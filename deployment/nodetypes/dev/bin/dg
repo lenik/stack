@@ -27,7 +27,7 @@ BRIEF="$*"
 
 if [ -z "$BRIEF" ]; then
     echo "Please describe what have you done to this node: "
-    echo "(You may also specify action text in command line: $0 ACTION-TEXT)"
+    echo "(You can specify it in the command-line: $0 ACTION-TEXT)"
     read -r BRIEF
 fi
 
