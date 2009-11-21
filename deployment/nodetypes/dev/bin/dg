@@ -49,7 +49,7 @@ EOM
 
 cat "$TMPLOG"
 
-echo "Detail Text: (Press CTRL-D to submit, or CTRL-C to launch EDITOR)"
+echo "Detail Text: (Press CTRL-D to submit, or CTRL-Z to launch EDITOR)"
 
 function commit() {
     if ! cat "$TMPLOG" >>"$LOGFILE"; then
@@ -69,14 +69,14 @@ function edit() {
 
 }
 
-# trap control-c (signal 2)
-trap 'edit' 2
+# trap Control-Z (signal 18)
+trap 'edit' 18
 
 until cat >>"$TMPLOG"; do
 
     cat "$TMPLOG"
 
-    echo "Append more? (Press CTRL-D to submit, or CTRL-C to launch EDITOR)"
+    echo "Append more? (Press CTRL-D to submit, or CTRL-Z to launch EDITOR)"
 
 done
 
