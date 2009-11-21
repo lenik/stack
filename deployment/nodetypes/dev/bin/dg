@@ -49,7 +49,7 @@ EOM
 
 cat "$TMPLOG"
 
-echo "Detail Text: (Press CTRL-D to submit, or CTRL-Z to launch EDITOR)"
+echo "Detail Text: (Press CTRL-D to submit, or CTRL-\\ to launch EDITOR)"
 
 function commit() {
     if ! cat "$TMPLOG" >>"$LOGFILE"; then
@@ -69,14 +69,15 @@ function edit() {
 
 }
 
-# trap Control-Z (signal 18)
-trap 'edit' 18
+# trap Control-\ (signal 3)
+# SIG_TSTP (Control-Z) doesn't work, and will lead to halt.
+trap 'edit' SIGQUIT
 
 until cat >>"$TMPLOG"; do
 
     cat "$TMPLOG"
 
-    echo "Append more? (Press CTRL-D to submit, or CTRL-Z to launch EDITOR)"
+    echo "Append more? (Press CTRL-D to submit, or CTRL-\\ to launch EDITOR)"
 
 done
 
