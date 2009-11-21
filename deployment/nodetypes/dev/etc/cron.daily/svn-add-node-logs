@@ -1,0 +1,4 @@
+#!/bin/bash
+
+svn add --parents --auto-props /node/log/*
+svn ci -m "[dev-node] Add daily node logs" /node/log
