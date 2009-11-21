@@ -32,7 +32,7 @@ fi
 
 if [ ! -f "$LOGFILE" ]; then
     cat <<EOM >"$LOGFILE"
-# This log database is backed by Diary-loG (dg).
+# This log database is backed by noDe-loG (dg).
 #
 # You SHOULD NOT edit this file directly, which may break the integrity of the
 # database.  The dg utility doesn't lock the underlying file when others are
