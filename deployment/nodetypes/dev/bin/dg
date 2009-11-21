@@ -41,6 +41,7 @@ fi
 cat <<EOM >$TMPLOG
 ___________________________________________________________________________
 Node log on $NODE_ID ($NODE_IP/$HOSTNAME)
+
 Date:       `date`
 Operator:   $USER (From $REMOTEHOST)
 Action:     $BRIEF
