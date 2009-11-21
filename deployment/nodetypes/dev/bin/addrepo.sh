@@ -1,0 +1,1 @@
+../share/lenik-svn-util/addrepo.sh
