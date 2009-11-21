@@ -1,0 +1,55 @@
+#!/bin/bash
+
+NODE_ID=unknown
+NODE_IP=unknown
+REMOTEHOST=local
+
+if [ -f /node/.noderc ]; then
+    . /node/.noderc
+fi
+
+LOGFILE="/node/log/`date +%Y-%m/%Y-%m-%d`.txt"
+LOGDIR="${LOGFILE%/*}"
+if [ ! -d "$LOGDIR" ]; then
+    if ! mkdir -p "$LOGDIR"; then
+        echo "Can't create directory $LOGDIR"
+        exit 1
+    fi
+fi
+if ! echo -n>>"$LOGFILE"; then
+    echo "Can't write to $LOGFILE"
+    exit 2
+fi
+
+TMPLOG="/tmp/nodelog-$RANDOM"
+
+BRIEF="$*"
+
+if [ -z "$BRIEF" ]; then
+    echo "Please describe what have you done to this node: "
+    echo "(You may also specify action text in command line: $0 ACTION-TEXT)"
+    read -r BRIEF
+fi
+
+cat <<EOM >$TMPLOG
+___________________________________________________________________________
+Node log on $NODE_ID ($NODE_IP/$HOSTNAME)
+Date:       `date`
+Operator:   $USER (From $REMOTEHOST)
+Action:     $BRIEF
+
+EOM
+
+cat "$TMPLOG"
+
+echo "Detail Text: (Press CTRL-D to submit)"
+cat >>"$TMPLOG"
+
+if ! cat "$TMPLOG" >>"$LOGFILE"; then
+    echo "Commit error, please refer to unsaved log $TMPLOG"
+    exit 3
+fi
+
+echo ___________________________________________________________________________
+
+rm "$TMPLOG"
