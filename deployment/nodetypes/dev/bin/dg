@@ -2,10 +2,17 @@
 
 NODE_ID=unknown
 NODE_IP=unknown
-REMOTEHOST=local
 
 if [ -f /node/.noderc ]; then
     . /node/.noderc
+fi
+
+if [ -z "$REMOTEHOST" ]; then
+    REMOTEHOST=local
+fi
+
+if [ -z "$EDITOR" ]; then
+    EDITOR=vi
 fi
 
 LOGFILE="/node/log/`date +%Y-%m/%Y-%m-%d`.txt"
@@ -42,14 +49,35 @@ EOM
 
 cat "$TMPLOG"
 
-echo "Detail Text: (Press CTRL-D to submit)"
-cat >>"$TMPLOG"
+echo "Detail Text: (Press CTRL-D to submit, or CTRL-C to launch EDITOR)"
 
-if ! cat "$TMPLOG" >>"$LOGFILE"; then
-    echo "Commit error, please refer to unsaved log $TMPLOG"
-    exit 3
-fi
+function commit() {
+    if ! cat "$TMPLOG" >>"$LOGFILE"; then
+        echo "Commit error, please refer to unsaved log $TMPLOG"
+        exit 3
+    fi
 
-echo ___________________________________________________________________________
+    echo ___________________________________________________________________________
 
-rm "$TMPLOG"
+    rm "$TMPLOG"
+}
+
+function edit() {
+    echo "Switch to editor $EDITOR"
+    vi "$TMPLOG"
+    echo "vi exit status: $?"
+
+}
+
+# trap control-c (signal 2)
+trap 'edit' 2
+
+until cat >>"$TMPLOG"; do
+
+    cat "$TMPLOG"
+
+    echo "Append more? (Press CTRL-D to submit, or CTRL-C to launch EDITOR)"
+
+done
+
+commit
