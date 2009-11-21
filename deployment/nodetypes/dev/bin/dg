@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ "$1" = "-h" -o "$1" = "--help" ]; then
+    echo "$0 ACTION-TEXT..."
+    echo "$0 \"ACTION-TEXT...\" if the text contains special chars"
+    exit 1
+fi
+
 NODE_ID=unknown
 NODE_IP=unknown
 
@@ -23,7 +29,26 @@ if [ ! -d "$LOGDIR" ]; then
         exit 1
     fi
 fi
-if ! echo -n>>"$LOGFILE"; then
+
+if [ ! -f "$LOGFILE" ]; then
+    cat <<EOM >"$LOGFILE"
+# This log database is backed by Diary-loG (dg).
+#
+# You SHOULD NOT edit this file directly, which may break the integrity of the
+# database.  The dg utility doesn't lock the underlying file when others are
+# committing new log entries to the database.
+#
+# To add logs to this database, add dg to your PATH and type :
+#
+#     $ dg ACTION
+#
+# at your shell prompt.
+#
+# For more information about dg utility, please visit http://www.lapiota.com/.
+
+EOM
+
+elif ! echo -n>>"$LOGFILE"; then
     echo "Can't write to $LOGFILE"
     exit 2
 fi
