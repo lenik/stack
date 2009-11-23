@@ -1,0 +1,58 @@
+#!/bin/bash
+
+if [ $# = 0 ]; then
+    svn propget svn:ignore .
+    exit
+fi
+
+first="$1"
+shift
+
+function set() {
+    local ITEM="$1"
+    shift
+    for f in "$@"; do
+        echo "Ignore($f) = $ITEM"
+        svn propset svn:ignore "$ITEM" "$f"
+    done
+}
+
+function add() {
+    local ITEM="$1"
+    shift
+    for f in "$@"; do
+        OLD=`svn propget svn:ignore "$f"`
+        NEW="$OLD $ITEM"
+        echo "Ignore($f) = $NEW"
+        svn propset svn:ignore "$NEW" "$f"
+    done
+}
+
+function remove() {
+    local ITEM="$1"
+    shift
+    for f in "$@"; do
+        OLD=(`svn propget svn:ignore "$f"`)
+        NEW=""
+        for g in "${OLD[@]}"; do
+            if [ "$g" != "$ITEM" ]; then
+                NEW="$NEW\n$g"
+            fi
+        done
+        echo "Ignore($f) = $nEW"
+        svn propset svn:ignore "$NEW" "$f"
+    done
+}
+
+if [ "${first:0:1}" = '+' ]; then
+    first="${first:1}"
+    add "$first" "$@"
+elif [ "${first:0:1}" = '-' ]; then
+    first="${first:1}"
+    remove "$first" "$@"
+else
+    if [ "${first:0:1}" = '=' ]; then
+        first="${first:1}"
+    fi
+    set "$first" "$@"
+fi
