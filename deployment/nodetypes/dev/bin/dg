@@ -13,9 +13,13 @@ if [ -f /node/.noderc ]; then
     . /node/.noderc
 fi
 
-if [ -z "$REMOTEHOST" ]; then
-    REMOTEHOST=local
-fi
+CLIENT="$REMOTEHOST"
+    if [ -z "$CLIENT" ]; then
+        CLIENT="$SSH_CLIENT"
+    fi
+    if [ -z "$CLIENT" ]; then
+        CLIENT=local
+    fi
 
 if [ -z "$EDITOR" ]; then
     EDITOR=vi
@@ -84,6 +88,13 @@ function commit() {
     fi
 
     echo _______________________________________________________________________________
+
+    echo _______________________________________________________________________________>>$TMPLOG
+    echo "__Message composed by *dg*, with version 1.0__">>$TMPLOG
+
+    if [ -n "$NODE_MAILLIST" ]; then
+        mail -s "[NODE $NODE_ID] $BRIEF" "$NODE_MAILLIST" <$TMPLOG
+    fi
 
     rm "$TMPLOG"
 }
