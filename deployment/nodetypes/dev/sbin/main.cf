@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo vi /etc/postfix/main.cf
+sudo postfix reload

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+FILE=/etc/postfix/canonical
+sudo vi $FILE
+sudo postmap $FILE
+sudo postfix reload

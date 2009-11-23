@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Try VIM Color Scheme
+
+if [ $# = 0 ]; then
+    echo Current color schemes available:
+    ls --color=auto /usr/share/vim/vimcurrent/colors/
+    exit 0
+fi
+
+SCHEME="$1"
+
+if [ -n "$2" ]; then
+    FILE="$2"
+    if [ ! -f "$FILE" ]; then
+        FILE=`which $FILE`
+    fi
+else
+    FILE="$0"
+fi
+
+vim -c "colorscheme $SCHEME" "$FILE"

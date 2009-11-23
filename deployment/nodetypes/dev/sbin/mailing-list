@@ -1,0 +1,7 @@
+#!/bin/bash
+
+LISTFILE=/etc/postfix/mailing-list
+
+sudo vi $LISTFILE
+sudo postmap $LISTFILE
+sudo postfix reload

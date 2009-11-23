@@ -1,0 +1,3 @@
+#!/bin/bash
+
+applysvn.sh / svn://svn.lapiota.com/l/lenik/trunk/etc/env.d/eci-secca

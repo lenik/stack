@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo Bash history size of users:
+
+sudo bash -c '
+IFS=:
+while read username password uid gid fullname home shell; do
+    if [ -r "$home/.bash_history" ]; then
+        histsize=`wc -l "$home/.bash_history"`
+        histsize="${histsize%% *}"
+        printf "%10d %s\n" $histsize $username
+    fi
+done </etc/passwd
+
+'

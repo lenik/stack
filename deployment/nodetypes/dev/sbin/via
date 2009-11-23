@@ -1,0 +1,14 @@
+#!/bin/bash
+
+FILE=/etc/apache2/httpd.conf
+
+if [ $# -gt 0 ]; then
+    FILE="$*"
+fi
+
+if [ -z "$EDITOR" ]; then
+    EDITOR=vi
+fi
+
+sudo $EDITOR $FILE
+sudo /etc/init.d/apache2 reload

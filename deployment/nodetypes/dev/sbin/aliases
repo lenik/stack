@@ -1,0 +1,5 @@
+#!/bin/bash
+
+sudo vi /etc/aliases
+sudo newaliases
+sudo postfix reload

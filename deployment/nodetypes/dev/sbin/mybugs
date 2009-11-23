@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# mysql -ubugzilla -poaY84ZsL -Dbugzilla
+mysql -ubugzilla3 -poaY84ZsL -Dbugzilla3
