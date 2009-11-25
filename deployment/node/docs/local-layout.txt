@@ -1,0 +1,15 @@
+node-local layout
+
+node/
+    local/
+        installed-assemblies/
+            dev/
+
+        installed-components/
+            mycomponent-r21234/
+                src/
+                    (bin, etc...)
+                postinstall-status/
+                    hello.done
+        removed-assemblies/
+        removed-components/
