@@ -1,0 +1,13 @@
+
+Commons:
+    cd $HOME
+
+    sudo apt-get update
+    sudo apt-get install subversion
+
+    export NODE_SVNROOT=http://svn.secca-project.com/stack/deployment/node
+    svn co $NODE_SVNROOT/component/commons/bin nodeutils
+    export PATH=~/nodeutils:$PATH
+
+    sudo installassembly dev
+    sudo installassembly user
