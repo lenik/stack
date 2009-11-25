@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# authmap ADB-FILES
+if [ $# = 0 ]; then
+    echo $0 ADB-FILES
+    exit 0
+fi
+
+function compile() {
+    local adb="$1"
+    local dir="${adb%/*}"
+    local file="${adb##*/}"
+    if [ "$dir" = "$adb" ]; then
+        dir=.
+    fi
+    local stem="${file%.*}"
+    echo "Compile auth-db $dir/$stem"
+    cat /dev/null >"$dir/$stem.htpasswd"
+    compile_htpasswd "$dir" "$file" "$dir/$stem.htpasswd"
+}
+
+function compile_htpasswd() {
+    local dir="$1"
+    local file="$2"
+    local out="$3"
+    while read key val; do
+        if [ -z "$key" ]; then continue; fi
+        if [ "${key:0:1}" = "#" ]; then
+            key="${key:1}"
+            if [ -z "$key" ]; then continue; fi
+            case "$key" in
+            include)
+                if [ "${val:0:1}" != '<' -o "${val: -1}" != '>' ]; then
+                    echo "$file: include syntax error: $val"
+                    exit 1
+                fi
+                val="${val:1:${#val}-2}"
+                compile_htpasswd "$dir" "$val" "$out"
+                ;;
+            esac
+            continue
+        fi
+        htpasswd -bm "$out" "$key" "$val" 2>/dev/null
+    done <"$dir/$file"
+}
+
+for adb in "$@"; do
+    compile "$adb"
+done

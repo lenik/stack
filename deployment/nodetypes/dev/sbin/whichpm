@@ -1,0 +1,15 @@
+#!/bin/bash
+
+while read -p "Enter the package name: " PACKAGE; do
+
+    pdir="${PACKAGE//::/\/}"
+    for base in "$@"; do
+        full="$base/$pdir"
+        if [ -f "$full" ]; then
+            echo "$full"
+        elif sudo test -f "$full"; then
+            echo "$full (sudo)"
+        fi
+    done
+
+done

@@ -6,9 +6,5 @@ if [ $# -gt 0 ]; then
     FILE="$*"
 fi
 
-if [ -z "$EDITOR" ]; then
-    EDITOR=vi
-fi
+ifedit --sudo $FILE /etc/init.d/apache2 reload
 
-sudo $EDITOR $FILE
-sudo /etc/init.d/apache2 reload

@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sudo vi /etc/postfix/main.cf
-sudo postfix reload
+ifedit --sudo /etc/postfix/main.cf \
+    postfix reload

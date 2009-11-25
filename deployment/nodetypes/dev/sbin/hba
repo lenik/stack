@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ifedit --sudo /etc/postgresql/8.4/main/pg_hba.conf \
+    /etc/init.d/postgresql-8.4 restart

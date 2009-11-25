@@ -24,7 +24,8 @@ function add() {
         OLD=`svn propget svn:ignore "$f"`
         NEW="$OLD $ITEM"
         echo "Ignore($f) = $NEW"
-        svn propset svn:ignore "$NEW" "$f"
+        # svn propset svn:ignore "$NEW" "$f"
+        svn propedit svn:ignore "$f"
     done
 }
 

@@ -1,5 +1,6 @@
 #!/bin/bash
 
-sudo vi /etc/aliases
-sudo newaliases
-sudo postfix reload
+if ifedit --sudo /etc/aliases; then
+    sudo newaliases
+    sudo postfix reload
+fi
