@@ -1,0 +1,50 @@
+$TTL            12H
+
+; The SOA resource record indicates that this DNS name server is the best
+; source of information for the data within this DNS domain.
+
+@               IN      SOA     (
+                                    1.dev.secca-project.com.; db creator host
+                                    admin.secca-project.com.; contact e-mail
+                                    3       ; serial
+                                    1H      ; sync refresh interval
+                                    10M     ; sync retry interval
+                                    12H     ; sync expire
+                                    1H      ; minimum TTL
+                                )
+                        NS      ec2-174-129-65-45.compute-1.amazonaws.com.
+                        NS      ns3.secca-project.com.
+                        NS      ns4.secca-project.com.
+
+ns3             24H     A       174.129.65.45
+ns4             24H     A       174.129.65.45
+
+@               24H     MX 10   ASPMX.L.GOOGLE.COM.
+                24H     MX 20   ALT1.ASPMX.L.GOOGLE.COM.
+                24H     MX 20   ALT2.ASPMX.L.GOOGLE.COM.
+                24H     MX 30   ASPMX2.GOOGLEMAIL.COM.
+
+                        TXT     "t=spf1 A MX include:authsmtp.com ~all"
+
+app             24H     CNAME   1.dev
+1.app           24H     CNAME   1.dev
+back            24H     CNAME   1.dev
+blogs           24H     CNAME   1.dev
+*.blogs         24H     CNAME   1.dev
+ci              24H     CNAME   1.dev
+dev             24H     CNAME   1.dev
+1.dev           24H     A       174.129.65.45
+econ            24H     CNAME   1.dev
+forum           24H     CNAME   1.dev
+ghs             24H     CNAME   1.dev
+list            24H     CNAME   1.dev
+m2              24H     CNAME   1.dev
+mail            24H     CNAME   rproxy
+node            24H     CNAME   1.dev
+repo            24H     CNAME   1.dev
+rproxy          24H     CNAME   1.dev
+svn             24H     CNAME   1.dev
+track           24H     CNAME   1.dev
+webmin          24H     CNAME   1.dev
+www             24H     CNAME   1.dev
+xmpp            24H     CNAME   1.dev
