@@ -3,15 +3,61 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.bodz.bas</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>bas-parent</artifactId>
 		<version>1</version>
 	</parent>
 	<groupId>com.seccaproject.parent</groupId>
 	<artifactId>parent</artifactId>
 	<version>1</version>
 	<packaging>pom</packaging>
-	<dependencyManagement>
-		<dependencies/>
-	</dependencyManagement>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+						<encoding>utf-8</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<configuration>
+						<source>1.6</source>
+						<encoding>utf-8</encoding>
+						<docencoding>utf-8</docencoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<configuration>
+						<encoding>utf-8</encoding>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<distributionManagement>
+		<repository>
+			<id>seccareleases</id>
+			<name>SECCA Release Distribution</name>
+			<url>http://m2.secca-project.com/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>seccasnapshots</id>
+			<name>boDz Snapshot Distribution Repository</name>
+			<url>http://m2.secca-project.com/snapshots</url>
+		</snapshotRepository>
+		<downloadUrl>http://download.secca-project.com</downloadUrl>
+	</distributionManagement>
 	<name>SECCA :: Parent</name>
+	<url>http://www.secca-project.com</url>
+	<organization>
+		<name>SECCA Project Team</name>
+		<url>http://www.secca-project.com/team</url>
+	</organization>
 </project>
