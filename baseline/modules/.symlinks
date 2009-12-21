@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for d in ../../../*/trunk; do
+	stem=${d#../../../}
+	stem=${stem%/trunk}
+	echo "Create symlink to $stem"
+	ln -snf "$d" $stem
+done
