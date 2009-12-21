@@ -15,7 +15,7 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>emergency-switcher</module>
+		<module>switcher</module>
 	</modules>
 	<name>SECCA :: RedStone :: Emergency</name>
 </project>
