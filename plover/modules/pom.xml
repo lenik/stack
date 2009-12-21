@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.seccaproject.plover</groupId>
+		<artifactId>plover</artifactId>
+		<version>0.0.1</version>
+	</parent>
+	<artifactId>modules</artifactId>
+	<packaging>pom</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<modules>
+		<module>arch</module>
+		<module>collections</module>
+		<module>sysutils</module>
+		<module>widgets</module>
+	</modules>
+	<name>SECCA :: Plover :: Modules</name>
+</project>
