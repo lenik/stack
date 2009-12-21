@@ -7,5 +7,5 @@
 	</parent>
 	<artifactId>sefra-dev</artifactId>
 	<packaging>jar</packaging>
-	<name>SECCA :: Sefra :: Dev</name>
+	<name>SECCA :: Sefra ESB :: Dev</name>
 </project>
