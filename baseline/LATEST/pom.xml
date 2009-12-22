@@ -86,8 +86,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/baseline/trunk</connection>
-		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/baseline/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/baseline/trunk</url>
+		<connection>scm:svn:http://svn.secca-project.com/stack/baseline/trunk/LATEST</connection>
+		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/baseline/trunk/LATEST</developerConnection>
+		<url>http://track.secca-project.com/projects/stack/browser/baseline/trunk/LATEST</url>
 	</scm>
 </project>

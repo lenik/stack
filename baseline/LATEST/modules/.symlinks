@@ -1,7 +1,7 @@
 #!/bin/bash
 
-for d in ../../../*/trunk; do
-	stem=${d#../../../}
+for d in ../../../../*/trunk; do
+	stem=${d#../../../../}
 	stem=${stem%/trunk}
 
     if [ "$stem" = "baseline" ]; then continue; fi
@@ -20,7 +20,7 @@ for d in ../../../*/trunk; do
             fi
         done < <(grep "scm\.tag\|project\.rel" $d/release.properties)
 
-        tagdir="../../../$stem/tags/$scm_tag"
+        tagdir="../../../../$stem/tags/$scm_tag"
         if [ ! -d "$tagdir" ]; then
             echo "Tag not exists or not checked out: $tagdir"
             exit 1
