@@ -16,19 +16,19 @@
 				<groupId>com.seccaproject.baseline</groupId>
 				<artifactId>bprof-api</artifactId>
 				<type>jar</type>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.baseline</groupId>
 				<artifactId>bprof-registry</artifactId>
 				<type>jar</type>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.baseline</groupId>
 				<artifactId>bprof-features</artifactId>
 				<type>pom</type>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
