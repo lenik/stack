@@ -3,6 +3,34 @@
 for d in ../../../*/trunk; do
 	stem=${d#../../../}
 	stem=${stem%/trunk}
-	echo "Create symlink to $stem"
-	ln -snf "$d" $stem
+
+    if [ "$stem" = "baseline" ]; then continue; fi
+
+    scm_tag=
+    project_rel=
+    if [ -f $d/release.properties ]; then
+        while read line; do
+            key="${line%%=*}"
+            val="${line#*=}"
+            #echo "    $key = $val."
+            if [ "$key" = "scm.tag" ]; then
+                scm_tag="$val"
+            elif [ "${key:0:11}" = "project.rel" ]; then
+                project_rel="$val"
+            fi
+        done < <(grep "scm\.tag\|project\.rel" $d/release.properties)
+
+        tagdir="../../../$stem/tags/$scm_tag"
+        if [ ! -d "$tagdir" ]; then
+            echo "Tag not exists or not checked out: $tagdir"
+            exit 1
+        fi
+
+        echo "Create symlink to $stem (version $project_rel, tag $scm_tag)"
+        ln -snf "$tagdir" $stem
+
+        echo "  Expand tag version"
+        svn update --set-depth infinity "$tagdir"
+    fi
+
 done
