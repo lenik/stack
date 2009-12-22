@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.seccaproject.plover</groupId>
 	<artifactId>plover</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
@@ -94,8 +94,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/plover/trunk</connection>
-		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/plover/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/plover/trunk</url>
+		<connection>scm:svn:http://svn.secca-project.com/stack/plover/tags/plover-0.0.2</connection>
+		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/plover/tags/plover-0.0.2</developerConnection>
+		<url>http://track.secca-project.com/projects/stack/browser/plover/tags/plover-0.0.2</url>
 	</scm>
 </project>
