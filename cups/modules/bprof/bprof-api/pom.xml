@@ -7,6 +7,6 @@
 	</parent>
 	<artifactId>bprof-api</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>SECCA :: CUPS :: Browser Profiler :: API</name>
 </project>
