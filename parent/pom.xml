@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.seccaproject.parent</groupId>
 	<artifactId>parent</artifactId>
-	<version>2-SNAPSHOT</version>
+	<version>2</version>
 	<packaging>pom</packaging>
 	<properties>
 		<svn.base>http://svn.secca-project.com/stack</svn.base>
@@ -96,8 +96,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/parent/trunk</connection>
-		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/parent/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/parent/trunk</url>
+		<connection>scm:svn:http://svn.secca-project.com/stack/parent/tags/parent-2</connection>
+		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/parent/tags/parent-2</developerConnection>
+		<url>http://track.secca-project.com/projects/stack/browser/parent/tags/parent-2</url>
 	</scm>
 </project>
