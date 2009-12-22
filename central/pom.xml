@@ -42,7 +42,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
-					<tagBase>svn://svn.secca-project.com/stack/central/tags</tagBase>
+					<tagBase>${svn.base.dev}/central/tags</tagBase>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -73,8 +73,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/central/trunk</connection>
-		<developerConnection>scm:svn:https://svn.secca-project.com/stack/central/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/central/trunk</url>
+		<connection>scm:svn:${svn.base}/central/trunk</connection>
+		<developerConnection>scm:svn:${svn.base.dev}/central/trunk</developerConnection>
+		<url>${svn.base.web}/central/trunk</url>
 	</scm>
 </project>
