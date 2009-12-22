@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.seccaproject.adarna</groupId>
 		<artifactId>aoh</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>aoh-api</artifactId>
 	<packaging>jar</packaging>
