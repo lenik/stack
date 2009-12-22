@@ -4,11 +4,11 @@
 	<parent>
 		<groupId>com.seccaproject.parent</groupId>
 		<artifactId>parent</artifactId>
-		<version>1</version>
+		<version>3-SNAPSHOT</version>
 	</parent>
 	<groupId>com.seccaproject.badger</groupId>
 	<artifactId>badger</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
@@ -78,8 +78,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:${svn.base}/badger/trunk</connection>
-		<developerConnection>scm:svn:${svn.base.dev}/badger/trunk</developerConnection>
-		<url>${svn.base.web}/badger/trunk</url>
+		<connection>scm:svn:http://svn.secca-project.com/stack/badger/trunk</connection>
+		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/badger/trunk</developerConnection>
+		<url>http://track.secca-project.com/projects/stack/browser/badger/trunk</url>
 	</scm>
 </project>
