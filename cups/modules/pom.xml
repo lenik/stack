@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.seccaproject.cups</groupId>
 		<artifactId>cups</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>modules</artifactId>
 	<packaging>pom</packaging>
