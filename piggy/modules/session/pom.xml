@@ -7,7 +7,7 @@
 	</parent>
 	<artifactId>piggy-session</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<dependencies/>
 	<name>SECCA :: Piggy :: Pseudo Session</name>
 </project>
