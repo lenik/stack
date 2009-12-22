@@ -42,7 +42,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
-					<tagBase>svn://svn.secca-project.com/stack/miglets/tags</tagBase>
+					<tagBase>${svn.base.dev}/miglets/tags</tagBase>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -73,8 +73,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/miglets/trunk</connection>
-		<developerConnection>scm:svn:https://svn.secca-project.com/stack/miglets/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/miglets/trunk</url>
+		<connection>scm:svn:${svn.base}/miglets/trunk</connection>
+		<developerConnection>scm:svn:${svn.base.dev}/miglets/trunk</developerConnection>
+		<url>${svn.base.web}/miglets/trunk</url>
 	</scm>
 </project>
