@@ -16,13 +16,13 @@
 				<groupId>com.seccaproject.redstone</groupId>
 				<artifactId>emergency-switcher</artifactId>
 				<type>jar</type>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.redstone</groupId>
 				<artifactId>incremental</artifactId>
 				<type>jar</type>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
