@@ -7,7 +7,7 @@
 	</parent>
 	<artifactId>icsf-patterndb-dev</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<dependencies/>
 	<name>SECCA :: ICSF :: Pattern Database :: Dev</name>
 </project>
