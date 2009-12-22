@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.seccaproject.baseline</groupId>
 	<artifactId>baseline</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
@@ -86,8 +86,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/baseline/trunk</connection>
-		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/baseline/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/baseline/trunk</url>
+		<connection>scm:svn:http://svn.secca-project.com/stack/baseline/tags/baseline-0.0.2</connection>
+		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/baseline/tags/baseline-0.0.2</developerConnection>
+		<url>http://track.secca-project.com/projects/stack/browser/baseline/tags/baseline-0.0.2</url>
 	</scm>
 </project>
