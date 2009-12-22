@@ -12,7 +12,7 @@
 	<packaging>pom</packaging>
 	<properties>
 		<svn.base>http://svn.secca-project.com/stack</svn.base>
-		<svn.base.dev>https://svn.secca-project.com/stack</svn.base.dev>
+		<svn.base.dev>svn+ssh://svn.secca-project.com/repos/svn/stack</svn.base.dev>
 		<svn.base.web>http://track.secca-project.com/projects/stack/browser</svn.base.web>
 	</properties>
 	<build>
