@@ -16,31 +16,31 @@
 				<groupId>com.seccaproject.icsf</groupId>
 				<artifactId>icsf-api</artifactId>
 				<type>jar</type>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.icsf</groupId>
 				<artifactId>icsf-analyzer-dev</artifactId>
 				<type>jar</type>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.icsf</groupId>
 				<artifactId>icsf-monitor-dev</artifactId>
 				<type>jar</type>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.icsf</groupId>
 				<artifactId>icsf-cleaner-dev</artifactId>
 				<type>jar</type>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.icsf</groupId>
 				<artifactId>icsf-patterndb-dev</artifactId>
 				<type>jar</type>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

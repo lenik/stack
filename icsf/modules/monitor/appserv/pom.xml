@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.seccaproject.icsf</groupId>
 		<artifactId>icsf-monitor</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>icsf-monitor-appserv</artifactId>
 	<packaging>jar</packaging>
