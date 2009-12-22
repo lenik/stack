@@ -3,11 +3,11 @@
 	<parent>
 		<groupId>com.seccaproject.plover</groupId>
 		<artifactId>modules</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>plover-widgets</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1-SNAPSHOT</version>
-	<dependencies/>
+	<version>0.0.2-SNAPSHOT</version>
+	<dependencies />
 	<name>SECCA :: Plover :: UI Widgets</name>
 </project>

@@ -4,11 +4,11 @@
 	<parent>
 		<groupId>com.seccaproject.parent</groupId>
 		<artifactId>parent</artifactId>
-		<version>1</version>
+		<version>3-SNAPSHOT</version>
 	</parent>
 	<groupId>com.seccaproject.plover</groupId>
 	<artifactId>plover</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
@@ -94,8 +94,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:${svn.base}/plover/trunk</connection>
-		<developerConnection>scm:svn:${svn.base.dev}/plover/trunk</developerConnection>
-		<url>${svn.base.web}/plover/trunk</url>
+		<connection>scm:svn:http://svn.secca-project.com/stack/plover/trunk</connection>
+		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/plover/trunk</developerConnection>
+		<url>http://track.secca-project.com/projects/stack/browser/plover/trunk</url>
 	</scm>
 </project>
