@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.seccaproject.adarna</groupId>
 	<artifactId>adarna</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
