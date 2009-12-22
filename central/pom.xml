@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.seccaproject.central</groupId>
 	<artifactId>central</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
@@ -73,8 +73,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/central/trunk</connection>
-		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/central/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/central/trunk</url>
+		<connection>scm:svn:http://svn.secca-project.com/stack/central/tags/central-0.0.2</connection>
+		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/central/tags/central-0.0.2</developerConnection>
+		<url>http://track.secca-project.com/projects/stack/browser/central/tags/central-0.0.2</url>
 	</scm>
 </project>
