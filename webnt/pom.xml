@@ -47,7 +47,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
-					<tagBase>svn://svn.secca-project.com/stack/webnt/tags</tagBase>
+					<tagBase>${svn.base.dev}/webnt/tags</tagBase>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -78,8 +78,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/webnt/trunk</connection>
-		<developerConnection>scm:svn:https://svn.secca-project.com/stack/webnt/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/webnt/trunk</url>
+		<connection>scm:svn:${svn.base}/webnt/trunk</connection>
+		<developerConnection>scm:svn:${svn.base.dev}/webnt/trunk</developerConnection>
+		<url>${svn.base.web}/webnt/trunk</url>
 	</scm>
 </project>
