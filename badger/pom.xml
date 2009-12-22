@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.seccaproject.badger</groupId>
 	<artifactId>badger</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
@@ -78,8 +78,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/badger/trunk</connection>
-		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/badger/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/badger/trunk</url>
+		<connection>scm:svn:http://svn.secca-project.com/stack/badger/tags/badger-0.0.2</connection>
+		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/badger/tags/badger-0.0.2</developerConnection>
+		<url>http://track.secca-project.com/projects/stack/browser/badger/tags/badger-0.0.2</url>
 	</scm>
 </project>
