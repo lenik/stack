@@ -15,32 +15,32 @@
 			<dependency>
 				<groupId>com.seccaproject.piggy</groupId>
 				<artifactId>piggy-animation</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.piggy</groupId>
 				<artifactId>piggy-banner</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.piggy</groupId>
 				<artifactId>piggy-cache</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.piggy</groupId>
 				<artifactId>piggy-mails</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.piggy</groupId>
 				<artifactId>piggy-session</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.piggy</groupId>
 				<artifactId>piggy-webapp</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
