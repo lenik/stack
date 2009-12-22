@@ -7,6 +7,6 @@
 	</parent>
 	<artifactId>portal-webapp</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>SECCA :: Epase :: Portal :: Web Application</name>
 </project>
