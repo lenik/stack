@@ -65,18 +65,4 @@
 		<name>SECCA Project Team</name>
 		<url>http://www.secca-project.com/team</url>
 	</organization>
-	<profiles>
-		<profile>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId/>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>
