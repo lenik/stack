@@ -10,6 +10,11 @@
 	<artifactId>parent</artifactId>
 	<version>1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<properties>
+		<svn.base>http://svn.secca-project.com/stack</svn.base>
+		<svn.base.dev>https://svn.secca-project.com/stack</svn.base.dev>
+		<svn.base.web>http://track.secca-project.com/projects/stack/browser</svn.base.web>
+	</properties>
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -38,6 +43,13 @@
 						<encoding>utf-8</encoding>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<configuration>
+						<tagBase>${svn.base.dev}/parent/tags</tagBase>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -56,13 +68,36 @@
 	</distributionManagement>
 	<name>SECCA :: Parent</name>
 	<url>http://www.secca-project.com</url>
-	<properties>
-		<svn.base>http://svn.secca-project.com/stack</svn.base>
-		<svn.base.dev>https://svn.secca-project.com/stack</svn.base.dev>
-		<svn.base.web>http://track.secca-project.com/projects/stack/browser</svn.base.web>
-	</properties>
+	<inceptionYear>2009</inceptionYear>
 	<organization>
 		<name>SECCA Project Team</name>
 		<url>http://www.secca-project.com/team</url>
 	</organization>
+	<developers>
+		<!--Please list in the alphabet order by developer id.-->
+		<developer>
+			<id>XJL</id>
+			<name>谢继雷</name>
+			<email>xjl@99jsj.com</email>
+			<roles>
+				<role>Project Leader</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>GMT+8</timezone>
+		</developer>
+	</developers>
+	<mailingLists>
+		<mailingList>
+			<name>SECCA Developer</name>
+			<archive>http://list.secca-project.com/archive/dev</archive>
+			<post>post-dev@list.secca-project.com</post>
+			<subscribe>subscribe-dev@list.secca-project.com</subscribe>
+			<unsubscribe>unsubscribe-dev@list.secca-project.com</unsubscribe>
+		</mailingList>
+	</mailingLists>
+	<scm>
+		<connection>scm:svn:${svn.base}/parent/trunk</connection>
+		<developerConnection>scm:svn:${svn.base.dev}/parent/trunk</developerConnection>
+		<url>${svn.base.web}/parent/trunk</url>
+	</scm>
 </project>
