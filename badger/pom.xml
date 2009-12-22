@@ -15,12 +15,12 @@
 			<dependency>
 				<groupId>com.seccaproject.badger</groupId>
 				<artifactId>badger-api</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.badger</groupId>
 				<artifactId>badger-designer</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
