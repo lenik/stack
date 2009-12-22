@@ -1,19 +1,24 @@
 package com.seccaproject.plover.arch.ui;
 
 import java.net.URL;
-import java.util.Locale;
 
 /**
  * @see AccessibleContextImpl
  */
 public interface IUIInfo {
+//
+// String getDisplayName(Locale locale);
+//
+// String getDescription(Locale locale);
+//
+// URL getIcon(Locale locale, IconVariant variant);
 
-    String getDisplayName(Locale locale);
+    String getDisplayName();
 
-    String getDescription(Locale locale);
+    String getDescription();
 
-    URL getIcon(Locale locale, IconVariant variant);
+    URL getIcon(IconVariant variant);
 
-    HelpIndex getHelpIndex();
+    IHelpIndex getHelpIndex();
 
 }

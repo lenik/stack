@@ -8,6 +8,11 @@
 	<artifactId>plover-arch</artifactId>
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<dependencies/>
+	<dependencies>
+		<dependency>
+			<groupId>net.bodz.bas</groupId>
+			<artifactId>bas-api</artifactId>
+		</dependency>
+	</dependencies>
 	<name>SECCA :: Plover :: System Architecture</name>
 </project>

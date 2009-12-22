@@ -13,6 +13,12 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>net.bodz.bas</groupId>
+				<artifactId>bas-api</artifactId>
+				<version>0.0.1</version>
+			</dependency>
+			<!--Project dependencies-->
+			<dependency>
 				<groupId>com.seccaproject.plover</groupId>
 				<artifactId>plover-arch</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
