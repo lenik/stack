@@ -15,22 +15,22 @@
 			<dependency>
 				<groupId>com.seccaproject.plover</groupId>
 				<artifactId>plover-arch</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.plover</groupId>
 				<artifactId>plover-collections</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.plover</groupId>
 				<artifactId>plover-sysutils</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.seccaproject.plover</groupId>
 				<artifactId>plover-widgets</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

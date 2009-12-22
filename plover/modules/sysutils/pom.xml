@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.seccaproject.plover</groupId>
 		<artifactId>modules</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>plover-sysutils</artifactId>
 	<packaging>jar</packaging>
