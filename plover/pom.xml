@@ -57,7 +57,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
-					<tagBase>svn://svn.secca-project.com/stack/plover/tags</tagBase>
+					<tagBase>${svn.base.dev}/plover/tags</tagBase>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -88,8 +88,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/plover/trunk</connection>
-		<developerConnection>scm:svn:https://svn.secca-project.com/stack/plover/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/plover/trunk</url>
+		<connection>scm:svn:${svn.base}/plover/trunk</connection>
+		<developerConnection>scm:svn:${svn.base.dev}/plover/trunk</developerConnection>
+		<url>${svn.base.web}/plover/trunk</url>
 	</scm>
 </project>
