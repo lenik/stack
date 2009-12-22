@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.seccaproject.badger</groupId>
 		<artifactId>modules</artifactId>
-		<version>0.0.2</version>
+		<version>0.0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>badger-designer</artifactId>
 	<packaging>jar</packaging>
