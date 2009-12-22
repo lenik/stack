@@ -42,7 +42,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
-					<tagBase>svn://svn.secca-project.com/stack/woodpecker/tags</tagBase>
+					<tagBase>${svn.base.dev}/woodpecker/tags</tagBase>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -73,8 +73,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/woodpecker/trunk</connection>
-		<developerConnection>scm:svn:https://svn.secca-project.com/stack/woodpecker/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/woodpecker/trunk</url>
+		<connection>scm:svn:${svn.base}/woodpecker/trunk</connection>
+		<developerConnection>scm:svn:${svn.base.dev}/woodpecker/trunk</developerConnection>
+		<url>${svn.base.web}/woodpecker/trunk</url>
 	</scm>
 </project>
