@@ -3,11 +3,11 @@
 	<parent>
 		<groupId>com.seccaproject.piggy</groupId>
 		<artifactId>modules</artifactId>
-		<version>0.0.3</version>
+		<version>0.0.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>piggy-cache</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.3</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<dependencies />
 	<name>SECCA :: Piggy :: Cache System</name>
 </project>
