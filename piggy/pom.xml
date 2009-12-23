@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.seccaproject.piggy</groupId>
 	<artifactId>piggy</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.3</version>
 	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
@@ -98,8 +98,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/piggy/trunk</connection>
-		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/piggy/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/piggy/trunk</url>
+		<connection>scm:svn:http://svn.secca-project.com/stack/piggy/tags/piggy-0.0.3</connection>
+		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/piggy/tags/piggy-0.0.3</developerConnection>
+		<url>http://track.secca-project.com/projects/stack/browser/piggy/tags/piggy-0.0.3</url>
 	</scm>
 </project>
