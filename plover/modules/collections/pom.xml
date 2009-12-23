@@ -3,11 +3,11 @@
 	<parent>
 		<groupId>com.seccaproject.plover</groupId>
 		<artifactId>modules</artifactId>
-		<version>0.0.3-SNAPSHOT</version>
+		<version>0.0.3</version>
 	</parent>
 	<artifactId>plover-collections</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.3</version>
 	<dependencies />
 	<name>SECCA :: Plover :: Common Collections</name>
 </project>
