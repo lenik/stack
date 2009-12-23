@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.seccaproject.miglets</groupId>
 	<artifactId>miglets</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.3</version>
 	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
@@ -73,8 +73,8 @@
 		</mailingList>
 	</mailingLists>
 	<scm>
-		<connection>scm:svn:http://svn.secca-project.com/stack/miglets/trunk</connection>
-		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/miglets/trunk</developerConnection>
-		<url>http://track.secca-project.com/projects/stack/browser/miglets/trunk</url>
+		<connection>scm:svn:http://svn.secca-project.com/stack/miglets/tags/miglets-0.0.3</connection>
+		<developerConnection>scm:svn:svn+ssh://svn.secca-project.com/repos/svn/stack/miglets/tags/miglets-0.0.3</developerConnection>
+		<url>http://track.secca-project.com/projects/stack/browser/miglets/tags/miglets-0.0.3</url>
 	</scm>
 </project>
