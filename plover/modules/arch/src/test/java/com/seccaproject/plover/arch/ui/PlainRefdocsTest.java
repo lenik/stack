@@ -19,7 +19,7 @@ public class PlainRefdocsTest {
     @Test
     public void testParseResource_en()
             throws Exception {
-        PlainRefdocs refdocs = PlainRefdocs.parseResource(RefdocsTest.class, Locale.ENGLISH);
+        PlainRefdocs refdocs = PlainRefdocs.parseResource(RefdocsSample.class, Locale.ENGLISH);
         String[] tags = refdocs.getTags().toArray(new String[0]);
         Arrays.sort(tags);
 
@@ -44,7 +44,7 @@ public class PlainRefdocsTest {
     @Test
     public void testParseResource_zh()
             throws Exception {
-        PlainRefdocs refdocs = PlainRefdocs.parseResource(RefdocsTest.class, Locale.SIMPLIFIED_CHINESE);
+        PlainRefdocs refdocs = PlainRefdocs.parseResource(RefdocsSample.class, Locale.SIMPLIFIED_CHINESE);
         String[] tags = refdocs.getTags().toArray(new String[0]);
         Arrays.sort(tags);
 

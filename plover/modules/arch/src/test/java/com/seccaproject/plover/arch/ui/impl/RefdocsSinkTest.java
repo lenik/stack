@@ -11,16 +11,16 @@ import org.junit.Test;
 
 import com.seccaproject.plover.arch.i18n.nls.DefaultDispatcher;
 import com.seccaproject.plover.arch.ui.IRefdocEntry;
-import com.seccaproject.plover.arch.ui.RefdocsTest;
+import com.seccaproject.plover.arch.ui.RefdocsSample;
 
 public class RefdocsSinkTest {
 
     RefdocsSink sink;
 
     public RefdocsSinkTest() {
-        sink = new RefdocsSink(RefdocsTest.class);
+        sink = new RefdocsSink(RefdocsSample.class);
         DefaultDispatcher dispatcher = new DefaultDispatcher(sink);
-        dispatcher.visitClassResource(RefdocsTest.class, Locale.ENGLISH);
+        dispatcher.visitClassResource(RefdocsSample.class, Locale.ENGLISH);
     }
 
     @Test
