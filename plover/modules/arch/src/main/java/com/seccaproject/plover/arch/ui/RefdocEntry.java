@@ -2,18 +2,21 @@ package com.seccaproject.plover.arch.ui;
 
 import java.net.URL;
 
-public class HelpEntry
-        implements IHelpEntry {
+/**
+ * 参考信息条目（POJO）
+ */
+public class RefdocEntry
+        implements IRefdocEntry {
 
     private URL url;
     private String[] tags;
     private String title;
 
-    public HelpEntry(URL url, String... tags) {
+    public RefdocEntry(URL url, String... tags) {
         this(null, url, tags);
     }
 
-    public HelpEntry(String title, URL url, String... tags) {
+    public RefdocEntry(String title, URL url, String... tags) {
         if (url == null)
             throw new NullPointerException("url");
         if (tags == null)

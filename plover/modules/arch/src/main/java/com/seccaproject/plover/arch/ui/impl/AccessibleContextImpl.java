@@ -1,4 +1,4 @@
-package com.seccaproject.plover.arch.ui;
+package com.seccaproject.plover.arch.ui.impl;
 
 import java.awt.IllegalComponentStateException;
 import java.util.Locale;

@@ -8,15 +8,17 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * @test {@link HelpIndexTest}
+ * 构建型帮助索引，支持帮助条目的更改，用于中间变量的目的。
+ *
+ * @test {@link RefdocsBuilderTest}
  */
-public class HelpIndex
-        implements IHelpIndex {
+public class RefdocsBuilder
+        implements IRefdocs {
 
-    private Map<String, List<IHelpEntry>> tagmap;
+    private Map<String, List<IRefdocEntry>> tagmap;
 
-    public HelpIndex() {
-        tagmap = new TreeMap<String, List<IHelpEntry>>();
+    public RefdocsBuilder() {
+        tagmap = new TreeMap<String, List<IRefdocEntry>>();
     }
 
     public String[] getTags() {
@@ -25,26 +27,26 @@ public class HelpIndex
     }
 
     @Override
-    public Collection<? extends IHelpEntry> getEntries(String tag) {
-        List<IHelpEntry> entries = tagmap.get(tag);
+    public Collection<? extends IRefdocEntry> getEntries(String tag) {
+        List<IRefdocEntry> entries = tagmap.get(tag);
         if (entries == null)
             return Collections.emptyList();
         return Collections.unmodifiableCollection(entries);
     }
 
     @Override
-    public IHelpEntry getPreferredEntry(String tag) {
-        List<IHelpEntry> entries = tagmap.get(tag);
+    public IRefdocEntry getDefaultEntry(String tag) {
+        List<IRefdocEntry> entries = tagmap.get(tag);
         if (entries == null || entries.isEmpty())
             return null;
         return entries.get(0);
     }
 
-    public void add(IHelpEntry entry) {
+    public void add(IRefdocEntry entry) {
         add(entry, entry.getTags());
     }
 
-    public void add(IHelpEntry entry, String... tags) {
+    public void add(IRefdocEntry entry, String... tags) {
         if (entry == null)
             throw new NullPointerException("entry");
         if (tags == null)
@@ -52,9 +54,9 @@ public class HelpIndex
         if (tags.length == 0)
             throw new IllegalArgumentException("No tag specified");
         for (String tag : tags) {
-            List<IHelpEntry> entries = tagmap.get(tag);
+            List<IRefdocEntry> entries = tagmap.get(tag);
             if (entries == null) {
-                entries = new ArrayList<IHelpEntry>(1);
+                entries = new ArrayList<IRefdocEntry>(1);
                 tagmap.put(tag, entries);
             }
             entries.add(entry);

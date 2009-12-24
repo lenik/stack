@@ -13,27 +13,31 @@ import java.util.TreeMap;
 import net.bodz.bas.api.exceptions.IllegalUsageException;
 
 /**
- * @test {@link ConstHelpIndexTest}
+ * 简化的平面帮助索引，占用更少的内存。
+ *
+ * 在内部通过使用 {@link RefdocsBuilder} 来建立中间内存模型，并最后约简为平面模型。
+ *
+ * @test {@link PlainRefdocsTest}
  */
-public class ConstHelpIndex
-        implements IHelpIndex {
+public class PlainRefdocs
+        implements IRefdocs {
 
     private String[] tags;
 
     // use PrefixMap in future.
-    private TreeMap<String, IHelpEntry> tagmap;
+    private TreeMap<String, IRefdocEntry> tagmap;
 
-    public ConstHelpIndex(IHelpIndex helpIndex) {
+    public PlainRefdocs(IRefdocs helpIndex) {
         if (helpIndex == null)
             throw new NullPointerException("helpIndex");
         tags = helpIndex.getTags();
-        tagmap = new TreeMap<String, IHelpEntry>();
+        tagmap = new TreeMap<String, IRefdocEntry>();
 
         for (String tag : tags) {
             String prefix = tag + ".";
-            Collection<? extends IHelpEntry> entries = helpIndex.getEntries(tag);
+            Collection<? extends IRefdocEntry> entries = helpIndex.getEntries(tag);
             int i = 0;
-            for (IHelpEntry entry : entries) {
+            for (IRefdocEntry entry : entries) {
                 tagmap.put(prefix + i, entry);
                 i++;
             }
@@ -46,7 +50,7 @@ public class ConstHelpIndex
     }
 
     @Override
-    public Collection<? extends IHelpEntry> getEntries(String tag) {
+    public Collection<? extends IRefdocEntry> getEntries(String tag) {
         tag += ".";
         String tagStart = tagmap.floorKey(tag);
         if (tagStart == null || !tagStart.startsWith(tag))
@@ -68,7 +72,7 @@ public class ConstHelpIndex
     }
 
     @Override
-    public IHelpEntry getPreferredEntry(String tag) {
+    public IRefdocEntry getDefaultEntry(String tag) {
         String first = tag + ".0";
         return tagmap.get(first);
     }
@@ -86,35 +90,51 @@ public class ConstHelpIndex
      * spec.2009.tags = refspec 2009
      * </pre>
      */
-    public static ConstHelpIndex parseResource(Class<?> clazz, Locale locale) {
-        HelpIndex helpIndex = new HelpIndex();
-
+    public static PlainRefdocs parseResource(Class<?> clazz, Locale locale) {
         String baseName = clazz.getName();
         ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale);
+        return parseResource(bundle, clazz, locale);
+    }
+
+    public static PlainRefdocs parseResource(ResourceBundle bundle, Locale locale) {
+        return parseResource(bundle, null, locale);
+    }
+
+    static PlainRefdocs parseResource(ResourceBundle bundle, Class<?> clazz, Locale locale) {
+        RefdocsBuilder builder = new RefdocsBuilder();
+
         Enumeration<String> keys = bundle.getKeys();
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();
-            if (key.endsWith(".tags")) {
+            if (key.endsWith(".url")) {
                 try {
-                    String tags = bundle.getString(key);
-
-                    key = key.substring(0, key.length() - 5);
                     String _url = bundle.getString(key);
+                    key = key.substring(0, key.length() - 4);
 
                     String title = null;
-                    if (bundle.containsKey(key + ".title"))
-                        title = bundle.getString(key + ".title");
+                    String tags = null;
+
+                    if (bundle.containsKey(key))
+                        title = bundle.getString(key);
+
+                    if (bundle.containsKey(key + ".tags"))
+                        tags = bundle.getString(key + ".tags");
+                    if (tags == null)
+                        continue;
+                    // tags=tags.trim();
+                    if (tags.isEmpty())
+                        continue;
 
                     URL url;
-                    if (_url.contains("//"))
-                        url = new URL(_url);
-                    else
+                    if (!_url.contains("//") && clazz != null)
                         url = clazz.getResource(_url);
+                    else
+                        url = new URL(_url);
 
                     String[] tagv = tags.split("\\s+");
-                    HelpEntry entry = new HelpEntry(title, url, tagv);
+                    RefdocEntry entry = new RefdocEntry(title, url, tagv);
 
-                    helpIndex.add(entry);
+                    builder.add(entry);
                 } catch (MissingResourceException e) {
                     continue; // skip if either tags or url not specified.
                 } catch (MalformedURLException e) {
@@ -122,8 +142,6 @@ public class ConstHelpIndex
                 }
             }
         }
-
-        return new ConstHelpIndex(helpIndex);
+        return new PlainRefdocs(builder);
     }
-
 }

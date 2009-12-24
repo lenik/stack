@@ -2,7 +2,10 @@ package com.seccaproject.plover.arch.ui;
 
 import java.net.URL;
 
-public interface IHelpEntry {
+/**
+ * 帮助、参考的信息条目
+ */
+public interface IRefdocEntry {
 
     // String getTitle(Locale locale);
     // URL getURL(Locale locale);
