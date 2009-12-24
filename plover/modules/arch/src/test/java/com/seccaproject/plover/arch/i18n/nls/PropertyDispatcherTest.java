@@ -1,47 +1,20 @@
-package com.seccaproject.plover.arch.ui.impl;
+package com.seccaproject.plover.arch.i18n.nls;
 
 import static org.junit.Assert.assertEquals;
 
 import java.net.URL;
-import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import org.junit.Test;
 
-public class UniquePrefixDispatcherTest {
-
-    static class BufferSink
-            implements IPrefixSink {
-
-        Map<String, String> bufferMap;
-
-        public BufferSink() {
-            this.bufferMap = new TreeMap<String, String>();
-        }
-
-        public BufferSink(Map<String, String> buffer) {
-            if (buffer == null)
-                throw new NullPointerException("buffer");
-            this.bufferMap = buffer;
-        }
-
-        @Override
-        public void receive(String suffix, String content) {
-            bufferMap.put(suffix, content);
-        }
-
-        public Map<String, String> getMap() {
-            return bufferMap;
-        }
-
-    }
+public class PropertyDispatcherTest {
 
     TreeMap<String, String> catExpected;
     TreeMap<String, String> dogExpected;
 
-    public UniquePrefixDispatcherTest() {
+    public PropertyDispatcherTest() {
         catExpected = new TreeMap<String, String>();
         dogExpected = new TreeMap<String, String>();
         catExpected.put("name", "Tom");
@@ -50,10 +23,10 @@ public class UniquePrefixDispatcherTest {
     }
 
     @Test
-    public void testProcessResourceBundle()
+    public void testVisitResourceBundle()
             throws Exception {
-        BufferSink catSink = new BufferSink();
-        BufferSink dogSink = new BufferSink();
+        BufferPropertySink catSink = new BufferPropertySink();
+        BufferPropertySink dogSink = new BufferPropertySink();
 
         UniquePrefixDispatcher dispatcher = new UniquePrefixDispatcher();
         dispatcher.registerSink("cat.", catSink);
@@ -67,10 +40,10 @@ public class UniquePrefixDispatcherTest {
     }
 
     @Test
-    public void testProcessProperties()
+    public void testVisitProperties()
             throws Exception {
-        BufferSink catSink = new BufferSink();
-        BufferSink dogSink = new BufferSink();
+        BufferPropertySink catSink = new BufferPropertySink();
+        BufferPropertySink dogSink = new BufferPropertySink();
 
         UniquePrefixDispatcher dispatcher = new UniquePrefixDispatcher();
         dispatcher.registerSink("cat.", catSink);

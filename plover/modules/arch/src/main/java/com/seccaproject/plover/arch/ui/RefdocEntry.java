@@ -12,6 +12,9 @@ public class RefdocEntry
     private String[] tags;
     private String title;
 
+    public RefdocEntry() {
+    }
+
     public RefdocEntry(URL url, String... tags) {
         this(null, url, tags);
     }
@@ -35,6 +38,16 @@ public class RefdocEntry
         if (tags == null)
             throw new NullPointerException("tags");
         this.tags = tags;
+    }
+
+    @Override
+    public boolean hasTag(String tag) {
+        if (tag == null)
+            throw new NullPointerException("tag");
+        for (String t : tags)
+            if (tag.equals(t))
+                return true;
+        return false;
     }
 
     @Override

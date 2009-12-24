@@ -21,6 +21,7 @@ public interface IIconMap {
      * @param variant
      *            图标变体，参考预定义的变体名称。若为 <code>null</code> 表示获取默认图标，等效于 <code>""</code>。
      * @return <code>null</code> 若没有可用的图标资源。
+     * @see IconVariantName
      */
     URL getIcon(String variant);
 
@@ -38,6 +39,7 @@ public interface IIconMap {
      * @param heightHint
      *            希望显示的图标高度（像素）0 表示未知。如果实际的图标大小和显示大小不相等，由调用者负责缩放。
      * @return <code>null</code> 若没有可用的图标资源。
+     * @see IconVariantName
      */
     URL getIcon(String variant, int widthHint, int heightHint);
 

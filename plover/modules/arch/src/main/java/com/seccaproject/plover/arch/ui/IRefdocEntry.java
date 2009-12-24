@@ -15,6 +15,8 @@ public interface IRefdocEntry {
      */
     String[] getTags();
 
+    boolean hasTag(String tag);
+
     /**
      * @return <code>null</code> if title information isn't available.
      */

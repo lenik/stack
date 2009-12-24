@@ -1,10 +1,11 @@
 package com.seccaproject.plover.arch.ui;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -21,17 +22,16 @@ public class RefdocsBuilder
         tagmap = new TreeMap<String, List<IRefdocEntry>>();
     }
 
-    public String[] getTags() {
-        String[] tags = tagmap.keySet().toArray(new String[0]);
-        return tags;
+    public Set<String> getTags() {
+        return tagmap.keySet();
     }
 
     @Override
-    public Collection<? extends IRefdocEntry> getEntries(String tag) {
+    public Iterator<? extends IRefdocEntry> getEntries(String tag) {
         List<IRefdocEntry> entries = tagmap.get(tag);
         if (entries == null)
-            return Collections.emptyList();
-        return Collections.unmodifiableCollection(entries);
+            return Collections.<IRefdocEntry> emptyList().iterator();
+        return Collections.unmodifiableCollection(entries).iterator();
     }
 
     @Override

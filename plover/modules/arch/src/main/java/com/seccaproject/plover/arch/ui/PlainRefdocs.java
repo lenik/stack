@@ -2,12 +2,13 @@ package com.seccaproject.plover.arch.ui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.TreeMap;
 
 import net.bodz.bas.api.exceptions.IllegalUsageException;
@@ -22,22 +23,23 @@ import net.bodz.bas.api.exceptions.IllegalUsageException;
 public class PlainRefdocs
         implements IRefdocs {
 
-    private String[] tags;
+    private Set<String> tags;
 
     // use PrefixMap in future.
     private TreeMap<String, IRefdocEntry> tagmap;
 
-    public PlainRefdocs(IRefdocs helpIndex) {
-        if (helpIndex == null)
-            throw new NullPointerException("helpIndex");
-        tags = helpIndex.getTags();
+    public PlainRefdocs(IRefdocs refdocs) {
+        if (refdocs == null)
+            throw new NullPointerException("refdocs");
+        tags = refdocs.getTags();
         tagmap = new TreeMap<String, IRefdocEntry>();
 
         for (String tag : tags) {
             String prefix = tag + ".";
-            Collection<? extends IRefdocEntry> entries = helpIndex.getEntries(tag);
+            Iterator<? extends IRefdocEntry> entries = refdocs.getEntries(tag);
             int i = 0;
-            for (IRefdocEntry entry : entries) {
+            while (entries.hasNext()) {
+                IRefdocEntry entry = entries.next();
                 tagmap.put(prefix + i, entry);
                 i++;
             }
@@ -45,16 +47,16 @@ public class PlainRefdocs
     }
 
     @Override
-    public String[] getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
     @Override
-    public Collection<? extends IRefdocEntry> getEntries(String tag) {
+    public Iterator<? extends IRefdocEntry> getEntries(String tag) {
         tag += ".";
         String tagStart = tagmap.floorKey(tag);
         if (tagStart == null || !tagStart.startsWith(tag))
-            return Collections.emptyList();
+            return Collections.<IRefdocEntry> emptyList().iterator();
 
         // String tagEndIncl = tagmap.floorKey(tag + "\uFFFF");
         // assert tagEndIncl != null;
@@ -68,7 +70,7 @@ public class PlainRefdocs
         // array[i] = tagmap.get(tag + i);
         // return Arrays.asList(array);
 
-        return tagmap.subMap(tag + ".", tag + ".\uFFFF").values();
+        return tagmap.subMap(tag + ".", tag + ".\uFFFF").values().iterator();
     }
 
     @Override
@@ -114,8 +116,8 @@ public class PlainRefdocs
                     String title = null;
                     String tags = null;
 
-                    if (bundle.containsKey(key))
-                        title = bundle.getString(key);
+                    if (bundle.containsKey(key + ".title"))
+                        title = bundle.getString(key + ".title");
 
                     if (bundle.containsKey(key + ".tags"))
                         tags = bundle.getString(key + ".tags");
@@ -144,4 +146,5 @@ public class PlainRefdocs
         }
         return new PlainRefdocs(builder);
     }
+
 }

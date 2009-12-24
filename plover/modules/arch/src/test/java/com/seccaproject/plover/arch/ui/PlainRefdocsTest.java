@@ -4,6 +4,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Locale;
 
 import org.junit.Test;
@@ -18,8 +19,9 @@ public class PlainRefdocsTest {
     @Test
     public void testParseResource_en()
             throws Exception {
-        PlainRefdocs refdocs = PlainRefdocs.parseResource(getClass(), Locale.getDefault());
-        String[] tags = refdocs.getTags();
+        PlainRefdocs refdocs = PlainRefdocs.parseResource(RefdocsTest.class, Locale.ENGLISH);
+        String[] tags = refdocs.getTags().toArray(new String[0]);
+        Arrays.sort(tags);
 
         // TreeMap required.
         assertArrayEquals(new String[] { "2009", "refspec", "simple", "tutorial", },//
@@ -42,8 +44,9 @@ public class PlainRefdocsTest {
     @Test
     public void testParseResource_zh()
             throws Exception {
-        PlainRefdocs refdocs = PlainRefdocs.parseResource(getClass(), Locale.SIMPLIFIED_CHINESE);
-        String[] tags = refdocs.getTags();
+        PlainRefdocs refdocs = PlainRefdocs.parseResource(RefdocsTest.class, Locale.SIMPLIFIED_CHINESE);
+        String[] tags = refdocs.getTags().toArray(new String[0]);
+        Arrays.sort(tags);
 
         // TreeMap required.
         assertArrayEquals(new String[] { "2009", "refspec", "simple", "tutorial", },//

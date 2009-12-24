@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.junit.Test;
@@ -30,10 +29,9 @@ public class RefdocsBuilderTest {
         assertEquals(url1, hi.getDefaultEntry("tag1").getURL());
         assertEquals(url1, hi.getDefaultEntry("tag2").getURL());
 
-        Collection<? extends IRefdocEntry> entries = hi.getEntries("tag2");
-        Iterator<? extends IRefdocEntry> iterator = entries.iterator();
-        assertEquals(url1, iterator.next().getURL());
-        assertEquals(url2, iterator.next().getURL());
+        Iterator<? extends IRefdocEntry> entriesIterator = hi.getEntries("tag2");
+        assertEquals(url1, entriesIterator.next().getURL());
+        assertEquals(url2, entriesIterator.next().getURL());
     }
 
 }

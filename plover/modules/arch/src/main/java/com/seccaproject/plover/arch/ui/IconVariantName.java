@@ -2,8 +2,15 @@ package com.seccaproject.plover.arch.ui;
 
 /**
  * 预定义图标变体名称
+ *
+ * @see #DEFAULT
+ * @see #DISABLED
+ * @see #SELECTED
+ * @see #HOVER
+ * @see #EXPANDED
+ *
  */
-public class IconVariant {
+public class IconVariantName {
 
     public static final String DEFAULT = "";
     public static final String DISABLED = "disabled";
