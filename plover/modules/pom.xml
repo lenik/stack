@@ -17,6 +17,7 @@
 	<modules>
 		<module>arch</module>
 		<module>collections</module>
+		<module>diagnostics</module>
 		<module>sysutils</module>
 		<module>widgets</module>
 	</modules>
