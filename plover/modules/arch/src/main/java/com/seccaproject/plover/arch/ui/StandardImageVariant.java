@@ -8,9 +8,8 @@ package com.seccaproject.plover.arch.ui;
  * @see #SELECTED
  * @see #HOVER
  * @see #EXPANDED
- *
  */
-public class IconVariantName {
+public class StandardImageVariant {
 
     public static final String DEFAULT = "";
     public static final String DISABLED = "disabled";

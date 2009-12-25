@@ -7,20 +7,20 @@ import java.util.TreeMap;
 import net.bodz.bas.api.exceptions.IllegalUsageException;
 
 import com.seccaproject.plover.arch.i18n.nls.IPropertySink;
-import com.seccaproject.plover.arch.ui.AbstractIconMap;
-import com.seccaproject.plover.arch.ui.IIconMap;
+import com.seccaproject.plover.arch.ui.AbstractImageMap;
+import com.seccaproject.plover.arch.ui.IImageMap;
 
 /**
- * @test {@link IconMapSinkTest}
+ * @test {@link ImageMapSinkTest}
  */
-public class IconMapSink
-        extends AbstractIconMap
-        implements IIconMap, IPropertySink {
+public class ImageMapSink
+        extends AbstractImageMap
+        implements IImageMap, IPropertySink {
 
     private final Class<?> resourceBase;
     private final TreeMap<VariantKey, URL> map;
 
-    public IconMapSink(Class<?> resourceBase) {
+    public ImageMapSink(Class<?> resourceBase) {
         if (resourceBase == null)
             throw new NullPointerException("resourceBase");
         this.resourceBase = resourceBase;
@@ -28,7 +28,7 @@ public class IconMapSink
     }
 
     @Override
-    public URL getIcon(String variant, int widthHint, int heightHint) {
+    public URL getImage(String variant, int widthHint, int heightHint) {
         VariantKey wantKey = new VariantKey(variant, widthHint, heightHint);
         while (wantKey != null) {
             VariantKey searchKey = map.floorKey(wantKey);
@@ -40,32 +40,45 @@ public class IconMapSink
         return null;
     }
 
+    boolean isSizeHint(String s) {
+        return true;
+    }
+
     @Override
     public void receive(String name, String value) {
         assert name != null;
         assert value != null;
         int widthHint = 0;
         int heightHint = 0;
-        String variantName;
+        String variantName = name;
+        String sizeHint = null;
         int dash = name.lastIndexOf('-');
         if (dash != -1) {
-            String sizeHint = name.substring(dash + 1);
-            int x = sizeHint.indexOf('x');
+            String suffix = name.substring(dash + 1);
+            if (isSizeHint(suffix)) {
+                sizeHint = suffix;
+                variantName = name.substring(0, dash);
+            }
+        } else if (isSizeHint(name)) {
+            sizeHint = name;
+            variantName = "";
+        }
+
+        if (sizeHint != null)
             try {
+                int x = sizeHint.indexOf('x');
                 if (x == -1)
                     widthHint = Integer.parseInt(sizeHint);
                 else {
                     widthHint = Integer.parseInt(sizeHint.substring(0, x));
                     heightHint = Integer.parseInt(sizeHint.substring(x + 1));
                 }
-                variantName = name.substring(0, dash);
             } catch (NumberFormatException e) {
                 widthHint = 0;
                 heightHint = 0;
                 variantName = name;
             }
-        } else
-            variantName = name;
+
         VariantKey key = new VariantKey(variantName, widthHint, heightHint);
         URL url;
         if (value.contains("//"))

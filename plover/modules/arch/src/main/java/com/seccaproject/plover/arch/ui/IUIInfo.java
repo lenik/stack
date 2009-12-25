@@ -30,11 +30,11 @@ public interface IUIInfo {
     String getDescription();
 
     /**
-     * 获取图标字典。
+     * 获取图像映射。
      *
-     * @return non-<code>null</code> {@link IIconMap}，如果没有可用的图标，返回 {@link EmptyIconMap}。
+     * @return non-<code>null</code> {@link IImageMap}，如果没有可用的图像，返回 {@link EmptyImageMap}。
      */
-    IIconMap getIconMap();
+    IImageMap getImageMap();
 
     /**
      * 获取参考、帮助信息目录。

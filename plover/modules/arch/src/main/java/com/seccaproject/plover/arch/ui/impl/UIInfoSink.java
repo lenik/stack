@@ -1,7 +1,7 @@
 package com.seccaproject.plover.arch.ui.impl;
 
 import com.seccaproject.plover.arch.i18n.nls.IPropertySink;
-import com.seccaproject.plover.arch.ui.IIconMap;
+import com.seccaproject.plover.arch.ui.IImageMap;
 import com.seccaproject.plover.arch.ui.IRefdocs;
 import com.seccaproject.plover.arch.ui.IUIInfo;
 
@@ -15,11 +15,14 @@ public class UIInfoSink
 
     private String displayName;
     private String description;
-    private IconMapSink iconMapSink;
+    private ImageMapSink imageMapSink;
     private RefdocsSink refdocsSink;
 
     public UIInfoSink(Class<?> resourceBase) {
-        this.iconMapSink = new IconMapSink(resourceBase);
+        if (resourceBase == null)
+            // resourceBase = getClass();
+            throw new NullPointerException("resourceBase");
+        this.imageMapSink = new ImageMapSink(resourceBase);
         this.refdocsSink = new RefdocsSink(resourceBase);
     }
 
@@ -30,8 +33,10 @@ public class UIInfoSink
             displayName = content;
         else if ("description".equals(name))
             description = content;
+        else if ("icon".equals(name))
+            imageMapSink.receive("", content);
         else if (name.startsWith("icon."))
-            iconMapSink.receive(name.substring(5), content);
+            imageMapSink.receive(name.substring(5), content);
         else if (name.startsWith("ref."))
             refdocsSink.receive(name.substring(4), content);
     }
@@ -47,8 +52,8 @@ public class UIInfoSink
     }
 
     @Override
-    public IIconMap getIconMap() {
-        return iconMapSink;
+    public IImageMap getImageMap() {
+        return imageMapSink;
     }
 
     @Override
