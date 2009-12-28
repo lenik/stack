@@ -1,0 +1,187 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+UnKnOwN - DeScRiPtIoN
+
+=cut
+use strict;
+use vars qw($LOGNAME $LOGLEVEL);
+use cmt::log(2);
+    $LOGNAME    = 'logt'; # $0 =~ /([^\/\\.]+)(?:\.\w+)*$/;
+use cmt::vcs('parse_id');
+    my %RCSID   = parse_id('$Id: .pl 845 2008-09-29 11:45:47Z lenik $');
+use Date::Parse;
+use FileHandle;
+use Getopt::Long;
+use POSIX('strftime');
+#use Time::localtime;
+
+sub _main; sub _version; sub _help;
+
+our $opt_within     = '86400';  # seconds
+our $opt_least_level= 0;
+
+sub _boot {
+    GetOptions('quiet|q'        => sub { $LOGLEVEL-- },
+               'verbose|v'      => sub { $LOGLEVEL++ },
+               'version'        => sub { _version; exit 0 },
+               'help|h'         => sub { _help; exit 0 },
+               'within|w=n',
+               'least-level|l=n',
+               );
+    _main;
+}
+
+=head1 SYNOPSIS
+
+B<UnKnOwN>
+    S<[ B<-q> | B<--quiet> ]>
+    S<[ B<-v> | B<--verbose> ]>
+    S<[ B<-h> | B<--help> ]>
+    S<[ B<--version> ]>
+    S<[ B<--> ]>
+    S<[ I<...the rest of arguments...> ]>
+
+=head1 DESCRIPTION
+
+B<UnKnOwN> is a WHAT used for WHAT. It HOW-WORKS.
+
+BACKGROUND-PROBLEM.
+
+HOW-UnKnOwN-RESOLVES.
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-m> | B<--my-option>
+
+...
+
+=item B<-q> | B<--quiet>
+
+Repeat this option to suppress unimportant information to display.
+
+=item B<-v> | B<--verbose>
+
+Repeat this option to display more detailed information.
+
+=item B<-h> | B<--help>
+
+Display a breif help page and exit(0).
+
+=item B<--version>
+
+Display a short version information and exit(0).
+
+=back
+
+=head1 EXAMPLES
+
+=over 4
+
+=item Show help
+
+    UnKnOwN --help
+
+=back
+
+=head1 ENVIRONMENT
+
+=over 8
+
+=item TEMP, TMP
+
+TEMP(or TMP, if $TEMP directory isn't existed) directory used to create
+temporary files.
+
+=back
+
+=cut
+sub _help {
+    &_version;
+    print "\nSyntax: \n    $0 [OPTION] [--] ...\n", <<'EOM';
+
+Common options:
+    -w, --within=SECONDS    select the most recent logs in this duration
+    -q, --quiet             repeat to get less info
+    -v, --verbose           repeat to get more info
+    -h, --help              show this help page
+        --version           print the version info
+EOM
+}
+
+exit (_boot or 0);
+
+sub _main {
+    for (@ARGV) {
+        _log1 "File $_";
+        my $file = new FileHandle($_) or die "Can't open $_: $!";
+        for (<$file>) {
+            # ip id user [d/mo/yr:h:m:s tz] url status size "referer" "agent"
+            next unless /^(\S+) (\S+) (\S+) \[(\S+) ([+\-]\d+)\] "(.*?)" (\d+) (-|\d+)(?: "(.*?)")?(?: "(.*?)")?/;
+            my $remote_ip = $1;
+            my $ident = $2;
+            my $user = $3;
+            my $time_str = $4;
+            my $time_zone = $5;
+            my $request = $6;
+            my $status = $7;
+            next if ($status < $opt_least_level);
+
+            my $time = str2time($time_str, $time_zone);
+            my $duration = time() - $time;
+            next if ($duration > $opt_within);
+
+            my $size = $8;
+            my $referer = $9;
+            my $agent = $10;
+            $size = 0 if ('-' eq $size);
+
+            my $t = strftime('%Y-%m-%d %H:%M:%S', localtime($time));
+            print "  [$t] $status $user $request (From $remote_ip)\n";
+        }
+        close $file;
+    }
+}
+
+=head1 DIAGNOSTICS
+
+(No Information)
+
+=cut
+# (HELPER FUNCTIONS)
+
+=head1 HACKING
+
+(No Information)
+
+=cut
+# (MODULE FUNCTIONS)
+
+=head1 HISTORY
+
+=over
+
+=item 0.x
+
+The initial version.
+
+=back
+
+=cut
+sub _version {
+    print "[$LOGNAME] DeScRiPtIoN \n";
+    print "Written by Lenik,  Version 0.$RCSID{rev},  Last updated at $RCSID{date}\n";
+}
+
+=head1 SEE ALSO
+
+The L<cmt/"Perl_simple_cli_program_template">
+
+=head1 AUTHOR
+
+Xima Lenik <name@mail.box>
+
+=cut

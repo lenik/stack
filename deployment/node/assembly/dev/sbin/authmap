@@ -1,8 +1,13 @@
 #!/bin/bash
 
-# authmap ADB-FILES
+REALM=
+if [ "$1" = "-r" ]; then
+    REALM="$2"
+    shift 2
+fi
+
 if [ $# = 0 ]; then
-    echo $0 ADB-FILES
+    echo $0 [ -r REALM ] FILES.adb...
     exit 0
 fi
 
@@ -16,31 +21,68 @@ function compile() {
     local stem="${file%.*}"
     echo "Compile auth-db $dir/$stem"
     cat /dev/null >"$dir/$stem.htpasswd"
-    compile_htpasswd "$dir" "$file" "$dir/$stem.htpasswd"
+    compile_htpasswd "$dir" "$file" "$dir/$stem.htpasswd" "$REALM"
 }
 
 function compile_htpasswd() {
     local dir="$1"
     local file="$2"
     local out="$3"
+    # TODO: realms array
+    local realm="$4"
     while read key val; do
         if [ -z "$key" ]; then continue; fi
         if [ "${key:0:1}" = "#" ]; then
             key="${key:1}"
             if [ -z "$key" ]; then continue; fi
             case "$key" in
+            realm)
+                if [ -z "$realm" ]; then
+                    realm="$val"
+                fi
+                ;;
             include)
                 if [ "${val:0:1}" != '<' -o "${val: -1}" != '>' ]; then
                     echo "$file: include syntax error: $val"
                     exit 1
                 fi
                 val="${val:1:${#val}-2}"
-                compile_htpasswd "$dir" "$val" "$out"
+                compile_htpasswd "$dir" "$val" "$out" "$realm"
                 ;;
             esac
             continue
         fi
-        htpasswd -bm "$out" "$key" "$val" 2>/dev/null
+        if [ -z "$realm" ]; then
+            htpasswd -bm "$out" "$key" "$val" 2>/dev/null
+        else
+            # htdigest "$out" "$realm" "$key" < <(echo "$val")
+            md5=`echo -n "$key:$realm:$val"| md5sum`
+            # echo "digest of $key:$realm:$val = $md5"
+            md5="${md5%% *}"
+            tmpout=/tmp/authmap.$$
+            mv "$out" $tmpout
+            touch "$out"
+            found=
+            while IFS=: read ename erealm epass; do
+                if [ -z "$epass" ]; then
+                    echo "$ename:$erealm">>"$out"
+                    continue
+                fi
+                if [ "$ename" = "$key" -a "$erealm" = "$realm" ]; then
+                    echo "$key:$realm:$md5">>"$out"
+                    found=1
+                else
+                    echo "$ename:$erealm:$epass">>"$out"
+                fi
+            done <$tmpout
+            if [ -z "$found" ]; then
+                echo "$key:$realm:$md5">>"$out"
+            fi
+            chmod --reference=$tmpout $out
+            chown --reference=$tmpout $out
+            chgrp --reference=$tmpout $out
+            rm -f $tmpout
+        fi
     done <"$dir/$file"
 }
 

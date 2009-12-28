@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ls -FANl --color=auto `which "$1"`
