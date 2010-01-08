@@ -15,11 +15,11 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>arch</module>
-		<module>collections</module>
-		<module>diagnostics</module>
-		<module>sysutils</module>
-		<module>widgets</module>
+		<module>plover-arch</module>
+		<module>plover-collections</module>
+		<module>plover-diagnostics</module>
+		<module>plover-sysutils</module>
+		<module>plover-widgets</module>
 	</modules>
 	<name>SECCA :: Plover :: Modules</name>
 </project>
