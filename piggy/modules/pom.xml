@@ -15,12 +15,12 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>animation</module>
-		<module>banner</module>
-		<module>cache</module>
-		<module>mails</module>
-		<module>session</module>
-		<module>webapp</module>
+		<module>piggy-animation</module>
+		<module>piggy-banner</module>
+		<module>piggy-cache</module>
+		<module>piggy-mails</module>
+		<module>piggy-session</module>
+		<module>piggy-webapp</module>
 	</modules>
 	<name>SECCA :: Piggy :: Modules</name>
 </project>
