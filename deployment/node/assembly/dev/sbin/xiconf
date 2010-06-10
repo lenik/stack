@@ -1,0 +1,8 @@
+#!/bin/sh
+
+SERVNAME="$1"
+shift
+
+sudo chkconfig $SERVNAME "$@"
+sudo /etc/init.d/xinetd reload
+sudo chkconfig $SERVNAME

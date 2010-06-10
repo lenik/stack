@@ -7,7 +7,7 @@ if [ $# -gt 0 ]; then
 fi
 
 if ifedit --sudo $FILE; then
-    if named-checkconf -z; then
-        /etc/init.d/bind9 reload
+    if sudo named-checkconf -z; then
+        sudo /etc/init.d/bind9 reload
     fi
 fi
