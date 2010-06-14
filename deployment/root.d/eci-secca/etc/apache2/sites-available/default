@@ -1,10 +1,16 @@
-<VirtualHost _default_ *:80>
-	ServerAdmin lenik@localhost
+<VirtualHost *:80>
+    ServerName  localhost
+	ServerAdmin admin@localhost
 
-	<Directory />
-		Options FollowSymLinks
-		AllowOverride None
-	</Directory>
+    #SSLEngine on
+    #SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+    #SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+
+	LogLevel warn
+	CustomLog /var/log/apache2/access.log combined
+	ErrorLog  /var/log/apache2/error.log
+
+    DocumentRoot /var/www
 	<Directory /var/www/>
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
@@ -19,22 +25,5 @@
 		Order allow,deny
 		Allow from all
 	</Directory>
-
-	ErrorLog /var/log/apache2/error.log
-
-	# Possible values include: debug, info, notice, warn, error, crit,
-	# alert, emerg.
-	LogLevel warn
-
-	CustomLog /var/log/apache2/access.log combined
-
-    <Directory "/usr/share/doc/">
-        Options Indexes MultiViews FollowSymLinks
-        AllowOverride None
-# using AUTH in future...
-#       Order deny,allow
-#       Deny from all
-#       Allow from 127.0.0.0/255.0.0.0 ::1/128
-    </Directory>
 
 </VirtualHost>

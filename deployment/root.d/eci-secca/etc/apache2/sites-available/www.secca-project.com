@@ -2,6 +2,9 @@
     ServerName www.secca-project.com
     ServerAdmin admin@secca-project.com
 
+    UserDir public_html
+    AliasMatch ^/home/([^/]+)/public_html/(.*) /home/$1/public_html/$2
+
     DocumentRoot /node/www
     <Directory /node/www>
         Options Indexes FollowSymLinks MultiViews
@@ -29,5 +32,9 @@
     LogLevel warn
 
     CustomLog /var/log/apache2/access.log combined
+
+    #RewriteEngine on
+    #RewriteRule (/.*/).dot.(\w+).(\w+) /ub/dot?key=$1&format=$2 [L]
+
 
 </VirtualHost>

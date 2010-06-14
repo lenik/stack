@@ -1,0 +1,27 @@
+<VirtualHost *:80>
+    ServerName www.zjhf.bia.cn
+    ServerAdmin admin@www.zjhf.bia.cn
+    ServerAlias demo.secca-project.com
+
+	ErrorLog /var/log/apache2/zjhf_error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/zjhf_access.log combined
+
+    DocumentRoot /node/local/dotproject
+    <Directory /node/local/dotproject>
+        Options Indexes FollowSymLinks
+        DirectoryIndex index.php
+
+        <IfModule mod_php5.c>
+            php_flag magic_quotes_gpc Off
+            php_flag track_vars On
+            php_flag register_globals Off
+            php_value include_path .
+        </IfModule>
+    </Directory>
+
+</VirtualHost>

@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+    ServerName xml.bodz.net
+    ServerAdmin admin@bodz.net
+
+    LogLevel warn
+    CustomLog /var/log/apache2/bodz_access.log combined
+    ErrorLog  /var/log/apache2/bodz_error.log
+
+    DocumentRoot /home/lenik/sites/xml-models
+    <Directory /home/lenik/sites/xml-models>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+</VirtualHost>
