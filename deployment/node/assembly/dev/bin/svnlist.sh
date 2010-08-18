@@ -1,1 +1,0 @@
-../share/lenik-svn-util/svnlist.sh

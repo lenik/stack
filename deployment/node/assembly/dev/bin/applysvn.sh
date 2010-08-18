@@ -1,1 +1,0 @@
-../share/lenik-svn-util/applysvn.sh
