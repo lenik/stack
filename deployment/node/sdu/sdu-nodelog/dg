@@ -13,6 +13,14 @@ if [ -f /node/.noderc ]; then
     . /node/.noderc
 fi
 
+REAL="$USER"
+    while IFS=: read name passwd uid gid real home shell; do
+        if [ "$name" = "$USER" ]; then
+            REAL="$real ($name)"
+            break
+        fi
+    done </etc/passwd
+
 CLIENT="$REMOTEHOST"
     if [ -z "$CLIENT" ]; then
         CLIENT="${SSH_CLIENT%% *}"
@@ -72,7 +80,7 @@ _______________________________________________________________________________
 Node log on $NODE_ID ($NODE_IP/$HOSTNAME)
 
 Date:       `date`
-Operator:   $USER (From $CLIENT)
+Operator:   $REAL from $CLIENT
 Action:     $BRIEF
 
 EOM
