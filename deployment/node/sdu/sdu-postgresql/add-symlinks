@@ -1,0 +1,25 @@
+#!/bin/bash -e
+
+shopt -s nullglob
+
+bindir="$1"
+cd "$bindir"
+
+# find postgresql lib bindir.  e.g.  /usr/lib/postgresql/8.4/bin
+for d in /usr/lib/postgresql/*/bin; do
+    pglibbindir=$d
+    break
+done
+
+if [ -z "$pglibbindir" ]; then
+    echo "Couldn't find postgresql lib bins"
+    exit 1
+fi
+
+shopt -s nullglob
+for f in "$pglibbindir"/*; do
+    if [ -x $f ]; then
+        echo "add symlink $f"
+        ln -snf "$f" .
+    fi
+done
