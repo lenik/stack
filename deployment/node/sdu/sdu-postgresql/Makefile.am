@@ -11,4 +11,7 @@ dist_sbin_SCRIPTS = \
 EXTRA_DIST = add-symlinks
 
 install-data-hook:
-	$(srcdir)/add-symlinks $(DESTDIR)$(bindir)
+	$(srcdir)/add-symlinks $(DESTDIR)$(sbindir)
+
+uninstall-hook:
+	$(srcdir)/remove-symlinks $(DESTDIR)$(sbindir)
