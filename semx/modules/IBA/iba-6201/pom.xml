@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.seccaproject.semx.iba</groupId>
+		<artifactId>IBA</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>com.seccaproject.semx.iba6201</groupId>
+	<artifactId>iba-6201</artifactId>
+	<packaging>pom</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<modules>
+		<module>alc</module>
+	</modules>
+	<name>SECCA :: SEMX :: IBA :: 6201 (Computer Programming)</name>
+	<!--http://unstats.un.org/unsd/cr/registry/regcs.asp?Cl=27&Lg=1&Co=6201-->
+</project>
