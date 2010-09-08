@@ -29,4 +29,4 @@ echo "Install $file to $instdir..."
 cd "@DESTDIR@/opt/java"
 "$file"
 
-echo "$instdir" >"@DESTDIR@@pkgdatadir@/instdir
+echo "$instdir" >"@DESTDIR@@pkgdatadir@/instdir"
