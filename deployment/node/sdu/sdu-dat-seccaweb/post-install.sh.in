@@ -1,1 +1,13 @@
 #!/bin/sh
+
+if [ ! -d /node/domains/seccaw ]; then
+
+    echo "Create seecaw domain"
+
+    sudo -uappserv /opt/java/glassfish/bin/asadmin create-domain \
+        --domaindir /node/domains seccaw
+
+fi
+
+cd /opt/java/glassfish/glassfish/domains
+    sudo -uappserv ln -snf /node/domains/seccaw .

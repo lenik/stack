@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# /node/domains/seccaw
+
+/opt/java/glassfish/glassfish/bin/asadmin \
+    "$@"
+
+# --passwordfile

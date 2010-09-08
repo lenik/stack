@@ -1,0 +1,31 @@
+#!/bin/sh
+
+ASADMIN="sudo -uappserv /opt/java/glassfish/glassfish/bin/asadmin"
+
+if [ -z "$1" ]; then
+    echo "$0 start|stop|restart|reload"
+    exit 1
+fi
+
+case "$1" in
+    start)
+        $ASADMIN start-domain seccaw
+        ;;
+
+    stop)
+        $ASADMIN stop-domain seccaw
+        ;;
+
+    restart)
+        $ASADMIN restart-domain seccaw
+        ;;
+
+    reload)
+        $ASADMIN reload-domain seccaw
+        ;;
+
+    *)
+        echo "unknown command $1"
+        exit 1
+        ;;
+esac

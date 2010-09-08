@@ -1,6 +1,18 @@
 
 include libauto/subst.am
 
+sysconfdir = /etc
+initdir = ${sysconfdir}/init
+
+dist_sbin_SCRIPTS = \
+	seccaw \
+	seccaw-admin
+
+dist_man_MANS = \
+	seccaw.1
+
+dist_init_DATA = \
+	seccaw.conf
 
 pkgdata_SCRIPTS = \
 	post-install.sh \
