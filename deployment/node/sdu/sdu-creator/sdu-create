@@ -1,0 +1,56 @@
+#!/bin/bash
+
+for d in "$@"; do
+
+    mkdir $d
+    svn add $d
+
+    cd $d
+
+    echo "#!/bin/sh" >post-install.sh.in
+    echo "#!/bin/sh" >pre-remove.sh.in
+
+    chmod a+x *.sh.in
+
+    cat <<EOT >>Makefile.am
+EXTRA_DIST = post-install.sh.in pre-remove.sh.in
+CLEANFILES = post-install.sh    pre-remove.sh
+
+post-install.sh: post-install.sh.in Makefile
+	\$(do_subst) <\$(srcdir)/post-install.sh.in >\$@
+
+pre-remove.sh: pre-remove.sh.in Makefile
+	\$(do_subst) <\$(srcdir)/pre-remove.sh.in >\$@
+EOT
+
+    autoinit
+    vercomp -i minor
+
+    autoreconf2 -i
+    rm -fr autom4te
+
+    svn add *
+
+    . dh_make-autover --createorig \
+        -i -e sdu-bugs@secca-project.com
+
+	cd debian
+		mv postinst.ex postinst
+		mv prerm.ex prerm
+		chmod a+x postinst prerm
+
+		line=`grepl "configure)" postinst`
+		sedit postinst sh -c "head -$line; \
+			echo \"        /usr/share/$d/post-install.sh\"; \
+			cat"
+
+		line=`grepl "deconfigure)" prerm`
+		sedit prerm sh -c "head -$line; \
+			echo \"        /usr/share/$d/pre-remove.sh\"; \
+			cat"
+
+		vi control
+	cd ..
+
+	cd ..
+done
