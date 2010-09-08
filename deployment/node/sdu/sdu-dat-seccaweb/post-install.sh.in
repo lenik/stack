@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# master-file
+
 if [ ! -d /node/domains/seccaw ]; then
 
     echo "Create seecaw domain"

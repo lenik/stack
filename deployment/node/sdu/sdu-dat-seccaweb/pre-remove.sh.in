@@ -1,1 +1,8 @@
 #!/bin/sh
+
+# master-file
+
+rm -fr /node/domains/seccaw
+rm -f  /opt/java/glassfish/glassfish/domains/seccaw
+
+rm -f  ~appserv/.seccaw.asadminpass
