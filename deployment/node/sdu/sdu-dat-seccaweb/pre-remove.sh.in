@@ -2,6 +2,8 @@
 
 # master-file
 
+echo Remove /node/domains/seccaw
+
 rm -fr /node/domains/seccaw
 rm -f  /opt/java/glassfish/glassfish/domains/seccaw
 

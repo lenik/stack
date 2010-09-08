@@ -6,8 +6,13 @@ if [ ! -d /node/domains/seccaw ]; then
 
     echo "Create seecaw domain"
 
-    sudo -uappserv /opt/java/glassfish/bin/asadmin create-domain \
-        --domaindir /node/domains seccaw
+    sudo -uappserv /opt/java/glassfish/bin/asadmin \
+        create-domain \
+            --savelogin \
+            --domaindir /node/domains \
+            seccaw
+
+    mv -f ~appserv/.asadminpass ~appserv/.seccaw.asadminpass
 
 fi
 
