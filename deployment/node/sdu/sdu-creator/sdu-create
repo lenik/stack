@@ -15,8 +15,12 @@ for d in "$@"; do
     autoinit
     vercomp -i minor
 
-    echo "#!/bin/sh" >post-install.sh.in
-    echo "#!/bin/sh" >pre-remove.sh.in
+    cat <<EOT | tee post-install.sh.in pre-remove.sh.in >/dev/null
+#!/bin/sh
+
+# master-file
+
+EOT
 
     chmod a+x *.sh.in
 
