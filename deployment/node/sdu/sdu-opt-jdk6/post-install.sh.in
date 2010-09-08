@@ -28,3 +28,5 @@ instdir="@DESTDIR@/opt/java/$javahome"
 echo "Install $file to $instdir..."
 cd "@DESTDIR@/opt/java"
 "$file"
+
+echo "$instdir" >"@DESTDIR@@pkgdatadir@/instdir

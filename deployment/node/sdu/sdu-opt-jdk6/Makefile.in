@@ -165,10 +165,11 @@ do_subst = sed \
     -e 's,[@]pkgdatadir[@],$(pkgdatadir),g'
 
 pkgdata_SCRIPTS = \
-    post-install.sh
+    post-install.sh \
+	pre-remove.sh
 
-EXTRA_DIST = post-install.sh.in
-CLEANFILES = post-install.sh
+EXTRA_DIST = post-install.sh.in pre-remove.sh.in
+CLEANFILES = post-install.sh    pre-remove.sh
 all: all-am
 
 .SUFFIXES:
@@ -515,6 +516,9 @@ uninstall-am: uninstall-pkgdataSCRIPTS
 
 post-install.sh: post-install.sh.in Makefile
 	$(do_subst) <$(srcdir)/post-install.sh.in >$@
+
+pre-remove.sh: pre-remove.sh.in Makefile
+	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
