@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if ! svn info >/dev/null 2>&1; then
+	echo "Current directory isn't versioned. "
+	exit 1
+fi
+
 for d in "$@"; do
 
     mkdir $d
@@ -60,4 +65,7 @@ EOT
     # makelook
 
 	cd ..
+
+	svn ci -m "Initial by sdu-creator" "$d"
+
 done
