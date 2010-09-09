@@ -4,5 +4,5 @@
 
 cd @DESTDIR@
 
-chmod 2775 @domainsdir@
-chmod 2775 @datadir@
+chmod 2775 @n_domainsdir@
+chmod 2775 @n_datadir@
