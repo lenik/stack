@@ -2,6 +2,7 @@
 
 # master-file
 
+echo "Stop seccaw..."
 initctl stop seccaw
 
 echo Remove /node/domains/seccaw

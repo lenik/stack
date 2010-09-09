@@ -15,7 +15,6 @@
 
 @SET_MAKE@
 
-
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -33,11 +32,11 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(dist_init_DATA) \
-	$(dist_man_MANS) $(dist_sbin_SCRIPTS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/libauto/subst.am \
-	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	install-sh missing
+DIST_COMMON = README $(am__configure_deps) $(dist_man_MANS) \
+	$(dist_sbin_SCRIPTS) $(dist_sysv_SCRIPTS) \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/libauto/subst.am $(top_srcdir)/configure AUTHORS \
+	COPYING ChangeLog INSTALL NEWS install-sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -69,15 +68,14 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(pkgdatadir)" \
-	"$(DESTDIR)$(man1dir)" "$(DESTDIR)$(initdir)"
-SCRIPTS = $(dist_sbin_SCRIPTS) $(pkgdata_SCRIPTS)
+am__installdirs = "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(sysvdir)" \
+	"$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(man1dir)"
+SCRIPTS = $(dist_sbin_SCRIPTS) $(dist_sysv_SCRIPTS) $(pkgdata_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
 man1dir = $(mandir)/man1
 NROFF = nroff
 MANS = $(dist_man_MANS)
-DATA = $(dist_init_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -172,6 +170,7 @@ do_subst = sed \
     -e 's,[@]pkgdatadir[@],$(pkgdatadir),g'
 
 initdir = ${sysconfdir}/init
+sysvdir = ${sysconfdir}/init.d
 dist_sbin_SCRIPTS = \
 	seccaw \
 	seccaw-admin
@@ -179,8 +178,11 @@ dist_sbin_SCRIPTS = \
 dist_man_MANS = \
 	seccaw.1
 
-dist_init_DATA = \
-	seccaw.conf
+
+# dist_init_DATA = \
+# 	seccaw.conf
+dist_sysv_SCRIPTS = \
+	init.d/seccawctl
 
 pkgdata_SCRIPTS = \
 	post-install.sh \
@@ -259,6 +261,40 @@ uninstall-dist_sbinSCRIPTS:
 	test -n "$$list" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(sbindir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(sbindir)" && rm -f $$files
+install-dist_sysvSCRIPTS: $(dist_sysv_SCRIPTS)
+	@$(NORMAL_INSTALL)
+	test -z "$(sysvdir)" || $(MKDIR_P) "$(DESTDIR)$(sysvdir)"
+	@list='$(dist_sysv_SCRIPTS)'; test -n "$(sysvdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
+	done | \
+	sed -e 'p;s,.*/,,;n' \
+	    -e 'h;s|.*|.|' \
+	    -e 'p;x;s,.*/,,;$(transform)' | sed 'N;N;N;s,\n, ,g' | \
+	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1; } \
+	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
+	    if ($$2 == $$4) { files[d] = files[d] " " $$1; \
+	      if (++n[d] == $(am__install_max)) { \
+		print "f", d, files[d]; n[d] = 0; files[d] = "" } } \
+	    else { print "f", d "/" $$4, $$1 } } \
+	  END { for (d in files) print "f", d, files[d] }' | \
+	while read type dir files; do \
+	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
+	     test -z "$$files" || { \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(sysvdir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(sysvdir)$$dir" || exit $$?; \
+	     } \
+	; done
+
+uninstall-dist_sysvSCRIPTS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_sysv_SCRIPTS)'; test -n "$(sysvdir)" || exit 0; \
+	files=`for p in $$list; do echo "$$p"; done | \
+	       sed -e 's,.*/,,;$(transform)'`; \
+	test -n "$$list" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(sysvdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(sysvdir)" && rm -f $$files
 install-pkgdataSCRIPTS: $(pkgdata_SCRIPTS)
 	@$(NORMAL_INSTALL)
 	test -z "$(pkgdatadir)" || $(MKDIR_P) "$(DESTDIR)$(pkgdatadir)"
@@ -331,26 +367,6 @@ uninstall-man1:
 	test -z "$$files" || { \
 	  echo " ( cd '$(DESTDIR)$(man1dir)' && rm -f" $$files ")"; \
 	  cd "$(DESTDIR)$(man1dir)" && rm -f $$files; }
-install-dist_initDATA: $(dist_init_DATA)
-	@$(NORMAL_INSTALL)
-	test -z "$(initdir)" || $(MKDIR_P) "$(DESTDIR)$(initdir)"
-	@list='$(dist_init_DATA)'; test -n "$(initdir)" || list=; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(initdir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(initdir)" || exit $$?; \
-	done
-
-uninstall-dist_initDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(dist_init_DATA)'; test -n "$(initdir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(initdir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(initdir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -520,9 +536,9 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(SCRIPTS) $(MANS) $(DATA)
+all-am: Makefile $(SCRIPTS) $(MANS)
 installdirs:
-	for dir in "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(initdir)"; do \
+	for dir in "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(sysvdir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(man1dir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -572,7 +588,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-dist_initDATA install-man \
+install-data-am: install-dist_sysvSCRIPTS install-man \
 	install-pkgdataSCRIPTS
 
 install-dvi: install-dvi-am
@@ -619,7 +635,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-dist_initDATA uninstall-dist_sbinSCRIPTS \
+uninstall-am: uninstall-dist_sbinSCRIPTS uninstall-dist_sysvSCRIPTS \
 	uninstall-man uninstall-pkgdataSCRIPTS
 
 uninstall-man: uninstall-man1
@@ -631,15 +647,16 @@ uninstall-man: uninstall-man1
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dist_initDATA install-dist_sbinSCRIPTS \
-	install-dvi install-dvi-am install-exec install-exec-am \
-	install-html install-html-am install-info install-info-am \
-	install-man install-man1 install-pdf install-pdf-am \
-	install-pkgdataSCRIPTS install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-dist_initDATA \
-	uninstall-dist_sbinSCRIPTS uninstall-man uninstall-man1 \
+	install-data-am install-dist_sbinSCRIPTS \
+	install-dist_sysvSCRIPTS install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-man1 \
+	install-pdf install-pdf-am install-pkgdataSCRIPTS install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic pdf pdf-am ps ps-am uninstall \
+	uninstall-am uninstall-dist_sbinSCRIPTS \
+	uninstall-dist_sysvSCRIPTS uninstall-man uninstall-man1 \
 	uninstall-pkgdataSCRIPTS
 
 
