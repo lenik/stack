@@ -1,0 +1,1 @@
+This directory SHOULD have set-gid bit set, and a umask of 002 is preferred.

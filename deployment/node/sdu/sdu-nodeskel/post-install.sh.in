@@ -1,3 +1,8 @@
 #!/bin/sh
 
 # master-file
+
+cd @DESTDIR@
+
+chmod 2775 @domainsdir@
+chmod 2775 @datadir@
