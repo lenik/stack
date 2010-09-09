@@ -18,3 +18,5 @@ fi
 
 cd /opt/java/glassfish/glassfish/domains
     sudo -uappserv ln -snf /node/domains/seccaw .
+
+initctl start seccaw

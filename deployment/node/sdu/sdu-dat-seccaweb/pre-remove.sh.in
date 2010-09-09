@@ -2,6 +2,8 @@
 
 # master-file
 
+initctl stop seccaw
+
 echo Remove /node/domains/seccaw
 
 rm -fr /node/domains/seccaw

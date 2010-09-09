@@ -2,7 +2,7 @@
 
 # /node/domains/seccaw
 
-/opt/java/glassfish/glassfish/bin/asadmin \
+sudo -uappserv /opt/java/glassfish/glassfish/bin/asadmin \
     --passwordfile ~appserv/.seccaw.asadminpass \
     "$@"
 
