@@ -1,0 +1,6 @@
+
+
+- How to purge postgresql and existing cluster db?
+
+    run:
+        sudo apt-get purge postgresql*

@@ -1,3 +1,26 @@
 #!/bin/sh
 
 # master-file
+
+__FILE__=`readlink -f $0`
+__DIR__=${__FILE__%/*}
+
+echo "Add symlinks"
+$__DIR__/add-symlinks /usr/sbin
+
+hba=/etc/postgresql/8.4/main/pg_hba.conf
+
+echo "Add host auth entries to $hba"
+    lineconf -t SDUC-1-192 \
+        "host all all 192.168.1.0/24 password" $hba
+
+    lineconf -t SDUC-9-remote \
+        "host all all 0.0.0.0/0 md5" $hba
+
+echo "Configure phppgadmin"
+    # phppgadmin:
+    #   - DEL /etc/apache2/conf.d/phppgadmin
+    #   + ADD /etc/apache2/sites-available/HOST
+    #   HOST:
+    #       /node/config/host-phppgadmin...
+    rm -f /etc/apache2/conf.d/phppgadmin

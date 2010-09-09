@@ -8,10 +8,7 @@ sbindir = ${prefix}/sbin
 dist_sbin_SCRIPTS = \
     hba
 
-EXTRA_DIST = add-symlinks
+dist_pkgdata_SCRIPTS = \
+	add-symlinks \
+	remove-symlinks
 
-install-data-hook:
-	$(srcdir)/add-symlinks $(DESTDIR)$(sbindir)
-
-uninstall-hook:
-	$(srcdir)/remove-symlinks $(DESTDIR)$(sbindir)

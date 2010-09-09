@@ -2,6 +2,11 @@
 
 shopt -s nullglob
 
+if [ -z "$1" ]; then
+    echo "$0 bindir"
+    exit 1
+fi
+
 bindir="$1"
 cd "$bindir"
 
@@ -19,7 +24,7 @@ fi
 shopt -s nullglob
 for f in "$pglibbindir"/*; do
     if [ -x $f ]; then
-        echo "add symlink $f"
+        echo "    add symlink $f"
         ln -snf "$f" .
     fi
 done
