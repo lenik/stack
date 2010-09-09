@@ -2,31 +2,31 @@
 
 # master-file
 
-echo "Search latest linux JDK6 bin file..."
-index=http://download.java.net/jdk6/latest_binaries/
-latest_file=`wget -qO- $index | grep lin32JDKbin | grep -o -m1 'jdk-.*.bin' `
+instbase="@DESTDIR@/opt/java"
 
-if [ -z "$latest_file" ]; then
-    echo "Not found. "
-    exit 1
-fi
+echo "Search latest linux JDK6 bin file..."
+    index=http://download.java.net/jdk6/latest_binaries/
+    latest_file=`wget -qO- $index | grep lin32JDKbin | grep -o -m1 'jdk-.*.bin' `
+    if [ -z "$latest_file" ]; then
+        echo "Not found. "
+        exit 1
+    fi
 
 url=`urljoin "$index" "$latest_file"`
 echo "Download $url..."
-if ! file=`wgetc "$url"`; then
-    echo "Failed to download. "
-fi
-
-if [ ! -x "$file" ]; then
+    if ! file=`wgetc "$url"`; then
+        echo "Failed to download. "
+    fi
     chmod a+x "$file"
-fi
 
 javahome=`grep -a -m1 javahome= $file`
 javahome=${javahome#*=}
-instdir="@DESTDIR@/opt/java/$javahome"
+instdir="$instbase/$javahome"
 
 echo "Install $file to $instdir..."
-cd "@DESTDIR@/opt/java"
-"$file"
+    cd "$instbase"
+    "$file"
+
+    ln -snf $javahome jdk-6
 
 echo "$instdir" >"@DESTDIR@@pkgdatadir@/instdir"
