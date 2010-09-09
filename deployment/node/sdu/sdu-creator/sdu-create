@@ -51,7 +51,6 @@ EOT
 	cd debian
 		mv postinst.ex postinst
 		mv prerm.ex prerm
-		chmod a+x postinst prerm
 
 		line=`grepl "configure)" postinst`
 		sedit postinst sh -c "head -$line; \
@@ -62,6 +61,8 @@ EOT
 		sedit prerm sh -c "head -$line; \
 			echo \"        /usr/share/$d/pre-remove.sh\"; \
 			cat"
+
+		chmod a+x postinst prerm
 
 		vi control
 	cd ..
