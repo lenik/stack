@@ -5,7 +5,7 @@ echo Bash history size of users:
 sudo bash -c '
 while IFS=: read username password uid gid fullname home shell; do
     if [ -r "$home/.bash_history" ]; then
-        histsize=`wc -l "$home/.bash_history"`
+        histsize=`grep -v '^#' "$home/.bash_history" | wc -l`
         histsize="${histsize%% *}"
         printf "%10d %s\n" $histsize $username
     fi
