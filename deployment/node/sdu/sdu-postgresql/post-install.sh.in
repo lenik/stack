@@ -2,12 +2,6 @@
 
 # master-file
 
-__FILE__=`readlink -f $0`
-__DIR__=${__FILE__%/*}
-
-echo "Add symlinks"
-$__DIR__/add-symlinks /usr/sbin
-
 hba=/etc/postgresql/8.4/main/pg_hba.conf
 
 echo "Add host auth entries to $hba"
