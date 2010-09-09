@@ -8,5 +8,5 @@ echo "Set group to dev: @nodedir@"
     chgrp -R dev @nodedir@
 
 echo "Set-gid over @nodedir@"
-    find @nodedir@ -type d -exec chmod g+ws {} \;
+    find @nodedir@/ -type d -exec chmod g+ws {} \;
 
