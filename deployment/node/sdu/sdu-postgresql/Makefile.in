@@ -572,7 +572,7 @@ install-data-hook:
 	@echo Please run $(DESTDIR)$(pkgdatadir)/post-install.sh
 
 uninstall-hook:
-	test -d $($pglibdir)/bin
+	test -d $(pglibdir)/bin
 	cd $(pglibdir)/bin; \
 		for f in *; do rm -f $(DESTDIR)$(sbindir)/$$f; done
 	@echo Please run $(DESTDIR)$(pkgdatadir)/pre-remove.sh
