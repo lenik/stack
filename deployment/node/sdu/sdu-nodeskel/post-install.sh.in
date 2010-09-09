@@ -4,5 +4,7 @@
 
 cd @DESTDIR@
 
+chgrp -R dev @nodedir@
+
 chmod 2775 @n_domainsdir@
 chmod 2775 @n_datadir@
