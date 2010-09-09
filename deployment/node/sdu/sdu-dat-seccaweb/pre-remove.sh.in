@@ -3,7 +3,11 @@
 # master-file
 
 echo "Stop seccaw..."
-initctl stop seccaw
+    # initctl stop seccaw
+    /etc/init.d/seccawctl stop
+
+echo "Remove from sysv init"
+    update-rc.d seccawctl remove
 
 echo Remove /node/domains/seccaw
 
