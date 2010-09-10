@@ -1,6 +1,11 @@
 
 include libauto/subst.am
 
+sbindir = ${prefix}/sbin
+
+PG_CREATE_SHORTCUTS = pg-create-shortcuts
+
+sbin_SCRIPTS =
 
 pkgdata_SCRIPTS = \
 	post-install.sh \
@@ -14,3 +19,7 @@ post-install.sh: post-install.sh.in Makefile
 
 pre-remove.sh: pre-remove.sh.in Makefile
 	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
+
+# XXX_PROG_PG_CREATE_SHORTCUTS, Otherwise AM is away from debian/control.
+install-data-hook:
+	$(PG_CREATE_SHORTCUTS) -nseccadb -p1063 $(DESTDIR)$(sbindir)
