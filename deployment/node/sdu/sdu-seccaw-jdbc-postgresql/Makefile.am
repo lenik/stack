@@ -10,18 +10,18 @@ dist_pkgdata_SCRIPTS = \
 
 pkgdata_SCRIPTS = \
 	post-install.sh \
-	post-remove.sh
+	pre-remove.sh
 
 dblib_DATA =
 
-EXTRA_DIST = post-install.sh.in post-remove.sh.in
-CLEANFILES = post-install.sh    post-remove.sh
+EXTRA_DIST = post-install.sh.in pre-remove.sh.in
+CLEANFILES = post-install.sh    pre-remove.sh
 
 post-install.sh: post-install.sh.in Makefile
 	$(do_subst) <$(srcdir)/post-install.sh.in >$@
 
-post-remove.sh: post-remove.sh.in Makefile
-	$(do_subst) <$(srcdir)/post-remove.sh.in >$@
+pre-remove.sh: pre-remove.sh.in Makefile
+	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
 
 install-data-hook:
 	$(srcdir)/download-latest.sh $(DESTDIR)$(dblibdir)
