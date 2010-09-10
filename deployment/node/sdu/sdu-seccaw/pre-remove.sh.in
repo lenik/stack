@@ -11,12 +11,13 @@ fi
 
 function remove_pool() {
     name="$1"
+    jndi_name=jdbc/$name
     pool_id=${name}_pool
     shift
 
     echo "From JDBC connection pool $name"
 
-    seccaw-admin delete-jdbc-resource $name
+    seccaw-admin delete-jdbc-resource $jndi_name
     seccaw-admin delete-jdbc-connection-pool \
         --cascade=$cascade \
         $pool_id

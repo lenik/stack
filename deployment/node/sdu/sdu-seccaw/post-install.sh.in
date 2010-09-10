@@ -6,6 +6,7 @@
 
 function create_pool() {
     name="$1"
+    jndi_name="jdbc/$name"
     pool_id=${name}_pool
     shift
 
@@ -18,18 +19,18 @@ function create_pool() {
         properties="$properties:$key=$value"
     done
 
-    echo "Create JDBC connection pool for $name"
+    echo "Create JDBC connection pool $name"
 
     seccaw-admin create-jdbc-connection-pool \
         --datasourceclassname org.postgresql.ds.PGSimpleDataSource \
         --restype javax.sql.DataSource \
         --property $properties \
         "$@" \
-        ${pool_id}
+        $pool_id
 
     seccaw-admin create-jdbc-resource \
-        --connectionpoolid ${pool_id} \
-        $name
+        --connectionpoolid $pool_id \
+        $jndi_name
 }
 
 create_pool seccadb_postgres \
