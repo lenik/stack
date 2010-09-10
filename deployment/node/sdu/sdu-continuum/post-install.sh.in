@@ -27,11 +27,11 @@ echo "Config resources on seccaw"
 
     seccaw-admin create-jdbc-resource \
         --connectionpoolid seccadb_dev_pool \
-        users
+        jdbc/users
 
     seccaw-admin create-jdbc-resource \
         --connectionpoolid seccadb_dev_pool \
-        continuum
+        jdbc/continuum
 
     #seccaw-admin create-javamail-resource \
     #    --mailhost localhost \
