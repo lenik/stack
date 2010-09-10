@@ -8,7 +8,8 @@ sbindir = ${prefix}/sbin
 pglibdir = /usr/lib/postgresql/8.4
 
 dist_sbin_SCRIPTS = \
-    hba
+    hba \
+	pg-create-shortcuts
 
 pkgdata_SCRIPTS = \
 	post-install.sh \
