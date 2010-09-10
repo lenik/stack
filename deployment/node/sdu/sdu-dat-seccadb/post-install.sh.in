@@ -1,3 +1,45 @@
-#!/bin/sh
+#!/bin/bash
 
 # master-file
+
+echo "Create seccadb cluster"
+    pwfile=/tmp/pwfile-$$-$RANDOM
+    echo "cW3EADp8" >$pwfile
+
+    sudo -upostgres initdb \
+        -D /node/data/seccadb \
+        -E utf-8 \
+        --username=postgres \
+        --pwfile=$pwfile
+
+    rm -f $pwfile
+
+# stop if old main
+echo "Stop postgresql (main = default)"
+    sudo /etc/init.d/postgresql-8.4 stop
+
+echo "Switch main to seccadb"
+    cd /var/lib/postgresql/8.4
+
+    # backup-if-nonsym(main)
+    if [ -h main ]; then rm -f main; fi
+    if [ -e main ]; then
+        if [ -d main.orig ]; then
+            echo "existing main cluster which can't be cleared"
+            exit 1
+        fi
+        if ! mv main main.orig; then
+            echo "Can't rename main to main.orig"
+            exit 1
+        fi
+    fi
+
+    if ! ln -snf /node/data/seccadb main; then
+        echo "symlink failed $?"
+        exit 1
+    fi
+
+    postgresql-init /node/data/seccadb
+
+echo "Start postgresql (main = seccadb)"
+    sudo /etc/init.d/postgresql-8.4 start
