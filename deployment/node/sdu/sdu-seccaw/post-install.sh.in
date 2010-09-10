@@ -1,3 +1,57 @@
-#!/bin/sh
+#!/bin/bash
 
 # master-file
+
+# install -seccadb to the appserv.
+
+function create_pool() {
+    name="$1"
+    pool_id=${name}_pool
+    shift
+
+    properties=serverName=localhost:portNumber=1063
+    while [ "${1:0:1}" = ':' ]; do
+        key="${1:1}"
+        value="$2"
+        shift 2
+
+        properties="$properties:$key=$value"
+    done
+
+    echo "Create JDBC connection pool for $name"
+
+    seccaw-admin create-jdbc-connection-pool \
+        --datasourceclassname org.postgresql.ds.PGSimpleDataSource \
+        --restype javax.sql.DataSource \
+        --property $properties \
+        "$@" \
+        ${pool_id}
+
+    seccaw-admin create-jdbc-resource \
+        --connectionpoolid ${pool_id} \
+        $name
+}
+
+create_pool seccadb_postgres \
+    :databaseName   postgres \
+    :user           postgres \
+    :password       cW3EADp8 \
+    --description   "Postgres maintaince" \
+    --maxpoolsize   10 \
+    --poolresize    1
+
+create_pool seccadb_play \
+    :databaseName   playdb \
+    :user           play \
+    :password       yalp \
+    --description   "PlayDB for normal access" \
+    --maxpoolsize   20 \
+    --poolresize    2
+
+create_pool seccadb_dev \
+    :databaseName   devdb \
+    :user           dev \
+    :password       s3cret \
+    --description   "DevDB for normal access" \
+    --maxpoolsize   50 \
+    --poolresize    3

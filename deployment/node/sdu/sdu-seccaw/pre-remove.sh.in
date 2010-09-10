@@ -1,3 +1,29 @@
-#!/bin/sh
+#!/bin/bash
 
 # master-file
+
+# uninstall -seccadb from the appserv.
+
+cascade=false
+if [ "$1" = '-f' ]; then
+    cascade=true
+fi
+
+function remove_pool() {
+    name="$1"
+    pool_id=${name}_pool
+    shift
+
+    echo "From JDBC connection pool $name"
+
+    seccaw-admin delete-jdbc-resource $name
+    seccaw-admin delete-jdbc-connection-pool \
+        --cascade=$cascade \
+        $pool_id
+}
+
+remove_pool seccadb_postgres
+
+remove_pool seccadb_play
+
+remove_pool seccadb_dev
