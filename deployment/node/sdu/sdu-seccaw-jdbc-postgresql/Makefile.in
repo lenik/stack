@@ -15,6 +15,7 @@
 
 @SET_MAKE@
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -32,10 +33,10 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/libauto/subst.am \
-	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	install-sh missing
+DIST_COMMON = README $(am__configure_deps) $(dist_pkgdata_SCRIPTS) \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/libauto/subst.am $(top_srcdir)/configure AUTHORS \
+	COPYING ChangeLog INSTALL NEWS install-sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -67,10 +68,12 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(pkgdatadir)"
-SCRIPTS = $(pkgdata_SCRIPTS)
+am__installdirs = "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(pkgdatadir)" \
+	"$(DESTDIR)$(dblibdir)"
+SCRIPTS = $(dist_pkgdata_SCRIPTS) $(pkgdata_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
+DATA = $(dblib_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -164,12 +167,19 @@ do_subst = sed \
     -e 's,[@]datadir[@],$(datadir),g' \
     -e 's,[@]pkgdatadir[@],$(pkgdatadir),g'
 
+nodedir = /node
+domaindir = ${nodedir}/domains/seccaw
+dblibdir = ${domaindir}/lib/databases
+dist_pkgdata_SCRIPTS = \
+	download-latest.sh
+
 pkgdata_SCRIPTS = \
 	post-install.sh \
-	pre-remove.sh
+	post-remove.sh
 
-EXTRA_DIST = post-install.sh.in pre-remove.sh.in
-CLEANFILES = post-install.sh    pre-remove.sh
+dblib_DATA =
+EXTRA_DIST = post-install.sh.in post-remove.sh.in
+CLEANFILES = post-install.sh    post-remove.sh
 all: all-am
 
 .SUFFIXES:
@@ -207,6 +217,40 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
+install-dist_pkgdataSCRIPTS: $(dist_pkgdata_SCRIPTS)
+	@$(NORMAL_INSTALL)
+	test -z "$(pkgdatadir)" || $(MKDIR_P) "$(DESTDIR)$(pkgdatadir)"
+	@list='$(dist_pkgdata_SCRIPTS)'; test -n "$(pkgdatadir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
+	done | \
+	sed -e 'p;s,.*/,,;n' \
+	    -e 'h;s|.*|.|' \
+	    -e 'p;x;s,.*/,,;$(transform)' | sed 'N;N;N;s,\n, ,g' | \
+	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1; } \
+	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
+	    if ($$2 == $$4) { files[d] = files[d] " " $$1; \
+	      if (++n[d] == $(am__install_max)) { \
+		print "f", d, files[d]; n[d] = 0; files[d] = "" } } \
+	    else { print "f", d "/" $$4, $$1 } } \
+	  END { for (d in files) print "f", d, files[d] }' | \
+	while read type dir files; do \
+	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
+	     test -z "$$files" || { \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(pkgdatadir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(pkgdatadir)$$dir" || exit $$?; \
+	     } \
+	; done
+
+uninstall-dist_pkgdataSCRIPTS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_pkgdata_SCRIPTS)'; test -n "$(pkgdatadir)" || exit 0; \
+	files=`for p in $$list; do echo "$$p"; done | \
+	       sed -e 's,.*/,,;$(transform)'`; \
+	test -n "$$list" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(pkgdatadir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(pkgdatadir)" && rm -f $$files
 install-pkgdataSCRIPTS: $(pkgdata_SCRIPTS)
 	@$(NORMAL_INSTALL)
 	test -z "$(pkgdatadir)" || $(MKDIR_P) "$(DESTDIR)$(pkgdatadir)"
@@ -241,6 +285,26 @@ uninstall-pkgdataSCRIPTS:
 	test -n "$$list" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(pkgdatadir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(pkgdatadir)" && rm -f $$files
+install-dblibDATA: $(dblib_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(dblibdir)" || $(MKDIR_P) "$(DESTDIR)$(dblibdir)"
+	@list='$(dblib_DATA)'; test -n "$(dblibdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(dblibdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(dblibdir)" || exit $$?; \
+	done
+
+uninstall-dblibDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dblib_DATA)'; test -n "$(dblibdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(dblibdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(dblibdir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -397,9 +461,9 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(SCRIPTS)
+all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(pkgdatadir)"; do \
+	for dir in "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(dblibdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -449,8 +513,10 @@ info: info-am
 
 info-am:
 
-install-data-am: install-pkgdataSCRIPTS
-
+install-data-am: install-dblibDATA install-dist_pkgdataSCRIPTS \
+	install-pkgdataSCRIPTS
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 install-dvi: install-dvi-am
 
 install-dvi-am:
@@ -495,30 +561,36 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-pkgdataSCRIPTS
+uninstall-am: uninstall-dblibDATA uninstall-dist_pkgdataSCRIPTS \
+	uninstall-pkgdataSCRIPTS
 
-.MAKE: install-am install-strip
+.MAKE: install-am install-data-am install-strip
 
 .PHONY: all all-am am--refresh check check-am clean clean-generic dist \
 	dist-all dist-bzip2 dist-gzip dist-lzma dist-shar dist-tarZ \
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-pkgdataSCRIPTS install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am \
+	install-data-am install-data-hook install-dblibDATA \
+	install-dist_pkgdataSCRIPTS install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-pkgdataSCRIPTS install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-dblibDATA uninstall-dist_pkgdataSCRIPTS \
 	uninstall-pkgdataSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile
 	$(do_subst) <$(srcdir)/post-install.sh.in >$@
 
-pre-remove.sh: pre-remove.sh.in Makefile
-	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
+post-remove.sh: post-remove.sh.in Makefile
+	$(do_subst) <$(srcdir)/post-remove.sh.in >$@
+
+install-data-hook:
+	$(srcdir)/download-latest.sh $(DESTDIR)$(dblibdir)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
