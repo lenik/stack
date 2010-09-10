@@ -3,7 +3,7 @@ include libauto/subst.am
 
 nodedir = /node
 domaindir = ${nodedir}/domains/seccaw
-dblibdir = ${domaindir}/lib/databases
+dblibdir = ${domaindir}/lib
 
 dist_pkgdata_SCRIPTS = \
 	download-latest.sh

@@ -4,7 +4,7 @@
 
 shopt -s nullglob
 
-libdir=/node/domains/seccaw/lib/databases
+libdir=/node/domains/seccaw/lib
 
 for ex in "$libdir"/postgresql-8.4-*; do
     echo "Remove: $ex"
