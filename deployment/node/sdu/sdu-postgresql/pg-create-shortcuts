@@ -88,7 +88,7 @@ function main() {
         echo "Create shortcut $shcut"
         cat <<EOT >"$shcut"
 #!/bin/sh
-    sudo -u$user $program -p$port "$@"
+    sudo -u$user $prog_file -p$port "\$@"
 EOT
         chmod a+x "$shcut"
     done
