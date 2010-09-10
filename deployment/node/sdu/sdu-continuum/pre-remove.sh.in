@@ -1,1 +1,27 @@
-#!/bin/sh
+#!/bin/bash
+
+# master-file
+
+domaindir=/node/domains/seccaw
+force=
+
+if [ "$1" = "-f" ]; then
+    force=1
+fi
+
+echo "Unconfig resources on seccaw"
+
+    seccaw-admin delete-jdbc-resource jdbc/continuum
+
+    if [ "$force" = 1 ]; then
+        seccaw-admin delete-jdbc-resource jdbc/users
+
+        seccaw-admin delete-javamail-resource mail/Session
+
+        seccaw-admin list-jvm-options | grep -- -Dappserver\. |
+            xargs -l seccaw-admin delete-jvm-options
+    fi
+
+echo "Undeploy continuum"
+
+    seccaw-admin undeploy continuum
