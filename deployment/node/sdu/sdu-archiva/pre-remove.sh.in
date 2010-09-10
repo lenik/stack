@@ -1,1 +1,20 @@
-#!/bin/sh
+#!/bin/bash
+
+# master-file
+
+domaindir=/node/domains/seccaw
+index=http://archiva.apache.org/download.html
+
+echo "Unconfig resources on seccaw"
+
+    seccaw-admin delete-jdbc-resource jdbc/users
+    seccaw-admin delete-jdbc-resource jdbc/archiva
+
+    seccaw-admin delete-javamail-resource mail/Session
+
+    seccaw-admin list-jvm-options | grep -- -Dappserver\. |
+        xargs -l seccaw-admin delete-jvm-options
+
+echo "Undeploy archiva"
+
+    seccaw-admin undeploy archiva
