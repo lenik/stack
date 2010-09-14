@@ -1,5 +1,8 @@
-
 include libauto/coolauto.am
+
+do_subst2 = $(do_subst) \
+	-e 's,[@]bindconfdir[@],$(bindconfdir),g' \
+	-e 's,[@]seccadbdir[@],$(seccadbdir),g'
 
 sysconfdir  = /etc
 bindconfdir = ${sysconfdir}/bind
@@ -18,7 +21,7 @@ EXTRA_DIST = post-install.sh.in pre-remove.sh.in
 CLEANFILES = post-install.sh    pre-remove.sh
 
 post-install.sh: post-install.sh.in Makefile
-	$(do_subst) <$(srcdir)/post-install.sh.in >$@
+	$(do_subst2) <$(srcdir)/post-install.sh.in >$@
 
 pre-remove.sh: pre-remove.sh.in Makefile
-	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
+	$(do_subst2) <$(srcdir)/pre-remove.sh.in >$@
