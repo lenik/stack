@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# master-file
+
+bindconfdir=@bindconfdir@
+named_conf=$bindconfdir/named.conf
+
+echo "Config bind9"
+    if lineconf -et $named_conf @section::secca \
+            "include \"$bindconfdir/secca/named.conf\";"; then
+        echo "    done"
+    else
+        echo "    skipped"
+    fi
+
+echo "Reload bind9"
+    /etc/init.d/bind9 reload

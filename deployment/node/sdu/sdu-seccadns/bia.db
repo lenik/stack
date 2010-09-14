@@ -4,7 +4,7 @@ $TTL            12H
 ; source of information for the data within this DNS domain.
 
 @               IN      SOA     (
-                                    1.dev.secca-project.com.; db creator host
+                                    main-dev.secca-project.com.; db creator host
                                     admin.secca-project.com.; contact e-mail
                                     1       ; serial
                                     1H      ; sync refresh interval
@@ -15,13 +15,13 @@ $TTL            12H
                         NS      ns1.secca-project.com.
                         NS      ns2.secca-project.com.
 
-@               24H     MX 10   1.dev.secca-project.com.
+@                       MX 10   main-dev.secca-project.com.
 
                         TXT     "t=spf1 A MX include:authsmtp.com ~all"
 
-www             24H     CNAME   1.dev.secca-project.com.
+www                     CNAME   main-dev.secca-project.com.
 
-www.zjhf        24H     CNAME   www
+www.zjhf                CNAME   www
 
 ; testing purpose
 volatile        3       A       1.2.3.4

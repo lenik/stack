@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# master-file
+
+bindconfdir=@bindconfdir@
+named_conf=$bindconfdir/named.conf
+
+echo "Unconfig bind9"
+    if lineconf -ekt $named_conf @section::secca; then
+        echo "    done"
+    else
+        echo "    skipped"
+    fi
+
+echo "Reload bind9"
+    /etc/init.d/bind9 reload
