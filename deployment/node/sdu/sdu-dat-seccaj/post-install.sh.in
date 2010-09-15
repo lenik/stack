@@ -2,11 +2,11 @@
 
 # master-file
 
-domaindir=/node/domains/seccaw
+domaindir=/node/domains/seccaj
 
 if [ ! -d $domaindir/applications ]; then
 
-    echo "Create seccaw domain"
+    echo "Create seccaj domain"
     echo "    (Purge $domaindir if necessary)"
 
     sudo -uappserv /opt/java/glassfish/bin/asadmin \
@@ -14,9 +14,9 @@ if [ ! -d $domaindir/applications ]; then
             --savelogin \
             --domaindir /node/domains \
             --adminport 1090 \
-            seccaw
+            seccaj
 
-    mv -f ~appserv/.asadminpass ~appserv/.seccaw.asadminpass
+    mv -f ~appserv/.asadminpass ~appserv/.seccaj.asadminpass
 
 fi
 
@@ -24,8 +24,9 @@ cd /opt/java/glassfish/glassfish/domains
     sudo -uappserv ln -snf $domaindir .
 
 echo "Setup sysv init"
-    update-rc.d seccawctl defaults
+    update-rc.d seccajctl defaults
 
-echo "Start seccaw..."
-    # initctl start seccaw
-    /etc/init.d/seccawctl start
+echo "Start seccaj..."
+    # initctl start seccaj
+    /etc/init.d/seccajctl start
+

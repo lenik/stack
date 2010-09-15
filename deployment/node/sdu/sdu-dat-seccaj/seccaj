@@ -9,19 +9,19 @@ fi
 
 case "$1" in
     start)
-        $ASADMIN start-domain seccaw
+        $ASADMIN start-domain seccaj
         ;;
 
     stop)
-        $ASADMIN stop-domain seccaw
+        $ASADMIN stop-domain seccaj
         ;;
 
     restart)
-        $ASADMIN restart-domain seccaw
+        $ASADMIN restart-domain seccaj
         ;;
 
     reload)
-        $ASADMIN reload-domain seccaw
+        $ASADMIN reload-domain seccaj
         ;;
 
     *)

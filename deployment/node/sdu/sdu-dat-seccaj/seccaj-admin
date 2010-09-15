@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# /node/domains/seccaw
+# /node/domains/seccaj
 
 sudo -uappserv /opt/java/glassfish/glassfish/bin/asadmin \
-    --passwordfile ~appserv/.seccaw.asadminpass \
+    --passwordfile ~appserv/.seccaj.asadminpass \
     "$@"
 

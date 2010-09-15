@@ -6,17 +6,17 @@ initdir = ${sysconfdir}/init
 sysvdir = ${sysconfdir}/init.d
 
 dist_sbin_SCRIPTS = \
-	seccaw \
-	seccaw-admin
+	seccaj \
+	seccaj-admin
 
 dist_man_MANS = \
-	seccaw.1
+	seccaj.1
 
 # dist_init_DATA = \
-# 	seccaw.conf
+# 	seccaj.conf
 
 dist_sysv_SCRIPTS = \
-	init.d/seccawctl
+	init.d/seccajctl
 
 pkgdata_SCRIPTS = \
 	post-install.sh \

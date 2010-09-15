@@ -2,16 +2,17 @@
 
 # master-file
 
-echo "Stop seccaw..."
-    # initctl stop seccaw
-    /etc/init.d/seccawctl stop
+echo "Stop seccaj..."
+    # initctl stop seccaj
+    /etc/init.d/seccajctl stop
 
 echo "Remove from sysv init"
-    update-rc.d seccawctl remove
+    update-rc.d seccajctl remove
 
-echo Remove /node/domains/seccaw
+echo Remove /node/domains/seccaj
 
-rm -fr /node/domains/seccaw
-rm -f  /opt/java/glassfish/glassfish/domains/seccaw
+rm -fr /node/domains/seccaj
+rm -f  /opt/java/glassfish/glassfish/domains/seccaj
 
-rm -f  ~appserv/.seccaw.asadminpass
+rm -f  ~appserv/.seccaj.asadminpass
+
