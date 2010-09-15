@@ -21,14 +21,14 @@ function create_pool() {
 
     echo "Create JDBC connection pool $name"
 
-    seccaw-admin create-jdbc-connection-pool \
+    seccaj-admin create-jdbc-connection-pool \
         --datasourceclassname org.postgresql.ds.PGSimpleDataSource \
         --restype javax.sql.DataSource \
         --property $properties \
         "$@" \
         $pool_id
 
-    seccaw-admin create-jdbc-resource \
+    seccaj-admin create-jdbc-resource \
         --connectionpoolid $pool_id \
         $jndi_name
 }
