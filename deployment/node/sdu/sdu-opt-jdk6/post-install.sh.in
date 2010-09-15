@@ -2,7 +2,7 @@
 
 # master-file
 
-instbase="@DESTDIR@/opt/java"
+java_prefix="@DESTDIR@/opt/java"
 
 echo "Search latest linux JDK6 bin file..."
     index=http://download.java.net/jdk6/latest_binaries/
@@ -21,10 +21,13 @@ echo "Download $url..."
 
 javahome=`grep -a -m1 javahome= $file`
 javahome=${javahome#*=}
-instdir="$instbase/$javahome"
+instdir="$java_prefix/$javahome"
 
 echo "Install $file to $instdir..."
-    cd "$instbase"
+
+    install -d -m 755 -o root -g dev $java_prefix
+    cd "$java_prefix"
+
     "$file"
 
     ln -snf $javahome jdk-6
