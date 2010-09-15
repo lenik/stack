@@ -1,8 +1,8 @@
 
-include libauto/subst.am
+include libauto/coolauto.am
 
 nodedir = /node
-domaindir = ${nodedir}/domains/seccaw
+domaindir = ${nodedir}/domains/seccaj
 dblibdir = ${domaindir}/lib
 
 dist_pkgdata_SCRIPTS = \
