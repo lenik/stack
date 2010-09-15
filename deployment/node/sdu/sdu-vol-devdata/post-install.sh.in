@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# master-file
+
+# 0, id of this inst
+if inst_id=`ec2-metadata -i`; then
+    # "instance-id: xxx"
+    inst_id=${inst_id#instance-id: }
+else
+    # not an instance.
+    exit 1
+fi
+
+# 1, attach
+vol_devdata=`echo vol:devdata | substcat`
+att_dev=
+echo "Query the status of attachment $vol_devdata"
+while read type vol inst dev status t0; do
+    if [ "$type" != ATTACHMENT ]; then continue; fi
+    if [ "$vol" = $vol_devdata ]; then
+        if [ "$inst" = $inst_id ]; then
+            echo "Already attached to this instance: $dev"
+            att_dev="$dev"
+            break
+        elif [ "$status" = "attached" ]; then
+            echo "Already attached to a different instance, try detach first"
+            if ! ec2-detach-volume vol:devdata; then
+                echo "Failed to detach, try with --force?"
+                exit 1
+            else
+                att_dev=
+            fi
+        fi
+        break
+    fi
+done < <(NO_SUBST=1 ec2-describe-volumes)
+
+if [ -z "$att_dev" ]; then
+    if ! att_dev=`nextdev /dev/sd fghijklmnop`; then
+        echo "No more available /dev/sd? name"
+        exit 1
+    fi
+
+    echo "Attach vol:devdata to $att_dev" | substcat
+    if ! ec2-attach-volume vol:devdata -i $inst_id -d $att_dev; then
+        echo "Failed to attach. "
+        exit 1
+    fi
+fi
+
+# 2, mount
+mount_point=/mnt/devdata
+install -d -m 775 -o dev -g dev $mount_point
+
+if lineconf -e /etc/fstab $mount_point \
+        "$att_dev $mount_point ext3 defaults 0 0"; then
+    echo "Updated entry in /etc/fstab. "
+
+    echo "Unmount $att_dev"
+    umount $att_dev
+
+    echo "Mount $att_dev on $mount_point"
+    mount $mount_point
+fi
