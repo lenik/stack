@@ -2,7 +2,7 @@
 
 # master-file
 
-echo "Restart seccaw server"
-seccaw restart
+echo "Restart seccaj server"
+seccaj restart
 
 exit 0
