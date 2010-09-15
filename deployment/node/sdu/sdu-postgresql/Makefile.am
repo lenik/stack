@@ -1,9 +1,6 @@
-
 include libauto/coolauto.am
 
 # Require postgresqldir.
-
-sbindir = ${prefix}/sbin
 
 pglibdir = /usr/lib/postgresql/8.4
 
@@ -11,7 +8,7 @@ dist_sbin_SCRIPTS = \
     hba \
 	pg-create-shortcuts
 
-pkgdata_SCRIPTS = \
+setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh \
 	rm-pglibsyms

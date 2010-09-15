@@ -99,8 +99,8 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(pkgdatadir)"
-SCRIPTS = $(dist_sbin_SCRIPTS) $(pkgdata_SCRIPTS)
+am__installdirs = "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(setupdir)"
+SCRIPTS = $(dist_sbin_SCRIPTS) $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -179,8 +179,6 @@ pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
-
-# Require postgresqldir.
 sbindir = ${prefix}/sbin
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
@@ -201,12 +199,14 @@ do_subst = sed \
     -e 's,[@]pkgdatadir[@],$(pkgdatadir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
+
+# Require postgresqldir.
 pglibdir = /usr/lib/postgresql/8.4
 dist_sbin_SCRIPTS = \
     hba \
 	pg-create-shortcuts
 
-pkgdata_SCRIPTS = \
+setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh \
 	rm-pglibsyms
@@ -284,10 +284,10 @@ uninstall-dist_sbinSCRIPTS:
 	test -n "$$list" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(sbindir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(sbindir)" && rm -f $$files
-install-pkgdataSCRIPTS: $(pkgdata_SCRIPTS)
+install-setupSCRIPTS: $(setup_SCRIPTS)
 	@$(NORMAL_INSTALL)
-	test -z "$(pkgdatadir)" || $(MKDIR_P) "$(DESTDIR)$(pkgdatadir)"
-	@list='$(pkgdata_SCRIPTS)'; test -n "$(pkgdatadir)" || list=; \
+	test -z "$(setupdir)" || $(MKDIR_P) "$(DESTDIR)$(setupdir)"
+	@list='$(setup_SCRIPTS)'; test -n "$(setupdir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
@@ -305,19 +305,19 @@ install-pkgdataSCRIPTS: $(pkgdata_SCRIPTS)
 	while read type dir files; do \
 	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
 	     test -z "$$files" || { \
-	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(pkgdatadir)$$dir'"; \
-	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(pkgdatadir)$$dir" || exit $$?; \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(setupdir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(setupdir)$$dir" || exit $$?; \
 	     } \
 	; done
 
-uninstall-pkgdataSCRIPTS:
+uninstall-setupSCRIPTS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(pkgdata_SCRIPTS)'; test -n "$(pkgdatadir)" || exit 0; \
+	@list='$(setup_SCRIPTS)'; test -n "$(setupdir)" || exit 0; \
 	files=`for p in $$list; do echo "$$p"; done | \
 	       sed -e 's,.*/,,;$(transform)'`; \
 	test -n "$$list" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(pkgdatadir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(pkgdatadir)" && rm -f $$files
+	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -476,7 +476,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS)
 installdirs:
-	for dir in "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(pkgdatadir)"; do \
+	for dir in "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(setupdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -526,7 +526,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-pkgdataSCRIPTS
+install-data-am: install-setupSCRIPTS
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 install-dvi: install-dvi-am
@@ -573,7 +573,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-dist_sbinSCRIPTS uninstall-pkgdataSCRIPTS
+uninstall-am: uninstall-dist_sbinSCRIPTS uninstall-setupSCRIPTS
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
 .MAKE: install-am install-data-am install-strip uninstall-am
@@ -586,13 +586,13 @@ uninstall-am: uninstall-dist_sbinSCRIPTS uninstall-pkgdataSCRIPTS
 	install-data-am install-data-hook install-dist_sbinSCRIPTS \
 	install-dvi install-dvi-am install-exec install-exec-am \
 	install-html install-html-am install-info install-info-am \
-	install-man install-pdf install-pdf-am install-pkgdataSCRIPTS \
-	install-ps install-ps-am install-strip installcheck \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-setupSCRIPTS install-strip installcheck \
 	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am uninstall uninstall-am \
 	uninstall-dist_sbinSCRIPTS uninstall-hook \
-	uninstall-pkgdataSCRIPTS
+	uninstall-setupSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile
