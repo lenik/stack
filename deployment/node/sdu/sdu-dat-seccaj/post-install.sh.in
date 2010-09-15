@@ -9,12 +9,23 @@ if [ ! -d $domaindir/applications ]; then
     echo "Create seccaj domain"
     echo "    (Purge $domaindir if necessary)"
 
-    sudo -uappserv /opt/java/glassfish/bin/asadmin \
+    if [ -d $domaindir ]; then
+        echo "    Backup existing domain data $domaindir"
+        mv $domaindir $domaindir.bak
+    fi
+
+    echox sudo -uappserv /opt/java/glassfish/bin/asadmin \
         create-domain \
             --savelogin \
             --domaindir /node/domains \
             --adminport 1090 \
             seccaj
+
+    if [ -d $domaindir.bak ]; then
+        echo "    Overwrite with the old domain data"
+        cp -RT $domaindir.bak $domaindir
+        rm -fr $domaindir.bak
+    fi
 
     mv -f ~appserv/.asadminpass ~appserv/.seccaj.asadminpass
 

@@ -3,6 +3,7 @@
 # /node/domains/seccaj
 
 sudo -uappserv /opt/java/glassfish/glassfish/bin/asadmin \
+    --port 1090 \
     --passwordfile ~appserv/.seccaj.asadminpass \
     "$@"
 
