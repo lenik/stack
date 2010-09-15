@@ -5,11 +5,8 @@
 hba=/etc/postgresql/8.4/main/pg_hba.conf
 
 echo "Add host auth entries to $hba"
-    lineconf -t SDUC-1-192 \
-        "host all all 192.168.1.0/24 password" $hba
-
-    lineconf -t SDUC-9-remote \
-        "host all all 0.0.0.0/0 md5" $hba
+    lineconf -t $hba SDUC-1-192    "host all all 192.168.1.0/24 password"
+    lineconf -t $hba SDUC-9-remote "host all all 0.0.0.0/0 md5"
 
 echo "Configure phppgadmin"
     # phppgadmin:
