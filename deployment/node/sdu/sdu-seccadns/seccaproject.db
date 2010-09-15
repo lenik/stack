@@ -24,26 +24,30 @@ $TTL            12H
 
 ns1                     A       67.202.17.183
 ns2                     A       67.202.17.183
-main-dev                A       67.202.17.183
 
-app                     CNAME   main-dev
-1.app                   CNAME   main-dev
-back                    CNAME   main-dev
-blogs                   CNAME   main-dev
-*.blogs                 CNAME   main-dev
-ci                      CNAME   main-dev
+main-app                A       67.202.17.183
+main-dev                A       67.202.17.183
+s-dev                   A       67.202.17.183
+aut-dev                 A       67.202.17.183
+back                    A       67.202.17.183
+
 dev                     CNAME   main-dev
-econ                    CNAME   main-dev
-forum                   CNAME   main-dev
 ghs                     CNAME   main-dev
-list                    CNAME   main-dev
-m2                      CNAME   main-dev
-mail                    CNAME   rproxy
+mail                    CNAME   ghs
 node                    CNAME   main-dev
-repo                    CNAME   main-dev
 rproxy                  CNAME   main-dev
+
+1.app                   CNAME   main-app
+blogs                   CNAME   s-dev
+*.blogs                 CNAME   blogs
+ci                      CNAME   aut-dev
+econ                    CNAME   main-dev
+forum                   CNAME   s-dev
+list                    CNAME   s-dev
+m2                      CNAME   aut-dev
+repo                    CNAME   s-dev
 svn                     CNAME   main-dev
-track                   CNAME   main-dev
+track                   CNAME   s-dev
 webmin                  CNAME   main-dev
 www                     CNAME   main-dev
-xmpp                    CNAME   main-dev
+xmpp                    CNAME   s-dev
