@@ -1,0 +1,10 @@
+<VirtualHost *:80>
+    ServerName devsite.secca-project.com
+	ServerAdmin admin@secca-project.com
+
+	ErrorLog  /var/log/apache2/secca_devsite_error.log
+	CustomLog /var/log/apache2/secca_devsite_access.log combined
+
+	DocumentRoot /node/sites/devsite
+
+</VirtualHost>

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# master-file
+
+echo "Unconfig apache2"
+
+    a2dissite secca-devsite.site
+    a2reload
+
+
+local_repo=/mnt/devdata/svnrepo
+url=file://$local_repo/public/trunk
+devsite_dir=/node/sites/devsite
+
+if [ -d $devsite_dir ]; then
+
+    echo "Remove $devsite_dir"
+
+        # XXX - check if anything changed, prevent from deletion.
+        rm -fr "$devsite_dir"
+
+fi

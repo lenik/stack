@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# master-file
+
+# 1, Checkout http://svn.secca-project.com/public/trunk/ to /node/sites/devsite
+#    cuz devsite will always run on the main-dev, so we can safely checkout
+#    from the local repository.
+#
+#    Instead of checkout from /repos/svn (which is provided by serv-seccasvn,
+#    we will get from /mnt/devdata/svnrepo instead. )
+#
+#    Switch between either is easy cuz the UUID is always the same.
+
+local_repo=/mnt/devdata/svnrepo
+url=file://$local_repo/public/trunk/www
+
+if [ ! -d $local_repo ]; then
+    echo "Repository $local_repo doesn't exist. "
+    echo "Is this a main-dev instance? "
+    exit 1
+fi
+
+devsite_dir=/node/sites/devsite
+    echo "Initialize $devsite_dir"
+    if ! install -d -m 2775 -o root -g dev $devsite_dir; then
+        echo "    failed"
+        exit 1
+    fi
+
+    echo "Checkout $url to $devsite_dir"
+
+    # IGNORE_EXTERNALS=--ignore-externals
+    IGNORE_EXTERNALS=
+    if ! svn-002 co $IGNORE_EXTERNALS $url $devsite_dir; then
+        echo "checkout failed. "
+        exit 1
+    fi
+
+echo "Config apache2"
+
+    a2ensite secca-devsite.site
+    a2reload
