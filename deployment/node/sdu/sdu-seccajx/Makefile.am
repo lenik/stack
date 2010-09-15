@@ -1,6 +1,5 @@
 
-include libauto/subst.am
-
+include libauto/coolauto.am
 
 pkgdata_SCRIPTS = \
 	post-install.sh \
