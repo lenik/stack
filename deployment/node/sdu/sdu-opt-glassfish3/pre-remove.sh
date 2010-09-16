@@ -4,9 +4,11 @@ instdir=/opt/java/glassfish-3.0.1
 
 if [ -d $instdir ]; then
 
-    echo "Remove $instdir"
-    rm -fr /opt/java/glassfish-3.0.1
+    echo "Remove $instdir (exclude domains/*)"
+    # rm -fr $instdir
+    find $instdir -depth -path */domains/* -prune -o -delete
 
+    echo "Remove symlink /opt/java/glassfish"
     rm -f  /opt/java/glassfish
 
 fi

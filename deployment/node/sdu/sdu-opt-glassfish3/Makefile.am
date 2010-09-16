@@ -1,10 +1,10 @@
 
-include libauto/subst.am
+include libauto/coolauto.am
 
-dist_pkgdata_SCRIPTS = \
+dist_setup_SCRIPTS = \
     post-install.sh \
     post-install-2.sh \
     pre-remove.sh
 
-dist_pkgdata_DATA = \
+dist_setup_DATA = \
     glassfishv3.ans
