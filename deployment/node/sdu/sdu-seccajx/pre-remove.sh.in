@@ -28,3 +28,5 @@ remove_pool seccadb_postgres
 remove_pool seccadb_play
 
 remove_pool seccadb_dev
+
+exit 0
