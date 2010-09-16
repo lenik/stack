@@ -13,7 +13,7 @@ fi
 
 if [ ! -d $instdir/glassfish/bin ]; then
 
-       mode=sh
+       mode=zip
      sh_url=http://download.java.net/glassfish/$ver/release/glassfish-$ver-unix.sh
     zip_url=http://download.java.net/glassfish/$ver/release/glassfish-$ver.zip
 

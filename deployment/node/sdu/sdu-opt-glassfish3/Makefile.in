@@ -65,8 +65,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(dist_pkgdata_DATA) \
-	$(dist_pkgdata_SCRIPTS) $(srcdir)/Makefile.am \
+DIST_COMMON = README $(am__configure_deps) $(dist_setup_DATA) \
+	$(dist_setup_SCRIPTS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/libauto/coolauto.am \
 	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
 	install-sh missing
@@ -101,11 +101,11 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(pkgdatadir)"
-SCRIPTS = $(dist_pkgdata_SCRIPTS)
+am__installdirs = "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(setupdir)"
+SCRIPTS = $(dist_setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
-DATA = $(dist_pkgdata_DATA)
+DATA = $(dist_setup_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -202,12 +202,12 @@ do_subst = sed \
     -e 's,[@]pkgdatadir[@],$(pkgdatadir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
-dist_pkgdata_SCRIPTS = \
+dist_setup_SCRIPTS = \
     post-install.sh \
     post-install-2.sh \
     pre-remove.sh
 
-dist_pkgdata_DATA = \
+dist_setup_DATA = \
     glassfishv3.ans
 
 all: all-am
@@ -247,10 +247,10 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
-install-dist_pkgdataSCRIPTS: $(dist_pkgdata_SCRIPTS)
+install-dist_setupSCRIPTS: $(dist_setup_SCRIPTS)
 	@$(NORMAL_INSTALL)
-	test -z "$(pkgdatadir)" || $(MKDIR_P) "$(DESTDIR)$(pkgdatadir)"
-	@list='$(dist_pkgdata_SCRIPTS)'; test -n "$(pkgdatadir)" || list=; \
+	test -z "$(setupdir)" || $(MKDIR_P) "$(DESTDIR)$(setupdir)"
+	@list='$(dist_setup_SCRIPTS)'; test -n "$(setupdir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
@@ -268,39 +268,39 @@ install-dist_pkgdataSCRIPTS: $(dist_pkgdata_SCRIPTS)
 	while read type dir files; do \
 	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
 	     test -z "$$files" || { \
-	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(pkgdatadir)$$dir'"; \
-	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(pkgdatadir)$$dir" || exit $$?; \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(setupdir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(setupdir)$$dir" || exit $$?; \
 	     } \
 	; done
 
-uninstall-dist_pkgdataSCRIPTS:
+uninstall-dist_setupSCRIPTS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(dist_pkgdata_SCRIPTS)'; test -n "$(pkgdatadir)" || exit 0; \
+	@list='$(dist_setup_SCRIPTS)'; test -n "$(setupdir)" || exit 0; \
 	files=`for p in $$list; do echo "$$p"; done | \
 	       sed -e 's,.*/,,;$(transform)'`; \
 	test -n "$$list" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(pkgdatadir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(pkgdatadir)" && rm -f $$files
-install-dist_pkgdataDATA: $(dist_pkgdata_DATA)
+	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
+install-dist_setupDATA: $(dist_setup_DATA)
 	@$(NORMAL_INSTALL)
-	test -z "$(pkgdatadir)" || $(MKDIR_P) "$(DESTDIR)$(pkgdatadir)"
-	@list='$(dist_pkgdata_DATA)'; test -n "$(pkgdatadir)" || list=; \
+	test -z "$(setupdir)" || $(MKDIR_P) "$(DESTDIR)$(setupdir)"
+	@list='$(dist_setup_DATA)'; test -n "$(setupdir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
 	done | $(am__base_list) | \
 	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(pkgdatadir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(pkgdatadir)" || exit $$?; \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(setupdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(setupdir)" || exit $$?; \
 	done
 
-uninstall-dist_pkgdataDATA:
+uninstall-dist_setupDATA:
 	@$(NORMAL_UNINSTALL)
-	@list='$(dist_pkgdata_DATA)'; test -n "$(pkgdatadir)" || list=; \
+	@list='$(dist_setup_DATA)'; test -n "$(setupdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(pkgdatadir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(pkgdatadir)" && rm -f $$files
+	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -459,7 +459,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(pkgdatadir)"; do \
+	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(setupdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -508,7 +508,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-dist_pkgdataDATA install-dist_pkgdataSCRIPTS
+install-data-am: install-dist_setupDATA install-dist_setupSCRIPTS
 
 install-dvi: install-dvi-am
 
@@ -554,7 +554,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-dist_pkgdataDATA uninstall-dist_pkgdataSCRIPTS
+uninstall-am: uninstall-dist_setupDATA uninstall-dist_setupSCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -563,15 +563,15 @@ uninstall-am: uninstall-dist_pkgdataDATA uninstall-dist_pkgdataSCRIPTS
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dist_pkgdataDATA \
-	install-dist_pkgdataSCRIPTS install-dvi install-dvi-am \
+	install-data-am install-dist_setupDATA \
+	install-dist_setupSCRIPTS install-dvi install-dvi-am \
 	install-exec install-exec-am install-html install-html-am \
 	install-info install-info-am install-man install-pdf \
 	install-pdf-am install-ps install-ps-am install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-dist_pkgdataDATA uninstall-dist_pkgdataSCRIPTS
+	uninstall-dist_setupDATA uninstall-dist_setupSCRIPTS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
