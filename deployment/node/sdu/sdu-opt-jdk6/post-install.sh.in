@@ -14,10 +14,9 @@ echo "Search latest linux JDK6 bin file..."
 
 url=`urljoin "$index" "$latest_file"`
 echo "Download $url..."
-    if ! file=`wgetc "$url"`; then
+    if ! file=`wgetc -m755 "$url"`; then
         echo "Failed to download. "
     fi
-    chmod a+x "$file"
 
 javahome=`grep -a -m1 javahome= $file`
 javahome=${javahome#*=}
@@ -30,6 +29,7 @@ echo "Install $file to $instdir..."
 
     "$file"
 
+echo "Link jdk-6 to $javahome"
     ln -snf $javahome jdk-6
 
 echo "$instdir" >"@DESTDIR@@pkgdatadir@/instdir"
