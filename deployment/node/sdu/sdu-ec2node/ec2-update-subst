@@ -1,0 +1,53 @@
+#!/bin/bash
+
+SUBST="subst -q"
+export NO_SUBST=1
+
+echo "Update instances"
+
+    ec2-describe-instances --show-empty-fields |
+    while read type id ami wan lan state sec _1 _2 m1 t0 loc aki ari _3 mon ipw ipl _4 _5 st _6 _7; do
+        if [ "$type" != "INSTANCE" ]; then continue; fi
+        if [ "$state" != "running" ]; then continue; fi
+
+        key=`ifrsubst $id inst:$id`
+        key=${key%%[*}
+        echo "$key ($ipw)"
+
+        $SUBST $key[id]  $id
+        $SUBST $key[ami] $ami
+        $SUBST $key[aki] $aki
+        $SUBST $key[ari] $ari
+        $SUBST $key[wan] $wan
+        $SUBST $key[lan] $lan
+        $SUBST $key[ipw] $ipw
+        $SUBST $key[ipl] $ipl
+    done
+
+echo "Update volumes"
+
+    ec2-describe-volumes --show-empty-fields |
+    while read type id _1 _2 loc state t0; do
+        if [ "$type" != VOLUME ]; then continue; fi
+
+        key=`ifrsubst $id vol:$id`
+        key=${key%%[*}
+        echo "$key"
+
+        $SUBST $key[id]   $id
+        # $SUBST $key[snap] $snap
+    done
+
+echo "Update snapshots"
+
+    ec2-describe-snapshots --show-empty-fields |
+    while read type id vol status t0 perc ser n1 desc; do
+        if [ "$type" != SNAPSHOT ]; then continue; fi
+
+        key=`ifrsubst $id snap:$id`
+        key=${key%%[*}
+        echo "$key ($vol, $t0)"
+
+        $SUBST $key[id]  $id
+        # $SUBST $key[vol] $vol
+    done

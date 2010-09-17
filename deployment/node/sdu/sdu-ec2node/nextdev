@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+    echo "$0 dev-prefix chartab"
+    exit 1
+fi
+
+dev_prefix="$1"
+tab="$2"
+ntab="${#tab}"
+
+for ((i = 0; i < ntab; i++)); do
+    char=${tab:i:1}
+
+    dev="$dev_prefix$char"
+    if [ ! -e "$dev" ]; then
+        echo "$dev"
+        exit 0
+    fi
+done
+
+exit 1
