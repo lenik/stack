@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# master-file
+
+setupdir=@setupdir@
+
+for u in $setupdir/users/*/; do
+    u=${u%/}
+    username=${u##*/}
+
+    if ! grep -q "^$username:" /etc/passwd; then
+        echo "Create non-exist user $username"
+        if ! useradd -g dev -m $username; then
+            echo "    failed"
+            exit 1
+        fi
+    fi
+
+    IFS=: read name x uid gid cmt home sh \
+            < <(grep "^$username:" /etc/passwd)
+
+    echo "Configure user $name, home $home"
+
+    _sshdir=$home/.ssh
+    install -m 0700 -o $uid -g $gid -d $_sshdir
+
+    if [ -f $u/authorized_keys ]; then
+        # SHOULD merge the authorized-keys.
+        install -m 0600 -o $uid -g $gid $u/authorized_keys $_sshdir/
+    fi
+
+    for k in identity id_rsa id_dsa; do
+        if [ -f $u/$k ]; then
+            install -m 0600 -o $uid -g $gid $u/$k $_sshdir/
+        fi
+    done
+
+done
