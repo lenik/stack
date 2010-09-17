@@ -1,15 +1,21 @@
 #!/bin/bash
 
-while read -p "Enter the package name: " PACKAGE; do
+if [ "$#" = 0 ]; then
+    perlpath=(`perl -V | grep -A100 @INC | grep -v @INC`)
+else
+    perlpath=("$@")
+fi
 
-    pdir="${PACKAGE//::/\/}"
-    for base in "$@"; do
-        full="$base/$pdir"
+while read -p "Enter the package name: " pkgname; do
+
+    resf="${pkgname//:://}.pm"
+    for libdir in "${perlpath[@]}"; do
+        full="$libdir/$resf"
         if [ -f "$full" ]; then
             echo "$full"
-        elif sudo test -f "$full"; then
-            echo "$full (sudo)"
         fi
     done
 
 done
+
+echo
