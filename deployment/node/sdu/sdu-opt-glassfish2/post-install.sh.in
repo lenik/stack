@@ -1,3 +1,23 @@
-#!/bin/sh
+#!/bin/bash
 
 # master-file
+
+ver=2.1.1
+instdir=/opt/java/glassfish-$ver
+
+index=https://glassfish.dev.java.net/downloads/v2.1.1-final.html
+
+if ! jar_url=`wget -qO- $index | egrep -o '"[^"]+-linux\.jar"' `; then
+    echo "Failed to find glassfish-*-linux.jar archive online"
+    exit 1
+fi
+
+jar_url=${jar_url#\"}
+jar_url=${jar_url%\"}
+jar_url=`urljoin $index $jar_url`
+
+echo "Download $jar_url..."
+if ! jar_file=`wgetc $jar_url`; then
+    echo "Failed to download $jar_url"
+    exit 1
+fi
