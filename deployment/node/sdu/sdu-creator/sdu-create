@@ -5,6 +5,12 @@ if ! svn info >/dev/null 2>&1; then
 	exit 1
 fi
 
+for envf in ../../.env ../.env .env; do
+    if [ -f $envf ]; then
+        . $envf
+    fi
+done
+
 for d in "$@"; do
 
     mkdir $d
@@ -26,7 +32,7 @@ EOT
 
     cat <<EOT >>Makefile.am
 
-pkgdata_SCRIPTS = \\
+setup_SCRIPTS = \\
 	post-install.sh \\
 	pre-remove.sh
 
@@ -45,8 +51,8 @@ EOT
 
     svn add *
 
-    . dh_make-autover --createorig \
-        -i -e sdu-bugs@secca-project.com
+    # -i indep binary.
+    . dh_make-autover --createorig -i
 
 	cd debian
 		mv postinst.ex postinst
@@ -54,18 +60,23 @@ EOT
 
 		line=`grepl "configure)" postinst`
 		sedit postinst sh -c "head -$line; \
-			echo \"        /usr/share/$d/post-install.sh\"; \
+			echo \"        /usr/share/setup/$d/post-install.sh\"; \
 			cat"
 
 		line=`grepl "deconfigure)" prerm`
 		sedit prerm sh -c "head -$line; \
-			echo \"        /usr/share/$d/pre-remove.sh\"; \
+			echo \"        /usr/share/setup/$d/pre-remove.sh\"; \
 			cat"
 
 		chmod a+x postinst prerm
 
 		vi control
 	cd ..
+
+	svn add --depth empty debian
+	svn ps svn:ignore '*' debian
+	svn add debian/{control, postinst, prerm, docs, \
+		rules, copyright, compat, README.*}
 
     # makelook
 
