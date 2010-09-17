@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# master-file
+
+f=/usr/bin/ec2-cmd
+fdir="${f%/*}"
+
+if [ -f $f-orig ]; then
+    echo "Restore $f"
+    mv -f $f-orig $f
+fi
