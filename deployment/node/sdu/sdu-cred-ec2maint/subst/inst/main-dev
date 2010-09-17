@@ -1,0 +1,8 @@
+id=i-431e3b29
+ami=ami-1437dd7d
+aki=aki-5037dd39
+ari=(nil)
+wan=ec2-67-202-17-183.compute-1.amazonaws.com
+lan=domU-12-31-39-09-55-13.compute-1.internal
+ipw=67.202.17.183
+ipl=10.210.90.225
