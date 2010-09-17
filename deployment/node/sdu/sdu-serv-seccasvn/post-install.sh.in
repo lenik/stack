@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# master-file
+
+function die() {
+    echo "$@" >&2
+    exit 1
+}
+
+# ln /repos/svn -> /mnt/devdata/svnrepo
+
+    echo "Prepare /repos/svn"
+    install -d -m 755 -o root -g dev /repos || die "failed to init /repos"
+    # install -d -m 755 -o scm  -g dev /repos/svn
+
+    cd /repos || die
+
+    echo "Create symlink /repos/svn -> vol:devdata/svnrepo"
+    ln -snf /mnt/devdata/svnrepo svn
+
+# configure xinetd/svn
+
+    echo "Config xinetd svn-1030 service"
+    if [ -f /etc/init.d/xinet ]; then
+        /etc/init.d/xinetd reload
+    fi
+
+# configure apache2/sites.available
+
+    echo "Config apache secca-svn.site"
+
+    a2enmod  dav
+    a2enmod  dav_svn
+    a2ensite secca-svn.site
+    a2reload
