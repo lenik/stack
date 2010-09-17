@@ -1,0 +1,14 @@
+
+sbindir = ${prefix}/sbin
+setupdir = ${datadir}/setup/${PACKAGE_NAME}
+
+do_subst = sed \
+    -e 's/master-file/generated-file, please do not edit/' \
+    -e 's,[@]DESTDIR[@],$(DESTDIR),g' \
+    -e 's,[@]prefix[@],$(prefix),g' \
+    -e 's,[@]bindir[@],$(bindir),g' \
+    -e 's,[@]sbindir[@],$(sbindir),g' \
+    -e 's,[@]docdir[@],$(docdir),g' \
+    -e 's,[@]datadir[@],$(datadir),g' \
+    -e 's,[@]pkgdatadir[@],$(pkgdatadir),g' \
+    -e 's,[@]setupdir[@],$(setupdir),g'
