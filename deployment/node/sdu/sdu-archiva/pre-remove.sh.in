@@ -2,7 +2,7 @@
 
 # master-file
 
-domaindir=/node/domains/seccaw
+domaindir=/node/domains/seccaj
 force=
 
 if [ "$1" = "-f" ]; then
@@ -13,7 +13,7 @@ echo "Undeploy archiva"
 
     seccaj-admin undeploy archiva
 
-echo "Unconfig resources on seccaw"
+echo "Unconfig resources on seccaj"
 
     seccaj-admin delete-jdbc-resource jdbc/archiva
 

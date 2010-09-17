@@ -2,7 +2,7 @@
 
 # master-file
 
-domaindir=/node/domains/seccaw
+domaindir=/node/domains/seccaj
 force=
 
 if [ "$1" = "-f" ]; then
@@ -11,18 +11,18 @@ fi
 
 echo "Undeploy continuum"
 
-    seccaw-admin undeploy continuum
+    seccaj-admin undeploy continuum
 
-echo "Unconfig resources on seccaw"
+echo "Unconfig resources on seccaj"
 
-    seccaw-admin delete-jdbc-resource jdbc/continuum
+    seccaj-admin delete-jdbc-resource jdbc/continuum
 
     if [ "$force" = 1 ]; then
-        seccaw-admin delete-jdbc-resource jdbc/users
+        seccaj-admin delete-jdbc-resource jdbc/users
 
-        seccaw-admin delete-javamail-resource mail/Session
+        seccaj-admin delete-javamail-resource mail/Session
 
-        seccaw-admin list-jvm-options | grep -- -Dappserver\. |
-            xargs -l seccaw-admin delete-jvm-options
+        seccaj-admin list-jvm-options | grep -- -Dappserver\. |
+            xargs -l seccaj-admin delete-jvm-options
     fi
 
