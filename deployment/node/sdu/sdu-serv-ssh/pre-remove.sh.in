@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# master-file
+
+sshd_config=/etc/ssh/sshd_config
+
+echo "Unconfig sshd port number"
+    if lineconf -e $sshd_config \^Port "Port 22"; then
+        echo "    done"
+    else
+        echo "    skipped"
+    fi
+
+echo "Reload sshd"
+    /etc/init.d/ssh reload

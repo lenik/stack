@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# master-file
+
+sshd_config=/etc/ssh/sshd_config
+
+echo "Config sshd port number"
+    if lineconf -e $sshd_config \^Port "Port 1070"; then
+        echo "    done"
+    else
+        echo "    skipped"
+    fi
+
+echo "Reload sshd"
+    /etc/init.d/ssh reload
