@@ -1,0 +1,12 @@
+Source: sdu-seccajx-jdbc-postgresql
+Section: database
+Priority: optional
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://sdu.secca-project.com/sdu-seccajx-jdbc-postgresql
+
+Package: sdu-seccajx-jdbc-postgresql
+Architecture: all
+Depends: ${misc:Depends}, sdu-opt-glassfish3
+Description: PostgreSQL JDBC driver support.

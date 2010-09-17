@@ -1,0 +1,13 @@
+Source: sdu-serv-ssh
+Section: net
+Priority: required
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://sdu.secca-project.com/sdu-serv-ssh
+
+Package: sdu-serv-ssh
+Architecture: all
+Depends: ${misc:Depends}, openssh-server, sdu-ec2node,
+    wget, xjl-coolutils
+Description: Provide SSH access with node-type preference.

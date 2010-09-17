@@ -1,0 +1,13 @@
+Source: sdu-ec2node
+Section: admin
+Priority: optional
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://sdu.secca-project.com/sdu-ec2node
+
+Package: sdu-ec2node
+Architecture: all
+Depends: ${misc:Depends}, ec2-api-tools, xjl-coolcmd, file
+Recommends: sdu-nodeskel, sdu-sysutil
+Description: Amazon EC2 Instance support SDU

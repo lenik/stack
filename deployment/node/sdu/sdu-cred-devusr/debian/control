@@ -1,0 +1,15 @@
+Source: sdu-cred-devusr
+Section: admin
+Priority: extra
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://sdu.secca-project.com/sdu-cred-devusr
+
+Package: sdu-cred-devusr
+Architecture: all
+Depends: ${misc:Depends}, openssh-server
+Description: Credentials of dev users.
+    Will depend on sdu-serv-ssh in future.
+    (This will also change the ssh port to 1070)
+    (The transation will be done after svn cleaned. )

@@ -1,0 +1,12 @@
+Source: sdu-continuum
+Section: devel
+Priority: optional
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://sdu.secca-project.com/sdu-continuum
+
+Package: sdu-continuum
+Architecture: all
+Depends: ${misc:Depends}, xjl-coolwget, sdu-seccajx
+Description: Continuum CI support.

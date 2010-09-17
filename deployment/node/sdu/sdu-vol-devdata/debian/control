@@ -1,0 +1,18 @@
+Source: sdu-vol-devdata
+Section: admin
+Priority: extra
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://sdu.secca-project.com/sdu-vol-devdata
+
+Package: sdu-vol-devdata
+Architecture: all
+Depends: ${misc:Depends}, xjl-coolutils,
+    sdu-ec2node, sdu-cred-ec2maint
+Description: Attach vol:devdata to current instance.
+  This will attach vol:devdata to current instance.
+  It will find thru /dev/sdf..sdn, get an unused name, and attach
+  vol:devdata to the unused dev.
+  Then, mount the dev at /mnt/devdata, create the mount-point when
+  necessary.
