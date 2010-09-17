@@ -1,0 +1,12 @@
+service svn-1030
+{
+    socket_type = stream
+    protocol    = tcp
+    port        = 1030
+    user        = scm
+    wait        = no
+    server      = /usr/bin/svnserve-002
+
+    # -i inetd mode, -R read-only
+    server_args = -iRr/repos/svn --config-file /repos/svn/conf/anon-secca.conf
+}
