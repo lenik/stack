@@ -1,5 +1,5 @@
 
-include libauto/subst.am
+include libauto/coolauto.am
 
 do_subst2 = ${do_subst} \
 	-e 's,[@]nodedir[@],$(nodedir),g' \

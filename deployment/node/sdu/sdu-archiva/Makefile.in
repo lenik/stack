@@ -99,8 +99,8 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(pkgdatadir)"
-SCRIPTS = $(pkgdata_SCRIPTS)
+am__installdirs = "$(DESTDIR)$(setupdir)"
+SCRIPTS = $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -199,7 +199,7 @@ do_subst = sed \
     -e 's,[@]pkgdatadir[@],$(pkgdatadir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
-pkgdata_SCRIPTS = \
+setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh
 
@@ -242,10 +242,10 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
-install-pkgdataSCRIPTS: $(pkgdata_SCRIPTS)
+install-setupSCRIPTS: $(setup_SCRIPTS)
 	@$(NORMAL_INSTALL)
-	test -z "$(pkgdatadir)" || $(MKDIR_P) "$(DESTDIR)$(pkgdatadir)"
-	@list='$(pkgdata_SCRIPTS)'; test -n "$(pkgdatadir)" || list=; \
+	test -z "$(setupdir)" || $(MKDIR_P) "$(DESTDIR)$(setupdir)"
+	@list='$(setup_SCRIPTS)'; test -n "$(setupdir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
@@ -263,19 +263,19 @@ install-pkgdataSCRIPTS: $(pkgdata_SCRIPTS)
 	while read type dir files; do \
 	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
 	     test -z "$$files" || { \
-	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(pkgdatadir)$$dir'"; \
-	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(pkgdatadir)$$dir" || exit $$?; \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(setupdir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(setupdir)$$dir" || exit $$?; \
 	     } \
 	; done
 
-uninstall-pkgdataSCRIPTS:
+uninstall-setupSCRIPTS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(pkgdata_SCRIPTS)'; test -n "$(pkgdatadir)" || exit 0; \
+	@list='$(setup_SCRIPTS)'; test -n "$(setupdir)" || exit 0; \
 	files=`for p in $$list; do echo "$$p"; done | \
 	       sed -e 's,.*/,,;$(transform)'`; \
 	test -n "$$list" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(pkgdatadir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(pkgdatadir)" && rm -f $$files
+	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -434,7 +434,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS)
 installdirs:
-	for dir in "$(DESTDIR)$(pkgdatadir)"; do \
+	for dir in "$(DESTDIR)$(setupdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -484,7 +484,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-pkgdataSCRIPTS
+install-data-am: install-setupSCRIPTS
 
 install-dvi: install-dvi-am
 
@@ -530,7 +530,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-pkgdataSCRIPTS
+uninstall-am: uninstall-setupSCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -542,11 +542,10 @@ uninstall-am: uninstall-pkgdataSCRIPTS
 	install-data-am install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
 	install-info-am install-man install-pdf install-pdf-am \
-	install-pkgdataSCRIPTS install-ps install-ps-am install-strip \
+	install-ps install-ps-am install-setupSCRIPTS install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-pkgdataSCRIPTS
+	pdf-am ps ps-am uninstall uninstall-am uninstall-setupSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile

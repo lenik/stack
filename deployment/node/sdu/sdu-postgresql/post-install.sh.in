@@ -14,4 +14,6 @@ echo "Configure phppgadmin"
     #   + ADD /etc/apache2/sites-available/HOST
     #   HOST:
     #       /node/config/host-phppgadmin...
-    rm -f /etc/apache2/conf.d/phppgadmin
+    phppgadmin_conf=/etc/apache2/conf.d/phppgadmin
+    lineconf -k /etc/apache2/httpd.conf $phppgadmin_conf
+    rm -f $phppgadmin_conf

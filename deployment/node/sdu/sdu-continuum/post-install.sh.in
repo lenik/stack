@@ -2,7 +2,7 @@
 
 # master-file
 
-domaindir=/node/domains/seccaw
+domaindir=/node/domains/seccaj
 index=http://continuum.apache.org/download.html
 
 echo "Parse index-1: $index"
@@ -23,28 +23,28 @@ if ! war_file=`wgetc $war_url`; then
     exit 1
 fi
 
-echo "Config resources on seccaw"
+echo "Config resources on seccaj"
 
-    seccaw-admin create-jdbc-resource \
+    seccaj-admin create-jdbc-resource \
         --connectionpoolid seccadb_dev_pool \
         jdbc/users
 
-    seccaw-admin create-jdbc-resource \
+    seccaj-admin create-jdbc-resource \
         --connectionpoolid seccadb_dev_pool \
         jdbc/continuum
 
-    #seccaw-admin create-javamail-resource \
+    #seccaj-admin create-javamail-resource \
     #    --mailhost localhost \
     #    --mailuser appserv \
     #    --fromaddress mail_session@localhost \
     #    mail/Session
 
-    # seccaw-admin create-jvm-options -Dappserver.home=$domaindir
-    # seccaw-admin create-jvm-options -Dappserver.base=$domaindir
+    # seccaj-admin create-jvm-options -Dappserver.home=$domaindir
+    # seccaj-admin create-jvm-options -Dappserver.base=$domaindir
 
 echo "Install war $war_file..."
 
-    seccaw-admin deploy \
+    seccaj-admin deploy \
         --contextroot continuum \
         --name continuum \
         $war_file

@@ -1,5 +1,5 @@
 
-include libauto/subst.am
+include libauto/coolauto.am
 
 sysconfdir = /etc
 crondailydir = ${sysconfdir}/cron.daily
