@@ -21,7 +21,7 @@ for d in "$@"; do
     autoinit
     vercomp -i minor
 
-    cat <<EOT | tee post-install.sh.in pre-remove.sh.in >/dev/null
+    cat <<EOT | tee post-install.sh.in pre-remove.sh.in post-remove.sh.in >/dev/null
 #!/bin/sh
 
 # master-file
@@ -34,16 +34,20 @@ EOT
 
 setup_SCRIPTS = \\
 	post-install.sh \\
-	pre-remove.sh
+	pre-remove.sh \\
+	post-remove.sh
 
-EXTRA_DIST = post-install.sh.in pre-remove.sh.in
-CLEANFILES = post-install.sh    pre-remove.sh
+EXTRA_DIST = post-install.sh.in pre-remove.sh.in post-remove.sh.in
+CLEANFILES = post-install.sh    pre-remove.sh    post-remove.sh
 
 post-install.sh: post-install.sh.in Makefile
 	\$(do_subst) <\$(srcdir)/post-install.sh.in >\$@
 
 pre-remove.sh: pre-remove.sh.in Makefile
 	\$(do_subst) <\$(srcdir)/pre-remove.sh.in >\$@
+
+post-remove.sh: post-remove.sh.in Makefile
+	\$(do_subst) <\$(srcdir)/post-remove.sh.in >\$@
 EOT
 
     autoreconf2 -i
@@ -56,7 +60,8 @@ EOT
 
 	cd debian
 		mv postinst.ex postinst
-		mv prerm.ex prerm
+		mv prerm.ex    prerm
+		mv postrm.ex   postrm
 
 		line=`grepl "configure)" postinst`
 		sedit postinst sh -c "head -$line; \
@@ -68,7 +73,12 @@ EOT
 			echo \"        /usr/share/setup/$d/pre-remove.sh\"; \
 			cat"
 
-		chmod a+x postinst prerm
+		line=`grepl "disappear)" postrm`
+		sedit postrm  sh -c "head -$line; \
+			echo \"        /usr/share/setup/$d/post-remove.sh\"; \
+			cat"
+
+		chmod a+x postinst prerm postrm
 
 		vi control
 	cd ..
