@@ -13,5 +13,9 @@ echo "Config bind9"
         echo "    skipped"
     fi
 
+echo "Update substs on seccaproject.db"
+    @setupdir@/substs-db   @seccadbdir@/seccaproject.db
+    @setupdir@/substs-host @sysconfdir@/hosts
+
 echo "Reload bind9"
     /etc/init.d/bind9 reload

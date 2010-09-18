@@ -15,7 +15,9 @@ seccadb_DATA = \
 
 setup_SCRIPTS = \
 	post-install.sh \
-	pre-remove.sh
+	pre-remove.sh \
+	substs-db \
+	substs-hosts
 
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in
 CLEANFILES = post-install.sh    pre-remove.sh

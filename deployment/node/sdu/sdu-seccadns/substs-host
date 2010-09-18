@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# ec2-update-subst
+
+for inst in main-dev main-app s-dev aut-dev back; do
+
+    if ip=`substecho inst:$inst[ipw]`; then # exists
+        line=`printf "%-15s %s" $ip $inst`
+
+        for hf in "$@"; do
+            if lineconf -te "$hf" host::$inst "$line"; then
+                echo "$hf: $inst -> $ip"
+            else
+                echo "$hf: $inst skipped. "
+            fi
+        done
+    fi
+
+done
