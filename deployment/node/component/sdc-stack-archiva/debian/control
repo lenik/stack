@@ -1,0 +1,12 @@
+Source: sdc-stack-archiva
+Section: devel
+Priority: extra
+Maintainer: Lenik (谢继雷) <sdu-bugs@secca-project.com>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://sdc.secca-project.com/sdc-stack-archiva
+
+Package: sdc-stack-archiva
+Architecture: all
+Depends: ${misc:Depends}, sdu-archiva
+Description: Stack maven2 repository over Archiva.
