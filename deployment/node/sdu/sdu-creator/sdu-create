@@ -84,8 +84,8 @@ EOT
 	cd ..
 
 	svn add --depth empty debian
-	svnpsl svn:ignore "$d" '*.log' '*.ex' '*.EX' 'changelog' 'files' \; debian
-	svn add debian/{control,postinst,prerm,postrm,docs,rules,copyright,compat,README.*,*.substvars}
+	svnpsl svn:ignore "$d" '*.log' '*.ex' '*.EX' '*.substvars' 'changelog' 'files' \; debian
+	svn add debian/{control,postinst,prerm,postrm,docs,rules,copyright,compat,README.*}
 
     # makelook
 
