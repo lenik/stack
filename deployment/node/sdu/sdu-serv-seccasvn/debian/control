@@ -11,6 +11,6 @@ Architecture: all
 Depends: ${misc:Depends}, xinetd, xjl-coolsvn,
     libapache2-svn,
     sdu-svntools, sdu-svnjoin,
-    sdu-serv-devsite, sdu-vol-devdata
+    sdu-site-maindev, sdu-vol-devdata
 Description: Provide http://svn.*secca* service.
     The svn-1030 will only provide access for anonymous-allowed portions.
