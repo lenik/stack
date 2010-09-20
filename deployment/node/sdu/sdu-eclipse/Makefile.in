@@ -219,11 +219,10 @@ do_subst = sed \
 
 setup_SCRIPTS = \
 	post-install.sh \
-	pre-remove.sh \
-	post-remove.sh
+	pre-remove.sh
 
-EXTRA_DIST = post-install.sh.in pre-remove.sh.in post-remove.sh.in
-CLEANFILES = post-install.sh    pre-remove.sh    post-remove.sh
+EXTRA_DIST = post-install.sh.in pre-remove.sh.in
+CLEANFILES = post-install.sh    pre-remove.sh
 all: all-am
 
 .SUFFIXES:
@@ -572,9 +571,6 @@ post-install.sh: post-install.sh.in Makefile
 
 pre-remove.sh: pre-remove.sh.in Makefile
 	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
-
-post-remove.sh: post-remove.sh.in Makefile
-	$(do_subst) <$(srcdir)/post-remove.sh.in >$@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
