@@ -2,7 +2,7 @@
     RCSID='$Id: bash.sh 1427 2010-08-25 04:39:31Z lenik $'
     short_opts="pK:C:hqv"
     long_opts="preserve,private-key,cert,help,quiet,verbose,version"
-    . /usr/lib/bash/cliboot
+    . shlib-import cliboot
 
     preserve=
     private_key=

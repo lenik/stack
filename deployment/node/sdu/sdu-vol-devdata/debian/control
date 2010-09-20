@@ -8,7 +8,7 @@ Homepage: http://sdu.secca-project.com/sdu-vol-devdata
 
 Package: sdu-vol-devdata
 Architecture: all
-Depends: ${misc:Depends}, xjl-coolutils,
+Depends: ${misc:Depends}, xjl-coolutils, curl,
     sdu-ec2node, sdu-cred-ec2maint
 Description: Attach vol:devdata to current instance.
   This will attach vol:devdata to current instance.
