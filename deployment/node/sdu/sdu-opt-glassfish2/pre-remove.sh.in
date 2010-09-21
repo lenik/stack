@@ -12,3 +12,5 @@ if [ -d $instdir ]; then
     rm -f  /opt/java/glassfish
 
 fi
+
+exit 0

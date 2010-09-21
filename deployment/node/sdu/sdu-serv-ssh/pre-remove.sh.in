@@ -13,3 +13,5 @@ echo "Unconfig sshd port number"
 
 echo "Reload sshd"
     /etc/init.d/ssh reload
+
+exit 0

@@ -21,11 +21,17 @@ for d in "$@"; do
     autoinit
     vercomp -i minor
 
-    cat <<EOT | tee post-install.sh.in pre-remove.sh.in >/dev/null
+    cat <<EOT >post-install.sh.in
 #!/bin/sh
+# master-file
+EOT
 
+	cat <<EOT >pre-remove.sh.in
+#!/bin/sh
 # master-file
 
+# Pre-Remove script should always exit 0 to force the state.
+exit 0
 EOT
 
     chmod a+x *.sh.in

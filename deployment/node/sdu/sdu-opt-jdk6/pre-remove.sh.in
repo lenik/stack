@@ -10,3 +10,4 @@ if [ -f $instdir_f ]; then
         rm -fr "$instdir"
     fi
 fi
+exit 0

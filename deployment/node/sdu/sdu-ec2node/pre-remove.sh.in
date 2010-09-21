@@ -9,3 +9,5 @@ if [ -f $f-orig ]; then
     echo "Restore $f"
     mv -f $f-orig $f
 fi
+
+exit 0

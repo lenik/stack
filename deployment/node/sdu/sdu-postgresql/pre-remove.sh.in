@@ -7,3 +7,5 @@ hba=/etc/postgresql/8.4/main/pg_hba.conf
 echo "Remove entries from $hba"
     lineconf -tk SDUC-1-192    $hba
     lineconf -tk SDUC-9-remote $hba
+
+exit 0

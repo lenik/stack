@@ -14,3 +14,4 @@ echo "Unconfig bind9"
 
 echo "Reload bind9"
     /etc/init.d/bind9 reload
+exit 0

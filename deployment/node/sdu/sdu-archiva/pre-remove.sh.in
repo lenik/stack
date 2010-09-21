@@ -25,4 +25,4 @@ echo "Unconfig resources on seccaj"
         seccaj-admin list-jvm-options | grep -- -Dappserver\. |
             xargs -l seccaj-admin delete-jvm-options
     fi
-
+exit 0

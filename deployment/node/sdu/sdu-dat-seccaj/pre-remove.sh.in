@@ -16,3 +16,4 @@ rm -f  /opt/java/glassfish/glassfish/domains/seccaj
 
 rm -f  ~appserv/.seccaj.asadminpass
 
+exit 0

@@ -22,8 +22,8 @@ $TTL            12H
 
                         TXT     "t=spf1 A MX include:authsmtp.com ~all"
 
-ns1                     CNAME   main-dev
-ns2                     CNAME   main-dev
+ns1                     A       67.202.17.183
+ns2                     A       67.202.17.183
 
 main-dev                A       67.202.17.183
 main-app                CNAME   main-dev
