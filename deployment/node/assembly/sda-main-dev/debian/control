@@ -1,0 +1,12 @@
+Source: sda-main-dev
+Section: devel
+Priority: extra
+Maintainer: Lenik <lenik@unknown>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://sdu.secca-project.com/sda-main-dev
+
+Package: sda-main-dev
+Architecture: all
+Depends:
+Description: Main-Dev Assembly
