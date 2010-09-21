@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-UnKnOwN - DeScRiPtIoN
+logt - Log Tails
 
 =cut
 use strict;
@@ -35,7 +35,7 @@ sub _boot {
 
 =head1 SYNOPSIS
 
-B<UnKnOwN>
+B<logt>
     S<[ B<-q> | B<--quiet> ]>
     S<[ B<-v> | B<--verbose> ]>
     S<[ B<-h> | B<--help> ]>
@@ -45,11 +45,11 @@ B<UnKnOwN>
 
 =head1 DESCRIPTION
 
-B<UnKnOwN> is a WHAT used for WHAT. It HOW-WORKS.
+B<logt> is a WHAT used for WHAT. It HOW-WORKS.
 
 BACKGROUND-PROBLEM.
 
-HOW-UnKnOwN-RESOLVES.
+HOW-logt-RESOLVES.
 
 =head1 OPTIONS
 
@@ -83,7 +83,7 @@ Display a short version information and exit(0).
 
 =item Show help
 
-    UnKnOwN --help
+    logt --help
 
 =back
 
@@ -172,7 +172,7 @@ The initial version.
 
 =cut
 sub _version {
-    print "[$LOGNAME] DeScRiPtIoN \n";
+    print "[$LOGNAME] Log Tails \n";
     print "Written by Lenik,  Version 0.$RCSID{rev},  Last updated at $RCSID{date}\n";
 }
 

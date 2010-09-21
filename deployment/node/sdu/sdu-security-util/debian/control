@@ -1,13 +1,13 @@
 Source: sdu-security-util
-Section: unknown
+Section: admin
 Priority: extra
 Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
 Build-Depends: debhelper (>= 7)
 Standards-Version: 3.8.3
-Homepage: <insert the upstream URL, if relevant>
+Homepage: http://sdu.secca-project.com/sdu-security-util
 
 Package: sdu-security-util
 Architecture: all
-Depends: ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Depends: xjl-libcmt, grep
+Recommends: clamav
+Description: Linux security utils for ec2node.
