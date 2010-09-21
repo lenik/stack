@@ -1,0 +1,70 @@
+#!/bin/bash
+    . shlib-import cliboot
+
+    RCSID='$Id: bash.sh 1731 2010-09-19 20:34:56Z lenik $'
+    short_opts="hqv"
+    long_opts="help,quiet,verbose,version"
+
+function version() {
+    parse_id "$RCSID"
+    echo "[$BASENAME] Add effects to special boxes"
+    echo "Written by Lenik, Version 0.$rcs_rev, Last updated at $rcs_date"
+}
+
+function help() {
+    version
+    echo
+    echo "Syntax: "
+    echo "    $0 [OPTION] [--] PATTERN FX..."
+    echo
+    echo "Options: "
+    echo "    -q, --quiet             repeat to get less info"
+    echo "    -v, --verbose           repeat to get more info"
+    echo "    -h, --help              show this help page"
+    echo "        --version           print the version info"
+}
+
+function setopt() {
+    case "$1" in
+        -h|--help)
+            help; exit;;
+        -q|--quiet)
+            LOGLEVEL=$((LOGLEVEL - 1));;
+        -v|--verbose)
+            LOGLEVEL=$((LOGLEVEL + 1));;
+        --version)
+            version; exit;;
+        *)
+            quit "invalid option: $1";;
+    esac
+}
+
+function main() {
+    if [ $# -lt 2 ]; then
+        help
+        exit 1
+    fi
+
+    pattern="$1"
+    shift
+
+    dattr=
+    for a in "$@"; do
+        dattr="$dattr,$a"
+    done
+
+    while read line; do
+        if [ "$line" != "${line/shape=box}" ]; then
+            body="${line%[*}"
+            attr="${line#*[}"
+            attr="${attr%];}"
+            if [ "$body" != "${body/$pattern}" ]; then
+                attr="$attr$dattr"
+                line="$body[$attr];"
+            fi
+        fi
+        echo "$line"
+    done
+}
+
+boot "$@"

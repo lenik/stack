@@ -1,0 +1,14 @@
+Source: sdu-sduutils
+Section: devel
+Priority: extra
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://sdu.secca-project.com/sdu-sduutils
+
+Package: sdu-sduutils
+Architecture: all
+Depends: apt, apt-rdepends, dpkg, devscripts,
+    debtree, graphviz, xjl-cooldeb, aptitude,
+    dpkg-dev, sdu-creator
+Description: SDU development utilities.
