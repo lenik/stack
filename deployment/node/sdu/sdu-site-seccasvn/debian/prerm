@@ -1,5 +1,5 @@
 #!/bin/sh
-# prerm script for sdu-serv-seccasvn
+# prerm script for sdu-site-seccasvn
 #
 # see: dh_installdeb(1)
 
@@ -19,7 +19,7 @@ set -e
 
 case "$1" in
     remove|upgrade|deconfigure)
-        /usr/share/setup/sdu-serv-seccasvn/pre-remove.sh
+        /usr/share/setup/sdu-site-seccasvn/pre-remove.sh
     ;;
 
     failed-upgrade)
