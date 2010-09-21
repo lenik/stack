@@ -1,0 +1,82 @@
+#!/bin/bash
+    . shlib-import cliboot
+
+    RCSID='$Id: bash.sh 1769 2010-09-21 07:32:29Z lenik $'
+    short_opts="hqv"
+    long_opts="help,quiet,verbose,version"
+
+function version() {
+    parse_id "$RCSID"
+    echo "[$BASENAME] Collect/update auth confs"
+    echo "Written by Lenik, Version 0.$rcs_rev, Last updated at $rcs_date"
+}
+
+function help() {
+    version
+    echo
+    echo "Syntax: "
+    echo "    $0 [OPTION] [--] ..."
+    echo
+    echo "Options: "
+    echo "    -q, --quiet             repeat to get less info"
+    echo "    -v, --verbose           repeat to get more info"
+    echo "    -h, --help              show this help page"
+    echo "        --version           print the version info"
+}
+
+function setopt() {
+    case "$1" in
+        -h|--help)
+            help; exit;;
+        -q|--quiet)
+            LOGLEVEL=$((LOGLEVEL - 1));;
+        -v|--verbose)
+            LOGLEVEL=$((LOGLEVEL + 1));;
+        --version)
+            version; exit;;
+        *)
+            quit "invalid option: $1";;
+    esac
+}
+
+function main() {
+    if [ ! -w / ]; then
+        echo "Should run by root."
+        exit 1
+    fi
+
+    rm -f /etc/authdb/*
+    install -d -m 700 -o root -g root /etc/authdb
+
+    while IFS=: read uname x uid gid cmt home sh; do
+
+        if [ -z "$uname" ]; then continue; fi
+        if [ "${uname:0:1}" = '#' ]; then continue; fi
+
+        secf="$home/.secrets"
+        if [ ! -f "$secf" ]; then continue; fi
+
+        _log1 "Process $secf"
+        for grp in all `sudo -u $uname groups`; do
+
+            while read app passwd; do
+                if [ -z "$app" ]; then continue; fi
+                if [ "${app:0:1}" = '#' ]; then continue; fi
+
+                _log2 "  Realm $app, Group $grp"
+                adb="/etc/authdb/$app.$grp.adb"
+                echo "$uname $passwd" >>$adb
+            done <"$secf"
+
+        done
+
+    done </etc/passwd
+
+    cd /etc/authdb
+    for adb in *.adb; do
+        realm="${adb%%.*}"
+        authmap -r "$realm" $adb
+    done
+}
+
+boot "$@"
