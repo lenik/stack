@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-assembly
 
 Package: sdu-assembly
 Architecture: all
-Depends: ${misc:Depends}
+Depends: sdu-sduutils
 Description: Assembly support unit.

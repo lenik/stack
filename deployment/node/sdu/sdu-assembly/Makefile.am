@@ -1,9 +1,7 @@
 
 include libauto/coolauto.am
 
-bindir = ${prefix}/sbin
-
-dist_bin_SCRIPTS = \
+dist_sbin_SCRIPTS = \
     commitnode \
     exportnode \
     installassembly \
@@ -11,3 +9,13 @@ dist_bin_SCRIPTS = \
     postnode \
     removenode \
     updatenode
+
+setup_SCRIPTS = \
+    post-install.sh \
+    pre-remove.sh
+
+EXTRA_DIST = post-install.sh.in pre-remove.sh.in
+CLEANFILES = post-install.sh    pre-remove.sh
+
+%: %.in Makefile
+	$(do_subst) <$< >$@
