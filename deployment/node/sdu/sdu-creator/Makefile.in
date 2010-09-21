@@ -221,7 +221,8 @@ do_subst = sed \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
 dist_bin_SCRIPTS = \
-    sdu-create
+    sdu-create \
+    sdu-convert
 
 dist_man_MANS = \
     sdu-create.1

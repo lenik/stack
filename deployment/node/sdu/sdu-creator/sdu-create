@@ -13,8 +13,8 @@ done
 
 for d in "$@"; do
 
-    mkdir $d
-    svn add $d
+    mkdir -p $d
+    svn add --depth empty $d/
 
     cd $d
 
