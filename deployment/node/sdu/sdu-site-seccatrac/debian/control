@@ -1,0 +1,13 @@
+Source: sdu-site-seccatrac
+Section: devel
+Priority: extra
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://sdu.secca-project.com/sdu-site-seccatrac
+
+Package: sdu-site-seccatrac
+Architecture: all
+Depends: sdu-site-seccasvn, sdu-vol-devdata,
+    subversion, trac, apache2, sdu-a2utils
+Description: Trac support for SECCA Project.
