@@ -1,7 +1,6 @@
 
 include libauto/coolauto.am
 
-sysconfdir = /etc
 ec2confdir = ${sysconfdir}/ec2
 substdir = ${sysconfdir}/coolcmd/subst
 s_instdir = ${substdir}/inst

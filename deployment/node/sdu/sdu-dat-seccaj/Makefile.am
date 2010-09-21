@@ -1,10 +1,6 @@
 
 include libauto/coolauto.am
 
-sysconfdir = /etc
-initdir = ${sysconfdir}/init
-sysvdir = ${sysconfdir}/init.d
-
 dist_sbin_SCRIPTS = \
 	seccaj \
 	seccaj-admin
@@ -15,7 +11,7 @@ dist_man_MANS = \
 # dist_init_DATA = \
 # 	seccaj.conf
 
-dist_sysv_SCRIPTS = \
+dist_sysvinit_SCRIPTS = \
 	init.d/seccajctl
 
 pkgdata_SCRIPTS = \

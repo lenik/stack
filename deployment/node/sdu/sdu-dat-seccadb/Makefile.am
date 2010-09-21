@@ -1,13 +1,11 @@
 
 include libauto/coolauto.am
 
-sbindir = ${prefix}/sbin
-
 PG_CREATE_SHORTCUTS = pg-create-shortcuts
 
 sbin_SCRIPTS =
 
-pkgdata_SCRIPTS = \
+setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh
 

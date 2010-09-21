@@ -4,7 +4,6 @@ do_subst2 = $(do_subst) \
 	-e 's,[@]bindconfdir[@],$(bindconfdir),g' \
 	-e 's,[@]seccadbdir[@],$(seccadbdir),g'
 
-sysconfdir  = /etc
 bindconfdir = ${sysconfdir}/bind
 seccadbdir  = ${bindconfdir}/secca
 

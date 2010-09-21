@@ -1,7 +1,6 @@
 
 include libauto/coolauto.am
 
-sysconfdir = /etc
 crondailydir = ${sysconfdir}/cron.daily
 
 dist_bin_SCRIPTS = \

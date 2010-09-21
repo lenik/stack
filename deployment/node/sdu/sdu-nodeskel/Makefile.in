@@ -186,12 +186,21 @@ psdir = @psdir@
 sbindir = ${prefix}/sbin
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
-sysconfdir = @sysconfdir@
+sysconfdir = /etc
 target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 setupdir = ${datadir}/setup/${PACKAGE_NAME}
+aliasesdir = ${sysconfdir}/bash_aliases.d
+bashcompdir = ${sysconfdir}/bash_completion.d
+profiledir = ${sysconfdir}/profile.d
+sudoersdir = ${sysconfdir}/sudoers.d
+initdir = ${sysconfdir}/init
+sysvinitdir = ${sysconfdir}/init.d
+apparmordir = ${sysconfdir}/apparmor.d
+shlibdir = ${libdir}/shlib.d
+newtmpldir = ${libdir}/newtmpl.d
 do_subst = sed \
     -e 's/master-file/generated-file, please do not edit/' \
     -e 's,[@]DESTDIR[@],$(DESTDIR),g' \
@@ -201,6 +210,15 @@ do_subst = sed \
     -e 's,[@]docdir[@],$(docdir),g' \
     -e 's,[@]datadir[@],$(datadir),g' \
     -e 's,[@]pkgdatadir[@],$(pkgdatadir),g' \
+    -e 's,[@]sysconfdir[@],$(sysconfdir),g' \
+    -e 's,[@]aliasesdir[@],$(aliasesdir),g' \
+    -e 's,[@]bashcompdir[@],$(bashcompdir),g' \
+    -e 's,[@]profiledir[@],$(profiledir),g' \
+    -e 's,[@]sudoersdir[@],$(sudoersdir),g' \
+    -e 's,[@]initdir[@],$(initdir),g' \
+    -e 's,[@]apparmordir[@],$(apparmordir),g' \
+    -e 's,[@]shlibdir[@],$(shlibdir),g' \
+    -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
 do_subst2 = ${do_subst} \
