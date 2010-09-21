@@ -64,7 +64,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
+DIST_COMMON = README $(am__configure_deps) $(dist_bin_SCRIPTS) \
+	$(dist_crondaily_SCRIPTS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/libauto/coolauto.am \
 	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
 	install-sh missing
@@ -99,8 +100,8 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(setupdir)"
-SCRIPTS = $(setup_SCRIPTS)
+am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(crondailydir)"
+SCRIPTS = $(dist_bin_SCRIPTS) $(dist_crondaily_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -217,12 +218,13 @@ do_subst = sed \
     -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
-setup_SCRIPTS = \
-	post-install.sh \
-	pre-remove.sh
+crondailydir = ${sysconfdir}/cron.daily
+dist_bin_SCRIPTS = \
+    dg
 
-EXTRA_DIST = post-install.sh.in pre-remove.sh.in
-CLEANFILES = post-install.sh    pre-remove.sh
+dist_crondaily_SCRIPTS = \
+    svn-add-node-logs
+
 all: all-am
 
 .SUFFIXES:
@@ -260,10 +262,10 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
-install-setupSCRIPTS: $(setup_SCRIPTS)
+install-dist_binSCRIPTS: $(dist_bin_SCRIPTS)
 	@$(NORMAL_INSTALL)
-	test -z "$(setupdir)" || $(MKDIR_P) "$(DESTDIR)$(setupdir)"
-	@list='$(setup_SCRIPTS)'; test -n "$(setupdir)" || list=; \
+	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
+	@list='$(dist_bin_SCRIPTS)'; test -n "$(bindir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
@@ -281,19 +283,53 @@ install-setupSCRIPTS: $(setup_SCRIPTS)
 	while read type dir files; do \
 	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
 	     test -z "$$files" || { \
-	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(setupdir)$$dir'"; \
-	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(setupdir)$$dir" || exit $$?; \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(bindir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
 	     } \
 	; done
 
-uninstall-setupSCRIPTS:
+uninstall-dist_binSCRIPTS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(setup_SCRIPTS)'; test -n "$(setupdir)" || exit 0; \
+	@list='$(dist_bin_SCRIPTS)'; test -n "$(bindir)" || exit 0; \
 	files=`for p in $$list; do echo "$$p"; done | \
 	       sed -e 's,.*/,,;$(transform)'`; \
 	test -n "$$list" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
+	echo " ( cd '$(DESTDIR)$(bindir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(bindir)" && rm -f $$files
+install-dist_crondailySCRIPTS: $(dist_crondaily_SCRIPTS)
+	@$(NORMAL_INSTALL)
+	test -z "$(crondailydir)" || $(MKDIR_P) "$(DESTDIR)$(crondailydir)"
+	@list='$(dist_crondaily_SCRIPTS)'; test -n "$(crondailydir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
+	done | \
+	sed -e 'p;s,.*/,,;n' \
+	    -e 'h;s|.*|.|' \
+	    -e 'p;x;s,.*/,,;$(transform)' | sed 'N;N;N;s,\n, ,g' | \
+	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1; } \
+	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
+	    if ($$2 == $$4) { files[d] = files[d] " " $$1; \
+	      if (++n[d] == $(am__install_max)) { \
+		print "f", d, files[d]; n[d] = 0; files[d] = "" } } \
+	    else { print "f", d "/" $$4, $$1 } } \
+	  END { for (d in files) print "f", d, files[d] }' | \
+	while read type dir files; do \
+	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
+	     test -z "$$files" || { \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(crondailydir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(crondailydir)$$dir" || exit $$?; \
+	     } \
+	; done
+
+uninstall-dist_crondailySCRIPTS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_crondaily_SCRIPTS)'; test -n "$(crondailydir)" || exit 0; \
+	files=`for p in $$list; do echo "$$p"; done | \
+	       sed -e 's,.*/,,;$(transform)'`; \
+	test -n "$$list" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(crondailydir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(crondailydir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -452,7 +488,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS)
 installdirs:
-	for dir in "$(DESTDIR)$(setupdir)"; do \
+	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(crondailydir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -472,7 +508,6 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
-	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -502,13 +537,13 @@ info: info-am
 
 info-am:
 
-install-data-am: install-setupSCRIPTS
+install-data-am: install-dist_crondailySCRIPTS
 
 install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am:
+install-exec-am: install-dist_binSCRIPTS
 
 install-html: install-html-am
 
@@ -548,7 +583,8 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-setupSCRIPTS
+uninstall-am: uninstall-dist_binSCRIPTS \
+	uninstall-dist_crondailySCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -557,20 +593,16 @@ uninstall-am: uninstall-setupSCRIPTS
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-setupSCRIPTS install-strip \
+	install-data-am install-dist_binSCRIPTS \
+	install-dist_crondailySCRIPTS install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-setupSCRIPTS
+	pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-dist_binSCRIPTS uninstall-dist_crondailySCRIPTS
 
-
-post-install.sh: post-install.sh.in Makefile
-	$(do_subst) <$(srcdir)/post-install.sh.in >$@
-
-pre-remove.sh: pre-remove.sh.in Makefile
-	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -4,9 +4,22 @@
 
 cd @DESTDIR@
 
-echo "Set group to dev: @nodedir@"
-    chgrp -R dev @nodedir@/
+    echo "Reset access permission on @nodedir@"
+        install -d -m 2775 -o root -g dev @nodedir@
 
-echo "Set-gid over @nodedir@"
-    find @nodedir@/ -type d -exec chmod g+ws {} \;
+
+if [ -d /mnt/istore ]; then
+    echo "Found istore, setup node-alt directory structure"
+
+    altdir=/mnt/istore/node-alt
+    install -d -m 2775 -o root -g dev $altdir
+    install -d -m 2775 -o root -g dev $altdir/sites
+
+    cd @nodedir@
+    for altd in $altdir/*/; do
+        ln -snf $altd .
+    done
+fi
+
+exit 0
 

@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-users
 
 Package: sdu-users
 Architecture: all
-Depends: ${misc:Depends}
+Depends:
 Description: SDU standard users

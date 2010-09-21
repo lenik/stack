@@ -64,10 +64,10 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/libauto/coolauto.am \
-	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	install-sh missing
+DIST_COMMON = README $(am__configure_deps) $(dist_sbin_SCRIPTS) \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/libauto/coolauto.am $(top_srcdir)/configure AUTHORS \
+	COPYING ChangeLog INSTALL NEWS install-sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -99,8 +99,8 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(setupdir)"
-SCRIPTS = $(setup_SCRIPTS)
+am__installdirs = "$(DESTDIR)$(sbindir)"
+SCRIPTS = $(dist_sbin_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -217,12 +217,14 @@ do_subst = sed \
     -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
-setup_SCRIPTS = \
-	post-install.sh \
-	pre-remove.sh
+dist_sbin_SCRIPTS = \
+    aliases \
+    canonical \
+    mailing-list \
+    main.cf \
+    master.cf \
+    qdel
 
-EXTRA_DIST = post-install.sh.in pre-remove.sh.in
-CLEANFILES = post-install.sh    pre-remove.sh
 all: all-am
 
 .SUFFIXES:
@@ -260,10 +262,10 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
-install-setupSCRIPTS: $(setup_SCRIPTS)
+install-dist_sbinSCRIPTS: $(dist_sbin_SCRIPTS)
 	@$(NORMAL_INSTALL)
-	test -z "$(setupdir)" || $(MKDIR_P) "$(DESTDIR)$(setupdir)"
-	@list='$(setup_SCRIPTS)'; test -n "$(setupdir)" || list=; \
+	test -z "$(sbindir)" || $(MKDIR_P) "$(DESTDIR)$(sbindir)"
+	@list='$(dist_sbin_SCRIPTS)'; test -n "$(sbindir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
@@ -281,19 +283,19 @@ install-setupSCRIPTS: $(setup_SCRIPTS)
 	while read type dir files; do \
 	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
 	     test -z "$$files" || { \
-	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(setupdir)$$dir'"; \
-	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(setupdir)$$dir" || exit $$?; \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(sbindir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(sbindir)$$dir" || exit $$?; \
 	     } \
 	; done
 
-uninstall-setupSCRIPTS:
+uninstall-dist_sbinSCRIPTS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(setup_SCRIPTS)'; test -n "$(setupdir)" || exit 0; \
+	@list='$(dist_sbin_SCRIPTS)'; test -n "$(sbindir)" || exit 0; \
 	files=`for p in $$list; do echo "$$p"; done | \
 	       sed -e 's,.*/,,;$(transform)'`; \
 	test -n "$$list" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
+	echo " ( cd '$(DESTDIR)$(sbindir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(sbindir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -452,7 +454,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS)
 installdirs:
-	for dir in "$(DESTDIR)$(setupdir)"; do \
+	for dir in "$(DESTDIR)$(sbindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -472,7 +474,6 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
-	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -502,13 +503,13 @@ info: info-am
 
 info-am:
 
-install-data-am: install-setupSCRIPTS
+install-data-am:
 
 install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am:
+install-exec-am: install-dist_sbinSCRIPTS
 
 install-html: install-html-am
 
@@ -548,7 +549,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-setupSCRIPTS
+uninstall-am: uninstall-dist_sbinSCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -557,20 +558,15 @@ uninstall-am: uninstall-setupSCRIPTS
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-setupSCRIPTS install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-setupSCRIPTS
+	install-data-am install-dist_sbinSCRIPTS install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-dist_sbinSCRIPTS
 
-
-post-install.sh: post-install.sh.in Makefile
-	$(do_subst) <$(srcdir)/post-install.sh.in >$@
-
-pre-remove.sh: pre-remove.sh.in Makefile
-	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

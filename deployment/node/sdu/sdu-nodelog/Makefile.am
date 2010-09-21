@@ -1,15 +1,11 @@
+
 include libauto/coolauto.am
 
+crondailydir = ${sysconfdir}/cron.daily
 
-setup_SCRIPTS = \
-	post-install.sh \
-	pre-remove.sh
+dist_bin_SCRIPTS = \
+    dg
 
-EXTRA_DIST = post-install.sh.in pre-remove.sh.in
-CLEANFILES = post-install.sh    pre-remove.sh
+dist_crondaily_SCRIPTS = \
+    svn-add-node-logs
 
-post-install.sh: post-install.sh.in Makefile
-	$(do_subst) <$(srcdir)/post-install.sh.in >$@
-
-pre-remove.sh: pre-remove.sh.in Makefile
-	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@

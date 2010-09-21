@@ -2,7 +2,9 @@
 
 # master-file
 
-if [ ! -d /node/data/seccadb/base ]; then
+if [ -d /node/data/seccadb/base ]; then
+	echo "seccadb cluster is existed, reuse it. "
+else
     echo "Create seccadb cluster"
 
     install -d -opostgres -gdev /node/data/seccadb
