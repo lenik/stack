@@ -1,10 +1,10 @@
 <VirtualHost *:80>
-    ServerName main-dev.secca-project.com
-	ServerAdmin admin@secca-project.com
+    ServerName  www.secca-project.com
+    ServerAdmin admin@secca-project.com
 
-	ErrorLog  /var/log/apache2/secca_maindev_error.log
-	CustomLog /var/log/apache2/secca_maindev_access.log combined
+    ErrorLog  /var/log/apache2/secca_maindev_error.log
+    CustomLog /var/log/apache2/secca_maindev_access.log combined
 
-	DocumentRoot @pkgdatadir@/html
+    DocumentRoot @pkgdatadir@/html
 
 </VirtualHost>
