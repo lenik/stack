@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SUBST="subst -q"
+SUBST="subst -q -g"
 export NO_SUBST=1
 
 echo "Update instances"
