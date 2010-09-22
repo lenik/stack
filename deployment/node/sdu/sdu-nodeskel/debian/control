@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-nodeskel
 
 Package: sdu-nodeskel
 Architecture: all
-Depends: sdu-users, sdu-ec2node
+Depends: sdu-ec2istore
 Description: Node skeleton SDU

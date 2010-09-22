@@ -8,7 +8,7 @@ Homepage: http://sdu.secca-project.com/sdu-vol-devdata
 
 Package: sdu-vol-devdata
 Architecture: all
-Depends: sdu-ec2node
+Depends: sdu-ec2admin
 Description: Attach vol:devdata to current instance.
   This will attach vol:devdata to current instance.
   It will find thru /dev/sdf..sdn, get an unused name, and attach

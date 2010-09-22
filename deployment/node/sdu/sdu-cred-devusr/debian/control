@@ -8,7 +8,7 @@ Homepage: http://sdu.secca-project.com/sdu-cred-devusr
 
 Package: sdu-cred-devusr
 Architecture: all
-Depends: ${misc:Depends}, openssh-server
+Depends: openssh-server
 Description: Credentials of dev users.
     Will depend on sdu-serv-ssh in future.
     (This will also change the ssh port to 1070)

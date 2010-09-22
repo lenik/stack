@@ -8,6 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-seccajx
 
 Package: sdu-seccajx
 Architecture: all
-Depends: ${misc:Depends}, sdu-dat-seccaj, sdu-dat-seccadb,
-    sdu-seccajx-jdbc-postgresql
+Depends: sdu-dat-seccaj, sdu-dat-seccadb, sdu-seccajx-jdbc-postgresql
 Description: SECCA Web-site with DB support.

@@ -8,6 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-opt-glassfish3
 
 Package: sdu-opt-glassfish3
 Architecture: all
-Depends: ${misc:Depends}, xjl-coolwget, unzip,
-    sdu-users, sdu-opt-jdk6
+Depends: xjl-coolwget, unzip, sdu-cred-appserv, sdu-opt-jdk6
 Description: Glassfish v3 for SDU.

@@ -20,7 +20,7 @@ set -e
 
 case "$1" in
     configure)
-        /usr/share/sdu-nodeskel/post-install.sh
+        /usr/share/setup/sdu-nodeskel/post-install.sh
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

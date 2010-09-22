@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-vol-devuser
 
 Package: sdu-vol-devuser
 Architecture: all
-Depends:
+Depends: sdu-ec2admin, sdu-cred-devgroup
 Description: Dev users home storage
