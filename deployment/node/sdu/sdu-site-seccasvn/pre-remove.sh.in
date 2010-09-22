@@ -2,4 +2,14 @@
 
 # master-file
 
+echo "Unconfig svn-1030 service"
+    # remove file xinetd.d/svn-1030
+    if [ -f /etc/init.d/xinet ]; then
+        /etc/init.d/xinetd reload
+    fi
+
+echo "Unconfig apache2"
+    a2dissite secca-svn.site
+    a2reload
+
 exit 0
