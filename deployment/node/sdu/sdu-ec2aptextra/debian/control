@@ -8,5 +8,7 @@ Homepage: http://sdu.secca-project.com/sdu-ec2aptextra
 
 Package: sdu-ec2aptextra
 Architecture: all
-Depends: aptitude
-Description: Extra source lists, multiverse
+Depends: aptitude, apt
+Description: Extra source lists
+    This will also add multiverse repository to source.list,
+    to allow the consequent installs.
