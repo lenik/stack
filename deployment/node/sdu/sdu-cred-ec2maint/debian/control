@@ -8,5 +8,7 @@ Homepage: http://sdu.secca-project.com/sdu-cred-ec2maint
 
 Package: sdu-cred-ec2maint
 Architecture: all
-Depends: sdu-users
+Depends:
+Suggests: sdu-ec2utils
 Description: Maintainer for ec2 nodes operation
+    This contains predefined subst parameters.
