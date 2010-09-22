@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-ec2utils
 
 Package: sdu-ec2utils
 Architecture: all
-Depends: ec2-api-tools, xjl-coolcmd, file, curl
+Depends: ec2-api-tools, sdu-ec2metadata, xjl-coolcmd, bash-shlib
 Description: EC2 instance operation utilities.

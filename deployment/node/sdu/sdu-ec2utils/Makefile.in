@@ -64,7 +64,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
+DIST_COMMON = README $(am__configure_deps) $(dist_man_MANS) \
+	$(dist_sbin_SCRIPTS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/libauto/coolauto.am \
 	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
 	install-sh missing
@@ -99,10 +100,14 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(setupdir)"
-SCRIPTS = $(setup_SCRIPTS)
+am__installdirs = "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(setupdir)" \
+	"$(DESTDIR)$(man1dir)"
+SCRIPTS = $(dist_sbin_SCRIPTS) $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
+man1dir = $(mandir)/man1
+NROFF = nroff
+MANS = $(dist_man_MANS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -225,6 +230,20 @@ do_subst = sed \
     -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
+dist_sbin_SCRIPTS = \
+    ec2-cmd \
+    mount-ebs \
+    nextdev \
+    ec2user-init \
+    ec2-update-subst
+
+dist_man_MANS = \
+    ec2-cmd.1 \
+    mount-ebs.1 \
+    nextdev.1 \
+    ec2user-init.1 \
+    ec2-update-subst.1
+
 setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh
@@ -268,6 +287,40 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
+install-dist_sbinSCRIPTS: $(dist_sbin_SCRIPTS)
+	@$(NORMAL_INSTALL)
+	test -z "$(sbindir)" || $(MKDIR_P) "$(DESTDIR)$(sbindir)"
+	@list='$(dist_sbin_SCRIPTS)'; test -n "$(sbindir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
+	done | \
+	sed -e 'p;s,.*/,,;n' \
+	    -e 'h;s|.*|.|' \
+	    -e 'p;x;s,.*/,,;$(transform)' | sed 'N;N;N;s,\n, ,g' | \
+	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1; } \
+	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
+	    if ($$2 == $$4) { files[d] = files[d] " " $$1; \
+	      if (++n[d] == $(am__install_max)) { \
+		print "f", d, files[d]; n[d] = 0; files[d] = "" } } \
+	    else { print "f", d "/" $$4, $$1 } } \
+	  END { for (d in files) print "f", d, files[d] }' | \
+	while read type dir files; do \
+	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
+	     test -z "$$files" || { \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(sbindir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(sbindir)$$dir" || exit $$?; \
+	     } \
+	; done
+
+uninstall-dist_sbinSCRIPTS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_sbin_SCRIPTS)'; test -n "$(sbindir)" || exit 0; \
+	files=`for p in $$list; do echo "$$p"; done | \
+	       sed -e 's,.*/,,;$(transform)'`; \
+	test -n "$$list" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(sbindir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(sbindir)" && rm -f $$files
 install-setupSCRIPTS: $(setup_SCRIPTS)
 	@$(NORMAL_INSTALL)
 	test -z "$(setupdir)" || $(MKDIR_P) "$(DESTDIR)$(setupdir)"
@@ -302,6 +355,44 @@ uninstall-setupSCRIPTS:
 	test -n "$$list" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
+install-man1: $(dist_man_MANS)
+	@$(NORMAL_INSTALL)
+	test -z "$(man1dir)" || $(MKDIR_P) "$(DESTDIR)$(man1dir)"
+	@list=''; test -n "$(man1dir)" || exit 0; \
+	{ for i in $$list; do echo "$$i"; done; \
+	l2='$(dist_man_MANS)'; for i in $$l2; do echo "$$i"; done | \
+	  sed -n '/\.1[a-z]*$$/p'; \
+	} | while read p; do \
+	  if test -f $$p; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; echo "$$p"; \
+	done | \
+	sed -e 'n;s,.*/,,;p;h;s,.*\.,,;s,^[^1][0-9a-z]*$$,1,;x' \
+	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,' | \
+	sed 'N;N;s,\n, ,g' | { \
+	list=; while read file base inst; do \
+	  if test "$$base" = "$$inst"; then list="$$list $$file"; else \
+	    echo " $(INSTALL_DATA) '$$file' '$(DESTDIR)$(man1dir)/$$inst'"; \
+	    $(INSTALL_DATA) "$$file" "$(DESTDIR)$(man1dir)/$$inst" || exit $$?; \
+	  fi; \
+	done; \
+	for i in $$list; do echo "$$i"; done | $(am__base_list) | \
+	while read files; do \
+	  test -z "$$files" || { \
+	    echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(man1dir)'"; \
+	    $(INSTALL_DATA) $$files "$(DESTDIR)$(man1dir)" || exit $$?; }; \
+	done; }
+
+uninstall-man1:
+	@$(NORMAL_UNINSTALL)
+	@list=''; test -n "$(man1dir)" || exit 0; \
+	files=`{ for i in $$list; do echo "$$i"; done; \
+	l2='$(dist_man_MANS)'; for i in $$l2; do echo "$$i"; done | \
+	  sed -n '/\.1[a-z]*$$/p'; \
+	} | sed -e 's,.*/,,;h;s,.*\.,,;s,^[^1][0-9a-z]*$$,1,;x' \
+	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,'`; \
+	test -z "$$files" || { \
+	  echo " ( cd '$(DESTDIR)$(man1dir)' && rm -f" $$files ")"; \
+	  cd "$(DESTDIR)$(man1dir)" && rm -f $$files; }
 tags: TAGS
 TAGS:
 
@@ -310,6 +401,19 @@ CTAGS:
 
 
 distdir: $(DISTFILES)
+	@list='$(MANS)'; if test -n "$$list"; then \
+	  list=`for p in $$list; do \
+	    if test -f $$p; then d=; else d="$(srcdir)/"; fi; \
+	    if test -f "$$d$$p"; then echo "$$d$$p"; else :; fi; done`; \
+	  if test -n "$$list" && \
+	    grep 'ab help2man is required to generate this page' $$list >/dev/null; then \
+	    echo "error: found man pages containing the \`missing help2man' replacement text:" >&2; \
+	    grep -l 'ab help2man is required to generate this page' $$list | sed 's/^/         /' >&2; \
+	    echo "       to fix them, install help2man, remove and regenerate the man pages;" >&2; \
+	    echo "       typically \`make maintainer-clean' will remove them" >&2; \
+	    exit 1; \
+	  else :; fi; \
+	else :; fi
 	$(am__remove_distdir)
 	test -d "$(distdir)" || mkdir "$(distdir)"
 	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
@@ -458,9 +562,9 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(SCRIPTS)
+all-am: Makefile $(SCRIPTS) $(MANS)
 installdirs:
-	for dir in "$(DESTDIR)$(setupdir)"; do \
+	for dir in "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(man1dir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -510,13 +614,13 @@ info: info-am
 
 info-am:
 
-install-data-am: install-setupSCRIPTS
+install-data-am: install-man install-setupSCRIPTS
 
 install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am:
+install-exec-am: install-dist_sbinSCRIPTS
 
 install-html: install-html-am
 
@@ -526,7 +630,7 @@ install-info: install-info-am
 
 install-info-am:
 
-install-man:
+install-man: install-man1
 
 install-pdf: install-pdf-am
 
@@ -556,7 +660,10 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-setupSCRIPTS
+uninstall-am: uninstall-dist_sbinSCRIPTS uninstall-man \
+	uninstall-setupSCRIPTS
+
+uninstall-man: uninstall-man1
 
 .MAKE: install-am install-strip
 
@@ -565,13 +672,16 @@ uninstall-am: uninstall-setupSCRIPTS
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-setupSCRIPTS install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	install-data-am install-dist_sbinSCRIPTS install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-man1 install-pdf install-pdf-am install-ps \
+	install-ps-am install-setupSCRIPTS install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-setupSCRIPTS
+	pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-dist_sbinSCRIPTS uninstall-man uninstall-man1 \
+	uninstall-setupSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile
