@@ -10,7 +10,7 @@
     ErrorLog  /var/log/apache2/svn_error.log
     CustomLog /var/log/apache2/svn_access.log combined
 
-    DocumentRoot /usr/share/sdu-devsite/html/farm
+    DocumentRoot /usr/share/sdu-site-maindev/html/farm
 
     <Location />
         DAV svn
