@@ -1,11 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 # master-file
 
-domaindir=@pkgvarlibdir@
+domaindir=/var/lib/seccaj
+domainparent=${domaindir%/*}
 
-if [ ! -d $domaindir/applications ]; then
-
+if [ -d $domaindir/applications ]; then
+    echo "Domain seccaj is existed, skipped"
+else
     echo "Create seccaj domain"
     echo "    (Purge $domaindir if necessary)"
 
@@ -14,10 +16,14 @@ if [ ! -d $domaindir/applications ]; then
         mv $domaindir $domaindir.bak
     fi
 
+    install -d -m 2775 -o appserv -g dev $domainparent
+    # domaindir MUST be not existed, before create-domain.
+    # install -d -m 2775 -o appserv -g dev $domaindir
+
     echox sudo -uappserv /opt/java/glassfish/bin/asadmin \
         create-domain \
             --savelogin \
-            --domaindir /node/domains \
+            --domaindir $domainparent \
             --adminport 1090 \
             seccaj
 
@@ -28,7 +34,6 @@ if [ ! -d $domaindir/applications ]; then
     fi
 
     mv -f ~appserv/.asadminpass ~appserv/.seccaj.asadminpass
-
 fi
 
 cd /opt/java/glassfish/glassfish/domains

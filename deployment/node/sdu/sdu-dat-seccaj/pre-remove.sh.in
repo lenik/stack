@@ -2,7 +2,7 @@
 
 # master-file
 
-domaindir=@pkgvarlibdir@
+domaindir=/var/lib/seccaj
 
 echo "Stop seccaj..."
     # initctl stop seccaj
@@ -12,11 +12,15 @@ echo "Remove SysV init job: seccajctl"
     update-rc.d seccajctl remove
 
 echo "Delete seccaj domain from glassfish"
-    seccaj-admin delete-domain seccaj
+    sudo -uappserv /opt/java/glassfish/bin/asadmin delete-domain seccaj
 
 echo Remove $domaindir
     rm -f  ~appserv/.seccaj.asadminpass
     rm -f  /opt/java/glassfish/glassfish/domains/seccaj
-    rm -fR $domaindir
+
+    # rm -fR $domaindir
+
+    # -depth -path '*/domains/*' -prune -o -delete
+    # find $domaindir -depth -path lib/ -prune -o -delete
 
 exit 0
