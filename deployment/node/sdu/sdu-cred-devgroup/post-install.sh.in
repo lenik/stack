@@ -1,2 +1,9 @@
 #!/bin/sh
 # master-file
+
+GROUPADD=groupadd
+
+echo "Add group dev"
+$GROUPADD -r dev
+
+exit 0
