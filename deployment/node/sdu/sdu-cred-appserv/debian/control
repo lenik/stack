@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-cred-appserv
 
 Package: sdu-cred-appserv
 Architecture: all
-Depends:
+Depends: sdu-cred-devgroup
 Description: SDU standard users
