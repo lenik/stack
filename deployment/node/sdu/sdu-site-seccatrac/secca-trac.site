@@ -10,7 +10,7 @@
     CustomLog /var/log/apache2/track_access.log combined
     ErrorLog  /var/log/apache2/track_error.log
 
-    DocumentRoot /usr/share/sdu-devsite/html/farm
+    DocumentRoot /usr/share/sdu-site-maindev/html/farm
 
     Alias /bugzilla3/doc/ /usr/share/doc/bugzilla3-doc/html/
     Alias /bugzilla3/ /usr/share/bugzilla3/web/
