@@ -101,11 +101,11 @@ am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
 am__installdirs = "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(ec2confdir)" \
-	"$(DESTDIR)$(s_instdir)" "$(DESTDIR)$(s_voldir)"
+	"$(DESTDIR)$(substdir)"
 SCRIPTS = $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
-DATA = $(ec2conf_DATA) $(s_inst_DATA) $(s_vol_DATA)
+DATA = $(ec2conf_DATA) $(subst_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -222,23 +222,16 @@ do_subst = sed \
 
 ec2confdir = ${sysconfdir}/ec2
 substdir = ${sysconfdir}/coolcmd/subst
-s_instdir = ${substdir}/inst
-s_voldir = ${substdir}/vol
 ec2conf_DATA = \
-	private_key \
-	cert
+    private_key \
+    cert
 
-s_inst_DATA = \
-	subst/inst/main-dev
-
-s_vol_DATA = \
-	subst/vol/devdata
-
+subst_DATA =
 setup_SCRIPTS = \
-	post-install.sh \
-	pre-remove.sh
+    post-install.sh \
+    pre-remove.sh
 
-EXTRA_DIST = post-install.sh.in pre-remove.sh.in
+EXTRA_DIST = post-install.sh.in pre-remove.sh.in subst
 CLEANFILES = post-install.sh    pre-remove.sh
 all: all-am
 
@@ -331,46 +324,26 @@ uninstall-ec2confDATA:
 	test -n "$$files" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(ec2confdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(ec2confdir)" && rm -f $$files
-install-s_instDATA: $(s_inst_DATA)
+install-substDATA: $(subst_DATA)
 	@$(NORMAL_INSTALL)
-	test -z "$(s_instdir)" || $(MKDIR_P) "$(DESTDIR)$(s_instdir)"
-	@list='$(s_inst_DATA)'; test -n "$(s_instdir)" || list=; \
+	test -z "$(substdir)" || $(MKDIR_P) "$(DESTDIR)$(substdir)"
+	@list='$(subst_DATA)'; test -n "$(substdir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
 	done | $(am__base_list) | \
 	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(s_instdir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(s_instdir)" || exit $$?; \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(substdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(substdir)" || exit $$?; \
 	done
 
-uninstall-s_instDATA:
+uninstall-substDATA:
 	@$(NORMAL_UNINSTALL)
-	@list='$(s_inst_DATA)'; test -n "$(s_instdir)" || list=; \
+	@list='$(subst_DATA)'; test -n "$(substdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(s_instdir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(s_instdir)" && rm -f $$files
-install-s_volDATA: $(s_vol_DATA)
-	@$(NORMAL_INSTALL)
-	test -z "$(s_voldir)" || $(MKDIR_P) "$(DESTDIR)$(s_voldir)"
-	@list='$(s_vol_DATA)'; test -n "$(s_voldir)" || list=; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(s_voldir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(s_voldir)" || exit $$?; \
-	done
-
-uninstall-s_volDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(s_vol_DATA)'; test -n "$(s_voldir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(s_voldir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(s_voldir)" && rm -f $$files
+	echo " ( cd '$(DESTDIR)$(substdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(substdir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -410,6 +383,9 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
+	$(MAKE) $(AM_MAKEFLAGS) \
+	  top_distdir="$(top_distdir)" distdir="$(distdir)" \
+	  dist-hook
 	-test -n "$(am__skip_mode_fix)" \
 	|| find "$(distdir)" -type d ! -perm -755 \
 		-exec chmod u+rwx,go+rx {} \; -o \
@@ -529,7 +505,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(ec2confdir)" "$(DESTDIR)$(s_instdir)" "$(DESTDIR)$(s_voldir)"; do \
+	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(ec2confdir)" "$(DESTDIR)$(substdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -579,9 +555,10 @@ info: info-am
 
 info-am:
 
-install-data-am: install-ec2confDATA install-s_instDATA \
-	install-s_volDATA install-setupSCRIPTS
-
+install-data-am: install-ec2confDATA install-setupSCRIPTS \
+	install-substDATA
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 install-dvi: install-dvi-am
 
 install-dvi-am:
@@ -626,26 +603,26 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-ec2confDATA uninstall-s_instDATA \
-	uninstall-s_volDATA uninstall-setupSCRIPTS
+uninstall-am: uninstall-ec2confDATA uninstall-setupSCRIPTS \
+	uninstall-substDATA
 
-.MAKE: install-am install-strip
+.MAKE: install-am install-data-am install-strip
 
 .PHONY: all all-am am--refresh check check-am clean clean-generic dist \
-	dist-all dist-bzip2 dist-gzip dist-lzma dist-shar dist-tarZ \
-	dist-xz dist-zip distcheck distclean distclean-generic \
-	distcleancheck distdir distuninstallcheck dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-ec2confDATA \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-s_instDATA \
-	install-s_volDATA install-setupSCRIPTS install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-ec2confDATA \
-	uninstall-s_instDATA uninstall-s_volDATA \
-	uninstall-setupSCRIPTS
+	dist-all dist-bzip2 dist-gzip dist-hook dist-lzma dist-shar \
+	dist-tarZ dist-xz dist-zip distcheck distclean \
+	distclean-generic distcleancheck distdir distuninstallcheck \
+	dvi dvi-am html html-am info info-am install install-am \
+	install-data install-data-am install-data-hook install-dvi \
+	install-dvi-am install-ec2confDATA install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-setupSCRIPTS install-strip \
+	install-substDATA installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-ec2confDATA uninstall-setupSCRIPTS \
+	uninstall-substDATA
 
 
 post-install.sh: post-install.sh.in Makefile
@@ -653,6 +630,13 @@ post-install.sh: post-install.sh.in Makefile
 
 pre-remove.sh: pre-remove.sh.in Makefile
 	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
+
+dist-hook:
+	find $(distdir)/subst -type d -name .svn -exec rm -fR {} \; -prune
+
+install-data-hook:
+	cp -RT $(srcdir)/subst $(DESTDIR)$(substdir)
+	find $(DESTDIR)$(substdir) -type d -name .svn -exec rm -fR {} \; -prune
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
