@@ -31,5 +31,6 @@ function die() {
 
     a2enmod  dav
     a2enmod  dav_svn
+    a2enmod  ssl
     a2ensite secca-svn.site
     a2reload
