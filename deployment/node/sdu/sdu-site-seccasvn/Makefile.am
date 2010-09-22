@@ -1,7 +1,6 @@
 
 include libauto/coolauto.am
 
-sysconfdir    = /etc
 a2confdir     = ${sysconfdir}/apache2
 siteconfdir	  = ${a2confdir}/sites-available
 xinetdconfdir = ${sysconfdir}/xinetd.d
