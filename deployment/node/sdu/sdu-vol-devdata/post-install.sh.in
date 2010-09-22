@@ -2,10 +2,10 @@
 
 # master-file
 
+install -d -m 2775 -g dev /mnt/devdata
+
 if ! mount-ebs devdata /mnt/devdata; then
     exit $?
 fi
-
-install -d -m 2775 -g dev /mnt/devdata
 
 exit 0

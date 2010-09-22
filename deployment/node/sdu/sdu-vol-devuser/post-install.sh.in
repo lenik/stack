@@ -1,6 +1,8 @@
 #!/bin/sh
 # master-file
 
+install -d -m 2775 -g dev /mnt/devuser
+
 if ! mount-ebs devuser /mnt/devuser; then
     echo "Failed to mount vol:devuser"
     exit 1

@@ -228,8 +228,7 @@ do_subst = sed \
     -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
-nodedir = /node
-domaindir = ${nodedir}/domains/seccaj
+domaindir = /var/lib/seccaj
 dblibdir = ${domaindir}/lib
 dist_pkgdata_SCRIPTS = \
 	download-latest.sh

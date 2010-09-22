@@ -1,8 +1,7 @@
 
 include libauto/coolauto.am
 
-nodedir = /node
-domaindir = ${nodedir}/domains/seccaj
+domaindir = /var/lib/seccaj
 dblibdir = ${domaindir}/lib
 
 dist_pkgdata_SCRIPTS = \
