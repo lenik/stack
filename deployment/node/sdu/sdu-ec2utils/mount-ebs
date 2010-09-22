@@ -142,7 +142,7 @@ function main() {
     fi
 
     if lineconf -e /etc/fstab $mount_point \
-            "$atdev_req $mount_point ext3 defaults 0 0"; then
+            "$atdev_req $mount_point auto defaults 0 0"; then
         echo "Updated entry in /etc/fstab. "
 
         echo "Unmount $atdev_req"
