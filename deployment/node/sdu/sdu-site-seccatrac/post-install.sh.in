@@ -1,3 +1,30 @@
-#!/bin/sh
+#!/bin/bash
 
 # master-file
+
+function die() {
+    echo "$@" >&2
+    exit 1
+}
+
+# ln /repos/trac -> /mnt/devdata/trac
+
+    echo "Prepare /repos/trac"
+    install -d -m 775 -o root -g dev /repos || die "failed to init /repos"
+    # install -d -m 755 -o scm -g dev /repos/trac
+
+    cd /repos || die
+
+    echo "Create symlink /repos/trac -> vol:devdata/trac"
+    ln -snf /mnt/devdata/trac trac
+
+# configure apache2/sites.available
+
+    echo "Config apache secca-trac.site"
+
+    a2enmod  auth_digest
+    a2enmod  python
+    a2enmod  rewrite
+    a2enmod  ssl
+    a2ensite secca-trac.site
+    a2reload

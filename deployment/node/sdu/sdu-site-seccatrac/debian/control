@@ -9,5 +9,11 @@ Homepage: http://sdu.secca-project.com/sdu-site-seccatrac
 Package: sdu-site-seccatrac
 Architecture: all
 Depends: sdu-site-seccasvn, sdu-vol-devdata,
-    subversion, trac, apache2, sdu-a2utils
+    subversion, trac, apache2, sdu-a2utils, libapache2-mod-python,
+    trac-accountmanager, trac-graphviz
+Recommends: python-docutils,  python-textile,
+    trac-git, trac-spamfilter, trac-bzr, trac-mercurial,
+    trac-email2trac, trac-xmlrpc, trac-wysiwyg,
+    trac-mastertickets, trac-customfieldadmin, trac-bittn, trac-authopenid,
+    trac-wikirename, trac-wikiprint, trac-ja-resource
 Description: Trac support for SECCA Project.

@@ -47,6 +47,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -64,10 +65,10 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/libauto/coolauto.am \
-	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	install-sh missing
+DIST_COMMON = README $(am__configure_deps) $(dist_siteconf_DATA) \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/libauto/coolauto.am $(top_srcdir)/configure AUTHORS \
+	COPYING ChangeLog INSTALL NEWS install-sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -99,10 +100,11 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(setupdir)"
+am__installdirs = "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(siteconfdir)"
 SCRIPTS = $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
+DATA = $(dist_siteconf_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -217,6 +219,11 @@ do_subst = sed \
     -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
+a2confdir = ${sysconfdir}/apache2
+siteconfdir = ${a2confdir}/sites-available
+dist_siteconf_DATA = \
+	secca-trac.site
+
 setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh
@@ -294,6 +301,26 @@ uninstall-setupSCRIPTS:
 	test -n "$$list" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
+install-dist_siteconfDATA: $(dist_siteconf_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(siteconfdir)" || $(MKDIR_P) "$(DESTDIR)$(siteconfdir)"
+	@list='$(dist_siteconf_DATA)'; test -n "$(siteconfdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(siteconfdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(siteconfdir)" || exit $$?; \
+	done
+
+uninstall-dist_siteconfDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_siteconf_DATA)'; test -n "$(siteconfdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(siteconfdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(siteconfdir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -450,9 +477,9 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(SCRIPTS)
+all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(setupdir)"; do \
+	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(siteconfdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -502,7 +529,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-setupSCRIPTS
+install-data-am: install-dist_siteconfDATA install-setupSCRIPTS
 
 install-dvi: install-dvi-am
 
@@ -548,7 +575,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-setupSCRIPTS
+uninstall-am: uninstall-dist_siteconfDATA uninstall-setupSCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -557,13 +584,15 @@ uninstall-am: uninstall-setupSCRIPTS
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-setupSCRIPTS install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	install-data-am install-dist_siteconfDATA install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-setupSCRIPTS install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-setupSCRIPTS
+	pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-dist_siteconfDATA uninstall-setupSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile
