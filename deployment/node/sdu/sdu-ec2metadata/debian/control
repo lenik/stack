@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-ec2metadata
 
 Package: sdu-ec2metadata
 Architecture: all
-Depends: wget
+Depends: curl
 Description: ec2-metadata wrapper
