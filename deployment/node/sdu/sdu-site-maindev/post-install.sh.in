@@ -2,7 +2,8 @@
 
 # master-file
 
-# 1, Checkout http://svn.secca-project.com/public/trunk/ to /node/sites/devsite
+# 1, Checkout http://svn.secca-project.com/public/trunk/ to
+#       PKGDATA/html
 #    cuz devsite will always run on the main-dev, so we can safely checkout
 #    from the local repository.
 #
@@ -20,7 +21,7 @@ if [ ! -d $local_repo ]; then
     exit 1
 fi
 
-devsite_dir=/node/sites/devsite
+devsite_dir=@pkgdatadir@/html
     echo "Initialize $devsite_dir"
     if ! install -d -m 2775 -o root -g dev $devsite_dir; then
         echo "    failed"

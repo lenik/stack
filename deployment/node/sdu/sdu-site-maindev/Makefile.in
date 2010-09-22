@@ -235,8 +235,8 @@ setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh
 
-EXTRA_DIST = post-install.sh.in pre-remove.sh.in
-CLEANFILES = post-install.sh    pre-remove.sh
+EXTRA_DIST = post-install.sh.in pre-remove.sh.in secca-devsite.site.in
+CLEANFILES = post-install.sh    pre-remove.sh	 secca-devsite.site
 all: all-am
 
 .SUFFIXES:
@@ -607,6 +607,9 @@ post-install.sh: post-install.sh.in Makefile
 
 pre-remove.sh: pre-remove.sh.in Makefile
 	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
+
+secca-devsite.site: secca-devsite.site.in Makefile
+	$(do_subst) <$(srcdir)/secca-devsite.site.in >$@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
