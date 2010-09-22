@@ -2,4 +2,13 @@
 # master-file
 
 # Pre-Remove script should always exit 0 to force the state.
+
+origf=/usr/bin/ec2-cmd
+origdir="${origf%/*}"
+
+if [ -f $origf-orig ]; then
+    echo "Restore $origf"
+    mv -f $origf-orig $origf
+fi
+
 exit 0
