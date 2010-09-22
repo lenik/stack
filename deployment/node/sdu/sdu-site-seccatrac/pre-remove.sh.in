@@ -1,3 +1,10 @@
 #!/bin/sh
 
 # master-file
+
+echo "Unconfig apache secca-trac.site"
+
+    a2dissite secca-trac.site
+    a2reload
+
+exit 0
