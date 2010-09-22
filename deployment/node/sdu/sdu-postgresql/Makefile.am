@@ -5,13 +5,11 @@ include libauto/coolauto.am
 pglibdir = /usr/lib/postgresql/8.4
 
 dist_sbin_SCRIPTS = \
-    hba \
-	pg-create-shortcuts
+    hba
 
 setup_SCRIPTS = \
-	post-install.sh \
-	pre-remove.sh \
-	rm-pglibsyms
+    post-install.sh \
+    pre-remove.sh
 
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in
 CLEANFILES = post-install.sh    pre-remove.sh
