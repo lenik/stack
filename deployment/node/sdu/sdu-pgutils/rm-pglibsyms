@@ -1,0 +1,26 @@
+#!/bin/bash
+
+libbins=(
+        clusterdb
+        createdb
+        createlang
+        createuser
+        dropdb
+        droplang
+        dropuser
+        initdb
+        pg_controldata
+        pg_ctl
+        pg_dump
+        pg_dumpall
+        pg_resetxlog
+        pg_restore
+        postgres
+        postmaster
+        psql
+        reindexdb
+        vacuumdb
+        )
+for a in "${libbins[@]}"; do
+    rm $a
+done

@@ -1,5 +1,8 @@
 include libauto/coolauto.am
 
+dist_sbin_SCRIPTS = \
+	pg-create-shortcuts \
+	rm-pglibsyms
 
 setup_SCRIPTS = \
 	post-install.sh \
