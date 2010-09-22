@@ -2,14 +2,15 @@
 include libauto/coolauto.am
 
 dist_sbin_SCRIPTS = \
-	nextdev \
-	ec2user-init \
-	ec2-update-subst
+    nextdev \
+    mount-ebs \
+    ec2user-init \
+    ec2-update-subst
 
 setup_SCRIPTS = \
-	ec2-cmd \
-	post-install.sh \
-	pre-remove.sh
+    ec2-cmd \
+    post-install.sh \
+    pre-remove.sh
 
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in
 CLEANFILES = post-install.sh    pre-remove.sh
