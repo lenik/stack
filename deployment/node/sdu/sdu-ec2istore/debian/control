@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-ec2istore
 
 Package: sdu-ec2istore
 Architecture: all
-Depends: grep
+Depends: grep, file, xjl-coolutils
 Description: Prepare and utilize istore

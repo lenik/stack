@@ -1,2 +1,67 @@
-#!/bin/sh
+#!/bin/bash
 # master-file
+
+# intance store mount.
+istore_dev=/dev/sda2
+istore_mnt=/mnt/istore
+if [ ! -b $istore_dev ]; then
+    echo "istore device $istore_dev isn't existed, skipped"
+elif ! file -s $istore_dev | grep -q ext[34]; then
+    echo "fstype of $istore_dev isn't ext3/4, skipped"
+else
+    echo "Config instance-store"
+
+    echo "    Checking previous mount"
+    read dev mnt _ < <(grep "$istore_dev" /etc/fstab)
+    if [ "$dev" != "$istore_dev" ] || [ "$mnt" != /mnt ]; then
+        echo "    Not an ec2-instance, or istore is already moved. "
+
+    else
+        echo "    Unmount $istore_mnt"
+        umount $istore_dev
+
+        if [ ! -d $istore_mnt ]; then
+            if ! mkdir -p $istore_mnt; then
+                echo "    Failed to create directory $istore_mnt"
+                exit 1
+            fi
+        fi
+
+        echo "    Config entry $istore_dev in /etc/fstab"
+        if ! lineconf /etc/fstab $istore_dev \
+                "$istore_dev $istore_mnt auto defaults 0 0"; then
+            echo "        Failed"
+            exit 1
+        fi
+
+        echo "    Mount $istore_mnt"
+        mount $istore_mnt
+    fi
+fi
+
+istore_swap=$istore_mnt/swap
+mkdir -p $istore_swap
+
+function istore_swap() {
+    local dir="$1"
+    local iname="$2"
+    if [ ! -h $dir ]; then
+        echo "Istore-swap: $dir"
+        if mv $dir $istore_swap/$iname; then
+            echo "    swapped out. "
+            parent=${dir%/*}
+            base=${dir##*/}
+            cd $parent
+            ln -snf $istore_swap/$iname $base
+        else
+            echo "    swapout failed, leave the state"
+        fi
+    fi
+}
+
+istore_swap /var/log   var_log
+istore_swap /var/lib   var_lib
+istore_swap /var/cache var_cache
+istore_swap /usr/local var_local
+
+exit 0
