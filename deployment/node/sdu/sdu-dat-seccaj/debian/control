@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-data-seccajeb
 
 Package: sdu-dat-seccaj
 Architecture: all
-Depends: ${misc:Depends}, sdu-opt-glassfish3, sdu-nodeskel, sdu-users
+Depends: sdu-opt-glassfish3, sdu-cred-appserv
 Description: SECCA-Web application server domain

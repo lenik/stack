@@ -2,7 +2,7 @@
 
 # master-file
 
-domaindir=/node/domains/seccaj
+domaindir=@pkgvarlibdir@
 
 if [ ! -d $domaindir/applications ]; then
 
