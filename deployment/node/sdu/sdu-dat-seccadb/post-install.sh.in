@@ -2,15 +2,17 @@
 
 # master-file
 
-if [ -d /node/data/seccadb/base ]; then
+dbdir=/mnt/devdata/seccadb
+
+if [ -d $dbdir/base ]; then
 	echo "seccadb cluster is existed, reuse it. "
 else
     echo "Create seccadb cluster"
 
-    install -d -opostgres -gdev /node/data/seccadb
+    install -d -opostgres -gdev $dbdir
 
     sudo -upostgres pg_createcluster \
-        -d /node/data/seccadb \
+        -d $dbdir \
         -e utf-8 \
         -p 1063 \
         --start \

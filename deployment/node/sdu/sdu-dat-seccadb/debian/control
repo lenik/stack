@@ -2,11 +2,11 @@ Source: sdu-dat-seccadb
 Section: database
 Priority: optional
 Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
-Build-Depends: debhelper (>= 7), autotools-dev
+Build-Depends: debhelper (>= 7), autotools-dev, sdu-pgutils
 Standards-Version: 3.8.3
 Homepage: http://sdu.secca-project.com/sdu-data-seccadb
 
 Package: sdu-dat-seccadb
 Architecture: all
-Depends: ${misc:Depends}, sdu-postgresql, sdu-nodeskel, sdu-users
+Depends: sdu-postgresql, sdu-cred-devgroup, sdu-vol-devdata
 Description: SECCA-DB (PostgreSQL) SDU
