@@ -1,2 +1,22 @@
 #!/bin/sh
 # master-file
+
+# ec2-cmd alt.
+echo "Checking ec2-cmd overrides"
+    origf=/usr/bin/ec2-cmd
+    if [ ! -f "$origf" ]; then
+        echo "    ec2-api-tools is required. "
+        exit 1
+    fi
+
+    origdir="${origf%/*}"
+
+    if grep -q Amazon.com $origf; then
+        echo "    Override $origf"
+        cd "$origdir"
+        mv -f $origf $origf-orig
+    fi
+
+    cp -f @DESTDIR@@setupdir@/ec2-cmd-alt $origf
+
+exit 0
