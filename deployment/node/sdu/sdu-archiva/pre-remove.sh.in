@@ -2,11 +2,14 @@
 
 # master-file
 
-domaindir=/node/domains/seccaj
-force=
+domaindir=/var/lib/seccaj
 
-if [ "$1" = "-f" ]; then
-    force=1
+# By default, don't remove resources like jdbc/users and javamails,
+# which may be used by other packages as well.
+ALL=
+
+if [ "$1" = "-a" ]; then
+    ALL=1
 fi
 
 echo "Undeploy archiva"
@@ -17,7 +20,7 @@ echo "Unconfig resources on seccaj"
 
     seccaj-admin delete-jdbc-resource jdbc/archiva
 
-    if [ "$force" = 1 ]; then
+    if [ "$ALL" = 1 ]; then
         seccaj-admin delete-jdbc-resource jdbc/users
 
         seccaj-admin delete-javamail-resource mail/Session
@@ -25,4 +28,5 @@ echo "Unconfig resources on seccaj"
         seccaj-admin list-jvm-options | grep -- -Dappserver\. |
             xargs -l seccaj-admin delete-jvm-options
     fi
+
 exit 0

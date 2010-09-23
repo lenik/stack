@@ -8,5 +8,6 @@ Homepage: http://sdu.secca-project.com/sdu-archiva
 
 Package: sdu-archiva
 Architecture: all
-Depends: ${misc:Depends}, xjl-coolwget, sdu-seccajx
+Depends: maven2, xjl-coolwget, sdu-seccajx, sdu-cred-appserv
+Recommends: sdu-archiva-users
 Description: Archiva maven repo support.

@@ -47,6 +47,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -99,10 +100,11 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(setupdir)"
+am__installdirs = "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(siteconfdir)"
 SCRIPTS = $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
+DATA = $(siteconf_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -225,6 +227,10 @@ do_subst = sed \
     -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
+siteconfdir = ${sysconfdir}/apache2/sites-conf
+siteconf_DATA = \
+	archiva.rules
+
 setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh
@@ -302,6 +308,26 @@ uninstall-setupSCRIPTS:
 	test -n "$$list" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
+install-siteconfDATA: $(siteconf_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(siteconfdir)" || $(MKDIR_P) "$(DESTDIR)$(siteconfdir)"
+	@list='$(siteconf_DATA)'; test -n "$(siteconfdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(siteconfdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(siteconfdir)" || exit $$?; \
+	done
+
+uninstall-siteconfDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(siteconf_DATA)'; test -n "$(siteconfdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(siteconfdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(siteconfdir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -458,9 +484,9 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(SCRIPTS)
+all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(setupdir)"; do \
+	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(siteconfdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -510,7 +536,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-setupSCRIPTS
+install-data-am: install-setupSCRIPTS install-siteconfDATA
 
 install-dvi: install-dvi-am
 
@@ -556,7 +582,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-setupSCRIPTS
+uninstall-am: uninstall-setupSCRIPTS uninstall-siteconfDATA
 
 .MAKE: install-am install-strip
 
@@ -568,10 +594,12 @@ uninstall-am: uninstall-setupSCRIPTS
 	install-data-am install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
 	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-setupSCRIPTS install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	install-ps install-ps-am install-setupSCRIPTS \
+	install-siteconfDATA install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-setupSCRIPTS
+	pdf-am ps ps-am uninstall uninstall-am uninstall-setupSCRIPTS \
+	uninstall-siteconfDATA
 
 
 post-install.sh: post-install.sh.in Makefile

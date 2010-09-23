@@ -1,6 +1,9 @@
-
 include libauto/coolauto.am
 
+siteconfdir = ${sysconfdir}/apache2/sites-conf
+
+siteconf_DATA = \
+	archiva.rules
 
 setup_SCRIPTS = \
 	post-install.sh \
