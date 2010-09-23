@@ -24,22 +24,29 @@ else
 fi
 
 devsite_dir=@pkgdatadir@/html
-    echo "Initialize $devsite_dir"
-    if ! install -d -m 2775 -o root -g dev $devsite_dir; then
-        echo "    failed"
-        exit 1
-    fi
 
-    echo "Checkout $url to $devsite_dir"
+    if [ -d $devsite_dir ]; then
+        echo "Already checked out: $devsite_dir"
+        svn up $devsite_dir
+    else
+        echo "Initialize $devsite_dir"
+        if ! install -d -m 2775 -o root -g dev $devsite_dir; then
+            echo "    failed"
+            exit 1
+        fi
 
-    # IGNORE_EXTERNALS=--ignore-externals
-    IGNORE_EXTERNALS=
-    if ! svn-002 co $IGNORE_EXTERNALS $url $devsite_dir; then
-        echo "checkout failed. "
-        exit 1
+        echo "Checkout $url to $devsite_dir"
+
+        # IGNORE_EXTERNALS=--ignore-externals
+        IGNORE_EXTERNALS=
+        if ! svn-002 co $IGNORE_EXTERNALS $url $devsite_dir; then
+            echo "checkout failed. "
+            exit 1
+        fi
     fi
 
 echo "Config apache2"
 
+    a2enmod  userdir
     a2ensite secca-devsite.site
     a2reload

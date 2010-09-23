@@ -8,17 +8,16 @@ echo "Unconfig apache2"
     a2reload
 
 
-local_repo=/mnt/devdata/svnrepo
-url=file://$local_repo/public/trunk
-devsite_dir=/node/sites/devsite
-
+devsite_dir=@pkgdatadir@/html
 if [ -d $devsite_dir ]; then
 
-    echo "Remove $devsite_dir"
-
-        # XXX - check if anything changed, prevent from deletion.
-        rm -fr "$devsite_dir"
-
+    dirty=`svn st $devsite_dir | wc -l`
+    if [ $dirty != 0 ]; then
+        echo "Something uncommit in $devsite_dir, no remove"
+    else
+        echo "Remove $devsite_dir"
+        rm -fR "$devsite_dir"
+    fi
 fi
 
 exit 0

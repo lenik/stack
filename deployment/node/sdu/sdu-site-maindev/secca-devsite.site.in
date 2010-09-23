@@ -8,7 +8,6 @@
     DocumentRoot @pkgdatadir@/html
 
     UserDir public_html
-    AliasMatch ^/~([^/]+)/(.*)                 /home/$1/public_html/$2
     AliasMatch ^/home/([^/]+)/public_html/(.*) /home/$1/public_html/$2
     <Directory "/home/">
         Options Indexes MultiViews FollowSymLinks
