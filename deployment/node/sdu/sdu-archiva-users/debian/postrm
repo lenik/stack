@@ -1,5 +1,5 @@
 #!/bin/sh
-# postrm script for sdu-archiva-devusers
+# postrm script for sdu-archiva-users
 #
 # see: dh_installdeb(1)
 

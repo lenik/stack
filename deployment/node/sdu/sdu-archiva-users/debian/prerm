@@ -1,5 +1,5 @@
 #!/bin/sh
-# prerm script for sdu-archiva-devusers
+# prerm script for sdu-archiva-users
 #
 # see: dh_installdeb(1)
 
@@ -19,7 +19,7 @@ set -e
 
 case "$1" in
     remove|upgrade|deconfigure)
-        /usr/share/setup/sdu-archiva-devusers/pre-remove.sh
+        /usr/share/setup/sdu-archiva-users/pre-remove.sh
     ;;
 
     failed-upgrade)

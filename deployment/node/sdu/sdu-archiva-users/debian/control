@@ -1,12 +1,12 @@
-Source: sdu-archiva-devusers
+Source: sdu-archiva-users
 Section: devel
 Priority: extra
 Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
 Build-Depends: debhelper (>= 7), autotools-dev
 Standards-Version: 3.8.3
-Homepage: http://sdu.secca-project.com/sdu-archiva-devusers
+Homepage: http://sdu.secca-project.com/sdu-archiva-users
 
-Package: sdu-archiva-devusers
+Package: sdu-archiva-users
 Architecture: all
 Depends: sdu-archiva, sdu-cred-devusr
 Description: Add dev users to Apache Archiva
