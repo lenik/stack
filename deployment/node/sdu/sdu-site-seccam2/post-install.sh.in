@@ -1,3 +1,46 @@
-#!/bin/sh
-
+#!/bin/bash
 # master-file
+
+# 1, ~appserv/.m2/archiva-security-setting.xml (sdu-archiva)
+#       foreach user in dev:
+#           xmlrpc add user
+# 2, /var/lib/m2/
+#       mirror.releases     (-m2mirrors)
+#       mirror.snapshots    (-m2mirrors)
+#       secca.releases -> vol:devdata/m2repo/secca-releases
+#       secca.snapshots
+# 3, xmlrpc -> archiva
+#       add repository secca.releases
+#       add repository secca.snapshots
+# 4, add archiva rewrite rules
+
+umask 002
+
+echo "Prepare secca-releases in devdata"
+
+    mkdir -p /mnt/devdata/m2repo/secca-releases
+    cd /repos
+    ln -snf /mnt/devdata/m2repo/secca-releases .
+
+    mkdir -p /var/lib/m2
+    cd /var/lib/m2
+    install -d -m 2775 -o appserv -g dev secca.snapshots
+    ln -snf /mnt/devdata/m2repo/secca-releases secca.releases
+
+echo "Configure Archiva"
+
+    # xmlrpc...
+
+    rulesf=/etc/apache2/sites-conf/archiva.rules
+
+    #Alias /releases     /archiva/repository/releases
+    #Alias /snapshots    /archiva/repository/snapshots
+    lineconf -tm "Add archiva rule for /releases" \
+        $rulesf @Rule::SECCA::Release \
+        'RewriteRule ^/releases/(.*)  /archiva/repository/releases/$1 [PT]'
+
+    lineconf -tm "Add archiva rule for /snapshots" \
+        $rulesf @Rule::SECCA::Snapshots \
+        'RewriteRule ^/snapshots/(.*) /archiva/repository/snapshots/$1 [PT]'
+
+exit 0

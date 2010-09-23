@@ -8,5 +8,6 @@ Homepage: http://sdc.secca-project.com/sdu-site-seccam2
 
 Package: sdu-site-seccam2
 Architecture: all
-Depends: ${misc:Depends}, sdu-archiva
+Depends: sdu-archiva, sdu-vol-devdata, sdu-cred-appserv
+Recommends: sdu-archiva-users
 Description: Stack maven2 repository over Archiva.
