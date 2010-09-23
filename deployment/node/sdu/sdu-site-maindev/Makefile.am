@@ -1,7 +1,6 @@
 
 include libauto/coolauto.am
 
-sysconfdir  = /etc
 siteconfdir = ${sysconfdir}/apache2/sites-available
 
 siteconf_DATA = \

@@ -7,4 +7,26 @@
 
     DocumentRoot @pkgdatadir@/html
 
+    UserDir public_html
+    AliasMatch ^/~([^/]+)/(.*)                 /home/$1/public_html/$2
+    AliasMatch ^/home/([^/]+)/public_html/(.*) /home/$1/public_html/$2
+    <Directory "/home/">
+        Options Indexes MultiViews FollowSymLinks
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    Alias /doc/ /usr/share/doc/
+    <Directory "/usr/share/doc/">
+        Options Indexes MultiViews FollowSymLinks
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+        AuthType Basic
+        AuthName "User Documents"
+        AuthUserFile /etc/authdb/res.dev.htpasswd
+        Require valid-user
+    </Directory>
+
 </VirtualHost>

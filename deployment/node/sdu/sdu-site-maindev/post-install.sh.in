@@ -13,12 +13,14 @@
 #    Switch between either is easy cuz the UUID is always the same.
 
 local_repo=/mnt/devdata/svnrepo
-url=file://$local_repo/public/trunk/www
-
-if [ ! -d $local_repo ]; then
-    echo "Repository $local_repo doesn't exist. "
-    echo "Is this a main-dev instance? "
-    exit 1
+if [ -d $local_repo ]; then
+    echo "Found vol:devdata/svnrepo, use it. "
+    url=file://$local_repo/public/trunk/www
+else
+    echo "Not an main-dev instance, checkout site from svn remote"
+    # url=http://svn.secca-project.com/public/trunk/www
+    # url=svn://svn.secca-project.com:1030/public/trunk/www
+    url=svn+ssh://svn.secca-project.com/public/trunk/www
 fi
 
 devsite_dir=@pkgdatadir@/html
