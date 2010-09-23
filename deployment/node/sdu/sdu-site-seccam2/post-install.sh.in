@@ -33,6 +33,10 @@ echo "Configure Archiva"
 
     rulesf=/etc/apache2/sites-conf/archiva.rules
 
+    lineconf -tm "Add server alias" \
+        $rulesf @Alias::SECCA \
+        'ServerAlias m2.secca-project.com'
+
     #Alias /releases     /archiva/repository/releases
     #Alias /snapshots    /archiva/repository/snapshots
     lineconf -tm "Add archiva rule for /releases" \
