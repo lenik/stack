@@ -15,6 +15,7 @@ for d in "$@"; do
 
     mkdir -p $d
     svn add --depth empty $d/
+    svn propset svn:ignore '*.tar.gz' $d/
 
     cd $d
 
