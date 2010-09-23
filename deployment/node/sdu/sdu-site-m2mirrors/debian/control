@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-site-m2mirrors
 
 Package: sdu-site-m2mirrors
 Architecture: all
-Depends: sdu-archiva, sdu-cred-appserv
+Depends: sdu-archiva, sdu-cred-appserv, sdu-archiva-users
 Description: Provide M2 mirror repositories service

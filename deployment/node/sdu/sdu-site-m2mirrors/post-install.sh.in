@@ -1,2 +1,34 @@
 #!/bin/sh
 # master-file
+
+# 1, ~appserv/.m2/archiva-security-setting.xml (sdu-archiva)
+#       foreach user in dev:
+#           xmlrpc add user
+# 2, /var/lib/m2/
+#       mirror.releases
+#       mirror.snapshots
+# 3, xmlrpc -> archiva
+#       add repository mirror.releases
+#       add repository mirror.snapshots
+# 4, add archiva rewrite rules
+
+umask 002
+
+echo "Prepare mirror repository dirs"
+
+    mkdir -p /var/lib/m2
+    cd /var/lib/m2
+    install -d -m 2775 -o appserv -g dev mirror.releases
+    install -d -m 2775 -o appserv -g dev mirror.snapshots
+
+echo "Configure Archiva"
+
+    # xmlrpc...
+
+    rulesf=/etc/apache2/sites-conf/archiva.rules
+
+    lineconf -tm "Add archiva rule for /internal" \
+        $rulesf @Rule::SECCA::Internal \
+        'RewriteRule ^/internal/(.*)  /archiva/repository/mirror-releases/$1 [PT]'
+
+exit 0
