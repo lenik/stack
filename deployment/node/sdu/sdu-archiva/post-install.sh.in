@@ -2,6 +2,20 @@
 
 # master-file
 
+echo "Config apache to forward archiva"
+
+    a2enmod proxy
+    a2enmod proxy_http
+    a2enmod rewrite
+    a2ensite sdu-archiva.site
+    a2reload
+
+m2secf=/home/appserv/.m2/security.properties
+echo "Reset permission on m2 security file"
+    chown appserv:dev $m2secf
+
+echo "Prepare WAR"
+
 domaindir=/var/lib/seccaj
 index=http://archiva.apache.org/download.html
 
@@ -41,12 +55,6 @@ echo "Config resources on seccaj"
 
     seccaj-admin create-jvm-options -Dappserver.home=$domaindir
     seccaj-admin create-jvm-options -Dappserver.base=$domaindir
-
-echo "Config apache to forward archiva"
-
-    a2enmod proxy
-    a2enmod rewrite
-    a2ensite sdu-archiva.site
 
 echo "Install war $war_file..."
 
