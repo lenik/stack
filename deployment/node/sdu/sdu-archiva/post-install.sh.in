@@ -2,7 +2,7 @@
 
 # master-file
 
-domaindir=/node/domains/seccaj
+domaindir=/var/lib/seccaj
 index=http://archiva.apache.org/download.html
 
 echo "Parse index-1: $index"

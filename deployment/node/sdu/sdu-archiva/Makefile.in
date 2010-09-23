@@ -100,11 +100,12 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(siteconfdir)"
+am__installdirs = "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(homedir)" \
+	"$(DESTDIR)$(siteconfdir)" "$(DESTDIR)$(sitesdir)"
 SCRIPTS = $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
-DATA = $(siteconf_DATA)
+DATA = $(home_DATA) $(siteconf_DATA) $(sites_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -227,15 +228,21 @@ do_subst = sed \
     -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
+sitesdir = ${sysconfdir}/apache2/sites-available
 siteconfdir = ${sysconfdir}/apache2/sites-conf
+homedir = /home/appserv
+sites_DATA = \
+	sdu-archiva.site
+
 siteconf_DATA = \
 	archiva.rules
 
+home_DATA =
 setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh
 
-EXTRA_DIST = post-install.sh.in pre-remove.sh.in
+EXTRA_DIST = post-install.sh.in pre-remove.sh.in owner
 CLEANFILES = post-install.sh    pre-remove.sh
 all: all-am
 
@@ -308,6 +315,26 @@ uninstall-setupSCRIPTS:
 	test -n "$$list" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
+install-homeDATA: $(home_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(homedir)" || $(MKDIR_P) "$(DESTDIR)$(homedir)"
+	@list='$(home_DATA)'; test -n "$(homedir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(homedir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(homedir)" || exit $$?; \
+	done
+
+uninstall-homeDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(home_DATA)'; test -n "$(homedir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(homedir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(homedir)" && rm -f $$files
 install-siteconfDATA: $(siteconf_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(siteconfdir)" || $(MKDIR_P) "$(DESTDIR)$(siteconfdir)"
@@ -328,6 +355,26 @@ uninstall-siteconfDATA:
 	test -n "$$files" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(siteconfdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(siteconfdir)" && rm -f $$files
+install-sitesDATA: $(sites_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(sitesdir)" || $(MKDIR_P) "$(DESTDIR)$(sitesdir)"
+	@list='$(sites_DATA)'; test -n "$(sitesdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(sitesdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(sitesdir)" || exit $$?; \
+	done
+
+uninstall-sitesDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(sites_DATA)'; test -n "$(sitesdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(sitesdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(sitesdir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -367,6 +414,9 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
+	$(MAKE) $(AM_MAKEFLAGS) \
+	  top_distdir="$(top_distdir)" distdir="$(distdir)" \
+	  dist-hook
 	-test -n "$(am__skip_mode_fix)" \
 	|| find "$(distdir)" -type d ! -perm -755 \
 		-exec chmod u+rwx,go+rx {} \; -o \
@@ -486,7 +536,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(siteconfdir)"; do \
+	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(homedir)" "$(DESTDIR)$(siteconfdir)" "$(DESTDIR)$(sitesdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -536,8 +586,10 @@ info: info-am
 
 info-am:
 
-install-data-am: install-setupSCRIPTS install-siteconfDATA
-
+install-data-am: install-homeDATA install-setupSCRIPTS \
+	install-siteconfDATA install-sitesDATA
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 install-dvi: install-dvi-am
 
 install-dvi-am:
@@ -582,25 +634,34 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-setupSCRIPTS uninstall-siteconfDATA
+uninstall-am: uninstall-homeDATA uninstall-setupSCRIPTS \
+	uninstall-siteconfDATA uninstall-sitesDATA
 
-.MAKE: install-am install-strip
+.MAKE: install-am install-data-am install-strip
 
 .PHONY: all all-am am--refresh check check-am clean clean-generic dist \
-	dist-all dist-bzip2 dist-gzip dist-lzma dist-shar dist-tarZ \
-	dist-xz dist-zip distcheck distclean distclean-generic \
-	distcleancheck distdir distuninstallcheck dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-setupSCRIPTS \
-	install-siteconfDATA install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-setupSCRIPTS \
-	uninstall-siteconfDATA
+	dist-all dist-bzip2 dist-gzip dist-hook dist-lzma dist-shar \
+	dist-tarZ dist-xz dist-zip distcheck distclean \
+	distclean-generic distcleancheck distdir distuninstallcheck \
+	dvi dvi-am html html-am info info-am install install-am \
+	install-data install-data-am install-data-hook install-dvi \
+	install-dvi-am install-exec install-exec-am install-homeDATA \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-setupSCRIPTS install-siteconfDATA \
+	install-sitesDATA install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic pdf pdf-am ps ps-am uninstall \
+	uninstall-am uninstall-homeDATA uninstall-setupSCRIPTS \
+	uninstall-siteconfDATA uninstall-sitesDATA
 
+
+dist-hook:
+	find $(distdir)/owner -type d -name .svn -exec rm -fR {} \; -prune
+
+install-data-hook:
+	cp -RT $(srcdir)/owner $(DESTDIR)$(homedir)
+	find $(DESTDIR)$(homedir) -type d -name .svn -exec rm -fR {} \; -prune
 
 post-install.sh: post-install.sh.in Makefile
 	$(do_subst) <$(srcdir)/post-install.sh.in >$@
