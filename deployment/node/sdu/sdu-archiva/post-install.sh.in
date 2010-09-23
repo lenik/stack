@@ -42,6 +42,12 @@ echo "Config resources on seccaj"
     seccaj-admin create-jvm-options -Dappserver.home=$domaindir
     seccaj-admin create-jvm-options -Dappserver.base=$domaindir
 
+echo "Config apache to forward archiva"
+
+    a2enmod proxy
+    a2enmod rewrite
+    a2ensite sdu-archiva.site
+
 echo "Install war $war_file..."
 
     seccaj-admin deploy \
