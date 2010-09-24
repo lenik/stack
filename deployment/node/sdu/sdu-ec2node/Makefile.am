@@ -1,4 +1,3 @@
-
 include libauto/coolauto.am
 
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in
