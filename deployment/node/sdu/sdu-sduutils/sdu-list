@@ -2,13 +2,14 @@
     . shlib-import cliboot
 
     RCSID='$Id: bash.sh 1731 2010-09-19 20:34:56Z lenik $'
-    short_opts="i:l:sdhqv"
-    long_opts="include,layout,svg,display,help,quiet,verbose,version"
+    short_opts="i:x:l:sdg:hqv"
+    long_opts="include,exclude,layout,svg,display,program,help,quiet,verbose,version"
 
     format=
     layout=fdp
     display=
     includes=()
+    excludes=()
 
     color_1=green
     color_2=blue
@@ -29,9 +30,11 @@ function help() {
     echo
     echo "Options: "
     echo "    -i, --include=PREFIX    select only specific packages"
+    echo "    -x, --exclude=NAME      exclude specific packages"
     echo "    -l, --layout=LAYOUT     specify the layout method"
     echo "    -s, --svg               output SVG graphics"
     echo "    -d, --display           open the graphics with ImageMagick"
+    echo "    -g, --program=NAME      open with specific viewer"
     echo "    -q, --quiet             repeat to get less info"
     echo "    -v, --verbose           repeat to get more info"
     echo "    -h, --help              show this help page"
@@ -42,12 +45,16 @@ function setopt() {
     case "$1" in
         -i|--include)
             includes[${#includes[@]}]="$2-";;
+        -x|--exclude)
+            excludes[${#excludes[@]}]="$2";;
         -l|--layout)
             layout="$2";;
         -s|--svg)
             format=svg;;
         -d|--display)
             display=display;;
+        -g|--program)
+            display="$2";;
         -h|--help)
             help; exit;;
         -q|--quiet)
@@ -71,12 +78,26 @@ function main() {
             aptitude search "^$inc"
         done
     else
-	pkgs=
+        pkgs=
         for inc in "${includes[@]}"; do
-            pkgs="$pkgs `apt-cache pkgnames $inc`"
+            list0=`apt-cache pkgnames $inc`
+            list=
+            for n in $list0; do
+                excl=
+                for x in "${excludes[@]}"; do
+                    if [ "$n" = "$x" ]; then
+                        excl=1
+                        break
+                    fi
+                done
+                if [ -z "$excl" ]; then
+                    list="$list $n"
+                fi
+            done
+            pkgs="$pkgs $list"
         done
-	tmp=`tempfile`
-	apt-cache -o APT::Cache::GivenOnly=1 dotty $pkgs >$tmp
+        tmp=`tempfile`
+        apt-cache -o APT::Cache::GivenOnly=1 dotty $pkgs >$tmp
 
         index=0
         for inc in "${includes[@]}"; do
@@ -89,12 +110,12 @@ function main() {
         $layout -T$format <$tmp >$tmp.1
         mv -f $tmp.1 $tmp
 
-	if [ -n "$display" ]; then
-		$display $tmp
-	else
-		cat $tmp
-	fi
-	rm -f $tmp
+        if [ -n "$display" ]; then
+            $display $tmp
+        else
+            cat $tmp
+        fi
+        rm -f $tmp
     fi
 }
 
