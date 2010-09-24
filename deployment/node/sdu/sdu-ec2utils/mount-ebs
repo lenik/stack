@@ -149,6 +149,15 @@ function main() {
         umount $atdev_req
     fi
 
+    read dev_ text < <(file -s $atdev_req)
+    if [ "$text" = "data" ]; then
+        echo "Initialize new data volume with ext4 fs"
+        if ! mkfs.ext4 $atdev_req; then
+            echo "  Failed to mkfs.ext4: $?"
+            exit 1
+        fi
+    fi
+
     echo "Mount $atdev_req on $mount_point"
     mount $mount_point
 
