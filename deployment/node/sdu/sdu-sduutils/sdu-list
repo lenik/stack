@@ -2,11 +2,18 @@
     . shlib-import cliboot
 
     RCSID='$Id: bash.sh 1731 2010-09-19 20:34:56Z lenik $'
-    short_opts="sdhqv"
-    long_opts="svg,display,help,quiet,verbose,version"
+    short_opts="i:l:sdhqv"
+    long_opts="include,layout,svg,display,help,quiet,verbose,version"
 
     format=
+    layout=fdp
     display=
+    includes=()
+
+    color_1=green
+    color_2=blue
+    color_3=red
+    color_4=orange
 
 function version() {
     parse_id "$RCSID"
@@ -21,6 +28,8 @@ function help() {
     echo "    $0 [OPTION] [--] ..."
     echo
     echo "Options: "
+    echo "    -i, --include=PREFIX    select only specific packages"
+    echo "    -l, --layout=LAYOUT     specify the layout method"
     echo "    -s, --svg               output SVG graphics"
     echo "    -d, --display           open the graphics with ImageMagick"
     echo "    -q, --quiet             repeat to get less info"
@@ -31,6 +40,10 @@ function help() {
 
 function setopt() {
     case "$1" in
+        -i|--include)
+            includes[${#includes[@]}]="$2-";;
+        -l|--layout)
+            layout="$2";;
         -s|--svg)
             format=svg;;
         -d|--display)
@@ -49,14 +62,33 @@ function setopt() {
 }
 
 function main() {
+    if [ ${#includes[@]} = 0 ]; then
+        includes=(sdu-)
+    fi
+
     if [ -z "$format" ]; then
-	aptitude search '^sdu-'
+        for inc in "${includes[@]}"; do
+            aptitude search "^$inc"
+        done
     else
-	pkgs=`apt-cache pkgnames sdu-`
+	pkgs=
+        for inc in "${includes[@]}"; do
+            pkgs="$pkgs `apt-cache pkgnames $inc`"
+        done
 	tmp=`tempfile`
-	apt-cache -o APT::Cache::GivenOnly=1 dotty $pkgs \
-	    | boxfx sdu- style=bold color=green \
-	    | fdp -T$format >$tmp
+	apt-cache -o APT::Cache::GivenOnly=1 dotty $pkgs >$tmp
+
+        index=0
+        for inc in "${includes[@]}"; do
+            style_color="color_$((++index))"
+
+            boxfx $inc style=bold color=${!style_color} <$tmp >$tmp.1
+            mv -f $tmp.1 $tmp
+        done
+
+        $layout -T$format <$tmp >$tmp.1
+        mv -f $tmp.1 $tmp
+
 	if [ -n "$display" ]; then
 		$display $tmp
 	else
