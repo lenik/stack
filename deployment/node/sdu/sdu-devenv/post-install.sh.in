@@ -1,2 +1,6 @@
 #!/bin/sh
 # master-file
+
+@cronhourlydir@/update-secca-env
+
+exit 0

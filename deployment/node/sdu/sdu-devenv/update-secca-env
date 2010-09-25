@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# secca domain shortcuts
+
+    if maindev=`getaddrbyname main-dev.secca-project.com`; then
+        lineconf -tm "Update secca domain" \
+            /etc/hosts @host::secca "$maindev secca"
+        lineconf -tm "Update *.secca domain" \
+            /etc/hosts @host::secca-a "$maindev *.secca"
+    fi
+
+exit 0

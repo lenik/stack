@@ -1,5 +1,9 @@
 include libauto/coolauto.am
 
+cronhourlydir = ${sysconfdir}/cron.hourly
+
+dist_cronhourly_SCRIPTS = \
+	update-secca-env
 
 setup_SCRIPTS = \
 	post-install.sh \

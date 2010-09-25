@@ -64,10 +64,10 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/libauto/coolauto.am \
-	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	install-sh missing
+DIST_COMMON = README $(am__configure_deps) $(dist_cronhourly_SCRIPTS) \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/libauto/coolauto.am $(top_srcdir)/configure AUTHORS \
+	COPYING ChangeLog INSTALL NEWS install-sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -99,8 +99,8 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(setupdir)"
-SCRIPTS = $(setup_SCRIPTS)
+am__installdirs = "$(DESTDIR)$(cronhourlydir)" "$(DESTDIR)$(setupdir)"
+SCRIPTS = $(dist_cronhourly_SCRIPTS) $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -227,6 +227,10 @@ do_subst = sed \
     -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
+cronhourlydir = ${sysconfdir}/cron.hourly
+dist_cronhourly_SCRIPTS = \
+	update-secca-env
+
 setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh
@@ -270,6 +274,40 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
+install-dist_cronhourlySCRIPTS: $(dist_cronhourly_SCRIPTS)
+	@$(NORMAL_INSTALL)
+	test -z "$(cronhourlydir)" || $(MKDIR_P) "$(DESTDIR)$(cronhourlydir)"
+	@list='$(dist_cronhourly_SCRIPTS)'; test -n "$(cronhourlydir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
+	done | \
+	sed -e 'p;s,.*/,,;n' \
+	    -e 'h;s|.*|.|' \
+	    -e 'p;x;s,.*/,,;$(transform)' | sed 'N;N;N;s,\n, ,g' | \
+	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1; } \
+	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
+	    if ($$2 == $$4) { files[d] = files[d] " " $$1; \
+	      if (++n[d] == $(am__install_max)) { \
+		print "f", d, files[d]; n[d] = 0; files[d] = "" } } \
+	    else { print "f", d "/" $$4, $$1 } } \
+	  END { for (d in files) print "f", d, files[d] }' | \
+	while read type dir files; do \
+	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
+	     test -z "$$files" || { \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(cronhourlydir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(cronhourlydir)$$dir" || exit $$?; \
+	     } \
+	; done
+
+uninstall-dist_cronhourlySCRIPTS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_cronhourly_SCRIPTS)'; test -n "$(cronhourlydir)" || exit 0; \
+	files=`for p in $$list; do echo "$$p"; done | \
+	       sed -e 's,.*/,,;$(transform)'`; \
+	test -n "$$list" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(cronhourlydir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(cronhourlydir)" && rm -f $$files
 install-setupSCRIPTS: $(setup_SCRIPTS)
 	@$(NORMAL_INSTALL)
 	test -z "$(setupdir)" || $(MKDIR_P) "$(DESTDIR)$(setupdir)"
@@ -462,7 +500,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS)
 installdirs:
-	for dir in "$(DESTDIR)$(setupdir)"; do \
+	for dir in "$(DESTDIR)$(cronhourlydir)" "$(DESTDIR)$(setupdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -512,7 +550,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-setupSCRIPTS
+install-data-am: install-dist_cronhourlySCRIPTS install-setupSCRIPTS
 
 install-dvi: install-dvi-am
 
@@ -558,7 +596,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-setupSCRIPTS
+uninstall-am: uninstall-dist_cronhourlySCRIPTS uninstall-setupSCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -567,13 +605,15 @@ uninstall-am: uninstall-setupSCRIPTS
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-setupSCRIPTS install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	install-data-am install-dist_cronhourlySCRIPTS install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-setupSCRIPTS install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-setupSCRIPTS
+	pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-dist_cronhourlySCRIPTS uninstall-setupSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile
