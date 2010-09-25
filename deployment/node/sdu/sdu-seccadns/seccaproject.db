@@ -46,7 +46,7 @@ forum                   CNAME   s-dev
 list                    CNAME   s-dev
 m2                      CNAME   aut-dev
 repo                    CNAME   s-dev
-sql                     CNAME   sql-dev
+sql                     CNAME   aut-dev
 svn                     CNAME   main-dev
 webapp                  CNAME   main-app
 track                   CNAME   s-dev
