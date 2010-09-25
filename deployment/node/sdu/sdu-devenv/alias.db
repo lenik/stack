@@ -15,5 +15,4 @@ $TTL            12H
                         NS      ns1.secca-project.com.
                         NS      ns2.secca-project.com.
 
-                        CNAME   main-dev.secca-project.com.
 *                       CNAME   main-dev.secca-project.com.

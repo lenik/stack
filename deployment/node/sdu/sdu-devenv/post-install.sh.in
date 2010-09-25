@@ -3,8 +3,15 @@
 
 # @cronhourlydir@/update-secca-env
 
-lineconf -tm "Setup secca domain" \
-    @bindconfdir@/named.conf @domain::secca-alias \
-    'zone "secca" { type master; file "@bindconfdir@/secca/alias.db"; };'
+#lineconf -tm "Setup secca domain" \
+#    @bindconfdir@/named.conf @domain::secca-alias \
+#    'zone "secca" { type master; file "@bindconfdir@/secca/alias.db"; };'
+
+# NOTICE:
+#   1, set hostname to set the domain will only effective until next reboot
+#   2, set /etc/hostname is not recommended, since the host name is touched
+lineconf -m "Set domain to secca-project.com" \
+    @sysconfdir@/resolv.conf '^domain' \
+    "domain secca-project.com"
 
 exit 0
