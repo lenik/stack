@@ -228,6 +228,7 @@ do_subst = sed \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
 cronhourlydir = ${sysconfdir}/cron.hourly
+do_subst2 = $(do_subst) -e 's,[@]cronhourlydir[@],$(cronhourlydir),g'
 dist_cronhourly_SCRIPTS = \
 	update-secca-env
 
@@ -617,10 +618,10 @@ uninstall-am: uninstall-dist_cronhourlySCRIPTS uninstall-setupSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile
-	$(do_subst) <$(srcdir)/post-install.sh.in >$@
+	$(do_subst2) <$(srcdir)/post-install.sh.in >$@
 
 pre-remove.sh: pre-remove.sh.in Makefile
-	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
+	$(do_subst2) <$(srcdir)/pre-remove.sh.in >$@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
