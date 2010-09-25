@@ -47,6 +47,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -64,10 +65,11 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(dist_cronhourly_SCRIPTS) \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/libauto/coolauto.am $(top_srcdir)/configure AUTHORS \
-	COPYING ChangeLog INSTALL NEWS install-sh missing
+DIST_COMMON = README $(am__configure_deps) $(dist_bindsecca_DATA) \
+	$(dist_cronhourly_SCRIPTS) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in $(srcdir)/libauto/coolauto.am \
+	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
+	install-sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -99,10 +101,12 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(cronhourlydir)" "$(DESTDIR)$(setupdir)"
+am__installdirs = "$(DESTDIR)$(cronhourlydir)" "$(DESTDIR)$(setupdir)" \
+	"$(DESTDIR)$(bindseccadir)"
 SCRIPTS = $(dist_cronhourly_SCRIPTS) $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
+DATA = $(dist_bindsecca_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -227,14 +231,23 @@ do_subst = sed \
     -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
+bindconfdir = ${sysconfdir}/bind
+bindseccadir = ${bindconfdir}/secca
 cronhourlydir = ${sysconfdir}/cron.hourly
-do_subst2 = $(do_subst) -e 's,[@]cronhourlydir[@],$(cronhourlydir),g'
-dist_cronhourly_SCRIPTS = \
-	update-secca-env
+do_subst2 = $(do_subst) \
+	-e 's,[@]bindconfdir[@],$(bindconfdir),g' \
+	-e 's,[@]cronhourlydir[@],$(cronhourlydir),g'
+
+
+# update-secca-env is obsolete, using local bind instead.
+dist_cronhourly_SCRIPTS =
+dist_bindsecca_DATA = \
+	alias.db
 
 setup_SCRIPTS = \
 	post-install.sh \
-	pre-remove.sh
+	pre-remove.sh \
+	update-secca-env
 
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in
 CLEANFILES = post-install.sh    pre-remove.sh
@@ -343,6 +356,26 @@ uninstall-setupSCRIPTS:
 	test -n "$$list" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
+install-dist_bindseccaDATA: $(dist_bindsecca_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(bindseccadir)" || $(MKDIR_P) "$(DESTDIR)$(bindseccadir)"
+	@list='$(dist_bindsecca_DATA)'; test -n "$(bindseccadir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(bindseccadir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(bindseccadir)" || exit $$?; \
+	done
+
+uninstall-dist_bindseccaDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_bindsecca_DATA)'; test -n "$(bindseccadir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(bindseccadir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(bindseccadir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -499,9 +532,9 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(SCRIPTS)
+all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(cronhourlydir)" "$(DESTDIR)$(setupdir)"; do \
+	for dir in "$(DESTDIR)$(cronhourlydir)" "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(bindseccadir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -551,7 +584,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-dist_cronhourlySCRIPTS install-setupSCRIPTS
+install-data-am: install-dist_bindseccaDATA \
+	install-dist_cronhourlySCRIPTS install-setupSCRIPTS
 
 install-dvi: install-dvi-am
 
@@ -597,7 +631,8 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-dist_cronhourlySCRIPTS uninstall-setupSCRIPTS
+uninstall-am: uninstall-dist_bindseccaDATA \
+	uninstall-dist_cronhourlySCRIPTS uninstall-setupSCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -606,15 +641,16 @@ uninstall-am: uninstall-dist_cronhourlySCRIPTS uninstall-setupSCRIPTS
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dist_cronhourlySCRIPTS install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-setupSCRIPTS install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-dist_cronhourlySCRIPTS uninstall-setupSCRIPTS
+	install-data-am install-dist_bindseccaDATA \
+	install-dist_cronhourlySCRIPTS install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-setupSCRIPTS \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-dist_bindseccaDATA uninstall-dist_cronhourlySCRIPTS \
+	uninstall-setupSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile

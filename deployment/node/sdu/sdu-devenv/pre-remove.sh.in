@@ -2,4 +2,7 @@
 # master-file
 
 # Pre-Remove script should always exit 0 to force the state.
+lineconf -tm "Remove secca alias domain" \
+    @bindconfdir@/named.conf @domain::secca-alias
+
 exit 0
