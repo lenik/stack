@@ -5,6 +5,6 @@
 
 lineconf -tm "Setup secca domain" \
     @bindconfdir@/named.conf @domain::secca-alias \
-    'zone "secca" { type master; file "@bindconfdir@/secca/seccaalias.db"; };'
+    'zone "secca" { type master; file "@bindconfdir@/secca/alias.db"; };'
 
 exit 0
