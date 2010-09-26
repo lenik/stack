@@ -1,12 +1,22 @@
-#!/bin/sh
+#!/bin/bash
 # master-file
 
 # lineconf -tm "Remove secca alias domain" \
 #     @bindconfdir@/named.conf @domain::secca-alias
 
 lineconf -km "Reset the domain in resolv.conf" \
-    @sysconfdir@/resolv.conf '^domain'
+    @sysconfdir@/resolv.conf '^domain secca-project.com'
 
+echo -n "Reset domainname... "
+if ! grep -q 'secca-project.com' /etc/hostname; then
+    echo "skipped"
+else
+    read host </etc/hostname
+    newval=${host%.secca-project.com}
+    echo $newval >/etc/hostname
+    # flush cache.
+    hostname $newval
+    echo "done"
+fi
 
-# Pre-Remove script should always exit 0 to force the state.
 exit 0

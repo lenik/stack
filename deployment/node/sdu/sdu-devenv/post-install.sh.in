@@ -9,9 +9,23 @@
 
 # NOTICE:
 #   1, set hostname to set the domain will only effective until next reboot
-#   2, set /etc/hostname is not recommended, since the host name is touched
-lineconf -m "Set domain to secca-project.com" \
-    @sysconfdir@/resolv.conf '^domain' \
-    "domain secca-project.com"
+#   2, the resolv.conf is auto changed by other means
+#   3, set /etc/hostname is not recommended, but there's no alternative way
+
+# lineconf -m "Set domain to secca-project.com" \
+#    @sysconfdir@/resolv.conf '^domain' \
+#    "domain secca-project.com"
+
+echo -n "Set domainname to secca-project.com... "
+if grep -q 'secca-project.com' /etc/hostname; then
+    echo "skipped"
+else
+    read host </etc/hostname
+    newval=$host.secca-project.com
+    echo $newval >/etc/hostname
+    # flush cache.
+    hostname $newval
+    echo "done"
+fi
 
 exit 0

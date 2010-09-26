@@ -8,6 +8,6 @@ Homepage: http://sdu.secca-project.com/sdu-devenv
 
 Package: sdu-devenv
 Architecture: all
-Depends: xjl-netutils, bind9
+Depends: xjl-netutils
 Recommends: sdu-sduutils
 Description: SECCA developer environment
