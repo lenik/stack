@@ -2,7 +2,7 @@
     ServerName seccaproject.com
     ServerAlias *.seccaproject.com
     ServerAlias *.secca
-    ServerAlias *.secca.secca-project.com
+    ServerAlias *.secca.rad.vapeak.com
     ServerAdmin admin@secca-project.com
 
     LogLevel warn
@@ -10,14 +10,23 @@
     CustomLog /var/log/apache2/alias_access.log combined
 
     RewriteEngine On
+
     RewriteCond %{HTTP_HOST} ^(.*)seccaproject.com$
     RewriteRule ^(.*)$ http://%1secca-project.com$1 [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(.*)secca$
+    RewriteRule ^(.*)$ http://%1secca-project.com$1 [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(.*)secca.rad.vapeak.com
+    RewriteRule ^(.*)$ http://%1secca-project.com$1 [R=301,L]
+
 </VirtualHost>
 
 <VirtualHost *:443>
     ServerName seccaproject.com
     ServerAlias *.seccaproject.com
-    ServerAlias *.secca.secca-project.com
+    ServerAlias *.secca
+    ServerAlias *.secca.rad.vapeak.com
     ServerAdmin admin@secca-project.com
 
     SSLEngine on
@@ -30,6 +39,14 @@
     CustomLog /var/log/apache2/alias_access.log combined
 
     RewriteEngine On
+
     RewriteCond %{HTTP_HOST} ^(.*)seccaproject.com$
     RewriteRule ^(.*)$ https://%1secca-project.com$1 [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(.*)secca$
+    RewriteRule ^(.*)$ http://%1secca-project.com$1 [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(.*)secca.rad.vapeak.com
+    RewriteRule ^(.*)$ http://%1secca-project.com$1 [R=301,L]
+
 </VirtualHost>
