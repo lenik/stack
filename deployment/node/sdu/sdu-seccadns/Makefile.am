@@ -6,11 +6,16 @@ do_subst2 = $(do_subst) \
 
 bindconfdir = ${sysconfdir}/bind
 seccadbdir  = ${bindconfdir}/secca
+sitesdir	= ${sysconfdir}/apache2/sites-available
 
-seccadb_DATA = \
+dist_seccadb_DATA = \
 	named.conf \
 	seccaproject.db \
+	rad.db \
 	bia.db
+
+dist_sites_DATA = \
+	secca-aliases.site
 
 setup_SCRIPTS = \
 	post-install.sh \

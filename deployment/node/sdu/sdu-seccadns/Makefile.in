@@ -65,10 +65,10 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/libauto/coolauto.am \
-	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	install-sh missing
+DIST_COMMON = README $(am__configure_deps) $(dist_seccadb_DATA) \
+	$(dist_sites_DATA) $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/libauto/coolauto.am $(top_srcdir)/configure AUTHORS \
+	COPYING ChangeLog INSTALL NEWS install-sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -100,11 +100,12 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(seccadbdir)"
+am__installdirs = "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(seccadbdir)" \
+	"$(DESTDIR)$(sitesdir)"
 SCRIPTS = $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
-DATA = $(seccadb_DATA)
+DATA = $(dist_seccadb_DATA) $(dist_sites_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -233,10 +234,15 @@ do_subst2 = $(do_subst) \
 
 bindconfdir = ${sysconfdir}/bind
 seccadbdir = ${bindconfdir}/secca
-seccadb_DATA = \
+sitesdir = ${sysconfdir}/apache2/sites-available
+dist_seccadb_DATA = \
 	named.conf \
 	seccaproject.db \
+	rad.db \
 	bia.db
+
+dist_sites_DATA = \
+	secca-aliases.site
 
 setup_SCRIPTS = \
 	post-install.sh \
@@ -317,10 +323,10 @@ uninstall-setupSCRIPTS:
 	test -n "$$list" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
-install-seccadbDATA: $(seccadb_DATA)
+install-dist_seccadbDATA: $(dist_seccadb_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(seccadbdir)" || $(MKDIR_P) "$(DESTDIR)$(seccadbdir)"
-	@list='$(seccadb_DATA)'; test -n "$(seccadbdir)" || list=; \
+	@list='$(dist_seccadb_DATA)'; test -n "$(seccadbdir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
@@ -330,13 +336,33 @@ install-seccadbDATA: $(seccadb_DATA)
 	  $(INSTALL_DATA) $$files "$(DESTDIR)$(seccadbdir)" || exit $$?; \
 	done
 
-uninstall-seccadbDATA:
+uninstall-dist_seccadbDATA:
 	@$(NORMAL_UNINSTALL)
-	@list='$(seccadb_DATA)'; test -n "$(seccadbdir)" || list=; \
+	@list='$(dist_seccadb_DATA)'; test -n "$(seccadbdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	test -n "$$files" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(seccadbdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(seccadbdir)" && rm -f $$files
+install-dist_sitesDATA: $(dist_sites_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(sitesdir)" || $(MKDIR_P) "$(DESTDIR)$(sitesdir)"
+	@list='$(dist_sites_DATA)'; test -n "$(sitesdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(sitesdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(sitesdir)" || exit $$?; \
+	done
+
+uninstall-dist_sitesDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_sites_DATA)'; test -n "$(sitesdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(sitesdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(sitesdir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -495,7 +521,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(seccadbdir)"; do \
+	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(seccadbdir)" "$(DESTDIR)$(sitesdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -545,7 +571,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-seccadbDATA install-setupSCRIPTS
+install-data-am: install-dist_seccadbDATA install-dist_sitesDATA \
+	install-setupSCRIPTS
 
 install-dvi: install-dvi-am
 
@@ -591,7 +618,8 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-seccadbDATA uninstall-setupSCRIPTS
+uninstall-am: uninstall-dist_seccadbDATA uninstall-dist_sitesDATA \
+	uninstall-setupSCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -600,14 +628,15 @@ uninstall-am: uninstall-seccadbDATA uninstall-setupSCRIPTS
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
+	install-data-am install-dist_seccadbDATA \
+	install-dist_sitesDATA install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
 	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-seccadbDATA \
-	install-setupSCRIPTS install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
+	install-ps install-ps-am install-setupSCRIPTS install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-seccadbDATA \
+	pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-dist_seccadbDATA uninstall-dist_sitesDATA \
 	uninstall-setupSCRIPTS
 
 

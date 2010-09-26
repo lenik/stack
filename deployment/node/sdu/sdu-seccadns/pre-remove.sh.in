@@ -14,4 +14,9 @@ echo "Unconfig bind9"
 
 echo "Reload bind9"
     /etc/init.d/bind9 reload
+
+echo "Unload aliases site"
+    a2dissite secca-aliases.site
+    a2reload
+
 exit 0

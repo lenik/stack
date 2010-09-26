@@ -19,3 +19,11 @@ echo "Update substs on seccaproject.db"
 
 echo "Reload bind9"
     /etc/init.d/bind9 reload
+
+echo "Load aliases site"
+    a2enmod ssl
+    a2enmod rewrite
+    a2ensite secca-aliases.site
+    a2reload
+
+exit 0
