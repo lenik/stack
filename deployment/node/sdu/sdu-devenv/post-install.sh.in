@@ -3,29 +3,59 @@
 
 # @cronhourlydir@/update-secca-env
 
-#lineconf -tm "Setup secca domain" \
-#    @bindconfdir@/named.conf @domain::secca-alias \
-#    'zone "secca" { type master; file "@bindconfdir@/secca/alias.db"; };'
-
 # NOTICE:
 #   1, set hostname to set the domain will only effective until next reboot
-#   2, the resolv.conf is auto changed by other means
-#   3, set /etc/hostname is not recommended, but there's no alternative way
+#   2, the resolv.conf is auto changed by other means: NetworkManager/system-..
+#   3, set /etc/hostname is not recommended, and all clients must be defined.
 
-# lineconf -m "Set domain to secca-project.com" \
-#    @sysconfdir@/resolv.conf '^domain' \
-#    "domain secca-project.com"
+method=2
 
-echo -n "Set domainname to secca-project.com... "
-if grep -q 'secca-project.com' /etc/hostname; then
-    echo "skipped"
-else
-    read host </etc/hostname
-    newval=$host.secca-project.com
-    echo $newval >/etc/hostname
-    # flush cache.
-    hostname $newval
-    echo "done"
-fi
+case $method in
+1)
+    lineconf -tm "Setup secca domain" \
+        @bindconfdir@/named.conf @domain::secca-alias \
+        'zone "secca" { type master; file "@bindconfdir@/secca/alias.db"; };'
+    ;;
+
+2)
+    lineconf -m "Set domain to secca-project.com" \
+        @sysconfdir@/resolv.conf '^domain' \
+        "domain secca-project.com"
+
+    sconndir=@sysconfdir@/NetworkManager/system-connections
+    if [ -d $sconndir ]; then
+        for conn in $sconndir/*; do
+            echo "  Config onnection $conn... "
+            if grep -q "secca-project.com" "$conn"; then
+                if dns_search=`grepl dns-search= "$conn"`; then
+                    echo "dns-search updated"
+                    sedit -k "$conn"
+                if ipv4_ln=`grepl '[ipv4]' "$conn"`; then
+                    sedit head -$ipv4_ln
+                    echo "dns-search added"
+                else
+                    echo "Ignored"
+                fi
+            else
+                echo "no change"
+            fi
+        done
+    fi
+    ;;
+
+3)
+    echo -n "Set domainname to secca-project.com... "
+        if grep -q 'secca-project.com' /etc/hostname; then
+            echo "skipped"
+        else
+            read host </etc/hostname
+            newval=$host.secca-project.com
+            echo $newval >/etc/hostname
+            # flush cache.
+            hostname $newval
+            echo "done"
+        fi
+    ;;
+esac
 
 exit 0
