@@ -1,0 +1,18 @@
+digraph "secca-dev-dns" {
+
+    node [ shape=box ];
+
+    "SECCA-DNS" -> "Root";
+    "User-Router" -> "SECCA-DNS";
+    "Win32-TCPIP" -> "User-Router";
+    "WK-DNS" -> "Root";
+    "Local-DNS" -> "SECCA-DNS";
+    "Local-DNS" -> "Root";
+    "-localbind" -> "Local-DNS";
+    "-wkforwarder" -> "Local-DNS";
+    "v-localdns-provider" -> "-localbind";
+    "v-localdns-provider" -> "-wkforwarder";
+    "SDU-devenv" -> "v-localdns-provider";
+    "SDC-devclient" -> "SDU-devenv";
+
+}

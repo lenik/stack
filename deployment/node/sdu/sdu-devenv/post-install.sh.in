@@ -8,7 +8,14 @@
 #   2, the resolv.conf is auto changed by other means: NetworkManager/system-..
 #   3, set /etc/hostname is not recommended, and all clients must be defined.
 
-method=2
+# Current:
+#   rad.vapeak.com domain for workgroup and,
+#       *.secca.RVC -> services
+#       *.RVC       -> work station -> 127.0.0.1
+#       internal
+
+method=3
+domain=rad.vapeak.com
 
 case $method in
 1)
@@ -18,20 +25,20 @@ case $method in
     ;;
 
 2)
-    lineconf -m "Set domain to secca-project.com" \
+    lineconf -m "Set domain to $domain" \
         @sysconfdir@/resolv.conf '^domain' \
-        "domain secca-project.com"
+        "domain $domain"
 
     sconndir=@sysconfdir@/NetworkManager/system-connections
     if [ -d $sconndir ]; then
         for conn in $sconndir/*; do
             echo "  Config onnection $conn... "
-            if grep -q "secca-project.com" "$conn"; then
+            if grep -qF $domain "$conn"; then
                 if dns_search=`grepl dns-search= "$conn"`; then
+                    # TODO sedit -k "$conn"
                     echo "dns-search updated"
-                    sedit -k "$conn"
-                if ipv4_ln=`grepl '[ipv4]' "$conn"`; then
-                    sedit head -$ipv4_ln
+                elif ipv4_ln=`grepl '[ipv4]' "$conn"`; then
+                    # TODO sedit head -$ipv4_ln
                     echo "dns-search added"
                 else
                     echo "Ignored"
@@ -44,12 +51,12 @@ case $method in
     ;;
 
 3)
-    echo -n "Set domainname to secca-project.com... "
-        if grep -q 'secca-project.com' /etc/hostname; then
+    echo -n "Set domainname to $domain... "
+        if grep -qF $domain /etc/hostname; then
             echo "skipped"
         else
             read host </etc/hostname
-            newval=$host.secca-project.com
+            newval=$host.$domain
             echo $newval >/etc/hostname
             # flush cache.
             hostname $newval
