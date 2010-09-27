@@ -16,6 +16,7 @@ $TTL            1H
                         NS      ns2.secca-project.com.
 
 secca                   CNAME   secca-project.com.
+s                       CNAME   secca-project.com.
 
 ; lenik                   CNAME   lenik.dyndns.org.
 
