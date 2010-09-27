@@ -1,0 +1,42 @@
+<VirtualHost *:80>
+    ServerName  my.secca-project.com
+    ServerAdmin admin@secca-project.com
+
+    LogLevel warn
+    CustomLog /var/log/apache2/sql_access.log combined
+    ErrorLog  /var/log/apache2/sql_error.log
+
+    DocumentRoot /usr/share/sdu-site-maindev/html/farm
+
+    Alias /admin /usr/share/phpmyadmin
+    <Directory /usr/share/phpmyadmin/>
+        Options FollowSymLinks
+        DirectoryIndex index.php
+
+        Order allow,deny
+        Allow from all
+
+        <IfModule mod_php5.c>
+            php_flag magic_quotes_gpc Off
+            php_flag track_vars On
+            php_flag register_globals Off
+            php_value include_path .
+        </IfModule>
+
+        AuthType Digest
+        AuthName "sql"
+        AuthUserFile /etc/authdb/sql.dev.htpasswd
+        Require valid-user
+    </Directory>
+
+    # Disallow web access to directories that don't need it
+    <Directory /usr/share/phpmyadmin/libraries>
+        Order Deny,Allow
+        Deny from All
+    </Directory>
+    <Directory /usr/share/phpmyadmin/setup/lib>
+        Order Deny,Allow
+        Deny from All
+    </Directory>
+
+</VirtualHost>
