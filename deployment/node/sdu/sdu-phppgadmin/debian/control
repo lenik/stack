@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-phppgadmin
 
 Package: sdu-phppgadmin
 Architecture: all
-Depends: ${misc:Depends}, phppgadmin
+Depends: apache2, php5, phppgadmin, sdu-site-maindev
 Description: PHP PostgreSQL Admin SDU

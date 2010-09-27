@@ -1,3 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 
 # master-file
+
+echo "Remove the global phppgadmin.conf"
+    rm -f /etc/apache2/conf.d/phppgadmin.conf
+
+echo "Load secca-pgsql.site"
+    a2enmod auth_digest
+    a2enmod php5
+    a2ensite secca-pgsql.site
+    a2reload
+
+exit 0

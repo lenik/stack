@@ -1,5 +1,8 @@
 #!/bin/sh
 
 # master-file
+echo "Unload secca-pgsql.site"
+    a2dissite secca-pgsql.site
+    a2reload
 
 exit 0

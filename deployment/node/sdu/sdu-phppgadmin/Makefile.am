@@ -1,8 +1,6 @@
-
 include libauto/coolauto.am
 
-
-pkgdata_SCRIPTS = \
+setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh
 
