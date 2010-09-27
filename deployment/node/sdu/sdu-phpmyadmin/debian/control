@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-phpmyadmin
 
 Package: sdu-phpmyadmin
 Architecture: all
-Depends: mysql, php
+Depends: apache2, php5, phpmyadmin, sdu-site-maindev
 Description: Access mysql over http.
