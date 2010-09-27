@@ -1,0 +1,32 @@
+<VirtualHost *:80>
+    ServerName  pg.secca-project.com
+    ServerAdmin admin@secca-project.com
+
+    LogLevel warn
+    CustomLog /var/log/apache2/sql_access.log combined
+    ErrorLog  /var/log/apache2/sql_error.log
+
+    DocumentRoot /usr/share/sdu-site-maindev/html/farm
+
+    Alias /admin /usr/share/phppgadmin
+    <Directory /usr/share/phppgadmin/>
+        DirectoryIndex index.php
+
+        Options +FollowSymLinks
+        AllowOverride None
+
+        Order allow,deny
+        Allow from all
+
+        <IfModule mod_php5.c>
+            php_flag magic_quotes_gpc Off
+            php_flag track_vars On
+            php_value include_path .
+        </IfModule>
+
+        AuthType Digest
+        AuthName "sql"
+        AuthUserFile /etc/authdb/sql.dev.htpasswd
+        Require valid-user
+    </Directory>
+</VirtualHost>
