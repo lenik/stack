@@ -37,9 +37,7 @@ mail                    CNAME   ghs
 node                    CNAME   main-dev
 rproxy                  CNAME   main-dev
 
-1.app                   CNAME   main-app
 blogs                   CNAME   s-dev
-*.blogs                 CNAME   blogs
 ci                      CNAME   aut-dev
 econ                    CNAME   main-dev
 forum                   CNAME   s-dev
@@ -53,3 +51,8 @@ track                   CNAME   s-dev
 webmin                  CNAME   main-dev
 www                     CNAME   main-dev
 xmpp                    CNAME   s-dev
+
+1.app                   CNAME   main-app
+*.blogs                 CNAME   blogs
+pg                      CNAME   sql
+my                      CNAME   sql

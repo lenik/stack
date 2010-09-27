@@ -1,6 +1,14 @@
-
 include libauto/coolauto.am
 
+svnrootdir = /repos/svn
+
+svnroot_DATA =
+
+install-data-hook:
+	cd $(DESTDIR)$(svnrootdir); \
+	for a in api artifacts public sandbox ssp stack test users; do \
+		ln -snf /mnt/devdata/svnrepo/$$a .; \
+	done
 
 setup_SCRIPTS = \
 	post-install.sh \

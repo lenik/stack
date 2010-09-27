@@ -27,6 +27,10 @@ echo "Configure Archiva"
 
     rulesf=/etc/apache2/sites-conf/archiva.rules
 
+    lineconf -tm "Add server alias" \
+        $rulesf @Alias::SECCA \
+        'ServerAlias m2.secca-project.com'
+
     lineconf -tm "Add archiva rule for /internal" \
         $rulesf @Rule::SECCA::Internal \
         'RewriteRule ^/internal/(.*)  /archiva/repository/mirror-releases/$1 [PT]'

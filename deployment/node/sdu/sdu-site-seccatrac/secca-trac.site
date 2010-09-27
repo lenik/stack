@@ -47,16 +47,16 @@
         Allow from all
     </Directory>
 
-    Alias /trac/ /repos/trac/chrome/htdocs/common/
-    #AliasMatch ^/projects/[^/]*/chrome/(.*)$ /repos/trac/chrome/htdocs/common/$1
+    Alias /trac/ /mnt/devdata/trac/chrome/htdocs/common/
+    #AliasMatch ^/projects/[^/]*/chrome/(.*)$ /mnt/devdata/trac/chrome/htdocs/common/$1
 
     <Location /projects>
         SetHandler mod_python
         PythonInterpreter main_interpreter
         PythonHandler trac.web.modpython_frontend
-        PythonOption TracUriRoot /projects
-        PythonOption TracEnvParentDir /repos/trac
-        PythonOption TracEnvIndexTemplate /repos/trac/index.html
+        PythonOption TracUriRoot          /projects
+        PythonOption TracEnvParentDir     /mnt/devdata/trac
+        PythonOption TracEnvIndexTemplate /mnt/devdata/trac/index.html
     </Location>
 
     #LoadModule auth_digest_module /usr/lib/apache2/modules/mod_auth_digest.so

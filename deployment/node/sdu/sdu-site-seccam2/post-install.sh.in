@@ -27,9 +27,7 @@ echo "Prepare secca-releases in devdata"
     install -d -m 2775 -o appserv -g dev secca.snapshots
     ln -snf /mnt/devdata/m2repo/secca-releases secca.releases
 
-echo "Configure Archiva"
-
-    # xmlrpc...
+echo "Configure Apache forwarder"
 
     rulesf=/etc/apache2/sites-conf/archiva.rules
 
@@ -41,10 +39,14 @@ echo "Configure Archiva"
     #Alias /snapshots    /archiva/repository/snapshots
     lineconf -tm "Add archiva rule for /releases" \
         $rulesf @Rule::SECCA::Release \
-        'RewriteRule ^/releases/(.*)  /archiva/repository/releases/$1 [PT]'
+        'RewriteRule ^/releases/(.*)  /archiva/repository/secca.releases/$1 [PT]'
 
     lineconf -tm "Add archiva rule for /snapshots" \
         $rulesf @Rule::SECCA::Snapshots \
-        'RewriteRule ^/snapshots/(.*) /archiva/repository/snapshots/$1 [PT]'
+        'RewriteRule ^/snapshots/(.*) /archiva/repository/secca.snapshots/$1 [PT]'
+
+echo "Setup repositories"
+
+    # xmlrpc...
 
 exit 0
