@@ -1,0 +1,12 @@
+Source: sdu-cred-a2ssl
+Section: web
+Priority: extra
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://sdu.secca-project.com/sdu-cred-a2ssl
+
+Package: sdu-cred-a2ssl
+Architecture: all
+Depends:
+Description: Define the key-pair used in SSL conversation.
