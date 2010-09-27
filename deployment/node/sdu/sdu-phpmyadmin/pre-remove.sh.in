@@ -1,0 +1,9 @@
+#!/bin/sh
+# master-file
+
+echo "Unload secca-mysql.site"
+    a2dissite secca-mysql.site
+    a2reload
+
+# Pre-Remove script should always exit 0 to force the state.
+exit 0
