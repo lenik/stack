@@ -78,9 +78,6 @@ function compile_htpasswd() {
             if [ -z "$found" ]; then
                 echo "$key:$realm:$md5">>"$out"
             fi
-            chmod --reference=$tmpout $out
-            chown --reference=$tmpout $out
-            chgrp --reference=$tmpout $out
             rm -f $tmpout
         fi
     done <"$dir/$file"
