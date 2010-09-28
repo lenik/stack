@@ -21,18 +21,24 @@ echo "Prepare mirror repository dirs"
     install -d -m 2775 -o appserv -g dev mirror.releases
     install -d -m 2775 -o appserv -g dev mirror.snapshots
 
-echo "Configure Archiva"
+echo "Configure Apache2 (forwarder)"
 
     # xmlrpc...
 
-    rulesf=/etc/apache2/sites-conf/archiva.rules
+    rulesf=@a2confdir@/sites-conf/archiva.rules
 
     lineconf -tm "Add server alias" \
         $rulesf @Alias::SECCA \
         'ServerAlias m2.secca-project.com'
 
     lineconf -tm "Add archiva rule for /internal" \
-        $rulesf @Rule::SECCA::Internal \
-        'RewriteRule ^/internal/(.*)  /archiva/repository/mirror-releases/$1 [PT]'
+        $rulesf @Rule::Mirror::Internal \
+        'RewriteRule ^/internal/(.*)  /archiva/repository/internal/$1 [PT]'
+
+    lineconf -tm "Add archiva rule for /snapshots" \
+        $rulesf @Rule::Mirror::Snapshots \
+        'RewriteRule ^/snapshots/(.*)  /archiva/repository/snapshots/$1 [PT]'
+
+    a2reload
 
 exit 0

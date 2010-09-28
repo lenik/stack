@@ -1,5 +1,19 @@
 #!/bin/sh
 # master-file
 
+echo "Configure Apache2 (forwarder)"
+
+    # xmlrpc...
+
+    rulesf=@a2confdir@/sites-conf/archiva.rules
+
+    lineconf -ktm "Remove archiva rule for /internal" \
+        $rulesf @Rule::Mirror::Internal
+
+    lineconf -ktm "Remove archiva rule for /snapshots" \
+        $rulesf @Rule::Mirror::Snapshots
+
+    a2reload
+
 # Pre-Remove script should always exit 0 to force the state.
 exit 0

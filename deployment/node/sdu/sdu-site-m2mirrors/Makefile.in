@@ -225,6 +225,12 @@ do_subst = sed \
     -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
+a2confdir = ${sysconfdir}/apache2
+siteconfdir = ${a2confdir}/sites-conf
+do_subst2 = $(do_subst) \
+    -e 's,[@]a2confdir[@],$(a2confdir),g' \
+    -e 's,[@]siteconfdir[@],$(siteconfdir),g'
+
 setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh
@@ -575,10 +581,10 @@ uninstall-am: uninstall-setupSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile
-	$(do_subst) <$(srcdir)/post-install.sh.in >$@
+	$(do_subst2) <$(srcdir)/post-install.sh.in >$@
 
 pre-remove.sh: pre-remove.sh.in Makefile
-	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
+	$(do_subst2) <$(srcdir)/pre-remove.sh.in >$@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
