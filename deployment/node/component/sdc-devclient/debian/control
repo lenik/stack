@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdc-devclient
 
 Package: sdc-devclient
 Architecture: all
-Depends: sdu-devenv
+Depends: srad-devenv
 Description: Developer Client-Side Installation
