@@ -45,6 +45,8 @@ echo "Configure Apache forwarder"
         $rulesf @Rule::SECCA::Snapshots \
         'RewriteRule ^/snapshots/(.*) /archiva/repository/secca.snapshots/$1 [PT]'
 
+    a2reload
+
 echo "Setup repositories"
 
     # xmlrpc...

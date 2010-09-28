@@ -12,4 +12,17 @@ echo "Remove SECCA M2 repositories"
         echo "  Removed release repository (symlink)"
     fi
 
+echo "Unconfig apache2 forwarders"
+
+    lineconf -ktm "  Remove server alias" \
+        $rulesf @Alias::SECCA
+
+    lineconf -ktm "  Remove archiva rule for /releases" \
+        $rulesf @Rule::SECCA::Release
+
+    lineconf -ktm "  Remove archiva rule for /snapshots" \
+        $rulesf @Rule::SECCA::Snapshots
+
+    a2reload
+
 exit 0
