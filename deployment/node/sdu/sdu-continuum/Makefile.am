@@ -1,6 +1,4 @@
-
 include libauto/coolauto.am
-
 
 setup_SCRIPTS = \
 	post-install.sh \

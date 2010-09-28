@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-continuum
 
 Package: sdu-continuum
 Architecture: all
-Depends: ${misc:Depends}, xjl-coolwget, sdu-seccajx
+Depends: xjl-coolwget, sdu-seccajx
 Description: Continuum CI support.
