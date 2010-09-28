@@ -62,6 +62,10 @@ case $method in
             hostname $newval
             echo "done"
         fi
+
+    lineconf -tm "Set localhost of fqdn" \
+        /etc/hosts @host::localfqdn \
+        "127.0.0.1 $newval"
     ;;
 esac
 

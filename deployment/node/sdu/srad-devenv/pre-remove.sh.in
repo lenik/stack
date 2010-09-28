@@ -28,6 +28,9 @@ case $method in
         hostname $newval
         echo "done"
     fi
+
+    lineconf -ktm "Unset localhost of fqdn" \
+        /etc/hosts @host::localfqdn
     ;;
 esac
 
