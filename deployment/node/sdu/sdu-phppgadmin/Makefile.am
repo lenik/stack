@@ -2,9 +2,13 @@ include libauto/coolauto.am
 
 a2confdir = ${sysconfdir}/apache2
 sitesdir  = ${a2confdir}/sites-available
+admindir  = ${sysconfdir}/phppgadmin
 
 dist_sites_DATA = \
 	secca-pgsql.site
+
+dist_admin_DATA = \
+	add_server.inc.php
 
 setup_SCRIPTS = \
 	post-install.sh \

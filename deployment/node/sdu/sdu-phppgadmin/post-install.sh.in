@@ -5,6 +5,25 @@
 echo "Remove the global phppgadmin.conf"
     rm -f /etc/apache2/conf.d/phppgadmin.conf
 
+configinc=/etc/phppgadmin/config.inc.php
+echo -n "Add add_server() support to config.inc.php: "
+    if grep -qF 'add_server.inc.php' $configinc; then
+        echo Skip
+    else
+        echo -n "<?php include 'add_server.inc.php'; ?>" >>$configinc
+        echo Done
+    fi
+
+echo -n "Add SECCA DB: "
+    if grep -qF 'SECCA DB' $configinc; then
+        echo Skip
+    else
+        echo -n "<?php add_server(\
+            'SECCA DB', \
+            'localhost', 1063);" >>$configinc
+        echo Done
+    fi
+
 echo "Load secca-pgsql.site"
     a2enmod auth_digest
     a2enmod php5

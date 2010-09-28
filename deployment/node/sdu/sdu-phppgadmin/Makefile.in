@@ -65,8 +65,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(dist_sites_DATA) \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+DIST_COMMON = README $(am__configure_deps) $(dist_admin_DATA) \
+	$(dist_sites_DATA) $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/libauto/coolauto.am $(top_srcdir)/configure AUTHORS \
 	COPYING ChangeLog INSTALL NEWS install-sh missing
 subdir = .
@@ -100,11 +100,12 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(sitesdir)"
+am__installdirs = "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(admindir)" \
+	"$(DESTDIR)$(sitesdir)"
 SCRIPTS = $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
-DATA = $(dist_sites_DATA)
+DATA = $(dist_admin_DATA) $(dist_sites_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -229,8 +230,12 @@ do_subst = sed \
 
 a2confdir = ${sysconfdir}/apache2
 sitesdir = ${a2confdir}/sites-available
+admindir = ${sysconfdir}/phppgadmin
 dist_sites_DATA = \
 	secca-pgsql.site
+
+dist_admin_DATA = \
+	add_server.inc.php
 
 setup_SCRIPTS = \
 	post-install.sh \
@@ -309,6 +314,26 @@ uninstall-setupSCRIPTS:
 	test -n "$$list" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
+install-dist_adminDATA: $(dist_admin_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(admindir)" || $(MKDIR_P) "$(DESTDIR)$(admindir)"
+	@list='$(dist_admin_DATA)'; test -n "$(admindir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(admindir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(admindir)" || exit $$?; \
+	done
+
+uninstall-dist_adminDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_admin_DATA)'; test -n "$(admindir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(admindir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(admindir)" && rm -f $$files
 install-dist_sitesDATA: $(dist_sites_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(sitesdir)" || $(MKDIR_P) "$(DESTDIR)$(sitesdir)"
@@ -487,7 +512,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(sitesdir)"; do \
+	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(admindir)" "$(DESTDIR)$(sitesdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -537,7 +562,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-dist_sitesDATA install-setupSCRIPTS
+install-data-am: install-dist_adminDATA install-dist_sitesDATA \
+	install-setupSCRIPTS
 
 install-dvi: install-dvi-am
 
@@ -583,7 +609,8 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-dist_sitesDATA uninstall-setupSCRIPTS
+uninstall-am: uninstall-dist_adminDATA uninstall-dist_sitesDATA \
+	uninstall-setupSCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -592,15 +619,16 @@ uninstall-am: uninstall-dist_sitesDATA uninstall-setupSCRIPTS
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dist_sitesDATA install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-setupSCRIPTS install-strip installcheck \
+	install-data-am install-dist_adminDATA install-dist_sitesDATA \
+	install-dvi install-dvi-am install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-setupSCRIPTS install-strip installcheck \
 	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-dist_sitesDATA uninstall-setupSCRIPTS
+	uninstall-dist_adminDATA uninstall-dist_sitesDATA \
+	uninstall-setupSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile
