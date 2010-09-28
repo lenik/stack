@@ -1,5 +1,5 @@
 #!/bin/sh
-# postrm script for sdu-devenv
+# postrm script for srad-devenv
 #
 # see: dh_installdeb(1)
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-# prerm script for sdu-devenv
+# prerm script for srad-devenv
 #
 # see: dh_installdeb(1)
 
@@ -19,7 +19,7 @@ set -e
 
 case "$1" in
     remove|upgrade|deconfigure)
-        /usr/share/setup/sdu-devenv/pre-remove.sh
+        /usr/share/setup/srad-devenv/pre-remove.sh
     ;;
 
     failed-upgrade)

@@ -1,5 +1,5 @@
 #!/bin/sh
-# postinst script for sdu-devenv
+# postinst script for srad-devenv
 #
 # see: dh_installdeb(1)
 
@@ -20,7 +20,7 @@ set -e
 
 case "$1" in
     configure)
-        /usr/share/setup/sdu-devenv/post-install.sh
+        /usr/share/setup/srad-devenv/post-install.sh
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
