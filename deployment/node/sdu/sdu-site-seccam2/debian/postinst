@@ -20,7 +20,7 @@ set -e
 
 case "$1" in
     configure)
-        /usr/share/sdu-site-seccam2/post-install.sh
+        /usr/share/setup/sdu-site-seccam2/post-install.sh
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
