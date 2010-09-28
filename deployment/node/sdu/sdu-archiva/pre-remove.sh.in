@@ -29,4 +29,8 @@ echo "Unconfig resources on seccaj"
             xargs -l seccaj-admin delete-jvm-options
     fi
 
+echo "Unconfig apache2"
+    a2dissite sdu-archiva.site
+    a2reload
+
 exit 0
