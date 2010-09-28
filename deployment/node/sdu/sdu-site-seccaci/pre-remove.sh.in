@@ -1,3 +1,9 @@
 #!/bin/sh
 
 # master-file
+
+echo "Remove secca-ci site"
+    a2dissite secca-ci.site
+    a2reload
+
+exit 0

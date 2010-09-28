@@ -15,6 +15,39 @@
 
 @SET_MAKE@
 
+#
+# Copyright (c) 1998-2010, Xie Jilei (Lenik)
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+# 3. Neither the names of the copyright holders nor the names of its
+#    contributors may be used to endorse or promote products derived from
+#    this software without specific prior written permission.
+#
+# Alternatively, this software may be distributed under the terms of the
+# GNU General Public License ("GPL") version 2 as published by the Free
+# Software Foundation.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -32,10 +65,10 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/libauto/subst.am \
-	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	install-sh missing
+DIST_COMMON = README $(am__configure_deps) $(dist_sites_DATA) \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/libauto/coolauto.am $(top_srcdir)/configure AUTHORS \
+	COPYING ChangeLog INSTALL NEWS install-sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -67,10 +100,11 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(pkgdatadir)"
-SCRIPTS = $(pkgdata_SCRIPTS)
+am__installdirs = "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(sitesdir)"
+SCRIPTS = $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
+DATA = $(dist_sites_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -147,24 +181,60 @@ pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
-sbindir = @sbindir@
+sbindir = ${prefix}/sbin
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
-sysconfdir = @sysconfdir@
+sysconfdir = /etc
 target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+varlibdir = /var/lib
+cachedir = /var/cache
+pkgvarlibdir = ${varlibdir}/${PACKAGE_NAME}
+pkgcachedir = ${cachedir}/${PACKAGE_NAME}
+setupdir = ${datadir}/setup/${PACKAGE_NAME}
+aliasesdir = ${sysconfdir}/bash_aliases.d
+bashcmpldir = ${sysconfdir}/bash_completion.d
+profiledir = ${sysconfdir}/profile.d
+sudoersdir = ${sysconfdir}/sudoers.d
+initdir = ${sysconfdir}/init
+sysvinitdir = ${sysconfdir}/init.d
+apparmordir = ${sysconfdir}/apparmor.d
+substdir = ${sysconfdir}/coolcmd/subst
+shlibdir = ${libdir}/shlib.d
+newtmpldir = ${libdir}/newtmpl.d
 do_subst = sed \
     -e 's/master-file/generated-file, please do not edit/' \
     -e 's,[@]DESTDIR[@],$(DESTDIR),g' \
     -e 's,[@]prefix[@],$(prefix),g' \
     -e 's,[@]bindir[@],$(bindir),g' \
+    -e 's,[@]sbindir[@],$(sbindir),g' \
     -e 's,[@]docdir[@],$(docdir),g' \
     -e 's,[@]datadir[@],$(datadir),g' \
-    -e 's,[@]pkgdatadir[@],$(pkgdatadir),g'
+    -e 's,[@]varlibdir[@],$(varlibdir),g' \
+    -e 's,[@]cachedir[@],$(cachedir),g' \
+    -e 's,[@]pkgdatadir[@],$(pkgdatadir),g' \
+    -e 's,[@]pkgvarlibdir[@],$(pkgvarlibdir),g' \
+    -e 's,[@]pkgcachedir[@],$(pkgcachedir),g' \
+    -e 's,[@]sysconfdir[@],$(sysconfdir),g' \
+    -e 's,[@]aliasesdir[@],$(aliasesdir),g' \
+    -e 's,[@]bashcmpldir[@],$(bashcmpldir),g' \
+    -e 's,[@]profiledir[@],$(profiledir),g' \
+    -e 's,[@]sudoersdir[@],$(sudoersdir),g' \
+    -e 's,[@]initdir[@],$(initdir),g' \
+    -e 's,[@]apparmordir[@],$(apparmordir),g' \
+    -e 's,[@]substdir[@],$(substdir),g' \
+    -e 's,[@]shlibdir[@],$(shlibdir),g' \
+    -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
+    -e 's,[@]setupdir[@],$(setupdir),g'
 
-pkgdata_SCRIPTS = \
+a2confdir = ${sysconfdir}/apache2
+sitesdir = ${a2confdir}/sites-available
+dist_sites_DATA = \
+	secca-ci.site
+
+setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh
 
@@ -175,7 +245,7 @@ all: all-am
 .SUFFIXES:
 am--refresh:
 	@:
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(srcdir)/libauto/subst.am $(am__configure_deps)
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(srcdir)/libauto/coolauto.am $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -207,10 +277,10 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
-install-pkgdataSCRIPTS: $(pkgdata_SCRIPTS)
+install-setupSCRIPTS: $(setup_SCRIPTS)
 	@$(NORMAL_INSTALL)
-	test -z "$(pkgdatadir)" || $(MKDIR_P) "$(DESTDIR)$(pkgdatadir)"
-	@list='$(pkgdata_SCRIPTS)'; test -n "$(pkgdatadir)" || list=; \
+	test -z "$(setupdir)" || $(MKDIR_P) "$(DESTDIR)$(setupdir)"
+	@list='$(setup_SCRIPTS)'; test -n "$(setupdir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
@@ -228,19 +298,39 @@ install-pkgdataSCRIPTS: $(pkgdata_SCRIPTS)
 	while read type dir files; do \
 	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
 	     test -z "$$files" || { \
-	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(pkgdatadir)$$dir'"; \
-	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(pkgdatadir)$$dir" || exit $$?; \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(setupdir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(setupdir)$$dir" || exit $$?; \
 	     } \
 	; done
 
-uninstall-pkgdataSCRIPTS:
+uninstall-setupSCRIPTS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(pkgdata_SCRIPTS)'; test -n "$(pkgdatadir)" || exit 0; \
+	@list='$(setup_SCRIPTS)'; test -n "$(setupdir)" || exit 0; \
 	files=`for p in $$list; do echo "$$p"; done | \
 	       sed -e 's,.*/,,;$(transform)'`; \
 	test -n "$$list" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(pkgdatadir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(pkgdatadir)" && rm -f $$files
+	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
+install-dist_sitesDATA: $(dist_sites_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(sitesdir)" || $(MKDIR_P) "$(DESTDIR)$(sitesdir)"
+	@list='$(dist_sites_DATA)'; test -n "$(sitesdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(sitesdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(sitesdir)" || exit $$?; \
+	done
+
+uninstall-dist_sitesDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_sites_DATA)'; test -n "$(sitesdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(sitesdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(sitesdir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -397,9 +487,9 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(SCRIPTS)
+all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(pkgdatadir)"; do \
+	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(sitesdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -449,7 +539,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-pkgdataSCRIPTS
+install-data-am: install-dist_sitesDATA install-setupSCRIPTS
 
 install-dvi: install-dvi-am
 
@@ -495,7 +585,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-pkgdataSCRIPTS
+uninstall-am: uninstall-dist_sitesDATA uninstall-setupSCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -504,14 +594,15 @@ uninstall-am: uninstall-pkgdataSCRIPTS
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-pkgdataSCRIPTS install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	install-data-am install-dist_sitesDATA install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-setupSCRIPTS install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-pkgdataSCRIPTS
+	uninstall-dist_sitesDATA uninstall-setupSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile

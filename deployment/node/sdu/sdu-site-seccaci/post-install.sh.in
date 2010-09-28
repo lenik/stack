@@ -1,3 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
 # master-file
+
+echo "Enable secca-ci site"
+    a2enmod proxy
+    a2enmod proxy_http
+    a2enmod rewrite
+    a2ensite secca-ci.site
+    a2reload
+
+exit 0

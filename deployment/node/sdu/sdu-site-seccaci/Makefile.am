@@ -1,8 +1,12 @@
+include libauto/coolauto.am
 
-include libauto/subst.am
+a2confdir = ${sysconfdir}/apache2
+sitesdir  = ${a2confdir}/sites-available
 
+dist_sites_DATA = \
+	secca-ci.site
 
-pkgdata_SCRIPTS = \
+setup_SCRIPTS = \
 	post-install.sh \
 	pre-remove.sh
 
