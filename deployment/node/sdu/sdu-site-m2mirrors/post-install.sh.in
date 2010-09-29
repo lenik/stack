@@ -33,11 +33,11 @@ echo "Configure Apache2 (forwarder)"
 
     lineconf -tm "Add archiva rule for /internal" \
         $rulesf @Rule::Mirror::Internal \
-        'RewriteRule ^/internal/(.*)  /archiva/repository/internal/$1 [PT]'
+        'RewriteRule ^/mirror/internal/(.*)  /archiva/repository/internal/$1 [PT]'
 
     lineconf -tm "Add archiva rule for /snapshots" \
         $rulesf @Rule::Mirror::Snapshots \
-        'RewriteRule ^/snapshots/(.*)  /archiva/repository/snapshots/$1 [PT]'
+        'RewriteRule ^/mirror/snapshots/(.*)  /archiva/repository/snapshots/$1 [PT]'
 
     a2reload
 
