@@ -1,0 +1,27 @@
+#!/bin/bash
+# master-file
+
+# 1, checkout sems projects
+# 2, mvn package for each
+# 3, deploy to seccaj
+
+builddir=/tmp/sems-build/$$.$RANDOM
+mkdir -p $builddir
+cd $builddir
+
+svn co file:///repos/svn/stack/sems/trunk sems-latest
+cd sems-latest
+if ! mvn package; then
+    echo Build failed.
+    exit 1
+fi
+
+# set -e: error exit immediately if any command fails.
+set -e
+
+    seccaj-admin deploy --contextroot ebi-org \
+        ebi/ebi-org/target/ebi-org-*.war
+
+# and more to deploy...
+
+exit 0
