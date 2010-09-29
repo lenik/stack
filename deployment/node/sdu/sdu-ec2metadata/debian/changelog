@@ -1,0 +1,17 @@
+sdu-ec2metadata (1.0.1-1) lucid; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Wed, 22 Sep 2010 16:12:54 +0800
+
+sdu-ec2metadata (0.1.1-1) lucid; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Wed, 22 Sep 2010 16:12:43 +0800
+
+sdu-ec2metadata (0.1.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Wed, 22 Sep 2010 16:07:07 +0800

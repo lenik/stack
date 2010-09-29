@@ -1,0 +1,11 @@
+sdu-archiva-users (0.1.0-2) lucid; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Fri, 24 Sep 2010 14:23:35 +0800
+
+sdu-archiva-users (0.1.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Thu, 23 Sep 2010 19:00:50 +0800

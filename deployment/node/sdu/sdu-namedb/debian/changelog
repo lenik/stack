@@ -1,0 +1,5 @@
+sdu-namedb (0.1.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Tue, 21 Sep 2010 17:40:56 +0800
