@@ -23,9 +23,9 @@ fi
 
 hba=/etc/postgresql/8.4/seccadb/pg_hba.conf
 
-echo "Configure $hba"
-    lineconf -t SDUC-1-192 \
-        "host all all 192.168.0.0/16 md5" $hba
+lineconf -tm "Configure $hba" \
+    $hba SDUC-1-192 \
+    "host all all 192.168.0.0/16 md5"
 
 echo "Set postgres default password"
     seccadb-psql -d template1 -c \
