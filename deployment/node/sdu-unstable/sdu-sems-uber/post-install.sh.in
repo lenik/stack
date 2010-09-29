@@ -19,8 +19,12 @@ fi
 # set -e: error exit immediately if any command fails.
 set -e
 
+function find_latest() {
+    ls "$@" | tail -1
+}
+
     seccaj-admin deploy --contextroot ebi-org \
-        ebi/ebi-org/target/ebi-org-*.war
+        `find_latest ebi/ebi-org/target/ebi-org-*.war`
 
 # and more to deploy...
 
