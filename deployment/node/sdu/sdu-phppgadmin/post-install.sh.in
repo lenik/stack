@@ -11,11 +11,6 @@ lineconf -tm "Add add_server() support to config.inc.php" \
     $configinc @inc::add-server \
     "<?php include 'add_server.inc.php'; ?>"
 
-lineconf -tm "Add SECCA DB: " \
-    -p '<?php # ' -s ' ?>' \
-    $configinc @server::seccadb \
-    "<?php add_server('SECCA DB', 'localhost', 1063); ?>"
-
 echo "Load secca-pgsql.site"
     a2enmod auth_digest
     a2enmod php5

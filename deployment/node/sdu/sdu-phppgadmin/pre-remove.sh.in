@@ -1,5 +1,10 @@
 #!/bin/sh
 
+configinc=/etc/phppgadmin/config.inc.php
+lineconf -ktm "Remove add_server() support from config.inc.php" \
+    -p '<?php # ' -s ' ?>' \
+    $configinc @inc::add-server
+
 # master-file
 echo "Unload secca-pgsql.site"
     a2dissite secca-pgsql.site

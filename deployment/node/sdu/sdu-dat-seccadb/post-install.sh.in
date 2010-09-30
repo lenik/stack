@@ -73,3 +73,10 @@ else
             --owner=dev \
             "devdb" "Used by dev-sites"
 fi
+
+configinc=/etc/phppgadmin/config.inc.php
+    lineconf -tm "Add SECCA DB to phppgadmin: " -p '<?php # ' -s ' ?>' \
+        $configinc @server::seccadb \
+        "<?php add_server('SECCA DB', 'localhost', 1063); ?>"
+
+exit 0

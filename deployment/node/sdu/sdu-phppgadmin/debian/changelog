@@ -1,3 +1,15 @@
+sdu-phppgadmin (0.1.13-1) lucid; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Thu, 30 Sep 2010 18:50:42 +0800
+
+sdu-phppgadmin (0.1.12-1) lucid; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Thu, 30 Sep 2010 18:47:01 +0800
+
 sdu-phppgadmin (0.1.11-1) lucid; urgency=low
 
   * Upstream updates, automatic package by deb-redist
