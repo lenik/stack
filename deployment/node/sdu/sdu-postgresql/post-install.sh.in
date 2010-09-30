@@ -9,14 +9,14 @@ lineconf -tm "Add host auth 192.* by password" \
 lineconf -tm "Add host auth all by md5" \
     $hba SDUC-9-remote "host all all 0.0.0.0/0 md5"
 
-echo "Configure phppgadmin"
-    # phppgadmin:
-    #   - DEL /etc/apache2/conf.d/phppgadmin
-    #   + ADD /etc/apache2/sites-available/HOST
-    #   HOST:
-    #       /node/config/host-phppgadmin...
-    phppgadmin_conf=/etc/apache2/conf.d/phppgadmin
-    lineconf -k /etc/apache2/httpd.conf $phppgadmin_conf
-    rm -f $phppgadmin_conf
+
+echo "Set postgres default password"
+    sudo -upostgres psql -d template1 -c \
+        "alter user postgres with password 'cW3EADp8'"
+
+configinc=/etc/phppgadmin/config.inc.php
+    lineconf -tm "Add server to phppgadmin" -p '<?php # ' -s ' ?>' \
+        $configinc @server::main-default \
+        '<?php add_server("main default", "localhost"); ?>'
 
 exit 0
