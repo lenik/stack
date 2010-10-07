@@ -6,8 +6,11 @@
     ErrorLog  /var/log/apache2/static_error.log
     CustomLog /var/log/apache2/static_access.log combined
 
-    Alias /lib  /usr/share/sdu-site-maindev/html/lib
-    Alias /lib2 /usr/share/sdu-site-maindev/html/lib2
+    Alias /lib     /usr/share/sdu-site-maindev/html/lib
+    Alias /lib2    /usr/share/sdu-site-maindev/html/lib2
+    Alias /style   /usr/share/sdu-site-maindev/html/style
+    Alias /symbols /usr/share/sdu-site-maindev/html/symbols
+
     <Directory /usr/share/sdu-site-maindev/html/>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None

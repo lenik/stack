@@ -1,2 +1,9 @@
 #!/bin/sh
 # master-file
+
+# Currently, -static relies on -maindev.
+
+echo "Config apache2"
+
+    a2ensite secca-static.site
+    a2reload

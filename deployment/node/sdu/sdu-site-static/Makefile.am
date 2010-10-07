@@ -1,5 +1,10 @@
 include libauto/coolauto.am
 
+a2confdir = ${sysconfdir}/apache2
+sitesdir  = ${a2confdir}/sites-available
+
+dist_sites_DATA = \
+	secca-static.site
 
 setup_SCRIPTS = \
 	post-install.sh \

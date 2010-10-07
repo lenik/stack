@@ -1,5 +1,10 @@
 #!/bin/sh
 # master-file
 
+echo "Unconfig apache2"
+
+    a2dissite secca-static.site
+    a2reload
+
 # Pre-Remove script should always exit 0 to force the state.
 exit 0
