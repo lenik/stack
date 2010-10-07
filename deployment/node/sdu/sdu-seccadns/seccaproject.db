@@ -45,6 +45,7 @@ list                    CNAME   s-dev
 m2                      CNAME   aut-dev
 repo                    CNAME   s-dev
 sql                     CNAME   aut-dev
+static                  CNAME   main-app
 svn                     CNAME   main-dev
 webapp                  CNAME   main-app
 track                   CNAME   s-dev

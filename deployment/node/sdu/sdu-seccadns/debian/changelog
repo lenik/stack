@@ -1,3 +1,9 @@
+sdu-seccadns (0.1.20-1) lucid; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Fri, 08 Oct 2010 00:27:15 +0800
+
 sdu-seccadns (0.1.19-1) lucid; urgency=low
 
   * Upstream updates, automatic package by deb-redist
