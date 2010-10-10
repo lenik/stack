@@ -2,8 +2,8 @@
     . shlib-import cliboot
 
     RCSID='$Id: bash.sh 1731 2010-09-19 20:34:56Z lenik $'
-    short_opts="i:x:l:sdg:hqv"
-    long_opts="include,exclude,layout,svg,display,program,help,quiet,verbose,version"
+    short_opts="i:x:l:f:sdg:hqv"
+    long_opts="include,exclude,layout,format,svg,display,program,help,quiet,verbose,version"
 
     format=
     layout=fdp
@@ -32,6 +32,7 @@ function help() {
     echo "    -i, --include=PREFIX    select only specific packages"
     echo "    -x, --exclude=NAME      exclude specific packages"
     echo "    -l, --layout=LAYOUT     specify the layout method"
+    echo "    -f, --format=FORMAT     output format"
     echo "    -s, --svg               output SVG graphics"
     echo "    -d, --display           open the graphics with ImageMagick"
     echo "    -g, --program=NAME      open with specific viewer"
@@ -48,7 +49,9 @@ function setopt() {
         -x|--exclude)
             excludes[${#excludes[@]}]="$2";;
         -l|--layout)
-            layout="$2";;
+            layout=$2;;
+        -f|--format)
+            format=$2;;
         -s|--svg)
             format=svg;;
         -d|--display)
