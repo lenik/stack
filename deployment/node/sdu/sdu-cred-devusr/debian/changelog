@@ -1,3 +1,9 @@
+sdu-cred-devusr (0.2.0-1) lucid; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Mon, 11 Oct 2010 12:22:42 +0800
+
 sdu-cred-devusr (0.1.4-1) lucid; urgency=low
 
   * Upstream updates, automatic package by deb-redist

@@ -1,0 +1,114 @@
+#!/bin/bash
+    . shlib-import cliboot
+
+    RCSID='$Id: bash.sh 1853 2010-09-29 01:35:59Z lenik $'
+    short_opts="n:r:s:cfhqv"
+    long_opts="name,root,servers,compile,force,help,quiet,verbose,version"
+
+    opts=()
+    nopt=0
+
+    name=
+    contextroot=
+
+function version() {
+    parse_id "$RCSID"
+    echo "[$BASENAME] Deploy this webapp to -seccajx server"
+    echo "Written by Lenik, Version 0.$rcs_rev, Last updated at $rcs_date"
+}
+
+function help() {
+    version
+    echo
+    echo "Syntax: "
+    echo "    $0 [OPTION] [--] ..."
+    echo
+    echo "Options: "
+    echo "    -n, --name=NAME         Application name to deploy"
+    echo "    -r, --root=CONEXT-ROOT  Context root to deploy"
+    echo "    -s, --servers=VSERVERS  Virtual servers to deploy"
+    echo "    -c, --compile           Precompile JSP files"
+    echo "    -f, --force             Overwrite existing application"
+    echo "    -q, --quiet             Repeat to get less info"
+    echo "    -v, --verbose           Repeat to get more info"
+    echo "    -h, --help              Show this help page"
+    echo "        --version           Print the version info"
+}
+
+function setopt() {
+    case "$1" in
+        -n|--name)
+            name="$2";;
+        -r|--root)
+            contextroot="$2";;
+        -s|--server)
+            opts[nopt++]="--virtualservers"
+            otps[nopt++]="$2";;
+        -c|--compile)
+            opts[nopt++]="--precompilejsp=true";;
+        -f|--force)
+            opts[nopt++]="--force=true";;
+        -h|--help)
+            help; exit;;
+        -q|--quiet)
+            LOGLEVEL=$((LOGLEVEL - 1));;
+        -v|--verbose)
+            LOGLEVEL=$((LOGLEVEL + 1));;
+        --version)
+            version; exit;;
+        *)
+            quit "invalid option: $1";;
+    esac
+}
+
+function main() {
+    dir=`readlink -f "$PWD"`
+    base="${dir##*/}"
+
+    found=0
+    for war in target/*.war; do
+        found=1
+        break
+    done
+    if [ "$found" = 0 ]; then
+        echo "No war found, build it..."
+        if ! mvn -q package; then
+            echo "Build failed. "
+            exit 1
+        fi
+    fi
+
+    warfile=
+    for war in target/*.war; do
+        if [ -n "$warfile" ]; then
+            echo "Warning: There are more than 1 WAR in target/. "
+            echo "Please do clean build first."
+            exit 1
+        fi
+        warfile="$war"
+    done
+    if [ -z "$warfile" ]; then
+        echo "Not a war project. "
+        exit 2
+    fi
+
+    if [ -z "$name" ]; then
+        name="$base"
+    fi
+
+    if [ -z "$contextroot" ]; then
+        contextroot="$name"
+    fi
+
+    opts[nopt++]="--name"
+    opts[nopt++]="$name"
+    opts[nopt++]="--contextroot"
+    opts[nopt++]="$contextroot"
+
+    ECHOX=
+    if [ $LOGLEVEL -ge 2 ]; then ECHOX=echox; fi
+
+    $ECHOX seccaj-admin deploy "${opts[@]}" "$warfile"
+}
+
+boot "$@"

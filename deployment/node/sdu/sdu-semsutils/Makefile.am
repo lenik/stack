@@ -1,5 +1,7 @@
 include libauto/coolauto.am
 
+dist_sbin_SCRIPTS = \
+	deploy-this
 
 setup_SCRIPTS = \
 	post-install.sh \
