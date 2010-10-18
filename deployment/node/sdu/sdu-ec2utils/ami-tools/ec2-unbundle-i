@@ -1,2 +1,2 @@
-$!/bin/bash
+#!/bin/bash
 ec2-unbundle -k $EC2_PRIVATE_KEY "$@"

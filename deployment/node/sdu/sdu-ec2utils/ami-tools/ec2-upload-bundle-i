@@ -1,2 +1,2 @@
-$!/bin/bash
+#!/bin/bash
 ec2-upload-bundle -a "$AWS_ACCESS_KEY_ID" -s "$AWS_SECRET_ACCESS_KEY_ID" "$@"

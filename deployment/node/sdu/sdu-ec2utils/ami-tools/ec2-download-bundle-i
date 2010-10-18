@@ -1,2 +1,2 @@
-$!/bin/bash
+#!/bin/bash
 ec2-download-bundle -a "$AWS_ACCESS_KEY_ID" -s "$AWS_SECRET_ACCESS_KEY_ID" -k "$EC2_PRIVATE_KEY" "$@"
