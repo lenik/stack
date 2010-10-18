@@ -1,9 +1,15 @@
 include libauto/coolauto.am
 
+SUBDIRS = ami-tools
+
+dist_aliases_DATA = \
+    ec2utils.sh
+
 dist_sbin_SCRIPTS = \
     mount-ebs \
     nextdev \
     ec2user-init \
+    ec2-init-cred \
     ec2-update-subst
 
 dist_man_MANS = \

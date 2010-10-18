@@ -1,0 +1,2 @@
+$!/bin/bash
+ec2-bundle-image -c $EC2_CERT -k $EC2_PRIVATE_KEY -u $AWS_USER_ID "$@"

@@ -1,26 +1,8 @@
 #!/bin/sh
 
-# This is ec2-cmd from sdu-ec2node package.
+# This is ec2-cmd from sdu-ec2utils package.
 # The original ec2-cmd is renamed to ec2-cmd-orig.
 
-for k in ~/.ec2/private_key /etc/ec2/private_key; do
-    if [ -f $k ]; then
-        export EC2_PRIVATE_KEY=$k
-        break
-    fi
-done
-
-for c in ~/.ec2/cert /etc/ec2/cert; do
-    if [ -f $c ]; then
-        export EC2_CERT=$c
-        break
-    fi
-done
-
-if [ "$NO_SUBST" = 1 ]; then
-    RSEXEC=
-else
-    RSEXEC="rsexec-c"
-fi
+. ec2-init-cred
 
 $RSEXEC ec2-cmd-orig "$@"

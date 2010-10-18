@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([sdu-ec2utils], [1.1.1], [sdu-bugs@secca-project.com])
+AC_INIT([sdu-ec2utils], [1.2.0], [sdu-bugs@secca-project.com])
 AM_INIT_AUTOMAKE([-Wall])
 
 # Checks for programs.
@@ -17,4 +17,5 @@ AC_PROG_LN_S
 # Checks for library functions.
 
 AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([ami-tools/Makefile])
 AC_OUTPUT

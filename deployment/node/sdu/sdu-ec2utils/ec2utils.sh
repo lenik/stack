@@ -1,0 +1,8 @@
+alias ec2-bundle-image='ec2-bundle-image-i'
+alias ec2-bundle-vol='ec2-bundle-vol-i'
+alias ec2-delete-bundle='ec2-delete-bundle-i'
+alias ec2-download-bundle='ec2-download-bundle-i'
+alias ec2-migrate-bundle='ec2-migrate-bundle-i'
+alias ec2-migrate-manifest='ec2-migrate-manifest-i'
+alias ec2-unbundle='ec2-unbundle-i'
+alias ec2-upload-bundle='ec2-upload-bundle-i'

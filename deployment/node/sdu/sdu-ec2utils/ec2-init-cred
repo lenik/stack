@@ -1,0 +1,31 @@
+# Please source this file.
+
+for u in /etc/ec2/user_id ~/.ec2/user_id; do
+    if [ -f $u ]; then
+        while read k v; do
+            if [ -z "$k" ]; then continue; fi
+            if [ "${k:0:1}" = '#' ]; then continue; fi
+            eval "export $k=\"$v\""
+        done <$u
+    fi
+done
+
+for k in ~/.ec2/private_key /etc/ec2/private_key; do
+    if [ -f $k ]; then
+        export EC2_PRIVATE_KEY=$k
+        break
+    fi
+done
+
+for c in ~/.ec2/cert /etc/ec2/cert; do
+    if [ -f $c ]; then
+        export EC2_CERT=$c
+        break
+    fi
+done
+
+if [ "$NO_SUBST" = 1 ]; then
+    RSEXEC=
+else
+    RSEXEC="rsexec-c"
+fi
