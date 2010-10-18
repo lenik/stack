@@ -5,6 +5,7 @@ ec2confdir = ${sysconfdir}/ec2
 substdir   = ${sysconfdir}/coolcmd/subst
 
 ec2conf_DATA = \
+    user_id \
     private_key \
     cert
 
