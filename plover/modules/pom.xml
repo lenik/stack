@@ -6,6 +6,7 @@
 		<version>0.0.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>modules</artifactId>
+	<version>0.0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<dependencies>
 		<dependency>
@@ -18,6 +19,7 @@
 		<module>plover-arch</module>
 		<module>plover-collections</module>
 		<module>plover-diagnostics</module>
+		<module>plover-session</module>
 		<module>plover-sysutils</module>
 		<module>plover-widgets</module>
 	</modules>
