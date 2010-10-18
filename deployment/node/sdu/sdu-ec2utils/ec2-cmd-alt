@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This is ec2-cmd from sdu-ec2utils package.
 # The original ec2-cmd is renamed to ec2-cmd-orig.
