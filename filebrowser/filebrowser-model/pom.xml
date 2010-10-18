@@ -8,6 +8,19 @@
     </parent>
     <artifactId>filebrowser-model</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <dependencies />
+    <dependencies >
+        <dependency>
+            <groupId>javax.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>1.2_13</version>
+        </dependency>
+	<dependency>
+		<groupId>org.apache.myfaces.tomahawk</groupId>
+		<artifactId>tomahawk</artifactId>
+		<version>1.1.10</version>
+		<type>jar</type>
+		<scope>compile</scope>
+	</dependency>
+    </dependencies>
     <name>SECCA :: File Browser :: Model</name>
 </project>
