@@ -1,0 +1,12 @@
+Source: sdu-netmon
+Section: net
+Priority: extra
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: http://sdu.secca-project.com/sdu-netmon
+
+Package: sdu-netmon
+Architecture: all
+Depends: iputils-ping, wget
+Description: Net monitor utilities
