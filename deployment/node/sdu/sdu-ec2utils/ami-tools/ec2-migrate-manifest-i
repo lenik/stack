@@ -1,2 +1,3 @@
 #!/bin/bash
+. ec2-init-cred
 ec2-migrate-manifest -c $EC2_CERT -k $EC2_PRIVATE_KEY -a "$AWS_ACCESS_KEY_ID" -s "$AWS_SECRET_ACCESS_KEY_ID" "$@"
