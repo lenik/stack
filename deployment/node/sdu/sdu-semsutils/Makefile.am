@@ -1,5 +1,11 @@
 include libauto/coolauto.am
 
+dist_aliases_DATA = \
+	semsutils.sh
+
+dist_bin_SCRIPTS = \
+	cd-sems
+
 dist_sbin_SCRIPTS = \
 	deploy-this
 

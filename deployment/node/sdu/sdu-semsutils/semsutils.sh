@@ -1,0 +1,1 @@
+alias semsd=cd-sems
