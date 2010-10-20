@@ -1,1 +1,1 @@
-alias semsd=cd-sems
+alias semsd='. cd-sems'
