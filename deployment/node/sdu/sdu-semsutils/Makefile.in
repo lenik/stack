@@ -67,9 +67,10 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 DIST_COMMON = README $(am__configure_deps) $(dist_aliases_DATA) \
 	$(dist_bashcmpl_DATA) $(dist_bin_SCRIPTS) $(dist_sbin_SCRIPTS) \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/libauto/coolauto.am $(top_srcdir)/configure AUTHORS \
-	COPYING ChangeLog INSTALL NEWS install-sh missing
+	$(dist_shsrc_SCRIPTS) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in $(srcdir)/libauto/coolauto.am \
+	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
+	install-sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -102,9 +103,10 @@ am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(sbindir)" \
-	"$(DESTDIR)$(setupdir)" "$(DESTDIR)$(aliasesdir)" \
-	"$(DESTDIR)$(bashcmpldir)"
-SCRIPTS = $(dist_bin_SCRIPTS) $(dist_sbin_SCRIPTS) $(setup_SCRIPTS)
+	"$(DESTDIR)$(shsrcdir)" "$(DESTDIR)$(setupdir)" \
+	"$(DESTDIR)$(aliasesdir)" "$(DESTDIR)$(bashcmpldir)"
+SCRIPTS = $(dist_bin_SCRIPTS) $(dist_sbin_SCRIPTS) \
+	$(dist_shsrc_SCRIPTS) $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
 DATA = $(dist_aliases_DATA) $(dist_bashcmpl_DATA)
@@ -232,15 +234,18 @@ do_subst = sed \
     -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
+shsrcdir = ${bindir}
 dist_bin_SCRIPTS = \
-    cd-sems \
     svnrootofcwd
+
+dist_shsrc_SCRIPTS = \
+    cd-sems
 
 dist_aliases_DATA = \
     semsutils.sh
 
 dist_bashcmpl_DATA = \
-    cd-sems.sh
+    semsd.sh
 
 dist_sbin_SCRIPTS = \
     deploy-this
@@ -356,6 +361,40 @@ uninstall-dist_sbinSCRIPTS:
 	test -n "$$list" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(sbindir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(sbindir)" && rm -f $$files
+install-dist_shsrcSCRIPTS: $(dist_shsrc_SCRIPTS)
+	@$(NORMAL_INSTALL)
+	test -z "$(shsrcdir)" || $(MKDIR_P) "$(DESTDIR)$(shsrcdir)"
+	@list='$(dist_shsrc_SCRIPTS)'; test -n "$(shsrcdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  if test -f "$$d$$p"; then echo "$$d$$p"; echo "$$p"; else :; fi; \
+	done | \
+	sed -e 'p;s,.*/,,;n' \
+	    -e 'h;s|.*|.|' \
+	    -e 'p;x;s,.*/,,;$(transform)' | sed 'N;N;N;s,\n, ,g' | \
+	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1; } \
+	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
+	    if ($$2 == $$4) { files[d] = files[d] " " $$1; \
+	      if (++n[d] == $(am__install_max)) { \
+		print "f", d, files[d]; n[d] = 0; files[d] = "" } } \
+	    else { print "f", d "/" $$4, $$1 } } \
+	  END { for (d in files) print "f", d, files[d] }' | \
+	while read type dir files; do \
+	     if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
+	     test -z "$$files" || { \
+	       echo " $(INSTALL_SCRIPT) $$files '$(DESTDIR)$(shsrcdir)$$dir'"; \
+	       $(INSTALL_SCRIPT) $$files "$(DESTDIR)$(shsrcdir)$$dir" || exit $$?; \
+	     } \
+	; done
+
+uninstall-dist_shsrcSCRIPTS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_shsrc_SCRIPTS)'; test -n "$(shsrcdir)" || exit 0; \
+	files=`for p in $$list; do echo "$$p"; done | \
+	       sed -e 's,.*/,,;$(transform)'`; \
+	test -n "$$list" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(shsrcdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(shsrcdir)" && rm -f $$files
 install-setupSCRIPTS: $(setup_SCRIPTS)
 	@$(NORMAL_INSTALL)
 	test -z "$(setupdir)" || $(MKDIR_P) "$(DESTDIR)$(setupdir)"
@@ -588,7 +627,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(aliasesdir)" "$(DESTDIR)$(bashcmpldir)"; do \
+	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(shsrcdir)" "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(aliasesdir)" "$(DESTDIR)$(bashcmpldir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -639,7 +678,7 @@ info: info-am
 info-am:
 
 install-data-am: install-dist_aliasesDATA install-dist_bashcmplDATA \
-	install-setupSCRIPTS
+	install-dist_shsrcSCRIPTS install-setupSCRIPTS
 
 install-dvi: install-dvi-am
 
@@ -687,7 +726,7 @@ ps-am:
 
 uninstall-am: uninstall-dist_aliasesDATA uninstall-dist_bashcmplDATA \
 	uninstall-dist_binSCRIPTS uninstall-dist_sbinSCRIPTS \
-	uninstall-setupSCRIPTS
+	uninstall-dist_shsrcSCRIPTS uninstall-setupSCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -698,16 +737,17 @@ uninstall-am: uninstall-dist_aliasesDATA uninstall-dist_bashcmplDATA \
 	html-am info info-am install install-am install-data \
 	install-data-am install-dist_aliasesDATA \
 	install-dist_bashcmplDATA install-dist_binSCRIPTS \
-	install-dist_sbinSCRIPTS install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-setupSCRIPTS \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am \
+	install-dist_sbinSCRIPTS install-dist_shsrcSCRIPTS install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-setupSCRIPTS install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
+	pdf-am ps ps-am uninstall uninstall-am \
 	uninstall-dist_aliasesDATA uninstall-dist_bashcmplDATA \
 	uninstall-dist_binSCRIPTS uninstall-dist_sbinSCRIPTS \
-	uninstall-setupSCRIPTS
+	uninstall-dist_shsrcSCRIPTS uninstall-setupSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile

@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([sdu-semsutils], [0.4.0], [sdu-bugs@secca-project.com])
+AC_INIT([sdu-semsutils], [0.5.0], [sdu-bugs@secca-project.com])
 AM_INIT_AUTOMAKE([-Wall])
 
 # Checks for programs.

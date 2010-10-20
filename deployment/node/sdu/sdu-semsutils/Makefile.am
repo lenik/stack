@@ -1,14 +1,18 @@
 include libauto/coolauto.am
 
+shsrcdir = ${bindir}
+
 dist_bin_SCRIPTS = \
-    cd-sems \
     svnrootofcwd
+
+dist_shsrc_SCRIPTS = \
+    cd-sems
 
 dist_aliases_DATA = \
     semsutils.sh
 
 dist_bashcmpl_DATA = \
-    cd-sems.sh
+    semsd.sh
 
 dist_sbin_SCRIPTS = \
     deploy-this

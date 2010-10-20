@@ -1,3 +1,4 @@
+#!/bin/bash
 # Please source this file.
 
 if [ -z "$1" ]; then
@@ -6,9 +7,7 @@ if [ -z "$1" ]; then
     return
 fi
 
-svnroot=`. svnrootofcwd`
-semsroot=${svnroot#stack/sems/trunk}
-if [ "$svnroot" = "$semsroot" ]; then
+if ! semsroot=`svnrootofcwd stack/sems/trunk`; then
     echo "Not a SEMS working copy"
     false
     return
@@ -33,7 +32,7 @@ function find_mod() {
     return 1
 }
 
-for mid in build modules/EBC modules/EBI modules/EBO modules/EBX; do
+for mid in . archetype build modules/EBC modules/EBI modules/EBO modules/EBX; do
     if dir=`find_mod $semsroot/$mid "$1"`; then
         cd "$dir"
         return

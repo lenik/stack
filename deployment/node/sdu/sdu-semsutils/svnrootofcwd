@@ -1,9 +1,18 @@
 #!/bin/bash
 
 read URL_ url < <(svn info | grep URL)
-    host_=${url##*://}
-    full_cwd=${host_#*/}
-    svn_cwd=${full_cwd#repos/svn/}
+    host_="${url##*://}"
+    full_cwd="${host_#*/}"
+    svn_cwd="${full_cwd#repos/svn/}"
+
+    while [ $# != 0 ]; do
+        xxx_cwd="${svn_cwd#$1/}"
+        if [ "$xxx_cwd" = "$svn_cwd" ]; then
+            exit 1
+        fi
+        svn_cwd="$xxx_cwd"
+        shift
+    done
 
 cwd=`readlink -f .`
 # echo sems_cwd=$sems_cwd
