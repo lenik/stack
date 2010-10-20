@@ -8,14 +8,32 @@ function autokey() {
     local key
 
     key=`ifrsubst $id`
-
-    if [ -z "$key" ]; then
-        read
+    if [ -n "$key" ]; then
+        key=${key%%[*}
+    else
+        namevar=Name_${id//-/_}
+        nametag="${!namevar}"
+        if [ -n "$nametag" ]; then
+            key=$class:$nametag
+        else
+            key=$class:$id
+        fi
+    fi
+    echo "$key"
+}
 
 SUBST="subst -q -g"
 export NO_SUBST=1
 
 for region in us-east-1 ap-southeast-1; do
+
+  echo "[Region $region] Query tags"
+
+    while read type obj_type id tag_name tag_data; do
+        if [ -z "$id" ]; then continue; fi
+        namevar=${tag_name}_${id//-/_}
+        eval "$namevar=\"$tag_data\""
+    done < <(NO_SUBST=1 ec2-describe-tags --region $region)
 
   echo "[Region $region] Update instances"
 
@@ -24,20 +42,11 @@ for region in us-east-1 ap-southeast-1; do
         if [ "$type" != "INSTANCE" ]; then continue; fi
         if [ "$state" != "running" ]; then continue; fi
 
-        key=`ifrsubst $id`
-        if [ -z "$key" ]; then
-            read a_type a_inst_id a_dat_k a_dat \
-                < <(ec2-describe-instance-attribute --region $region $id -t)
-            if [ -n "$a_dat_k" ]; then
-                key="inst:$a_dat_k"
-            else
-                key="inst:$id"
-            fi
-        fi
-        key=${key%%[*}
+        key=`autokey inst $region $id`
         echo "$key ($ipw)"
 
         $SUBST $key[id]   $id
+        $SUBST $key[.rg]  $region
         $SUBST $key[.ami] $ami
         $SUBST $key[.aki] $aki
         $SUBST $key[.ari] $ari
@@ -54,26 +63,26 @@ for region in us-east-1 ap-southeast-1; do
     while read type id _1 _2 loc state t0; do
         if [ "$type" != VOLUME ]; then continue; fi
 
-        key=`ifrsubst $id vol:$id`
-        key=${key%%[*}
+        key=`autokey vol $region $id`
         echo "$key"
 
         $SUBST $key[id]   $id
+        $SUBST $key[.rg]  $region
         $SUBST $key[.loc] $loc
         # $SUBST $key[.snap] $snap
     done
 
   echo "[Region $region] Update snapshots"
 
-    ec2-describe-snapshots --show-empty-fields |
+    ec2-describe-snapshots --region $region --show-empty-fields |
     while read type id vol status t0 perc ser n1 desc; do
         if [ "$type" != SNAPSHOT ]; then continue; fi
 
-        key=`ifrsubst $id snap:$id`
-        key=${key%%[*}
+        key=`autokey snap $region $id`
         echo "$key ($vol, $t0)"
 
         $SUBST $key[id]   $id
+        $SUBST $key[.rg]  $region
         $SUBST $key[.vol] $vol
         $SUBST $key[ser]  $ser
         $SUBST $key[t0]   $t0
