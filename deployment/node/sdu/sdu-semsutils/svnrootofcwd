@@ -1,0 +1,13 @@
+#!/bin/bash
+
+read URL_ url < <(svn info | grep URL)
+    host_=${url##*://}
+    full_cwd=${host_#*/}
+    svn_cwd=${full_cwd#repos/svn/}
+
+cwd=`readlink -f .`
+# echo sems_cwd=$sems_cwd
+# echo cwd=$cwd
+
+svnroot="${cwd%$svn_cwd}"
+echo "$svnroot"
