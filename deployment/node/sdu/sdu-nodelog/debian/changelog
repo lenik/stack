@@ -1,3 +1,21 @@
+sdu-nodelog (0.1.1-2) maverick; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Wed, 20 Oct 2010 13:23:28 +0800
+
+sdu-nodelog (0.1.1-1) maverick; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Wed, 20 Oct 2010 13:22:58 +0800
+
+sdu-nodelog (0.1.0-2) maverick; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Wed, 20 Oct 2010 12:12:41 +0800
+
 sdu-nodelog (0.1.0-1) unstable; urgency=low
 
   * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
