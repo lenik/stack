@@ -1,3 +1,9 @@
+sdu-eclipse (0.1.2-2) maverick; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Wed, 20 Oct 2010 12:11:53 +0800
+
 sdu-eclipse (0.1.2-1) lucid; urgency=low
 
   * Upstream updates, automatic package by deb-redist

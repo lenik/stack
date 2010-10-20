@@ -45,8 +45,14 @@ mkdir -p $istore_swap
 function istore_swap() {
     local dir="$1"
     local iname="$2"
-    if [ ! -h $dir ]; then
-        echo "Istore-swap: $dir"
+    echo -n "Istore-swap: $dir"
+
+    if [ -h $dir ]; then
+        echo " (symlink, skipped)"
+    elif df $dir | grep -q $istore_mnt; then
+        echo " (bind-mount, skipped)"
+    else
+        echo " Moving..."
         if mv $dir $istore_swap/$iname; then
             echo "    swapped out. "
             parent=${dir%/*}

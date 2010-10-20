@@ -1,32 +1,56 @@
 #!/bin/bash
 
+# autokey instance|volume <id>
+function autokey() {
+    local class=$1
+    local region=$2
+    local id=$3
+    local key
+
+    key=`ifrsubst $id`
+
+    if [ -z "$key" ]; then
+        read
+
 SUBST="subst -q -g"
 export NO_SUBST=1
 
-echo "Update instances"
+for region in us-east-1 ap-southeast-1; do
 
-    ec2-describe-instances --show-empty-fields |
+  echo "[Region $region] Update instances"
+
+    ec2-describe-instances --region $region --show-empty-fields |
     while read type id ami wan lan state sec _1 _2 m1 t0 loc aki ari _3 mon ipw ipl _4 _5 st _6 _7; do
         if [ "$type" != "INSTANCE" ]; then continue; fi
         if [ "$state" != "running" ]; then continue; fi
 
-        key=`ifrsubst $id inst:$id`
+        key=`ifrsubst $id`
+        if [ -z "$key" ]; then
+            read a_type a_inst_id a_dat_k a_dat \
+                < <(ec2-describe-instance-attribute --region $region $id -t)
+            if [ -n "$a_dat_k" ]; then
+                key="inst:$a_dat_k"
+            else
+                key="inst:$id"
+            fi
+        fi
         key=${key%%[*}
         echo "$key ($ipw)"
 
-        $SUBST $key[id]  $id
-        $SUBST $key[ami] $ami
-        $SUBST $key[aki] $aki
-        $SUBST $key[ari] $ari
-        $SUBST $key[wan] $wan
-        $SUBST $key[lan] $lan
-        $SUBST $key[ipw] $ipw
-        $SUBST $key[ipl] $ipl
+        $SUBST $key[id]   $id
+        $SUBST $key[.ami] $ami
+        $SUBST $key[.aki] $aki
+        $SUBST $key[.ari] $ari
+        $SUBST $key[.loc] $loc
+        $SUBST $key[wan]  $wan
+        $SUBST $key[lan]  $lan
+        $SUBST $key[ipw]  $ipw
+        $SUBST $key[ipl]  $ipl
     done
 
-echo "Update volumes"
+  echo "[Region $region] Update volumes"
 
-    ec2-describe-volumes --show-empty-fields |
+    ec2-describe-volumes --region $region --show-empty-fields |
     while read type id _1 _2 loc state t0; do
         if [ "$type" != VOLUME ]; then continue; fi
 
@@ -35,10 +59,11 @@ echo "Update volumes"
         echo "$key"
 
         $SUBST $key[id]   $id
-        # $SUBST $key[snap] $snap
+        $SUBST $key[.loc] $loc
+        # $SUBST $key[.snap] $snap
     done
 
-echo "Update snapshots"
+  echo "[Region $region] Update snapshots"
 
     ec2-describe-snapshots --show-empty-fields |
     while read type id vol status t0 perc ser n1 desc; do
@@ -48,6 +73,11 @@ echo "Update snapshots"
         key=${key%%[*}
         echo "$key ($vol, $t0)"
 
-        $SUBST $key[id]  $id
-        # $SUBST $key[vol] $vol
+        $SUBST $key[id]   $id
+        $SUBST $key[.vol] $vol
+        $SUBST $key[ser]  $ser
+        $SUBST $key[t0]   $t0
+        $SUBST $key[desc] $desc
     done
+
+done

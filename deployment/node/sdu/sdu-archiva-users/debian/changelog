@@ -1,3 +1,9 @@
+sdu-archiva-users (0.1.0-3) maverick; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Wed, 20 Oct 2010 12:08:34 +0800
+
 sdu-archiva-users (0.1.0-2) lucid; urgency=low
 
   * Upstream updates, automatic package by deb-redist
