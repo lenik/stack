@@ -1,0 +1,12 @@
+Source: sdu-dat-geocity
+Section: database
+Priority: extra
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7.0.50~), autotools-dev
+Standards-Version: 3.8.4
+Homepage: http://www.maxmind.com/app/geolitecity
+
+Package: sdu-dat-geocity
+Architecture: all
+Depends:
+Description: GeoLite City free database
