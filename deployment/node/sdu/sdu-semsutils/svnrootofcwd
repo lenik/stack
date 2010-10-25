@@ -1,12 +1,14 @@
 #!/bin/bash
 
+prefix="${1%/}"
+
 read URL_ url < <(svn info | grep URL)
     host_="${url##*://}"
     full_cwd="${host_#*/}"
     svn_cwd="${full_cwd#repos/svn/}"
 
     while [ $# != 0 ]; do
-        xxx_cwd="${svn_cwd#$1/}"
+        xxx_cwd="${svn_cwd#$prefix}"
         if [ "$xxx_cwd" = "$svn_cwd" ]; then
             exit 1
         fi

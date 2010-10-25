@@ -8,6 +8,7 @@ Homepage: http://sdu.secca-project.com/sdu-semsutils
 
 Package: sdu-semsutils
 Architecture: all
-Depends: sdu-seccajx, maven2
+Depends: maven2
 Recommends: xjl-coolbash
+Suggests: sdu-seccajx
 Description: SEMS maintainence utilities
