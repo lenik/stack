@@ -1,5 +1,7 @@
 include libauto/coolauto.am
 
+dist_sbin_SCRIPTS = \
+    istore-swap
 
 setup_SCRIPTS = \
 	post-install.sh \
@@ -13,3 +15,6 @@ post-install.sh: post-install.sh.in Makefile
 
 pre-remove.sh: pre-remove.sh.in Makefile
 	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
+
+istore-swap: istore-swap.in Makefile
+	$(do_subst) <$(srcdir)/istore-swap.in >$@

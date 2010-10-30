@@ -1,0 +1,38 @@
+#!/bin/bash
+# master-file
+
+# intance store mount.
+istore_dev=/dev/sda2
+istore_mnt=/mnt/istore
+istore_swap=$istore_mnt/swap
+mkdir -p $istore_swap
+
+function istore_swap() {
+    local dir="$1"
+    local iname="$2"
+    echo -n "Istore-swap: $dir"
+
+    if [ -h $dir ]; then
+        echo " (symlink, skipped)"
+    elif df $dir | grep -q $istore_mnt; then
+        echo " (bind-mount, skipped)"
+    else
+        echo " Moving..."
+        if mv $dir $istore_swap/$iname; then
+            echo "    swapped out. "
+            parent=${dir%/*}
+            base=${dir##*/}
+            cd $parent
+            ln -snf $istore_swap/$iname $base
+        else
+            echo "    swapout failed, leave the state"
+        fi
+    fi
+}
+
+istore_swap /var/log   var_log
+istore_swap /var/lib   var_lib
+istore_swap /var/cache var_cache
+istore_swap /usr/local var_local
+
+exit 0
