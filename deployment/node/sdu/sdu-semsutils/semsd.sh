@@ -4,8 +4,8 @@ function _cd_sems() {
     if ! semsroot=`svnrootofcwd stack/sems/trunk`; then
         return 1
     fi
-    COMPREPLY=( $( find "$semsroot" -name pom.xml -exec sh -c \
-        'pom_xml="{}"; dir="${pom_xml%/pom.xml}"; echo "${dir##*/}"' \; | \
-        grep ^$cur) )
+    COMPREPLY=( $( find "$semsroot" -name pom.xml \
+        | ( while read f; do dir="${f%/pom.xml}"; echo "${dir##*/}"; done ) \
+        | grep "^$cur" ))
     return 0
 } && complete -F _cd_sems semsd

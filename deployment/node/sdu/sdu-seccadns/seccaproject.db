@@ -25,35 +25,34 @@ $TTL            12H
 ns1                     A       67.202.17.183
 ns2                     A       67.202.17.183
 
-main-dev                A       67.202.17.183
-main-app                CNAME   main-dev
-s-dev                   CNAME   main-dev
-aut-dev                 CNAME   main-dev
-back                    CNAME   main-dev
+main-dev                A       67.202.17.183   ; 主开发节点
+app-1                   CNAME   main-dev        ; 应用节点-1
+s-dev                   CNAME   main-dev        ; 开发组支持
+aut-dev                 CNAME   main-dev        ; 综合集成
+backup                  CNAME   main-dev        ; 备份
 
 dev                     CNAME   main-dev
 ghs                     CNAME   main-dev
-mail                    CNAME   ghs
-node                    CNAME   main-dev
-rproxy                  CNAME   main-dev
+mail                    CNAME   ghs             ; 邮件支持
+node                    CNAME   main-dev        ; 节点信息查询
+rproxy                  CNAME   main-dev        ; 反向代理支持
 
-blogs                   CNAME   s-dev
-ci                      CNAME   aut-dev
+blogs                   CNAME   s-dev           ; 开发者日志
+ci                      CNAME   aut-dev         ; 连续集成
 econ                    CNAME   main-dev
-forum                   CNAME   s-dev
-list                    CNAME   s-dev
-m2                      CNAME   aut-dev
-repo                    CNAME   s-dev
-sql                     CNAME   aut-dev
-static                  CNAME   main-app
-svn                     CNAME   main-dev
-webapp                  CNAME   main-app
-track                   CNAME   s-dev
-webmin                  CNAME   main-dev
-www                     CNAME   main-dev
-xmpp                    CNAME   s-dev
+forum                   CNAME   s-dev           ; 用户论坛
+list                    CNAME   s-dev           ; 邮件列表
+m2                      CNAME   aut-dev         ; M2仓库/模快依赖项
+repo                    CNAME   s-dev           ; SDU仓库/预编译部署单元
+sql                     CNAME   aut-dev         ; SQL数据管理
+static                  CNAME   app-1           ; 静态资源
+svn                     CNAME   main-dev        ; SVN仓库/版本控制
+webapp                  CNAME   app-1
+track                   CNAME   s-dev           ; Trac 项目管理支持
+webmin                  CNAME   main-dev        ; Web 远程系统监控
+www                     CNAME   main-dev        ; SECCA 工程开发网
+xmpp                    CNAME   s-dev           ; XMPP IM 支持
 
-1.app                   CNAME   main-app
 *.blogs                 CNAME   blogs
-pg                      CNAME   sql
-my                      CNAME   sql
+pg                      CNAME   sql             ; PostgreSQL 数据库管理
+my                      CNAME   sql             ; MySQL 数据库管理

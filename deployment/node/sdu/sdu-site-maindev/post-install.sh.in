@@ -20,7 +20,7 @@ else
     echo "Not an main-dev instance, checkout site from svn remote"
     # url=http://svn.secca-project.com/public/trunk/www
     # url=svn://svn.secca-project.com:1030/public/trunk/www
-    url=svn+ssh://svn.secca-project.com/public/trunk/www
+    url=svn+ssh://svn.secca-project.com/repos/svn/public/trunk/www
 fi
 
 devsite_dir=@pkgdatadir@/html
