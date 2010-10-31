@@ -1,5 +1,9 @@
 include libauto/coolauto.am
 
+srclistdir = ${sysconfdir}/apt/sources.list.d
+
+dist_srclist_DATA = \
+    d/google-chrome.list
 
 setup_SCRIPTS = \
     post-install.sh \
