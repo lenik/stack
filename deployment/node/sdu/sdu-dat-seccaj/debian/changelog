@@ -1,3 +1,9 @@
+sdu-dat-seccaj (1.2.8-3) unstable; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Tue, 02 Nov 2010 19:20:17 +0800
+
 sdu-dat-seccaj (1.2.8-2) maverick; urgency=low
 
   * Upstream updates, automatic package by deb-redist

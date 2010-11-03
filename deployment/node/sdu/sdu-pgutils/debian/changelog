@@ -1,3 +1,9 @@
+sdu-pgutils (0.1.1-3) unstable; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Tue, 02 Nov 2010 19:34:01 +0800
+
 sdu-pgutils (0.1.1-2) maverick; urgency=low
 
   * Upstream updates, automatic package by deb-redist
