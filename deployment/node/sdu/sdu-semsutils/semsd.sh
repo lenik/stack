@@ -4,8 +4,20 @@ function _cd_sems() {
     if ! semsroot=`svnrootofcwd stack/sems/trunk`; then
         return 1
     fi
-    COMPREPLY=( $( find "$semsroot" -name pom.xml \
-        | ( while read f; do dir="${f%/pom.xml}"; echo "${dir##*/}"; done ) \
-        | grep "^$cur" ))
+    local pomdirs="$semsroot/.pomdirs"
+    local ver=0
+    if [ -f "$pomdirs" ]; then
+        ver=`stat -c%Y "$pomdirs"`
+    fi
+    local cver=`date +%s`
+    if [ $(( (cver - ver) / 3600 )) -gt 240 ]; then
+        find "$semsroot" -name pom.xml \
+        | while read f; do
+            dir="${f%/pom.xml}"
+            echo "${dir##*/}"
+        done >"$pomdirs"
+    fi
+
+    COMPREPLY=( $( grep "^$cur" "$pomdirs" ))
     return 0
 } && complete -F _cd_sems semsd
