@@ -6,6 +6,26 @@ Build-Depends: debhelper (>= 7.0.50~), autotools-dev
 Standards-Version: 3.8.4
 Homepage: http://sdu.secca-project.com/sdu-trac-suite
 
+Package: trac-ticketdepgraph
+Architecture: all
+Depends: trac-graphviz
+Description: Trac Ticket Dependencies Graph plugin (SDU Redist)
+
+Package: trac-ticketmodifiedfiles
+Architecture: all
+Depends: trac
+Description: Trac Ticket Modified Files plugin (SDU Redist)
+
+Package: trac-tickettemplate
+Architecture: all
+Depends: trac
+Description: Trac Ticket Template plugin (SDU Redist)
+
+Package: trac-ticketstats
+Architecture: all
+Depends: trac
+Description: Trac Ticket Statistics plugin (SDU Redist)
+
 Package: trac-tocmacro
 Architecture: all
 Depends: trac

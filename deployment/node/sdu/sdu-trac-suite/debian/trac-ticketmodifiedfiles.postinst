@@ -1,0 +1,4 @@
+#!/bin/sh
+easy_install http://trac-hacks.org/svn/ticketmodifiedfilesplugin
+
+exit 0
