@@ -6,6 +6,11 @@ Build-Depends: debhelper (>= 7.0.50~), autotools-dev
 Standards-Version: 3.8.4
 Homepage: http://sdu.secca-project.com/sdu-trac-suite
 
+Package: trac-tocmacro
+Architecture: all
+Depends: trac
+Description: Trac TOC macro plugin (SDU Redist)
+
 Package: sdu-trac-suite
 Architecture: all
 Depends: trac, sdu-tracutils

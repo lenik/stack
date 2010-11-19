@@ -1,0 +1,3 @@
+#!/bin/sh
+
+easy_install http://trac-hacks.org/svn/tocmacro/0.11
