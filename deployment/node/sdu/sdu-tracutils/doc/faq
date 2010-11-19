@@ -1,0 +1,7 @@
+- set admin permission for user
+
+    trac-admin DIR permission add `user` TRAC_ADMIN
+
+- install trac-graphviz
+
+    in trac Admin page, enable the "Graphviz Component" in graphviz plugin.
