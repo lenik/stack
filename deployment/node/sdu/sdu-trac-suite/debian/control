@@ -1,0 +1,31 @@
+Source: sdu-trac-suite
+Section: python
+Priority: extra
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7.0.50~), autotools-dev
+Standards-Version: 3.8.4
+Homepage: http://sdu.secca-project.com/sdu-trac-suite
+
+Package: sdu-trac-suite
+Architecture: all
+Depends: trac, sdu-tracutils
+Recommends:
+    trac-accountmanager,
+    trac-authopenid,
+    trac-bitten,
+    trac-bzr,
+    trac-customfieldadmin,
+    trac-email2trac,
+    trac-git,
+    trac-graphviz,
+    trac-icalviewplugin,
+    trac-ja-resource,
+    trac-mastertickets,
+    trac-mercurial,
+    trac-spamfilter,
+    trac-wikiprint,
+    trac-wikirename,
+    trac-wikitablemacro,
+    trac-wysiwyg,
+    trac-xmlrpc
+Description: Common Trac installation.
