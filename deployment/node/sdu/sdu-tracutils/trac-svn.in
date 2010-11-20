@@ -1,0 +1,142 @@
+#!/bin/bash
+# master-file
+
+    . shlib-import cliboot
+
+    RCSID='$Id: bash.sh 1853 2010-09-29 01:35:59Z lenik $'
+    short_opts="bchqv"
+    long_opts="pre-ci, post-ci, help,quiet,verbose,version"
+
+    contribdir=@datadir@/doc/trac/contrib
+
+    pre_ci=
+    post_ci=
+
+function version() {
+    parse_id "$RCSID"
+    echo "[$BASENAME] Trac/SVN Intergation Helper"
+    echo "Written by Lenik, Version 0.$rcs_rev, Last updated at $rcs_date"
+}
+
+function help() {
+    version
+    echo
+    echo "Syntax: "
+    echo "    $0 [OPTION] [--] TRAC_ENV_DIR ..."
+    echo
+    echo "Options: "
+    echo "    -b, --pre-ci        Install Trac pre-commit hook"
+    echo "    -c, --post-ci       Install Trac post-commit hook"
+    echo "    -q, --quiet         Repeat to get less info"
+    echo "    -v, --verbose       Repeat to get more info"
+    echo "    -h, --help          Show this help page"
+    echo "        --version       Print the version info"
+}
+
+function setopt() {
+    case "$1" in
+        -b|--pre-ci)
+            pre_ci=1;;
+        -c|--post-ci)
+            post_ci=1;;
+        -h|--help)
+            help; exit;;
+        -q|--quiet)
+            LOGLEVEL=$((LOGLEVEL - 1));;
+        -v|--verbose)
+            LOGLEVEL=$((LOGLEVEL + 1));;
+        --version)
+            version; exit;;
+        *)
+            quit "invalid option: $1";;
+    esac
+}
+
+function main() {
+
+    if [ $# = 0 ]; then
+        echo "No trac env dir specified. "
+        exit 1
+    fi
+
+    for tracenv in "$@"; do
+        tracini="$tracenv/conf/trac.ini"
+        if [ ! -f "$tracini" ]; then
+            echo "Not a Trac env dir: $tracenv"
+            exit 1
+        fi
+
+        if repo_type=`grep '^repository_type[ =]' "$tracini"`; then
+            repo_type="${repo_type#*=}"
+            repo_type="${repo_type// }"
+            if [ "$repo_type" != svn ]; then
+                echo "Not an SVN repository: $repo_type"
+                exit 1
+            fi
+        fi
+
+        if ! repo=`grep '^repository_dir[ =]' "$tracini"`; then
+            echo "No repository_dir defined in $tracini"
+            exit 1
+        fi
+        repo="${repo#*=}"
+        while [ "$repo" != "${repo# }" ]; do    # LTRIM
+            repo="${repo# }"
+        done
+
+        if [ ! -d "$repo/db/revs" ]; then
+            echo "Not an SVN repository: $repo"
+            exit 1
+        fi
+
+        _log1 "Process: $tracenv -> $repo"
+
+        if [ "$pre_ci" = 1 ]; then
+            repo_pre_ci="$repo/hooks/pre-commit"
+            trac_pre_ci="$contribdir/trac-pre-commit-hook"
+            if [ ! -f "$trac_pre_ci" ]; then
+                echo "No such file: $trac_pre_ci"
+                exit 1
+            fi
+
+            if [ ! -f "$repo_pre_ci" ]; then
+                echo '#!/bin/bash -e'            >"$repo_pre_ci"
+                echo 'REPOS="$1"'               >>"$repo_pre_ci"
+                echo 'TXN="$2"'                 >>"$repo_pre_ci"
+                echo 'SVNLOOK=@bindir@/svnlook' >>"$repo_pre_ci"
+                echo                            >>"$repo_pre_ci"
+            fi
+
+            lineconf -tm "    Install $pre_ci_hook to $repo" \
+                "$repo/hooks/pre-commit" @trac::pre-ci \
+                '@bindir@/python "'"$trac_pre_ci"'" "'"$tracenv"'" "`$SVNLOOK log -t "$TXN" "$REPOS"`"'
+
+            chmod +x "$repo_pre_ci"
+        fi
+
+        if [ "$post_ci" = 1 ]; then
+            repo_post_ci="$repo/hooks/post-commit"
+            trac_post_ci="$contribdir/trac-post-commit-hook"
+            if [ ! -f "$trac_post_ci" ]; then
+                echo "No such file: $trac_post_ci"
+                exit 1
+            fi
+
+            if [ ! -f "$repo_post_ci" ]; then
+                echo '#!/bin/bash -e'            >"$repo_post_ci"
+                echo 'REPOS="$1"'               >>"$repo_post_ci"
+                echo 'REV="$2"'                 >>"$repo_post_ci"
+                echo                            >>"$repo_post_ci"
+            fi
+
+            lineconf -tm "    Install $post_ci_hook to $repo" \
+                "$repo/hooks/post-commit" @trac::post-ci \
+                '@bindir@/python "'"$trac_post_ci"'" -p "'"$tracenv"'" -r "$REV"'
+
+            chmod +x "$repo_post_ci"
+        fi
+
+    done
+}
+
+boot "$@"

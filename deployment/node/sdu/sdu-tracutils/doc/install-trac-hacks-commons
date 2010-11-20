@@ -1,0 +1,24 @@
+# NOTE: the order matters!
+easy_install http://trac-hacks.org/svn/accountmanagerplugin/trunk
+easy_install http://trac-hacks.org/svn/tagsplugin/tags/0.6/
+easy_install http://trac-hacks.org/svn/stractisticsplugin/0.10/tags/0.4.2
+easy_install http://trac-hacks.org/svn/projectmenuplugin/
+# NOTE: APPLY PATCH: http://trac-hacks.org/ticket/1892
+
+easy_install http://trac-hacks.org/svn/iniadminplugin/0.11/
+easy_install http://trac-hacks.org/svn/ganttchartplugin/0.11/
+easy_install http://trac-hacks.org/svn/gitplugin/0.11/
+easy_install http://trac-hacks.org/svn/masterticketsplugin/0.11/
+easy_install http://trac-hacks.org/svn/loomingcloudsplugin/0.11/
+easy_install http://trac-hacks.org/svn/workfloweditorplugin/0.11/
+easy_install http://trac-hacks.org/svn/tractickettemplateplugin/0.11/
+easy_install http://trac-hacks.org/svn/tracticketstatsplugin/0.11/
+
+# NOTE: Prior to installing graphvizplugin
+yum install graphviz and graphviz-python
+easy_install http://trac-hacks.org/svn/graphvizplugin/0.11-0.7.4/
+easy_install http://trac-hacks.org/svn/tracticketdepgraphplugin/0.11/
+
+easy_install http://trac-hacks.org/svn/tocmacro/0.11
+easy_install http://trac-hacks.org/svn/ticketmodifiedfilesplugin
+easy_install http://trac-hacks.org/svn/tasklistplugin/
