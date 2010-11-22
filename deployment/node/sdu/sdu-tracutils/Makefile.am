@@ -13,6 +13,9 @@ setup_SCRIPTS = \
     post-install.sh \
     pre-remove.sh
 
+setup_DATA = \
+    trac-post-commit-hook.diff
+
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in trac-svn.in doc
 CLEANFILES = post-install.sh    pre-remove.sh    trac-svn
 
@@ -24,3 +27,7 @@ pre-remove.sh: pre-remove.sh.in Makefile
 
 trac-svn: trac-svn.in Makefile
 	$(do_subst) <$(srcdir)/trac-svn.in >$@
+
+trac-post-commit-hook.diff: trac-post-commit-hook.orig trac-post-commit-hook
+	-diff -u ${srcdir}/trac-post-commit-hook.orig \
+                 ${srcdir}/trac-post-commit-hook >$@

@@ -1,2 +1,10 @@
 #!/bin/sh
 # master-file
+
+origdir="@datadir@/doc/trac/contrib"
+
+echo "Setup trac-post-commit-hook to support zh"
+patch -u "$origdir/trac-post-commit-hook"
+       "@setupdir@/trac-post-commit-hook.diff"
+
+exit 0

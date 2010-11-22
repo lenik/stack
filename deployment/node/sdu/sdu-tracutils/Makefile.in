@@ -101,11 +101,12 @@ am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" \
-	"$(DESTDIR)$(setupdir)" "$(DESTDIR)$(docdir)"
+	"$(DESTDIR)$(setupdir)" "$(DESTDIR)$(docdir)" \
+	"$(DESTDIR)$(setupdir)"
 SCRIPTS = $(bin_SCRIPTS) $(dist_bin_SCRIPTS) $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
-DATA = $(dist_doc_DATA)
+DATA = $(dist_doc_DATA) $(setup_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -244,6 +245,9 @@ dist_doc_DATA = \
 setup_SCRIPTS = \
     post-install.sh \
     pre-remove.sh
+
+setup_DATA = \
+    trac-post-commit-hook.diff
 
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in trac-svn.in doc
 CLEANFILES = post-install.sh    pre-remove.sh    trac-svn
@@ -406,6 +410,26 @@ uninstall-dist_docDATA:
 	test -n "$$files" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(docdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(docdir)" && rm -f $$files
+install-setupDATA: $(setup_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(setupdir)" || $(MKDIR_P) "$(DESTDIR)$(setupdir)"
+	@list='$(setup_DATA)'; test -n "$(setupdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(setupdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(setupdir)" || exit $$?; \
+	done
+
+uninstall-setupDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(setup_DATA)'; test -n "$(setupdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -564,7 +588,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(docdir)"; do \
+	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(docdir)" "$(DESTDIR)$(setupdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -614,7 +638,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-dist_docDATA install-setupSCRIPTS
+install-data-am: install-dist_docDATA install-setupDATA \
+	install-setupSCRIPTS
 
 install-dvi: install-dvi-am
 
@@ -661,7 +686,8 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-binSCRIPTS uninstall-dist_binSCRIPTS \
-	uninstall-dist_docDATA uninstall-setupSCRIPTS
+	uninstall-dist_docDATA uninstall-setupDATA \
+	uninstall-setupSCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -674,12 +700,13 @@ uninstall-am: uninstall-binSCRIPTS uninstall-dist_binSCRIPTS \
 	install-dist_docDATA install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
 	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-setupSCRIPTS install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	install-ps install-ps-am install-setupDATA \
+	install-setupSCRIPTS install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am uninstall uninstall-am uninstall-binSCRIPTS \
 	uninstall-dist_binSCRIPTS uninstall-dist_docDATA \
-	uninstall-setupSCRIPTS
+	uninstall-setupDATA uninstall-setupSCRIPTS
 
 
 post-install.sh: post-install.sh.in Makefile
@@ -690,6 +717,10 @@ pre-remove.sh: pre-remove.sh.in Makefile
 
 trac-svn: trac-svn.in Makefile
 	$(do_subst) <$(srcdir)/trac-svn.in >$@
+
+trac-post-commit-hook.diff: trac-post-commit-hook.orig trac-post-commit-hook
+	-diff -u ${srcdir}/trac-post-commit-hook.orig \
+                 ${srcdir}/trac-post-commit-hook >$@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
