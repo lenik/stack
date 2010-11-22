@@ -28,6 +28,6 @@ pre-remove.sh: pre-remove.sh.in Makefile
 trac-svn: trac-svn.in Makefile
 	$(do_subst) <$(srcdir)/trac-svn.in >$@
 
-trac-post-commit-hook.diff: trac-post-commit-hook.orig trac-post-commit-hook
-	-diff -u ${srcdir}/trac-post-commit-hook.orig \
+trac-post-commit-hook.diff: trac-post-commit-hook.0 trac-post-commit-hook
+	-diff -u ${srcdir}/trac-post-commit-hook.0 \
                  ${srcdir}/trac-post-commit-hook >$@
