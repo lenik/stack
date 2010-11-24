@@ -1,0 +1,81 @@
+#!/bin/bash
+    . shlib-import cliboot
+
+    RCSID='$Id: bash.sh 1853 2010-09-29 01:35:59Z lenik $'
+    short_opts="hqv"
+    long_opts="help,quiet,verbose,version"
+
+function version() {
+    parse_id "$RCSID"
+    echo "[$BASENAME] Split squid.conf by tags"
+    echo "Written by Lenik, Version 0.$rcs_rev, Last updated at $rcs_date"
+}
+
+function help() {
+    version
+    echo
+    echo "Syntax: "
+    echo "    $0 [OPTION] [--] squid.conf"
+    echo
+    echo "Options: "
+    echo "    -q, --quiet             Repeat to get less info"
+    echo "    -v, --verbose           Repeat to get more info"
+    echo "    -h, --help              Show this help page"
+    echo "        --version           Print the version info"
+}
+
+function setopt() {
+    case "$1" in
+        -h|--help)
+            help; exit;;
+        -q|--quiet)
+            LOGLEVEL=$((LOGLEVEL - 1));;
+        -v|--verbose)
+            LOGLEVEL=$((LOGLEVEL + 1));;
+        --version)
+            version; exit;;
+        *)
+            quit "invalid option: $1";;
+    esac
+}
+
+function main() {
+    if [ $# = 0 ]; then
+        echo "No squid.conf file specified. "
+        exit 1
+    fi
+    squid_conf="$1"
+    shift
+
+    if [ ! -r "$squid_conf" ]; then
+        echo "Config file $squid_conf isn't readable. "
+        exit 1
+    fi
+
+    topf=`tempfile`
+    sectf=
+    while read -r l; do
+        section="${l/ OPTIONS FOR}"
+        section="${section/ OPTIONS}"
+        if [ "$section" != "$l" ]; then # contains "OPTIONS ..."
+            section="${section#\#}"
+            section=`echo $section | tr ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz`
+            section="${section//[^A-Za-z0-9]/-}"
+            sectf="$section.conf"
+            _log1 "Split $sectf"
+            echo "include $sectf" >>$topf
+            echo -n >$sectf
+        fi
+
+        if [ -z "$sectf" ]; then
+            echo -E "$l" 1>>$topf
+        else
+            echo -E "$l" 1>>$sectf
+        fi
+    done <"$squid_conf"
+
+    _log1 "Save $squid_conf"
+    mv $topf "$squid_conf"
+}
+
+boot "$@"

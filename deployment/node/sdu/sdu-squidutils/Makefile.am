@@ -1,5 +1,10 @@
 include libauto/coolauto.am
 
+dist_bin_SCRIPTS = \
+    squidconfsplit
+
+dist_man_MANS = \
+    squidconfsplit.1
 
 setup_SCRIPTS = \
     post-install.sh \
