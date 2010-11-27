@@ -1,2 +1,12 @@
 #!/bin/sh
 # master-file
+
+lineconf -tm "Mask out altova authentication sites [1]" \
+    /etc/hosts @altova.1 \
+    '127.0.0.1 link.altova.com'
+
+lineconf -tm "Mask out altova authentication sites [2]" \
+    /etc/hosts @altova.2 \
+    '127.0.0.1 link.altova.com.edgekey.net'
+
+exit 0
