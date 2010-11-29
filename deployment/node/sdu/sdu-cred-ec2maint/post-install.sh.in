@@ -1,8 +1,4 @@
 #!/bin/sh
-
 # master-file
-
-# echo "Create ec2maint user..."
-# useradd -m -u 902 -g dev -s /bin/bash -c "General EC2 Maintainer" ec2maint
 
 exit 0

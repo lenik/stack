@@ -39,7 +39,7 @@ devsite_dir=@pkgdatadir@/html
 
         # IGNORE_EXTERNALS=--ignore-externals
         IGNORE_EXTERNALS=
-        if ! svn-002 co $IGNORE_EXTERNALS $url $devsite_dir; then
+        if ! svn-002 co --trust-server-cert $IGNORE_EXTERNALS $url $devsite_dir; then
             echo "checkout failed. "
             exit 1
         fi

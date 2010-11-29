@@ -4,3 +4,6 @@
 
     run:
         sudo apt-get purge postgresql*
+
+sdu-postgresql
+==============
