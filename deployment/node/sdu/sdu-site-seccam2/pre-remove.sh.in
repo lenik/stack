@@ -14,6 +14,8 @@ echo "Remove SECCA M2 repositories"
 
 echo "Unconfig apache2 forwarders"
 
+    rulesf=/etc/apache2/sites-conf/archiva.rules
+
     lineconf -ktm "  Remove server alias" \
         $rulesf @Alias::SECCA
 
