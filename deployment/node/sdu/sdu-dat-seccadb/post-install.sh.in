@@ -33,7 +33,7 @@ echo "Set postgres default password"
 
 echo "Search installed databases"
     while read db; do
-        eval "db_$db=1"
+        eval "db_${db//[^a-zA-Z0-9]/_}=1"
     done < <(seccadb-psql -Atc 'select datname from pg_database')
 
 if [ "$db_playdb" = 1 ]; then
