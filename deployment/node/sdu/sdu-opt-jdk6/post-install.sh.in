@@ -33,3 +33,17 @@ echo "Link jdk-6 to $javahome"
     ln -snf $javahome jdk-6
 
 echo "$instdir" >"@DESTDIR@@pkgdatadir@/instdir"
+
+echo "Set preferred alternatives for Sun JDK-6"
+    for f in $instdir/bin/*; do
+        if [ -x "$f" ]; then
+            base=${f##*/}
+            update-alternatives --install /usr/bin/$base $base "$f" 3000
+        fi
+    done
+    for f in $instdir/jre/bin/*; do
+        if [ -x "$f" ]; then
+            base=${f##*/}
+            update-alternatives --install /usr/bin/$base $base "$f" 5000
+        fi
+    done
