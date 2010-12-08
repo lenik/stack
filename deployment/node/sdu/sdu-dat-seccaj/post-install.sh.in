@@ -20,7 +20,7 @@ else
     # domaindir MUST be not existed, before create-domain.
     # install -d -m 2775 -o appserv -g dev $domaindir
 
-    echox sudo -uappserv /opt/java/glassfish/bin/asadmin \
+    echo-x sudo -uappserv /opt/java/glassfish/bin/asadmin \
         create-domain \
             --savelogin \
             --domaindir $domainparent \

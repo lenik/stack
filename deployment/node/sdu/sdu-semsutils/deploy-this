@@ -106,7 +106,7 @@ function main() {
     opts[nopt++]="$contextroot"
 
     ECHOX=
-    if [ $LOGLEVEL -ge 2 ]; then ECHOX=echox; fi
+    if [ $LOGLEVEL -ge 2 ]; then ECHOX=echo-x; fi
 
     $ECHOX seccaj-admin deploy "${opts[@]}" "$warfile"
 }
