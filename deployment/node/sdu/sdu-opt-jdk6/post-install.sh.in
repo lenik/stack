@@ -1,33 +1,47 @@
 #!/bin/bash
-
 # master-file
 
 java_prefix="@DESTDIR@/opt/java"
+install -d -m 755 -o root -g dev $java_prefix
+cd "$java_prefix"
 
-echo "Search latest linux JDK6 bin file..."
-    index=http://download.java.net/jdk6/latest_binaries/
-    latest_file=`wget -qO- $index | grep lin32JDKbin | grep -o -m1 'jdk-.*.bin' `
-    if [ -z "$latest_file" ]; then
-        echo "Not found. "
-        exit 1
-    fi
+# Find the latest installed version
+installed=
+for d in "$java_prefix/jdk"?.?.*/; do
+    d="${d%/}"
+    if [ ! -f "$d/lib/tools.jar" ]; then continue; fi
+    echo "Installed JDK: $d"
+    installed="$d"
+done
 
-url=`urljoin "$index" "$latest_file"`
-echo "Download $url..."
-    if ! file=`wgetc -m755 "$url"`; then
-        echo "Failed to download. "
-    fi
+if [ -n "$installed" ]; then
+    echo "Found installed JDK: $installed"
+    instdir="$installed"
+    javahome="${installed##*/}"
 
-javahome=`grep -a -m1 javahome= $file`
-javahome=${javahome#*=}
-instdir="$java_prefix/$javahome"
+else
 
-echo "Install $file to $instdir..."
+    echo "Search latest linux JDK6 bin file..."
+        index=http://download.java.net/jdk6/latest_binaries/
+        latest_file=`wget -qO- $index | grep lin32JDKbin | grep -o -m1 'jdk-.*.bin' `
+        if [ -z "$latest_file" ]; then
+            echo "Not found. "
+            exit 1
+        fi
 
-    install -d -m 755 -o root -g dev $java_prefix
-    cd "$java_prefix"
+    url=`urljoin "$index" "$latest_file"`
+    echo "Download $url..."
+        if ! file=`wgetc -m755 "$url"`; then
+            echo "Failed to download. "
+        fi
 
+    javahome=`grep -a -m1 javahome= $file`
+    javahome=${javahome#*=}
+    instdir="$java_prefix/$javahome"
+
+    echo "Install $file to $instdir..."
     "$file"
+fi
 
 echo "Link jdk-6 to $javahome"
     ln -snf $javahome jdk-6
