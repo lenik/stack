@@ -1,3 +1,15 @@
+sdu-dat-seccadb (0.1.10-2) unstable; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Thu, 09 Dec 2010 09:06:35 +0800
+
+sdu-dat-seccadb (0.1.10-1) unstable; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Thu, 09 Dec 2010 09:05:45 +0800
+
 sdu-dat-seccadb (0.1.9-3) unstable; urgency=low
 
   * Upstream updates, automatic package by deb-redist

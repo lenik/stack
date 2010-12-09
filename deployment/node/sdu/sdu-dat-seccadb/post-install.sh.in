@@ -74,6 +74,26 @@ else
             "devdb" "Used by dev-sites"
 fi
 
+if [ "$db_semsdb" = 1 ]; then
+    echo "  SEMS database is installed. "
+else
+    echo "Create secca user and database"
+        seccadb-createuser \
+            --connection-limit=20 \
+            --no-createdb \
+            --createrole \
+            --no-superuser \
+            semsadmin
+
+        seccadb-psql -d template1 -c \
+            "alter user semsadmin with password 'MxDkUWl1'"
+
+        seccadb-createdb \
+            --owner=semsadmin \
+            "semsdb" "Used by SEMS applications"
+fi
+
+
 configinc=/etc/phppgadmin/config.inc.php
     lineconf -tm "Add SECCA DB to phppgadmin: " -p '<?php # ' -s ' ?>' \
         $configinc @server::seccadb \
