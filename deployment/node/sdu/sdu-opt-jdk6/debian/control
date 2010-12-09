@@ -8,6 +8,5 @@ Homepage: http://sdu.secca-project.com
 
 Package: sdu-opt-jdk6
 Architecture: all
-Depends: ${misc:Depends}, openjdk-6-jdk,
-    xjl-coolwget
+Depends: sun-java6-jdk, dpkg
 Description: Install the latest JDK6

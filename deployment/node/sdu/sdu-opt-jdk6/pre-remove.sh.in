@@ -1,13 +1,3 @@
 #!/bin/sh
 
-instdir_f=@DESTDIR@@pkgdatadir@/instdir
-
-if [ -f $instdir_f ]; then
-    read instdir < $instdir_f
-
-    if [ -n "$instdir" ]; then
-        echo "Delete $instdir..."
-        rm -fr "$instdir"
-    fi
-fi
 exit 0
