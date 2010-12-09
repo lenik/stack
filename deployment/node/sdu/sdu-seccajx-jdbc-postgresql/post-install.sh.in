@@ -5,7 +5,7 @@ echo "Set permission for postgres: "
 for f in \
         postgresqljdbc.jar \
         ; do
-    file="@libdir@/$f"
+    file="@dblibdir@/$f"
     chown postgres:dev "$file"
 done
 

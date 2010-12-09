@@ -227,6 +227,10 @@ do_subst = sed \
     -e 's,[@]newtmpldir[@],$(newtmpldir),g' \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
+do_subst2 = $(do_subst) \
+	-e 's,[@]domaindir[@],$(domaindir),g' \
+	-e 's,[@]dblibdir[@],$(dblibdir),g'
+
 domaindir = /var/lib/seccaj
 dblibdir = ${domaindir}/lib
 dblib_DATA = \
@@ -606,10 +610,10 @@ postgresqljdbc.jar:
 	$(srcdir)/download-latest.sh $@
 
 post-install.sh: post-install.sh.in Makefile
-	$(do_subst) <$(srcdir)/post-install.sh.in >$@
+	$(do_subst2) <$(srcdir)/post-install.sh.in >$@
 
 pre-remove.sh: pre-remove.sh.in Makefile
-	$(do_subst) <$(srcdir)/pre-remove.sh.in >$@
+	$(do_subst2) <$(srcdir)/pre-remove.sh.in >$@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

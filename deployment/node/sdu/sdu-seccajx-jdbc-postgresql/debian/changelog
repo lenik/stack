@@ -1,3 +1,9 @@
+sdu-seccajx-jdbc-postgresql (0.2.9-1) unstable; urgency=low
+
+  * Upstream updates, automatic package by deb-redist
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Thu, 09 Dec 2010 10:50:37 +0800
+
 sdu-seccajx-jdbc-postgresql (0.2.8-1) unstable; urgency=low
 
   * Upstream updates, automatic package by deb-redist
