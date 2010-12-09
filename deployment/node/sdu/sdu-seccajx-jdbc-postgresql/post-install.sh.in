@@ -1,6 +1,13 @@
 #!/bin/bash
-
 # master-file
+
+echo "Set permission for postgres: "
+for f in \
+        postgresqljdbc.jar \
+        ; do
+    file="@libdir@/$f"
+    chown postgres:dev "$file"
+done
 
 echo "Restart seccaj server"
 seccaj restart

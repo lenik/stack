@@ -1,8 +1,9 @@
 #!/bin/bash
 
-libdir="$1"
-if [ ! -d "$libdir" ]; then
-    echo "Lib dir isn't existed: $libdir"
+destfile="$1"
+
+if [ -z "$destfile" ]; then
+    echo "Dest file isn't specified: $destfile"
     exit 1
 fi
 
@@ -13,19 +14,19 @@ if ! jar_url=`grepurl -Em1 '[^"]+8.4-[0-9]*.jdbc4.jar' http://jdbc.postgresql.or
 fi
 
 basename="${jar_url##*/}"
-put_file="$libdir/$basename"
 
-if [ -f "$put_file" ]; then
-    echo "    Already there: $put_file"
-else
-    echo "Download $jar_url"
-    if ! jar_file=`wgetc "$jar_url"`; then
-        echo "    Failed to download"
-        exit 1
-    fi
-
-    echo "Put jar in $put_file"
-    install -o appserv -g dev "$jar_file" "$put_file"
+if [ -f "$destfile" ]; then
+    echo "    Already there: $destfile"
+    exit 0
 fi
+
+echo "Download $jar_url"
+if ! jar_file=`wgetc "$jar_url"`; then
+    echo "    Failed to download"
+    exit 1
+fi
+
+echo "Put jar in $destfile"
+install -m 644 "$jar_file" "$destfile"
 
 exit 0
