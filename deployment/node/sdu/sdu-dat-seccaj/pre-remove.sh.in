@@ -3,6 +3,8 @@
 # master-file
 
 domaindir=/var/lib/seccaj
+ginstdir=/opt/java/glassfish
+gdir=$ginstdir/glassfish
 
 echo "Stop seccaj..."
     # initctl stop seccaj
@@ -12,15 +14,10 @@ echo "Remove SysV init job: seccajctl"
     update-rc.d seccajctl remove
 
 echo "Delete seccaj domain from glassfish"
-    sudo -uappserv /opt/java/glassfish/bin/asadmin delete-domain seccaj
+    sudo -uappserv $ginstdir/bin/asadmin delete-domain seccaj
 
-echo Remove $domaindir
+echo "Remove domain symlink: $gdir/domains/seccaj"
     rm -f  ~appserv/.seccaj.asadminpass
-    rm -f  /opt/java/glassfish/glassfish/domains/seccaj
-
-    # rm -fR $domaindir
-
-    # -depth -path '*/domains/*' -prune -o -delete
-    # find $domaindir -depth -path lib/ -prune -o -delete
+    rm -f  $gdir/domains/seccaj
 
 exit 0
