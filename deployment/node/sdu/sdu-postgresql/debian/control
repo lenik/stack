@@ -9,6 +9,9 @@ Homepage: http://sdu.secca-project.com/sdu-postgresql
 Package: sdu-postgresql
 Architecture: all
 Depends: postgresql, xjl-coolutils, xjl-coolvim,
-    sdu-dat-seccaj, sdu-pgutils, sdu-phppgadmin
+    sdu-dat-seccaj, sdu-pgutils, sdu-phppgadmin,
+    postgresql-8.4-plsh,
+    postgresql-plperl-8.4,
+    postgresql-plpython-8.4
 Recommends: pgadmin3
 Description: PostgreSQL SDU with phppgadmin support.
