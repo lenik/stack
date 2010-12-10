@@ -1,6 +1,7 @@
 include libauto/coolauto.am
 
 dist_bin_SCRIPTS = \
+    mb_gentab \
     mb_chtab \
     mb_csvtmp
 

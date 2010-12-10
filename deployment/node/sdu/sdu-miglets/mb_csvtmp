@@ -1,53 +1,279 @@
-#!/bin/bash
-    . shlib-import cliboot
+#!/usr/bin/perl
 
-    RCSID='$Id: bash.sh 1853 2010-09-29 01:35:59Z lenik $'
-    short_opts="s:hqv"
-    long_opts="psql:,help,quiet,verbose,version"
+=head1 NAME
 
-    psql="seccadb-psql"
+mb_csvtmp - Import CSV to tmp tables
 
-function version() {
-    parse_id "$RCSID"
-    echo "[$BASENAME] Import (CSV) to tmp tables"
-    echo "Written by Lenik, Version 0.$rcs_rev, Last updated at $rcs_date"
+=cut
+use strict;
+use vars qw($LOGNAME $LOGLEVEL);
+use cmt::log(2);
+    $LOGNAME    = 'mb_csvtmp'; # $0 =~ /([^\/\\.]+)(?:\.\w+)*$/;
+use cmt::path;
+use cmt::util('readfile', 'writefile');
+use cmt::vcs('parse_id');
+    my %RCSID   = parse_id('$Id: perl.pl 2016 2010-11-02 08:37:55Z lenik $');
+use DirHandle;
+use Data::Dumper;
+use Getopt::Long;
+    Getopt::Long::Configure('gnu_getopt');
+
+our $opt_psql = 'seccadb-psql';
+
+sub _main; sub _version; sub _help;
+
+sub sql_str($);
+
+sub _boot {
+    GetOptions('q|quiet'        => sub { $LOGLEVEL-- },
+               'v|verbose'      => sub { $LOGLEVEL++ },
+               'version'        => sub { _version; exit 0 },
+               'h|help'         => sub { _help; exit 0 },
+               'p|psql=s'       => \$opt_psql,
+               )
+        or exit(1);
+    _main;
 }
 
-function help() {
-    version
-    echo
-    echo "Syntax: "
-    echo "    $0 [OPTION] [--] csv-files..."
-    echo
-    echo "Options: "
-    echo "    -s, --psql=CMD          The psql cmdline to use"
-    echo "    -q, --quiet             Repeat to get less info"
-    echo "    -v, --verbose           Repeat to get more info"
-    echo "    -h, --help              Show this help page"
-    echo "        --version           Print the version info"
+=head1 SYNOPSIS
+
+B<mb_csvtmp>
+    S<[ B<-q> | B<--quiet> ]>
+    S<[ B<-v> | B<--verbose> ]>
+    S<[ B<-h> | B<--help> ]>
+    S<[ B<--version> ]>
+    S<[ B<--> ]>
+    S<[ I<...the rest of arguments...> ]>
+
+=head1 DESCRIPTION
+
+B<mb_csvtmp> is a WHAT used for WHAT. It HOW-WORKS.
+
+BACKGROUND-PROBLEM.
+
+HOW-mb_csvtmp-RESOLVES.
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-m> | B<--my-option>
+
+...
+
+=item B<-q> | B<--quiet>
+
+Repeat this option to suppress unimportant information to display.
+
+=item B<-v> | B<--verbose>
+
+Repeat this option to display more detailed information.
+
+=item B<-h> | B<--help>
+
+Display a breif help page and exit(0).
+
+=item B<--version>
+
+Display a short version information and exit(0).
+
+=back
+
+=head1 EXAMPLES
+
+=over 4
+
+=item Show help
+
+    mb_csvtmp --help
+
+=back
+
+=head1 ENVIRONMENT
+
+=over 8
+
+=item TEMP, TMP
+
+TEMP(or TMP, if $TEMP directory isn't existed) directory used to create
+temporary files.
+
+=back
+
+=cut
+sub _help {
+    &_version;
+    print "\nSyntax: \n    $0 [OPTION] [--] ...\n", <<'EOM';
+
+Common options:
+    -p, --psql=PSQL-CMD     Psql command line
+    -q, --quiet             Repeat to get less info
+    -v, --verbose           Repeat to get more info
+    -h, --help              Show this help page
+        --version           Print the version info
+EOM
 }
 
-function setopt() {
-    case "$1" in
-        -s|--psql)
-            psql="$2";;
-        -h|--help)
-            help; exit;;
-        -q|--quiet)
-            LOGLEVEL=$((LOGLEVEL - 1));;
-        -v|--verbose)
-            LOGLEVEL=$((LOGLEVEL + 1));;
-        --version)
-            version; exit;;
-        *)
-            quit "invalid option: $1";;
-    esac
+exit (_boot or 0);
+
+sub _main {
+
+    # [ -d $1 ] && cd $1
+
+    for my $f (<10incoming/*>) {
+        my ($dir, $base) = path_split($f);
+        my ($name, $ext) = path_splitext($base);
+
+        next if $ext ne '.csv';
+
+        my ($bcode, $sys, $app, $ver, $obj, $date, $time) = split('-', $name);
+
+        next unless defined $sys and defined $app and defined $ver;
+        next unless defined $obj and defined $date;
+
+        my @tabmap = (
+            "legacy/$sys-$app-$ver-$obj-$bcode.tab",
+            "legacy/$sys-$app-$ver-$obj.tab",
+            "legacy/$sys-$app-$obj-$bcode.tab",
+            "legacy/$sys-$app-$obj.tab",
+            );
+        my $tabmap;
+        for (@tabmap) {
+            if (-f) {
+                $tabmap = $_;
+                last;
+            }
+        }
+
+        my $csv2sql = "21csv2sql/$name.sql";
+        my $tmptab = "${obj}__TMP";
+
+        my %map;
+        if (defined $tabmap) {
+            _log1 "Load tabmap $tabmap for $f";
+            open(TAB, "<$tabmap") or die "Can't open tabmap: $@";
+            while (<TAB>) {
+                next if /^\s*#/;
+                my ($zh, $en) = /^\s* ([^:]*?) \s* : \s* (\w+) \s* $/x;
+                $map{$zh} = $en if ($zh ne '' and $en ne '');
+            }
+            close TAB;
+        }
+
+        open(IN, "<$f") or die "Can't open $f: $@";
+
+        my $head = 1;
+        my $delim = ',';
+        my @cols;
+        my @maxlen;
+        my @row;
+        my @rows;
+        while (<IN>) {
+            chomp;
+            if (/[\"\']/) {
+                s/\"\"/\\\"/;
+                s/\'\'/\\\'/;
+                @row = eval "($_)";
+            } else {
+                @row = split($delim, $_);
+            }
+
+            if ($head) {
+                $head = 0;
+                if (defined $tabmap) {
+                    @cols = map { $map{$_} } @row;
+                } else {
+                    @cols = @row;
+                }
+                @maxlen = map { 0 } @cols;
+                next;
+            }
+
+            for (my $i = 0; $i < $#row; $i++) {
+                my $len = length($row[$i]);
+                if ($len > $maxlen[$i]) {
+                    $maxlen[$i] = $len;
+                }
+            }
+            push @rows, [@row];
+        } # while <IN>
+
+        close TABNORM;
+
+        my $sql;
+        open(CSQL, ">$csv2sql") or die "Can't write to $csv2sql: $@";
+
+        my $sql = "create table [$tmptab](\n";
+        for (my $i = 0; $i < $#cols; $i++) {
+            my $col = $cols[$i];
+            my $len = $maxlen[$i];
+            $sql .= "    [$col] varchar($len), \n";
+        }
+        $sql = substr($sql, 0, length($sql) - 3);
+        $sql .= "); \n";
+        print CSQL $sql;
+
+        for (@rows) {
+            @row = @$_;
+            my $keys = "";
+            my $vals = "";
+            for (my $i = 0; $i < $#cols; $i++) {
+                my $col = $cols[$i];
+                my $val = $row[$i];
+                $keys .= "[$col], ";
+                $vals .= "'" . sql_str($val) . "', ";
+            }
+            chop $keys; chop $keys;
+            chop $vals; chop $vals;
+            print CSQL "insert into [$tmptab]($keys) values($vals);\n";
+        }
+
+        close CSQL;
+    } # <10incoming/*>
+
 }
 
-function main() {
-    for csv in "$@"; do
+=head1 DIAGNOSTICS
 
-    done
+(No Information)
+
+=cut
+# (HELPER FUNCTIONS)
+sub sql_str($) {
+    my $s = shift;
+    $s =~ s/\'/\'\'/g;
+    return $s;
 }
 
-boot "$@"
+=head1 HACKING
+
+(No Information)
+
+=cut
+# (MODULE FUNCTIONS)
+
+=head1 HISTORY
+
+=over
+
+=item 0.x
+
+The initial version.
+
+=back
+
+=cut
+sub _version {
+    print "[$LOGNAME] Change table field names according to tabmap file \n";
+    print "Written by Lenik,  Version 0.$RCSID{rev},  Last updated at $RCSID{date}\n";
+}
+
+=head1 SEE ALSO
+
+The L<cmt/"Perl_simple_cli_program_template">
+
+=head1 AUTHOR
+
+lenik <lenik (at) bodz.net>
+
+=cut

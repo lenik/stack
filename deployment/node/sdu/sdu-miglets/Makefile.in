@@ -234,6 +234,7 @@ do_subst = sed \
     -e 's,[@]setupdir[@],$(setupdir),g'
 
 dist_bin_SCRIPTS = \
+    mb_gentab \
     mb_chtab \
     mb_csvtmp
 

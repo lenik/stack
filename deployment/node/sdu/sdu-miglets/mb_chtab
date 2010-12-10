@@ -1,81 +1,241 @@
-#!/bin/bash
-    . shlib-import cliboot
+#!/usr/bin/perl
 
-    RCSID='$Id: bash.sh 1853 2010-09-29 01:35:59Z lenik $'
-    short_opts="hqv"
-    long_opts="help,quiet,verbose,version"
+=head1 NAME
 
-function version() {
-    parse_id "$RCSID"
-    echo "[$BASENAME] Change table field names according to tabmap file"
-    echo "Written by Lenik, Version 0.$rcs_rev, Last updated at $rcs_date"
+mb_chtab - Change table field names according to tabmap file
+
+=cut
+use strict;
+use vars qw($LOGNAME $LOGLEVEL);
+use cmt::log(2);
+    $LOGNAME    = 'mb_chtab'; # $0 =~ /([^\/\\.]+)(?:\.\w+)*$/;
+use cmt::path;
+use cmt::util('readfile', 'writefile');
+use cmt::vcs('parse_id');
+    my %RCSID   = parse_id('$Id: perl.pl 2016 2010-11-02 08:37:55Z lenik $');
+use DirHandle;
+use Data::Dumper;
+use Getopt::Long;
+    Getopt::Long::Configure('gnu_getopt');
+
+sub _main; sub _version; sub _help;
+
+sub sql_str($);
+
+sub _boot {
+    GetOptions('q|quiet'        => sub { $LOGLEVEL-- },
+               'v|verbose'      => sub { $LOGLEVEL++ },
+               'version'        => sub { _version; exit 0 },
+               'h|help'         => sub { _help; exit 0 },
+               )
+        or exit(1);
+    _main;
 }
 
-function help() {
-    version
-    echo
-    echo "Syntax: "
-    echo "    $0 [OPTION] [--] [MIGDATA-DIR (default .)]"
-    echo
-    echo "Options: "
-    echo "    -q, --quiet             Repeat to get less info"
-    echo "    -v, --verbose           Repeat to get more info"
-    echo "    -h, --help              Show this help page"
-    echo "        --version           Print the version info"
-    echo
-    echo "See-Also: "
-    echo "    tabmap(5)"
+=head1 SYNOPSIS
+
+B<mb_chtab>
+    S<[ B<-q> | B<--quiet> ]>
+    S<[ B<-v> | B<--verbose> ]>
+    S<[ B<-h> | B<--help> ]>
+    S<[ B<--version> ]>
+    S<[ B<--> ]>
+    S<[ I<...the rest of arguments...> ]>
+
+=head1 DESCRIPTION
+
+B<mb_chtab> is a WHAT used for WHAT. It HOW-WORKS.
+
+BACKGROUND-PROBLEM.
+
+HOW-mb_chtab-RESOLVES.
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-m> | B<--my-option>
+
+...
+
+=item B<-q> | B<--quiet>
+
+Repeat this option to suppress unimportant information to display.
+
+=item B<-v> | B<--verbose>
+
+Repeat this option to display more detailed information.
+
+=item B<-h> | B<--help>
+
+Display a breif help page and exit(0).
+
+=item B<--version>
+
+Display a short version information and exit(0).
+
+=back
+
+=head1 EXAMPLES
+
+=over 4
+
+=item Show help
+
+    mb_chtab --help
+
+=back
+
+=head1 ENVIRONMENT
+
+=over 8
+
+=item TEMP, TMP
+
+TEMP(or TMP, if $TEMP directory isn't existed) directory used to create
+temporary files.
+
+=back
+
+=cut
+sub _help {
+    &_version;
+    print "\nSyntax: \n    $0 [OPTION] [--] ...\n", <<'EOM';
+
+Common options:
+    -q, --quiet             Repeat to get less info
+    -v, --verbose           Repeat to get more info
+    -h, --help              Show this help page
+        --version           Print the version info
+EOM
 }
 
-function setopt() {
-    case "$1" in
-        -h|--help)
-            help; exit;;
-        -q|--quiet)
-            LOGLEVEL=$((LOGLEVEL - 1));;
-        -v|--verbose)
-            LOGLEVEL=$((LOGLEVEL + 1));;
-        --version)
-            version; exit;;
-        *)
-            quit "invalid option: $1";;
-    esac
+exit (_boot or 0);
+
+sub _main {
+
+    # [ -d $1 ] && cd $1
+
+    for my $f (<10incoming/*>) {
+        my ($dir, $base) = path_split($f);
+        my ($name, $ext) = path_splitext($base);
+
+        next if $ext ne '.csv';
+
+        my ($bcode, $sys, $app, $ver, $obj, $date, $time) = split('-', $name);
+
+        next unless defined $sys and defined $app and defined $ver;
+        next unless defined $obj and defined $date;
+
+        my @tabmap = (
+            "legacy/$sys-$app-$ver-$obj-$bcode.tab",
+            "legacy/$sys-$app-$ver-$obj.tab",
+            "legacy/$sys-$app-$obj-$bcode.tab",
+            "legacy/$sys-$app-$obj.tab",
+            );
+        my $tabmap;
+        for (@tabmap) {
+            if (-f) {
+                $tabmap = $_;
+                last;
+            }
+        }
+
+        my $tabnorm = "11chtab/$base";
+        my $csv2sql = "21csv2sql/$name.sql";
+        my $tmptab = "${obj}__TMP";
+
+        my %map;
+        if (defined $tabmap) {
+            _log1 "Choose $tabmap for $f";
+
+            open(TAB, "<$tabmap") or die "Can't open tabmap: $@";
+            while (<TAB>) {
+                next if /^\s*#/;
+                my ($zh, $en) = /^\s* ([^:]*?) \s* : \s* (\w+) \s* $/x;
+                $map{$zh} = $en if ($zh ne '' and $en ne '');
+            }
+            close TAB;
+        }
+
+        open(IN, "<$f") or die "Can't open $f: $@";
+        open(TABNORM, ">$tabnorm") or die "Can't write to $tabnorm: $@";
+
+        my $head = 1;
+        my $delim = ',';
+        my @cols;
+        my @row;
+        my @rows;
+        while (<IN>) {
+            chomp;
+            if (/[\"\']/) {
+                s/\"\"/\\\"/;
+                s/\'\'/\\\'/;
+                @row = eval "($_)";
+            } else {
+                @row = split($delim, $_);
+            }
+
+            if ($head) {
+                $head = 0;
+                if (defined $tabmap) {
+                    @cols = map { $map{$_} } @row;
+                } else {
+                    @cols = @row;
+                }
+                print TABNORM join(',', @cols)."\n";
+                next;
+            }
+
+            print TABNORM $_."\n";
+        } # while <IN>
+
+        close TABNORM;
+    } # <10incoming/*>
+
 }
 
-function main() {
-    [ -n  "$1" ] && cd "$1"
+=head1 DIAGNOSTICS
 
-    for f in 10incoming/*.csv; do
+(No Information)
 
-        base="${f##*/}"
-        name="${base%.*}"
-        ext="${base##*.}"
-
-        bcode="${name%%-*}"
-        class="${name#*-}" # B-code
-        class="${class%-*}" # HHMMSS
-        class="${class%-*}" # YYYYMMDD
-
-        tabmap="legacy/$class-$bcode.tab"
-        if [ ! -f "$tabmap" ]; then
-            tabmap="legacy/$class.tab"
-            if [ ! -f "$tabmap" ]; then
-                tabmap=
-            fi
-        fi
-
-        if [ -n "$tabmap" ]; then
-            cat "$f" | (
-                head -1 | sed -e 's/[\'"]//g' -e 's/[,:]/\n/g' (
-                    xxx
-                )
-                cat
-            ) >"11chtab/$base"
-
-        else
-        fi
-
-    done
+=cut
+# (HELPER FUNCTIONS)
+sub sql_str($) {
+    my $s = shift;
+    $s =~ s/\'/\'\'/g;
+    return $s;
 }
 
-boot "$@"
+=head1 HACKING
+
+(No Information)
+
+=cut
+# (MODULE FUNCTIONS)
+
+=head1 HISTORY
+
+=over
+
+=item 0.x
+
+The initial version.
+
+=back
+
+=cut
+sub _version {
+    print "[$LOGNAME] Change table field names according to tabmap file \n";
+    print "Written by Lenik,  Version 0.$RCSID{rev},  Last updated at $RCSID{date}\n";
+}
+
+=head1 SEE ALSO
+
+The L<cmt/"Perl_simple_cli_program_template">
+
+=head1 AUTHOR
+
+lenik <lenik (at) bodz.net>
+
+=cut
