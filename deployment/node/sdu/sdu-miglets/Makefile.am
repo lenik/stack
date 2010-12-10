@@ -1,5 +1,11 @@
 include libauto/coolauto.am
 
+dist_bin_SCRIPTS = \
+    mb_chtab \
+    mb_csvtmp
+
+dist_man_MANS = \
+    tabmap.5
 
 setup_SCRIPTS = \
     post-install.sh \
