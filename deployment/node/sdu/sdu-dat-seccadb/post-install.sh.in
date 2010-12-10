@@ -31,6 +31,10 @@ echo "Set postgres default password"
     seccadb-psql -d template1 -c \
         "alter user postgres with password 'cW3EADp8'"
 
+echo "Enable pl/langs for seccadb databases"
+    seccadb-createlang plperl template1
+    seccadb-createlang plpythonu template1
+
 echo "Search installed databases"
     while read db; do
         eval "db_${db//[^a-zA-Z0-9]/_}=1"

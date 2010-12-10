@@ -15,11 +15,9 @@ echo "Set postgres default password"
         "alter user postgres with password 'cW3EADp8'"
 
 echo "Enable *lang for default databases"
-    sudo -upostgres psql -d template1 -c \
-        "createlang plperl template1; \
-         createlang plpython template1; \
-         createlang plpythonu template1; \
-         createlang plsh template1"
+    sudo -upostgres createlang plperl template1
+    sudo -upostgres createlang plpythonu template1
+    # sudo -upostgres createlang plsh template1
 
 configinc=/etc/phppgadmin/config.inc.php
     lineconf -tm "Add server to phppgadmin" -p '<?php # ' -s ' ?>' \
