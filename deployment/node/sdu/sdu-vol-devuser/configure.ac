@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.65])
 AC_INIT([sdu-vol-devuser], [0.1.3], [sdu-bugs@secca-project.com])
-AM_INIT_AUTOMAKE([-Wall])
+AM_INIT_AUTOMAKE([-Wno-portability])
 
 # Checks for programs.
 AC_PROG_LN_S
