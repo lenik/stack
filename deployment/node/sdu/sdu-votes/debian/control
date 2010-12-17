@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-votes
 
 Package: sdu-votes
 Architecture: all
-Depends: coreutils, sed, bash-shlib
+Depends: coreutils, perl, libtext-csv-perl, libcmt
 Description: Text votes support utilities
