@@ -1,0 +1,27 @@
+2009-12-23  谢继雷
+
+	* [maven-release-plugin] prepare for next development iteration
+	* [maven-release-plugin] prepare release baseline-0.0.3
+	* prepare 0.0.3
+
+2009-12-22  谢继雷
+
+	* don't inline modules in pom.
+	* set dir level 4
+	* symlink to tag versions
+	* [maven-release-plugin] prepare for next development iteration
+	* [maven-release-plugin] prepare release baseline-0.0.2
+	* [maven-release-plugin] prepare for next development iteration
+	* ignore pom.xml.releaseBackup
+	* [vm-r1]
+
+2009-12-21  谢继雷
+
+	* symlinks update
+	* symlinks-updater and baseline pom.
+	* rename bird (report system) -> woodpecker
+	  rename bicycle (biz process flow) -> badger
+
+2009-12-14  谢继雷
+
+	* aggregates
