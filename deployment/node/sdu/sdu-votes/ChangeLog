@@ -1,0 +1,15 @@
+2010-12-17  lenik
+
+	* ., Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
+	  debian, debian/control, votes2csv: add votes2csv.
+
+2010-12-16  lenik
+
+	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
+	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
+	  configure.ac, debian, debian/README.Debian, debian/README.source,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
+	  install-sh, libauto, libauto/allin.am, libauto/coolauto.am,
+	  libauto/rst.am, libauto/subst.am, missing, post-install.sh.in,
+	  pre-remove.sh.in: Initial by sdu-creator

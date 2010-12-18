@@ -1,0 +1,96 @@
+2010-12-13  lenik
+
+	* configure.ac: don't report portability warnings.
+
+2010-12-08  lenik
+
+	* .: add itree.tex to svn ignores
+
+2010-11-29  lenik
+
+	* README: create empty README files to be filled in future.
+
+2010-11-03  lenik
+
+	* debian/changelog: switch to unstable.
+
+2010-10-20  lenik
+
+	* debian/changelog: Maverick redist.
+
+2010-10-18  lenik
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
+	  NEWS, README, VERSION.av, aclocal.m4, configure, configure.ac,
+	  debian/README.Debian, debian/README.source, debian/changelog,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/rules, install-sh, libauto/coolauto.am, missing,
+	  sdu-convert, sdu-create, sdu-create.1: set eol-style to native
+
+2010-09-29  lenik
+
+	* VERSION.av, configure, configure.ac, sdu-create: don't ignore
+	  changelog
+	* debian/changelog: add changelog
+
+2010-09-23  lenik
+
+	* .: set ignores.
+	* VERSION.av, configure, configure.ac, sdu-create: ignore *.tar.gz
+	  by default
+	* .: ignore *.gz
+
+2010-09-22  lenik
+
+	* Makefile.in, libauto/coolauto.am: auto updates.
+
+2010-09-21  lenik
+
+	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
+	  sdu-convert, sdu-create: add sdu-convert to convert existing
+	  modules
+	* Makefile.in, libauto/coolauto.am: auto updates.
+	* VERSION.av, configure, configure.ac, sdu-create: pre-remove
+	  always exit 0
+
+2010-09-20  lenik
+
+	* VERSION.av, configure, configure.ac, sdu-create: no post-remove
+	  by default.
+
+2010-09-19  lenik
+
+	* debian, sdu-create: ignore substvars
+
+2010-09-17  lenik
+
+	* VERSION.av, configure, configure.ac, sdu-create: add postrm.
+	* VERSION.av, configure, configure.ac, sdu-create: add post-remove
+	  by default.
+	* debian, debian/README.Debian, debian/README.source,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/rules: add debian control files.
+	* VERSION.av, configure, configure.ac, sdu-create: utilize svnpsl
+	  to ignore
+	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
+	  libauto/coolauto.am, sdu-create, sdu-create.1: svn add debian/*.
+	* libauto/subst.am: libauto updates.
+
+2010-09-09  lenik
+
+	* VERSION.av, configure, configure.ac, sdu-create: chmod after
+	  sedit, to preserve perm mode.
+
+2010-09-08  lenik
+
+	* VERSION.av, configure, configure.ac, sdu-create: add master-file
+	  hint in maint.sh.
+	* VERSION.av, configure, configure.ac, sdu-create: svn ci at wrong
+	  dir.
+	* VERSION.av, configure.ac: 0.1 release.
+	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
+	  sdu-create, sdu-create.1: initial.
+	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
+	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
+	  configure.ac, install-sh, libauto, libauto/subst.am, missing,
+	  sdu-create: initial

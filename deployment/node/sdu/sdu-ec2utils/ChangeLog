@@ -1,0 +1,92 @@
+2010-12-13  lenik
+
+	* configure.ac: don't report portability warnings.
+
+2010-11-29  lenik
+
+	* README: create empty README files to be filled in future.
+
+2010-11-03  lenik
+
+	* debian/changelog: switch to unstable.
+
+2010-10-20  lenik
+
+	* VERSION.av, aclocal.m4, configure, configure.ac,
+	  debian/changelog, ec2-update-subst: update-subst for different
+	  regions, and ignore some properties for rindex.
+	* debian/changelog, ec2-update-subst: Maverick redist.
+
+2010-10-18  lenik
+
+	* VERSION.av, configure, configure.ac, debian/changelog,
+	  ec2-cmd-alt: ec2-cmd shebang fix.
+	* VERSION.av, ami-tools/ec2-bundle-image-i,
+	  ami-tools/ec2-bundle-vol-i, ami-tools/ec2-delete-bundle-i,
+	  ami-tools/ec2-download-bundle-i, ami-tools/ec2-migrate-bundle-i,
+	  ami-tools/ec2-migrate-manifest-i, ami-tools/ec2-unbundle-i,
+	  ami-tools/ec2-upload-bundle-i, configure, configure.ac,
+	  debian/changelog: missing ec2-init-cred.
+	* VERSION.av, ami-tools/ec2-bundle-image-i,
+	  ami-tools/ec2-bundle-vol-i, ami-tools/ec2-delete-bundle-i,
+	  ami-tools/ec2-download-bundle-i, ami-tools/ec2-migrate-bundle-i,
+	  ami-tools/ec2-migrate-manifest-i, ami-tools/ec2-unbundle-i,
+	  ami-tools/ec2-upload-bundle-i, configure, configure.ac,
+	  debian/changelog: fix shebang.
+	* ., Makefile.am, Makefile.in, VERSION.av, ami-tools,
+	  ami-tools/Makefile.am, ami-tools/ec2-bundle-image-i,
+	  ami-tools/ec2-bundle-vol-i, ami-tools/ec2-delete-bundle-i,
+	  ami-tools/ec2-download-bundle-i, ami-tools/ec2-migrate-bundle-i,
+	  ami-tools/ec2-migrate-manifest-i, ami-tools/ec2-unbundle-i,
+	  ami-tools/ec2-upload-bundle-i, configure, configure.ac,
+	  debian/changelog, ec2-cmd-alt, ec2-init-cred, ec2utils.sh: add
+	  ami-tools shortcuts
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
+	  NEWS, README, VERSION.av, aclocal.m4, configure, configure.ac,
+	  debian/README.Debian, debian/README.source, debian/changelog,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
+	  ec2-cmd-alt, ec2-cmd-alt.1, ec2-update-subst, ec2-update-subst.1,
+	  ec2user-init, ec2user-init.1, install-sh, libauto/coolauto.am,
+	  missing, mount-ebs, mount-ebs.1, nextdev, nextdev.1,
+	  post-install.sh.in, pre-remove.sh.in: set eol-style to native
+
+2010-09-29  lenik
+
+	* debian/changelog: add changelog
+
+2010-09-27  lenik
+
+	* VERSION.av, configure, configure.ac: ignores
+
+2010-09-24  lenik
+
+	* VERSION.av, configure, configure.ac, mount-ebs: initialize new
+	  volume if necessary
+
+2010-09-23  lenik
+
+	* .: set ignores.
+	* .: ignore *.gz
+
+2010-09-22  lenik
+
+	* VERSION.av, configure, configure.ac, mount-ebs: set auto fs in
+	  fstab.
+	* VERSION.av, configure, configure.ac, pre-remove.sh.in: prerm as
+	  well.
+	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
+	  ec2-cmd, ec2-cmd-alt, ec2-cmd-alt.1, ec2-cmd.1,
+	  post-install.sh.in: ec2-cmd must be post-installed, cuz the file
+	  collision with ec2-api-tools.
+	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
+	  debian/control, ec2-cmd, ec2-cmd.1, ec2-update-subst,
+	  ec2-update-subst.1, ec2user-init, ec2user-init.1, mount-ebs,
+	  mount-ebs.1, nextdev, nextdev.1: separate ec2 utils from -ec2node
+	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
+	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
+	  configure.ac, debian, debian/README.Debian, debian/README.source,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
+	  install-sh, libauto, libauto/coolauto.am, missing,
+	  post-install.sh.in, pre-remove.sh.in: Initial by sdu-creator

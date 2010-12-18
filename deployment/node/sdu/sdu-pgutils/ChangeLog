@@ -1,0 +1,52 @@
+2010-12-13  lenik
+
+	* configure.ac: don't report portability warnings.
+
+2010-12-08  lenik
+
+	* .: add itree.tex to svn ignores
+
+2010-11-29  lenik
+
+	* README: create empty README files to be filled in future.
+
+2010-11-03  lenik
+
+	* debian/changelog: switch to unstable.
+
+2010-10-20  lenik
+
+	* debian/changelog: Maverick redist.
+
+2010-10-18  lenik
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
+	  NEWS, README, VERSION.av, aclocal.m4, configure, configure.ac,
+	  debian/README.Debian, debian/README.source, debian/changelog,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
+	  install-sh, libauto/coolauto.am, missing, pg-create-shortcuts,
+	  post-install.sh.in, pre-remove.sh.in, rm-pglibsyms: set eol-style
+	  to native
+
+2010-09-29  lenik
+
+	* debian/changelog: add changelog
+
+2010-09-23  lenik
+
+	* .: set ignores.
+	* .: ignore *.gz
+
+2010-09-22  lenik
+
+	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
+	  pg-create-shortcuts, rm-pglibsyms: move postgresql utilities from
+	  -postgresql.
+	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
+	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
+	  configure.ac, debian, debian/README.Debian, debian/README.source,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
+	  install-sh, libauto, libauto/coolauto.am, missing,
+	  post-install.sh.in, pre-remove.sh.in: Initial by sdu-creator

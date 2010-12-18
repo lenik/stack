@@ -1,0 +1,85 @@
+2010-12-13  lenik
+
+	* configure.ac: don't report portability warnings.
+
+2010-12-08  lenik
+
+	* .: add itree.tex to svn ignores
+
+2010-11-29  lenik
+
+	* README: create empty README files to be filled in future.
+
+2010-11-03  lenik
+
+	* debian/changelog: switch to unstable.
+
+2010-10-20  lenik
+
+	* debian/changelog: Maverick redist.
+
+2010-10-18  lenik
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
+	  NEWS, README, VERSION.av, aclocal.m4, clamd.conf, configure,
+	  configure.ac, debian/README.Debian, debian/README.source,
+	  debian/changelog, debian/compat, debian/control,
+	  debian/copyright, debian/docs, debian/rules, hw, install-sh,
+	  libauto/coolauto.am, logt, missing: set eol-style to native
+
+2010-09-29  lenik
+
+	* debian/changelog: add changelog
+
+2010-09-23  lenik
+
+	* .: set ignores.
+	* .: ignore *.gz
+
+2010-09-22  lenik
+
+	* Makefile.in, libauto/coolauto.am: auto updates.
+
+2010-09-21  lenik
+
+	* VERSION.av, configure, configure.ac, debian/control, logt: add
+	  help texts.
+	* Makefile.am, Makefile.in, libauto/coolauto.am: auto updates.
+
+2010-09-19  lenik
+
+	* libauto/coolauto.am: libauto missings.
+	* debian: ignore substvars
+
+2010-09-17  lenik
+
+	* Makefile.in, VERSION.av, configure, configure.ac: libauto
+	  updates.
+	* debian, debian/README.Debian, debian/README.source,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/rules: add debian control files.
+	* Makefile.am, Makefile.in, configure, configure.ac: updates
+	* libauto/subst.am: libauto updates.
+
+2010-09-10  lenik
+
+	* VERSION.av, configure, configure.ac:
+
+2010-09-09  lenik
+
+	* COPYING, INSTALL, Makefile.in, VERSION.av, aclocal.m4, configure,
+	  configure.ac, hw, install-sh, libauto, libauto/subst.am, missing:
+	  initial.
+
+	  hw: count excludes "#... " time lines in history.
+
+2010-08-29  lenik
+
+	* Makefile.am: Autoconfiscated
+	* AUTHORS, ChangeLog, Makefile.am, NEWS, README, configure.ac:
+	  autoconfiscated.
+
+2010-08-18  lenik
+
+	* ., clamd.conf, hw, logt: split more component/assembly into
+	  SDU(s).

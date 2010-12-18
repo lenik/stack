@@ -1,0 +1,81 @@
+2010-12-13  lenik
+
+	* configure.ac: don't report portability warnings.
+
+2010-12-08  lenik
+
+	* .: add itree.tex to svn ignores
+	* debian/changelog: echox/echo-v -> echo-x
+
+2010-11-29  lenik
+
+	* README: create empty README files to be filled in future.
+
+2010-11-03  lenik
+
+	* debian/changelog: switch to unstable.
+
+2010-10-20  lenik
+
+	* debian/changelog: Maverick redist.
+
+2010-10-18  lenik
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
+	  NEWS, README, VERSION.av, a2logtail, a2reload, a2restart, a2stop,
+	  aclocal.m4, auth-coll, authmap, configure, configure.ac,
+	  debian/README.Debian, debian/README.source, debian/changelog,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/prerm, debian/rules, install-sh,
+	  libauto/coolauto.am, missing, post-install.sh.in,
+	  pre-remove.sh.in, via: set eol-style to native
+
+2010-09-29  lenik
+
+	* debian/changelog: add changelog
+
+2010-09-27  lenik
+
+	* VERSION.av, auth-coll, authmap, configure, configure.ac: set
+	  perm/owner to .adb and .htpasswd files, by auth-coll not authmap.
+
+2010-09-23  lenik
+
+	* .: set ignores.
+	* .: ignore *.gz
+
+2010-09-22  lenik
+
+	* Makefile.in, libauto/coolauto.am: auto updates.
+
+2010-09-21  lenik
+
+	* Makefile.am, Makefile.in, VERSION.av, auth-coll, configure,
+	  configure.ac: new auth-coll to let user manage their secrets for
+	  applications
+	* Makefile.in, libauto/coolauto.am: auto updates.
+	* VERSION.av, configure, configure.ac, pre-remove.sh.in: pre-remove
+	  always exit 0
+
+2010-09-19  lenik
+
+	* debian: ignore substvars
+	* debian/sdu-a2utils.substvars: exclude substvars.
+
+2010-09-17  lenik
+
+	* debian, debian/README.Debian, debian/README.source,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/prerm, debian/rules,
+	  debian/sdu-a2utils.substvars: add debian control files.
+
+2010-09-15  lenik
+
+	* Makefile.am, Makefile.in, VERSION.av, a2reload, a2stop,
+	  configure, configure.ac: move a2stop from -a2util to -a2utils.
+	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
+	  Makefile.in, NEWS, README, VERSION.av, a2logtail, a2reload,
+	  a2restart, aclocal.m4, authmap, configure, configure.ac,
+	  install-sh, libauto, libauto/coolauto.am, missing,
+	  post-install.sh.in, pre-remove.sh.in, via: rename -a2util to
+	  -a2utils.

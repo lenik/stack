@@ -1,0 +1,81 @@
+2010-12-13  lenik
+
+	* configure.ac: don't report portability warnings.
+
+2010-12-08  lenik
+
+	* .: add itree.tex to svn ignores
+
+2010-11-29  lenik
+
+	* README, post-install.sh.in: create empty README files to be
+	  filled in future.
+
+2010-11-03  lenik
+
+	* debian/changelog: switch to unstable.
+
+2010-10-20  lenik
+
+	* debian/changelog: Maverick redist.
+
+2010-10-18  lenik
+
+	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
+	  debian/changelog, user_id: add user_id.
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
+	  NEWS, README, VERSION.av, aclocal.m4, cert, configure,
+	  configure.ac, debian/README.Debian, debian/README.source,
+	  debian/changelog, debian/compat, debian/control,
+	  debian/copyright, debian/docs, debian/postinst, debian/prerm,
+	  debian/rules, install-sh, libauto/coolauto.am, missing,
+	  post-install.sh.in, pre-remove.sh.in, subst/inst/main-dev,
+	  subst/vol/devdata, subst/vol/devuser: set eol-style to native
+
+2010-09-29  lenik
+
+	* debian/changelog: add changelog
+
+2010-09-23  lenik
+
+	* .: set ignores.
+	* .: ignore *.gz
+
+2010-09-22  lenik
+
+	* VERSION.av, configure, configure.ac, debian/control: no dep on
+	  sdu-users
+	* Makefile.in, libauto/coolauto.am: auto updates.
+	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
+	  debian/control, subst/vol/devuser: dist subst/ entirely.
+	  add vol:devuser.
+
+2010-09-21  lenik
+
+	* VERSION.av, configure, configure.ac, subst/vol/devdata: devdata
+	  expansion
+	* debian/sdu-cred-maint.substvars: updates
+	* Makefile.am, Makefile.in, libauto/coolauto.am: auto updates.
+	* VERSION.av, configure, configure.ac, pre-remove.sh.in: pre-remove
+	  always exit 0
+
+2010-09-19  lenik
+
+	* debian: ignore substvars
+	* debian/sdu-cred-ec2maint.substvars: exclude substvars.
+
+2010-09-17  lenik
+
+	* debian, debian/README.Debian, debian/README.source,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/prerm, debian/rules,
+	  debian/sdu-cred-ec2maint.substvars,
+	  debian/sdu-cred-maint.substvars: add debian control files.
+	* VERSION.av, cert, configure, configure.ac, private_key, subst,
+	  subst/inst, subst/inst/main-dev, subst/vol, subst/vol/devdata:
+	  add subst/ initials.
+	  add private_key/cert to login for maint.
+	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
+	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
+	  configure.ac, install-sh, libauto, libauto/coolauto.am, missing,
+	  post-install.sh.in, pre-remove.sh.in: initial

@@ -1,0 +1,79 @@
+2010-12-13  lenik
+
+	* configure.ac: don't report portability warnings.
+
+2010-12-08  lenik
+
+	* .: add itree.tex to svn ignores
+
+2010-11-29  lenik
+
+	* README: create empty README files to be filled in future.
+
+2010-11-03  lenik
+
+	* debian/changelog: switch to unstable.
+
+2010-10-31  lenik
+
+	* .: something new added.
+	  and add more ignores
+
+2010-10-20  lenik
+
+	* Makefile.am, Makefile.in, VERSION.av, aclocal.m4, configure,
+	  configure.ac, debian/changelog: add missing pre/post scripts in
+	  AM.
+
+2010-10-18  lenik
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
+	  NEWS, README, VERSION.av, aclocal.m4, configure, configure.ac,
+	  debian/README.Debian, debian/README.source, debian/changelog,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/postrm, debian/prerm, debian/rules, dg,
+	  install-sh, libauto/coolauto.am, missing, post-install.sh.in,
+	  pre-remove.sh.in, svn-add-node-logs: set eol-style to native
+
+2010-09-29  lenik
+
+	* debian/changelog: add changelog
+
+2010-09-23  lenik
+
+	* .: set ignores.
+	* .: ignore *.gz
+
+2010-09-22  lenik
+
+	* Makefile.in, libauto/coolauto.am: auto updates.
+
+2010-09-21  lenik
+
+	* Makefile.am, Makefile.in, configure, configure.ac: updates
+	* COPYING, INSTALL, Makefile.am, Makefile.in, VERSION.av,
+	  aclocal.m4, configure, configure.ac, debian,
+	  debian/README.Debian, debian/README.source, debian/compat,
+	  debian/control, debian/copyright, debian/docs, debian/postinst,
+	  debian/postrm, debian/prerm, debian/rules, install-sh, libauto,
+	  libauto/coolauto.am, missing, post-install.sh.in,
+	  pre-remove.sh.in: Initial by sdu-creator
+	* Makefile.am: auto updates.
+
+2010-09-17  lenik
+
+	* Makefile.am, configure.ac: updates
+
+2010-08-29  lenik
+
+	* etc: Autoconfiscated
+	* Makefile.am, etc/cron.daily/svn-add-node-logs, svn-add-node-logs:
+	  autoconfiscated
+	* AUTHORS, ChangeLog, Makefile.am, NEWS, README, configure.ac:
+	  autoconfiscated.
+
+2010-08-18  lenik
+
+	* dg: parse real name of a user from passwd.
+	* dg, etc: split component/assembly into SDU(s).
+	* .: Layer: secca debian units.

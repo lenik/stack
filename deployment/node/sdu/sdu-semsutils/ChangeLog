@@ -1,0 +1,62 @@
+2010-12-13  lenik
+
+	* configure.ac: don't report portability warnings.
+
+2010-12-08  lenik
+
+	* deploy-this: echox/echo-v -> echo-x
+
+2010-11-29  lenik
+
+	* ., README: create empty README files to be filled in future.
+
+2010-11-09  lenik
+
+	* VERSION.av, configure, configure.ac, semsd.sh: cache the pom dirs
+	  list.
+
+2010-10-31  lenik
+
+	* VERSION.av, configure, configure.ac, semsd.sh: something new
+	  added.
+	  and add more ignores
+
+2010-10-25  lenik
+
+	* VERSION.av, configure, configure.ac, debian/control,
+	  svnrootofcwd: no dep to -seccajx
+
+2010-10-20  lenik
+
+	* Makefile.am, Makefile.in, VERSION.av, cd-sems, cd-sems.sh,
+	  configure, configure.ac, semsd.sh, svnrootofcwd: search
+	  archetype, (semsroot:/) also.
+	  bash-compl fixes.
+	* Makefile.am, Makefile.in, VERSION.av, cd-sems, cd-sems.sh,
+	  configure, configure.ac, svnrootofcwd: add bash completion
+	  support.
+	* VERSION.av, cd-sems, configure, configure.ac, semsutils.sh: fix
+	  cd-sems dryrun.
+	* ., Makefile.am, Makefile.in, VERSION.av, aclocal.m4, cd-sems,
+	  configure, configure.ac, debian, debian/control, semsutils.sh:
+	  initial
+
+2010-10-18  lenik
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
+	  NEWS, README, VERSION.av, aclocal.m4, configure, configure.ac,
+	  debian/README.Debian, debian/README.source, debian/compat,
+	  debian/control, debian/copyright, debian/docs, debian/postinst,
+	  debian/postrm, debian/prerm, debian/rules, deploy-this,
+	  install-sh, libauto/coolauto.am, missing, post-install.sh.in,
+	  pre-remove.sh.in: set eol-style to native
+
+2010-10-08  lenik
+
+	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
+	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
+	  configure.ac, debian, debian/README.Debian, debian/README.source,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
+	  install-sh, libauto, libauto/coolauto.am, missing,
+	  post-install.sh.in, pre-remove.sh.in: Initial by sdu-creator

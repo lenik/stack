@@ -1,0 +1,94 @@
+2010-12-13  lenik
+
+	* configure.ac: don't report portability warnings.
+
+2010-12-08  lenik
+
+	* .: add itree.tex to svn ignores
+
+2010-11-29  lenik
+
+	* README: create empty README files to be filled in future.
+
+2010-11-03  lenik
+
+	* debian/changelog: switch to unstable.
+
+2010-10-20  lenik
+
+	* debian/changelog: Maverick redist.
+
+2010-10-18  lenik
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
+	  NEWS, README, VERSION.av, aclocal.m4, configure, configure.ac,
+	  debian/README.Debian, debian/README.source, debian/changelog,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/prerm, debian/rules, install-sh,
+	  libauto/coolauto.am, missing, post-install.sh.in,
+	  pre-remove.sh.in: set eol-style to native
+
+2010-09-29  lenik
+
+	* debian/changelog: add changelog
+
+2010-09-27  lenik
+
+	* .: ignores
+
+2010-09-24  lenik
+
+	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac:
+	  pre/post not dist.
+	* Makefile.am, VERSION.av, configure, configure.ac: collision with
+	  ec2utils?
+
+2010-09-23  lenik
+
+	* .: set ignores.
+	* .: ignore *.gz
+
+2010-09-22  lenik
+
+	* Makefile.am, Makefile.in, debian/control, ec2-cmd,
+	  ec2-update-subst, ec2user-init, mount-ebs, nextdev,
+	  post-install.sh.in, pre-remove.sh.in: transferred utils to
+	  -ec2utils
+	* VERSION.av, configure, configure.ac, ec2-update-subst: subst
+	  globals.
+	* Makefile.in, debian/control, libauto/coolauto.am: auto updates.
+	* Makefile.am, Makefile.in, VERSION.av, configure, configure.ac,
+	  mount-ebs: distill ebs mountation from vol-devdata
+
+2010-09-21  lenik
+
+	* Makefile.in, libauto/coolauto.am: auto updates.
+	* VERSION.av, configure, configure.ac, pre-remove.sh.in: pre-remove
+	  always exit 0
+
+2010-09-20  lenik
+
+	* VERSION.av, configure, configure.ac, ec2user-init: version up.
+
+2010-09-19  lenik
+
+	* debian: ignore substvars
+	* debian/sdu-ec2node.substvars: exclude substvars.
+
+2010-09-17  lenik
+
+	* debian, debian/README.Debian, debian/README.source,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/prerm, debian/rules,
+	  debian/sdu-ec2node.substvars: add debian control files.
+	* COPYING, INSTALL, Makefile.in, VERSION.av, configure,
+	  configure.ac, ec2-cmd, ec2-update-subst, ec2user-init, nextdev:
+	  ec2-cmd do param subst btw.
+
+	  ec2-update-subst update the params.
+
+	  add ec2user-init.
+	* ., AUTHORS, ChangeLog, Makefile.am, NEWS, README, VERSION.av,
+	  aclocal.m4, configure, configure.ac, install-sh, libauto,
+	  libauto/coolauto.am, missing, post-install.sh.in,
+	  pre-remove.sh.in: autoconfiscate

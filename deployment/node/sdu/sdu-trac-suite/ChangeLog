@@ -1,0 +1,33 @@
+2010-12-13  lenik
+
+	* configure.ac: don't report portability warnings.
+
+2010-11-24  lenik
+
+	* VERSION.av, configure, configure.ac,
+	  debian/sdu-trac-suite.install: the install file list is empty by
+	  default if multiple package in one source.
+
+2010-11-19  lenik
+
+	* VERSION.av, configure, configure.ac, debian, debian/control,
+	  debian/trac-ticketmodifiedfiles.install,
+	  debian/trac-ticketmodifiedfiles.postinst,
+	  debian/trac-ticketstats.install,
+	  debian/trac-ticketstats.postinst,
+	  debian/trac-tickettemplate.install,
+	  debian/trac-tickettemplate.postinst,
+	  debian/trac-tocmacro.postinst,
+	  debian/trac-tticketdepgraph.install,
+	  debian/trac-tticketdepgraph.postinst: add more trac plugins
+	  packages.
+	* ., VERSION.av, configure, configure.ac, debian, debian/control,
+	  debian/trac-tocmacro.install, debian/trac-tocmacro.postinst:
+	  Provide trac-tocmacro in addition.
+	* ., AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am,
+	  Makefile.in, NEWS, README, VERSION.av, aclocal.m4, configure,
+	  configure.ac, debian, debian/README.Debian, debian/README.source,
+	  debian/compat, debian/control, debian/copyright, debian/docs,
+	  debian/postinst, debian/postrm, debian/prerm, debian/rules,
+	  install-sh, libauto, libauto/coolauto.am, missing,
+	  post-install.sh.in, pre-remove.sh.in: Initial by sdu-creator
