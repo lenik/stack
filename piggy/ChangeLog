@@ -1,0 +1,38 @@
+2010-10-18  谢继雷
+
+	* set eol-style to native
+
+2010-01-18  谢继雷
+
+	* add piggy- prefix to artifact-ids.
+
+2009-12-23  谢继雷
+
+	* [maven-release-plugin] prepare for next development iteration
+	* [maven-release-plugin] prepare release piggy-0.0.3
+
+2009-12-22  谢继雷
+
+	* [maven-release-plugin] prepare for next development iteration
+	* [maven-release-plugin] prepare release piggy-0.0.2
+	* [maven-release-plugin] rollback the release of ]
+	* invalid char ']' in svn url.
+	* [maven-release-plugin] prepare release ]
+	* parent in release always
+	* [maven-release-plugin] prepare for next development iteration
+	* ignore pom.xml.releaseBackup
+	* [vm-r1]
+	* version management.
+	* svn urls in property
+
+2009-12-21  谢继雷
+
+	* prepare layout
+
+2009-12-18  谢继雷
+
+	* about secca frameworks.
+
+2009-12-07  谢继雷
+
+	*
