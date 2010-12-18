@@ -1,0 +1,46 @@
+2010-10-18  谢继雷
+
+	* set eol-style to native
+	* initial, not impl yet.
+
+2010-04-08  谢继雷
+
+	*
+
+2010-01-08  谢继雷
+
+	* canonical dirname.
+
+2009-12-25  谢继雷
+
+	*
+	* rename IconMap to ImageMap.
+	* new module
+
+2009-12-24  谢继雷
+
+	*
+	* nls properties initial released.
+	* rename HelpIndex -> Refdocs, add UniquePrefixDispatcher impl. for
+	  fast properties process.
+
+2009-12-23  谢继雷
+
+	* [maven-release-plugin] prepare for next development iteration
+	* [maven-release-plugin] prepare release plover-0.0.3
+
+2009-12-22  谢继雷
+
+	* [maven-release-plugin] prepare for next development iteration
+	* [maven-release-plugin] prepare release plover-0.0.2
+	* [maven-release-plugin] prepare for next development iteration
+	* ignore pom.xml.releaseBackup
+	* new helpdoc/UI-info.
+	* [vm-r1]
+	* plover ui base
+	* version management.
+
+2009-12-21  谢继雷
+
+	* prepare layout
+	* prepare layout
