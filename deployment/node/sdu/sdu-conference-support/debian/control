@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-conference-support
 
 Package: sdu-conference-support
 Architecture: all
-Depends: sox
+Depends: sox, lame
 Description: Conference support utilities

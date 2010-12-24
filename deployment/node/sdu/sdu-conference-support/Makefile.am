@@ -1,5 +1,7 @@
 include libauto/coolauto.am
 
+dist_bin_SCRIPTS = \
+    record-talking
 
 setup_SCRIPTS = \
     post-install.sh \
