@@ -10,5 +10,5 @@ Homepage: http://sdu.secca-project.com/sdu-seqtool
 
 Package: sdu-seqtool
 Architecture: all
-Depends: graphviz, perl
+Depends: graphviz, perl, libcmt-perl
 Description: Tools for create/convert .seq files.

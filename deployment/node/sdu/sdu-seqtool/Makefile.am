@@ -1,5 +1,9 @@
 include libauto/coolauto.am
 
+textmdadir = ${perllibdir}/Text/MDA
+
+dist_textmda_DATA = \
+    Text/MDA/Seq.pm
 
 setup_SCRIPTS = \
     post-install.sh \

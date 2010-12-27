@@ -143,6 +143,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -160,11 +161,12 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/libauto/coolauto.am \
-	$(top_srcdir)/configure $(top_srcdir)/libauto/allin.am \
-	$(top_srcdir)/libauto/rst.am $(top_srcdir)/libauto/subst.am \
-	AUTHORS COPYING ChangeLog INSTALL NEWS install-sh missing
+DIST_COMMON = README $(am__configure_deps) $(dist_textmda_DATA) \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/libauto/coolauto.am $(top_srcdir)/configure \
+	$(top_srcdir)/libauto/allin.am $(top_srcdir)/libauto/rst.am \
+	$(top_srcdir)/libauto/subst.am AUTHORS COPYING ChangeLog \
+	INSTALL NEWS install-sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -196,10 +198,11 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(setupdir)"
+am__installdirs = "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(textmdadir)"
 SCRIPTS = $(setup_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
+DATA = $(dist_textmda_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -329,6 +332,10 @@ do_subst = sed \
 RST2HTML = rst2html
 RST2MAN = rst2man
 RST2PDF = rst2pdf
+textmdadir = ${perllibdir}/Text/MDA
+dist_textmda_DATA = \
+    Text/MDA/Seq.pm
+
 setup_SCRIPTS = \
     post-install.sh \
     pre-remove.sh
@@ -406,6 +413,26 @@ uninstall-setupSCRIPTS:
 	test -n "$$list" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(setupdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(setupdir)" && rm -f $$files
+install-dist_textmdaDATA: $(dist_textmda_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(textmdadir)" || $(MKDIR_P) "$(DESTDIR)$(textmdadir)"
+	@list='$(dist_textmda_DATA)'; test -n "$(textmdadir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(textmdadir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(textmdadir)" || exit $$?; \
+	done
+
+uninstall-dist_textmdaDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_textmda_DATA)'; test -n "$(textmdadir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(textmdadir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(textmdadir)" && rm -f $$files
 tags: TAGS
 TAGS:
 
@@ -562,9 +589,9 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(SCRIPTS)
+all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(setupdir)"; do \
+	for dir in "$(DESTDIR)$(setupdir)" "$(DESTDIR)$(textmdadir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -614,7 +641,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-setupSCRIPTS
+install-data-am: install-dist_textmdaDATA install-setupSCRIPTS
 
 install-dvi: install-dvi-am
 
@@ -660,7 +687,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-setupSCRIPTS
+uninstall-am: uninstall-dist_textmdaDATA uninstall-setupSCRIPTS
 
 .MAKE: install-am install-strip
 
@@ -669,13 +696,15 @@ uninstall-am: uninstall-setupSCRIPTS
 	dist-xz dist-zip distcheck distclean distclean-generic \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-setupSCRIPTS install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	install-data-am install-dist_textmdaDATA install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-setupSCRIPTS install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-setupSCRIPTS
+	pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-dist_textmdaDATA uninstall-setupSCRIPTS
 
 
 %: %.in Makefile
