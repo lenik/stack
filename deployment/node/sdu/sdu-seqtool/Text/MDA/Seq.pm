@@ -26,6 +26,7 @@ our $NODEL = {
     '@' => { shape => 'doublecircle' },
     '|' => { style => 'dashed' },
     '?' => { '.branch' => 1, shape => 'diamond' },
+    '*' => { shape => 'note', style => 'filled', fillcolor => '#ffff88' },
     };
 our $EDGEL = {
     ':' => { style => 'dashed' },
@@ -75,7 +76,7 @@ sub seq_parse(@) {
     my @prev = ();
     my $meta = {
         # concentrate => 'true',
-        labeljust   => 'l',
+        labeljust   => 'c',
         labelloc    => 't',
         rankdir     => 'TD',
         splines     => 'polyline',
@@ -274,7 +275,7 @@ sub seq_dump_viz($$$;$) {
 
     for my $lane (@$lanes) {
         my $lane_meta = $all->{$lane};
-        my $lane_text = $lane_meta->{'.text'};
+        my $lane_text = $lane_meta->{'.text'} || $lane;
 
         my @lane_nodes = grep { $all->{$_}->{'.lane'} eq $lane } keys(%$all);
         print "    subgraph cluster_$lane {\n";
