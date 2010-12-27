@@ -2,6 +2,9 @@ include libauto/coolauto.am
 
 textmdadir = ${perllibdir}/Text/MDA
 
+dist_bin_SCRIPTS = \
+    seqlint
+
 dist_textmda_DATA = \
     Text/MDA/Seq.pm
 

@@ -1,0 +1,24 @@
+# @doctitle Sample Title
+#
+# $Id$
+# $Log: $
+
+#     Review.
+
+# comment
+
+lane1: Lane 1
+    @start
+    step1(Short Cut Path=step3, Error=end, sub1)
+    step2?(yes=step3, no:=end, sub2)
+    step3
+    end[color=red]
+
+lane2: Lane 2
+    sub1
+    sub2|
+    sub3
+    sub4
+
+sub1 -> sub3
+sub2 -> sub4 [style=dashed, color=blue]: Link Label
