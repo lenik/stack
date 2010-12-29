@@ -1,3 +1,9 @@
+sdu-site-maindev (0.1.12-1) unstable; urgency=low
+
+  * Upstream updates, by xjl-cooldeb
+
+ -- 谢继雷 (99计算机) <xjl@99jsj.com>  Wed, 29 Dec 2010 23:37:00 +0800
+
 sdu-site-maindev (0.1.11-2) unstable; urgency=low
 
   * Upstream updates, automatic package by deb-redist

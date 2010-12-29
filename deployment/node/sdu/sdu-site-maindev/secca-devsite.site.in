@@ -6,6 +6,14 @@
     CustomLog /var/log/apache2/secca_maindev_access.log combined
 
     DocumentRoot @pkgdatadir@/html
+    <Directory "@pkgdatadir@/html">
+        Options Indexes MultiViews FollowSymLinks
+        # You need to patch 100_autoindex_preview on apache2.
+        IndexOptions FancyIndexing Preview AltContentType
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+    </Directory>
 
     UserDir public_html
     AliasMatch ^/home/([^/]+)/public_html/(.*) /home/$1/public_html/$2
