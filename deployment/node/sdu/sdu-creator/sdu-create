@@ -53,10 +53,11 @@ pre-remove.sh: pre-remove.sh.in Makefile
 	\$(do_subst) <\$(srcdir)/pre-remove.sh.in >\$@
 EOT
 
-    autoreconf2 -i
-    rm -fr autom4te.cache
-
     svn add *
+
+    # reconf2 after added. so exclude gen stuff.
+    autoreconf2 -is
+    rm -fr autom4te.cache
 
     # -i indep binary.
     . dh_make-autover --createorig -i
