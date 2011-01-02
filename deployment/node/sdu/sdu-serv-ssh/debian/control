@@ -9,5 +9,5 @@ Homepage: http://sdu.secca-project.com/sdu-serv-ssh
 Package: sdu-serv-ssh
 Architecture: all
 Depends: ${misc:Depends}, openssh-server, sdu-ec2node,
-    wget, xjl-coolutils
+    wget, coolutils
 Description: Provide SSH access with node-type preference.

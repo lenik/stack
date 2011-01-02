@@ -8,6 +8,6 @@ Homepage: http://sdu.secca-project.com/sdu-ec2node
 
 Package: sdu-ec2node
 Architecture: all
-Depends: sdu-ec2aptextra, sdu-ec2utils, xjl-coolusers, sdu-nodeskel
+Depends: sdu-ec2aptextra, sdu-ec2utils, users-pref-xjl, sdu-nodeskel
 Recommends: sdu-sysutil
 Description: Amazon EC2 Instance support SDU

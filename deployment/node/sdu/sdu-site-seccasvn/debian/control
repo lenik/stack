@@ -8,7 +8,7 @@ Homepage: http://sdu.secca-project.com/sdu-site-seccasvn
 
 Package: sdu-site-seccasvn
 Architecture: all
-Depends: ${misc:Depends}, xinetd, xjl-coolsvn,
+Depends: ${misc:Depends}, xinetd, svn-enh,
     libapache2-svn,
     sdu-svntools, sdu-svnjoin,
     sdu-site-maindev, sdu-vol-devdata

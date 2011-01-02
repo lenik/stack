@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-site-maindev
 
 Package: sdu-site-maindev
 Architecture: all
-Depends: xjl-coolsvn, apache2, sdu-a2utils
+Depends: svn-enh, apache2, sdu-a2utils
 Description: Provide dev-site and farm index.

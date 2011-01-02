@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-seccadns
 
 Package: sdu-seccadns
 Architecture: all
-Depends: ${misc:Depends}, xjl-cooldns, bind9
+Depends: ${misc:Depends}, bind-pref-xjl, bind9
 Description: Provide SECCA Domain Names Service

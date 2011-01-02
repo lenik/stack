@@ -9,6 +9,6 @@ Homepage: http://sdu.secca-project.com/sdu-sduutils
 Package: sdu-sduutils
 Architecture: all
 Depends: apt, apt-rdepends, dpkg, devscripts,
-    debtree, graphviz, xjl-cooldeb, aptitude,
+    debtree, graphviz, cooldeb, aptitude,
     dpkg-dev, sdu-creator
 Description: SDU development utilities.

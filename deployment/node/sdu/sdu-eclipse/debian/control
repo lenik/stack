@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-eclipse
 
 Package: sdu-eclipse
 Architecture: all
-Depends: xjl-coolwget
+Depends: wget-enh
 Description: Eclipse the latest version.

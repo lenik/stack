@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/srad-chrome
 
 Package: srad-chrome
 Architecture: all
-Depends: xjl-coolwget, dpkg
+Depends: wget-enh, dpkg
 Description: Google chrome bundles

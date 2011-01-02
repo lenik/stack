@@ -8,6 +8,6 @@ Homepage: http://sdu.secca-project.com/srad-devenv
 
 Package: srad-devenv
 Architecture: all
-Depends: xjl-netutils
+Depends: nameutils
 Recommends: sdu-sduutils
 Description: SECCA developer environment

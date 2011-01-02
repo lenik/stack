@@ -9,5 +9,5 @@ Homepage: http://sdu.secca-project.com/sdu-creator
 Package: sdu-creator
 Architecture: all
 Depends: ${misc:Depends}, debhelper, dpkg-dev, dh-make, dput,
-    subversion, grep, xjl-cooldeb, xjl-coolutils
+    subversion, grep, cooldeb, coolutils
 Description: SDU creator utility.

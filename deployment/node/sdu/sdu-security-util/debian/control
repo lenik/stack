@@ -8,6 +8,6 @@ Homepage: http://sdu.secca-project.com/sdu-security-util
 
 Package: sdu-security-util
 Architecture: all
-Depends: xjl-libcmt, grep
+Depends: libcmt-perl, grep
 Recommends: clamav
 Description: Linux security utils for ec2node.
