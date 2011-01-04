@@ -1,3 +1,5 @@
+alias ec2vars='. ec2-init-cred'
+
 alias ec2-bundle-image='ec2-bundle-image-i'
 alias ec2-bundle-vol='ec2-bundle-vol-i'
 alias ec2-delete-bundle='ec2-delete-bundle-i'
