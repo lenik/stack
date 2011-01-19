@@ -1,2 +1,6 @@
 #!/bin/sh
 # master-file
+
+install -d -m 777 @logdir@
+
+exit 0

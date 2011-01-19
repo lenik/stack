@@ -9,9 +9,10 @@ fi
 NODE_ID=unknown
 NODE_IP=unknown
 
-if [ -f /node/.noderc ]; then
-    . /node/.noderc
-fi
+for rc in /etc; do
+    [ -f $rc/.noderc ] && . $rc/.noderc
+    [ -f $rc/noderc ]  && . $rc/noderc
+done
 
 REAL="$USER"
     while IFS=: read name passwd uid gid real home shell; do
@@ -33,7 +34,7 @@ if [ -z "$EDITOR" ]; then
     EDITOR=vi
 fi
 
-LOGFILE="/node/log/`date +%Y-%m/%Y-%m-%d`.txt"
+LOGFILE="@logdir@/`date +%Y-%m/%Y-%m-%d`.txt"
 LOGDIR="${LOGFILE%/*}"
 if [ ! -d "$LOGDIR" ]; then
     if ! mkdir -p "$LOGDIR"; then
@@ -77,11 +78,11 @@ fi
 
 cat <<EOM >$TMPLOG
 _______________________________________________________________________________
-Node log on $NODE_ID ($NODE_IP/$HOSTNAME)
+机群节点操作记录：位于 $NODE_ID $NODE_LOC ($NODE_IP/$HOSTNAME)
 
-Date:       `date`
-Operator:   $REAL from $CLIENT
-Action:     $BRIEF
+日期:     `date`
+操作员:   $REAL from $CLIENT
+动作:     $BRIEF
 
 EOM
 
@@ -98,7 +99,7 @@ function commit() {
     echo _______________________________________________________________________________
 
     echo _______________________________________________________________________________>>$TMPLOG
-    echo "__Message composed by *dg*, with version 1.0__">>$TMPLOG
+    echo "【智恒软件|系统与网络|SDU-NODELOG】__Message composed by *dg*, version @VERSION@__">>$TMPLOG
 
     if [ -n "$NODE_MAILLIST" ]; then
         mail -s "[NODE $NODE_ID] $BRIEF" "$NODE_MAILLIST" <$TMPLOG

@@ -8,5 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-nodelog
 
 Package: sdu-nodelog
 Architecture: all
-Depends: ${misc:Depends}
+Depends: bsd-mailx
 Description: Node Log support, include writer and mailer
