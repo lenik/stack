@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.65])
-AC_INIT([sdu-postfix], [0.1.1], [xjl@99jsj.com])
+AC_INIT([sdu-postfix], [1.0.1], [xjl@99jsj.com])
 AM_INIT_AUTOMAKE([-Wno-portability])
 
 # Checks for programs.
@@ -17,4 +17,5 @@ AC_PROG_LN_S
 # Checks for library functions.
 
 AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([postfix/Makefile])
 AC_OUTPUT
