@@ -22,10 +22,10 @@ $TTL            12H
 
                         TXT     "t=spf1 A MX include:authsmtp.com ~all"
 
-ns1                     A       67.202.17.183
-ns2                     A       67.202.17.183
+ns1                     A       50.16.108.115
+ns2                     A       50.16.108.115
 
-main-dev                A       67.202.17.183   ; 主开发节点
+main-dev                A       50.16.108.115   ; 主开发节点
 app-1                   CNAME   main-dev        ; 应用节点-1
 s-dev                   CNAME   main-dev        ; 开发组支持
 aut-dev                 CNAME   main-dev        ; 综合集成

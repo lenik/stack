@@ -18,14 +18,12 @@ umask 002
 
 echo "Prepare secca-releases in devdata"
 
-    mkdir -p /mnt/devdata/m2repo/secca-releases
-    cd /repos
-    ln -snf /mnt/devdata/m2repo/secca-releases .
+    mkdir -p /mnt/devdata/m2repo/releases
+    mkdir -p /mnt/devdata/m2repo/snapshots
 
-    mkdir -p /var/lib/m2
-    cd /var/lib/m2
-    install -d -m 2775 -o appserv -g dev secca.snapshots
-    ln -snf /mnt/devdata/m2repo/secca-releases secca.releases
+    cd /repos
+    ln -snf /mnt/devdata/m2repo/releases .
+    ln -snf /mnt/devdata/m2repo/snapshots .
 
 echo "Configure Apache forwarder"
 
@@ -35,15 +33,15 @@ echo "Configure Apache forwarder"
         $rulesf @Alias::SECCA \
         'ServerAlias m2.secca-project.com'
 
-    #Alias /releases     /archiva/repository/releases
+    #Alias /releases     /archiva/repository/internal
     #Alias /snapshots    /archiva/repository/snapshots
     lineconf -tm "Add archiva rule for /releases" \
         $rulesf @Rule::SECCA::Release \
-        'RewriteRule ^/releases/(.*)  /archiva/repository/secca.releases/$1 [PT]'
+        'RewriteRule ^/releases/(.*)  /archiva/repository/internal/$1 [PT]'
 
     lineconf -tm "Add archiva rule for /snapshots" \
         $rulesf @Rule::SECCA::Snapshots \
-        'RewriteRule ^/snapshots/(.*) /archiva/repository/secca.snapshots/$1 [PT]'
+        'RewriteRule ^/snapshots/(.*) /archiva/repository/snapshots/$1 [PT]'
 
     a2reload
 
