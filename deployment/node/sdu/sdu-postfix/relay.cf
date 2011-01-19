@@ -19,3 +19,5 @@ smtpd_sasl_local_domain = $myhostname
 smtp_sasl_security_options = noanonymous
 smtp_sasl_tls_security_options = noanonymous
 smtpd_sasl_application_name = smtpd
+
+relay = [smtp.gmail.com]:587

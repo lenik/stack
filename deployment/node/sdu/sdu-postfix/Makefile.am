@@ -17,7 +17,7 @@ dist_sbin_SCRIPTS = \
 dist_setup_SCRIPTS = \
     post-install.sh \
     pre-remove.sh \
-    sasl.cf
+    relay.cf
 
 %.sh: %.sh.in Makefile
 	$(do_subst) <$< >$@
