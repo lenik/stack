@@ -11,14 +11,15 @@
 	<version>0.0.4-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
-			<groupId>net.bodz.bas</groupId>
-			<artifactId>bas-api</artifactId>
-		</dependency>
-		<dependency>
 			<optional>true</optional>
 			<groupId>jakarta-regexp</groupId>
 			<artifactId>jakarta-regexp</artifactId>
 			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.free</groupId>
+			<artifactId>freejava-closure</artifactId>
+			<version>3.0.0</version>
 		</dependency>
 	</dependencies>
 	<name>SECCA :: Plover :: System Architecture</name>

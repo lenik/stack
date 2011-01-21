@@ -1,0 +1,17 @@
+# RESERVED
+sems
+
+# Common
+*.tmp
+*.swp
+*.log
+*~
+
+# Maven
+target
+*.versionBackup
+
+# Eclipse
+.project
+.classpath
+.settings
