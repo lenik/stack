@@ -1,0 +1,29 @@
+parent/
+    plover-parent
+
+back-end/
+    plover-sysutils
+    plover-diagnostics
+
+core/
+    plover-arch
+
+library/
+    plover-collections
+
+lifecycle/
+    plover-session
+
+modeling/
+    plover-model
+
+repr/
+    plover-repr
+
+ui/
+    plover-widgets
+
+web-ui/
+    plover-restful
+    plover-servlet
+    plover-webwidgets
