@@ -7,7 +7,11 @@ back-end/
 
 core/
     plover-arch
+    plover-indexing
     plover-collections
+    plover-expr
+    plover-expr-sql
+    plover-expr-criteria
 
 library/
     plover-commons
