@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>plover-commons</module>
-        <module>plover-stateflow</module>
     </modules>
     <name>Plover :: Library</name>
 </project>

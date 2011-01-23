@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>plover-session</module>
+        <module>plover-stateflow</module>
     </modules>
     <name>Plover :: Lifecycle</name>
 </project>

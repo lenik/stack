@@ -7,12 +7,14 @@ back-end/
 
 core/
     plover-arch
+    plover-collections
 
 library/
-    plover-collections
+    plover-commons
 
 lifecycle/
     plover-session
+    plover-stateflow
 
 modeling/
     plover-model
