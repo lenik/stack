@@ -11,7 +11,7 @@ core/
     plover-collections
     plover-expr
     plover-expr-sql
-    plover-expr-criteria
+    plover-expr-criterion
 
 library/
     plover-commons

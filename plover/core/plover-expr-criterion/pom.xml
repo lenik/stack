@@ -5,8 +5,24 @@
         <artifactId>core</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
-    <artifactId>plover-expr-criteria</artifactId>
+    <artifactId>plover-expr-criterion</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <dependencies/>
+    <dependencies>
+	<dependency>
+		<groupId>com.bee32.plover</groupId>
+		<artifactId>plover-expr</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<type>jar</type>
+		<scope>compile</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-core</artifactId>
+		<version>3.5.0-Final</version>
+		<type>jar</type>
+		<scope>compile</scope>
+		<optional>true</optional>
+	</dependency>
+    </dependencies>
     <name>Plover :: Core :: Plover Expr Criteria</name>
 </project>
