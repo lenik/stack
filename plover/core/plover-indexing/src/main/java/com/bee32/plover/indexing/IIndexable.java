@@ -8,4 +8,6 @@ public interface IIndexable {
 
     IIndexingMetaData getIndexingMetaData();
 
+    void accept(IIndexingVisitor indexer);
+
 }

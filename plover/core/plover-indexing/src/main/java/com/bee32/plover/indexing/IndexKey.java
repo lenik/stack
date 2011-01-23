@@ -7,5 +7,4 @@ public abstract class IndexKey
 
     private static final long serialVersionUID = 1L;
 
-
 }

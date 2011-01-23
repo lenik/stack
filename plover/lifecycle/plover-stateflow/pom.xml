@@ -15,6 +15,13 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+		<groupId>com.bee32.plover</groupId>
+		<artifactId>plover-indexing</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<type>jar</type>
+		<scope>compile</scope>
+        </dependency>
     </dependencies>
     <name>Plover :: Lifecycle :: Plover Stateflow</name>
 </project>

@@ -2,8 +2,8 @@ package com.bee32.plover.stateflow;
 
 public interface IStateful {
 
-    IStateSchema getSchema();
+    int getStateCount();
 
-    State getState();
+    State getState(int stateIndex);
 
 }

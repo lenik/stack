@@ -7,9 +7,10 @@ public abstract class State
 
     private static final long serialVersionUID = 1L;
 
+    public abstract IStateSchema getSchema();
+
     public void accept(IStateVisitor stateVisitor) {
         // Do nothing by default.
     }
-
 
 }

@@ -1,0 +1,25 @@
+package com.bee32.plover.expr;
+
+public class ExpressionFormatter
+        extends AbstractExpressionVisitor {
+
+    private final StringBuffer buffer;
+
+    public ExpressionFormatter() {
+        this.buffer = new StringBuffer();
+    }
+
+    public void reset() {
+        buffer.setLength(0);
+    }
+
+    @Override
+    public boolean begin(Expression expression) {
+        return true;
+    }
+
+    @Override
+    public void end(Expression expression) {
+    }
+
+}
