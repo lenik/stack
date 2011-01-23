@@ -12,7 +12,8 @@
     <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>plover-collections</module>
+        <module>plover-commons</module>
+        <module>plover-stateflow</module>
     </modules>
     <name>Plover :: Library</name>
 </project>

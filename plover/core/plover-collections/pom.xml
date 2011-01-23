@@ -2,12 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.plover</groupId>
-        <artifactId>library</artifactId>
+        <artifactId>core</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
     <artifactId>plover-collections</artifactId>
     <packaging>jar</packaging>
     <version>0.0.4-SNAPSHOT</version>
     <dependencies/>
-    <name>Plover :: Library :: Plover Collections</name>
+    <name>Plover :: Core :: Plover Collections</name>
 </project>
