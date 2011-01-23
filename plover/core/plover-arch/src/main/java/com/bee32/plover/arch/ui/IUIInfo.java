@@ -8,6 +8,9 @@ import com.bee32.plover.arch.ui.impl.AccessibleContextImpl;
  * @see AccessibleContextImpl
  */
 public interface IUIInfo {
+
+    int traitsIndex = -1428529429; // IUIInfo
+
 //
 // String getDisplayName(Locale locale);
 //

@@ -4,6 +4,8 @@ import java.net.URL;
 
 public interface IImageMap {
 
+    int traitsIndex = 404835690; // IImageMap
+
     /**
      * 获取默认图像。
      *

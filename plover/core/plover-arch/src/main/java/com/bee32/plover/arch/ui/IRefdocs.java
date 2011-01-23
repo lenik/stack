@@ -8,6 +8,8 @@ import java.util.Set;
  */
 public interface IRefdocs {
 
+    int traitsIndex = 1125825733; // IRefdocs
+
     /**
      * 获取文档中使用了的标签集。
      *
