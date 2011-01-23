@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.seccaproject.plover</groupId>
+        <groupId>com.bee32.plover</groupId>
         <artifactId>web-ui</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
     <artifactId>plover-restful</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SECCA :: Plover :: Web Ui :: Plover Restful</name>
+    <name>Plover :: Web Ui :: Plover Restful</name>
 </project>

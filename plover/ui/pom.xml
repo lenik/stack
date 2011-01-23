@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>net.bodz.bas</groupId>
-        <artifactId>bas</artifactId>
+        <groupId>com.bee32.plover</groupId>
+        <artifactId>plover</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
     <artifactId>ui</artifactId>
@@ -14,5 +14,5 @@
     <modules>
         <module>plover-widgets</module>
     </modules>
-    <name>SECCA :: Plover :: Ui</name>
+    <name>Plover :: Ui</name>
 </project>

@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.seccaproject.plover</groupId>
+        <groupId>com.bee32.plover</groupId>
         <artifactId>core</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
@@ -21,5 +21,5 @@
             <version>3.0.0</version>
         </dependency>
     </dependencies>
-    <name>SECCA :: Plover :: Core :: Plover Arch</name>
+    <name>Plover :: Core :: Plover Arch</name>
 </project>
