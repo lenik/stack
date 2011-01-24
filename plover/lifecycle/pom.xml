@@ -12,6 +12,7 @@
     <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>plover-restful</module>
         <module>plover-session</module>
         <module>plover-stateflow</module>
     </modules>

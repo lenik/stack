@@ -2,17 +2,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.plover</groupId>
-        <artifactId>web-ui</artifactId>
+        <artifactId>lifecycle</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
-    <artifactId>plover-servlet</artifactId>
+    <artifactId>plover-restful</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-mock</artifactId>
-		<version>2.0.8</version>
-	</dependency>
+        <dependency>
+            <groupId>org.kohsuke.stapler</groupId>
+            <artifactId>stapler</artifactId>
+            <version>1.155</version>
+        </dependency>
     </dependencies>
-    <name>Plover :: Web Ui :: Plover Servlet</name>
+    <name>Plover :: Lifecycle :: Plover Restful</name>
 </project>

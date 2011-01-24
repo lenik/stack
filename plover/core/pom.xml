@@ -18,6 +18,7 @@
         <module>plover-expr-criterion</module>
         <module>plover-expr-sql</module>
         <module>plover-indexing</module>
+        <module>plover-servlet</module>
     </modules>
     <name>Plover :: Core</name>
 </project>
