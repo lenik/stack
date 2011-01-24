@@ -12,6 +12,7 @@ core/
     plover-expr
     plover-expr-sql
     plover-expr-criterion
+    plover-servlet
 
 library/
     plover-commons
@@ -19,6 +20,7 @@ library/
 lifecycle/
     plover-session
     plover-stateflow
+    plover-restful
 
 modeling/
     plover-model
@@ -30,6 +32,4 @@ ui/
     plover-widgets
 
 web-ui/
-    plover-restful
-    plover-servlet
     plover-webwidgets
