@@ -1,11 +1,16 @@
 package com.bee32.plover.cache.pull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import javax.free.CreateException;
 import javax.free.ObjectInfo;
 import javax.free.Pred0;
+
+import com.bee32.plover.cache.CacheCheckException;
+import com.bee32.plover.cache.CacheRetrieveException;
 
 public abstract class Resource<T>
         extends Pred0 {
@@ -13,7 +18,7 @@ public abstract class Resource<T>
     private final ICacheSchema cacheSchema;
     private final Ref<T> ref;
 
-    private int serialVersion;
+    private long version;
 
     public Resource(ICacheSchema cacheSchema, Ref<T> ref) {
         if (cacheSchema == null)
@@ -22,7 +27,7 @@ public abstract class Resource<T>
             throw new NullPointerException("ref");
         this.cacheSchema = cacheSchema;
         this.ref = ref;
-        this.serialVersion = -1;
+        this.version = -1;
     }
 
     public Resource(ICacheSchema cacheSchema) {
@@ -37,22 +42,28 @@ public abstract class Resource<T>
         return getName();
     }
 
-    public int getSerialVersion() {
-        return serialVersion;
+    public long getVersion() {
+        return version;
     }
 
     @Override
     public final boolean test() {
-        return checkValidity();
+        try {
+            return checkState();
+        } catch (CacheCheckException e) {
+            return false;
+        }
     }
 
-    public boolean checkValidity() {
-        return checkValidityOfDependencies();
+    public boolean checkState()
+            throws CacheCheckException {
+        return checkStateOfDependencies();
     }
 
-    boolean checkValidityOfDependencies() {
+    protected final boolean checkStateOfDependencies()
+            throws CacheCheckException {
         for (Resource<?> dep : getDependencies()) {
-            if (!dep.checkValidity())
+            if (!dep.checkState())
                 return false;
         }
         return true;
@@ -63,19 +74,47 @@ public abstract class Resource<T>
     }
 
     public synchronized T pull()
-            throws CreateException {
+            throws CacheRetrieveException {
+        boolean cacheValidity = test();
+
         T obj;
-        if (ref.isSet())
+
+        if (ref.isSet()) {
             obj = ref.get();
-        else {
-            obj = create();
+
+            List<Object> resolvedDeps = new ArrayList<Object>();
+            long maxVersion = resolveDependencies(resolvedDeps);
+
+            obj = create(resolvedDeps);
             ref.set(obj);
-            serialVersion = cacheSchema.tick();
+
+            // The cache contents now have been generated.
+            ref.set(obj);
+            version = cacheSchema.getClock().tick();
         }
         return obj;
     }
 
-    protected abstract T create()
+    protected long resolveDependencies(List<Object> resolvedDeps)
+            throws CreateException {
+        long maxVersion = this.version;
+
+        for (Resource<?> dep : getDependencies()) {
+            long depVersion = dep.getVersion();
+
+            if (maxVersion < depVersion)
+                maxVersion = depVersion;
+
+            Object depObj = dep.pull();
+
+            if (resolvedDeps != null)
+                resolvedDeps.add(depObj);
+        }
+
+        return maxVersion;
+    }
+
+    protected abstract T create(List<?> resolvedDependencies)
             throws CreateException;
 
 }

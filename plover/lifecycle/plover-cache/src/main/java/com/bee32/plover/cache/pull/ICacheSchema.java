@@ -2,8 +2,8 @@ package com.bee32.plover.cache.pull;
 
 public interface ICacheSchema {
 
-    int tick();
+    TickClock getClock();
 
-    int compareSerialVersion(int a, int b);
+    void setClock(TickClock clock);
 
 }
