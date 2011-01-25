@@ -1,6 +1,3 @@
-parent/
-    plover-parent
-
 back-end/
     plover-sysutils
     plover-diagnostics
@@ -18,6 +15,7 @@ library/
     plover-commons
 
 lifecycle/
+    plover-cache
     plover-session
     plover-stateflow
     plover-restful
