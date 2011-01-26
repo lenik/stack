@@ -5,6 +5,7 @@ back-end/
 core/
     plover-arch
     plover-indexing
+    plover-inject
     plover-collections
     plover-expr
     plover-expr-sql
