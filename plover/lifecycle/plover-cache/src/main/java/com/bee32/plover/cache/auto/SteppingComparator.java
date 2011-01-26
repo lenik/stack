@@ -1,8 +1,8 @@
-package com.bee32.plover.cache.pull;
+package com.bee32.plover.cache.auto;
 
 import javax.free.AbstractNonNullComparator;
 
-public class TickComparator
+public class SteppingComparator
         extends AbstractNonNullComparator<Long> {
 
     @Override
@@ -10,9 +10,9 @@ public class TickComparator
         return compare(a, b);
     }
 
-    private static final TickComparator instance = new TickComparator();
+    private static final SteppingComparator instance = new SteppingComparator();
 
-    public static TickComparator getInstance() {
+    public static SteppingComparator getInstance() {
         return instance;
     }
 
