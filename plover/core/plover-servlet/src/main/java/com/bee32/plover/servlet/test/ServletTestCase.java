@@ -1,4 +1,4 @@
-package com.bee32.plover.servlet;
+package com.bee32.plover.servlet.test;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -6,7 +6,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockServletConfig;
 import org.springframework.mock.web.MockServletContext;
 
-public abstract class AbstractServletTest {
+public abstract class ServletTestCase {
 
     protected final MockServletConfig servletConfig;
     protected final MockServletContext application;
@@ -14,7 +14,7 @@ public abstract class AbstractServletTest {
     protected final MockHttpServletRequest request;
     protected final MockHttpServletResponse response;
 
-    public AbstractServletTest() {
+    public ServletTestCase() {
         application = new MockServletContext();
         servletConfig = new MockServletConfig(application);
         session = new MockHttpSession(application);

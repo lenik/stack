@@ -12,7 +12,7 @@ public class GridMapper
     public void map(Map<String, Object> tree) {
         List<String> paths = new ArrayList<String>(tree.keySet());
 
-        Collections.sort(path);
+        Collections.sort(paths);
 
     }
 
