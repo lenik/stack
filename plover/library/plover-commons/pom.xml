@@ -8,5 +8,5 @@
     <artifactId>plover-commons</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>Plover :: Library :: Plover Commons</name>
+    <name>Plover :: Library :: Commons</name>
 </project>

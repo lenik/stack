@@ -5,8 +5,8 @@
         <artifactId>core</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
-    <artifactId>plover-indexing</artifactId>
+    <artifactId>plover-inject</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>Plover :: Core :: Indexing</name>
+    <name>Plover :: Core :: Inject</name>
 </project>

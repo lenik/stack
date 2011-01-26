@@ -26,5 +26,5 @@
             <version>3.0.0</version>
         </dependency>
     </dependencies>
-    <name>Plover :: Core :: Plover Arch</name>
+    <name>Plover :: Core :: Arch</name>
 </project>

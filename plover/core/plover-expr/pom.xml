@@ -19,5 +19,5 @@
             <version>3.0.0</version>
         </dependency>
     </dependencies>
-    <name>Plover :: Core :: Plover Expr</name>
+    <name>Plover :: Core :: Expr</name>
 </project>

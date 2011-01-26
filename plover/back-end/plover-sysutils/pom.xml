@@ -9,5 +9,5 @@
     <packaging>jar</packaging>
     <version>0.0.4-SNAPSHOT</version>
     <dependencies/>
-    <name>Plover :: Back End :: Plover Sysutils</name>
+    <name>Plover :: Back End :: Sysutils</name>
 </project>

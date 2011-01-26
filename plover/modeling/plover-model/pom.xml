@@ -8,5 +8,5 @@
     <artifactId>plover-model</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>Plover :: Modeling :: Plover Model</name>
+    <name>Plover :: Modeling :: Model</name>
 </project>

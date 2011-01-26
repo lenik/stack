@@ -9,5 +9,5 @@
     <packaging>jar</packaging>
     <version>0.0.4-SNAPSHOT</version>
     <dependencies/>
-    <name>Plover :: Ui :: Plover Widgets</name>
+    <name>Plover :: Ui :: Widgets</name>
 </project>

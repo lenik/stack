@@ -16,5 +16,5 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-    <name>Plover :: Core :: Plover Expr Sql</name>
+    <name>Plover :: Core :: Expr Sql</name>
 </project>

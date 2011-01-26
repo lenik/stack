@@ -9,5 +9,5 @@
     <packaging>jar</packaging>
     <version>0.0.4-SNAPSHOT</version>
     <dependencies/>
-    <name>Plover :: Core :: Plover Collections</name>
+    <name>Plover :: Core :: Collections</name>
 </project>

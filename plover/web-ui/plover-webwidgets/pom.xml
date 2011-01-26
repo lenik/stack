@@ -8,5 +8,5 @@
     <artifactId>plover-webwidgets</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>Plover :: Web Ui :: Plover Webwidgets</name>
+    <name>Plover :: Web Ui :: Webwidgets</name>
 </project>

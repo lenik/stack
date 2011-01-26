@@ -23,5 +23,5 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-    <name>Plover :: Lifecycle :: Plover Stateflow</name>
+    <name>Plover :: Lifecycle :: Stateflow</name>
 </project>
