@@ -6,27 +6,48 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.free.AbstractCommonTraits;
+import javax.free.AbstractQueryable;
 import javax.free.DisplayNameUtil;
 import javax.free.DocUtil;
 import javax.free.TagsUtil;
 
-public abstract class AnnotationBasedUIInfo<T>
-        extends AbstractCommonTraits<T>
-        implements IUIInfo, IImageMap, IRefdocs {
+import com.bee32.plover.arch.util.LoadFlags32;
 
-    public AnnotationBasedUIInfo(Class<T> type) {
-        super(type);
+public class Appearance
+        extends AbstractQueryable
+        implements IAppearance, IImageMap, IRefdocs {
+
+    private final Class<?> declaringType;
+
+    private static final int HAVE_DISPLAY_NAME = 1 << 0;
+    private static final int HAVE_DESCRIPTION = 1 << 1;
+    private static final int HAVE_TAGS = 1 << 2;
+    private LoadFlags32 flags;
+
+    private String displayName;
+
+    private String description;
+
+    private Set<String> tags;
+
+    public Appearance(Class<?> declaringType) {
+        if (declaringType == null)
+            throw new NullPointerException("declaringType");
+        this.declaringType = declaringType;
     }
 
     @Override
     public String getDisplayName() {
-        return DisplayNameUtil.getDisplayName(getClass());
+        if (flags.checkAndLoad(HAVE_DISPLAY_NAME))
+            displayName = DisplayNameUtil.getDisplayName(declaringType);
+        return displayName;
     }
 
     @Override
     public String getDescription() {
-        return DocUtil.getDoc(getClass());
+        if (flags.checkAndLoad(HAVE_DESCRIPTION))
+            description = DocUtil.getDoc(declaringType);
+        return description;
     }
 
     @Override
@@ -41,11 +62,13 @@ public abstract class AnnotationBasedUIInfo<T>
 
     @Override
     public Set<String> getTags() {
-        String[] tags = TagsUtil.getTags(getClass());
-        Set<String> tagsSet = new TreeSet<String>();
-        for (String tag : tags)
-            tagsSet.add(tag);
-        return tagsSet;
+        if (flags.checkAndLoad(HAVE_TAGS)) {
+            String[] tagArray = TagsUtil.getTags(declaringType);
+            tags = new TreeSet<String>();
+            for (String tag : tagArray)
+                tags.add(tag);
+        }
+        return tags;
     }
 
     @Override
@@ -78,7 +101,7 @@ public abstract class AnnotationBasedUIInfo<T>
         traitsMap = new HashMap<Class<?>, Integer>();
         traitsMap.put(IImageMap.class, IImageMap.traitsIndex);
         traitsMap.put(IRefdocs.class, IRefdocs.traitsIndex);
-        traitsMap.put(IUIInfo.class, IUIInfo.traitsIndex);
+        traitsMap.put(IAppearance.class, IAppearance.traitsIndex);
     }
 
     @Override
@@ -86,18 +109,18 @@ public abstract class AnnotationBasedUIInfo<T>
         Integer localIndex = traitsMap.get(specificationType);
         if (localIndex == null)
             return super.query(specificationType);
-        Object traits = query(localIndex);
+        Object traits = query(localIndex.intValue());
         return specificationType.cast(traits);
     }
 
-    @Override
+    // @Override
     protected Object query(int traitsIndex) {
         switch (traitsIndex) {
         case IImageMap.traitsIndex:
             return this;
         case IRefdocs.traitsIndex:
             return this;
-        case IUIInfo.traitsIndex:
+        case IAppearance.traitsIndex:
             return this;
         }
         return null;

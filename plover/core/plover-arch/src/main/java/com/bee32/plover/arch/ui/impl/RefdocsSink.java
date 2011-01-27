@@ -15,11 +15,7 @@ import com.bee32.plover.arch.i18n.nls.IPropertySink;
 import com.bee32.plover.arch.ui.IRefdocEntry;
 import com.bee32.plover.arch.ui.IRefdocs;
 import com.bee32.plover.arch.ui.RefdocEntry;
-import com.bee32.plover.arch.ui.impl.RefdocsSinkTest;
 
-/**
- * @test {@link RefdocsSinkTest}
- */
 public class RefdocsSink
         implements IRefdocs, IPropertySink {
 

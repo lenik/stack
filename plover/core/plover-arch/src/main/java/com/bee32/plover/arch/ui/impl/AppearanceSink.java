@@ -1,25 +1,22 @@
 package com.bee32.plover.arch.ui.impl;
 
 import com.bee32.plover.arch.i18n.nls.IPropertySink;
+import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.ui.IImageMap;
 import com.bee32.plover.arch.ui.IRefdocs;
-import com.bee32.plover.arch.ui.IUIInfo;
-import com.bee32.plover.arch.ui.impl.UIInfoSinkTest;
 
 /**
  * 从资源中提取的用户界面信息。
- *
- * @test {@link UIInfoSinkTest}
  */
-public class UIInfoSink
-        implements IUIInfo, IPropertySink {
+public class AppearanceSink
+        implements IAppearance, IPropertySink {
 
     private String displayName;
     private String description;
     private ImageMapSink imageMapSink;
     private RefdocsSink refdocsSink;
 
-    public UIInfoSink(Class<?> resourceBase) {
+    public AppearanceSink(Class<?> resourceBase) {
         if (resourceBase == null)
             // resourceBase = getClass();
             throw new NullPointerException("resourceBase");

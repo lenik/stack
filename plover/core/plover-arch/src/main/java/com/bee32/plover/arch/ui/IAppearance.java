@@ -7,16 +7,9 @@ import com.bee32.plover.arch.ui.impl.AccessibleContextImpl;
  *
  * @see AccessibleContextImpl
  */
-public interface IUIInfo {
+public interface IAppearance {
 
     int traitsIndex = -1428529429; // IUIInfo
-
-//
-// String getDisplayName(Locale locale);
-//
-// String getDescription(Locale locale);
-//
-// URL getIcon(Locale locale, IconVariant variant);
 
     /**
      * 获取显示名称。

@@ -6,7 +6,7 @@ public class UITraitsIndexCG {
             //
             IImageMap.class, //
             IRefdocs.class, //
-            IUIInfo.class, //
+            IAppearance.class, //
     };
 
     public static void main(String[] args) {

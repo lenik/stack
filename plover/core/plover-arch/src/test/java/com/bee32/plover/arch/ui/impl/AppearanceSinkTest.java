@@ -7,16 +7,16 @@ import java.util.Locale;
 import org.junit.Test;
 
 import com.bee32.plover.arch.i18n.nls.DefaultDispatcher;
-import com.bee32.plover.arch.ui.impl.UIInfoSink;
+import com.bee32.plover.arch.ui.impl.AppearanceSink;
 
-public class UIInfoSinkTest {
+public class AppearanceSinkTest {
 
-    UIInfoSink sink;
+    AppearanceSink sink;
 
-    public UIInfoSinkTest() {
+    public AppearanceSinkTest() {
         Locale.setDefault(new Locale("not-exist-locale"));
 
-        sink = new UIInfoSink(UIInfoSinkTest.class);
+        sink = new AppearanceSink(AppearanceSinkTest.class);
         DefaultDispatcher dispatcher = new DefaultDispatcher(sink);
         dispatcher.visitClassResource(getClass(), Locale.ENGLISH);
     }
