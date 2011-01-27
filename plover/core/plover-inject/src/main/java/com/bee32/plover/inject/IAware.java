@@ -13,14 +13,14 @@ package com.bee32.plover.inject;
  * 另一方面，Spring DI 之类的容器并不为定制作用域提供便利。 你只能说我这个类是 Request 作用域的，但是你无法针对 Request 作用域为类行为提供一定的重用。 当
  * Request 重新分配后，你不知道什么时候应该清理，等等。
  * <p>
- * Plover 组件要求你显示的实现 IComponent 接口。 对，忘了什么 POJO，你必须显示定义你的类为 Plover 组件。 如果你希望和 Plover 脱离关系，你就必须为你的愚蠢的
- * POJO 实现一个附加的适配器，并结合 Plover 提供的桥接工具，以便使它们能够被 Plover 容器正确注入。
+ * Plover 组件要求你显示的实现 {@link IAware} 接口。 对，忘了什么 POJO，你必须显示定义你的类为 Plover 组件，判断派生关系比搜索标注更快。 如果你希望和
+ * Plover 脱离关系，你就必须为你的愚蠢的 POJO 实现一个附加的适配器，并结合 Plover 提供的桥接工具，以便使它们能够被 Plover 容器正确注入。
  *
  * @see com.bee32.plover.inject.bridge.JSR330Bridge
  * @see com.bee32.plover.inject.bridge.PlexusComponentBridge
  * @see com.bee32.plover.inject.bridge.SpringDIBridge
  */
-public interface IComponent {
+public interface IAware {
 
     /**
      * 组件被添加到容器，此时组件应该和容器交互，以便获得所有必备的信息和资源。
