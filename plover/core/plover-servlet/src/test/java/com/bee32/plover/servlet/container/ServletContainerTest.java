@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.bee32.plover.inject.ContextException;
-import com.bee32.plover.inject.IComponent;
+import com.bee32.plover.inject.IAware;
 import com.bee32.plover.inject.IContainer;
 import com.bee32.plover.servlet.unit.ServletUnit;
 
@@ -51,8 +51,8 @@ public class ServletContainerTest
         miniServer.end();
     }
 
-    class Component1
-            implements IComponent {
+    class SayHello
+            implements IAware {
 
         ServletContext app;
         HttpServletRequest request;
@@ -80,7 +80,7 @@ public class ServletContainerTest
 
     @Test
     public void test1() {
-        Component1 c1 = new Component1();
+        SayHello c1 = new SayHello();
 
         String actual = c1.hello();
         // assertEquals("hello, lucy", actual);

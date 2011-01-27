@@ -5,11 +5,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.inject.ContextException;
-import com.bee32.plover.inject.IComponent;
+import com.bee32.plover.inject.IAware;
 import com.bee32.plover.inject.IContainer;
 
-public class HttpServletComponent
-        implements IComponent {
+public class HttpServletAware
+        implements IAware {
 
     protected ServletContext application;
     protected HttpServletRequest request;
