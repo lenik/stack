@@ -1,6 +1,9 @@
 package com.bee32.plover.inject;
 
-public interface IContextManager {
+import com.bee32.plover.arch.IComponent;
+
+public interface IContextManager
+        extends IComponent {
 
     /**
      * 向容器请求必须的上下文，容器必须返回非空值。
