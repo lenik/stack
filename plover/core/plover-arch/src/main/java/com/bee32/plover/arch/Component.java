@@ -16,9 +16,6 @@ public abstract class Component
 
     public Component(String name) {
         this.name = name;
-
-        Class<?> componentClass = getClass();
-        this.appearance = new Appearance(componentClass);
     }
 
     @Override
@@ -28,6 +25,10 @@ public abstract class Component
 
     @Override
     public IAppearance getAppearance() {
+        if (appearance == null) {
+            Class<?> componentClass = getClass();
+            appearance = new Appearance(componentClass);
+        }
         return appearance;
     }
 
@@ -48,39 +49,7 @@ public abstract class Component
 
     @Override
     public String toString() {
-        return name;
+        return getName();
     }
-
-// private final transient int typeHash = getClass().hashCode();
-//
-// @Override
-// public final int hashCode() {
-// int hash = typeHash;
-// if (name != null)
-// hash += name.hashCode();
-// return hash + hashCodeLocal();
-// }
-//
-// public final boolean equals(Component obj) {
-// Class<? extends Component> componentType = getClass();
-// if (!componentType.isInstance(obj))
-// return false;
-// Component o = (Component) obj;
-// return equalsLocal(o);
-// }
-//
-// protected int hashCodeLocal() {
-// return super.hashCode();
-// }
-//
-// /**
-// * Local equals.
-// *
-// * @param obj
-// * The object of same type to compare.
-// */
-// protected boolean equalsLocal(Component obj) {
-// return this == obj;
-// }
 
 }
