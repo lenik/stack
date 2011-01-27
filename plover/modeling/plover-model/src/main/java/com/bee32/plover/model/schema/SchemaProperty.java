@@ -1,11 +1,13 @@
-package com.bee32.plover.model;
+package com.bee32.plover.model.schema;
+
+import com.bee32.plover.model.stereo.StereoType;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class SchemaProperty
         extends SchemaElement {
 
     public SchemaProperty(String name, Class propertyType) {
-        super(name, SchemaElementStereoType.PROPERTY, propertyType);
+        super(name, StereoType.PROPERTY, propertyType);
     }
 
 }

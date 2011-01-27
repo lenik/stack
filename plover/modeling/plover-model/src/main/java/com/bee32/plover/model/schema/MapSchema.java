@@ -1,4 +1,4 @@
-package com.bee32.plover.model;
+package com.bee32.plover.model.schema;
 
 import java.util.HashMap;
 import java.util.Map;

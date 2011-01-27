@@ -1,4 +1,4 @@
-package com.bee32.plover.model;
+package com.bee32.plover.model.schema;
 
 import javax.free.DecodeException;
 import javax.free.EncodeException;
@@ -13,6 +13,9 @@ import javax.free.ValidateException;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.LoadFlags32;
+import com.bee32.plover.model.qualifier.Qualifier;
+import com.bee32.plover.model.qualifier.QualifierMap;
+import com.bee32.plover.model.stereo.StereoType;
 
 /**
  * @param <T>
@@ -22,12 +25,13 @@ public class SchemaElement<T>
         extends Component
         implements ISchemaElement<T> {
 
-    private final SchemaElementStereoType stereo;
+    private final StereoType stereo;
 
     private final Class<T> type;
 
-    private String anchor;
     private PreferenceLevel preferenceLevel = PreferenceLevel.INTERMEDIATE;
+
+    private QualifierMap qualifierMap; // XXX
 
     private transient LoadFlags32 flags;
     private static final int HAVE_TRAITS = 1 << 0;
@@ -40,7 +44,7 @@ public class SchemaElement<T>
     private transient IFormatter<T> formatter;
     private transient IValidator<T> validator;
 
-    public SchemaElement(String name, SchemaElementStereoType stereo, Class<T> type) {
+    public SchemaElement(String name, StereoType stereo, Class<T> type) {
         super(name);
         if (stereo == null)
             throw new NullPointerException("stereo");
@@ -51,17 +55,17 @@ public class SchemaElement<T>
     }
 
     @Override
-    public SchemaElementStereoType getStereoType() {
+    public StereoType getStereoType() {
         return stereo;
     }
 
     /**
      * Get the data type this element refers to.
      * <p>
-     * For {@link SchemaElementStereoType#PROPERTY properties}, the type is the property type.
+     * For {@link StereoType#PROPERTY properties}, the type is the property type.
      *
-     * For {@link SchemaElementStereoType#METHOD methods}, the type is the returned type of the
-     * corresponding method.
+     * For {@link StereoType#COMMAND methods}, the type is the returned type of the corresponding
+     * method.
      */
     @Override
     public Class<T> getType() {
@@ -80,12 +84,18 @@ public class SchemaElement<T>
     }
 
     @Override
-    public String getAnchor() {
-        return anchor;
+    public Iterable<? extends Qualifier<?>> getQualifiers() {
+        return qualifierMap.getQualifiers();
     }
 
-    public void setAnchor(String anchor) {
-        this.anchor = anchor;
+    @Override
+    public <Q extends Qualifier<Q>> Iterable<Q> getQualifiers(Class<Q> qualifierType) {
+        return qualifierMap.getQualifiers(qualifierType);
+    }
+
+    @Override
+    public <Q extends Qualifier<Q>> Q getQualifier(Class<Q> qualifierType) {
+        return qualifierMap.getQualifier(qualifierType);
     }
 
     public ICommonTraits<T> getTraits() {
@@ -155,9 +165,6 @@ public class SchemaElement<T>
         if (!Nullables.equals(name, o.name))
             return false;
 
-        if (!anchor.equals(o.anchor))
-            return false;
-
         if (preferenceLevel != o.preferenceLevel)
             return false;
 
@@ -169,7 +176,6 @@ public class SchemaElement<T>
         int hash = 8432837;
         if (name != null)
             hash += name.hashCode();
-        hash += anchor.hashCode();
         hash += type.hashCode();
         hash += preferenceLevel.hashCode();
         return hash;

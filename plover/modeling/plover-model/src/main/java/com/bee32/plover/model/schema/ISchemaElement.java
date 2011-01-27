@@ -1,21 +1,21 @@
-package com.bee32.plover.model;
+package com.bee32.plover.model.schema;
 
 import javax.free.DecodeException;
 import javax.free.EncodeException;
 import javax.free.ValidateException;
 
 import com.bee32.plover.arch.IComponent;
+import com.bee32.plover.model.qualifier.IQualified;
+import com.bee32.plover.model.stereo.StereoType;
 
 public interface ISchemaElement<T>
-        extends IComponent {
+        extends IComponent, IQualified {
 
-    SchemaElementStereoType getStereoType();
+    StereoType getStereoType();
 
     Class<T> getType();
 
     PreferenceLevel getPreferenceLevel();
-
-    String getAnchor();
 
     T decodeText(String s)
             throws DecodeException;
