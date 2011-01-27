@@ -2,12 +2,13 @@ package com.bee32.plover.stateflow;
 
 import java.io.Serializable;
 
+import com.bee32.plover.model.Model;
+
 public abstract class State
-        implements Serializable {
+        extends Model
+        implements /* IIndexable, */Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    public abstract IStateSchema getSchema();
 
     public void accept(IStateVisitor stateVisitor) {
         // Do nothing by default.
