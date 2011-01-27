@@ -3,8 +3,6 @@ package com.bee32.plover.inject;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.free.IExecutableX;
-
 public class SimpleContainer
         extends AbstractContainer {
 
@@ -12,6 +10,7 @@ public class SimpleContainer
     private int stackPointer;
 
     public SimpleContainer() {
+        super("SimpleContainer");
         stack = new ArrayList<Object>();
         stackPointer = -1;
     }
@@ -41,12 +40,6 @@ public class SimpleContainer
     @Override
     public synchronized void setFrame(Object frameObject) {
         stack.set(stackPointer, frameObject);
-    }
-
-    @Override
-    public <X extends Exception> void execute(IExecutableX<X> closure)
-            throws X {
-
     }
 
 }

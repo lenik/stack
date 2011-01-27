@@ -15,8 +15,7 @@ public class ServletContainer
     }
 
     public ServletContainer(ServletContext servletContext) {
-        if (servletContext == null)
-            throw new NullPointerException("servletContext");
+        super(servletContext.getServletContextName());
         registerContext(ServletContext.class, servletContext);
     }
 

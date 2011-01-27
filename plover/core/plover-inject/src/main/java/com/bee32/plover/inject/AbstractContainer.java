@@ -4,91 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.free.IllegalUsageException;
-import javax.free.NotImplementedException;
+
+import com.bee32.plover.arch.Component;
 
 public abstract class AbstractContainer
-        extends ContextManager
+        extends Component
         implements IContainer {
 
-    @Override
-    public final <T> T require(Class<T> contextClass)
-            throws ContextException {
-        T context = query(contextClass);
-        if (context == null)
-            throw new NoSuchContextException(contextClass);
-        return context;
+    protected IContextManager contextManager = new ContextManager();
+
+    public AbstractContainer() {
+        super();
     }
 
-    @Override
-    public final <T> T require(Class<T> contextClass, String qualifier)
-            throws ContextException {
-        T context = query(contextClass, qualifier);
-        if (context == null)
-            throw new NoSuchContextException(contextClass);
-        return context;
-    }
-
-    @Override
-    public final <T> T require(Class<T> contextClass, Object qualifier)
-            throws ContextException {
-        T context = query(contextClass, qualifier);
-        if (context == null)
-            throw new NoSuchContextException(contextClass);
-        return context;
-    }
-
-    @Override
-    public <T> T query(Class<T> contextClass)
-            throws ContextException {
-        Object context = contextMap.floor(contextClass);
-        return contextClass.cast(context);
-    }
-
-    @Override
-    public <T> T query(Class<T> contextClass, String qualifier)
-            throws ContextException {
-        Object context = contextMap.floor(contextClass, qualifier);
-        return contextClass.cast(context);
-    }
-
-    @Override
-    public <T> T query(Class<T> contextClass, Object qualifier)
-            throws ContextException {
-        // Object context = contextMap.get(contextClass, qualifier);
-        // return contextClass.cast(context);
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public final <T> void registerContext(Class<T> contextClass, T contextInstance) {
-        contextMap.put(contextClass, null, contextInstance);
-    }
-
-    @Override
-    public <T> void registerContext(Class<T> contextClass, String qualifier, T contextInstance) {
-        contextMap.put(contextClass, qualifier, contextInstance);
-    }
-
-    @Override
-    public <T> void registerContext(Class<T> contextClass, Object qualifier, T contextInstance) {
-        // contextMap.put(contextClass, qualifier, contextInstance);
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public void removeContext(Class<?> contextClass, String qualifier) {
-        contextMap.remove(contextClass);
-    }
-
-    @Override
-    public void removeContext(Class<?> contextClass, Object qualifier) {
-        // contextMap.remove(contextClass, qualifier);
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public void removeContextInstances(Object contextInstance) {
-        throw new NotImplementedException();
+    public AbstractContainer(String name) {
+        super(name);
     }
 
     @Override
@@ -125,6 +55,66 @@ public abstract class AbstractContainer
             throw new IllegalUsageException("Frame is already set to a non-Map object");
 
         mapFrame.put(key, value);
+    }
+
+    // contextManager delegates.
+
+    public final <T> T require(Class<T> contextClass)
+            throws ContextException {
+        return contextManager.require(contextClass);
+    }
+
+    public final <T> T require(Class<T> contextClass, Object qualifier)
+            throws ContextException {
+        return contextManager.require(contextClass, qualifier);
+    }
+
+    public final <T> T require(Class<T> contextClass, String qualifier)
+            throws ContextException {
+        return contextManager.require(contextClass, qualifier);
+    }
+
+    public final <T> T query(Class<T> contextClass)
+            throws ContextException {
+        return contextManager.query(contextClass);
+    }
+
+    public final <T> T query(Class<T> contextClass, Object qualifier)
+            throws ContextException {
+        return contextManager.query(contextClass, qualifier);
+    }
+
+    public final <T> T query(Class<T> contextClass, String qualifier)
+            throws ContextException {
+        return contextManager.query(contextClass, qualifier);
+    }
+
+    public final <T> void registerContext(Class<T> contextClass, T contextInstance) {
+        contextManager.registerContext(contextClass, contextInstance);
+    }
+
+    public final <T> void registerContext(Class<T> contextClass, String qualifier, T contextInstance) {
+        contextManager.registerContext(contextClass, qualifier, contextInstance);
+    }
+
+    public final <T> void registerContext(Class<T> contextClass, Object qualifier, T contextInstance) {
+        contextManager.registerContext(contextClass, qualifier, contextInstance);
+    }
+
+    public final void removeContext(Class<?> contextClass) {
+        contextManager.removeContext(contextClass);
+    }
+
+    public final void removeContext(Class<?> contextClass, String qualifier) {
+        contextManager.removeContext(contextClass, qualifier);
+    }
+
+    public final void removeContext(Class<?> contextClass, Object qualifier) {
+        contextManager.removeContext(contextClass, qualifier);
+    }
+
+    public final void removeContextInstances(Object contextInstance) {
+        contextManager.removeContextInstances(contextInstance);
     }
 
 }
