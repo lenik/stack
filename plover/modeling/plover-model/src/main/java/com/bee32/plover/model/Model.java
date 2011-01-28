@@ -14,6 +14,14 @@ public class Model
 
     private ISchema schema;
 
+    public Model() {
+        super();
+    }
+
+    public Model(String name) {
+        super(name);
+    }
+
     @Override
     public ISchema getSchema() {
         if (schema == null) {
@@ -33,7 +41,7 @@ public class Model
     }
 
     @Override
-    public void load(IModelStage stage)
+    public void reload(IModelStage stage)
             throws ModelLoadException {
     }
 

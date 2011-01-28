@@ -14,7 +14,7 @@ public interface IModel
     void stage(IModelStage stage)
             throws ModelStageException;
 
-    void load(IModelStage stage)
+    void reload(IModelStage stage)
             throws ModelLoadException;
 
 }
