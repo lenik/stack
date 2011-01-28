@@ -1,4 +1,4 @@
-package com.bee32.plover.arch;
+package com.bee32.plover.arch.util;
 
 import java.util.ArrayList;
 import java.util.List;
