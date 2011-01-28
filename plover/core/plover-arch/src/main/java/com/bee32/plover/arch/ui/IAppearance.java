@@ -9,7 +9,8 @@ import com.bee32.plover.arch.ui.impl.AccessibleContextImpl;
  */
 public interface IAppearance {
 
-    int traitsIndex = -1428529429; // IUIInfo
+    // @see TraitsIndex.APPEARANCE
+    // int traitsIndex = -1428529429; // IUIInfo
 
     /**
      * 获取显示名称。

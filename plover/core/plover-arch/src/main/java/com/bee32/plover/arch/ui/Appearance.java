@@ -101,7 +101,7 @@ public class Appearance
         traitsMap = new HashMap<Class<?>, Integer>();
         traitsMap.put(IImageMap.class, IImageMap.traitsIndex);
         traitsMap.put(IRefdocs.class, IRefdocs.traitsIndex);
-        traitsMap.put(IAppearance.class, IAppearance.traitsIndex);
+        traitsMap.put(IAppearance.class, TraitsIndex.APPEARANCE);
     }
 
     @Override
@@ -120,10 +120,9 @@ public class Appearance
             return this;
         case IRefdocs.traitsIndex:
             return this;
-        case IAppearance.traitsIndex:
+        case TraitsIndex.APPEARANCE:
             return this;
         }
         return null;
     }
-
 }
