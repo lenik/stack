@@ -6,12 +6,16 @@ import com.bee32.plover.model.Model;
 
 public abstract class State
         extends Model
-        implements /* IIndexable, */Serializable {
+        implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public void accept(IStateVisitor stateVisitor) {
-        // Do nothing by default.
+    public State() {
+        super();
+    }
+
+    public State(String name) {
+        super(name);
     }
 
 }
