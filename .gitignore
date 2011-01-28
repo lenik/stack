@@ -15,3 +15,8 @@ target
 .project
 .classpath
 .settings
+
+# Idea
+*.iml
+*.ipr
+*.iws
