@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.free.IllegalUsageException;
+import javax.free.NotImplementedException;
 
 public abstract class AbstractContainer
         extends ContextManager
@@ -52,5 +53,16 @@ public abstract class AbstractContainer
 
         mapFrame.put(key, value);
     }
+
+    @Override
+    public Object getFrame() {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void setFrame(Object frameObject) {
+        throw new NotImplementedException();
+    }
+
 
 }
