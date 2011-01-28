@@ -25,6 +25,13 @@
             <artifactId>freejava-traits</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <dependency>
+		<groupId>javax.free</groupId>
+		<artifactId>freejava-string</artifactId>
+		<version>3.0.0</version>
+		<type>jar</type>
+		<scope>compile</scope>
+        </dependency>
     </dependencies>
     <name>Plover :: Core :: Arch</name>
 </project>

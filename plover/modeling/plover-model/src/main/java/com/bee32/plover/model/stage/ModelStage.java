@@ -1,23 +1,27 @@
 package com.bee32.plover.model.stage;
 
+import com.bee32.plover.inject.DelegatedContainer;
+import com.bee32.plover.inject.IContainer;
 import com.bee32.plover.model.qualifier.Qualifier;
 import com.bee32.plover.model.qualifier.QualifierMap;
 import com.bee32.plover.model.view.StandardViews;
 import com.bee32.plover.model.view.View;
 
 public class ModelStage
+        extends DelegatedContainer
         implements IModelStage {
 
     private static final long serialVersionUID = 1L;
 
     protected final QualifierMap qualifierMap;
 
-    public ModelStage() {
+    public ModelStage(IContainer container) {
+        super(container);
         qualifierMap = new QualifierMap();
     }
 
-    public ModelStage(View view) {
-        this();
+    public ModelStage(IContainer container, View view) {
+        this(container);
         qualifierMap.setQualifier(view);
     }
 
@@ -45,6 +49,7 @@ public class ModelStage
 
     @Override
     public void add(IStagedElement element) {
+        element.getElementType();
     }
 
     @Override
