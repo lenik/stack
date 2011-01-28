@@ -162,7 +162,7 @@ public class SchemaElement<T>
         if (!type.equals(o.type))
             return false;
 
-        if (!Nullables.equals(name, o.name))
+        if (!Nullables.equals(getName(), o.getName()))
             return false;
 
         if (preferenceLevel != o.preferenceLevel)
@@ -174,8 +174,11 @@ public class SchemaElement<T>
     @Override
     public int hashCode() {
         int hash = 8432837;
+
+        String name = getName();
         if (name != null)
             hash += name.hashCode();
+
         hash += type.hashCode();
         hash += preferenceLevel.hashCode();
         return hash;

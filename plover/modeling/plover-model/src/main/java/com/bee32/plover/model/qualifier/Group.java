@@ -65,7 +65,7 @@ public class Group
         if (cmp != 0)
             return cmp;
 
-        return name.compareTo(o.name);
+        return getName().compareTo(o.getName());
     }
 
 }

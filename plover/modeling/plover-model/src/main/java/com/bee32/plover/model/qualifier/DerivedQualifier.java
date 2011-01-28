@@ -59,7 +59,7 @@ public abstract class DerivedQualifier<Q extends DerivedQualifier<Q>>
 
         Q o = qualifierType.cast(obj);
 
-        if (!Nullables.equals(name, o.name))
+        if (!Nullables.equals(getName(), o.getName()))
             return false;
 
         if (!Nullables.equals(kindOf, o.kindOf))
@@ -82,6 +82,7 @@ public abstract class DerivedQualifier<Q extends DerivedQualifier<Q>>
     public int hashCode() {
         int hash = typeHash;
 
+        String name = getName();
         if (name != null)
             hash += name.hashCode();
 
@@ -116,7 +117,7 @@ public abstract class DerivedQualifier<Q extends DerivedQualifier<Q>>
         if (o.kindOf(this_Q))
             return -1;
 
-        return name.compareTo(o.name);
+        return getName().compareTo(o.getName());
     }
 
 }

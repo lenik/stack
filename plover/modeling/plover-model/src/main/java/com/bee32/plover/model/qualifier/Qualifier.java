@@ -60,6 +60,7 @@ public abstract class Qualifier<Q extends Qualifier<Q>>
     @Override
     public/* final */int hashCode() {
         int hash = typeHash;
+        String name = getName();
         if (name != null)
             hash += name.hashCode();
         return hash + hashCodeSpecific();
@@ -77,7 +78,7 @@ public abstract class Qualifier<Q extends Qualifier<Q>>
 
         Q o = qualifierType.cast(obj);
 
-        if (!Nullables.equals(name, o.name))
+        if (!Nullables.equals(getName(), o.getName()))
             return false;
 
         return equalsSpecific(o);

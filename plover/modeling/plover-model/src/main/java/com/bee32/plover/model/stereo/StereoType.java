@@ -33,6 +33,7 @@ public class StereoType
     @Override
     public int hashCode() {
         int hash = typeHash;
+        String name = getName();
         if (name != null)
             hash += name.hashCode();
         return hash;
