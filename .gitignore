@@ -20,3 +20,6 @@ target
 *.iml
 *.ipr
 *.iws
+
+# Misc
+stats
