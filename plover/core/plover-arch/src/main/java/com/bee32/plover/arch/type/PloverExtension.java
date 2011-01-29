@@ -1,4 +1,4 @@
-package com.bee32.plover.arch.typeextension;
+package com.bee32.plover.arch.type;
 
 import java.lang.annotation.Annotation;
 
