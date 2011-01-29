@@ -12,7 +12,7 @@
     <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>plover-locator</module>
+        <module>plover-disp</module>
         <module>plover-model</module>
     </modules>
     <name>Plover :: Modeling</name>
