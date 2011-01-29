@@ -20,6 +20,7 @@
         <module>plover-indexing</module>
         <module>plover-inject</module>
         <module>plover-servlet</module>
+        <module>plover-test</module>
     </modules>
     <name>Plover :: Core</name>
 </project>

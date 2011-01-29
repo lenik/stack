@@ -11,6 +11,7 @@ core/
     plover-expr-sql
     plover-expr-criterion
     plover-servlet
+    plover-test
 
 library/
     plover-commons
@@ -19,13 +20,14 @@ lifecycle/
     plover-cache
     plover-session
     plover-stateflow
-    plover-restful
 
 modeling/
     plover-model
+    plover-locator
 
 repr/
     plover-repr
+    plover-restful
 
 ui/
     plover-widgets
