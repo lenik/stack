@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 
-public class DispatcherFilter
+public class DispatchFilter
         implements Filter {
 
     private static final long serialVersionUID = 1L;

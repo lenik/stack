@@ -3,7 +3,6 @@ package com.bee32.plover.restful;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.junit.Before;
 import org.kohsuke.stapler.Stapler;
 
 import com.bee32.plover.test.servlet.ServletTestCase;
@@ -11,8 +10,7 @@ import com.bee32.plover.test.servlet.ServletTestCase;
 public abstract class StaplerTestCase
         extends ServletTestCase {
 
-    @Before
-    public void start()
+    public void setup()
             throws Exception {
         logger.debug("Add stapler servlet");
         addServlet(Stapler.class, "/");

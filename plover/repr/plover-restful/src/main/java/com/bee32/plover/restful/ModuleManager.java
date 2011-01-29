@@ -5,7 +5,6 @@ import java.util.ServiceLoader;
 import javax.free.IllegalUsageError;
 
 import com.bee32.plover.arch.IModule;
-import com.bee32.plover.arch.Module;
 import com.bee32.plover.pub.oid.OidTree;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
@@ -19,13 +18,13 @@ public class ModuleManager
         refreshModules();
     }
 
-    private transient ServiceLoader<Module> moduleLoader;
+    private transient ServiceLoader<IModule> moduleLoader;
 
     void refreshModules() {
-        moduleLoader = ServiceLoader.load(Module.class);
+        moduleLoader = ServiceLoader.load(IModule.class);
 
-        for (Module module : moduleLoader) {
-            Class<? extends Module> moduleClass = module.getClass();
+        for (IModule module : moduleLoader) {
+            Class<? extends IModule> moduleClass = module.getClass();
 
             OidVector oid = OidUtil.getOid(moduleClass);
             if (oid == null)
