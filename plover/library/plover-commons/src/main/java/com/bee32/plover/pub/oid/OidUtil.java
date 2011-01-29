@@ -1,12 +1,10 @@
-package com.bee32.plover.restful.oid;
+package com.bee32.plover.pub.oid;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import javax.free.ParseException;
 
 public class OidUtil {
 
@@ -69,12 +67,11 @@ public class OidUtil {
      *            The delimitor to use.
      * @param oidString
      *            The OID string, non-<code>null</code>.
-     * @return The result array parsed.
-     * @throws ParseException
-     *             If the oidString isn't composed by integers and without any space.
+     * @return The result array parsed, <code>null</code> if failed to parse.
      */
-    public static OidVector parse(char delim, String oidString)
-            throws ParseException {
+    public static OidVector parse(char delim, String oidString) {
+        if (oidString == null)
+            throw new NullPointerException("oidString");
         List<Integer> list = new ArrayList<Integer>(oidString.length() / 2);
         StringTokenizer st = new StringTokenizer(oidString, String.valueOf(delim));
         while (st.hasMoreTokens()) {
@@ -83,7 +80,7 @@ public class OidUtil {
                 int num = Integer.parseInt(token);
                 list.add(num);
             } catch (NumberFormatException e) {
-                throw new ParseException(e);
+                return null;
             }
         }
 

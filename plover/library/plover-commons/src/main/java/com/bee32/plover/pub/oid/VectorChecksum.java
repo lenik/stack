@@ -1,4 +1,4 @@
-package com.bee32.plover.restful.oid;
+package com.bee32.plover.pub.oid;
 
 import java.util.Arrays;
 

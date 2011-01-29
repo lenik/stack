@@ -14,9 +14,9 @@ import org.kohsuke.stapler.StaplerSupport;
 
 import com.bee32.plover.arch.IModule;
 import com.bee32.plover.arch.Module;
-import com.bee32.plover.restful.oid.OidTree;
-import com.bee32.plover.restful.oid.OidUtil;
-import com.bee32.plover.restful.oid.OidVector;
+import com.bee32.plover.pub.oid.OidTree;
+import com.bee32.plover.pub.oid.OidUtil;
+import com.bee32.plover.pub.oid.OidVector;
 
 public class ModuleDispatcher
         extends Dispatcher {

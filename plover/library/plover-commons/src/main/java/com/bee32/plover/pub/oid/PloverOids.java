@@ -1,4 +1,4 @@
-package com.bee32.plover.restful.oid;
+package com.bee32.plover.pub.oid;
 
 @Oid({ 3, 12, 4, 1, 1, 1 })
 public interface PloverOids {

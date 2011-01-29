@@ -5,9 +5,9 @@ import javax.free.ParseException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.restful.oid.Oid;
-import com.bee32.plover.restful.oid.OidUtil;
-import com.bee32.plover.restful.oid.OidVector;
+import com.bee32.plover.pub.oid.Oid;
+import com.bee32.plover.pub.oid.OidUtil;
+import com.bee32.plover.pub.oid.OidVector;
 
 public class OidUtilTest
         extends Assert {

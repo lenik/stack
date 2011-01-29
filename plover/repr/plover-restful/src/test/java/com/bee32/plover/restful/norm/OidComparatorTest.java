@@ -3,8 +3,8 @@ package com.bee32.plover.restful.norm;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.restful.oid.OidComparator;
-import com.bee32.plover.restful.oid.OidVector;
+import com.bee32.plover.pub.oid.OidComparator;
+import com.bee32.plover.pub.oid.OidVector;
 
 public class OidComparatorTest
         extends Assert {
