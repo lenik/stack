@@ -23,7 +23,7 @@ lifecycle/
 
 modeling/
     plover-model
-    plover-locator
+    plover-disp
 
 repr/
     plover-repr

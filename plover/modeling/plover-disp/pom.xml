@@ -7,6 +7,14 @@
     </parent>
     <artifactId>plover-locator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <dependencies/>
-    <name>Plover :: Modeling :: Locator</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-commons</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+    <name>Plover :: Modeling :: Disp</name>
 </project>
