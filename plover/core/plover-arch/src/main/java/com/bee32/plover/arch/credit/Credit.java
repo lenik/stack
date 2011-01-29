@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import com.bee32.plover.arch.Component;
 
@@ -14,7 +15,7 @@ public class Credit
     private static final long serialVersionUID = 1L;
 
     /**
-     * Role -> Contributor
+     * Subject -> Contributors
      */
     private final TreeMap<Subject, Collection<Contributor>> subjects;
 
@@ -32,6 +33,15 @@ public class Credit
         if (contributors == null)
             contributors = Collections.emptyList();
         return contributors;
+    }
+
+    public synchronized void addContributor(Subject subject, Contributor contributor) {
+        Collection<Contributor> contributors = subjects.get(subject);
+        if (contributors == null) {
+            contributors = new TreeSet<Contributor>();
+            subjects.put(subject, contributors);
+        }
+        contributors.add(contributor);
     }
 
 }
