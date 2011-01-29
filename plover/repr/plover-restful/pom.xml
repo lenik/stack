@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.plover</groupId>
-        <artifactId>lifecycle</artifactId>
+        <artifactId>repr</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
     <artifactId>plover-restful</artifactId>
@@ -47,5 +47,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <name>Plover :: Lifecycle :: Restful</name>
+    <name>Plover :: Repr :: Restful</name>
 </project>

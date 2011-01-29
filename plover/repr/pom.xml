@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>plover-repr</module>
+        <module>plover-restful</module>
     </modules>
     <name>Plover :: Repr</name>
 </project>
