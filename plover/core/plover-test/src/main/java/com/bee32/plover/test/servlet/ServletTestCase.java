@@ -25,10 +25,14 @@ public abstract class ServletTestCase
     @Before
     public void start()
             throws Exception {
+        setup();
         logger.debug("Start test server: " + this);
         super.start();
         logger.debug("Test server started: " + this);
     }
+
+    protected abstract void setup()
+            throws Exception;
 
     @After
     public void stop()
