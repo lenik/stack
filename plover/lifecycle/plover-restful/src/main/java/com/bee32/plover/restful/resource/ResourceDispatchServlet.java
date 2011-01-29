@@ -12,14 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DispatchServlet
+public class ResourceDispatchServlet
         extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
     private ResourceDispatcher dispatcher;
 
-    public DispatchServlet() {
+    public ResourceDispatchServlet() {
         dispatcher = ResourceDispatcher.getInstance();
     }
 
