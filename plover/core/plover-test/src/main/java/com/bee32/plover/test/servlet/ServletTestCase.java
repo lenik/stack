@@ -31,8 +31,9 @@ public abstract class ServletTestCase
         logger.debug("Test server started: " + this);
     }
 
-    protected abstract void setup()
-            throws Exception;
+    protected void setup()
+            throws Exception {
+    }
 
     @After
     public void stop()
