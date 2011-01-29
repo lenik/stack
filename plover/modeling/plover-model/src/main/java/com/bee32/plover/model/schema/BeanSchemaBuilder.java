@@ -29,7 +29,7 @@ public class BeanSchemaBuilder
                 String name = propertyDescriptor.getName();
                 Class<?> propertyType = propertyDescriptor.getPropertyType();
 
-                SchemaProperty property = new SchemaProperty(name, propertyType);
+                PropertySchema property = new PropertySchema(name, propertyType);
                 schema.add(property);
             }
 

@@ -2,12 +2,13 @@ package com.bee32.plover.model.schema;
 
 import javax.free.DecodeException;
 import javax.free.EncodeException;
+import javax.free.FinalNegotiation;
 import javax.free.ICommonTraits;
 import javax.free.IFormatter;
 import javax.free.IParser;
 import javax.free.IValidator;
 import javax.free.Nullables;
-import javax.free.ParseException;
+import javax.free.Optional;
 import javax.free.Traits;
 import javax.free.ValidateException;
 
@@ -21,9 +22,9 @@ import com.bee32.plover.model.stereo.StereoType;
  * @param <T>
  *            Type of the value which this element refers to.
  */
-public class SchemaElement<T>
+public class AbstractSchema<T>
         extends Component
-        implements ISchemaElement<T> {
+        implements ISchema<T> {
 
     private final StereoType stereo;
 
@@ -44,7 +45,7 @@ public class SchemaElement<T>
     private transient IFormatter<T> formatter;
     private transient IValidator<T> validator;
 
-    public SchemaElement(String name, StereoType stereo, Class<T> type) {
+    public AbstractSchema(String name, StereoType stereo, Class<T> type) {
         super(name);
         if (stereo == null)
             throw new NullPointerException("stereo");
@@ -84,6 +85,11 @@ public class SchemaElement<T>
     }
 
     @Override
+    public boolean isTransient() {
+        return false;
+    }
+
+    @Override
     public Iterable<? extends Qualifier<?>> getQualifiers() {
         return qualifierMap.getQualifiers();
     }
@@ -100,17 +106,18 @@ public class SchemaElement<T>
 
     public ICommonTraits<T> getTraits() {
         if (flags.checkAndLoad(HAVE_TRAITS)) {
-
-            @SuppressWarnings("unchecked")
-            ICommonTraits<T> _traits = Traits.getTraits(type, ICommonTraits.class);
-
-            this.traits = _traits;
+            this.traits = loadTraits();
         }
         return traits;
     }
 
+    @SuppressWarnings("unchecked")
+    protected ICommonTraits<T> loadTraits() {
+        return Traits.getTraits(type, ICommonTraits.class);
+    }
+
     @Override
-    public T decodeText(String s)
+    public T decodeText(String s, Object enclosingObject)
             throws DecodeException {
         if (flags.checkAndLoad(HAVE_PARSER))
             parser = getTraits().getParser();
@@ -119,14 +126,15 @@ public class SchemaElement<T>
             throw new UnsupportedOperationException("Don't know how to decode text for " + type);
 
         try {
-            return parser.parse(s);
-        } catch (ParseException e) {
+            return parser.parse(s, new FinalNegotiation(//
+                    new Optional(IParser.PARSE_CONTEXT, enclosingObject)));
+        } catch (Exception e) {
             throw new DecodeException(e.getMessage(), e);
         }
     }
 
     @Override
-    public String encodeText(T value)
+    public String encodeText(T value, Object enclosingObject)
             throws EncodeException {
         if (flags.checkAndLoad(HAVE_FORMATTER))
             formatter = getTraits().getFormatter();
@@ -142,7 +150,7 @@ public class SchemaElement<T>
     }
 
     @Override
-    public void validate(T value)
+    public void validate(T value, Object enclosingObject)
             throws ValidateException {
         if (flags.checkAndLoad(HAVE_VALIDATOR))
             validator = getTraits().getValidator();
@@ -154,10 +162,25 @@ public class SchemaElement<T>
     }
 
     @Override
+    public Iterable<String> listSubNames() {
+        return null;
+    }
+
+    @Override
+    public Iterable<? extends ISchema<?>> listSubSchemas() {
+        return null;
+    }
+
+    @Override
+    public ISchema<?> getSubSchema(String name) {
+        return null;
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof SchemaElement))
+        if (!(obj instanceof AbstractSchema))
             return false;
-        SchemaElement<?> o = (SchemaElement<?>) obj;
+        AbstractSchema<?> o = (AbstractSchema<?>) obj;
 
         if (!type.equals(o.type))
             return false;
