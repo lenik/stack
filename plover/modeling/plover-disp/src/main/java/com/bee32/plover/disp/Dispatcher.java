@@ -4,7 +4,6 @@ import java.util.ServiceLoader;
 import java.util.TreeSet;
 
 import com.bee32.plover.disp.util.ITokenQueue;
-import com.bee32.plover.disp.util.TokenQueue;
 
 public class Dispatcher
         extends AbstractDispatcher {
@@ -29,12 +28,6 @@ public class Dispatcher
     }
 
     private static int maxDispatches = 100;
-
-    public Object dispatch(Object context, String path)
-            throws DispatchException {
-        TokenQueue tq = new TokenQueue(path);
-        return dispatch(context, tq);
-    }
 
     @Override
     public Object dispatch(Object context, ITokenQueue tokens)

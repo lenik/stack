@@ -1,6 +1,7 @@
 package com.bee32.plover.pub.oid;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 public class OidTree<T>
@@ -26,6 +27,9 @@ public class OidTree<T>
     }
 
     public synchronized OidTree<T> get(int ord) {
+        if (children == null)
+            children = new HashMap<Integer, OidTree<T>>();
+
         OidTree<T> tree = children.get(ord);
         if (tree == null) {
             tree = new OidTree<T>();
@@ -34,15 +38,19 @@ public class OidTree<T>
         return tree;
     }
 
+    public synchronized void set(int ord, T value) {
+        get(ord).set(value);
+    }
+
     public boolean contains(OidVector oid) {
         return contains(oid.vector);
     }
 
-    public boolean contains(int[] vector) {
-        return contains(vector, 0, vector.length);
+    public boolean contains(int... vector) {
+        return _contains(vector, 0, vector.length);
     }
 
-    protected boolean contains(int[] vector, int start, int end) {
+    protected boolean _contains(int[] vector, int start, int end) {
         OidTree<T> node = this;
         while (start < end) {
             int ord = vector[start++];
@@ -57,11 +65,11 @@ public class OidTree<T>
         return get(oid.vector);
     }
 
-    public OidTree<T> get(int[] vector) {
-        return get(vector, 0, vector.length);
+    public OidTree<T> get(int... vector) {
+        return _get(vector, 0, vector.length);
     }
 
-    protected OidTree<T> get(int[] vector, int start, int end) {
+    protected OidTree<T> _get(int[] vector, int start, int end) {
         OidTree<T> node = this;
         while (start < end) {
             int ord = vector[start++];
