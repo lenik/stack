@@ -21,10 +21,10 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-		<groupId>com.bee32.plover</groupId>
-		<artifactId>plover-test</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<scope>test</scope>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-test</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <name>Plover :: Core :: Servlet</name>
