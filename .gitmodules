@@ -1,0 +1,3 @@
+[submodule "sems"]
+	path = sems
+	url = ssh://svn.bee32.com/repos/git/stack/sems.git
