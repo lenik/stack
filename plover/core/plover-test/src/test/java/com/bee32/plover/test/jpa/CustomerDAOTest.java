@@ -5,17 +5,13 @@ import java.sql.SQLException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
 public class CustomerDAOTest
         extends JpaTestCase {
 
     @Test
-    public void testDb()
+    public void testCustomerGetSet()
             throws SQLException {
-        Injector injector = Guice.createInjector(new JpaModule_H2());
-        CustomerDAO customerDao = injector.getInstance(CustomerDAO.class);
+        CustomerDAO customerDao = getInstance(CustomerDAO.class);
 
         Customer customer = new Customer();
         customer.setName("lenik");

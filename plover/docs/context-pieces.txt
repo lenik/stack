@@ -1,0 +1,12 @@
+
+
+out.print(ResourceAnchor(url));
+
+    classData(getClass(), "1")
+    jspLink("site-pages/a.jsp?a=b=c");
+    JavaioResource(...)
+
+    CreateRuleResource(X,
+        JavaioResource(...))
+
+ContextPiece
