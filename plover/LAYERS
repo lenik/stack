@@ -15,6 +15,7 @@ core/
 
 library/
     plover-commons
+    plover-orm
 
 lifecycle/
     plover-cache
