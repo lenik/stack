@@ -7,7 +7,7 @@ public interface IQualified {
      *
      * @return Non-<code>null</code> qualifiers iterable.
      */
-    Iterable<? extends Qualifier<?>> getQualifiers();
+    Iterable<Qualifier<?>> getQualifiers();
 
     /**
      * Get all qualifiers of specific type.

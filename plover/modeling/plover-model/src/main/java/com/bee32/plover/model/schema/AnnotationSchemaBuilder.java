@@ -1,6 +1,5 @@
 package com.bee32.plover.model.schema;
 
-
 public class AnnotationSchemaBuilder
         extends SchemaBuilder {
 
@@ -15,14 +14,14 @@ public class AnnotationSchemaBuilder
         Schema schemaAnnotation = type.getAnnotation(Schema.class);
         Class<? extends ISchema> schemaClass = schemaAnnotation.value();
 
-        ISchema schema;
         try {
-            schema = schemaClass.newInstance();
+            ISchema schema = (ISchema) schemaClass.newInstance();
+            return schema;
+        } catch (ClassCastException e) {
+            throw new SchemaBuilderException("Bad schema type annotated", e);
         } catch (Exception e) {
             throw new SchemaBuilderException(e.getMessage(), e);
         }
-
-        return schema;
     }
 
 }

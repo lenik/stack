@@ -1,5 +1,6 @@
 package com.bee32.plover.model.stage;
 
+import com.bee32.plover.model.qualifier.Group;
 import com.bee32.plover.model.schema.ISchema;
 
 public class StageBuilder {
@@ -17,7 +18,7 @@ public class StageBuilder {
     /**
      * The loaded schema for the enclosing object.
      */
-    private ISchema<?> schema;
+    private ISchema schema;
 
     public StageBuilder(Object enclosing, IModelStage stage) {
         if (enclosing == null)
@@ -44,12 +45,17 @@ public class StageBuilder {
         stage.add(methodElement);
     }
 
-    public void group(String groupName, StagedElement... elements) {
-
+    public void group(String groupName, int priority, StagedElement... elements) {
+        Group group = new Group(groupName, priority);
+        GroupElement groupElement = new GroupElement(group);
+        for (StagedElement e : elements)
+            groupElement.add(groupElement);
+        stage.add(groupElement);
     }
 
     public void doc(String docName) {
-
+        DocElement docElement = new DocElement(docName);
+        stage.add(docElement);
     }
 
 }

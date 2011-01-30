@@ -1,5 +1,9 @@
 package com.bee32.plover.model.schema;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import javax.free.DecodeException;
 import javax.free.EncodeException;
 import javax.free.FinalNegotiation;
@@ -9,6 +13,7 @@ import javax.free.IParser;
 import javax.free.IValidator;
 import javax.free.Nullables;
 import javax.free.Optional;
+import javax.free.PrefetchedIterator;
 import javax.free.Traits;
 import javax.free.ValidateException;
 
@@ -19,20 +24,24 @@ import com.bee32.plover.model.qualifier.QualifierMap;
 import com.bee32.plover.model.stereo.StereoType;
 
 /**
- * @param <T>
- *            Type of the value which this element refers to.
+ * @param <?> Type of the value which this element refers to.
  */
-public class AbstractSchema<T>
+@SuppressWarnings({ "rawtypes", "unchecked" })
+public abstract class AbstractSchema
         extends Component
-        implements ISchema<T> {
+        implements ISchema {
 
     private final StereoType stereo;
 
-    private final Class<T> type;
+    private final Class<?> type;
 
     private PreferenceLevel preferenceLevel = PreferenceLevel.INTERMEDIATE;
 
-    private QualifierMap qualifierMap; // XXX
+    private QualifierMap qualifierMap;
+    // private boolean qualifiersLoaded;
+
+    private transient Map<SchemaKey, ISchema> children;
+    private transient boolean childrenLoaded;
 
     private transient LoadFlags32 flags;
     private static final int HAVE_TRAITS = 1 << 0;
@@ -40,12 +49,12 @@ public class AbstractSchema<T>
     private static final int HAVE_FORMATTER = 1 << 2;
     private static final int HAVE_VALIDATOR = 1 << 3;
 
-    private transient ICommonTraits<T> traits;
-    private transient IParser<T> parser;
-    private transient IFormatter<T> formatter;
-    private transient IValidator<T> validator;
+    private transient ICommonTraits traits;
+    private transient IParser parser;
+    private transient IFormatter formatter;
+    private transient IValidator validator;
 
-    public AbstractSchema(String name, StereoType stereo, Class<T> type) {
+    public AbstractSchema(String name, StereoType stereo, Class<?> type) {
         super(name);
         if (stereo == null)
             throw new NullPointerException("stereo");
@@ -60,6 +69,11 @@ public class AbstractSchema<T>
         return stereo;
     }
 
+    @Override
+    public SchemaKey getKey() {
+        return new SchemaKey(stereo, name);
+    }
+
     /**
      * Get the data type this element refers to.
      * <p>
@@ -69,7 +83,7 @@ public class AbstractSchema<T>
      * method.
      */
     @Override
-    public Class<T> getType() {
+    public Class<?> getType() {
         return type;
     }
 
@@ -89,8 +103,18 @@ public class AbstractSchema<T>
         return false;
     }
 
+    // Qualifier Support
+
+    protected QualifierMap getQualifierMap() {
+        if (qualifierMap == null)
+            qualifierMap = loadQualifierMap();
+        return qualifierMap;
+    }
+
+    protected abstract QualifierMap loadQualifierMap();
+
     @Override
-    public Iterable<? extends Qualifier<?>> getQualifiers() {
+    public Iterable<Qualifier<?>> getQualifiers() {
         return qualifierMap.getQualifiers();
     }
 
@@ -104,20 +128,98 @@ public class AbstractSchema<T>
         return qualifierMap.getQualifier(qualifierType);
     }
 
-    public ICommonTraits<T> getTraits() {
+    // Composition
+
+    protected abstract void loadChildren(Map<SchemaKey, ISchema> map);
+
+    Map<SchemaKey, ISchema> getChildren() {
+        if (children == null)
+            children = new HashMap<SchemaKey, ISchema>();
+        if (!childrenLoaded)
+            loadChildren(children);
+        return children;
+    }
+
+    public void add(ISchema element) {
+        StereoType stereoType = element.getStereoType();
+        String name = element.getName();
+        SchemaKey key = new SchemaKey(stereoType, name);
+        getChildren().put(key, element);
+    }
+
+    public void remove(ISchema element) {
+        StereoType stereoType = element.getStereoType();
+        String name = element.getName();
+        SchemaKey key = new SchemaKey(stereoType, name);
+        getChildren().remove(key);
+    }
+
+    @Override
+    public Iterator<ISchema> iterator() {
+        return getChildren().values().iterator();
+    }
+
+    static class StereoFilter
+            implements Iterable<ISchema> {
+
+        private final Iterable<ISchema> schemas;
+        private final StereoType stereoType;
+
+        public StereoFilter(Iterable<ISchema> schemas, StereoType stereoType) {
+            this.schemas = schemas;
+            this.stereoType = stereoType;
+        }
+
+        @Override
+        public Iterator<ISchema> iterator() {
+            final Iterator<ISchema> orig = schemas.iterator();
+
+            return new PrefetchedIterator<ISchema>() {
+
+                @Override
+                protected ISchema fetch() {
+                    if (orig.hasNext()) {
+                        ISchema schema = orig.next();
+                        if (Nullables.equals(schema.getStereoType(), stereoType))
+                            return schema;
+                    }
+                    return next();
+                }
+
+            };
+        }
+    }
+
+    @Override
+    public Iterable<ISchema> restrict(StereoType stereoType) {
+        return new StereoFilter(this, stereoType);
+    }
+
+    @Override
+    public ISchema get(SchemaKey schemaKey) {
+        return getChildren().get(schemaKey);
+    }
+
+    @Override
+    public ISchema getProperty(String name) {
+        return get(new SchemaKey(StereoType.PROPERTY, name));
+    }
+
+    // Traits -> encode/decode/validator implementation.
+
+    public ICommonTraits<Object> getTraits() {
         if (flags.checkAndLoad(HAVE_TRAITS)) {
             this.traits = loadTraits();
         }
         return traits;
     }
 
-    @SuppressWarnings("unchecked")
-    protected ICommonTraits<T> loadTraits() {
+    protected ICommonTraits<?> loadTraits() {
         return Traits.getTraits(type, ICommonTraits.class);
     }
 
     @Override
-    public T decodeText(String s, Object enclosingObject)
+    public Object decodeText(String s, Object enclosingObject)
             throws DecodeException {
         if (flags.checkAndLoad(HAVE_PARSER))
             parser = getTraits().getParser();
@@ -134,7 +236,7 @@ public class AbstractSchema<T>
     }
 
     @Override
-    public String encodeText(T value, Object enclosingObject)
+    public String encodeText(Object value, Object enclosingObject)
             throws EncodeException {
         if (flags.checkAndLoad(HAVE_FORMATTER))
             formatter = getTraits().getFormatter();
@@ -150,7 +252,7 @@ public class AbstractSchema<T>
     }
 
     @Override
-    public void validate(T value, Object enclosingObject)
+    public void validate(Object value, Object enclosingObject)
             throws ValidateException {
         if (flags.checkAndLoad(HAVE_VALIDATOR))
             validator = getTraits().getValidator();
@@ -162,25 +264,13 @@ public class AbstractSchema<T>
     }
 
     @Override
-    public Iterable<String> listSubNames() {
-        return null;
-    }
-
-    @Override
-    public Iterable<? extends ISchema<?>> listSubSchemas() {
-        return null;
-    }
-
-    @Override
-    public ISchema<?> getSubSchema(String name) {
-        return null;
-    }
-
-    @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof AbstractSchema))
+        if (obj == null)
             return false;
-        AbstractSchema<?> o = (AbstractSchema<?>) obj;
+        if (!obj.getClass().equals(getClass()))
+            return false;
+
+        AbstractSchema o = (AbstractSchema) obj;
 
         if (!type.equals(o.type))
             return false;

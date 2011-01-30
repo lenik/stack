@@ -8,12 +8,16 @@ import com.bee32.plover.arch.IComponent;
 import com.bee32.plover.model.qualifier.IQualified;
 import com.bee32.plover.model.stereo.StereoType;
 
-public interface ISchema<T>
-        extends IComponent, IQualified {
+public interface ISchema
+        extends IComponent, IQualified, Iterable<ISchema> {
 
     StereoType getStereoType();
 
-    Class<T> getType();
+    String getName();
+
+    SchemaKey getKey();
+
+    Class<?> getType();
 
     PreferenceLevel getPreferenceLevel();
 
@@ -25,19 +29,19 @@ public interface ISchema<T>
      */
     boolean isTransient();
 
-    T decodeText(String s, Object enclosingObject)
+    Object decodeText(String s, Object enclosingObject)
             throws DecodeException;
 
-    String encodeText(T value, Object enclosingObject)
+    String encodeText(Object value, Object enclosingObject)
             throws EncodeException;
 
-    void validate(T value, Object enclosingObject)
+    void validate(Object value, Object enclosingObject)
             throws ValidateException;
 
-    Iterable<SchemaKey> listSubKeys();
+    Iterable<ISchema> restrict(StereoType stereoType);
 
-    Iterable<? extends ISchema<?>> listSubSchemas();
+    ISchema get(SchemaKey schemaKey);
 
-    ISchema<?> getSubSchema(SchemaKey subKey);
+    ISchema getProperty(String name);
 
 }

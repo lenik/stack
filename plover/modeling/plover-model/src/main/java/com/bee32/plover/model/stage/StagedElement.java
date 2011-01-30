@@ -1,33 +1,34 @@
 package com.bee32.plover.model.stage;
 
-import com.bee32.plover.model.schema.ISchema;
-
-public abstract class StagedElement
-        extends VirtualStagedElement
+public class StagedElement
+        extends StagedNode
         implements IStagedElement {
 
-    @Override
-    public Class<? extends ISchema<?>> getElementSchema() {
-        return null;
+    protected Object value;
+    private boolean dirty;
+
+    public StagedElement() {
+        super();
     }
 
-    @Override
-    public Class<?> getElementType() {
-        return null;
+    public StagedElement(String name) {
+        super(name);
     }
 
     @Override
     public Object getValue() {
-        return null;
+        return this.value;
     }
 
     @Override
     public void setValue(Object obj) {
+        this.value = obj;
+        dirty = true;
     }
 
     @Override
     public boolean isDirty() {
-        return false;
+        return dirty;
     }
 
 }

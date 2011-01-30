@@ -18,7 +18,7 @@ public class QualifierMap
     }
 
     @Override
-    public Iterable<? extends Qualifier<?>> getQualifiers() {
+    public Iterable<Qualifier<?>> getQualifiers() {
         List<Qualifier<?>> all = new ArrayList<Qualifier<?>>();
         for (List<? extends Qualifier<?>> list : map.values()) {
             all.addAll(list);

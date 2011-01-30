@@ -1,5 +1,9 @@
 package com.bee32.plover.model.stage;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.bee32.plover.inject.DelegatedContainer;
 import com.bee32.plover.inject.IContainer;
 import com.bee32.plover.model.qualifier.Qualifier;
@@ -15,9 +19,12 @@ public class ModelStage
 
     protected final QualifierMap qualifierMap;
 
+    private List<IStagedElement> children;
+
     public ModelStage(IContainer container) {
         super(container);
         qualifierMap = new QualifierMap();
+        children = new ArrayList<IStagedElement>();
     }
 
     public ModelStage(IContainer container, View view) {
@@ -33,7 +40,7 @@ public class ModelStage
     }
 
     @Override
-    public Iterable<? extends Qualifier<?>> getQualifiers() {
+    public Iterable<Qualifier<?>> getQualifiers() {
         return qualifierMap.getQualifiers();
     }
 
@@ -49,11 +56,17 @@ public class ModelStage
 
     @Override
     public void add(IStagedElement element) {
-        element.getElementType();
+        children.add(element);
     }
 
     @Override
     public void remove(IStagedElement element) {
+        children.remove(element);
+    }
+
+    @Override
+    public Iterator<IStagedElement> iterator() {
+        return children.iterator();
     }
 
 }

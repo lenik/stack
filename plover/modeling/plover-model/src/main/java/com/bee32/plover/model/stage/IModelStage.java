@@ -7,7 +7,7 @@ import com.bee32.plover.model.qualifier.IQualified;
 import com.bee32.plover.model.view.View;
 
 public interface IModelStage
-        extends IContainer, IQualified, Serializable {
+        extends IContainer, IQualified, Iterable<IStagedElement>, Serializable {
 
     /**
      * Get the preferred view to stage.

@@ -7,14 +7,14 @@ import java.util.TreeSet;
 
 public class SchemaLoader {
 
-    static ServiceLoader<SchemaBuilder> schemaProviderLoader;
-    static TreeSet<SchemaBuilder> schemaProviders;
+    static ServiceLoader<SchemaBuilder> schemaBuilderLoader;
+    static TreeSet<SchemaBuilder> schemaBuilders;
 
     static void reloadSchemaProviders() {
-        schemaProviderLoader = ServiceLoader.load(SchemaBuilder.class);
-        schemaProviders = new TreeSet<SchemaBuilder>(SchemaBuilderComparator.getInstance());
-        for (SchemaBuilder provider : schemaProviderLoader) {
-            schemaProviders.add(provider);
+        schemaBuilderLoader = ServiceLoader.load(SchemaBuilder.class);
+        schemaBuilders = new TreeSet<SchemaBuilder>(SchemaBuilderComparator.getInstance());
+        for (SchemaBuilder provider : schemaBuilderLoader) {
+            schemaBuilders.add(provider);
         }
     }
 
@@ -33,11 +33,11 @@ public class SchemaLoader {
     public static ISchema loadSchema(Class<?> type)
             throws SchemaBuilderException {
 
-        ISchema cachedSchema = schemaCache.get(type);
+        ISchema cachedSchema = (ISchema) schemaCache.get(type);
 
         if (cachedSchema == null) {
-            for (SchemaBuilder provider : schemaProviders) {
-                ISchema schema = provider.buildSchema(type);
+            for (SchemaBuilder builder : schemaBuilders) {
+                ISchema schema = builder.buildSchema(type);
                 cachedSchema = schema;
             }
         }
