@@ -1,14 +1,14 @@
 package com.bee32.plover.disp.tree;
 
-import static org.junit.Assert.assertEquals;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.util.TokenQueue;
 import com.bee32.plover.pub.oid.OidTree;
 
-public class OidDispatcherTest {
+public class OidDispatcherTest
+        extends Assert {
 
     OidTree<String> tree;
 
@@ -39,7 +39,7 @@ public class OidDispatcherTest {
             throws DispatchException {
         OidDispatcher od = new OidDispatcher();
         Object actual = od.dispatch(tree, "1/3/4");
-        assertEquals(null, actual);
+        assertNull(actual);
     }
 
 }
