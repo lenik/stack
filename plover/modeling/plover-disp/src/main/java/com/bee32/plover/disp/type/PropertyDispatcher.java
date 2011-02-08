@@ -62,6 +62,8 @@ public class PropertyDispatcher
         if (propertyDescriptor == null)
             return null;
 
+        tokens.shift();
+
         Method readMethod = propertyDescriptor.getReadMethod();
         if (readMethod == null)
             throw new DispatchException("Property " + propertyName + " isn't readable");

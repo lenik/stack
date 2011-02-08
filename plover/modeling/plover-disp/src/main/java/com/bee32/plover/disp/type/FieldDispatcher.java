@@ -54,6 +54,8 @@ public class FieldDispatcher
         if (field == null)
             return null;
 
+        tokens.shift();
+
         try {
             return field.get(context);
         } catch (Exception e) {
