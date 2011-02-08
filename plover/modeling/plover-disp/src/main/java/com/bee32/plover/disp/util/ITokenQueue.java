@@ -1,5 +1,8 @@
 package com.bee32.plover.disp.util;
 
+/**
+ * Records the state of token preprocessing.
+ */
 public interface ITokenQueue {
 
     String INDEX = ""; // "<<index>>";
@@ -29,7 +32,7 @@ public interface ITokenQueue {
     /**
      * Shift out the head token.
      *
-     * A trailing slash ('/') should be translated into {@link #INDEX}.
+     * A trailing slash (<code>'/'</code>) should be translated into {@link #INDEX}.
      *
      * @return <code>null</code> If no more token.
      */

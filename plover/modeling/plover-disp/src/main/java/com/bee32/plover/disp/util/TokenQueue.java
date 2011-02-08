@@ -3,9 +3,6 @@ package com.bee32.plover.disp.util;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Records the state of token preprocessing.
- */
 public class TokenQueue
         implements ITokenQueue {
 
