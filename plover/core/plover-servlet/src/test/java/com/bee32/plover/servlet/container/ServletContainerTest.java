@@ -17,7 +17,7 @@ import com.bee32.plover.test.servlet.ServletTestCase;
 public class ServletContainerTest
         extends ServletTestCase {
 
-    ServletContainer container = new ServletContainer();
+    private ServletContainer application;
 
     class MiniServer {
         ServletContextListener listener;
@@ -42,7 +42,7 @@ public class ServletContainerTest
     @Before
     public void setup() {
         miniServer = new MiniServer();
-        miniServer.addListener(container);
+        miniServer.addListener(application);
         miniServer.start();
     }
 
