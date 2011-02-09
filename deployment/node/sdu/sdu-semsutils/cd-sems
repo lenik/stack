@@ -7,7 +7,7 @@ if [ -z "$1" ]; then
     return
 fi
 
-if ! semsroot=`svnrootofcwd stack/sems/trunk`; then
+if ! semsroot=`vcscmd rootpath .`; then
     echo "Not a SEMS working copy"
     false
     return

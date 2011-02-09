@@ -1,7 +1,7 @@
 function _cd_sems() {
     local cur="${COMP_WORDS[COMP_CWORD]}"
     local semsroot
-    if ! semsroot=`svnrootofcwd stack/sems/trunk`; then
+    if ! semsroot=`vcscmd rootpath .`; then
         return 1
     fi
     local pomdirs="$semsroot/.pomdirs"
