@@ -1,13 +1,12 @@
 package com.bee32.plover.restful;
 
-import java.util.ServiceLoader;
-
-import javax.free.IllegalUsageError;
-
 import com.bee32.plover.arch.IModule;
 import com.bee32.plover.pub.oid.OidTree;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
+
+import javax.free.IllegalUsageError;
+import java.util.ServiceLoader;
 
 public class ModuleManager
         extends OidTree<IModule> {
