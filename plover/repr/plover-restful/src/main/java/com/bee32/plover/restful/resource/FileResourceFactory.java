@@ -5,7 +5,7 @@ public class FileResourceFactory
 
     @Override
     public String getType() {
-        return "file";
+        return ResourceTypes.RT_FILE;
     }
 
     @Override

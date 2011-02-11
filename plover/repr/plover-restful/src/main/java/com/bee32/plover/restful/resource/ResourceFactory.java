@@ -16,6 +16,7 @@ public abstract class ResourceFactory {
      *            Non-<code>null</code> path, without the leading slash.
      * @return <code>null</code> if couldn't resolve the path.
      */
-    public abstract IResource resolve(String path);
+    public abstract IResource resolve(String path)
+            throws ResourceResolveException;
 
 }

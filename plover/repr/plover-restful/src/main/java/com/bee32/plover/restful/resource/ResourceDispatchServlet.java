@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * TODO Convert this servlet to a View Renderer in plover-model arch.
+ */
 public class ResourceDispatchServlet
         extends HttpServlet {
 

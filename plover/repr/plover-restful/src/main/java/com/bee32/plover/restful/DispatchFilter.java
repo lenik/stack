@@ -21,20 +21,35 @@ import com.bee32.plover.model.stage.ModelStage;
 import com.bee32.plover.model.stage.ModelStageException;
 import com.bee32.plover.servlet.container.ServletContainer;
 
+/**
+ * The overall modules dispatcher.
+ */
 public class DispatchFilter
         implements Filter {
 
     private static final long serialVersionUID = 1L;
 
     static Dispatcher dispatcher;
-    static ModuleManager moduleManager;
     static {
         dispatcher = new Dispatcher();
-        moduleManager = new ModuleManager();
     }
 
     private ServletContext servletContext;
     protected String contextPath; // Not used.
+
+    private Object rootContext;
+
+    public DispatchFilter() {
+        rootContext = ModuleManager.getInstance();
+    }
+
+    public Object getRootContext() {
+        return rootContext;
+    }
+
+    public void setRootContext(Object rootContext) {
+        this.rootContext = rootContext;
+    }
 
     @Override
     public void init(FilterConfig filterConfig)
@@ -55,7 +70,7 @@ public class DispatchFilter
 
             Object target;
             try {
-                target = dispatcher.dispatch(moduleManager, tq);
+                target = dispatcher.dispatch(rootContext, tq);
             } catch (DispatchException e) {
                 // resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
                 throw new ServletException(e.getMessage(), e);

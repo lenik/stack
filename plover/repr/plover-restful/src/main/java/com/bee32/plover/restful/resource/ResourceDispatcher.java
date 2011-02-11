@@ -4,7 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
 
-public class ResourceDispatcher {
+import com.bee32.plover.disp.AbstractDispatcher;
+import com.bee32.plover.disp.DispatchException;
+import com.bee32.plover.disp.util.ITokenQueue;
+import com.bee32.plover.restful.DispatchFilter;
+import com.bee32.plover.restful.ModuleManager;
+
+public class ResourceDispatcher
+        extends AbstractDispatcher {
 
     private final Map<String, ResourceFactory> resourceTypes;
 
@@ -22,37 +29,35 @@ public class ResourceDispatcher {
         resourceTypes.put(type, factory);
     }
 
-    public IResource dispatch(String mixedPath) {
-        if (mixedPath == null)
-            throw new NullPointerException("path");
-
-        String type;
-        String path;
-        int slash = mixedPath.indexOf('/');
-        if (slash != -1) {
-            type = mixedPath.substring(0, slash);
-            path = mixedPath.substring(slash); // with the leading /
-        } else {
-            type = mixedPath;
-            path = "/";
-        }
-        return dispatch(type, path);
-    }
-
-    public IResource dispatch(String type, String path) {
+    /**
+     * The initial/root context is: {@link ModuleManager}.
+     *
+     * @see DispatchFilter#getRootContext()
+     * @see ModuleManager
+     */
+    @Override
+    public IResource dispatch(Object context, ITokenQueue tokens)
+            throws DispatchException {
+        String type = tokens.peek();
         ResourceFactory resourceFactory = resourceTypes.get(type);
         if (resourceFactory == null)
             return null;
 
-        return resourceFactory.resolve(path);
+        tokens.shift();
+
+        String path = tokens.getRemainingPath();
+        IResource resource = resourceFactory.resolve(path);
+
+        if (resource == null)
+            throw new DispatchException();
+
+        tokens.skip(tokens.available());
+        return resource;
     }
 
     private static final ResourceDispatcher instance;
     static {
         instance = new ResourceDispatcher();
-
-        // Load standards
-        instance.register("crt", ClassResourceFactory.getInstance());
 
         // Load services.
         for (ResourceFactory factory : ServiceLoader.load(ResourceFactory.class)) {

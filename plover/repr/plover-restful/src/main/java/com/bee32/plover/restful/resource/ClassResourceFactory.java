@@ -1,41 +1,58 @@
 package com.bee32.plover.restful.resource;
 
 import java.net.URL;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ClassResourceFactory
         extends ResourceFactory {
 
-    private ClassLoader loader;
+    private Map<String, ClassLoader> loaders;
 
     public ClassResourceFactory() {
-        this.loader = ClassResourceFactory.class.getClassLoader();
-    }
+        loaders = new TreeMap<String, ClassLoader>();
 
-    public ClassResourceFactory(ClassLoader loader) {
-        if (loader == null)
-            throw new NullPointerException("loader");
-        this.loader = loader;
+        loaders.put("scl", ClassLoader.getSystemClassLoader());
+        // loaders.put("ccl", Thread.currentThread().getContextClassLoader());
+        loaders.put("core", ClassResourceFactory.class.getClassLoader());
     }
 
     @Override
     public String getType() {
-        return "class";
+        return ResourceTypes.RT_CLASS;
     }
 
     @Override
-    public IResource resolve(String path) {
-        URL resource = loader.getResource(path);
-        return new URLResource(resource);
-    }
+    public IResource resolve(String path)
+            throws ResourceResolveException {
+        int slash = path.indexOf('/');
+        if (slash == -1)
+            throw new ResourceResolveException("Context class/loader for class-resource is missing");
 
-    private static final ClassResourceFactory instance;
-    static {
-        ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
-        instance = new ClassResourceFactory(systemLoader);
-    }
+        String contextName = path.substring(0, slash);
+        path = path.substring(slash + 1);
 
-    public static ClassResourceFactory getInstance() {
-        return instance;
+        URL url;
+
+        ClassLoader contextLoader = loaders.get(contextName);
+        if (contextLoader != null) {
+            url = contextLoader.getResource(path);
+            if (url == null)
+                throw new ResourceResolveException(String.format(
+                        "Failed to resolve resource %s with-in class loader %s.", contextName, path));
+        } else {
+            Class<?> contextClass;
+            try {
+                contextClass = Class.forName(contextName);
+            } catch (ClassNotFoundException e) {
+                throw new ResourceResolveException(e.getMessage(), e);
+            }
+            url = contextClass.getResource(path);
+            if (url == null)
+                throw new ResourceResolveException(String.format("Failed to resolve resource %s relative to class %s.",
+                        path, contextClass));
+        }
+        return new URLResource(url);
     }
 
 }
