@@ -1,6 +1,6 @@
 package com.bee32.plover.pub.oid;
 
-@Oid({ 3, 12, 4, 1, 1, 1 })
+@Oid({ 3, 12, PloverOids.LIBRARY, 1, 1, 1 })
 public interface PloverOids {
 
     int[] ROOT = { 3, 12 };
