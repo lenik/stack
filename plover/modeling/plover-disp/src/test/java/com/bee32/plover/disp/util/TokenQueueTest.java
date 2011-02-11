@@ -7,6 +7,26 @@ public class TokenQueueTest
         extends Assert {
 
     @Test
+    public void testGetRemainingPath() {
+        TokenQueue queue = new TokenQueue("a/b/c/d");
+        assertEquals("a/b/c/d", queue.getRemainingPath());
+
+        queue.shift();
+        assertEquals("b/c/d", queue.getRemainingPath());
+
+        queue.shift();
+        assertEquals("c/d", queue.getRemainingPath());
+
+        queue.shift();
+        assertEquals("d", queue.getRemainingPath());
+
+        queue.shift();
+        assertEquals("", queue.getRemainingPath());
+
+        assertTrue(queue.isEmpty());
+    }
+
+    @Test
     public void testParsePath() {
         TokenQueue queue = new TokenQueue("a/b/c");
         assertEquals("a", queue.shift());

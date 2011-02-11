@@ -8,11 +8,18 @@ public interface ITokenQueue {
     String INDEX = ""; // "<<index>>";
 
     /**
-     * Get available token count of the rest.
+     * Get the available count of remaining tokens.
      *
-     * @return Count of the rest tokens.
+     * @return Count of the remaining tokens.
      */
     int available();
+
+    /**
+     * Join the remaining tokens to a path string.
+     *
+     * @return The joined remaining path, without leading slash('/').
+     */
+    String getRemainingPath();
 
     /**
      * Test if the queue is empty.

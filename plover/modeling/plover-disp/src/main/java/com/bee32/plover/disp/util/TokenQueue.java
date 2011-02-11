@@ -56,6 +56,18 @@ public class TokenQueue
     }
 
     @Override
+    public String getRemainingPath() {
+        int remaining = tokens.length - index;
+        StringBuffer buf = new StringBuffer(remaining * 20);
+        for (int i = index; i < tokens.length; i++) {
+            if (i != index)
+                buf.append('/');
+            buf.append(tokens[i]);
+        }
+        return buf.toString();
+    }
+
+    @Override
     public boolean isEmpty() {
         return index >= tokens.length;
     }

@@ -1,7 +1,6 @@
 package com.bee32.plover.disp;
 
 import com.bee32.plover.arch.IComponent;
-import com.bee32.plover.disp.util.ITokenQueue;
 
 /**
  * URI-style path dispatcher.
@@ -11,7 +10,7 @@ import com.bee32.plover.disp.util.ITokenQueue;
  * @see org.kohsuke.stapler.Dispatcher
  */
 public interface IDispatcher
-        extends IComponent {
+        extends IDispatchable, IComponent {
 
     /**
      * The order of the dispatcher.
@@ -21,36 +20,5 @@ public interface IDispatcher
      * @return An integer represents the order of the dispatch. A lower value means higher order.
      */
     int getOrder();
-
-    /**
-     * Resolve the tokens with-in the context object.
-     *
-     * @param context
-     *            The context object in which this dispatcher runs into, should non-
-     *            <code>null</code>.
-     * @param tokens
-     *            Tokens to be consumed by dispatcher. Only effective dispatch could consume the
-     *            corresponding token.
-     * @return The final receiver be dispatched into. <code>null</code> if no more matching items.
-     * @throws NullPointerException
-     *             If either <code>context</code> or <code>tokens</code> is <code>null</code>.
-     */
-    Object dispatch(Object context, ITokenQueue tokens)
-            throws DispatchException;
-
-    /**
-     * Resolve the tokens with-in the context object.
-     *
-     * @param context
-     *            The context object in which this dispatcher runs into, should non-
-     *            <code>null</code>.
-     * @param path
-     *            Path must be fully dispatched, otherwise <code>null</code> is returned.
-     * @return The final receiver be dispatched into. <code>null</code> if no more matching items.
-     * @throws NullPointerException
-     *             If either <code>context</code> or <code>tokens</code> is <code>null</code>.
-     */
-    Object dispatch(Object context, String path)
-            throws DispatchException;
 
 }
