@@ -4,6 +4,7 @@ back-end/
 
 core/
     plover-arch
+    plover-conf
     plover-indexing
     plover-inject
     plover-collections
