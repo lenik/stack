@@ -31,6 +31,7 @@ modeling/
 repr/
     plover-repr
     plover-restful
+    plover-javascript
 
 ui/
     plover-widgets

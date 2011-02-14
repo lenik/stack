@@ -12,6 +12,7 @@
     <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>plover-javascript</module>
         <module>plover-repr</module>
         <module>plover-restful</module>
     </modules>
