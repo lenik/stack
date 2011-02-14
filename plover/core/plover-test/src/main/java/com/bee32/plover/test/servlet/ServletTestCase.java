@@ -17,6 +17,7 @@ public abstract class ServletTestCase
     protected final Logger logger;
 
     private String host = "localhost";
+    private int socketPort = -1;
 
     public ServletTestCase() {
         this.logger = LoggerFactory.getLogger(getClass());
@@ -25,6 +26,16 @@ public abstract class ServletTestCase
     @Before
     public void start()
             throws Exception {
+
+        // int port = getPort();
+        // logger.debug("Set connector listen on port " + port);
+        // LocalConnector connector = createLocalConnector();
+
+        String connector = createSocketConnector(false);
+        int colon = connector.lastIndexOf(':');
+        String portString = connector.substring(colon + 1);
+        socketPort = Integer.parseInt(portString);
+
         setup();
         logger.debug("Start test server: " + this);
         super.start();
@@ -42,13 +53,31 @@ public abstract class ServletTestCase
         super.stop();
     }
 
-    protected HttpTester get(String uri)
+    protected int getPort() {
+        return socketPort;
+    }
+
+    protected HttpTester get(String uriOrPath)
             throws Exception {
         HttpTester request = new HttpTester();
         request.setMethod("GET");
-        request.setHeader("Host", host);
         request.setVersion("HTTP/1.0");
-        request.setURI(uri);
+
+        String host = this.host;
+        if (uriOrPath.startsWith("http://")) {
+            uriOrPath = uriOrPath.substring("http://".length());
+            int slash = uriOrPath.indexOf('/');
+            if (slash == -1) {
+                host = uriOrPath;
+                uriOrPath = "/";
+            } else {
+                host = uriOrPath.substring(0, slash);
+                uriOrPath = uriOrPath.substring(slash);
+            }
+        }
+
+        request.setHeader("Host", host);
+        request.setURI(uriOrPath);
 
         String rawRequest = request.generate();
 
