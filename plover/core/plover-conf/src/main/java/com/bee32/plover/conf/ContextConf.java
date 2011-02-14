@@ -2,20 +2,23 @@ package com.bee32.plover.conf;
 
 import java.util.Collection;
 
+import javax.free.IContext;
+
 import com.bee32.plover.model.Model;
 
-public abstract class BoundConf
+public class ContextConf
         extends Model
         implements IConf {
 
     private static final long serialVersionUID = 1L;
 
-    public BoundConf() {
-        super();
-    }
+    protected final IContext context;
 
-    public BoundConf(String name) {
-        super(name);
+    public ContextConf(IContext context) {
+        super();
+        if (context == null)
+            throw new NullPointerException("context");
+        this.context = context;
     }
 
     @Override

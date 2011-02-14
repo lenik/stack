@@ -8,6 +8,12 @@
     <artifactId>plover-conf</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies>
+        <dependency>
+            <groupId>javax.free</groupId>
+            <artifactId>freejava-context</artifactId>
+            <version>3.0.0</version>
+            <scope>compile</scope>
+        </dependency>
 	<dependency>
 		<groupId>com.bee32.plover</groupId>
 		<artifactId>plover-arch</artifactId>

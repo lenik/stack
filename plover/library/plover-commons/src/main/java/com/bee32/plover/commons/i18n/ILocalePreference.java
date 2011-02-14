@@ -1,4 +1,4 @@
-package com.bee32.plover.conf.style;
+package com.bee32.plover.commons.i18n;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -16,15 +16,17 @@ public interface ILocalePreference
 
     NumberFormat getDoubleFormat();
 
-    DateFormat getDateFormat();
+    NumberFormat getPercentFormat();
 
-    DateFormat getLongDateFormat();
+    DateFormat getDateFormat();
 
     DateFormat getTimeFormat();
 
-    DateFormat getLongTimeFormat();
-
     DateFormat getDateTimeFormat();
+
+    DateFormat getLongDateFormat();
+
+    DateFormat getLongTimeFormat();
 
     DateFormat getLongDateTimeFormat();
 
