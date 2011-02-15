@@ -2,9 +2,14 @@ package com.bee32.plover.test;
 
 import org.junit.Test;
 
-public class RestfulServiceTestCaseTest
-        extends RestfulServiceTestCase {
+import com.bee32.plover.restful.DispatchFilter;
 
+public class DispServiceTestCaseTest
+        extends DispServiceTestCase {
+
+    /**
+     * @see DispatchFilter
+     */
     @Test
     public void testCoreInfoCreditText()
             throws Exception {

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 public class ServletTestCaseTest
         extends ServletTestCase {
+
     @Test
     public void testGetURL()
             throws Exception {

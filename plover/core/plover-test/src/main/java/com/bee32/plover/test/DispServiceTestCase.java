@@ -5,7 +5,7 @@ import org.mortbay.jetty.Handler;
 import com.bee32.plover.restful.DispatchFilter;
 import com.bee32.plover.test.servlet.ServletTestCase;
 
-public class RestfulServiceTestCase
+public class DispServiceTestCase
         extends ServletTestCase {
 
     @Override
