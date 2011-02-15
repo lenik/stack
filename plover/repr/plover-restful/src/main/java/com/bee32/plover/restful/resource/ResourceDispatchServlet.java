@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.bee32.plover.disp.DispatchException;
+
 /**
  * TODO Convert this servlet to a View Renderer in plover-model arch.
  */
@@ -33,7 +35,13 @@ public class ResourceDispatchServlet
         while (path.startsWith("/"))
             path = path.substring(1);
 
-        IResource resource = dispatcher.dispatch(path);
+        IResource resource;
+        try {
+            resource = dispatcher.dispatch(dispatcher, path);
+        } catch (DispatchException e) {
+            throw new ServletException(e.getMessage(), e);
+        }
+
         if (resource == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource: " + path);
             return;

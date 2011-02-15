@@ -30,8 +30,11 @@ public class ResourceDispatcher
     }
 
     /**
-     * The initial/root context is: {@link ModuleManager}.
+     * The root context should be module manager.
      *
+     * @param context
+     *            Not used actually, because this resource dispatcher manages children resources by
+     *            itself.
      * @see DispatchFilter#getRootContext()
      * @see ModuleManager
      */
@@ -46,13 +49,24 @@ public class ResourceDispatcher
         tokens.shift();
 
         String path = tokens.getRemainingPath();
-        IResource resource = resourceFactory.resolve(path);
+        IResource resource;
+        try {
+            resource = resourceFactory.resolve(path);
+        } catch (ResourceResolveException e) {
+            throw new DispatchException(e.getMessage(), e);
+        }
 
         if (resource == null)
             throw new DispatchException();
 
         tokens.skip(tokens.available());
         return resource;
+    }
+
+    @Override
+    public IResource dispatch(Object context, String path)
+            throws DispatchException {
+        return (IResource) super.dispatch(context, path);
     }
 
     private static final ResourceDispatcher instance;
