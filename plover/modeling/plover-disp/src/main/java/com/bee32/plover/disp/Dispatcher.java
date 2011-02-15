@@ -5,6 +5,12 @@ import java.util.TreeSet;
 
 import com.bee32.plover.disp.util.ITokenQueue;
 
+/**
+ * The dispatcher facade. This is also a {@link IDispatcher}, though it needn't be.
+ * <p>
+ * This facade is commonly used by HttpServlet or Filter, which accepts the initial URL prefix, and
+ * pass down the rest of the tokens.
+ */
 public class Dispatcher
         extends AbstractDispatcher {
 
@@ -50,7 +56,7 @@ public class Dispatcher
             if (!processed)
                 break;
             if (++count > maxDispatches)
-                throw new DispatchException("Dispatched too many times, is there any dead loop?");
+                throw new DispatchException(String.format("Dispatch-deadloop (%d) detected.", maxDispatches));
         }
 
         return context;

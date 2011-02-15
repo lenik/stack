@@ -13,6 +13,9 @@ public interface IDispatchable {
      * @param tokens
      *            Tokens to be consumed by dispatcher. Only effective dispatch could consume the
      *            corresponding token.
+     *            <p>
+     *            It's the caller's responsibility to check if the tokens are full consumed. It's
+     *            not required all the tokens be processed by the {@link Dispatcher} facade.
      * @return The final receiver be dispatched into. <code>null</code> if no more matching items.
      * @throws NullPointerException
      *             If either <code>context</code> or <code>tokens</code> is <code>null</code>.
