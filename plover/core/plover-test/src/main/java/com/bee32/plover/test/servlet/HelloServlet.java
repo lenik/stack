@@ -16,8 +16,14 @@ public class HelloServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String name = req.getParameter("name");
+        String hack = req.getParameter("hack");
+
         PrintWriter out = resp.getWriter();
-        out.println("hello, " + name);
+        if (hack != null) {
+            out.println("hey, hacker " + name);
+        } else {
+            out.println("hello, " + name);
+        }
     }
 
 }
