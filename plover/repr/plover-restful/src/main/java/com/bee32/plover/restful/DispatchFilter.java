@@ -10,6 +10,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,8 +24,17 @@ import com.bee32.plover.servlet.container.ServletContainer;
 
 /**
  * The overall modules dispatcher.
+ * <p>
+ * The dispatch filter can be used in both servlet-mapping and filter-mapping form.
+ * <p>
+ * In the servlet-mapping form, only path starts with-in a specific namespace will be served by the
+ * dispatch filter.
+ * <p>
+ * In the filter-mapping form, the dispatched namespace is mess up with the ordinary servlets and
+ * jsp urls.
  */
 public class DispatchFilter
+        extends HttpServlet
         implements Filter {
 
     private static final long serialVersionUID = 1L;
@@ -56,6 +66,11 @@ public class DispatchFilter
             throws ServletException {
         servletContext = filterConfig.getServletContext();
         contextPath = servletContext.getContextPath();
+    }
+
+    @Override
+    public void destroy() {
+        servletContext = null;
     }
 
     @Override
@@ -111,8 +126,14 @@ public class DispatchFilter
     }
 
     @Override
-    public void destroy() {
-        servletContext = null;
+    protected void service(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        super.service(req, resp);
+    }
+
+    @Override
+    protected long getLastModified(HttpServletRequest req) {
+        return super.getLastModified(req);
     }
 
 }
