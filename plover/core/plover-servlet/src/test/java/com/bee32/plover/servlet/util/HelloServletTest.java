@@ -1,8 +1,12 @@
-package com.bee32.plover.test.servlet;
+package com.bee32.plover.servlet.util;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import com.bee32.plover.servlet.test.ServletTestCase;
+import com.bee32.plover.servlet.util.HelloServlet;
+
 
 public class HelloServletTest
         extends ServletTestCase {

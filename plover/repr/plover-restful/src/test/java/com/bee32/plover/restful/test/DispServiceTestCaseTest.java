@@ -1,4 +1,4 @@
-package com.bee32.plover.test;
+package com.bee32.plover.restful.test;
 
 import org.junit.Test;
 

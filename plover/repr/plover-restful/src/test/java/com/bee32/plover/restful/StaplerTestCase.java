@@ -5,7 +5,7 @@ import javax.servlet.ServletContextListener;
 
 import org.kohsuke.stapler.Stapler;
 
-import com.bee32.plover.test.servlet.ServletTestCase;
+import com.bee32.plover.servlet.test.ServletTestCase;
 
 public abstract class StaplerTestCase
         extends ServletTestCase {

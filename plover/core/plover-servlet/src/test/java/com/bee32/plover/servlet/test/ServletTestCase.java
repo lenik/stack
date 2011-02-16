@@ -1,4 +1,4 @@
-package com.bee32.plover.test.servlet;
+package com.bee32.plover.servlet.test;
 
 import java.io.PrintStream;
 import java.util.Enumeration;

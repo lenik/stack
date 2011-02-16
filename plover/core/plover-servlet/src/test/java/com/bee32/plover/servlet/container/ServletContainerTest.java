@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.bee32.plover.inject.ContextException;
 import com.bee32.plover.inject.IAware;
 import com.bee32.plover.inject.IContainer;
-import com.bee32.plover.test.servlet.ServletTestCase;
+import com.bee32.plover.servlet.test.ServletTestCase;
 
 public class ServletContainerTest
         extends ServletTestCase {
