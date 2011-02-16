@@ -1,0 +1,14 @@
+monitor/
+    rack-monitor-appserv
+    rack-monitor-syslogs
+    rack-monitor-weblogs
+    rack-monitor-tcpip
+
+analyzer/
+    rack-analyzer
+
+cleaner/
+    rack-cleaner
+
+db/
+    rack-coredb
