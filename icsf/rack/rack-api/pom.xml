@@ -7,7 +7,6 @@
     </parent>
     <artifactId>rack-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
     <modules/>
     <name>ICSF :: Rack :: Rack Api</name>
 </project>
