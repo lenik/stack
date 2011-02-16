@@ -48,11 +48,11 @@
             <version>3.4.0.GA</version>
         </dependency>
         <dependency>
-		<groupId>com.bee32.plover</groupId>
-		<artifactId>plover-restful</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<type>jar</type>
-		<scope>compile</scope>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-restful</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <name>Plover :: Core :: Test</name>
