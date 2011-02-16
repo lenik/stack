@@ -19,7 +19,7 @@
         </dependency>
     </dependencies>
     <modules>
-        <module>core</module>
+        <module>identity</module>
         <module>rack</module>
     </modules>
     <build>
