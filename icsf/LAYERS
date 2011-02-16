@@ -1,6 +1,7 @@
-core/
+identity/
     icsf-principal
     icsf-acl
+    icsf-sso
 
 rack/
     rack-api

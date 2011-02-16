@@ -8,12 +8,13 @@
         <artifactId>icsf</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>core</artifactId>
+    <artifactId>identity</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>icsf-acl</module>
         <module>icsf-principal</module>
+        <module>icsf-sso</module>
     </modules>
-    <name>ICSF :: Core</name>
+    <name>ICSF :: Identity</name>
 </project>

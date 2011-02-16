@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.sems</groupId>
-        <artifactId>core</artifactId>
+        <artifactId>identity</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>ebc-accesscontrol</artifactId>
@@ -20,5 +20,5 @@
             <version>3.0.0</version>
         </dependency>
     </dependencies>
-    <name>ICSF :: Core :: Principal</name>
+    <name>ICSF :: Identity :: Principal</name>
 </project>

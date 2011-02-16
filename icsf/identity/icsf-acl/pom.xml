@@ -2,11 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.icsf</groupId>
-        <artifactId>core</artifactId>
+        <artifactId>identity</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>icsf-acl</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>ICSF :: Core :: Acl</name>
+    <name>ICSF :: Identity :: Acl</name>
 </project>
