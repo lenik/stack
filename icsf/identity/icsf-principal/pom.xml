@@ -5,7 +5,7 @@
         <artifactId>identity</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>ebc-accesscontrol</artifactId>
+    <artifactId>icsf-principal</artifactId>
     <packaging>jar</packaging>
     <version>0.0.4-SNAPSHOT</version>
     <dependencies>

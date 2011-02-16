@@ -5,7 +5,7 @@
         <artifactId>monitor</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>icsf-monitor-appserv</artifactId>
+    <artifactId>rack-monitor-appserv</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>

@@ -5,7 +5,7 @@
         <artifactId>cleaner</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>icsf-cleaner-dev</artifactId>
+    <artifactId>rack-cleaner</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>

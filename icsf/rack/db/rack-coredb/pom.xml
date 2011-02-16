@@ -5,7 +5,7 @@
         <artifactId>db</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>icsf-patterndb-dev</artifactId>
+    <artifactId>rack-coredb</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
