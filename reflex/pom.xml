@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.bee32.plover</groupId>
+        <artifactId>plover-parent</artifactId>
+        <version>2</version>
+    </parent>
+    <groupId>com.bee32.reflex</groupId>
+    <artifactId>reflex</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <modules>
+        <module>identity</module>
+        <module>rack</module>
+    </modules>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <failOnError>true</failOnError>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <tagBase>${svn.base.dev}/icsf/tags</tagBase>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <name>Reflex</name>
+    <url>http://www.bee32.com</url>
+    <inceptionYear>2011</inceptionYear>
+    <developers>
+        <!--Please list in the alphabet order by developer id.-->
+        <developer>
+            <id>XJL</id>
+            <name>谢继雷</name>
+            <email>xjl@99jsj.com</email>
+            <roles>
+                <role>Project Leader</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>GMT+8</timezone>
+        </developer>
+    </developers>
+    <mailingLists>
+        <mailingList>
+            <name>SECCA Developer</name>
+            <archive>http://list.secca-project.com/archive/dev</archive>
+            <post>post-dev@list.secca-project.com</post>
+            <subscribe>subscribe-dev@list.secca-project.com</subscribe>
+            <unsubscribe>unsubscribe-dev@list.secca-project.com</unsubscribe>
+        </mailingList>
+    </mailingLists>
+    <scm>
+        <connection>scm:git:git://git.bee32.com/stack.git</connection>
+        <developerConnection>scm:git:ssh://git.bee32.com/repos/git/stack.git</developerConnection>
+        <url>http://track.bee32.com/projects/stack/browser/reflex</url>
+    </scm>
+</project>

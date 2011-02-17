@@ -1,0 +1,11 @@
+control/
+    reflex-commons
+
+designer/
+    reflex-ajax
+    reflex-swt
+    reflex-flex
+
+format/
+    reflex-html
+    reflex-pdf
