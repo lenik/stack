@@ -1,0 +1,25 @@
+
+core/
+    sem-user
+    sem-calendar
+    sem-people
+    sem-log
+
+asset/
+    sem-bank
+    sem-asset
+    sem-file
+    sem-mail
+    sem-contract
+    sem-store
+    sem-thing
+
+social/
+    sem-staff
+    sem-customer
+    sem-supplier
+    sem-partner
+
+support/
+    sem-track
+    sem-kb
