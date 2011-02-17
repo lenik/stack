@@ -1,7 +1,14 @@
-identity/
+identity/   Identity and Access Security
     icsf-principal
     icsf-acl
     icsf-sso
+    icsf-jaas
+    icsf-jca
+    icsf-pkcs11
+    icsf-smartcard
 
-rack/
+txn/        Transaction Security
+    icsf-audit
+
+rack/       Rack Servers Security
     rack-api

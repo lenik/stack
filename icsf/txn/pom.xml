@@ -8,17 +8,10 @@
         <artifactId>icsf</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>identity</artifactId>
+    <artifactId>txn</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>icsf-acl</module>
-        <module>icsf-jaas</module>
-        <module>icsf-jca</module>
-        <module>icsf-pkcs11</module>
-        <module>icsf-principal</module>
-        <module>icsf-smartcard</module>
-        <module>icsf-sso</module>
     </modules>
-    <name>ICSF :: Identity</name>
+    <name>ICSF :: Txn</name>
 </project>
