@@ -1,0 +1,6 @@
+aoh/    Adarna-over-Hibernate
+    aoh-api
+    aoh-googledatastore
+    aoh-mysql
+    aoh-postgresql
+    aoh-simpledb

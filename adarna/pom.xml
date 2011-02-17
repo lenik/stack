@@ -2,58 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.seccaproject.parent</groupId>
+		<groupId>com.bee32.parent</groupId>
 		<artifactId>parent</artifactId>
 		<version>1</version>
 	</parent>
-	<groupId>com.seccaproject.adarna</groupId>
+	<groupId>com.bee32.adarna</groupId>
 	<artifactId>adarna</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.seccaproject.adarna</groupId>
-				<artifactId>aoh</artifactId>
-				<type>pom</type>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.seccaproject.adarna</groupId>
-				<artifactId>aoh-api</artifactId>
-				<type>jar</type>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.seccaproject.adarna</groupId>
-				<artifactId>aoh-mysql</artifactId>
-				<type>jar</type>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.seccaproject.adarna</groupId>
-				<artifactId>aoh-postgresql</artifactId>
-				<type>jar</type>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.seccaproject.adarna</groupId>
-				<artifactId>aoh-googledatastore</artifactId>
-				<type>jar</type>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>com.seccaproject.adarna</groupId>
-				<artifactId>aoh-simpledb</artifactId>
-				<type>jar</type>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -78,8 +39,8 @@
 			</plugin>
 		</plugins>
 	</build>
-	<name>SECCA :: Adarna</name>
-	<url>http://www.secca-project.com</url>
+	<name>Adarna</name>
+	<url>http://www.bee32.com</url>
 	<inceptionYear>2009</inceptionYear>
 	<developers>
 		<!--Please list in the alphabet order by developer id.-->
@@ -97,10 +58,10 @@
 	<mailingLists>
 		<mailingList>
 			<name>SECCA Developer</name>
-			<archive>http://list.secca-project.com/archive/dev</archive>
-			<post>post-dev@list.secca-project.com</post>
-			<subscribe>subscribe-dev@list.secca-project.com</subscribe>
-			<unsubscribe>unsubscribe-dev@list.secca-project.com</unsubscribe>
+			<archive>http://list.bee32.com/archive/dev</archive>
+			<post>post-dev@list.bee32.com</post>
+			<subscribe>subscribe-dev@list.bee32.com</subscribe>
+			<unsubscribe>unsubscribe-dev@list.bee32.com</unsubscribe>
 		</mailingList>
 	</mailingLists>
 	<scm>
