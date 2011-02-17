@@ -5,6 +5,8 @@ identity/   Identity and Access Security
     icsf-jaas
     icsf-jca
     icsf-pkcs11
+    icsf-ldap
+    icsf-kerberos
     icsf-smartcard
 
 txn/        Transaction Security
