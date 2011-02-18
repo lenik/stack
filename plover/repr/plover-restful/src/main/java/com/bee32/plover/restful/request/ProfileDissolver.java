@@ -9,6 +9,12 @@ import javax.free.UnexpectedException;
 import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.model.profile.StandardProfiles;
 
+/**
+ * Only standard profile names are supported.
+ * <p>
+ * Non-standard profile should not be used, alternatively, one should construct specific profiles
+ * thru a specific model builder functions.
+ */
 public class ProfileDissolver
         implements IExtensionDissolver {
 
