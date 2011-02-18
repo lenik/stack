@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.model.Model;
-import com.bee32.plover.model.view.View;
+import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.restful.Verb;
 
 public class RequestModel
@@ -22,7 +22,7 @@ public class RequestModel
     private String dispatchPath;
 
     private Verb verb;
-    private View view;
+    private Profile profile;
     private String renderer;
 
     public RequestModel(HttpServletRequest request) {
@@ -49,12 +49,12 @@ public class RequestModel
         this.verb = verb;
     }
 
-    public View getView() {
-        return view;
+    public Profile getProfile() {
+        return profile;
     }
 
-    public void setView(View view) {
-        this.view = view;
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
 }

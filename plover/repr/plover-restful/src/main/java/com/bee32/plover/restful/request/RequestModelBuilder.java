@@ -17,6 +17,7 @@ public class RequestModelBuilder {
         methodDissolver = new MethodDissolver();
         extensionDissolvers = new ArrayList<IExtensionDissolver>();
         extensionDissolvers.add(new RendererDissolver());
+        extensionDissolvers.add(new ProfileDissolver());
     }
 
     static TreeSet<IRequestPreprocessor> preprocessors;
