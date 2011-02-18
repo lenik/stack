@@ -3,7 +3,8 @@ package com.bee32.plover.restful.request;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RendererDissolver {
+public class RendererDissolver
+        implements IExtensionDissolver {
 
     private static final Map<String, String> rendererByKeyword;
 
@@ -17,6 +18,18 @@ public class RendererDissolver {
         rendererByKeyword.put("ps", "postscript");
         rendererByKeyword.put("png", "image");
         rendererByKeyword.put("jpg", "image");
+    }
+
+    @Override
+    public boolean desolveExtension(String extension, RequestModel model) {
+        if (extension == null)
+            throw new NullPointerException("extension");
+
+        String renderer = rendererByKeyword.get(extension);
+        if (renderer == null)
+            return false;
+
+        return true;
     }
 
 }

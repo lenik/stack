@@ -2,10 +2,10 @@ package com.bee32.plover.restful.request;
 
 import java.io.Serializable;
 
-import javax.free.StringPart;
 import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.model.Model;
+import com.bee32.plover.model.view.View;
 import com.bee32.plover.restful.Verb;
 
 public class RequestModel
@@ -22,25 +22,39 @@ public class RequestModel
     private String dispatchPath;
 
     private Verb verb;
-    private String view;
+    private View view;
     private String renderer;
 
     public RequestModel(HttpServletRequest request) {
         this.request = request;
+    }
 
-        String uri = request.getRequestURI();
-        String baseName = StringPart.before(uri, '/');
+    public HttpServletRequest getRequest() {
+        return request;
+    }
 
-        int end = baseName.length();
-        int dot;
-        while ((dot = baseName.lastIndexOf('.', end - 1)) != -1) {
-            String keyword = baseName.substring(dot + 1, end);
-            // parseKeyword();
-            end = dot;
-        }
+    public String getDispatchPath() {
+        return dispatchPath;
+    }
 
-        int stripped = baseName.length() - end;
-        dispatchPath = uri.substring(0, uri.length() - stripped);
+    public void setDispatchPath(String dispatchPath) {
+        this.dispatchPath = dispatchPath;
+    }
+
+    public Verb getVerb() {
+        return verb;
+    }
+
+    public void setVerb(Verb verb) {
+        this.verb = verb;
+    }
+
+    public View getView() {
+        return view;
+    }
+
+    public void setView(View view) {
+        this.view = view;
     }
 
 }
