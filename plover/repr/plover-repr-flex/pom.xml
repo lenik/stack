@@ -5,25 +5,16 @@
         <artifactId>repr</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
-    <artifactId>plover-repr</artifactId>
+    <artifactId>plover-repr-flex</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies>
-        <dependency>
-            <groupId>javax.free</groupId>
-            <artifactId>freejava-collection</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-		<groupId>javax.free</groupId>
-		<artifactId>freejava-io</artifactId>
-		<version>3.0.0</version>
-        </dependency>
-        <dependency>
+	<dependency>
 		<groupId>com.bee32.plover</groupId>
-		<artifactId>plover-model</artifactId>
+		<artifactId>plover-repr</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
+		<type>jar</type>
 		<scope>compile</scope>
-        </dependency>
+	</dependency>
     </dependencies>
-    <name>Plover :: Repr :: Repr</name>
+    <name>Plover :: Repr :: Repr Flex</name>
 </project>

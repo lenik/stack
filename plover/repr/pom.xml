@@ -14,6 +14,9 @@
     <modules>
         <module>plover-javascript</module>
         <module>plover-repr</module>
+        <module>plover-repr-flex</module>
+        <module>plover-repr-html</module>
+        <module>plover-repr-pdf</module>
         <module>plover-restful</module>
     </modules>
     <name>Plover :: Repr</name>

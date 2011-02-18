@@ -26,10 +26,13 @@ lifecycle/
 modeling/
     plover-model
     plover-disp
-    plover-view
+    plover-view         NOT USED.
 
 repr/
     plover-repr
+    plover-repr-html
+    plover-repr-pdf
+    plover-repr-flex
     plover-restful
     plover-javascript
 
