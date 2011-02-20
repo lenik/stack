@@ -39,11 +39,6 @@ public class DispatchFilter
 
     private static final long serialVersionUID = 1L;
 
-    static Dispatcher dispatcher;
-    static {
-        dispatcher = new Dispatcher();
-    }
-
     private ServletContext servletContext;
     protected String contextPath; // Not used.
 
@@ -83,6 +78,7 @@ public class DispatchFilter
             String pathInfo = req.getPathInfo();
             TokenQueue tq = new TokenQueue(pathInfo);
 
+            Dispatcher dispatcher = Dispatcher.getInstance();
             Object target;
             try {
                 target = dispatcher.dispatch(rootContext, tq);
