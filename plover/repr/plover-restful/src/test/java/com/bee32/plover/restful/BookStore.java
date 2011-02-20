@@ -1,34 +1,34 @@
 package com.bee32.plover.restful;
 
-import java.util.Map;
-import java.util.TreeMap;
+import com.bee32.plover.orm.entity.MapEntityRepository;
 
-public class BookStore {
+public class BookStore
+        extends MapEntityRepository<Book, String> {
 
-    Map<String, Book> books;
+    private static final long serialVersionUID = 1L;
 
     public BookStore() {
-        books = new TreeMap<String, Book>();
+        super(Book.class, String.class);
     }
 
-    public int count() {
-        return books.size();
-    }
-
-    public Book getBook(String name) {
-        return books.get(name);
+    public void addBook(Book book) {
+        addBook(book.getName(), book);
     }
 
     public void addBook(String name, Book book) {
-        books.put(name, book);
+        getMap().put(name, book);
     }
 
-    public Book removeBook(String name) {
-        return books.remove(name);
+    public Book getBook(String name) {
+        return retrieve(name);
+    }
+
+    public void removeBook(String name) {
+        deleteByKey(name);
     }
 
     public void clear() {
-        books.clear();
+        deleteAll();
     }
 
 }
