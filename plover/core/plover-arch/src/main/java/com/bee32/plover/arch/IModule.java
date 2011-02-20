@@ -1,9 +1,10 @@
 package com.bee32.plover.arch;
 
 import com.bee32.plover.arch.credit.Credit;
+import com.bee32.plover.arch.locator.IObjectLocator;
 
 public interface IModule
-        extends IComponent {
+        extends IComponent, IObjectLocator {
 
     Credit getCredit();
 
