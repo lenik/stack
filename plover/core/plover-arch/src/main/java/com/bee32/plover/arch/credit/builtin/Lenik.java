@@ -1,4 +1,4 @@
-package com.bee32.plover.arch.builtin;
+package com.bee32.plover.arch.credit.builtin;
 
 import com.bee32.plover.arch.credit.Contributor;
 
