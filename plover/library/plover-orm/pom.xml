@@ -25,6 +25,18 @@
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
+        <dependency>
+		<groupId>com.bee32.plover</groupId>
+		<artifactId>plover-arch</artifactId>
+		<version>0.0.4-SNAPSHOT</version>
+		<type>jar</type>
+		<scope>compile</scope>
+        </dependency>
+        <dependency>
+		<groupId>javax</groupId>
+		<artifactId>javaee-api</artifactId>
+		<version>6.0</version>
+        </dependency>
     </dependencies>
     <name>Plover :: Library :: Orm</name>
 </project>
