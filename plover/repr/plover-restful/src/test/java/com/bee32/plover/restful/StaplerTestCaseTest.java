@@ -6,18 +6,10 @@ import org.mortbay.jetty.testing.HttpTester;
 public class StaplerTestCaseTest
         extends StaplerTestCase {
 
-    BookStore store;
+    BookStore store = SimpleBooks.store;
 
     public StaplerTestCaseTest() {
         logger.debug("Prepare book store");
-        store = new BookStore();
-
-        Book tom = new Book("Tom", "A great story");
-        Book jerry = new Book("Jerry", "A wonderful cartoon book");
-
-        store.addBook("Tom", tom);
-        store.addBook("Jerry", jerry);
-
     }
 
     @Override
@@ -33,4 +25,5 @@ public class StaplerTestCaseTest
         HttpTester response = get("/book/Tom/");
         dumpResponse(response);
     }
+
 }
