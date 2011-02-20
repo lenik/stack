@@ -9,8 +9,9 @@ import org.junit.Test;
 import com.bee32.plover.disp.coll.ListDispatcher;
 import com.bee32.plover.disp.coll.MapDispatcher;
 import com.bee32.plover.disp.dyna.DynamicDispatcher;
-import com.bee32.plover.disp.model.ModelDispatcher;
-import com.bee32.plover.disp.model.StageDispatcher;
+import com.bee32.plover.disp.plover.LocatorDispatcher;
+import com.bee32.plover.disp.plover.ModelDispatcher;
+import com.bee32.plover.disp.plover.StageDispatcher;
 import com.bee32.plover.disp.type.FieldDispatcher;
 import com.bee32.plover.disp.type.MethodDispatcher;
 import com.bee32.plover.disp.type.PropertyDispatcher;
@@ -32,6 +33,7 @@ public class DispatcherTest
 
                 ListDispatcher.class, //
                 MapDispatcher.class, //
+                LocatorDispatcher.class, //
                 ModelDispatcher.class, //
                 StageDispatcher.class, //
                 FieldDispatcher.class, //
