@@ -3,8 +3,8 @@ package com.bee32.plover.model.stage;
 import java.io.Serializable;
 
 import com.bee32.plover.inject.IContainer;
+import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.model.qualifier.IQualified;
-import com.bee32.plover.model.view.View;
 
 public interface IModelStage
         extends IContainer, IQualified, Iterable<IStagedElement>, Serializable {
@@ -14,7 +14,7 @@ public interface IModelStage
      *
      * @return Non-<code>null</code> view qualifier.
      */
-    View getView();
+    Profile getView();
 
     /**
      * Add the element to the staged index.

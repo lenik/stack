@@ -6,10 +6,10 @@ import java.util.List;
 
 import com.bee32.plover.inject.DelegatedContainer;
 import com.bee32.plover.inject.IContainer;
+import com.bee32.plover.model.profile.Profile;
+import com.bee32.plover.model.profile.StandardProfiles;
 import com.bee32.plover.model.qualifier.Qualifier;
 import com.bee32.plover.model.qualifier.QualifierMap;
-import com.bee32.plover.model.view.StandardViews;
-import com.bee32.plover.model.view.View;
 
 public class ModelStage
         extends DelegatedContainer
@@ -27,15 +27,15 @@ public class ModelStage
         children = new ArrayList<IStagedElement>();
     }
 
-    public ModelStage(IContainer container, View view) {
+    public ModelStage(IContainer container, Profile view) {
         this(container);
         qualifierMap.setQualifier(view);
     }
 
-    public View getView() {
-        View view = getQualifier(View.class);
+    public Profile getView() {
+        Profile view = getQualifier(Profile.class);
         if (view == null)
-            view = StandardViews.VIEW;
+            view = StandardProfiles.VIEW;
         return view;
     }
 
