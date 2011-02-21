@@ -33,9 +33,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-		<groupId>javax.free</groupId>
-		<artifactId>freejava-collection</artifactId>
-		<version>3.0.0</version>
+            <groupId>javax.free</groupId>
+            <artifactId>freejava-collection</artifactId>
+            <version>3.0.0</version>
         </dependency>
     </dependencies>
     <name>Plover :: Core :: Arch</name>

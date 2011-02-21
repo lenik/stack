@@ -10,6 +10,7 @@ public class CriterionBuilder
 
     @Override
     public void visit(BinaryExpr evalExpr) {
+
         // if evalExpr == eq
         String propertyName = null;
         Object value = null;

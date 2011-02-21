@@ -5,12 +5,13 @@ back-end/
 core/
     plover-arch
     plover-conf
-    plover-indexing
     plover-inject
     plover-collections
     plover-expr
     plover-expr-sql
     plover-expr-criterion
+    plover-route
+    plover-indexing
     plover-servlet
     plover-test
 
