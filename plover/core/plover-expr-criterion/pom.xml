@@ -21,7 +21,6 @@
             <version>3.5.0-Final</version>
             <type>jar</type>
             <scope>compile</scope>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
