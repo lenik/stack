@@ -1,0 +1,40 @@
+Plover 开发计划
+
+1, 大图景
+
+    - Restful URL逆推
+    - Object 而非 Model 作为基本类型
+        getSchema 改为 Provider 模式
+        IModel 作为特例，可定制 Schema。
+
+    - Annotation 作为后期 Util，而不是非此不可。
+    - renderer-html 而不是 view-html
+
+    - Index: 通过 Caching-View 来实现特定功能
+        -> orm: ser, struct event router
+
+
+
+
+
+
+
+2，控件
+    - String
+        Pattern, 候选列表，max-len, ...?
+    - Number
+        Min/Max，scale/precision, Format,
+        slider, scroll-bar，list, spin, ...?
+        ENUM?
+    - Date
+        DatePicker-JS, Format, TimeZone, ...?
+    - Boolean
+        Check, push-button, ...?
+    - Email
+        Display-Safe? Send-button, ...?
+    - Resource
+        Link, download/open?
+    - ImageResource
+        width/height?
+
+3，Index/Search
