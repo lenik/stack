@@ -2,11 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.sem</groupId>
-        <artifactId>resource</artifactId>
+        <artifactId>base</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>sem-file</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Resource :: File</name>
+    <name>SME :: Base :: File</name>
 </project>

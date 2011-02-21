@@ -1,17 +1,17 @@
-core/
+base/
     sem-user
     sem-people
     sem-event
+    sem-bank
+    sem-file
+    sem-mail
 
 process/
     sem-techproc
     sem-workflow
 
 resource/
-    sem-bank
     sem-asset
-    sem-file
-    sem-mail
     sem-contract
     sem-store
     sem-thing

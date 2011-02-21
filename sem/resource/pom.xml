@@ -13,10 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>sem-asset</module>
-        <module>sem-bank</module>
         <module>sem-contract</module>
-        <module>sem-file</module>
-        <module>sem-mail</module>
         <module>sem-store</module>
         <module>sem-thing</module>
     </modules>

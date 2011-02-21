@@ -8,14 +8,17 @@
         <artifactId>sem</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>core</artifactId>
+    <artifactId>base</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>sem-bank</module>
         <module>sem-calendar</module>
+        <module>sem-file</module>
         <module>sem-log</module>
+        <module>sem-mail</module>
         <module>sem-people</module>
         <module>sem-user</module>
     </modules>
-    <name>SME :: Core</name>
+    <name>SME :: Base</name>
 </project>

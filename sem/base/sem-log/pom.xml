@@ -2,11 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.plover</groupId>
-        <artifactId>core</artifactId>
+        <artifactId>base</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>sem-log</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Core :: Log</name>
+    <name>SME :: Base :: Log</name>
 </project>

@@ -18,8 +18,9 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>core</module>
-		<module>asset</module>
+		<module>base</module>
+		<module>process</module>
+		<module>resource</module>
 		<module>social</module>
 		<module>support</module>
 	</modules>
