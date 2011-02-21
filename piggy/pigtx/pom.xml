@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.seccaproject.piggy</groupId>
+        <groupId>com.bee32.piggy</groupId>
         <artifactId>piggy</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
@@ -15,5 +15,5 @@
         <module>piggy-cache</module>
         <module>piggy-session</module>
     </modules>
-    <name>SECCA :: Pigtx</name>
+    <name>Piggy :: Pigtx</name>
 </project>
