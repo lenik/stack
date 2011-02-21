@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>sem-bank</module>
-        <module>sem-calendar</module>
         <module>sem-event</module>
         <module>sem-file</module>
         <module>sem-log</module>

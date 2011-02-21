@@ -2,11 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.sem</groupId>
-        <artifactId>base</artifactId>
+        <artifactId>support</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>sem-calendar</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SEM :: Base :: Calendar</name>
+    <name>SEM :: Support :: Calendar</name>
 </project>

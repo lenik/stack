@@ -12,6 +12,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>sem-calendar</module>
         <module>sem-kb</module>
         <module>sem-track</module>
     </modules>

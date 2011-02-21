@@ -8,13 +8,20 @@
     <artifactId>sem-event</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies>
-	<dependency>
-		<groupId>com.bee32.plover</groupId>
-		<artifactId>plover-stateflow</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<type>jar</type>
-		<scope>compile</scope>
-	</dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-stateflow</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.icsf</groupId>
+            <artifactId>icsf-principal</artifactId>
+            <version>0.1.1-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <name>SEM :: Base :: Event</name>
 </project>
