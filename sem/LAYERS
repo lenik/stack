@@ -1,11 +1,13 @@
-
 core/
     sem-user
-    sem-calendar
     sem-people
-    sem-log
+    sem-event
 
-asset/
+process/
+    sem-techproc
+    sem-workflow
+
+resource/
     sem-bank
     sem-asset
     sem-file
