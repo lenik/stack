@@ -8,5 +8,5 @@
     <artifactId>sem-kb</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Support :: Kb</name>
+    <name>SEM :: Support :: Kb</name>
 </project>

@@ -8,5 +8,5 @@
     <artifactId>sem-user</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Base :: User</name>
+    <name>SEM :: Base :: User</name>
 </project>

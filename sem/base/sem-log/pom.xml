@@ -8,5 +8,5 @@
     <artifactId>sem-log</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Base :: Log</name>
+    <name>SEM :: Base :: Log</name>
 </project>

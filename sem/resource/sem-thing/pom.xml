@@ -8,5 +8,5 @@
     <artifactId>sem-thing</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Resource :: Thing</name>
+    <name>SEM :: Resource :: Thing</name>
 </project>

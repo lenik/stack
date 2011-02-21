@@ -15,5 +15,5 @@
         <module>sem-kb</module>
         <module>sem-track</module>
     </modules>
-    <name>SME :: Support</name>
+    <name>SEM :: Support</name>
 </project>

@@ -8,5 +8,5 @@
     <artifactId>sem-workflow</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Process :: Workflow</name>
+    <name>SEM :: Process :: Workflow</name>
 </project>

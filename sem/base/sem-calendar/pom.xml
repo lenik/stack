@@ -8,5 +8,5 @@
     <artifactId>sem-calendar</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Base :: Calendar</name>
+    <name>SEM :: Base :: Calendar</name>
 </project>

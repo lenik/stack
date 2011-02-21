@@ -17,5 +17,5 @@
         <module>sem-store</module>
         <module>sem-thing</module>
     </modules>
-    <name>SME :: Resource</name>
+    <name>SEM :: Resource</name>
 </project>

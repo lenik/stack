@@ -14,11 +14,12 @@
     <modules>
         <module>sem-bank</module>
         <module>sem-calendar</module>
+        <module>sem-event</module>
         <module>sem-file</module>
         <module>sem-log</module>
         <module>sem-mail</module>
         <module>sem-people</module>
         <module>sem-user</module>
     </modules>
-    <name>SME :: Base</name>
+    <name>SEM :: Base</name>
 </project>

@@ -8,5 +8,5 @@
     <artifactId>sem-mail</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Base :: Mail</name>
+    <name>SEM :: Base :: Mail</name>
 </project>

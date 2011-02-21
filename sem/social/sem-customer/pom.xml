@@ -8,5 +8,5 @@
     <artifactId>sem-customer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Social :: Customer</name>
+    <name>SEM :: Social :: Customer</name>
 </project>

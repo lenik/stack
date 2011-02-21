@@ -8,5 +8,5 @@
     <artifactId>sem-contract</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Resource :: Contract</name>
+    <name>SEM :: Resource :: Contract</name>
 </project>

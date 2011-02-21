@@ -8,5 +8,5 @@
     <artifactId>sem-track</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Support :: Track</name>
+    <name>SEM :: Support :: Track</name>
 </project>

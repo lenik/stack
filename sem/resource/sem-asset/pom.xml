@@ -8,5 +8,5 @@
     <artifactId>sem-asset</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Resource :: Asset</name>
+    <name>SEM :: Resource :: Asset</name>
 </project>

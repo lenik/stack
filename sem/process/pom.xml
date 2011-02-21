@@ -15,5 +15,5 @@
         <module>sem-techproc</module>
         <module>sem-workflow</module>
     </modules>
-    <name>SME :: Process</name>
+    <name>SEM :: Process</name>
 </project>

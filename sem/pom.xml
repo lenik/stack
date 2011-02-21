@@ -42,7 +42,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	<name>SME Model</name>
+	<name>SEM</name>
 	<url>http://www.bee32.com</url>
 	<inceptionYear>2010</inceptionYear>
 	<developers>

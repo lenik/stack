@@ -8,5 +8,5 @@
     <artifactId>sem-store</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Resource :: Store</name>
+    <name>SEM :: Resource :: Store</name>
 </project>

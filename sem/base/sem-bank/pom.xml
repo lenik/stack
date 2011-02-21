@@ -8,5 +8,5 @@
     <artifactId>sem-bank</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Base :: Bank</name>
+    <name>SEM :: Base :: Bank</name>
 </project>

@@ -17,5 +17,5 @@
         <module>sem-staff</module>
         <module>sem-supplier</module>
     </modules>
-    <name>SME :: Social</name>
+    <name>SEM :: Social</name>
 </project>

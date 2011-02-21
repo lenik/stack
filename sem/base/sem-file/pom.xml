@@ -8,5 +8,5 @@
     <artifactId>sem-file</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SME :: Base :: File</name>
+    <name>SEM :: Base :: File</name>
 </project>
