@@ -1,0 +1,11 @@
+art/
+    piggy-animation
+    piggy-banner
+
+pigtx/
+    piggy-session
+    piggy-cache
+
+pigapp/
+    piggy-mail
+    piggy-web
