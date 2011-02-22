@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.free.ParseException;
-import javax.free.ParserUtil;
-
 public class MapEntityRepository<E extends IEntity<K>, K>
         extends EntityRepository<E, K>
         implements Serializable {
@@ -44,13 +41,25 @@ public class MapEntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
-    public void save(K key, E obj) {
-        getMap().put(key, obj);
+    public K save(E entity) {
+        K key = getKey(entity);
+        getMap().put(key, entity);
+        return key;
     }
 
     @Override
-    public void update(K key, E obj) {
-        getMap().put(key, obj);
+    public void update(E entity) {
+        K key = getKey(entity);
+        getMap().put(key, entity);
+    }
+
+    public void refresh(E entity) {
+        K key = getKey(entity);
+        E backedState = getMap().get(key);
+        if (entity instanceof IPopulatable) {
+            IPopulatable populatable = (IPopulatable) entity;
+            populatable.populate(backedState);
+        }
     }
 
     @Override
@@ -65,14 +74,6 @@ public class MapEntityRepository<E extends IEntity<K>, K>
 
     public int count() {
         return getMap().size();
-    }
-
-    @Override
-    protected K parseKey(String location)
-            throws ParseException {
-        if (keyType == String.class)
-            return keyType.cast(location);
-        return ParserUtil.parse(keyType, location);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.entity;
 
 import javax.free.ParseException;
+import javax.free.ParserUtil;
 
 import com.bee32.plover.arch.Repository;
 import com.bee32.plover.arch.locator.IObjectLocator;
@@ -8,7 +9,7 @@ import com.bee32.plover.arch.locator.ObjectLocatorRegistry;
 
 public abstract class EntityRepository<E extends IEntity<K>, K>
         extends Repository<K, E>
-        implements IObjectLocator {
+        implements IEntityRepository<E, K> {
 
     private IObjectLocator parentLocator;
 
@@ -22,14 +23,27 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
-    public K getKey(E obj) {
-        return obj.getPrimaryKey();
+    public K getKey(E entity) {
+        return entity.getPrimaryKey();
     }
+
+    @Override
+    public abstract K save(E entity);
+
+    @Override
+    public abstract void update(E entity);
+
+    @Override
+    public abstract void refresh(E entity);
 
     // IObjectLocator
 
-    protected abstract K parseKey(String location)
-            throws ParseException;
+    protected K parseKey(String location)
+            throws ParseException {
+        if (keyType == String.class)
+            return keyType.cast(location);
+        return ParserUtil.parse(keyType, location);
+    }
 
     protected String formatKey(K key) {
         return String.valueOf(key);
@@ -60,19 +74,19 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
-    public boolean isLocatable(Object obj) {
-        if (obj == null)
+    public boolean isLocatable(Object entity) {
+        if (entity == null)
             return false;
 
-        if (!instanceType.isInstance(obj))
+        if (!instanceType.isInstance(entity))
             return false;
 
         return true;
     }
 
     @Override
-    public String getLocation(Object obj) {
-        E instance = instanceType.cast(obj);
+    public String getLocation(Object entity) {
+        E instance = instanceType.cast(entity);
         K key = instance.getPrimaryKey();
         String keyLocation = formatKey(key);
         return keyLocation;
