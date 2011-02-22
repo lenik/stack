@@ -17,6 +17,7 @@
         <module>sem-file</module>
         <module>sem-log</module>
         <module>sem-mail</module>
+        <module>sem-module</module>
         <module>sem-people</module>
         <module>sem-user</module>
     </modules>
