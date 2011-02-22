@@ -18,6 +18,7 @@ core/
 library/
     plover-commons
     plover-orm
+    plover-internet
 
 lifecycle/
     plover-cache
