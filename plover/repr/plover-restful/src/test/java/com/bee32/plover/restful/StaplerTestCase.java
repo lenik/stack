@@ -15,7 +15,6 @@ public abstract class StaplerTestCase
         logger.debug("Add stapler servlet");
         addServlet(Stapler.class, "/");
         addEventListener(new StaplerInitializer());
-        super.start();
     }
 
     private Object _getRoot() {

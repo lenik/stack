@@ -11,7 +11,6 @@ public class DispServiceTestCase
     @Override
     protected void setup()
             throws Exception {
-        super.setup();
         addFilter(DispatchFilter.class, "/", Handler.DEFAULT);
     }
 

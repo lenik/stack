@@ -42,6 +42,11 @@ public abstract class ServletTestCase
         logger.debug("Test server started: " + this);
     }
 
+    /**
+     * Config servlet, filter, etc.
+     * <p>
+     * Don't call {@link #start()} here.
+     */
     protected void setup()
             throws Exception {
     }
