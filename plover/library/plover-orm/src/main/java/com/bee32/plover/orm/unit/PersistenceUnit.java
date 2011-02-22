@@ -2,7 +2,7 @@ package com.bee32.plover.orm.unit;
 
 import com.bee32.plover.arch.Component;
 
-public class PersistenceUnit
+public abstract class PersistenceUnit
         extends Component
         implements IPersistenceUnit {
 
@@ -14,8 +14,10 @@ public class PersistenceUnit
         super(name);
     }
 
+    protected abstract Class<? extends IPersistenceUnitContribution> getContributionClass();
+
     @Override
-    public Object generateHibernateMappings() {
+    public Object get() {
         return null;
     }
 

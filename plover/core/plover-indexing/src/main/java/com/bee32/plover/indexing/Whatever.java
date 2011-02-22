@@ -56,9 +56,9 @@ class VInfo {
 
     boolean state;
 
-//    (state 1)
-//    (step jerry_tom 8432847 Some_messages_left_for_checking)
-//    (step Some_one_Else 8432847 \LMore\R_messages)
-//     The most recent month.
+    // (state 1)
+    // (step jerry_tom 8432847 Some_messages_left_for_checking)
+    // (step Some_one_Else 8432847 \LMore\R_messages)
+    // The most recent month.
 
 }
