@@ -10,12 +10,6 @@
     <version>0.0.4-SNAPSHOT</version>
     <dependencies>
         <dependency>
-            <optional>true</optional>
-            <groupId>jakarta-regexp</groupId>
-            <artifactId>jakarta-regexp</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
             <groupId>javax.free</groupId>
             <artifactId>freejava-closure</artifactId>
             <version>3.0.0</version>
@@ -36,6 +30,17 @@
             <groupId>javax.free</groupId>
             <artifactId>freejava-collection</artifactId>
             <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta-regexp</groupId>
+            <artifactId>jakarta-regexp</artifactId>
+            <version>1.4</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
     <name>Plover :: Core :: Arch</name>
