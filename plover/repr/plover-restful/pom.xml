@@ -15,18 +15,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.5.10</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.kohsuke.stapler</groupId>
-            <artifactId>stapler</artifactId>
-            <version>1.155</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
@@ -44,6 +32,12 @@
             <groupId>javax.free</groupId>
             <artifactId>freejava-vfs</artifactId>
             <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kohsuke.stapler</groupId>
+            <artifactId>stapler</artifactId>
+            <version>1.155</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
