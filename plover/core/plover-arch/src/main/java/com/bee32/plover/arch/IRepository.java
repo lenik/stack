@@ -4,10 +4,23 @@ import java.util.Map;
 
 public interface IRepository<K, V> {
 
+    /**
+     * Get the object key type.
+     *
+     * @return Non-<code>null</code> class of the key.
+     */
     Class<K> getKeyType();
 
+    /**
+     * Get the object instance type.
+     *
+     * @return Non-<code>null</code> class of the instance.
+     */
     Class<V> getInstanceType();
 
+    /**
+     * Get the primary key of an object.
+     */
     K getKey(V obj);
 
     /**
@@ -28,9 +41,27 @@ public interface IRepository<K, V> {
      */
     V retrieve(Object key);
 
-    void save(K key, V obj);
+    /**
+     * Save the entity to the persistence layer.
+     *
+     * @see javax.persist.EntityManager#persist(Object)
+     * @see
+     */
+    K save(V obj);
 
-    void update(K key, V obj);
+    /**
+     * Update the entity in the persistence layer.
+     *
+     * @see javax.persist.EntityManager#persist(Object)
+     */
+    void update(V obj);
+
+    /**
+     * Revert the entity to the persisted state.
+     *
+     * @see javax.persist.EntityManager#refresh(Object)
+     */
+    void refresh(V obj);
 
     /**
      * Save the object to the underlying persistence layer.
@@ -39,7 +70,7 @@ public interface IRepository<K, V> {
      *            Non-<code>null</code> object object.
      * @see Map#put(Object, Object)
      */
-    void saveOrUpdate(K key, V obj);
+    K saveOrUpdate(V obj);
 
     /**
      * Delete an object from underlying persistent layer by object key.

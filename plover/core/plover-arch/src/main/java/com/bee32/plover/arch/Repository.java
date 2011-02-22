@@ -41,11 +41,13 @@ public abstract class Repository<K, V>
     }
 
     @Override
-    public void saveOrUpdate(K key, V obj) {
+    public K saveOrUpdate(V obj) {
+        K key = getKey(obj);
         if (containsKey(key))
-            update(key, obj);
+            update(obj);
         else
-            save(key, obj);
+            save(obj);
+        return key;
     }
 
 }
