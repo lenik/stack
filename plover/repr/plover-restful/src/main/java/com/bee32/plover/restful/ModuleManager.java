@@ -17,7 +17,7 @@ public class ModuleManager
 
     private static final long serialVersionUID = 1L;
 
-    public ModuleManager() {
+    private ModuleManager() {
         refreshModules();
     }
 
