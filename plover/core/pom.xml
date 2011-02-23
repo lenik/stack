@@ -23,6 +23,7 @@
         <module>plover-route</module>
         <module>plover-servlet</module>
         <module>plover-test</module>
+        <module>plover-vcs</module>
     </modules>
     <name>Plover :: Core</name>
 </project>

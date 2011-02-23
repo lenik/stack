@@ -14,6 +14,7 @@ core/
     plover-indexing     索引框架
     plover-servlet      Servlet 模型
     plover-test         测试工具
+    plover-vcs          版本模型
 
 library/
     plover-commons      公共库
