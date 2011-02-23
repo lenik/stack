@@ -14,6 +14,7 @@
     <modules>
         <module>plover-commons</module>
         <module>plover-internet</module>
+        <module>plover-javascript</module>
         <module>plover-orm</module>
     </modules>
     <name>Plover :: Library</name>

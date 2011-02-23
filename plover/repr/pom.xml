@@ -12,11 +12,13 @@
     <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>plover-javascript</module>
         <module>plover-repr</module>
+        <module>plover-repr-csv</module>
         <module>plover-repr-flex</module>
         <module>plover-repr-html</module>
+        <module>plover-repr-mso</module>
         <module>plover-repr-pdf</module>
+        <module>plover-repr-xml</module>
         <module>plover-restful</module>
     </modules>
     <name>Plover :: Repr</name>
