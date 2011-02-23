@@ -1,49 +1,49 @@
 back-end/
-    plover-sysutils
-    plover-diagnostics
+    plover-sysutils     系统辅助工具
+    plover-diagnostics  调试工具
 
 core/
-    plover-arch
-    plover-conf
-    plover-inject
-    plover-collections
-    plover-expr
-    plover-expr-sql
-    plover-expr-criterion
-    plover-route
-    plover-indexing
-    plover-servlet
-    plover-test
+    plover-arch         核心体系结构
+    plover-conf         结构化配置
+    plover-inject       依赖注入
+    plover-collections  通用集合类
+    plover-expr         一般函数表达式
+    plover-expr-sql     SQL表达式
+    plover-criteria     查询表达式
+    plover-route        事件路由
+    plover-indexing     索引框架
+    plover-servlet      Servlet 模型
+    plover-test         测试工具
 
 library/
-    plover-commons
-    plover-orm
-    plover-internet
+    plover-commons      公共库
+    plover-orm          对象关系映射辅助工具
+    plover-internet     互联网应用工具
+    plover-javascript   轻量级 JavaScript 组件 （类似与Google GWT）
 
 lifecycle/
-    plover-cache
-    plover-session
-    plover-stateflow
+    plover-cache        缓存模型与级联构建
+    plover-session      结构化会话
+    plover-stateflow    基本状态流模型
 
 modeling/
-    plover-model
-    plover-disp
-    plover-view         NOT USED.
+    plover-model        组件模型结构
+    plover-disp         资源分发与定位
+    plover-view         视图模型 （不确定）
 
 repr/
-    plover-repr
-    plover-repr-html
-    plover-repr-pdf
-    plover-repr-xml
-    plover-repr-csv
-    plover-repr-flex
-    plover-repr-mso
-    plover-restful
-    plover-javascript
+    plover-repr         基本表示层
+    plover-repr-html    HTML表示
+    plover-repr-pdf     PDF表示
+    plover-repr-xml     XML表示
+    plover-repr-csv     CSV表示
+    plover-repr-flex    Flex表示
+    plover-repr-mso     Word/Excel表示
+    plover-restful      资源状态表示与集成
 
 ui/
-    plover-widgets
+    plover-widgets      SWT控件
 
-web/
-    plover-portal
-    plover-webwidgets
+web-ui/
+    plover-webwidgets   Web控件
+
