@@ -10,6 +10,7 @@ base/
     sem-mail
 
 process/
+    sem-process
     sem-techproc
     sem-workflow
 

@@ -12,6 +12,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>sem-process</module>
         <module>sem-techproc</module>
         <module>sem-workflow</module>
     </modules>
