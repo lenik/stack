@@ -3,8 +3,8 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.bee32.crab</groupId>
-        <artifactId>crab-parent</artifactId>
+        <groupId>com.bee32.plover</groupId>
+        <artifactId>plover-parent</artifactId>
         <version>2</version>
     </parent>
     <groupId>com.bee32.crab</groupId>
@@ -45,6 +45,7 @@
         </plugins>
     </build>
     <name>Crab</name>
+    <description>Creative Web Tools</description>
     <url>http://www.bee32.com</url>
     <inceptionYear>2009</inceptionYear>
     <developers>
