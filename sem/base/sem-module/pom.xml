@@ -29,6 +29,11 @@
             <artifactId>plover-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-frame</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <name>SEM :: Base :: Module</name>
 </project>

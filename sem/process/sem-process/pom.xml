@@ -7,6 +7,22 @@
     </parent>
     <artifactId>sem-process</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <dependencies/>
+    <dependencies>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-frame</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-user</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
     <name>SEM :: Process :: Process</name>
 </project>
