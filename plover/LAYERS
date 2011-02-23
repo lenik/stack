@@ -34,12 +34,16 @@ repr/
     plover-repr
     plover-repr-html
     plover-repr-pdf
+    plover-repr-xml
+    plover-repr-csv
     plover-repr-flex
+    plover-repr-mso
     plover-restful
     plover-javascript
 
 ui/
     plover-widgets
 
-web-ui/
+web/
+    plover-portal
     plover-webwidgets
