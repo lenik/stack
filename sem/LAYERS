@@ -1,5 +1,7 @@
 base/
     sem-module
+    sem-frame
+    sem-desktop
     sem-user
     sem-people
     sem-event
