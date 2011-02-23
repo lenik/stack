@@ -7,6 +7,14 @@
     </parent>
     <artifactId>plover-internet</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <dependencies/>
+    <dependencies>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-arch</artifactId>
+            <version>0.0.4-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
     <name>Plover :: Library :: Internet</name>
 </project>
