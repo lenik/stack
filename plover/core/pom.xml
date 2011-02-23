@@ -15,8 +15,8 @@
         <module>plover-arch</module>
         <module>plover-collections</module>
         <module>plover-conf</module>
+        <module>plover-criteria</module>
         <module>plover-expr</module>
-        <module>plover-expr-criterion</module>
         <module>plover-expr-sql</module>
         <module>plover-indexing</module>
         <module>plover-inject</module>

@@ -5,7 +5,7 @@
         <artifactId>core</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
-    <artifactId>plover-expr-criterion</artifactId>
+    <artifactId>plover-criteria</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies>
         <dependency>
@@ -30,5 +30,5 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-    <name>Plover :: Core :: Expr Criterion</name>
+    <name>Plover :: Core :: Criteria</name>
 </project>
