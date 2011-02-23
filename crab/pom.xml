@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.bee32.crab</groupId>
+        <artifactId>crab-parent</artifactId>
+        <version>2</version>
+    </parent>
+    <groupId>com.bee32.crab</groupId>
+    <artifactId>crab</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <modules>
+        <module>api</module>
+        <module>js</module>
+        <module>widget</module>
+    </modules>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <failOnError>true</failOnError>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <tagBase>${svn.base.dev}/crab/tags</tagBase>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <name>Crab</name>
+    <url>http://www.bee32.com</url>
+    <inceptionYear>2009</inceptionYear>
+    <developers>
+        <!--Please list in the alphabet order by developer id. -->
+        <developer>
+            <id>XJL</id>
+            <name>谢继雷</name>
+            <email>xjl@99jsj.com</email>
+            <roles>
+                <role>Project Leader</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>GMT+8</timezone>
+        </developer>
+    </developers>
+    <mailingLists>
+        <mailingList>
+            <name>SECCA Developer</name>
+            <archive>http://list.bee32.com/archive/dev</archive>
+            <post>post-dev@list.bee32.com</post>
+            <subscribe>subscribe-dev@list.bee32.com</subscribe>
+            <unsubscribe>unsubscribe-dev@list.bee32.com</unsubscribe>
+        </mailingList>
+    </mailingLists>
+    <issueManagement>
+        <system>trac</system>
+        <url>http://trac.bee32.com/projects/stack/</url>
+    </issueManagement>
+    <ciManagement>
+        <system>hudson</system>
+        <url>http://ci.bee32.com/hudson/job/Plover</url>
+    </ciManagement>
+    <scm>
+        <connection>scm:git:git://git.bee32.com/repos/git/stack.git</connection>
+        <developerConnection>scm:git:svn+ssh://git.bee32.com/repos/git/stack.git</developerConnection>
+        <url>http://track.bee32.com/projects/stack/browser/crab</url>
+    </scm>
+</project>

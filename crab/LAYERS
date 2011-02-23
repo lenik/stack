@@ -1,0 +1,13 @@
+api/
+    crab-api
+    crab-css
+
+js/
+    crab-compjs
+    crab-jsunit
+    crab-jquery
+
+widget/
+    crab-simple
+    crab-tree
+    crab-painter
