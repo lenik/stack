@@ -12,6 +12,9 @@ import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.util.ExceptionSupport;
 import com.bee32.plover.arch.util.VirtualOrigin;
 
+/**
+ * A component is bound with appearance, and optionally an alternative exception support.
+ */
 public abstract class Component
         implements IComponent {
 
