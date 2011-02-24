@@ -1,4 +1,4 @@
-package com.bee32.plover.arch.i18n.nls;
+package com.bee32.plover.arch.util.res;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,8 +9,8 @@ import java.util.TreeMap;
 
 import org.junit.Test;
 
-import com.bee32.plover.arch.i18n.nls.BufferPropertySink;
-import com.bee32.plover.arch.i18n.nls.UniquePrefixDispatcher;
+import com.bee32.plover.arch.util.res.PropertyBuffer;
+import com.bee32.plover.arch.util.res.UniquePrefixDispatcher;
 
 public class PropertyDispatcherTest {
 
@@ -28,38 +28,38 @@ public class PropertyDispatcherTest {
     @Test
     public void testVisitResourceBundle()
             throws Exception {
-        BufferPropertySink catSink = new BufferPropertySink();
-        BufferPropertySink dogSink = new BufferPropertySink();
+        PropertyBuffer catSink = new PropertyBuffer();
+        PropertyBuffer dogSink = new PropertyBuffer();
 
         UniquePrefixDispatcher dispatcher = new UniquePrefixDispatcher();
-        dispatcher.registerSink("cat.", catSink);
-        dispatcher.registerSink("dog", dogSink);
+        dispatcher.registerPrefix("cat.", catSink);
+        dispatcher.registerPrefix("dog", dogSink);
 
         ResourceBundle bundle = ResourceBundle.getBundle(getClass().getName());
-        dispatcher.visit(bundle);
+        dispatcher.dispatchResourceBundle(bundle);
 
-        assertEquals(catExpected, catSink.getMap());
-        assertEquals(dogExpected, dogSink.getMap());
+        assertEquals(catExpected, catSink.getBufferedMap());
+        assertEquals(dogExpected, dogSink.getBufferedMap());
     }
 
     @Test
     public void testVisitProperties()
             throws Exception {
-        BufferPropertySink catSink = new BufferPropertySink();
-        BufferPropertySink dogSink = new BufferPropertySink();
+        PropertyBuffer catSink = new PropertyBuffer();
+        PropertyBuffer dogSink = new PropertyBuffer();
 
         UniquePrefixDispatcher dispatcher = new UniquePrefixDispatcher();
-        dispatcher.registerSink("cat.", catSink);
-        dispatcher.registerSink("dog", dogSink);
+        dispatcher.registerPrefix("cat.", catSink);
+        dispatcher.registerPrefix("dog", dogSink);
 
         URL propertiesURL = getClass().getResource(getClass().getSimpleName() + ".properties");
         Properties properties = new Properties();
         properties.load(propertiesURL.openStream());
 
-        dispatcher.visit(properties);
+        dispatcher.dispatchProperties(properties);
 
-        assertEquals(catExpected, catSink.getMap());
-        assertEquals(dogExpected, dogSink.getMap());
+        assertEquals(catExpected, catSink.getBufferedMap());
+        assertEquals(dogExpected, dogSink.getBufferedMap());
     }
 
 }

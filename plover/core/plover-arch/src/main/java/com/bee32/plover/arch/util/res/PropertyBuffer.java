@@ -1,18 +1,18 @@
-package com.bee32.plover.arch.i18n.nls;
+package com.bee32.plover.arch.util.res;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-public class BufferPropertySink
-        implements IPropertySink {
+public class PropertyBuffer
+        implements IPropertyAcceptor {
 
     private Map<String, String> bufferMap;
 
-    public BufferPropertySink() {
+    public PropertyBuffer() {
         this.bufferMap = new TreeMap<String, String>();
     }
 
-    public BufferPropertySink(Map<String, String> buffer) {
+    public PropertyBuffer(Map<String, String> buffer) {
         if (buffer == null)
             throw new NullPointerException("buffer");
         this.bufferMap = buffer;
@@ -23,7 +23,7 @@ public class BufferPropertySink
         bufferMap.put(suffix, content);
     }
 
-    public Map<String, String> getMap() {
+    public Map<String, String> getBufferedMap() {
         return bufferMap;
     }
 

@@ -1,11 +1,11 @@
-package com.bee32.plover.arch.i18n.nls;
+package com.bee32.plover.arch.util.res;
 
-public class DefaultDispatcher
+public class LoopbackDispatcher
         extends PropertyDispatcher {
 
-    private final IPropertySink sink;
+    private final IPropertyAcceptor sink;
 
-    public DefaultDispatcher(IPropertySink sink) {
+    public LoopbackDispatcher(IPropertyAcceptor sink) {
         if (sink == null)
             throw new NullPointerException("sink");
         this.sink = sink;

@@ -1,4 +1,4 @@
-package com.bee32.plover.arch.i18n.nls;
+package com.bee32.plover.arch.util.res;
 
 import java.util.Enumeration;
 import java.util.Locale;
@@ -10,7 +10,7 @@ public abstract class PropertyDispatcher {
 
     protected abstract void dispatch(String key, String content);
 
-    public void visit(ResourceBundle resourceBundle) {
+    public void dispatchResourceBundle(ResourceBundle resourceBundle) {
         if (resourceBundle == null)
             throw new NullPointerException("resourceBundle");
         Enumeration<String> keys = resourceBundle.getKeys();
@@ -21,7 +21,7 @@ public abstract class PropertyDispatcher {
         }
     }
 
-    public void visit(Properties properties) {
+    public void dispatchProperties(Properties properties) {
         if (properties == null)
             throw new NullPointerException("properties");
         for (Entry<Object, Object> entry : properties.entrySet()) {
@@ -31,10 +31,10 @@ public abstract class PropertyDispatcher {
         }
     }
 
-    public void visitClassResource(Class<?> clazz, Locale locale) {
+    public void dispatchClassResource(Class<?> clazz, Locale locale) {
         String baseName = clazz.getName();
         ResourceBundle resourceBundle = ResourceBundle.getBundle(baseName, locale);
-        visit(resourceBundle);
+        dispatchResourceBundle(resourceBundle);
     }
 
 }
