@@ -1,6 +1,6 @@
 package com.bee32.plover.model;
 
-import com.bee32.plover.arch.Component;
+import com.bee32.plover.model.qualifier.Qualified;
 import com.bee32.plover.model.schema.ISchema;
 import com.bee32.plover.model.schema.SchemaBuilderException;
 import com.bee32.plover.model.schema.SchemaLoader;
@@ -9,7 +9,7 @@ import com.bee32.plover.model.stage.ModelLoadException;
 import com.bee32.plover.model.stage.ModelStageException;
 
 public class Model
-        extends Component
+        extends Qualified
         implements IModel {
 
     private ISchema schema;
