@@ -1,42 +1,44 @@
-package com.bee32.plover.arch.ui.impl;
+package com.bee32.plover.arch.ui.res;
 
-import com.bee32.plover.arch.i18n.nls.IPropertySink;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.ui.IImageMap;
 import com.bee32.plover.arch.ui.IRefdocs;
+import com.bee32.plover.arch.util.res.IPropertyAcceptor;
 
 /**
  * 从资源中提取的用户界面信息。
  */
-public class AppearanceSink
-        implements IAppearance, IPropertySink {
+public class InjectedAppearance
+        implements IAppearance, IPropertyAcceptor {
 
     private String displayName;
     private String description;
-    private ImageMapSink imageMapSink;
-    private RefdocsSink refdocsSink;
+    private InjectedImageMap imageMap;
+    private InjectedRefdocs refdocs;
 
-    public AppearanceSink(Class<?> resourceBase) {
+    public InjectedAppearance(Class<?> resourceBase) {
         if (resourceBase == null)
-            // resourceBase = getClass();
             throw new NullPointerException("resourceBase");
-        this.imageMapSink = new ImageMapSink(resourceBase);
-        this.refdocsSink = new RefdocsSink(resourceBase);
+        this.imageMap = new InjectedImageMap(resourceBase);
+        this.refdocs = new InjectedRefdocs(resourceBase);
     }
 
     @Override
     public void receive(String name, String content) {
-        // TODO Use Java-7 string-switch in future.
         if ("displayName".equals(name))
             displayName = content;
+
         else if ("description".equals(name))
             description = content;
+
         else if ("icon".equals(name))
-            imageMapSink.receive("", content);
+            imageMap.receive("", content);
+
         else if (name.startsWith("icon."))
-            imageMapSink.receive(name.substring(5), content);
+            imageMap.receive(name.substring(5), content);
+
         else if (name.startsWith("ref."))
-            refdocsSink.receive(name.substring(4), content);
+            refdocs.receive(name.substring(4), content);
     }
 
     @Override
@@ -51,12 +53,12 @@ public class AppearanceSink
 
     @Override
     public IImageMap getImageMap() {
-        return imageMapSink;
+        return imageMap;
     }
 
     @Override
     public IRefdocs getRefdocs() {
-        return refdocsSink;
+        return refdocs;
     }
 
 }

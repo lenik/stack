@@ -1,6 +1,5 @@
-package com.bee32.plover.internet;
+package com.bee32.plover.arch;
 
-import com.bee32.plover.arch.IComponent;
 import com.bee32.plover.arch.ui.Appearance;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.util.ExceptionSupport;

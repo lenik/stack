@@ -1,6 +1,6 @@
 package com.bee32.plover.arch.ui;
 
-import com.bee32.plover.arch.ui.impl.AccessibleContextImpl;
+import com.bee32.plover.arch.ui.res.AccessibleContextImpl;
 
 /**
  * 基本的用户界面信息。
@@ -29,7 +29,7 @@ public interface IAppearance {
     /**
      * 获取图像映射。
      *
-     * @return non-<code>null</code> {@link IImageMap}，如果没有可用的图像，返回 {@link EmptyImageMap}。
+     * @return non-<code>null</code> {@link IImageMap}，如果没有可用的图像，返回 {@link SimpleImageMap}。
      */
     IImageMap getImageMap();
 

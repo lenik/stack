@@ -12,8 +12,6 @@ import java.util.TreeMap;
 
 import javax.free.IllegalUsageException;
 
-import com.bee32.plover.arch.ui.PlainRefdocsTest;
-
 /**
  * 平面化了的参考信息集。
  * <p>
@@ -27,19 +25,19 @@ public class PlainRefdocs
     private Set<String> tags;
 
     // use PrefixMap in future.
-    private TreeMap<String, IRefdocEntry> tagmap;
+    private TreeMap<String, IRefdocEntry> qualifiedEntries;
 
     public PlainRefdocs(IRefdocs refdocs) {
         if (refdocs == null)
             throw new NullPointerException("refdocs");
         tags = refdocs.getTags();
-        tagmap = new TreeMap<String, IRefdocEntry>();
+        qualifiedEntries = new TreeMap<String, IRefdocEntry>();
 
         for (String tag : tags) {
             String prefix = tag + ".";
             int i = 0;
             for (IRefdocEntry entry : refdocs.getEntries(tag)) {
-                tagmap.put(prefix + i++, entry);
+                qualifiedEntries.put(prefix + i++, entry);
                 i++;
             }
         }
@@ -50,10 +48,13 @@ public class PlainRefdocs
         return tags;
     }
 
+    /**
+     * List all matching entries in the optimized way.
+     */
     @Override
     public Iterable<? extends IRefdocEntry> getEntries(String tag) {
         tag += ".";
-        String tagStart = tagmap.floorKey(tag);
+        String tagStart = qualifiedEntries.floorKey(tag);
         if (tagStart == null || !tagStart.startsWith(tag))
             return Collections.<IRefdocEntry> emptyList();
 
@@ -69,13 +70,13 @@ public class PlainRefdocs
         // array[i] = tagmap.get(tag + i);
         // return Arrays.asList(array);
 
-        return tagmap.subMap(tag + ".", tag + ".\uFFFF").values();
+        return qualifiedEntries.subMap(tag + ".", tag + ".\uFFFF").values();
     }
 
     @Override
     public IRefdocEntry getDefaultEntry(String tag) {
         String first = tag + ".0";
-        return tagmap.get(first);
+        return qualifiedEntries.get(first);
     }
 
     /**

@@ -7,19 +7,19 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.bee32.plover.arch.i18n.nls.DefaultDispatcher;
 import com.bee32.plover.arch.ui.StandardImageVariant;
-import com.bee32.plover.arch.ui.impl.ImageMapSink;
+import com.bee32.plover.arch.ui.res.InjectedImageMap;
+import com.bee32.plover.arch.util.res.LoopbackDispatcher;
 
 public class ImageMapSinkTest {
 
-    ImageMapSink sink;
+    InjectedImageMap sink;
     Class<?> clazz = ImageMapSinkTest.class;
 
     public ImageMapSinkTest() {
-        sink = new ImageMapSink(getClass());
-        DefaultDispatcher dispatcher = new DefaultDispatcher(sink);
-        dispatcher.visitClassResource(getClass(), Locale.ENGLISH);
+        sink = new InjectedImageMap(getClass());
+        LoopbackDispatcher dispatcher = new LoopbackDispatcher(sink);
+        dispatcher.dispatchClassResource(getClass(), Locale.ENGLISH);
     }
 
     @Test

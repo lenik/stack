@@ -6,19 +6,19 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.bee32.plover.arch.i18n.nls.DefaultDispatcher;
-import com.bee32.plover.arch.ui.impl.AppearanceSink;
+import com.bee32.plover.arch.ui.res.InjectedAppearance;
+import com.bee32.plover.arch.util.res.LoopbackDispatcher;
 
 public class AppearanceSinkTest {
 
-    AppearanceSink sink;
+    InjectedAppearance sink;
 
     public AppearanceSinkTest() {
         Locale.setDefault(new Locale("not-exist-locale"));
 
-        sink = new AppearanceSink(AppearanceSinkTest.class);
-        DefaultDispatcher dispatcher = new DefaultDispatcher(sink);
-        dispatcher.visitClassResource(getClass(), Locale.ENGLISH);
+        sink = new InjectedAppearance(AppearanceSinkTest.class);
+        LoopbackDispatcher dispatcher = new LoopbackDispatcher(sink);
+        dispatcher.dispatchClassResource(getClass(), Locale.ENGLISH);
     }
 
     @Test
