@@ -6,7 +6,7 @@ import com.bee32.icsf.access.authority.IAuthority;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.ui.IImageMap;
 import com.bee32.plover.arch.ui.IRefdocs;
-import com.bee32.plover.arch.ui.impl.AppearanceSink;
+import com.bee32.plover.arch.ui.res.InjectedAppearance;
 
 /**
  * <em><font color='red'>The modal logic of belief should be considered in more detail. </font></em>
@@ -16,10 +16,10 @@ public abstract class Permission
 
     private static final long serialVersionUID = 1L;
 
-    protected final AppearanceSink sink;
+    protected final InjectedAppearance sink;
 
     public Permission() {
-        sink = new AppearanceSink(getClass());
+        sink = new InjectedAppearance(getClass());
     }
 
     public abstract String getName();
