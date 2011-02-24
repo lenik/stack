@@ -23,23 +23,32 @@ public class OidDispatcher
         OidTree<?> tree = (OidTree<?>) context;
 
         int index = 0;
+        Object lastNode = null;
+        int lastNodeIndex = 0;
+
         while (index < tokens.available()) {
-            String token = tokens.peek(index++);
+            String token = tokens.peek(index);
+            if (!OidUtil.isNumber(token))
+                break;
 
-            if (OidUtil.isNumber(token)) {
-                int ord = Integer.parseInt(token);
-                if (!tree.contains(ord))
-                    return null;
+            int ord = Integer.parseInt(token);
+            if (!tree.contains(ord))
+                break;
 
-                tree = tree.get(ord);
-                Object node = tree.get();
-                if (node != null) {
-                    tokens.skip(index);
-                    return node;
-                }
+            index++;
+
+            tree = tree.get(ord);
+            Object node = tree.get();
+            if (node != null) {
+                lastNode = node;
+                lastNodeIndex = index;
             }
         }
-        return null;
+
+        if (lastNode != null)
+            tokens.skip(lastNodeIndex);
+
+        return lastNode;
     }
 
 }

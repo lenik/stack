@@ -16,6 +16,7 @@ public class OidDispatcherTest
         tree = new OidTree<String>();
         tree.get(0).set("X");
         tree.get(1, 2).set("AB");
+        tree.get(1, 2, 3).set("ABC");
         tree.get(1, 3, 4, 6, 8).set("somewhere");
     }
 
@@ -23,23 +24,58 @@ public class OidDispatcherTest
     public void testFully()
             throws DispatchException {
         OidDispatcher od = new OidDispatcher();
+        TokenQueue tq;
 
-        Object actual = od.dispatch(tree, new TokenQueue("0"));
+        Object actual = od.dispatch(tree, tq = new TokenQueue("0"));
         assertEquals("X", actual);
-
-        actual = od.dispatch(tree, new TokenQueue("1/2"));
-        assertEquals("AB", actual);
+        assertEquals(0, tq.available());
 
         actual = od.dispatch(tree, "1/3/4/6/8");
         assertEquals("somewhere", actual);
     }
 
-    @Test(expected = DispatchException.class)
+    @Test
+    public void testOverlapped()
+            throws DispatchException {
+        OidDispatcher od = new OidDispatcher();
+        TokenQueue tq;
+
+        Object actual = od.dispatch(tree, tq = new TokenQueue("1/2"));
+        assertEquals("AB", actual);
+        assertEquals(0, tq.available());
+
+        actual = od.dispatch(tree, tq = new TokenQueue("1/2/3"));
+        assertEquals("ABC", actual);
+        assertEquals(0, tq.available());
+    }
+
+    @Test
     public void testIncomplete()
             throws DispatchException {
         OidDispatcher od = new OidDispatcher();
-        Object actual = od.dispatch(tree, "1/3/4");
+        TokenQueue tq;
+
+        Object actual = od.dispatch(tree, tq = new TokenQueue("1/3/4"));
         assertNull(actual);
+        assertEquals(3, tq.available());
+    }
+
+    @Test
+    public void testIncompleteOverlapped()
+            throws DispatchException {
+        OidDispatcher od = new OidDispatcher();
+        TokenQueue tq;
+
+        Object actual = od.dispatch(tree, tq = new TokenQueue("1/2/4"));
+        assertEquals("AB", actual);
+        assertEquals(1, tq.available());
+    }
+
+    @Test(expected = DispatchException.class)
+    public void testIncompleteForce()
+            throws DispatchException {
+        OidDispatcher od = new OidDispatcher();
+        od.dispatch(tree, ("1/3/4"));
     }
 
 }
