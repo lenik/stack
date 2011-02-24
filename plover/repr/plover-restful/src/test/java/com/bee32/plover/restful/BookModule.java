@@ -4,7 +4,7 @@ import com.bee32.plover.arch.Module;
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.plover.pub.oid.PloverOids;
 
-@Oid({ 13, 2, PloverOids.REPR, 3001 })
+@Oid({ 13, 2, PloverOids.repr, PloverOids.reprRestful, 10001 })
 public class BookModule
         extends Module {
 

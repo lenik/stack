@@ -9,6 +9,11 @@ import com.bee32.plover.disp.Dispatcher;
 public class BookStoreTest
         extends Assert {
 
+    /**
+     * @see BookModule
+     */
+    static String bookModuleOid = "13/2/6/2/10001";
+
     Dispatcher dispatcher = Dispatcher.getInstance();
     ModuleManager mm = ModuleManager.getInstance();
 
@@ -20,7 +25,7 @@ public class BookStoreTest
     @Test
     public void testDispatchToBookStore()
             throws DispatchException {
-        Object bookStore = dispatcher.dispatch(mm, "13/2/6/3001/book");
+        Object bookStore = dispatcher.dispatch(mm, bookModuleOid + "/book");
         assertSame(SimpleBooks.store, bookStore);
     }
 
@@ -28,7 +33,7 @@ public class BookStoreTest
     public void testDispatchToBook()
             throws DispatchException {
         Book book = SimpleBooks.helloWorld;
-        Object got = dispatcher.dispatch(mm, "13/2/6/3001/book/World");
+        Object got = dispatcher.dispatch(mm, bookModuleOid + "/book/World");
         assertSame(book, got);
     }
 
@@ -36,14 +41,14 @@ public class BookStoreTest
     public void testReverseBookStore()
             throws DispatchException {
         String path = mm.getReversedPath(SimpleBooks.store);
-        assertEquals("13/2/6/3001/book", path);
+        assertEquals(bookModuleOid + "/book", path);
     }
 
     @Test
     public void testReverseBook()
             throws DispatchException {
         String path = mm.getReversedPath(SimpleBooks.helloWorld);
-        assertEquals("13/2/6/3001/book/World", path);
+        assertEquals(bookModuleOid + "/book/World", path);
     }
 
 }
