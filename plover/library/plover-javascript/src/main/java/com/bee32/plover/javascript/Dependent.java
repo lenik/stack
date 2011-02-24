@@ -6,16 +6,16 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class AbstractDependent<T extends IDependent<T>>
+public class Dependent<T extends IDependent<T>>
         implements IDependent<T> {
 
     private final Set<T> dependencies;
 
-    public AbstractDependent() {
+    public Dependent() {
         this.dependencies = new HashSet<T>();
     }
 
-    public AbstractDependent(Comparator<? super T> comparator) {
+    public Dependent(Comparator<? super T> comparator) {
         this.dependencies = new TreeSet<T>(comparator);
     }
 

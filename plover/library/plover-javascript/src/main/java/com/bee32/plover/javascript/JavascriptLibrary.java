@@ -4,16 +4,16 @@ import java.net.URL;
 import java.util.Collection;
 
 public class JavascriptLibrary
-        extends AbstractJavascriptUsage
-        implements IJavascriptLibrary {
+        extends JavascriptDependant
+        implements IJavascriptDependency {
 
     @Override
-    public Collection<IJavascriptLibrary> getDependencies() {
+    public Collection<IJavascriptDependency> getDependencies() {
         return null;
     }
 
     @Override
-    public URL getLibraryURL() {
+    public URL getURL(URL context) {
         return null;
     }
 

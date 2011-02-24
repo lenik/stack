@@ -4,7 +4,7 @@ import com.bee32.plover.inject.ContextException;
 import com.bee32.plover.inject.IContainer;
 
 public class JavascriptChunk
-        extends AbstractJavascriptUsage
+        extends JavascriptDependant
         implements IJavascriptChunk {
 
     @Override
