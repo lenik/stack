@@ -2,12 +2,10 @@ package com.bee32.plover.orm.unit;
 
 import java.util.Collection;
 
-import com.bee32.plover.arch.service.IServiceContribution;
+import com.bee32.plover.arch.IComponent;
 
 public interface IPersistenceUnit
-        extends IServiceContribution<IPersistenceUnit> {
-
-    String GLOBAL = "global";
+        extends IComponent {
 
     /**
      * The persistence unit name.
