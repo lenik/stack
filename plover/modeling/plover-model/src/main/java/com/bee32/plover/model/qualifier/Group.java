@@ -60,9 +60,4 @@ public class Group
         return true;
     }
 
-    @Override
-    public int compareSpecific(Group o) {
-        return getName().compareTo(o.getName());
-    }
-
 }

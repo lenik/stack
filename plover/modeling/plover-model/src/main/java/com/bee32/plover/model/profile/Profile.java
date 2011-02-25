@@ -15,9 +15,4 @@ public class Profile
         super(Profile.class, name, kindOf);
     }
 
-    @Override
-    public int compareSpecific(Profile o) {
-        return getName().compareTo(o.getName());
-    }
-
 }

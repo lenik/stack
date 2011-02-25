@@ -16,6 +16,10 @@ public class Qualified
         super(name);
     }
 
+    public QualifierMap getQualifierMap() {
+        return qualifierMap;
+    }
+
     @Override
     public Iterable<Qualifier<?>> getQualifiers() {
         return qualifierMap.getQualifiers();

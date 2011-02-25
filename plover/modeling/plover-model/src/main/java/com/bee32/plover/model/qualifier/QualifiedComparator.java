@@ -35,4 +35,10 @@ public class QualifiedComparator
         }
     }
 
+    private static final QualifiedComparator instance = new QualifiedComparator();
+
+    public static QualifiedComparator getInstance() {
+        return instance;
+    }
+
 }

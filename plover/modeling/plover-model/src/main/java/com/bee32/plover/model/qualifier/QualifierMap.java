@@ -2,8 +2,8 @@ package com.bee32.plover.model.qualifier;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class QualifierMap
@@ -14,7 +14,7 @@ public class QualifierMap
     private Map<Class<? extends Qualifier<?>>, TreeSet<Qualifier<?>>> map;
 
     public QualifierMap() {
-        map = new TreeMap<Class<? extends Qualifier<?>>, TreeSet<Qualifier<?>>>();
+        map = new HashMap<Class<? extends Qualifier<?>>, TreeSet<Qualifier<?>>>();
     }
 
     @Override

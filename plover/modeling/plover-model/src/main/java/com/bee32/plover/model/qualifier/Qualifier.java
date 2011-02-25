@@ -44,12 +44,17 @@ public abstract class Qualifier<Q extends Qualifier<Q>>
     /**
      * Get the priority of the qualifier.
      *
-     * @return Priority in integer.
+     * @return Priority in integer, the lower value the higher priority.
      */
     public int getQualifierPriority() {
         return 0;
     }
 
+    /**
+     * Get the priority of the object.
+     *
+     * @return Priority in integer, the lower value the higher priority.
+     */
     public int getPriority() {
         return 0;
     }
@@ -113,7 +118,14 @@ public abstract class Qualifier<Q extends Qualifier<Q>>
 
     /**
      * The compare method, assert that qualifier-priority & priority are the same.
+     * <p>
+     * The default implementation compares the name only.
+     *
+     * @return Compare result, as negative, zero, positive stand for less-than, equals,
+     *         greater-than.
      */
-    public abstract int compareSpecific(Q o);
+    public int compareSpecific(Q o) {
+        return getName().compareTo(o.getName());
+    }
 
 }
