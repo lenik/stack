@@ -34,7 +34,7 @@ public class Position
     }
 
     @Override
-    public int compareTo(Position o) {
+    public int compareSpecific(Position o) {
         return position.compareTo(o.position);
     }
 

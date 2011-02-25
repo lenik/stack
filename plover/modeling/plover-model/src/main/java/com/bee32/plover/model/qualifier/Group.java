@@ -30,6 +30,7 @@ public class Group
      *
      * @return 优先级数值，数值越小、优先级越高。
      */
+    @Override
     public int getPriority() {
         return priority;
     }
@@ -60,11 +61,7 @@ public class Group
     }
 
     @Override
-    public int compareTo(Group o) {
-        int cmp = priority - o.priority;
-        if (cmp != 0)
-            return cmp;
-
+    public int compareSpecific(Group o) {
         return getName().compareTo(o.getName());
     }
 

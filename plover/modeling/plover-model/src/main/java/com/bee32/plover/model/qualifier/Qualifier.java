@@ -50,6 +50,10 @@ public abstract class Qualifier<Q extends Qualifier<Q>>
         return 0;
     }
 
+    public int getPriority() {
+        return 0;
+    }
+
     protected transient final int typeHash = getClass().hashCode();
 
     /**
@@ -99,6 +103,17 @@ public abstract class Qualifier<Q extends Qualifier<Q>>
      *            Non-<code>null</code> qualifier. Using <code>null</code> qualifier is meaningless.
      */
     @Override
-    public abstract int compareTo(Q o);
+    public int compareTo(Q o) {
+        QualifierComparator qcmp = QualifierComparator.getInstance();
+        int cmp = qcmp.compare(this, o);
+        if (cmp != 0)
+            return cmp;
+        return compareSpecific(o);
+    }
+
+    /**
+     * The compare method, assert that qualifier-priority & priority are the same.
+     */
+    public abstract int compareSpecific(Q o);
 
 }

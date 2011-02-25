@@ -3,9 +3,10 @@ package com.bee32.plover.model.qualifier;
 public interface IQualified {
 
     /**
-     * Get all qualifiers.
+     * Get all qualifiers in order.
      *
-     * @return Non-<code>null</code> qualifiers iterable.
+     * @return Non-<code>null</code> qualifiers iterable which is already orderred.
+     * @see QualifierComparator
      */
     Iterable<Qualifier<?>> getQualifiers();
 

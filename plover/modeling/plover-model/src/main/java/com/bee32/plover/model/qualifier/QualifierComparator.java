@@ -3,8 +3,9 @@ package com.bee32.plover.model.qualifier;
 import java.util.Comparator;
 
 public class QualifierComparator
-        implements Comparator<Qualifier<?>> {
+        implements Comparator<Qualifier<? extends Qualifier<?>>> {
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public int compare(Qualifier<?> o1, Qualifier<?> o2) {
         if (o1 == null)
@@ -19,14 +20,23 @@ public class QualifierComparator
             return cmp;
 
         Class<?> o1t = o1.getQualifierType();
-        if (o1t.isInstance(o2)) {
-            @SuppressWarnings("unchecked")
-            Comparable<Qualifier<?>> o1c = (Comparable<Qualifier<?>>) o1;
-            return o1c.compareTo(o2);
+        Class<?> o2t = o2.getQualifierType();
+        if (!o1t.equals(o2t)) {
+            String n1 = o1t.getName();
+            String n2 = o2t.getName();
+            cmp = n1.compareTo(n2);
+            if (cmp != 0)
+                return cmp;
         }
 
-        Class<?> o2t = o2.getQualifierType();
-        return o1t.getName().compareTo(o2t.getName());
+        int p1 = o1.getPriority();
+        int p2 = o2.getPriority();
+        cmp = p1 - p2;
+        if (cmp != 0)
+            return cmp;
+
+        // o1t == o2t.
+        return ((Qualifier) o1).compareSpecific(o2);
     }
 
     private static final QualifierComparator instance = new QualifierComparator();

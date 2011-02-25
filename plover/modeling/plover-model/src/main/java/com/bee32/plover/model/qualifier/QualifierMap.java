@@ -1,27 +1,27 @@
 package com.bee32.plover.model.qualifier;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class QualifierMap
         implements IQualified {
 
     private static final long serialVersionUID = 1L;
 
-    private Map<Class<? extends Qualifier<?>>, List<Qualifier<?>>> map;
+    private Map<Class<? extends Qualifier<?>>, TreeSet<Qualifier<?>>> map;
 
     public QualifierMap() {
-        map = new TreeMap<Class<? extends Qualifier<?>>, List<Qualifier<?>>>();
+        map = new TreeMap<Class<? extends Qualifier<?>>, TreeSet<Qualifier<?>>>();
     }
 
     @Override
     public Iterable<Qualifier<?>> getQualifiers() {
-        List<Qualifier<?>> all = new ArrayList<Qualifier<?>>();
-        for (List<? extends Qualifier<?>> list : map.values()) {
-            all.addAll(list);
+        TreeSet<Qualifier<?>> all = new TreeSet<Qualifier<?>>(QualifierComparator.getInstance());
+        for (Collection<? extends Qualifier<?>> set : map.values()) {
+            all.addAll(set);
         }
         return all;
     }
@@ -29,12 +29,12 @@ public class QualifierMap
     @Override
     public <Q extends Qualifier<Q>> Iterable<Q> getQualifiers(Class<Q> qualifierType) {
         @SuppressWarnings("unchecked")
-        List<Q> list = (List<Q>) map.get(qualifierType);
+        Collection<Q> set = (Collection<Q>) map.get(qualifierType);
 
-        if (list == null)
+        if (set == null)
             return Collections.emptyList();
 
-        return list;
+        return set;
     }
 
     @Override
@@ -49,16 +49,16 @@ public class QualifierMap
         Class<Q> qualifierType = qualifier.getQualifierType();
         assert qualifierType.equals(qualifier.getClass()) : "Inconsistent qualifier type";
 
-        List<Qualifier<?>> list = map.get(qualifierType);
-        if (list == null) {
-            list = new ArrayList<Qualifier<?>>();
-            map.put(qualifierType, list);
+        TreeSet<Qualifier<?>> set = map.get(qualifierType);
+        if (set == null) {
+            set = new TreeSet<Qualifier<?>>(QualifierComparator.getInstance());
+            map.put(qualifierType, set);
         }
 
         if (clear)
-            list.clear();
+            set.clear();
 
-        list.add(qualifier);
+        set.add(qualifier);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -78,8 +78,8 @@ public class QualifierMap
     public <Q extends Qualifier<Q>> boolean hasQualifier(Class<Q> qualifierType) {
         if (qualifierType == null)
             throw new NullPointerException("qualifierType");
-        List<Qualifier<?>> list = map.get(qualifierType);
-        if (list == null || list.isEmpty())
+        TreeSet<Qualifier<?>> set = map.get(qualifierType);
+        if (set == null || set.isEmpty())
             return false;
         return true;
     }
