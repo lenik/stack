@@ -8,7 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-public abstract class HibernateEntityRepository<E extends IEntity<K>, K>
+public class HibernateEntityRepository<E extends IEntity<K>, K>
         extends EntityRepository<E, K> {
 
     static class Support
