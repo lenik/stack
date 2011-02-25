@@ -6,6 +6,11 @@ import com.bee32.plover.arch.locator.IObjectLocator;
 public interface IEntityRepository<E extends IEntity<K>, K>
         extends IRepository<K, E>, IObjectLocator {
 
+    /**
+     * This is the same to {@link #getInstanceType()}.
+     */
+    Class<E> getEntityType();
+
     @Override
     K getKey(E entity);
 
