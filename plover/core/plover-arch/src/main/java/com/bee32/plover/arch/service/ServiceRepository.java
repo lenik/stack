@@ -36,7 +36,7 @@ public class ServiceRepository
         return contributionsList;
     }
 
-    public synchronized <C extends IServiceContribution<C>> void contribute(C contribution) {
+    public synchronized void contribute(IServiceContribution<?> contribution) {
         Class<?> contributionClass = contribution.getContributionClass();
         List<IServiceContribution<?>> list = contributionsMap.get(contributionClass);
         if (list == null) {
