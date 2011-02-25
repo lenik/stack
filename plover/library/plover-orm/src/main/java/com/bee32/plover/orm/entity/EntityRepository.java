@@ -15,6 +15,13 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
 
     public EntityRepository(Class<E> entityType, Class<K> keyType) {
         super(keyType, entityType);
+    }
+
+    public EntityRepository(String name, Class<E> entityType, Class<K> keyType) {
+        super(name, keyType, entityType);
+    }
+
+    {
         ObjectLocatorRegistry.getInstance().register(this);
     }
 

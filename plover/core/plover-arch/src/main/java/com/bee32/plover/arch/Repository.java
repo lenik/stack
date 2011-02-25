@@ -1,13 +1,24 @@
 package com.bee32.plover.arch;
 
 public abstract class Repository<K, V>
-        // extends Component
+        extends Component
         implements IRepository<K, V> {
 
     protected final Class<K> keyType;
     protected final Class<V> instanceType;
 
     public Repository(Class<K> keyType, Class<V> instanceType) {
+        super();
+        if (keyType == null)
+            throw new NullPointerException("keyType");
+        if (instanceType == null)
+            throw new NullPointerException("instanceType");
+        this.keyType = keyType;
+        this.instanceType = instanceType;
+    }
+
+    public Repository(String name, Class<K> keyType, Class<V> instanceType) {
+        super(name);
         if (keyType == null)
             throw new NullPointerException("keyType");
         if (instanceType == null)

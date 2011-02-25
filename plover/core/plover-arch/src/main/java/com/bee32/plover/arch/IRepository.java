@@ -2,7 +2,9 @@ package com.bee32.plover.arch;
 
 import java.util.Map;
 
-public interface IRepository<K, V> {
+public interface IRepository<K, V>
+        extends IComponent // IModel ??
+{
 
     /**
      * Get the object key type.
