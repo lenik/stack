@@ -1,10 +1,12 @@
 package com.bee32.sem.module;
 
-import java.util.Collection;
-
 import com.bee32.plover.arch.Module;
 import com.bee32.plover.arch.credit.Credit;
-import com.bee32.plover.orm.unit.IPersistenceUnitContribution;
+import com.bee32.plover.arch.service.IServiceContribution;
+import com.bee32.plover.arch.service.Service;
+import com.bee32.plover.orm.entity.EntityRepository;
+import com.bee32.plover.orm.entity.IEntity;
+import com.bee32.plover.orm.unit.IPersistenceUnit;
 
 /**
  * Module contributions for the menu:
@@ -23,10 +25,13 @@ public abstract class EnterpriseModule
 
     public EnterpriseModule() {
         super();
+        preamble();
+
     }
 
     public EnterpriseModule(String name) {
         super(name);
+        preamble();
     }
 
     @Override
@@ -39,12 +44,29 @@ public abstract class EnterpriseModule
         return "(C) Copyright 2011 BEE32.com, all rights reserved.";
     }
 
-    protected void contribute(IPersistenceUnitContribution contribution) {
-        Collection<Class<?>> classes = contribution.getClasses();
-        for (Class<?> c : classes) {
-            // ZQ GRAB TO THE UNIT.
+    protected abstract void preamble();
 
-        }
+    protected final void contribute(IServiceContribution<?> contribution) {
+        Service.contribute(contribution);
+    }
+
+    protected <E extends IEntity<K>, K> void service(EntityRepository<E, K> entityRepository, String location,
+            String persistenceUnitName) {
+
+        // declare the restful token
+        declare(location, entityRepository);
+
+        // contribute to the persistence unit.
+        entityRepository.getEntityType();
+    }
+
+    protected <E extends IEntity<K>, K> void service(EntityRepository<E, K> entityRepository, String location) {
+        service(entityRepository, location, IPersistenceUnit.GLOBAL);
+    }
+
+    protected <E extends IEntity<K>, K> void service(EntityRepository<E, K> entityRepository) {
+        String location = entityRepository.getName();
+        service(entityRepository, location);
     }
 
 }

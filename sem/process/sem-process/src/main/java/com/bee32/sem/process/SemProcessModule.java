@@ -8,6 +8,11 @@ import com.bee32.sem.module.EnterpriseModule;
 public class SemProcessModule
         extends EnterpriseModule {
 
+    @Override
+    protected void configure() {
+
+    }
+
     // Map<String, IVerifyPolicy> policies;
 
 }
