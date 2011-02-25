@@ -12,6 +12,9 @@ public interface IComponent {
      */
     String getName();
 
+    /**
+     * 获取组件的显示外观和参考信息。
+     */
     IAppearance getAppearance();
 
     /**
