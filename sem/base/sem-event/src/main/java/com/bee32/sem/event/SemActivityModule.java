@@ -1,22 +1,18 @@
 package com.bee32.sem.event;
 
-import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.pub.oid.Oid;
+import com.bee32.sem.SEMOids;
 import com.bee32.sem.module.EnterpriseModule;
 
+@Oid({ 3, 15, SEMOids.base, SEMOids.baseEvent })
 public class SemActivityModule
         extends EnterpriseModule {
 
-    PersistenceUnit persistenceUnit;
-    {
-        persistenceUnit = new PersistenceUnit();
-        persistenceUnit.addPersistedClass(Activity.class);
-        persistenceUnit.addPersistedClass(Event.class);
-        persistenceUnit.addPersistedClass(Task.class);
-    }
-
     @Override
     protected void preamble() {
-        declare(persistenceUnit);
+        exportEntity(Activity.class, Long.class);
+        exportEntity(Event.class, Long.class);
+        exportEntity(Task.class, Long.class);
     }
 
 }

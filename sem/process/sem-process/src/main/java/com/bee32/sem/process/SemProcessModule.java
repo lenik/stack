@@ -9,10 +9,8 @@ public class SemProcessModule
         extends EnterpriseModule {
 
     @Override
-    protected void configure() {
-
+    protected void preamble() {
+        // exportEntity(VerifyPolicy.class, String.class);
     }
-
-    // Map<String, IVerifyPolicy> policies;
 
 }
