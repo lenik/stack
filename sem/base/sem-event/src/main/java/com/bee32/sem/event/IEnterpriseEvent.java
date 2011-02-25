@@ -1,15 +1,15 @@
 package com.bee32.sem.event;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.plover.orm.entity.IEntity;
 
 /**
  * Base type for all enterprise events.
  */
 public interface IEnterpriseEvent
-        extends Serializable {
+        extends IEntity<Long> {
 
     Long getId();
 

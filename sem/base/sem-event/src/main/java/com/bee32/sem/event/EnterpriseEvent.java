@@ -3,8 +3,10 @@ package com.bee32.sem.event;
 import java.util.Date;
 
 import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.plover.orm.entity.Entity;
 
 public class EnterpriseEvent
+        extends Entity<Long>
         implements IEnterpriseEvent {
 
     private static final long serialVersionUID = 1L;
