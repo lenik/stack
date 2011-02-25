@@ -18,6 +18,11 @@
 		<artifactId>plover-model</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+		<groupId>javax.free</groupId>
+		<artifactId>freejava-c3</artifactId>
+		<version>3.0.0</version>
+        </dependency>
     </dependencies>
     <name>Plover :: Library :: Internet</name>
 </project>

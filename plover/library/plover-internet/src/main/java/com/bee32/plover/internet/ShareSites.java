@@ -3,15 +3,22 @@ package com.bee32.plover.internet;
 import java.util.Collection;
 import java.util.ServiceLoader;
 
-import com.bee32.plover.model.qualifier.Group;
+import org.apache.commons.collections15.list.TreeList;
 
 public class ShareSites {
 
-    public static Collection<IShareSite> getShareSites() {
-        for (IShareSite site : ServiceLoader.load(IShareSite.class)) {
-            Group group;
+    static TreeList<IShareSite> shareSites;
 
+    public static synchronized Collection<IShareSite> getShareSites() {
+        if (shareSites == null) {
+            shareSites = new TreeList<IShareSite>();
+
+            for (IShareSite site : ServiceLoader.load(IShareSite.class)) {
+                // Group group = site.getQualifier(Group.class);
+                shareSites.add(site);
+            }
         }
+        return shareSites;
     }
 
 }
