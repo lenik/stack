@@ -2,14 +2,12 @@ package com.bee32.plover.orm.unit;
 
 import java.util.Collection;
 
-import javax.sql.DataSource;
-
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
-
-import com.bee32.plover.arch.IComponent;
+import com.bee32.plover.arch.service.IServiceContribution;
 
 public interface IPersistenceUnit
-        extends IComponent {
+        extends IServiceContribution<IPersistenceUnit> {
+
+    String GLOBAL = "global";
 
     /**
      * The persistence unit name.
@@ -20,23 +18,8 @@ public interface IPersistenceUnit
     String getName();
 
     /**
-     * @see org.springframework.orm.hibernate3.LocalSessionFactoryBean
+     * @see org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean
      */
     Collection<Class<?>> getClasses();
-
-}
-
-class CT {
-
-    {
-        LocalSessionFactoryBean sb = new LocalSessionFactoryBean();
-
-        DataSource source = null;
-        sb.setDataSource(source); // BasicDataSource
-        sb.setHibernateProperties(null); // hibernate.format_sql -> ...
-
-        sb.setMappingResources(null); // List: classpath:com/...
-        sb.setConfigLocation(null); // classpath:com/...
-    }
 
 }

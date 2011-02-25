@@ -1,24 +1,36 @@
 package com.bee32.plover.orm.unit;
 
-import com.bee32.plover.arch.Component;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-public abstract class PersistenceUnit
-        extends Component
+import com.bee32.plover.arch.service.ServiceContribution;
+
+public class PersistenceUnit
+        extends ServiceContribution<IPersistenceUnit>
         implements IPersistenceUnit {
 
+       private List<Class<?>> classes = new ArrayList<Class<?>>();
+
     public PersistenceUnit() {
-        super();
+        super(GLOBAL, IPersistenceUnit.class);
     }
 
     public PersistenceUnit(String name) {
-        super(name);
+        super(name, IPersistenceUnit.class);
     }
 
-    protected abstract Class<? extends IPersistenceUnitContribution> getContributionClass();
-
     @Override
-    public Object get() {
-        return null;
+    public Collection<Class<?>> getClasses() {
+        return classes;
+    }
+
+    public void addPersistedClass(Class<?> clazz) {
+        classes.add(clazz);
+    }
+
+    public void removePersistedClass(Class<?> clazz) {
+        classes.remove(clazz);
     }
 
 }
