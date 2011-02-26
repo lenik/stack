@@ -38,6 +38,18 @@ public class PersistenceUnit
         classes.remove(clazz);
     }
 
+    public String[] getMappingResources() {
+        int size = classes.size();
+        String[] mappingResources = new String[size];
+        for (int index = 0; index < size; index++) {
+            String className = classes.get(index).getName();
+            // foo.Bar -> foo/Bar.hbm.xml
+            String hbmPath = className.replace('.', '/') + ".hbm.xml";
+            mappingResources[index] = /*"classpath:" +*/ hbmPath;
+        }
+        return mappingResources;
+    }
+
     private static Map<String, PersistenceUnit> units;
 
     static {

@@ -17,7 +17,7 @@ public abstract class Entity<K>
     }
 
     @Override
-    public void populate(Object obj) {
+    public void populate(Object source) {
     }
 
     @Override
