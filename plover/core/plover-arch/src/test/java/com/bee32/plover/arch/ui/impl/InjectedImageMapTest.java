@@ -11,12 +11,12 @@ import com.bee32.plover.arch.ui.StandardImageVariant;
 import com.bee32.plover.arch.ui.res.InjectedImageMap;
 import com.bee32.plover.arch.util.res.LoopbackDispatcher;
 
-public class ImageMapSinkTest {
+public class InjectedImageMapTest {
 
     InjectedImageMap sink;
-    Class<?> clazz = ImageMapSinkTest.class;
+    Class<?> clazz = InjectedImageMapTest.class;
 
-    public ImageMapSinkTest() {
+    public InjectedImageMapTest() {
         sink = new InjectedImageMap(getClass());
         LoopbackDispatcher dispatcher = new LoopbackDispatcher(sink);
         dispatcher.dispatchClassResource(getClass(), Locale.ENGLISH);

@@ -9,23 +9,23 @@ import org.junit.Test;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.res.LoopbackDispatcher;
 
-public class AppearanceSinkTest {
+public class InjectedAppearanceTest {
 
-    InjectedAppearance sink;
+    InjectedAppearance appearance;
 
-    public AppearanceSinkTest() {
+    public InjectedAppearanceTest() {
         Locale.setDefault(new Locale("not-exist-locale"));
 
-        sink = new InjectedAppearance(AppearanceSinkTest.class);
-        LoopbackDispatcher dispatcher = new LoopbackDispatcher(sink);
+        appearance = new InjectedAppearance(InjectedAppearanceTest.class);
+        LoopbackDispatcher dispatcher = new LoopbackDispatcher(appearance);
         dispatcher.dispatchClassResource(getClass(), Locale.ENGLISH);
     }
 
     @Test
     public void testBasicProperties()
             throws Exception {
-        assertEquals("Display Name", sink.getDisplayName());
-        assertEquals("A descriptive string.", sink.getDescription());
+        assertEquals("Display Name", appearance.getDisplayName());
+        assertEquals("A descriptive string.", appearance.getDescription());
     }
 
 }

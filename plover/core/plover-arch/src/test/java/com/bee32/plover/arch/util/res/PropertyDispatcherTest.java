@@ -9,9 +9,6 @@ import java.util.TreeMap;
 
 import org.junit.Test;
 
-import com.bee32.plover.arch.util.res.PropertyBuffer;
-import com.bee32.plover.arch.util.res.UniquePrefixDispatcher;
-
 public class PropertyDispatcherTest {
 
     TreeMap<String, String> catExpected;
@@ -26,7 +23,7 @@ public class PropertyDispatcherTest {
     }
 
     @Test
-    public void testVisitResourceBundle()
+    public void testDispatchResourceBundle()
             throws Exception {
         PropertyBuffer catSink = new PropertyBuffer();
         PropertyBuffer dogSink = new PropertyBuffer();
@@ -43,7 +40,7 @@ public class PropertyDispatcherTest {
     }
 
     @Test
-    public void testVisitProperties()
+    public void testDispatchProperties()
             throws Exception {
         PropertyBuffer catSink = new PropertyBuffer();
         PropertyBuffer dogSink = new PropertyBuffer();
