@@ -6,4 +6,4 @@
  *
  * @author Lenik
  */
-package com.bee32.plover.expr.criterion;
+package com.bee32.plover.criteria;
