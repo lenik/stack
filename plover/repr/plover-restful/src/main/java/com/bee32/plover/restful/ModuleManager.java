@@ -1,11 +1,10 @@
 package com.bee32.plover.restful;
 
-import java.util.ServiceLoader;
-
 import javax.free.IllegalUsageError;
 import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.IModule;
+import com.bee32.plover.arch.ModuleLoader;
 import com.bee32.plover.arch.locator.LocationLookup;
 import com.bee32.plover.arch.locator.ObjectLocatorRegistry;
 import com.bee32.plover.pub.oid.OidTree;
@@ -18,15 +17,11 @@ public class ModuleManager
     private static final long serialVersionUID = 1L;
 
     private ModuleManager() {
-        refreshModules();
+        installModules();
     }
 
-    private transient ServiceLoader<IModule> moduleLoader;
-
-    void refreshModules() {
-        moduleLoader = ServiceLoader.load(IModule.class);
-
-        for (IModule module : moduleLoader) {
+    void installModules() {
+        for (IModule module : ModuleLoader.getModules()) {
             Class<? extends IModule> moduleClass = module.getClass();
 
             OidVector oid = OidUtil.getOid(moduleClass);

@@ -8,6 +8,7 @@ import java.util.ServiceLoader;
 import java.util.TreeMap;
 
 import com.bee32.plover.arch.Component;
+import com.bee32.plover.arch.ModuleLoader;
 
 public class PersistenceUnit
         extends Component
@@ -45,7 +46,7 @@ public class PersistenceUnit
             String className = classes.get(index).getName();
             // foo.Bar -> foo/Bar.hbm.xml
             String hbmPath = className.replace('.', '/') + ".hbm.xml";
-            mappingResources[index] = /*"classpath:" +*/ hbmPath;
+            mappingResources[index] = /* "classpath:" + */hbmPath;
         }
         return mappingResources;
     }
@@ -72,6 +73,10 @@ public class PersistenceUnit
             units.put(unitName, unit);
         }
         return unit;
+    }
+
+    static {
+        ModuleLoader.load();
     }
 
 }
