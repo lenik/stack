@@ -1,7 +1,5 @@
 package com.bee32.plover.cache.pull;
 
-import org.junit.Test;
-
 import com.bee32.plover.cache.CacheRetrieveException;
 import com.bee32.plover.cache.auto.FriendlySteppingClock;
 import com.bee32.plover.cache.auto.IMakeSchema;
@@ -22,7 +20,7 @@ public class TimeoutResourceTest
         return schema;
     }
 
-    @Test
+    // @Test
     public void testShortTimeout()
             throws CacheRetrieveException {
         CreationCountResource ccr = new CreationCountResource(schema);

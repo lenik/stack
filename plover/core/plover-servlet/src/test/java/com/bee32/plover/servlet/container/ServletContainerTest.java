@@ -42,10 +42,9 @@ public class ServletContainerTest
 
     }
 
-    @Test
-    public void test1() {
+    // @Test
+    public void testRegular() {
         SayHello c1 = new SayHello();
-
         String actual = c1.hello();
         // assertEquals("hello, lucy", actual);
     }
