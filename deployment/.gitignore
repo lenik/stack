@@ -24,6 +24,7 @@ config.status
 configure
 install-sh
 missing
+autom4te.cache
 
 post-install.sh
 pre-remove.sh
