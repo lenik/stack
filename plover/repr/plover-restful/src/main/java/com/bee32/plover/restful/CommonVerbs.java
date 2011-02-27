@@ -2,9 +2,9 @@ package com.bee32.plover.restful;
 
 public interface CommonVerbs {
 
-    Verb CREATE = new Verb("create");
-
     Verb GET = new Verb("get");
+
+    Verb CREATE = new Verb("create");
 
     Verb UPDATE = new Verb("update");
 

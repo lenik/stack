@@ -21,7 +21,7 @@ public class RendererDissolver
     }
 
     @Override
-    public boolean desolveExtension(String extension, RequestModel model) {
+    public boolean desolveExtension(String extension, ResourceRequest model) {
         if (extension == null)
             throw new NullPointerException("extension");
 

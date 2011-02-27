@@ -4,6 +4,6 @@ public interface IRequestPreprocessor {
 
     int getPriority();
 
-    void preprocess(RequestModel model);
+    void preprocess(ResourceRequest request);
 
 }

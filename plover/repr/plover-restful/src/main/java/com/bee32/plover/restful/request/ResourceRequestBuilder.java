@@ -8,7 +8,7 @@ import java.util.TreeSet;
 import javax.free.StringPart;
 import javax.servlet.http.HttpServletRequest;
 
-public class RequestModelBuilder {
+public class ResourceRequestBuilder {
 
     private static IMethodDissolver methodDissolver;
     private static List<IExtensionDissolver> extensionDissolvers;
@@ -35,15 +35,17 @@ public class RequestModelBuilder {
         reloadServices();
     }
 
-    public RequestModel build(HttpServletRequest request) {
-        RequestModel model = new RequestModel(request);
+    public ResourceRequest build(HttpServletRequest request) {
+        ResourceRequest model = new ResourceRequest(request);
 
+        // translate http method
         String httpMethod = request.getMethod();
         methodDissolver.desolveMethod(httpMethod, model);
 
         String uri = request.getRequestURI();
         String baseName = StringPart.afterLast(uri, '/');
 
+        // parse extensions
         int end = baseName.length();
         int dot;
         while ((dot = baseName.lastIndexOf('.', end - 1)) != -1) {
@@ -58,10 +60,12 @@ public class RequestModelBuilder {
             end = dot;
         }
 
+        // resource path
         int stripped = baseName.length() - end;
-        String dispatchPath = uri.substring(0, uri.length() - stripped);
-        model.setDispatchPath(dispatchPath);
+        String path = uri.substring(0, uri.length() - stripped);
+        model.setPath(path);
 
+        // other preprocessors.
         if (preprocessors != null) {
             for (IRequestPreprocessor preprocessor : preprocessors)
                 preprocessor.preprocess(model);

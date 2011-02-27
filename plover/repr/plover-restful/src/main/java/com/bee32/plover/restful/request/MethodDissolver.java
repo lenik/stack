@@ -9,7 +9,7 @@ import com.bee32.plover.restful.Verb;
 public class MethodDissolver
         implements IMethodDissolver {
 
-    private static final Map<String, Verb> verbByMethod;
+    static final Map<String, Verb> verbByMethod;
 
     static {
         verbByMethod = new HashMap<String, Verb>();
@@ -21,7 +21,7 @@ public class MethodDissolver
     }
 
     @Override
-    public void desolveMethod(String httpMethod, RequestModel model) {
+    public void desolveMethod(String httpMethod, ResourceRequest model) {
         if (httpMethod == null)
             throw new NullPointerException("httpMethod");
 
