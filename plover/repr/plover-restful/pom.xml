@@ -31,12 +31,6 @@
             <version>3.0.0</version>
         </dependency>
         <dependency>
-            <groupId>org.kohsuke.stapler</groupId>
-            <artifactId>stapler</artifactId>
-            <version>1.155</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-inject</artifactId>
             <version>0.0.1-SNAPSHOT</version>
