@@ -20,4 +20,6 @@ public interface IPersistenceUnit
      */
     Collection<Class<?>> getClasses();
 
+    String[] getMappingResources();
+
 }

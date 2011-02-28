@@ -33,6 +33,7 @@ public class PersistenceUnit
         classes.remove(clazz);
     }
 
+    @Override
     public String[] getMappingResources() {
         int size = classes.size();
         String[] mappingResources = new String[size];
