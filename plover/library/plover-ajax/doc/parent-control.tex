@@ -1,0 +1,180 @@
+\documentclass[hyperref, bookmark]{article}
+
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage[cm-default]{fontspec}
+\usepackage{xunicode,xltxtra}
+\usepackage[slantfont,boldfont]{xeCJK}
+\usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage{multicol}
+% \usepackage{float}
+\usepackage{framed}
+\usepackage{fancybox}
+\usepackage[vario]{fancyref}
+\usepackage{url}
+\usepackage{xy}
+
+\setCJKmainfont{WenQuanYi Micro Hei}
+
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+\linespread{1.2}
+\setlength{\columnsep}{.5in}
+
+\newcommand*\xpc{ \textsc{X-Parent-Control} }
+\newcommand*\ajax{AJAX}
+\newcommand{\syntax}[1]{
+    \vskip .2cm
+    \doublebox{
+        \begin{minipage}{.9\linewidth}
+        #1
+        \end{minipage}
+    }
+    \vskip .5cm
+}
+
+\newcommand\ol[1]{\begin{enumerate}{#1}\end{enumerate}}
+
+% \newfontfamily\urlf{"Nimbus Sans L"}
+% \makeatletter
+% \def\url@leostyle{
+%   \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\urlf}}}
+% \makeatother
+% \urlstyle{leo}
+
+\title {\xpc \\ 父页面控制协议 }
+\author{谢继雷 \\ $\infty$ \small{海宁小蜜蜂软件}}
+
+\begin{document}
+
+\maketitle
+
+\abstract {
+    \xpc 协议用于在 \ajax 请求中，实现由内部页面向外部传递异常的机制。
+    目前 \xpc 实现了两种控制： 父页面重定向与父页面脚本调用。
+    }
+
+\vskip .5in
+\begin{multicols}{2}
+    \tableofcontents
+\end{multicols}
+\vskip .5in
+
+\section {协议头}
+
+    \xpc 协议向 HTTP 返回报文中添加了以下字段： （见 \Fref{tab:headers}）
+
+    \begin{table*}[ht]
+        \label{tab:headers}
+        \caption{\xpc 头列表}
+        \begin{center}
+        \begin{tabular}{l|c|l}
+            \hline
+              协议头  & 描述 & 格式 \\
+            \hline
+            X-Parent-Control    & \xpc 版本       & 1.0 \\
+            X-Parent-Location   & 父页面重定向     & 相对或绝对URL \\
+            X-Parent-Invoke     & 父页面脚本调用   & JavaScript 脚本 \\
+            X-Parent-Auth       & 控制验证授权码   & URL 或 Javascript 的 HMAC 字符串 \\
+            \hline
+        \end{tabular}
+        \end{center}
+    \end{table*}
+
+\section {父页面重定向}
+
+    \syntax {
+        X-Parent-Control: 1.0
+
+        X-Parent-Location: \emph{URL-Spec}
+
+        X-Parent-Auth: HMAC( \emph{URL-Spec} )
+    }
+
+    \emph{URL-Spec} 可以是绝对URL 或相对于当前父页面地址的相对 URL。
+    当父页面收到 \xpc 控制时，应该使用 HTML4 DOM 模型的 location.href = \emph{URL-Spec} 来解释。
+
+    安全措施： \texttt{X-Parent-Location} 必须验证。
+        MITM 攻击中，入侵者篡改内部页面，插入 HTTP \texttt{Location} $(301)$ 重定向头，可以使内部页面重定向到非法内容。但父页面决定如何解释内部页面的数据。如果入侵者插入非法 \texttt{X-Parent-Location} 值，则可能导致非法的跨站请求。
+
+
+\section {父页面脚本调用}
+
+    \syntax {
+        X-Parent-Control: 1.0
+
+        X-Parent-Invoke: \emph{JavaScript}
+
+        X-Parent-Auth: HMAC( \emph{JavaScript})
+    }
+
+    其中 \emph{JavaScript} 指定要执行的脚本。该脚本通过 JavaScript \texttt{eval} 的方法被求值。
+
+    安全措施： \texttt{X-Parent-Invoke} 必须验证。理由是显而易见的。
+
+\section {验证算法}
+
+    为了防止恶意代码注入，在返回的控制信息中必须附加验证码。
+    目前为了简化起见， 只使用了随机数，并用下列方式实现密钥分享，在真正应用中这是不安全的。
+    将来改变这一算法应不影响程序结构。
+
+    \ol{
+        \item Parent生成隨機數 $ secret $，计算 $ E = 9*secret^2 + 102*secret + 57 $，发送 $E$ 给远程.
+        \item 远程计算 $\displaystyle secret = \frac{\sqrt{E - 232} - 17}{3} $
+        \item 远程计算 $H= hmac(secret, message)$，作为 HMAC 验证码
+        \item 远程将 HMAC 附加到 \xpc HTTP 报文上
+        \item Parent 收到 $message$，重新计算 $H$ 并核对，如果 $H$ 错误则丢弃控制信息。
+    }
+
+    验证使用如下 HMAC 算法 \cite{ebcdev.hmac}：
+
+   \begin{leftbar}
+   \begin{center}
+    $ K = sha1(string(k)) $ \\
+    $ hmac(K, m) = sha1((K \oplus opad) \parallel sha1((K \oplus ipad) \parallel m)) $ \\
+    $ opad = 50_{16} $ \\
+    $ ipad = 36_{16} $
+   \end{center}
+   \end{leftbar}
+
+
+\section {使用}
+
+    下图描述了 \xpc 的典型用法：
+    （其中 \textsl{ 斜体 } 部分为验证相关，目前可暂时缺省）
+
+    \subsection {父页面}
+
+        \ol{
+            \item include jquery-min.js;
+            \item include jquery.sha1.js;
+            \item include jquery.ajaxex.js;
+            \item \textsl{ sessionSecret = secret = RANDOM; }
+            \item \textsl{ E = 9*secret*secret + 102*secret + 57; }
+            \item Xxx.load(AJAX-URL... \textsl{\&e=E} );
+        }
+
+    \subsection {AJAX请求}
+
+        \ol{
+            \item import ParentControl;
+            \item \textsl{ E = request.getParameter("e"); }
+            \item \textsl{ secret = (Math.sqrt(E - 232) - 17) / 3; }
+            \item ParentControl.sendParentRedirect(response, "new-location..."
+                    \textsl{, secret} );
+        }
+
+\appendix
+\section {实现参考}
+
+     引用 \cite{jq.ajaxex} 以启用父页面控制扩展。
+
+    Servlet 支持类参考 \cite{ebcdev.xpc}。
+
+    \bibliographystyle{plain}
+    \bibliography{secca}
+
+\section {索引}
+
+    \listoftables
+
+\end{document}

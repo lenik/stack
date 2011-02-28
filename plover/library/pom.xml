@@ -12,6 +12,7 @@
     <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>plover-ajax</module>
         <module>plover-commons</module>
         <module>plover-internet</module>
         <module>plover-javascript</module>

@@ -21,6 +21,7 @@ library/
     plover-orm          对象关系映射辅助工具
     plover-internet     互联网应用工具
     plover-javascript   轻量级 JavaScript 组件 （类似与Google GWT）
+    plover-ajax
 
 lifecycle/
     plover-cache        缓存模型与级联构建
