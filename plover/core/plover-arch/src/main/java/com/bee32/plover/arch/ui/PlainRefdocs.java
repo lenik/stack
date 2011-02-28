@@ -16,8 +16,6 @@ import javax.free.IllegalUsageException;
  * 平面化了的参考信息集。
  * <p>
  * 通过使用 {@link RefdocsBuilder} 来建立中间内存模型，并最后简化为平面模型。
- *
- * @test {@link PlainRefdocsTest}
  */
 public class PlainRefdocs
         implements IRefdocs {

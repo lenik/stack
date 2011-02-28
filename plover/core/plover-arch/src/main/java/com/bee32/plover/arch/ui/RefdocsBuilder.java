@@ -7,12 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.bee32.plover.arch.ui.RefdocsBuilderTest;
-
 /**
  * 构建型帮助索引，支持帮助条目的更改，用于中间变量的目的。
- *
- * @test {@link RefdocsBuilderTest}
  */
 public class RefdocsBuilder
         implements IRefdocs {

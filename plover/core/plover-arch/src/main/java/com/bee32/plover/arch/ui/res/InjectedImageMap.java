@@ -8,12 +8,8 @@ import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.ui.AbstractImageMap;
 import com.bee32.plover.arch.ui.IImageMap;
-import com.bee32.plover.arch.ui.res.InjectedImageMapTest;
 import com.bee32.plover.arch.util.res.IPropertyAcceptor;
 
-/**
- * @test {@link InjectedImageMapTest}
- */
 public class InjectedImageMap
         extends AbstractImageMap
         implements IImageMap, IPropertyAcceptor {

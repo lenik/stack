@@ -7,16 +7,12 @@ import javax.free.IllegalUsageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.arch.util.res.UniquePrefixDispatcherTest;
-
 /**
  * 唯一前缀分发器。
  * <p>
  * <font color='red'>公共前缀限制：若存在前缀 a, b，且b=a.ω*，则要求不存在任何的c >= a && c <= b</font>
  *
  * @see UniquePrefixDispatcherTest#testCommonPrefix()
- *
- * @test {@link UniquePrefixDispatcherTest}
  */
 public class UniquePrefixDispatcher
         extends PrefixDispatcher {
