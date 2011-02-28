@@ -15,9 +15,6 @@ import com.bee32.icsf.access.IManagedOperation;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.SimpleManagedOperation;
 
-/**
- * @test {@link AnnotatedAccessControlInfoTest}
- */
 public class AnnotatedAccessControlInfo
         implements IAccessControlInfo {
 

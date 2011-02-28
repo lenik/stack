@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.authority.IAuthority;
-import com.bee32.icsf.access.builtins.DividedPermissionTest;
 
 /**
  * @test {@link DividedPermissionTest}
