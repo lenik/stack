@@ -6,8 +6,8 @@ package com.bee32.plover.indexing;
  */
 public interface IIndexable {
 
-    IIndexingMetaData getIndexingMetaData();
-
     void accept(IIndexingVisitor indexer);
+
+    IIndexingMetaData getIndexingMetaData();
 
 }

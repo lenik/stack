@@ -12,22 +12,16 @@
             <groupId>javax.persistence</groupId>
             <artifactId>persistence-api</artifactId>
             <version>1.0</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>3.5.0-Final</version>
-            <type>jar</type>
-            <scope>compile</scope>
+            <version>3.3.2.GA</version>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-expr</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
     <name>Plover :: Core :: Criteria</name>
