@@ -2,15 +2,15 @@ package com.bee32.plover.repr.renderer;
 
 import com.bee32.plover.model.stage.IModelStage;
 
-public abstract class StageRenderer
+public abstract class ViewRenderer
         implements IRenderer {
 
     @Override
     public void render(IDisplay display, Object obj) {
-        if (obj instanceof IModelStage) {
-            IModelStage stage = (IModelStage) obj;
+    }
 
-        }
+    @Override
+    public void render(IDisplay display, IModelStage obj) {
     }
 
 }

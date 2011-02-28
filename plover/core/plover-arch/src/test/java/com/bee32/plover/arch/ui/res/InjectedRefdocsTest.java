@@ -1,4 +1,4 @@
-package com.bee32.plover.arch.ui.impl;
+package com.bee32.plover.arch.ui.res;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -14,11 +14,11 @@ import com.bee32.plover.arch.ui.RefdocsSample;
 import com.bee32.plover.arch.ui.res.InjectedRefdocs;
 import com.bee32.plover.arch.util.res.LoopbackDispatcher;
 
-public class RefdocsSinkTest {
+public class InjectedRefdocsTest {
 
     InjectedRefdocs sink;
 
-    public RefdocsSinkTest() {
+    public InjectedRefdocsTest() {
         sink = new InjectedRefdocs(RefdocsSample.class);
         LoopbackDispatcher dispatcher = new LoopbackDispatcher(sink);
         dispatcher.dispatchClassResource(RefdocsSample.class, Locale.ENGLISH);

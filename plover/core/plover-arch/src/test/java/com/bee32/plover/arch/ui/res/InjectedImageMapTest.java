@@ -1,4 +1,4 @@
-package com.bee32.plover.arch.ui.impl;
+package com.bee32.plover.arch.ui.res;
 
 import static org.junit.Assert.assertEquals;
 
