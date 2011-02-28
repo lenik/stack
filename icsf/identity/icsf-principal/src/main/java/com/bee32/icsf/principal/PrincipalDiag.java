@@ -2,8 +2,6 @@ package com.bee32.icsf.principal;
 
 import java.util.IdentityHashMap;
 
-import com.bee32.icsf.principal.PrincipalDiagTest;
-
 class PrincipalDiagException
         extends RuntimeException {
 
@@ -16,7 +14,7 @@ class PrincipalDiagException
 }
 
 /**
- * @test {@link PrincipalDiagTest}
+ * @test {@link com.bee32.icsf.principal.PrincipalDiagTest}
  */
 public class PrincipalDiag {
 
