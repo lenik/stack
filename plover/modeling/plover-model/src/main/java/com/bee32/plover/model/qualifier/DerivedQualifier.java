@@ -58,11 +58,12 @@ public abstract class DerivedQualifier<Q extends DerivedQualifier<Q>>
             return false;
 
         Q o = qualifierType.cast(obj);
+        DerivedQualifier<?> _o = o;
 
-        if (!Nullables.equals(getName(), o.getName()))
+        if (!Nullables.equals(name, _o.name))
             return false;
 
-        if (!Nullables.equals(kindOf, o.kindOf))
+        if (!Nullables.equals(kindOf, _o.kindOf))
             return false;
 
         return equalsSpecific(o);
