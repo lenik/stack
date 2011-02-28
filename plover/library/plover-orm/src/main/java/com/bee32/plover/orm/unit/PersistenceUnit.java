@@ -3,23 +3,17 @@ package com.bee32.plover.orm.unit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.ServiceLoader;
-import java.util.TreeMap;
 
 import com.bee32.plover.arch.Component;
-import com.bee32.plover.arch.ModuleLoader;
 
 public class PersistenceUnit
         extends Component
         implements IPersistenceUnit {
 
-    public static final String GLOBAL = "global";
-
     private List<Class<?>> classes = new ArrayList<Class<?>>();
 
     public PersistenceUnit() {
-        super(GLOBAL);
+        super(PersistenceUnits.GLOBAL);
     }
 
     public PersistenceUnit(String name) {
@@ -49,34 +43,6 @@ public class PersistenceUnit
             mappingResources[index] = /* "classpath:" + */hbmPath;
         }
         return mappingResources;
-    }
-
-    private static Map<String, PersistenceUnit> units;
-
-    static {
-        units = new TreeMap<String, PersistenceUnit>();
-
-        for (PersistenceUnit unit : ServiceLoader.load(PersistenceUnit.class)) {
-            String name = unit.getName();
-            units.put(name, unit);
-        }
-    }
-
-    public static PersistenceUnit getInstance() {
-        return getInstance(GLOBAL);
-    }
-
-    public static synchronized PersistenceUnit getInstance(String unitName) {
-        PersistenceUnit unit = units.get(unitName);
-        if (unit == null) {
-            unit = new PersistenceUnit(unitName);
-            units.put(unitName, unit);
-        }
-        return unit;
-    }
-
-    static {
-        ModuleLoader.load();
     }
 
 }
