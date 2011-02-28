@@ -8,6 +8,7 @@ import com.bee32.plover.orm.entity.HibernateEntityRepository;
 import com.bee32.plover.orm.entity.IEntity;
 import com.bee32.plover.orm.entity.IEntityRepository;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.orm.unit.PersistenceUnits;
 
 /**
  * Module contributions for the menu:
@@ -67,12 +68,12 @@ public abstract class EnterpriseModule
 
         // contribute to the global persistence unit.
         Class<E> entityType = entityRepository.getEntityType();
-        PersistenceUnit unit = PersistenceUnit.getInstance(persistenceUnitName);
+        PersistenceUnit unit = PersistenceUnits.getInstance(persistenceUnitName);
         unit.addPersistedClass(entityType);
     }
 
     protected <E extends IEntity<K>, K> void export(IEntityRepository<E, K> entityRepository, String location) {
-        export(entityRepository, location, PersistenceUnit.GLOBAL);
+        export(entityRepository, location, PersistenceUnits.GLOBAL);
     }
 
     protected <E extends IEntity<K>, K> void export(IEntityRepository<E, K> entityRepository) {
