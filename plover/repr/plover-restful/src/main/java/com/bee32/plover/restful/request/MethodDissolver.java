@@ -13,8 +13,8 @@ public class MethodDissolver
 
     static {
         verbByMethod = new HashMap<String, Verb>();
-        verbByMethod.put("put", CommonVerbs.CREATE);
         verbByMethod.put("get", CommonVerbs.GET); // or, read in CRUD
+        verbByMethod.put("put", CommonVerbs.CREATE);
         verbByMethod.put("post", CommonVerbs.UPDATE);
         verbByMethod.put("delete", CommonVerbs.DELETE);
         verbByMethod.put("head", CommonVerbs.HEAD);

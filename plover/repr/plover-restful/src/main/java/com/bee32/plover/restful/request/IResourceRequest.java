@@ -38,7 +38,7 @@ public interface IResourceRequest {
     /**
      * The output format.
      */
-    // Format getFormat();
+    String getFormat();
 
     /**
      * @see ServletRequest#getParameter(String)

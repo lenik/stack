@@ -22,8 +22,7 @@ public class ResourceRequest
     private Verb verb;
     private String path;
     private Profile profile;
-
-    // private String renderer;
+    private String format;
 
     public ResourceRequest(HttpServletRequest request) {
         this.rawRequest = request;
@@ -59,6 +58,15 @@ public class ResourceRequest
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    @Override
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
     }
 
     @Override

@@ -16,7 +16,7 @@ public class ResourceRequestBuilder {
     static {
         methodDissolver = new MethodDissolver();
         extensionDissolvers = new ArrayList<IExtensionDissolver>();
-        extensionDissolvers.add(new RendererDissolver());
+        extensionDissolvers.add(new FormatDissolver());
         extensionDissolvers.add(new ProfileDissolver());
     }
 
@@ -72,6 +72,12 @@ public class ResourceRequestBuilder {
         }
 
         return model;
+    }
+
+    private static final ResourceRequestBuilder instance = new ResourceRequestBuilder();
+
+    public static ResourceRequestBuilder getInstance() {
+        return instance;
     }
 
 }

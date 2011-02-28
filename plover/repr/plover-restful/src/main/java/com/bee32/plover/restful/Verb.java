@@ -8,11 +8,28 @@ public class Verb
     private static final long serialVersionUID = 1L;
 
     private final String name;
+    private final boolean managed;
 
     public Verb(String name) {
         if (name == null)
             throw new NullPointerException("name");
         this.name = name;
+        this.managed = false;
+    }
+
+    public Verb(String name, boolean managed) {
+        if (name == null)
+            throw new NullPointerException("name");
+        this.name = name;
+        this.managed = managed;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isManaged() {
+        return managed;
     }
 
     @Override
@@ -21,6 +38,8 @@ public class Verb
             return false;
 
         Verb o = (Verb) obj;
+        if (managed != o.managed)
+            return false;
         if (!name.equals(o.name))
             return false;
 
@@ -29,7 +48,11 @@ public class Verb
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        int hash = 0x878cd12;
+        if (managed)
+            hash ^= 0x189245ca;
+        hash ^= name.hashCode();
+        return hash;
     }
 
     @Override
