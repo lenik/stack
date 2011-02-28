@@ -29,6 +29,7 @@ public class ModuleLoader {
     }
 
     public static Iterable<IModule> getModules() {
+        load();
         return modules;
     }
 
