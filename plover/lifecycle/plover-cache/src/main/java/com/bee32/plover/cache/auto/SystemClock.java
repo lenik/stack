@@ -36,7 +36,7 @@ public class SystemClock
 
     @Override
     public String format(long tick) {
-        long offset = tick -= initial;
+        long offset = tick - initial;
         return String.valueOf(offset);
     }
 
