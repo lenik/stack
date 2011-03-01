@@ -15,6 +15,7 @@
         <module>plover-disp</module>
         <module>plover-form</module>
         <module>plover-model</module>
+        <module>plover-view</module>
     </modules>
     <name>Plover :: Modeling</name>
 </project>
