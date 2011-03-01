@@ -27,4 +27,18 @@ public interface IUserPrincipal
      */
     Collection<? extends IGroupPrincipal> getAssignedGroups();
 
+    /**
+     * The primary role which this user stands for.
+     *
+     * @return The primary role assigned. <code>null</code> if none.
+     */
+    IRolePrincipal getPrimaryRole();
+
+    /**
+     * The primary group which this user stands for.
+     *
+     * @return The primary group assigned. <code>null</code> if none.
+     */
+    IGroupPrincipal getPrimaryGroup();
+
 }

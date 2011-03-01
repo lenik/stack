@@ -10,12 +10,15 @@ public abstract class AbstractRole
     public boolean implies(IPrincipal principal) {
         if (principal == null)
             throw new NullPointerException("principal");
+
         if (this.equals(principal))
             return true;
+
         IRolePrincipal base = getInheritedRole();
         if (base != null)
             if (base.implies(principal))
                 return true;
+
         return false;
     }
 
