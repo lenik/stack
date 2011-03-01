@@ -63,14 +63,14 @@ public class HibernateEntityRepository<E extends IEntity<K>, K>
     @Override
     public boolean containsKey(Object key) {
         Serializable id = (Serializable) key;
-        E entity = getHibernateTemplate().get(instanceType, id);
+        E entity = getHibernateTemplate().get(entityType, id);
         return entity != null;
     }
 
     @Override
     public E retrieve(Object key) {
         Serializable id = (Serializable) key;
-        E entity = getHibernateTemplate().get(instanceType, id);
+        E entity = getHibernateTemplate().get(entityType, id);
         return entity;
     }
 
@@ -105,7 +105,7 @@ public class HibernateEntityRepository<E extends IEntity<K>, K>
     @Override
     public void deleteAll() {
         HibernateTemplate template = getHibernateTemplate();
-        List<E> list = template.loadAll(instanceType);
+        List<? extends E> list = template.loadAll(entityType);
         template.deleteAll(list);
     }
 

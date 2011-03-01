@@ -1,5 +1,8 @@
 package com.bee32.plover.orm.entity;
 
+import java.lang.reflect.Modifier;
+
+import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 import javax.free.ParserUtil;
 
@@ -11,22 +14,39 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
         extends Repository<K, E>
         implements IEntityRepository<E, K> {
 
+    protected Class<? extends E> entityType;
+
     private IObjectLocator parentLocator;
 
-    public EntityRepository(Class<E> entityType, Class<K> keyType) {
-        super(keyType, entityType);
+    public EntityRepository(Class<E> instanceType, Class<K> keyType) {
+        super(keyType, instanceType);
+        init();
     }
 
-    public EntityRepository(String name, Class<E> entityType, Class<K> keyType) {
-        super(name, keyType, entityType);
+    public EntityRepository(String name, Class<E> instanceType, Class<K> keyType) {
+        super(name, keyType, instanceType);
+        init();
     }
 
-    {
+    @SuppressWarnings("unchecked")
+    void init() {
+        Class<?> entityType;
+        try {
+            entityType = getEntityType(instanceType);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalUsageException("No implementation type for " + instanceType);
+        }
+
+        if (!instanceType.isAssignableFrom(entityType))
+            throw new IllegalUsageException("Incompatible implementation " + entityType + " for " + instanceType);
+
+        this.entityType = (Class<? extends E>) entityType;
+
         ObjectLocatorRegistry.getInstance().register(this);
     }
 
-    public Class<E> getEntityType() {
-        return instanceType;
+    public Class<? extends E> getEntityType() {
+        return entityType;
     }
 
     @Override
@@ -97,6 +117,41 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
         K key = instance.getPrimaryKey();
         String keyLocation = formatKey(key);
         return keyLocation;
+    }
+
+    protected Class<?> getEntityType(Class<?> clazz)
+            throws ClassNotFoundException {
+
+        int modifiers = clazz.getModifiers();
+        if (!Modifier.isAbstract(modifiers))
+            return clazz;
+
+        String typeName = clazz.getName();
+        int lastDot = typeName.lastIndexOf('.');
+        String prefix;
+        String simpleName;
+        if (lastDot == -1) {
+            prefix = "";
+            simpleName = typeName;
+        } else {
+            prefix = typeName.substring(0, lastDot + 1);
+            simpleName = typeName.substring(lastDot + 1);
+        }
+
+        String entityClassName = null;
+        if (simpleName.length() >= 2) {
+            char a = simpleName.charAt(0);
+            char b = simpleName.charAt(1);
+            if (a == 'I' && Character.isUpperCase(b))
+                entityClassName = simpleName.substring(1);
+            else
+                entityClassName = simpleName + "Impl";
+        } else
+            entityClassName = simpleName + "Impl";
+
+        entityClassName = prefix + entityClassName;
+
+        return Class.forName(entityClassName, true, clazz.getClassLoader());
     }
 
 }

@@ -7,9 +7,9 @@ public interface IEntityRepository<E extends IEntity<K>, K>
         extends IRepository<K, E>, IObjectLocator {
 
     /**
-     * This is the same to {@link #getInstanceType()}.
+     * Or the storage class.
      */
-    Class<E> getEntityType();
+    Class<? extends E> getEntityType();
 
     @Override
     K getKey(E entity);
