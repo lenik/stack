@@ -151,6 +151,7 @@ public class Mimes {
 
     /** HTML; Defined in RFC 2854 */
     public static final Mime text_html = register("text/html", "html", "htm");
+    public static final Mime text_xhtml = register("text/xhtml", "xhtml", "xhtm");
 
     /** Textual data; Defined in RFC 2046 and RFC 3676 */
     public static final Mime text_plain = register("text/plain", "txt", "text");
