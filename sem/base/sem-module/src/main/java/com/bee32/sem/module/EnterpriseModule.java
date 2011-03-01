@@ -67,7 +67,7 @@ public abstract class EnterpriseModule
         declare(location, entityRepository);
 
         // contribute to the global persistence unit.
-        Class<E> entityType = entityRepository.getEntityType();
+        Class<? extends E> entityType = entityRepository.getEntityType();
         PersistenceUnit unit = PersistenceUnits.getInstance(persistenceUnitName);
         unit.addPersistedClass(entityType);
     }
