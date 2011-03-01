@@ -13,11 +13,11 @@
             <artifactId>sem-module</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-	<dependency>
-		<groupId>com.bee32.sem</groupId>
-		<artifactId>sem-process</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-process</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <name>SEM :: Demo :: Samples</name>
 </project>

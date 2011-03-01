@@ -30,3 +30,6 @@ support/
     sem-calendar
     sem-track
     sem-kb
+
+demo/
+    sem-samples
