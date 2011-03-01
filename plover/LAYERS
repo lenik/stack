@@ -31,17 +31,17 @@ lifecycle/
 modeling/
     plover-model        组件模型结构
     plover-disp         资源分发与定位
-    plover-view         视图模型 （不确定）
+    plover-form         中间表单模型
 
 repr/
     plover-repr         基本表示层
-    plover-repr-html    HTML表示
-    plover-repr-pdf     PDF表示
-    plover-repr-xml     XML表示
-    plover-repr-csv     CSV表示
-    plover-repr-flex    Flex表示
-    plover-repr-mso     Word/Excel表示
     plover-restful      资源状态表示与集成
+    plover-x2html       HTML表示
+    plover-x2pdf        PDF表示
+    plover-x2xml        XML表示
+    plover-x2csv        CSV表示
+    plover-x2flex       Flex表示
+    plover-x2mso        Word/Excel表示
 
 ui/
     plover-widgets      SWT控件
