@@ -9,19 +9,19 @@ core/
     plover-collections  通用集合类
     plover-expr         一般函数表达式
     plover-expr-sql     SQL表达式
-    plover-criteria     查询表达式
+    plover-criteria     组合检索模型
     plover-route        事件路由
     plover-indexing     索引框架
-    plover-servlet      Servlet 模型
-    plover-test         测试工具
-    plover-vcs          版本模型
+    plover-servlet      Servlet 工具与扩展
+    plover-test         测试框架与工具
+    plover-vcs          一般业务版本模型
 
 library/
     plover-commons      公共库
     plover-orm          对象关系映射辅助工具
     plover-internet     互联网应用工具
     plover-javascript   轻量级 JavaScript 组件 （类似与Google GWT）
-    plover-ajax
+    plover-ajax         AJAX 扩展库
 
 lifecycle/
     plover-cache        缓存模型与级联构建
@@ -32,6 +32,7 @@ modeling/
     plover-model        组件模型结构
     plover-disp         资源分发与定位
     plover-form         中间表单模型
+    plover-view         公共视图模型
 
 repr/
     plover-repr         基本表示层
