@@ -8,18 +8,18 @@
     <artifactId>plover-ajax</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies>
-	<dependency>
-		<groupId>com.bee32.plover</groupId>
-		<artifactId>plover-javascript</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<scope>compile</scope>
-	</dependency>
-	<dependency>
-		<groupId>com.bee32.plover</groupId>
-		<artifactId>plover-servlet</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<scope>compile</scope>
-	</dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-javascript</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-servlet</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <name>Plover :: Library :: Ajax</name>
 </project>
