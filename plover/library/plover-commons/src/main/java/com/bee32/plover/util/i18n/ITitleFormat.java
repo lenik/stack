@@ -1,4 +1,4 @@
-package com.bee32.plover.commons.i18n;
+package com.bee32.plover.util.i18n;
 
 public interface ITitleFormat {
 
