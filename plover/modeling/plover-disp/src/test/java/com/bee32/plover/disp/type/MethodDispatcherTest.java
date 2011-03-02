@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bee32.plover.disp.DispatchException;
+import com.bee32.plover.disp.util.DispatchUtil;
 import com.bee32.plover.disp.util.TokenQueue;
 
 public class MethodDispatcherTest
@@ -22,7 +23,7 @@ public class MethodDispatcherTest
             throws DispatchException {
         MethodDispatcher disp = new MethodDispatcher();
         TokenQueue tq = new TokenQueue("method1:Si/hello/3");
-        Object actual = disp.dispatch(this, tq);
+        Object actual = DispatchUtil.dispatch(disp, this, tq);
         assertEquals("hello:3", actual);
     }
 
@@ -31,7 +32,7 @@ public class MethodDispatcherTest
             throws DispatchException {
         MethodDispatcher disp = new MethodDispatcher();
         TokenQueue tq = new TokenQueue("say/clock");
-        Object actual = disp.dispatch(this, tq);
+        Object actual = DispatchUtil.dispatch(disp, this, tq);
         assertEquals("hey, clock", actual);
     }
 

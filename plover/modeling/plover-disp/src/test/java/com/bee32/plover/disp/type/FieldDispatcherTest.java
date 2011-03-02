@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bee32.plover.disp.DispatchException;
+import com.bee32.plover.disp.util.DispatchUtil;
 
 public class FieldDispatcherTest
         extends Assert {
@@ -20,7 +21,7 @@ public class FieldDispatcherTest
             throws DispatchException {
         Object context = new FieldDispatcherTest();
         FieldDispatcher fd = new FieldDispatcher();
-        Object target = fd.dispatch(context, "publicField");
+        Object target = DispatchUtil.dispatch(fd, context, "publicField");
         assertSame(publicField, target);
     }
 
@@ -29,7 +30,7 @@ public class FieldDispatcherTest
             throws DispatchException {
         Object context = new FieldDispatcherTest();
         FieldDispatcher fd = new FieldDispatcher();
-        Object target = fd.dispatch(context, "protectedField");
+        Object target = DispatchUtil.dispatch(fd, context, "protectedField");
         assertSame(protectedField, target);
     }
 
@@ -38,7 +39,7 @@ public class FieldDispatcherTest
             throws DispatchException {
         Object context = new FieldDispatcherTest();
         FieldDispatcher fd = new FieldDispatcher();
-        Object target = fd.dispatch(context, "privateField");
+        Object target = DispatchUtil.dispatch(fd, context, "privateField");
         assertSame(privateField, target);
     }
 

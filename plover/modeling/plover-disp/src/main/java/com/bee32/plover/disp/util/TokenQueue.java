@@ -1,6 +1,7 @@
 package com.bee32.plover.disp.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TokenQueue
@@ -78,6 +79,15 @@ public class TokenQueue
         if (index > tokens.length)
             throw new IllegalArgumentException("Skip to underflow: " + n);
         this.index = index;
+    }
+
+    @Override
+    public String[] shift(int n) {
+        if (index + n > tokens.length)
+            return null;
+        String[] copy = Arrays.copyOfRange(tokens, index, index + n);
+        index += n;
+        return copy;
     }
 
     @Override

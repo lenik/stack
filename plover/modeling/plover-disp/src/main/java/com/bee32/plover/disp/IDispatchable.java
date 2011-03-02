@@ -20,7 +20,7 @@ public interface IDispatchable {
      * @throws NullPointerException
      *             If either <code>context</code> or <code>tokens</code> is <code>null</code>.
      */
-    Object dispatch(Object context, ITokenQueue tokens)
+    IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
             throws DispatchException;
 
     /**
@@ -35,7 +35,7 @@ public interface IDispatchable {
      * @throws NullPointerException
      *             If either <code>context</code> or <code>tokens</code> is <code>null</code>.
      */
-    Object dispatch(Object context, String path)
+    IDispatchContext dispatch(IDispatchContext context, String path)
             throws DispatchException;
 
 }

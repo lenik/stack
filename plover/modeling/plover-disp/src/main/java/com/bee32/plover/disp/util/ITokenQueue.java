@@ -37,6 +37,17 @@ public interface ITokenQueue {
     void skip(int n);
 
     /**
+     * Shift out a number of head tokens.
+     *
+     * A trailing slash (<code>'/'</code>) should be translated into {@link #INDEX}.
+     *
+     * @return A token array consists of n tokens.
+     * @throws IndexOutOfBoundsException
+     *             If <code>n</code> is out of range.
+     */
+    String[] shift(int n);
+
+    /**
      * Shift out the head token.
      *
      * A trailing slash (<code>'/'</code>) should be translated into {@link #INDEX}.

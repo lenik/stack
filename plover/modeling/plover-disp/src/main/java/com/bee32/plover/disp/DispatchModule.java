@@ -22,13 +22,13 @@ public abstract class DispatchModule
     public abstract IDispatcher getDispatcher();
 
     @Override
-    public Object dispatch(Object context, ITokenQueue tokens)
+    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
             throws DispatchException {
         return delegate.dispatch(context, tokens);
     }
 
     @Override
-    public Object dispatch(Object context, String path)
+    public IDispatchContext dispatch(IDispatchContext context, String path)
             throws DispatchException {
         return delegate.dispatch(context, path);
     }

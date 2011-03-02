@@ -10,7 +10,9 @@ import java.util.Map;
 
 import com.bee32.plover.disp.AbstractDispatcher;
 import com.bee32.plover.disp.DispatchConfig;
+import com.bee32.plover.disp.DispatchContext;
 import com.bee32.plover.disp.DispatchException;
+import com.bee32.plover.disp.IDispatchContext;
 import com.bee32.plover.disp.util.ITokenQueue;
 
 public class MethodDispatcher
@@ -35,8 +37,12 @@ public class MethodDispatcher
     }
 
     @Override
-    public Object dispatch(Object context, ITokenQueue tokens)
+    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
             throws DispatchException {
+        Object obj = context.getObject();
+        if (obj == null)
+            return null;
+
         String methodName = tokens.peek();
         if (methodName == null)
             return null;
@@ -112,7 +118,7 @@ public class MethodDispatcher
             parsedPV[i] = parameter;
         }
 
-        Class<? extends Object> contextClass = context.getClass();
+        Class<? extends Object> contextClass = obj.getClass();
         MethodKey wantKey = new MethodKey(methodName, wantPV);
 
         Map<MethodKey, Method> methodMap = classMap.get(contextClass);
@@ -144,13 +150,16 @@ public class MethodDispatcher
             return null;
 
         int consumed = 1 + wantPV.length;
-        tokens.skip(consumed);
+        String[] consumedTokens = tokens.shift(consumed);
 
+        Object result;
         try {
-            return method.invoke(context, parsedPV);
+            result = method.invoke(obj, parsedPV);
         } catch (Exception e) {
             throw new DispatchException(e);
         }
+
+        return new DispatchContext(context, result, consumedTokens);
     }
 }
 

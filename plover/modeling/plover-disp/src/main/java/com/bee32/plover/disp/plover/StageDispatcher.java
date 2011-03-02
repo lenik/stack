@@ -2,6 +2,7 @@ package com.bee32.plover.disp.plover;
 
 import com.bee32.plover.disp.AbstractDispatcher;
 import com.bee32.plover.disp.DispatchException;
+import com.bee32.plover.disp.IDispatchContext;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.model.stage.IModelStage;
 
@@ -17,16 +18,18 @@ public class StageDispatcher
     }
 
     @Override
-    public Object dispatch(Object context, ITokenQueue tokens)
+    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
             throws DispatchException {
-        if (!(context instanceof IModelStage))
+        Object obj = context.getObject();
+
+        if (!(obj instanceof IModelStage))
             return null;
 
         String key = tokens.shift();
         if (key == null)
             return null;
 
-        IModelStage stage = (IModelStage) context;
+        IModelStage stage = (IModelStage) obj;
         // stage.contains(....);
         return null;
     }

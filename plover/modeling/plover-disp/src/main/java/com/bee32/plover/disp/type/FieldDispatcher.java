@@ -6,7 +6,9 @@ import java.util.Map;
 
 import com.bee32.plover.disp.AbstractDispatcher;
 import com.bee32.plover.disp.DispatchConfig;
+import com.bee32.plover.disp.DispatchContext;
 import com.bee32.plover.disp.DispatchException;
+import com.bee32.plover.disp.IDispatchContext;
 import com.bee32.plover.disp.util.ITokenQueue;
 
 public class FieldDispatcher
@@ -31,13 +33,17 @@ public class FieldDispatcher
     }
 
     @Override
-    public Object dispatch(Object context, ITokenQueue tokens)
+    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
             throws DispatchException {
+        Object obj = context.getObject();
+        if (obj == null)
+            return null;
+
         String fieldName = tokens.peek();
         if (fieldName == null)
             return null;
 
-        Class<? extends Object> contextClass = context.getClass();
+        Class<? extends Object> contextClass = obj.getClass();
 
         Map<String, Field> fieldMap = classMap.get(contextClass);
         if (fieldMap == null) {
@@ -56,11 +62,14 @@ public class FieldDispatcher
 
         tokens.shift();
 
+        Object result;
         try {
-            return field.get(context);
+            result = field.get(obj);
         } catch (Exception e) {
             throw new DispatchException(e);
         }
+
+        return new DispatchContext(context, result, fieldName);
     }
 
 }

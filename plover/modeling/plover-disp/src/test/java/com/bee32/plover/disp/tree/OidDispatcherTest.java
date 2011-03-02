@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bee32.plover.disp.DispatchException;
+import com.bee32.plover.disp.util.DispatchUtil;
 import com.bee32.plover.disp.util.TokenQueue;
 import com.bee32.plover.pub.oid.OidTree;
 
@@ -26,11 +27,11 @@ public class OidDispatcherTest
         OidDispatcher od = new OidDispatcher();
         TokenQueue tq;
 
-        Object actual = od.dispatch(tree, tq = new TokenQueue("0"));
+        Object actual = DispatchUtil.dispatch(od, tree, tq = new TokenQueue("0"));
         assertEquals("X", actual);
         assertEquals(0, tq.available());
 
-        actual = od.dispatch(tree, "1/3/4/6/8");
+        actual = DispatchUtil.dispatch(od, tree, "1/3/4/6/8");
         assertEquals("somewhere", actual);
     }
 
@@ -40,11 +41,11 @@ public class OidDispatcherTest
         OidDispatcher od = new OidDispatcher();
         TokenQueue tq;
 
-        Object actual = od.dispatch(tree, tq = new TokenQueue("1/2"));
+        Object actual = DispatchUtil.dispatch(od, tree, tq = new TokenQueue("1/2"));
         assertEquals("AB", actual);
         assertEquals(0, tq.available());
 
-        actual = od.dispatch(tree, tq = new TokenQueue("1/2/3"));
+        actual = DispatchUtil.dispatch(od, tree, tq = new TokenQueue("1/2/3"));
         assertEquals("ABC", actual);
         assertEquals(0, tq.available());
     }
@@ -55,7 +56,7 @@ public class OidDispatcherTest
         OidDispatcher od = new OidDispatcher();
         TokenQueue tq;
 
-        Object actual = od.dispatch(tree, tq = new TokenQueue("1/3/4"));
+        Object actual = DispatchUtil.dispatch(od, tree, tq = new TokenQueue("1/3/4"));
         assertNull(actual);
         assertEquals(3, tq.available());
     }
@@ -66,7 +67,7 @@ public class OidDispatcherTest
         OidDispatcher od = new OidDispatcher();
         TokenQueue tq;
 
-        Object actual = od.dispatch(tree, tq = new TokenQueue("1/2/4"));
+        Object actual = DispatchUtil.dispatch(od, tree, tq = new TokenQueue("1/2/4"));
         assertEquals("AB", actual);
         assertEquals(1, tq.available());
     }
@@ -75,7 +76,7 @@ public class OidDispatcherTest
     public void testIncompleteForce()
             throws DispatchException {
         OidDispatcher od = new OidDispatcher();
-        od.dispatch(tree, ("1/3/4"));
+        DispatchUtil.dispatch(od, tree, ("1/3/4"));
     }
 
 }

@@ -3,7 +3,9 @@ package com.bee32.plover.disp.plover;
 import com.bee32.plover.arch.locator.IObjectLocator;
 import com.bee32.plover.disp.AbstractDispatcher;
 import com.bee32.plover.disp.DispatchConfig;
+import com.bee32.plover.disp.DispatchContext;
 import com.bee32.plover.disp.DispatchException;
+import com.bee32.plover.disp.IDispatchContext;
 import com.bee32.plover.disp.util.ITokenQueue;
 
 public class LocatorDispatcher
@@ -23,23 +25,25 @@ public class LocatorDispatcher
     }
 
     @Override
-    public Object dispatch(Object context, ITokenQueue tokens)
+    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
             throws DispatchException {
-        if (!(context instanceof IObjectLocator))
+        Object obj = context.getObject();
+
+        if (!(obj instanceof IObjectLocator))
             return null;
 
         String key = tokens.peek();
         if (key == null)
             return null;
 
-        IObjectLocator locator = (IObjectLocator) context;
+        IObjectLocator locator = (IObjectLocator) obj;
 
-        Object obj = locator.locate(key);
-        if (obj == null)
+        Object result = locator.locate(key);
+        if (result == null)
             return null;
 
         tokens.shift();
-        return obj;
+        return new DispatchContext(context, result, key);
     }
 
 }

@@ -15,6 +15,7 @@ import com.bee32.plover.disp.plover.StageDispatcher;
 import com.bee32.plover.disp.type.FieldDispatcher;
 import com.bee32.plover.disp.type.MethodDispatcher;
 import com.bee32.plover.disp.type.PropertyDispatcher;
+import com.bee32.plover.disp.util.DispatchUtil;
 
 public class DispatcherTest
         extends Assert {
@@ -63,9 +64,9 @@ public class DispatcherTest
             throws DispatchException {
         Home home = new Home();
         Dispatcher d = new Dispatcher();
-        assertEquals("coridor", d.dispatch(home, "address"));
-        assertEquals("Punjab", d.dispatch(home, "city"));
-        assertEquals("very long", d.dispatch(home, "road"));
+        assertEquals("coridor", DispatchUtil.dispatch(d, home, "address"));
+        assertEquals("Punjab", DispatchUtil.dispatch(d, home, "city"));
+        assertEquals("very long", DispatchUtil.dispatch(d, home, "road"));
     }
 
 }

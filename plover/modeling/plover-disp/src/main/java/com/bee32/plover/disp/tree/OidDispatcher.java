@@ -1,7 +1,9 @@
 package com.bee32.plover.disp.tree;
 
 import com.bee32.plover.disp.AbstractDispatcher;
+import com.bee32.plover.disp.DispatchContext;
 import com.bee32.plover.disp.DispatchException;
+import com.bee32.plover.disp.IDispatchContext;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.pub.oid.OidTree;
 import com.bee32.plover.pub.oid.OidUtil;
@@ -15,12 +17,14 @@ public class OidDispatcher
     }
 
     @Override
-    public Object dispatch(Object context, ITokenQueue tokens)
+    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
             throws DispatchException {
-        if (!(context instanceof OidTree<?>))
+        Object obj = context.getObject();
+
+        if (!(obj instanceof OidTree<?>))
             return null;
 
-        OidTree<?> tree = (OidTree<?>) context;
+        OidTree<?> tree = (OidTree<?>) obj;
 
         int index = 0;
         Object lastNode = null;
@@ -45,10 +49,11 @@ public class OidDispatcher
             }
         }
 
-        if (lastNode != null)
-            tokens.skip(lastNodeIndex);
+        if (lastNode == null)
+            return null;
 
-        return lastNode;
+        String[] consumedTokens = tokens.shift(lastNodeIndex);
+        return new DispatchContext(context, lastNode, consumedTokens);
     }
 
 }
