@@ -1,6 +1,8 @@
 package com.bee32.plover.restful;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Verb
         implements Serializable {
@@ -10,11 +12,10 @@ public class Verb
     private final String name;
     private final boolean managed;
 
+    private static Map<String, Verb> verbs = new HashMap<String, Verb>();
+
     public Verb(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-        this.name = name;
-        this.managed = false;
+        this(name, false);
     }
 
     public Verb(String name, boolean managed) {
@@ -22,6 +23,11 @@ public class Verb
             throw new NullPointerException("name");
         this.name = name;
         this.managed = managed;
+
+        if (verbs.containsKey(name))
+            throw new IllegalStateException("Verb " + name + " is already registered");
+
+        verbs.put(name, this);
     }
 
     public String getName() {
@@ -58,6 +64,10 @@ public class Verb
     @Override
     public String toString() {
         return name;
+    }
+
+    public static Verb getInstance(String name) {
+        return verbs.get(name);
     }
 
 }

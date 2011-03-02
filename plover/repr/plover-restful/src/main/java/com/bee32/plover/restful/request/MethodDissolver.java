@@ -3,8 +3,8 @@ package com.bee32.plover.restful.request;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.bee32.plover.restful.CommonVerbs;
 import com.bee32.plover.restful.Verb;
+import com.bee32.plover.restful.Verbs;
 
 public class MethodDissolver
         implements IMethodDissolver {
@@ -13,11 +13,11 @@ public class MethodDissolver
 
     static {
         verbByMethod = new HashMap<String, Verb>();
-        verbByMethod.put("get", CommonVerbs.GET); // or, read in CRUD
-        verbByMethod.put("put", CommonVerbs.CREATE);
-        verbByMethod.put("post", CommonVerbs.UPDATE);
-        verbByMethod.put("delete", CommonVerbs.DELETE);
-        verbByMethod.put("head", CommonVerbs.HEAD);
+        verbByMethod.put("get", Verbs.GET); // or, read in CRUD
+        verbByMethod.put("put", Verbs.CREATE);
+        verbByMethod.put("post", Verbs.UPDATE);
+        verbByMethod.put("delete", Verbs.DELETE);
+        verbByMethod.put("head", Verbs.ESTATE);
     }
 
     @Override
