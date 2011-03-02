@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
+import com.bee32.plover.disp.util.DispatchUtil;
 
 public class BookStoreTest
         extends Assert {
@@ -25,7 +26,7 @@ public class BookStoreTest
     @Test
     public void testDispatchToBookStore()
             throws DispatchException {
-        Object bookStore = dispatcher.dispatch(mm, bookModuleOid + "/book");
+        Object bookStore = DispatchUtil.dispatch(dispatcher, mm, bookModuleOid + "/book");
         assertSame(SimpleBooks.store, bookStore);
     }
 
@@ -33,7 +34,7 @@ public class BookStoreTest
     public void testDispatchToBook()
             throws DispatchException {
         Book book = SimpleBooks.helloWorld;
-        Object got = dispatcher.dispatch(mm, bookModuleOid + "/book/World");
+        Object got = DispatchUtil.dispatch(dispatcher, mm, bookModuleOid + "/book/World");
         assertSame(book, got);
     }
 

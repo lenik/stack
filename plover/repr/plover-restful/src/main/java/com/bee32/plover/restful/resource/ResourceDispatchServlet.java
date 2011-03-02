@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.disp.DispatchException;
+import com.bee32.plover.disp.util.DispatchUtil;
 
 /**
  * TODO Convert this servlet to a View Renderer in plover-model arch.
@@ -37,7 +38,7 @@ public class ResourceDispatchServlet
 
         IResource resource;
         try {
-            resource = dispatcher.dispatch(dispatcher, path);
+            resource = (IResource) DispatchUtil.dispatch(dispatcher, dispatcher, path);
         } catch (DispatchException e) {
             throw new ServletException(e.getMessage(), e);
         }

@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.ServiceLoader;
 
 import com.bee32.plover.disp.AbstractDispatcher;
+import com.bee32.plover.disp.DispatchContext;
 import com.bee32.plover.disp.DispatchException;
+import com.bee32.plover.disp.IDispatchContext;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.restful.DispatchFilter;
 import com.bee32.plover.restful.ModuleManager;
@@ -39,8 +41,11 @@ public class ResourceDispatcher
      * @see ModuleManager
      */
     @Override
-    public IResource dispatch(Object context, ITokenQueue tokens)
+    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
             throws DispatchException {
+        // The context object is ignored.
+        // Object obj = context.getObject();
+
         String type = tokens.peek();
         ResourceFactory resourceFactory = resourceTypes.get(type);
         if (resourceFactory == null)
@@ -57,16 +62,16 @@ public class ResourceDispatcher
         }
 
         if (resource == null)
-            throw new DispatchException();
+            throw new DispatchException("Resource is resolved to null");
 
-        tokens.skip(tokens.available());
-        return resource;
-    }
+        int available = tokens.available();
+        String[] consumedTokens = new String[1 + available];
+        consumedTokens[0] = type;
+        for (int i = 1; i <= available; i++) {
+            consumedTokens[i] = tokens.shift();
+        }
 
-    @Override
-    public IResource dispatch(Object context, String path)
-            throws DispatchException {
-        return (IResource) super.dispatch(context, path);
+        return new DispatchContext(context, resource, consumedTokens);
     }
 
     private static final ResourceDispatcher instance;

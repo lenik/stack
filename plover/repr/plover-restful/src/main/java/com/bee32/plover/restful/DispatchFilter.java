@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.bee32.plover.disp.DispatchContext;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
+import com.bee32.plover.disp.IDispatchContext;
 import com.bee32.plover.disp.util.TokenQueue;
 import com.bee32.plover.model.IModel;
 import com.bee32.plover.model.stage.ModelStage;
@@ -44,18 +46,20 @@ public class DispatchFilter
     private ServletContext servletContext;
     protected String contextPath; // Not used.
 
-    private Object rootContext;
+    private Object root;
 
     public DispatchFilter() {
-        rootContext = ModuleManager.getInstance();
+        root = ModuleManager.getInstance();
     }
 
-    public Object getRootContext() {
-        return rootContext;
+    public Object getRoot() {
+        return root;
     }
 
-    public void setRootContext(Object rootContext) {
-        this.rootContext = rootContext;
+    public void setRoot(Object root) {
+        if (root == null)
+            throw new NullPointerException("root");
+        this.root = root;
     }
 
     @Override
@@ -83,22 +87,36 @@ public class DispatchFilter
             String pathInfo = rreq.getPath();
             TokenQueue tq = new TokenQueue(pathInfo);
 
+            IDispatchContext rootContext = new DispatchContext(root);
             Dispatcher dispatcher = Dispatcher.getInstance();
-            Object target;
+            IDispatchContext resultContext;
             try {
-                target = dispatcher.dispatch(rootContext, tq);
+                resultContext = dispatcher.dispatch(rootContext, tq);
             } catch (DispatchException e) {
                 // resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
                 throw new ServletException(e.getMessage(), e);
             }
 
-            if (target != null) {
+            if (resultContext == null) {
+                chain.doFilter(request, response);
+                return;
+            }
 
+            Object result = resultContext.getObject();
+            // Date expires = resultContext.getExpires();
+
+            if (result == null) {
+                // ERROR 404??
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+            if (result != null) {
                 //
-                target.getClass();
+                result.getClass();
 
-                if (target instanceof IModel) {
-                    IModel targetModel = (IModel) target;
+                if (result instanceof IModel) {
+                    IModel targetModel = (IModel) result;
 
                     ServletContainer container = new ServletContainer(servletContext, request, response);
                     ModelStage stage = new ModelStage(container);
@@ -113,8 +131,8 @@ public class DispatchFilter
                     // display...
                 }
 
-                else if (target instanceof Servlet) {
-                    Servlet targetServlet = (Servlet) target;
+                else if (result instanceof Servlet) {
+                    Servlet targetServlet = (Servlet) result;
                     targetServlet.service(request, response);
                 }
 
@@ -126,7 +144,6 @@ public class DispatchFilter
             }
         }
 
-        chain.doFilter(request, response);
     }
 
     @Override
