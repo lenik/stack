@@ -35,7 +35,7 @@ public class ModelStage
     public Profile getView() {
         Profile view = getQualifier(Profile.class);
         if (view == null)
-            view = StandardProfiles.VIEW;
+            view = StandardProfiles.CONTENT;
         return view;
     }
 
