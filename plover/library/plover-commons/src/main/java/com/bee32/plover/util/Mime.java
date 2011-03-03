@@ -63,4 +63,12 @@ public class Mime
         return name;
     }
 
+    public static Mime getInstance(String contentType) {
+        return Mimes.contentTypeMap.get(contentType);
+    }
+
+    public static Mime getInstanceByExtension(String extension) {
+        return Mimes.extensionMap.get(extension);
+    }
+
 }

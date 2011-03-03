@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class Mimes {
 
-    public static Map<String, Mime> contentTypeMap = new HashMap<String, Mime>();
-    public static Map<String, Mime> extensionMap = new HashMap<String, Mime>();
+    static Map<String, Mime> contentTypeMap = new HashMap<String, Mime>();
+    static Map<String, Mime> extensionMap = new HashMap<String, Mime>();
 
     public static Mime register(String contentType, String preferredExtension, String... altExtensions) {
         if (contentType == null)
