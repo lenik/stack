@@ -4,25 +4,24 @@ import java.io.Serializable;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.bee32.plover.model.Model;
 import com.bee32.plover.model.profile.Profile;
+import com.bee32.plover.model.profile.StandardProfiles;
 import com.bee32.plover.restful.Verb;
+import com.bee32.plover.restful.Verbs;
+import com.bee32.plover.util.Mime;
+import com.bee32.plover.util.Mimes;
 
 public class ResourceRequest
-        extends Model
         implements IResourceRequest, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    static final String defaultView = "view";
-    static final String defaultRenderer = "html";
-
     private final HttpServletRequest rawRequest;
 
-    private Verb verb;
+    private Verb verb = Verbs.GET;
     private String path;
-    private Profile profile;
-    private String format;
+    private Profile profile = StandardProfiles.CONTENT;
+    private Mime contentType = Mimes.text_html;
 
     public ResourceRequest(HttpServletRequest request) {
         this.rawRequest = request;
@@ -61,12 +60,12 @@ public class ResourceRequest
     }
 
     @Override
-    public String getFormat() {
-        return format;
+    public Mime getContentType() {
+        return contentType;
     }
 
-    public void setFormat(String format) {
-        this.format = format;
+    public void setContentType(Mime contentType) {
+        this.contentType = contentType;
     }
 
     @Override

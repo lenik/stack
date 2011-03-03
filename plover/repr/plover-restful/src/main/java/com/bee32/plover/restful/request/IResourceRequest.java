@@ -4,6 +4,7 @@ import javax.servlet.ServletRequest;
 
 import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.restful.Verb;
+import com.bee32.plover.util.Mime;
 
 public interface IResourceRequest {
 
@@ -38,7 +39,7 @@ public interface IResourceRequest {
     /**
      * The output format.
      */
-    String getFormat();
+    Mime getContentType();
 
     /**
      * @see ServletRequest#getParameter(String)

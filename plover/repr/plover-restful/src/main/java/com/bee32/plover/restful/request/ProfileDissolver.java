@@ -16,7 +16,7 @@ import com.bee32.plover.model.profile.StandardProfiles;
  * thru a specific model builder functions.
  */
 public class ProfileDissolver
-        implements IExtensionDissolver {
+        implements ISuffixDissolver {
 
     private static Map<String, Profile> profileByKeyword;
 
@@ -41,14 +41,14 @@ public class ProfileDissolver
     }
 
     @Override
-    public boolean desolveExtension(String extension, ResourceRequest model) {
-        if (extension == null)
+    public boolean desolveSuffix(String name, ResourceRequest model) {
+        if (name == null)
             throw new NullPointerException("extension");
 
         if (profileByKeyword == null)
             return false;
 
-        Profile profile = profileByKeyword.get(extension);
+        Profile profile = profileByKeyword.get(name);
         if (profile == null)
             return false;
 

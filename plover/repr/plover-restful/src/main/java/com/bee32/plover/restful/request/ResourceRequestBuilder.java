@@ -1,23 +1,29 @@
 package com.bee32.plover.restful.request;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.TreeSet;
 
+import javax.free.IllegalUsageException;
 import javax.free.StringPart;
 import javax.servlet.http.HttpServletRequest;
+
+import com.bee32.plover.model.profile.StandardProfiles;
+import com.bee32.plover.util.Mime;
 
 public class ResourceRequestBuilder {
 
     private static IMethodDissolver methodDissolver;
-    private static List<IExtensionDissolver> extensionDissolvers;
+    private static Map<Character, ISuffixDissolver> suffixDissolvers;
 
     static {
         methodDissolver = new MethodDissolver();
-        extensionDissolvers = new ArrayList<IExtensionDissolver>();
-        extensionDissolvers.add(new FormatDissolver());
-        extensionDissolvers.add(new ProfileDissolver());
+
+        suffixDissolvers = new HashMap<Character, ISuffixDissolver>();
+        suffixDissolvers.put('~', new ProfileDissolver());
+        suffixDissolvers.put('*', new VerbDissolver());
+        suffixDissolvers.put('.', new ContentTypeDissolver());
     }
 
     static TreeSet<IRequestPreprocessor> preprocessors;
@@ -38,32 +44,49 @@ public class ResourceRequestBuilder {
     public ResourceRequest build(HttpServletRequest request) {
         ResourceRequest model = new ResourceRequest(request);
 
-        // translate http method
+        // Translate http method
         String httpMethod = request.getMethod();
         methodDissolver.desolveMethod(httpMethod, model);
 
-        String uri = request.getRequestURI();
-        String baseName = StringPart.afterLast(uri, '/');
-
-        // parse extensions
-        int end = baseName.length();
-        int dot;
-        while ((dot = baseName.lastIndexOf('.', end - 1)) != -1) {
-            String extension = baseName.substring(dot + 1, end);
-            boolean consumed = false;
-            for (IExtensionDissolver ed : extensionDissolvers) {
-                if (ed.desolveExtension(extension, model))
-                    consumed = true;
-            }
-            if (!consumed)
-                break;
-            end = dot;
+        String acceptContentType = request.getHeader("Accept-Content-Type");
+        if (acceptContentType != null) {
+            Mime contentType = Mime.getInstance(acceptContentType);
+            if (contentType != null)
+                model.setContentType(contentType);
         }
 
-        // resource path
-        int stripped = baseName.length() - end;
-        String path = uri.substring(0, uri.length() - stripped);
+        // Prepare resource path
+        // dir/base*~.suffix
+        // dir/*~.suffix => base=""
+        String rawPath = request.getPathInfo();
+        String dirName = StringPart.beforeLast(rawPath, '/');
+        String baseName = StringPart.afterLast(rawPath, '/');
+
+        // Prepare to parse suffixes
+        SuffixTokenizer tokens = new SuffixTokenizer(baseName, true);
+        baseName = tokens.next();
+
+        String path;
+        if (baseName.isEmpty()) { // index?
+            path = dirName;
+            model.setProfile(StandardProfiles.INDEX);
+        } else {
+            path = dirName + '/' + baseName;
+        }
         model.setPath(path);
+
+        while (tokens.hasNext()) {
+            String suffix = tokens.next();
+
+            char delim = suffix.charAt(0);
+            ISuffixDissolver dissolver = suffixDissolvers.get(delim);
+            if (dissolver == null)
+                throw new IllegalUsageException("Bad suffix: " + suffix);
+
+            String suffixName = suffix.substring(1);
+
+            dissolver.desolveSuffix(suffixName, model);
+        }
 
         // other preprocessors.
         if (preprocessors != null) {
