@@ -23,6 +23,11 @@ public class Mime
         return name;
     }
 
+    /**
+     * The preferred extension name.
+     *
+     * @return The extension name, without the dot(.).
+     */
     public String getPreferredExtension() {
         return preferredExtension;
     }
