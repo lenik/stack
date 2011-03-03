@@ -2,16 +2,16 @@ package com.bee32.plover.model.profile;
 
 public interface StandardProfiles {
 
-    Profile SUMMARY = new Profile("summary");
-    Profile ONE_LINE = new Profile("one-line", SUMMARY);
-    Profile LIST_ENTRY = new Profile("index", ONE_LINE);
+    Profile CONTENT = new Profile("content");
+    Profile BRIEF = new Profile("brief", CONTENT);
+    Profile LIST_ENTRY = new Profile("index", BRIEF);
+    Profile ONE_LINE = new Profile("index", LIST_ENTRY);
 
-    Profile DUMP = new Profile("dump");
-    Profile VIEW = new Profile("page", DUMP);
-    Profile SHORT = new Profile("short", VIEW);
-    Profile WAP = new Profile("wap", SHORT);
+    Profile EDIT = new Profile("edit", CONTENT);
+    Profile EDIT_BRIEF = new Profile("edit-brief", EDIT);
+    Profile EDIT_LIST_ENTRY = new Profile("", EDIT_BRIEF);
+    Profile EDIT_ONE_LINE = new Profile("", EDIT_LIST_ENTRY);
 
-    Profile EDIT = new Profile("edit");
-    Profile EDIT_LIST_ENTRY = new Profile("edit-list-entry", EDIT);
+    Profile INDEX = new Profile("index", CONTENT);
 
 }
