@@ -6,7 +6,7 @@ import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.restful.Verb;
 import com.bee32.plover.util.Mime;
 
-public interface IResourceRequest {
+public interface IRestfulRequest {
 
     /**
      * The original servlet request.

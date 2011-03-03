@@ -11,25 +11,25 @@ import com.bee32.plover.restful.Verbs;
 import com.bee32.plover.util.Mime;
 import com.bee32.plover.util.Mimes;
 
-public class ResourceRequest
-        implements IResourceRequest, Serializable {
+public class RestfulRequest
+        implements IRestfulRequest, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final HttpServletRequest rawRequest;
+    private final HttpServletRequest servletRequest;
 
     private Verb verb = Verbs.GET;
     private String path;
     private Profile profile = StandardProfiles.CONTENT;
     private Mime contentType = Mimes.text_html;
 
-    public ResourceRequest(HttpServletRequest request) {
-        this.rawRequest = request;
+    public RestfulRequest(HttpServletRequest request) {
+        this.servletRequest = request;
     }
 
     @Override
     public HttpServletRequest getServletRequest() {
-        return rawRequest;
+        return servletRequest;
     }
 
     @Override
@@ -70,17 +70,41 @@ public class ResourceRequest
 
     @Override
     public String getParameter(String name) {
-        return rawRequest.getParameter(name);
+        return servletRequest.getParameter(name);
     }
 
     @Override
     public String[] getParameterValues(String name) {
-        return rawRequest.getParameterValues(name);
+        return servletRequest.getParameterValues(name);
+    }
+
+    public String toComplexPath() {
+        StringBuffer buf = new StringBuffer();
+
+        buf.append(path);
+
+        if (profile != StandardProfiles.CONTENT) {
+            buf.append('~');
+            buf.append(profile);
+        }
+
+        if (verb != null && verb != Verbs.GET) {
+            buf.append('*');
+            buf.append(verb);
+        }
+
+        if (contentType != Mimes.text_html) {
+            buf.append('.');
+            buf.append(contentType.getPreferredExtension());
+        }
+
+        String complexPath = buf.toString();
+        return complexPath;
     }
 
     @Override
     public String toString() {
-        return verb + " " + path + ":" + profile;
+        return toComplexPath();
     }
 
 }

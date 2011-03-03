@@ -6,7 +6,7 @@ public class ContentTypeDissolver
         implements ISuffixDissolver {
 
     @Override
-    public boolean desolveSuffix(String name, ResourceRequest model) {
+    public boolean desolveSuffix(String name, RestfulRequest model) {
         if (name == null)
             throw new NullPointerException("extension");
 

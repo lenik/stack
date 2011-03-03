@@ -21,7 +21,7 @@ public class MethodDissolver
     }
 
     @Override
-    public void desolveMethod(String httpMethod, ResourceRequest model) {
+    public void desolveMethod(String httpMethod, RestfulRequest model) {
         if (httpMethod == null)
             throw new NullPointerException("httpMethod");
 

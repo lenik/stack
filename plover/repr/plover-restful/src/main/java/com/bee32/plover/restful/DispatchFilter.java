@@ -22,8 +22,8 @@ import com.bee32.plover.disp.util.TokenQueue;
 import com.bee32.plover.model.IModel;
 import com.bee32.plover.model.stage.ModelStage;
 import com.bee32.plover.model.stage.ModelStageException;
-import com.bee32.plover.restful.request.ResourceRequest;
-import com.bee32.plover.restful.request.ResourceRequestBuilder;
+import com.bee32.plover.restful.request.RestfulRequest;
+import com.bee32.plover.restful.request.RestfulRequestBuilder;
 import com.bee32.plover.servlet.container.ServletContainer;
 
 /**
@@ -81,8 +81,8 @@ public class DispatchFilter
             HttpServletRequest req = (HttpServletRequest) request;
             HttpServletResponse resp = (HttpServletResponse) response;
 
-            ResourceRequestBuilder requestBuilder = ResourceRequestBuilder.getInstance();
-            ResourceRequest rreq = requestBuilder.build(req);
+            RestfulRequestBuilder requestBuilder = RestfulRequestBuilder.getInstance();
+            RestfulRequest rreq = requestBuilder.build(req);
 
             String pathInfo = rreq.getPath();
             TokenQueue tq = new TokenQueue(pathInfo);

@@ -6,7 +6,7 @@ public class VerbPreprocessor
         extends AbstractRequestPreprocessor {
 
     @Override
-    public void preprocess(ResourceRequest request) {
+    public void preprocess(RestfulRequest request) {
         String x = request.getParameter("X");
         if (x != null) {
             Verb verb = new Verb(x);

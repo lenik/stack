@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.bee32.plover.model.profile.StandardProfiles;
 import com.bee32.plover.util.Mime;
 
-public class ResourceRequestBuilder {
+public class RestfulRequestBuilder {
 
     private static IMethodDissolver methodDissolver;
     private static Map<Character, ISuffixDissolver> suffixDissolvers;
@@ -41,8 +41,8 @@ public class ResourceRequestBuilder {
         reloadServices();
     }
 
-    public ResourceRequest build(HttpServletRequest request) {
-        ResourceRequest model = new ResourceRequest(request);
+    public RestfulRequest build(HttpServletRequest request) {
+        RestfulRequest model = new RestfulRequest(request);
 
         // Translate http method
         String httpMethod = request.getMethod();
@@ -97,9 +97,9 @@ public class ResourceRequestBuilder {
         return model;
     }
 
-    private static final ResourceRequestBuilder instance = new ResourceRequestBuilder();
+    private static final RestfulRequestBuilder instance = new RestfulRequestBuilder();
 
-    public static ResourceRequestBuilder getInstance() {
+    public static RestfulRequestBuilder getInstance() {
         return instance;
     }
 
