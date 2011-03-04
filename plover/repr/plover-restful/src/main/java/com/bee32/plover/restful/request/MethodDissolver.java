@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.plover.restful.Verb;
-import com.bee32.plover.restful.Verbs;
+import com.bee32.plover.restful.VerbNames;
 
 public class MethodDissolver
         implements IMethodDissolver {
@@ -13,11 +13,10 @@ public class MethodDissolver
 
     static {
         verbByMethod = new HashMap<String, Verb>();
-        verbByMethod.put("get", Verbs.GET); // or, read in CRUD
-        verbByMethod.put("put", Verbs.CREATE);
-        verbByMethod.put("post", Verbs.UPDATE);
-        verbByMethod.put("delete", Verbs.DELETE);
-        verbByMethod.put("head", Verbs.ESTATE);
+        verbByMethod.put("put", new Verb(VerbNames.CREATE));
+        verbByMethod.put("post", new Verb(VerbNames.UPDATE));
+        verbByMethod.put("delete", new Verb(VerbNames.DELETE));
+        verbByMethod.put("head", new Verb(VerbNames.ESTATE));
     }
 
     @Override
@@ -28,10 +27,8 @@ public class MethodDissolver
         String methodName = httpMethod.toLowerCase();
 
         Verb verb = verbByMethod.get(methodName);
-        if (verb == null)
-            verb = new Verb(methodName);
-
-        model.setVerb(verb);
+        if (verb != null)
+            model.setVerb(verb);
     }
 
 }

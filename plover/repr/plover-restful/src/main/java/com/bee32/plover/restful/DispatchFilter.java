@@ -2,8 +2,6 @@ package com.bee32.plover.restful;
 
 import java.io.IOException;
 
-import javax.free.FinalNegotiation;
-import javax.free.NegotiationParameter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -20,7 +18,7 @@ import com.bee32.plover.disp.DispatchContext;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.IDispatchContext;
-import com.bee32.plover.disp.util.TokenQueue;
+import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.model.IModel;
 import com.bee32.plover.model.stage.ModelStage;
 import com.bee32.plover.model.stage.ModelStageException;
@@ -105,7 +103,14 @@ public class DispatchFilter
 
         // 2, Path-dispatch
         String dispatchPath = rreq.getDispatchPath();
-        TokenQueue tq = new TokenQueue(dispatchPath);
+
+        Verb verb = rreq.getVerb();
+        if (verb != null) {
+            dispatchPath = verb.translate(dispatchPath);
+            rreq.setDispatchPath(dispatchPath);
+        }
+
+        ITokenQueue tq = rreq.getTokenQueue();
 
         IDispatchContext rootContext = new DispatchContext(root);
         Dispatcher dispatcher = Dispatcher.getInstance();
@@ -129,22 +134,7 @@ public class DispatchFilter
             return true;
         }
 
-        // 3, Do the verb
-        Verb verb = rreq.getVerb();
-        if (verb != null && verb != Verbs.GET) {
-
-            if (verb.isManaged()) {
-
-            }
-
-            FinalNegotiation negotiation = new FinalNegotiation( //
-                    new NegotiationParameter(HttpServletRequest.class, req), //
-                    new NegotiationParameter(HttpServletResponse.class, resp) //
-            );
-
-        }
-
-        // 4, Render the specific Profile, or default if none.
+        // 3, Render the specific Profile, or default if none.
         if (result instanceof Servlet) {
             Servlet resultServlet = (Servlet) result;
             resultServlet.service(request, response);

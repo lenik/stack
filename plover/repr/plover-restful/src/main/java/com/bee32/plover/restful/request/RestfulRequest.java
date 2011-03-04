@@ -4,10 +4,11 @@ import java.io.Serializable;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.bee32.plover.disp.util.ITokenQueue;
+import com.bee32.plover.disp.util.TokenQueue;
 import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.model.profile.StandardProfiles;
 import com.bee32.plover.restful.Verb;
-import com.bee32.plover.restful.Verbs;
 import com.bee32.plover.servlet.util.ModifiableHttpServletRequest;
 import com.bee32.plover.util.Mime;
 import com.bee32.plover.util.Mimes;
@@ -18,8 +19,11 @@ public class RestfulRequest
 
     private static final long serialVersionUID = 1L;
 
-    private Verb verb = Verbs.GET;
+    private Verb verb;
+
     private String path;
+    private ITokenQueue tokenQueue;
+
     private Profile profile = StandardProfiles.CONTENT;
     private Mime contentType = Mimes.text_html;
 
@@ -41,8 +45,16 @@ public class RestfulRequest
         return path;
     }
 
-    public void setPath(String path) {
+    public void setDispatchPath(String path) {
         this.path = path;
+        if (path == null)
+            tokenQueue = null;
+        else
+            tokenQueue = new TokenQueue(path);
+    }
+
+    public ITokenQueue getTokenQueue() {
+        return tokenQueue;
     }
 
     @Override
@@ -73,8 +85,10 @@ public class RestfulRequest
             buf.append(profile);
         }
 
-        if (verb != null && verb != Verbs.GET) {
-            buf.append('*');
+        if (verb != null) {
+            int level = verb.getLevel();
+            while (level-- > 0)
+                buf.append('*');
             buf.append(verb);
         }
 

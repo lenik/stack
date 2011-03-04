@@ -73,7 +73,7 @@ public class RestfulRequestBuilder {
         } else {
             path = dirName + '/' + baseName;
         }
-        model.setPath(path);
+        model.setDispatchPath(path);
 
         while (tokens.hasNext()) {
             String suffix = tokens.next();
