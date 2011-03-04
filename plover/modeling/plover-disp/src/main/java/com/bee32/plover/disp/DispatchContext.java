@@ -2,8 +2,11 @@ package com.bee32.plover.disp;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
 
 import javax.free.StringArray;
+
+import com.bee32.plover.arch.operation.IOperation;
 
 public class DispatchContext
         implements IDispatchContext {
@@ -16,6 +19,8 @@ public class DispatchContext
     private Object reachedObject;
 
     private Date expires;
+
+    private Map<String, IOperation> operations;
 
     public DispatchContext(Object startObject) {
         this.parent = null;
@@ -47,6 +52,20 @@ public class DispatchContext
     }
 
     @Override
+    public String[] getConsumedTokens() {
+        return consumedTokens;
+    }
+
+    public void setConsumedTokens(String[] consumedTokens) {
+        this.consumedTokens = consumedTokens;
+    }
+
+    @Override
+    public String getConsumedPath() {
+        return StringArray.join("/", consumedTokens);
+    }
+
+    @Override
     public Object getObject() {
         return reachedObject;
     }
@@ -72,17 +91,15 @@ public class DispatchContext
     }
 
     @Override
-    public String[] getConsumedTokens() {
-        return consumedTokens;
-    }
-
-    public void setConsumedTokens(String[] consumedTokens) {
-        this.consumedTokens = consumedTokens;
+    public Map<String, IOperation> getOperations() {
+        return operations;
     }
 
     @Override
-    public String getConsumedPath() {
-        return StringArray.join("/", consumedTokens);
+    public IOperation getOperation(String name) {
+        if (operations == null)
+            return null;
+        return operations.get(name);
     }
 
     @Override
