@@ -1,1 +1,2 @@
 com.bee32.plover.arch.operation.builtin.MethodOperationDiscoverer
+com.bee32.plover.arch.operation.builtin.OverlayOperationDiscoverer

@@ -1,7 +1,16 @@
 package com.bee32.plover.arch.operation;
 
 import java.util.Map;
+import java.util.ServiceLoader;
 
+/**
+ * Discover operation from classes and instances.
+ *
+ * The discoverer are configured using java service framework.
+ *
+ * @see OperationDiscovererManager
+ * @see ServiceLoader
+ */
 public interface IOperationDiscoverer {
 
     /**
@@ -26,6 +35,6 @@ public interface IOperationDiscoverer {
      *
      * @return A mutable (copied) map.
      */
-    public Map<String, IOperation> getOperations(Object instance);
+    Map<String, IOperation> getOperations(Object instance);
 
 }

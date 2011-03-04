@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bee32.plover.arch.operation.builtin.MethodOperationDiscoverer;
+import com.bee32.plover.arch.operation.builtin.OverlayOperationDiscoverer;
 
 public class OperationDiscovererManagerTest
         extends Assert {
@@ -19,6 +20,7 @@ public class OperationDiscovererManagerTest
         }
 
         assertTrue(discovererClasses.contains(MethodOperationDiscoverer.class));
+        assertTrue(discovererClasses.contains(OverlayOperationDiscoverer.class));
     }
 
 }

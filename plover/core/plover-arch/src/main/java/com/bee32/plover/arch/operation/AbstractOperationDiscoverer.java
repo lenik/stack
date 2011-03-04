@@ -1,5 +1,6 @@
 package com.bee32.plover.arch.operation;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractOperationDiscoverer
@@ -35,6 +36,9 @@ public abstract class AbstractOperationDiscoverer
                     }
                 }
         }
+
+        if (allOperations == null)
+            allOperations = new HashMap<String, IOperation>();
 
         return allOperations;
     }

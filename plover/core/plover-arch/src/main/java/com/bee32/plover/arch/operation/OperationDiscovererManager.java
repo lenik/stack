@@ -24,4 +24,9 @@ public class OperationDiscovererManager {
         return discoverers;
     }
 
+    static {
+        // XXX - cyclic loading?
+        // ModuleLoader.load();
+    }
+
 }
