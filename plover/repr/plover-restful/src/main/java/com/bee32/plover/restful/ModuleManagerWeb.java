@@ -1,0 +1,37 @@
+package com.bee32.plover.restful;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.bee32.plover.arch.IModule;
+import com.bee32.plover.arch.ModuleLoader;
+import com.bee32.plover.pub.oid.OidUtil;
+import com.bee32.plover.pub.oid.OidVector;
+
+public class ModuleManagerWeb {
+
+    public void index(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        resp.setContentType("text/html");
+
+        PrintWriter out = resp.getWriter();
+        out.println("<ul>");
+
+        for (IModule module : ModuleLoader.getModules()) {
+            OidVector oid = OidUtil.getOid(module.getClass());
+
+            String name = module.getName();
+
+            String path = oid.toPath();
+            out.println("<li>" + name + ":");
+            out.println("  <a href=\"" + path + "\">about</a>");
+            out.println("  <a href=\"" + path + "/\">index</a>");
+        }
+
+        out.println("</ul>");
+    }
+
+}
