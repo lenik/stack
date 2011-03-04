@@ -59,9 +59,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-		<groupId>com.bee32.plover</groupId>
-		<artifactId>plover-view</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-view</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <name>Plover :: Repr :: Restful</name>

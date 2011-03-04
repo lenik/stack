@@ -12,15 +12,16 @@
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-commons</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-servlet</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <name>Plover :: Modeling :: Disp</name>
