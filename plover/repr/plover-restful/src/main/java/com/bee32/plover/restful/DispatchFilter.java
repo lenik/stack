@@ -2,6 +2,8 @@ package com.bee32.plover.restful;
 
 import java.io.IOException;
 
+import javax.free.FinalNegotiation;
+import javax.free.NegotiationParameter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -128,6 +130,19 @@ public class DispatchFilter
         }
 
         // 3, Do the verb
+        Verb verb = rreq.getVerb();
+        if (verb != null && verb != Verbs.GET) {
+
+            if (verb.isManaged()) {
+
+            }
+
+            FinalNegotiation negotiation = new FinalNegotiation( //
+                    new NegotiationParameter(HttpServletRequest.class, req), //
+                    new NegotiationParameter(HttpServletResponse.class, resp) //
+            );
+
+        }
 
         // 4, Render the specific Profile, or default if none.
         if (result instanceof Servlet) {
@@ -158,12 +173,14 @@ public class DispatchFilter
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        super.service(req, resp);
-    }
-
-    @Override
-    protected long getLastModified(HttpServletRequest req) {
-        return super.getLastModified(req);
+        try {
+            if (!processOrNot(req, resp)) {
+                // Dispatched to nothing.
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
+        } catch (RestfulException e) {
+            throw new ServletException(e.getMessage(), e);
+        }
     }
 
 }
