@@ -43,4 +43,27 @@ public abstract class AbstractOperationDiscoverer
         return allOperations;
     }
 
+    public IOperation getOperation(Object instance, String operationName) {
+        if (instance == null)
+            throw new NullPointerException("instance");
+        if (operationName == null)
+            throw new NullPointerException("operationName");
+
+        Map<String, IOperation> instanceOperations = getInstanceOperations(instance);
+        if (instanceOperations != null) {
+            IOperation operation = instanceOperations.get(operationName);
+            if (operation != null)
+                return operation;
+        }
+
+        Map<String, IOperation> typeOperations = getTypeOperations(instance.getClass());
+        if (typeOperations != null) {
+            IOperation operation = typeOperations.get(operationName);
+            if (operation != null)
+                return operation;
+        }
+
+        return null;
+    }
+
 }
