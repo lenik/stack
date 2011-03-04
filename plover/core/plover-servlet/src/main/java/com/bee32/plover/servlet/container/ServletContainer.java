@@ -1,6 +1,5 @@
 package com.bee32.plover.servlet.container;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -48,10 +47,6 @@ public class ServletContainer
 
     @Override
     public void setFrame(Object frameObject) {
-    }
-
-    public void service(Servlet servlet) {
-
     }
 
 }
