@@ -1,4 +1,4 @@
-package com.bee32.plover.restful;
+package com.bee32.plover.restful.book;
 
 public class SimpleBooks {
 

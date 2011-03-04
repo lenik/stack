@@ -1,4 +1,4 @@
-package com.bee32.plover.restful;
+package com.bee32.plover.restful.book;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -7,6 +7,8 @@ import com.bee32.plover.arch.ModuleLoader;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.util.DispatchUtil;
+import com.bee32.plover.restful.DispatchFilter;
+import com.bee32.plover.restful.ModuleManager;
 
 public class BookStoreTest
         extends Assert {
