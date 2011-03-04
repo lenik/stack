@@ -32,7 +32,7 @@ public class ModelStage
         qualifierMap.setQualifier(view);
     }
 
-    public Profile getView() {
+    public Profile getProfile() {
         Profile view = getQualifier(Profile.class);
         if (view == null)
             view = StandardProfiles.CONTENT;

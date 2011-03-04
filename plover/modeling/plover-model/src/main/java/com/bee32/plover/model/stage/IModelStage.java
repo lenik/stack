@@ -14,7 +14,7 @@ public interface IModelStage
      *
      * @return Non-<code>null</code> view qualifier.
      */
-    Profile getView();
+    Profile getProfile();
 
     /**
      * Add the element to the staged index.
