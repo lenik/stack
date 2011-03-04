@@ -1,5 +1,6 @@
 package com.bee32.plover.arch;
 
+import java.util.Collection;
 import java.util.Map;
 
 public interface IRepository<K, V>
@@ -42,6 +43,10 @@ public interface IRepository<K, V>
      * @see Map#get(Object)
      */
     V retrieve(Object key);
+
+    Collection<? extends K> listKeys();
+
+    Collection<? extends V> list();
 
     /**
      * Save the entity to the persistence layer.

@@ -1,5 +1,7 @@
 package com.bee32.plover.arch;
 
+import java.util.Collection;
+
 import com.bee32.plover.arch.credit.Credit;
 import com.bee32.plover.arch.locator.IObjectLocator;
 import com.bee32.plover.arch.locator.MapLocator;
@@ -10,7 +12,7 @@ public abstract class Module
 
     private MapLocator<Object> locatorImpl = new MapLocator<Object>(Object.class);
 
-    private Credit credit;
+    private Credit credit = Credit.dummy;
 
     public Module() {
         super();
@@ -82,6 +84,10 @@ public abstract class Module
     @Override
     public String getLocation(Object obj) {
         return locatorImpl.getLocation(obj);
+    }
+
+    public Collection<String> getLocationEntries() {
+        return locatorImpl.getLocations();
     }
 
 }

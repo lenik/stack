@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.bee32.plover.arch.Component;
+import com.bee32.plover.arch.credit.builtin.Lenik;
 
 public class Credit
         extends Component
@@ -42,6 +43,12 @@ public class Credit
             subjects.put(subject, contributors);
         }
         contributors.add(contributor);
+    }
+
+    public static final Credit dummy;
+    static {
+        dummy = new Credit();
+        dummy.addContributor(Subject.SystemArchitect, Lenik.getLenik());
     }
 
 }

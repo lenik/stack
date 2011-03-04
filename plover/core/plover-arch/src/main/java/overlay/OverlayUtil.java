@@ -13,12 +13,18 @@ public class OverlayUtil {
      */
     public static Class<?> getOverlay(Class<?> clazz, String extension) {
         String Extension = Strings.ucfirst(extension);
-        String overlayClassName = overlayPackage + "." + clazz.getName() + Extension;
-        Class<?> overlayClass;
+        String friendClassName = clazz.getName() + Extension;
         try {
-            overlayClass = Class.forName(overlayClassName);
-            return overlayClass;
-        } catch (ClassNotFoundException e) {
+            Class<?> friendClass = Class.forName(friendClassName);
+            return friendClass;
+        } catch (ClassNotFoundException e1) {
+            String overlayClassName = overlayPackage + "." + clazz.getName() + Extension;
+            Class<?> overlayClass;
+            try {
+                overlayClass = Class.forName(overlayClassName);
+                return overlayClass;
+            } catch (ClassNotFoundException e) {
+            }
         }
 
         Class<?> superclass = clazz.getSuperclass();

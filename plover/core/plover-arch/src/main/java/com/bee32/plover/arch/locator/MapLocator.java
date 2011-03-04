@@ -1,6 +1,7 @@
 package com.bee32.plover.arch.locator;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -49,6 +50,10 @@ public class MapLocator<T>
     public void remove(Object obj) {
         String locationToken = reverseMap.remove(obj);
         map.remove(locationToken);
+    }
+
+    public Collection<String> getLocations() {
+        return map.keySet();
     }
 
     @Override
