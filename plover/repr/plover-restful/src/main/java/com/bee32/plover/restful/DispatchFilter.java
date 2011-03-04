@@ -1,7 +1,9 @@
 package com.bee32.plover.restful;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
+import javax.free.NotImplementedException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -14,17 +16,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+
+import overlay.OverlayUtil;
+
+import com.bee32.plover.arch.operation.IOperation;
+import com.bee32.plover.arch.operation.OperationFusion;
+import com.bee32.plover.cache.annotation.StatelessUtil;
 import com.bee32.plover.disp.DispatchContext;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.IDispatchContext;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.model.IModel;
+import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.model.stage.ModelStage;
 import com.bee32.plover.model.stage.ModelStageException;
 import com.bee32.plover.restful.request.RestfulRequest;
 import com.bee32.plover.restful.request.RestfulRequestBuilder;
 import com.bee32.plover.servlet.container.ServletContainer;
+import com.bee32.plover.velocity.Velocity;
 
 /**
  * The overall modules dispatcher.
@@ -134,31 +146,83 @@ public class DispatchFilter
             return true;
         }
 
+        rreq.setDispatchContext(resultContext);
+
         // 3, Render the specific Profile, or default if none.
-        if (result instanceof Servlet) {
-            Servlet resultServlet = (Servlet) result;
-            resultServlet.service(request, response);
+        if (resp.isCommitted())
             return true;
-        }
 
-        if (result instanceof IModel) {
-            IModel targetModel = (IModel) result;
+        String profileName = "content";
+        Profile profile = rreq.getProfile();
+        if (profile != null)
+            profileName = profile.getName();
 
-            ServletContainer container = new ServletContainer(servletContext, request, response);
-            ModelStage stage = new ModelStage(container);
-            // ... stage.setView(tq.rest()); ...
+        Class<? extends Object> resultClass = result.getClass();
+        Class<?> webClass = OverlayUtil.getOverlay(resultClass, "web");
+        if (webClass != null) {
+            Object webImpl;
             try {
-                targetModel.stage(stage);
-            } catch (ModelStageException e) {
+                webImpl = StatelessUtil.createOrReuse(webClass);
+            } catch (Exception e) {
                 throw new ServletException(e.getMessage(), e);
             }
 
-            // stage.getElements() -> Tree-Convert...
-            // display...
+            OperationFusion fusion = OperationFusion.getInstance();
+            IOperation profileOperation = fusion.getOperation(webImpl, profileName);
+
+            if (profileOperation != null) {
+                try {
+                    // XXX - Return value is ignored here.
+                    profileOperation.execute(webImpl, req, resp);
+                } catch (ServletException e) {
+                    throw e;
+                } catch (Exception e) {
+                    throw new ServletException(e.getMessage(), e);
+                }
+                return true;
+            }
         }
 
-        throw new UnsupportedContentTypeException();
-    }
+        Template template = Velocity.getTemplate(resultClass, profileName);
+        if (template != null) {
+            VelocityContext context = new VelocityContext();
+            context.put("it", result);
+            PrintWriter writer = resp.getWriter();
+            template.merge(context, writer);
+            writer.flush();
+            return true;
+        }
+
+        if (!skipped) {
+            if (result instanceof Servlet) {
+                Servlet resultServlet = (Servlet) result;
+                resultServlet.service(request, response);
+                return true;
+            }
+
+            if (result instanceof IModel) {
+                IModel targetModel = (IModel) result;
+
+                ServletContainer container = new ServletContainer(servletContext, request, response);
+                ModelStage stage = new ModelStage(container);
+                // ... stage.setView(tq.rest()); ...
+                try {
+                    targetModel.stage(stage);
+                } catch (ModelStageException e) {
+                    throw new ServletException(e.getMessage(), e);
+                }
+
+                // stage.getElements() -> Tree-Convert...
+                // display...
+            }
+
+            throw new NotImplementedException();
+        } // skipped
+
+        return false;
+    } // processOrNot
+
+    static boolean skipped = true;
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp)
