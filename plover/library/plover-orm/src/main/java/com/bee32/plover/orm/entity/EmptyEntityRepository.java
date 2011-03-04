@@ -1,5 +1,8 @@
 package com.bee32.plover.orm.entity;
 
+import java.util.Collections;
+import java.util.List;
+
 public class EmptyEntityRepository<E extends IEntity<K>, K>
         extends EntityRepository<E, K> {
 
@@ -14,6 +17,15 @@ public class EmptyEntityRepository<E extends IEntity<K>, K>
     @Override
     public boolean containsKey(Object key) {
         return false;
+    }
+
+    @Override
+    public List<? extends E> list() {
+        return Collections.emptyList();
+    }
+
+    public List<? extends K> listKeys() {
+        return Collections.emptyList();
     }
 
     @Override

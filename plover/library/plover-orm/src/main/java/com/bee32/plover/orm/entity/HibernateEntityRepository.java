@@ -56,6 +56,18 @@ public class HibernateEntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
+    public List<? extends E> list() {
+        return getHibernateTemplate().loadAll(entityType);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<? extends K> listKeys() {
+        List<?> _list = getHibernateTemplate().find("select ID from " + entityType.getName());
+        return (List<? extends K>) _list;
+    }
+
+    @Override
     public boolean contains(Object entity) {
         return getHibernateTemplate().contains(entity);
     }

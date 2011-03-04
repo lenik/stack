@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +34,16 @@ public class MapEntityRepository<E extends IEntity<K>, K>
     @Override
     public boolean containsKey(Object key) {
         return getMap().containsKey(key);
+    }
+
+    @Override
+    public Collection<? extends E> list() {
+        return getMap().values();
+    }
+
+    @Override
+    public Collection<? extends K> listKeys() {
+        return getMap().keySet();
     }
 
     @Override

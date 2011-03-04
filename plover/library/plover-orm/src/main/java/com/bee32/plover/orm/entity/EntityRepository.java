@@ -1,6 +1,8 @@
 package com.bee32.plover.orm.entity;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.free.IllegalUsageException;
 import javax.free.ParseException;
@@ -52,6 +54,17 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
     @Override
     public K getKey(E entity) {
         return entity.getPrimaryKey();
+    }
+
+    @Override
+    public Collection<? extends K> listKeys() {
+        Collection<? extends E> list = list();
+        ArrayList<K> keys = new ArrayList<K>(list.size());
+        for (E entity : list) {
+            K key = getKey(entity);
+            keys.add(key);
+        }
+        return keys;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.entity;
 
+import java.util.Collection;
+
 import com.bee32.plover.arch.IRepository;
 import com.bee32.plover.arch.locator.IObjectLocator;
 
@@ -13,6 +15,12 @@ public interface IEntityRepository<E extends IEntity<K>, K>
 
     @Override
     K getKey(E entity);
+
+    @Override
+    Collection<? extends E> list();
+
+    @Override
+    Collection<? extends K> listKeys();
 
     @Override
     boolean contains(Object entity);
