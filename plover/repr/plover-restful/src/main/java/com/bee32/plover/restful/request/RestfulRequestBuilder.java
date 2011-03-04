@@ -30,6 +30,9 @@ public class RestfulRequestBuilder {
 
     static void reloadServices() {
         ServiceLoader<IRequestPreprocessor> preprocessorServices = ServiceLoader.load(IRequestPreprocessor.class);
+
+        preprocessors = new TreeSet<IRequestPreprocessor>(RequestPreprocessorComparator.getInstance());
+
         for (IRequestPreprocessor preprocessor : preprocessorServices) {
             preprocessors.add(preprocessor);
         }
@@ -59,6 +62,9 @@ public class RestfulRequestBuilder {
         // dir/base*~.suffix
         // dir/*~.suffix => base=""
         String rawPath = request.getPathInfo();
+        if (rawPath == null)
+            rawPath = request.getRequestURI();
+
         String dirName = StringPart.beforeLast(rawPath, '/');
         String baseName = StringPart.afterLast(rawPath, '/');
 

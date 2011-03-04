@@ -2,6 +2,8 @@ package com.bee32.plover.restful.request;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.bee32.plover.disp.IDispatchContext;
+import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.restful.Verb;
 import com.bee32.plover.util.Mime;
@@ -15,8 +17,6 @@ public interface IRestfulRequest
      * @return Non-<code>null</code> resource path (without any context-uri).
      */
     String getDispatchPath();
-
-    // IDispatchContext getDispatchContext();
 
     /**
      * The verb on resource.
@@ -36,5 +36,16 @@ public interface IRestfulRequest
      * The output format.
      */
     Mime getTargetContentType();
+
+    // Stateful extension
+
+    ITokenQueue getTokenQueue();
+
+    IDispatchContext getDispatchContext();
+
+    /**
+     * The same as dispatchContext.object.
+     */
+    <T> T getObject();
 
 }

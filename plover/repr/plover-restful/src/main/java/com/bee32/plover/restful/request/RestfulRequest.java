@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.bee32.plover.disp.IDispatchContext;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.disp.util.TokenQueue;
 import com.bee32.plover.model.profile.Profile;
@@ -23,6 +24,7 @@ public class RestfulRequest
 
     private String path;
     private ITokenQueue tokenQueue;
+    private IDispatchContext dispatchContext;
 
     private Profile profile = StandardProfiles.CONTENT;
     private Mime contentType = Mimes.text_html;
@@ -53,8 +55,26 @@ public class RestfulRequest
             tokenQueue = new TokenQueue(path);
     }
 
+    @Override
     public ITokenQueue getTokenQueue() {
         return tokenQueue;
+    }
+
+    @Override
+    public IDispatchContext getDispatchContext() {
+        return dispatchContext;
+    }
+
+    public void setDispatchContext(IDispatchContext dispatchContext) {
+        this.dispatchContext = dispatchContext;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getObject() {
+        if (dispatchContext == null)
+            return null;
+        return (T) dispatchContext.getObject();
     }
 
     @Override
