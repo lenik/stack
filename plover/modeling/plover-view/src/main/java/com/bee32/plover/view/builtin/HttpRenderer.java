@@ -20,7 +20,7 @@ public class HttpRenderer
             throws RenderException {
         HttpServlet servlet = (HttpServlet) obj;
         ServletResponse response = display.getResponse();
-        servlet.service(req, response);
+        // servlet.service(req, response);
     }
 
 }
