@@ -95,6 +95,10 @@ public class DispatchContext
         return operations;
     }
 
+    public void setOperations(Map<String, IOperation> operations) {
+        this.operations = operations;
+    }
+
     @Override
     public IOperation getOperation(String name) {
         if (operations == null)
