@@ -1,19 +1,22 @@
 package com.bee32.plover.restful.request;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.restful.Verb;
 import com.bee32.plover.util.Mime;
 
-public interface IRestfulRequest {
+public interface IRestfulRequest
+        extends HttpServletRequest {
 
     /**
-     * The original servlet request.
+     * The resource path.
      *
-     * @return The servlet request object, or <code>null</code> if non-applicable.
+     * @return Non-<code>null</code> resource path (without any context-uri).
      */
-    ServletRequest getServletRequest();
+    String getDispatchPath();
+
+    // IDispatchContext getDispatchContext();
 
     /**
      * The verb on resource.
@@ -21,13 +24,6 @@ public interface IRestfulRequest {
      * @return Non-<code>null</code> verb literal on the resource.
      */
     Verb getVerb();
-
-    /**
-     * The resource path.
-     *
-     * @return Non-<code>null</code> resource path (without any context-uri).
-     */
-    String getPath();
 
     /**
      * The profile to be staged.
@@ -39,16 +35,6 @@ public interface IRestfulRequest {
     /**
      * The output format.
      */
-    Mime getContentType();
-
-    /**
-     * @see ServletRequest#getParameter(String)
-     */
-    String getParameter(String name);
-
-    /**
-     * @see ServletRequest#getParameterValues(String)
-     */
-    String[] getParameterValues(String name);
+    Mime getTargetContentType();
 
 }

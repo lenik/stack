@@ -14,7 +14,7 @@ public class ContentTypeDissolver
         if (contentType == null)
             return false;
 
-        model.setContentType(contentType);
+        model.setTargetContentType(contentType);
         return true;
     }
 

@@ -52,7 +52,7 @@ public class RestfulRequestBuilder {
         if (acceptContentType != null) {
             Mime contentType = Mime.getInstance(acceptContentType);
             if (contentType != null)
-                model.setContentType(contentType);
+                model.setTargetContentType(contentType);
         }
 
         // Prepare resource path

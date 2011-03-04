@@ -8,15 +8,15 @@ import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.model.profile.StandardProfiles;
 import com.bee32.plover.restful.Verb;
 import com.bee32.plover.restful.Verbs;
+import com.bee32.plover.servlet.util.ModifiableHttpServletRequest;
 import com.bee32.plover.util.Mime;
 import com.bee32.plover.util.Mimes;
 
 public class RestfulRequest
+        extends ModifiableHttpServletRequest
         implements IRestfulRequest, Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private final HttpServletRequest servletRequest;
 
     private Verb verb = Verbs.GET;
     private String path;
@@ -24,12 +24,7 @@ public class RestfulRequest
     private Mime contentType = Mimes.text_html;
 
     public RestfulRequest(HttpServletRequest request) {
-        this.servletRequest = request;
-    }
-
-    @Override
-    public HttpServletRequest getServletRequest() {
-        return servletRequest;
+        super(request);
     }
 
     @Override
@@ -42,7 +37,7 @@ public class RestfulRequest
     }
 
     @Override
-    public String getPath() {
+    public String getDispatchPath() {
         return path;
     }
 
@@ -60,25 +55,15 @@ public class RestfulRequest
     }
 
     @Override
-    public Mime getContentType() {
+    public Mime getTargetContentType() {
         return contentType;
     }
 
-    public void setContentType(Mime contentType) {
+    public void setTargetContentType(Mime contentType) {
         this.contentType = contentType;
     }
 
-    @Override
-    public String getParameter(String name) {
-        return servletRequest.getParameter(name);
-    }
-
-    @Override
-    public String[] getParameterValues(String name) {
-        return servletRequest.getParameterValues(name);
-    }
-
-    public String toComplexPath() {
+    public String getRestfulPath() {
         StringBuffer buf = new StringBuffer();
 
         buf.append(path);
@@ -104,7 +89,7 @@ public class RestfulRequest
 
     @Override
     public String toString() {
-        return toComplexPath();
+        return getRestfulPath();
     }
 
 }
