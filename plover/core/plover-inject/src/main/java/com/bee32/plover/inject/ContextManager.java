@@ -7,7 +7,10 @@ import com.bee32.plover.inject.util.NameQualifiedClassMap;
 public class ContextManager
         extends AbstractContextManager {
 
-    protected final NameQualifiedClassMap contextMap = new NameQualifiedClassMap();;
+    protected final NameQualifiedClassMap<Object> contextMap;
+    {
+        contextMap = new NameQualifiedClassMap<Object>();
+    }
 
     public ContextManager() {
     }

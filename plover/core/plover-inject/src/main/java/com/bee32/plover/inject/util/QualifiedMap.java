@@ -2,8 +2,8 @@ package com.bee32.plover.inject.util;
 
 import javax.free.PreorderMap;
 
-public class QualifiedMap<Q>
-        extends PreorderMap<Q, Object> {
+public class QualifiedMap<Q, T>
+        extends PreorderMap<Q, T> {
 
     private static final long serialVersionUID = 1L;
 
