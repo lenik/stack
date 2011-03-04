@@ -77,73 +77,82 @@ public class DispatchFilter
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        if (request instanceof HttpServletRequest) {
-            HttpServletRequest req = (HttpServletRequest) request;
-            HttpServletResponse resp = (HttpServletResponse) response;
 
-            RestfulRequestBuilder requestBuilder = RestfulRequestBuilder.getInstance();
-            RestfulRequest rreq = requestBuilder.build(req);
+        try {
+            if (processOrNot(request, response))
+                return;
+        } catch (RestfulException e) {
+            throw new ServletException(e.getMessage(), e);
+        }
 
-            String pathInfo = rreq.getPath();
-            TokenQueue tq = new TokenQueue(pathInfo);
+        chain.doFilter(request, response);
+    }
 
-            IDispatchContext rootContext = new DispatchContext(root);
-            Dispatcher dispatcher = Dispatcher.getInstance();
-            IDispatchContext resultContext;
+    protected boolean processOrNot(ServletRequest request, ServletResponse response)
+            throws IOException, ServletException, RestfulException {
+
+        if (!(request instanceof HttpServletRequest))
+            return false;
+
+        // 1, Build the restful-request
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+
+        RestfulRequestBuilder requestBuilder = RestfulRequestBuilder.getInstance();
+        RestfulRequest rreq = requestBuilder.build(req);
+
+        // 2, Path-dispatch
+        String dispatchPath = rreq.getDispatchPath();
+        TokenQueue tq = new TokenQueue(dispatchPath);
+
+        IDispatchContext rootContext = new DispatchContext(root);
+        Dispatcher dispatcher = Dispatcher.getInstance();
+        IDispatchContext resultContext;
+        try {
+            resultContext = dispatcher.dispatch(rootContext, tq);
+        } catch (DispatchException e) {
+            // resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
+            throw new ServletException(e.getMessage(), e);
+        }
+
+        if (resultContext == null)
+            return false;
+
+        Object result = resultContext.getObject();
+        // Date expires = resultContext.getExpires();
+
+        if (result == null) {
+            // ERROR 404??
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return true;
+        }
+
+        // 3, Do the verb
+
+        // 4, Render the specific Profile, or default if none.
+        if (result instanceof Servlet) {
+            Servlet resultServlet = (Servlet) result;
+            resultServlet.service(request, response);
+            return true;
+        }
+
+        if (result instanceof IModel) {
+            IModel targetModel = (IModel) result;
+
+            ServletContainer container = new ServletContainer(servletContext, request, response);
+            ModelStage stage = new ModelStage(container);
+            // ... stage.setView(tq.rest()); ...
             try {
-                resultContext = dispatcher.dispatch(rootContext, tq);
-            } catch (DispatchException e) {
-                // resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
+                targetModel.stage(stage);
+            } catch (ModelStageException e) {
                 throw new ServletException(e.getMessage(), e);
             }
 
-            if (resultContext == null) {
-                chain.doFilter(request, response);
-                return;
-            }
-
-            Object result = resultContext.getObject();
-            // Date expires = resultContext.getExpires();
-
-            if (result == null) {
-                // ERROR 404??
-                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            if (result != null) {
-                //
-                result.getClass();
-
-                if (result instanceof IModel) {
-                    IModel targetModel = (IModel) result;
-
-                    ServletContainer container = new ServletContainer(servletContext, request, response);
-                    ModelStage stage = new ModelStage(container);
-                    // ... stage.setView(tq.rest()); ...
-                    try {
-                        targetModel.stage(stage);
-                    } catch (ModelStageException e) {
-                        throw new ServletException(e.getMessage(), e);
-                    }
-
-                    // stage.getElements() -> Tree-Convert...
-                    // display...
-                }
-
-                else if (result instanceof Servlet) {
-                    Servlet targetServlet = (Servlet) result;
-                    targetServlet.service(request, response);
-                }
-
-                // else if target.getClass()#doVIEW(req, resp) ...
-
-                // else if side-file target.getClass().getResource(simpleName + ".jelly") ...
-
-                return;
-            }
+            // stage.getElements() -> Tree-Convert...
+            // display...
         }
 
+        throw new UnsupportedContentTypeException();
     }
 
     @Override
