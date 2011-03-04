@@ -16,8 +16,8 @@ public class CoreInfoModule
         return CREDIT;
     }
 
-    static Credit CREDIT;
-    {
+    public static final Credit CREDIT;
+    static {
         CREDIT = new Credit();
         CREDIT.addContributor(Subject.SystemArchitect, Lenik.getLenik());
     }
