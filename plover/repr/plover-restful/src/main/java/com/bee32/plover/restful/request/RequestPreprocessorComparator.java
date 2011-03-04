@@ -2,7 +2,7 @@ package com.bee32.plover.restful.request;
 
 import java.util.Comparator;
 
-public class PreprocessorComparator
+public class RequestPreprocessorComparator
         implements Comparator<IRequestPreprocessor> {
 
     @Override
@@ -16,9 +16,9 @@ public class PreprocessorComparator
         return cmp;
     }
 
-    static final PreprocessorComparator instance = new PreprocessorComparator();
+    static final RequestPreprocessorComparator instance = new RequestPreprocessorComparator();
 
-    public static PreprocessorComparator getInstance() {
+    public static RequestPreprocessorComparator getInstance() {
         return instance;
     }
 
