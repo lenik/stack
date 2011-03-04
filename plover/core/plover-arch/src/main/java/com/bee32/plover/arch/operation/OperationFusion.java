@@ -1,10 +1,14 @@
 package com.bee32.plover.arch.operation;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class OperationFusion
         extends ClassOperationDiscoverer {
+
+    private OperationFusion() {
+    }
 
     @Override
     protected Map<String, IOperation> buildTypeOperationMap(Class<?> type) {
@@ -30,6 +34,10 @@ public class OperationFusion
                 merged.putAll(map);
             }
         }
+
+        if (merged == null)
+            merged = Collections.emptyMap();
+
         return merged;
     }
 
@@ -58,6 +66,12 @@ public class OperationFusion
             }
         }
         return merged;
+    }
+
+    public static final OperationFusion instance = new OperationFusion();
+
+    public static OperationFusion getInstance() {
+        return instance;
     }
 
 }
