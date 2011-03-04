@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.free.StringArray;
 
 import com.bee32.plover.arch.operation.IOperation;
+import com.bee32.plover.arch.operation.OperationFusion;
 
 public class DispatchContext
         implements IDispatchContext {
@@ -17,6 +18,7 @@ public class DispatchContext
     private String[] consumedTokens = emptyStringArray;
 
     private Object reachedObject;
+    private boolean objectPrepared;
 
     private Date expires;
 
@@ -71,7 +73,10 @@ public class DispatchContext
     }
 
     public void setObject(Object object) {
-        this.reachedObject = object;
+        if (reachedObject != object) {
+            this.reachedObject = object;
+            this.objectPrepared = false;
+        }
     }
 
     @Override
@@ -92,6 +97,7 @@ public class DispatchContext
 
     @Override
     public Map<String, IOperation> getOperations() {
+        prepareObject();
         return operations;
     }
 
@@ -104,6 +110,18 @@ public class DispatchContext
         if (operations == null)
             return null;
         return operations.get(name);
+    }
+
+    synchronized void prepareObject() {
+        if (!objectPrepared) {
+            if (reachedObject != null) {
+                OperationFusion fusion = OperationFusion.getInstance();
+                this.operations = fusion.getOperations(reachedObject);
+            } else {
+                this.operations = null;
+            }
+            objectPrepared = true;
+        }
     }
 
     @Override
