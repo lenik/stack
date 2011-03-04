@@ -13,13 +13,26 @@ public class BookStoreWeb {
     public String list(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         RestfulRequest rreq = (RestfulRequest) req;
-
         BookStore store = rreq.getObject();
 
         String list = Velocity.merge("list", store);
 
         resp.getWriter().println(list);
         return list;
+    }
+
+    public void create(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        RestfulRequest rreq = (RestfulRequest) req;
+        BookStore store = rreq.getObject();
+
+        String name = req.getParameter("name");
+        String content = req.getParameter("content");
+
+        Book book = new Book(name, content);
+        store.addBook(book);
+
+        resp.sendRedirect("~index");
     }
 
 }

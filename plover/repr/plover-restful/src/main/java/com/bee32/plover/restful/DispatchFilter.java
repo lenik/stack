@@ -173,7 +173,7 @@ public class DispatchFilter
             if (profileOperation != null) {
                 try {
                     // XXX - Return value is ignored here.
-                    profileOperation.execute(webImpl, req, resp);
+                    profileOperation.execute(webImpl, rreq, resp);
                 } catch (ServletException e) {
                     throw e;
                 } catch (Exception e) {

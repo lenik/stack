@@ -50,7 +50,7 @@ public class ProfileDissolver
 
         Profile profile = profileByKeyword.get(name);
         if (profile == null)
-            return false;
+            profile = new Profile(name);
 
         model.setProfile(profile);
         return true;
