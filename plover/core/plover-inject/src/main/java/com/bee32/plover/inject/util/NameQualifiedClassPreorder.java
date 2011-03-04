@@ -54,7 +54,7 @@ public class NameQualifiedClassPreorder
             return LESS_THAN;
 
         Class<?> class1 = nqc1.getClazz();
-        Class<?> class2 = nqc2.getClass();
+        Class<?> class2 = nqc2.getClazz();
 
         int cmp = classPreorder.precompare(class1, class2);
         if (cmp == EQUALS) {
