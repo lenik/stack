@@ -9,8 +9,18 @@
     <version>0.0.1-SNAPSHOT</version>
     <dependencies>
         <dependency>
-            <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-model</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-module</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-user</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -21,16 +31,6 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-indexing</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-module</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-user</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

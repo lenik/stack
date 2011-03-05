@@ -1,32 +1,33 @@
 package com.bee32.sem.process.verify.impl;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeMap;
 
 import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.plover.orm.entity.IEntity;
 import com.bee32.sem.process.verify.AbstractVerifyPolicy;
-import com.bee32.sem.process.verify.BadVerifyDataException;
-import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.VerifyException;
 
-public class Levelized
-        extends AbstractVerifyPolicy {
+public class MultiLevelAllowList
+        extends AbstractVerifyPolicy<ILevelContext, AllowState>
+        implements IEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    private final TreeMap<Integer, Collection<IPrincipal>> levelMap;
+    private Integer id;
 
-    public Levelized() {
-        this.levelMap = new TreeMap<Integer, Collection<IPrincipal>>();
+    private final TreeMap<Integer, Set<IPrincipal>> levelMap;
+
+    public MultiLevelAllowList() {
+        super(AllowState.class);
+        this.levelMap = new TreeMap<Integer, Set<IPrincipal>>();
     }
 
     public void add(int maxLevel, IPrincipal principal) {
         if (principal == null)
             throw new NullPointerException("principal");
 
-        Collection<IPrincipal> principals = levelMap.get(maxLevel);
+        Set<IPrincipal> principals = levelMap.get(maxLevel);
         if (principals == null) {
             principals = new HashSet<IPrincipal>();
             levelMap.put(maxLevel, principals);
@@ -34,11 +35,11 @@ public class Levelized
         principals.add(principal);
     }
 
-    public Collection<IPrincipal> getResponsibles(int level) {
+    public Set<IPrincipal> getResponsibles(int level) {
         Set<IPrincipal> responsibles = new HashSet<IPrincipal>();
         Integer ceil = levelMap.ceilingKey(level);
         while (ceil != null) {
-            Collection<IPrincipal> onelevel = levelMap.get(ceil);
+            Set<IPrincipal> onelevel = levelMap.get(ceil);
             responsibles.addAll(onelevel);
             ceil = levelMap.higherKey(ceil);
         }
@@ -46,9 +47,13 @@ public class Levelized
     }
 
     @Override
-    public void verify(IVerifiable verifiableObject)
-            throws VerifyException, BadVerifyDataException {
+    public Integer getPrimaryKey() {
+        return id;
+    }
 
+    @Override
+    public String checkState(ILevelContext context, AllowState state) {
+        return null;
     }
 
 }

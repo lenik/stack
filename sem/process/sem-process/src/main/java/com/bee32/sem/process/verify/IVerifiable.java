@@ -14,10 +14,10 @@ public interface IVerifiable {
     /**
      * 该业务采用的审核策略。
      */
-    IVerifyPolicy getVerifyPolicy();
+    IVerifyPolicy<?, ?> getVerifyPolicy();
 
     /**
-     * 查询审核数据。
+     * 查询审核数据的文本形式。
      *
      * 如果 {@link IVerifiable#getVerifyData()} 返回 <code>null</code>
      * 并不表示该业务不被审核，如果该业务隐含默认的审核规则，比如“采购的金额未超过大宗采购的最小值”，则该业务即被认为默认审核了。
@@ -29,6 +29,6 @@ public interface IVerifiable {
      *
      * @return 审核状态数据。
      */
-    VerifyState getVerifyState();
+    String getEncodedState();
 
 }

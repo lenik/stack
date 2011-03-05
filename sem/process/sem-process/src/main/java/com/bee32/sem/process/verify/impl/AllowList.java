@@ -5,70 +5,121 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.plover.model.stage.IModelStage;
-import com.bee32.plover.model.stage.ModelLoadException;
-import com.bee32.plover.model.stage.ModelStageException;
+import com.bee32.plover.orm.entity.IEntity;
 import com.bee32.sem.process.verify.AbstractVerifyPolicy;
-import com.bee32.sem.process.verify.BadVerifyDataException;
-import com.bee32.sem.process.verify.IVerifiable;
-import com.bee32.sem.process.verify.VerifyException;
-import com.bee32.sem.process.verify.VerifyState;
 
 /**
  * 由任一管理员审核策略。
  */
 public class AllowList
-        extends AbstractVerifyPolicy {
+        extends AbstractVerifyPolicy<Object, AllowState>
+        implements IEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    private final Collection<IPrincipal> allowList;
+    private Integer id;
+    private Collection<IPrincipal> responsibles;
+
+    public AllowList() {
+        super(AllowState.class);
+        this.responsibles = new ArrayList<IPrincipal>();
+    }
 
     public AllowList(IPrincipal singleManager) {
-        this.allowList = new ArrayList<IPrincipal>(1);
-        this.allowList.add(singleManager);
+        super(AllowState.class);
+        this.responsibles = new ArrayList<IPrincipal>(1);
+        this.responsibles.add(singleManager);
     }
 
-    public AllowList(IPrincipal... managers) {
-        if (managers == null)
-            throw new NullPointerException("managers");
-        this.allowList = Arrays.asList(managers);
+    public AllowList(IPrincipal... responsibles) {
+        super(AllowState.class);
+        if (responsibles == null)
+            throw new NullPointerException("responsibles");
+        this.responsibles = Arrays.asList(responsibles);
     }
 
-    public AllowList(Collection<IPrincipal> managers) {
-        if (managers == null)
-            throw new NullPointerException("managers");
-        this.allowList = managers;
+    public AllowList(Collection<IPrincipal> responsibles) {
+        super(AllowState.class);
+        if (responsibles == null)
+            throw new NullPointerException("responsibles");
+        this.responsibles = responsibles;
     }
 
-    public void verify(IVerifiable verifiableObject)
-            throws VerifyException, BadVerifyDataException {
-        if (verifiableObject == null)
-            throw new NullPointerException("verifiableObject");
-
-        VerifyState state = verifiableObject.getVerifyState();
+    @Override
+    public String checkState(Object context, AllowState state) {
         if (state == null)
-            throw new VerifyException("尚未审核。");
+            return "尚未审核。";
 
-        if (!(state instanceof AllowState))
-            throw new BadVerifyDataException(AllowState.class, state);
+        IPrincipal principal = state.getPrincipal();
 
-        AllowState allowState = (AllowState) state;
+        if (!responsibles.contains(principal))
+            return "无效的审核人：" + principal;
 
-        if (!allowList.contains(allowState.getAllowedBy()))
-            throw new VerifyException("无效的审核人：" + allowState.getAllowedBy());
+        return null;
     }
 
     @Override
-    public void stage(IModelStage stage)
-            throws ModelStageException {
-        super.stage(stage);
+    public Integer getPrimaryKey() {
+        return id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Collection<IPrincipal> getResponsibles() {
+        return responsibles;
+    }
+
+    public void setResponsibles(Collection<IPrincipal> responsibles) {
+        this.responsibles = responsibles;
     }
 
     @Override
-    public void reload(IModelStage stage)
-            throws ModelLoadException {
-        super.reload(stage);
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((responsibles == null) ? 0 : responsibles.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        AllowList other = (AllowList) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (responsibles == null) {
+            if (other.responsibles != null)
+                return false;
+        } else if (!responsibles.equals(other.responsibles))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer buf = new StringBuffer();
+        buf.append("Allow-List: ");
+        if (responsibles != null)
+            for (IPrincipal responsible : responsibles) {
+                buf.append('\n');
+                buf.append(responsible);
+            }
+        return buf.toString();
     }
 
 }

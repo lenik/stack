@@ -11,21 +11,30 @@ public class AllowState
 
     private static final long serialVersionUID = 1L;
 
-    private IPrincipal allowedBy;
+    private IPrincipal principal;
+    private String message;
 
     public AllowState() {
     }
 
     public AllowState(IPrincipal allowedBy) {
-        this.allowedBy = allowedBy;
+        this.principal = allowedBy;
     }
 
-    public IPrincipal getAllowedBy() {
-        return allowedBy;
+    public IPrincipal getPrincipal() {
+        return principal;
     }
 
-    public void setAllowedBy(IPrincipal allowedBy) {
-        this.allowedBy = allowedBy;
+    public void setPrincipal(IPrincipal principal) {
+        this.principal = principal;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
@@ -48,6 +57,36 @@ public class AllowState
     public void reload(IModelStage stage)
             throws ModelLoadException {
         // stage.get
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((principal == null) ? 0 : principal.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        AllowState other = (AllowState) obj;
+        if (principal == null) {
+            if (other.principal != null)
+                return false;
+        } else if (!principal.equals(other.principal))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Allowd by " + principal;
     }
 
 }
