@@ -13,6 +13,10 @@ import com.bee32.plover.restful.resource.ResourceDispatcher;
 public class ResourceModule
         extends DispatchModule {
 
+    public ResourceModule() {
+        super();
+    }
+
     public ResourceModule(String name) {
         super(name);
     }
