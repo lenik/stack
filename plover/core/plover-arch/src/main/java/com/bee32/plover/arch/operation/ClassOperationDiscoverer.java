@@ -17,6 +17,7 @@ public abstract class ClassOperationDiscoverer
     @Override
     public Map<String, IOperation> getTypeOperations(Class<?> type) {
         Map<String, IOperation> map = classMap.get(type);
+
         if (map == null) {
             synchronized (this) {
                 if (map == null) {
@@ -27,7 +28,10 @@ public abstract class ClassOperationDiscoverer
                 classMap.put(type, map);
             }
         }
-        return map;
+
+        @SuppressWarnings("unchecked")
+        Map<String, IOperation> _map = (Map<String, IOperation>) (Object) map;
+        return _map;
     }
 
     @Override

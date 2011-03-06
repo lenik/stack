@@ -22,7 +22,8 @@ public abstract class AbstractOperationDiscoverer
         if (instanceOperations != null && !instanceOperations.isEmpty())
             allOperations = instanceOperations;
 
-        Class<?> type = instance.getClass();
+        Class<?> type = (Class<?>) instance.getClass();
+
         Map<String, IOperation> typeOperations = getTypeOperations(type);
         if (typeOperations != null && !typeOperations.isEmpty()) {
             if (allOperations == null)
@@ -56,7 +57,9 @@ public abstract class AbstractOperationDiscoverer
                 return operation;
         }
 
-        Map<String, IOperation> typeOperations = getTypeOperations(instance.getClass());
+        Class<?> instanceClass = (Class<?>) instance.getClass();
+
+        Map<String, IOperation> typeOperations = getTypeOperations(instanceClass);
         if (typeOperations != null) {
             IOperation operation = typeOperations.get(operationName);
             if (operation != null)

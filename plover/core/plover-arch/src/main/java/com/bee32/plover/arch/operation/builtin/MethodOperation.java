@@ -3,6 +3,7 @@ package com.bee32.plover.arch.operation.builtin;
 import java.lang.reflect.Method;
 
 import com.bee32.plover.arch.operation.AbstractOperation;
+import com.bee32.plover.arch.operation.IParameterMap;
 
 public class MethodOperation
         extends AbstractOperation {
@@ -21,14 +22,15 @@ public class MethodOperation
     }
 
     @Override
-    public Class<?>[] getParameterTypes() {
-        return method.getParameterTypes();
-    }
-
-    @Override
-    public Object execute(Object instance, Object... parameters)
+    public Object execute(Object instance, IParameterMap parameters)
             throws Exception {
-        return method.invoke(instance, parameters);
+        Class<?>[] tv = method.getParameterTypes();
+        Object[] pv = new Object[tv.length];
+
+        for (int i = 0; i < tv.length; i++)
+            pv[i] = parameters.get(i);
+
+        return method.invoke(instance, pv);
     }
 
 }

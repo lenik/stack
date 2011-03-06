@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.operation.AbstractOperation;
+import com.bee32.plover.arch.operation.IParameterMap;
 
 public class DelegatedMethodOperation
         extends AbstractOperation {
@@ -39,19 +40,17 @@ public class DelegatedMethodOperation
     }
 
     @Override
-    public Class<?>[] getParameterTypes() {
-        return parameterTypes;
-    }
-
-    @Override
-    public Object execute(Object instance, Object... parameters)
+    public Object execute(Object instance, IParameterMap parameters)
             throws Exception {
-        Object[] prefixed = new Object[parameterTypes.length + 1];
+        Class<?>[] tv = method.getParameterTypes();
+        Object[] pv = new Object[1 + tv.length];
 
-        prefixed[0] = instance;
-        System.arraycopy(parameters, 0, prefixed, 1, parameters.length);
+        pv[0] = instance;
 
-        return method.invoke(null, parameters);
+        for (int i = 0; i < tv.length; i++)
+            pv[i + 1] = parameters.get(i);
+
+        return method.invoke(null, pv);
     }
 
 }
