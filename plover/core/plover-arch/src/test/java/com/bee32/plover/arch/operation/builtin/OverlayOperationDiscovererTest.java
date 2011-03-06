@@ -10,6 +10,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bee32.plover.arch.operation.IOperation;
+import com.bee32.plover.arch.operation.OperationContext;
 
 public class OverlayOperationDiscovererTest {
 
@@ -26,7 +27,7 @@ public class OverlayOperationDiscovererTest {
         Map<String, IOperation> operations = discoverer.getOperations(list);
 
         IOperation deleteOperation = operations.get("delete");
-        deleteOperation.execute(list, 1);
+        deleteOperation.execute(list, new OperationContext(1));
 
         assertEquals(1, list.size());
     }

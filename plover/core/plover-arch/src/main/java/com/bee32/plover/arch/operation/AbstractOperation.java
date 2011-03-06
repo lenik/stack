@@ -18,24 +18,22 @@ public abstract class AbstractOperation
         super(name);
     }
 
-    @Override
     public Object execute(Object instance, Object... parameters)
             throws Exception {
-        IParameterMap pm = new IndexedParameterMap(parameters);
+        IOperationContext pm = new IndexedContext(parameters);
         return execute(instance, pm);
     }
 
-    @Override
     public Object execute(Object instance, INegotiation negotiation)
             throws Exception {
-        NegotiationMap map = new NegotiationMap(negotiation);
+        NegotiationContext map = new NegotiationContext(negotiation);
         return execute(instance, map);
     }
 
-    @Override
-    public Object execute(Object instance, Map<Object, Object> parameters)
+    public Object execute(Object instance, Map<String, ?> parameters)
             throws Exception {
-        IParameterMap pm = new MapParameterMap(parameters);
+        IOperationContext pm = new OperationContext();
+        pm.putAll(parameters); // CopyOnWriteTreeMap();
         return execute(instance, pm);
     }
 
