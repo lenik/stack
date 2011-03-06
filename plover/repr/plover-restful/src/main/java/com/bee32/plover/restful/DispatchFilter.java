@@ -21,6 +21,7 @@ import org.apache.velocity.VelocityContext;
 
 import overlay.OverlayUtil;
 
+import com.bee32.plover.arch.naming.ReverseLookupRegistry;
 import com.bee32.plover.arch.operation.IOperation;
 import com.bee32.plover.arch.operation.OperationFusion;
 import com.bee32.plover.cache.annotation.StatelessUtil;
@@ -114,14 +115,6 @@ public class DispatchFilter
         RestfulRequest rreq = requestBuilder.build(req);
 
         // 2, Path-dispatch
-        String dispatchPath = rreq.getDispatchPath();
-
-        Verb verb = rreq.getVerb();
-        if (verb != null) {
-            dispatchPath = verb.translate(dispatchPath);
-            rreq.setDispatchPath(dispatchPath);
-        }
-
         ITokenQueue tq = rreq.getTokenQueue();
 
         IDispatchContext rootContext = new DispatchContext(root);
@@ -136,6 +129,46 @@ public class DispatchFilter
 
         if (resultContext == null)
             return false;
+
+        HttpRequestContext requestContext = new HttpRequestContext(req, resp);
+
+        Verb verb = rreq.getVerb();
+
+        if (verb != null) {
+            Object verbImpl;
+            Object redirectObject;
+
+            try {
+                verbImpl = verb.operate(resultContext, requestContext);
+            } catch (Exception e) {
+                throw new RestfulException(e.getMessage(), e);
+            }
+            redirectObject = requestContext.getReturnValue();
+
+            if (redirectObject == null)
+                redirectObject = resultContext.getReachedObject(); // verbImpl?
+
+            String message = "Operation done";
+
+            if (redirectObject != null) {
+                if (redirectObject instanceof String)
+                    message = (String) redirectObject;
+
+                // redirect...
+                String relativeLocation = ReverseLookupRegistry.getInstance().getLocation(redirectObject);
+                if (relativeLocation != null) {
+                    String location = req.getContextPath() + "/" + relativeLocation;
+                    resp.sendRedirect(location);
+                    return true;
+                }
+            }
+
+            resp.getWriter().println(message);
+            resp.flushBuffer();
+            return true;
+        }
+
+        // No verb, do GET/READ.
 
         Object result = resultContext.getObject();
         // Date expires = resultContext.getExpires();
@@ -173,7 +206,7 @@ public class DispatchFilter
             if (profileOperation != null) {
                 try {
                     // XXX - Return value is ignored here.
-                    profileOperation.execute(webImpl, rreq, resp);
+                    profileOperation.execute(webImpl, requestContext);
                 } catch (ServletException e) {
                     throw e;
                 } catch (Exception e) {

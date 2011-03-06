@@ -1,6 +1,13 @@
 package com.bee32.plover.restful;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.bee32.plover.arch.operation.IOperation;
+import com.bee32.plover.arch.operation.IOperationContext;
+import com.bee32.plover.arch.operation.OperationFusion;
+import com.bee32.plover.disp.IDispatchContext;
 
 public class Verb
         implements Serializable {
@@ -93,6 +100,55 @@ public class Verb
             return count == 0 ? 0 : -1;
 
         return lastIndexOf(str, ch, index, count);
+    }
+
+    public Object operate(IDispatchContext dc, IOperationContext context)
+            throws Exception {
+        List<String> pathRevList = new ArrayList<String>();
+        return operate(dc, context, pathRevList);
+    }
+
+    public Object operate(IDispatchContext dc, IOperationContext context, List<String> pathRevList)
+            throws Exception {
+        Object obj = dc.getObject();
+
+        if (obj != null) {
+            OperationFusion fusion = OperationFusion.getInstance();
+            IOperation operation = fusion.getOperation(obj, name);
+
+            if (operation != null) {
+                String path = pathreverse(pathRevList);
+                context.setPath(path);
+
+                Object retval = operation.execute(obj, context);
+                context.setReturnValue(retval);
+
+                return obj;
+            }
+        }
+
+        IDispatchContext parent = dc.getParent();
+        if (parent == null)
+            return null;
+
+        String[] consumedTokens = dc.getConsumedTokens();
+        for (int i = consumedTokens.length - 1; i >= 0; i--)
+            pathRevList.add(consumedTokens[i]);
+
+        return operate(dc.getParent(), context, pathRevList);
+    }
+
+    static String pathreverse(List<String> stack) {
+        int size = stack.size();
+        StringBuffer buf = new StringBuffer(size * 30);
+
+        for (int index = size - 1; index >= 0; index--) {
+            if (index != 0)
+                buf.append('/');
+            buf.append(stack.get(index));
+        }
+
+        return buf.toString();
     }
 
 }

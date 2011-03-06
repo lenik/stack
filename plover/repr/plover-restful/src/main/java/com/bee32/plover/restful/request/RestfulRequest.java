@@ -106,9 +106,9 @@ public class RestfulRequest
         }
 
         if (verb != null) {
-            int level = verb.getLevel();
-            while (level-- > 0)
-                buf.append('*');
+            // int level = verb.getLevel();
+            // while (level-- > 0)
+            buf.append('*');
             buf.append(verb);
         }
 

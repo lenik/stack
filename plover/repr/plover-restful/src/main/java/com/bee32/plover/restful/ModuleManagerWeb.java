@@ -12,8 +12,10 @@ import com.bee32.plover.inject.ContextException;
 import com.bee32.plover.inject.IContainer;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
+import com.bee32.plover.restful.annotation.WebCase;
 
-public class ModuleManagerWeb {
+public class ModuleManagerWeb
+        implements WebCase {
 
     public void index(IContainer container)
             throws IOException, ContextException {
