@@ -1,5 +1,9 @@
 package com.bee32.plover.orm.entity;
 
+/**
+ * Please implement {@link IEntity} instead of extends this class.
+ */
+@Deprecated
 public abstract class Entity<K>
         implements IEntity<K>, IPopulatable {
 
