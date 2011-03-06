@@ -42,6 +42,12 @@ public class ContextManager
     }
 
     @Override
+    public void registerContext(Object contextInstance) {
+        Class<?> contextClass = contextInstance.getClass();
+        contextMap.put(contextClass, contextInstance);
+    }
+
+    @Override
     public <T> void registerContext(Class<T> contextClass, T contextInstance) {
         contextMap.put(contextClass, contextInstance);
     }

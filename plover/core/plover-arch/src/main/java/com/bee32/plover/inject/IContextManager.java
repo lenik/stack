@@ -1,9 +1,6 @@
 package com.bee32.plover.inject;
 
-import com.bee32.plover.arch.IComponent;
-
-public interface IContextManager
-        extends IComponent {
+public interface IContextManager {
 
     /**
      * 向容器请求必须的上下文，容器必须返回非空值。
@@ -94,10 +91,16 @@ public interface IContextManager
     /**
      * 向容器注册上下文实例。
      *
+     * @param contextInstance
+     *            上下文实例，非空值
+     */
+    void registerContext(Object contextInstance);
+
+    /**
+     * 向容器注册上下文实例。
+     *
      * @param contextClass
      *            上下文实例的类型，非空值
-     * @param qualifier
-     *            修饰语，用于区分同名类的不同实例。
      * @param contextInstance
      *            上下文实例，非空值
      */

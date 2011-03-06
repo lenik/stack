@@ -65,6 +65,11 @@ public class DelegatedContainer
     }
 
     @Override
+    public void registerContext(Object contextInstance) {
+        container.registerContext(contextInstance);
+    }
+
+    @Override
     public <T> void registerContext(Class<T> contextClass, T contextInstance) {
         container.registerContext(contextClass, contextInstance);
     }
