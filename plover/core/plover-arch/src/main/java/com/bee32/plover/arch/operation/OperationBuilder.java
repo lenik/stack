@@ -21,13 +21,15 @@ public class OperationBuilder {
     public void discover(Class<?> clazz) {
         OperationFusion fusion = OperationFusion.getInstance();
         Map<String, IOperation> operations = fusion.getTypeOperations(clazz);
-        map.putAll(operations);
+        if (operations != null)
+            map.putAll(operations);
     }
 
     public void discover(Object instance) {
         OperationFusion fusion = OperationFusion.getInstance();
         Map<String, IOperation> operations = fusion.getInstanceOperations(instance);
-        map.putAll(operations);
+        if (operations != null)
+            map.putAll(operations);
     }
 
     public void remove(String operationName) {
