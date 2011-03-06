@@ -21,6 +21,11 @@ public abstract class AbstractOperationDiscoverer
         if (instance == null)
             throw new NullPointerException("instance");
 
+        if (instance instanceof IOperational) {
+            IOperational operational = (IOperational) instance;
+            return operational.getOperationMap();
+        }
+
         Map<String, IOperation> allOperations = null;
 
         Map<String, IOperation> instanceOperations = getInstanceOperations(instance);
@@ -54,6 +59,11 @@ public abstract class AbstractOperationDiscoverer
             throw new NullPointerException("instance");
         if (operationName == null)
             throw new NullPointerException("operationName");
+
+        if (instance instanceof IOperational) {
+            IOperational operational = (IOperational) instance;
+            return operational.getOperation(operationName);
+        }
 
         Map<String, IOperation> instanceOperations = getInstanceOperations(instance);
         if (instanceOperations != null) {
