@@ -41,7 +41,7 @@ public class ProfileDissolver
     }
 
     @Override
-    public boolean desolveSuffix(String name, RestfulRequest model) {
+    public boolean dissolveSuffix(String name, RestfulRequest model) {
         if (name == null)
             throw new NullPointerException("extension");
 

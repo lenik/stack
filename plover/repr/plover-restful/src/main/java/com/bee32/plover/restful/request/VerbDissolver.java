@@ -6,7 +6,7 @@ public class VerbDissolver
         implements ISuffixDissolver {
 
     @Override
-    public boolean desolveSuffix(String name, RestfulRequest model) {
+    public boolean dissolveSuffix(String name, RestfulRequest model) {
         Verb verb = new Verb(name);
         model.setVerb(verb);
         return true;

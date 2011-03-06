@@ -17,13 +17,17 @@ public class RestfulRequestBuilder {
     private static IMethodDissolver methodDissolver;
     private static Map<Character, ISuffixDissolver> suffixDissolvers;
 
+    private static ProfileDissolver profileDissolver = new ProfileDissolver();
+    private static VerbDissolver verbDissolver = new VerbDissolver();
+    private static ContentTypeDissolver contentTypeDissolver = new ContentTypeDissolver();
+
     static {
         methodDissolver = new MethodDissolver();
 
         suffixDissolvers = new HashMap<Character, ISuffixDissolver>();
-        suffixDissolvers.put('~', new ProfileDissolver());
-        suffixDissolvers.put('*', new VerbDissolver());
-        suffixDissolvers.put('.', new ContentTypeDissolver());
+        suffixDissolvers.put('~', profileDissolver);
+        suffixDissolvers.put('*', verbDissolver);
+        suffixDissolvers.put('.', contentTypeDissolver);
     }
 
     static TreeSet<IRequestPreprocessor> preprocessors;
@@ -81,6 +85,7 @@ public class RestfulRequestBuilder {
         }
         model.setDispatchPath(path);
 
+        // Process suffixes
         while (tokens.hasNext()) {
             String suffix = tokens.next();
 
@@ -91,8 +96,17 @@ public class RestfulRequestBuilder {
 
             String suffixName = suffix.substring(1);
 
-            dissolver.desolveSuffix(suffixName, model);
+            dissolver.dissolveSuffix(suffixName, model);
         }
+
+        // X-Y param
+        String x = request.getParameter("X");
+        if (x != null)
+            verbDissolver.dissolveSuffix(x, model);
+
+        String y = request.getParameter("Y");
+        if (y != null)
+            profileDissolver.dissolveSuffix(y, model);
 
         // other preprocessors.
         if (preprocessors != null) {
