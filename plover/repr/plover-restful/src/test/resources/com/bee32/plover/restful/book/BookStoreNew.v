@@ -5,7 +5,9 @@
 <body>
 <h1>Prepare a new book</h1>
 <hr>
-<form action="~create">
+<form action="?">
+	<input type="hidden" name="X" value="create">
+
     <div>
         Name: <input type="text" name="name">
     </div>

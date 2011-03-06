@@ -17,7 +17,7 @@ public class BookModuleTest
         String loc = "http://localhost:" + getPort();
         System.out.println(loc);
 
-        // Thread.sleep(10000000);
+        Thread.sleep(10000000);
     }
 
 }

@@ -6,8 +6,8 @@
 <h1>Module $it.name</h1>
 <h2>Entries</h2>
 <hr>
-#foreach ($loc in $it.locationEntries)
-#set ($target = $it.locate($loc))
+#foreach ($loc in $it.childNames)
+#set ($target = $it.getChild($loc))
     <div>
         $loc - $target
         <a href="$loc">contents</a>

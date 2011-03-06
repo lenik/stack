@@ -112,6 +112,7 @@ public class Verb
             throws Exception {
         Object obj = dc.getObject();
 
+        // XXX - parent = null??
         if (obj != null) {
             OperationFusion fusion = OperationFusion.getInstance();
             IOperation operation = fusion.getOperation(obj, name);
