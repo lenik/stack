@@ -8,13 +8,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.arch.IModule;
 import com.bee32.plover.arch.ModuleLoader;
+import com.bee32.plover.inject.ContextException;
+import com.bee32.plover.inject.IContainer;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
 
 public class ModuleManagerWeb {
 
-    public void index(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+    public void index(IContainer container)
+            throws IOException, ContextException {
+        final HttpServletRequest req = container.require(HttpServletRequest.class);
+        final HttpServletResponse resp = container.require(HttpServletResponse.class);
+
         resp.setContentType("text/html");
 
         PrintWriter out = resp.getWriter();

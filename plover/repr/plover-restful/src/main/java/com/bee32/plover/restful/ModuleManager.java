@@ -17,6 +17,8 @@ public class ModuleManager
     private static final long serialVersionUID = 1L;
 
     private ModuleManager() {
+        super(IModule.class);
+
         installModules();
     }
 
