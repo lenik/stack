@@ -2,8 +2,10 @@ package com.bee32.plover.arch.operation;
 
 import java.util.Map;
 
+import com.bee32.plover.inject.IContainer;
+
 public interface IOperationContext
-        extends Map<String, Object> {
+        extends IContainer, Map<String, Object> {
 
     String getPath();
 
