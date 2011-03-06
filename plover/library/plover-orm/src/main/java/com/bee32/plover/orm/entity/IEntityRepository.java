@@ -1,7 +1,5 @@
 package com.bee32.plover.orm.entity;
 
-import java.util.Collection;
-
 import com.bee32.plover.arch.IRepository;
 import com.bee32.plover.arch.naming.INamedNode;
 
@@ -13,14 +11,11 @@ public interface IEntityRepository<E extends IEntity<K>, K>
      */
     Class<? extends E> getEntityType();
 
+    // Override following methods to get eclipse "generate override methods"
+    // to work.
+
     @Override
     K getKey(E entity);
-
-    @Override
-    Collection<? extends E> list();
-
-    @Override
-    Collection<? extends K> listKeys();
 
     @Override
     boolean contains(Object entity);

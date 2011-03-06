@@ -10,13 +10,14 @@ import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 import javax.free.ParserUtil;
 
+import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.Repository;
 import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.arch.naming.NamedNode;
 import com.bee32.plover.arch.naming.ReverseLookupRegistry;
 import com.bee32.plover.arch.operation.AbstractOperation;
 import com.bee32.plover.arch.operation.IOperation;
-import com.bee32.plover.arch.operation.IParameterMap;
+import com.bee32.plover.arch.operation.IOperationContext;
 import com.bee32.plover.arch.operation.OperationBuilder;
 
 public abstract class EntityRepository<E extends IEntity<K>, K>
@@ -107,6 +108,21 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
             keys.add(key);
         }
         return keys;
+    }
+
+    @Override
+    public E populate(Map<String, ?> struct)
+            throws BuildException {
+        E entity;
+        try {
+            entity = entityType.newInstance();
+        } catch (Exception e) {
+            throw new BuildException(e);
+        }
+
+        populate(entity, struct);
+
+        return entity;
     }
 
     @Override
@@ -219,24 +235,72 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
     }
 
     protected void buildOperation(OperationBuilder builder) {
-        this.delete(entity);
-        this.update(entity);
-        this.save(entity);
+        builder.add(CreateOperation.instance);
+        builder.add(UpdateOperation.instance);
+        builder.add(DeleteOperation.instance);
+    }
+
+    static class CreateOperation
+            extends AbstractOperation {
+
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        @Override
+        public Object execute(Object instance, IOperationContext context)
+                throws Exception {
+            IEntityRepository repo = (EntityRepository) instance;
+
+            Object entity = repo.populate(context);
+
+            repo.saveOrUpdate(entity);
+
+            return entity;
+        }
+
+        static final CreateOperation instance = new CreateOperation();
+
+    }
+
+    static class UpdateOperation
+            extends AbstractOperation {
+
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        @Override
+        public Object execute(Object instance, IOperationContext context)
+                throws Exception {
+            EntityRepository repo = (EntityRepository) instance;
+
+            String entityKey = context.getPath();
+            Object key = repo.parseKey(entityKey);
+
+            Object entity = repo.retrieve(key);
+            repo.populate(entity, context);
+
+            repo.update(entity);
+
+            return entity;
+        }
+
+        static final UpdateOperation instance = new UpdateOperation();
+
     }
 
     static class DeleteOperation
             extends AbstractOperation {
 
         @Override
-        public Object execute(Object instance, IParameterMap parameters)
+        public Object execute(Object instance, IOperationContext context)
                 throws Exception {
             EntityRepository<?, ?> repo = (EntityRepository<?, ?>) instance;
 
-            String entityKey = (String) parameters.get(0);
+            String entityKey = context.getPath();
             Object key = repo.parseKey(entityKey);
 
             repo.deleteByKey(key);
+
+            return repo;
         }
+
+        static final DeleteOperation instance = new DeleteOperation();
 
     }
 
