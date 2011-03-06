@@ -78,13 +78,13 @@ public class ReverseLookupRegistry {
 
         while (floorEntry != null) {
             Class<?> baseType = floorEntry.getKey();
-            NamedNodeSet locatorSet = (NamedNodeSet) floorEntry.getValue();
+            NamedNodeSet nodeSet = (NamedNodeSet) floorEntry.getValue();
 
-            if (locatorSet != null) {
-                for (INamedNode _locator : locatorSet) {
-                    String location = _locator.getChildName(object);
+            if (nodeSet != null) {
+                for (INamedNode _node : nodeSet) {
+                    String location = _node.getChildName(object);
                     if (location != null)
-                        return _locator;
+                        return _node;
                 }
             }
 
@@ -110,6 +110,11 @@ public class ReverseLookupRegistry {
         return lookup(locator, lookup);
     }
 
+    /**
+     * Get the leaf token of a path refers to this object.
+     *
+     * @return <code>null</code> if obj isn't registered with this registry.
+     */
     public String getLocation(Object obj) {
         LookupChain chain = lookup(obj, null);
         if (chain == null)

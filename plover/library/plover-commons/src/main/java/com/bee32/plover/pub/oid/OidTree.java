@@ -1,16 +1,37 @@
 package com.bee32.plover.pub.oid;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import com.bee32.plover.arch.naming.NamedNode;
 
 public class OidTree<T>
+        extends NamedNode
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private Class<T> dataType;
+
     private T data;
     private Map<Integer, OidTree<T>> children;
+
+    public OidTree(Class<T> dataType) {
+        super(dataType, null);
+        this.dataType = dataType;
+    }
+
+    public OidTree(String name, Class<T> dataType) {
+        super(name, dataType, null);
+        this.dataType = dataType;
+    }
 
     public T get() {
         return data;
@@ -32,7 +53,7 @@ public class OidTree<T>
 
         OidTree<T> tree = children.get(ord);
         if (tree == null) {
-            tree = new OidTree<T>();
+            tree = new OidTree<T>(dataType);
             children.put(ord, tree);
         }
         return tree;
@@ -76,6 +97,89 @@ public class OidTree<T>
             node = node.get(ord);
         }
         return node;
+    }
+
+    @Override
+    public Object getChild(String childName) {
+        String[] split = childName.split("/");
+        int[] vector = new int[split.length];
+        for (int i = 0; i < vector.length; i++)
+            vector[i] = Integer.parseInt(split[i]);
+
+        OidTree<T> childTree = get(vector);
+
+        return childTree.data;
+    }
+
+    @Override
+    public String getChildName(Object obj) {
+        Map<T, String> reverseMap = getReverseMap();
+        return reverseMap.get(obj);
+    }
+
+    public Map<T, String> getReverseMap() {
+        if (children == null || children.isEmpty())
+            return Collections.emptyMap();
+
+        Map<T, String> map = new IdentityHashMap<T, String>();
+        dumpReverseMap(map, new StringBuffer());
+        return map;
+    }
+
+    void dumpReverseMap(Map<T, String> map, StringBuffer prefix) {
+        if (data != null)
+            map.put(data, prefix.toString());
+
+        if (children == null)
+            return;
+
+        if (prefix.length() != 0)
+            prefix.append('/');
+
+        int len = prefix.length();
+
+        for (Entry<Integer, OidTree<T>> entry : children.entrySet()) {
+            int ord = entry.getKey();
+            OidTree<T> childTree = entry.getValue();
+
+            prefix.setLength(len);
+            prefix.append(ord);
+
+            childTree.dumpReverseMap(map, prefix);
+        }
+    }
+
+    @Override
+    public Collection<String> getChildNames() {
+        if (children == null || children.isEmpty())
+            return Collections.emptyList();
+
+        List<String> names = new ArrayList<String>();
+        dumpChildNames(names, new StringBuffer());
+        return names;
+    }
+
+    void dumpChildNames(List<String> list, StringBuffer prefix) {
+        if (data != null)
+            list.add(prefix.toString());
+
+        if (children == null)
+            return;
+
+        if (prefix.length() != 0)
+            prefix.append('/');
+
+        int len = prefix.length();
+
+        for (Entry<Integer, OidTree<T>> entry : children.entrySet()) {
+            int ord = entry.getKey();
+            OidTree<T> childTree = entry.getValue();
+
+            prefix.setLength(len);
+            prefix.append(ord);
+
+            childTree.dumpChildNames(list, prefix);
+        }
     }
 
     @Override
