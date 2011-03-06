@@ -1,6 +1,7 @@
 package com.bee32.plover.arch.operation;
 
 import java.util.Collection;
+import java.util.Map;
 
 public interface IOperational {
 
@@ -17,5 +18,12 @@ public interface IOperational {
      * @return Non-<code>null</code> collection of operation objects.
      */
     Collection<IOperation> getOperations();
+
+    /**
+     * Get operation map.
+     *
+     * @return Non-<code>null</code> map of operation objects.
+     */
+    Map<String, IOperation> getOperationMap();
 
 }

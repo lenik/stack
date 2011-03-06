@@ -83,6 +83,7 @@ public abstract class NamedNode
         return operation;
     }
 
+    @Override
     public Map<String, IOperation> getOperationMap() {
         if (operationMap == null) {
             synchronized (this) {

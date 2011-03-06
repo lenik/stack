@@ -19,7 +19,8 @@ public abstract class Operational
         return operation;
     }
 
-    final Map<String, IOperation> getOperationMap() {
+    @Override
+    public Map<String, IOperation> getOperationMap() {
         if (operationMap == null) {
             synchronized (this) {
                 if (operationMap == null) {
