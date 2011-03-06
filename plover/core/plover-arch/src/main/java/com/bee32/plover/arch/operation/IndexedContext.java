@@ -1,7 +1,7 @@
 package com.bee32.plover.arch.operation;
 
 public class IndexedContext
-        extends AbstractOperationContext {
+        extends OperationContext {
 
     private static final long serialVersionUID = 1L;
 

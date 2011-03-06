@@ -4,7 +4,7 @@ import javax.free.INegotiation;
 import javax.free.NegotiationParameter;
 
 public class NegotiationContext
-        extends AbstractOperationContext {
+        extends OperationContext {
 
     private static final long serialVersionUID = 1L;
 
