@@ -71,13 +71,13 @@ public interface INamedNode
      *
      * @return <code>null</code> if the operation with specified name doesn't exist.
      */
-    IOperation<?> getOperation(String name);
+    IOperation getOperation(String name);
 
     /**
      * Get all operations.
      *
      * @return Non-<code>null</code> collection of operation objects.
      */
-    Collection<IOperation<?>> getOperations();
+    Collection<IOperation> getOperations();
 
 }

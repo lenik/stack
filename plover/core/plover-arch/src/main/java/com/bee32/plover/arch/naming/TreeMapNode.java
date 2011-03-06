@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.bee32.plover.arch.operation.AbstractOperation;
-import com.bee32.plover.arch.operation.IParameterMap;
+import com.bee32.plover.arch.operation.IOperationContext;
 import com.bee32.plover.arch.operation.OperationBuilder;
 
 public class TreeMapNode<T>
@@ -85,7 +85,7 @@ public class TreeMapNode<T>
             extends AbstractOperation {
 
         @Override
-        public Object execute(Object instance, IParameterMap parameters)
+        public Object execute(Object instance, IOperationContext parameters)
                 throws Exception {
             TreeMapNode<?> node = (TreeMapNode<?>) instance;
             Object key = parameters.get(0);
