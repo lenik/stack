@@ -1,5 +1,9 @@
 package com.bee32.plover.arch;
 
+import java.util.Map;
+
+import com.bee32.plover.arch.util.BeanPopulater;
+
 public abstract class Repository<K, V>
         extends Component
         implements IRepository<K, V> {
@@ -59,6 +63,28 @@ public abstract class Repository<K, V>
         else
             save(obj);
         return key;
+    }
+
+    @Override
+    public V populate(Map<String, ?> struct)
+            throws BuildException {
+        V instance;
+        try {
+            instance = instanceType.newInstance();
+        } catch (Exception e) {
+            throw new BuildException(e);
+        }
+
+        populate(instance, struct);
+
+        return instance;
+    }
+
+    @Override
+    public boolean populate(V instance, Map<String, ?> struct)
+            throws BuildException {
+        int changes = BeanPopulater.populate(instanceType, instance, struct);
+        return changes != 0;
     }
 
 }

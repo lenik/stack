@@ -49,6 +49,22 @@ public interface IRepository<K, V>
     Collection<? extends V> list();
 
     /**
+     * Create and populate a new instance with a struct.
+     *
+     * @return Non-<code>null</code> instantiated instance.
+     */
+    V populate(Map<String, ?> struct)
+            throws BuildException;
+
+    /**
+     * Populate the existed instance with a struct.
+     *
+     * @return <code>true</code> if anything changed.
+     */
+    boolean populate(V instance, Map<String, ?> struct)
+            throws BuildException;
+
+    /**
      * Save the entity to the persistence layer.
      *
      * @see javax.persist.EntityManager#persist(Object)
