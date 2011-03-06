@@ -26,7 +26,7 @@ public class MethodOperationDiscovererTest
     @Test
     public void executeByVector()
             throws Exception {
-        FooOperations foo = new FooOperations();
+        HelloBean foo = new HelloBean();
         Map<String, IOperation> operations = discoverer.getOperations(foo);
         IOperation operation = operations.get("hello");
         Object result = operation.execute(foo, new IndexedContext("cat", 13));
@@ -37,7 +37,7 @@ public class MethodOperationDiscovererTest
     @Ignore
     public void executeByParamIndex()
             throws Exception {
-        FooOperations foo = new FooOperations();
+        HelloBean foo = new HelloBean();
         Map<String, IOperation> operations = discoverer.getOperations(foo);
         IOperation operation = operations.get("hello");
 
@@ -53,7 +53,7 @@ public class MethodOperationDiscovererTest
     @Ignore
     public void executeByParamMixed()
             throws Exception {
-        FooOperations foo = new FooOperations();
+        HelloBean foo = new HelloBean();
         Map<String, IOperation> operations = discoverer.getOperations(foo);
         IOperation operation = operations.get("hello");
 
