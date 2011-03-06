@@ -1,15 +1,15 @@
 package com.bee32.plover.arch.operation;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ServiceLoader;
+import java.util.TreeSet;
 
 public class OperationDiscovererManager {
 
-    private static Collection<IOperationDiscoverer> discoverers;
+    private static TreeSet<IOperationDiscoverer> discoverers;
 
     static void refreshDiscoverers() {
-        discoverers = new ArrayList<IOperationDiscoverer>();
+        discoverers = new TreeSet<IOperationDiscoverer>(OperationDiscovererComparator.getInstance());
 
         ServiceLoader<IOperationDiscoverer> loader = ServiceLoader.load(IOperationDiscoverer.class);
         for (IOperationDiscoverer discoverer : loader)

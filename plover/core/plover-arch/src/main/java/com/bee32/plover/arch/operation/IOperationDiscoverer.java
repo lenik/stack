@@ -13,6 +13,8 @@ import java.util.ServiceLoader;
  */
 public interface IOperationDiscoverer {
 
+    int getPriority();
+
     /**
      * The class operations.
      *

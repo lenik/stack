@@ -6,6 +6,11 @@ import java.util.Map;
 public abstract class AbstractOperationDiscoverer
         implements IOperationDiscoverer {
 
+    @Override
+    public int getPriority() {
+        return 0;
+    }
+
     /**
      * Returns the merged operation map contains both type operations and instance operations.
      *

@@ -15,6 +15,11 @@ public class OverlayOperationDiscoverer
         extends ClassOperationDiscoverer {
 
     @Override
+    public int getPriority() {
+        return 10;
+    }
+
+    @Override
     protected Map<String, IOperation> buildTypeOperationMap(Class<?> type) {
         Class<?> overlay = OverlayUtil.getOverlay(type, "operations");
         if (overlay == null)
