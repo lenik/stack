@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+import com.bee32.plover.orm.dao.HibernateDaoSupport;
+import com.bee32.plover.orm.dao.HibernateTemplate;
 
 public class HibernateEntityRepository<E extends IEntity<K>, K>
         extends EntityRepository<E, K> {
@@ -44,7 +45,7 @@ public class HibernateEntityRepository<E extends IEntity<K>, K>
     }
 
     public final HibernateTemplate getHibernateTemplate() {
-        return support.getHibernateTemplate();
+        return support.getHibernateTemplateEx();
     }
 
     protected final Session getSession() {
