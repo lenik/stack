@@ -1,6 +1,7 @@
 package com.bee32.plover.arch;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.bee32.plover.arch.credit.Credit;
 import com.bee32.plover.arch.naming.INamedNode;
@@ -11,7 +12,7 @@ public abstract class Module
         extends Component
         implements IModule {
 
-    private TreeMapNode<Object> locatorImpl = new TreeMapNode<Object>(Object.class);
+    private TreeMapNode<Object> nodeImpl = new TreeMapNode<Object>(Object.class);
 
     private Credit credit = Credit.dummy;
 
@@ -35,7 +36,7 @@ public abstract class Module
      *            Non-<code>null</code> object locator.
      */
     protected void declare(String token, Object obj) {
-        locatorImpl.addChild(token, obj);
+        nodeImpl.addChild(token, obj);
     }
 
     @Override
@@ -59,47 +60,52 @@ public abstract class Module
 
     @Override
     public int getPriority() {
-        return locatorImpl.getPriority();
+        return nodeImpl.getPriority();
     }
 
     @Override
     public INamedNode getParent() {
-        return locatorImpl.getParent();
+        return nodeImpl.getParent();
     }
 
     @Override
     public Class<?> getChildType() {
-        return locatorImpl.getChildType();
+        return nodeImpl.getChildType();
     }
 
     @Override
     public boolean hasChild(Object obj) {
-        return locatorImpl.hasChild(obj);
+        return nodeImpl.hasChild(obj);
     }
 
     @Override
     public Object getChild(String location) {
-        return locatorImpl.getChild(location);
+        return nodeImpl.getChild(location);
     }
 
     @Override
     public String getChildName(Object obj) {
-        return locatorImpl.getChildName(obj);
+        return nodeImpl.getChildName(obj);
     }
 
     @Override
     public Collection<String> getChildNames() {
-        return locatorImpl.getChildNames();
+        return nodeImpl.getChildNames();
     }
 
     @Override
     public IOperation getOperation(String name) {
-        return locatorImpl.getOperation(name);
+        return nodeImpl.getOperation(name);
     }
 
     @Override
     public Collection<IOperation> getOperations() {
-        return locatorImpl.getOperations();
+        return nodeImpl.getOperations();
+    }
+
+    @Override
+    public Map<String, IOperation> getOperationMap() {
+        return nodeImpl.getOperationMap();
     }
 
 }
