@@ -14,7 +14,7 @@ public abstract class NamedNode
     private final INamedNode parent;
     private final Class<?> childType;
 
-    private Map<String, IOperation> operationMap;
+    private transient Map<String, IOperation> operationMap;
 
     /**
      * <ul>

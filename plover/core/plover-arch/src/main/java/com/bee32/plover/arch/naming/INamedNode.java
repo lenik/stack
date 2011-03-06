@@ -3,10 +3,10 @@ package com.bee32.plover.arch.naming;
 import java.util.Collection;
 
 import com.bee32.plover.arch.IComponent;
-import com.bee32.plover.arch.operation.IOperation;
+import com.bee32.plover.arch.operation.IOperational;
 
 public interface INamedNode
-        extends IComponent {
+        extends IComponent, IOperational {
 
     /**
      * The priority is used for reversed object lookup.
@@ -65,19 +65,5 @@ public interface INamedNode
      * @return Non-<code>null</code> string collection of child names.
      */
     Collection<String> getChildNames();
-
-    /**
-     * Get operation with a specific name.
-     *
-     * @return <code>null</code> if the operation with specified name doesn't exist.
-     */
-    IOperation getOperation(String name);
-
-    /**
-     * Get all operations.
-     *
-     * @return Non-<code>null</code> collection of operation objects.
-     */
-    Collection<IOperation> getOperations();
 
 }
