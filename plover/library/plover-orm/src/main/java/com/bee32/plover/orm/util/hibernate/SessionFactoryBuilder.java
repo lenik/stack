@@ -38,8 +38,12 @@ public abstract class SessionFactoryBuilder {
         // Merge mapping resources
         List<String> allResources = new ArrayList<String>();
         for (IPersistenceUnit persistenceUnit : persistenceUnits) {
-            String[] resources = persistenceUnit.getMappingResources();
-            for (String resource : resources)
+            if (persistenceUnit == null)
+                throw new NullPointerException("persistenceUnit");
+
+            String[] mappingResources = persistenceUnit.getMappingResources();
+
+            for (String resource : mappingResources)
                 allResources.add(resource);
         }
         if (!allResources.isEmpty()) {
