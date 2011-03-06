@@ -79,6 +79,17 @@ public class DispatchContext
     }
 
     @Override
+    public Object getReachedObject() {
+        if (reachedObject != null)
+            return reachedObject;
+
+        if (parent == null)
+            return null;
+
+        return parent.getReachedObject();
+    }
+
+    @Override
     public Date getExpires() {
         return expires;
     }

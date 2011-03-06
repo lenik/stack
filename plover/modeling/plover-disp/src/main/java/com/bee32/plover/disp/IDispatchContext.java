@@ -34,6 +34,13 @@ public interface IDispatchContext {
     Object getObject();
 
     /**
+     * Get the first non-<code>null</code> object in the dispatched-chain.
+     *
+     * @return <code>null</code> if none reached.
+     */
+    Object getReachedObject();
+
+    /**
      * The latest expires date gathered in the context chain.
      *
      * @return Expires date, <code>null</code> for no-cache.
