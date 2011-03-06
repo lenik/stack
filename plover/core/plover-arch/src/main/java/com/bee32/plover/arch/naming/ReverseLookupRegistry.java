@@ -1,32 +1,32 @@
-package com.bee32.plover.arch.locator;
+package com.bee32.plover.arch.naming;
 
 import java.util.Map.Entry;
 
 import javax.free.TypeHierMap;
 
-public class ObjectLocatorRegistry {
+public class ReverseLookupRegistry {
 
-    private TypeHierMap<ObjectLocatorSet> typemap;
+    private TypeHierMap<NamedNodeSet> typemap;
 
-    public ObjectLocatorRegistry() {
-        typemap = new TypeHierMap<ObjectLocatorSet>();
+    public ReverseLookupRegistry() {
+        typemap = new TypeHierMap<NamedNodeSet>();
     }
 
-    public synchronized <T> void register(IObjectLocator locator) {
-        Class<?> baseType = locator.getBaseType();
+    public synchronized <T> void register(INamedNode locator) {
+        Class<?> baseType = locator.getChildType();
 
-        ObjectLocatorSet locatorSet = (ObjectLocatorSet) typemap.get(baseType);
+        NamedNodeSet locatorSet = (NamedNodeSet) typemap.get(baseType);
 
         if (locatorSet == null) {
-            locatorSet = new ObjectLocatorSet();
+            locatorSet = new NamedNodeSet();
             typemap.put(baseType, locatorSet);
         }
         locatorSet.add(locator);
     }
 
-    public synchronized void unregister(IObjectLocator locator) {
-        Class<?> baseType = locator.getBaseType();
-        ObjectLocatorSet locatorSet = typemap.get(baseType);
+    public synchronized void unregister(INamedNode locator) {
+        Class<?> baseType = locator.getChildType();
+        NamedNodeSet locatorSet = typemap.get(baseType);
         if (locatorSet != null) {
             locatorSet.remove(locator);
             if (locatorSet.isEmpty())
@@ -40,15 +40,15 @@ public class ObjectLocatorRegistry {
      * @return The locator with highest priority for a specific object type is returned. Return
      *         <code>null</code> if none available.
      */
-    public <T> IObjectLocator getLocatorForObjectType(Class<?> objectType) {
+    public <T> INamedNode getLocatorForObjectType(Class<?> objectType) {
         if (objectType == null)
             throw new NullPointerException("objectType");
 
-        Entry<Class<?>, ObjectLocatorSet> floorEntry = typemap.floorEntry(objectType);
+        Entry<Class<?>, NamedNodeSet> floorEntry = typemap.floorEntry(objectType);
 
         while (floorEntry != null) {
             Class<?> baseType = floorEntry.getKey();
-            ObjectLocatorSet locatorSet = (ObjectLocatorSet) floorEntry.getValue();
+            NamedNodeSet locatorSet = (NamedNodeSet) floorEntry.getValue();
 
             if (locatorSet != null && !locatorSet.isEmpty())
                 return locatorSet.iterator().next();
@@ -60,29 +60,29 @@ public class ObjectLocatorRegistry {
         return null;
     }
 
-    public <T> IObjectLocator getLocatorForObject(T object) {
+    public <T> INamedNode getLocatorForObject(T object) {
         if (object == null)
             throw new NullPointerException("object");
 
         // Local tighten.
-        if (object instanceof IObjectLocator) {
-            IObjectLocator locatorObj = (IObjectLocator) object;
-            IObjectLocator parent = locatorObj.getParent();
+        if (object instanceof INamedNode) {
+            INamedNode locatorObj = (INamedNode) object;
+            INamedNode parent = locatorObj.getParent();
             if (parent != null)
                 return parent;
         }
 
         Class<?> objectType = object.getClass();
 
-        Entry<Class<?>, ObjectLocatorSet> floorEntry = typemap.floorEntry(objectType);
+        Entry<Class<?>, NamedNodeSet> floorEntry = typemap.floorEntry(objectType);
 
         while (floorEntry != null) {
             Class<?> baseType = floorEntry.getKey();
-            ObjectLocatorSet locatorSet = (ObjectLocatorSet) floorEntry.getValue();
+            NamedNodeSet locatorSet = (NamedNodeSet) floorEntry.getValue();
 
             if (locatorSet != null) {
-                for (IObjectLocator _locator : locatorSet) {
-                    String location = _locator.getLocation(object);
+                for (INamedNode _locator : locatorSet) {
+                    String location = _locator.getChildName(object);
                     if (location != null)
                         return _locator;
                 }
@@ -95,32 +95,32 @@ public class ObjectLocatorRegistry {
         return null;
     }
 
-    public LocationLookup lookup(Object obj, LocationLookup inner) {
-        IObjectLocator locator = getLocatorForObject(obj);
+    public LookupChain lookup(Object obj, LookupChain inner) {
+        INamedNode locator = getLocatorForObject(obj);
         if (locator == null)
             if (inner == null)
                 return null;
             else
-                return new LocationLookup(null, obj, inner);
+                return new LookupChain(null, obj, inner);
 
-        String location = locator.getLocation(obj);
+        String location = locator.getChildName(obj);
         assert location != null;
-        LocationLookup lookup = new LocationLookup(location, obj, inner);
+        LookupChain lookup = new LookupChain(location, obj, inner);
 
         return lookup(locator, lookup);
     }
 
     public String getLocation(Object obj) {
-        LocationLookup lookup = lookup(obj, null);
-        if (lookup == null)
+        LookupChain chain = lookup(obj, null);
+        if (chain == null)
             return null;
         else
-            return lookup.joinLocation();
+            return chain.join();
     }
 
-    private static ObjectLocatorRegistry instance = new ObjectLocatorRegistry();
+    private static ReverseLookupRegistry instance = new ReverseLookupRegistry();
 
-    public static ObjectLocatorRegistry getInstance() {
+    public static ReverseLookupRegistry getInstance() {
         return instance;
     }
 

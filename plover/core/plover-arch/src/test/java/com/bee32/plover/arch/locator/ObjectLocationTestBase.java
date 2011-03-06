@@ -1,49 +1,51 @@
 package com.bee32.plover.arch.locator;
 
+import com.bee32.plover.arch.naming.TreeMapNode;
+
 public class ObjectLocationTestBase {
 
-    MapLocator<String> foodMap;
-    MapLocator<String> sportsMap;
-    MapLocator<MapLocator<?>> lifeHub;
+    TreeMapNode<String> foodMap;
+    TreeMapNode<String> sportsMap;
+    TreeMapNode<TreeMapNode<?>> lifeHub;
 
-    MapLocator<String> colorMap;
-    MapLocator<String> powerMap;
-    MapLocator<MapLocator<?>> genHub;
+    TreeMapNode<String> colorMap;
+    TreeMapNode<String> powerMap;
+    TreeMapNode<TreeMapNode<?>> genHub;
 
-    MapLocator<MapLocator<?>> root;
+    TreeMapNode<TreeMapNode<?>> root;
 
     public ObjectLocationTestBase() {
-        root = new MapLocator<MapLocator<?>>(MapLocator.class);
-        lifeHub = new MapLocator<MapLocator<?>>(root);
-        genHub = new MapLocator<MapLocator<?>>(root);
+        root = new TreeMapNode<TreeMapNode<?>>(TreeMapNode.class);
+        lifeHub = new TreeMapNode<TreeMapNode<?>>(root);
+        genHub = new TreeMapNode<TreeMapNode<?>>(root);
 
-        foodMap = new MapLocator<String>(String.class, lifeHub);
-        sportsMap = new MapLocator<String>(String.class, lifeHub);
+        foodMap = new TreeMapNode<String>(String.class, lifeHub);
+        sportsMap = new TreeMapNode<String>(String.class, lifeHub);
 
-        colorMap = new MapLocator<String>(String.class, genHub);
-        powerMap = new MapLocator<String>(String.class, genHub);
+        colorMap = new TreeMapNode<String>(String.class, genHub);
+        powerMap = new TreeMapNode<String>(String.class, genHub);
 
-        foodMap.setLocation("apple", "Apple");
-        foodMap.setLocation("banana", "Banana");
+        foodMap.addChild("apple", "Apple");
+        foodMap.addChild("banana", "Banana");
 
-        sportsMap.setLocation("ping", "Ping-Pong");
-        sportsMap.setLocation("basket", "BasketBall");
+        sportsMap.addChild("ping", "Ping-Pong");
+        sportsMap.addChild("basket", "BasketBall");
 
-        lifeHub.setLocation("food", foodMap);
-        lifeHub.setLocation("sport", sportsMap);
+        lifeHub.addChild("food", foodMap);
+        lifeHub.addChild("sport", sportsMap);
 
-        colorMap.setLocation("red", "Red");
-        colorMap.setLocation("green", "Green");
-        colorMap.setLocation("blue", "Blue");
+        colorMap.addChild("red", "Red");
+        colorMap.addChild("green", "Green");
+        colorMap.addChild("blue", "Blue");
 
-        powerMap.setLocation("weak", "Weak");
-        powerMap.setLocation("strong", "Strong");
+        powerMap.addChild("weak", "Weak");
+        powerMap.addChild("strong", "Strong");
 
-        genHub.setLocation("color", colorMap);
-        genHub.setLocation("power", powerMap);
+        genHub.addChild("color", colorMap);
+        genHub.addChild("power", powerMap);
 
-        root.setLocation("life", lifeHub);
-        root.setLocation("gen", genHub);
+        root.addChild("life", lifeHub);
+        root.addChild("gen", genHub);
     }
 
 }

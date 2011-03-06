@@ -5,8 +5,8 @@ import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.IModule;
 import com.bee32.plover.arch.ModuleLoader;
-import com.bee32.plover.arch.locator.LocationLookup;
-import com.bee32.plover.arch.locator.ObjectLocatorRegistry;
+import com.bee32.plover.arch.naming.LookupChain;
+import com.bee32.plover.arch.naming.ReverseLookupRegistry;
 import com.bee32.plover.pub.oid.OidTree;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
@@ -44,11 +44,11 @@ public class ModuleManager
      *             If <code>obj</code> isn't possessed by any module.
      */
     public String getReversedPath(Object obj) {
-        LocationLookup lookup = ObjectLocatorRegistry.getInstance().lookup(obj, null);
+        LookupChain lookup = ReverseLookupRegistry.getInstance().lookup(obj, null);
         if (lookup == null)
             return null;
 
-        String location = lookup.joinLocation();
+        String location = lookup.join();
         Object module = lookup.getObject();
         if (!(module instanceof IModule)) {
             throw new IllegalUsageException("Outmost isn't a module");

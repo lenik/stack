@@ -1,12 +1,12 @@
-package com.bee32.plover.arch.locator;
+package com.bee32.plover.arch.naming;
 
-public class LocationLookup {
+public class LookupChain {
 
     private String location;
     private Object object;
-    private LocationLookup inner;
+    private LookupChain inner;
 
-    public LocationLookup(String location, Object object, LocationLookup inner) {
+    public LookupChain(String location, Object object, LookupChain inner) {
         this.location = location;
         this.object = object;
         this.inner = inner;
@@ -28,11 +28,11 @@ public class LocationLookup {
         this.object = object;
     }
 
-    public LocationLookup getInner() {
+    public LookupChain getInner() {
         return inner;
     }
 
-    public void setInner(LocationLookup inner) {
+    public void setInner(LookupChain inner) {
         this.inner = inner;
     }
 
@@ -49,7 +49,7 @@ public class LocationLookup {
         }
     }
 
-    public String joinLocation() {
+    public String join() {
         StringBuffer buf = new StringBuffer();
         dumpFullLocation(buf);
         return buf.toString();
@@ -57,7 +57,7 @@ public class LocationLookup {
 
     @Override
     public String toString() {
-        return joinLocation();
+        return join();
     }
 
 }

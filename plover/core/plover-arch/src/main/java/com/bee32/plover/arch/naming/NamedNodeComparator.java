@@ -1,12 +1,12 @@
-package com.bee32.plover.arch.locator;
+package com.bee32.plover.arch.naming;
 
 import java.util.Comparator;
 
-public class ObjectLocatorComparator
-        implements Comparator<IObjectLocator> {
+public class NamedNodeComparator
+        implements Comparator<INamedNode> {
 
     @Override
-    public int compare(IObjectLocator o1, IObjectLocator o2) {
+    public int compare(INamedNode o1, INamedNode o2) {
         assert o1 != null && o2 != null;
         int p1 = o1.getPriority();
         int p2 = o2.getPriority();
@@ -25,9 +25,9 @@ public class ObjectLocatorComparator
         return -1;
     }
 
-    private static final ObjectLocatorComparator instance = new ObjectLocatorComparator();
+    private static final NamedNodeComparator instance = new NamedNodeComparator();
 
-    public static ObjectLocatorComparator getInstance() {
+    public static NamedNodeComparator getInstance() {
         return instance;
     }
 

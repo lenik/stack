@@ -1,6 +1,6 @@
 package com.bee32.plover.disp.plover;
 
-import com.bee32.plover.arch.locator.IObjectLocator;
+import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.disp.AbstractDispatcher;
 import com.bee32.plover.disp.DispatchConfig;
 import com.bee32.plover.disp.DispatchContext;
@@ -29,16 +29,16 @@ public class LocatorDispatcher
             throws DispatchException {
         Object obj = context.getObject();
 
-        if (!(obj instanceof IObjectLocator))
+        if (!(obj instanceof INamedNode))
             return null;
 
         String key = tokens.peek();
         if (key == null)
             return null;
 
-        IObjectLocator locator = (IObjectLocator) obj;
+        INamedNode locator = (INamedNode) obj;
 
-        Object result = locator.locate(key);
+        Object result = locator.getChild(key);
         if (result == null)
             return null;
 

@@ -1,10 +1,6 @@
 package com.bee32.plover.disp;
 
 import java.util.Date;
-import java.util.Map;
-
-import com.bee32.plover.arch.operation.IOperation;
-import com.bee32.plover.arch.operation.OperationFusion;
 
 public interface IDispatchContext {
 
@@ -43,21 +39,5 @@ public interface IDispatchContext {
      * @return Expires date, <code>null</code> for no-cache.
      */
     Date getExpires();
-
-    /**
-     * Get the exported operations for the dispatched {@link #getObject() object}.
-     *
-     * @return Operation map, <code>null</code> if not available, or the dispatched object is
-     *         <code>null</code>.
-     * @see {@link OperationFusion#getOperations(Object)}
-     */
-    Map<String, IOperation> getOperations();
-
-    /**
-     * Get the named operation.
-     *
-     * @return <code>null</code> If the operation with specific name isn't existed.
-     */
-    IOperation getOperation(String name);
 
 }

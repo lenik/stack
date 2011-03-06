@@ -3,14 +3,15 @@ package com.bee32.plover.arch;
 import java.util.Collection;
 
 import com.bee32.plover.arch.credit.Credit;
-import com.bee32.plover.arch.locator.IObjectLocator;
-import com.bee32.plover.arch.locator.MapLocator;
+import com.bee32.plover.arch.naming.INamedNode;
+import com.bee32.plover.arch.naming.TreeMapNode;
+import com.bee32.plover.arch.operation.IOperation;
 
 public abstract class Module
         extends Component
         implements IModule {
 
-    private MapLocator<Object> locatorImpl = new MapLocator<Object>(Object.class);
+    private TreeMapNode<Object> locatorImpl = new TreeMapNode<Object>(Object.class);
 
     private Credit credit = Credit.dummy;
 
@@ -34,7 +35,7 @@ public abstract class Module
      *            Non-<code>null</code> object locator.
      */
     protected void declare(String token, Object obj) {
-        locatorImpl.setLocation(token, obj);
+        locatorImpl.addChild(token, obj);
     }
 
     @Override
@@ -57,37 +58,48 @@ public abstract class Module
     // IObjectLocator
 
     @Override
-    public IObjectLocator getParent() {
-        return locatorImpl.getParent();
-    }
-
-    @Override
-    public Class<?> getBaseType() {
-        return locatorImpl.getBaseType();
-    }
-
-    @Override
     public int getPriority() {
         return locatorImpl.getPriority();
     }
 
     @Override
-    public Object locate(String location) {
-        return locatorImpl.locate(location);
+    public INamedNode getParent() {
+        return locatorImpl.getParent();
     }
 
     @Override
-    public boolean isLocatable(Object obj) {
-        return locatorImpl.isLocatable(obj);
+    public Class<?> getChildType() {
+        return locatorImpl.getChildType();
     }
 
     @Override
-    public String getLocation(Object obj) {
-        return locatorImpl.getLocation(obj);
+    public boolean hasChild(Object obj) {
+        return locatorImpl.hasChild(obj);
     }
 
-    public Collection<String> getLocationEntries() {
-        return locatorImpl.getLocations();
+    @Override
+    public Object getChild(String location) {
+        return locatorImpl.getChild(location);
+    }
+
+    @Override
+    public String getChildName(Object obj) {
+        return locatorImpl.getChildName(obj);
+    }
+
+    @Override
+    public Collection<String> getChildNames() {
+        return locatorImpl.getChildNames();
+    }
+
+    @Override
+    public IOperation getOperation(String name) {
+        return locatorImpl.getOperation(name);
+    }
+
+    @Override
+    public Collection<IOperation> getOperations() {
+        return locatorImpl.getOperations();
     }
 
 }

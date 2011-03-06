@@ -3,10 +3,10 @@ package com.bee32.plover.orm.entity;
 import java.util.Collection;
 
 import com.bee32.plover.arch.IRepository;
-import com.bee32.plover.arch.locator.IObjectLocator;
+import com.bee32.plover.arch.naming.INamedNode;
 
 public interface IEntityRepository<E extends IEntity<K>, K>
-        extends IRepository<K, E>, IObjectLocator {
+        extends IRepository<K, E>, INamedNode {
 
     /**
      * Or the storage class.
@@ -41,9 +41,9 @@ public interface IEntityRepository<E extends IEntity<K>, K>
     void delete(Object entity);
 
     @Override
-    boolean isLocatable(Object entity);
+    boolean hasChild(Object entity);
 
     @Override
-    String getLocation(Object entity);
+    String getChildName(Object entity);
 
 }

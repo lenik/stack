@@ -5,4 +5,4 @@
  *
  * @author Lenik
  */
-package com.bee32.plover.arch.locator;
+package com.bee32.plover.arch.naming;

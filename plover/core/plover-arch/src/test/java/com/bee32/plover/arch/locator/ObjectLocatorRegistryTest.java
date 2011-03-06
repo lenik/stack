@@ -4,10 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.bee32.plover.arch.naming.ReverseLookupRegistry;
+
 public class ObjectLocatorRegistryTest
         extends ObjectLocationTestBase {
 
-    ObjectLocatorRegistry registry;
+    ReverseLookupRegistry registry;
 
     public ObjectLocatorRegistryTest() {
         // registry = ObjectLocatorRegistry.getInstance();
@@ -22,7 +24,7 @@ public class ObjectLocatorRegistryTest
 
     @Test
     public void testLookup() {
-        ObjectLocatorRegistry registry = ObjectLocatorRegistry.getInstance();
+        ReverseLookupRegistry registry = ReverseLookupRegistry.getInstance();
         assertEquals("life/food/apple", registry.getLocation("Apple"));
         assertEquals("life/sport/basket", registry.getLocation("BasketBall"));
         assertEquals("gen/color/red", registry.getLocation("Red"));
