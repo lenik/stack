@@ -3,6 +3,9 @@ package com.bee32.plover.disp;
 import java.util.ServiceLoader;
 import java.util.TreeSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bee32.plover.disp.util.ITokenQueue;
 
 /**
@@ -13,6 +16,8 @@ import com.bee32.plover.disp.util.ITokenQueue;
  */
 public class Dispatcher
         extends AbstractDispatcher {
+
+    static Logger logger = LoggerFactory.getLogger(Dispatcher.class);
 
     TreeSet<IDispatcher> dispatchers;
 
@@ -41,10 +46,16 @@ public class Dispatcher
         if (context == null)
             throw new NullPointerException("context");
 
+        if (dispatchers.isEmpty())
+            logger.warn("No dispatch configured");
+
         int count = 0;
+
+        logger.debug("Dispatch " + tokens);
 
         while (!tokens.isEmpty()) {
             boolean processed = false;
+
             for (IDispatcher dispatcher : dispatchers) {
                 IDispatchContext next = dispatcher.dispatch(context, tokens);
                 if (next != null) {
@@ -53,8 +64,12 @@ public class Dispatcher
                     break;
                 }
             }
+
             if (!processed)
                 break;
+
+            logger.debug("    " + context);
+
             if (++count > maxDispatches)
                 throw new DispatchException(String.format("Dispatch-deadloop (%d) detected.", maxDispatches));
         }
