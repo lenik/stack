@@ -7,6 +7,8 @@ import com.bee32.plover.arch.credit.Credit;
 import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.arch.naming.TreeMapNode;
 import com.bee32.plover.arch.operation.IOperation;
+import com.bee32.plover.arch.service.IServiceContribution;
+import com.bee32.plover.arch.service.Service;
 
 public abstract class Module
         extends Component
@@ -18,10 +20,26 @@ public abstract class Module
 
     public Module() {
         super();
+        preamble();
     }
 
     public Module(String name) {
         super(name);
+        preamble();
+    }
+
+    /**
+     * In the preamble, you should:
+     * <ol>
+     * <li>Configure the module.
+     * <li>Add service contributions by {@link #contribute(IServiceContribution) contribute} method.
+     * <li>Export resources, entities for public access.
+     * <ol>
+     */
+    protected abstract void preamble();
+
+    protected final void contribute(IServiceContribution<?> contribution) {
+        Service.contribute(contribution);
     }
 
     /**
