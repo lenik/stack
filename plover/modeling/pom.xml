@@ -17,7 +17,6 @@
         <module>plover-model</module>
         <module>plover-velocity</module>
         <module>plover-view</module>
-        <module>plover-zk</module>
     </modules>
     <name>Plover :: Modeling</name>
 </project>

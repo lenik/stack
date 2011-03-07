@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.plover</groupId>
-        <artifactId>modeling</artifactId>
+        <artifactId>web-ui</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
     <artifactId>plover-zk</artifactId>
@@ -29,5 +29,5 @@
             <version>5.0.6</version>
         </dependency>
     </dependencies>
-    <name>Plover :: Modeling :: Zk</name>
+    <name>Plover :: Web Ui :: Zk</name>
 </project>

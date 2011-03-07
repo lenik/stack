@@ -34,7 +34,6 @@ modeling/
     plover-form         中间表单模型
     plover-view         公共视图模型
     plover-velocity     Velocity Support
-    plover-zk           Zk Support
 
 repr/
     plover-repr         基本表示层
@@ -50,5 +49,6 @@ ui/
     plover-widgets      SWT控件
 
 web-ui/
+    plover-zk           Zk Support
     plover-webwidgets   Web控件
 
