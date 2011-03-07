@@ -12,11 +12,15 @@ public abstract class Component
         implements IComponent {
 
     /**
+     * The name is readable/writable to support entity design.
+     *
+     * <strike>
+     * <p>
      * This should be final field, but make it non-final to overcome the java language restriction.
      * <p>
-     * Avoid to change the name field, except in the constructor.
+     * Avoid to change the name field, except in the constructor. </strike>
      */
-    protected final String name;
+    protected String name;
 
     private IAppearance appearance;
     private ExceptionSupport exceptionSupport;
