@@ -114,6 +114,13 @@ public class DispatchFilter
         RestfulRequestBuilder requestBuilder = RestfulRequestBuilder.getInstance();
         RestfulRequest rreq = requestBuilder.build(req);
 
+        // XXX -opt away.
+        System.err.println(req.getRequestURI());
+        if ("/favicon.ico".equals(req.getRequestURI())) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return true;
+        }
+
         // 2, Path-dispatch
         ITokenQueue tq = rreq.getTokenQueue();
 
@@ -140,9 +147,12 @@ public class DispatchFilter
 
             try {
                 verbImpl = verb.operate(resultContext, requestContext);
+            } catch (UnsupportedVerbException e) {
+                throw e;
             } catch (Exception e) {
                 throw new RestfulException(e.getMessage(), e);
             }
+
             redirectObject = requestContext.getReturnValue();
 
             if (redirectObject == null)
