@@ -37,6 +37,11 @@ public abstract class Module
      */
     protected void declare(String token, Object obj) {
         nodeImpl.addChild(token, obj);
+
+        if (obj instanceof INamedNode) {
+            INamedNode child = (INamedNode) obj;
+            child.setParent(this);
+        }
     }
 
     @Override
@@ -96,6 +101,11 @@ public abstract class Module
     @Override
     public Collection<String> getChildNames() {
         return nodeImpl.getChildNames();
+    }
+
+    @Override
+    public Iterable<?> getChildren() {
+        return nodeImpl.getChildren();
     }
 
     @Override

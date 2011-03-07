@@ -74,4 +74,11 @@ public interface INamedNode
      */
     Collection<String> getChildNames();
 
+    /**
+     * Get all children.
+     *
+     * @return Non-<code>null</code> children iterable.
+     */
+    Iterable<?> getChildren();
+
 }

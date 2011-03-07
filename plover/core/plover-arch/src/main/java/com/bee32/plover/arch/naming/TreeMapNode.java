@@ -66,6 +66,11 @@ public class TreeMapNode<T>
     }
 
     @Override
+    public Iterable<?> getChildren() {
+        return map.values();
+    }
+
+    @Override
     protected void buildOperation(OperationBuilder builder) {
         builder.add(deleteOperation);
     }

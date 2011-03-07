@@ -6,11 +6,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.free.IllegalUsageException;
+import javax.free.PrefetchedIterator;
 
 import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.arch.naming.NamedNode;
@@ -215,6 +217,66 @@ public class OidTree<T>
 
             childTree.dumpChildNames(list, prefix);
         }
+    }
+
+    @Override
+    public Iterable<?> getChildren() {
+        if (children == null || children.isEmpty())
+            return Collections.emptyList();
+
+        List<T> children = new ArrayList<T>();
+        dumpChildren(children);
+
+        return children;
+    }
+
+    public void dumpChildren(List<T> all) {
+        if (data != null)
+            all.add(data);
+
+        if (children == null)
+            return;
+
+        for (OidTree<T> childTree : children.values())
+            childTree.dumpChildren(all);
+    }
+
+    // XXX - Please rewrite this later.
+    class ChildrenIterator
+            extends PrefetchedIterator<Object> {
+
+        final Iterator<Entry<Integer, OidTree<T>>> entries;
+        Iterator<?> subIter;
+
+        public ChildrenIterator() {
+            entries = children.entrySet().iterator();
+        }
+
+        @Override
+        protected Object fetch() {
+            if (subIter != null) {
+                if (subIter.hasNext())
+                    return subIter.next();
+                else
+                    subIter = null;
+            }
+
+            while (entries.hasNext()) {
+                Entry<Integer, OidTree<T>> entry = entries.next();
+                OidTree<T> subnode = entry.getValue();
+
+                if (subnode != null)
+                    subIter = subnode.getChildren().iterator();
+
+                if (subnode.data != null)
+                    return subnode.data;
+
+                return fetch();
+            }
+
+            return end();
+        }
+
     }
 
     @Override
