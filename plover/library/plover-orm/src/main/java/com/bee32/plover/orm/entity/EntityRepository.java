@@ -19,6 +19,7 @@ import com.bee32.plover.arch.operation.AbstractOperation;
 import com.bee32.plover.arch.operation.IOperation;
 import com.bee32.plover.arch.operation.IOperationContext;
 import com.bee32.plover.arch.operation.OperationBuilder;
+import com.bee32.plover.arch.util.IStruct;
 
 public abstract class EntityRepository<E extends IEntity<K>, K>
         extends Repository<K, E>
@@ -111,7 +112,7 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
-    public E populate(Map<String, ?> struct)
+    public E populate(IStruct struct)
             throws BuildException {
         E entity;
         try {

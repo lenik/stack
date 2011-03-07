@@ -1,11 +1,10 @@
 package com.bee32.plover.orm.entity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Test;
 
 import com.bee32.plover.arch.BuildException;
+import com.bee32.plover.arch.util.IStruct;
+import com.bee32.plover.arch.util.MapStruct;
 import com.bee32.plover.orm.util.hibernate.HibernateSessionTestCase;
 
 public class CatRepoTest
@@ -18,7 +17,7 @@ public class CatRepoTest
     @Test
     public void testPopulate()
             throws BuildException {
-        Map<String, String> struct = new HashMap<String, String>();
+        IStruct struct = new MapStruct();
         struct.put("name", "kitty");
         struct.put("color", "pink");
 

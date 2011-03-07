@@ -1,8 +1,7 @@
 package com.bee32.plover.arch;
 
-import java.util.Map;
-
 import com.bee32.plover.arch.util.BeanPopulater;
+import com.bee32.plover.arch.util.IStruct;
 
 public abstract class Repository<K, V>
         extends Component
@@ -66,7 +65,7 @@ public abstract class Repository<K, V>
     }
 
     @Override
-    public V populate(Map<String, ?> struct)
+    public V populate(IStruct struct)
             throws BuildException {
         V instance;
         try {
@@ -76,12 +75,11 @@ public abstract class Repository<K, V>
         }
 
         populate(instance, struct);
-
         return instance;
     }
 
     @Override
-    public boolean populate(V instance, Map<String, ?> struct)
+    public boolean populate(V instance, IStruct struct)
             throws BuildException {
         int changes = BeanPopulater.populate(instanceType, instance, struct);
         return changes != 0;

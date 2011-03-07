@@ -3,6 +3,8 @@ package com.bee32.plover.arch;
 import java.util.Collection;
 import java.util.Map;
 
+import com.bee32.plover.arch.util.IStruct;
+
 public interface IRepository<K, V>
         extends IComponent // IModel ??
 {
@@ -53,7 +55,7 @@ public interface IRepository<K, V>
      *
      * @return Non-<code>null</code> instantiated instance.
      */
-    V populate(Map<String, ?> struct)
+    V populate(IStruct struct)
             throws BuildException;
 
     /**
@@ -61,7 +63,7 @@ public interface IRepository<K, V>
      *
      * @return <code>true</code> if anything changed.
      */
-    boolean populate(V instance, Map<String, ?> struct)
+    boolean populate(V instance, IStruct struct)
             throws BuildException;
 
     /**
