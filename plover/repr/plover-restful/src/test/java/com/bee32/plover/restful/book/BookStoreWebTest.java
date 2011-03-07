@@ -9,6 +9,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import com.bee32.plover.restful.request.RestfulRequest;
 import com.bee32.plover.restful.request.RestfulRequestUtil;
 
+/**
+ * This test runs in non-dispatch mode.
+ */
 public class BookStoreWebTest
         extends Assert {
 
@@ -17,7 +20,7 @@ public class BookStoreWebTest
     @Test
     public void testList()
             throws IOException {
-        RestfulRequest req = RestfulRequestUtil.wrap(SimpleBooks.store);
+        RestfulRequest req = RestfulRequestUtil.wrapDispatched(SimpleBooks.store);
         MockHttpServletResponse resp = new MockHttpServletResponse();
 
         String list = web.list(req, resp);

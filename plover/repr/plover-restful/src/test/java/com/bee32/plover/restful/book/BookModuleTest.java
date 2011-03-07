@@ -1,29 +1,42 @@
 package com.bee32.plover.restful.book;
 
-import java.awt.Desktop;
-import java.net.URI;
-
 import org.junit.Test;
 
-import com.bee32.plover.restful.DispatchFilter;
-import com.bee32.plover.servlet.test.ServletTestCase;
+import com.bee32.plover.pub.oid.OidUtil;
+import com.bee32.plover.restful.test.RestfulTestCase;
 
 public class BookModuleTest
-        extends ServletTestCase {
+        extends RestfulTestCase {
+
+    static String bookModuleOid = OidUtil.getOid(BookModule.class).toPath();
+
+    public BookModuleTest() {
+        super(SimpleBooks.unit);
+
+        SimpleBooks.init();
+    }
 
     @Test
     public void testUser()
             throws Exception {
-        // addFilter(DispatchFilter.class, "/", 3);
-        addServlet(DispatchFilter.class, "/");
+        setupH2Console();
 
-        String loc = "http://localhost:" + getPort();
-        System.out.println(loc);
+        String creditUri = "/" + bookModuleOid + "/credit";
+        String credit = rtl.httpGet(creditUri).getContent();
 
-        URI uri = new URI(loc);
-        Desktop.getDesktop().browse(uri);
+        System.out.println(credit);
 
-        Thread.sleep(10000000);
+        assertTrue(credit.contains("99"));
+    }
+
+    public static void main(String[] args)
+            throws Exception {
+        BookModuleTest test = new BookModuleTest();
+
+        test.setUpLibraries();
+
+        test.rtl.browse();
+        test.rtl.readLine();
     }
 
 }

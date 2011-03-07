@@ -10,7 +10,6 @@ public class BookModule
 
     public BookModule() {
         declare("book", SimpleBooks.store);
-        SimpleBooks.store.setParent(this);
     }
 
 }

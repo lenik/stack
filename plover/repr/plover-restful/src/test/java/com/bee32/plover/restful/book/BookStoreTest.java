@@ -1,22 +1,26 @@
 package com.bee32.plover.restful.book;
 
-import org.junit.Assert;
+import java.util.Map;
+
 import org.junit.Test;
 
+import com.bee32.plover.arch.IModule;
 import com.bee32.plover.arch.ModuleLoader;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.util.DispatchUtil;
+import com.bee32.plover.orm.util.hibernate.HibernateLibrary;
+import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.restful.DispatchFilter;
 import com.bee32.plover.restful.ModuleManager;
+import com.bee32.plover.test.AssembledTestCase;
 
 public class BookStoreTest
-        extends Assert {
+        extends AssembledTestCase {
 
-    /**
-     * @see BookModule
-     */
-    static String bookModuleOid = "13/2/6/2/10001";
+    static String bookModuleOid = OidUtil.getOid(BookModule.class).toPath();
+
+    HibernateLibrary hl;
 
     Dispatcher dispatcher = Dispatcher.getInstance();
     ModuleManager mm = ModuleManager.getInstance();
@@ -24,7 +28,10 @@ public class BookStoreTest
     DispatchFilter dispatchFilter = new DispatchFilter();
 
     public BookStoreTest() {
-        if (ModuleLoader.getModuleMap().isEmpty())
+        install(hl = new HibernateLibrary(SimpleBooks.unit));
+
+        Map<String, IModule> map = ModuleLoader.getModuleMap();
+        if (map.isEmpty())
             throw new Error("No module found, check you test environ.");
     }
 
@@ -38,9 +45,14 @@ public class BookStoreTest
     @Test
     public void testDispatchToBook()
             throws DispatchException {
+        SimpleBooks.store.setSessionFactory(hl.getSessionFactory());
+        SimpleBooks.init();
+
         Book book = SimpleBooks.helloWorld;
         Object got = DispatchUtil.dispatch(dispatcher, mm, bookModuleOid + "/book/World");
-        assertSame(book, got);
+
+        // for MemoryBookStore, this should be exact same.
+        assertEquals(book, got);
     }
 
     @Test
@@ -53,6 +65,9 @@ public class BookStoreTest
     @Test
     public void testReverseBook()
             throws DispatchException {
+        SimpleBooks.store.setSessionFactory(hl.getSessionFactory());
+        SimpleBooks.init();
+
         String path = mm.getReversedPath(SimpleBooks.helloWorld);
         assertEquals(bookModuleOid + "/book/World", path);
     }
