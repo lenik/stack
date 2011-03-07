@@ -206,6 +206,11 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
         return keyStrings;
     }
 
+    @Override
+    public Iterable<?> getChildren() {
+        return list();
+    }
+
     /**
      * @see NamedNode#getOperationMap()
      */
