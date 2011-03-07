@@ -10,6 +10,9 @@ public class Book
     private String name;
     private String content;
 
+    public Book() {
+    }
+
     public Book(String name, String content) {
         this.name = name;
         this.content = content;
@@ -38,7 +41,7 @@ public class Book
 
     @Override
     public String toString() {
-        return name+" :: " + content;
+        return name + " :: " + content;
     }
 
 }

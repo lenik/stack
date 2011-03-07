@@ -1,5 +1,7 @@
 package com.bee32.plover.restful.book;
 
+import com.bee32.plover.arch.BuildException;
+import com.bee32.plover.arch.util.IStruct;
 import com.bee32.plover.orm.entity.MapEntityRepository;
 
 public class BookStore
@@ -29,6 +31,14 @@ public class BookStore
 
     public void clear() {
         deleteAll();
+    }
+
+    @Override
+    public boolean populate(Book instance, IStruct struct)
+            throws BuildException {
+        instance.setName((String) struct.getScalar("name"));
+        instance.setContent((String) struct.getScalar("content"));
+        return true;
     }
 
 }
