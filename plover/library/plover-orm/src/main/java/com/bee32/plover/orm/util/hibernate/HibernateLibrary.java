@@ -2,13 +2,13 @@ package com.bee32.plover.orm.util.hibernate;
 
 import org.hibernate.SessionFactory;
 
-import com.bee32.plover.arch.ISupportLibrary;
+import com.bee32.plover.arch.SupportLibrary;
 import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
 public class HibernateLibrary
-        implements ISupportLibrary {
+        extends SupportLibrary {
 
     private final SessionFactoryBuilder builder;
     private final PersistenceUnit[] persistenceUnits;
