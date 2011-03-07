@@ -2,11 +2,8 @@ package com.bee32.plover.disp;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Map;
 
 import javax.free.StringArray;
-
-import com.bee32.plover.arch.operation.IOperation;
 
 public class DispatchContext
         implements IDispatchContext {
@@ -17,11 +14,8 @@ public class DispatchContext
     private String[] consumedTokens = emptyStringArray;
 
     private Object reachedObject;
-    private boolean objectPrepared;
 
     private Date expires;
-
-    private Map<String, IOperation> operations;
 
     public DispatchContext(Object startObject) {
         this.parent = null;
@@ -72,10 +66,7 @@ public class DispatchContext
     }
 
     public void setObject(Object object) {
-        if (reachedObject != object) {
-            this.reachedObject = object;
-            this.objectPrepared = false;
-        }
+        this.reachedObject = object;
     }
 
     @Override
