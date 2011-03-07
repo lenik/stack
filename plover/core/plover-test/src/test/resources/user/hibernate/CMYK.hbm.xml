@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="user.hibernate">
+    <subclass name="CMYK" extends="Color" discriminator-value="cmyk">
+        <property name="cyan" />
+        <property name="magenta" />
+        <property name="yellow" />
+        <property name="black" />
+    </subclass>
+</hibernate-mapping>
