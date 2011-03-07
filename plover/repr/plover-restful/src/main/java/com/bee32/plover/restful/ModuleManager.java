@@ -3,6 +3,9 @@ package com.bee32.plover.restful;
 import javax.free.IllegalUsageError;
 import javax.free.IllegalUsageException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bee32.plover.arch.IModule;
 import com.bee32.plover.arch.ModuleLoader;
 import com.bee32.plover.arch.naming.LookupChain;
@@ -15,6 +18,8 @@ public class ModuleManager
         extends OidTree<IModule> {
 
     private static final long serialVersionUID = 1L;
+
+    static Logger logger = LoggerFactory.getLogger(ModuleManager.class);
 
     private ModuleManager() {
         super(IModule.class, null);
@@ -29,6 +34,8 @@ public class ModuleManager
             OidVector oid = OidUtil.getOid(moduleClass);
             if (oid == null)
                 throw new IllegalUsageError("No OID defined on module " + moduleClass);
+
+            logger.info("Load module " + module + " at " + oid);
 
             OidTree<IModule> oidTree = get(oid);
             oidTree.set(module);
@@ -55,17 +62,20 @@ public class ModuleManager
 
         String location = lookup.join();
         Object module = lookup.getObject();
-        if (!(module instanceof IModule)) {
-            throw new IllegalUsageException("Outmost isn't a module");
+
+        if (module instanceof IModule) {
+            Class<?> moduleClass = module.getClass();
+            OidVector oid = OidUtil.getOid(moduleClass);
+            if (oid == null)
+                throw new IllegalUsageException("Module OID doesn't defined: " + moduleClass);
+
+            location = oid.toPath() + "/" + location;
+        } else {
+            // Congratulations!
+            // We've already went up to the root!
         }
 
-        Class<?> moduleClass = module.getClass();
-        OidVector oid = OidUtil.getOid(moduleClass);
-        if (oid == null)
-            throw new IllegalUsageException("Module OID doesn't defined: " + moduleClass);
-
-        String uri = oid.toPath() + "/" + location;
-        return uri;
+        return location;
     }
 
     private static final ModuleManager instance = new ModuleManager();
