@@ -108,8 +108,14 @@ public class Verb
         return operate(dc, context, pathRevList);
     }
 
+    /**
+     * @return The object who implemented the verb method. Non-<code>null</code>.
+     *
+     * @throws UnsupportedVerbException
+     *             If there is no implementation for any object in the dispatch-chain.
+     */
     public Object operate(IDispatchContext dc, IOperationContext context, List<String> pathRevList)
-            throws Exception {
+            throws UnsupportedVerbException, Exception {
         Object obj = dc.getObject();
 
         // XXX - parent = null??
@@ -130,13 +136,13 @@ public class Verb
 
         IDispatchContext parent = dc.getParent();
         if (parent == null)
-            return null;
+            throw new UnsupportedVerbException(name);
 
         String[] consumedTokens = dc.getConsumedTokens();
         for (int i = consumedTokens.length - 1; i >= 0; i--)
             pathRevList.add(consumedTokens[i]);
 
-        return operate(dc.getParent(), context, pathRevList);
+        return operate(parent, context, pathRevList);
     }
 
     static String pathreverse(List<String> stack) {
