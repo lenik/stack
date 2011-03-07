@@ -6,7 +6,7 @@ import com.bee32.plover.disp.DispatchContext;
 
 public class RestfulRequestUtil {
 
-    public static RestfulRequest wrap(Object obj) {
+    public static RestfulRequest wrapDispatched(Object obj) {
         MockHttpServletRequest req0 = new MockHttpServletRequest();
 
         RestfulRequest rreq = new RestfulRequest(req0);
