@@ -10,14 +10,19 @@
     <version>0.1.1-SNAPSHOT</version>
     <dependencies>
         <dependency>
-            <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-arch</artifactId>
-            <version>0.0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>javax.free</groupId>
             <artifactId>freejava-xml</artifactId>
             <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-orm</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-restful</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <name>ICSF :: Identity :: Principal</name>

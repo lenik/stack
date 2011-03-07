@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.bee32.icsf.principal">
+    <class abstract="true" name="AbstractRole">
+
+        <id name="id">
+            <generator class="native" />
+        </id>
+
+        <discriminator column="stereo" />
+
+        <property not-null="true" name="name" unique="true" length="30" />
+
+        <many-to-one not-null="false" name="inheritedRole" column="parent" />
+
+        <set name="responsibleUsers" table="UserRole" lazy="true">
+            <key column="role" />
+            <many-to-many column="user" class="AbstractUser" />
+        </set>
+
+        <set name="responsibleGroups" table="GroupRole" lazy="true">
+            <key column="role" />
+            <many-to-many column="group" class="AbstractGroup" />
+        </set>
+
+    </class>
+</hibernate-mapping>
