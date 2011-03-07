@@ -31,13 +31,12 @@ public class ModuleManagerTest
         Object child = mm.getChild(path);
         assertNotNull(child);
 
-        String reversed = mm.getChildName(child);
-
-        assertEquals(path, reversed);
+        String childName = mm.getChildName(child);
+        assertEquals(path, childName);
 
         ReverseLookupRegistry rl = ReverseLookupRegistry.getInstance();
-        String location = rl.getLocation(child);
-        assertEquals("2", location);
+        String registryLookup = rl.getLocation(child);
+        assertEquals(path, registryLookup);
     }
 
 }
