@@ -1,11 +1,11 @@
 package com.bee32.plover.arch.operation;
 
-import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.bee32.plover.arch.util.MapStruct;
 import com.bee32.plover.inject.AbstractContainer;
 
 public class OperationContext
@@ -60,32 +60,16 @@ public class OperationContext
         return get(String.valueOf(parameterIndex));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T getScalar(String key) {
         Object value = get(key);
-        if (value == null)
-            return null;
-
-        if (value.getClass().isArray())
-            return (T) Array.get(value, 0);
-
-        return (T) value;
+        return MapStruct.toScalar(value);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T[] getArray(String key) {
         Object value = get(key);
-        if (value == null)
-            return null;
-
-        if (value.getClass().isArray())
-            return (T[]) value;
-
-        Object array = Array.newInstance(value.getClass(), 1);
-        Array.set(array, 0, value);
-        return (T[]) array;
+        return MapStruct.toArray(value);
     }
 
     // Map delegates
