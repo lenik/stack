@@ -1,6 +1,7 @@
 package com.bee32.plover.disp;
 
 import java.util.ServiceLoader;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.slf4j.Logger;
@@ -36,6 +37,10 @@ public class Dispatcher
         for (IDispatcher dispatcher : dispatcherLoader) {
             dispatchers.add(dispatcher);
         }
+    }
+
+    public Set<IDispatcher> getDispatchers() {
+        return dispatchers;
     }
 
     private static int maxDispatches = 100;
