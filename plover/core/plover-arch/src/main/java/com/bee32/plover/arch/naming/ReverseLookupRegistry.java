@@ -2,6 +2,7 @@ package com.bee32.plover.arch.naming;
 
 import java.util.Map.Entry;
 
+import javax.free.IllegalUsageException;
 import javax.free.TypeHierMap;
 
 public class ReverseLookupRegistry {
@@ -12,24 +13,26 @@ public class ReverseLookupRegistry {
         typemap = new TypeHierMap<NamedNodeSet>();
     }
 
-    public synchronized <T> void register(INamedNode locator) {
-        Class<?> baseType = locator.getChildType();
+    public synchronized <T> void register(INamedNode node) {
+        Class<?> baseType = node.getChildType();
 
-        NamedNodeSet locatorSet = (NamedNodeSet) typemap.get(baseType);
+        NamedNodeSet nodesForSameType = (NamedNodeSet) typemap.get(baseType);
 
-        if (locatorSet == null) {
-            locatorSet = new NamedNodeSet();
-            typemap.put(baseType, locatorSet);
+        if (nodesForSameType == null) {
+            nodesForSameType = new NamedNodeSet();
+            typemap.put(baseType, nodesForSameType);
         }
-        locatorSet.add(locator);
+        nodesForSameType.add(node);
     }
 
     public synchronized void unregister(INamedNode locator) {
         Class<?> baseType = locator.getChildType();
-        NamedNodeSet locatorSet = typemap.get(baseType);
-        if (locatorSet != null) {
-            locatorSet.remove(locator);
-            if (locatorSet.isEmpty())
+
+        NamedNodeSet nodesForSameType = typemap.get(baseType);
+
+        if (nodesForSameType != null) {
+            nodesForSameType.remove(locator);
+            if (nodesForSameType.isEmpty())
                 typemap.remove(baseType);
         }
     }
@@ -40,7 +43,7 @@ public class ReverseLookupRegistry {
      * @return The locator with highest priority for a specific object type is returned. Return
      *         <code>null</code> if none available.
      */
-    public <T> INamedNode getLocatorForObjectType(Class<?> objectType) {
+    public <T> INamedNode whoseClass(Class<?> objectType) {
         if (objectType == null)
             throw new NullPointerException("objectType");
 
@@ -48,10 +51,10 @@ public class ReverseLookupRegistry {
 
         while (floorEntry != null) {
             Class<?> baseType = floorEntry.getKey();
-            NamedNodeSet locatorSet = (NamedNodeSet) floorEntry.getValue();
+            NamedNodeSet nodesForSameType = (NamedNodeSet) floorEntry.getValue();
 
-            if (locatorSet != null && !locatorSet.isEmpty())
-                return locatorSet.iterator().next();
+            if (nodesForSameType != null && !nodesForSameType.isEmpty())
+                return nodesForSameType.iterator().next();
 
             floorEntry = typemap.lowerEntry(baseType);
             // Assured by Preorder.
@@ -60,7 +63,7 @@ public class ReverseLookupRegistry {
         return null;
     }
 
-    public <T> INamedNode getLocatorForObject(T object) {
+    public <T> INamedNode whoseObject(T object) {
         if (object == null)
             throw new NullPointerException("object");
 
@@ -96,18 +99,21 @@ public class ReverseLookupRegistry {
     }
 
     public LookupChain lookup(Object obj, LookupChain inner) {
-        INamedNode locator = getLocatorForObject(obj);
-        if (locator == null)
+        // Should be the node who did the dispatching.
+        INamedNode node = whoseObject(obj);
+        if (node == null)
             if (inner == null)
                 return null;
             else
                 return new LookupChain(null, obj, inner);
 
-        String location = locator.getChildName(obj);
-        assert location != null;
+        String location = node.getChildName(obj);
+        if (location == null)
+            throw new IllegalUsageException("Location isn't set for " + obj + " in " + node);
+
         LookupChain lookup = new LookupChain(location, obj, inner);
 
-        return lookup(locator, lookup);
+        return lookup(node, lookup);
     }
 
     /**

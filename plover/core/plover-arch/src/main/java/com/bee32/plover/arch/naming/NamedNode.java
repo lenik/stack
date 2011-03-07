@@ -11,7 +11,7 @@ public abstract class NamedNode
         extends Component
         implements INamedNode {
 
-    private final INamedNode parent;
+    private INamedNode parent;
     private final Class<?> childType;
 
     private transient Map<String, IOperation> operationMap;
@@ -60,6 +60,11 @@ public abstract class NamedNode
     @Override
     public INamedNode getParent() {
         return parent;
+    }
+
+    @Override
+    public void setParent(INamedNode parent) {
+        this.parent = parent;
     }
 
     @Override

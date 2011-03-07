@@ -23,6 +23,14 @@ public interface INamedNode
     INamedNode getParent();
 
     /**
+     * Re-attach the parent node.
+     *
+     * @param parent
+     *            The new parent.
+     */
+    void setParent(INamedNode parent);
+
+    /**
      * Get the base type for the immediate children nodes.
      *
      * @return Non-<code>null</code> type of the children nodes.

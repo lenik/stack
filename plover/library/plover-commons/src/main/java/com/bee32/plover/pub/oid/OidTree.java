@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.free.IllegalUsageException;
+
+import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.arch.naming.NamedNode;
 
 public class OidTree<T>
@@ -23,13 +26,13 @@ public class OidTree<T>
     private T data;
     private Map<Integer, OidTree<T>> children;
 
-    public OidTree(Class<T> dataType) {
-        super(dataType, null);
+    public OidTree(Class<T> dataType, INamedNode parent) {
+        super("(root)", dataType, parent);
         this.dataType = dataType;
     }
 
-    public OidTree(String name, Class<T> dataType) {
-        super(name, dataType, null);
+    public OidTree(String name, Class<T> dataType, INamedNode parent) {
+        super(name, dataType, parent);
         this.dataType = dataType;
     }
 
@@ -53,7 +56,7 @@ public class OidTree<T>
 
         OidTree<T> tree = children.get(ord);
         if (tree == null) {
-            tree = new OidTree<T>(dataType);
+            tree = new OidTree<T>(name, dataType, this);
             children.put(ord, tree);
         }
         return tree;
@@ -61,6 +64,13 @@ public class OidTree<T>
 
     public synchronized void set(int ord, T value) {
         get(ord).set(value);
+    }
+
+    public void attach(int ord, OidTree<T> tree) {
+        if (tree == null)
+            children.remove(ord);
+        else
+            children.put(ord, tree);
     }
 
     public boolean contains(OidVector oid) {
@@ -99,6 +109,31 @@ public class OidTree<T>
         return node;
     }
 
+    public void attach(int[] vector, OidTree<T> tree) {
+        attach(vector, 0, vector.length, tree);
+    }
+
+    public void attach(int[] vector, int start, int end, OidTree<T> tree) {
+        // Don't allow to replace the root.
+        // OidTree<T> parent = getParent();
+        OidTree<T> parent = null;
+
+        OidTree<T> node = this;
+        int leafOrd = -1;
+        while (start < end) {
+            leafOrd = vector[start++];
+            parent = node;
+            node = node.get(leafOrd);
+        }
+
+        if (parent == null)
+            throw new IllegalUsageException("Can't replace the root of oid-tree");
+
+        assert leafOrd != -1; // Notice: You can't use -1 as ord number.
+
+        parent.attach(leafOrd, tree);
+    }
+
     @Override
     public Object getChild(String childName) {
         String[] split = childName.split("/");
@@ -118,7 +153,7 @@ public class OidTree<T>
     }
 
     public Map<T, String> getReverseMap() {
-        if (children == null || children.isEmpty())
+        if (data == null && children == null)
             return Collections.emptyMap();
 
         Map<T, String> map = new IdentityHashMap<T, String>();

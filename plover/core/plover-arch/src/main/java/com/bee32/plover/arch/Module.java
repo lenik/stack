@@ -56,7 +56,7 @@ public abstract class Module
         return null;
     }
 
-    // IObjectLocator
+    // TreeNodeMap
 
     @Override
     public int getPriority() {
@@ -66,6 +66,11 @@ public abstract class Module
     @Override
     public INamedNode getParent() {
         return nodeImpl.getParent();
+    }
+
+    @Override
+    public void setParent(INamedNode parent) {
+        nodeImpl.setParent(parent);
     }
 
     @Override

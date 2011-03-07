@@ -17,7 +17,7 @@ public class ModuleManager
     private static final long serialVersionUID = 1L;
 
     private ModuleManager() {
-        super(IModule.class);
+        super(IModule.class, null);
 
         installModules();
     }
@@ -32,6 +32,9 @@ public class ModuleManager
 
             OidTree<IModule> oidTree = get(oid);
             oidTree.set(module);
+
+            // re-attach the module to module manager.
+            module.setParent(this);
         }
     }
 

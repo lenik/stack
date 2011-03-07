@@ -31,6 +31,10 @@ public class TreeMapNode<T>
         super(baseType, parent);
     }
 
+    public TreeMapNode(String name, Class<?> baseType, INamedNode parent) {
+        super(name, baseType, parent);
+    }
+
     @Override
     public boolean hasChild(Object obj) {
         return reverseMap.containsKey(obj);

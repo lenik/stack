@@ -14,7 +14,7 @@ public class OidDispatcherTest
     OidTree<String> tree;
 
     public OidDispatcherTest() {
-        tree = new OidTree<String>(String.class);
+        tree = new OidTree<String>(String.class, null);
         tree.get(0).set("X");
         tree.get(1, 2).set("AB");
         tree.get(1, 2, 3).set("ABC");
