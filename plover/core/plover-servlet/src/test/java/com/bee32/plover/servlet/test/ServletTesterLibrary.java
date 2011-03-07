@@ -1,6 +1,13 @@
 package com.bee32.plover.servlet.test;
 
+import java.awt.Desktop;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Map;
 
@@ -11,20 +18,24 @@ import org.mortbay.jetty.testing.ServletTester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class ServletTestCase
-        extends ServletTester {
+import com.bee32.plover.arch.ISupportLibrary;
+
+public class ServletTesterLibrary
+        extends ServletTester
+        implements ISupportLibrary {
 
     protected final Logger logger;
 
     private String host = "localhost";
     private int socketPort = -1;
 
-    public ServletTestCase() {
+    public ServletTesterLibrary() {
         this.logger = LoggerFactory.getLogger(getClass());
     }
 
     @Before
-    public void start()
+    @Override
+    public void startup()
             throws Exception {
 
         // int port = getPort();
@@ -36,10 +47,19 @@ public abstract class ServletTestCase
         String portString = connector.substring(colon + 1);
         socketPort = Integer.parseInt(portString);
 
-        setup();
+        configureServlets();
+
         logger.debug("Start test server: " + this);
-        super.start();
+        start();
         logger.debug("Test server started: " + this);
+    }
+
+    @After
+    @Override
+    public void shutdown()
+            throws Exception {
+        logger.debug("Stop test server: " + this);
+        stop();
     }
 
     /**
@@ -47,22 +67,15 @@ public abstract class ServletTestCase
      * <p>
      * Don't call {@link #start()} here.
      */
-    protected void setup()
+    protected void configureServlets()
             throws Exception {
     }
 
-    @After
-    public void stop()
-            throws Exception {
-        logger.debug("Stop test server: " + this);
-        super.stop();
-    }
-
-    protected int getPort() {
+    public int getPort() {
         return socketPort;
     }
 
-    protected HttpTester get(String uriOrPath)
+    public HttpTester httpGet(String uriOrPath)
             throws Exception {
         HttpTester request = new HttpTester();
         request.setMethod("GET");
@@ -92,7 +105,7 @@ public abstract class ServletTestCase
         return response;
     }
 
-    protected HttpTester post(String uri, String content, Map<String, String> map)
+    public HttpTester httpPost(String uri, String content, Map<String, String> map)
             throws Exception {
         HttpTester request = new HttpTester();
         request.setMethod("POST");
@@ -107,7 +120,7 @@ public abstract class ServletTestCase
         return response;
     }
 
-    protected void dumpResponse(HttpTester http) {
+    public void dumpResponse(HttpTester http) {
         PrintStream out = System.err;
         out.println(http.getStatus() + " " + http.getReason());
 
@@ -123,6 +136,35 @@ public abstract class ServletTestCase
         out.println();
 
         out.println(http.getContent());
+    }
+
+    public void browse()
+            throws IOException {
+        browse("");
+    }
+
+    public void browse(String location)
+            throws IOException {
+
+        String root = "http://localhost:" + this.getPort();
+        URL rootUrl = new URL(root);
+
+        URL url = new URL(rootUrl, location);
+        logger.warn("Browse " + url);
+
+        URI uri;
+        try {
+            uri = url.toURI();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        Desktop.getDesktop().browse(uri);
+    }
+
+    public String readLine()
+            throws IOException {
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        return stdin.readLine();
     }
 
 }

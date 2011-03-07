@@ -8,7 +8,7 @@ import com.bee32.plover.orm.entity.Cat;
 import com.bee32.plover.orm.entity.Tiger;
 
 public class TestSessionFactoryBuilderTest
-        extends HibernateSessionTestCase {
+        extends HibernateLibrary {
 
     public TestSessionFactoryBuilderTest() {
         super(Animals.getInstance());

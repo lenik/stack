@@ -6,16 +6,15 @@ import org.junit.Test;
 
 import com.bee32.plover.servlet.util.HelloServlet;
 
-
-public class ServletTestCaseTest
-        extends ServletTestCase {
+public class ServletTesterLibraryTest
+        extends ServletTesterLibrary {
 
     @Test
     public void testGetURL()
             throws Exception {
         addServlet(HelloServlet.class, "/hello");
         String uri = "http://localhost:" + getPort() + "/hello?name=foo";
-        String content = get(uri).getContent();
+        String content = httpGet(uri).getContent();
         assertEquals("hello, foo\n", content);
     }
 
@@ -24,7 +23,7 @@ public class ServletTestCaseTest
             throws Exception {
         addServlet(HelloServlet.class, "/hello");
         String uri = "http://localhost:" + getPort() + "/hello?hack&name=foo";
-        String content = get(uri).getContent();
+        String content = httpGet(uri).getContent();
         assertEquals("hey, hacker foo\n", content);
     }
 
