@@ -1,14 +1,7 @@
 package com.bee32.sem.module;
 
-import com.bee32.plover.arch.Module;
 import com.bee32.plover.arch.credit.Credit;
-import com.bee32.plover.arch.service.IServiceContribution;
-import com.bee32.plover.arch.service.Service;
-import com.bee32.plover.orm.entity.HibernateEntityRepository;
-import com.bee32.plover.orm.entity.IEntity;
-import com.bee32.plover.orm.entity.IEntityRepository;
-import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.unit.PersistenceUnits;
+import com.bee32.plover.orm.util.ERModule;
 
 /**
  * Module contributions for the menu:
@@ -22,18 +15,15 @@ import com.bee32.plover.orm.unit.PersistenceUnits;
  * <li>HELP -> model<br>
  */
 public abstract class EnterpriseModule
-        extends Module
+        extends ERModule
         implements IEnterpriseModule {
 
     public EnterpriseModule() {
         super();
-        preamble();
-
     }
 
     public EnterpriseModule(String name) {
         super(name);
-        preamble();
     }
 
     @Override
@@ -44,58 +34,6 @@ public abstract class EnterpriseModule
     @Override
     public String getCopyright() {
         return "(C) Copyright 2011 BEE32.com, all rights reserved.";
-    }
-
-    /**
-     * In the preamble, you should:
-     * <ol>
-     * <li>Configure the module.
-     * <li>Add service contributions by {@link #contribute(IServiceContribution) contribute} method.
-     * <li>Export resources, entities for public access.
-     * <ol>
-     */
-    protected abstract void preamble();
-
-    protected final void contribute(IServiceContribution<?> contribution) {
-        Service.contribute(contribution);
-    }
-
-    protected <E extends IEntity<K>, K> void export(IEntityRepository<E, K> entityRepository, String location,
-            String persistenceUnitName) {
-
-        // declare the restful token
-        declare(location, entityRepository);
-
-        // contribute to the global persistence unit.
-        Class<? extends E> entityType = entityRepository.getEntityType();
-        PersistenceUnit unit = PersistenceUnits.getInstance(persistenceUnitName);
-        unit.addPersistedClass(entityType);
-    }
-
-    protected <E extends IEntity<K>, K> void export(IEntityRepository<E, K> entityRepository, String location) {
-        export(entityRepository, location, PersistenceUnits.GLOBAL);
-    }
-
-    protected <E extends IEntity<K>, K> void export(IEntityRepository<E, K> entityRepository) {
-        String location = entityRepository.getName();
-        export(entityRepository, location);
-    }
-
-    /**
-     * Export entity using default entity manager.
-     *
-     * Currently, this default constrction of hibernate repository is used.
-     */
-    protected <E extends IEntity<K>, K> void exportEntity(Class<E> entityType, Class<K> keyType) {
-        exportEntityByHibernate(entityType, keyType);
-    }
-
-    /**
-     * The hibernate mapping file (<code>&lt;entity-class&gt;.hbm.xml</code>).
-     */
-    protected <E extends IEntity<K>, K> void exportEntityByHibernate(Class<E> entityType, Class<K> keyType) {
-        IEntityRepository<E, K> repository = new HibernateEntityRepository<E, K>(entityType, keyType);
-        export(repository);
     }
 
 }
