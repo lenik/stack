@@ -1,4 +1,4 @@
-package com.bee32.plover.disp.plover;
+package com.bee32.plover.disp.tree;
 
 import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.disp.AbstractDispatcher;
@@ -8,14 +8,14 @@ import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.IDispatchContext;
 import com.bee32.plover.disp.util.ITokenQueue;
 
-public class LocatorDispatcher
+public class NamedNodeDispatcher
         extends AbstractDispatcher {
 
-    public LocatorDispatcher() {
+    public NamedNodeDispatcher() {
         super();
     }
 
-    public LocatorDispatcher(String name) {
+    public NamedNodeDispatcher(String name) {
         super(name);
     }
 
