@@ -16,6 +16,7 @@ public class OperationBuilder {
     public void add(IOperation operation) {
         if (operation == null)
             throw new NullPointerException("operation");
+        map.put(operation.getName(), operation);
     }
 
     public void discover(Class<?> clazz) {
