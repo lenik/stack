@@ -2,16 +2,17 @@ package user.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
 import com.bee32.plover.restful.book.Book;
 
-@Component
 public class FooBean
         extends ComponentBase {
 
     @Autowired
     Book book1;
+
+    public FooBean() {
+    }
 
     public Book getBook1() {
         return book1;

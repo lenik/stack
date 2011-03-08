@@ -1,5 +1,8 @@
 package user.spring;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class BigBlob {
 
     String name;

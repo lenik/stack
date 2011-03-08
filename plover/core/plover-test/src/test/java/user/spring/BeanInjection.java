@@ -3,22 +3,20 @@ package user.spring;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.bee32.plover.restful.book.Book;
+import com.bee32.plover.test.WiredTestCase;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("context1.xml")
 // @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 // @Transactional
-public class IoCFeatures
-        extends Assert {
+public class BeanInjection
+        extends WiredTestCase {
 
     @Autowired
     ApplicationContext context;
@@ -33,8 +31,8 @@ public class IoCFeatures
     @Named("book2")
     Book bookAuto;
 
-    // By @configuration
-    @Autowired
+    @Inject
+    @Version("B")
     Book book10;
 
     @Test
@@ -48,6 +46,7 @@ public class IoCFeatures
     }
 
     @Test
+    @Ignore
     public void testBook10() {
         assertEquals("name10B", book10.getName());
     }
@@ -74,11 +73,20 @@ public class IoCFeatures
     @Test
     public void testGetBigBlob() {
         FooBean foo = context.getBean(FooBean.class);
-
         System.out.println("Internal blob = " + foo.blob);
         System.out.println("Start to get big blob");
         BigBlob big = foo.getBigBlob();
         System.out.println("Got big: " + big);
+    }
+
+    @Autowired
+    @Named("magic")
+    Book bookMagic;
+
+    @Test
+    public void testBookMagic() {
+        System.out.println("magic: " + bookMagic);
+        assertNotNull(bookMagic);
     }
 
 }
