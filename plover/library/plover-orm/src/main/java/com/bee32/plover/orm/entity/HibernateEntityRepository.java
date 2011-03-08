@@ -3,6 +3,8 @@ package com.bee32.plover.orm.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -32,6 +34,7 @@ public class HibernateEntityRepository<E extends IEntity<K>, K>
         support = new Support();
     }
 
+    @Inject
     public final void setSessionFactory(SessionFactory sessionFactory) {
         support.setSessionFactory(sessionFactory);
     }
