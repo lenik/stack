@@ -11,8 +11,14 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Map;
 
+import javax.free.StringPart;
+import javax.servlet.http.HttpServlet;
+
 import org.junit.After;
 import org.junit.Before;
+import org.mortbay.jetty.servlet.Context;
+import org.mortbay.jetty.servlet.ServletHandler;
+import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.jetty.testing.HttpTester;
 import org.mortbay.jetty.testing.ServletTester;
 import org.slf4j.Logger;
@@ -29,8 +35,18 @@ public class ServletTesterLibrary
     private String host = "localhost";
     private int socketPort = -1;
 
+    private String rootResourceFile = "index.html";
+
     public ServletTesterLibrary() {
         this.logger = LoggerFactory.getLogger(getClass());
+    }
+
+    public String getRootResourceFile() {
+        return rootResourceFile;
+    }
+
+    public void setRootResourceFile(String rootResourceFile) {
+        this.rootResourceFile = rootResourceFile;
     }
 
     @Before
@@ -48,6 +64,29 @@ public class ServletTesterLibrary
         socketPort = Integer.parseInt(portString);
 
         configureServlets();
+
+        // Find the resource base.
+        if (rootResourceFile != null) {
+            URL indexResource = null;
+            Class<?> chain = getClass();
+            while (chain != null) {
+                indexResource = chain.getResource(rootResourceFile);
+                if (indexResource != null)
+                    break;
+                chain = chain.getSuperclass();
+            }
+            if (indexResource != null) {
+                String fileUrl = indexResource.toString();
+
+                int shrink = fileUrl.length() - rootResourceFile.length();
+                String resourceBase = fileUrl.substring(0, shrink);
+
+                // remove the trailing /*.
+                resourceBase = StringPart.beforeLast(resourceBase, '/');
+
+                setResourceBase(resourceBase);
+            }
+        }
 
         logger.debug("Start test server: " + this);
         start();
@@ -69,6 +108,21 @@ public class ServletTesterLibrary
      */
     protected void configureServlets()
             throws Exception {
+    }
+
+    public ServletHolder addServlet(String servletName, Class<? extends HttpServlet> servlet, String pathSpec) {
+        if (servletName == null)
+            throw new NullPointerException("servletName");
+
+        Context context = getContext();
+        ServletHandler servletHandler = context.getServletHandler();
+
+        ServletHolder holder = new ServletHolder(servlet);
+
+        holder.setName(servletName);
+
+        servletHandler.addServletWithMapping(holder, pathSpec);
+        return holder;
     }
 
     public int getPort() {
