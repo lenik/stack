@@ -12,6 +12,10 @@ public class CoreInfoModule
         extends Module {
 
     @Override
+    protected void preamble() {
+    }
+
+    @Override
     public Credit getCredit() {
         return CREDIT;
     }

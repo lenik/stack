@@ -11,11 +11,14 @@ public abstract class DispatchModule
 
     public DispatchModule() {
         super();
-        delegate = getDispatcher();
     }
 
     public DispatchModule(String name) {
         super(name);
+    }
+
+    @Override
+    protected void preamble() {
         delegate = getDispatcher();
     }
 
