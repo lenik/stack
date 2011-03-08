@@ -6,12 +6,13 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.TreeMap;
 
-public class ModuleLoader {
+public class ServiceModuleLoader
+        implements IModuleLoader {
 
     private static List<IModule> modules;
     private static Map<String, IModule> moduleMap;
 
-    public static synchronized void load() {
+    static synchronized void _load() {
         if (modules == null) {
             modules = new ArrayList<IModule>();
             moduleMap = new TreeMap<String, IModule>();
@@ -28,14 +29,25 @@ public class ModuleLoader {
         }
     }
 
-    public static Iterable<IModule> getModules() {
+    @Override
+    public void load() {
+        _load();
+    }
+
+    public Iterable<IModule> getModules() {
         load();
         return modules;
     }
 
-    public static Map<String, IModule> getModuleMap() {
+    public Map<String, IModule> getModuleMap() {
         load();
         return moduleMap;
+    }
+
+    static final ServiceModuleLoader instance = new ServiceModuleLoader();
+
+    public static ServiceModuleLoader getInstance() {
+        return instance;
     }
 
 }
