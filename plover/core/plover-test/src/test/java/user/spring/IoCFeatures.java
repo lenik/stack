@@ -33,6 +33,10 @@ public class IoCFeatures
     @Named("book2")
     Book bookAuto;
 
+    // By @configuration
+    @Autowired
+    Book book10;
+
     @Test
     public void testBook1() {
         assertEquals("name1", book1.getName());
@@ -41,6 +45,11 @@ public class IoCFeatures
     @Test
     public void testBook2() {
         assertEquals("name2", book2.getName());
+    }
+
+    @Test
+    public void testBook10() {
+        assertEquals("name10B", book10.getName());
     }
 
     @Test
@@ -57,12 +66,19 @@ public class IoCFeatures
 
     @Test
     public void testThruContext() {
-        if (context == null)
-            throw new NullPointerException("context");
-
         FooBean foo = context.getBean(FooBean.class);
         Book fooBook = foo.getBook1();
         System.out.println("ctx/foo: " + fooBook);
+    }
+
+    @Test
+    public void testGetBigBlob() {
+        FooBean foo = context.getBean(FooBean.class);
+
+        System.out.println("Internal blob = " + foo.blob);
+        System.out.println("Start to get big blob");
+        BigBlob big = foo.getBigBlob();
+        System.out.println("Got big: " + big);
     }
 
 }
