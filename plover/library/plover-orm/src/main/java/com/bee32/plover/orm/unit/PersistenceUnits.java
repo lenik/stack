@@ -4,8 +4,9 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.TreeMap;
 
-import com.bee32.plover.arch.ModuleLoader;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class PersistenceUnits {
 
     public static final String GLOBAL = "global";
@@ -34,8 +35,11 @@ public class PersistenceUnits {
         return unit;
     }
 
+    /**
+     * XXX - There is no way to distinguish whether the app is service-based or spring-based.
+     */
     static {
-        ModuleLoader.load();
+        // ServiceModuleLoader.getInstance();
     }
 
 }

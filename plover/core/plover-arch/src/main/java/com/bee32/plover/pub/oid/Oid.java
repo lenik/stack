@@ -1,6 +1,7 @@
 package com.bee32.plover.pub.oid;
 
 import java.lang.annotation.Documented;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -12,6 +13,7 @@ import java.lang.annotation.RetentionPolicy;
  * @see <a href="http://track.secca-project.com/projects/sandbox/wiki/oid-37042">Bee32 OID 分配表</a>
  */
 @Documented
+@Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Oid {
 

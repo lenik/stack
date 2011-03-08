@@ -9,10 +9,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bee32.plover.orm.dao.HibernateTemplate;
-import com.bee32.plover.orm.util.hibernate.HibernateLibrary;
+import com.bee32.plover.orm.util.hibernate.HibernateUnitDao;
 
 public class DiscriminatorTest
-        extends HibernateLibrary {
+        extends HibernateUnitDao {
 
     public DiscriminatorTest() {
         super(ColorSystem.unit);

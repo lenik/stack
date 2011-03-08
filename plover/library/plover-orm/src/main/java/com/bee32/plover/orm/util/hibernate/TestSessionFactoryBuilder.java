@@ -3,7 +3,9 @@ package com.bee32.plover.orm.util.hibernate;
 import org.hibernate.cache.NoCacheProvider;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.transaction.JDBCTransactionFactory;
+import org.springframework.stereotype.Component;
 
+@Component("test")
 public class TestSessionFactoryBuilder
         extends SessionFactoryBuilder {
 

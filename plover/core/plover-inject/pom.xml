@@ -9,6 +9,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <dependencies>
         <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+        <dependency>
             <groupId>javax.free</groupId>
             <artifactId>freejava-collection</artifactId>
             <version>3.0.0</version>
@@ -17,8 +22,6 @@
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-arch</artifactId>
             <version>0.0.4-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
     <name>Plover :: Core :: Inject</name>

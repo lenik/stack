@@ -5,22 +5,22 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.bee32.plover.arch.IModule;
-import com.bee32.plover.arch.ModuleLoader;
+import com.bee32.plover.arch.ServiceModuleLoader;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.util.DispatchUtil;
-import com.bee32.plover.orm.util.hibernate.HibernateLibrary;
+import com.bee32.plover.orm.util.hibernate.HibernateUnitDao;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.restful.DispatchFilter;
 import com.bee32.plover.restful.ModuleManager;
-import com.bee32.plover.test.AssembledTestCase;
+import com.bee32.plover.test.WiredAssembledTestCase;
 
 public class BookStoreTest
-        extends AssembledTestCase {
+        extends WiredAssembledTestCase {
 
     static String bookModuleOid = OidUtil.getOid(BookModule.class).toPath();
 
-    HibernateLibrary hl;
+    HibernateUnitDao hl;
 
     Dispatcher dispatcher = Dispatcher.getInstance();
     ModuleManager mm = ModuleManager.getInstance();
@@ -28,9 +28,9 @@ public class BookStoreTest
     DispatchFilter dispatchFilter = new DispatchFilter();
 
     public BookStoreTest() {
-        install(hl = new HibernateLibrary(SimpleBooks.unit));
+        install(hl = new HibernateUnitDao(SimpleBooks.unit));
 
-        Map<String, IModule> map = ModuleLoader.getModuleMap();
+        Map<String, IModule> map = ServiceModuleLoader.getModuleMap();
         if (map.isEmpty())
             throw new Error("No module found, check you test environ.");
     }

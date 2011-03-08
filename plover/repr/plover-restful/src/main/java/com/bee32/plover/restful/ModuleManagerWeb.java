@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.arch.IModule;
-import com.bee32.plover.arch.ModuleLoader;
+import com.bee32.plover.arch.ServiceModuleLoader;
 import com.bee32.plover.inject.ContextException;
 import com.bee32.plover.inject.IContainer;
 import com.bee32.plover.pub.oid.OidUtil;
@@ -27,7 +27,7 @@ public class ModuleManagerWeb
         PrintWriter out = resp.getWriter();
         out.println("<ul>");
 
-        for (IModule module : ModuleLoader.getModules()) {
+        for (IModule module : ServiceModuleLoader.getModules()) {
             OidVector oid = OidUtil.getOid(module.getClass());
 
             String name = module.getName();

@@ -45,6 +45,7 @@ public interface PloverOids {
 
     int reprRepr = 1;
     int reprRestful = 2;
+    int reprResource = 3;
 
     int reprReprHtml = 1;
     int reprReprPdf = 2;

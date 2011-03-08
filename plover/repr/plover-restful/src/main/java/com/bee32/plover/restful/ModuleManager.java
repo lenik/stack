@@ -2,33 +2,61 @@ package com.bee32.plover.restful;
 
 import javax.free.IllegalUsageError;
 import javax.free.IllegalUsageException;
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
 
 import com.bee32.plover.arch.IModule;
-import com.bee32.plover.arch.ModuleLoader;
+import com.bee32.plover.arch.IModuleLoader;
+import com.bee32.plover.arch.ServiceModuleLoader;
 import com.bee32.plover.arch.naming.LookupChain;
 import com.bee32.plover.arch.naming.ReverseLookupRegistry;
 import com.bee32.plover.pub.oid.OidTree;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
 
+@Component
 public class ModuleManager
-        extends OidTree<IModule> {
+        extends OidTree<IModule>
+        implements InitializingBean {
 
     private static final long serialVersionUID = 1L;
 
     static Logger logger = LoggerFactory.getLogger(ModuleManager.class);
 
-    private ModuleManager() {
-        super(IModule.class, null);
+    @Inject
+    private transient IModuleLoader moduleLoader;
 
-        installModules();
+    private transient boolean loaded;
+
+    public ModuleManager() {
+        super(IModule.class, null);
     }
 
-    void installModules() {
-        for (IModule module : ModuleLoader.getModules()) {
+    public ModuleManager(IModuleLoader moduleLoader) {
+        super(IModule.class, null);
+
+        if (moduleLoader == null)
+            throw new NullPointerException("moduleLoader");
+
+        this.moduleLoader = moduleLoader;
+
+        afterPropertiesSet();
+    }
+
+    @Override
+    public synchronized void afterPropertiesSet() {
+        if (!loaded) {
+            installModules();
+            loaded = true;
+        }
+    }
+
+    protected synchronized void installModules() {
+        for (IModule module : moduleLoader.getModules()) {
             Class<? extends IModule> moduleClass = module.getClass();
 
             OidVector oid = OidUtil.getOid(moduleClass);
@@ -78,7 +106,10 @@ public class ModuleManager
         return location;
     }
 
-    private static final ModuleManager instance = new ModuleManager();
+    private static final ModuleManager instance;
+    static {
+        instance = new ModuleManager(ServiceModuleLoader.getInstance());
+    }
 
     public static ModuleManager getInstance() {
         return instance;

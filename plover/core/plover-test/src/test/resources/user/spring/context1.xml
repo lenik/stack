@@ -4,9 +4,8 @@
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-3.0.xsd
-        ">
+        "
+    default-lazy-init="true">
 
     <bean id="book1" class="com.bee32.plover.restful.book.Book">
         <constructor-arg value="name1" />
@@ -20,7 +19,8 @@
         </property>
     </bean>
 
-    <context:component-scan base-package="user.spring">
-    </context:component-scan>
+    <bean lazy-init="true" id="blob" class="user.spring.BigBlob">
+        <property name="name" value="1000 buckets" />
+    </bean>
 
 </beans>
