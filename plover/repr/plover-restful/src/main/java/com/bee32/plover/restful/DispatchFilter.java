@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.free.NotImplementedException;
+import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.springframework.beans.factory.InitializingBean;
 
 import overlay.OverlayUtil;
 
@@ -52,17 +54,25 @@ import com.bee32.plover.velocity.Velocity;
  */
 public class DispatchFilter
         extends HttpServlet
-        implements Filter {
+        implements Filter, InitializingBean {
 
     private static final long serialVersionUID = 1L;
 
     private ServletContext servletContext;
     protected String contextPath; // Not used.
 
-    private Object root;
+    @Inject
+    private transient ModuleManager moduleManager;
+
+    private transient Object root;
 
     public DispatchFilter() {
-        root = ModuleManager.getInstance();
+    }
+
+    @Override
+    public void afterPropertiesSet()
+            throws Exception {
+        root = moduleManager;
     }
 
     public Object getRoot() {
