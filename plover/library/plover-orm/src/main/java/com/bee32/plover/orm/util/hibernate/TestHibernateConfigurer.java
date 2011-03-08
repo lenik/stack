@@ -3,13 +3,16 @@ package com.bee32.plover.orm.util.hibernate;
 import org.hibernate.cache.NoCacheProvider;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.transaction.JDBCTransactionFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component("test")
-public class TestSessionFactoryBuilder
-        extends SessionFactoryBuilder {
+import com.bee32.plover.inject.qualifier.RunConfig;
 
-    public TestSessionFactoryBuilder() {
+@Service
+@RunConfig("test")
+public class TestHibernateConfigurer
+        extends HibernateConfigurer {
+
+    public TestHibernateConfigurer() {
         // Dialect
         setProperty("hibernate.dialect", H2Dialect.class.getName());
 
@@ -42,10 +45,10 @@ public class TestSessionFactoryBuilder
         setProperty("hibernate.current_session_context_class", "thread");
     }
 
-    static final TestSessionFactoryBuilder instance = new TestSessionFactoryBuilder();
-
-    public static TestSessionFactoryBuilder getInstance() {
-        return instance;
-    }
+// static final TestSessionFactoryBuilder instance = new TestSessionFactoryBuilder();
+//
+// public static TestSessionFactoryBuilder getInstance() {
+// return instance;
+// }
 
 }

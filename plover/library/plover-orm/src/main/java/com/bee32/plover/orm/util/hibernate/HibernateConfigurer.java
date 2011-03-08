@@ -11,11 +11,11 @@ import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
 import com.bee32.plover.orm.unit.IPersistenceUnit;
 
-public abstract class SessionFactoryBuilder {
+public abstract class HibernateConfigurer {
 
     private final Map<String, String> properties;
 
-    public SessionFactoryBuilder() {
+    public HibernateConfigurer() {
         properties = new TreeMap<String, String>();
     }
 
@@ -27,7 +27,7 @@ public abstract class SessionFactoryBuilder {
         return properties.put(key, value);
     }
 
-    public SessionFactory buildForUnits(IPersistenceUnit... persistenceUnits) {
+    public SessionFactory getSessionFactory(IPersistenceUnit... persistenceUnits) {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 
         // Inject custom properties.

@@ -1,39 +1,32 @@
 package com.bee32.plover.orm.util.hibernate;
 
-import javax.inject.Inject;
-
 import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Component;
 
 import com.bee32.plover.arch.SupportLibrary;
 import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
-@Component
-public class HibernateUnitDao
+public class HibernateUnitConfigurer
         extends SupportLibrary {
 
-    @Inject
-    private SessionFactoryBuilder builder;
+    private HibernateConfigurer hibernateConfigurer;
 
     private PersistenceUnit[] persistenceUnits;
 
     private HibernateDaoSupport support;
 
-    public HibernateUnitDao() {
+    public HibernateUnitConfigurer() {
     }
 
-    public HibernateUnitDao(PersistenceUnit... persistenceUnits) {
-        this(TestSessionFactoryBuilder.getInstance(), persistenceUnits);
-    }
+    public HibernateUnitConfigurer(HibernateConfigurer hibernateConfigurer, PersistenceUnit... persistenceUnits) {
+        if (hibernateConfigurer == null)
+            throw new NullPointerException("hibernateConfigurer");
 
-    public HibernateUnitDao(SessionFactoryBuilder builder, PersistenceUnit... persistenceUnits) {
-        if (builder == null)
-            throw new NullPointerException("builder");
         if (persistenceUnits == null)
             throw new NullPointerException("persistenceUnits");
-        this.builder = builder;
+
+        this.hibernateConfigurer = hibernateConfigurer;
         this.persistenceUnits = persistenceUnits;
     }
 
@@ -41,7 +34,7 @@ public class HibernateUnitDao
         if (support == null) {
             support = new HibernateDaoSupport();
 
-            SessionFactory sessionFactory = builder.buildForUnits(persistenceUnits);
+            SessionFactory sessionFactory = hibernateConfigurer.getSessionFactory(persistenceUnits);
             // factoryBuilder.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 
             support.setSessionFactory(sessionFactory);

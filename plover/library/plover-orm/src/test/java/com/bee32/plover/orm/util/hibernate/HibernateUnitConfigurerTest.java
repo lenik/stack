@@ -7,11 +7,11 @@ import com.bee32.plover.orm.entity.Animals;
 import com.bee32.plover.orm.entity.Cat;
 import com.bee32.plover.orm.entity.Tiger;
 
-public class TestSessionFactoryBuilderTest
-        extends HibernateUnitDao {
+public class HibernateUnitConfigurerTest
+        extends HibernateUnitConfigurer {
 
-    public TestSessionFactoryBuilderTest() {
-        super(Animals.getInstance());
+    public HibernateUnitConfigurerTest() {
+        super(new TestHibernateConfigurer(), Animals.getInstance());
     }
 
     @Test
