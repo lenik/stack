@@ -10,7 +10,10 @@ import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.PersistenceUnits;
 
 public class SessionFactoryForUnit
+        extends ProxySessionFactory
         implements BeanNameAware, FactoryBean<SessionFactory> {
+
+    private static final long serialVersionUID = 1L;
 
     private String beanName;
 
@@ -18,6 +21,10 @@ public class SessionFactoryForUnit
     private HibernateConfigurer builder;
 
     private SessionFactory sessionFactory;
+
+    public SessionFactoryForUnit() {
+        super(null);
+    }
 
     @Override
     public void setBeanName(String name) {

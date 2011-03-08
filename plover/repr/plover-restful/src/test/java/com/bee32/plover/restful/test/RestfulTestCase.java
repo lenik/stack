@@ -3,16 +3,13 @@ package com.bee32.plover.restful.test;
 import javax.inject.Inject;
 
 import org.h2.server.web.WebServlet;
-import org.junit.runner.RunWith;
 import org.mortbay.jetty.servlet.ServletHolder;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.util.hibernate.HibernateConfigurer;
 import com.bee32.plover.orm.util.hibernate.HibernateUnitConfigurer;
 import com.bee32.plover.test.WiredAssembledTestCase;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 public class RestfulTestCase
         extends WiredAssembledTestCase {
 

@@ -25,8 +25,7 @@ public class CreateOrder
     }
 
     @Override
-    public void afterPropertiesSet()
-            throws Exception {
+    public void afterPropertiesSet() {
         System.out.println("After properties set");
     }
 

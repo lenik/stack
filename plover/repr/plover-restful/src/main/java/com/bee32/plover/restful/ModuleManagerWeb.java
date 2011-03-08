@@ -3,11 +3,12 @@ package com.bee32.plover.restful;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.arch.IModule;
-import com.bee32.plover.arch.ServiceModuleLoader;
+import com.bee32.plover.arch.IModuleLoader;
 import com.bee32.plover.inject.ContextException;
 import com.bee32.plover.inject.IContainer;
 import com.bee32.plover.pub.oid.OidUtil;
@@ -16,6 +17,9 @@ import com.bee32.plover.restful.annotation.WebCase;
 
 public class ModuleManagerWeb
         implements WebCase {
+
+    @Inject
+    IModuleLoader moduleLoader;
 
     public void index(IContainer container)
             throws IOException, ContextException {
@@ -27,7 +31,7 @@ public class ModuleManagerWeb
         PrintWriter out = resp.getWriter();
         out.println("<ul>");
 
-        for (IModule module : ServiceModuleLoader.getModules()) {
+        for (IModule module : moduleLoader.getModules()) {
             OidVector oid = OidUtil.getOid(module.getClass());
 
             String name = module.getName();
