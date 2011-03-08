@@ -2,7 +2,9 @@ package com.bee32.plover.arch;
 
 import com.bee32.plover.arch.util.BeanPopulater;
 import com.bee32.plover.arch.util.IStruct;
+import com.bee32.plover.inject.NonWireable;
 
+@NonWireable
 public abstract class Repository<K, V>
         extends Component
         implements IRepository<K, V> {
