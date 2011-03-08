@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.bee32.icsf.principal">
-    <class abstract="true" name="AbstractGroup">
+    <class name="GroupBean">
 
         <id name="id">
             <generator class="native" />
@@ -19,12 +19,12 @@
 
         <set name="assignedRoles" table="GroupRole" lazy="true">
             <key column="user" />
-            <many-to-many column="role" class="AbstractRole" />
+            <many-to-many column="role" class="RoleBean" />
         </set>
 
         <set name="memberUsers" table="UserGroup" lazy="true">
             <key column="group" />
-            <many-to-many column="user" class="AbstractUser" />
+            <many-to-many column="user" class="UserBean" />
         </set>
 
     </class>

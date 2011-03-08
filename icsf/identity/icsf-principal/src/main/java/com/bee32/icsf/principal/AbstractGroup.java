@@ -9,17 +9,17 @@ public abstract class AbstractGroup
     private static final long serialVersionUID = 1L;
 
     @Override
+    public IUserPrincipal getOwner() {
+        return null;
+    }
+
+    @Override
     public IRolePrincipal getPrimaryRole() {
         Iterator<? extends IRolePrincipal> roles = getAssignedRoles().iterator();
         if (roles.hasNext())
             return roles.next();
         else
             return null;
-    }
-
-    @Override
-    public IUserPrincipal getOwner() {
-        return null;
     }
 
     @Override
