@@ -1,5 +1,13 @@
 package com.bee32.icsf.principal.realm;
 
-public class SystemRealm {
+import com.bee32.icsf.principal.IPrincipal;
+
+public class SystemRealm
+        extends AbstractRealm {
+
+    @Override
+    public boolean contains(IPrincipal principal) {
+        return true;
+    }
 
 }
