@@ -17,24 +17,6 @@ public interface IGroupPrincipal
     IGroupPrincipal getInheritedGroup();
 
     /**
-     * 授予该组的角色集。
-     * <p>
-     * <font color='red'>注意形成引用回路。 </font>
-     *
-     * @see PrincipalDiag#checkDeadLoop(IPrincipal)
-     *
-     * @return 如果没有被授予任何角色，返回空集。
-     */
-    Collection<? extends IRolePrincipal> getAssignedRoles();
-
-    /**
-     * 获取成员用户。
-     *
-     * @return 如果没有成员，返回空集。
-     */
-    Collection<? extends IUserPrincipal> getMemberUsers();
-
-    /**
      * 获取组的拥有者。
      * <p>
      * 这个拥有者只是为了方便进行类的设计，与实际应用的拥有者可能无关。
@@ -53,5 +35,23 @@ public interface IGroupPrincipal
      * @return 如果没有设置主要角色，返回空。
      */
     IRolePrincipal getPrimaryRole();
+
+    /**
+     * 授予该组的角色集。
+     * <p>
+     * <font color='red'>注意形成引用回路。 </font>
+     *
+     * @see PrincipalDiag#checkDeadLoop(IPrincipal)
+     *
+     * @return 如果没有被授予任何角色，返回空集。
+     */
+    Collection<? extends IRolePrincipal> getAssignedRoles();
+
+    /**
+     * 获取成员用户。
+     *
+     * @return 如果没有成员，返回空集。
+     */
+    Collection<? extends IUserPrincipal> getMemberUsers();
 
 }
