@@ -1,8 +1,8 @@
 package user.spring;
 
-import com.bee32.plover.inject.Wireable;
+import com.bee32.plover.inject.ComponentTemplate;
 
-@Wireable
+@ComponentTemplate
 public class ComponentBase {
 
 }

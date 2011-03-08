@@ -12,6 +12,6 @@ import org.springframework.stereotype.Component;
 @Inherited
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Wireable {
+public @interface ComponentTemplate {
 
 }
