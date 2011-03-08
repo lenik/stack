@@ -1,5 +1,6 @@
 package com.bee32.plover.orm;
 
+import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,7 +21,7 @@ public class PloverOrmModule
 
     @Bean
     @RunConfig("default")
-    public Object defaultSessionFactory() {
+    public SessionFactory defaultSessionFactory() {
         return new SessionFactoryForUnit();
     }
 

@@ -1,26 +1,40 @@
 package user.hibernate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
+
+import javax.inject.Inject;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.bee32.plover.orm.PloverOrmModule;
 import com.bee32.plover.orm.dao.HibernateTemplate;
-import com.bee32.plover.orm.util.hibernate.HibernateUnitDao;
+import com.bee32.plover.orm.util.hibernate.HibernateConfigurer;
+import com.bee32.plover.orm.util.hibernate.HibernateUnitConfigurer;
+import com.bee32.plover.test.WiredAssembledTestCase;
 
 public class DiscriminatorTest
-        extends HibernateUnitDao {
+        extends WiredAssembledTestCase {
+
+    PloverOrmModule pom;
+
+    @Inject
+    HibernateConfigurer hibernateConfigurer;
+
+    HibernateUnitConfigurer hl;
 
     public DiscriminatorTest() {
-        super(ColorSystem.unit);
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        super.afterPropertiesSet();
+        hl = new HibernateUnitConfigurer(hibernateConfigurer, ColorSystem.unit);
     }
 
     @Test
     public void listAllColors() {
-        HibernateTemplate template = getHibernateTemplate();
+        HibernateTemplate template = hl.getHibernateTemplate();
 
         for (Color color : ColorSystem.getPredefinedColors())
             template.save(color);
@@ -32,7 +46,7 @@ public class DiscriminatorTest
     @Test
     @Ignore
     public void listCMYKOnly() {
-        HibernateTemplate template = getHibernateTemplate();
+        HibernateTemplate template = hl.getHibernateTemplate();
 
         for (Color color : ColorSystem.getPredefinedColors())
             template.save(color);

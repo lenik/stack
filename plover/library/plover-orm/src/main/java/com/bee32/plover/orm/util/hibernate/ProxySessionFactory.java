@@ -27,8 +27,8 @@ public class ProxySessionFactory
     private final SessionFactory proxy;
 
     public ProxySessionFactory(SessionFactory proxy) {
-        if (proxy == null)
-            throw new NullPointerException("proxy");
+//        if (proxy == null)
+//            throw new NullPointerException("proxy");
         this.proxy = proxy;
     }
 
