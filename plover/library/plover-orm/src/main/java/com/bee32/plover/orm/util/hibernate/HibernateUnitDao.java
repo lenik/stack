@@ -1,25 +1,34 @@
 package com.bee32.plover.orm.util.hibernate;
 
+import javax.inject.Inject;
+
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Component;
 
 import com.bee32.plover.arch.SupportLibrary;
 import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
-public class HibernateLibrary
+@Component
+public class HibernateUnitDao
         extends SupportLibrary {
 
-    private final SessionFactoryBuilder builder;
-    private final PersistenceUnit[] persistenceUnits;
+    @Inject
+    private SessionFactoryBuilder builder;
+
+    private PersistenceUnit[] persistenceUnits;
 
     private HibernateDaoSupport support;
 
-    public HibernateLibrary(PersistenceUnit... persistenceUnits) {
+    public HibernateUnitDao() {
+    }
+
+    public HibernateUnitDao(PersistenceUnit... persistenceUnits) {
         this(TestSessionFactoryBuilder.getInstance(), persistenceUnits);
     }
 
-    public HibernateLibrary(SessionFactoryBuilder builder, PersistenceUnit... persistenceUnits) {
+    public HibernateUnitDao(SessionFactoryBuilder builder, PersistenceUnit... persistenceUnits) {
         if (builder == null)
             throw new NullPointerException("builder");
         if (persistenceUnits == null)

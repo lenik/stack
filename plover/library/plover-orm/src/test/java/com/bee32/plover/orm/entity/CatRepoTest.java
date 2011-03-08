@@ -5,16 +5,16 @@ import org.junit.Test;
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.util.IStruct;
 import com.bee32.plover.arch.util.MapStruct;
-import com.bee32.plover.orm.util.hibernate.HibernateLibrary;
+import com.bee32.plover.orm.util.hibernate.HibernateUnitDao;
 import com.bee32.plover.test.AssembledTestCase;
 
 public class CatRepoTest
         extends AssembledTestCase {
 
-    HibernateLibrary hibernate;
+    HibernateUnitDao hl;
 
     public CatRepoTest() {
-        install(hibernate = new HibernateLibrary(Animals.getInstance()));
+        install(hl = new HibernateUnitDao(Animals.getInstance()));
     }
 
     @Test
@@ -35,7 +35,7 @@ public class CatRepoTest
     @Test
     public void testSaveLoad() {
         CatRepo repo = new CatRepo();
-        repo.setSessionFactory(hibernate.getSessionFactory());
+        repo.setSessionFactory(hl.getSessionFactory());
 
         Cat kitty = new Cat("kitty", "pink");
         repo.save(kitty);

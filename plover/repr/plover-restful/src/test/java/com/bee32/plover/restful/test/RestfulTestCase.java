@@ -1,20 +1,20 @@
 package com.bee32.plover.restful.test;
 
 import org.h2.server.web.WebServlet;
+import org.junit.runner.RunWith;
 import org.mortbay.jetty.servlet.ServletHolder;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.bee32.plover.arch.IModule;
-import com.bee32.plover.arch.ModuleLoader;
-import com.bee32.plover.orm.entity.HibernateEntityRepository;
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.util.hibernate.HibernateLibrary;
-import com.bee32.plover.test.AssembledTestCase;
+import com.bee32.plover.orm.util.hibernate.HibernateUnitDao;
+import com.bee32.plover.test.WiredAssembledTestCase;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 public class RestfulTestCase
-        extends AssembledTestCase {
+        extends WiredAssembledTestCase {
 
     protected final RestfulTesterLibrary rtl;
-    protected final HibernateLibrary hl;
+    protected final HibernateUnitDao hl;
 
     public RestfulTestCase(PersistenceUnit... units) {
         install(rtl = new RestfulTesterLibrary() {
@@ -24,21 +24,7 @@ public class RestfulTestCase
                 RestfulTestCase.this.configureServlets();
             }
         });
-        install(hl = new HibernateLibrary(units));
-
-        injectER();
-    }
-
-    void injectER() {
-        // SimpleBooks.init(hl.getSessionFactory());
-        for (IModule module : ModuleLoader.getModules()) {
-            for (Object managed : module.getChildren()) {
-                if (managed instanceof HibernateEntityRepository<?, ?>) {
-                    HibernateEntityRepository<?, ?> er = (HibernateEntityRepository<?, ?>) managed;
-                    er.setSessionFactory(hl.getSessionFactory());
-                }
-            }
-        }
+        install(hl = new HibernateUnitDao(units));
     }
 
     protected void configureServlets() {
