@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.bee32.icsf.principal">
+    <class abstract="true" name="PrincipalBean">
+
+        <id name="id">
+            <generator class="native" />
+        </id>
+
+        <discriminator column="stereo" />
+
+        <property not-null="true" name="name" unique="true" length="30" />
+
+        <set name="impliedPrincipals" table="PrincipalImplication" lazy="true">
+            <key column="subject" />
+            <many-to-many column="impl" class="PrincipalBean" />
+        </set>
+
+    </class>
+</hibernate-mapping>
