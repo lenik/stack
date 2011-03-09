@@ -4,9 +4,6 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.TreeMap;
 
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
 public class PersistenceUnits {
 
     public static final String GLOBAL = "global";
