@@ -19,7 +19,7 @@ public class PloverOrmModule
     }
 
     @Bean
-    public SessionFactory sessionFactory() {
+    public SessionFactory defaultSessionFactory() {
         return new SessionFactoryForUnit();
     }
 

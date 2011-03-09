@@ -17,7 +17,6 @@ import com.bee32.plover.inject.ComponentTemplate;
  * &#64;Configuration is not inheritable, so you should add Configuration annotation in all concrete
  * Module classes, to enable Spring usage.
  */
-//
 @ComponentTemplate
 public abstract class Module
         extends Component
