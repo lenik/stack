@@ -9,7 +9,7 @@ import com.bee32.plover.arch.credit.builtin.Lenik;
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.plover.pub.oid.PloverOids;
 
-@Configuration
+
 @Oid({ 3, 12, PloverOids.core })
 public class CoreInfoModule
         extends Module {

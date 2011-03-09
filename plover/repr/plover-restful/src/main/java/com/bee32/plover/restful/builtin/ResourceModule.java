@@ -11,7 +11,7 @@ import com.bee32.plover.pub.oid.Oid;
 import com.bee32.plover.pub.oid.PloverOids;
 import com.bee32.plover.restful.resource.ResourceDispatcher;
 
-@Configuration
+
 @Oid({ 3, 12, PloverOids.repr, PloverOids.reprResource })
 public class ResourceModule
         extends DispatchModule {
