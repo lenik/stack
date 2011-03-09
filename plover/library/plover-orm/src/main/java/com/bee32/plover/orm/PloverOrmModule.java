@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.bee32.plover.arch.Module;
-import com.bee32.plover.inject.qualifier.RunConfig;
 import com.bee32.plover.orm.util.hibernate.SessionFactoryForUnit;
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.plover.pub.oid.PloverOids;
@@ -20,8 +19,7 @@ public class PloverOrmModule
     }
 
     @Bean
-    @RunConfig("default")
-    public SessionFactory defaultSessionFactory() {
+    public SessionFactory sessionFactory() {
         return new SessionFactoryForUnit();
     }
 

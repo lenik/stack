@@ -5,10 +5,7 @@ import org.hibernate.dialect.H2Dialect;
 import org.hibernate.transaction.JDBCTransactionFactory;
 import org.springframework.stereotype.Service;
 
-import com.bee32.plover.inject.qualifier.RunConfig;
-
 @Service
-@RunConfig("test")
 public class TestHibernateConfigurer
         extends HibernateConfigurer {
 
@@ -45,10 +42,10 @@ public class TestHibernateConfigurer
         setProperty("hibernate.current_session_context_class", "thread");
     }
 
-// static final TestSessionFactoryBuilder instance = new TestSessionFactoryBuilder();
-//
-// public static TestSessionFactoryBuilder getInstance() {
-// return instance;
-// }
+    // static final TestSessionFactoryBuilder instance = new TestSessionFactoryBuilder();
+    //
+    // public static TestSessionFactoryBuilder getInstance() {
+    // return instance;
+    // }
 
 }
