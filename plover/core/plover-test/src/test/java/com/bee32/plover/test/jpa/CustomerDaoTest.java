@@ -5,13 +5,13 @@ import java.sql.SQLException;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class CustomerDAOTest
+public class CustomerDaoTest
         extends JpaTestCase {
 
     @Test
     public void testCustomerGetSet()
             throws SQLException {
-        CustomerDAO customerDao = getInstance(CustomerDAO.class);
+        CustomerDao customerDao = getInstance(CustomerDao.class);
 
         Customer customer = new Customer();
         customer.setName("lenik");

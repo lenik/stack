@@ -5,12 +5,12 @@ import javax.persistence.Query;
 
 import com.google.inject.Inject;
 
-public class CustomerDAO {
+public class CustomerDao {
 
     protected EntityManager entityManager;
 
     @Inject
-    public CustomerDAO(EntityManager entityManager) {
+    public CustomerDao(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
