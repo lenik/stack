@@ -8,7 +8,7 @@ import com.bee32.plover.inject.ComponentTemplate;
  */
 @ComponentTemplate
 public abstract class AbstractDao<E extends IEntity<K>, K>
-        extends HibernateEntityRepository<E, K> {
+        extends GenericEntityRepository<E, K> {
 
     public AbstractDao(Class<E> entityType, Class<K> keyType) {
         super(entityType, keyType);
