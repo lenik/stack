@@ -3,6 +3,8 @@ package com.bee32.plover.arch;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.InitializingBean;
+
 import com.bee32.plover.arch.credit.Credit;
 import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.arch.naming.TreeMapNode;
@@ -19,7 +21,7 @@ import com.bee32.plover.inject.ComponentTemplate;
 @ComponentTemplate
 public abstract class Module
         extends Component
-        implements IModule {
+        implements IModule, InitializingBean {
 
     private TreeMapNode<Object> nodeImpl = new TreeMapNode<Object>(Object.class);
 
@@ -27,11 +29,17 @@ public abstract class Module
 
     public Module() {
         super();
-        preamble();
+        // preamble();
     }
 
     public Module(String name) {
         super(name);
+        // preamble();
+    }
+
+    @Override
+    public void afterPropertiesSet()
+            throws Exception {
         preamble();
     }
 
