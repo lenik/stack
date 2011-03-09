@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.entity;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,6 +54,11 @@ public class EmptyEntityRepository<E extends IEntity<K>, K>
 
     @Override
     public void refresh(E entity) {
+    }
+
+    @Override
+    public Collection<E> getTransientSamples(boolean worseCase) {
+        return Collections.emptyList();
     }
 
 }

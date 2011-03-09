@@ -3,6 +3,7 @@ package com.bee32.plover.orm.entity;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,9 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
     protected Class<? extends E> entityType;
 
     private INamedNode parentLocator;
+
+    private List<E> normalSamples;
+    private List<E> worseSamples;
 
     public EntityRepository(Class<E> instanceType, Class<K> keyType) {
         super(keyType, instanceType);
@@ -134,6 +138,41 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
 
     @Override
     public abstract void refresh(E entity);
+
+    protected void addNormalSample(E sample) {
+        if (normalSamples == null) {
+            synchronized (this) {
+                if (normalSamples == null)
+                    normalSamples = new ArrayList<E>();
+            }
+        }
+        normalSamples.add(sample);
+    }
+
+    protected void addWorseSample(E sample) {
+        if (worseSamples == null) {
+            synchronized (this) {
+                if (worseSamples == null)
+                    worseSamples = new ArrayList<E>();
+            }
+        }
+        worseSamples.add(sample);
+    }
+
+    @Override
+    public Collection<E> getTransientSamples(boolean worseCase) {
+        if (worseCase) {
+            if (worseSamples != null)
+                return worseSamples;
+            else
+                return Collections.emptyList();
+        } else {
+            if (normalSamples != null)
+                return normalSamples;
+            else
+                return Collections.emptyList();
+        }
+    }
 
     // --o INamedNode
 
