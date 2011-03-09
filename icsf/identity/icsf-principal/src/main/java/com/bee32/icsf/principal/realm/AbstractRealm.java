@@ -1,8 +1,12 @@
 package com.bee32.icsf.principal.realm;
 
 import java.util.Collection;
+import java.util.Collections;
 
+import com.bee32.icsf.principal.IGroupPrincipal;
 import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.icsf.principal.IRolePrincipal;
+import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.plover.arch.Component;
 
 public abstract class AbstractRealm
@@ -31,7 +35,22 @@ public abstract class AbstractRealm
 
     @Override
     public Collection<? extends IPrincipal> getPrincipals() {
-        return null;
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Collection<? extends IUserPrincipal> getUsers() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Collection<? extends IGroupPrincipal> getGroups() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Collection<? extends IRolePrincipal> getRoles() {
+        return Collections.emptyList();
     }
 
 }
