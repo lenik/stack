@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.util.hibernate;
+package com.bee32.plover.thirdparty.hibernate.util;
 
 import org.dom4j.dom.DOMDocument;
 import org.dom4j.dom.DOMDocumentType;

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.FactoryBean;
 
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.PersistenceUnits;
+import com.bee32.plover.thirdparty.hibernate.util.ProxySessionFactory;
 
 public class SessionFactoryForUnit
         extends ProxySessionFactory
