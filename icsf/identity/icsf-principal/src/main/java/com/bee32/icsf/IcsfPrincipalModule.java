@@ -2,8 +2,6 @@ package com.bee32.icsf;
 
 import javax.inject.Inject;
 
-import org.springframework.context.annotation.Configuration;
-
 import com.bee32.icsf.principal.dao.GroupDao;
 import com.bee32.icsf.principal.dao.RealmDao;
 import com.bee32.icsf.principal.dao.RoleDao;
@@ -11,10 +9,12 @@ import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.plover.orm.util.ERModule;
 import com.bee32.plover.pub.oid.Oid;
 
-@Configuration
 @Oid({ 3, 7, IcsfOids.principal })
 public class IcsfPrincipalModule
         extends ERModule {
+
+    // @Inject
+    // PrincipalDao principalDao;
 
     @Inject
     private UserDao userDao;
@@ -30,6 +30,7 @@ public class IcsfPrincipalModule
 
     @Override
     protected void preamble() {
+        // export(principalDao);
         export(userDao);
         export(groupDao);
         export(roleDao);
