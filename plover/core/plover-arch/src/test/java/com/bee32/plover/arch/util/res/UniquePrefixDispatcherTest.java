@@ -7,9 +7,6 @@ import java.util.Properties;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.bee32.plover.arch.util.res.PropertyBuffer;
-import com.bee32.plover.arch.util.res.UniquePrefixDispatcher;
-
 public class UniquePrefixDispatcherTest {
 
     @Ignore("Should use PrefixMap instead.")

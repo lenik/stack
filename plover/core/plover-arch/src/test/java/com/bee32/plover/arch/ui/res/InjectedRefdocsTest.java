@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import com.bee32.plover.arch.ui.IRefdocEntry;
 import com.bee32.plover.arch.ui.RefdocsSample;
-import com.bee32.plover.arch.ui.res.InjectedRefdocs;
 import com.bee32.plover.arch.util.res.LoopbackDispatcher;
 
 public class InjectedRefdocsTest {

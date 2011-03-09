@@ -8,7 +8,6 @@ import java.util.Locale;
 import org.junit.Test;
 
 import com.bee32.plover.arch.ui.StandardImageVariant;
-import com.bee32.plover.arch.ui.res.InjectedImageMap;
 import com.bee32.plover.arch.util.res.LoopbackDispatcher;
 
 public class InjectedImageMapTest {

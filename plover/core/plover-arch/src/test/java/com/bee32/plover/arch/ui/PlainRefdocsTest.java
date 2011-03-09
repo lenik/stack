@@ -9,9 +9,6 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.bee32.plover.arch.ui.IRefdocEntry;
-import com.bee32.plover.arch.ui.PlainRefdocs;
-
 public class PlainRefdocsTest {
 
     public PlainRefdocsTest() {

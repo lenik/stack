@@ -3,9 +3,6 @@ package com.bee32.plover.pub.oid;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.pub.oid.OidComparator;
-import com.bee32.plover.pub.oid.OidVector;
-
 public class OidComparatorTest
         extends Assert {
 

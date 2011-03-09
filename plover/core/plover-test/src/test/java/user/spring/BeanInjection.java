@@ -59,14 +59,14 @@ public class BeanInjection
     @Test
     public void testImplicitWire() {
         FooBean foo = new FooBean();
-        Book fooBook = foo.getBook1();
+        Book fooBook = foo.getBook();
         assertNull(fooBook);
     }
 
     @Test
     public void testThruContext() {
         FooBean foo = context.getBean(FooBean.class);
-        Book fooBook = foo.getBook1();
+        Book fooBook = foo.getBook();
         System.out.println("ctx/foo: " + fooBook);
     }
 

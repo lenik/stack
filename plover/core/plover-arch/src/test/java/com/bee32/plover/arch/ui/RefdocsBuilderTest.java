@@ -8,10 +8,6 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import com.bee32.plover.arch.ui.IRefdocEntry;
-import com.bee32.plover.arch.ui.RefdocEntry;
-import com.bee32.plover.arch.ui.RefdocsBuilder;
-
 public class RefdocsBuilderTest {
 
     URL url1;

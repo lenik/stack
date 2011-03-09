@@ -1,7 +1,5 @@
 package com.bee32.plover.restful.builtin;
 
-import org.springframework.context.annotation.Configuration;
-
 import com.bee32.plover.arch.credit.Credit;
 import com.bee32.plover.arch.credit.Subject;
 import com.bee32.plover.arch.credit.builtin.Lenik;

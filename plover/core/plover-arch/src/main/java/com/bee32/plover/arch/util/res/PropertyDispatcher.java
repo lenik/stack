@@ -2,9 +2,9 @@ package com.bee32.plover.arch.util.res;
 
 import java.util.Enumeration;
 import java.util.Locale;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.Map.Entry;
 
 public abstract class PropertyDispatcher {
 

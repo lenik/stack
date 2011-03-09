@@ -1,5 +1,7 @@
 package user.spring;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
@@ -8,18 +10,18 @@ import com.bee32.plover.restful.book.Book;
 public class FooBean
         extends ComponentBase {
 
-    @Autowired
-    Book book1;
+    @Inject
+    Book book333;
 
     public FooBean() {
     }
 
-    public Book getBook1() {
-        return book1;
+    public Book getBook() {
+        return book333;
     }
 
-    public void setBook1(Book book1) {
-        this.book1 = book1;
+    public void setBook(Book book) {
+        this.book333 = book;
     }
 
     BigBlob blob;
