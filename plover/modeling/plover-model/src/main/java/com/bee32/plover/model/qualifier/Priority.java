@@ -1,5 +1,7 @@
 package com.bee32.plover.model.qualifier;
 
+import com.bee32.plover.arch.Component;
+
 public class Priority
         extends Qualifier<Priority> {
 
@@ -36,11 +38,15 @@ public class Priority
     }
 
     @Override
-    public boolean equalsSpecific(Priority o) {
+    protected boolean equalsSpecific(Component obj) {
+        Priority o = (Priority) obj;
+
         if (qualifierPriority != o.qualifierPriority)
             return false;
+
         if (priority != o.priority)
             return false;
+
         return true;
     }
 

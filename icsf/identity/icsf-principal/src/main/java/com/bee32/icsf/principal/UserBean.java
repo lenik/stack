@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.free.Nullables;
 
+import com.bee32.plover.arch.Component;
 import com.bee32.plover.orm.entity.IEntity;
 
 public class UserBean
@@ -99,7 +100,7 @@ public class UserBean
     }
 
     @Override
-    public int hashCode() {
+    protected int hashCodeSpecific() {
         final int prime = 31;
         if (id != null)
             return prime * id.hashCode();
@@ -114,13 +115,7 @@ public class UserBean
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+    protected boolean equalsSpecific(Component obj) {
         UserBean other = (UserBean) obj;
 
         if (id != null)

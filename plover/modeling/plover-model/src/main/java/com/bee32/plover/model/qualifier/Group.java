@@ -1,5 +1,7 @@
 package com.bee32.plover.model.qualifier;
 
+import com.bee32.plover.arch.Component;
+
 /**
  * 分组修饰语。
  * <p>
@@ -54,9 +56,12 @@ public class Group
     }
 
     @Override
-    public boolean equalsSpecific(Group o) {
+    public boolean equalsSpecific(Component obj) {
+        Group o = (Group) obj;
+
         if (priority != o.priority)
             return false;
+
         return true;
     }
 

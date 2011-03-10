@@ -1,6 +1,7 @@
 package com.bee32.sem.process.verify.builtin;
 
 import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.plover.arch.Component;
 import com.bee32.plover.model.stage.IModelStage;
 import com.bee32.plover.model.stage.ModelLoadException;
 import com.bee32.plover.model.stage.ModelStageException;
@@ -60,7 +61,7 @@ public class AllowState
     }
 
     @Override
-    public int hashCode() {
+    protected int hashCodeSpecific() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((principal == null) ? 0 : principal.hashCode());
@@ -68,13 +69,7 @@ public class AllowState
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+    protected boolean equalsSpecific(Component obj) {
         AllowState other = (AllowState) obj;
         if (principal == null) {
             if (other.principal != null)

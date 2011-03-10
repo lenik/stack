@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.plover.arch.Component;
 import com.bee32.plover.orm.entity.IEntity;
 import com.bee32.sem.process.verify.AbstractVerifyPolicy;
 
@@ -80,7 +81,7 @@ public class AllowList
     }
 
     @Override
-    public int hashCode() {
+    protected int hashCodeSpecific() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -89,13 +90,7 @@ public class AllowList
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+    protected boolean equalsSpecific(Component obj) {
         AllowList other = (AllowList) obj;
         if (id == null) {
             if (other.id != null)

@@ -2,6 +2,8 @@ package com.bee32.plover.model.qualifier;
 
 import javax.free.Nullables;
 
+import com.bee32.plover.arch.Component;
+
 public abstract class DerivedQualifier<Q extends DerivedQualifier<Q>>
         extends Qualifier<Q> {
 
@@ -38,10 +40,10 @@ public abstract class DerivedQualifier<Q extends DerivedQualifier<Q>>
         this.kindOf = kindOf;
     }
 
-    public boolean kindOf(Q o) {
+    public boolean kindOf(DerivedQualifier<?> o) {
         DerivedQualifier<?> it = this;
         while (it != null) {
-            if (it.equals(o))
+            if (it.equalsSpecific(o))
                 return true;
             it = it.degrade();
         }
@@ -53,20 +55,16 @@ public abstract class DerivedQualifier<Q extends DerivedQualifier<Q>>
     }
 
     @Override
-    public/* final */boolean equals(Object obj) {
-        if (!qualifierType.isInstance(obj))
+    protected/* final */boolean equalsSpecific(Component obj) {
+        DerivedQualifier<?> other = (DerivedQualifier<?>) obj;
+
+        if (!Nullables.equals(name, other.name))
             return false;
 
-        Q o = qualifierType.cast(obj);
-        DerivedQualifier<?> _o = o;
-
-        if (!Nullables.equals(name, _o.name))
+        if (!Nullables.equals(kindOf, other.kindOf))
             return false;
 
-        if (!Nullables.equals(kindOf, _o.kindOf))
-            return false;
-
-        return equalsSpecific(o);
+        return equalsSpecific(other);
     }
 
     /**
@@ -75,7 +73,7 @@ public abstract class DerivedQualifier<Q extends DerivedQualifier<Q>>
      * It's possible that using derived qualifier for strong typing, but nothing more then the
      * kind-of hierachy.
      */
-    public boolean equalsSpecific(Q o) {
+    protected boolean equalsSpecific(DerivedQualifier<?> o) {
         return true;
     }
 
@@ -93,32 +91,10 @@ public abstract class DerivedQualifier<Q extends DerivedQualifier<Q>>
         return hash + hashCodeSpecific();
     }
 
-    /**
-     * Always returns <code>0</code> in the default implementation.
-     * <p>
-     * It's possible that using derived qualifier for strong typing, but nothing more then the
-     * kind-of hierachy.
-     */
-    @Override
-    protected int hashCodeSpecific() {
-        return 0;
-    }
-
-    /**
-     * Default order by &lt;kind-of, name&gt;.
-     */
     public int compareTo(Q o) {
-        if (equals(o))
-            return 0;
-
-        if (this.kindOf(o))
-            return 1;
-
-        Q this_Q = qualifierType.cast(this);
-        if (o.kindOf(this_Q))
-            return -1;
-
-        return getName().compareTo(o.getName());
+        // Type-Priority > Qualifier-Type > Kind-Of > Instance-Priority > Other
+        int cmp = DerivedQualifierComparator.getInstance().compare(this, o);
+        return cmp;
     }
 
 }

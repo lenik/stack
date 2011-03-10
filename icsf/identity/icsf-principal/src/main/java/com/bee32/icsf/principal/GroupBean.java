@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.free.Nullables;
 
+import com.bee32.plover.arch.Component;
 import com.bee32.plover.orm.entity.IEntity;
 
 public class GroupBean
@@ -82,12 +83,12 @@ public class GroupBean
     }
 
     @Override
-    public int hashCode() {
+    protected int hashCodeSpecific() {
         final int prime = 31;
         if (id != null)
             return prime * id.hashCode();
 
-        int result = super.hashCode();
+        int result = 0;
         result = prime * result + ((assignedRoles == null) ? 0 : assignedRoles.hashCode());
         result = prime * result + ((inheritedGroup == null) ? 0 : inheritedGroup.hashCode());
         result = prime * result + ((memberUsers == null) ? 0 : memberUsers.hashCode());
@@ -98,13 +99,7 @@ public class GroupBean
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+    protected boolean equalsSpecific(Component obj) {
         GroupBean other = (GroupBean) obj;
 
         if (id != null)

@@ -1,5 +1,7 @@
 package com.bee32.plover.model.stereo;
 
+import javax.free.Nullables;
+
 import com.bee32.plover.arch.Component;
 
 public class StereoType
@@ -31,17 +33,21 @@ public class StereoType
     private static final int typeHash = StereoType.class.hashCode();
 
     @Override
-    public int hashCode() {
-        int hash = typeHash;
-        String name = getName();
-        if (name != null)
-            hash += name.hashCode();
-        return hash;
+    protected int hashCodeSpecific() {
+        if (resolutionType == null)
+            return 0;
+        else
+            return resolutionType.hashCode();
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return this == obj;
+    protected boolean equalsSpecific(Component obj) {
+        StereoType o = (StereoType) obj;
+
+        if (!Nullables.equals(resolutionType, o.resolutionType))
+            return false;
+
+        return true;
     }
 
     public static final StereoType PROPERTY = new StereoType("Property", null);

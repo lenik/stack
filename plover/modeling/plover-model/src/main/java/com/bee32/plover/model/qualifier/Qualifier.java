@@ -2,8 +2,6 @@ package com.bee32.plover.model.qualifier;
 
 import java.io.Serializable;
 
-import javax.free.Nullables;
-
 import com.bee32.plover.arch.Component;
 
 public abstract class Qualifier<Q extends Qualifier<Q>>
@@ -59,48 +57,6 @@ public abstract class Qualifier<Q extends Qualifier<Q>>
         return 0;
     }
 
-    protected transient final int typeHash = getClass().hashCode();
-
-    /**
-     * Qualifier must implement the hash code in efficient way.
-     *
-     * @return The hash code.
-     */
-    @Override
-    public/* final */int hashCode() {
-        int hash = typeHash;
-        String name = getName();
-        if (name != null)
-            hash += name.hashCode();
-        return hash + hashCodeSpecific();
-    }
-
-    protected abstract int hashCodeSpecific();
-
-    /**
-     * This method should be treated as <b>final</b>.
-     */
-    @Override
-    public/* final */boolean equals(Object obj) {
-        if (!qualifierType.isInstance(obj))
-            return false;
-
-        Q o = qualifierType.cast(obj);
-
-        if (!Nullables.equals(getName(), o.getName()))
-            return false;
-
-        return equalsSpecific(o);
-    }
-
-    /**
-     * Test if the this qualifier is equals to the another.
-     *
-     * @param qualifier
-     *            Non-<code>null</code> qualifier to compare with.
-     */
-    public abstract boolean equalsSpecific(Q o);
-
     /**
      * Compare to another qualifier.
      *
@@ -109,11 +65,9 @@ public abstract class Qualifier<Q extends Qualifier<Q>>
      */
     @Override
     public int compareTo(Q o) {
+        // Type-Priority > Qualifier-Type > Instance-Priority > Other
         QualifierComparator qcmp = QualifierComparator.getInstance();
-        int cmp = qcmp.compare(this, o);
-        if (cmp != 0)
-            return cmp;
-        return compareSpecific(o);
+        return qcmp.compare(this, o);
     }
 
     /**
@@ -124,8 +78,12 @@ public abstract class Qualifier<Q extends Qualifier<Q>>
      * @return Compare result, as negative, zero, positive stand for less-than, equals,
      *         greater-than.
      */
-    public int compareSpecific(Q o) {
-        return getName().compareTo(o.getName());
+    public int compareSpecificTo(Q o) {
+        int cmp = getName().compareTo(o.getName());
+        if (cmp != 0)
+            return cmp;
+
+        return 0;
     }
 
 }

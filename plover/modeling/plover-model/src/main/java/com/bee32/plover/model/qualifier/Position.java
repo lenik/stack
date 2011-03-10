@@ -1,5 +1,7 @@
 package com.bee32.plover.model.qualifier;
 
+import com.bee32.plover.arch.Component;
+
 public class Position
         extends Qualifier<Position> {
 
@@ -27,14 +29,17 @@ public class Position
     }
 
     @Override
-    public boolean equalsSpecific(Position o) {
+    protected boolean equalsSpecific(Component obj) {
+        Position o = (Position) obj;
+
         if (!position.equals(o.position))
             return false;
+
         return true;
     }
 
     @Override
-    public int compareSpecific(Position o) {
+    public int compareSpecificTo(Position o) {
         return position.compareTo(o.position);
     }
 

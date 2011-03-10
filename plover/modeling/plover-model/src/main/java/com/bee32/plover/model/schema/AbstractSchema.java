@@ -264,18 +264,10 @@ public abstract class AbstractSchema
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null)
-            return false;
-        if (!obj.getClass().equals(getClass()))
-            return false;
-
+    protected boolean equalsSpecific(Component obj) {
         AbstractSchema o = (AbstractSchema) obj;
 
         if (!type.equals(o.type))
-            return false;
-
-        if (!Nullables.equals(getName(), o.getName()))
             return false;
 
         if (preferenceLevel != o.preferenceLevel)
@@ -285,12 +277,8 @@ public abstract class AbstractSchema
     }
 
     @Override
-    public int hashCode() {
+    protected int hashCodeSpecific() {
         int hash = 8432837;
-
-        String name = getName();
-        if (name != null)
-            hash += name.hashCode();
 
         hash += type.hashCode();
         hash += preferenceLevel.hashCode();

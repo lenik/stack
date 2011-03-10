@@ -18,25 +18,25 @@ public class Credit
     /**
      * Subject -> Contributors
      */
-    private final TreeMap<Subject, Collection<Contributor>> subjects;
+    private final TreeMap<CreditSubject, Collection<Contributor>> subjects;
 
     public Credit() {
         super("CREDIT");
-        this.subjects = new TreeMap<Subject, Collection<Contributor>>();
+        this.subjects = new TreeMap<CreditSubject, Collection<Contributor>>();
     }
 
-    public Collection<Subject> getSubjects() {
+    public Collection<CreditSubject> getSubjects() {
         return subjects.keySet();
     }
 
-    public Collection<Contributor> getContributors(Subject subject) {
+    public Collection<Contributor> getContributors(CreditSubject subject) {
         Collection<Contributor> contributors = subjects.get(subject);
         if (contributors == null)
             contributors = Collections.emptyList();
         return contributors;
     }
 
-    public synchronized void addContributor(Subject subject, Contributor contributor) {
+    public synchronized void addContributor(CreditSubject subject, Contributor contributor) {
         Collection<Contributor> contributors = subjects.get(subject);
         if (contributors == null) {
             contributors = new TreeSet<Contributor>();
@@ -48,7 +48,7 @@ public class Credit
     public static final Credit dummy;
     static {
         dummy = new Credit();
-        dummy.addContributor(Subject.SystemArchitect, Lenik.getLenik());
+        dummy.addContributor(CreditSubject.SystemArchitect, Lenik.getLenik());
     }
 
 }

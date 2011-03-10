@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.free.Nullables;
 
 import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.plover.arch.Component;
 import com.bee32.plover.orm.entity.IEntity;
 
 public class RealmBean
@@ -32,25 +33,17 @@ public class RealmBean
     }
 
     @Override
-    public int hashCode() {
+    protected int hashCodeSpecific() {
         final int prime = 31;
         if (id != null)
             return prime * id.hashCode();
 
-        int result = super.hashCode();
-        result = prime * result + ((principals == null) ? 0 : principals.hashCode());
-
+        int result = ((principals == null) ? 0 : principals.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+    public boolean equalsSpecific(Component obj) {
         RealmBean other = (RealmBean) obj;
 
         if (id != null)

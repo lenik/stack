@@ -5,12 +5,12 @@ import java.util.Comparator;
 /**
  * Type-Priority > Qualifier-Type > Instance-Priority > Other*
  */
-public class QualifierComparator
-        implements Comparator<Qualifier<? extends Qualifier<?>>> {
+public class DerivedQualifierComparator
+        implements Comparator<DerivedQualifier<? extends DerivedQualifier<?>>> {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public int compare(Qualifier<?> o1, Qualifier<?> o2) {
+    public int compare(DerivedQualifier<?> o1, DerivedQualifier<?> o2) {
         if (o1 == null)
             return o2 == null ? 0 : -1;
         if (o2 == null)
@@ -32,6 +32,11 @@ public class QualifierComparator
                 return cmp;
         }
 
+        if (o1.kindOf(o2))
+            return 1;
+        if (o2.kindOf(o1))
+            return -1;
+
         int p1 = o1.getPriority();
         int p2 = o2.getPriority();
         cmp = p1 - p2;
@@ -50,9 +55,9 @@ public class QualifierComparator
         return cmp;
     }
 
-    private static final QualifierComparator instance = new QualifierComparator();
+    private static final DerivedQualifierComparator instance = new DerivedQualifierComparator();
 
-    public static QualifierComparator getInstance() {
+    public static DerivedQualifierComparator getInstance() {
         return instance;
     }
 

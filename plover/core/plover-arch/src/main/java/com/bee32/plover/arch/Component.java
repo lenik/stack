@@ -1,5 +1,7 @@
 package com.bee32.plover.arch;
 
+import javax.free.Nullables;
+
 import com.bee32.plover.arch.ui.Appearance;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.util.AutoNaming;
@@ -60,6 +62,60 @@ public abstract class Component
 
     protected final boolean recover(Exception e) {
         return getExceptionSupport().recoverException(this, e);
+    }
+
+    /**
+     * Warning: You should override {@link #equalsSpecific(Component)} instead.
+     */
+    @Override
+    public/* final */boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+
+        if (getClass() != obj.getClass())
+            return false;
+
+        Component other = (Component) obj;
+        if (!Nullables.equals(name, other.name))
+            return false;
+
+        return equalsSpecific(other);
+    }
+
+    /**
+     * Test if two components of same type are equal.
+     *
+     * @param obj
+     *            The other object of the same class of this, to be compared.
+     * @return <code>true</code> If equals.
+     */
+    protected boolean equalsSpecific(Component obj) {
+        return this == obj;
+    }
+
+    protected transient final int typeHash = getClass().hashCode();
+
+    /**
+     * Warning: You should override {@link #hashCodeSpecific()} instead.
+     */
+    @Override
+    public/* final */int hashCode() {
+        int hash = typeHash;
+        if (name != null)
+            hash += name.hashCode();
+
+        hash += hashCodeSpecific();
+
+        return hash;
+    }
+
+    /**
+     * Get the hash code of the local part.
+     *
+     * @return hash code of the local part.
+     */
+    protected int hashCodeSpecific() {
+        return super.hashCode();
     }
 
     @Override

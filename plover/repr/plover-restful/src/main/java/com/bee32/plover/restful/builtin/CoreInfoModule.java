@@ -2,7 +2,7 @@ package com.bee32.plover.restful.builtin;
 
 import com.bee32.plover.arch.Module;
 import com.bee32.plover.arch.credit.Credit;
-import com.bee32.plover.arch.credit.Subject;
+import com.bee32.plover.arch.credit.CreditSubject;
 import com.bee32.plover.arch.credit.builtin.Lenik;
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.plover.pub.oid.PloverOids;
@@ -24,7 +24,7 @@ public class CoreInfoModule
     public static final Credit CREDIT;
     static {
         CREDIT = new Credit();
-        CREDIT.addContributor(Subject.SystemArchitect, Lenik.getLenik());
+        CREDIT.addContributor(CreditSubject.SystemArchitect, Lenik.getLenik());
     }
 
 }

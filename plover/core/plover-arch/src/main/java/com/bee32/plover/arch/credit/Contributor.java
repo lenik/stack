@@ -1,5 +1,7 @@
 package com.bee32.plover.arch.credit;
 
+import javax.free.Nullables;
+
 import com.bee32.plover.arch.Component;
 
 public class Contributor
@@ -50,6 +52,41 @@ public class Contributor
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    protected boolean equalsSpecific(Component obj) {
+        Contributor other = (Contributor) obj;
+
+        if (rank != other.rank)
+            return false;
+
+        if (!Nullables.equals(email, other.email))
+            return false;
+
+        if (!Nullables.equals(organization, other.organization))
+            return false;
+
+        if (!Nullables.equals(role, other.role))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    protected int hashCodeSpecific() {
+        int hash = Double.valueOf(rank).hashCode();
+
+        if (email != null)
+            hash += email.hashCode();
+
+        if (organization != null)
+            hash += organization.hashCode();
+
+        if (role != null)
+            hash += role.hashCode();
+
+        return hash;
     }
 
     public int compareTo(Contributor o) {
