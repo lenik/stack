@@ -7,7 +7,7 @@ import com.bee32.plover.orm.util.hibernate.HibernateConfigurer;
 import com.bee32.plover.orm.util.hibernate.HibernateUnitConfigurer;
 import com.bee32.plover.test.WiredAssembledTestCase;
 
-public class WiredDaoTestCase
+public abstract class WiredDaoTestCase
         extends WiredAssembledTestCase {
 
     @Inject
