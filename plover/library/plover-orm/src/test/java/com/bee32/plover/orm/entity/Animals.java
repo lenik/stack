@@ -6,6 +6,8 @@ public class Animals
         extends PersistenceUnit {
 
     public Animals() {
+        super("animals");
+
         addPersistedClass(Cat.class);
         addPersistedClass(Tiger.class);
     }

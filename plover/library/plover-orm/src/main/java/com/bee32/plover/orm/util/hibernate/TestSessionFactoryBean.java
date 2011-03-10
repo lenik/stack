@@ -33,7 +33,7 @@ public class TestSessionFactoryBean
         properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 
         // Performance
-        properties.setProperty("hibernate.connection.pool_size", "1");
+        properties.setProperty("hibernate.connection.pool_size", "3");
         properties.setProperty("hibernate.cache.provider_class", NoCacheProvider.class.getName());
     }
 

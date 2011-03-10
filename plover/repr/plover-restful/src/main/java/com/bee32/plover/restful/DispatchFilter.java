@@ -20,13 +20,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import overlay.OverlayUtil;
 
 import com.bee32.plover.arch.naming.ReverseLookupRegistry;
 import com.bee32.plover.arch.operation.IOperation;
 import com.bee32.plover.arch.operation.OperationFusion;
-import com.bee32.plover.cache.annotation.StatelessUtil;
 import com.bee32.plover.disp.DispatchContext;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
@@ -61,22 +63,20 @@ public class DispatchFilter
     private ServletContext servletContext;
     protected String contextPath; // Not used.
 
-    @Inject
-    private transient ModuleManager moduleManager;
-
     private transient Object root;
 
     public DispatchFilter() {
     }
 
+    @Inject
+    WebApplicationContext wac;
+
+    @Inject
+    private transient ModuleManager moduleManager;
+
     @Override
     public void afterPropertiesSet()
             throws Exception {
-        root = moduleManager;
-    }
-
-    public Object getRoot() {
-        return root;
     }
 
     public void setRoot(Object root) {
@@ -90,6 +90,10 @@ public class DispatchFilter
             throws ServletException {
         servletContext = filterConfig.getServletContext();
         contextPath = servletContext.getContextPath();
+
+        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        AutowireCapableBeanFactory acbf = context.getAutowireCapableBeanFactory();
+        acbf.autowireBean(this);
     }
 
     @Override
@@ -134,7 +138,12 @@ public class DispatchFilter
         // 2, Path-dispatch
         ITokenQueue tq = rreq.getTokenQueue();
 
-        IDispatchContext rootContext = new DispatchContext(root);
+        Object rootObject = root == null ? moduleManager : root;
+        if (rootObject == null)
+            // throw new IllegalStateException("Root object isn't set");
+            rootObject = ModuleManager.getInstance();
+
+        IDispatchContext rootContext = new DispatchContext(rootObject);
         Dispatcher dispatcher = Dispatcher.getInstance();
         IDispatchContext resultContext;
         try {
@@ -215,7 +224,8 @@ public class DispatchFilter
         if (webClass != null) {
             Object webImpl;
             try {
-                webImpl = StatelessUtil.createOrReuse(webClass);
+                // webImpl = StatelessUtil.createOrReuse(webClass);
+                webImpl = wac.getAutowireCapableBeanFactory().createBean(webClass);
             } catch (Exception e) {
                 throw new ServletException(e.getMessage(), e);
             }

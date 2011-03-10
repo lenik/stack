@@ -8,9 +8,9 @@ import java.util.TreeMap;
 import javax.inject.Inject;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class SpringModuleLoader
         implements IModuleLoader {
 

@@ -15,7 +15,7 @@ public class BookStoreWeb {
         RestfulRequest rreq = (RestfulRequest) req;
         BookStore store = rreq.getObject();
 
-        String list = Velocity.merge("list", store);
+        String list = Velocity.merge("index", store);
 
         resp.getWriter().println(list);
         return list;

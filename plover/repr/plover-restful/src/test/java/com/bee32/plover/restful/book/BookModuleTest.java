@@ -14,7 +14,7 @@ public class BookModuleTest
     // BookStore store;
 
     public BookModuleTest() {
-        super(SimpleBooks.unit);
+        // super(SimpleBooks.unit);
     }
 
     @Test

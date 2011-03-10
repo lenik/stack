@@ -13,7 +13,6 @@ import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.util.DispatchUtil;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.pub.oid.OidUtil;
-import com.bee32.plover.restful.DispatchFilter;
 import com.bee32.plover.restful.ModuleManager;
 
 public class BookStoreTest
@@ -24,10 +23,13 @@ public class BookStoreTest
     @Inject
     IModuleLoader moduleLoader;
 
-    Dispatcher dispatcher = Dispatcher.getInstance();
-    ModuleManager mm = ModuleManager.getInstance();
+    @Inject
+    ModuleManager mm;
 
-    DispatchFilter dispatchFilter = new DispatchFilter();
+    /**
+     * The dispatcher is self-managed, not have to be injected.
+     */
+    Dispatcher dispatcher = Dispatcher.getInstance();
 
     @Inject
     BookStore bookStore;

@@ -32,8 +32,14 @@ public class ModuleManager
 
     private transient boolean loaded;
 
+    private static ModuleManager _lastInstance;
+
     public ModuleManager() {
         super(IModule.class, null);
+
+        if (_lastInstance != null)
+            throw new IllegalStateException("ModuleManager should be singleton.");
+        _lastInstance = this;
     }
 
     public ModuleManager(IModuleLoader moduleLoader) {
