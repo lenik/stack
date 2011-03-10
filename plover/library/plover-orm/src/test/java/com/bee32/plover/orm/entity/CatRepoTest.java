@@ -1,32 +1,14 @@
 package com.bee32.plover.orm.entity;
 
-import javax.inject.Inject;
-
 import org.junit.Test;
 
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.util.IStruct;
 import com.bee32.plover.arch.util.MapStruct;
-import com.bee32.plover.orm.util.hibernate.HibernateConfigurer;
-import com.bee32.plover.orm.util.hibernate.HibernateUnitConfigurer;
-import com.bee32.plover.test.WiredAssembledTestCase;
+import com.bee32.plover.orm.util.WiredDaoTestCase;
 
 public class CatRepoTest
-        extends WiredAssembledTestCase {
-
-    @Inject
-    HibernateConfigurer hibernateConfigurer;
-
-    HibernateUnitConfigurer hl;
-
-    public CatRepoTest() {
-    }
-
-    @Override
-    public void afterPropertiesSet() {
-        super.afterPropertiesSet();
-        install(hl = new HibernateUnitConfigurer(hibernateConfigurer, Animals.getInstance()));
-    }
+        extends WiredDaoTestCase {
 
     @Test
     public void testPopulate()
@@ -46,7 +28,7 @@ public class CatRepoTest
     @Test
     public void testSaveLoad() {
         CatRepo repo = new CatRepo();
-        repo.setSessionFactory(hl.getSessionFactory());
+        repo.setSessionFactory(getSessionFactory());
 
         Cat kitty = new Cat("kitty", "pink");
         repo.save(kitty);

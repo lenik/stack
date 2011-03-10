@@ -2,29 +2,44 @@ package com.bee32.plover.orm.util;
 
 import javax.inject.Inject;
 
+import org.hibernate.SessionFactory;
+
+import com.bee32.plover.orm.dao.HibernateDaoSupport;
+import com.bee32.plover.orm.dao.HibernateTemplate;
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.util.hibernate.HibernateConfigurer;
-import com.bee32.plover.orm.util.hibernate.HibernateUnitConfigurer;
 import com.bee32.plover.test.WiredAssembledTestCase;
 
 public abstract class WiredDaoTestCase
         extends WiredAssembledTestCase {
 
     @Inject
-    private HibernateConfigurer hibernateConfigurer;
+    private SessionFactory sessionFactory;
 
-    private HibernateUnitConfigurer unitConfigurer;
-
-    private final PersistenceUnit[] persistenceUnits;
+    private transient HibernateDaoSupport support;
 
     public WiredDaoTestCase(PersistenceUnit... persistenceUnits) {
-        this.persistenceUnits = persistenceUnits;
+        PUSelection.setPersistenceUnits(persistenceUnits);
     }
 
-    @Override
-    public void afterPropertiesSet() {
-        super.afterPropertiesSet();
-        install(unitConfigurer = new HibernateUnitConfigurer(hibernateConfigurer, persistenceUnits));
+    protected HibernateDaoSupport getSupport() {
+        if (support == null) {
+            synchronized (this) {
+                if (support == null) {
+                    support = new HibernateDaoSupport();
+                    support.setSessionFactory(sessionFactory);
+                    support.afterPropertiesSet();
+                }
+            }
+        }
+        return support;
+    }
+
+    public final SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public final HibernateTemplate getHibernateTemplate() {
+        return getSupport().getHibernateTemplateEx();
     }
 
 }

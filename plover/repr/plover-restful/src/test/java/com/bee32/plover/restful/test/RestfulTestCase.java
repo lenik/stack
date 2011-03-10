@@ -6,8 +6,8 @@ import org.h2.server.web.WebServlet;
 import org.mortbay.jetty.servlet.ServletHolder;
 
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.util.hibernate.HibernateConfigurer;
-import com.bee32.plover.orm.util.hibernate.HibernateUnitConfigurer;
+import com.bee32.plover.orm.util.HibernateConfigurer;
+import com.bee32.plover.orm.util.HibernateUnitConfigurer;
 import com.bee32.plover.test.WiredAssembledTestCase;
 
 public abstract class RestfulTestCase

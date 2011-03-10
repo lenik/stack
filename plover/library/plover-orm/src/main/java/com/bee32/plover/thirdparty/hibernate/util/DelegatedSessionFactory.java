@@ -19,140 +19,134 @@ import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.stat.Statistics;
 
 @SuppressWarnings("rawtypes")
-public class ProxySessionFactory
+public abstract class DelegatedSessionFactory
         implements SessionFactory {
 
     private static final long serialVersionUID = 1L;
 
-    private final SessionFactory proxy;
-
-    public ProxySessionFactory(SessionFactory proxy) {
-//        if (proxy == null)
-//            throw new NullPointerException("proxy");
-        this.proxy = proxy;
-    }
+    protected abstract SessionFactory getDelegate();
 
     public Reference getReference()
             throws NamingException {
-        return proxy.getReference();
+        return getDelegate().getReference();
     }
 
     public Session openSession(Connection connection) {
-        return proxy.openSession(connection);
+        return getDelegate().openSession(connection);
     }
 
     public Session openSession(Interceptor interceptor)
             throws HibernateException {
-        return proxy.openSession(interceptor);
+        return getDelegate().openSession(interceptor);
     }
 
     public Session openSession(Connection connection, Interceptor interceptor) {
-        return proxy.openSession(connection, interceptor);
+        return getDelegate().openSession(connection, interceptor);
     }
 
     public Session openSession()
             throws HibernateException {
-        return proxy.openSession();
+        return getDelegate().openSession();
     }
 
     public Session getCurrentSession()
             throws HibernateException {
-        return proxy.getCurrentSession();
+        return getDelegate().getCurrentSession();
     }
 
     public ClassMetadata getClassMetadata(Class persistentClass)
             throws HibernateException {
-        return proxy.getClassMetadata(persistentClass);
+        return getDelegate().getClassMetadata(persistentClass);
     }
 
     public ClassMetadata getClassMetadata(String entityName)
             throws HibernateException {
-        return proxy.getClassMetadata(entityName);
+        return getDelegate().getClassMetadata(entityName);
     }
 
     public CollectionMetadata getCollectionMetadata(String roleName)
             throws HibernateException {
-        return proxy.getCollectionMetadata(roleName);
+        return getDelegate().getCollectionMetadata(roleName);
     }
 
     public Map getAllClassMetadata()
             throws HibernateException {
-        return proxy.getAllClassMetadata();
+        return getDelegate().getAllClassMetadata();
     }
 
     public Map getAllCollectionMetadata()
             throws HibernateException {
-        return proxy.getAllCollectionMetadata();
+        return getDelegate().getAllCollectionMetadata();
     }
 
     public Statistics getStatistics() {
-        return proxy.getStatistics();
+        return getDelegate().getStatistics();
     }
 
     public void close()
             throws HibernateException {
-        proxy.close();
+        getDelegate().close();
     }
 
     public boolean isClosed() {
-        return proxy.isClosed();
+        return getDelegate().isClosed();
     }
 
     public void evict(Class persistentClass)
             throws HibernateException {
-        proxy.evict(persistentClass);
+        getDelegate().evict(persistentClass);
     }
 
     public void evict(Class persistentClass, Serializable id)
             throws HibernateException {
-        proxy.evict(persistentClass, id);
+        getDelegate().evict(persistentClass, id);
     }
 
     public void evictEntity(String entityName)
             throws HibernateException {
-        proxy.evictEntity(entityName);
+        getDelegate().evictEntity(entityName);
     }
 
     public void evictEntity(String entityName, Serializable id)
             throws HibernateException {
-        proxy.evictEntity(entityName, id);
+        getDelegate().evictEntity(entityName, id);
     }
 
     public void evictCollection(String roleName)
             throws HibernateException {
-        proxy.evictCollection(roleName);
+        getDelegate().evictCollection(roleName);
     }
 
     public void evictCollection(String roleName, Serializable id)
             throws HibernateException {
-        proxy.evictCollection(roleName, id);
+        getDelegate().evictCollection(roleName, id);
     }
 
     public void evictQueries()
             throws HibernateException {
-        proxy.evictQueries();
+        getDelegate().evictQueries();
     }
 
     public void evictQueries(String cacheRegion)
             throws HibernateException {
-        proxy.evictQueries(cacheRegion);
+        getDelegate().evictQueries(cacheRegion);
     }
 
     public StatelessSession openStatelessSession() {
-        return proxy.openStatelessSession();
+        return getDelegate().openStatelessSession();
     }
 
     public StatelessSession openStatelessSession(Connection connection) {
-        return proxy.openStatelessSession(connection);
+        return getDelegate().openStatelessSession(connection);
     }
 
     public Set getDefinedFilterNames() {
-        return proxy.getDefinedFilterNames();
+        return getDelegate().getDefinedFilterNames();
     }
 
     public FilterDefinition getFilterDefinition(String filterName)
             throws HibernateException {
-        return proxy.getFilterDefinition(filterName);
+        return getDelegate().getFilterDefinition(filterName);
     }
 
 }

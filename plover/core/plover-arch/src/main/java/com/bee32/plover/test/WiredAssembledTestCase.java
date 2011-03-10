@@ -21,8 +21,9 @@ public abstract class WiredAssembledTestCase
 
     private AutowireCapableBeanFactory autowireCapableBeanFactory;
 
+    @Override
     public void afterPropertiesSet() {
-        // context.getAutowireCapableBeanFactory();
+        autowireCapableBeanFactory = context.getAutowireCapableBeanFactory();
     }
 
     protected <T> T createBean(Class<T> beanClass)

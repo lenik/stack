@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import com.bee32.plover.orm.PloverOrmModule;
 import com.bee32.plover.orm.dao.HibernateTemplate;
-import com.bee32.plover.orm.util.hibernate.HibernateConfigurer;
-import com.bee32.plover.orm.util.hibernate.HibernateUnitConfigurer;
+import com.bee32.plover.orm.util.HibernateConfigurer;
+import com.bee32.plover.orm.util.HibernateUnitConfigurer;
 import com.bee32.plover.test.WiredAssembledTestCase;
 
 public class DiscriminatorTest
