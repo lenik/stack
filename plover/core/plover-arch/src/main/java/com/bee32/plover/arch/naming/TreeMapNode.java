@@ -23,8 +23,16 @@ public class TreeMapNode<T>
         super(baseType, null);
     }
 
+    public TreeMapNode(String name, Class<?> baseType) {
+        super(name, baseType, null);
+    }
+
     public TreeMapNode(INamedNode parent) {
         super(null, parent);
+    }
+
+    public TreeMapNode(String name, INamedNode parent) {
+        super(name, null, parent);
     }
 
     public TreeMapNode(Class<?> baseType, INamedNode parent) {
@@ -78,6 +86,10 @@ public class TreeMapNode<T>
     @Override
     public String toString() {
         StringBuffer buf = new StringBuffer();
+
+        buf.append("node ");
+        buf.append(name);
+        buf.append(" {");
         for (Map.Entry<String, T> entry : map.entrySet()) {
             String locationToken = entry.getKey();
             T obj = entry.getValue();
@@ -87,6 +99,7 @@ public class TreeMapNode<T>
             buf.append(String.valueOf(obj));
             buf.append('\n');
         }
+        buf.append("}");
         return buf.toString();
     }
 

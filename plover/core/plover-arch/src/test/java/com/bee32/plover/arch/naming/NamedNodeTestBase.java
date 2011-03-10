@@ -1,8 +1,7 @@
-package com.bee32.plover.arch.locator;
+package com.bee32.plover.arch.naming;
 
-import com.bee32.plover.arch.naming.TreeMapNode;
 
-public class ObjectLocationTestBase {
+public class NamedNodeTestBase {
 
     TreeMapNode<String> foodMap;
     TreeMapNode<String> sportsMap;
@@ -14,16 +13,16 @@ public class ObjectLocationTestBase {
 
     TreeMapNode<TreeMapNode<?>> root;
 
-    public ObjectLocationTestBase() {
-        root = new TreeMapNode<TreeMapNode<?>>(TreeMapNode.class);
-        lifeHub = new TreeMapNode<TreeMapNode<?>>(root);
-        genHub = new TreeMapNode<TreeMapNode<?>>(root);
+    public NamedNodeTestBase() {
+        root = new TreeMapNode<TreeMapNode<?>>("root", TreeMapNode.class);
+        lifeHub = new TreeMapNode<TreeMapNode<?>>("life-hub", root);
+        genHub = new TreeMapNode<TreeMapNode<?>>("gen-hub", root);
 
-        foodMap = new TreeMapNode<String>(String.class, lifeHub);
-        sportsMap = new TreeMapNode<String>(String.class, lifeHub);
+        foodMap = new TreeMapNode<String>("food", String.class, lifeHub);
+        sportsMap = new TreeMapNode<String>("sports", String.class, lifeHub);
 
-        colorMap = new TreeMapNode<String>(String.class, genHub);
-        powerMap = new TreeMapNode<String>(String.class, genHub);
+        colorMap = new TreeMapNode<String>("color", String.class, genHub);
+        powerMap = new TreeMapNode<String>("power", String.class, genHub);
 
         foodMap.addChild("apple", "Apple");
         foodMap.addChild("banana", "Banana");

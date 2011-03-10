@@ -111,9 +111,9 @@ public class ReverseLookupRegistry {
         if (location == null)
             throw new IllegalUsageException("Location isn't set for " + obj + " in " + node);
 
-        LookupChain lookup = new LookupChain(location, obj, inner);
+        LookupChain head = new LookupChain(location, obj, inner);
 
-        return lookup(node, lookup);
+        return lookup(node, head);
     }
 
     /**
