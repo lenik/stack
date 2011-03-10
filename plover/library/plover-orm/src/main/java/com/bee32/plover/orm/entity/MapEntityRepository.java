@@ -13,8 +13,20 @@ public class MapEntityRepository<E extends IEntity<K>, K>
 
     private Map<K, E> map;
 
-    public MapEntityRepository(Class<E> entityType, Class<K> keyType) {
-        super(entityType, keyType);
+    public MapEntityRepository(Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
+        super(instanceType, entityType, keyType);
+    }
+
+    public MapEntityRepository(Class<E> instanceType, Class<K> keyType) {
+        super(instanceType, keyType);
+    }
+
+    public MapEntityRepository(String name, Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
+        super(name, instanceType, entityType, keyType);
+    }
+
+    public MapEntityRepository(String name, Class<E> instanceType, Class<K> keyType) {
+        super(name, instanceType, keyType);
     }
 
     public Map<K, E> getMap() {

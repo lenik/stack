@@ -10,8 +10,20 @@ import com.bee32.plover.inject.ComponentTemplate;
 public abstract class AbstractDao<E extends IEntity<K>, K>
         extends GenericEntityRepository<E, K> {
 
+    public AbstractDao(Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
+        super(instanceType, entityType, keyType);
+    }
+
     public AbstractDao(Class<E> entityType, Class<K> keyType) {
         super(entityType, keyType);
+    }
+
+    public AbstractDao(String name, Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
+        super(name, instanceType, entityType, keyType);
+    }
+
+    public AbstractDao(String name, Class<E> instanceType, Class<K> keyType) {
+        super(name, instanceType, keyType);
     }
 
 }

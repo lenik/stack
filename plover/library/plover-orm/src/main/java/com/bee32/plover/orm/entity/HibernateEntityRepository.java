@@ -29,11 +29,22 @@ public class HibernateEntityRepository<E extends IEntity<K>, K>
 
     }
 
-    private Support support;
+    private Support support = new Support();
 
     public HibernateEntityRepository(Class<E> entityType, Class<K> keyType) {
         super(entityType, keyType);
-        support = new Support();
+    }
+
+    public HibernateEntityRepository(Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
+        super(instanceType, entityType, keyType);
+    }
+
+    public HibernateEntityRepository(String name, Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
+        super(name, instanceType, entityType, keyType);
+    }
+
+    public HibernateEntityRepository(String name, Class<E> instanceType, Class<K> keyType) {
+        super(name, instanceType, keyType);
     }
 
     @Inject

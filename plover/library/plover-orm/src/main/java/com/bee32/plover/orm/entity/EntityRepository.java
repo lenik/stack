@@ -38,25 +38,38 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
         init();
     }
 
+    public EntityRepository(Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
+        super(keyType, instanceType);
+        this.entityType = entityType;
+        init();
+    }
+
     public EntityRepository(String name, Class<E> instanceType, Class<K> keyType) {
         super(name, keyType, instanceType);
         init();
     }
 
+    public EntityRepository(String name, Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
+        super(name, keyType, instanceType);
+        this.entityType = entityType;
+        init();
+    }
+
     @SuppressWarnings("unchecked")
     void init() {
-        Class<?> entityType;
-        try {
-            entityType = deferEntityType(instanceType);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalUsageException("No implementation type for " + instanceType);
+        if (this.entityType == null) {
+            Class<?> entityType;
+            try {
+                entityType = deferEntityType(instanceType);
+            } catch (ClassNotFoundException e) {
+                throw new IllegalUsageException("No implementation type for " + instanceType);
+            }
+
+            if (!instanceType.isAssignableFrom(entityType))
+                throw new IllegalUsageException("Incompatible implementation " + entityType + " for " + instanceType);
+
+            this.entityType = (Class<? extends E>) entityType;
         }
-
-        if (!instanceType.isAssignableFrom(entityType))
-            throw new IllegalUsageException("Incompatible implementation " + entityType + " for " + instanceType);
-
-        this.entityType = (Class<? extends E>) entityType;
-
         ReverseLookupRegistry.getInstance().register(this);
     }
 
@@ -138,6 +151,17 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
 
     @Override
     public abstract void refresh(E entity);
+
+    protected void addNormalSample(E... samples) {
+        for (E sample : samples) {
+            addNormalSample(sample);
+        }
+
+        for (Object sample : samples) {
+            System.out.println(sample);
+        }
+        return;
+    }
 
     protected void addNormalSample(E sample) {
         if (normalSamples == null) {
