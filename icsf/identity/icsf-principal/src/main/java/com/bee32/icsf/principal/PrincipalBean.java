@@ -13,18 +13,7 @@ public class PrincipalBean
 
     private static final long serialVersionUID = 1L;
 
-    protected Long id;
-
     protected Collection<IPrincipal> impliedPrincipals;
-
-    @Override
-    public Long getPrimaryKey() {
-        return id;
-    }
-
-    public Long getId() {
-        return id;
-    }
 
     public void setName(String name) {
         if (name == null)

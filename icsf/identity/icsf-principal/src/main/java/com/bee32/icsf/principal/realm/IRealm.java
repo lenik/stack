@@ -7,9 +7,10 @@ import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.IRolePrincipal;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.plover.arch.IComponent;
+import com.bee32.plover.orm.entity.IEntity;
 
 public interface IRealm
-        extends IComponent {
+        extends IComponent, IEntity<Integer> {
 
     boolean contains(IPrincipal principal);
 

@@ -9,11 +9,9 @@ import com.bee32.plover.orm.entity.IEntity;
 
 public class GroupBean
         extends AbstractGroup
-        implements IEntity<Integer> {
+        implements IEntity<Long> {
 
     private static final long serialVersionUID = 1L;
-
-    protected Integer id;
 
     protected IGroupPrincipal inheritedGroup;
     protected IUserPrincipal owner;
@@ -22,16 +20,13 @@ public class GroupBean
     protected Collection<IRolePrincipal> assignedRoles;
     protected Collection<IUserPrincipal> memberUsers;
 
-    @Override
-    public Integer getPrimaryKey() {
-        return id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
     public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        this.name = name;
+    }
+
+    public void setName(String name, IUserPrincipal owner) {
         if (name == null)
             throw new NullPointerException("name");
         this.name = name;

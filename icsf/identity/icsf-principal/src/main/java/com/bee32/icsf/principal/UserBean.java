@@ -21,6 +21,15 @@ public class UserBean
     protected Collection<IGroupPrincipal> assignedGroups;
     protected Collection<IRolePrincipal> assignedRoles;
 
+    public UserBean() {
+    }
+
+    public UserBean(String name, IGroupPrincipal primaryGroup, IRolePrincipal primaryRole) {
+        super(name);
+        this.primaryGroup = primaryGroup;
+        this.primaryRole = primaryRole;
+    }
+
     @Override
     public Long getPrimaryKey() {
         return id;

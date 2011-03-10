@@ -11,6 +11,14 @@ public abstract class AbstractRole
     private Collection<IGroupPrincipal> responsibleGroups;
     private Collection<IUserPrincipal> responsibleUsers;
 
+    public AbstractRole() {
+        super();
+    }
+
+    public AbstractRole(String name) {
+        super(name);
+    }
+
     @Override
     public Collection<? extends IGroupPrincipal> getResponsibleGroups() {
         return responsibleGroups;

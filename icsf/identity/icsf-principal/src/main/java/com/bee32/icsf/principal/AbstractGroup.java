@@ -8,6 +8,14 @@ public abstract class AbstractGroup
 
     private static final long serialVersionUID = 1L;
 
+    public AbstractGroup() {
+        super();
+    }
+
+    public AbstractGroup(String name) {
+        super(name);
+    }
+
     @Override
     public IUserPrincipal getOwner() {
         return null;

@@ -1,13 +1,13 @@
 package com.bee32.icsf.principal.dao;
 
-import com.bee32.icsf.principal.UserBean;
+import com.bee32.icsf.principal.realm.RealmBean;
 import com.bee32.plover.orm.entity.AbstractDao;
 
 public class RealmDao
-        extends AbstractDao<UserBean, Long> {
+        extends AbstractDao<RealmBean, Integer> {
 
     public RealmDao() {
-        super(UserBean.class, Long.class);
+        super(RealmBean.class, Integer.class);
     }
 
 }

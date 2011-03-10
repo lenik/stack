@@ -6,11 +6,9 @@ import javax.free.Nullables;
 
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.plover.arch.Component;
-import com.bee32.plover.orm.entity.IEntity;
 
 public class RealmBean
-        extends AbstractRealm
-        implements IEntity<Integer> {
+        extends AbstractRealm {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +19,14 @@ public class RealmBean
     @Override
     public Integer getPrimaryKey() {
         return id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override

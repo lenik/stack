@@ -9,7 +9,7 @@ import com.bee32.plover.orm.entity.IEntity;
 
 public class RoleBean
         extends AbstractRole
-        implements IEntity<Integer> {
+        implements IEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,15 +19,6 @@ public class RoleBean
 
     protected Collection<IUserPrincipal> responsibleUsers;
     protected Collection<IGroupPrincipal> responsibleGroups;
-
-    @Override
-    public Integer getPrimaryKey() {
-        return id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
 
     public void setName(String name) {
         if (name == null)

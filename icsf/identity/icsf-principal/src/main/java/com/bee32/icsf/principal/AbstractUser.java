@@ -8,6 +8,14 @@ public abstract class AbstractUser
 
     private static final long serialVersionUID = 1L;
 
+    public AbstractUser() {
+        super();
+    }
+
+    public AbstractUser(String name) {
+        super(name);
+    }
+
     /**
      * {@inheritDoc}
      * <p>

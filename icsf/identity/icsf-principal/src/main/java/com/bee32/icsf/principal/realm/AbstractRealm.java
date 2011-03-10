@@ -15,12 +15,22 @@ public abstract class AbstractRealm
 
     private static final long serialVersionUID = 1L;
 
+    private Integer id;
+
     public AbstractRealm() {
         super();
     }
 
     public AbstractRealm(String name) {
         super(name);
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override

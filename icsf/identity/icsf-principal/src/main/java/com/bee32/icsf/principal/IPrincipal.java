@@ -1,10 +1,10 @@
 package com.bee32.icsf.principal;
 
-import java.io.Serializable;
 import java.security.Principal;
 
 import com.bee32.plover.arch.IComponent;
 import com.bee32.plover.arch.ui.IAppearance;
+import com.bee32.plover.orm.entity.IEntity;
 
 /**
  * 安全主体。
@@ -12,7 +12,7 @@ import com.bee32.plover.arch.ui.IAppearance;
  * 在涉及安全的操作中，代表行为主体的身份抽象。
  */
 public interface IPrincipal
-        extends Principal, IComponent, Serializable {
+        extends Principal, IComponent, IEntity<Long> {
 
     /**
      * 主体在该主体所属域中的唯一名称。
