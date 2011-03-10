@@ -1,9 +1,9 @@
 package com.bee32.plover.restful.book;
 
-import com.bee32.plover.orm.entity.AbstractDao;
+import com.bee32.plover.orm.entity.HibernateEntityRepository;
 
 public class HibernateBookStore
-        extends AbstractDao<Book, String> {
+        extends HibernateEntityRepository<Book, String> {
 
     private static final long serialVersionUID = 1L;
 

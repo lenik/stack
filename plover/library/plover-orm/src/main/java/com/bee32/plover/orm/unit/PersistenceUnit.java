@@ -12,8 +12,10 @@ public class PersistenceUnit
 
     private List<Class<?>> classes = new ArrayList<Class<?>>();
 
+    public static final String defaultUnitName = "default";
+
     public PersistenceUnit() {
-        super(PersistenceUnits.GLOBAL);
+        super(defaultUnitName);
     }
 
     public PersistenceUnit(String name) {

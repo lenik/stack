@@ -26,6 +26,8 @@ public class RestfulTesterLibraryTest
         // System.out.println(creditUri);
 
         String credit = rtl.httpGet(creditUri).getContent();
+        assertNotNull(credit);
+
         System.out.println(credit);
         assertTrue(credit.contains("99"));
     }

@@ -1,8 +1,14 @@
 package com.bee32.plover.restful.book;
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Service;
+
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
-public class SimpleBooks {
+@Service
+public class SimpleBooks
+        extends BookStore
+        implements InitializingBean {
 
     public static final PersistenceUnit unit;
     static {
@@ -14,12 +20,11 @@ public class SimpleBooks {
     public static final Book jerry = new Book("Jerry", "A wonderful cartoon book");
     public static final Book helloWorld = new Book("World", "Hello, world!");;
 
-    public static final BookStore store = new BookStore();
-
-    public static void init() {
-        store.addBook(tom);
-        store.addBook(jerry);
-        store.addBook(helloWorld);
+    @Override
+    public void afterPropertiesSet() {
+        this.addBook(tom);
+        this.addBook(jerry);
+        this.addBook(helloWorld);
     }
 
 }

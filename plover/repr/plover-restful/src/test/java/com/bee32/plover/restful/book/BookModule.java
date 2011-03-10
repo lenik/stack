@@ -1,5 +1,7 @@
 package com.bee32.plover.restful.book;
 
+import javax.inject.Inject;
+
 import com.bee32.plover.orm.util.ERModule;
 import com.bee32.plover.pub.oid.Oid;
 import com.bee32.plover.pub.oid.PloverOids;
@@ -8,9 +10,13 @@ import com.bee32.plover.pub.oid.PloverOids;
 public class BookModule
         extends ERModule {
 
+    @Inject
+    BookStore bookStore;
+
     @Override
     protected void preamble() {
-        declare("book", SimpleBooks.store);
+        // declare("book", bookStore);
+        export(bookStore, "book");
     }
 
 }

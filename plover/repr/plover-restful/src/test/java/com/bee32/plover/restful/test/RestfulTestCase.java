@@ -1,28 +1,18 @@
 package com.bee32.plover.restful.test;
 
-import javax.inject.Inject;
-
 import org.h2.server.web.WebServlet;
 import org.mortbay.jetty.servlet.ServletHolder;
 
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.util.HibernateConfigurer;
-import com.bee32.plover.orm.util.HibernateUnitConfigurer;
-import com.bee32.plover.test.WiredAssembledTestCase;
+import com.bee32.plover.orm.util.WiredDaoTestCase;
 
 public abstract class RestfulTestCase
-        extends WiredAssembledTestCase {
-
-    @Inject
-    private HibernateConfigurer hibernateConfigurer;
+        extends WiredDaoTestCase {
 
     protected RestfulTesterLibrary rtl;
-    protected HibernateUnitConfigurer hl;
-
-    private PersistenceUnit[] units;
 
     public RestfulTestCase(PersistenceUnit... units) {
-        this.units = units;
+        super(units);
     }
 
     @Override
@@ -36,7 +26,6 @@ public abstract class RestfulTestCase
                 RestfulTestCase.this.configureServlets();
             }
         });
-        install(hl = new HibernateUnitConfigurer(hibernateConfigurer, units));
     }
 
     protected void configureServlets() {

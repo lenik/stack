@@ -1,11 +1,12 @@
 package com.bee32.plover.orm.util;
 
+import com.bee32.plover.arch.IModule;
 import com.bee32.plover.arch.Module;
 import com.bee32.plover.orm.entity.HibernateEntityRepository;
 import com.bee32.plover.orm.entity.IEntity;
 import com.bee32.plover.orm.entity.IEntityRepository;
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.unit.PersistenceUnits;
+import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 
 public abstract class ERModule
         extends Module {
@@ -26,12 +27,15 @@ public abstract class ERModule
 
         // contribute to the global persistence unit.
         Class<? extends E> entityType = entityRepository.getEntityType();
-        PersistenceUnit unit = PersistenceUnits.getInstance(persistenceUnitName);
+
+        PersistenceUnitSelection puSelection = PersistenceUnitSelection.getContextSelection(IModule.class);
+
+        PersistenceUnit unit = puSelection.getOrCreate(persistenceUnitName);
         unit.addPersistedClass(entityType);
     }
 
     protected <E extends IEntity<K>, K> void export(IEntityRepository<E, K> entityRepository, String location) {
-        export(entityRepository, location, PersistenceUnits.GLOBAL);
+        export(entityRepository, location, PersistenceUnit.defaultUnitName);
     }
 
     protected <E extends IEntity<K>, K> void export(IEntityRepository<E, K> entityRepository) {

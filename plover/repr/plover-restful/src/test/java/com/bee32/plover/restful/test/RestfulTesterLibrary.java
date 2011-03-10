@@ -18,6 +18,9 @@ public class RestfulTesterLibrary
             throws Exception {
 
         addFilter(DispatchFilter.class, "/*", 0);
+
+        // The default servlet must be existed.
+        // Otherwise, the filter won't work.
         addServlet(DefaultServlet.class, "/");
     }
 

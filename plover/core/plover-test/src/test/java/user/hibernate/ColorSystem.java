@@ -7,13 +7,13 @@ import java.util.Collection;
 import java.util.List;
 
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.unit.PersistenceUnits;
 
 public class ColorSystem {
 
-    static PersistenceUnit unit = PersistenceUnits.getInstance();
+    static PersistenceUnit unit;
 
     static {
+        unit = new PersistenceUnit("color-system");
         unit.addPersistedClass(Color.class);
         unit.addPersistedClass(RGB.class);
         unit.addPersistedClass(CMYK.class);

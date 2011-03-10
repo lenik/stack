@@ -10,14 +10,15 @@ public class BookModuleTest
 
     static String bookModuleOid = OidUtil.getOid(BookModule.class).toPath();
 
+    // @Inject
+    // BookStore store;
+
     public BookModuleTest() {
         super(SimpleBooks.unit);
-
-        SimpleBooks.init();
     }
 
     @Test
-    public void testUser()
+    public void testBookModuleCredit()
             throws Exception {
         setupH2Console();
 

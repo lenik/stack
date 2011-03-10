@@ -10,8 +10,12 @@ import com.bee32.plover.orm.util.WiredDaoTestCase;
 public class CatRepoTest
         extends WiredDaoTestCase {
 
+    public CatRepoTest() {
+        super(Animals.getInstance());
+    }
+
     @Test
-    public void testPopulate()
+    public void testPopulateStruct()
             throws BuildException {
         IStruct struct = new MapStruct();
         struct.put("name", "kitty");
