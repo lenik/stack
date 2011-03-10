@@ -2,6 +2,7 @@
 *.tmp
 *.swp
 *.log
+*.log.[0-9]*
 *~
 
 # Maven
