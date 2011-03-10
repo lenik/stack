@@ -104,7 +104,7 @@ public class UserBean
         if (id != null)
             return prime * id.hashCode();
 
-        int result = super.hashCode();
+        int result = (name == null) ? 0 : name.hashCode();
         result = prime * result + ((primaryRole == null) ? 0 : primaryRole.hashCode());
         result = prime * result + ((primaryGroup == null) ? 0 : primaryGroup.hashCode());
         result = prime * result + ((assignedRoles == null) ? 0 : assignedRoles.hashCode());
