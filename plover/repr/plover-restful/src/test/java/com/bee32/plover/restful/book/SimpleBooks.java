@@ -4,6 +4,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 
 @Service
 public class SimpleBooks
@@ -12,8 +13,11 @@ public class SimpleBooks
 
     public static final PersistenceUnit unit;
     static {
-        unit = new PersistenceUnit();
+        unit = new PersistenceUnit("book-store");
         unit.addPersistedClass(Book.class);
+
+        // XXX
+        PersistenceUnitSelection.getSharedSelection().add(unit);
     }
 
     public static final Book tom = new Book("Tom", "A great story");

@@ -14,10 +14,6 @@ public class PersistenceUnit
 
     public static final String defaultUnitName = "default";
 
-    public PersistenceUnit() {
-        super(defaultUnitName);
-    }
-
     public PersistenceUnit(String name) {
         super(name);
     }

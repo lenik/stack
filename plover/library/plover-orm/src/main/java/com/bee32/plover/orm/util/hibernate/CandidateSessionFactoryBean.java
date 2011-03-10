@@ -1,6 +1,6 @@
 package com.bee32.plover.orm.util.hibernate;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Properties;
 
 import org.hibernate.transaction.JDBCTransactionFactory;
@@ -68,7 +68,7 @@ public abstract class CandidateSessionFactoryBean
         this.setHibernateProperties(hibernateProperties);
 
         // Merge mapping resources
-        List<String> allResources = getPersistenceUnitSelection().mergeMappingResources();
+        Collection<String> allResources = getPersistenceUnitSelection().mergeMappingResources();
 
         if (!allResources.isEmpty()) {
             String[] resourceArray = allResources.toArray(new String[0]);

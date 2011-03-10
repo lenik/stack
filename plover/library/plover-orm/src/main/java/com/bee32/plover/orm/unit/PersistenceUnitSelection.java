@@ -1,11 +1,12 @@
 package com.bee32.plover.orm.unit;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
 import java.util.TreeMap;
 
 import com.bee32.plover.arch.Component;
@@ -17,11 +18,11 @@ public class PersistenceUnitSelection
 
     private Map<String, PersistenceUnit> selectedUnits = new TreeMap<String, PersistenceUnit>();
 
-    public PersistenceUnitSelection() {
+    PersistenceUnitSelection() {
         super();
     }
 
-    public PersistenceUnitSelection(String name) {
+    PersistenceUnitSelection(String name) {
         super(name);
     }
 
@@ -55,9 +56,9 @@ public class PersistenceUnitSelection
         return selectedUnits.values().iterator();
     }
 
-    public List<String> mergeMappingResources() {
+    public Collection<String> mergeMappingResources() {
         // Merge mapping resources
-        List<String> allResources = new ArrayList<String>();
+        Set<String> allResources = new LinkedHashSet<String>();
         for (IPersistenceUnit persistenceUnit : selectedUnits.values()) {
             if (persistenceUnit == null)
                 throw new NullPointerException("persistenceUnit");
@@ -74,7 +75,7 @@ public class PersistenceUnitSelection
     private static PersistenceUnitSelection serviceProviderSelection;
 
     public static PersistenceUnitSelection getServiceProviderSelection() {
-        if (serviceProviderSelection == null)
+        if (serviceProviderSelection == null) {
             synchronized (PersistenceUnitSelection.class) {
                 if (serviceProviderSelection == null) {
                     serviceProviderSelection = new PersistenceUnitSelection();
@@ -87,7 +88,7 @@ public class PersistenceUnitSelection
 
                 }
             }
-
+        }
         return serviceProviderSelection;
     }
 
@@ -96,16 +97,30 @@ public class PersistenceUnitSelection
         contextLocal = new HashMap<Object, PersistenceUnitSelection>();
     }
 
+    static final boolean shareAllContext = true;
+    static PersistenceUnitSelection sharedSelection = new PersistenceUnitSelection("shared");
+
     public static synchronized PersistenceUnitSelection getContextSelection(Object contextKey) {
-        PersistenceUnitSelection selection = contextLocal.get(contextKey);
+        if (shareAllContext) {
 
-        if (selection == null) {
-            String contextName = String.valueOf(contextKey) + "-selection";
-            selection = new PersistenceUnitSelection(contextName);
-            contextLocal.put(contextKey, selection);
+            return sharedSelection;
+
+        } else {
+
+            PersistenceUnitSelection contextSelection = contextLocal.get(contextKey);
+
+            if (contextSelection == null) {
+                String contextName = String.valueOf(contextKey) + "-selection";
+                contextSelection = new PersistenceUnitSelection(contextName);
+                contextLocal.put(contextKey, contextSelection);
+            }
+
+            return contextSelection;
         }
+    }
 
-        return selection;
+    public static PersistenceUnitSelection getSharedSelection() {
+        return sharedSelection;
     }
 
 }
