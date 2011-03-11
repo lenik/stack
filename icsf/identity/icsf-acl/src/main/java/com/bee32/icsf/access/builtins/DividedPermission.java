@@ -139,7 +139,7 @@ public abstract class DividedPermission
 
     @Override
     public String toString() {
-        StringBuffer buf = new StringBuffer(name.length() + ranges.length * 16);
+        StringBuilder buf = new StringBuilder(name.length() + ranges.length * 16);
         buf.append(name);
         buf.append("(");
         for (int i = 0; i < ranges.length; i++) {

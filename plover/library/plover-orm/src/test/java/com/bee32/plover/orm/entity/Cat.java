@@ -20,7 +20,7 @@ public class Cat
     }
 
     @Override
-    public Long getPrimaryKey() {
+    public Long getId() {
         return id;
     }
 

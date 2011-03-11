@@ -36,7 +36,7 @@ public class LookupChain {
         this.inner = inner;
     }
 
-    private void dumpFullLocation(StringBuffer buf) {
+    private void dumpFullLocation(StringBuilder buf) {
         if (location == null) {
             assert inner != null;
             inner.dumpFullLocation(buf);
@@ -50,7 +50,7 @@ public class LookupChain {
     }
 
     public String join() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         dumpFullLocation(buf);
         return buf.toString();
     }

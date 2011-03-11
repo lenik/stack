@@ -215,7 +215,7 @@ class MethodKey
 
     @Override
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append(methodName);
         buf.append("(");
         for (int i = 0; i < parameterTypes.length; i++) {

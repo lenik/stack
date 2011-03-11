@@ -74,7 +74,7 @@ public class HMAC {
     }
 
     static String hex(byte[] bin) {
-        StringBuffer buf = new StringBuffer(bin.length * 2);
+        StringBuilder buf = new StringBuilder(bin.length * 2);
         for (int i = 0; i < bin.length; i++) {
             byte byt = bin[i];
             int lo = byt & 0x0f;

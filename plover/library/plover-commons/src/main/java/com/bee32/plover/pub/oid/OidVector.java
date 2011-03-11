@@ -24,7 +24,7 @@ public class OidVector
      * @return The formatted string.
      */
     public String format(char delim) {
-        StringBuffer buf = new StringBuffer(vector.length * 15);
+        StringBuilder buf = new StringBuilder(vector.length * 15);
         for (int i = 0; i < vector.length; i++) {
             if (i != 0)
                 buf.append(delim);

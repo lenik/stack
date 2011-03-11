@@ -62,7 +62,7 @@ public class ModifiableHttpServletRequest
 
     @Override
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (Map.Entry<String, String[]> entry : copy.entrySet()) {
             buf.append(entry.getKey());
             buf.append(" = ");

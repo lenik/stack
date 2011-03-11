@@ -147,7 +147,7 @@ public class Verb
 
     static String pathreverse(List<String> stack) {
         int size = stack.size();
-        StringBuffer buf = new StringBuffer(size * 30);
+        StringBuilder buf = new StringBuilder(size * 30);
 
         for (int index = size - 1; index >= 0; index--) {
             if (index != 0)

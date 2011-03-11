@@ -87,7 +87,7 @@ public class InjectedImageMap
 
     @Override
     public String toString() {
-        StringBuffer buf = new StringBuffer(variantMap.size() * 20);
+        StringBuilder buf = new StringBuilder(variantMap.size() * 20);
         for (ImageVariant variant : variantMap.keySet()) {
             buf.append(variant);
             buf.append("\n");

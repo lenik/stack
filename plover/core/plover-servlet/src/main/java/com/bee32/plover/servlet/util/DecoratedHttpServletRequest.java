@@ -193,7 +193,7 @@ public class DecoratedHttpServletRequest
         return proxy.getLocales();
     }
 
-    public StringBuffer getRequestURL() {
+    public StringBuilder getRequestURL() {
         return proxy.getRequestURL();
     }
 

@@ -85,7 +85,7 @@ public class TreeMapNode<T>
 
     @Override
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         buf.append("node ");
         buf.append(name);

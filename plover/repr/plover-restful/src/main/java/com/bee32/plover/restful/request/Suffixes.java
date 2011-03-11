@@ -51,7 +51,7 @@ public class Suffixes
 
     @Override
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (String suffix : this) {
             buf.append(suffix);
             buf.append('\n');

@@ -96,7 +96,7 @@ public class RestfulRequest
     }
 
     public String getRestfulPath() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         buf.append(path);
 

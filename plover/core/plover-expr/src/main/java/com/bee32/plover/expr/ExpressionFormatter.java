@@ -3,10 +3,10 @@ package com.bee32.plover.expr;
 public class ExpressionFormatter
         extends AbstractExpressionVisitor {
 
-    private final StringBuffer buffer;
+    private final StringBuilder buffer;
 
     public ExpressionFormatter() {
-        this.buffer = new StringBuffer();
+        this.buffer = new StringBuilder();
     }
 
     public void reset() {

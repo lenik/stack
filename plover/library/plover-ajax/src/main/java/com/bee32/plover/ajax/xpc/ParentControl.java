@@ -67,7 +67,7 @@ public class ParentControl {
     }
 
     static String _hmac(String authSecret, String script, String location) {
-        StringBuffer payload = new StringBuffer();
+        StringBuilder payload = new StringBuilder();
         if (script != null) {
             payload.append("I:");
             payload.append(script.length());

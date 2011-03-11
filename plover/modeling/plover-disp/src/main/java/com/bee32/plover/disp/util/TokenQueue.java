@@ -59,7 +59,7 @@ public class TokenQueue
     @Override
     public String getRemainingPath() {
         int remaining = tokens.length - index;
-        StringBuffer buf = new StringBuffer(remaining * 20);
+        StringBuilder buf = new StringBuilder(remaining * 20);
         for (int i = index; i < tokens.length; i++) {
             if (i != index)
                 buf.append('/');
@@ -171,7 +171,7 @@ public class TokenQueue
 
     @Override
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < index; i++) {
             if (i != 0)
                 buf.append('/');

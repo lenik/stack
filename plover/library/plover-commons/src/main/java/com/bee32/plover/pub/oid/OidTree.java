@@ -161,11 +161,11 @@ public class OidTree<T>
             return Collections.emptyMap();
 
         Map<T, String> map = new IdentityHashMap<T, String>();
-        dumpReverseMap(map, new StringBuffer());
+        dumpReverseMap(map, new StringBuilder());
         return map;
     }
 
-    void dumpReverseMap(Map<T, String> map, StringBuffer prefix) {
+    void dumpReverseMap(Map<T, String> map, StringBuilder prefix) {
         if (data != null)
             map.put(data, prefix.toString());
 
@@ -194,11 +194,11 @@ public class OidTree<T>
             return Collections.emptyList();
 
         List<String> names = new ArrayList<String>();
-        dumpChildNames(names, new StringBuffer());
+        dumpChildNames(names, new StringBuilder());
         return names;
     }
 
-    void dumpChildNames(List<String> list, StringBuffer prefix) {
+    void dumpChildNames(List<String> list, StringBuilder prefix) {
         if (data != null)
             list.add(prefix.toString());
 

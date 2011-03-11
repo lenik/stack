@@ -32,7 +32,7 @@ public class LoadFlags32
             return "0";
 
         // char[32]: XXX - needs to fast check the MSB index.
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         int x = flags;
         while (x != 0) {
             int lsb = x & 1;
