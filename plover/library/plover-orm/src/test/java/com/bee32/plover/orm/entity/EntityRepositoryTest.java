@@ -29,7 +29,7 @@ public class EntityRepositoryTest
 interface IFoo
         extends IEntity<Integer> {
     @Override
-    Integer getPrimaryKey();
+    Integer getId();
 }
 
 class Foo
@@ -38,7 +38,7 @@ class Foo
     private static final long serialVersionUID = 1L;
 
     @Override
-    public Integer getPrimaryKey() {
+    public Integer getId() {
         return null;
     }
 
@@ -47,7 +47,7 @@ class Foo
 interface Bar
         extends IEntity<Integer> {
     @Override
-    Integer getPrimaryKey();
+    Integer getId();
 }
 
 class BarImpl
@@ -56,7 +56,7 @@ class BarImpl
     private static final long serialVersionUID = 1L;
 
     @Override
-    public Integer getPrimaryKey() {
+    public Integer getId() {
         return null;
     }
 

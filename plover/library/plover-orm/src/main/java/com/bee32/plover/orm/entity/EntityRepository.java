@@ -114,7 +114,7 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
 
     @Override
     public K getKey(E entity) {
-        return entity.getPrimaryKey();
+        return entity.getId();
     }
 
     @Override
@@ -249,7 +249,7 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
     @Override
     public String getChildName(Object entity) {
         E instance = instanceType.cast(entity);
-        K key = instance.getPrimaryKey();
+        K key = instance.getId();
         String keyLocation = formatKey(key);
         return keyLocation;
     }

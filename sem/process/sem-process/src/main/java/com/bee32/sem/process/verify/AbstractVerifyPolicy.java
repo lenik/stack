@@ -4,10 +4,10 @@ import javax.free.DecodeException;
 import javax.free.EncodeException;
 import javax.free.XMLs;
 
-import com.bee32.plover.model.Model;
+import com.bee32.plover.orm.entity.Entity;
 
 public abstract class AbstractVerifyPolicy<C, S extends VerifyState>
-        extends Model
+        extends Entity<Integer>
         implements IVerifyPolicy<C, S> {
 
     private static final long serialVersionUID = 1L;
@@ -42,16 +42,16 @@ public abstract class AbstractVerifyPolicy<C, S extends VerifyState>
      *
      * @return <code>null</code> means verified, otherwise the error message.
      */
-    public abstract String checkState(C context,S state);
+    public abstract String checkState(C context, S state);
 
-    public void verify(C context,S state)
+    public void verify(C context, S state)
             throws VerifyException {
-        String errorMessage = checkState(context,state);
+        String errorMessage = checkState(context, state);
         if (errorMessage != null)
             throw new VerifyException(errorMessage);
     }
 
-    public boolean isVerified(C context,S state) {
+    public boolean isVerified(C context, S state) {
         String errorMessage = checkState(context, state);
         return errorMessage == null;
     }

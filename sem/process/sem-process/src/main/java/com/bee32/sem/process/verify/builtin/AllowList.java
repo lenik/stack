@@ -5,8 +5,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.plover.arch.Component;
+import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.orm.entity.IEntity;
+import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.process.verify.AbstractVerifyPolicy;
 
 /**
@@ -18,7 +19,6 @@ public class AllowList
 
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
     private Collection<IPrincipal> responsibles;
 
     public AllowList() {
@@ -59,19 +59,6 @@ public class AllowList
         return null;
     }
 
-    @Override
-    public Integer getPrimaryKey() {
-        return id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Collection<IPrincipal> getResponsibles() {
         return responsibles;
     }
@@ -81,40 +68,13 @@ public class AllowList
     }
 
     @Override
-    protected int hashCodeSpecific() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((responsibles == null) ? 0 : responsibles.hashCode());
-        return result;
-    }
-
-    @Override
-    protected boolean equalsSpecific(Component obj) {
-        AllowList other = (AllowList) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        if (responsibles == null) {
-            if (other.responsibles != null)
-                return false;
-        } else if (!responsibles.equals(other.responsibles))
-            return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer buf = new StringBuffer();
-        buf.append("Allow-List: ");
+    public void toString(PrettyPrintStream out, EntityFormat format) {
+        out.print("Allow-List: ");
         if (responsibles != null)
             for (IPrincipal responsible : responsibles) {
-                buf.append('\n');
-                buf.append(responsible);
+                out.print('\n');
+                out.print(responsible);
             }
-        return buf.toString();
     }
 
 }

@@ -23,9 +23,4 @@ public class Tiger
         this.power = power;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + " P" + power;
-    }
-
 }

@@ -8,21 +8,18 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.plover.orm.entity.IEntity;
 import com.bee32.sem.process.verify.AbstractVerifyPolicy;
 
 /**
  * 依序审核策略
  */
 public class PassToNext
-        extends AbstractVerifyPolicy<Object, PassLog>
-        implements IEntity<Integer> {
+        extends AbstractVerifyPolicy<Object, PassLog> {
 
     private static final long serialVersionUID = 1L;
 
     static Logger logger = LoggerFactory.getLogger(PassToNext.class);
 
-    private Integer id;
     private List<PassStep> sequence;
 
     public PassToNext() {
@@ -83,19 +80,6 @@ public class PassToNext
         }
 
         return null;
-    }
-
-    @Override
-    public Integer getPrimaryKey() {
-        return id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public List<PassStep> getSequence() {

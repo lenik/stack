@@ -47,7 +47,7 @@ public class MultiLevelAllowList
     }
 
     @Override
-    public Integer getPrimaryKey() {
+    public Integer getId() {
         return id;
     }
 

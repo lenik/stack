@@ -14,13 +14,23 @@ public class QualifierMap
     private Map<Class<? extends Qualifier<?>>, TreeSet<Qualifier<?>>> map;
 
     public QualifierMap() {
-        map = new HashMap<Class<? extends Qualifier<?>>, TreeSet<Qualifier<?>>>();
+    }
+
+    public Map<Class<? extends Qualifier<?>>, TreeSet<Qualifier<?>>> getMap() {
+        if (map == null) {
+            synchronized (this) {
+                if (map == null) {
+                    map = new HashMap<Class<? extends Qualifier<?>>, TreeSet<Qualifier<?>>>();
+                }
+            }
+        }
+        return map;
     }
 
     @Override
     public Iterable<Qualifier<?>> getQualifiers() {
         TreeSet<Qualifier<?>> all = new TreeSet<Qualifier<?>>(QualifierComparator.getInstance());
-        for (Collection<? extends Qualifier<?>> set : map.values()) {
+        for (Collection<? extends Qualifier<?>> set : getMap().values()) {
             all.addAll(set);
         }
         return all;
@@ -29,7 +39,7 @@ public class QualifierMap
     @Override
     public <Q extends Qualifier<Q>> Iterable<Q> getQualifiers(Class<Q> qualifierType) {
         @SuppressWarnings("unchecked")
-        Collection<Q> set = (Collection<Q>) map.get(qualifierType);
+        Collection<Q> set = (Collection<Q>) getMap().get(qualifierType);
 
         if (set == null)
             return Collections.emptyList();
@@ -49,10 +59,10 @@ public class QualifierMap
         Class<Q> qualifierType = qualifier.getQualifierType();
         assert qualifierType.equals(qualifier.getClass()) : "Inconsistent qualifier type";
 
-        TreeSet<Qualifier<?>> set = map.get(qualifierType);
+        TreeSet<Qualifier<?>> set = getMap().get(qualifierType);
         if (set == null) {
             set = new TreeSet<Qualifier<?>>(QualifierComparator.getInstance());
-            map.put(qualifierType, set);
+            getMap().put(qualifierType, set);
         }
 
         if (clear)
@@ -78,14 +88,14 @@ public class QualifierMap
     public <Q extends Qualifier<Q>> boolean hasQualifier(Class<Q> qualifierType) {
         if (qualifierType == null)
             throw new NullPointerException("qualifierType");
-        TreeSet<Qualifier<?>> set = map.get(qualifierType);
+        TreeSet<Qualifier<?>> set = getMap().get(qualifierType);
         if (set == null || set.isEmpty())
             return false;
         return true;
     }
 
     public <Q extends Qualifier<Q>> void removeQualifiers(Class<Q> qualifierType) {
-        map.remove(qualifierType);
+        getMap().remove(qualifierType);
     }
 
 }

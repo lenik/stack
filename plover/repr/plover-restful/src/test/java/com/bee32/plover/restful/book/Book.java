@@ -19,7 +19,7 @@ public class Book
     }
 
     @Override
-    public String getPrimaryKey() {
+    public String getId() {
         return name;
     }
 

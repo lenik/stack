@@ -8,6 +8,6 @@ import javax.ejb.EnterpriseBean;
 public interface IEntity<K>
         extends EnterpriseBean {
 
-    K getPrimaryKey();
+    K getId();
 
 }

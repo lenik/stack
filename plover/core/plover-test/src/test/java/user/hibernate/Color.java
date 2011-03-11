@@ -17,7 +17,7 @@ public class Color
     }
 
     @Override
-    public String getPrimaryKey() {
+    public String getId() {
         return name;
     }
 
