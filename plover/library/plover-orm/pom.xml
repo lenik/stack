@@ -69,6 +69,11 @@
             <artifactId>plover-arch</artifactId>
             <version>0.0.4-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-commons</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <name>Plover :: Library :: Orm</name>
 </project>
