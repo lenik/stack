@@ -1,10 +1,13 @@
 package com.bee32.plover.test.jpa;
 
+import org.junit.Assert;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
-public class JpaTestCase {
+public class JpaTestCase
+        extends Assert {
 
     protected final Injector injector;
 
