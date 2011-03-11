@@ -14,12 +14,28 @@ public interface IRealm
 
     boolean contains(IPrincipal principal);
 
-    Collection<? extends IPrincipal> getPrincipals();
+    Collection<IPrincipal> getPrincipals();
 
-    Collection<? extends IUserPrincipal> getUsers();
+    Collection<IUserPrincipal> getUsers();
 
-    Collection<? extends IGroupPrincipal> getGroups();
+    Collection<IGroupPrincipal> getGroups();
 
-    Collection<? extends IRolePrincipal> getRoles();
+    Collection<IRolePrincipal> getRoles();
+
+    void addPrincipal(IPrincipal principal);
+
+    void removePrincipal(IPrincipal principal);
+
+    void addUser(IUserPrincipal user);
+
+    void removeUser(IUserPrincipal user);
+
+    void addGroup(IGroupPrincipal group);
+
+    void removeGroup(IGroupPrincipal group);
+
+    void addRole(IRolePrincipal role);
+
+    void removeRole(IRolePrincipal role);
 
 }

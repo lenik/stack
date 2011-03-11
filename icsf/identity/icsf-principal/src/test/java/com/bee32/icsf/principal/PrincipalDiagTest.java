@@ -6,8 +6,6 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.bee32.icsf.principal.PrincipalCheckException;
-import com.bee32.icsf.principal.PrincipalDiag;
 import com.bee32.icsf.principal.builtins.MultiPrincipal;
 
 public class PrincipalDiagTest {
@@ -20,16 +18,16 @@ public class PrincipalDiagTest {
     @Test
     public void testNoLoop1()
             throws PrincipalCheckException {
-        SimpleUser u1 = new SimpleUser("u1");
+        UserBean u1 = new UserBean("u1");
         PrincipalDiag.checkDeadLoop(u1);
     }
 
     @Test
     public void testNoLoop2_UG()
             throws PrincipalCheckException {
-        SimpleUser u1 = new SimpleUser("u1");
-        SimpleGroup g1 = new SimpleGroup("g1", null);
-        u1.assignGroup(g1);
+        UserBean u1 = new UserBean("u1");
+        GroupBean g1 = new GroupBean("g1", null);
+        u1.addAssignedGroup(g1);
         PrincipalDiag.checkDeadLoop(u1);
     }
 

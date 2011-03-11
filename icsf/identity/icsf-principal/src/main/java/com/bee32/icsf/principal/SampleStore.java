@@ -19,9 +19,24 @@ public class SampleStore {
     public UserBean kate;
 
     {
-        sunCorp = new Group
-        tom = new UserBean("Tom", sunCorp, adminRole);
+        adminRole = new RoleBean("Administrator");
+        registeredRole = new RoleBean("Registered User");
 
+        eva = new UserBean("Eva", null, adminRole);
+        solaGroup = new GroupBean("Sola AV Club", eva);
+        eva.setPrimaryGroup(solaGroup);
+        wallE = new UserBean("Wall-E", solaGroup, registeredRole);
+
+        tom = new UserBean("Tom", null, adminRole);
+        sunCorp = new GroupBean("Sun Corp", tom);
+        tom.setPrimaryGroup(sunCorp);
+
+        kate = new UserBean("Kate", sunCorp, registeredRole);
+
+        alice = new UserBean("Alice", null, null);
+        alice.addAssignedGroup(sunCorp);
+        alice.addAssignedGroup(solaGroup);
+        alice.addAssignedRole(registeredRole);
     }
 
     /**

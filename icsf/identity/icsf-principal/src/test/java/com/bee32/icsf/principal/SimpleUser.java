@@ -5,10 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.bee32.icsf.principal.AbstractUser;
-import com.bee32.icsf.principal.IGroupPrincipal;
-import com.bee32.icsf.principal.IRolePrincipal;
-
+@Deprecated
 public class SimpleUser
         extends AbstractUser {
 
@@ -32,12 +29,20 @@ public class SimpleUser
     }
 
     @Override
-    public Collection<? extends IGroupPrincipal> getAssignedGroups() {
+    public void setPrimaryRole(IRolePrincipal role) {
+    }
+
+    @Override
+    public void setPrimaryGroup(IGroupPrincipal group) {
+    }
+
+    @Override
+    public Collection<IGroupPrincipal> getAssignedGroups() {
         return Collections.unmodifiableList(groups);
     }
 
     @Override
-    public Collection<? extends IRolePrincipal> getAssignedRoles() {
+    public Collection<IRolePrincipal> getAssignedRoles() {
         return Collections.unmodifiableList(roles);
     }
 

@@ -12,12 +12,16 @@ public interface IUserPrincipal
      */
     IRolePrincipal getPrimaryRole();
 
+    void setPrimaryRole(IRolePrincipal role);
+
     /**
      * The primary group which this user stands for.
      *
      * @return The primary group assigned. <code>null</code> if none.
      */
     IGroupPrincipal getPrimaryGroup();
+
+    void setPrimaryGroup(IGroupPrincipal group);
 
     /**
      * 授予该用户的角色集。
@@ -28,7 +32,11 @@ public interface IUserPrincipal
      *
      * @return 如果没有被授予任何角色，返回一个不是 <code>null</code> 的空集。
      */
-    Collection<? extends IRolePrincipal> getAssignedRoles();
+    Collection<IRolePrincipal> getAssignedRoles();
+
+    void addAssignedRole(IRolePrincipal role);
+
+    void removeAssignedRole(IRolePrincipal role);
 
     /**
      * 授予该用户的组集。
@@ -39,6 +47,10 @@ public interface IUserPrincipal
      *
      * @return 如果没有被授予任何组，返回一个不是 <code>null</code> 的空集。
      */
-    Collection<? extends IGroupPrincipal> getAssignedGroups();
+    Collection<IGroupPrincipal> getAssignedGroups();
+
+    void addAssignedGroup(IGroupPrincipal group);
+
+    void removeAssignedGroup(IGroupPrincipal group);
 
 }

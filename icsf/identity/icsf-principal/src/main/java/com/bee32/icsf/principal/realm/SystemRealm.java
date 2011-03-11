@@ -3,7 +3,7 @@ package com.bee32.icsf.principal.realm;
 import com.bee32.icsf.principal.IPrincipal;
 
 public class SystemRealm
-        extends AbstractRealm {
+        extends EmptyRealm {
 
     private static final long serialVersionUID = 1L;
 
@@ -13,11 +13,6 @@ public class SystemRealm
 
     public SystemRealm(String name) {
         super(name);
-    }
-
-    @Override
-    public Integer getPrimaryKey() {
-        return -1;
     }
 
     @Override

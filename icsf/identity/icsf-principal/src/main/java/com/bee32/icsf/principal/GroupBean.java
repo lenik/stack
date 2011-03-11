@@ -1,8 +1,7 @@
 package com.bee32.icsf.principal;
 
 import java.util.Collection;
-
-import javax.free.Nullables;
+import java.util.HashSet;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.orm.entity.IEntity;
@@ -19,6 +18,23 @@ public class GroupBean
 
     protected Collection<IRolePrincipal> assignedRoles;
     protected Collection<IUserPrincipal> memberUsers;
+
+    public GroupBean() {
+    }
+
+    public GroupBean(String name) {
+        super(name);
+    }
+
+    public GroupBean(String name, IUserPrincipal owner, IUserPrincipal... memberUsers) {
+        super(name);
+        this.owner = owner;
+
+        addMemberUser(owner);
+
+        for (IUserPrincipal user : memberUsers)
+            addMemberUser(user);
+    }
 
     public void setName(String name) {
         if (name == null)
@@ -61,6 +77,13 @@ public class GroupBean
 
     @Override
     public Collection<IRolePrincipal> getAssignedRoles() {
+        if (assignedRoles == null) {
+            synchronized (this) {
+                if (assignedRoles == null) {
+                    assignedRoles = new HashSet<IRolePrincipal>();
+                }
+            }
+        }
         return assignedRoles;
     }
 
@@ -70,6 +93,13 @@ public class GroupBean
 
     @Override
     public Collection<IUserPrincipal> getMemberUsers() {
+        if (memberUsers == null) {
+            synchronized (this) {
+                if (memberUsers == null) {
+                    memberUsers = new HashSet<IUserPrincipal>();
+                }
+            }
+        }
         return memberUsers;
     }
 
@@ -79,18 +109,7 @@ public class GroupBean
 
     @Override
     protected int hashCodeSpecific() {
-        final int prime = 31;
-        if (id != null)
-            return prime * id.hashCode();
-
-        int result = 0;
-        result = prime * result + ((assignedRoles == null) ? 0 : assignedRoles.hashCode());
-        result = prime * result + ((inheritedGroup == null) ? 0 : inheritedGroup.hashCode());
-        result = prime * result + ((memberUsers == null) ? 0 : memberUsers.hashCode());
-        result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-        result = prime * result + ((primaryRole == null) ? 0 : primaryRole.hashCode());
-
-        return result;
+        return id != null ? id.hashCode() : super.hashCodeSpecific();
     }
 
     @Override
@@ -98,20 +117,9 @@ public class GroupBean
         GroupBean other = (GroupBean) obj;
 
         if (id != null)
-            return !id.equals(other.id);
+            return id.equals(other.id);
 
-        if (!Nullables.equals(owner, other.owner))
-            return false;
-        if (!Nullables.equals(primaryRole, other.primaryRole))
-            return false;
-        if (!Nullables.equals(inheritedGroup, other.inheritedGroup))
-            return false;
-        if (!Nullables.equals(assignedRoles, other.assignedRoles))
-            return false;
-        if (!Nullables.equals(memberUsers, other.memberUsers))
-            return false;
-
-        return true;
+        return false;
     }
 
 }

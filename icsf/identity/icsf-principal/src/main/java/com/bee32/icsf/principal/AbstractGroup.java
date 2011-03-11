@@ -17,17 +17,32 @@ public abstract class AbstractGroup
     }
 
     @Override
-    public IUserPrincipal getOwner() {
-        return null;
-    }
-
-    @Override
     public IRolePrincipal getPrimaryRole() {
         Iterator<? extends IRolePrincipal> roles = getAssignedRoles().iterator();
         if (roles.hasNext())
             return roles.next();
         else
             return null;
+    }
+
+    @Override
+    public void addAssignedRole(IRolePrincipal role) {
+        getAssignedRoles().add(role);
+    }
+
+    @Override
+    public void removeAssignedRole(IRolePrincipal role) {
+        getAssignedRoles().remove(role);
+    }
+
+    @Override
+    public void addMemberUser(IUserPrincipal user) {
+        getMemberUsers().add(user);
+    }
+
+    @Override
+    public void removeMemberUser(IUserPrincipal user) {
+        getMemberUsers().remove(user);
     }
 
     @Override

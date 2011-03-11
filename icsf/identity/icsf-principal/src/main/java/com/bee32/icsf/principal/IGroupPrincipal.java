@@ -29,12 +29,16 @@ public interface IGroupPrincipal
      */
     IUserPrincipal getOwner();
 
+    void setOwner(IUserPrincipal owner);
+
     /**
      * 获取组的主要角色。
      *
      * @return 如果没有设置主要角色，返回空。
      */
     IRolePrincipal getPrimaryRole();
+
+    void setPrimaryRole(IRolePrincipal role);
 
     /**
      * 授予该组的角色集。
@@ -45,13 +49,21 @@ public interface IGroupPrincipal
      *
      * @return 如果没有被授予任何角色，返回空集。
      */
-    Collection<? extends IRolePrincipal> getAssignedRoles();
+    Collection<IRolePrincipal> getAssignedRoles();
+
+    void addAssignedRole(IRolePrincipal role);
+
+    void removeAssignedRole(IRolePrincipal role);
 
     /**
      * 获取成员用户。
      *
      * @return 如果没有成员，返回空集。
      */
-    Collection<? extends IUserPrincipal> getMemberUsers();
+    Collection<IUserPrincipal> getMemberUsers();
+
+    void addMemberUser(IUserPrincipal user);
+
+    void removeMemberUser(IUserPrincipal user);
 
 }

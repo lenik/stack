@@ -1,6 +1,7 @@
 package com.bee32.icsf.principal;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.free.Nullables;
 
@@ -20,6 +21,14 @@ public class RoleBean
     protected Collection<IUserPrincipal> responsibleUsers;
     protected Collection<IGroupPrincipal> responsibleGroups;
 
+    public RoleBean() {
+        super();
+    }
+
+    public RoleBean(String name) {
+        super(name);
+    }
+
     public void setName(String name) {
         if (name == null)
             throw new NullPointerException("name");
@@ -35,6 +44,13 @@ public class RoleBean
     }
 
     public Collection<IUserPrincipal> getResponsibleUsers() {
+        if (responsibleUsers == null) {
+            synchronized (this) {
+                if (responsibleUsers == null) {
+                    responsibleUsers = new HashSet<IUserPrincipal>();
+                }
+            }
+        }
         return responsibleUsers;
     }
 
@@ -43,6 +59,13 @@ public class RoleBean
     }
 
     public Collection<IGroupPrincipal> getResponsibleGroups() {
+        if (responsibleGroups == null) {
+            synchronized (this) {
+                if (responsibleGroups == null) {
+                    responsibleGroups = new HashSet<IGroupPrincipal>();
+                }
+            }
+        }
         return responsibleGroups;
     }
 
@@ -56,7 +79,7 @@ public class RoleBean
         if (id != null)
             return prime * id.hashCode();
 
-        int result = super.hashCode();
+        int result = 0;
         result = prime * result + ((inheritedRole == null) ? 0 : inheritedRole.hashCode());
         result = prime * result + ((responsibleUsers == null) ? 0 : responsibleUsers.hashCode());
         result = prime * result + ((responsibleGroups == null) ? 0 : responsibleGroups.hashCode());

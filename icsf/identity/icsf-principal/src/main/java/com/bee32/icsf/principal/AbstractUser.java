@@ -45,6 +45,26 @@ public abstract class AbstractUser
     }
 
     @Override
+    public void addAssignedGroup(IGroupPrincipal group) {
+        getAssignedGroups().add(group);
+    }
+
+    @Override
+    public void removeAssignedGroup(IGroupPrincipal group) {
+        getAssignedGroups().remove(group);
+    }
+
+    @Override
+    public void addAssignedRole(IRolePrincipal role) {
+        getAssignedRoles().add(role);
+    }
+
+    @Override
+    public void removeAssignedRole(IRolePrincipal role) {
+        getAssignedRoles().remove(role);
+    }
+
+    @Override
     public boolean implies(IPrincipal principal) {
         if (principal == null)
             throw new NullPointerException("principal");

@@ -7,7 +7,7 @@ public class PrincipalToXML {
 
     public static void main(String[] args)
             throws EncodeException {
-        SimpleGroup group1 = new SimpleGroup("MyGroup", null);
+        GroupBean group1 = new GroupBean("MyGroup");
         String xml = XMLs.encode(group1);
         System.out.println(xml);
     }

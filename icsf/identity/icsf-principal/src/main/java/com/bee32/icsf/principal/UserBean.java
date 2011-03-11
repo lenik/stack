@@ -1,6 +1,7 @@
 package com.bee32.icsf.principal;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.free.Nullables;
 
@@ -22,6 +23,10 @@ public class UserBean
     protected Collection<IRolePrincipal> assignedRoles;
 
     public UserBean() {
+    }
+
+    public UserBean(String name) {
+        super(name);
     }
 
     public UserBean(String name, IGroupPrincipal primaryGroup, IRolePrincipal primaryRole) {
@@ -65,6 +70,13 @@ public class UserBean
 
     @Override
     public Collection<IGroupPrincipal> getAssignedGroups() {
+        if (assignedGroups == null) {
+            synchronized (this) {
+                if (assignedGroups == null) {
+                    assignedGroups = new HashSet<IGroupPrincipal>();
+                }
+            }
+        }
         return assignedGroups;
     }
 
@@ -74,6 +86,13 @@ public class UserBean
 
     @Override
     public Collection<IRolePrincipal> getAssignedRoles() {
+        if (assignedRoles == null) {
+            synchronized (this) {
+                if (assignedRoles == null) {
+                    assignedRoles = new HashSet<IRolePrincipal>();
+                }
+            }
+        }
         return assignedRoles;
     }
 

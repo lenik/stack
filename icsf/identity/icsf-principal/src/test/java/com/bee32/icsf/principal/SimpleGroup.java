@@ -5,11 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.bee32.icsf.principal.AbstractGroup;
-import com.bee32.icsf.principal.IGroupPrincipal;
-import com.bee32.icsf.principal.IRolePrincipal;
-import com.bee32.icsf.principal.IUserPrincipal;
-
+@Deprecated
 public class SimpleGroup
         extends AbstractGroup {
 
@@ -40,7 +36,20 @@ public class SimpleGroup
     }
 
     @Override
-    public Collection<? extends IRolePrincipal> getAssignedRoles() {
+    public IUserPrincipal getOwner() {
+        return null;
+    }
+
+    @Override
+    public void setOwner(IUserPrincipal owner) {
+    }
+
+    @Override
+    public void setPrimaryRole(IRolePrincipal role) {
+    }
+
+    @Override
+    public Collection<IRolePrincipal> getAssignedRoles() {
         return Collections.unmodifiableList(roles);
     }
 
@@ -55,17 +64,17 @@ public class SimpleGroup
     }
 
     @Override
-    public Collection<? extends IUserPrincipal> getMemberUsers() {
+    public Collection<IUserPrincipal> getMemberUsers() {
         return Collections.unmodifiableList(users);
     }
 
-    void addMemberUser(IUserPrincipal user) {
+    public void addMemberUser(IUserPrincipal user) {
         if (user == null)
             throw new NullPointerException("user");
         users.add(user);
     }
 
-    void removeMemberUser(IUserPrincipal user) {
+    public void removeMemberUser(IUserPrincipal user) {
         users.remove(user);
     }
 

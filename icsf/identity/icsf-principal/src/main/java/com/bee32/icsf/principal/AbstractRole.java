@@ -1,15 +1,10 @@
 package com.bee32.icsf.principal;
 
-import java.util.Collection;
-
 public abstract class AbstractRole
         extends AbstractPrincipal
         implements IRolePrincipal {
 
     private static final long serialVersionUID = 1L;
-
-    private Collection<IGroupPrincipal> responsibleGroups;
-    private Collection<IUserPrincipal> responsibleUsers;
 
     public AbstractRole() {
         super();
@@ -20,13 +15,23 @@ public abstract class AbstractRole
     }
 
     @Override
-    public Collection<? extends IGroupPrincipal> getResponsibleGroups() {
-        return responsibleGroups;
+    public void addResponsibleUser(IUserPrincipal user) {
+        getResponsibleUsers().add(user);
     }
 
     @Override
-    public Collection<? extends IUserPrincipal> getResponsibleUsers() {
-        return responsibleUsers;
+    public void removeResponsibleUser(IUserPrincipal user) {
+        getResponsibleUsers().remove(user);
+    }
+
+    @Override
+    public void addResponsibleGroup(IGroupPrincipal group) {
+        getResponsibleGroups().add(group);
+    }
+
+    @Override
+    public void removeResponsibleGroup(IGroupPrincipal group) {
+        getResponsibleGroups().remove(group);
     }
 
     @Override

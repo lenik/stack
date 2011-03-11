@@ -1,5 +1,9 @@
 package com.bee32.icsf.principal;
 
+import java.util.Collection;
+import java.util.Collections;
+
+@Deprecated
 public class SimpleRole
         extends AbstractRole {
 
@@ -23,6 +27,16 @@ public class SimpleRole
     @Override
     public IRolePrincipal getInheritedRole() {
         return parent;
+    }
+
+    @Override
+    public Collection<IUserPrincipal> getResponsibleUsers() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Collection<IGroupPrincipal> getResponsibleGroups() {
+        return Collections.emptyList();
     }
 
 }

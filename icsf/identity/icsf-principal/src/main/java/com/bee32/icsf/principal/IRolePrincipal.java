@@ -16,8 +16,16 @@ public interface IRolePrincipal
      */
     IRolePrincipal getInheritedRole();
 
-    Collection<? extends IUserPrincipal> getResponsibleUsers();
+    Collection<IUserPrincipal> getResponsibleUsers();
 
-    Collection<? extends IGroupPrincipal> getResponsibleGroups();
+    Collection<IGroupPrincipal> getResponsibleGroups();
+
+    void addResponsibleUser(IUserPrincipal user);
+
+    void removeResponsibleUser(IUserPrincipal user);
+
+    void addResponsibleGroup(IGroupPrincipal group);
+
+    void removeResponsibleGroup(IGroupPrincipal group);
 
 }

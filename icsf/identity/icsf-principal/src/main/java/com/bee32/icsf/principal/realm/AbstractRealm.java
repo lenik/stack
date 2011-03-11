@@ -1,7 +1,6 @@
 package com.bee32.icsf.principal.realm;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import com.bee32.icsf.principal.IGroupPrincipal;
 import com.bee32.icsf.principal.IPrincipal;
@@ -35,7 +34,7 @@ public abstract class AbstractRealm
 
     @Override
     public boolean contains(IPrincipal principal) {
-        Collection<? extends IPrincipal> principals = getPrincipals();
+        Collection<IPrincipal> principals = getPrincipals();
 
         if (principals == null)
             return false;
@@ -44,23 +43,43 @@ public abstract class AbstractRealm
     }
 
     @Override
-    public Collection<? extends IPrincipal> getPrincipals() {
-        return Collections.emptyList();
+    public void addPrincipal(IPrincipal principal) {
+        getPrincipals().add(principal);
     }
 
     @Override
-    public Collection<? extends IUserPrincipal> getUsers() {
-        return Collections.emptyList();
+    public void removePrincipal(IPrincipal principal) {
+        getPrincipals().remove(principal);
     }
 
     @Override
-    public Collection<? extends IGroupPrincipal> getGroups() {
-        return Collections.emptyList();
+    public void addUser(IUserPrincipal user) {
+        getUsers().add(user);
     }
 
     @Override
-    public Collection<? extends IRolePrincipal> getRoles() {
-        return Collections.emptyList();
+    public void removeUser(IUserPrincipal user) {
+        getUsers().remove(user);
+    }
+
+    @Override
+    public void addGroup(IGroupPrincipal group) {
+        getGroups().add(group);
+    }
+
+    @Override
+    public void removeGroup(IGroupPrincipal group) {
+        getGroups().remove(group);
+    }
+
+    @Override
+    public void addRole(IRolePrincipal role) {
+        getRoles().add(role);
+    }
+
+    @Override
+    public void removeRole(IRolePrincipal role) {
+        getRoles().remove(role);
     }
 
 }
