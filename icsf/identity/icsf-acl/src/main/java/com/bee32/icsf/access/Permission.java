@@ -1,50 +1,41 @@
 package com.bee32.icsf.access;
 
-import java.io.Serializable;
-
 import com.bee32.icsf.access.authority.IAuthority;
-import com.bee32.plover.arch.ui.IAppearance;
-import com.bee32.plover.arch.ui.IImageMap;
-import com.bee32.plover.arch.ui.IRefdocs;
-import com.bee32.plover.arch.ui.res.InjectedAppearance;
+import com.bee32.plover.orm.entity.Entity;
 
 /**
  * <em><font color='red'>The modal logic of belief should be considered in more detail. </font></em>
  */
 public abstract class Permission
-        implements IAppearance, Serializable {
+        extends Entity<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    protected final InjectedAppearance sink;
+    private String displayName;
+    private String description;
 
     public Permission() {
-        sink = new InjectedAppearance(getClass());
+        super();
     }
 
-    public abstract String getName();
+    public Permission(String name) {
+        super(name);
+    }
 
-    @Override
     public String getDisplayName() {
-        String displayName = sink.getDisplayName();
-        // if (displayName == null)
-        // displayName = getName();
         return displayName;
     }
 
-    @Override
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public String getDescription() {
-        return sink.getDescription();
+        return description;
     }
 
-    @Override
-    public IImageMap getImageMap() {
-        return sink.getImageMap();
-    }
-
-    @Override
-    public IRefdocs getRefdocs() {
-        return sink.getRefdocs();
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public abstract IAuthority getAuthority();

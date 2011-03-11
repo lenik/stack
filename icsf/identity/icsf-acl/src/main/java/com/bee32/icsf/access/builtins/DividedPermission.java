@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.authority.IAuthority;
+import com.bee32.plover.orm.entity.EntityFormat;
+import com.bee32.plover.util.PrettyPrintStream;
 
 /**
  * @test {@link DividedPermissionTest}
@@ -18,7 +20,7 @@ public abstract class DividedPermission
     private final String name;
     private final String description;
     private final int[] ranges; // sorted.
-//    private final boolean determined;
+// private final boolean determined;
 
     public DividedPermission(IAuthority authority, String name, String description) {
         this(null, authority, name, description, new int[0]);
@@ -138,20 +140,18 @@ public abstract class DividedPermission
     }
 
     @Override
-    public String toString() {
-        StringBuilder buf = new StringBuilder(name.length() + ranges.length * 16);
-        buf.append(name);
-        buf.append("(");
+    public void toString(PrettyPrintStream out, EntityFormat format) {
+        out.print(name);
+        out.print("(");
         for (int i = 0; i < ranges.length; i++) {
             if (i != 0)
-                buf.append(", ");
+                out.print(", ");
             String rangeName = getRangeName(ranges[i]);
             if (rangeName == null)
                 rangeName = "%" + ranges[i];
-            buf.append(rangeName);
+            out.print(rangeName);
         }
-        buf.append(")");
-        return buf.toString();
+        out.print(")");
     }
 
 }

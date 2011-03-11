@@ -3,7 +3,6 @@ package com.bee32.icsf.principal;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.bee32.plover.arch.Component;
 import com.bee32.plover.orm.entity.IEntity;
 
 public class GroupBean
@@ -87,8 +86,8 @@ public class GroupBean
         return assignedRoles;
     }
 
-    public void setAssignedRoles(Collection<IRolePrincipal> assignedRoles) {
-        this.assignedRoles = assignedRoles;
+    public void setAssignedRoles(Collection<? extends IRolePrincipal> assignedRoles) {
+        this.assignedRoles = new HashSet<IRolePrincipal>(assignedRoles);
     }
 
     @Override
@@ -103,23 +102,8 @@ public class GroupBean
         return memberUsers;
     }
 
-    public void setMemberUsers(Collection<IUserPrincipal> memberUsers) {
-        this.memberUsers = memberUsers;
-    }
-
-    @Override
-    protected int hashCodeSpecific() {
-        return id != null ? id.hashCode() : super.hashCodeSpecific();
-    }
-
-    @Override
-    protected boolean equalsSpecific(Component obj) {
-        GroupBean other = (GroupBean) obj;
-
-        if (id != null)
-            return id.equals(other.id);
-
-        return false;
+    public void setMemberUsers(Collection<? extends IUserPrincipal> memberUsers) {
+        this.memberUsers = new HashSet<IUserPrincipal>(memberUsers);
     }
 
 }

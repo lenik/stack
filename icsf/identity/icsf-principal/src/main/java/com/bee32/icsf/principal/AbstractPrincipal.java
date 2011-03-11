@@ -1,14 +1,17 @@
 package com.bee32.icsf.principal;
 
-import com.bee32.plover.arch.Component;
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityFormat;
+import com.bee32.plover.util.PrettyPrintStream;
 
 public abstract class AbstractPrincipal
-        extends Component
+        extends Entity<Long>
         implements IPrincipal {
 
     private static final long serialVersionUID = 1L;
 
-    protected Long id;
+    private String displayName;
+    private String description;
 
     public AbstractPrincipal() {
         super();
@@ -18,9 +21,20 @@ public abstract class AbstractPrincipal
         super(name);
     }
 
-    @Override
-    public Long getPrimaryKey() {
-        return id;
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    protected void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    protected void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -33,9 +47,18 @@ public abstract class AbstractPrincipal
     }
 
     @Override
-    public String toString() {
-        String principalType = getClass().getSimpleName();
-        return principalType + " :: " + getName();
+    public void toString(PrettyPrintStream out, EntityFormat format) {
+        switch (format) {
+
+        case SHORT:
+            String principalType = getClass().getSimpleName();
+            String qname = principalType + " :: " + getName();
+            out.print(qname);
+            break;
+
+        default:
+            super.toString(out, format);
+        }
     }
 
 }

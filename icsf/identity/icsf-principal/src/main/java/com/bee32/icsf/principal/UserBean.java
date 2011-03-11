@@ -35,15 +35,6 @@ public class UserBean
         this.primaryRole = primaryRole;
     }
 
-    @Override
-    public Long getPrimaryKey() {
-        return id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
     public void setName(String name) {
         if (name == null)
             throw new NullPointerException("name");

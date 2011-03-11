@@ -14,8 +14,6 @@ public class RoleBean
 
     private static final long serialVersionUID = 1L;
 
-    protected Integer id;
-
     protected IRolePrincipal inheritedRole;
 
     protected Collection<IUserPrincipal> responsibleUsers;

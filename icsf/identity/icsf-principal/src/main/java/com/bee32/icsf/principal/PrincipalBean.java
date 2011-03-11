@@ -2,9 +2,6 @@ package com.bee32.icsf.principal;
 
 import java.util.Collection;
 
-import javax.free.Nullables;
-
-import com.bee32.plover.arch.Component;
 import com.bee32.plover.orm.entity.IEntity;
 
 public class PrincipalBean
@@ -43,31 +40,6 @@ public class PrincipalBean
 
     @Override
     public void accept(IPrincipalVisitor visitor) {
-    }
-
-    @Override
-    protected int hashCodeSpecific() {
-        final int prime = 31;
-        if (id != null)
-            return prime * id.hashCode();
-
-        int result = super.hashCode();
-        result = prime * result + ((impliedPrincipals == null) ? 0 : impliedPrincipals.hashCode());
-
-        return result;
-    }
-
-    @Override
-    protected boolean equalsSpecific(Component obj) {
-        PrincipalBean other = (PrincipalBean) obj;
-
-        if (id != null)
-            return !id.equals(other.id);
-
-        if (!Nullables.equals(impliedPrincipals, other.impliedPrincipals))
-            return false;
-
-        return true;
     }
 
 }

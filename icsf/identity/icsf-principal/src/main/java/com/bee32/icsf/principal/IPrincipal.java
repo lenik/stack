@@ -2,7 +2,6 @@ package com.bee32.icsf.principal;
 
 import java.security.Principal;
 
-import com.bee32.plover.arch.IComponent;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.orm.entity.IEntity;
 
@@ -12,7 +11,7 @@ import com.bee32.plover.orm.entity.IEntity;
  * 在涉及安全的操作中，代表行为主体的身份抽象。
  */
 public interface IPrincipal
-        extends Principal, IComponent, IEntity<Long> {
+        extends Principal, IEntity<Long> {
 
     /**
      * 主体在该主体所属域中的唯一名称。
@@ -26,16 +25,14 @@ public interface IPrincipal
      *
      * 如用户姓名、企业名称、角色名称等。
      */
-    // @Override
-    // String getDisplayName();;
+    String getDisplayName();;
 
     /**
      * 描述信息，如用户全称、企业全称、角色的描述信息等。
      *
      * @return <code>null</code> 如果描述信息不可用。
      */
-    // @Override
-    // String getDescription();
+    String getDescription();
 
     /**
      * 主体的肖像。

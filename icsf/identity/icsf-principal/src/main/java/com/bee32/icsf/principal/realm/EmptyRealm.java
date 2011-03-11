@@ -22,7 +22,7 @@ public class EmptyRealm
     }
 
     @Override
-    public Integer getPrimaryKey() {
+    public Integer getId() {
         return null;
     }
 
