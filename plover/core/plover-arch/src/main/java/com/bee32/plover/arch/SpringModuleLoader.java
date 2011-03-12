@@ -8,9 +8,11 @@ import java.util.TreeMap;
 import javax.inject.Inject;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
+@Lazy
 public class SpringModuleLoader
         implements IModuleLoader {
 

@@ -5,11 +5,6 @@ import java.util.Properties;
 import org.hibernate.cache.NoCacheProvider;
 import org.hibernate.dialect.H2Dialect;
 
-import com.bee32.plover.inject.TestComponent;
-import com.bee32.plover.inject.qualifier.RunConfig;
-
-@TestComponent
-@RunConfig("test")
 public class TestSessionFactoryBean
         extends CandidateSessionFactoryBean {
 

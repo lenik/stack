@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.arch.IModule;
@@ -19,6 +20,7 @@ import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
 
 @Component
+@Lazy
 public class ModuleManager
         extends OidTree<IModule>
         implements InitializingBean {

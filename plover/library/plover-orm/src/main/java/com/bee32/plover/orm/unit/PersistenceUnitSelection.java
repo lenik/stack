@@ -124,7 +124,6 @@ public class PersistenceUnitSelection
     }
 
     public static PersistenceUnitSelection getSharedSelection() {
-        System.err.println("Get -- " + sharedSelection.selectedUnits.size());
         return sharedSelection;
     }
 

@@ -20,7 +20,7 @@
     </bean>
 
     <bean lazy-init="true" id="blob" class="user.spring.BigBlob">
-        <property name="name" value="1000 buckets" />
+        <property name="contents" value="1000 buckets" />
     </bean>
 
 </beans>

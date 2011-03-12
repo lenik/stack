@@ -3,12 +3,9 @@ package com.bee32.plover.orm.util.hibernate;
 import java.util.Collection;
 import java.util.Properties;
 
-import javax.inject.Inject;
-
 import org.hibernate.transaction.JDBCTransactionFactory;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
-import com.bee32.plover.arch.IModuleLoader;
 import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 
 public abstract class CandidateSessionFactoryBean
@@ -73,6 +70,12 @@ public abstract class CandidateSessionFactoryBean
         // Merge mapping resources
         PersistenceUnitSelection selection = getPersistenceUnitSelection();
         Collection<String> allResources = selection.mergeMappingResources();
+
+        if (logger.isInfoEnabled()) {
+            logger.info("Resource mappings for SFB " + getName());
+            for (String resource : allResources)
+                logger.info("Resource for mapping: " + resource);
+        }
 
         if (!allResources.isEmpty()) {
             String[] resourceArray = allResources.toArray(new String[0]);
