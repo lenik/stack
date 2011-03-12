@@ -2,9 +2,6 @@ package user.spring;
 
 import javax.inject.Inject;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-
 import com.bee32.plover.restful.book.Book;
 
 public class FooBean
@@ -30,8 +27,7 @@ public class FooBean
         return blob;
     }
 
-    @Autowired
-    @Lazy
+    @Inject
     public void setBigBlob(BigBlob blob) {
         this.blob = blob;
     }

@@ -1,23 +1,27 @@
 package user.spring;
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BigBlob {
+@Lazy
+public class BigBlob
+        implements InitializingBean {
 
-    String name;
+    String contents;
 
     public BigBlob() {
         System.out.println("Creating BigBlob...");
     }
 
-    public String getName() {
-        return name;
+    public String getContents() {
+        return contents;
     }
 
-    public void setName(String name) {
-        System.out.println("Set name to " + name);
-        this.name = name;
+    public void setContents(String contents) {
+        System.out.println("Set contents to " + contents);
+        this.contents = contents;
     }
 
     @Override
@@ -28,7 +32,14 @@ public class BigBlob {
 
     @Override
     public String toString() {
-        return "BigBlob [name=" + name + "]";
+        return "BigBlob [contents =" + contents + "]";
+    }
+
+    @Override
+    public void afterPropertiesSet()
+            throws Exception {
+        System.out.println("afterPropertiesSet: " + this);
+        this.contents = "blob xyz";
     }
 
 }
