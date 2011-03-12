@@ -1,13 +1,13 @@
 package com.bee32.icsf.access;
 
 import com.bee32.icsf.access.authority.IAuthority;
-import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityBean;
 
 /**
  * <em><font color='red'>The modal logic of belief should be considered in more detail. </font></em>
  */
 public abstract class Permission
-        extends Entity<Long> {
+        extends EntityBean<Long> {
 
     private static final long serialVersionUID = 1L;
 

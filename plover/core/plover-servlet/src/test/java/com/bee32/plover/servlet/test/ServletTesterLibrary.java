@@ -156,6 +156,10 @@ public class ServletTesterLibrary
         String rawResponse = getResponses(rawRequest);
         HttpTester response = new HttpTester();
         response.parse(rawResponse);
+
+        if (response.getStatus() >= 400)
+            throw new HttpException(response);
+
         return response;
     }
 

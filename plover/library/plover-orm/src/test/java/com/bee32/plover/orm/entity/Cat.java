@@ -1,7 +1,7 @@
 package com.bee32.plover.orm.entity;
 
 public class Cat
-        extends Entity<Long> {
+        extends EntityBean<Long> {
 
     private static final long serialVersionUID = 1L;
 

@@ -9,7 +9,15 @@ import com.bee32.plover.arch.Component;
 import com.bee32.plover.model.Model;
 import com.bee32.plover.util.PrettyPrintStream;
 
-public abstract class Entity<K>
+/**
+ * You may annotate the concrete entities with:
+ * <ul>
+ * <li>&#64;Entity
+ * <li>&#64;Table
+ * </ul>
+ */
+// @Entity
+public abstract class EntityBean<K>
         extends Model
         implements IEntity<K>, IPopulatable, IFormatString {
 
@@ -19,11 +27,11 @@ public abstract class Entity<K>
 
     private int version;
 
-    public Entity() {
+    public EntityBean() {
         super();
     }
 
-    public Entity(String name) {
+    public EntityBean(String name) {
         super(name);
     }
 
@@ -62,7 +70,7 @@ public abstract class Entity<K>
             return false;
 
         @SuppressWarnings("unchecked")
-        Entity<K> other = (Entity<K>) obj;
+        EntityBean<K> other = (EntityBean<K>) obj;
 
         if (other.id == null)
             return false;
@@ -86,7 +94,7 @@ public abstract class Entity<K>
         switch (format) {
         case VERBOSE:
             String rts = ReflectionToStringBuilder.toString(this, //
-                    ToStringStyle.SHORT_PREFIX_STYLE, false, false, Entity.class);
+                    ToStringStyle.SHORT_PREFIX_STYLE, false, false, EntityBean.class);
 
             out.print(rts);
             break;

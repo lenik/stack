@@ -1,7 +1,7 @@
 package com.bee32.sem.process.verify.builtin;
 
 import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
@@ -9,7 +9,7 @@ import com.bee32.plover.util.PrettyPrintStream;
  * 审核步骤
  */
 public class PassStep
-        extends Entity<Integer> {
+        extends EntityBean<Integer> {
 
     private static final long serialVersionUID = 1L;
 

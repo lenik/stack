@@ -4,10 +4,10 @@ import javax.free.DecodeException;
 import javax.free.EncodeException;
 import javax.free.XMLs;
 
-import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityBean;
 
 public abstract class AbstractVerifyPolicy<C, S extends VerifyState>
-        extends Entity<Integer>
+        extends EntityBean<Integer>
         implements IVerifyPolicy<C, S> {
 
     private static final long serialVersionUID = 1L;

@@ -1,11 +1,11 @@
 package com.bee32.icsf.principal;
 
-import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public abstract class AbstractPrincipal
-        extends Entity<Long>
+        extends EntityBean<Long>
         implements IPrincipal {
 
     private static final long serialVersionUID = 1L;
