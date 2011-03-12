@@ -35,12 +35,16 @@ public class PersistenceUnitSelection
         return unit;
     }
 
-    public void add(PersistenceUnit unit) {
+    public synchronized void add(PersistenceUnit unit) {
         if (unit == null)
             throw new NullPointerException("unit");
 
-        String name = unit.getName();
-        selectedUnits.put(name, unit);
+        String unitName = unit.getName();
+        PersistenceUnit existed = selectedUnits.get(unitName);
+        if (existed != null)
+            throw new IllegalStateException("P-Unit is already existed: " + unitName);
+
+        selectedUnits.put(unitName, unit);
     }
 
     public void add(PersistenceUnit... units) {
@@ -56,7 +60,7 @@ public class PersistenceUnitSelection
         return selectedUnits.values().iterator();
     }
 
-    public Collection<String> mergeMappingResources() {
+    public synchronized Collection<String> mergeMappingResources() {
         // Merge mapping resources
         Set<String> allResources = new LinkedHashSet<String>();
         for (IPersistenceUnit persistenceUnit : selectedUnits.values()) {
@@ -103,7 +107,7 @@ public class PersistenceUnitSelection
     public static synchronized PersistenceUnitSelection getContextSelection(Object contextKey) {
         if (shareAllContext) {
 
-            return sharedSelection;
+            return getSharedSelection();
 
         } else {
 
@@ -120,6 +124,7 @@ public class PersistenceUnitSelection
     }
 
     public static PersistenceUnitSelection getSharedSelection() {
+        System.err.println("Get -- " + sharedSelection.selectedUnits.size());
         return sharedSelection;
     }
 
