@@ -35,11 +35,6 @@
             <version>2.2</version>
         </dependency>
         <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>1</version>
-        </dependency>
-        <dependency>
             <groupId>javax.free</groupId>
             <artifactId>freejava-closure</artifactId>
             <version>3.0.0</version>
