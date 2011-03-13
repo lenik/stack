@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 import javax.free.Nullables;
 
-import com.bee32.plover.arch.Component;
+import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
 
 public class RoleBean
@@ -72,10 +72,8 @@ public class RoleBean
     }
 
     @Override
-    protected int hashCodeSpecific() {
+    protected int hashCodeEntity() {
         final int prime = 31;
-        if (id != null)
-            return prime * id.hashCode();
 
         int result = 0;
         result = prime * result + ((inheritedRole == null) ? 0 : inheritedRole.hashCode());
@@ -86,11 +84,8 @@ public class RoleBean
     }
 
     @Override
-    protected boolean equalsSpecific(Component obj) {
-        RoleBean other = (RoleBean) obj;
-
-        if (id != null)
-            return !id.equals(other.id);
+    protected boolean equalsEntity(EntityBean<Long> entity) {
+        RoleBean other = (RoleBean) entity;
 
         if (!Nullables.equals(inheritedRole, other.inheritedRole))
             return false;

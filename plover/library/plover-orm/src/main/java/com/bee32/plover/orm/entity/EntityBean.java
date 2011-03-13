@@ -1,6 +1,10 @@
 package com.bee32.plover.orm.entity;
 
 import javax.free.Nullables;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -23,9 +27,12 @@ public abstract class EntityBean<K>
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected K id;
 
-    private int version;
+    @Version
+    int version;
 
     public EntityBean() {
         super();
@@ -44,6 +51,7 @@ public abstract class EntityBean<K>
         this.id = id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -65,28 +73,55 @@ public abstract class EntityBean<K>
     }
 
     @Override
-    protected boolean equalsSpecific(Component obj) {
-        if (id == null)
-            return false;
-
-        @SuppressWarnings("unchecked")
-        EntityBean<K> other = (EntityBean<K>) obj;
-
-        if (other.id == null)
-            return false;
-
-        if (!id.equals(other.id))
-            return false;
-
-        return true;
+    public final boolean equals(Object obj) {
+        return super.equals(obj);
     }
 
     @Override
-    protected int hashCodeSpecific() {
+    protected final boolean equalsSpecific(Component obj) {
+        @SuppressWarnings("unchecked")
+        EntityBean<K> other = (EntityBean<K>) obj;
+
+        if (version != other.version)
+            return false;
+
+        if (id != null) {
+            if (other.id == null)
+                return false;
+
+            if (!id.equals(other.id))
+                return false;
+
+            return true;
+        } else if (other.id != null)
+            return false;
+
+        return equalsEntity(other);
+    }
+
+    protected boolean equalsEntity(EntityBean<K> other) {
+        return false;
+    }
+
+    @Override
+    public final int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    protected final int hashCodeSpecific() {
+        int hash = 0xbabade33 * version;
+
         if (id != null)
-            return id.hashCode();
+            hash += id.hashCode();
         else
-            return super.hashCodeSpecific();
+            hash += hashCodeEntity();
+
+        return hash;
+    }
+
+    protected int hashCodeEntity() {
+        return super.hashCodeSpecific();
     }
 
     @Override

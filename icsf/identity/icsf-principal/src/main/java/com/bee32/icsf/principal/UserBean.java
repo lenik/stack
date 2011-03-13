@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 import javax.free.Nullables;
 
-import com.bee32.plover.arch.Component;
+import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
 
 public class UserBean
@@ -119,10 +119,8 @@ public class UserBean
     }
 
     @Override
-    protected int hashCodeSpecific() {
+    protected int hashCodeEntity() {
         final int prime = 31;
-        if (id != null)
-            return prime * id.hashCode();
 
         int result = (name == null) ? 0 : name.hashCode();
         result = prime * result + ((primaryRole == null) ? 0 : primaryRole.hashCode());
@@ -134,11 +132,8 @@ public class UserBean
     }
 
     @Override
-    protected boolean equalsSpecific(Component obj) {
+    protected boolean equalsEntity(EntityBean<Long> obj) {
         UserBean other = (UserBean) obj;
-
-        if (id != null)
-            return !id.equals(other.id);
 
         if (!Nullables.equals(primaryGroup, other.primaryGroup))
             return false;

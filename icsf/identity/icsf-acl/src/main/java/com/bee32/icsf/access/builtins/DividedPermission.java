@@ -2,8 +2,11 @@ package com.bee32.icsf.access.builtins;
 
 import java.util.Arrays;
 
+import javax.free.Nullables;
+
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.authority.IAuthority;
+import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
@@ -112,30 +115,34 @@ public abstract class DividedPermission
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof DividedPermission))
+    protected boolean equalsEntity(EntityBean<Long> entity) {
+        DividedPermission other = (DividedPermission) entity;
+
+        if (!Nullables.equals(authority, other.authority))
             return false;
-        DividedPermission q = (DividedPermission) obj;
-        if (!authority.equals(q.authority))
+
+        if (!Nullables.equals(parent, other.parent))
             return false;
-        if (!name.equals(q))
+
+        if (!Arrays.equals(ranges, other.ranges))
             return false;
-        if (parent != q.parent)
-            if (parent == null || q.parent == null || !parent.equals(q.parent))
-                return false;
-        if (!Arrays.equals(ranges, q.ranges))
-            return false;
+
         return true;
     }
 
     @Override
-    public int hashCode() {
+    protected int hashCodeEntity() {
         int hash = 0x1c3ad4eb;
-        hash += authority.hashCode();
-        hash += name.hashCode() * 0x1d3c7e9a;
+
+        if (authority != null)
+            hash += authority.hashCode();
+
         if (parent != null)
-            hash += parent.hashCode() * 0xfce2e570;
-        hash += Arrays.hashCode(ranges);
+            hash += parent.hashCode();
+
+        if (ranges != null)
+            hash += Arrays.hashCode(ranges);
+
         return hash;
     }
 
