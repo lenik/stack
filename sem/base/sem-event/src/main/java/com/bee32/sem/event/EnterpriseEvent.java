@@ -3,15 +3,13 @@ package com.bee32.sem.event;
 import java.util.Date;
 
 import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityBean;
 
 public class EnterpriseEvent
-        extends Entity<Long>
+        extends EntityBean<Long>
         implements IEnterpriseEvent {
 
     private static final long serialVersionUID = 1L;
-
-    private Long id;
 
     private Class<?> sourceClass;
     private Object sourceKey;
@@ -24,13 +22,12 @@ public class EnterpriseEvent
     private String subject;
     private String message;
 
-    @Override
-    public Long getId() {
-        return id;
+    public EnterpriseEvent() {
+        super();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public EnterpriseEvent(String name) {
+        super(name);
     }
 
     @Override
