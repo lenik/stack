@@ -69,6 +69,9 @@ public abstract class Component
      */
     @Override
     public/* final */boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+
         if (obj == null)
             return false;
 
@@ -90,7 +93,7 @@ public abstract class Component
      * @return <code>true</code> If equals.
      */
     protected boolean equalsSpecific(Component obj) {
-        return this == obj;
+        return false;
     }
 
     protected transient final int typeHash = getClass().hashCode();
