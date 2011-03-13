@@ -7,15 +7,9 @@ import java.lang.annotation.Retention;
 
 import javax.inject.Qualifier;
 
-/**
- * @see TestPurpose
- */
-@Deprecated
 @Retention(RUNTIME)
 @Documented
 @Qualifier
-public @interface RunConfig {
-
-    String value();
+public @interface TestPurpose {
 
 }
