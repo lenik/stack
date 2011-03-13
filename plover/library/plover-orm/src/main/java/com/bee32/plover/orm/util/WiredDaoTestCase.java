@@ -4,7 +4,6 @@ import javax.inject.Inject;
 
 import org.hibernate.SessionFactory;
 
-import com.bee32.plover.inject.qualifier.RunConfig;
 import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 import com.bee32.plover.orm.unit.PersistenceUnit;
@@ -16,7 +15,6 @@ public abstract class WiredDaoTestCase
         extends WiredAssembledTestCase {
 
     @Inject
-    @RunConfig("test")
     private SessionFactory sessionFactory;
 
     private transient HibernateDaoSupport support;
@@ -24,6 +22,9 @@ public abstract class WiredDaoTestCase
     public WiredDaoTestCase(PersistenceUnit... persistenceUnits) {
         PersistenceUnitSelection puSelection = PersistenceUnitSelection.getContextSelection(//
                 TestSessionFactoryBean.class);
+
+        for (PersistenceUnit unit : persistenceUnits)
+            puSelection.remove(unit);
 
         puSelection.add(persistenceUnits);
     }
