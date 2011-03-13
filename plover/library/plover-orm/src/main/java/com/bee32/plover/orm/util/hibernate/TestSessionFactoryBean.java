@@ -2,14 +2,28 @@ package com.bee32.plover.orm.util.hibernate;
 
 import java.util.Properties;
 
+import javax.inject.Inject;
+import javax.sql.DataSource;
+
 import org.hibernate.cache.NoCacheProvider;
 import org.hibernate.dialect.H2Dialect;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
+import com.bee32.plover.inject.qualifier.TestPurpose;
+
+@Component
+@TestPurpose
+@Lazy
 public class TestSessionFactoryBean
         extends CandidateSessionFactoryBean {
 
+    @Inject
+    @TestPurpose
+    DataSource dataSource;
+
     public TestSessionFactoryBean() {
-        super("test");
+        super("test-sfb");
     }
 
     @Override
@@ -19,10 +33,7 @@ public class TestSessionFactoryBean
         // Dialect
         properties.setProperty("hibernate.dialect", H2Dialect.class.getName());
 
-        properties.setProperty("hibernate.connection.driver_class", "org.h2.Driver");
-        properties.setProperty("hibernate.connection.url", "jdbc:h2:target/testdb;DB_CLOSE_ON_EXIT=FALSE");
-        properties.setProperty("hibernate.connection.username", "sa");
-        properties.setProperty("hibernate.connection.password", "");
+        setDataSource(dataSource);
 
         // Mapping
         properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");

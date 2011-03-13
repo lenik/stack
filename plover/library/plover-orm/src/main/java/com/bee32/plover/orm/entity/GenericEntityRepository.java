@@ -1,9 +1,12 @@
 package com.bee32.plover.orm.entity;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.bee32.plover.inject.ComponentTemplate;
 
 @ComponentTemplate
 // @RepositoryTemplate
+@Lazy
 public abstract class GenericEntityRepository<E extends IEntity<K>, K>
         extends HibernateEntityRepository<E, K> {
 

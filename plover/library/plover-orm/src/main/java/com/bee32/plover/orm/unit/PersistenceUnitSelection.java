@@ -55,6 +55,18 @@ public class PersistenceUnitSelection
             add(unit);
     }
 
+    public synchronized void remove(PersistenceUnit unit) {
+        if (unit == null)
+            throw new NullPointerException("unit");
+        selectedUnits.remove(unit.getName());
+    }
+
+    public synchronized void remove(String unitName) {
+        if (unitName == null)
+            throw new NullPointerException("unitName");
+        selectedUnits.remove(unitName);
+    }
+
     @Override
     public Iterator<PersistenceUnit> iterator() {
         return selectedUnits.values().iterator();
@@ -74,6 +86,22 @@ public class PersistenceUnitSelection
         }
 
         return allResources;
+    }
+
+    public synchronized Collection<Class<?>> mergePersistentClasses() {
+        // Merge mapping resources
+        Set<Class<?>> allClasses = new LinkedHashSet<Class<?>>();
+        for (IPersistenceUnit persistenceUnit : selectedUnits.values()) {
+            if (persistenceUnit == null)
+                throw new NullPointerException("persistenceUnit");
+
+            Collection<Class<?>> classes = persistenceUnit.getClasses();
+
+            for (Class<?> clazz : classes)
+                allClasses.add(clazz);
+        }
+
+        return allClasses;
     }
 
     private static PersistenceUnitSelection serviceProviderSelection;

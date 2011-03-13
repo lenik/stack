@@ -1,11 +1,13 @@
 package com.bee32.plover.restful.book;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 
 @Service
+@Lazy
 public class SimpleBooks
         extends BookStore {
 

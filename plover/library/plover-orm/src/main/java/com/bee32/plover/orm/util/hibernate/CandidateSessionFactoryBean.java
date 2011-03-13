@@ -3,10 +3,15 @@ package com.bee32.plover.orm.util.hibernate;
 import java.util.Collection;
 import java.util.Properties;
 
+import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.transaction.JDBCTransactionFactory;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
 import com.bee32.plover.orm.unit.PersistenceUnitSelection;
+import com.bee32.plover.thirdparty.hibernate.util.LazyInitSessionFactory;
 
 public abstract class CandidateSessionFactoryBean
         extends LocalSessionFactoryBean {
@@ -61,6 +66,13 @@ public abstract class CandidateSessionFactoryBean
     @Override
     public void afterPropertiesSet()
             throws Exception {
+        super.afterPropertiesSet();
+    }
+
+    static boolean usingAnnotation = true;
+
+    protected void lazyConfigure() {
+
         // SelectedSessionFactory
 
         Properties hibernateProperties = new Properties();
@@ -69,20 +81,67 @@ public abstract class CandidateSessionFactoryBean
 
         // Merge mapping resources
         PersistenceUnitSelection selection = getPersistenceUnitSelection();
-        Collection<String> allResources = selection.mergeMappingResources();
 
-        if (logger.isInfoEnabled()) {
-            logger.info("Resource mappings for SFB " + getName());
-            for (String resource : allResources)
-                logger.info("Resource for mapping: " + resource);
+        if (usingAnnotation) {
+
+            this.setConfigurationClass(AnnotationConfiguration.class);
+            // see newConfiguration overrides.
+
+        } else {
+            Collection<String> allResources = selection.mergeMappingResources();
+
+            if (logger.isInfoEnabled()) {
+                logger.info("Resource mappings for SFB " + getName());
+                for (String resource : allResources)
+                    logger.info("Resource for mapping: " + resource);
+            }
+
+            if (!allResources.isEmpty()) {
+                String[] resourceArray = allResources.toArray(new String[0]);
+                this.setMappingResources(resourceArray);
+            }
         }
+    }
 
-        if (!allResources.isEmpty()) {
-            String[] resourceArray = allResources.toArray(new String[0]);
-            this.setMappingResources(resourceArray);
-        }
+    @Override
+    protected Configuration newConfiguration()
+            throws HibernateException {
+        Configuration conf = super.newConfiguration();
+        if (!usingAnnotation)
+            return conf;
 
-        super.afterPropertiesSet();
+        AnnotationConfiguration aconf = (AnnotationConfiguration) conf;
+
+        PersistenceUnitSelection selection = getPersistenceUnitSelection();
+        Collection<Class<?>> persistentClasses = selection.mergePersistentClasses();
+
+        for (Class<?> persistentClass : persistentClasses)
+            aconf.addClass(persistentClass);
+
+        return aconf;
+    }
+
+    @Override
+    protected SessionFactory buildSessionFactory()
+            throws Exception {
+        return new LazyInitSessionFactory() {
+
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected SessionFactory newSessionFactory()
+                    throws Exception {
+
+                lazyConfigure();
+
+                return buildSessionFactoryImpl();
+            }
+        };
+    }
+
+    private SessionFactory buildSessionFactoryImpl()
+            throws Exception {
+        return super.buildSessionFactory();
     }
 
 }

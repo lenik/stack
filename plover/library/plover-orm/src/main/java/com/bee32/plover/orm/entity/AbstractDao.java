@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.entity;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.bee32.plover.inject.ComponentTemplate;
 
 /**
@@ -7,6 +9,7 @@ import com.bee32.plover.inject.ComponentTemplate;
  * Module classes, to enable Spring usage.
  */
 @ComponentTemplate
+@Lazy
 public abstract class AbstractDao<E extends IEntity<K>, K>
         extends GenericEntityRepository<E, K> {
 

@@ -14,13 +14,20 @@ public abstract class LazyInitSessionFactory
         if (sessionFactory == null) {
             synchronized (this) {
                 if (sessionFactory == null) {
-                    sessionFactory = buildSessionFactory();
+                    try {
+                        sessionFactory = newSessionFactory();
+                    } catch (RuntimeException e) {
+                        throw e;
+                    } catch (Exception e) {
+                        throw new RuntimeException(e.getMessage(), e);
+                    }
                 }
             }
         }
         return sessionFactory;
     }
 
-    protected abstract SessionFactory buildSessionFactory();
+    protected abstract SessionFactory newSessionFactory()
+            throws Exception;
 
 }

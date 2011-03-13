@@ -16,6 +16,7 @@ public class TestSessionFactoryBeanTest
     @Test
     public void gotAnySessionFactory() {
         assertNotNull(sessionFactory);
+        System.err.println("End of test");
     }
 
 }
