@@ -11,6 +11,9 @@ import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 import javax.free.ParserUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.Repository;
 import com.bee32.plover.arch.naming.INamedNode;
@@ -25,6 +28,8 @@ import com.bee32.plover.arch.util.IStruct;
 public abstract class EntityRepository<E extends IEntity<K>, K>
         extends Repository<K, E>
         implements IEntityRepository<E, K> {
+
+    static Logger logger = LoggerFactory.getLogger(EntityRepository.class);
 
     protected Class<? extends E> entityType;
 
@@ -204,6 +209,17 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
             throws ParseException {
         if (keyType == String.class)
             return keyType.cast(keyString);
+
+        if (keyType == Integer.class) {
+            Integer integerId = Integer.valueOf(keyString);
+            return keyType.cast(integerId);
+        }
+
+        if (keyType == Long.class) {
+            Long longId = Long.valueOf(keyString);
+            return keyType.cast(longId);
+        }
+
         return ParserUtil.parse(keyType, keyString);
     }
 
@@ -232,7 +248,15 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
 
     @Override
     public Object getChild(String location) {
-        return retrieve(location);
+        K parsedKey;
+        try {
+            parsedKey = parseKey(location);
+        } catch (ParseException e) {
+            if (logger.isDebugEnabled())
+                logger.warn("Bad location token: " + location + ", for " + this, e);
+            return null;
+        }
+        return retrieve(parsedKey);
     }
 
     @Override
@@ -263,8 +287,10 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
             return (Collection<String>) keys;
 
         List<String> keyStrings = new ArrayList<String>(keys.size());
-        for (K key : keys)
-            keyStrings.add(String.valueOf(key));
+        for (K key : keys) {
+            String keyString = formatKey(key);
+            keyStrings.add(keyString);
+        }
 
         return keyStrings;
     }
