@@ -1,5 +1,12 @@
 package user.hibernate;
 
+import javax.persistence.Entity;
+
+import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.EntityFormat;
+import com.bee32.plover.util.PrettyPrintStream;
+
+@Entity
 public class RGB
         extends Color {
 
@@ -45,9 +52,9 @@ public class RGB
     }
 
     @Override
-    public int hashCode() {
+    protected int hashCodeEntity() {
         final int prime = 31;
-        int result = super.hashCode();
+        int result = 1;
         result = prime * result + blue;
         result = prime * result + green;
         result = prime * result + red;
@@ -55,14 +62,8 @@ public class RGB
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        RGB other = (RGB) obj;
+    protected boolean equalsEntity(EntityBean<String> otherEntity) {
+        RGB other = (RGB) otherEntity;
         if (blue != other.blue)
             return false;
         if (green != other.green)
@@ -73,8 +74,9 @@ public class RGB
     }
 
     @Override
-    public String toString() {
-        return String.format("%s (%02x%02x%02x)", name, red, green, blue);
+    public void toString(PrettyPrintStream out, EntityFormat format) {
+        String hex = String.format("%s (%02x%02x%02x)", name, red, green, blue);
+        out.print(hex);
     }
 
 }

@@ -5,14 +5,11 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.bee32.plover.orm.PloverOrmModule;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 
 public class DiscriminatorTest
         extends WiredDaoTestCase {
-
-    PloverOrmModule pom;
 
     public DiscriminatorTest() {
         super(ColorSystem.unit);
