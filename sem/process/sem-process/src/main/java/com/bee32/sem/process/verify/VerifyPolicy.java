@@ -31,13 +31,13 @@ public abstract class VerifyPolicy<C, S extends VerifyState>
     }
 
     @Override
-    public String encodeState(S state)
+    public String encodeState(C context, S state)
             throws EncodeException {
         return XMLs.encode(state);
     }
 
     @Override
-    public S decodeState(String stateClob)
+    public S decodeState(C context, String stateClob)
             throws DecodeException {
         Object object = XMLs.decode(stateClob);
         S state = verifyStateClass.cast(object);
