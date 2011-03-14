@@ -25,7 +25,7 @@ import com.bee32.sem.process.verify.VerifyPolicy;
  * 由任一管理员审核策略。
  */
 @Entity
-@DiscriminatorValue("alist")
+@DiscriminatorValue("list")
 public class AllowList
         extends VerifyPolicy<Object, AllowState> {
 
@@ -54,6 +54,11 @@ public class AllowList
         if (responsibles == null)
             throw new NullPointerException("responsibles");
         this.responsibles = new HashSet<Principal>(responsibles);
+    }
+
+    @Override
+    public Collection<? extends Principal> getDeclaredResponsibles(Object context) {
+        return getResponsibles();
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,

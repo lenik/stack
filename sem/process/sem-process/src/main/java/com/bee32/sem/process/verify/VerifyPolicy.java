@@ -12,7 +12,7 @@ import com.bee32.plover.orm.entity.EntityBean;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "policy", length = 20)
+@DiscriminatorColumn(name = "policy", length = 10)
 public abstract class VerifyPolicy<C, S extends VerifyState>
         extends EntityBean<Integer>
         implements IVerifyPolicy<C, S> {

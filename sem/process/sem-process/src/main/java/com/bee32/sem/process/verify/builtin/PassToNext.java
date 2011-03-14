@@ -1,20 +1,29 @@
 package com.bee32.sem.process.verify.builtin;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.IUserPrincipal;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.sem.process.verify.ContextClass;
 import com.bee32.sem.process.verify.VerifyPolicy;
 
 /**
  * 依序审核策略
  */
+@ContextClass(ICurrentStep.class)
+@Entity
+@DiscriminatorValue("p2n")
 public class PassToNext
-        extends VerifyPolicy<Object, PassLog> {
+        extends VerifyPolicy<ICurrentStep, PassLog> {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,7 +46,15 @@ public class PassToNext
     }
 
     @Override
-    public String checkState(Object context, PassLog passLog) {
+    public Collection<? extends Principal> getDeclaredResponsibles(ICurrentStep context) {
+        int stepIndex = context.getCurrentStepIndex();
+        if (sequence == null)
+            return null;
+        return null;
+    }
+
+    @Override
+    public String checkState(ICurrentStep context, PassLog passLog) {
         if (passLog == null)
             return "尚未审核。";
 
