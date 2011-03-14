@@ -2,15 +2,14 @@ package user.hibernate.anno;
 
 import javax.free.Nullables;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
 import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBean;
 
 @Entity
-@Inheritance
 public class Fruit
-        extends EntityBean<Long> {
+        extends EntityBean<Long>
+        implements IFruit {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,6 +19,15 @@ public class Fruit
 
     @Transient
     String otherField;
+
+    public Fruit() {
+        super();
+    }
+
+    public Fruit(String name) {
+        super();
+        setName(name);
+    }
 
     @Override
     public String getName() {
@@ -31,10 +39,12 @@ public class Fruit
         this.name = name;
     }
 
+    @Override
     public int getPrice() {
         return price;
     }
 
+    @Override
     public void setPrice(int price) {
         this.price = price / 2;
     }

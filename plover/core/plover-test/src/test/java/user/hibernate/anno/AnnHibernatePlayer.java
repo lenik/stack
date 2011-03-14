@@ -78,8 +78,9 @@ public class AnnHibernatePlayer {
         HibernateTemplate template = new HibernateTemplate(sessionFactory);
 
         Friend tom = new Friend("tom");
-        tom.addFruit(apple);
-        tom.addFruit(banana);
+//        tom.addFruit(apple);
+//        tom.addFruit(banana);
+        tom.setFav(apple);
         tomId = template.save(tom);
 
         System.out.println("Saved tom: " + tom);

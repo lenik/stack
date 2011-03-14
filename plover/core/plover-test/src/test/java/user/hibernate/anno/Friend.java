@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import com.bee32.plover.orm.entity.EntityBean;
 
@@ -14,6 +15,8 @@ public class Friend
         extends EntityBean<Integer> {
 
     private static final long serialVersionUID = 1L;
+
+    IFruit fav;
 
     List<Fruit> fruits;
 
@@ -33,6 +36,15 @@ public class Friend
     @Override
     public void setName(String name) {
         super.setName(name);
+    }
+
+    @ManyToOne(targetEntity = Fruit.class)
+    public IFruit getFav() {
+        return fav;
+    }
+
+    public void setFav(IFruit fav) {
+        this.fav = fav;
     }
 
     @ManyToMany(cascade = CascadeType.ALL, targetEntity = Fruit.class)
