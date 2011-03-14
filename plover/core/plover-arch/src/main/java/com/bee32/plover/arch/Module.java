@@ -4,22 +4,27 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.arch.credit.Credit;
 import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.arch.naming.TreeMapNode;
 import com.bee32.plover.arch.operation.IOperation;
 import com.bee32.plover.arch.service.IServiceContribution;
-import com.bee32.plover.arch.service.Service;
+import com.bee32.plover.arch.service.PloverService;
 import com.bee32.plover.inject.ComponentTemplate;
 
 /**
  * &#64;Configuration is not inheritable, so you should add Configuration annotation in all concrete
  * Module classes, to enable Spring usage.
  * <p>
- * For Spring usage: Module must not be in lazy-init mode, otherwise, ModuleLoader won't know it.
+ * <strike> For Spring usage: Module must not be in lazy-init mode, otherwise, ModuleLoader won't
+ * know it. </strike>
+ *
+ * Lazy component is initialized when getBeanOfType() is invoked.
  */
 @ComponentTemplate
+@Lazy
 public abstract class Module
         extends Component
         implements IModule, InitializingBean {
@@ -55,7 +60,7 @@ public abstract class Module
     protected abstract void preamble();
 
     protected final void contribute(IServiceContribution<?> contribution) {
-        Service.contribute(contribution);
+        PloverService.contribute(contribution);
     }
 
     /**
