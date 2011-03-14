@@ -161,10 +161,6 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
         for (E sample : samples) {
             addNormalSample(sample);
         }
-
-        for (Object sample : samples) {
-            System.out.println(sample);
-        }
         return;
     }
 
