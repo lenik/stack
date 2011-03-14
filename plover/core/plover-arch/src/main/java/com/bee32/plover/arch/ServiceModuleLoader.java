@@ -1,47 +1,36 @@
 package com.bee32.plover.arch;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.ServiceLoader;
-import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class ServiceModuleLoader
-        implements IModuleLoader {
-
-    private static List<IModule> modules;
-    private static Map<String, IModule> moduleMap;
-
-    static synchronized void _load() {
-        if (modules == null) {
-            modules = new ArrayList<IModule>();
-            moduleMap = new TreeMap<String, IModule>();
-
-            ServiceLoader<IModule> moduleLoader;
-            moduleLoader = ServiceLoader.load(IModule.class);
-
-            for (IModule module : moduleLoader) {
-                modules.add(module);
-
-                String moduleName = module.getName();
-                moduleMap.put(moduleName, module);
-            }
-        }
-    }
+        extends AbstractModuleLoader {
 
     @Override
-    public void load() {
-        _load();
-    }
+    protected Collection<IModule> reload() {
+        List<IModule> modules = new ArrayList<IModule>();
 
-    public Iterable<IModule> getModules() {
-        load();
+        ServiceLoader<IModule> moduleLoader;
+        moduleLoader = ServiceLoader.load(IModule.class);
+
+        for (IModule module : moduleLoader)
+            modules.add(module);
+
         return modules;
     }
 
-    public Map<String, IModule> getModuleMap() {
-        load();
-        return moduleMap;
+    protected TreeSet<IModulePostProcessor> getPostProcessors() {
+        TreeSet<IModulePostProcessor> modulePostProcessors = new TreeSet<IModulePostProcessor>(
+                ModulePostProcessorComparator.getInstance());
+
+        for (IModulePostProcessor modulePostProcessor : ServiceLoader.load(IModulePostProcessor.class)) {
+            modulePostProcessors.add(modulePostProcessor);
+        }
+
+        return modulePostProcessors;
     }
 
     static final ServiceModuleLoader instance = new ServiceModuleLoader();

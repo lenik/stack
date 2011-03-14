@@ -1,23 +1,21 @@
 package com.bee32.plover.arch;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @Lazy
 public class SpringModuleLoader
-        implements IModuleLoader {
-
-    private List<IModule> modules;
-    private Map<String, IModule> moduleMap;
+        extends AbstractModuleLoader {
 
     @Inject
     private ApplicationContext applicationContext;
@@ -26,36 +24,35 @@ public class SpringModuleLoader
      * XXX - Should listen to application events?
      */
     @Override
-    public synchronized void load() {
-        if (modules == null) {
-            if (applicationContext == null)
-                throw new IllegalStateException("Application context is null");
+    protected Collection<IModule> reload() {
+        if (applicationContext == null)
+            throw new IllegalStateException("Application context is null");
 
-            modules = new ArrayList<IModule>();
-            moduleMap = new TreeMap<String, IModule>();
+        List<IModule> modules = new ArrayList<IModule>();
 
-            Map<String, IModule> mmap = applicationContext.getBeansOfType(IModule.class);
+        Map<String, IModule> mmap = applicationContext.getBeansOfType(IModule.class);
 
-            // Ignore the bean names.
-            for (IModule module : mmap.values()) {
-                modules.add(module);
+        // Ignore the bean names.
+        for (IModule module : mmap.values())
+            modules.add(module);
 
-                String moduleName = module.getName();
-                moduleMap.put(moduleName, module);
-            }
-        }
-    }
-
-    @Override
-    public Iterable<IModule> getModules() {
-        load();
         return modules;
     }
 
     @Override
-    public Map<String, IModule> getModuleMap() {
-        load();
-        return moduleMap;
+    protected TreeSet<IModulePostProcessor> getPostProcessors() {
+        if (applicationContext == null)
+            throw new IllegalStateException("Application context is null");
+
+        TreeSet<IModulePostProcessor> modulePostProcessors = new TreeSet<IModulePostProcessor>(
+                ModulePostProcessorComparator.getInstance());
+
+        Map<String, IModulePostProcessor> ppMap = applicationContext.getBeansOfType(IModulePostProcessor.class);
+
+        for (IModulePostProcessor modulePostProcessor : ppMap.values())
+            modulePostProcessors.add(modulePostProcessor);
+
+        return modulePostProcessors;
     }
 
 }
