@@ -11,7 +11,7 @@ public enum EntityFormat {
 
     public static final String DEFAULT_PROPERTY = "plover.entity.format";
 
-    public static EntityFormat DEFAULT = SHORT;
+    public static EntityFormat DEFAULT = VERBOSE;
 
     static {
         String formatProperty = System.getProperty(DEFAULT_PROPERTY);
