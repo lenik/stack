@@ -5,16 +5,10 @@ import java.util.Properties;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
 
-import com.bee32.plover.inject.qualifier.TestPurpose;
-import com.bee32.plover.inject.qualifier.Variant;
+import user.hibernate.anno.ext.Banana;
 
-//@Component
-@TestPurpose
-@Variant("AnnSFB")
-@Lazy
 public class Food_AnnotationSessionFactoryBean
         extends AnnotationSessionFactoryBean {
 
@@ -31,7 +25,13 @@ public class Food_AnnotationSessionFactoryBean
 
         this.setHibernateProperties(properties);
 
-        this.setAnnotatedClasses(new Class<?>[] { Fruit.class });
+        this.setAnnotatedClasses(new Class<?>[] {
+                //
+
+                Friend.class, //
+                Fruit.class, //
+                Banana.class, //
+        });
     }
 
     @Override
