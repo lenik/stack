@@ -1,9 +1,11 @@
 package com.bee32.plover.orm.entity;
 
 import javax.free.Nullables;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -20,18 +22,15 @@ import com.bee32.plover.util.PrettyPrintStream;
  * <li>&#64;Table
  * </ul>
  */
-// @Entity
+@Entity
 public abstract class EntityBean<K>
         extends Model
         implements IEntity<K>, IPopulatable, IFormatString {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     protected K id;
 
-    @Version
     int version;
 
     public EntityBean() {
@@ -42,6 +41,8 @@ public abstract class EntityBean<K>
         super(name);
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Override
     public K getId() {
         return id;
@@ -51,6 +52,16 @@ public abstract class EntityBean<K>
         this.id = id;
     }
 
+    @Version
+    public int getVersion() {
+        return version;
+    }
+
+    void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Transient
     @Override
     public String getName() {
         return name;
@@ -58,14 +69,6 @@ public abstract class EntityBean<K>
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    void setVersion(int version) {
-        this.version = version;
     }
 
     @Override
@@ -99,7 +102,7 @@ public abstract class EntityBean<K>
         return equalsEntity(other);
     }
 
-    protected boolean equalsEntity(EntityBean<K> other) {
+    protected boolean equalsEntity(EntityBean<K> otherEntity) {
         return false;
     }
 
