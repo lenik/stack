@@ -1,6 +1,6 @@
 package com.bee32.icsf.principal;
 
-import java.util.Collection;
+import java.util.Set;
 
 public interface IUserPrincipal
         extends IPrincipal {
@@ -32,7 +32,7 @@ public interface IUserPrincipal
      *
      * @return 如果没有被授予任何角色，返回一个不是 <code>null</code> 的空集。
      */
-    Collection<IRolePrincipal> getAssignedRoles();
+    Set<? extends IRolePrincipal> getAssignedRoles();
 
     void addAssignedRole(IRolePrincipal role);
 
@@ -47,7 +47,7 @@ public interface IUserPrincipal
      *
      * @return 如果没有被授予任何组，返回一个不是 <code>null</code> 的空集。
      */
-    Collection<IGroupPrincipal> getAssignedGroups();
+    Set<? extends IGroupPrincipal> getAssignedGroups();
 
     void addAssignedGroup(IGroupPrincipal group);
 

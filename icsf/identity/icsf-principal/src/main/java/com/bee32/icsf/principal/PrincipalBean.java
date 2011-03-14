@@ -2,6 +2,8 @@ package com.bee32.icsf.principal;
 
 import java.util.Collection;
 
+import javax.persistence.Transient;
+
 import com.bee32.plover.orm.entity.IEntity;
 
 public class PrincipalBean
@@ -18,6 +20,8 @@ public class PrincipalBean
         this.name = name;
     }
 
+    // @ManyToMany(cascade = CascadeType.ALL, mappedBy = "impl", targetEntity = PrincipalBean.class)
+    @Transient
     public Collection<IPrincipal> getImpliedPrincipals() {
         return impliedPrincipals;
     }

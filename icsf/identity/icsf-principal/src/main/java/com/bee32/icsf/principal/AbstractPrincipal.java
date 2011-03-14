@@ -1,14 +1,16 @@
 package com.bee32.icsf.principal;
 
 import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
-@Entity
+//@Entity
+@MappedSuperclass
+// @DiscriminatorColumn(name = "steoro", length = 20)
 public abstract class AbstractPrincipal
         extends EntityBean<Long>
         implements IPrincipal {
@@ -26,7 +28,8 @@ public abstract class AbstractPrincipal
         super(name);
     }
 
-    @Basic
+    @Basic(optional = false)
+    @Column(length = 60)
     @Override
     public String getName() {
         return super.getName();
@@ -38,7 +41,7 @@ public abstract class AbstractPrincipal
         this.name = name;
     }
 
-    @Transient
+    @Column(length = 50)
     @Override
     public String getDisplayName() {
         return displayName;
@@ -48,7 +51,7 @@ public abstract class AbstractPrincipal
         this.displayName = displayName;
     }
 
-    @Transient
+    @Column(length = 200)
     @Override
     public String getDescription() {
         return description;

@@ -1,6 +1,7 @@
 package com.bee32.icsf.principal;
 
 import java.util.Iterator;
+import java.util.Set;
 
 public abstract class AbstractGroup
         extends AbstractPrincipal
@@ -26,6 +27,9 @@ public abstract class AbstractGroup
     }
 
     @Override
+    public abstract Set<IRolePrincipal> getAssignedRoles();
+
+    @Override
     public void addAssignedRole(IRolePrincipal role) {
         getAssignedRoles().add(role);
     }
@@ -34,6 +38,9 @@ public abstract class AbstractGroup
     public void removeAssignedRole(IRolePrincipal role) {
         getAssignedRoles().remove(role);
     }
+
+    @Override
+    public abstract Set<IUserPrincipal> getMemberUsers();
 
     @Override
     public void addMemberUser(IUserPrincipal user) {

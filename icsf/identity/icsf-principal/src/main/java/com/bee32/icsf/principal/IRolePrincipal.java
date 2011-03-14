@@ -1,6 +1,6 @@
 package com.bee32.icsf.principal;
 
-import java.util.Collection;
+import java.util.Set;
 
 public interface IRolePrincipal
         extends IPrincipal {
@@ -16,9 +16,9 @@ public interface IRolePrincipal
      */
     IRolePrincipal getInheritedRole();
 
-    Collection<IUserPrincipal> getResponsibleUsers();
+    Set<? extends IUserPrincipal> getResponsibleUsers();
 
-    Collection<IGroupPrincipal> getResponsibleGroups();
+    Set<? extends IGroupPrincipal> getResponsibleGroups();
 
     void addResponsibleUser(IUserPrincipal user);
 

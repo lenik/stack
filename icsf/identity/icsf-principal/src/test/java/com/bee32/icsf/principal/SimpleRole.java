@@ -1,7 +1,7 @@
 package com.bee32.icsf.principal;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 @Deprecated
 public class SimpleRole
@@ -30,13 +30,13 @@ public class SimpleRole
     }
 
     @Override
-    public Collection<IUserPrincipal> getResponsibleUsers() {
-        return Collections.emptyList();
+    public Set<IUserPrincipal> getResponsibleUsers() {
+        return Collections.emptySet();
     }
 
     @Override
-    public Collection<IGroupPrincipal> getResponsibleGroups() {
-        return Collections.emptyList();
+    public Set<IGroupPrincipal> getResponsibleGroups() {
+        return Collections.emptySet();
     }
 
 }

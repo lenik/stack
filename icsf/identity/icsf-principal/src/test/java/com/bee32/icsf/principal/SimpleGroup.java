@@ -1,9 +1,8 @@
 package com.bee32.icsf.principal;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Deprecated
 public class SimpleGroup
@@ -13,16 +12,16 @@ public class SimpleGroup
 
     private final String name;
     private final IGroupPrincipal parent;
-    private final List<IRolePrincipal> roles;
-    private final List<IUserPrincipal> users;
+    private final Set<IRolePrincipal> roles;
+    private final Set<IUserPrincipal> users;
 
     public SimpleGroup(String name, IGroupPrincipal parent) {
         if (name == null)
             throw new NullPointerException("name");
         this.name = name;
         this.parent = parent;
-        this.roles = new ArrayList<IRolePrincipal>(4);
-        this.users = new ArrayList<IUserPrincipal>();
+        this.roles = new HashSet<IRolePrincipal>(4);
+        this.users = new HashSet<IUserPrincipal>();
     }
 
     @Override
@@ -49,8 +48,8 @@ public class SimpleGroup
     }
 
     @Override
-    public Collection<IRolePrincipal> getAssignedRoles() {
-        return Collections.unmodifiableList(roles);
+    public Set<IRolePrincipal> getAssignedRoles() {
+        return Collections.unmodifiableSet(roles);
     }
 
     public void assignRole(IRolePrincipal role) {
@@ -64,8 +63,8 @@ public class SimpleGroup
     }
 
     @Override
-    public Collection<IUserPrincipal> getMemberUsers() {
-        return Collections.unmodifiableList(users);
+    public Set<IUserPrincipal> getMemberUsers() {
+        return Collections.unmodifiableSet(users);
     }
 
     public void addMemberUser(IUserPrincipal user) {

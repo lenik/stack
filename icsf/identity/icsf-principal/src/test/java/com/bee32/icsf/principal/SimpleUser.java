@@ -1,9 +1,8 @@
 package com.bee32.icsf.principal;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Deprecated
 public class SimpleUser
@@ -12,15 +11,15 @@ public class SimpleUser
     private static final long serialVersionUID = 1L;
 
     private final String name;
-    private final List<IGroupPrincipal> groups;
-    private final List<IRolePrincipal> roles;
+    private final Set<IGroupPrincipal> groups;
+    private final Set<IRolePrincipal> roles;
 
     public SimpleUser(String name) {
         if (name == null)
             throw new NullPointerException("name");
         this.name = name;
-        this.groups = new ArrayList<IGroupPrincipal>(1);
-        this.roles = new ArrayList<IRolePrincipal>(1);
+        this.groups = new HashSet<IGroupPrincipal>(1);
+        this.roles = new HashSet<IRolePrincipal>(1);
     }
 
     @Override
@@ -37,13 +36,13 @@ public class SimpleUser
     }
 
     @Override
-    public Collection<IGroupPrincipal> getAssignedGroups() {
-        return Collections.unmodifiableList(groups);
+    public Set<IGroupPrincipal> getAssignedGroups() {
+        return Collections.unmodifiableSet(groups);
     }
 
     @Override
-    public Collection<IRolePrincipal> getAssignedRoles() {
-        return Collections.unmodifiableList(roles);
+    public Set<IRolePrincipal> getAssignedRoles() {
+        return Collections.unmodifiableSet(roles);
     }
 
     public void assignGroup(SimpleGroup group) {

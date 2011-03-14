@@ -2,14 +2,25 @@ package com.bee32.icsf.principal;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.free.Nullables;
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
 
 @Entity
+@Table(name = "Group")
+@DiscriminatorValue("group")
 public class GroupBean
         extends AbstractGroup
         implements IEntity<Long> {
@@ -20,8 +31,8 @@ public class GroupBean
     protected IUserPrincipal owner;
     protected IRolePrincipal primaryRole;
 
-    protected Collection<IRolePrincipal> assignedRoles;
-    protected Collection<IUserPrincipal> memberUsers;
+    protected Set<IRolePrincipal> assignedRoles;
+    protected Set<IUserPrincipal> memberUsers;
 
     public GroupBean() {
     }
@@ -40,6 +51,8 @@ public class GroupBean
             addMemberUser(user);
     }
 
+    @ManyToOne(targetEntity = GroupBean.class)
+    @JoinColumn(name = "parent")
     @Override
     public IGroupPrincipal getInheritedGroup() {
         return inheritedGroup;
@@ -49,6 +62,7 @@ public class GroupBean
         this.inheritedGroup = inheritedGroup;
     }
 
+    @ManyToOne(targetEntity = UserBean.class)
     @Override
     public IUserPrincipal getOwner() {
         return owner;
@@ -58,6 +72,8 @@ public class GroupBean
         this.owner = owner;
     }
 
+    @ManyToOne(targetEntity = RoleBean.class)
+    @JoinColumn(name = "role1")
     @Override
     public IRolePrincipal getPrimaryRole() {
         return primaryRole;
@@ -67,8 +83,33 @@ public class GroupBean
         this.primaryRole = primaryRole;
     }
 
+    @ManyToMany(cascade = CascadeType.ALL, targetEntity = UserBean.class)
+    @JoinTable(name = "GroupMember", //
+    /*            */joinColumns = @JoinColumn(name = "group"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "member"))
     @Override
-    public Collection<IRolePrincipal> getAssignedRoles() {
+    public Set<IUserPrincipal> getMemberUsers() {
+        if (memberUsers == null) {
+            synchronized (this) {
+                if (memberUsers == null) {
+                    memberUsers = new HashSet<IUserPrincipal>();
+                }
+            }
+        }
+        return memberUsers;
+    }
+
+    public void setMemberUsers(Collection<? extends IUserPrincipal> memberUsers) {
+        this.memberUsers = new HashSet<IUserPrincipal>(memberUsers);
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+    /*            */targetEntity = RoleBean.class)
+    @JoinTable(name = "GroupRole", //
+    /*            */joinColumns = @JoinColumn(name = "group"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "role"))
+    @Override
+    public Set<IRolePrincipal> getAssignedRoles() {
         if (assignedRoles == null) {
             synchronized (this) {
                 if (assignedRoles == null) {
@@ -84,27 +125,18 @@ public class GroupBean
     }
 
     @Override
-    public Collection<IUserPrincipal> getMemberUsers() {
-        if (memberUsers == null) {
-            synchronized (this) {
-                if (memberUsers == null) {
-                    memberUsers = new HashSet<IUserPrincipal>();
-                }
-            }
-        }
-        return memberUsers;
-    }
-
-    public void setMemberUsers(Collection<? extends IUserPrincipal> memberUsers) {
-        this.memberUsers = new HashSet<IUserPrincipal>(memberUsers);
-    }
-
-    @Override
     protected int hashCodeEntity() {
         if (!PrincipalBeanConfig.fullEquality)
             return super.hashCodeEntity();
 
-        return super.hashCodeEntity();
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((inheritedGroup == null) ? 0 : inheritedGroup.hashCode());
+        result = prime * result + ((owner == null) ? 0 : owner.hashCode());
+        result = prime * result + ((primaryRole == null) ? 0 : primaryRole.hashCode());
+        result = prime * result + ((assignedRoles == null) ? 0 : assignedRoles.hashCode());
+        result = prime * result + ((memberUsers == null) ? 0 : memberUsers.hashCode());
+        return result;
     }
 
     @Override

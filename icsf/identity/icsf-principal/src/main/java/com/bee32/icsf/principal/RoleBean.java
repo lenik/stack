@@ -2,14 +2,23 @@ package com.bee32.icsf.principal;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.free.Nullables;
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
 
 @Entity
+@Table(name = "Role")
+@DiscriminatorValue("role")
 public class RoleBean
         extends AbstractRole
         implements IEntity<Long> {
@@ -18,8 +27,8 @@ public class RoleBean
 
     protected IRolePrincipal inheritedRole;
 
-    protected Collection<IUserPrincipal> responsibleUsers;
-    protected Collection<IGroupPrincipal> responsibleGroups;
+    protected Set<IUserPrincipal> responsibleUsers;
+    protected Set<IGroupPrincipal> responsibleGroups;
 
     public RoleBean() {
         super();
@@ -29,6 +38,8 @@ public class RoleBean
         super(name);
     }
 
+    @Override
+    @JoinColumn(name = "parent")
     public IRolePrincipal getInheritedRole() {
         return inheritedRole;
     }
@@ -37,7 +48,9 @@ public class RoleBean
         this.inheritedRole = inheritedRole;
     }
 
-    public Collection<IUserPrincipal> getResponsibleUsers() {
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+    /*            */targetEntity = UserBean.class, mappedBy = "assignedRoles")
+    public Set<IUserPrincipal> getResponsibleUsers() {
         if (responsibleUsers == null) {
             synchronized (this) {
                 if (responsibleUsers == null) {
@@ -49,10 +62,12 @@ public class RoleBean
     }
 
     public void setResponsibleUsers(Collection<IUserPrincipal> responsibleUsers) {
-        this.responsibleUsers = responsibleUsers;
+        this.responsibleUsers = new HashSet<IUserPrincipal>(responsibleUsers);
     }
 
-    public Collection<IGroupPrincipal> getResponsibleGroups() {
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+    /*            */targetEntity = GroupBean.class, mappedBy = "assignedRoles")
+    public Set<IGroupPrincipal> getResponsibleGroups() {
         if (responsibleGroups == null) {
             synchronized (this) {
                 if (responsibleGroups == null) {
@@ -63,8 +78,8 @@ public class RoleBean
         return responsibleGroups;
     }
 
-    public void setResponsibleGroups(Collection<IGroupPrincipal> responsibleGroups) {
-        this.responsibleGroups = responsibleGroups;
+    public void setResponsibleGroups(Collection<? extends IGroupPrincipal> responsibleGroups) {
+        this.responsibleGroups = new HashSet<IGroupPrincipal>(responsibleGroups);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.bee32.icsf.principal;
 
+import java.util.Set;
+
 public abstract class AbstractRole
         extends AbstractPrincipal
         implements IRolePrincipal {
@@ -15,6 +17,9 @@ public abstract class AbstractRole
     }
 
     @Override
+    public abstract Set<IUserPrincipal> getResponsibleUsers();
+
+    @Override
     public void addResponsibleUser(IUserPrincipal user) {
         getResponsibleUsers().add(user);
     }
@@ -23,6 +28,9 @@ public abstract class AbstractRole
     public void removeResponsibleUser(IUserPrincipal user) {
         getResponsibleUsers().remove(user);
     }
+
+    @Override
+    public abstract Set<IGroupPrincipal> getResponsibleGroups();
 
     @Override
     public void addResponsibleGroup(IGroupPrincipal group) {
