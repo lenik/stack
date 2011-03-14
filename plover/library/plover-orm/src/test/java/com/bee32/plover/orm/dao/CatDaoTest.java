@@ -1,16 +1,23 @@
-package com.bee32.plover.orm.entity;
+package com.bee32.plover.orm.dao;
+
+import javax.inject.Inject;
 
 import org.junit.Test;
 
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.util.IStruct;
 import com.bee32.plover.arch.util.MapStruct;
+import com.bee32.plover.orm.entity.Animals;
+import com.bee32.plover.orm.entity.Cat;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 
-public class CatRepoTest
+public class CatDaoTest
         extends WiredDaoTestCase {
 
-    public CatRepoTest() {
+    @Inject
+    CatDao dao;
+
+    public CatDaoTest() {
         super(Animals.getInstance());
     }
 
@@ -23,19 +30,20 @@ public class CatRepoTest
 
         Cat expected = new Cat("kitty", "pink");
 
-        CatRepo repo = new CatRepo();
-        Cat actual = repo.populate(struct);
+        Cat actual = dao.populate(struct);
 
         assertEquals(expected, actual);
     }
 
     @Test
     public void testSaveLoad() {
-        CatRepo repo = new CatRepo();
-        repo.setSessionFactory(getSessionFactory());
-
         Cat kitty = new Cat("kitty", "pink");
-        repo.save(kitty);
+
+        assertNull(kitty.getId());
+
+        dao.save(kitty);
+
+        assertNotNull(kitty.getId());
     }
 
 }

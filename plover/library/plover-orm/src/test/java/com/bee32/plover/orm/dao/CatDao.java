@@ -1,12 +1,14 @@
-package com.bee32.plover.orm.entity;
+package com.bee32.plover.orm.dao;
 
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.util.IStruct;
+import com.bee32.plover.orm.entity.AbstractDao;
+import com.bee32.plover.orm.entity.Cat;
 
-public class CatRepo
-        extends HibernateEntityRepository<Cat, Long> {
+public class CatDao
+        extends AbstractDao<Cat, Long> {
 
-    public CatRepo() {
+    public CatDao() {
         super(Cat.class, Long.class);
     }
 

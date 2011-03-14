@@ -1,5 +1,9 @@
 package com.bee32.plover.orm.entity;
 
+import javax.free.Nullables;
+import javax.persistence.Entity;
+
+@Entity
 public class Cat
         extends EntityBean<Long> {
 
@@ -23,6 +27,21 @@ public class Cat
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    @Override
+    protected boolean equalsEntity(EntityBean<Long> otherEntity) {
+        Cat o = (Cat) otherEntity;
+
+        if (!Nullables.equals(color, o.color))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    protected int hashCodeEntity() {
+        return color == null ? 0 : color.hashCode();
     }
 
 }
