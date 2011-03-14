@@ -1,9 +1,9 @@
 package com.bee32.plover.arch.service;
 
 /**
- * The default service repository facade.
+ * For the service/contribution pattern.
  */
-public class Service {
+public class PloverService {
 
     private static IServiceRepository repository;
     static {
