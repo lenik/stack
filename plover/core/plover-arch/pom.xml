@@ -53,12 +53,15 @@
             <groupId>javax.free</groupId>
             <artifactId>freejava-string</artifactId>
             <version>3.0.0</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>javax.free</groupId>
             <artifactId>freejava-collection</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.free</groupId>
+            <artifactId>freejava-io</artifactId>
             <version>3.0.0</version>
         </dependency>
         <dependency>
