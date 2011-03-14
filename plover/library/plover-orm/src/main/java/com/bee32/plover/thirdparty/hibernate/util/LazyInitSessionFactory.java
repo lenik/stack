@@ -1,5 +1,6 @@
 package com.bee32.plover.thirdparty.hibernate.util;
 
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
 public abstract class LazyInitSessionFactory
@@ -29,5 +30,20 @@ public abstract class LazyInitSessionFactory
 
     protected abstract SessionFactory newSessionFactory()
             throws Exception;
+
+    @Override
+    public void close()
+            throws HibernateException {
+        if (sessionFactory == null)
+            return;
+        super.close();
+    }
+
+    @Override
+    public boolean isClosed() {
+        if (sessionFactory == null)
+            return true;
+        return super.isClosed();
+    }
 
 }
