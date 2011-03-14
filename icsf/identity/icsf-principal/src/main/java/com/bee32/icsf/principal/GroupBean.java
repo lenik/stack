@@ -3,8 +3,13 @@ package com.bee32.icsf.principal;
 import java.util.Collection;
 import java.util.HashSet;
 
+import javax.free.Nullables;
+import javax.persistence.Entity;
+
+import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
 
+@Entity
 public class GroupBean
         extends AbstractGroup
         implements IEntity<Long> {
@@ -33,18 +38,6 @@ public class GroupBean
 
         for (IUserPrincipal user : memberUsers)
             addMemberUser(user);
-    }
-
-    public void setName(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-        this.name = name;
-    }
-
-    public void setName(String name, IUserPrincipal owner) {
-        if (name == null)
-            throw new NullPointerException("name");
-        this.name = name;
     }
 
     @Override
@@ -104,6 +97,39 @@ public class GroupBean
 
     public void setMemberUsers(Collection<? extends IUserPrincipal> memberUsers) {
         this.memberUsers = new HashSet<IUserPrincipal>(memberUsers);
+    }
+
+    @Override
+    protected int hashCodeEntity() {
+        if (!PrincipalBeanConfig.fullEquality)
+            return super.hashCodeEntity();
+
+        return super.hashCodeEntity();
+    }
+
+    @Override
+    protected boolean equalsEntity(EntityBean<Long> otherEntity) {
+        if (!PrincipalBeanConfig.fullEquality)
+            return false;
+
+        GroupBean other = (GroupBean) otherEntity;
+
+        if (!Nullables.equals(inheritedGroup, other.inheritedGroup))
+            return false;
+
+        if (!Nullables.equals(owner, other.owner))
+            return false;
+
+        if (!Nullables.equals(primaryRole, other.primaryRole))
+            return false;
+
+        if (!Nullables.equals(assignedRoles, other.assignedRoles))
+            return false;
+
+        if (!Nullables.equals(memberUsers, other.memberUsers))
+            return false;
+
+        return true;
     }
 
 }

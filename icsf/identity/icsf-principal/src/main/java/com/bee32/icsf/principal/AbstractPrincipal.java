@@ -1,9 +1,14 @@
 package com.bee32.icsf.principal;
 
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
+@Entity
 public abstract class AbstractPrincipal
         extends EntityBean<Long>
         implements IPrincipal {
@@ -21,6 +26,20 @@ public abstract class AbstractPrincipal
         super(name);
     }
 
+    @Basic
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        this.name = name;
+    }
+
+    @Transient
+    @Override
     public String getDisplayName() {
         return displayName;
     }
@@ -29,6 +48,8 @@ public abstract class AbstractPrincipal
         this.displayName = displayName;
     }
 
+    @Transient
+    @Override
     public String getDescription() {
         return description;
     }

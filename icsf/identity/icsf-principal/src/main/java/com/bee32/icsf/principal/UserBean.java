@@ -35,12 +35,6 @@ public class UserBean
         this.primaryRole = primaryRole;
     }
 
-    public void setName(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-        this.name = name;
-    }
-
     @Override
     public IGroupPrincipal getPrimaryGroup() {
         return primaryGroup;
@@ -120,6 +114,9 @@ public class UserBean
 
     @Override
     protected int hashCodeEntity() {
+        if (!PrincipalBeanConfig.fullEquality)
+            return super.hashCodeEntity();
+
         final int prime = 31;
 
         int result = (name == null) ? 0 : name.hashCode();
@@ -127,20 +124,25 @@ public class UserBean
         result = prime * result + ((primaryGroup == null) ? 0 : primaryGroup.hashCode());
         result = prime * result + ((assignedRoles == null) ? 0 : assignedRoles.hashCode());
         result = prime * result + ((assignedGroups == null) ? 0 : assignedGroups.hashCode());
-
         return result;
     }
 
     @Override
     protected boolean equalsEntity(EntityBean<Long> obj) {
+        if (!PrincipalBeanConfig.fullEquality)
+            return false;
+
         UserBean other = (UserBean) obj;
 
         if (!Nullables.equals(primaryGroup, other.primaryGroup))
             return false;
+
         if (!Nullables.equals(primaryRole, other.primaryRole))
             return false;
+
         if (!Nullables.equals(assignedGroups, other.assignedGroups))
             return false;
+
         if (!Nullables.equals(assignedRoles, other.assignedRoles))
             return false;
 

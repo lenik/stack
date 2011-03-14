@@ -4,10 +4,12 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import javax.free.Nullables;
+import javax.persistence.Entity;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
 
+@Entity
 public class RoleBean
         extends AbstractRole
         implements IEntity<Long> {
@@ -25,12 +27,6 @@ public class RoleBean
 
     public RoleBean(String name) {
         super(name);
-    }
-
-    public void setName(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-        this.name = name;
     }
 
     public IRolePrincipal getInheritedRole() {
@@ -73,6 +69,9 @@ public class RoleBean
 
     @Override
     protected int hashCodeEntity() {
+        if (!PrincipalBeanConfig.fullEquality)
+            return super.hashCodeEntity();
+
         final int prime = 31;
 
         int result = 0;
@@ -85,12 +84,17 @@ public class RoleBean
 
     @Override
     protected boolean equalsEntity(EntityBean<Long> entity) {
+        if (!PrincipalBeanConfig.fullEquality)
+            return false;
+
         RoleBean other = (RoleBean) entity;
 
         if (!Nullables.equals(inheritedRole, other.inheritedRole))
             return false;
+
         if (!Nullables.equals(responsibleUsers, other.responsibleUsers))
             return false;
+
         if (!Nullables.equals(responsibleGroups, other.responsibleGroups))
             return false;
 
