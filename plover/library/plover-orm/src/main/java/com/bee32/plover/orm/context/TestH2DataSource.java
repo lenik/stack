@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.util.hibernate;
+package com.bee32.plover.orm.context;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Lazy;
@@ -14,10 +14,12 @@ import com.bee32.plover.inject.qualifier.Variant;
 public class TestH2DataSource
         extends BasicDataSource {
 
+    public static final String JDBC_URL = "jdbc:h2:target/testdb;DB_CLOSE_ON_EXIT=FALSE";
+
     public TestH2DataSource() {
         setDriverClassName("org.h2.Driver");
 
-        setUrl("jdbc:h2:target/testdb;DB_CLOSE_ON_EXIT=FALSE");
+        setUrl(JDBC_URL);
         setUsername("sa");
         setPassword("");
 

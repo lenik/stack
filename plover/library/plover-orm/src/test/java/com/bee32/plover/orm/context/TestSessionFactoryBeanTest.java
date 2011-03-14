@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.util.hibernate;
+package com.bee32.plover.orm.context;
 
 import javax.inject.Inject;
 

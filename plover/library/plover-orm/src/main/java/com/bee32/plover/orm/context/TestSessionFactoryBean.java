@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.util.hibernate;
+package com.bee32.plover.orm.context;
 
 import java.util.Properties;
 
@@ -8,11 +8,11 @@ import javax.sql.DataSource;
 import org.hibernate.cache.NoCacheProvider;
 import org.hibernate.dialect.H2Dialect;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
+import com.bee32.plover.inject.TestComponent;
 import com.bee32.plover.inject.qualifier.TestPurpose;
 
-@Component
+@TestComponent
 @TestPurpose
 @Lazy
 public class TestSessionFactoryBean

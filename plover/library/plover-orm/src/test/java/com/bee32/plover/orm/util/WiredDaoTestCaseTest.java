@@ -1,41 +1,55 @@
 package com.bee32.plover.orm.util;
 
-import org.junit.Test;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import java.util.List;
 
+import javax.inject.Inject;
+
+import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.bee32.plover.orm.dao.CatDao;
 import com.bee32.plover.orm.entity.Animals;
 import com.bee32.plover.orm.entity.Cat;
 import com.bee32.plover.orm.entity.Tiger;
-import com.bee32.plover.orm.util.WiredDaoTestCase;
 
 public class WiredDaoTestCaseTest
         extends WiredDaoTestCase {
+
+    @Inject
+    CatDao catDao;
 
     public WiredDaoTestCaseTest() {
         super(Animals.getInstance());
     }
 
     @Test
-    public void testAdd() {
+    public void testCreateReload() {
+        create();
+        reload();
+    }
+
+    @Transactional
+    void create() {
         Cat tomCat = new Cat("Tom", "black");
         Cat lucyCat = new Cat("Lucy", "pink");
 
         Tiger fishTiger = new Tiger("Fish", "yellow");
         fishTiger.setPower(10);
 
-        HibernateTemplate template = getHibernateTemplate();
-
-        template.save(tomCat);
-        template.save(lucyCat);
-        template.save(fishTiger);
+        catDao.save(tomCat);
+        catDao.save(lucyCat);
+        catDao.save(fishTiger);
     }
 
-    @Test
-    public void testList() {
-        HibernateTemplate template = getHibernateTemplate();
+    @Transactional(readOnly = true)
+    void reload() {
+        List<? extends Cat> cats = catDao.list();
 
-        for (Cat cat : template.loadAll(Cat.class))
+        for (Cat cat : cats) {
             System.out.println(cat);
+        }
+
+        assertEquals(3, cats.size());
     }
 
 }

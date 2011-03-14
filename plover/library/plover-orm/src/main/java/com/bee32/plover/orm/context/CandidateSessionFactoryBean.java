@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.util.hibernate;
+package com.bee32.plover.orm.context;
 
 import java.util.Collection;
 import java.util.Properties;
@@ -7,14 +7,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.transaction.JDBCTransactionFactory;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
 
 import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 import com.bee32.plover.thirdparty.hibernate.util.LazyInitSessionFactory;
 
 public abstract class CandidateSessionFactoryBean
-        extends LocalSessionFactoryBean {
+        extends AnnotationSessionFactoryBean {
 
     private final String name;
 
@@ -35,7 +34,7 @@ public abstract class CandidateSessionFactoryBean
     protected void populateHibernateProperties(Properties properties) {
 
         // Transaction
-        properties.setProperty("hibernate.transaction.factory_class", JDBCTransactionFactory.class.getName());
+        // properties.setProperty("hibernate.transaction.factory_class", JDBCTransactionFactory.class.getName());
         properties.setProperty("hibernate.connection.autocommit", "false");
 
         // Mapping
@@ -84,8 +83,13 @@ public abstract class CandidateSessionFactoryBean
 
         if (usingAnnotation) {
 
-            this.setConfigurationClass(AnnotationConfiguration.class);
+            // this.setConfigurationClass(AnnotationConfiguration.class);
             // see newConfiguration overrides.
+
+            Collection<Class<?>> persistentClasses = selection.mergePersistentClasses();
+
+            Class<?>[] persistentClassArray = persistentClasses.toArray(new Class<?>[0]);
+            this.setAnnotatedClasses(persistentClassArray);
 
         } else {
             Collection<String> allResources = selection.mergeMappingResources();
@@ -103,8 +107,8 @@ public abstract class CandidateSessionFactoryBean
         }
     }
 
-    @Override
-    protected Configuration newConfiguration()
+// @Override
+    protected Configuration newConfiguration11()
             throws HibernateException {
         Configuration conf = super.newConfiguration();
         if (!usingAnnotation)
