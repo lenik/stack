@@ -18,15 +18,15 @@ public class PrincipalDiagTest {
     @Test
     public void testNoLoop1()
             throws PrincipalCheckException {
-        UserBean u1 = new UserBean("u1");
+        User u1 = new User("u1");
         PrincipalDiag.checkDeadLoop(u1);
     }
 
     @Test
     public void testNoLoop2_UG()
             throws PrincipalCheckException {
-        UserBean u1 = new UserBean("u1");
-        GroupBean g1 = new GroupBean("g1", null);
+        User u1 = new User("u1");
+        Group g1 = new Group("g1", null);
         u1.addAssignedGroup(g1);
         PrincipalDiag.checkDeadLoop(u1);
     }

@@ -21,7 +21,7 @@ import com.bee32.plover.orm.entity.IEntity;
 @Entity
 @Table(name = "User")
 @DiscriminatorValue("user")
-public class UserBean
+public class User
         extends AbstractUser
         implements IEntity<Long> {
 
@@ -35,20 +35,20 @@ public class UserBean
     protected Set<IGroupPrincipal> assignedGroups;
     protected Set<IRolePrincipal> assignedRoles;
 
-    public UserBean() {
+    public User() {
     }
 
-    public UserBean(String name) {
+    public User(String name) {
         super(name);
     }
 
-    public UserBean(String name, IGroupPrincipal primaryGroup, IRolePrincipal primaryRole) {
+    public User(String name, IGroupPrincipal primaryGroup, IRolePrincipal primaryRole) {
         super(name);
         this.primaryGroup = primaryGroup;
         this.primaryRole = primaryRole;
     }
 
-    @ManyToOne(targetEntity = GroupBean.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Group.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "group1")
     @Override
     public IGroupPrincipal getPrimaryGroup() {
@@ -59,7 +59,7 @@ public class UserBean
         this.primaryGroup = primaryGroup;
     }
 
-    @ManyToOne(targetEntity = RoleBean.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Role.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "role1")
     @Override
     public IRolePrincipal getPrimaryRole() {
@@ -71,7 +71,7 @@ public class UserBean
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-    /*            */targetEntity = GroupBean.class, mappedBy = "memberUsers")
+    /*            */targetEntity = Group.class, mappedBy = "memberUsers")
     @Override
     public Set<IGroupPrincipal> getAssignedGroups() {
         if (assignedGroups == null) {
@@ -89,7 +89,7 @@ public class UserBean
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-    /*            */targetEntity = RoleBean.class)
+    /*            */targetEntity = Role.class)
     @JoinTable(name = "UserRole", //
     /*            */joinColumns = @JoinColumn(name = "user"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "role"))
@@ -156,7 +156,7 @@ public class UserBean
         if (!PrincipalBeanConfig.fullEquality)
             return false;
 
-        UserBean other = (UserBean) obj;
+        User other = (User) obj;
 
         if (!Nullables.equals(primaryGroup, other.primaryGroup))
             return false;

@@ -21,7 +21,7 @@ import com.bee32.plover.orm.entity.IEntity;
 @Entity
 @Table(name = "Group")
 @DiscriminatorValue("group")
-public class GroupBean
+public class Group
         extends AbstractGroup
         implements IEntity<Long> {
 
@@ -34,14 +34,14 @@ public class GroupBean
     protected Set<IRolePrincipal> assignedRoles;
     protected Set<IUserPrincipal> memberUsers;
 
-    public GroupBean() {
+    public Group() {
     }
 
-    public GroupBean(String name) {
+    public Group(String name) {
         super(name);
     }
 
-    public GroupBean(String name, IUserPrincipal owner, IUserPrincipal... memberUsers) {
+    public Group(String name, IUserPrincipal owner, IUserPrincipal... memberUsers) {
         super(name);
         this.owner = owner;
 
@@ -51,7 +51,7 @@ public class GroupBean
             addMemberUser(user);
     }
 
-    @ManyToOne(targetEntity = GroupBean.class)
+    @ManyToOne(targetEntity = Group.class)
     @JoinColumn(name = "parent")
     @Override
     public IGroupPrincipal getInheritedGroup() {
@@ -62,7 +62,7 @@ public class GroupBean
         this.inheritedGroup = inheritedGroup;
     }
 
-    @ManyToOne(targetEntity = UserBean.class)
+    @ManyToOne(targetEntity = User.class)
     @Override
     public IUserPrincipal getOwner() {
         return owner;
@@ -72,7 +72,7 @@ public class GroupBean
         this.owner = owner;
     }
 
-    @ManyToOne(targetEntity = RoleBean.class)
+    @ManyToOne(targetEntity = Role.class)
     @JoinColumn(name = "role1")
     @Override
     public IRolePrincipal getPrimaryRole() {
@@ -83,7 +83,7 @@ public class GroupBean
         this.primaryRole = primaryRole;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, targetEntity = UserBean.class)
+    @ManyToMany(cascade = CascadeType.ALL, targetEntity = User.class)
     @JoinTable(name = "GroupMember", //
     /*            */joinColumns = @JoinColumn(name = "group"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "member"))
@@ -104,7 +104,7 @@ public class GroupBean
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-    /*            */targetEntity = RoleBean.class)
+    /*            */targetEntity = Role.class)
     @JoinTable(name = "GroupRole", //
     /*            */joinColumns = @JoinColumn(name = "group"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "role"))
@@ -144,7 +144,7 @@ public class GroupBean
         if (!PrincipalBeanConfig.fullEquality)
             return false;
 
-        GroupBean other = (GroupBean) otherEntity;
+        Group other = (Group) otherEntity;
 
         if (!Nullables.equals(inheritedGroup, other.inheritedGroup))
             return false;

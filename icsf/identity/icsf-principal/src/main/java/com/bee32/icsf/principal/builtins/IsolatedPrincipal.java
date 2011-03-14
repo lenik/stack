@@ -2,14 +2,14 @@ package com.bee32.icsf.principal.builtins;
 
 import java.io.Serializable;
 
-import com.bee32.icsf.principal.AbstractPrincipal;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.IPrincipalVisitor;
 import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public class IsolatedPrincipal
-        extends AbstractPrincipal
+        extends Principal
         implements Serializable {
 
     private static final long serialVersionUID = 1L;

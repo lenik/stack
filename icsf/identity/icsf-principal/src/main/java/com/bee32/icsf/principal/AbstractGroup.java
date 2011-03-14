@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 public abstract class AbstractGroup
-        extends AbstractPrincipal
+        extends Principal
         implements IGroupPrincipal {
 
     private static final long serialVersionUID = 1L;

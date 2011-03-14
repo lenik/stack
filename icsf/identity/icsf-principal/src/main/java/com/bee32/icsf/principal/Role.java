@@ -19,7 +19,7 @@ import com.bee32.plover.orm.entity.IEntity;
 @Entity
 @Table(name = "Role")
 @DiscriminatorValue("role")
-public class RoleBean
+public class Role
         extends AbstractRole
         implements IEntity<Long> {
 
@@ -30,11 +30,11 @@ public class RoleBean
     protected Set<IUserPrincipal> responsibleUsers;
     protected Set<IGroupPrincipal> responsibleGroups;
 
-    public RoleBean() {
+    public Role() {
         super();
     }
 
-    public RoleBean(String name) {
+    public Role(String name) {
         super(name);
     }
 
@@ -49,7 +49,7 @@ public class RoleBean
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-    /*            */targetEntity = UserBean.class, mappedBy = "assignedRoles")
+    /*            */targetEntity = User.class, mappedBy = "assignedRoles")
     public Set<IUserPrincipal> getResponsibleUsers() {
         if (responsibleUsers == null) {
             synchronized (this) {
@@ -66,7 +66,7 @@ public class RoleBean
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-    /*            */targetEntity = GroupBean.class, mappedBy = "assignedRoles")
+    /*            */targetEntity = Group.class, mappedBy = "assignedRoles")
     public Set<IGroupPrincipal> getResponsibleGroups() {
         if (responsibleGroups == null) {
             synchronized (this) {
@@ -102,7 +102,7 @@ public class RoleBean
         if (!PrincipalBeanConfig.fullEquality)
             return false;
 
-        RoleBean other = (RoleBean) entity;
+        Role other = (Role) entity;
 
         if (!Nullables.equals(inheritedRole, other.inheritedRole))
             return false;

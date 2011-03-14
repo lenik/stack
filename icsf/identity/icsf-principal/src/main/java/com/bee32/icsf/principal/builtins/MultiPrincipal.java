@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.bee32.icsf.principal.AbstractPrincipal;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.IPrincipalVisitor;
 
 public class MultiPrincipal
-        extends AbstractPrincipal
+        extends Principal
         implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -3,7 +3,7 @@ package com.bee32.icsf.principal;
 import java.util.Set;
 
 public abstract class AbstractRole
-        extends AbstractPrincipal
+        extends Principal
         implements IRolePrincipal {
 
     private static final long serialVersionUID = 1L;

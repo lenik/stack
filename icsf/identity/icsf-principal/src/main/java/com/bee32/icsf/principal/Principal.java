@@ -1,17 +1,28 @@
 package com.bee32.icsf.principal;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
-//@Entity
-@MappedSuperclass
-// @DiscriminatorColumn(name = "steoro", length = 20)
-public abstract class AbstractPrincipal
+//@MappedSuperclass
+@Entity
+@Table(name = "Principal")
+@DiscriminatorColumn(name = "steoro", length = 20)
+public class Principal
         extends EntityBean<Long>
         implements IPrincipal {
 
@@ -20,11 +31,13 @@ public abstract class AbstractPrincipal
     private String displayName;
     private String description;
 
-    public AbstractPrincipal() {
+    private Collection<Principal> impliedPrincipals;
+
+    public Principal() {
         super();
     }
 
-    public AbstractPrincipal(String name) {
+    public Principal(String name) {
         super(name);
     }
 
@@ -61,8 +74,35 @@ public abstract class AbstractPrincipal
         this.description = description;
     }
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, //
+    /*            */targetEntity = Principal.class)
+    @JoinTable(name = "PrincipalImpl", //
+    /*            */joinColumns = @JoinColumn(name = "impl"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "principal"))
+    public Collection<Principal> getImpliedPrincipals() {
+        if (impliedPrincipals == null) {
+            synchronized (this) {
+                if (impliedPrincipals == null) {
+                    impliedPrincipals = new HashSet<Principal>();
+                }
+            }
+        }
+        return impliedPrincipals;
+    }
+
+    public void setImpliedPrincipals(Collection<? extends Principal> impliedPrincipals) {
+        this.impliedPrincipals = new HashSet<Principal>(impliedPrincipals);
+    }
+
     @Override
     public boolean implies(IPrincipal principal) {
+        if (impliedPrincipals == null)
+            return false;
+
+        for (IPrincipal impliedPrincipal : impliedPrincipals)
+            if (impliedPrincipal.implies(principal))
+                return true;
+
         return false;
     }
 

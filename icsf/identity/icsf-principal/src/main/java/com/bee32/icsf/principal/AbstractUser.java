@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 public abstract class AbstractUser
-        extends AbstractPrincipal
+        extends Principal
         implements IUserPrincipal {
 
     private static final long serialVersionUID = 1L;

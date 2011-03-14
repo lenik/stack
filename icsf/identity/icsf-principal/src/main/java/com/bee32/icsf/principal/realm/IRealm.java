@@ -1,6 +1,6 @@
 package com.bee32.icsf.principal.realm;
 
-import java.util.Collection;
+import java.util.Set;
 
 import com.bee32.icsf.principal.IGroupPrincipal;
 import com.bee32.icsf.principal.IPrincipal;
@@ -14,13 +14,13 @@ public interface IRealm
 
     boolean contains(IPrincipal principal);
 
-    Collection<IPrincipal> getPrincipals();
+    Set<? extends IPrincipal> getPrincipals();
 
-    Collection<IUserPrincipal> getUsers();
+    Set<? extends IUserPrincipal> getUsers();
 
-    Collection<IGroupPrincipal> getGroups();
+    Set<? extends IGroupPrincipal> getGroups();
 
-    Collection<IRolePrincipal> getRoles();
+    Set<? extends IRolePrincipal> getRoles();
 
     void addPrincipal(IPrincipal principal);
 

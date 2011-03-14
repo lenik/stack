@@ -1,14 +1,14 @@
 package com.bee32.icsf.principal.dao;
 
-import com.bee32.icsf.principal.RoleBean;
+import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.SampleStore;
 import com.bee32.plover.orm.entity.AbstractDao;
 
 public class RoleDao
-        extends AbstractDao<RoleBean, Long> {
+        extends AbstractDao<Role, Long> {
 
     public RoleDao() {
-        super(RoleBean.class, Long.class);
+        super(Role.class, Long.class);
     }
 
     {

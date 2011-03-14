@@ -2,12 +2,12 @@ package com.bee32.icsf.principal.builtins;
 
 import java.io.Serializable;
 
-import com.bee32.icsf.principal.AbstractPrincipal;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.IPrincipalVisitor;
 
 public final class WorldPrincipal
-        extends AbstractPrincipal
+        extends Principal
         implements Serializable {
 
     private static final long serialVersionUID = 1L;

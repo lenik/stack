@@ -3,6 +3,8 @@ package com.bee32.icsf;
 import javax.inject.Inject;
 
 import com.bee32.icsf.principal.dao.GroupDao;
+import com.bee32.icsf.principal.dao.PrincipalDao;
+import com.bee32.icsf.principal.dao.RealmDao;
 import com.bee32.icsf.principal.dao.RoleDao;
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.plover.orm.util.ERModule;
@@ -12,28 +14,28 @@ import com.bee32.plover.pub.oid.Oid;
 public class IcsfPrincipalModule
         extends ERModule {
 
-    // @Inject
-    // PrincipalDao principalDao;
+    @Inject
+    PrincipalDao principalDao;
 
     @Inject
-    private UserDao userDao;
+    UserDao userDao;
 
     @Inject
-    private GroupDao groupDao;
+    GroupDao groupDao;
 
     @Inject
-    private RoleDao roleDao;
+    RoleDao roleDao;
 
-    // @Inject
-    // private RealmDao realmDao;
+    @Inject
+    RealmDao realmDao;
 
     @Override
     protected void preamble() {
-        // export(principalDao);
+        export(principalDao);
         export(userDao);
         export(groupDao);
         export(roleDao);
-        // export(realmDao);
+        export(realmDao);
     }
 
 }

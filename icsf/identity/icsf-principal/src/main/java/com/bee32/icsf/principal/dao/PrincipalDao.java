@@ -1,14 +1,13 @@
 package com.bee32.icsf.principal.dao;
 
-import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.icsf.principal.PrincipalBean;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.entity.AbstractDao;
 
 public class PrincipalDao
-        extends AbstractDao<IPrincipal, Long> {
+        extends AbstractDao<Principal, Long> {
 
     public PrincipalDao() {
-        super(IPrincipal.class, PrincipalBean.class, Long.class);
+        super(Principal.class, Long.class);
     }
 
     @Override

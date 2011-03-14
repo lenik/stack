@@ -6,34 +6,34 @@ import com.bee32.plover.arch.Component;
 
 public class SampleStore {
 
-    public GroupBean sunCorp;
-    public GroupBean solaGroup;
+    public Group sunCorp;
+    public Group solaGroup;
 
-    public RoleBean adminRole;
-    public RoleBean registeredRole;
+    public Role adminRole;
+    public Role registeredRole;
 
-    public UserBean eva;
-    public UserBean wallE;
-    public UserBean alice;
-    public UserBean tom;
-    public UserBean kate;
+    public User eva;
+    public User wallE;
+    public User alice;
+    public User tom;
+    public User kate;
 
     {
-        adminRole = new RoleBean("Administrator");
-        registeredRole = new RoleBean("Registered User");
+        adminRole = new Role("Administrator");
+        registeredRole = new Role("Registered User");
 
-        eva = new UserBean("Eva", null, adminRole);
-        solaGroup = new GroupBean("Sola AV Club", eva);
+        eva = new User("Eva", null, adminRole);
+        solaGroup = new Group("Sola AV Club", eva);
         eva.setPrimaryGroup(solaGroup);
-        wallE = new UserBean("Wall-E", solaGroup, registeredRole);
+        wallE = new User("Wall-E", solaGroup, registeredRole);
 
-        tom = new UserBean("Tom", null, adminRole);
-        sunCorp = new GroupBean("Sun Corp", tom);
+        tom = new User("Tom", null, adminRole);
+        sunCorp = new Group("Sun Corp", tom);
         tom.setPrimaryGroup(sunCorp);
 
-        kate = new UserBean("Kate", sunCorp, registeredRole);
+        kate = new User("Kate", sunCorp, registeredRole);
 
-        alice = new UserBean("Alice", null, null);
+        alice = new User("Alice", null, null);
         alice.addAssignedGroup(sunCorp);
         alice.addAssignedGroup(solaGroup);
         alice.addAssignedRole(registeredRole);
