@@ -2,11 +2,13 @@ package user.hibernate.anno;
 
 import javax.free.Nullables;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
 import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBean;
 
 @Entity
+@Inheritance
 public class Fruit
         extends EntityBean<Long> {
 
@@ -19,21 +21,21 @@ public class Fruit
     @Transient
     String otherField;
 
-// public String getName() {
-// return name;
-// }
-//
-// public void setName(String name) {
-// this.name = name;
-// }
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getPrice() {
-        System.err.println("Get price called");
         return price;
     }
 
     public void setPrice(int price) {
-        System.err.println("Set on price");
         this.price = price / 2;
     }
 
