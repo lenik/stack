@@ -57,6 +57,9 @@ public class BookStoreTest
     @Test
     public void testDispatchToBook()
             throws DispatchException {
+        for (Book book:bookStore.list())
+            System.out.println(book);
+        bookStore.getChild("123");
         Object got = DispatchUtil.dispatch(dispatcher, mm, bookModuleOid + "/book/123");
 
         // for MemoryBookStore, this should be exact same.

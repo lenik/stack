@@ -30,7 +30,7 @@ public class Book
         this.content = content;
     }
 
-//    @Basic
+// @Basic
     public String getName() {
         return name;
     }
@@ -71,7 +71,7 @@ public class Book
 
     @Override
     public void toString(PrettyPrintStream out, EntityFormat format) {
-        String s = name + " :: " + content;
+        String s = id + ") " + name + " :: " + content;
         out.print(s);
     }
 
