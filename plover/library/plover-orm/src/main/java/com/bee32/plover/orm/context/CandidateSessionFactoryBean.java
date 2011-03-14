@@ -7,8 +7,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.transaction.JDBCTransactionFactory;
 import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
 
+import com.bee32.plover.orm.PloverNamingStrategy;
 import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 import com.bee32.plover.thirdparty.hibernate.util.LazyInitSessionFactory;
 
@@ -34,10 +36,14 @@ public abstract class CandidateSessionFactoryBean
     protected void populateHibernateProperties(Properties properties) {
 
         // Transaction
-        // properties.setProperty("hibernate.transaction.factory_class", JDBCTransactionFactory.class.getName());
+        properties.setProperty("hibernate.transaction.factory_class", //
+                JDBCTransactionFactory.class.getName());
+
         properties.setProperty("hibernate.connection.autocommit", "false");
 
         // Mapping
+        properties.setProperty("hibernate.globally_quoted_identifiers", "true");
+
         properties.setProperty("hibernate.id.new_generator_mappings", "true");
 
         properties.setProperty("org.hibernate.flushMode", "COMMIT");
@@ -77,6 +83,10 @@ public abstract class CandidateSessionFactoryBean
         Properties hibernateProperties = new Properties();
         populateHibernateProperties(hibernateProperties);
         this.setHibernateProperties(hibernateProperties);
+
+        // Naming strategy (used to escape the name)
+        String hibernateDialect = (String) hibernateProperties.get("hibernate.dialect");
+        this.setNamingStrategy(PloverNamingStrategy.getInstance(hibernateDialect));
 
         // Merge mapping resources
         PersistenceUnitSelection selection = getPersistenceUnitSelection();
