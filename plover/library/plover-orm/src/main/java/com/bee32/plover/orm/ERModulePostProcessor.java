@@ -39,6 +39,7 @@ public class ERModulePostProcessor
                 EntityRepository<?, ?> er = (EntityRepository<?, ?>) child;
 
                 Collection<?> normalTransientSamples = er.getTransientSamples(false);
+
                 for (Object sample : normalTransientSamples) {
                     template.save(sample);
                 }

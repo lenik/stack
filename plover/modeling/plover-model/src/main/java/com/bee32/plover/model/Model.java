@@ -12,7 +12,7 @@ public class Model
         extends Qualified
         implements IModel {
 
-    private ISchema schema;
+    private transient ISchema schema;
 
     public Model() {
         super();
@@ -25,11 +25,15 @@ public class Model
     @Override
     public ISchema getSchema() {
         if (schema == null) {
-            Class<?> modelClass = getClass();
-            try {
-                schema = SchemaLoader.loadSchema(modelClass);
-            } catch (SchemaBuilderException e) {
-                _throw(e);
+            synchronized (this) {
+                if (schema == null) {
+                    Class<?> modelClass = getClass();
+                    try {
+                        schema = SchemaLoader.loadSchema(modelClass);
+                    } catch (SchemaBuilderException e) {
+                        _throw(e);
+                    }
+                }
             }
         }
         return schema;
