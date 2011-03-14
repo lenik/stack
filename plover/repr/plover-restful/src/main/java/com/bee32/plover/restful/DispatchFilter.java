@@ -21,6 +21,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -38,6 +39,7 @@ import com.bee32.plover.model.IModel;
 import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.model.stage.ModelStage;
 import com.bee32.plover.model.stage.ModelStageException;
+import com.bee32.plover.orm.context.TxTemplateContext;
 import com.bee32.plover.restful.request.RestfulRequest;
 import com.bee32.plover.restful.request.RestfulRequestBuilder;
 import com.bee32.plover.servlet.container.ServletContainer;
@@ -91,7 +93,12 @@ public class DispatchFilter
         servletContext = filterConfig.getServletContext();
         contextPath = servletContext.getContextPath();
 
-        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        if (context == null) {
+            // Not run in web-app, create an application one.
+            context = new TxTemplateContext();
+        }
+
         AutowireCapableBeanFactory acbf = context.getAutowireCapableBeanFactory();
         acbf.autowireBean(this);
     }
