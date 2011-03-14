@@ -15,7 +15,7 @@ public class SemProcessModule
     protected void preamble() {
         export(new AllowListDao(), "alist");
         export(new MultiLevelAllowListDao(), "mlist");
-        export(new PassToNextDao(), "pseq");
+        export(new PassToNextDao(), "p2next");
     }
 
 }

@@ -1,6 +1,11 @@
 package com.bee32.sem.process.verify.builtin;
 
-import com.bee32.icsf.principal.IPrincipal;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.model.stage.IModelStage;
 import com.bee32.plover.model.stage.ModelLoadException;
@@ -12,24 +17,27 @@ public class AllowState
 
     private static final long serialVersionUID = 1L;
 
-    private IPrincipal principal;
+    private User allowedBy;
     private String message;
 
     public AllowState() {
     }
 
-    public AllowState(IPrincipal allowedBy) {
-        this.principal = allowedBy;
+    public AllowState(User allowedBy) {
+        this.allowedBy = allowedBy;
     }
 
-    public IPrincipal getPrincipal() {
-        return principal;
+    @ManyToOne(optional = false, //
+    /*            */cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public User getAllowedBy() {
+        return allowedBy;
     }
 
-    public void setPrincipal(IPrincipal principal) {
-        this.principal = principal;
+    public void setAllowedBy(User allowedBy) {
+        this.allowedBy = allowedBy;
     }
 
+    @Column(length = 200)
     public String getMessage() {
         return message;
     }
@@ -64,24 +72,24 @@ public class AllowState
     protected int hashCodeSpecific() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((principal == null) ? 0 : principal.hashCode());
+        result = prime * result + ((allowedBy == null) ? 0 : allowedBy.hashCode());
         return result;
     }
 
     @Override
     protected boolean equalsSpecific(Component obj) {
         AllowState other = (AllowState) obj;
-        if (principal == null) {
-            if (other.principal != null)
+        if (allowedBy == null) {
+            if (other.allowedBy != null)
                 return false;
-        } else if (!principal.equals(other.principal))
+        } else if (!allowedBy.equals(other.allowedBy))
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Allowd by " + principal;
+        return "Allowd by " + allowedBy;
     }
 
 }

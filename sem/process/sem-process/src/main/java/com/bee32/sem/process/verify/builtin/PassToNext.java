@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.sem.process.verify.AbstractVerifyPolicy;
+import com.bee32.sem.process.verify.VerifyPolicy;
 
 /**
  * 依序审核策略
  */
 public class PassToNext
-        extends AbstractVerifyPolicy<Object, PassLog> {
+        extends VerifyPolicy<Object, PassLog> {
 
     private static final long serialVersionUID = 1L;
 

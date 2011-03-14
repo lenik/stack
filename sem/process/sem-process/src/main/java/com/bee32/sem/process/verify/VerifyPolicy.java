@@ -3,10 +3,17 @@ package com.bee32.sem.process.verify;
 import javax.free.DecodeException;
 import javax.free.EncodeException;
 import javax.free.XMLs;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 import com.bee32.plover.orm.entity.EntityBean;
 
-public abstract class AbstractVerifyPolicy<C, S extends VerifyState>
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "policy", length = 20)
+public abstract class VerifyPolicy<C, S extends VerifyState>
         extends EntityBean<Integer>
         implements IVerifyPolicy<C, S> {
 
@@ -17,7 +24,7 @@ public abstract class AbstractVerifyPolicy<C, S extends VerifyState>
     /**
      * Initialize the policy name from the class name.
      */
-    public AbstractVerifyPolicy(Class<S> verifyStateClass) {
+    public VerifyPolicy(Class<S> verifyStateClass) {
         if (verifyStateClass == null)
             throw new NullPointerException("verifyStateClass");
         this.verifyStateClass = verifyStateClass;
