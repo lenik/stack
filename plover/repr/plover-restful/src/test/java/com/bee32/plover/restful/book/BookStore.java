@@ -4,14 +4,10 @@ import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.util.IStruct;
 
 public class BookStore
-        extends HibernateBookStore {
+        extends DaoBookStore {
 
     public Book getBook(String name) {
         return retrieve(name);
-    }
-
-    public void addBook(Book book) {
-        addBook(book.getName(), book);
     }
 
     public void removeBook(String name) {
@@ -28,6 +24,12 @@ public class BookStore
         instance.setName((String) struct.getScalar("name"));
         instance.setContent((String) struct.getScalar("content"));
         return true;
+    }
+
+    {
+        addNormalSample(SimpleBooks.tom);
+        addNormalSample(SimpleBooks.jerry);
+        addNormalSample(SimpleBooks.helloWorld);
     }
 
 }

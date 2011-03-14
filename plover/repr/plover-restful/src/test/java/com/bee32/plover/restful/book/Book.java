@@ -1,9 +1,15 @@
 package com.bee32.plover.restful.book;
 
-import com.bee32.plover.orm.entity.IEntity;
+import javax.free.Nullables;
+import javax.persistence.Entity;
 
+import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.EntityFormat;
+import com.bee32.plover.util.PrettyPrintStream;
+
+@Entity
 public class Book
-        implements IEntity<String> {
+        extends EntityBean<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,11 +24,13 @@ public class Book
         this.content = content;
     }
 
-    @Override
-    public String getId() {
-        return name;
+    public Book(int id, String name, String content) {
+        this.id = id;
+        this.name = name;
+        this.content = content;
     }
 
+//    @Basic
     public String getName() {
         return name;
     }
@@ -40,7 +48,7 @@ public class Book
     }
 
     @Override
-    public int hashCode() {
+    protected int hashCodeEntity() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((content == null) ? 0 : content.hashCode());
@@ -49,30 +57,22 @@ public class Book
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
+    protected boolean equalsEntity(EntityBean<Integer> otherEntity) {
+        Book o = (Book) otherEntity;
+
+        if (!Nullables.equals(name, o.name))
             return false;
-        if (getClass() != obj.getClass())
+
+        if (!Nullables.equals(content, o.content))
             return false;
-        Book other = (Book) obj;
-        if (content == null) {
-            if (other.content != null)
-                return false;
-        } else if (!content.equals(other.content))
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+
         return true;
     }
 
     @Override
-    public String toString() {
-        return name + " :: " + content;
+    public void toString(PrettyPrintStream out, EntityFormat format) {
+        String s = name + " :: " + content;
+        out.print(s);
     }
 
 }

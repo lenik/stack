@@ -57,11 +57,10 @@ public class BookStoreTest
     @Test
     public void testDispatchToBook()
             throws DispatchException {
-        Book book = SimpleBooks.helloWorld;
-        Object got = DispatchUtil.dispatch(dispatcher, mm, bookModuleOid + "/book/World");
+        Object got = DispatchUtil.dispatch(dispatcher, mm, bookModuleOid + "/book/123");
 
         // for MemoryBookStore, this should be exact same.
-        assertEquals(book, got);
+        assertEquals(SimpleBooks.helloWorld, got);
     }
 
     @Test
@@ -75,7 +74,7 @@ public class BookStoreTest
     public void testReverseBook()
             throws DispatchException {
         String path = mm.getReversedPath(SimpleBooks.helloWorld);
-        assertEquals(bookModuleOid + "/book/World", path);
+        assertEquals(bookModuleOid + "/book/123", path);
     }
 
 }
