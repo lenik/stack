@@ -1,10 +1,10 @@
 package com.bee32.plover.orm.entity;
 
 import javax.free.Nullables;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
@@ -22,7 +22,7 @@ import com.bee32.plover.util.PrettyPrintStream;
  * <li>&#64;Table
  * </ul>
  */
-@Entity
+@MappedSuperclass
 public abstract class EntityBean<K>
         extends Model
         implements IEntity<K>, IPopulatable, IFormatString {
