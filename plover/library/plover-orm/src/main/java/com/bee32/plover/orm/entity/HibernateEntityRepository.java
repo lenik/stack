@@ -1,8 +1,6 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -136,11 +134,6 @@ public class HibernateEntityRepository<E extends IEntity<K>, K>
         HibernateTemplate template = getHibernateTemplate();
         List<? extends E> list = template.loadAll(entityType);
         template.deleteAll(list);
-    }
-
-    @Override
-    public Collection<E> getTransientSamples(boolean worseCase) {
-        return Collections.emptyList();
     }
 
 }
