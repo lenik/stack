@@ -3,7 +3,7 @@ package user.spring;
 import javax.inject.Inject;
 
 import org.junit.Test;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.bee32.plover.inject.qualifier.Variant;
 import com.bee32.plover.test.WiredTestCase;
@@ -23,12 +23,12 @@ class Gear {
 
 }
 
-@Service
+@Component
 class DefaultGear
         extends Gear {
 }
 
-@Service
+@Component
 @Variant("Special")
 class SpecialGear
         extends Gear {
