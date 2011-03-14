@@ -1,11 +1,16 @@
 package com.bee32.plover.restful.test;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.restful.builtin.CoreInfoModule;
 import com.bee32.plover.test.AssembledTestCase;
 
+/**
+ * Should set RootWebAppContext.
+ */
+@Ignore
 public class RestfulTesterLibraryTest
         extends AssembledTestCase {
 

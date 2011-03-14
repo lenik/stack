@@ -22,6 +22,8 @@ public class RestfulTesterLibrary
         // The default servlet must be existed.
         // Otherwise, the filter won't work.
         addServlet(DefaultServlet.class, "/");
+
+        // String wacAttr=WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE;
     }
 
 }

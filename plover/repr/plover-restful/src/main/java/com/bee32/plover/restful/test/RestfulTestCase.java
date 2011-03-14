@@ -12,6 +12,7 @@ import org.h2.server.web.WebServlet;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.springframework.web.context.ContextLoaderListener;
 
+import com.bee32.plover.inject.spring.ContextConfigurationUtil;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.test.AssembledTestCase;
 
