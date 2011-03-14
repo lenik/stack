@@ -3,6 +3,7 @@ package com.bee32.plover.restful;
 import javax.free.IllegalUsageError;
 import javax.free.IllegalUsageException;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
 
 @Component
+@Singleton
 @Lazy
 public class ModuleManager
         extends OidTree<IModule>
@@ -34,14 +36,14 @@ public class ModuleManager
 
     private transient boolean loaded;
 
-    private static ModuleManager _lastInstance;
+    static ModuleManager _lastInstance;
 
     public ModuleManager() {
         super(IModule.class, null);
 
-        if (_lastInstance != null)
-            throw new IllegalStateException("ModuleManager should be singleton.");
-        _lastInstance = this;
+        // if (_lastInstance != null)
+        // throw new IllegalStateException("ModuleManager should be singleton.");
+        // _lastInstance = this;
     }
 
     public ModuleManager(IModuleLoader moduleLoader) {
