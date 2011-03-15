@@ -3,7 +3,6 @@ package com.bee32.plover.restful;
 import java.util.Collection;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bee32.plover.arch.naming.ReverseLookupRegistry;
@@ -16,7 +15,6 @@ import com.bee32.plover.restful.builtin.CoreInfoModule;
  *
  * NOTICE: Enable this test case until dynamic test suites selection is supported.
  */
-@Ignore
 public class ModuleManagerTest
         extends Assert {
 
