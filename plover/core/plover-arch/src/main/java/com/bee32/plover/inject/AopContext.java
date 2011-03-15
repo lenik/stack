@@ -2,15 +2,15 @@ package com.bee32.plover.inject;
 
 import com.bee32.plover.inject.spring.ContextConfiguration;
 
-@ContextConfiguration("legacy-context.xml")
-public class LegacyContext
+@ContextConfiguration("aop-context.xml")
+public class AopContext
         extends ConfigResourceObject {
 
-    public LegacyContext() {
+    public AopContext() {
         super();
     }
 
-    public LegacyContext(ConfigResourceObject... parents) {
+    public AopContext(ConfigResourceObject... parents) {
         super(parents);
     }
 

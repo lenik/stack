@@ -39,7 +39,6 @@ import com.bee32.plover.model.IModel;
 import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.model.stage.ModelStage;
 import com.bee32.plover.model.stage.ModelStageException;
-import com.bee32.plover.orm.context.TxTemplateContext;
 import com.bee32.plover.restful.request.RestfulRequest;
 import com.bee32.plover.restful.request.RestfulRequestBuilder;
 import com.bee32.plover.servlet.container.ServletContainer;
@@ -96,7 +95,8 @@ public class DispatchFilter
         ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
         if (context == null) {
             // Not run in web-app, create an application one.
-            context = new TxTemplateContext();
+            // context = new TxTemplateContext();
+            throw new ServletException("Application context isn't set up");
         }
 
         AutowireCapableBeanFactory acbf = context.getAutowireCapableBeanFactory();

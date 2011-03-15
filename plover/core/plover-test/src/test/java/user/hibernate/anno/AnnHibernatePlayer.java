@@ -5,11 +5,14 @@ import java.io.Serializable;
 import javax.inject.Inject;
 
 import org.hibernate.SessionFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import user.hibernate.anno.ext.Banana;
 
+import com.bee32.plover.inject.LegacyContext;
 import com.bee32.plover.inject.qualifier.Variant;
+import com.bee32.plover.orm.context.TxContext;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 
 @Transactional
@@ -26,7 +29,11 @@ public class AnnHibernatePlayer {
 
     public static void mainByContext(String[] args)
             throws Exception {
-        new AnnoContext().getBean(AnnHibernatePlayer.class).runAop();
+
+        ApplicationContext applicationContext = new AnnoContext(//
+                new LegacyContext(), new TxContext()).getApplicationContext();
+
+        applicationContext.getBean(AnnHibernatePlayer.class).runAop();
     }
 
     public void runAop()
@@ -78,8 +85,8 @@ public class AnnHibernatePlayer {
         HibernateTemplate template = new HibernateTemplate(sessionFactory);
 
         Friend tom = new Friend("tom");
-//        tom.addFruit(apple);
-//        tom.addFruit(banana);
+// tom.addFruit(apple);
+// tom.addFruit(banana);
         tom.setFav(apple);
         tomId = template.save(tom);
 

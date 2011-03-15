@@ -18,6 +18,7 @@ public class SemProcessModuleTest
     @Test
     public void testUser()
             throws Exception {
+
         // addFilter(DispatchFilter.class, "/", 3);
         rtl.addServlet(DispatchFilter.class, "/");
 

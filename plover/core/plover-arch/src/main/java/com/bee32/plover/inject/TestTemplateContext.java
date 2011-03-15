@@ -2,15 +2,15 @@ package com.bee32.plover.inject;
 
 import com.bee32.plover.inject.spring.ContextConfiguration;
 
-@ContextConfiguration("legacy-context.xml")
-public class LegacyContext
+@ContextConfiguration("testtemplate-context.xml")
+public class TestTemplateContext
         extends ConfigResourceObject {
 
-    public LegacyContext() {
+    public TestTemplateContext() {
         super();
     }
 
-    public LegacyContext(ConfigResourceObject... parents) {
+    public TestTemplateContext(ConfigResourceObject... parents) {
         super(parents);
     }
 

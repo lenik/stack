@@ -4,6 +4,14 @@ import com.bee32.plover.inject.spring.ContextConfiguration;
 
 @ContextConfiguration({"template-context.xml"})
 public class TemplateContext
-        extends ApplicationContextSupport {
+        extends ConfigResourceObject {
+
+    public TemplateContext() {
+        super();
+    }
+
+    public TemplateContext(ConfigResourceObject... parents) {
+        super(parents);
+    }
 
 }

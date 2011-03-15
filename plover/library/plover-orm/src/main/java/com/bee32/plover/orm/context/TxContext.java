@@ -1,17 +1,17 @@
-package user.hibernate.anno;
+package com.bee32.plover.orm.context;
 
 import com.bee32.plover.inject.ConfigResourceObject;
 import com.bee32.plover.inject.spring.ContextConfiguration;
 
-@ContextConfiguration("anno-context.xml")
-public class AnnoContext
+@ContextConfiguration("tx-context.xml")
+public class TxContext
         extends ConfigResourceObject {
 
-    public AnnoContext() {
+    public TxContext() {
         super();
     }
 
-    public AnnoContext(ConfigResourceObject... parents) {
+    public TxContext(ConfigResourceObject... parents) {
         super(parents);
     }
 
