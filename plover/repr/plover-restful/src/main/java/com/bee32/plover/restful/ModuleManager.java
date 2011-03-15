@@ -116,12 +116,16 @@ public class ModuleManager
         return location;
     }
 
-    private static final ModuleManager instance;
-    static {
-        instance = new ModuleManager(ServiceModuleLoader.getInstance());
-    }
+    private static ModuleManager instance;
 
     public static ModuleManager getInstance() {
+        if (instance == null) {
+            synchronized (ModuleManager.class) {
+                if (instance == null) {
+                    instance = new ModuleManager(ServiceModuleLoader.getInstance());
+                }
+            }
+        }
         return instance;
     }
 
