@@ -7,8 +7,8 @@
             <h1>Bookstore Index</h1>
             #foreach ($ent in $it.list())
             <li>
-                <a href="$ent.primaryKey">
-                    $ent.primaryKey
+                <a href="$ent.id">
+                    $ent.id
         </a>
                 $ent
             </li>

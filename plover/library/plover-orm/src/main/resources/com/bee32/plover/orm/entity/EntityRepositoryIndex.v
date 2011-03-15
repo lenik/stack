@@ -8,7 +8,7 @@
 #foreach ($ent in $it.list())
     <li>
         <a href="$ent.primaryKey">
-            $ent.primaryKey
+            $ent.id
         </a>
         $ent
     </li>
