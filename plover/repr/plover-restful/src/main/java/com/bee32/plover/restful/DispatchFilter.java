@@ -22,8 +22,6 @@ import org.apache.velocity.VelocityContext;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import overlay.OverlayUtil;
 
@@ -39,6 +37,7 @@ import com.bee32.plover.model.IModel;
 import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.model.stage.ModelStage;
 import com.bee32.plover.model.stage.ModelStageException;
+import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
 import com.bee32.plover.restful.request.RestfulRequest;
 import com.bee32.plover.restful.request.RestfulRequestBuilder;
 import com.bee32.plover.servlet.container.ServletContainer;
@@ -70,7 +69,7 @@ public class DispatchFilter
     }
 
     @Inject
-    WebApplicationContext wac;
+    ApplicationContext applicationContext;
 
     @Inject
     private transient ModuleManager moduleManager;
@@ -92,15 +91,12 @@ public class DispatchFilter
         servletContext = filterConfig.getServletContext();
         contextPath = servletContext.getContextPath();
 
-        ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
-        if (context == null) {
-            // Not run in web-app, create an application one.
-            // context = new TxTemplateContext();
+        ApplicationContext context = SimpleApplicationContextUtil.getApplicationContext(servletContext);
+        if (context == null)
             throw new ServletException("Application context isn't set up");
-        }
 
-        AutowireCapableBeanFactory acbf = context.getAutowireCapableBeanFactory();
-        acbf.autowireBean(this);
+        AutowireCapableBeanFactory beanFactory = context.getAutowireCapableBeanFactory();
+        beanFactory.autowireBean(this);
     }
 
     @Override
@@ -232,7 +228,7 @@ public class DispatchFilter
             Object webImpl;
             try {
                 // webImpl = StatelessUtil.createOrReuse(webClass);
-                webImpl = wac.getAutowireCapableBeanFactory().createBean(webClass);
+                webImpl = applicationContext.getAutowireCapableBeanFactory().createBean(webClass);
             } catch (Exception e) {
                 throw new ServletException(e.getMessage(), e);
             }
