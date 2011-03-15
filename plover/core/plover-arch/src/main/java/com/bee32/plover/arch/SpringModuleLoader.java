@@ -8,6 +8,8 @@ import java.util.TreeSet;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Component;
 @Lazy
 public class SpringModuleLoader
         extends AbstractModuleLoader {
+
+    static Logger logger = LoggerFactory.getLogger(SpringModuleLoader.class);
 
     @Inject
     private ApplicationContext applicationContext;

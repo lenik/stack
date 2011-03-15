@@ -38,6 +38,9 @@ public abstract class AbstractModuleLoader
                 modulePostProcessors = getPostProcessors();
 
             for (IModulePostProcessor modulePostProcessor : modulePostProcessors) {
+
+                logger.info("Apply module post-processor: " + modulePostProcessor);
+
                 for (IModule module : modules) {
                     try {
                         modulePostProcessor.afterModuleLoaded(module);
