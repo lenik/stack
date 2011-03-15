@@ -303,4 +303,17 @@ public class OidTree<T>
         return true;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getName() + " => { ");
+
+        for (String name : getChildNames()) {
+            Object node = getChild(name);
+            sb.append(name + " -> { " + node + " }\n");
+        }
+
+        sb.append(" }");
+        return sb.toString();
+    }
 }
