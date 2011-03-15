@@ -115,7 +115,7 @@ public abstract class DividedPermission
     }
 
     @Override
-    protected boolean equalsEntity(EntityBean<Long> entity) {
+    protected boolean equalsEntity(EntityBean<Integer> entity) {
         DividedPermission other = (DividedPermission) entity;
 
         if (!Nullables.equals(authority, other.authority))
