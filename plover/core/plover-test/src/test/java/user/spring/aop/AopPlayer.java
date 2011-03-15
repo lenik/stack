@@ -4,8 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.inject.AopContext;
-import com.bee32.plover.inject.LegacyContext;
+import com.bee32.plover.inject.cref.ContextRefs;
 
 @Component
 @Lazy
@@ -13,7 +12,7 @@ public class AopPlayer {
 
     public static void main(String[] args) {
 
-        ApplicationContext context = new AopContext(new LegacyContext()).getApplicationContext();
+        ApplicationContext context = ContextRefs.STD.getApplicationContext();
 
         AopPlayer player = context.getBean(AopPlayer.class);
         player.main();

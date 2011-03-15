@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import user.hibernate.anno.ext.Banana;
 
-import com.bee32.plover.inject.LegacyContext;
+import com.bee32.plover.inject.cref.ContextRefs;
 import com.bee32.plover.inject.qualifier.Variant;
 import com.bee32.plover.orm.context.TxContext;
 import com.bee32.plover.orm.dao.HibernateTemplate;
@@ -31,7 +31,7 @@ public class AnnHibernatePlayer {
             throws Exception {
 
         ApplicationContext applicationContext = new AnnoContext(//
-                new LegacyContext(), new TxContext()).getApplicationContext();
+                new TxContext(ContextRefs.STD_TEST)).getApplicationContext();
 
         applicationContext.getBean(AnnHibernatePlayer.class).runAop();
     }

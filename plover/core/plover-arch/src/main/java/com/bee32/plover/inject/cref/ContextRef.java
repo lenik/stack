@@ -1,4 +1,4 @@
-package com.bee32.plover.inject;
+package com.bee32.plover.inject.cref;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,17 +11,17 @@ import org.springframework.core.io.Resource;
 
 import com.bee32.plover.inject.spring.ContextConfigurationUtil;
 
-public class ConfigResourceObject {
+public class ContextRef {
 
-    private ConfigResourceObject[] parents;
+    private ContextRef[] parents;
 
     private transient ApplicationContext applicationContext;
 
-    public ConfigResourceObject() {
+    public ContextRef() {
         this.parents = null;
     }
 
-    public ConfigResourceObject(ConfigResourceObject... parents) {
+    public ContextRef(ContextRef... parents) {
         this.parents = parents;
     }
 
@@ -68,7 +68,7 @@ public class ConfigResourceObject {
 
     protected void exportResources(List<Resource> resources) {
         if (parents != null) {
-            for (ConfigResourceObject parent : parents)
+            for (ContextRef parent : parents)
                 parent.exportResources(resources);
         }
 

@@ -1,17 +1,17 @@
-package com.bee32.plover.inject;
+package com.bee32.plover.inject.cref;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.core.io.Resource;
 
-public class LegacyContextTest
+public class StdScanContextTest
         extends Assert {
 
     @Test
     public void testImportAnnotations() {
-        LegacyContext context = new LegacyContext();
+        ContextRef cref = ContextRefs.STD;
 
-        Resource[] resources = context.getConfigResources();
+        Resource[] resources = cref.getConfigResources();
 
         assertEquals(1, resources.length);
     }
