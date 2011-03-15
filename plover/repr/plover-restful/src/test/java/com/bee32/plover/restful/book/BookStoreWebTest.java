@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -13,7 +14,10 @@ import com.bee32.plover.restful.request.RestfulRequestUtil;
 
 /**
  * This test runs in non-dispatch mode.
+ *
+ * So, the book store samples are not set.
  */
+@Ignore
 public class BookStoreWebTest
         extends WiredDaoTestCase {
 
