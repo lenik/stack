@@ -37,6 +37,11 @@ public class VerifyPolicyManagerTest
             implements IContextLimit {
 
         @Override
+        public String getLimitName() {
+            return "Money Limit";
+        }
+
+        @Override
         public long getContextLimit() {
             return 1000;
         }
