@@ -21,7 +21,7 @@ import com.bee32.sem.process.verify.VerifyPolicy;
  */
 @ContextClass(ICurrentStep.class)
 @Entity
-@DiscriminatorValue("p2n")
+@DiscriminatorValue("NEXT")
 public class PassToNext
         extends VerifyPolicy<ICurrentStep, PassLog> {
 

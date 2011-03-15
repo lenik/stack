@@ -25,7 +25,7 @@ import com.bee32.sem.process.verify.VerifyPolicy;
  * 由任一管理员审核策略。
  */
 @Entity
-@DiscriminatorValue("list")
+@DiscriminatorValue("LIST")
 public class AllowList
         extends VerifyPolicy<Object, AllowState> {
 

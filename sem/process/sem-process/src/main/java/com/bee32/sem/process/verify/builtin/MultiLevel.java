@@ -15,7 +15,7 @@ import com.bee32.sem.process.verify.VerifyPolicy;
 
 @ContextClass(IContextLimit.class)
 @Entity
-@DiscriminatorValue("level")
+@DiscriminatorValue("LEVEL")
 public class MultiLevel
         extends VerifyPolicy<IContextLimit, AllowState> {
 
