@@ -14,8 +14,8 @@ public class SimpleBooks {
         PersistenceUnitSelection.getSharedSelection().add(unit);
     }
 
-    public static final Book tom = new Book(100, "Tom", "A great story");
-    public static final Book jerry = new Book(101, "Jerry", "A wonderful cartoon book");
-    public static final Book helloWorld = new Book(123, "World", "Hello, world!");;
+    public static final Book tom = new Book("Tom", "A great story");
+    public static final Book jerry = new Book("Jerry", "A wonderful cartoon book");
+    public static final Book helloWorld = new Book("World", "Hello, world!");;
 
 }

@@ -50,17 +50,17 @@ public class BookStoreTest
     @Test
     public void testDispatchToBookStore()
             throws DispatchException {
+
         Object dispatchedStore = DispatchUtil.dispatch(dispatcher, mm, bookModuleOid + "/book");
+
         assertSame(bookStore, dispatchedStore);
     }
 
     @Test
     public void testDispatchToBook()
             throws DispatchException {
-        for (Book book:bookStore.list())
-            System.out.println(book);
-        bookStore.getChild("123");
-        Object got = DispatchUtil.dispatch(dispatcher, mm, bookModuleOid + "/book/123");
+        int id = SimpleBooks.helloWorld.getId();
+        Object got = DispatchUtil.dispatch(dispatcher, mm, bookModuleOid + "/book/" + id);
 
         // for MemoryBookStore, this should be exact same.
         assertEquals(SimpleBooks.helloWorld, got);
@@ -77,7 +77,10 @@ public class BookStoreTest
     public void testReverseBook()
             throws DispatchException {
         String path = mm.getReversedPath(SimpleBooks.helloWorld);
-        assertEquals(bookModuleOid + "/book/123", path);
+
+        int id = SimpleBooks.helloWorld.getId();
+
+        assertEquals(bookModuleOid + "/book/" + id, path);
     }
 
 }
