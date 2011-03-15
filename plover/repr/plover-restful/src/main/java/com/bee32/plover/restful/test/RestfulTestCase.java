@@ -6,8 +6,6 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.free.StringArray;
-
 import org.h2.server.web.WebServlet;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.springframework.web.context.ContextLoaderListener;
@@ -32,18 +30,24 @@ public abstract class RestfulTestCase
     // }
 
     void initialize() {
-        install(rtl = new RestfulTesterLibrary() {
-            protected void configureServlets()
-                    throws Exception {
-                super.configureServlets();
-
-                RestfulTestCase.this.configureBuiltinServlets();
-                RestfulTestCase.this.configureServlets();
-            }
-        });
+        install(rtl = new LocalRTL());
     }
 
-    private void configureBuiltinServlets() {
+    class LocalRTL
+            extends RestfulTesterLibrary {
+
+        @Override
+        protected void configureServlets()
+                throws Exception {
+            super.configureServlets();
+
+            RestfulTestCase.this.configureBuiltinServlets();
+            RestfulTestCase.this.configureServlets();
+        }
+
+    }
+
+    void configureBuiltinServlets() {
         // setup
         ContextLoaderListener contextLoaderListener = new ContextLoaderListener();
 
@@ -59,11 +63,18 @@ public abstract class RestfulTestCase
         mergedLocations.addAll(baseLocations);
         mergedLocations.addAll(userLocations);
 
-        String locations = "classpath:" + StringArray.join(",", mergedLocations);
+        StringBuilder locations = new StringBuilder();
+        for (String location : mergedLocations) {
+            String respath = "classpath:" + location;
+
+            if (locations.length() != 0)
+                locations.append(", ");
+
+            locations.append(respath);
+        }
 
         Map<String, String> contextParams = new HashMap<String, String>();
-
-        contextParams.put("contextConfigLocation", locations);
+        contextParams.put("contextConfigLocation", locations.toString());
 
         rtl.getContext().setInitParams(contextParams);
 
