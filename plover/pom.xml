@@ -11,14 +11,6 @@
     <artifactId>plover</artifactId>
     <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
     <modules>
         <module>back-end</module>
         <module>core</module>
