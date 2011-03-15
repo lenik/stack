@@ -2,6 +2,7 @@ package user.spring;
 
 import javax.inject.Inject;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +35,7 @@ class SpecialGear
         extends Gear {
 }
 
+@Ignore
 public class QualifierCandidatesTest
         extends WiredTestCase {
 
