@@ -2,15 +2,15 @@ package com.bee32.plover.inject.cref;
 
 import com.bee32.plover.inject.spring.ContextConfiguration;
 
-@ContextConfiguration("template-test-context.xml")
-public class TemplateTestContext
+@ContextConfiguration("scan-test-context.xml")
+public class ScanTestContext
         extends ContextRef {
 
-    TemplateTestContext() {
+    ScanTestContext() {
         super();
     }
 
-    TemplateTestContext(ContextRef... parents) {
+    ScanTestContext(ContextRef... parents) {
         super(parents);
     }
 

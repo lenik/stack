@@ -2,15 +2,15 @@ package com.bee32.plover.inject.cref;
 
 import com.bee32.plover.inject.spring.ContextConfiguration;
 
-@ContextConfiguration("stdscan-context.xml")
-public class StdScanContext
+@ContextConfiguration({ "scan-stdx-context.xml" })
+public class ScanStdxContext
         extends ContextRef {
 
-    StdScanContext() {
+    ScanStdxContext() {
         super();
     }
 
-    StdScanContext(ContextRef... parents) {
+    ScanStdxContext(ContextRef... parents) {
         super(parents);
     }
 

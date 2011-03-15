@@ -11,7 +11,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("test-context.xml")
+@ContextConfiguration({ //
+/*            */"/com/bee32/plover/inject/cref/stdscan-test-context.xml",
+/*            */"/com/bee32/plover/inject/cref/template-test-context.xml" })
 public abstract class WiredTestCase
         extends Assert {
 

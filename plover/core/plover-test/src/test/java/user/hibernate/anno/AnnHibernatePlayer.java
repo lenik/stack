@@ -31,7 +31,7 @@ public class AnnHibernatePlayer {
             throws Exception {
 
         ApplicationContext applicationContext = new AnnoContext(//
-                new TxContext(ContextRefs.STD_TEST)).getApplicationContext();
+                new TxContext(ContextRefs.SCAN_TEST)).getApplicationContext();
 
         applicationContext.getBean(AnnHibernatePlayer.class).runAop();
     }

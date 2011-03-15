@@ -9,11 +9,11 @@ public class StdScanContextTest
 
     @Test
     public void testImportAnnotations() {
-        ContextRef cref = ContextRefs.STD;
+        ContextRef cref = ContextRefs.SCAN_STD;
 
         Resource[] resources = cref.getConfigResources();
 
-        assertEquals(1, resources.length);
+        assertTrue(resources.length >= 1);
     }
 
 }

@@ -12,7 +12,7 @@ public class AopPlayer {
 
     public static void main(String[] args) {
 
-        ApplicationContext context = ContextRefs.STD.getApplicationContext();
+        ApplicationContext context = ContextRefs.SCAN_STD.getApplicationContext();
 
         AopPlayer player = context.getBean(AopPlayer.class);
         player.main();
