@@ -33,7 +33,7 @@ public class SimpleApplicationContextUtil {
         return applicationContext;
     }
 
-    public static void setApplicationContext(ServletContext servletContext, ApplicationContext applicationContext) {
+    static void _setApplicationContext(ServletContext servletContext, ApplicationContext applicationContext) {
         if (applicationContext instanceof WebApplicationContext) {
             servletContext.removeAttribute(rootApplicationContextKey);
             servletContext.setAttribute(webRootApplicationContextKey, applicationContext);
