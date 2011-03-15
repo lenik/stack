@@ -6,12 +6,12 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.h2.server.web.WebServlet;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.springframework.web.context.ContextLoaderListener;
 
 import com.bee32.plover.inject.spring.ContextConfigurationUtil;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
+import com.bee32.plover.servlet.util.LazyLoadServlet;
 import com.bee32.plover.test.AssembledTestCase;
 
 public abstract class RestfulTestCase
@@ -89,7 +89,8 @@ public abstract class RestfulTestCase
 
         // context-params?
 
-        ServletHolder servlet = rtl.addServlet(WebServlet.class, "/console/*");
+        ServletHolder servlet = rtl.addServlet(LazyLoadServlet.class, "/console/*");
+        servlet.setInitParameter("servlet-class", "org.h2.server.web.WebServlet");
         servlet.setInitParameter("db.url", "jdbc:h2:target/testdb");
         // servlet.setInitParameter("webAllowOthers", "");
         // servlet.setInitParameter("trace", "");
