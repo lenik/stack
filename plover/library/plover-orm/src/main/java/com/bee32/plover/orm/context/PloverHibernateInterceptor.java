@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.context;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.orm.hibernate3.HibernateInterceptor;
 import org.springframework.stereotype.Component;
 
 @Component
+@Named("hibernateInterceptor")
 @Lazy
 public class PloverHibernateInterceptor
         extends HibernateInterceptor {
