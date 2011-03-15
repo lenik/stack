@@ -9,6 +9,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <dependencies>
         <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-arch</artifactId>
+            <version>0.0.4-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
             <version>2.2.0</version>
