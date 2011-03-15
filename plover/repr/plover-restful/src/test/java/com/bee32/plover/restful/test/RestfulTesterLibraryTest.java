@@ -2,9 +2,7 @@ package com.bee32.plover.restful.test;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
 
-import com.bee32.plover.inject.LegacyContext;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.restful.builtin.CoreInfoModule;
 import com.bee32.plover.test.AssembledTestCase;
@@ -21,8 +19,7 @@ public class RestfulTesterLibraryTest
     RestfulTesterLibrary rtl;
 
     public RestfulTesterLibraryTest() {
-        ApplicationContext context = new LegacyContext().getApplicationContext();
-        install(rtl = new RestfulTesterLibrary(context));
+        install(rtl = new RestfulTesterLibrary());
     }
 
     @Test
