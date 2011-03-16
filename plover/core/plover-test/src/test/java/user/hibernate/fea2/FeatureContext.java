@@ -4,14 +4,14 @@ import com.bee32.plover.inject.cref.ContextRef;
 import com.bee32.plover.inject.spring.ContextConfiguration;
 
 @ContextConfiguration("context.xml")
-public class LocalContext
+public class FeatureContext
         extends ContextRef {
 
-    public LocalContext() {
+    public FeatureContext() {
         super();
     }
 
-    public LocalContext(ContextRef... parents) {
+    public FeatureContext(ContextRef... parents) {
         super(parents);
     }
 

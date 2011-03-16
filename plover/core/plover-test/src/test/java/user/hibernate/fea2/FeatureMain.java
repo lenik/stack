@@ -13,33 +13,28 @@ import org.springframework.transaction.annotation.Transactional;
 import user.hibernate.fea2.ext.Banana;
 
 import com.bee32.plover.inject.cref.ContextRefs;
-import com.bee32.plover.inject.qualifier.Variant;
+import com.bee32.plover.inject.qualifier.TestPurpose;
 import com.bee32.plover.orm.context.TxContext;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 
 @Transactional
-public class AnnPlayerMain {
+public class FeatureMain {
 
     @Inject
-    @Variant("AnnSFB")
+    @TestPurpose
     SessionFactory sessionFactory;
 
     public static void main(String[] args)
             throws Exception {
-        mainByContext(args);
-    }
 
-    public static void mainByContext(String[] args)
-            throws Exception {
-
-        ApplicationContext applicationContext = new LocalContext(//
+        ApplicationContext applicationContext = new FeatureContext(//
                 new TxContext(ContextRefs.SCAN_TEST)).getApplicationContext();
 
-        // applicationContext.getBean(AnnPlayerMain.class).runAop();
+// applicationContext.getBean(FeatureMain.class).runAop();
 
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
-            applicationContext.getBean(AnnPlayer.class).run();
+            applicationContext.getBean(FeaturePlayer.class).run();
             System.out.println("Press enter to try again");
             stdin.readLine();
         }
