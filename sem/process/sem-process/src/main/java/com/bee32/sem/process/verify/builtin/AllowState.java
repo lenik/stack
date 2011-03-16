@@ -1,8 +1,6 @@
 package com.bee32.sem.process.verify.builtin;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 import com.bee32.icsf.principal.User;
@@ -37,8 +35,7 @@ public class AllowState
         this.isAllowed = isAllowed;
     }
 
-    @ManyToOne(optional = false, //
-    /*            */cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     public User getUser() {
         return user;
     }
