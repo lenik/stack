@@ -8,6 +8,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.AccessType;
+
 import com.bee32.icsf.access.authority.IAuthority;
 import com.bee32.plover.orm.entity.EntityBean;
 
@@ -34,15 +36,11 @@ public abstract class Permission
         super(name);
     }
 
+    @AccessType("field")
     @Column(length = 60)
     @Override
     public String getName() {
         return super.getName();
-    }
-
-    @Override
-    public void setName(String name) {
-        super.setName(name);
     }
 
     @Column(length = 60)
