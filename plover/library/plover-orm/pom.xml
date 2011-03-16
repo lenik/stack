@@ -11,7 +11,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>ejb3-persistence</artifactId>
-            <version>3.3.2.Beta1</version>
+            <version>1.0.2.GA</version>
         </dependency>
         <dependency>
             <groupId>commons-dbcp</groupId>
