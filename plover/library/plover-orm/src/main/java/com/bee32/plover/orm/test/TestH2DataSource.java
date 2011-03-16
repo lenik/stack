@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.context;
+package com.bee32.plover.orm.test;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Lazy;

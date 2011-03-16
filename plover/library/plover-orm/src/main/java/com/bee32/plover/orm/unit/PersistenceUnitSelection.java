@@ -18,11 +18,11 @@ public class PersistenceUnitSelection
 
     private Map<String, PersistenceUnit> selectedUnits = new TreeMap<String, PersistenceUnit>();
 
-    PersistenceUnitSelection() {
+    public PersistenceUnitSelection() {
         super();
     }
 
-    PersistenceUnitSelection(String name) {
+    public PersistenceUnitSelection(String name) {
         super(name);
     }
 

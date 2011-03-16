@@ -6,9 +6,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.orm.context.TestSessionFactoryBean;
 import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
+import com.bee32.plover.orm.test.DefaultTestSessionFactoryBean;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 import com.bee32.plover.test.WiredAssembledTestCase;
@@ -25,7 +25,7 @@ public abstract class WiredDaoTestCase
 
     public WiredDaoTestCase(PersistenceUnit... persistenceUnits) {
         PersistenceUnitSelection puSelection = PersistenceUnitSelection.getContextSelection(//
-                TestSessionFactoryBean.class);
+                DefaultTestSessionFactoryBean.class);
 
         for (PersistenceUnit unit : persistenceUnits)
             puSelection.remove(unit);
