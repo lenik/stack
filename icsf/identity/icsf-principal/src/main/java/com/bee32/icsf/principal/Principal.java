@@ -4,11 +4,9 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -74,8 +72,8 @@ public class Principal
         this.description = description;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, //
-    /*            */targetEntity = Principal.class)
+    @ManyToMany(targetEntity = Principal.class)
+    // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "PrincipalImpl", //
     /*            */joinColumns = @JoinColumn(name = "impl"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "principal"))

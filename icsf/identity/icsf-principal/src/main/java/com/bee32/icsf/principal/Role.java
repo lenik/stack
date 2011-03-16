@@ -1,17 +1,18 @@
 package com.bee32.icsf.principal;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.free.Nullables;
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
@@ -38,8 +39,8 @@ public class Role
         super(name);
     }
 
-    @Override
     @JoinColumn(name = "parent")
+    @Override
     public IRolePrincipal getInheritedRole() {
         return inheritedRole;
     }
@@ -65,8 +66,9 @@ public class Role
         this.responsibleUsers = new HashSet<IUserPrincipal>(responsibleUsers);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-    /*            */targetEntity = Group.class, mappedBy = "assignedRoles")
+    @ManyToMany(targetEntity = Group.class, mappedBy = "assignedRoles")
+    // @Cascade(CascadeType.SAVE_UPDATE)
+    @Override
     public Set<IGroupPrincipal> getResponsibleGroups() {
         if (responsibleGroups == null) {
             synchronized (this) {

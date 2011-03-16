@@ -5,10 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.free.Nullables;
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -48,7 +46,7 @@ public class User
         this.primaryRole = primaryRole;
     }
 
-    @ManyToOne(targetEntity = Group.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Group.class)
     @JoinColumn(name = "group1")
     @Override
     public IGroupPrincipal getPrimaryGroup() {
@@ -59,7 +57,7 @@ public class User
         this.primaryGroup = primaryGroup;
     }
 
-    @ManyToOne(targetEntity = Role.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Role.class)
     @JoinColumn(name = "role1")
     @Override
     public IRolePrincipal getPrimaryRole() {
@@ -70,8 +68,8 @@ public class User
         this.primaryRole = primaryRole;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-    /*            */targetEntity = Group.class, mappedBy = "memberUsers")
+    @ManyToMany(targetEntity = Group.class, mappedBy = "memberUsers")
+    // @Cascade(CascadeType.SAVE_UPDATE)
     @Override
     public Set<IGroupPrincipal> getAssignedGroups() {
         if (assignedGroups == null) {
@@ -88,8 +86,8 @@ public class User
         this.assignedGroups = new HashSet<IGroupPrincipal>(assignedGroups);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-    /*            */targetEntity = Role.class)
+    @ManyToMany(targetEntity = Role.class)
+    // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "UserRole", //
     /*            */joinColumns = @JoinColumn(name = "user"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "role"))

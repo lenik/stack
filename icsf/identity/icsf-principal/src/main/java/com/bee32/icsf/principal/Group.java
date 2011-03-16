@@ -1,19 +1,20 @@
 package com.bee32.icsf.principal;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.free.Nullables;
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
@@ -83,7 +84,8 @@ public class Group
         this.primaryRole = primaryRole;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, targetEntity = User.class)
+    @ManyToMany(targetEntity = User.class)
+    // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "GroupMember", //
     /*            */joinColumns = @JoinColumn(name = "group"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "member"))
@@ -103,8 +105,8 @@ public class Group
         this.memberUsers = new HashSet<IUserPrincipal>(memberUsers);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-    /*            */targetEntity = Role.class)
+    @ManyToMany(targetEntity = Role.class)
+    // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "GroupRole", //
     /*            */joinColumns = @JoinColumn(name = "group"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "role"))
