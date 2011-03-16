@@ -20,6 +20,10 @@ public class RGB
         super();
     }
 
+    public RGB(String name) {
+        super(name);
+    }
+
     public RGB(String name, int red, int green, int blue) {
         super(name);
         this.red = red;

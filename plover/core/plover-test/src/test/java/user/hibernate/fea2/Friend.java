@@ -33,9 +33,8 @@ public class Friend
         return super.getName();
     }
 
-    @Override
     public void setName(String name) {
-        super.setName(name);
+        this.name = name;
     }
 
     @ManyToOne(targetEntity = Fruit.class)

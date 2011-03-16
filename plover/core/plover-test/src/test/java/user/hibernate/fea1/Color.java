@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import org.hibernate.annotations.AccessType;
+
 import com.bee32.plover.orm.entity.EntityBean;
 
 @Entity
@@ -21,6 +23,12 @@ public class Color
 
     public Color(String name) {
         super(name);
+    }
+
+    @AccessType("field")
+    @Override
+    public String getName() {
+        return super.getName();
     }
 
     public String getCode() {

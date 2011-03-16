@@ -17,7 +17,6 @@ import com.bee32.plover.inject.qualifier.TestPurpose;
 import com.bee32.plover.orm.context.TxContext;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 
-@Transactional
 public class FeatureMain {
 
     @Inject
@@ -28,9 +27,9 @@ public class FeatureMain {
             throws Exception {
 
         ApplicationContext applicationContext = new FeatureContext(//
-                new TxContext(ContextRefs.SCAN_TEST)).getApplicationContext();
+                new TxContext(ContextRefs.SCAN_TESTX)).getApplicationContext();
 
-// applicationContext.getBean(FeatureMain.class).runAop();
+        // applicationContext.getBean(FeatureMain.class).runAop();
 
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
@@ -58,8 +57,7 @@ public class FeatureMain {
     void addFruits() {
         HibernateTemplate template = new HibernateTemplate(sessionFactory);
 
-        apple = new Fruit();
-        apple.setName("Apple");
+        apple = new Fruit("Apple");
         apple.setPrice(10);
         appleId = template.save(apple);
 

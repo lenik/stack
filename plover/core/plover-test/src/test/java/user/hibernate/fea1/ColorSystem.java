@@ -30,11 +30,10 @@ public class ColorSystem {
                 if (!Modifier.isStatic(field.getModifiers()))
                     continue;
 
+                String colorName = field.getName();
                 java.awt.Color color = (java.awt.Color) field.get(null);
 
-                RGB rgb = new RGB();
-
-                rgb.setName(field.getName());
+                RGB rgb = new RGB(colorName);
 
                 rgb.setRed(color.getRed());
                 rgb.setGreen(color.getGreen());

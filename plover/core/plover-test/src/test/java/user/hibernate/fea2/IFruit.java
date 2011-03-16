@@ -3,11 +3,7 @@ package user.hibernate.fea2;
 import com.bee32.plover.orm.entity.IEntity;
 
 public interface IFruit
-        extends IEntity<Long> {
-
-    String getName();
-
-    void setName(String name);
+        extends IEntity<Integer> {
 
     int getPrice();
 
