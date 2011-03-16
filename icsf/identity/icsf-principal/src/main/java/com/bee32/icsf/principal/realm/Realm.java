@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.free.Nullables;
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -23,6 +24,7 @@ import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityBean;
 
+@Entity
 public class Realm
         extends EntityBean<Integer>
         implements IRealm {
