@@ -13,6 +13,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface ContextConfiguration {
 
+    Class<?>[] classes() default {};
+
     /**
      * @see org.springframework.test.context.ContextConfiguration#value()
      */
