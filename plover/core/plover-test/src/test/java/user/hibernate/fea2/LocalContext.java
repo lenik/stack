@@ -1,17 +1,17 @@
-package user.hibernate.anno;
+package user.hibernate.fea2;
 
 import com.bee32.plover.inject.cref.ContextRef;
 import com.bee32.plover.inject.spring.ContextConfiguration;
 
-@ContextConfiguration("anno-context.xml")
-public class AnnoContext
+@ContextConfiguration("context.xml")
+public class LocalContext
         extends ContextRef {
 
-    public AnnoContext() {
+    public LocalContext() {
         super();
     }
 
-    public AnnoContext(ContextRef... parents) {
+    public LocalContext(ContextRef... parents) {
         super(parents);
     }
 

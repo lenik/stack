@@ -1,4 +1,4 @@
-package user.hibernate;
+package user.hibernate.fea1;
 
 import javax.persistence.Entity;
 

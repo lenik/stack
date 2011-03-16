@@ -1,4 +1,4 @@
-package user.hibernate;
+package user.hibernate.fea1;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

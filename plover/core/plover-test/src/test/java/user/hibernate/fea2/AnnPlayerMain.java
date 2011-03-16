@@ -1,5 +1,7 @@
-package user.hibernate.anno;
+package user.hibernate.fea2;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 
 import javax.inject.Inject;
@@ -8,7 +10,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
-import user.hibernate.anno.ext.Banana;
+import user.hibernate.fea2.ext.Banana;
 
 import com.bee32.plover.inject.cref.ContextRefs;
 import com.bee32.plover.inject.qualifier.Variant;
@@ -16,7 +18,7 @@ import com.bee32.plover.orm.context.TxContext;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 
 @Transactional
-public class AnnHibernatePlayer {
+public class AnnPlayerMain {
 
     @Inject
     @Variant("AnnSFB")
@@ -30,19 +32,17 @@ public class AnnHibernatePlayer {
     public static void mainByContext(String[] args)
             throws Exception {
 
-        ApplicationContext applicationContext = new AnnoContext(//
+        ApplicationContext applicationContext = new LocalContext(//
                 new TxContext(ContextRefs.SCAN_TEST)).getApplicationContext();
 
-        applicationContext.getBean(AnnHibernatePlayer.class).runAop();
-    }
+        // applicationContext.getBean(AnnPlayerMain.class).runAop();
 
-    public void runAop()
-            throws Exception {
-        addFruits();
-        reloadApple();
-
-        addFriends();
-        reloadTom();
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        while (true) {
+            applicationContext.getBean(AnnPlayer.class).run();
+            System.out.println("Press enter to try again");
+            stdin.readLine();
+        }
     }
 
     Fruit apple;
@@ -50,6 +50,14 @@ public class AnnHibernatePlayer {
 
     Banana banana;
     Serializable bananaId;
+
+    public void runAop()
+            throws Exception {
+        addFruits();
+        reloadApple();
+        addFriends();
+        reloadTom();
+    }
 
     @Transactional
     void addFruits() {

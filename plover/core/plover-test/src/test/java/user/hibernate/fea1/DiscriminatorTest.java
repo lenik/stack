@@ -1,4 +1,4 @@
-package user.hibernate;
+package user.hibernate.fea1;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.junit.Test;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 
+@Ignore
 public class DiscriminatorTest
         extends WiredDaoTestCase {
 

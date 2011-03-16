@@ -1,4 +1,4 @@
-package user.hibernate.anno;
+package user.hibernate.fea2;
 
 import javax.free.Nullables;
 import javax.persistence.Entity;

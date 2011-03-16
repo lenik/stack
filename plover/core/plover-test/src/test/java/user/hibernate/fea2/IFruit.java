@@ -1,4 +1,4 @@
-package user.hibernate.anno;
+package user.hibernate.fea2;
 
 import com.bee32.plover.orm.entity.IEntity;
 

@@ -1,4 +1,4 @@
-package user.hibernate.anno.ext;
+package user.hibernate.fea2.ext;
 
 import java.io.Serializable;
 

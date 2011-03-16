@@ -1,8 +1,8 @@
-package user.hibernate.anno.ext;
+package user.hibernate.fea2.ext;
 
 import javax.persistence.Entity;
 
-import user.hibernate.anno.Fruit;
+import user.hibernate.fea2.Fruit;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityFormat;

@@ -1,4 +1,4 @@
-package user.hibernate.anno;
+package user.hibernate.fea2;
 
 import java.util.Properties;
 
@@ -7,15 +7,15 @@ import javax.sql.DataSource;
 
 import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
 
-import user.hibernate.anno.ext.Banana;
+import user.hibernate.fea2.ext.Banana;
 
-public class Food_AnnotationSessionFactoryBean
+public class LocalSessionFactory
         extends AnnotationSessionFactoryBean {
 
     @Inject
     DataSource dataSource;
 
-    public Food_AnnotationSessionFactoryBean() {
+    public LocalSessionFactory() {
         Properties properties = new Properties();
 
         properties.setProperty("hibernate.show_sql", "true");
