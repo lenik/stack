@@ -9,10 +9,8 @@ public class PloverNamingStrategy
     private static final long serialVersionUID = 1L;
 
     public String escapeName(String name) {
-        if (name.startsWith("`"))
-            return name;
-        else
-            return "`" + name + "`";
+        name = name.replace("`", "");
+        return "`" + name + "`";
     }
 
     @Override
