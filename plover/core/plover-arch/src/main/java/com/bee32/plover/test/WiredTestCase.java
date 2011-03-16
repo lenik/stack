@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,15 +16,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 /*            */"/com/bee32/plover/inject/cref/auto-context.xml",
 /*            */"/com/bee32/plover/inject/cref/scan-testx-context.xml" })
 public abstract class WiredTestCase
-        extends Assert {
+        extends Assert
+        implements InitializingBean {
 
     @Inject
-    protected ApplicationContext appContext;
+    protected ApplicationContext application;
 
     protected AutowireCapableBeanFactory beanFactory;
 
     public void afterPropertiesSet() {
-        beanFactory = appContext.getAutowireCapableBeanFactory();
+        beanFactory = application.getAutowireCapableBeanFactory();
     }
 
     protected <T> T createBean(Class<T> beanClass)
