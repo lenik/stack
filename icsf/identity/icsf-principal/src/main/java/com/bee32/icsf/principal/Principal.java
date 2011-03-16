@@ -107,6 +107,46 @@ public class Principal
     }
 
     @Override
+    public boolean impliesOneOf(Collection<? extends IPrincipal> principals) {
+        if (principals != null)
+            for (IPrincipal principal : principals)
+                if (implies(principal))
+                    return true;
+
+        return false;
+    }
+
+    @Override
+    public boolean impliesAllOf(Collection<? extends IPrincipal> principals) {
+        if (principals != null)
+            for (IPrincipal principal : principals)
+                if (implies(principal))
+                    return false;
+
+        return true;
+    }
+
+    @Override
+    public boolean impliedByOneOf(Collection<? extends IPrincipal> principals) {
+        if (principals != null)
+            for (IPrincipal principal : principals)
+                if (principal.implies(this))
+                    return true;
+
+        return false;
+    }
+
+    @Override
+    public boolean impliedByAllOf(Collection<? extends IPrincipal> principals) {
+        if (principals != null)
+            for (IPrincipal principal : principals)
+                if (!principal.implies(this))
+                    return false;
+
+        return true;
+    }
+
+    @Override
     public void accept(IPrincipalVisitor visitor) {
     }
 

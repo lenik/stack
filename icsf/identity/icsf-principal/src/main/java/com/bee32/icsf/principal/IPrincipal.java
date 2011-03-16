@@ -1,6 +1,7 @@
 package com.bee32.icsf.principal;
 
 import java.security.Principal;
+import java.util.Collection;
 
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.orm.entity.IEntity;
@@ -42,7 +43,7 @@ public interface IPrincipal
     String IMAGE_PORTRAIT = "portrait";
 
     /**
-     * 蕴含关系。
+     * 判断蕴含关系。
      *
      * @param principal
      *            待测试的被蕴含的安全主体。
@@ -51,6 +52,28 @@ public interface IPrincipal
      * @see PrincipalImplication#getLUB()
      */
     boolean implies(IPrincipal principal);
+
+    boolean impliesOneOf(Collection<? extends IPrincipal> principals);
+
+    boolean impliesAllOf(Collection<? extends IPrincipal> principals);
+
+    /**
+     * 判断被任一蕴含关系。
+     *
+     * @param principals
+     *            待测试的蕴含的安全主体。
+     * @return 当任一指定的 <code>principals</code> 蕴含了本主体则返回 <code>true</code>，否则返回 <code>false</code>。
+     */
+    boolean impliedByOneOf(Collection<? extends IPrincipal> principals);
+
+    /**
+     * 判断被全部蕴含关系。
+     *
+     * @param principals
+     *            待测试的蕴含的安全主体。
+     * @return 当所有指定的 <code>principals</code> 蕴含了本主体则返回 <code>true</code>，否则返回 <code>false</code>。
+     */
+    boolean impliedByAllOf(Collection<? extends IPrincipal> principals);
 
     void accept(IPrincipalVisitor visitor);
 
