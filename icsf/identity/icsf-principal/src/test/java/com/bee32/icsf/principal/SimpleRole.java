@@ -3,9 +3,11 @@ package com.bee32.icsf.principal;
 import java.util.Collections;
 import java.util.Set;
 
-@Deprecated
+import javax.persistence.Entity;
+
+@Entity
 public class SimpleRole
-        extends AbstractRole {
+        extends Role {
 
     private static final long serialVersionUID = 1L;
 
