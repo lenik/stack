@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.free.Nullables;
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -65,8 +64,7 @@ public class AllowList
         return getResponsibles();
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,
-    /*        */targetEntity = Principal.class)
+    @OneToMany(targetEntity = Principal.class, fetch = FetchType.EAGER)
     @JoinTable(name = "AllowListResponsible", //
     /*        */joinColumns = @JoinColumn(name = "responsible"), //
     /*        */inverseJoinColumns = @JoinColumn(name = "allowList"))

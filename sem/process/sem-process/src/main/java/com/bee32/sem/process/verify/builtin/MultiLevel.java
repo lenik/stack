@@ -6,10 +6,14 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.free.IdentityHashSet;
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.MapKey;
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortType;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
@@ -33,7 +37,11 @@ public class MultiLevel
         super(AllowState.class);
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "multiLevel")
+    @OneToMany(mappedBy = "multiLevel")
+    // @Cascade(CascadeType.DELETE_ORPHAN)
+    @MapKey(columns = @Column(name = "limit"))
+    @Sort(type = SortType.NATURAL)
+    @Column(name = "verifyPolicy")
     public Map<Long, VerifyPolicy<?, ?>> getRangeMap() {
         return rangeMap;
     }
