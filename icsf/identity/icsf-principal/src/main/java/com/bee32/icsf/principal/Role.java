@@ -28,6 +28,8 @@ public class Role
 
     protected IRolePrincipal inheritedRole;
 
+    protected Set<? extends IRolePrincipal> derivedRoles;
+
     protected Set<IUserPrincipal> responsibleUsers;
     protected Set<IGroupPrincipal> responsibleGroups;
 
@@ -49,8 +51,23 @@ public class Role
         this.inheritedRole = inheritedRole;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-    /*            */targetEntity = User.class, mappedBy = "assignedRoles")
+    @Transient
+    @OneToMany(targetEntity = Role.class, mappedBy = "inheritedRole")
+    @Override
+    public Set<? extends IRolePrincipal> getDerivedRoles() {
+        if (derivedRoles == null)
+            return null;
+        else
+            return Collections.unmodifiableSet(derivedRoles);
+    }
+
+    public void setDerivedRoles(Set<? extends IRolePrincipal> derivedRoles) {
+        this.derivedRoles = derivedRoles;
+    }
+
+    @ManyToMany(targetEntity = User.class, mappedBy = "assignedRoles")
+    // @Cascade(CascadeType.SAVE_UPDATE)
+    @Override
     public Set<IUserPrincipal> getResponsibleUsers() {
         if (responsibleUsers == null) {
             synchronized (this) {

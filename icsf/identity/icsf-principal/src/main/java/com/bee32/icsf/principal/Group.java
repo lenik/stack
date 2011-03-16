@@ -32,6 +32,8 @@ public class Group
     protected IUserPrincipal owner;
     protected IRolePrincipal primaryRole;
 
+    protected Set<? extends IGroupPrincipal> derivedGroups;
+
     protected Set<IRolePrincipal> assignedRoles;
     protected Set<IUserPrincipal> memberUsers;
 
@@ -61,6 +63,20 @@ public class Group
 
     public void setInheritedGroup(IGroupPrincipal inheritedGroup) {
         this.inheritedGroup = inheritedGroup;
+    }
+
+    @Transient
+    @OneToMany(targetEntity = Group.class, mappedBy = "inheritedGroup")
+    @Override
+    public Set<? extends IGroupPrincipal> getDerivedGroups() {
+        if (derivedGroups == null)
+            return null;
+        else
+            return Collections.unmodifiableSet(derivedGroups);
+    }
+
+    public void setDerivedGroups(Set<? extends IGroupPrincipal> derivedGroups) {
+        this.derivedGroups = derivedGroups;
     }
 
     @ManyToOne(targetEntity = User.class)

@@ -30,6 +30,11 @@ public class SimpleRole
     }
 
     @Override
+    public Set<? extends IRolePrincipal> getDerivedRoles() {
+        return Collections.emptySet();
+    }
+
+    @Override
     public Set<IUserPrincipal> getResponsibleUsers() {
         return Collections.emptySet();
     }

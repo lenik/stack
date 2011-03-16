@@ -35,6 +35,11 @@ public class SimpleGroup
     }
 
     @Override
+    public Set<? extends IGroupPrincipal> getDerivedGroups() {
+        return Collections.emptySet();
+    }
+
+    @Override
     public IUserPrincipal getOwner() {
         return null;
     }

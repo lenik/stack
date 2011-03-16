@@ -16,6 +16,8 @@ public interface IGroupPrincipal
      */
     IGroupPrincipal getInheritedGroup();
 
+    Set<? extends IGroupPrincipal> getDerivedGroups();
+
     /**
      * 获取组的拥有者。
      * <p>

@@ -16,6 +16,8 @@ public interface IRolePrincipal
      */
     IRolePrincipal getInheritedRole();
 
+    Set<? extends IRolePrincipal> getDerivedRoles();
+
     Set<? extends IUserPrincipal> getResponsibleUsers();
 
     Set<? extends IGroupPrincipal> getResponsibleGroups();
