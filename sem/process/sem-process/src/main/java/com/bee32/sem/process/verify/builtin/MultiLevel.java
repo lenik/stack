@@ -2,16 +2,22 @@ package com.bee32.sem.process.verify.builtin;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import javax.free.IdentityHashSet;
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.User;
 import com.bee32.sem.process.verify.ContextClass;
 import com.bee32.sem.process.verify.VerifyPolicy;
+import com.bee32.sem.process.verify.result.ErrorResult;
+import com.bee32.sem.process.verify.result.RejectedResult;
+import com.bee32.sem.process.verify.result.UnauthorizedResult;
 
 @ContextClass(IContextLimit.class)
 @Entity
@@ -21,22 +27,44 @@ public class MultiLevel
 
     private static final long serialVersionUID = 1L;
 
-    private final TreeMap<Long, VerifyPolicy<?, ?>> levelMap;
+    private MultiLevelRanges rangeMap;
 
     public MultiLevel() {
         super(AllowState.class);
-        this.levelMap = new TreeMap<Long, VerifyPolicy<?, ?>>();
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "multiLevel")
+    public Map<Long, VerifyPolicy<?, ?>> getRangeMap() {
+        return rangeMap;
+    }
+
+    public void setRangeMap(Map<Long, VerifyPolicy<?, ?>> rangeMap) {
+        this.rangeMap = new MultiLevelRanges(rangeMap);
+    }
+
+    public void addRange(long limit, VerifyPolicy<?, ?> verifyPolicy) {
+        if (verifyPolicy == null)
+            throw new NullPointerException("verifyPolicy for " + getName());
+
+        rangeMap.put(limit, verifyPolicy);
+    }
+
+    public boolean removeRange(long limit) {
+        VerifyPolicy<?, ?> definedPolicy = rangeMap.remove(limit);
+        return definedPolicy != null;
     }
 
     @Override
     public Collection<? extends Principal> getDeclaredResponsibles(IContextLimit context) {
         long limit = context.getContextLimit();
-        return getDeclaredResponsibles(context, limit);
+        return getResponsiblesWithinLimit(limit);
     }
 
-    public Collection<? extends Principal> getDeclaredResponsibles(IContextLimit context, long limit) {
+    public Collection<? extends Principal> getResponsiblesWithinLimit(long limit) {
+        DummyContextLimit compatibleContext = new DummyContextLimit("dummy", limit);
+
         Set<Principal> allDeclared = new HashSet<Principal>();
-        Long ceil = levelMap.ceilingKey(limit);
+        Long ceil = rangeMap.ceilingKey(limit);
 
         IdentityHashSet markSet = new IdentityHashSet();
         markSet.add(this);
@@ -44,7 +72,7 @@ public class MultiLevel
         while (ceil != null) {
 
             @SuppressWarnings("unchecked")
-            VerifyPolicy<IContextLimit, ?> policy = (VerifyPolicy<IContextLimit, ?>) levelMap.get(ceil);
+            VerifyPolicy<IContextLimit, ?> policy = (VerifyPolicy<IContextLimit, ?>) rangeMap.get(ceil);
 
             // Already scanned, skip to avoid cyclic ref.
             if (!markSet.add(policy))
@@ -52,32 +80,35 @@ public class MultiLevel
 
             if (policy instanceof MultiLevel) {
                 MultiLevel mlist = (MultiLevel) policy;
-                Collection<? extends Principal> subset = mlist.getDeclaredResponsibles(context, limit);
+                Collection<? extends Principal> subset = mlist.getResponsiblesWithinLimit(limit);
                 allDeclared.addAll(subset);
 
-            } else {
-
-                Collection<? extends Principal> subset = policy.getDeclaredResponsibles(context);
+            } else if (compatibleContext.isCompatibleWith(policy)) {
+                Collection<? extends Principal> subset = compatibleContext.getDeclaredResponsibles(policy);
                 allDeclared.addAll(subset);
             }
 
-            ceil = levelMap.higherKey(ceil);
+            ceil = rangeMap.higherKey(ceil);
         }
 
         return allDeclared;
     }
 
-    public void add(long limit, VerifyPolicy<?, ?> policy) {
-        if (policy == null)
-            throw new NullPointerException("allowList");
-
-        levelMap.put(limit, policy);
-    }
-
     @Override
-    public String checkState(IContextLimit context, AllowState state) {
+    public ErrorResult validateState(IContextLimit context, AllowState state) {
+        User user = state.getUser();
+
+        if (!user.impliesOneOf(getDeclaredResponsibles(context)))
+            return new UnauthorizedResult(user);
 
         return null;
     }
 
+    @Override
+    public ErrorResult checkState(IContextLimit context, AllowState state) {
+        if (!state.isAllowed())
+            return new RejectedResult(state.getUser(), state.getMessage());
+
+        return null;
+    }
 }
