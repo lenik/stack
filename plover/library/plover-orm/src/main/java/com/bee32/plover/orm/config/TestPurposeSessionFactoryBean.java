@@ -32,16 +32,21 @@ public abstract class TestPurposeSessionFactoryBean
         super.populateHibernateProperties(properties);
 
         // Dialect
-        properties.setProperty("hibernate.dialect", H2Dialect.class.getName());
+        properties.setProperty(dialect, H2Dialect.class.getName());
 
         setDataSource(dataSource);
 
         // Mapping
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        properties.setProperty(hbm2ddlAuto, "create-drop");
+
+        // Debug
+        properties.setProperty(showSql, "true");
+        properties.setProperty(formatSql, "true");
+        properties.setProperty(useSqlComments, "true");
 
         // Performance
-        properties.setProperty("hibernate.connection.pool_size", "1");
-        properties.setProperty("hibernate.cache.provider_class", NoCacheProvider.class.getName());
+        properties.setProperty(connectionPoolSize, "1");
+        properties.setProperty(cacheProviderClass, NoCacheProvider.class.getName());
     }
 
     private PersistenceUnit testUnit = new PersistenceUnit("test-unit");;

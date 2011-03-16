@@ -7,9 +7,11 @@ import org.hibernate.transaction.JDBCTransactionFactory;
 
 import com.bee32.plover.orm.PloverNamingStrategy;
 import com.bee32.plover.orm.unit.PersistenceUnitSelection;
+import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
 
 public abstract class CustomizedSessionFactoryBean
-        extends LazySessionFactoryBean {
+        extends LazySessionFactoryBean
+        implements HibernateProperties {
 
     public CustomizedSessionFactoryBean(String name) {
         super(name);
@@ -74,10 +76,10 @@ public abstract class CustomizedSessionFactoryBean
     protected void populateHibernateProperties(Properties properties) {
 
         // Transaction
-        properties.setProperty("hibernate.transaction.factory_class", //
+        properties.setProperty(transactionFactoryClass, //
                 JDBCTransactionFactory.class.getName());
 
-        properties.setProperty("hibernate.connection.autocommit", "false");
+        properties.setProperty(connectionAutocommit, "false");
 
         // Mapping
         properties.setProperty("hibernate.globally_quoted_identifiers", "true");
@@ -85,15 +87,13 @@ public abstract class CustomizedSessionFactoryBean
         properties.setProperty("hibernate.id.new_generator_mappings", "true");
 
         properties.setProperty("org.hibernate.flushMode", "COMMIT");
-        properties.setProperty("hibernate.generate_statistics", "true");
+        properties.setProperty(generateStatistics, "true");
 
         // Debug
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("hibernate.format_sql", "true");
-        properties.setProperty("hibernate.use_sql_comments", "true");
+        properties.setProperty(showSql, "true");
 
         // Misc
-        properties.setProperty("hibernate.current_session_context_class", "thread");
+        properties.setProperty(currentSessionContextClass, "thread");
 
     }
 
