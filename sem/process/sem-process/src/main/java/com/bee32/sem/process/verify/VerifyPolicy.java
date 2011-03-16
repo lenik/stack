@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import org.hibernate.annotations.AccessType;
+
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.sem.process.verify.result.ErrorResult;
 import com.bee32.sem.process.verify.result.PendingResult;
@@ -30,6 +32,12 @@ public abstract class VerifyPolicy<C, S extends VerifyState>
         if (verifyStateClass == null)
             throw new NullPointerException("verifyStateClass");
         this.verifyStateClass = verifyStateClass;
+    }
+
+    @AccessType("field")
+    @Override
+    public String getName() {
+        return name;
     }
 
     /**

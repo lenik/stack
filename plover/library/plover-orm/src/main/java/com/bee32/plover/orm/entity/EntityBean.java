@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -59,16 +58,6 @@ public abstract class EntityBean<K>
 
     void setVersion(int version) {
         this.version = version;
-    }
-
-    @Transient
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
