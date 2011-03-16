@@ -16,10 +16,14 @@ import javax.persistence.OneToMany;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalBeanConfig;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.process.verify.VerifyPolicy;
+import com.bee32.sem.process.verify.result.ErrorResult;
+import com.bee32.sem.process.verify.result.RejectedResult;
+import com.bee32.sem.process.verify.result.UnauthorizedResult;
 
 /**
  * 由任一管理员审核策略。
@@ -90,21 +94,21 @@ public class AllowList
     }
 
     @Override
-    public String checkState(Object context, AllowState state) {
-        if (state == null)
-            return "尚未审核。";
+    public ErrorResult validateState(Object context, AllowState state) {
+        User user = state.getUser();
 
-        Principal allowdBy = state.getAllowedBy();
-        if (allowdBy == null)
-            throw new NullPointerException("allowdBy");
+        if (!user.impliesOneOf(responsibles))
+            return new UnauthorizedResult(user);
 
-        if (responsibles != null) {
-            for (Principal responsible : responsibles)
-                if (responsible.implies(allowdBy))
-                    return null;
-        }
+        return null;
+    }
 
-        return "无效的审核人：" + allowdBy;
+    @Override
+    public ErrorResult checkState(Object context, AllowState state) {
+        if (!state.isAllowed())
+            return new RejectedResult(state.getUser(), state.getMessage());
+
+        return null;
     }
 
     @Override

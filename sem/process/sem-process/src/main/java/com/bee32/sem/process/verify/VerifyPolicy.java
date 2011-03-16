@@ -9,6 +9,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.sem.process.verify.result.ErrorResult;
+import com.bee32.sem.process.verify.result.PendingResult;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -30,6 +32,16 @@ public abstract class VerifyPolicy<C, S extends VerifyState>
         this.verifyStateClass = verifyStateClass;
     }
 
+    /**
+     * This is a shortcut to {@link ContextClassUtil#getContextClass(Class)}.
+     *
+     * @return The required context class for this verify policy, non-<code>null</code>.
+     */
+    public Class<?> getContextClass() {
+        Class<?> contextClass = ContextClassUtil.getContextClass(getClass());
+        return contextClass;
+    }
+
     @Override
     public String encodeState(C context, S state)
             throws EncodeException {
@@ -44,23 +56,52 @@ public abstract class VerifyPolicy<C, S extends VerifyState>
         return state;
     }
 
+    protected ErrorResult getNullResult() {
+        return PendingResult.getInstance();
+    }
+
+    public ErrorResult validateState(C context, S state) {
+        return null;
+    }
+
     /**
-     * Check if the given verify state is verified.
+     * 检查审核状态，如果未审核给出审核失败的消息。
      *
+     * @param context
+     *            当前审核状态的上下文对象（通常是审核数据所属的 Entity）。
+     * @param state
+     *            审核状态，非 <code>null</code> 值。
      * @return <code>null</code> means verified, otherwise the error message.
      */
-    public abstract String checkState(C context, S state);
+    public abstract ErrorResult checkState(C context, S state);
+
+    ErrorResult _verify(C context, S state) {
+
+        if (state == null)
+            return getNullResult();
+
+        // policy-consistency validation.
+        ErrorResult errorResult = validateState(context, state);
+
+        // Continue to check if the state is validated.
+        if (errorResult == null)
+            errorResult = checkState(context, state);
+
+        return errorResult;
+    }
 
     public void verify(C context, S state)
             throws VerifyException {
-        String errorMessage = checkState(context, state);
-        if (errorMessage != null)
-            throw new VerifyException(errorMessage);
+
+        ErrorResult errorResult = _verify(context, state);
+
+        if (errorResult != null)
+            throw new VerifyException(String.valueOf(errorResult));
     }
 
     public boolean isVerified(C context, S state) {
-        String errorMessage = checkState(context, state);
-        return errorMessage == null;
+        ErrorResult errorResult = _verify(context, state);
+        return errorResult == null;
     }
 
 }

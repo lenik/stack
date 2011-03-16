@@ -7,7 +7,7 @@ import com.bee32.plover.stateflow.MutableState;
 /**
  * 审核状态/审核数据。
  */
-public class VerifyState
+public abstract class VerifyState
         extends MutableState
         implements /* IIndexable, */Serializable {
 
@@ -19,6 +19,13 @@ public class VerifyState
 
     public VerifyState(String name) {
         super(name);
+    }
+
+    public abstract String getStateMessage();
+
+    @Override
+    public String toString() {
+        return getStateMessage();
     }
 
 }

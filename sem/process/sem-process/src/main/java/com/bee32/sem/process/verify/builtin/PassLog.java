@@ -3,7 +3,7 @@ package com.bee32.sem.process.verify.builtin;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bee32.icsf.principal.IUserPrincipal;
+import com.bee32.icsf.principal.User;
 import com.bee32.sem.process.verify.VerifyState;
 
 public class PassLog
@@ -11,47 +11,57 @@ public class PassLog
 
     private static final long serialVersionUID = 1L;
 
-    private List<IUserPrincipal> users;
+    private List<AllowState> stepStates;
 
     public PassLog() {
-        this.users = new ArrayList<IUserPrincipal>();
+        this.stepStates = new ArrayList<AllowState>();
     }
 
-    public PassLog(List<IUserPrincipal> persons) {
-        if (persons == null)
-            throw new NullPointerException("persons");
-        this.users = persons;
+    public PassLog(List<AllowState> stepStates) {
+        if (stepStates == null)
+            throw new NullPointerException("stepStates");
+        this.stepStates = stepStates;
     }
 
-    public void passBy(IUserPrincipal person) {
-        if (person == null)
-            throw new NullPointerException("person");
-        users.add(person);
+    public void passBy(User user) {
+        if (user == null)
+            throw new NullPointerException("user");
+        stepStates.add(new AllowState(true, user));
+    }
+
+    public void rejectBy(User user) {
+        if (user == null)
+            throw new NullPointerException("user");
+        stepStates.add(new AllowState(false, user));
     }
 
     public int size() {
-        return users.size();
+        return stepStates.size();
     }
 
     public void clear() {
-        users.clear();
+        stepStates.clear();
     }
 
-    public IUserPrincipal get(int index) {
-        return users.get(index);
+    public AllowState get(int index) {
+        return stepStates.get(index);
     }
 
     @Override
-    public String toString() {
-        String list = null;
-        for (IUserPrincipal user : users) {
-            if (list == null)
-                list = "";
-            else
-                list += ", ";
-            list += user.getName();
+    public String getStateMessage() {
+        StringBuilder sb = new StringBuilder();
+
+        int index = 0;
+        for (AllowState stepState : stepStates) {
+            if (index++ != 0)
+                sb.append(", ");
+
+            sb.append("审核" + index + " ");
+            sb.append(stepState);
+            sb.append("\n");
         }
-        return "Verified by " + list + " (" + users.size() + " persons)";
+
+        return sb.toString();
     }
 
 }
