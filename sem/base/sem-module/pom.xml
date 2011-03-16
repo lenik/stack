@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-orm</artifactId>
+            <artifactId>plover-or_ext</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
