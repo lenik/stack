@@ -4,7 +4,6 @@ import javax.inject.Inject;
 
 import org.hibernate.SessionFactory;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
@@ -14,7 +13,6 @@ import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 import com.bee32.plover.test.WiredAssembledTestCase;
 
 @ContextConfiguration("/com/bee32/plover/orm/context/tx-context.xml")
-@Transactional
 public abstract class WiredDaoTestCase
         extends WiredAssembledTestCase {
 
