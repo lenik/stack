@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.entity;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -27,7 +28,7 @@ import com.bee32.plover.util.PrettyPrintStream;
  * </ul>
  */
 @MappedSuperclass
-public abstract class EntityBean<K>
+public abstract class EntityBean<K extends Serializable>
         extends Model
         implements IEntity<K>, IPopulatable, IFormatString {
 

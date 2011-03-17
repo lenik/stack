@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.util;
 
+import java.io.Serializable;
+
 import com.bee32.plover.arch.IModule;
 import com.bee32.plover.arch.Module;
 import com.bee32.plover.orm.entity.HibernateEntityRepository;
@@ -19,8 +21,8 @@ public abstract class ERModule
         super(name);
     }
 
-    protected <E extends IEntity<K>, K> void export(IEntityRepository<E, K> entityRepository, String location,
-            String persistenceUnitName) {
+    protected <E extends IEntity<K>, K extends Serializable> //
+    void export(IEntityRepository<E, K> entityRepository, String location, String persistenceUnitName) {
 
         // declare the restful token
         declare(location, entityRepository);
@@ -34,11 +36,13 @@ public abstract class ERModule
         unit.addPersistedClass(entityType);
     }
 
-    protected <E extends IEntity<K>, K> void export(IEntityRepository<E, K> entityRepository, String location) {
+    protected <E extends IEntity<K>, K extends Serializable> //
+    void export(IEntityRepository<E, K> entityRepository, String location) {
         export(entityRepository, location, PersistenceUnit.defaultUnitName);
     }
 
-    protected <E extends IEntity<K>, K> void export(IEntityRepository<E, K> entityRepository) {
+    protected <E extends IEntity<K>, K extends Serializable> //
+    void export(IEntityRepository<E, K> entityRepository) {
         String location = entityRepository.getName();
         export(entityRepository, location);
     }
@@ -48,14 +52,16 @@ public abstract class ERModule
      *
      * Currently, this default constrction of hibernate repository is used.
      */
-    protected <E extends IEntity<K>, K> void exportEntity(Class<E> entityType, Class<K> keyType) {
+    protected <E extends IEntity<K>, K extends Serializable> //
+    void exportEntity(Class<E> entityType, Class<K> keyType) {
         exportEntityByHibernate(entityType, keyType);
     }
 
     /**
      * The hibernate mapping file (<code>&lt;entity-class&gt;.hbm.xml</code>).
      */
-    protected <E extends IEntity<K>, K> void exportEntityByHibernate(Class<E> entityType, Class<K> keyType) {
+    protected <E extends IEntity<K>, K extends Serializable> //
+    void exportEntityByHibernate(Class<E> entityType, Class<K> keyType) {
         IEntityRepository<E, K> repository = new HibernateEntityRepository<E, K>(entityType, keyType);
         export(repository);
     }

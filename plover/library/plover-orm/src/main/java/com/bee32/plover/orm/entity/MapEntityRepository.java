@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapEntityRepository<E extends IEntity<K>, K>
+public class MapEntityRepository<E extends IEntity<K>, K extends Serializable>
         extends EntityRepository<E, K>
         implements Serializable {
 
@@ -44,7 +44,7 @@ public class MapEntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(Serializable key) {
         return getMap().containsKey(key);
     }
 
@@ -59,7 +59,7 @@ public class MapEntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
-    public E retrieve(Object key) {
+    public E retrieve(Serializable key) {
         return getMap().get(key);
     }
 
@@ -86,7 +86,7 @@ public class MapEntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
-    public void deleteByKey(Object key) {
+    public void deleteByKey(Serializable key) {
         getMap().remove(key);
     }
 

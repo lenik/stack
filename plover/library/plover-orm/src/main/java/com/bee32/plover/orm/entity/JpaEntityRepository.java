@@ -1,10 +1,12 @@
 package com.bee32.plover.orm.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.EntityManager;
 
 import com.bee32.plover.orm.dao.JpaTemplate;
 
-public abstract class JpaEntityRepository<E extends IEntity<K>, K>
+public abstract class JpaEntityRepository<E extends IEntity<K>, K extends Serializable>
         extends EntityRepository<E, K> {
 
     private JpaTemplate template;
@@ -31,12 +33,12 @@ public abstract class JpaEntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(Serializable key) {
         return retrieve(key) != null;
     }
 
     @Override
-    public E retrieve(Object key) {
+    public E retrieve(Serializable key) {
         // TODO SHOULD convert key -> serializable.
         E entity = template.find(instanceType, key);
         return entity;
@@ -59,7 +61,7 @@ public abstract class JpaEntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
-    public void deleteByKey(Object key) {
+    public void deleteByKey(Serializable key) {
         E entity = retrieve(key);
         if (entity != null)
             template.remove(entity);

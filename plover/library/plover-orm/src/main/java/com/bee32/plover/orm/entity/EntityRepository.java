@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.entity;
 
+import java.io.Serializable;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +26,7 @@ import com.bee32.plover.arch.operation.IOperationContext;
 import com.bee32.plover.arch.operation.OperationBuilder;
 import com.bee32.plover.arch.util.IStruct;
 
-public abstract class EntityRepository<E extends IEntity<K>, K>
+public abstract class EntityRepository<E extends IEntity<K>, K extends Serializable>
         extends Repository<K, E>
         implements IEntityRepository<E, K> {
 
@@ -360,8 +361,8 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
                 throws Exception {
             EntityRepository repo = (EntityRepository) instance;
 
-            String entityKey = context.getPath();
-            Object key = repo.parseKey(entityKey);
+            String keyString = context.getPath();
+            Serializable key = repo.parseKey(keyString);
 
             Object entity = repo.retrieve(key);
             repo.populate(entity, context);
@@ -378,13 +379,15 @@ public abstract class EntityRepository<E extends IEntity<K>, K>
     static class DeleteOperation
             extends AbstractOperation {
 
+        @SuppressWarnings({ "rawtypes" })
         @Override
         public Object execute(Object instance, IOperationContext context)
                 throws Exception {
-            EntityRepository<?, ?> repo = (EntityRepository<?, ?>) instance;
 
-            String entityKey = context.getPath();
-            Object key = repo.parseKey(entityKey);
+            EntityRepository repo = (EntityRepository) instance;
+
+            String keyString = context.getPath();
+            Serializable key = repo.parseKey(keyString);
 
             repo.deleteByKey(key);
 

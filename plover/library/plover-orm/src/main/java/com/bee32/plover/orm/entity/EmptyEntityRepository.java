@@ -1,10 +1,11 @@
 package com.bee32.plover.orm.entity;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class EmptyEntityRepository<E extends IEntity<K>, K>
+public class EmptyEntityRepository<E extends IEntity<K>, K extends Serializable>
         extends EntityRepository<E, K> {
 
     public EmptyEntityRepository(Class<E> instanceType, Class<K> keyType) {
@@ -16,7 +17,7 @@ public class EmptyEntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(Serializable key) {
         return false;
     }
 
@@ -30,12 +31,12 @@ public class EmptyEntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
-    public E retrieve(Object key) {
+    public E retrieve(Serializable key) {
         return null;
     }
 
     @Override
-    public void deleteByKey(Object key) {
+    public void deleteByKey(Serializable key) {
     }
 
     @Override

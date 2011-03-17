@@ -5,13 +5,16 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.hibernate.LockMode;
+import org.hibernate.ReplicationMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.dao.DataAccessException;
 
 import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 
-public class HibernateEntityRepository<E extends IEntity<K>, K>
+public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializable>
         extends EntityRepository<E, K> {
 
     static class Support
@@ -88,17 +91,20 @@ public class HibernateEntityRepository<E extends IEntity<K>, K>
     }
 
     @Override
-    public boolean containsKey(Object key) {
-        Serializable id = (Serializable) key;
-        E entity = getHibernateTemplate().get(entityType, id);
+    public boolean containsKey(Serializable key) {
+        E entity = getHibernateTemplate().get(entityType, key);
         return entity != null;
     }
 
     @Override
-    public E retrieve(Object key) {
-        Serializable id = (Serializable) key;
-        E entity = getHibernateTemplate().get(entityType, id);
+    public E retrieve(Serializable key) {
+        E entity = getHibernateTemplate().get(entityType, key);
         return entity;
+    }
+
+    public E retrieve(Serializable key, LockMode lockMode)
+            throws DataAccessException {
+        return getHibernateTemplate().get(entityType, key, lockMode);
     }
 
     @Override
@@ -113,6 +119,11 @@ public class HibernateEntityRepository<E extends IEntity<K>, K>
         getHibernateTemplate().update(entity);
     }
 
+    public void update(E entity, LockMode lockMode)
+            throws DataAccessException {
+        getHibernateTemplate().update(entity, lockMode);
+    }
+
     @Override
     public void refresh(E entity) {
         getHibernateTemplate().refresh(entity);
@@ -123,8 +134,13 @@ public class HibernateEntityRepository<E extends IEntity<K>, K>
         getHibernateTemplate().delete(entity);
     }
 
+    public void delete(Object entity, LockMode lockMode)
+            throws DataAccessException {
+        getHibernateTemplate().delete(entity, lockMode);
+    }
+
     @Override
-    public void deleteByKey(Object key) {
+    public void deleteByKey(Serializable key) {
         E entity = retrieve(key);
         delete(entity);
     }
@@ -134,6 +150,27 @@ public class HibernateEntityRepository<E extends IEntity<K>, K>
         HibernateTemplate template = getHibernateTemplate();
         List<? extends E> list = template.loadAll(entityType);
         template.deleteAll(list);
+    }
+
+    public void merge(E entity)
+            throws DataAccessException {
+        HibernateTemplate template = getHibernateTemplate();
+        template.merge(entity);
+    }
+
+    public void evict(E entity)
+            throws DataAccessException {
+        HibernateTemplate template = getHibernateTemplate();
+        template.evict(entity);
+    }
+
+    public void replicate(E entity, ReplicationMode replicationMode)
+            throws DataAccessException {
+        getHibernateTemplate().replicate(entity, replicationMode);
+    }
+
+    public void flush() {
+        getHibernateTemplate().flush();
     }
 
 }

@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.entity;
 
+import java.io.Serializable;
+
 import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.ComponentTemplate;
@@ -10,7 +12,7 @@ import com.bee32.plover.inject.ComponentTemplate;
  */
 @ComponentTemplate
 @Lazy
-public abstract class AbstractDao<E extends IEntity<K>, K>
+public abstract class AbstractDao<E extends IEntity<K>, K extends Serializable>
         extends GenericEntityRepository<E, K> {
 
     public AbstractDao(Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {

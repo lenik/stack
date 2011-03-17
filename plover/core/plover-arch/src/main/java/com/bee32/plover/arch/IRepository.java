@@ -1,5 +1,6 @@
 package com.bee32.plover.arch;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public interface IRepository<K, V>
     /**
      * @see Map#containsKey(Object)
      */
-    boolean containsKey(Object key);
+    boolean containsKey(Serializable key);
 
     /**
      * @see Map#containsValue(Object)
@@ -44,7 +45,7 @@ public interface IRepository<K, V>
      * @return The retrieved object, <code>null</code> if the specific key doesn't exist.
      * @see Map#get(Object)
      */
-    V retrieve(Object key);
+    V retrieve(Serializable key);
 
     Collection<? extends K> listKeys();
 
@@ -106,7 +107,7 @@ public interface IRepository<K, V>
      *            Non-<code>null</code> object object.
      * @see Map#remove(Object)
      */
-    void deleteByKey(Object key);
+    void deleteByKey(Serializable key);
 
     /**
      * Delete an object from underlying persistent layer.
