@@ -53,10 +53,15 @@ public class ERNormalSamplesLoader
 
                 for (Object sample : normalTransientSamples) {
                     template.save(sample);
+
+                    // Evict immediately for debug.
+                    template.evict(sample);
                 }
 
             }
         }
+
+
     }
 
 }
