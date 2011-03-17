@@ -49,7 +49,7 @@ public abstract class TestPurposeSessionFactoryBean
         properties.setProperty(cacheProviderClass, NoCacheProvider.class.getName());
     }
 
-    private PersistenceUnit testUnit = new PersistenceUnit("test-unit");;
+    protected PersistenceUnit testUnit = new PersistenceUnit("test-unit");;
 
     public void addPersistedClass(Class<?> clazz) {
         testUnit.addPersistedClass(clazz);
