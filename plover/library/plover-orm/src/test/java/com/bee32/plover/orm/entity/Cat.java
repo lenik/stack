@@ -1,11 +1,17 @@
 package com.bee32.plover.orm.entity;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.free.Nullables;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 public class Cat
@@ -13,10 +19,11 @@ public class Cat
 
     private static final long serialVersionUID = 1L;
 
-    private String color;
+    String color;
 
-    private Cat parent;
-    private Collection<Cat> children;
+    Cat leader;
+    Cat parent;
+    Set<Cat> children;
 
     public Cat() {
     }
@@ -45,7 +52,7 @@ public class Cat
         this.color = color;
     }
 
-    @ManyToOne
+    @ManyToOne //(fetch = FetchType.LAZY)
     public Cat getParent() {
         return parent;
     }
@@ -54,13 +61,30 @@ public class Cat
         this.parent = parent;
     }
 
-    @OneToMany(mappedBy = "parent")
-    public Collection<Cat> getChildren() {
+    @ManyToOne //(fetch = FetchType.LAZY)
+    public Cat getLeader() {
+        return leader;
+    }
+
+    public void setLeader(Cat leader) {
+        this.leader = leader;
+    }
+
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
+    @Cascade(CascadeType.ALL)
+    public Set<Cat> getChildren() {
+        if (children == null) {
+            synchronized (this) {
+                if (children == null) {
+                    children = new HashSet<Cat>();
+                }
+            }
+        }
         return children;
     }
 
-    public void setChildren(Collection<Cat> children) {
-        this.children = children;
+    public void setChildren(Collection<? extends Cat> children) {
+        this.children = new HashSet<Cat>(children);
     }
 
     @Override
@@ -70,12 +94,23 @@ public class Cat
         if (!Nullables.equals(color, o.color))
             return false;
 
+        if (!Nullables.equals(parent, o.parent))
+            return false;
+
+        if (!Nullables.equals(leader, o.leader))
+            return false;
+
         return true;
     }
 
     @Override
     protected int hashCodeEntity() {
-        return color == null ? 0 : color.hashCode();
+        final int prime = 31;
+        int result = 0;
+        result = prime * result + ((color == null) ? 0 : color.hashCode());
+        result = prime * result + ((leader == null) ? 0 : leader.hashCode());
+        result = prime * result + ((parent == null) ? 0 : parent.hashCode());
+        return result;
     }
 
 }
