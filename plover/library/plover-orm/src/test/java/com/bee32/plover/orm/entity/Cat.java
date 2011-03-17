@@ -1,7 +1,11 @@
 package com.bee32.plover.orm.entity;
 
+import java.util.Collection;
+
 import javax.free.Nullables;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Cat
@@ -10,6 +14,9 @@ public class Cat
     private static final long serialVersionUID = 1L;
 
     private String color;
+
+    private Cat parent;
+    private Collection<Cat> children;
 
     public Cat() {
     }
@@ -36,6 +43,24 @@ public class Cat
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    @ManyToOne
+    public Cat getParent() {
+        return parent;
+    }
+
+    public void setParent(Cat parent) {
+        this.parent = parent;
+    }
+
+    @OneToMany(mappedBy = "parent")
+    public Collection<Cat> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Collection<Cat> children) {
+        this.children = children;
     }
 
     @Override
