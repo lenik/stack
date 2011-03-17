@@ -53,7 +53,7 @@ public abstract class EntityBean<K extends Serializable>
         return id;
     }
 
-    void setId(K id) {
+    protected void setId(K id) {
         this.id = id;
     }
 
@@ -62,7 +62,7 @@ public abstract class EntityBean<K extends Serializable>
         return version;
     }
 
-    void setVersion(int version) {
+    protected void setVersion(int version) {
         this.version = version;
     }
 
