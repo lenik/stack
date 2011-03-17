@@ -2,11 +2,14 @@ package user.hibernate.fea1;
 
 import javax.persistence.Entity;
 
+import org.hibernate.annotations.BatchSize;
+
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
 @Entity
+@BatchSize(size = 5)
 public class RGB
         extends Color {
 

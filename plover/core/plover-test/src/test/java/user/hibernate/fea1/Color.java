@@ -6,11 +6,13 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import org.hibernate.annotations.AccessType;
+import org.hibernate.annotations.BatchSize;
 
 import com.bee32.plover.orm.entity.EntityBean;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@BatchSize(size = 5)
 public class Color
         extends EntityBean<String> {
 

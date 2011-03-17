@@ -7,8 +7,8 @@ import org.junit.Test;
 
 import com.bee32.plover.orm.dao.HibernateTemplate;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
+import com.p6spy.engine.common.P6SpyOptions;
 
-@Ignore
 public class DiscriminatorTest
         extends WiredDaoTestCase {
 
@@ -16,12 +16,8 @@ public class DiscriminatorTest
         super(ColorSystem.unit);
     }
 
-    @Override
-    public void afterPropertiesSet() {
-        super.afterPropertiesSet();
-    }
-
     @Test
+    @Ignore
     public void listAllColors() {
         HibernateTemplate template = getHibernateTemplate();
 
@@ -42,6 +38,21 @@ public class DiscriminatorTest
 
         List<CMYK> list = template.loadAll(CMYK.class);
         assertEquals(2, list.size());
+    }
+
+    @Test
+    public void listRGBBased() {
+        String inc = P6SpyOptions.getIncludecategories();
+        System.err.println("[" + inc + "]");
+
+        HibernateTemplate template = getHibernateTemplate();
+
+        for (Color color : ColorSystem.getPredefinedColors())
+            template.save(color);
+
+        List<RGB> list = template.loadAll(RGB.class);
+        for (RGB rgb : list)
+            System.err.println("RGB: " + rgb);
     }
 
 }
