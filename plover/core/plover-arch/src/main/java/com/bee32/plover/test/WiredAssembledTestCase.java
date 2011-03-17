@@ -19,23 +19,23 @@ public abstract class WiredAssembledTestCase
         implements InitializingBean {
 
     @Inject
-    private ApplicationContext context;
+    protected ApplicationContext application;
 
-    private AutowireCapableBeanFactory autowireCapableBeanFactory;
+    protected AutowireCapableBeanFactory beanFactory;
 
     @Override
     public void afterPropertiesSet() {
-        autowireCapableBeanFactory = context.getAutowireCapableBeanFactory();
+        beanFactory = application.getAutowireCapableBeanFactory();
     }
 
     protected <T> T createBean(Class<T> beanClass)
             throws BeansException {
-        return autowireCapableBeanFactory.createBean(beanClass);
+        return beanFactory.createBean(beanClass);
     }
 
     protected <T> T createBean(Class<T> beanClass, int autowireMode, boolean dependencyCheck)
             throws BeansException {
-        Object bean = autowireCapableBeanFactory.createBean(beanClass, autowireMode, dependencyCheck);
+        Object bean = beanFactory.createBean(beanClass, autowireMode, dependencyCheck);
         return beanClass.cast(bean);
     }
 
