@@ -46,6 +46,11 @@ public class FeaturePlayer {
 
         banana.addRelated("color", apple);
         foodDao.save(banana);
+
+        foodDao.flush();
+        foodDao.evict(apple);
+        foodDao.evict(banana);
+        foodDao.evict(aba);
     }
 
     @Transactional
