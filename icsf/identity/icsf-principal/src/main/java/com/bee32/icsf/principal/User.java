@@ -18,7 +18,7 @@ import com.bee32.plover.orm.entity.IEntity;
 
 @Entity
 @Table(name = "User")
-@DiscriminatorValue("user")
+@DiscriminatorValue("U")
 public class User
         extends AbstractUser
         implements IEntity<Long> {

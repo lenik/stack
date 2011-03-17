@@ -3,9 +3,11 @@ package com.bee32.icsf.principal;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
+@DiscriminatorValue("R1")
 public class SimpleRole
         extends Role {
 

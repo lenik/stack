@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.free.Nullables;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -18,6 +19,7 @@ import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
 
 @Entity
+@DiscriminatorValue("G")
 public class Group
         extends AbstractGroup
         implements IEntity<Long> {

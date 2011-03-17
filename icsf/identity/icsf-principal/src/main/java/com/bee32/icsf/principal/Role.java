@@ -19,7 +19,7 @@ import com.bee32.plover.orm.entity.IEntity;
 
 @Entity
 @Table(name = "Role")
-@DiscriminatorValue("role")
+@DiscriminatorValue("R")
 public class Role
         extends AbstractRole
         implements IEntity<Long> {

@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -16,10 +17,9 @@ import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
-//@MappedSuperclass
 @Entity
-@Inheritance
-@DiscriminatorColumn(name = "steoro", length = 20)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "steoro", length = 3)
 public class Principal
         extends EntityBean<Long>
         implements IPrincipal {
@@ -40,7 +40,7 @@ public class Principal
     }
 
     @Basic(optional = false)
-    @Column(length = 60)
+    @Column(length = 50)
     @Override
     public String getName() {
         return super.getName();
