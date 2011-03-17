@@ -14,8 +14,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.EntityFormat;
-import com.bee32.plover.util.PrettyPrintStream;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -147,20 +145,12 @@ public class Principal
     @Override
     public void accept(IPrincipalVisitor visitor) {
     }
-
-    @Override
-    public void toString(PrettyPrintStream out, EntityFormat format) {
-        switch (format) {
-
-        case SHORT:
-            String principalType = getClass().getSimpleName();
-            String qname = principalType + " :: " + getName();
-            out.print(qname);
-            break;
-
-        default:
-            super.toString(out, format);
-        }
-    }
+//
+//    @Override
+//    public void toString(PrettyPrintStream out, EntityFormat format) {
+//        String principalType = getClass().getSimpleName();
+//        String qname = principalType + " :: " + getName();
+//        out.print(qname);
+//    }
 
 }
