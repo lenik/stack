@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import user.hibernate.fea2.Fruit;
 
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.EntityFormat;
-import com.bee32.plover.util.PrettyPrintStream;
 
 @Entity
 @DiscriminatorValue("BNNA")
@@ -44,12 +42,6 @@ public class Banana
     protected boolean equalsEntity(EntityBean<Integer> other) {
         Banana o = (Banana) other;
         return length == o.length;
-    }
-
-    @Override
-    public void toString(PrettyPrintStream out, EntityFormat format) {
-        super.toString(out, format);
-        out.print(" length=" + length);
     }
 
 }
