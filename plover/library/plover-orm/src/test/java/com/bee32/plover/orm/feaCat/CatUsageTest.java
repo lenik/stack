@@ -1,8 +1,9 @@
-package com.bee32.plover.orm.entity;
+package com.bee32.plover.orm.feaCat;
 
 import javax.inject.Inject;
 
 import org.junit.Test;
+import org.springframework.test.context.ContextConfiguration;
 
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.util.IStruct;
@@ -10,8 +11,12 @@ import com.bee32.plover.arch.util.MapStruct;
 import com.bee32.plover.orm.dao.CatDao;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 
+@ContextConfiguration("context.xml")
 public class CatUsageTest
         extends WiredDaoTestCase {
+
+    @Inject
+    FeaturePlayer catService;
 
     public CatUsageTest() {
         super(Animals.getInstance());
@@ -31,13 +36,11 @@ public class CatUsageTest
         assertEquals(expected, actual);
     }
 
-    @Inject
-    CatUsageService catService;
-
     @Test
     public void testCascade() {
         catService.tcPrepare();
-        catService.tcList();
+// catService.tcList();
+// catService.tcList();
     }
 
 }

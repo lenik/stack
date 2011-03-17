@@ -1,6 +1,8 @@
-package com.bee32.plover.orm.entity;
+package com.bee32.plover.orm.feaCat;
 
 import javax.persistence.Entity;
+
+import com.bee32.plover.orm.entity.EntityBean;
 
 @Entity
 public class Tiger

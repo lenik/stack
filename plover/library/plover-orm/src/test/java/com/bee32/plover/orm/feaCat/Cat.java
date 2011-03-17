@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.entity;
+package com.bee32.plover.orm.feaCat;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+
+import com.bee32.plover.orm.entity.EntityBean;
 
 @Entity
 public class Cat
@@ -36,6 +38,16 @@ public class Cat
     }
 
     @Override
+    public void setId(Long id) {
+        super.setId(id);
+    }
+
+    @Override
+    public void setVersion(int version) {
+        super.setVersion(version);
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -52,7 +64,8 @@ public class Cat
         this.color = color;
     }
 
-    @ManyToOne //(fetch = FetchType.LAZY)
+    @ManyToOne
+    // (fetch = FetchType.LAZY)
     public Cat getParent() {
         return parent;
     }
@@ -61,7 +74,8 @@ public class Cat
         this.parent = parent;
     }
 
-    @ManyToOne //(fetch = FetchType.LAZY)
+    @ManyToOne
+    // (fetch = FetchType.LAZY)
     public Cat getLeader() {
         return leader;
     }

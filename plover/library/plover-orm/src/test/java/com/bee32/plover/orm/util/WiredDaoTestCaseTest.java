@@ -8,9 +8,9 @@ import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.dao.CatDao;
-import com.bee32.plover.orm.entity.Animals;
-import com.bee32.plover.orm.entity.Cat;
-import com.bee32.plover.orm.entity.Tiger;
+import com.bee32.plover.orm.feaCat.Animals;
+import com.bee32.plover.orm.feaCat.Cat;
+import com.bee32.plover.orm.feaCat.Tiger;
 
 public class WiredDaoTestCaseTest
         extends WiredDaoTestCase {

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.bee32.plover.orm.feaCat.Cat;
+
 public class EntityBeanFormatTest
         extends Assert {
 

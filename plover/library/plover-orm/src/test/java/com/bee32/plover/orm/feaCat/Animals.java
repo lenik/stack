@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.entity;
+package com.bee32.plover.orm.feaCat;
 
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
