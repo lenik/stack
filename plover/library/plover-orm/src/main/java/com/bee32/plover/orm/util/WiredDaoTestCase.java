@@ -46,11 +46,11 @@ public abstract class WiredDaoTestCase
         return support;
     }
 
-    public final SessionFactory getSessionFactory() {
+    public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
-    public final HibernateTemplate getHibernateTemplate() {
+    public HibernateTemplate getHibernateTemplate() {
         return getSupport().getHibernateTemplateEx();
     }
 
