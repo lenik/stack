@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class EntityBeanTest
+public class EntityBeanFormatTest
         extends Assert {
 
     Cat kate = new Cat("kate", "yellow");
     Cat kitty = new Cat("kitty", "pink");
     Cat lily = new Cat("lily", "white");
 
-    public EntityBeanTest() {
+    public EntityBeanFormatTest() {
         kitty.setParent(kate);
         lily.setParent(kate);
 
