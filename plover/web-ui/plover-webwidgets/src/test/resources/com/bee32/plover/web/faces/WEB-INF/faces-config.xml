@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<faces-config>
+    <application>
+        <view-handler>
+            com.sun.facelets.FaceletViewHandler
+    </view-handler>
+    </application>
+</faces-config>
