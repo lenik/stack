@@ -30,14 +30,11 @@ public class BookModuleTest
         assertTrue(credit.contains("99"));
     }
 
-    public static void main(String[] args)
+    // @Test
+    public void play()
             throws Exception {
-        BookModuleTest test = new BookModuleTest();
-
-        test.setUpLibraries();
-
-        test.rtl.browse();
-        test.rtl.readLine();
+        setUpLibraries();
+        browseAndWait();
     }
 
 }

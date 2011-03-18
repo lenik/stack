@@ -1,6 +1,5 @@
 package com.bee32.plover.restful.test;
 
-import org.mortbay.jetty.servlet.DefaultServlet;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.bee32.plover.restful.DispatchFilter;
@@ -21,11 +20,13 @@ public class RestfulTesterLibrary
     /**
      * Should configure application-context using {@link RestfulTestCase.LocalRTL}
      */
-    public RestfulTesterLibrary() {
+    public RestfulTesterLibrary(Class<?> baseClass) {
+        super(baseClass);
         // this(defaultContextRef.getApplicationContext());
     }
 
-    public RestfulTesterLibrary(WebApplicationContext applicationContext) {
+    public RestfulTesterLibrary(Class<?> baseClass, WebApplicationContext applicationContext) {
+        super(baseClass);
         if (applicationContext != null) {
             String key = SimpleApplicationContextUtil.rootApplicationContextKey;
             setAttribute(key, applicationContext);
@@ -42,10 +43,6 @@ public class RestfulTesterLibrary
             throws Exception {
 
         addFilter(DispatchFilter.class, "/*", 0);
-
-        // The default servlet must be existed.
-        // Otherwise, the filter won't work.
-        addServlet(DefaultServlet.class, "/");
 
         // String wacAttr=WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE;
     }

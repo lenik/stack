@@ -11,43 +11,46 @@ import org.springframework.web.context.ContextLoaderListener;
 
 import com.bee32.plover.inject.spring.ContextConfigurationUtil;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
+import com.bee32.plover.servlet.test.ServletTestCase;
 import com.bee32.plover.servlet.util.LazyLoadServlet;
-import com.bee32.plover.test.AssembledTestCase;
 
 public abstract class RestfulTestCase
-        extends AssembledTestCase {
+        extends ServletTestCase {
 
     protected RestfulTesterLibrary rtl;
 
     public RestfulTestCase() {
-        // super(units);
-        initialize();
-    }
-
-    // @Override
-    // public void afterPropertiesSet() {
-    // super.afterPropertiesSet();
-    // }
-
-    void initialize() {
-        install(rtl = new LocalRTL());
+        super(null);
+        install(stl = rtl = new LocalRTL());
     }
 
     class LocalRTL
             extends RestfulTesterLibrary {
 
+        public LocalRTL() {
+            super(RestfulTestCase.this.getClass());
+        }
+
+        @Override
+        protected void configureBuiltinServlets()
+                throws Exception {
+            super.configureBuiltinServlets();
+            RestfulTestCase.this.configureBuiltinServlets();
+        }
+
         @Override
         protected void configureServlets()
                 throws Exception {
             super.configureServlets();
-
-            RestfulTestCase.this.configureBuiltinServlets();
             RestfulTestCase.this.configureServlets();
         }
 
     }
 
-    void configureBuiltinServlets() {
+    @Override
+    protected void configureBuiltinServlets() {
+        super.configureBuiltinServlets();
+
         // setup
         ContextLoaderListener contextLoaderListener = new ContextLoaderListener();
 
@@ -81,6 +84,7 @@ public abstract class RestfulTestCase
         setupH2Console();
     }
 
+    @Override
     protected void configureServlets() {
     }
 

@@ -19,7 +19,7 @@ public class RestfulTesterLibraryTest
     RestfulTesterLibrary rtl;
 
     public RestfulTesterLibraryTest() {
-        install(rtl = new RestfulTesterLibrary());
+        install(rtl = new RestfulTesterLibrary(getClass()));
     }
 
     @Test
