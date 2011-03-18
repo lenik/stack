@@ -5,6 +5,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -381,6 +382,39 @@ public abstract class EntityBean<K extends Serializable>
         PrettyPrintStream out = new PrettyPrintStream();
         toString(out, format);
         return out.toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T> T cast(Object thisLike) {
+        if (thisLike == null)
+            return null;
+
+        Object derived = getClass().cast(thisLike);
+
+        return (T) derived;
+    }
+
+    protected <T extends EntityBean<K>> T cast(Class<T> thatClass, EntityBean<K> thatLike) {
+        if (thatLike == null)
+            return null;
+
+        return thatClass.cast(thatLike);
+    }
+
+    protected <C extends IParentAware<P>, P> Set<C> attachCopy(Class<C> childClass, Set<?> children) {
+        @SuppressWarnings("unchecked")
+        P parent = (P) this;
+        return attachCopy(parent, childClass, children);
+    }
+
+    protected <C extends IParentAware<P>, P> Set<C> attachCopy(P parent, Class<C> childClass, Set<?> children) {
+        Set<C> copy = new HashSet<C>();
+        for (Object _child : children) {
+            C child = childClass.cast(_child);
+            child.setParent(parent);
+            copy.add(child);
+        }
+        return copy;
     }
 
 }
