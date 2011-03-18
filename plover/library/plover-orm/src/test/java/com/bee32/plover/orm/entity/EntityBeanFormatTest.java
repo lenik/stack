@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.entity;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,7 +19,7 @@ public class EntityBeanFormatTest
         kitty.setParent(kate);
         lily.setParent(kate);
 
-        ArrayList<Cat> children = new ArrayList<Cat>();
+        Set<Cat> children = new HashSet<Cat>();
         children.add(kitty);
         children.add(lily);
         kate.setChildren(children);

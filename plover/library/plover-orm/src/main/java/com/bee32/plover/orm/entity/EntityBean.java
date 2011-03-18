@@ -289,6 +289,8 @@ public abstract class EntityBean<K extends Serializable>
                                 return;
                             }
 
+                            out.print("(");
+
                             if (multiLine) {
                                 out.enter();
                                 out.println();
