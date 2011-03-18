@@ -10,7 +10,8 @@ public class FeatureSFB
     @Override
     protected void populateHibernateProperties(Properties properties) {
         super.populateHibernateProperties(properties);
-        properties.put(hbm2ddlAuto, "update");
+
+        // properties.put(hbm2ddlAuto, "validate");
     }
 
     {

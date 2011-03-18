@@ -3,6 +3,8 @@ package com.bee32.plover.orm.feaCat;
 import javax.inject.Inject;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.bee32.plover.arch.BuildException;
@@ -14,6 +16,8 @@ import com.bee32.plover.orm.util.WiredDaoTestCase;
 @ContextConfiguration("context.xml")
 public class CatUsageTest
         extends WiredDaoTestCase {
+
+    static Logger logger = LoggerFactory.getLogger(CatUsageTest.class);
 
     @Inject
     FeaturePlayer catService;
@@ -38,8 +42,11 @@ public class CatUsageTest
 
     @Test
     public void testCascade() {
+        logger.warn("Do Prepare");
         catService.tcPrepare();
-// catService.tcList();
+
+        logger.warn("Do List");
+        catService.tcList();
 // catService.tcList();
     }
 

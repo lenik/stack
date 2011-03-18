@@ -1,6 +1,5 @@
 package com.bee32.plover.orm.feaCat;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,7 +64,6 @@ public class Cat
     }
 
     @ManyToOne
-    // (fetch = FetchType.LAZY)
     public Cat getParent() {
         return parent;
     }
@@ -75,7 +73,6 @@ public class Cat
     }
 
     @ManyToOne
-    // (fetch = FetchType.LAZY)
     public Cat getLeader() {
         return leader;
     }
@@ -97,8 +94,8 @@ public class Cat
         return children;
     }
 
-    public void setChildren(Collection<? extends Cat> children) {
-        this.children = new HashSet<Cat>(children);
+    public void setChildren(Set<Cat> children) {
+        this.children = (children);
     }
 
     @Override
