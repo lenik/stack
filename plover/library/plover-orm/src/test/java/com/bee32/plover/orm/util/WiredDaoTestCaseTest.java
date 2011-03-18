@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.dao.CatDao;
@@ -16,7 +18,7 @@ public class WiredDaoTestCaseTest
         extends WiredDaoTestCase {
 
     @Inject
-    CatDao catDao;
+    DaoService service;
 
     public WiredDaoTestCaseTest() {
         super(Animals.getInstance());
@@ -24,32 +26,41 @@ public class WiredDaoTestCaseTest
 
     @Test
     public void testCreateReload() {
-        create();
-        reload();
+        service.create();
+        service.reload();
     }
 
-    @Transactional
-    void create() {
-        Cat tomCat = new Cat("Tom", "black");
-        Cat lucyCat = new Cat("Lucy", "pink");
+    @Service
+    static class DaoService
+            extends Assert {
 
-        Tiger fishTiger = new Tiger("Fish", "yellow");
-        fishTiger.setPower(10);
+        @Inject
+        CatDao catDao;
 
-        catDao.save(tomCat);
-        catDao.save(lucyCat);
-        catDao.save(fishTiger);
-    }
+        @Transactional
+        public void create() {
+            Cat tomCat = new Cat("Tom", "black");
+            Cat lucyCat = new Cat("Lucy", "pink");
 
-    @Transactional(readOnly = true)
-    void reload() {
-        List<? extends Cat> cats = catDao.list();
+            Tiger fishTiger = new Tiger("Fish", "yellow");
+            fishTiger.setPower(10);
 
-        for (Cat cat : cats) {
-            System.out.println(cat);
+            catDao.save(tomCat);
+            catDao.save(lucyCat);
+            catDao.save(fishTiger);
         }
 
-        assertEquals(3, cats.size());
+        @Transactional(readOnly = true)
+        public void reload() {
+            List<? extends Cat> cats = catDao.list();
+
+            for (Cat cat : cats) {
+                System.out.println(cat);
+            }
+
+            assertEquals(3, cats.size());
+        }
+
     }
 
 }
