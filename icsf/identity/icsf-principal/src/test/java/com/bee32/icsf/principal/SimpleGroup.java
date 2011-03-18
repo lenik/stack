@@ -1,8 +1,5 @@
 package com.bee32.icsf.principal;
 
-import java.util.Collections;
-import java.util.Set;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -23,29 +20,6 @@ public class SimpleGroup
 
     public SimpleGroup(String name) {
         super(name);
-    }
-
-    @Override
-    public SimpleGroup getInheritedGroup() {
-        return (SimpleGroup) super.getInheritedGroup();
-    }
-
-    @Override
-    public Set<SimpleGroup> getDerivedGroups() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public IUserPrincipal getOwner() {
-        return null;
-    }
-
-    @Override
-    public void setOwner(IUserPrincipal owner) {
-    }
-
-    @Override
-    public void setPrimaryRole(IRolePrincipal role) {
     }
 
 }

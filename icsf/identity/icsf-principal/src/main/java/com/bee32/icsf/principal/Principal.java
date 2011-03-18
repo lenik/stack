@@ -38,7 +38,7 @@ public class Principal
     }
 
     @Basic(optional = false)
-    @Column(length = 50)
+    @Column(length = 50, unique = true)
     @Override
     public String getName() {
         return super.getName();
@@ -146,11 +146,11 @@ public class Principal
     public void accept(IPrincipalVisitor visitor) {
     }
 //
-//    @Override
-//    public void toString(PrettyPrintStream out, EntityFormat format) {
-//        String principalType = getClass().getSimpleName();
-//        String qname = principalType + " :: " + getName();
-//        out.print(qname);
-//    }
+// @Override
+// public void toString(PrettyPrintStream out, EntityFormat format) {
+// String principalType = getClass().getSimpleName();
+// String qname = principalType + " :: " + getName();
+// out.print(qname);
+// }
 
 }

@@ -1,6 +1,5 @@
 package com.bee32.icsf.principal;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,8 +29,8 @@ public class User
     protected IGroupPrincipal primaryGroup;
     protected IRolePrincipal primaryRole;
 
-    protected Set<IGroupPrincipal> assignedGroups;
-    protected Set<IRolePrincipal> assignedRoles;
+    protected Set<? extends IGroupPrincipal> assignedGroups;
+    protected Set<? extends IRolePrincipal> assignedRoles;
 
     public User() {
     }
@@ -68,6 +67,7 @@ public class User
         this.primaryRole = primaryRole;
     }
 
+    @SuppressWarnings("unchecked")
     @ManyToMany(targetEntity = Group.class, mappedBy = "memberUsers")
     // @Cascade(CascadeType.SAVE_UPDATE)
     @Override
@@ -79,13 +79,14 @@ public class User
                 }
             }
         }
-        return assignedGroups;
+        return (Set<IGroupPrincipal>) assignedGroups;
     }
 
-    public void setAssignedGroups(Collection<? extends IGroupPrincipal> assignedGroups) {
-        this.assignedGroups = new HashSet<IGroupPrincipal>(assignedGroups);
+    public void setAssignedGroups(Set<? extends IGroupPrincipal> assignedGroups) {
+        this.assignedGroups = assignedGroups;
     }
 
+    @SuppressWarnings("unchecked")
     @ManyToMany(targetEntity = Role.class)
     // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "UserRole", //
@@ -100,11 +101,11 @@ public class User
                 }
             }
         }
-        return assignedRoles;
+        return (Set<IRolePrincipal>) assignedRoles;
     }
 
-    public void setAssignedRoles(Collection<? extends IRolePrincipal> assignedRoles) {
-        this.assignedRoles = new HashSet<IRolePrincipal>(assignedRoles);
+    public void setAssignedRoles(Set<? extends IRolePrincipal> assignedRoles) {
+        this.assignedRoles = assignedRoles;
     }
 
     @Override

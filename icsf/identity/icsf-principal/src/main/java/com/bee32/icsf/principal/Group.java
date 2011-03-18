@@ -1,7 +1,5 @@
 package com.bee32.icsf.principal;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,8 +30,8 @@ public class Group
 
     protected Set<? extends IGroupPrincipal> derivedGroups;
 
-    protected Set<IRolePrincipal> assignedRoles;
-    protected Set<IUserPrincipal> memberUsers;
+    protected Set<? extends IRolePrincipal> assignedRoles;
+    protected Set<? extends IUserPrincipal> memberUsers;
 
     public Group() {
     }
@@ -60,17 +58,22 @@ public class Group
     }
 
     public void setInheritedGroup(IGroupPrincipal inheritedGroup) {
-        this.inheritedGroup = inheritedGroup;
+        this.inheritedGroup = cast(inheritedGroup);
     }
 
+    @SuppressWarnings("unchecked")
     @Transient
     @OneToMany(targetEntity = Group.class, mappedBy = "inheritedGroup")
     @Override
-    public Set<? extends IGroupPrincipal> getDerivedGroups() {
-        if (derivedGroups == null)
-            return null;
-        else
-            return Collections.unmodifiableSet(derivedGroups);
+    public Set<IGroupPrincipal> getDerivedGroups() {
+        if (derivedGroups == null) {
+            synchronized (this) {
+                if (derivedGroups == null) {
+                    derivedGroups = new HashSet<IGroupPrincipal>();
+                }
+            }
+        }
+        return (Set<IGroupPrincipal>) derivedGroups;
     }
 
     public void setDerivedGroups(Set<? extends IGroupPrincipal> derivedGroups) {
@@ -98,6 +101,7 @@ public class Group
         this.primaryRole = primaryRole;
     }
 
+    @SuppressWarnings("unchecked")
     @ManyToMany(targetEntity = User.class)
     // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "GroupMember", //
@@ -112,13 +116,15 @@ public class Group
                 }
             }
         }
-        return memberUsers;
+        return (Set<IUserPrincipal>) memberUsers;
     }
 
-    public void setMemberUsers(Collection<? extends IUserPrincipal> memberUsers) {
-        this.memberUsers = new HashSet<IUserPrincipal>(memberUsers);
+    @SuppressWarnings("unchecked")
+    public void setMemberUsers(Set<? extends IUserPrincipal> memberUsers) {
+        this.memberUsers = (Set<IUserPrincipal>) memberUsers;
     }
 
+    @SuppressWarnings("unchecked")
     @ManyToMany(targetEntity = Role.class)
     // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "GroupRole", //
@@ -133,11 +139,11 @@ public class Group
                 }
             }
         }
-        return assignedRoles;
+        return (Set<IRolePrincipal>) assignedRoles;
     }
 
-    public void setAssignedRoles(Collection<? extends IRolePrincipal> assignedRoles) {
-        this.assignedRoles = new HashSet<IRolePrincipal>(assignedRoles);
+    public void setAssignedRoles(Set<? extends IRolePrincipal> assignedRoles) {
+        this.assignedRoles = assignedRoles;
     }
 
     @Override

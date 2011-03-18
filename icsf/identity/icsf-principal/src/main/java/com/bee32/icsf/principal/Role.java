@@ -1,6 +1,5 @@
 package com.bee32.icsf.principal;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,8 +29,8 @@ public class Role
 
     protected Set<? extends IRolePrincipal> derivedRoles;
 
-    protected Set<IUserPrincipal> responsibleUsers;
-    protected Set<IGroupPrincipal> responsibleGroups;
+    protected Set<? extends IUserPrincipal> responsibleUsers;
+    protected Set<? extends IGroupPrincipal> responsibleGroups;
 
     public Role() {
         super();
@@ -65,6 +64,7 @@ public class Role
         this.derivedRoles = derivedRoles;
     }
 
+    @SuppressWarnings("unchecked")
     @ManyToMany(targetEntity = User.class, mappedBy = "assignedRoles")
     // @Cascade(CascadeType.SAVE_UPDATE)
     @Override
@@ -76,13 +76,14 @@ public class Role
                 }
             }
         }
-        return responsibleUsers;
+        return (Set<IUserPrincipal>) responsibleUsers;
     }
 
-    public void setResponsibleUsers(Collection<IUserPrincipal> responsibleUsers) {
-        this.responsibleUsers = new HashSet<IUserPrincipal>(responsibleUsers);
+    public void setResponsibleUsers(Set<? extends IUserPrincipal> responsibleUsers) {
+        this.responsibleUsers = responsibleUsers;
     }
 
+    @SuppressWarnings("unchecked")
     @ManyToMany(targetEntity = Group.class, mappedBy = "assignedRoles")
     // @Cascade(CascadeType.SAVE_UPDATE)
     @Override
@@ -94,11 +95,11 @@ public class Role
                 }
             }
         }
-        return responsibleGroups;
+        return (Set<IGroupPrincipal>) responsibleGroups;
     }
 
-    public void setResponsibleGroups(Collection<? extends IGroupPrincipal> responsibleGroups) {
-        this.responsibleGroups = new HashSet<IGroupPrincipal>(responsibleGroups);
+    public void setResponsibleGroups(Set<? extends IGroupPrincipal> responsibleGroups) {
+        this.responsibleGroups = responsibleGroups;
     }
 
     @Override

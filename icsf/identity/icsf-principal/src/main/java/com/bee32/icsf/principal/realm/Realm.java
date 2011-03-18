@@ -71,8 +71,8 @@ public class Realm
         return principals;
     }
 
-    public void setPrincipals(Collection<? extends Principal> principals) {
-        this.principals = new HashSet<Principal>(principals);
+    public void setPrincipals(Set<Principal> principals) {
+        this.principals = principals;
     }
 
     @Transient
