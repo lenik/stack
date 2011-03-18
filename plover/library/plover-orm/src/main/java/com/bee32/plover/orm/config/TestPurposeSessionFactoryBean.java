@@ -16,11 +16,7 @@ public abstract class TestPurposeSessionFactoryBean
         extends CustomizedSessionFactoryBean {
 
     public TestPurposeSessionFactoryBean() {
-        super("test-purpose");
-    }
-
-    public TestPurposeSessionFactoryBean(String name) {
-        super(name);
+        super("test");
     }
 
     @Inject
@@ -34,10 +30,16 @@ public abstract class TestPurposeSessionFactoryBean
         // Dialect
         properties.setProperty(dialect, H2Dialect.class.getName());
 
+        /**
+         * If set, this will override corresponding settings in Hibernate properties.
+         *
+         * If this is set, the Hibernate settings should not define a connection provider to avoid
+         * meaningless double configuration.
+         */
         setDataSource(dataSource);
 
         // Mapping
-        properties.setProperty(hbm2ddlAuto, "create-drop");
+        properties.setProperty(hbm2ddlAuto, "create");
 
         // Debug
         properties.setProperty(showSql, "true");

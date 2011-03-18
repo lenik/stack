@@ -1,11 +1,13 @@
 package com.bee32.plover.orm.config;
 
 import java.util.Collection;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.hibernate.transaction.JDBCTransactionFactory;
 
 import com.bee32.plover.orm.PloverNamingStrategy;
+import com.bee32.plover.orm.test.DataConfig;
 import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
 
@@ -13,8 +15,22 @@ public abstract class CustomizedSessionFactoryBean
         extends LazySessionFactoryBean
         implements HibernateProperties {
 
+    private Properties overrides;
+
     public CustomizedSessionFactoryBean(String name) {
         super(name);
+
+        this.overrides = new Properties();
+
+        Properties properties = DataConfig.getProperties(name);
+
+        for (Entry<Object, Object> entry : properties.entrySet()) {
+            String key = (String) entry.getKey();
+            String value = (String) entry.getValue();
+            // if (key.startsWith("hibernate.connection."))
+            // continue;
+            overrides.put(key, value);
+        }
     }
 
     static boolean usingAnnotation = true;
@@ -22,14 +38,17 @@ public abstract class CustomizedSessionFactoryBean
     @Override
     protected void lazyConfigure() {
 
-        // SelectedSessionFactory
+        // Prepare hibernate overrides
+        Properties properties = new Properties();
+        populateHibernateProperties(properties);
 
-        Properties hibernateProperties = new Properties();
-        populateHibernateProperties(hibernateProperties);
-        this.setHibernateProperties(hibernateProperties);
+        // Add overrides
+        properties.putAll(overrides);
+
+        this.setHibernateProperties(properties);
 
         // Naming strategy (used to escape the name)
-        String hibernateDialect = (String) hibernateProperties.get("hibernate.dialect");
+        String hibernateDialect = (String) properties.get("hibernate.dialect");
         this.setNamingStrategy(PloverNamingStrategy.getInstance(hibernateDialect));
 
         // Merge mapping resources

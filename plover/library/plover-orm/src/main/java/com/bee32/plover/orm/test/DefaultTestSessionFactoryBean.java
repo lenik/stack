@@ -15,7 +15,7 @@ public class DefaultTestSessionFactoryBean
         extends TestPurposeSessionFactoryBean {
 
     public DefaultTestSessionFactoryBean() {
-        super("test/default");
+        super();
     }
 
     /**
