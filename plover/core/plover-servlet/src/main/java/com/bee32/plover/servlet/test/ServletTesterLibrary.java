@@ -35,10 +35,16 @@ public class ServletTesterLibrary
     private String host = "localhost";
     private int socketPort = -1;
 
+    private Class<?> baseClass;
     private String rootResourceFile = "index.html";
 
     public ServletTesterLibrary() {
+        this(null);
+    }
+
+    public ServletTesterLibrary(Class<?> baseClass) {
         this.logger = LoggerFactory.getLogger(getClass());
+        this.baseClass = baseClass == null ? getClass() : baseClass;
     }
 
     public String getRootResourceFile() {
@@ -63,12 +69,13 @@ public class ServletTesterLibrary
         String portString = connector.substring(colon + 1);
         socketPort = Integer.parseInt(portString);
 
+        configureBuiltinServlets();
         configureServlets();
 
         // Find the resource base.
         if (rootResourceFile != null) {
             URL indexResource = null;
-            Class<?> chain = getClass();
+            Class<?> chain = baseClass;
             while (chain != null) {
                 indexResource = chain.getResource(rootResourceFile);
                 if (indexResource != null)
@@ -99,6 +106,17 @@ public class ServletTesterLibrary
             throws Exception {
         logger.debug("Stop test server: " + this);
         stop();
+    }
+
+    protected void configureBuiltinServlets()
+            throws Exception {
+
+        addFilter(RequestLogger.class, "*", 0);
+
+        addServlet(Favicon.class, "/favicon.ico");
+
+        addFilter(Welcome.class, "/", 0);
+        addServlet(Logo.class, "/logo/*");
     }
 
     /**
@@ -219,7 +237,19 @@ public class ServletTesterLibrary
         Desktop.getDesktop().browse(uri);
     }
 
-    public String readLine()
+    public void browseAndWait()
+            throws IOException {
+        browse();
+        readLine();
+    }
+
+    public void browseAndWait(String location)
+            throws IOException {
+        browse(location);
+        readLine();
+    }
+
+    String readLine()
             throws IOException {
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
         return stdin.readLine();
