@@ -1,8 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <faces-config>
+
     <application>
-        <view-handler>
-            com.sun.facelets.FaceletViewHandler
-    </view-handler>
+        <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
     </application>
+
+    <!-- our NumberBean we just created -->
+    <managed-bean>
+        <managed-bean-name>NumberBean</managed-bean-name>
+        <managed-bean-class>com.bee32.plover.web.test</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>min</property-name>
+            <value>1</value>
+        </managed-property>
+        <managed-property>
+            <property-name>max</property-name>
+            <value>10</value>
+        </managed-property>
+    </managed-bean>
+
+
+    <!-- going from guess.xhtml to response.xhtml -->
+    <navigation-rule>
+        <from-view-id>/guess.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/response.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <!-- going from response.xhtml to guess.xhtml -->
+    <navigation-rule>
+        <from-view-id>/response.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/guess.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
 </faces-config>
