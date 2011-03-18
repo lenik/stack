@@ -69,7 +69,7 @@ public class Cat
     }
 
     public void setParent(Cat parent) {
-        this.parent = parent;
+        this.parent = cast(parent);
     }
 
     @ManyToOne
@@ -95,7 +95,7 @@ public class Cat
     }
 
     public void setChildren(Set<Cat> children) {
-        this.children = (children);
+        this.children = children;
     }
 
     @Override

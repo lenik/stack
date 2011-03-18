@@ -20,7 +20,18 @@ public class FeatureMain {
 
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
-            applicationContext.getBean(FeaturePlayer.class).run();
+
+            try {
+                FeaturePlayer player = applicationContext.getBean(FeaturePlayer.class);
+                System.err.println("Got player: " + player);
+
+                player.tcPrepare();
+                player.tcList();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             System.out.println("Press enter to try again");
             stdin.readLine();
         }
