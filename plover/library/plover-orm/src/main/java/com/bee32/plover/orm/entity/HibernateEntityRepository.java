@@ -75,6 +75,7 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
 
     @Override
     public List<? extends E> list() {
+        // XXX - wrap with a Session to make "dynamic" Collection to work?
         return getHibernateTemplate().loadAll(entityType);
     }
 
@@ -148,8 +149,10 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
     @Override
     public void deleteAll() {
         HibernateTemplate template = getHibernateTemplate();
-        List<? extends E> list = template.loadAll(entityType);
-        template.deleteAll(list);
+        template.bulkUpdate("delete from " + entityType.getSimpleName());
+
+//        List<? extends E> list = template.loadAll(entityType);
+//        template.deleteAll(list);
     }
 
     public void merge(E entity)
