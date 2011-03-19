@@ -5,6 +5,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import com.bee32.plover.servlet.test.ServletTestCase;
+import com.bee32.plover.web.faces.CustomResourceResolver;
 import com.sun.faces.application.WebappLifecycleListener;
 import com.sun.faces.config.ConfigureListener;
 
@@ -13,8 +14,8 @@ public class FaceletsTestCase
 
     @Override
     protected void configureServlets() {
-// stl.setAttribute("facelets.RESOURCE_RESOLVER", //
-// CustomResourceResolver.class.getName());
+        stl.setAttribute("facelets.RESOURCE_RESOLVER", //
+                CustomResourceResolver.class.getName());
 
         // - Use Documents Saved as *.xhtml
         stl.setAttribute("javax.faces.DEFAULT_SUFFIX", ".xhtml");
