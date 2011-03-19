@@ -8,7 +8,7 @@ core/
     plover-inject       依赖注入 (已合并到 plover-arch)
     plover-collections  通用集合类
     plover-expr         一般函数表达式
-    plover-expr-sql     SQL表达式
+    plover-expr-sql     SQL 表达式
     plover-criteria     组合检索模型
     plover-route        事件路由
     plover-indexing     索引框架
@@ -39,17 +39,18 @@ modeling/
 repr/
     plover-repr         基本表示层
     plover-restful      资源状态表示与集成
-    plover-x2html       HTML表示
-    plover-x2pdf        PDF表示
-    plover-x2xml        XML表示
-    plover-x2csv        CSV表示
-    plover-x2flex       Flex表示
-    plover-x2mso        Word/Excel表示
+    plover-x2html       HTML 表示
+    plover-x2pdf        PDF 表示
+    plover-x2xml        XML 表示
+    plover-x2csv        CSV 表示
+    plover-x2flex       Flex 表示
+    plover-x2mso        Word/Excel 表示
 
 ui/
-    plover-widgets      SWT控件
+    plover-widgets      SWT 控件
 
 web-ui/
-    plover-zk           Zk Support
-    plover-webwidgets   Web控件
+    plover-facelets     Facelets 框架与工具
+    plover-zk           Zk 支持
+    plover-webtest      Web 测试支持
 

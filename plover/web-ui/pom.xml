@@ -12,7 +12,8 @@
     <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>plover-webwidgets</module>
+        <module>plover-facelets</module>
+        <module>plover-webtest</module>
         <module>plover-zk</module>
     </modules>
     <name>Plover :: Web Ui</name>
