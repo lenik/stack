@@ -7,7 +7,6 @@ import java.util.Properties;
 import org.hibernate.transaction.JDBCTransactionFactory;
 
 import com.bee32.plover.orm.PloverNamingStrategy;
-import com.bee32.plover.orm.test.DataConfig;
 import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
 

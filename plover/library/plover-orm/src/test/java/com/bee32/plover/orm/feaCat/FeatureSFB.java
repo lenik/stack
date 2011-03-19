@@ -2,7 +2,7 @@ package com.bee32.plover.orm.feaCat;
 
 import java.util.Properties;
 
-import com.bee32.plover.orm.config.TestPurposeSessionFactoryBean;
+import com.bee32.plover.orm.config.test.TestPurposeSessionFactoryBean;
 
 public class FeatureSFB
         extends TestPurposeSessionFactoryBean {

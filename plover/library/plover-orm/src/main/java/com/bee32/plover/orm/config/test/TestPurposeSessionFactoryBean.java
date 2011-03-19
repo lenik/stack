@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.config;
+package com.bee32.plover.orm.config.test;
 
 import java.util.Properties;
 
@@ -9,19 +9,20 @@ import org.hibernate.cache.NoCacheProvider;
 import org.hibernate.dialect.H2Dialect;
 
 import com.bee32.plover.inject.qualifier.TestPurpose;
+import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 
 public abstract class TestPurposeSessionFactoryBean
         extends CustomizedSessionFactoryBean {
 
-    public TestPurposeSessionFactoryBean() {
-        super("test");
-    }
-
     @Inject
     @TestPurpose
     DataSource dataSource;
+
+    public TestPurposeSessionFactoryBean() {
+        super("test");
+    }
 
     @Override
     protected void populateHibernateProperties(Properties properties) {

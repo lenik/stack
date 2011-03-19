@@ -5,7 +5,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.realm.Realm;
-import com.bee32.plover.orm.config.TestPurposeSessionFactoryBean;
+import com.bee32.plover.orm.config.test.TestPurposeSessionFactoryBean;
 
 public class FeatureSFB
         extends TestPurposeSessionFactoryBean {

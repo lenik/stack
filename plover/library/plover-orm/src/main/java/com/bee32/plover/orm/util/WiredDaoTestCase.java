@@ -5,9 +5,9 @@ import javax.inject.Inject;
 import org.hibernate.SessionFactory;
 import org.springframework.test.context.ContextConfiguration;
 
+import com.bee32.plover.orm.config.test.DefaultTestSessionFactoryBean;
 import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
-import com.bee32.plover.orm.test.DefaultTestSessionFactoryBean;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 import com.bee32.plover.test.WiredAssembledTestCase;

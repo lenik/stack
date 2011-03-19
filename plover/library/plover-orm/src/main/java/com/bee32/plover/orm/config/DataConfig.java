@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.test;
+package com.bee32.plover.orm.config;
 
 import java.io.File;
 import java.io.IOException;
