@@ -1,4 +1,4 @@
-package com.bee32.plover.web.test;
+package com.bee32.plover.web.faces.test;
 
 import java.io.Serializable;
 import java.util.Random;

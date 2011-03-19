@@ -1,12 +1,8 @@
-package com.bee32.plover.web.faces;
-
-import java.io.IOException;
+package com.bee32.plover.web.faces.test;
 
 import javax.faces.webapp.FacesServlet;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import org.junit.Test;
 
 import com.bee32.plover.servlet.test.ServletTestCase;
 import com.sun.faces.application.WebappLifecycleListener;
@@ -32,7 +28,7 @@ public class FaceletsTestCase
 
         stl.addEventListener(new ConfigureListener());
 
-      final WebappLifecycleListener lifecycle= new WebappLifecycleListener();
+        final WebappLifecycleListener lifecycle = new WebappLifecycleListener();
 
         stl.addEventListener(new ServletContextListener() {
 
@@ -48,15 +44,8 @@ public class FaceletsTestCase
 
         });
 
-
         // Faces Servlet
         stl.addServlet(FacesServlet.class, "*.jsf");
-    }
-
-    @Test
-    public void play()
-            throws IOException {
-        browseAndWait();
     }
 
 }
