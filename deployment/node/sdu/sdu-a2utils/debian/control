@@ -8,6 +8,5 @@ Homepage: http://sdu.secca-project.com/sdu-a2utils
 
 Package: sdu-a2utils
 Architecture: all
-Depends: ${misc:Depends}, apache2, apache2-utils,
-    coolutils
+Depends: ${misc:Depends}, apache2, apache2-utils, coolutils
 Description: Apache2 with more utilities
