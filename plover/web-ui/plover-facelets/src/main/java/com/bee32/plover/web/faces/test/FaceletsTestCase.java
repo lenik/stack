@@ -1,21 +1,31 @@
 package com.bee32.plover.web.faces.test;
 
 import javax.faces.webapp.FacesServlet;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+
+import org.mortbay.jetty.servlet.ServletHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.servlet.test.ServletTestCase;
-import com.bee32.plover.web.faces.CustomResourceResolver;
-import com.sun.faces.application.WebappLifecycleListener;
-import com.sun.faces.config.ConfigureListener;
+
+enum FaceletsProvider {
+
+    JSF_RI, //
+
+    APACHE_MYFACES, //
+
+}
 
 public class FaceletsTestCase
         extends ServletTestCase {
 
+    static final FaceletsProvider faceletsProvider = FaceletsProvider.APACHE_MYFACES;
+
+    static Logger logger = LoggerFactory.getLogger(FaceletsTestCase.class);
+
     @Override
     protected void configureServlets() {
-        stl.setAttribute("facelets.RESOURCE_RESOLVER", //
-                CustomResourceResolver.class.getName());
+        // stl.setAttribute("facelets.RESOURCE_RESOLVER", CustomResourceResolver.class.getName());
 
         // - Use Documents Saved as *.xhtml
         stl.setAttribute("javax.faces.DEFAULT_SUFFIX", ".xhtml");
@@ -27,26 +37,21 @@ public class FaceletsTestCase
         stl.setAttribute("com.sun.faces.validateXml", "true");
         stl.setAttribute("com.sun.faces.verifyObjects", "true");
 
-        stl.addEventListener(new ConfigureListener());
+        switch (faceletsProvider) {
+        case JSF_RI:
+            // For jsf-ri only:
+            // stl.addEventListener(new ConfigureListener());
+            // stl.addEventListener(new FaceletsWebappLifecycleListener());
+            throw new UnsupportedOperationException("JSF-RI isn't supported anymore");
 
-        final WebappLifecycleListener lifecycle = new WebappLifecycleListener();
+        case APACHE_MYFACES:
+            stl.addEventListener(MyfacesReinitDummyServlet.myfacesSCL);
+            // stl.addServlet(MyfacesReinitDummyServlet.class, "/__mrds__").setInitOrder(1000);
+            break;
+        }
 
-        stl.addEventListener(new ServletContextListener() {
-
-            @Override
-            public void contextInitialized(ServletContextEvent sce) {
-                lifecycle.contextInitialized(sce);
-            }
-
-            @Override
-            public void contextDestroyed(ServletContextEvent sce) {
-                lifecycle.contextDestroyed(sce);
-            }
-
-        });
-
-        // Faces Servlet
-        stl.addServlet(FacesServlet.class, "*.jsf");
+        // Faces Servlet, must be load-on-startup, but STL seems not support.
+        ServletHolder facesServlet = stl.addServlet(FacesServlet.class, "*.jsf");
+        facesServlet.setInitOrder(0);
     }
-
 }
