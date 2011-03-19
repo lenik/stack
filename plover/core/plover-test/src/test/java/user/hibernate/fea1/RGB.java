@@ -1,5 +1,6 @@
 package user.hibernate.fea1;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.hibernate.annotations.BatchSize;
@@ -34,6 +35,7 @@ public class RGB
         this.blue = blue;
     }
 
+    @Column(name = "x")
     public int getRed() {
         return red;
     }
@@ -42,6 +44,7 @@ public class RGB
         this.red = red;
     }
 
+    @Column(name = "y")
     public int getGreen() {
         return green;
     }
@@ -50,6 +53,7 @@ public class RGB
         this.green = green;
     }
 
+    @Column(name = "z")
     public int getBlue() {
         return blue;
     }

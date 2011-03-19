@@ -1,5 +1,6 @@
 package user.hibernate.fea1;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.hibernate.annotations.BatchSize;
@@ -30,6 +31,7 @@ public class ARGB
         this.alpha = alpha;
     }
 
+    @Column(name = "w")
     public int getAlpha() {
         return alpha;
     }

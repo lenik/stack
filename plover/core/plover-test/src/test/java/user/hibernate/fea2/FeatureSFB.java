@@ -3,7 +3,7 @@ package user.hibernate.fea2;
 import user.hibernate.fea2.ext.Banana;
 import user.hibernate.fea2.ext.Food;
 
-import com.bee32.plover.orm.config.TestPurposeSessionFactoryBean;
+import com.bee32.plover.orm.config.test.TestPurposeSessionFactoryBean;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
 public class FeatureSFB

@@ -1,5 +1,6 @@
 package user.hibernate.fea1;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import com.bee32.plover.orm.entity.EntityBean;
@@ -29,6 +30,7 @@ public class CMYK
         this.black = black;
     }
 
+    @Column(name = "x")
     public int getCyan() {
         return cyan;
     }
@@ -37,6 +39,7 @@ public class CMYK
         this.cyan = cyan;
     }
 
+    @Column(name = "y")
     public int getMagenta() {
         return magenta;
     }
@@ -45,6 +48,7 @@ public class CMYK
         this.magenta = magenta;
     }
 
+    @Column(name = "z")
     public int getYellow() {
         return yellow;
     }
@@ -53,6 +57,7 @@ public class CMYK
         this.yellow = yellow;
     }
 
+    @Column(name = "w")
     public int getBlack() {
         return black;
     }
