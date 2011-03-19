@@ -131,13 +131,6 @@ public class DispatchFilter
         RestfulRequestBuilder requestBuilder = RestfulRequestBuilder.getInstance();
         RestfulRequest rreq = requestBuilder.build(req);
 
-        // XXX -opt away.
-        System.err.println(req.getRequestURI());
-        if ("/favicon.ico".equals(req.getRequestURI())) {
-            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return true;
-        }
-
         // 2, Path-dispatch
         ITokenQueue tq = rreq.getTokenQueue();
 
