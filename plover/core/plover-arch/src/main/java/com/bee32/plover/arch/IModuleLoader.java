@@ -10,4 +10,6 @@ public interface IModuleLoader {
 
     Map<String, IModule> getModuleMap();
 
+    void activate();
+
 }

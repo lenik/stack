@@ -15,6 +15,9 @@ public abstract class AbstractModuleLoader
 
     static Logger logger = LoggerFactory.getLogger(AbstractModuleLoader.class);
 
+    private boolean loaded;
+    private boolean activated;
+
     private Collection<IModule> modules;
     private Map<String, IModule> moduleMap;
 
@@ -22,15 +25,20 @@ public abstract class AbstractModuleLoader
 
     @Override
     public final synchronized void load() {
-        if (modules == null) {
-
+        if (!loaded) {
             modules = reload();
-
             moduleMap = new TreeMap<String, IModule>();
             for (IModule module : modules) {
                 String name = module.getName();
                 moduleMap.put(name, module);
             }
+            loaded = true;
+        }
+    }
+
+    @Override
+    public final synchronized void activate() {
+        if (!activated) {
 
             List<IModule> failedModules = new ArrayList<IModule>();
 
@@ -63,8 +71,9 @@ public abstract class AbstractModuleLoader
                     moduleMap.remove(failedModuleName);
                 }
             }
-        }
 
+            activated = true;
+        }
     }
 
     protected abstract Collection<IModule> reload();

@@ -83,6 +83,10 @@ public class ModuleManager
         }
     }
 
+    public void activate() {
+        moduleLoader.activate();
+    }
+
     /**
      * Get the representational path for a specific object.
      *
