@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<faces-config>
+
+    <!-- our NumberBean we just created -->
+    <managed-bean>
+        <managed-bean-name>NumberBean</managed-bean-name>
+        <managed-bean-class>com.bee32.plover.web.faces.NumberBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>min</property-name>
+            <value>1</value>
+        </managed-property>
+        <managed-property>
+            <property-name>max</property-name>
+            <value>10</value>
+        </managed-property>
+    </managed-bean>
+
+</faces-config>
