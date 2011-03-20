@@ -4,7 +4,7 @@
     <!-- our NumberBean we just created -->
     <managed-bean>
         <managed-bean-name>NumberBean</managed-bean-name>
-        <managed-bean-class>com.bee32.plover.web.test</managed-bean-class>
+        <managed-bean-class>com.bee32.plover.web.faces.test.NumberBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
         <managed-property>
             <property-name>min</property-name>

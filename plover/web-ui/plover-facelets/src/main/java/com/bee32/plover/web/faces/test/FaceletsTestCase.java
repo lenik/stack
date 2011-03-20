@@ -2,11 +2,16 @@ package com.bee32.plover.web.faces.test;
 
 import javax.faces.webapp.FacesServlet;
 
+import org.apache.myfaces.webapp.StartupServletContextListener;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.servlet.test.OverlappedBases;
+import com.bee32.plover.servlet.test.RabbitServletContext;
 import com.bee32.plover.servlet.test.ServletTestCase;
+import com.bee32.plover.web.faces.ClassResourceResolver;
+import com.bee32.plover.web.faces.FacesConstants;
 
 enum FaceletsProvider {
 
@@ -17,25 +22,34 @@ enum FaceletsProvider {
 }
 
 public class FaceletsTestCase
-        extends ServletTestCase {
+        extends ServletTestCase
+        implements FacesConstants {
 
     static final FaceletsProvider faceletsProvider = FaceletsProvider.APACHE_MYFACES;
 
     static Logger logger = LoggerFactory.getLogger(FaceletsTestCase.class);
 
+    public FaceletsTestCase() {
+        OverlappedBases.add("resources/");
+    }
+
     @Override
     protected void configureServlets() {
-        // stl.setAttribute("facelets.RESOURCE_RESOLVER", CustomResourceResolver.class.getName());
 
-        // - Use Documents Saved as *.xhtml
-        stl.setAttribute("javax.faces.DEFAULT_SUFFIX", ".xhtml");
+        RabbitServletContext sm = stl.getServletManager();
+        {
+            sm.addInitParam(RESOURCE_RESOLVER, ClassResourceResolver.class.getName());
 
-        // Special Debug Output for Development
-        stl.setAttribute("facelets.DEVELOPMENT", "true");
+            // - Use Documents Saved as *.xhtml
+            sm.addInitParam(DEFAULT_SUFFIX, ".xhtml");
 
-        // Optional JSF-RI Parameters to Help Debug
-        stl.setAttribute("com.sun.faces.validateXml", "true");
-        stl.setAttribute("com.sun.faces.verifyObjects", "true");
+            // Special Debug Output for Development
+            sm.addInitParam(DEVELOPMENT, "true");
+
+            // Optional JSF-RI Parameters to Help Debug
+            // sm.addInitParam(VALIDATE_XML, "true");
+            // sm.addInitParam(VERIFY_OBJECTS, "true");
+        }
 
         switch (faceletsProvider) {
         case JSF_RI:
@@ -45,8 +59,7 @@ public class FaceletsTestCase
             throw new UnsupportedOperationException("JSF-RI isn't supported anymore");
 
         case APACHE_MYFACES:
-            stl.addEventListener(MyfacesReinitDummyServlet.myfacesSCL);
-            // stl.addServlet(MyfacesReinitDummyServlet.class, "/__mrds__").setInitOrder(1000);
+            stl.addEventListener(new StartupServletContextListener());
             break;
         }
 
