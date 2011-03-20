@@ -14,7 +14,7 @@ public class SharedDispatcherServletTest
             throws Exception {
         addServlet("dispatcher", SharedDispatcherServlet.class, "/");
 
-        setRootResourceFile("WEB-INF/dispatcher-servlet.xml");
+        setHintRoots("WEB-INF/dispatcher-servlet.xml");
     }
 
     /**

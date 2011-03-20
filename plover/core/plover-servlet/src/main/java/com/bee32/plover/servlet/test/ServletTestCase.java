@@ -2,8 +2,6 @@ package com.bee32.plover.servlet.test;
 
 import java.io.IOException;
 
-import org.mortbay.jetty.servlet.DefaultServlet;
-
 import com.bee32.plover.test.AssembledTestCase;
 
 public abstract class ServletTestCase
@@ -13,6 +11,12 @@ public abstract class ServletTestCase
 
     public ServletTestCase() {
         install(stl = new LocalSTL());
+
+        Class<?> chain = getClass();
+        while (chain != null) {
+            OverlappedBases.add(chain);
+            chain = chain.getSuperclass();
+        }
     }
 
     public ServletTestCase(ServletTesterLibrary stl) {
@@ -41,15 +45,21 @@ public abstract class ServletTestCase
             ServletTestCase.this.configureServlets();
         }
 
+        @Override
+        protected void configureFallbackServlets() {
+            ServletTestCase.this.configureFallbackServlets();
+            super.configureFallbackServlets();
+        }
+
     }
 
     protected void configureBuiltinServlets() {
-        // The default servlet must be existed.
-        // Otherwise, the filter won't work.
-        stl.addServlet(DefaultServlet.class, "/");
     }
 
     protected abstract void configureServlets();
+
+    protected void configureFallbackServlets() {
+    }
 
     protected void browseAndWait()
             throws IOException {

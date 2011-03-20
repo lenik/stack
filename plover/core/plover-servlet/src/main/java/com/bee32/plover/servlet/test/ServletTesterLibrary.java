@@ -11,23 +11,22 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Map;
 
+import javax.free.IllegalUsageException;
 import javax.free.StringPart;
 import javax.servlet.http.HttpServlet;
 
 import org.junit.After;
 import org.junit.Before;
-import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.jetty.testing.HttpTester;
-import org.mortbay.jetty.testing.ServletTester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.ISupportLibrary;
 
 public class ServletTesterLibrary
-        extends ServletTester
+        extends RabbitServer
         implements ISupportLibrary {
 
     protected final Logger logger;
@@ -36,7 +35,7 @@ public class ServletTesterLibrary
     private int socketPort = -1;
 
     private Class<?> baseClass;
-    private String rootResourceFile = "index.html";
+    private String[] hintFilenames = { "WEB-INF/web.xml", "index.html" };
 
     public ServletTesterLibrary() {
         this(null);
@@ -47,12 +46,34 @@ public class ServletTesterLibrary
         this.baseClass = baseClass == null ? getClass() : baseClass;
     }
 
-    public String getRootResourceFile() {
-        return rootResourceFile;
+    public String[] getHintRoots() {
+        return hintFilenames;
     }
 
-    public void setRootResourceFile(String rootResourceFile) {
-        this.rootResourceFile = rootResourceFile;
+    public void setHintRoots(String... hintRoots) {
+        this.hintFilenames = hintRoots;
+    }
+
+    String searchResourceRoot(Class<?> clazz) {
+        URL hintResourceURL = null;
+
+        for (String hintFilename : hintFilenames) {
+
+            hintResourceURL = clazz.getResource(hintFilename);
+
+            if (hintResourceURL != null) {
+                String hintResourcePath = hintResourceURL.toString();
+
+                int shrink = hintResourcePath.length() - hintFilename.length();
+                String hintResourceRoot = hintResourcePath.substring(0, shrink);
+
+                // remove the trailing /*.
+                hintResourceRoot = StringPart.beforeLast(hintResourceRoot, '/');
+                return hintResourceRoot;
+            }
+        }
+
+        return null;
     }
 
     @Before
@@ -71,28 +92,34 @@ public class ServletTesterLibrary
 
         configureBuiltinServlets();
         configureServlets();
+        configureFallbackServlets();
 
         // Find the resource base.
-        if (rootResourceFile != null) {
-            URL indexResource = null;
+        if (hintFilenames != null) {
+
+            String resourceRoot = null;
+
             Class<?> chain = baseClass;
             while (chain != null) {
-                indexResource = chain.getResource(rootResourceFile);
-                if (indexResource != null)
+                resourceRoot = searchResourceRoot(chain);
+
+                if (resourceRoot != null)
                     break;
+
                 chain = chain.getSuperclass();
             }
-            if (indexResource != null) {
-                String fileUrl = indexResource.toString();
 
-                int shrink = fileUrl.length() - rootResourceFile.length();
-                String resourceBase = fileUrl.substring(0, shrink);
+            if (resourceRoot == null)
+                throw new IllegalUsageException("Can't find resource root for " + baseClass);
 
-                // remove the trailing /*.
-                resourceBase = StringPart.beforeLast(resourceBase, '/');
-
-                setResourceBase(resourceBase);
-            }
+            /**
+             * setResourceBase only affects DefaultServlet.
+             *
+             * [However, it's used to get WEB-INF/web.xml, too.]
+             *
+             * NOTE: Using RabbitServer to override the resource resolver.
+             */
+            getServletManager().setResourceBase(resourceRoot);
         }
 
         logger.debug("Start test server: " + this);
@@ -128,12 +155,18 @@ public class ServletTesterLibrary
             throws Exception {
     }
 
+    protected void configureFallbackServlets() {
+        // Add the fallback-servlet.
+        // Otherwise, the filter won't work.
+        addServlet(OverlappedResourceServlet.class, "/");
+    }
+
     public ServletHolder addServlet(String servletName, Class<? extends HttpServlet> servlet, String pathSpec) {
         if (servletName == null)
             throw new NullPointerException("servletName");
 
-        Context context = getContext();
-        ServletHandler servletHandler = context.getServletHandler();
+        RabbitServletContext servletManager = getServletManager();
+        ServletHandler servletHandler = servletManager.getServletHandler();
 
         ServletHolder holder = new ServletHolder(servlet);
 
@@ -200,7 +233,6 @@ public class ServletTesterLibrary
         PrintStream out = System.err;
         out.println(http.getStatus() + " " + http.getReason());
 
-        @SuppressWarnings("unchecked")
         Enumeration<String> names = http.getHeaderNames();
 
         while (names.hasMoreElements()) {

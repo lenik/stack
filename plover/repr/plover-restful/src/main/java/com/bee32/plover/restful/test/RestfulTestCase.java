@@ -1,9 +1,7 @@
 package com.bee32.plover.restful.test;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.mortbay.jetty.servlet.ServletHolder;
@@ -11,6 +9,7 @@ import org.springframework.web.context.ContextLoaderListener;
 
 import com.bee32.plover.inject.spring.ContextConfigurationUtil;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
+import com.bee32.plover.servlet.test.RabbitServletContext;
 import com.bee32.plover.servlet.test.ServletTestCase;
 import com.bee32.plover.servlet.util.LazyLoadServlet;
 
@@ -76,10 +75,8 @@ public abstract class RestfulTestCase
             locations.append(respath);
         }
 
-        Map<String, String> contextParams = new HashMap<String, String>();
-        contextParams.put("contextConfigLocation", locations.toString());
-
-        rtl.getContext().setInitParams(contextParams);
+        RabbitServletContext servletManager = rtl.getServletManager();
+        servletManager.addInitParam("contextConfigLocation", locations.toString());
 
         setupH2Console();
     }
