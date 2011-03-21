@@ -10,8 +10,7 @@ public class SharedDispatcherServletTest
         extends ServletTestLibrary {
 
     @Override
-    protected void configureServlets()
-            throws Exception {
+    protected void configureServlets() {
         addServlet("dispatcher", SharedDispatcherServlet.class, "/");
 
         setHintRoots("WEB-INF/dispatcher-servlet.xml");
