@@ -11,7 +11,7 @@ public class SemProcessModuleTest
     public void testUser()
             throws Exception {
 
-        String loc = "http://localhost:" + rtl.getPort();
+        String loc = "http://localhost:" + stl.getPort();
         System.out.println(loc);
 
         Thread.sleep(10000000);
