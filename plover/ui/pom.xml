@@ -12,6 +12,7 @@
     <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>plover-test</module>
         <module>plover-widgets</module>
     </modules>
     <name>Plover :: Ui</name>

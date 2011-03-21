@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.plover</groupId>
-        <artifactId>web-ui</artifactId>
+        <artifactId>library</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
     <artifactId>plover-facelets</artifactId>
@@ -32,30 +31,14 @@
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
-            <!-- jsp-api 2.1 doesn't work with servlet-tester, because we couldn't fetch the jsp-factory or sth. -->
-            <version>2.0</version>
+            <!-- jsp-api 2.1 doesn't work with servlet-tester, because we couldn't fetch the jsp-factory or sth. --><version>2.0</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-        <!--  TagLibrary confliects with myfaces-impl. -->
-        <!-- <dependency> -->
-        <!-- <groupId>com.sun.facelets</groupId> -->
-        <!-- <artifactId>jsf-facelets</artifactId> -->
-        <!-- <version>1.1.14</version> -->
-        <!-- </dependency> -->
-        <!-- <dependency> -->
-        <!-- <groupId>javax.faces</groupId> -->
-        <!-- <artifactId>jsf-api</artifactId> -->
-        <!-- <version>1.2_13</version> -->
-        <!-- </dependency> -->
-        <!-- <dependency> -->
-        <!-- <groupId>javax.faces</groupId> -->
-        <!-- <artifactId>jsf-impl</artifactId> -->
-        <!-- <version>1.2_13</version> -->
-        <!-- </dependency> -->
+        <!--  TagLibrary confliects with myfaces-impl. --><!-- <dependency> --><!-- <groupId>com.sun.facelets</groupId> --><!-- <artifactId>jsf-facelets</artifactId> --><!-- <version>1.1.14</version> --><!-- </dependency> --><!-- <dependency> --><!-- <groupId>javax.faces</groupId> --><!-- <artifactId>jsf-api</artifactId> --><!-- <version>1.2_13</version> --><!-- </dependency> --><!-- <dependency> --><!-- <groupId>javax.faces</groupId> --><!-- <artifactId>jsf-impl</artifactId> --><!-- <version>1.2_13</version> --><!-- </dependency> -->
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-api</artifactId>
@@ -72,5 +55,5 @@
             <version>1.1.10</version>
         </dependency>
     </dependencies>
-    <name>Plover :: Web Ui :: Facelets</name>
+    <name>Plover :: Library :: Facelets</name>
 </project>

@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.plover</groupId>
-        <artifactId>core</artifactId>
+        <artifactId>library</artifactId>
         <version>0.0.4-SNAPSHOT</version>
     </parent>
     <artifactId>plover-servlet</artifactId>
@@ -23,8 +22,7 @@
             <groupId>org.mortbay.jetty</groupId>
             <artifactId>jetty-servlet-tester</artifactId>
             <version>6.1.26</version>
-            <!--<scope>test</scope> -->
-        </dependency>
+        <!--<scope>test</scope> --></dependency>
         <dependency>
             <groupId>javax.free</groupId>
             <artifactId>freejava-c3</artifactId>
@@ -81,5 +79,5 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
-    <name>Plover :: Core :: Servlet</name>
+    <name>Plover :: Library :: Servlet</name>
 </project>
