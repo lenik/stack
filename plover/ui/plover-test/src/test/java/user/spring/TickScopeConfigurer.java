@@ -7,10 +7,10 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyScopes
+public class TickScopeConfigurer
         extends CustomScopeConfigurer {
 
-    public MyScopes() {
+    public TickScopeConfigurer() {
         Map<String, Object> scopes = new HashMap<String, Object>();
 
         scopes.put("tick", new TickScope(1));
