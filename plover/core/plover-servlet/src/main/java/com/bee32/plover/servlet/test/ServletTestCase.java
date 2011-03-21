@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.free.IllegalUsageException;
+import javax.free.Strings;
 
 import org.mortbay.jetty.testing.HttpTester;
 
@@ -11,6 +12,8 @@ import com.bee32.plover.test.AssembledTestCase;
 
 public abstract class ServletTestCase
         extends AssembledTestCase {
+
+    public static final boolean searchClassLocalResources = true;
 
     protected ServletTestLibrary stl;
 
@@ -21,7 +24,17 @@ public abstract class ServletTestCase
     public ServletTestCase() {
         install(stl = new LocalSTL());
 
-        Class<?> chain = getClass();
+        Class<?> head = getClass();
+
+        if (searchClassLocalResources) {
+            String headDir = head.getPackage().getName().replace('.', '/');
+            String headBase = head.getSimpleName();
+            headBase = Strings.lcfirst(headBase);
+            String headPrefix = headDir + "/" + headBase;
+            OverlappedBases.add(headPrefix);
+        }
+
+        Class<?> chain = head;
         while (chain != null) {
             OverlappedBases.add(chain);
             chain = chain.getSuperclass();
