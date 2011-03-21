@@ -1,88 +1,71 @@
 package com.bee32.plover.restful.test;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import javax.free.IllegalUsageException;
 
 import org.mortbay.jetty.servlet.ServletHolder;
-import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.context.ApplicationContext;
 
-import com.bee32.plover.inject.spring.ContextConfigurationUtil;
-import com.bee32.plover.orm.util.WiredDaoTestCase;
-import com.bee32.plover.servlet.test.RabbitServletContext;
-import com.bee32.plover.servlet.test.ServletTestCase;
+import com.bee32.plover.restful.DispatchFilter;
+import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
+import com.bee32.plover.servlet.test.WiredServletTestCase;
 import com.bee32.plover.servlet.util.LazyLoadServlet;
 
 public abstract class RestfulTestCase
-        extends ServletTestCase {
+        extends WiredServletTestCase {
 
-    protected RestfulTesterLibrary rtl;
+    private ApplicationContext applicationContext;
 
-    public RestfulTestCase() {
-        super(null);
-        install(stl = rtl = new LocalRTL());
+    private boolean checkAdditionalServlets;
+
+    protected RestfulTestCase() {
+        this((ApplicationContext) null);
     }
 
-    class LocalRTL
-            extends RestfulTesterLibrary {
+    protected RestfulTestCase(Class<?> altBaseClass) {
+        this(altBaseClass, null);
+    }
 
-        public LocalRTL() {
-            super(RestfulTestCase.this.getClass());
+    protected RestfulTestCase(ApplicationContext applicationContext) {
+        super();
+        this.applicationContext = applicationContext;
+    }
+
+    protected RestfulTestCase(Class<?> altBaseClass, ApplicationContext applicationContext) {
+        super(altBaseClass);
+        this.applicationContext = applicationContext;
+    }
+
+    @Override
+    protected void configureContext() {
+        super.configureContext();
+
+        if (applicationContext != null) {
+            String key = SimpleApplicationContextUtil.rootApplicationContextKey;
+            stl.setAttribute(key, applicationContext);
         }
 
-        @Override
-        protected void configureBuiltinServlets()
-                throws Exception {
-            super.configureBuiltinServlets();
-            RestfulTestCase.this.configureBuiltinServlets();
-        }
-
-        @Override
-        protected void configureServlets()
-                throws Exception {
-            super.configureServlets();
-            RestfulTestCase.this.configureServlets();
-        }
-
+        // String wacAttr=WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE;
     }
 
     @Override
     protected void configureBuiltinServlets() {
         super.configureBuiltinServlets();
 
-        // setup
-        ContextLoaderListener contextLoaderListener = new ContextLoaderListener();
-
-        rtl.addEventListener(contextLoaderListener);
-
-        Collection<String> baseLocations //
-        = ContextConfigurationUtil.getContextConfigurationLocations(WiredDaoTestCase.class);
-
-        Collection<String> userLocations //
-        = ContextConfigurationUtil.getContextConfigurationLocations(getClass());
-
-        Set<String> mergedLocations = new LinkedHashSet<String>();
-        mergedLocations.addAll(baseLocations);
-        mergedLocations.addAll(userLocations);
-
-        StringBuilder locations = new StringBuilder();
-        for (String location : mergedLocations) {
-            String respath = "classpath:" + location;
-
-            if (locations.length() != 0)
-                locations.append(", ");
-
-            locations.append(respath);
-        }
-
-        RabbitServletContext servletManager = rtl.getServletManager();
-        servletManager.addInitParam("contextConfigLocation", locations.toString());
+        stl.addFilter(DispatchFilter.class, "/*", 0);
 
         setupH2Console();
     }
 
     @Override
-    protected void configureServlets() {
+    protected final void configureServlets() {
+        configureAdditionalServlets();
+
+        if (!checkAdditionalServlets)
+            throw new IllegalUsageException("configureAdditionalServlets is overrided.");
+    }
+
+    protected void configureAdditionalServlets() {
+        checkAdditionalServlets = true;
     }
 
     protected void setupH2Console() {
@@ -90,7 +73,7 @@ public abstract class RestfulTestCase
 
         // context-params?
 
-        ServletHolder servlet = rtl.addServlet(LazyLoadServlet.class, "/console/*");
+        ServletHolder servlet = stl.addServlet(LazyLoadServlet.class, "/console/*");
         servlet.setInitParameter("servlet-class", "org.h2.server.web.WebServlet");
         servlet.setInitParameter("db.url", "jdbc:h2:target/testdb");
         // servlet.setInitParameter("webAllowOthers", "");

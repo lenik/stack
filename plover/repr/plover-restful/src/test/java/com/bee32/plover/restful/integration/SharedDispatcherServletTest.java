@@ -4,10 +4,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
-import com.bee32.plover.servlet.test.ServletTesterLibrary;
+import com.bee32.plover.servlet.test.ServletTestLibrary;
 
 public class SharedDispatcherServletTest
-        extends ServletTesterLibrary {
+        extends ServletTestLibrary {
 
     @Override
     protected void configureServlets()

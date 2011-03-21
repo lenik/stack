@@ -23,7 +23,7 @@ public class BookModuleTest
         setupH2Console();
 
         String creditUri = "/" + bookModuleOid + "/credit";
-        String credit = rtl.httpGet(creditUri).getContent();
+        String credit = stl.httpGet(creditUri).getContent();
 
         System.out.println(credit);
 

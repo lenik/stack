@@ -13,12 +13,12 @@ public class RestfulTestCaseTest
     @Test
     public void testCoreInfoCreditText()
             throws Exception {
-        String prefix = "http://localhost:" + rtl.getPort() + "/";
+        String prefix = "http://localhost:" + stl.getPort() + "/";
         String creditUri = prefix + corePath + "/credit";
 
         // System.out.println(creditUri);
 
-        String credit = rtl.httpGet(creditUri).getContent();
+        String credit = httpGet(creditUri).getContent();
         assertNotNull(credit);
 
         System.out.println(credit);
