@@ -10,11 +10,11 @@ import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.PersistenceUnitSelection;
-import com.bee32.plover.test.WiredAssembledTestCase;
+import com.bee32.plover.test.WiredTestCase;
 
 @ContextConfiguration("/com/bee32/plover/orm/context/tx-context.xml")
 public abstract class WiredDaoTestCase
-        extends WiredAssembledTestCase {
+        extends WiredTestCase {
 
     @Inject
     private SessionFactory sessionFactory;
