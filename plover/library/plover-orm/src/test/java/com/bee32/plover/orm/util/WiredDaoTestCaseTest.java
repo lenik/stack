@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ public class WiredDaoTestCaseTest
     }
 
     @Service
+    @Lazy
     static class DaoService
             extends Assert {
 

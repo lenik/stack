@@ -7,7 +7,7 @@ import com.bee32.plover.model.qualifier.Qualified;
 
 @ComponentTemplate
 @Transactional
-public class EnterpriseService
+public abstract class EnterpriseService
         extends Qualified {
 
     public EnterpriseService() {

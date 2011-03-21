@@ -1,12 +1,7 @@
 package com.bee32.plover.orm.config.main;
 
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-
 import com.bee32.plover.orm.config.CustomizedDataSource;
 
-@Component
-@Lazy
 public class MainDataSource
         extends CustomizedDataSource {
 
