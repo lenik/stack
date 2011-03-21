@@ -1,6 +1,6 @@
 package com.bee32.plover.orm.feaCat;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.free.Nullables;
@@ -24,6 +24,7 @@ public class Cat
 
     Cat leader;
     Cat parent;
+
     Set<Cat> children;
 
     public Cat() {
@@ -87,7 +88,8 @@ public class Cat
         if (children == null) {
             synchronized (this) {
                 if (children == null) {
-                    children = new HashSet<Cat>();
+                    // Using LinkedHashSet to keep order for test.
+                    children = new LinkedHashSet<Cat>();
                 }
             }
         }

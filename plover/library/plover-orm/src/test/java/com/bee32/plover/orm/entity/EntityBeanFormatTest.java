@@ -1,6 +1,6 @@
 package com.bee32.plover.orm.entity;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -19,7 +19,8 @@ public class EntityBeanFormatTest
         kitty.setParent(kate);
         lily.setParent(kate);
 
-        Set<Cat> children = new HashSet<Cat>();
+        // Using linked-set to keep order for test.
+        Set<Cat> children = new LinkedHashSet<Cat>();
         children.add(kitty);
         children.add(lily);
         kate.setChildren(children);
