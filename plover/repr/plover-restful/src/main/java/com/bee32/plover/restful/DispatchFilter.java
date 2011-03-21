@@ -40,7 +40,7 @@ import com.bee32.plover.model.stage.ModelStageException;
 import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
 import com.bee32.plover.restful.request.RestfulRequest;
 import com.bee32.plover.restful.request.RestfulRequestBuilder;
-import com.bee32.plover.servlet.container.ServletContainer;
+import com.bee32.plover.servlet.context.ServletContainer;
 import com.bee32.plover.velocity.Velocity;
 
 /**
