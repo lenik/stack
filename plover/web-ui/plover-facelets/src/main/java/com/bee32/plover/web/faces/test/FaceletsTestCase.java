@@ -60,6 +60,8 @@ public class FaceletsTestCase
             // Special Debug Output for Development
             context.addInitParam(DEVELOPMENT, "true");
 
+            context.addInitParam(REFRESH_PERIOD, "0");
+
             // Optional JSF-RI Parameters to Help Debug
             // sm.addInitParam(VALIDATE_XML, "true");
             // sm.addInitParam(VERIFY_OBJECTS, "true");

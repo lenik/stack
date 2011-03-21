@@ -44,7 +44,7 @@ public interface FacesConstants {
      * 2 When a page is requested, what interval in seconds should the compiler check for changes.
      * If you don't want the compiler to check for changes once the page is compiled, then use a
      * value of -1. Setting a low refresh period helps during development to be able to edit pages
-     * in a running application. -1
+     * in a running application.
      *
      * @example -1
      */
