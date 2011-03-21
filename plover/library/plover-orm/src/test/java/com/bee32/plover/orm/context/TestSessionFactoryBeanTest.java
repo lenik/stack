@@ -1,17 +1,11 @@
 package com.bee32.plover.orm.context;
 
-import javax.inject.Inject;
-
-import org.hibernate.SessionFactory;
 import org.junit.Test;
 
-import com.bee32.plover.test.WiredTestCase;
+import com.bee32.plover.orm.util.WiredDaoTestCase;
 
 public class TestSessionFactoryBeanTest
-        extends WiredTestCase {
-
-    @Inject
-    SessionFactory sessionFactory;
+        extends WiredDaoTestCase {
 
     @Test
     public void gotAnySessionFactory() {
