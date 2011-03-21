@@ -8,10 +8,10 @@ import org.junit.Test;
 import com.bee32.plover.inject.ContextException;
 import com.bee32.plover.inject.IAware;
 import com.bee32.plover.inject.IContainer;
-import com.bee32.plover.servlet.test.ServletTesterLibrary;
+import com.bee32.plover.servlet.test.ServletTestLibrary;
 
 public class ServletContainerTest
-        extends ServletTesterLibrary {
+        extends ServletTestLibrary {
 
     private ServletContainer application;
 

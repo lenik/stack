@@ -16,16 +16,16 @@ public class RabbitServer {
 
     private final Server server;
     private final LocalConnector localConnector;
-    private final RabbitServletContext servletManager;
+    private final RabbitServletContext servletContext;
 
     public RabbitServer() {
         server = new Server();
         localConnector = new LocalConnector();
-        servletManager = new RabbitServletContext();
+        servletContext = new RabbitServletContext();
 
         server.setSendServerVersion(false);
         server.addConnector(localConnector);
-        server.addHandler(servletManager);
+        server.addHandler(servletContext);
     }
 
     public void start()
@@ -38,8 +38,8 @@ public class RabbitServer {
         server.stop();
     }
 
-    public RabbitServletContext getServletManager() {
-        return servletManager;
+    public RabbitServletContext getServletContext() {
+        return servletContext;
     }
 
     public String getResponses(String rawRequests)
@@ -106,51 +106,51 @@ public class RabbitServer {
     // Facade to servlet context.
 
     public void setEventListeners(EventListener[] eventListeners) {
-        servletManager.setEventListeners(eventListeners);
+        servletContext.setEventListeners(eventListeners);
     }
 
     public void addEventListener(EventListener listener) {
-        servletManager.addEventListener(listener);
+        servletContext.addEventListener(listener);
     }
 
     public FilterHolder addFilter(Class<?> filterClass, String pathSpec, int dispatches) {
-        return servletManager.addFilter(filterClass, pathSpec, dispatches);
+        return servletContext.addFilter(filterClass, pathSpec, dispatches);
     }
 
     public FilterHolder addFilter(String filterClass, String pathSpec, int dispatches) {
-        return servletManager.addFilter(filterClass, pathSpec, dispatches);
+        return servletContext.addFilter(filterClass, pathSpec, dispatches);
     }
 
     public ServletHolder addServlet(Class<?> servlet, String pathSpec) {
-        return servletManager.addServlet(servlet, pathSpec);
+        return servletContext.addServlet(servlet, pathSpec);
     }
 
     public ServletHolder addServlet(String className, String pathSpec) {
-        return servletManager.addServlet(className, pathSpec);
+        return servletContext.addServlet(className, pathSpec);
     }
 
     public Attributes getAttributes() {
-        return servletManager.getAttributes();
+        return servletContext.getAttributes();
     }
 
     public Enumeration<String> getAttributeNames() {
-        return servletManager.getAttributeNames();
+        return servletContext.getAttributeNames();
     }
 
     public Object getAttribute(String name) {
-        return servletManager.getAttribute(name);
+        return servletContext.getAttribute(name);
     }
 
     public void setAttribute(String name, Object value) {
-        servletManager.setAttribute(name, value);
+        servletContext.setAttribute(name, value);
     }
 
     public void setClassLoader(ClassLoader classLoader) {
-        servletManager.setClassLoader(classLoader);
+        servletContext.setClassLoader(classLoader);
     }
 
     public void setContextPath(String contextPath) {
-        servletManager.setContextPath(contextPath);
+        servletContext.setContextPath(contextPath);
     }
 
 }

@@ -2,7 +2,6 @@ package com.bee32.plover.test;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -16,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 /*            */"/com/bee32/plover/inject/cref/auto-context.xml",
 /*            */"/com/bee32/plover/inject/cref/scan-testx-context.xml" })
 public abstract class WiredTestCase
-        extends Assert
+        extends AssembledTestCase
         implements InitializingBean {
 
     @Inject
@@ -24,6 +23,7 @@ public abstract class WiredTestCase
 
     protected AutowireCapableBeanFactory beanFactory;
 
+    @Override
     public void afterPropertiesSet() {
         beanFactory = application.getAutowireCapableBeanFactory();
     }

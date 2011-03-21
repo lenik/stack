@@ -1,13 +1,22 @@
 package com.bee32.plover.servlet.test;
 
 import java.io.IOException;
+import java.util.Map;
+
+import javax.free.IllegalUsageException;
+
+import org.mortbay.jetty.testing.HttpTester;
 
 import com.bee32.plover.test.AssembledTestCase;
 
 public abstract class ServletTestCase
         extends AssembledTestCase {
 
-    protected ServletTesterLibrary stl;
+    protected ServletTestLibrary stl;
+
+    private boolean checkContext;;
+    private boolean checkBuiltinServlets;
+    private boolean checkFallbackServlets;
 
     public ServletTestCase() {
         install(stl = new LocalSTL());
@@ -19,46 +28,74 @@ public abstract class ServletTestCase
         }
     }
 
-    public ServletTestCase(ServletTesterLibrary stl) {
-        if (stl != null)
-            install(this.stl = stl);
-    }
-
-    class LocalSTL
-            extends ServletTesterLibrary {
+    final class LocalSTL
+            extends ServletTestLibrary {
 
         private LocalSTL() {
             super(ServletTestCase.this.getClass());
         }
 
         @Override
-        protected void configureBuiltinServlets()
-                throws Exception {
-            super.configureBuiltinServlets();
-            ServletTestCase.this.configureBuiltinServlets();
+        protected void configureContext() {
+            super.configureContext();
+
+            ServletTestCase.this.configureContext();
+
+            if (!checkContext)
+                throw new IllegalUsageException("configureContext is overrided.");
         }
 
         @Override
-        protected void configureServlets()
-                throws Exception {
+        protected void configureBuiltinServlets() {
+            super.configureBuiltinServlets();
+
+            ServletTestCase.this.configureBuiltinServlets();
+
+            if (!checkBuiltinServlets)
+                throw new IllegalUsageException("configureBuiltinServlets is overrided.");
+        }
+
+        @Override
+        protected void configureServlets() {
             super.configureServlets();
+
             ServletTestCase.this.configureServlets();
         }
 
         @Override
         protected void configureFallbackServlets() {
             ServletTestCase.this.configureFallbackServlets();
+
             super.configureFallbackServlets();
+
+            if (!checkFallbackServlets)
+                throw new IllegalUsageException("configureFallbackServlets is overrided.");
         }
 
     }
 
+    protected void configureContext() {
+        checkContext = true;
+    }
+
     protected void configureBuiltinServlets() {
+        checkBuiltinServlets = true;
+    }
+
+    protected void configureFallbackServlets() {
+        checkFallbackServlets = true;
     }
 
     protected abstract void configureServlets();
 
-    protected void configureFallbackServlets() {
+    public HttpTester httpGet(String uriOrPath)
+            throws Exception {
+        return stl.httpGet(uriOrPath);
+    }
+
+    public HttpTester httpPost(String uri, String content, Map<String, String> map)
+            throws Exception {
+        return stl.httpPost(uri, content, map);
     }
 
     protected void browseAndWait()

@@ -4,10 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.bee32.plover.servlet.test.ServletTesterLibrary;
+import com.bee32.plover.servlet.test.ServletTestLibrary;
 
 public class HelloServletTest
-        extends ServletTesterLibrary {
+        extends ServletTestLibrary {
 
     @Test
     public void testHello()

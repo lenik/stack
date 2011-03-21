@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.ISupportLibrary;
 
-public class ServletTesterLibrary
+public class ServletTestLibrary
         extends RabbitServer
         implements ISupportLibrary {
 
@@ -37,13 +37,84 @@ public class ServletTesterLibrary
     private Class<?> baseClass;
     private String[] hintFilenames = { "WEB-INF/web.xml", "index.html" };
 
-    public ServletTesterLibrary() {
+    private boolean initialized;
+
+    public ServletTestLibrary() {
         this(null);
     }
 
-    public ServletTesterLibrary(Class<?> baseClass) {
+    public ServletTestLibrary(Class<?> baseClass) {
         this.logger = LoggerFactory.getLogger(getClass());
         this.baseClass = baseClass == null ? getClass() : baseClass;
+    }
+
+    @Before
+    @Override
+    public void startup()
+            throws Exception {
+
+        initialize();
+
+        // int port = getPort();
+        // logger.debug("Set connector listen on port " + port);
+        // LocalConnector connector = createLocalConnector();
+
+        String connector = createSocketConnector(false);
+        int colon = connector.lastIndexOf(':');
+        String portString = connector.substring(colon + 1);
+        socketPort = Integer.parseInt(portString);
+
+        logger.debug("Start test server: " + this);
+        start();
+        logger.debug("Test server started: " + this);
+    }
+
+    @After
+    @Override
+    public void shutdown()
+            throws Exception {
+        logger.debug("Stop test server: " + this);
+        stop();
+    }
+
+    protected synchronized void initialize() {
+        if (initialized)
+            return;
+
+        configureContext();
+        configureBuiltinServlets();
+        configureServlets();
+        configureFallbackServlets();
+
+        // Find the resource base.
+        if (hintFilenames != null) {
+
+            String resourceRoot = null;
+
+            Class<?> chain = baseClass;
+            while (chain != null) {
+                resourceRoot = searchResourceRoot(chain);
+
+                if (resourceRoot != null)
+                    break;
+
+                chain = chain.getSuperclass();
+            }
+
+            if (resourceRoot == null)
+                throw new IllegalUsageException("Can't find resource root for " + baseClass);
+
+            /**
+             * setResourceBase only affects DefaultServlet.
+             *
+             * [However, it's used to get WEB-INF/web.xml, too.]
+             *
+             * NOTE: Using RabbitServer to override the resource resolver.
+             */
+            getServletContext().setResourceBase(resourceRoot);
+        }
+
+        initialized = true;
     }
 
     public String[] getHintRoots() {
@@ -76,67 +147,10 @@ public class ServletTesterLibrary
         return null;
     }
 
-    @Before
-    @Override
-    public void startup()
-            throws Exception {
-
-        // int port = getPort();
-        // logger.debug("Set connector listen on port " + port);
-        // LocalConnector connector = createLocalConnector();
-
-        String connector = createSocketConnector(false);
-        int colon = connector.lastIndexOf(':');
-        String portString = connector.substring(colon + 1);
-        socketPort = Integer.parseInt(portString);
-
-        configureBuiltinServlets();
-        configureServlets();
-        configureFallbackServlets();
-
-        // Find the resource base.
-        if (hintFilenames != null) {
-
-            String resourceRoot = null;
-
-            Class<?> chain = baseClass;
-            while (chain != null) {
-                resourceRoot = searchResourceRoot(chain);
-
-                if (resourceRoot != null)
-                    break;
-
-                chain = chain.getSuperclass();
-            }
-
-            if (resourceRoot == null)
-                throw new IllegalUsageException("Can't find resource root for " + baseClass);
-
-            /**
-             * setResourceBase only affects DefaultServlet.
-             *
-             * [However, it's used to get WEB-INF/web.xml, too.]
-             *
-             * NOTE: Using RabbitServer to override the resource resolver.
-             */
-            getServletManager().setResourceBase(resourceRoot);
-        }
-
-        logger.debug("Start test server: " + this);
-        start();
-        logger.debug("Test server started: " + this);
+    protected void configureContext() {
     }
 
-    @After
-    @Override
-    public void shutdown()
-            throws Exception {
-        logger.debug("Stop test server: " + this);
-        stop();
-    }
-
-    protected void configureBuiltinServlets()
-            throws Exception {
+    protected void configureBuiltinServlets() {
 
         addFilter(RequestLogger.class, "*", 0);
 
@@ -151,8 +165,7 @@ public class ServletTesterLibrary
      * <p>
      * Don't call {@link #start()} here.
      */
-    protected void configureServlets()
-            throws Exception {
+    protected void configureServlets() {
     }
 
     protected void configureFallbackServlets() {
@@ -165,7 +178,7 @@ public class ServletTesterLibrary
         if (servletName == null)
             throw new NullPointerException("servletName");
 
-        RabbitServletContext servletManager = getServletManager();
+        RabbitServletContext servletManager = getServletContext();
         ServletHandler servletHandler = servletManager.getServletHandler();
 
         ServletHolder holder = new ServletHolder(servlet);
@@ -179,6 +192,8 @@ public class ServletTesterLibrary
     public int getPort() {
         return socketPort;
     }
+
+    // Delegates.
 
     public HttpTester httpGet(String uriOrPath)
             throws Exception {
@@ -281,7 +296,7 @@ public class ServletTesterLibrary
         readLine();
     }
 
-    String readLine()
+    private String readLine()
             throws IOException {
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
         return stdin.readLine();

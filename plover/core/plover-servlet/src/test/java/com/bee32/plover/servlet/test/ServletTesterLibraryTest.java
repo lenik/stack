@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.bee32.plover.servlet.util.HelloServlet;
 
 public class ServletTesterLibraryTest
-        extends ServletTesterLibrary {
+        extends ServletTestLibrary {
 
     @Test
     public void testGetURL()
