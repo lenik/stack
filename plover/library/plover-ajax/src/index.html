@@ -1,0 +1,86 @@
+<html>
+
+<head>
+<meta http-equiv='Content-Type' content="text/html; charset=utf-8">
+<title>AjaxEx Test Page</title>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+<script type="text/javascript" src="../js/jquery.sha1.js"></script>
+<script type="text/javascript" src="../js/jquery.ajaxex.js"></script>
+
+<script type="text/javascript" src="http://static.secca-project.com/lib2/jsTree.v.1.0rc2/jquery.jstree.js"></script>
+
+</head>
+
+<body>
+<h1>AjaxEx Test</h1>
+
+<ul>
+    <!--	<li><input type="button" value="HMAC Test" onclick="testHmac()">-->
+    <li><input type="checkbox" id="f_xpclocation"> XPC-Location: <input type="text" id="xpclocation"
+        value="xpc-redirect.html">
+    <li><input type="checkbox" id="f_xpcinvoke"> XPC-Invoke: <input type="text" id="xpcinvoke"
+        value="alert('show in parent: 你好,世界!')">
+    <li><input type="checkbox" id="f_jstree"> Load into jstree.
+    <li><input type="button" value="ajax normal" onclick="sendAjax()">
+    <li><input type="button" value="ajax returns 301 redirect" onclick="sendAjax('loc=data2.htm')">
+    <li><input type="button" value="ajax returns 400 error" onclick="sendAjax('sc=400')">
+    <li><input type="button" value="ajax returns 500 error" onclick="sendAjax('sc=500')">
+    <li><input type="button" value="ajax throws servlet exception" onclick="sendAjaxError('oh, my god!')">
+</ul>
+
+<script language="javascript">
+    function testHmac() {
+        var a = 'hello';
+        var hmac = $.hmac('secret', a);
+        alert(hmac);
+    }
+
+    function sendAjax(params) {
+        // AJAX Load...
+        if (params == null)
+            params = "";
+
+        if ($("#f_xpclocation").attr('checked'))
+            params += "&xpcloc=" + encodeURI($("#xpclocation").val());
+        if ($("#f_xpcinvoke").attr('checked'))
+            params += "&xpcinvoke=" + encodeURI($("#xpcinvoke").val());
+        if (params.substr(0, 1) == '&')
+            params = params.substr(1);
+
+        var url = 'test/data.htm?' + params;
+        $("#data").text("Loading " + url + "...");
+
+        if ($("#f_jstree").attr('checked')) {
+            $("#data").jstree({
+                plugins : [ "themes", "json_data" ],
+                json_data : {
+                    ajax : {
+                        url : url,
+                        dataType : "json"
+                    }
+                }
+            });
+        } else if (false) {
+            $.ajax({
+                context : undefined,
+                url : url,
+                dataType : "json",
+                complete : function(xhr, ts) {
+                    $("#data").text("complete");
+                }
+            });
+        } else
+            $("#data").load(url);
+    }
+
+    function sendAjaxError(mesg) {
+        sendAjax("err=" + escape(mesg));
+    }
+</script>
+
+<div id="data">Data not loaded yet.</div>
+
+</body>
+</html>
