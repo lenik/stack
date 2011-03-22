@@ -1,99 +1,134 @@
 package com.bee32.plover.arch.ui;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.free.AbstractQueryable;
-import javax.free.DisplayNameUtil;
-import javax.free.DocUtil;
-import javax.free.TagsUtil;
 
 import com.bee32.plover.arch.util.LoadFlags32;
 
-public class Appearance
+public abstract class Appearance
         extends AbstractQueryable
         implements IAppearance, IImageMap, IRefdocs {
 
-    private final Class<?> declaringType;
+    private IAppearance parent;
 
     private static final int HAVE_DISPLAY_NAME = 1 << 0;
     private static final int HAVE_DESCRIPTION = 1 << 1;
-    private static final int HAVE_TAGS = 1 << 2;
+    private static final int HAVE_REFDOCS = 1 << 2;
+    private static final int HAVE_IMAGE_MAP = 1 << 3;
     private LoadFlags32 flags;
 
     private String displayName;
-
     private String description;
+    private IRefdocs refdocs;
+    private IImageMap imageMap;
 
-    private Set<String> tags;
-
-    public Appearance(Class<?> declaringType) {
-        if (declaringType == null)
-            throw new NullPointerException("declaringType");
-        this.declaringType = declaringType;
+    public Appearance(IAppearance parent) {
+        this.parent = parent;
     }
+
+    protected abstract String loadDisplayName();
 
     @Override
     public String getDisplayName() {
-        if (flags.checkAndLoad(HAVE_DISPLAY_NAME))
-            displayName = DisplayNameUtil.getDisplayName(declaringType);
+        if (flags.checkAndLoad(HAVE_DISPLAY_NAME)) {
+            displayName = loadDisplayName();
+            if (displayName == null && parent != null)
+                return parent.getDisplayName();
+        }
         return displayName;
     }
 
+    protected abstract String loadDescription();
+
     @Override
     public String getDescription() {
-        if (flags.checkAndLoad(HAVE_DESCRIPTION))
-            description = DocUtil.getDoc(declaringType);
+        if (flags.checkAndLoad(HAVE_DESCRIPTION)) {
+            description = loadDescription();
+            if (description == null && parent != null)
+                description = parent.getDescription();
+        }
         return description;
     }
 
-    @Override
-    public IImageMap getImageMap() {
-        return this;
-    }
+    protected abstract IRefdocs loadRefdocs();
 
     @Override
-    public IRefdocs getRefdocs() {
-        return this;
+    public final IRefdocs getRefdocs() {
+        if (flags.checkAndLoad(HAVE_REFDOCS)) {
+            refdocs = loadRefdocs();
+            if (refdocs == null && parent != null)
+                refdocs = parent.getRefdocs();
+        }
+        return refdocs;
     }
+
+    protected abstract IImageMap loadImageMap();
+
+    @Override
+    public final IImageMap getImageMap() {
+        if (flags.checkAndLoad(HAVE_IMAGE_MAP)) {
+            imageMap = loadImageMap();
+            if (imageMap == null && parent != null)
+                imageMap = parent.getImageMap();
+        }
+        return imageMap;
+    }
+
+    // IRefdocs delegates
 
     @Override
     public Set<String> getTags() {
-        if (flags.checkAndLoad(HAVE_TAGS)) {
-            String[] tagArray = TagsUtil.getTags(declaringType);
-            tags = new TreeSet<String>();
-            for (String tag : tagArray)
-                tags.add(tag);
-        }
-        return tags;
+        IRefdocs refdocs = getRefdocs();
+        if (refdocs == null)
+            return null;
+        return refdocs.getTags();
     }
 
     @Override
-    public Iterable<? extends IRefdocEntry> getEntries(String tag) {
-        return null;
+    public Collection<? extends IRefdocEntry> getEntries(String tag) {
+        IRefdocs refdocs = getRefdocs();
+        if (refdocs == null)
+            return null;
+        return refdocs.getEntries(tag);
     }
 
     @Override
     public IRefdocEntry getDefaultEntry(String tag) {
-        return null;
+        IRefdocs refdocs = getRefdocs();
+        if (refdocs == null)
+            return parent.getRefdocs().getDefaultEntry(tag);
+        return refdocs.getDefaultEntry(tag);
     }
+
+    // IImageMap delegates
 
     @Override
     public URL getImage() {
-        return null;
+        IImageMap imageMap = getImageMap();
+        if (imageMap == null)
+            return null;
+        return imageMap.getImage();
     }
 
     @Override
-    public URL getImage(String variant) {
-        return null;
+    public URL getImage(String qualifier) {
+        IImageMap imageMap = getImageMap();
+        if (imageMap == null)
+            return null;
+        return imageMap.getImage(qualifier);
     }
 
     @Override
-    public URL getImage(String variant, int widthHint, int heightHint) {
-        return null;
+    public URL getImage(String qualifier, int widthHint, int heightHint) {
+        IImageMap imageMap = getImageMap();
+        if (imageMap == null)
+            return null;
+        return imageMap.getImage(qualifier, widthHint, heightHint);
     }
 
     static final Map<Class<?>, Integer> traitsMap;

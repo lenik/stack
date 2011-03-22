@@ -25,7 +25,7 @@ public interface IRefdocs {
      * @return non-<code>null</code> {@link Collection} of {@link IRefdocEntry}s for the specified
      *         <code>tag</code>
      */
-    Iterable<? extends IRefdocEntry> getEntries(String tag);
+    Collection<? extends IRefdocEntry> getEntries(String tag);
 
     /**
      * 获取指定标签下的缺省条目。

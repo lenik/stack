@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.bee32.plover.arch.ui.IRefdocEntry;
 import com.bee32.plover.arch.ui.RefdocsSample;
-import com.bee32.plover.arch.util.res.LoopbackDispatcher;
+import com.bee32.plover.arch.util.res.StemDispatcher;
 
 public class InjectedRefdocsTest {
 
@@ -19,7 +19,7 @@ public class InjectedRefdocsTest {
 
     public InjectedRefdocsTest() {
         sink = new InjectedRefdocs(RefdocsSample.class);
-        LoopbackDispatcher dispatcher = new LoopbackDispatcher(sink);
+        StemDispatcher dispatcher = new StemDispatcher(sink);
         dispatcher.dispatchClassResource(RefdocsSample.class, Locale.ENGLISH);
     }
 

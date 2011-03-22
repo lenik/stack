@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.bee32.plover.arch.util.res.LoopbackDispatcher;
+import com.bee32.plover.arch.util.res.StemDispatcher;
 
 public class InjectedAppearanceTest {
 
@@ -16,7 +16,7 @@ public class InjectedAppearanceTest {
         Locale.setDefault(new Locale("not-exist-locale"));
 
         appearance = new InjectedAppearance(InjectedAppearanceTest.class);
-        LoopbackDispatcher dispatcher = new LoopbackDispatcher(appearance);
+        StemDispatcher dispatcher = new StemDispatcher(appearance);
         dispatcher.dispatchClassResource(getClass(), Locale.ENGLISH);
     }
 
