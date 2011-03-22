@@ -1,6 +1,6 @@
 package com.bee32.sem.frame;
 
-public interface IRootFrame {
+public interface IMainFrame {
 
     ISiteFrame getMainFrame();
 

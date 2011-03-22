@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 @Component
-/* jsr-330 scope not work here */@Singleton
+/* jsr-330 scope wont work here */@Singleton
 @Lazy
 public class GlobalExceptionResolver
         extends SimpleMappingExceptionResolver {
@@ -17,6 +17,7 @@ public class GlobalExceptionResolver
     static final Properties globalMappings = new Properties();
 
     /**
+     * The exception mappings properties should be referenced rather then copied.
      * @since spring-mvc 3.0.5
      */
     public GlobalExceptionResolver() {

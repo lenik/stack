@@ -79,13 +79,12 @@ public class Menu
     }
 
     @Override
-    public boolean contribute(String menuPath, IMenu menu) {
-
+    public boolean contribute(String parentMenuPath, IMenu menu) {
         return false;
     }
 
     @Override
-    public boolean contribute(String menuPath, IMenuItem menuItem) {
+    public boolean contribute(String parentMenuPath, IMenuItem menuItem) {
         return false;
     }
 

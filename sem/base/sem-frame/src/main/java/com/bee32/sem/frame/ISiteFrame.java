@@ -11,4 +11,5 @@ public interface ISiteFrame {
      */
     IMenu getMenu(String menuId);
 
+
 }
