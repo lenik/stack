@@ -111,12 +111,12 @@ public abstract class ServletTestCase
         return stl.httpPost(uri, content, map);
     }
 
-    protected void browseAndWait()
+    public void browseAndWait()
             throws IOException {
         stl.browseAndWait();
     }
 
-    protected void browseAndWait(String location)
+    public void browseAndWait(String location)
             throws IOException {
         stl.browseAndWait(location);
     }

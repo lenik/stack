@@ -10,6 +10,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.bee32.plover.inject.cref.ContextRef;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ //
 /*            */"/com/bee32/plover/inject/cref/auto-context.xml",
@@ -37,6 +39,16 @@ public abstract class WiredTestCase
             throws BeansException {
         Object bean = beanFactory.createBean(beanClass, autowireMode, dependencyCheck);
         return beanClass.cast(bean);
+    }
+
+    protected void main() {
+        ApplicationContext context = new ContextRef(getClass()).buildApplicationContext();
+        AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
+        factory.autowireBean(this);
+        this.run();
+    }
+
+    protected void run() {
     }
 
 }
