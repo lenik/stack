@@ -1,11 +1,13 @@
-package com.bee32.sem.frame.command;
+package com.bee32.sem.frame.action;
 
 import com.bee32.plover.arch.IComponent;
 import com.bee32.plover.servlet.context.ContextLocation;
 
-public interface ICommand
+public interface IAction
         extends IComponent {
 
-    ContextLocation getLocation();
+    ContextLocation getActionTarget();
+
+    boolean isEnabled();
 
 }
