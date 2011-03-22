@@ -56,7 +56,7 @@ public class Principal
         return displayName;
     }
 
-    protected void setDisplayName(String displayName) {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
@@ -66,7 +66,7 @@ public class Principal
         return description;
     }
 
-    protected void setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
