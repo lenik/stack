@@ -129,7 +129,7 @@ public abstract class Component
         return false;
     }
 
-    transient final int typeHash = getClass().hashCode();
+    protected transient final int typeHash = getClass().hashCode();
 
     /**
      * Warning: You should override {@link #hashCodeSpecific()} instead.
