@@ -8,19 +8,25 @@ import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.ui.AbstractImageMap;
 import com.bee32.plover.arch.ui.IImageMap;
+import com.bee32.plover.arch.util.res.ClassResourceResolver;
 import com.bee32.plover.arch.util.res.IPropertyAcceptor;
+import com.bee32.plover.arch.util.res.IResourceResolver;
 
 public class InjectedImageMap
         extends AbstractImageMap
         implements IImageMap, IPropertyAcceptor {
 
-    private final Class<?> resourceBase;
+    private final IResourceResolver resourceResolver;
     private final TreeMap<ImageVariant, URL> variantMap;
 
-    public InjectedImageMap(Class<?> resourceBase) {
-        if (resourceBase == null)
-            throw new NullPointerException("resourceBase");
-        this.resourceBase = resourceBase;
+    public InjectedImageMap(Class<?> baseClass) {
+        this(new ClassResourceResolver(baseClass));
+    }
+
+    public InjectedImageMap(IResourceResolver resourceResolver) {
+        if (resourceResolver == null)
+            throw new NullPointerException("resourceResolver");
+        this.resourceResolver = resourceResolver;
         this.variantMap = new TreeMap<ImageVariant, URL>();
     }
 
@@ -34,9 +40,9 @@ public class InjectedImageMap
     }
 
     @Override
-    public void receive(String name, String value) {
+    public void receive(String name, String location) {
         assert name != null;
-        assert value != null;
+        assert location != null;
         int widthHint = 0;
         int heightHint = 0;
 
@@ -71,16 +77,20 @@ public class InjectedImageMap
 
         ImageVariant variant = new ImageVariant(variantName, widthHint, heightHint);
         URL url;
-        if (value.contains("//"))
+        if (location.contains("//"))
             try {
-                url = new URL(value);
+                url = new URL(location);
             } catch (MalformedURLException e) {
                 throw new IllegalUsageException(e.getMessage(), e);
             }
         else {
-            url = resourceBase.getResource(value);
+            try {
+                url = resourceResolver.resolve(location);
+            } catch (MalformedURLException e) {
+                throw new IllegalUsageException(e.getMessage(), e);
+            }
             if (url == null)
-                throw new IllegalUsageException("Class resource isn't existed: " + value);
+                throw new IllegalUsageException("Class resource isn't existed: " + location);
         }
         variantMap.put(variant, url);
     }

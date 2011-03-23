@@ -7,12 +7,20 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.free.AbstractQueryable;
+import javax.free.ClassLocal;
 
+import com.bee32.plover.arch.ui.annotated.AnnotatedAppearance;
+import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.LoadFlags32;
+import com.bee32.plover.arch.util.res.ClassResourceResolver;
+import com.bee32.plover.arch.util.res.IResourceResolver;
+import com.bee32.plover.arch.util.res.StemDispatchStrategy;
 
 public abstract class Appearance
         extends AbstractQueryable
         implements IAppearance, IImageMap, IRefdocs {
+
+    private final Object target;
 
     private IAppearance parent;
 
@@ -20,17 +28,23 @@ public abstract class Appearance
     private static final int HAVE_DESCRIPTION = 1 << 1;
     private static final int HAVE_REFDOCS = 1 << 2;
     private static final int HAVE_IMAGE_MAP = 1 << 3;
-    private LoadFlags32 flags;
+    private LoadFlags32 flags = new LoadFlags32();
 
     private String displayName;
     private String description;
     private IRefdocs refdocs;
     private IImageMap imageMap;
 
-    public Appearance(IAppearance parent) {
+    public Appearance(Object target, IAppearance parent) {
+        this.target = target;
         this.parent = parent;
     }
 
+    /**
+     * Find and load display name.
+     *
+     * @return <code>null</code> if not available.
+     */
     protected abstract String loadDisplayName();
 
     @Override
@@ -42,6 +56,12 @@ public abstract class Appearance
         }
         return displayName;
     }
+
+    /**
+     * Find and load description.
+     *
+     * @return <code>null</code> if not available.
+     */
 
     protected abstract String loadDescription();
 
@@ -55,6 +75,11 @@ public abstract class Appearance
         return description;
     }
 
+    /**
+     * Find and load refdocs.
+     *
+     * @return <code>null</code> if not available.
+     */
     protected abstract IRefdocs loadRefdocs();
 
     @Override
@@ -66,6 +91,12 @@ public abstract class Appearance
         }
         return refdocs;
     }
+
+    /**
+     * Find and load image-map.
+     *
+     * @return <code>null</code> if not available.
+     */
 
     protected abstract IImageMap loadImageMap();
 
@@ -161,4 +192,58 @@ public abstract class Appearance
         return null;
     }
 
+    public Object getTarget() {
+        return target;
+    }
+
+    @Override
+    public String toString() {
+        String appearanceType = getClass().getSimpleName();
+        return appearanceType + "<" + target + ">";
+    }
+
+    /**
+     * Find resource appearance first, if no available resource, fallback to annotation.
+     */
+    public static InjectedAppearance getAppearance(Object target, IResourceResolver resourceResolver,
+            Class<?> declaringType) {
+        Appearance fallback = new AnnotatedAppearance(null, declaringType);
+
+        InjectedAppearance injected = new InjectedAppearance(target, fallback, resourceResolver);
+
+        new StemDispatchStrategy(injected).bind(declaringType);
+
+        return injected;
+    }
+
+    /**
+     * Find annotated appearance first, if no available annotation, fallback to resource.
+     */
+    public static Appearance getAppearance(Object target, Class<?> declaringType, IResourceResolver resourceResolver) {
+        Appearance fallback = new InjectedAppearance(target, null, resourceResolver);
+        Appearance appearance = new AnnotatedAppearance(fallback, declaringType);
+        return appearance;
+    }
+
+    static final ClassLocal<InjectedAppearance> classLocalAppearance = new ClassLocal<InjectedAppearance>();
+
+    public static InjectedAppearance getAppearance(Class<?> declaringType) {
+        InjectedAppearance appearance = classLocalAppearance.get(declaringType);
+        if (appearance == null) {
+            synchronized (Appearance.class) {
+                appearance = classLocalAppearance.get(declaringType);
+                if (appearance == null) {
+
+                    IResourceResolver resourceResolver = new ClassResourceResolver(declaringType);
+
+                    appearance = getAppearance(null, resourceResolver, declaringType);
+
+                    new StemDispatchStrategy(appearance).bind(declaringType);
+
+                    classLocalAppearance.put(declaringType, appearance);
+                }
+            }
+        }
+        return appearance;
+    }
 }

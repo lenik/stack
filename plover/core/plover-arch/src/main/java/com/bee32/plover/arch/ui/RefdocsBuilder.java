@@ -1,6 +1,7 @@
 package com.bee32.plover.arch.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class RefdocsBuilder
     }
 
     @Override
-    public Iterable<? extends IRefdocEntry> getEntries(String tag) {
+    public Collection<? extends IRefdocEntry> getEntries(String tag) {
         List<IRefdocEntry> entries = tagmap.get(tag);
         if (entries == null)
             return Collections.<IRefdocEntry> emptyList();

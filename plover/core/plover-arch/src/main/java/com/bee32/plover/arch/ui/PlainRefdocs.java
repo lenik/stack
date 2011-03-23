@@ -2,6 +2,7 @@ package com.bee32.plover.arch.ui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -50,7 +51,7 @@ public class PlainRefdocs
      * List all matching entries in the optimized way.
      */
     @Override
-    public Iterable<? extends IRefdocEntry> getEntries(String tag) {
+    public Collection<? extends IRefdocEntry> getEntries(String tag) {
         tag += ".";
         String tagStart = qualifiedEntries.floorKey(tag);
         if (tagStart == null || !tagStart.startsWith(tag))

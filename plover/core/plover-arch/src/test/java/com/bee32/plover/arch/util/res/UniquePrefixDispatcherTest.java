@@ -16,10 +16,10 @@ public class UniquePrefixDispatcherTest {
         PropertyBuffer aSink = new PropertyBuffer();
         PropertyBuffer aaSink = new PropertyBuffer();
 
-        UniquePrefixDispatcher dispatcher = new UniquePrefixDispatcher();
-        dispatcher.registerPrefix("", _Sink);
-        dispatcher.registerPrefix("a", aSink);
-        dispatcher.registerPrefix("aa", aaSink);
+        UniquePrefixStrategy strategy = new UniquePrefixStrategy();
+        strategy.registerPrefix("", _Sink);
+        strategy.registerPrefix("a", aSink);
+        strategy.registerPrefix("aa", aaSink);
 
         Properties properties = new Properties();
         properties.put("", "*");
@@ -29,7 +29,7 @@ public class UniquePrefixDispatcherTest {
         properties.put("ab", "*");
         properties.put("aaa", "*");
         properties.put("xyz", "*");
-        dispatcher.dispatchProperties(properties);
+        strategy.bind(properties);
 
         assertEquals("{=*}", _Sink.getBufferedMap().toString());
         assertEquals("{=*}", aSink.getBufferedMap().toString());

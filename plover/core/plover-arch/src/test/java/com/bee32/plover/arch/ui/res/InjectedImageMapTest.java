@@ -8,7 +8,7 @@ import java.util.Locale;
 import org.junit.Test;
 
 import com.bee32.plover.arch.ui.StandardImageVariant;
-import com.bee32.plover.arch.util.res.StemDispatcher;
+import com.bee32.plover.arch.util.res.StemDispatchStrategy;
 
 public class InjectedImageMapTest {
 
@@ -17,8 +17,10 @@ public class InjectedImageMapTest {
 
     public InjectedImageMapTest() {
         sink = new InjectedImageMap(getClass());
-        StemDispatcher dispatcher = new StemDispatcher(sink);
-        dispatcher.dispatchClassResource(getClass(), Locale.ENGLISH);
+
+        StemDispatchStrategy strategy = new StemDispatchStrategy(sink);
+
+        strategy.bind(getClass(), Locale.ENGLISH).require();
     }
 
     @Test

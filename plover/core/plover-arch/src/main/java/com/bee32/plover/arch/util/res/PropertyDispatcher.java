@@ -1,40 +1,45 @@
 package com.bee32.plover.arch.util.res;
 
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import javax.free.StringPart;
 
-public abstract class PropertyDispatcher {
+public abstract class PropertyDispatcher
+        implements IPropertyDispatcher {
 
-    protected abstract void dispatch(String key, String content);
+    protected final PropertyDispatchStrategy strategy;
 
-    public void dispatchResourceBundle(ResourceBundle resourceBundle) {
-        if (resourceBundle == null)
-            throw new NullPointerException("resourceBundle");
-        Enumeration<String> keys = resourceBundle.getKeys();
-        while (keys.hasMoreElements()) {
-            String key = keys.nextElement();
-            String content = resourceBundle.getString(key);
-            dispatch(key, content);
+    private boolean required;
+
+    public PropertyDispatcher(PropertyDispatchStrategy strategy) {
+        if (strategy == null)
+            throw new NullPointerException("strategy");
+        this.strategy = strategy;
+    }
+
+    public PropertyDispatchStrategy getStrategy() {
+        return strategy;
+    }
+
+    @Override
+    public void require() {
+        if (!required) {
+            synchronized (this) {
+                if (!required) {
+                    dispatch();
+                }
+            }
         }
     }
 
-    public void dispatchProperties(Properties properties) {
-        if (properties == null)
-            throw new NullPointerException("properties");
-        for (Entry<Object, Object> entry : properties.entrySet()) {
-            String key = String.valueOf(entry.getKey());
-            String content = properties.getProperty(key);
-            dispatch(key, content);
-        }
-    }
+    @Override
+    public String toString() {
+        String dispatcherType = getClass().getSimpleName();
 
-    public void dispatchClassResource(Class<?> clazz, Locale locale) {
-        String baseName = clazz.getName();
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(baseName, locale);
-        dispatchResourceBundle(resourceBundle);
+        if (dispatcherType.contains("$"))
+            dispatcherType = StringPart.afterLast(dispatcherType, '$');
+
+        String strategyType = strategy.getClass().getSimpleName();
+
+        return dispatcherType + "/" + strategyType;
     }
 
 }

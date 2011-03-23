@@ -4,14 +4,17 @@ import javax.free.Nullables;
 
 import com.bee32.plover.arch.ui.Appearance;
 import com.bee32.plover.arch.ui.IAppearance;
+import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.AutoNaming;
 import com.bee32.plover.arch.util.ExceptionSupport;
+import com.bee32.plover.arch.util.res.IPropertyDispatcher;
+import com.bee32.plover.arch.util.res.IPropertyDispatcherAware;
 
 /**
  * A component is bound with appearance, and optionally an alternative exception support.
  */
 public abstract class Component
-        implements IComponent {
+        implements IComponent, IPropertyDispatcherAware {
 
     /**
      * The name is readable/writable to support entity design.
@@ -24,8 +27,8 @@ public abstract class Component
      */
     protected String name;
 
-    private IAppearance appearance;
-    private ExceptionSupport exceptionSupport;
+    IAppearance appearance;
+    ExceptionSupport exceptionSupport;
 
     public Component(String name) {
         this.name = name;
@@ -40,6 +43,26 @@ public abstract class Component
         return name;
     }
 
+    /**
+     * Set property-dispatcher on the component will override the one set on the
+     * injected-appearance.
+     *
+     * @param propertyDispatcher
+     *            The new proeprty dispatcher to use.
+     */
+    @Override
+    public void setPropertyDispatcher(IPropertyDispatcher propertyDispatcher) {
+        InjectedAppearance injected;
+        if (appearance instanceof InjectedAppearance)
+            injected = (InjectedAppearance) appearance;
+        else { // using this.getClass() as default resource resolver.
+            injected = new InjectedAppearance(this, appearance, getClass());
+            this.appearance = injected;
+        }
+
+        injected.setPropertyDispatcher(propertyDispatcher);
+    }
+
     @Override
     public IAppearance getAppearance() {
         if (appearance == null) {
@@ -47,6 +70,16 @@ public abstract class Component
             appearance = Appearance.getAppearance(componentClass);
         }
         return appearance;
+    }
+
+    /**
+     * Change the appearance of this component.
+     *
+     * @param appearance
+     *            The new appearance. Specify <code>null</code> to restore the default appearance.
+     */
+    void setAppearance(IAppearance appearance) {
+        this.appearance = appearance;
     }
 
     @Override
@@ -96,7 +129,7 @@ public abstract class Component
         return false;
     }
 
-    protected transient final int typeHash = getClass().hashCode();
+    transient final int typeHash = getClass().hashCode();
 
     /**
      * Warning: You should override {@link #hashCodeSpecific()} instead.

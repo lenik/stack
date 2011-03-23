@@ -7,18 +7,24 @@ import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.ui.RefdocEntry;
 import com.bee32.plover.arch.ui.SimpleRefdocs;
+import com.bee32.plover.arch.util.res.ClassResourceResolver;
 import com.bee32.plover.arch.util.res.IPropertyAcceptor;
+import com.bee32.plover.arch.util.res.IResourceResolver;
 
 public class InjectedRefdocs
         extends SimpleRefdocs
         implements IPropertyAcceptor {
 
-    private Class<?> resourceBase;
+    private IResourceResolver resourceResolver;
 
-    public InjectedRefdocs(Class<?> resourceBase) {
-        if (resourceBase == null)
-            throw new NullPointerException("resourceBase");
-        this.resourceBase = resourceBase;
+    public InjectedRefdocs(Class<?> baseClass) {
+        this(new ClassResourceResolver(baseClass));
+    }
+
+    public InjectedRefdocs(IResourceResolver resourceResolver) {
+        if (resourceResolver == null)
+            throw new NullPointerException("resourceResolver");
+        this.resourceResolver = resourceResolver;
     }
 
     static final int PROP_TITLE = 1;
@@ -68,7 +74,11 @@ public class InjectedRefdocs
                         throw new IllegalUsageException(e.getMessage(), e);
                     }
                 else { // Class-Relative URL
-                    resourceUrl = resourceBase.getResource(content);
+                    try {
+                        resourceUrl = resourceResolver.resolve(content);
+                    } catch (MalformedURLException e) {
+                        throw new IllegalUsageException(e.getMessage(), e);
+                    }
                     if (resourceUrl == null)
                         throw new IllegalUsageException("Class resource isn't existed: " + content);
                 }

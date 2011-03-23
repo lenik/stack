@@ -1,26 +1,49 @@
 package com.bee32.plover.arch.ui.res;
 
+import javax.inject.Inject;
+
+import com.bee32.plover.arch.ui.Appearance;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.ui.IImageMap;
 import com.bee32.plover.arch.ui.IRefdocs;
+import com.bee32.plover.arch.util.res.ClassResourceResolver;
 import com.bee32.plover.arch.util.res.IPropertyAcceptor;
+import com.bee32.plover.arch.util.res.IPropertyDispatcher;
+import com.bee32.plover.arch.util.res.IPropertyDispatcherAware;
+import com.bee32.plover.arch.util.res.IResourceResolver;
 
 /**
  * 从资源中提取的用户界面信息。
  */
 public class InjectedAppearance
-        implements IAppearance, IPropertyAcceptor {
+        extends Appearance
+        implements IPropertyAcceptor, IPropertyDispatcherAware {
 
     private String displayName;
     private String description;
     private InjectedImageMap imageMap;
     private InjectedRefdocs refdocs;
 
-    public InjectedAppearance(Class<?> resourceBase) {
-        if (resourceBase == null)
-            throw new NullPointerException("resourceBase");
-        this.imageMap = new InjectedImageMap(resourceBase);
-        this.refdocs = new InjectedRefdocs(resourceBase);
+    private IResourceResolver resourceResolver;
+
+    private IPropertyDispatcher propertyDispatcher;
+
+    public InjectedAppearance(Object target, IAppearance parent, Class<?> declaringClass) {
+        this(target, parent, new ClassResourceResolver(declaringClass));
+    }
+
+    public InjectedAppearance(Object target, IAppearance parent, IResourceResolver resourceResolver) {
+        super(target, parent);
+
+        if (resourceResolver == null)
+            throw new NullPointerException("resourceResolver");
+
+        this.resourceResolver = resourceResolver;
+    }
+
+    @Override
+    public void setPropertyDispatcher(IPropertyDispatcher propertyDispatcher) {
+        this.propertyDispatcher = propertyDispatcher;
     }
 
     @Override
@@ -32,33 +55,71 @@ public class InjectedAppearance
             description = content;
 
         else if ("icon".equals(name))
-            imageMap.receive("", content);
+            _imageMap().receive("", content);
 
         else if (name.startsWith("icon."))
-            imageMap.receive(name.substring(5), content);
+            _imageMap().receive(name.substring(5), content);
 
         else if (name.startsWith("ref."))
-            refdocs.receive(name.substring(4), content);
+            _refdocs().receive(name.substring(4), content);
+    }
+
+    InjectedImageMap _imageMap() {
+        if (imageMap == null) {
+            synchronized (this) {
+                if (imageMap == null) {
+                    imageMap = new InjectedImageMap(resourceResolver);
+                }
+            }
+        }
+        return imageMap;
+    }
+
+    InjectedRefdocs _refdocs() {
+        if (refdocs == null) {
+            synchronized (this) {
+                if (refdocs == null) {
+                    refdocs = new InjectedRefdocs(resourceResolver);
+                }
+            }
+        }
+        return refdocs;
+    }
+
+    IPropertyDispatcher _propertyDispatcher() {
+        if (propertyDispatcher == null)
+            throw new IllegalStateException("Property dispatcher is not bound.");
+        return propertyDispatcher;
     }
 
     @Override
-    public String getDisplayName() {
+    protected String loadDisplayName() {
+        _propertyDispatcher().require();
         return displayName;
     }
 
     @Override
-    public String getDescription() {
+    protected String loadDescription() {
+        _propertyDispatcher().require();
         return description;
     }
 
-    @Override
-    public IImageMap getImageMap() {
+    @Inject
+    protected IImageMap loadImageMap() {
+        _propertyDispatcher().require();
         return imageMap;
     }
 
-    @Override
-    public IRefdocs getRefdocs() {
+    @Inject
+    protected IRefdocs loadRefdocs() {
+        _propertyDispatcher().require();
         return refdocs;
+    }
+
+    @Override
+    public String toString() {
+        Object target = getTarget();
+        return resourceResolver + "<" + target + ">";
     }
 
 }

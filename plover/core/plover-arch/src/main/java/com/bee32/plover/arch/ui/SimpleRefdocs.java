@@ -1,6 +1,7 @@
 package com.bee32.plover.arch.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class SimpleRefdocs
      * TODO - use prefetched-iterator in future.
      */
     @Override
-    public Iterable<? extends IRefdocEntry> getEntries(String tag) {
+    public Collection<? extends IRefdocEntry> getEntries(String tag) {
         List<IRefdocEntry> list = new ArrayList<IRefdocEntry>();
         for (RefdocEntry entry : refdocEntries.values())
             if (entry.hasTag(tag)) {

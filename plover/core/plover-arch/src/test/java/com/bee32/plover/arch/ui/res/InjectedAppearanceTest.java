@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.bee32.plover.arch.util.res.StemDispatcher;
+import com.bee32.plover.arch.util.res.StemDispatchStrategy;
 
 public class InjectedAppearanceTest {
 
@@ -15,9 +15,10 @@ public class InjectedAppearanceTest {
     public InjectedAppearanceTest() {
         Locale.setDefault(new Locale("not-exist-locale"));
 
-        appearance = new InjectedAppearance(InjectedAppearanceTest.class);
-        StemDispatcher dispatcher = new StemDispatcher(appearance);
-        dispatcher.dispatchClassResource(getClass(), Locale.ENGLISH);
+        appearance = new InjectedAppearance(null, null, InjectedAppearanceTest.class);
+
+        StemDispatchStrategy strategy = new StemDispatchStrategy(appearance);
+        strategy.bind(getClass(), Locale.ENGLISH);
     }
 
     @Test
