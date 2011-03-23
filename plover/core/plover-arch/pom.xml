@@ -55,6 +55,11 @@
         </dependency>
         <dependency>
             <groupId>javax.free</groupId>
+            <artifactId>freejava-context</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.free</groupId>
             <artifactId>freejava-collection</artifactId>
             <version>3.0.0</version>
         </dependency>
