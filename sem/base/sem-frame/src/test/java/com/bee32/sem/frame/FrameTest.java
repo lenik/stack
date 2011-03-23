@@ -2,7 +2,7 @@ package com.bee32.sem.frame;
 
 import javax.inject.Inject;
 
-import com.bee32.sem.frame.context.ContextMenu;
+import com.bee32.sem.frame.builtins.ContextMenu;
 import com.bee32.sem.frame.menu.IMenu;
 
 public class FrameTest {

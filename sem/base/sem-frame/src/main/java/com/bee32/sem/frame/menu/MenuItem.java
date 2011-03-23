@@ -7,26 +7,26 @@ public class MenuItem
         extends Component
         implements IMenuItem {
 
-    private MenuGroup menuGroup;
+    private MenuSection menuGroup;
     private int order;
     private IAction action;
     private IMenu subMenu;
 
-    private MenuItem(String name) {
+    public MenuItem(String name) {
         this(name, null);
     }
 
-    private MenuItem(String name, IAction action) {
+    public MenuItem(String name, IAction action) {
         super(name);
         this.action = action;
     }
 
     @Override
-    public MenuGroup getMenuGroup() {
+    public MenuSection getMenuGroup() {
         return menuGroup;
     }
 
-    public void setMenuGroup(MenuGroup menuGroup) {
+    public void setMenuGroup(MenuSection menuGroup) {
         this.menuGroup = menuGroup;
     }
 

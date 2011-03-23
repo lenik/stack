@@ -11,7 +11,7 @@ public interface IMenuItem
      *
      * @return MenuGroup literal, or <code>null</code> if this item doesn't belong to any group.
      */
-    MenuGroup getMenuGroup();
+    MenuSection getMenuGroup();
 
     /**
      * Display order of this menu item.
