@@ -50,12 +50,14 @@ public abstract class Composite
         return prefixStrategy;
     }
 
-    public void self() {
+    protected Iterable<Field> getElementFields() {
+        return ReflectiveChildrenComponents.getImplicitAnalyzer(getClass());
+    }
+
+    void self() {
         declare("", this);
 
-        ReflectiveChildrenComponents reflectiveChildren = ReflectiveChildrenComponents.getImplicitAnalyzer(getClass());
-
-        for (Field field : reflectiveChildren) {
+        for (Field field : getElementFields()) {
             String name = field.getName();
             Component childComponent;
 
@@ -73,10 +75,16 @@ public abstract class Composite
 
     }
 
-    public void declare(String id, Component childComponent) {
+    protected boolean isFallbackEnabled() {
+        return false;
+    }
+
+    protected void declare(String id, Component childComponent) {
         // logger.debug("declare " + id + " in " + this);
 
-        IAppearance fallback = null; // childComponent.getAppearance();
+        IAppearance fallback = null;
+        if (isFallbackEnabled())
+            fallback = childComponent.getAppearance();
 
         Class<?> compositeClass = getClass();
         InjectedAppearance childAppearanceOverride = new InjectedAppearance(this, fallback, compositeClass);

@@ -47,6 +47,11 @@ public class CompositeTest
         protected void preamble() {
         }
 
+        @Override
+        protected boolean isFallbackEnabled() {
+            return true;
+        }
+
     }
 
     Basket basket = new Basket();
