@@ -9,7 +9,7 @@ import com.bee32.plover.pub.oid.Oid;
 import com.bee32.plover.pub.oid.PloverOids;
 import com.bee32.plover.restful.resource.ResourceDispatcher;
 
-@Oid({ 3, 12, PloverOids.repr, PloverOids.reprResource })
+@Oid({ 3, 12, PloverOids.Repr, PloverOids.repr.Resource })
 public class ResourceModule
         extends DispatchModule {
 
