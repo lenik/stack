@@ -10,7 +10,7 @@ public class Action
     private boolean enabled = true;
     private ContextLocation actionTarget;
 
-    private Action(String name, ContextLocation actionTarget) {
+    public Action(String name, ContextLocation actionTarget) {
         super(name);
         this.actionTarget = actionTarget;
     }
