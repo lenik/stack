@@ -5,16 +5,24 @@ import java.lang.reflect.Modifier;
 
 import org.springframework.context.annotation.Lazy;
 
+import com.bee32.plover.arch.Composite;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.sem.frame.Contribution;
 
+/**
+ * Class derives {@link MenuContribution} will be served as singleton instantiated beans.
+ * <p>
+ * After all beans are initialized, the instances of {@link MenuContribution}s are then be collected
+ * by MenuManager.
+ */
 @ComponentTemplate
 @Lazy
-public abstract class MenuContribution {
+public abstract class MenuContribution
+        extends Composite {
 
-    static final int CONTRIB_N_A = 1;
-    static final int CONTRIB_MENU = 1;
-    static final int CONTRIB_MENU_ITEM = 2;
+    private static final int CONTRIB_N_A = 1;
+    private static final int CONTRIB_MENU = 1;
+    private static final int CONTRIB_MENU_ITEM = 2;
 
     public static void contribute(MenuContribution menuContribution)
             throws ReflectiveOperationException {
