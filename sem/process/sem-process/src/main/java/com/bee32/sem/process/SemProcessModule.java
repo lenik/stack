@@ -7,7 +7,7 @@ import com.bee32.sem.process.verify.builtin.dao.AllowListDao;
 import com.bee32.sem.process.verify.builtin.dao.MultiLevelDao;
 import com.bee32.sem.process.verify.builtin.dao.PassToNextDao;
 
-@Oid({ 3, 15, SEMOids.process, SEMOids.processProcess })
+@Oid({ 3, 15, SEMOids.Process, SEMOids.process.Process })
 public class SemProcessModule
         extends EnterpriseModule {
 

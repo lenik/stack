@@ -4,38 +4,48 @@ public interface SEMOids {
 
     int[] ROOT = { 3, 15 };
 
-    int base = 1;
-    int process = 2;
-    int resource = 3;
-    int social = 4;
-    int support = 5;
+    int Base = 1;
+    int Process = 2;
+    int Resource = 3;
+    int Social = 4;
+    int Support = 5;
 
-    int baseFrame = 1;
-    int baseModule = 2;
-    int baseDesktop = 3;
-    int baseUser = 4;
-    int basePeople = 5;
-    int baseFile = 6;
-    int baseMail = 7;
-    int baseEvent = 8;
-    int baseBank = 9;
+    interface base {
+        int Frame = 1;
+        int Module = 2;
+        int Desktop = 3;
+        int User = 4;
+        int People = 5;
+        int File = 6;
+        int Mail = 7;
+        int Event = 8;
+        int Bank = 9;
+    }
 
-    int processProcess = 1;
-    int processTechproc = 2;
-    int processWorkflow = 3;
+    interface process {
+        int Process = 1;
+        int Techproc = 2;
+        int Workflow = 3;
+    }
 
-    int resourceStore = 1;
-    int resourceThing = 2;
-    int resourceAsset = 3;
-    int resourceContract = 4;
+    interface resource {
+        int Store = 1;
+        int Thing = 2;
+        int Asset = 3;
+        int Contract = 4;
+    }
 
-    int socialStaff = 1;
-    int socialCustomer = 2;
-    int socialSupplier = 3;
-    int socialPartner = 4;
+    interface social {
+        int Staff = 1;
+        int Customer = 2;
+        int Supplier = 3;
+        int Partner = 4;
+    }
 
-    int supportCalendar = 1;
-    int supportTrack = 2;
-    int supportKb = 3;
+    interface support {
+        int Calendar = 1;
+        int Track = 2;
+        int Kb = 3;
+    }
 
 }

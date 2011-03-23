@@ -4,7 +4,7 @@ import com.bee32.plover.pub.oid.Oid;
 import com.bee32.sem.SEMOids;
 import com.bee32.sem.module.EnterpriseModule;
 
-@Oid({ 3, 15, SEMOids.base, SEMOids.baseEvent })
+@Oid({ 3, 15, SEMOids.Base, SEMOids.base.Event })
 public class SemActivityModule
         extends EnterpriseModule {
 
