@@ -3,7 +3,7 @@ package com.bee32.sem.frame;
 import javax.inject.Inject;
 
 import com.bee32.sem.frame.builtins.ContextMenu;
-import com.bee32.sem.frame.menu.IMenu;
+import com.bee32.sem.frame.menu.IMenuEntry;
 
 public class FrameTest {
 
@@ -12,7 +12,7 @@ public class FrameTest {
 
     public FrameTest() {
 
-        IMenu menu = frame.getMainFrame().getMenu(ContextMenu.CONTEXT_NETWORK);
+        IMenuEntry menu = frame.getMainFrame().getMenu(ContextMenu.CONTEXT_NETWORK);
 //        menu.contribute("asd/foo", new MenuItem());
     }
 

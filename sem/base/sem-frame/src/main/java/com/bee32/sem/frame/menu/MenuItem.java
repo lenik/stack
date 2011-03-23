@@ -7,10 +7,14 @@ public class MenuItem
         extends Component
         implements IMenuItem {
 
-    private MenuSection menuGroup;
+    private MenuSection section;
     private int order;
+
+    private int flags;
+    private String preferredStyleClass;
+    private String preferredStyle;
+
     private IAction action;
-    private IMenu subMenu;
 
     public MenuItem(String name) {
         this(name, null);
@@ -22,12 +26,12 @@ public class MenuItem
     }
 
     @Override
-    public MenuSection getMenuGroup() {
-        return menuGroup;
+    public MenuSection getSection() {
+        return section;
     }
 
-    public void setMenuGroup(MenuSection menuGroup) {
-        this.menuGroup = menuGroup;
+    public void setSection(MenuSection section) {
+        this.section = section;
     }
 
     @Override
@@ -40,6 +44,33 @@ public class MenuItem
     }
 
     @Override
+    public int getFlags() {
+        return flags;
+    }
+
+    public void setFlags(int flags) {
+        this.flags = flags;
+    }
+
+    @Override
+    public String getPreferredStyleClass() {
+        return preferredStyleClass;
+    }
+
+    public void setPreferredStyleClass(String preferredStyleClass) {
+        this.preferredStyleClass = preferredStyleClass;
+    }
+
+    @Override
+    public String getPreferredStyle() {
+        return preferredStyle;
+    }
+
+    public void setPreferredStyle(String preferredStyle) {
+        this.preferredStyle = preferredStyle;
+    }
+
+    @Override
     public IAction getAction() {
         return action;
     }
@@ -48,13 +79,19 @@ public class MenuItem
         this.action = action;
     }
 
-    @Override
-    public IMenu getSubMenu() {
-        return subMenu;
-    }
+    public MenuItem populate(IMenuItem other) {
+        if (other == null)
+            throw new NullPointerException("other");
 
-    public void setSubMenu(IMenu subMenu) {
-        this.subMenu = subMenu;
+        this.name = other.getName();
+        this.section = other.getSection();
+        this.order = other.getOrder();
+        this.flags = other.getFlags();
+        this.preferredStyleClass = other.getPreferredStyleClass();
+        this.preferredStyle = other.getPreferredStyle();
+        this.action = other.getAction();
+
+        return this;
     }
 
 }

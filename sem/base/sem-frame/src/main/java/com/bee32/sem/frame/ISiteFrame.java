@@ -1,6 +1,6 @@
 package com.bee32.sem.frame;
 
-import com.bee32.sem.frame.menu.IMenu;
+import com.bee32.sem.frame.menu.IMenuEntry;
 
 public interface ISiteFrame {
 
@@ -9,7 +9,7 @@ public interface ISiteFrame {
      *
      * @return <code>null</code> if a top-level menu of with specified menu-id doesn't exist.
      */
-    IMenu getMenu(String menuId);
+    IMenuEntry getMenu(String menuId);
 
 
 }
