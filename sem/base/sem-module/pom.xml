@@ -3,10 +3,10 @@
     <parent>
         <groupId>com.bee32.sem</groupId>
         <artifactId>base</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.2.0</version>
     </parent>
     <artifactId>sem-module</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2.0</version>
     <dependencies>
         <dependency>
             <groupId>com.bee32.plover</groupId>
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>com.bee32.sem</groupId>
             <artifactId>sem-frame</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.2.0</version>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>

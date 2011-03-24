@@ -3,10 +3,10 @@
     <parent>
         <groupId>com.bee32.sem</groupId>
         <artifactId>support</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.2.0</version>
     </parent>
     <artifactId>sem-kb</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2.0</version>
     <dependencies/>
     <name>SEM :: Support :: Kb</name>
 </project>
