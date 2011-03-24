@@ -26,9 +26,11 @@ public class MainMenu
     @Override
     public void afterPropertiesSet()
             throws Exception {
-        for (MenuContribution menuContrib : context.getBeansOfType(MenuContribution.class).values()) {
 
+        for (MenuContribution contribution : context.getBeansOfType(MenuContribution.class).values()) {
+            merge(contribution);
         }
+
     }
 
 }
