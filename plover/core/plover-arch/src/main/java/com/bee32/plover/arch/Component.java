@@ -78,7 +78,7 @@ public abstract class Component
      * @param appearance
      *            The new appearance. Specify <code>null</code> to restore the default appearance.
      */
-    void setAppearance(IAppearance appearance) {
+    protected void setAppearance(IAppearance appearance) {
         this.appearance = appearance;
     }
 
