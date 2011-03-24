@@ -6,7 +6,7 @@
         <version>0.2.1-SNAPSHOT</version>
     </parent>
     <artifactId>plover-model</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2.1-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>com.bee32.plover</groupId>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-inject</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.2.1-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>

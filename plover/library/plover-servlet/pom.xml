@@ -6,7 +6,7 @@
         <version>0.2.1-SNAPSHOT</version>
     </parent>
     <artifactId>plover-servlet</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2.1-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -76,7 +76,7 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-inject</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.2.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <name>Plover :: Library :: Servlet</name>

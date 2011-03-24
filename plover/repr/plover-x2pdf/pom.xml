@@ -6,12 +6,12 @@
         <version>0.2.1-SNAPSHOT</version>
     </parent>
     <artifactId>plover-x2pdf</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2.1-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-repr</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.2.1-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
