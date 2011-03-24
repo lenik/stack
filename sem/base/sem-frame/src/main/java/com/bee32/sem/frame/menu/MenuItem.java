@@ -91,6 +91,8 @@ public class MenuItem
         this.preferredStyle = other.getPreferredStyle();
         this.action = other.getAction();
 
+        this.setAppearance(other.getAppearance());
+
         return this;
     }
 

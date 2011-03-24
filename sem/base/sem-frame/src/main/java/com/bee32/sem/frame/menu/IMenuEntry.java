@@ -47,6 +47,15 @@ public interface IMenuEntry
     IMenuEntry populate(IMenuEntry menuEntry);
 
     /**
+     * Resolve the menu path.
+     *
+     * @param path
+     *            The menu path to be resolved.
+     * @return The resolved entry, <code>null</code> if not existed.
+     */
+    IMenuEntry resolve(String path);
+
+    /**
      * Resolve the menu path, create any intermediate nodes if <code>true</code> value of
      * <code>createIfNotExisted</code> is specified.
      *

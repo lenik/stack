@@ -3,7 +3,9 @@ package com.bee32.sem.frame.menu;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.frame.action.IAction;
 
 public class MenuEntry
@@ -100,10 +102,17 @@ public class MenuEntry
     public MenuEntry populate(IMenuEntry menuEntry) {
         populate((IMenuItem) menuEntry);
 
-        for (IMenuEntry childEntry : menuEntry)
-            this.add(childEntry);
+        for (IMenuEntry childEntry : menuEntry) {
+            String childName = childEntry.getName();
+            getOrCreate(childName).populate(childEntry);
+        }
 
         return this;
+    }
+
+    @Override
+    public IMenuEntry resolve(String path) {
+        return resolve(path, false);
     }
 
     @Override
@@ -119,10 +128,14 @@ public class MenuEntry
         }
 
         IMenuEntry next;
-        if (createIfNotExisted)
-            next = getOrCreate(head);
-        else
-            next = get(head);
+        if (".".equals(head)) {
+            next = this;
+        } else {
+            if (createIfNotExisted)
+                next = this.getOrCreate(head);
+            else
+                next = this.get(head);
+        }
 
         if (path == null)
             return next;
@@ -152,6 +165,24 @@ public class MenuEntry
 
         newChild.populate(menuEntry);
         return true;
+    }
+
+    protected void format(PrettyPrintStream out) {
+        out.println(name + " -> " + getAction());
+        out.enter();
+        for (Entry<String, IMenuEntry> child : children.entrySet()) {
+            // String childName = child.getKey();
+            MenuEntry childEntry = (MenuEntry) child.getValue(); // XXX interface?
+            childEntry.format(out);
+        }
+        out.leave();
+    }
+
+    @Override
+    public String toString() {
+        PrettyPrintStream out = new PrettyPrintStream();
+        format(out);
+        return out.toString();
     }
 
 }

@@ -1,16 +1,15 @@
 package com.bee32.sem.frame.menu;
 
 import java.lang.reflect.Field;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import javax.inject.Inject;
+import javax.free.IllegalUsageException;
 
-import org.springframework.context.annotation.Lazy;
-
-import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.Composite;
 import com.bee32.plover.inject.ComponentTemplate;
+import com.bee32.plover.servlet.context.LocationContextConstants;
 import com.bee32.sem.frame.Contribution;
-import com.bee32.sem.frame.builtins.MainMenu;
 
 /**
  * Class derives {@link MenuContribution} will be served as singleton instantiated beans.
@@ -19,31 +18,23 @@ import com.bee32.sem.frame.builtins.MainMenu;
  * by MenuManager.
  */
 @ComponentTemplate
-@Lazy
 public abstract class MenuContribution
-        extends Composite {
+        extends Composite
+        implements LocationContextConstants {
 
-    @Inject
-    MainMenu mainMenu;
+    private Map<String, IMenuItem> contributions = new LinkedHashMap<String, IMenuItem>();
+
+    public MenuContribution() {
+        super();
+    }
+
+    public MenuContribution(String name) {
+        super(name);
+    }
 
     @Override
-    protected void declare(String id, Component childComponent) {
-        super.declare(id, childComponent);
-    }
-
-    protected void contribute(String parentMenuPath, IMenuItem menuItem) {
-        mainMenu.resolveMerge(parentMenuPath, menuItem);
-    }
-
-    protected void contribute(String parentMenuPath, IMenuEntry menuEntry) {
-        mainMenu.resolveMerge(parentMenuPath, menuEntry);
-    }
-
-    private static final int CONTRIB_MENU_ENTRY = 1;
-    private static final int CONTRIB_MENU_ITEM = 2;
-
-    void contributeTo(MenuEntry rootEntry)
-            throws ReflectiveOperationException {
+    protected void introduce() {
+        super.introduce();
 
         for (Field field : getElementFields()) {
 
@@ -56,25 +47,35 @@ public abstract class MenuContribution
 
             Class<?> fieldType = field.getType();
 
-            int contribType;
-            if (IMenuEntry.class.isAssignableFrom(fieldType))
-                contribType = CONTRIB_MENU_ENTRY;
-            else if (IMenuItem.class.isAssignableFrom(fieldType))
-                contribType = CONTRIB_MENU_ITEM;
-            else
+            if (!IMenuItem.class.isAssignableFrom(fieldType))
                 throw new UnsupportedOperationException("Bad contribution element type: " + field);
 
-            Object fieldValue = field.get(this);
-            switch (contribType) {
-            case CONTRIB_MENU_ITEM:
-                contribute(targetPath, (IMenuItem) fieldValue);
-                break;
-            case CONTRIB_MENU_ENTRY:
-                contribute(targetPath, (IMenuEntry) fieldValue);
-                break;
+            Object fieldValue;
+            try {
+                fieldValue = field.get(this);
+            } catch (Exception e) {
+                throw new IllegalUsageException(e.getMessage(), e);
             }
 
+            contribute(targetPath, (IMenuItem) fieldValue);
+
         }
+    }
+
+    protected void contribute(String parentMenuPath, IMenuItem element) {
+        contributions.put(parentMenuPath, element);
+    }
+
+    synchronized Map<String, IMenuItem> dump() {
+
+        if (this.contributions == null)
+            throw new IllegalStateException("Already dumped");
+
+        getPropertyBinding().bind(getClass());
+
+        Map<String, IMenuItem> retval = this.contributions;
+        this.contributions = null;
+        return retval;
     }
 
 }
