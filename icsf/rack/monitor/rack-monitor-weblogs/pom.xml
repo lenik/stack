@@ -3,11 +3,11 @@
     <parent>
         <groupId>com.bee32.icsf</groupId>
         <artifactId>monitor</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.2.0</version>
     </parent>
     <artifactId>rack-monitor-weblogs</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2.0</version>
     <dependencies/>
     <name>ICSF :: Rack :: Monitor :: Rack Monitor Weblogs</name>
 </project>
