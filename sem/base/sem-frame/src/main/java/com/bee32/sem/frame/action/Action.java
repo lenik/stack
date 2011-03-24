@@ -10,6 +10,11 @@ public class Action
     private boolean enabled = true;
     private ContextLocation actionTarget;
 
+    public Action(ContextLocation actionTarget) {
+        super();
+        this.actionTarget = actionTarget;
+    }
+
     public Action(String name, ContextLocation actionTarget) {
         super(name);
         this.actionTarget = actionTarget;
@@ -29,6 +34,14 @@ public class Action
 
     public void setActionTarget(ContextLocation actionTarget) {
         this.actionTarget = actionTarget;
+    }
+
+    @Override
+    public String toString() {
+        String target = String.valueOf(actionTarget);
+        if (!enabled)
+            target += " (disabled)";
+        return target;
     }
 
 }
