@@ -12,8 +12,6 @@
             <groupId>com.bee32.icsf</groupId>
             <artifactId>icsf-principal</artifactId>
             <version>0.2.1-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
     <name>ICSF :: Identity :: Acl</name>

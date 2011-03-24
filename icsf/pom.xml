@@ -9,14 +9,6 @@
     <artifactId>icsf</artifactId>
     <version>0.2.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
     <modules>
         <module>identity</module>
         <module>rack</module>

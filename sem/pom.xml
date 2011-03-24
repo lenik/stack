@@ -9,14 +9,6 @@
     <artifactId>sem</artifactId>
     <packaging>pom</packaging>
     <version>0.2.1-SNAPSHOT</version>
-    <dependencies>
-        <dependency>
-            <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-test</artifactId>
-            <version>0.2.1-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
     <modules>
         <module>base</module>
         <module>process</module>
