@@ -2,6 +2,7 @@ package com.bee32.plover.util.i18n;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.free.ContextLocal;
 import javax.free.IContext;
@@ -13,6 +14,9 @@ public class LocalePreference
         implements ILocalePreference {
 
     private static final long serialVersionUID = 1L;
+
+    static ContextLocal<Locale> locale//
+    = new ContextLocal<Locale>(LocalePreferenceDefaults.DEFAULT_LOCALE);
 
     static ContextLocal<NumberFormat> currencyFormat //
     = new ContextLocal<NumberFormat>(LocalePreferenceDefaults.DEFAULT_CURRENCY_FORMAT);
@@ -49,6 +53,16 @@ public class LocalePreference
 
     public LocalePreference(IContext context) {
         super(context);
+    }
+
+    @Override
+    public Locale getLocale() {
+        return locale.get(context);
+    }
+
+    @Override
+    public void setLocale(Locale locale) {
+        this.locale.set(context, locale);
     }
 
     @Override

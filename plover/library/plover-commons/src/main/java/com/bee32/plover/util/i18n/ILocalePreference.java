@@ -2,11 +2,16 @@ package com.bee32.plover.util.i18n;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 import com.bee32.plover.conf.IConf;
 
 public interface ILocalePreference
         extends IConf {
+
+    Locale getLocale();
+
+    void setLocale(Locale locale);
 
     NumberFormat getCurrencyFormat();
 
