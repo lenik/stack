@@ -3,10 +3,10 @@
     <parent>
         <groupId>com.bee32.icsf</groupId>
         <artifactId>identity</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1-SNAPSHOT</version>
     </parent>
     <artifactId>icsf-kerberos</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1-SNAPSHOT</version>
     <dependencies/>
     <name>ICSF :: Identity :: Kerberos</name>
 </project>

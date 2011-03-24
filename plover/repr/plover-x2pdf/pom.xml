@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.bee32.plover</groupId>
         <artifactId>repr</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1-SNAPSHOT</version>
     </parent>
     <artifactId>plover-x2pdf</artifactId>
     <version>0.0.1-SNAPSHOT</version>

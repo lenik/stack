@@ -3,10 +3,10 @@
     <parent>
         <groupId>com.bee32.sem</groupId>
         <artifactId>process</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1-SNAPSHOT</version>
     </parent>
     <artifactId>sem-techproc</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1-SNAPSHOT</version>
     <dependencies/>
     <name>SEM :: Process :: Techproc</name>
 </project>

@@ -3,10 +3,10 @@
     <parent>
         <groupId>com.bee32.sem</groupId>
         <artifactId>social</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1-SNAPSHOT</version>
     </parent>
     <artifactId>sem-customer</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1-SNAPSHOT</version>
     <dependencies/>
     <name>SEM :: Social :: Customer</name>
 </project>
