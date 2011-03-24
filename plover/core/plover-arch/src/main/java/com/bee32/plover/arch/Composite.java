@@ -37,7 +37,7 @@ public abstract class Composite
         if (!assembled) {
             synchronized (this) {
                 if (!assembled) {
-                    self();
+                    introduce();
                     preamble();
                     assembled = true;
                 }
@@ -54,8 +54,10 @@ public abstract class Composite
         return ReflectiveChildrenComponents.getImplicitAnalyzer(getClass());
     }
 
-    void self() {
+    protected void introduce() {
         declare("", this);
+
+        boolean usingComponentName = isUsingComponentName();
 
         for (Field field : getElementFields()) {
             String name = field.getName();
@@ -70,9 +72,19 @@ public abstract class Composite
             if (childComponent == null)
                 throw new IllegalUsageException("Null element: " + field);
 
+            if (usingComponentName) {
+                String componentName = childComponent.getName();
+                if (componentName != null)
+                    name = componentName;
+            }
+
             declare(name, childComponent);
         }
 
+    }
+
+    protected boolean isUsingComponentName() {
+        return true;
     }
 
     protected boolean isFallbackEnabled() {
