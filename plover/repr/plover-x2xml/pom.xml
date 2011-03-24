@@ -7,6 +7,6 @@
     </parent>
     <artifactId>plover-x2xml</artifactId>
     <version>0.2.1-SNAPSHOT</version>
-    <dependencies />
+    <dependencies/>
     <name>Plover :: Repr :: X2xml</name>
 </project>

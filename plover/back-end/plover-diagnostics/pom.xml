@@ -8,6 +8,6 @@
     <artifactId>plover-diagnostics</artifactId>
     <packaging>jar</packaging>
     <version>0.2.1-SNAPSHOT</version>
-    <dependencies />
+    <dependencies/>
     <name>Plover :: Back End :: Diagnostics</name>
 </project>
