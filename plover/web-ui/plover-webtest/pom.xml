@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.bee32.plover</groupId>
         <artifactId>web-ui</artifactId>
-        <version>0.0.4-SNAPSHOT</version>
+        <version>0.2.0</version>
     </parent>
     <artifactId>plover-webtest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
