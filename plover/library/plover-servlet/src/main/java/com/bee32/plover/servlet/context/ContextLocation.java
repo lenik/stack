@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.free.Nullables;
 
 public class ContextLocation
-        implements Serializable {
+        implements LocationContextConstants, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -13,7 +13,7 @@ public class ContextLocation
     private String location;
 
     public ContextLocation(String location) {
-        this(LocationContext.REQUEST, location);
+        this(REQUEST, location);
     }
 
     public ContextLocation(LocationContext context, String location) {
