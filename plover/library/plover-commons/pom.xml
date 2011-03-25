@@ -26,7 +26,7 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-collections</artifactId>
-            <version>0.2.1-SNAPSHOT</version>
+            <version>0.2.2</version>
         </dependency>
     </dependencies>
     <name>Plover :: Library :: Commons</name>
