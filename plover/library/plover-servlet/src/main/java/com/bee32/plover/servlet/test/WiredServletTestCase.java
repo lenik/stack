@@ -60,6 +60,11 @@ public abstract class WiredServletTestCase
         context.addInitParam("contextConfigLocation", locations.toString());
     }
 
+    /**
+     * Create a new instance of this using JUnit wrapper, and then autowire this using Spring DI.
+     *
+     * @return Wrapped & Wired instance.
+     */
     protected WiredServletTestCase wire()
             throws Exception {
         return wire(true);

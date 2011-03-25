@@ -30,11 +30,9 @@ public class BookModuleTest
         assertTrue(credit.contains("99"));
     }
 
-    // @Test
-    public void play()
+    public static void main(String[] args)
             throws Exception {
-        setUpLibraries();
-        browseAndWait();
+        new BookModuleTest().wire().browseAndWait();
     }
 
 }
