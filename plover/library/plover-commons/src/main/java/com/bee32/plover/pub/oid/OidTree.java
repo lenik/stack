@@ -142,8 +142,14 @@ public class OidTree<T>
     public Object getChild(String childName) {
         String[] split = childName.split("/");
         int[] vector = new int[split.length];
-        for (int i = 0; i < vector.length; i++)
-            vector[i] = Integer.parseInt(split[i]);
+        for (int i = 0; i < vector.length; i++) {
+            String token = split[i];
+            if (!OidUtil.isNumber(token))
+                return null;
+
+            int num = Integer.parseInt(split[i]);
+            vector[i] = num;
+        }
 
         OidTree<T> childTree = get(vector);
 
