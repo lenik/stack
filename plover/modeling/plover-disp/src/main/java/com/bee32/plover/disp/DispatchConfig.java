@@ -2,13 +2,19 @@ package com.bee32.plover.disp;
 
 public class DispatchConfig {
 
-    public static final int DYNAMIC_ORDER = 1;
-    public static final int REPOSITORY_ORDER = 2;
-    public static final int COLL_ORDER = 10;
-    public static final int MODEL_ORDER = 20;
-    public static final int PROPERTY_ORDER = 30;
-    public static final int FIELD_ORDER = 31;
-    public static final int GETMETHOD_ORDER = 40;
-    public static final int METHOD_ORDER = 41;
+    public static final int DYNAMIC_ORDER = 0;
+
+    public static final int ORDER_OID = 10;
+    public static final int ORDER_NAMED_NODE = 11;
+
+    public static final int ORDER_COLLECTION = 20;
+
+    public static final int ORDER_MODEL = 30;
+
+    public static final int ORDER_PROPERTY = 40;
+    public static final int ORDER_FIELD = 41;
+
+    public static final int ORDER_GET_METHOD = 50;
+    public static final int ORDER_METHOD = 51;
 
 }

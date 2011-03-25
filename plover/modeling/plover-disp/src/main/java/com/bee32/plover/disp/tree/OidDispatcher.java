@@ -1,6 +1,7 @@
 package com.bee32.plover.disp.tree;
 
 import com.bee32.plover.disp.AbstractDispatcher;
+import com.bee32.plover.disp.DispatchConfig;
 import com.bee32.plover.disp.DispatchContext;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.IDispatchContext;
@@ -13,7 +14,7 @@ public class OidDispatcher
 
     @Override
     public int getOrder() {
-        return 10;
+        return DispatchConfig.ORDER_OID;
     }
 
     @Override

@@ -21,7 +21,7 @@ public class NamedNodeDispatcher
 
     @Override
     public int getOrder() {
-        return DispatchConfig.REPOSITORY_ORDER;
+        return DispatchConfig.ORDER_NAMED_NODE;
     }
 
     @Override

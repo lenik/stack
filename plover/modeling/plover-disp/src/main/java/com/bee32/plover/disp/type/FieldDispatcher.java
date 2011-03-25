@@ -24,7 +24,7 @@ public class FieldDispatcher
 
     @Override
     public int getOrder() {
-        return DispatchConfig.FIELD_ORDER;
+        return DispatchConfig.ORDER_FIELD;
     }
 
     private transient ClassMap<String, Field> classMap;

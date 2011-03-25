@@ -27,7 +27,7 @@ public class PropertyDispatcher
 
     @Override
     public int getOrder() {
-        return DispatchConfig.FIELD_ORDER;
+        return DispatchConfig.ORDER_FIELD;
     }
 
     private transient ClassMap<String, PropertyDescriptor> classMap;

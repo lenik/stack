@@ -22,7 +22,7 @@ public class MapDispatcher
 
     @Override
     public int getOrder() {
-        return DispatchConfig.COLL_ORDER;
+        return DispatchConfig.ORDER_COLLECTION;
     }
 
     @Override

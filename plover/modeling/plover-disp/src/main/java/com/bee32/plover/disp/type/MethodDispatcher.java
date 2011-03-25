@@ -28,7 +28,7 @@ public class MethodDispatcher
 
     @Override
     public int getOrder() {
-        return DispatchConfig.METHOD_ORDER;
+        return DispatchConfig.ORDER_METHOD;
     }
 
     private transient ClassMap<MethodKey, Method> classMap;

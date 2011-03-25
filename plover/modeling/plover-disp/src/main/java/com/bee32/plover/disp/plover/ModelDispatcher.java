@@ -19,7 +19,7 @@ public class ModelDispatcher
 
     @Override
     public int getOrder() {
-        return DispatchConfig.MODEL_ORDER;
+        return DispatchConfig.ORDER_MODEL;
     }
 
     @Override
