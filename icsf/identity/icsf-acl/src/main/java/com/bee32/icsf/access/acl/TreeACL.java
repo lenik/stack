@@ -1,6 +1,8 @@
 package com.bee32.icsf.access.acl;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 import com.bee32.icsf.principal.IPrincipal;
 
@@ -11,12 +13,8 @@ public class TreeACL
         extends AbstractACL {
 
     @Override
-    protected IACL newACLRange() {
+    public IACL getInheritedACL() {
         return null;
-    }
-
-    @Override
-    public void add(Entry entry) {
     }
 
     @Override
@@ -25,8 +23,18 @@ public class TreeACL
     }
 
     @Override
-    public Collection<? extends IPrincipal> getDeclaredPrincipals() {
+    public Set<? extends IPrincipal> getDeclaredRelatedPrincipals() {
+        return Collections.emptySet();
+    }
+
+    @Override
+    protected IACL newACLRange() {
         return null;
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 
     @Override
@@ -35,8 +43,7 @@ public class TreeACL
     }
 
     @Override
-    public IACL getInheritedACL() {
-        return null;
+    public void add(Entry entry) {
     }
 
     @Override

@@ -7,32 +7,39 @@ import java.util.List;
 public abstract class ArrayACL
         extends AbstractACL {
 
-    private List<Entry> entries;
+    private List<Entry> entries = new ArrayList<Entry>();
 
     public ArrayACL() {
-        this.entries = new ArrayList<Entry>();
     }
 
     public ArrayACL(Collection<? extends Entry> entries) {
-        if (entries == null)
-            this.entries = new ArrayList<Entry>();
-        else
-            this.entries = new ArrayList<Entry>(entries);
+        if (entries != null)
+            for (Entry entry : entries)
+                this.add(entry);
     }
 
     @Override
-    public Collection<? extends Entry> getEntries() {
+    public int size() {
+        return entries.size();
+    }
+
+    @Override
+    public final List<Entry> getEntries() {
         return entries;
     }
 
     @Override
-    public void add(Entry entry) {
+    public final void add(Entry entry) {
         entries.add(entry);
+        onEntryChanged(entry, false);
     }
 
     @Override
-    public boolean remove(Entry entry) {
-        return entries.remove(entry);
+    public final boolean remove(Entry entry) {
+        boolean removed = entries.remove(entry);
+        if (removed)
+            onEntryChanged(entry, true);
+        return removed;
     }
 
     /**
@@ -41,8 +48,9 @@ public abstract class ArrayACL
      * @throws UnsupportedOperationException
      *             如果本 ACL 是只读的。
      */
-    public void add(int index, Entry entry) {
+    public final void add(int index, Entry entry) {
         entries.add(index, entry);
+        onEntryChanged(entry, false);
     }
 
     /**
@@ -50,8 +58,11 @@ public abstract class ArrayACL
      *
      * @throws IndexOutOfBoundsException
      */
-    public void remove(int index) {
-        entries.remove(index);
+    public final void remove(int index) {
+        Entry removedEntry = entries.remove(index);
+        onEntryChanged(removedEntry, true);
     }
+
+    protected abstract void onEntryChanged(Entry entry, boolean removed);
 
 }

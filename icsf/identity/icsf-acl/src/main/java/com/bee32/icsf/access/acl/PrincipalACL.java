@@ -1,7 +1,7 @@
 package com.bee32.icsf.access.acl;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.IPrincipal;
@@ -34,8 +34,10 @@ public class PrincipalACL
     }
 
     @Override
-    public Collection<? extends IPrincipal> getDeclaredPrincipals() {
-        return Arrays.asList(new IPrincipal[] { this.principal });
+    public Set<? extends IPrincipal> getDeclaredRelatedPrincipals() {
+        HashSet<IPrincipal> wrapper = new HashSet<IPrincipal>();
+        wrapper.add(principal);
+        return wrapper;
     }
 
     @Override
@@ -46,6 +48,10 @@ public class PrincipalACL
     @Override
     protected IACL newACLRange() {
         return new PrincipalACL(outer, principal);
+    }
+
+    @Override
+    protected void onEntryChanged(Entry entry, boolean removed) {
     }
 
     @Override

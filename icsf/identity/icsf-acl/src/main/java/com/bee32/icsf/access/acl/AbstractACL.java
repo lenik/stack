@@ -1,43 +1,61 @@
 package com.bee32.icsf.access.acl;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.PermissionException;
 import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.icsf.principal.PrincipalCheckException;
 
 public abstract class AbstractACL
         implements IACL {
 
-    public Collection<? extends IPrincipal> getPrincipals() {
+    @Override
+    public Set<? extends IPrincipal> getDeclaredRelatedPrincipals() {
+        Set<IPrincipal> declaredPrincipals;
+        declaredPrincipals = new HashSet<IPrincipal>();
+        for (Entry entry : getEntries()) {
+            IPrincipal p = entry.getPrincipal();
+            declaredPrincipals.add(p);
+        }
+        return declaredPrincipals;
+    }
+
+    @Override
+    public final Set<? extends IPrincipal> getRelatedPrincipals() {
         Set<IPrincipal> all = new HashSet<IPrincipal>();
         IACL acl = this;
         while (acl != null) {
-            all.addAll(acl.getDeclaredPrincipals());
+            all.addAll(acl.getDeclaredRelatedPrincipals());
             acl = getInheritedACL();
         }
         return all;
     }
 
-    void getImplicationACL(Collection<IPrincipal> all, IPrincipal principal)
-            throws PrincipalCheckException {
-        if (principal == null)
-            throw new NullPointerException("principal");
-        IACL inherited = getInheritedACL();
-        if (inherited != null) {
-            for (IPrincipal inherit : inherited.getDeclaredPrincipals()) {
-                if (!all.add(inherit)) {
-                    throw new PrincipalCheckException();
-                }
-            }
+    @Override
+    public boolean isDeclaredRelated(IPrincipal principal) {
+        for (Entry entry : getEntries()) {
+            IPrincipal declaredPrincipal = entry.getPrincipal();
+            if (declaredPrincipal.equals(principal))
+                return true;
         }
+        return false;
     }
 
     @Override
-    public void checkPermission(Permission requiredPermission)
+    public boolean isRelated(IPrincipal principal) {
+        if (isDeclaredRelated(principal))
+            return true;
+
+        IACL inheritedACL = getInheritedACL();
+        if (inheritedACL == null)
+            return false;
+
+        return inheritedACL.isRelated(principal);
+    }
+
+    @Override
+    public final void checkPermission(Permission requiredPermission)
             throws PermissionException {
         getACLPolicy().checkPermission(this, requiredPermission);
     }

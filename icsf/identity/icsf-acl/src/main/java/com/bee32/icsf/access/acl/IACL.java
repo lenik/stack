@@ -1,6 +1,7 @@
 package com.bee32.icsf.access.acl;
 
 import java.util.Collection;
+import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.PermissionException;
@@ -18,21 +19,51 @@ public interface IACL {
     IACL getInheritedACL();
 
     /**
-     * 本 ACL 的主体唯一集。
+     * 本 ACL 的有效主体集（局部）。
+     *
+     * 这个集合并不表明所含的主体具有对应权限，而仅仅表明本 ACL 对列出的主体集有影响力。
      *
      * @return 非 <code>null</code> {@link IPrincipal} 集合。
      */
-    Collection<? extends IPrincipal> getDeclaredPrincipals();
+    Set<? extends IPrincipal> getDeclaredRelatedPrincipals();
 
     /**
-     * 选取指定主体可用的权限集。
+     * 本 ACL 的有效主体集（包括继承项）。
+     *
+     * 这个集合并不表明所含的主体具有对应权限，而仅仅表明本 ACL 对列出的主体集有影响力。
+     *
+     * @return 非 <code>null</code> {@link IPrincipal} 集合。
+     */
+    Set<? extends IPrincipal> getRelatedPrincipals();
+
+    /**
+     * Test if given principal is declared in this ACL.
+     *
+     * @param principal
+     *            Non-<code>null</code> principal.
+     * @return <code>true</code> If given principal is declared in this ACL.
+     */
+    boolean isDeclaredRelated(IPrincipal principal);
+
+    /**
+     * Test if given principal in declared in this ACL or in the inherited ACLs.
+     *
+     * @param principal
+     *            Non-<code>null</code> principal.
+     * @return <code>true</code> If given principal is declared in this ACL or one of the inherited
+     *         ACLs.
+     */
+    boolean isRelated(IPrincipal principal);
+
+    /**
+     * 选取指定主体相关的 ACL 子集。
      *
      * @return 非 <code>null</code> 值。
      */
     IACL select(IPrincipal selectPrincipal);
 
     /**
-     * 选取蕴涵指定权限的主体集。
+     * 选取蕴涵指定权限的 ACL 子集。
      *
      * @return 非 <code>null</code> 值。
      */
@@ -80,6 +111,11 @@ public interface IACL {
     }
 
     /**
+     * 获取本 ACL （局部）定义的权限条目数。
+     */
+    int size();
+
+    /**
      * 列出本 ACL （局部）定义的所有权限条目。
      *
      * @return 非 <code>null</code> 的 {@link Entry} 集合。。
@@ -87,7 +123,7 @@ public interface IACL {
     Collection<? extends Entry> getEntries();
 
     /**
-     * 添加一个权限条目。
+     * 添加一个局部权限条目。
      *
      * @throws UnsupportedOperationException
      *             如果本 ACL 是只读的。
@@ -95,7 +131,7 @@ public interface IACL {
     void add(Entry entry);
 
     /**
-     * 删除一个权限条目。
+     * 删除一个局部权限条目。
      *
      * @throws UnsupportedOperationException
      *             如果本 ACL 是只读的。

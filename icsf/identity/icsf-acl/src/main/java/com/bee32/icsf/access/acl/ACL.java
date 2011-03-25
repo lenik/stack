@@ -1,8 +1,7 @@
 package com.bee32.icsf.access.acl;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.bee32.icsf.principal.IPrincipal;
@@ -10,14 +9,11 @@ import com.bee32.icsf.principal.IPrincipal;
 public class ACL
         extends ArrayACL {
 
-    // @Inject
     private IACLPolicy policy;
 
     private final IACL parent;
 
-    private boolean parsed;
-    private List<IPrincipal> declaredPrincipals;
-    private Map<IPrincipal, PrincipalACL> pmap;
+    private Map<IPrincipal, PrincipalACL> _pmap;
 
     public ACL() {
         this(null);
@@ -45,18 +41,6 @@ public class ACL
     }
 
     @Override
-    public Collection<? extends IPrincipal> getDeclaredPrincipals() {
-        if (declaredPrincipals == null) {
-            declaredPrincipals = new ArrayList<IPrincipal>();
-            for (Entry entry : getEntries()) {
-                IPrincipal p = entry.getPrincipal();
-                declaredPrincipals.add(p);
-            }
-        }
-        return declaredPrincipals;
-    }
-
-    @Override
     public IACLPolicy getACLPolicy() {
         return policy;
     }
@@ -66,32 +50,49 @@ public class ACL
         return new ACL(policy, parent, null);
     }
 
+    protected Map<IPrincipal, PrincipalACL> getPMap() {
+        if (_pmap == null) {
+            synchronized (this) {
+                if (_pmap == null) {
+                    _pmap = new HashMap<IPrincipal, PrincipalACL>();
+
+                    for (Entry entry : getEntries())
+                        onEntryChanged(entry, false);
+                }
+            }
+        }
+        return _pmap;
+    }
+
+    @Override
+    protected void onEntryChanged(Entry entry, boolean removed) {
+        if (_pmap == null)
+            return;
+
+        IPrincipal principal = entry.getPrincipal();
+        PrincipalACL pacl = _pmap.get(principal);
+
+        if (removed) {
+            if (pacl == null)
+                return;
+            else
+                _pmap = null; // invalidate immediately.
+        } else {
+            if (pacl == null) {
+                pacl = new PrincipalACL(this, principal);
+                _pmap.put(principal, pacl);
+            }
+            pacl.add(entry);
+        }
+    }
+
     /**
      * XXX - imply-relation
      */
     @Override
     public PrincipalACL select(IPrincipal principal) {
-        classifyEntries();
-        PrincipalACL principalACL = pmap.get(principal);
+        PrincipalACL principalACL = getPMap().get(principal);
         return principalACL;
-    }
-
-    private synchronized void classifyEntries() {
-        if (!parsed) {
-            for (Entry entry : getEntries()) {
-                IPrincipal principal = entry.getPrincipal();
-                PrincipalACL pacl;
-                if (declaredPrincipals.add(principal)) {
-                    pacl = new PrincipalACL(this, principal);
-                    pmap.put(principal, pacl);
-                } else {
-                    pacl = pmap.get(principal);
-                    assert pacl != null;
-                }
-                pacl.add(entry);
-            }
-            parsed = true;
-        }
     }
 
 }

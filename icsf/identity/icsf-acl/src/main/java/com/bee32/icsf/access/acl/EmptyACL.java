@@ -2,9 +2,8 @@ package com.bee32.icsf.access.acl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
-import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.PermissionException;
 import com.bee32.icsf.principal.IPrincipal;
 
 public final class EmptyACL
@@ -19,8 +18,8 @@ public final class EmptyACL
     }
 
     @Override
-    public Collection<? extends IPrincipal> getDeclaredPrincipals() {
-        return Collections.emptyList();
+    public Set<? extends IPrincipal> getDeclaredRelatedPrincipals() {
+        return Collections.emptySet();
     }
 
     @Override
@@ -29,19 +28,18 @@ public final class EmptyACL
     }
 
     @Override
-    public void checkPermission(Permission requiredPermission)
-            throws PermissionException {
-        throw new PermissionException("EmptyACL", requiredPermission);
+    protected IACL newACLRange() {
+        return this;
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 
     @Override
     public Collection<? extends Entry> getEntries() {
         return Collections.emptyList();
-    }
-
-    @Override
-    protected IACL newACLRange() {
-        return this;
     }
 
     @Override
