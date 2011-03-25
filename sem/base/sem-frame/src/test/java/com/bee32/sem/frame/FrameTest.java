@@ -5,6 +5,6 @@ import javax.inject.Inject;
 public class FrameTest {
 
     @Inject
-    IMainFrame frame;
+    IFrameset frame;
 
 }
