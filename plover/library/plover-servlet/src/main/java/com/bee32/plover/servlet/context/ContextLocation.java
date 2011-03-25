@@ -1,20 +1,21 @@
 package com.bee32.plover.servlet.context;
 
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.free.Nullables;
+import javax.servlet.http.HttpServletRequest;
 
 public class ContextLocation
-        implements LocationContextConstants, Serializable {
+        implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private LocationContext context;
     private String location;
-
-    public ContextLocation(String location) {
-        this(REQUEST, location);
-    }
 
     public ContextLocation(LocationContext context, String location) {
         if (context == null)
@@ -43,6 +44,20 @@ public class ContextLocation
         if (location == null)
             throw new NullPointerException("location");
         this.location = location;
+    }
+
+    public String resolve(HttpServletRequest request) {
+        return context.resolve(request, location);
+    }
+
+    public URL resolveUrl(HttpServletRequest request)
+            throws MalformedURLException {
+        return context.resolveUrl(request, location);
+    }
+
+    public URI resolveUri(HttpServletRequest request)
+            throws URISyntaxException {
+        return context.resolveUri(request, location);
     }
 
     @Override
