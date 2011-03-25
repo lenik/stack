@@ -16,6 +16,8 @@ import com.bee32.sem.frame.Contribution;
  * <p>
  * After all beans are initialized, the instances of {@link MenuContribution}s are then be collected
  * by MenuManager.
+ *
+ * TODO - Locale-local allocation.
  */
 @ComponentTemplate
 public abstract class MenuContribution
