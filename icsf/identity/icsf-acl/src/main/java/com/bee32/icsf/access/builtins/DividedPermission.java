@@ -10,9 +10,6 @@ import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
-/**
- * @test {@link DividedPermissionTest}
- */
 public abstract class DividedPermission
         extends Permission {
 
@@ -49,16 +46,6 @@ public abstract class DividedPermission
             int... ranges);
 
     protected abstract String getRangeName(int rangeId);
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
 
     @Override
     public IAuthority getAuthority() {

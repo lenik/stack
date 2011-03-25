@@ -23,10 +23,4 @@ final class DefaultPermission
         return false;
     }
 
-    @Override
-    public String getDisplayName() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }
