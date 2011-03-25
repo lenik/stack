@@ -6,7 +6,7 @@
         <version>0.2.1-SNAPSHOT</version>
     </parent>
     <artifactId>plover-x2mso</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.2.2</version>
     <dependencies/>
     <name>Plover :: Repr :: X2mso</name>
 </project>
