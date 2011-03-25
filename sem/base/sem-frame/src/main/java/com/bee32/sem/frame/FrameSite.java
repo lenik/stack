@@ -2,7 +2,7 @@ package com.bee32.sem.frame;
 
 import java.io.Serializable;
 
-public class FrameSite
+public final class FrameSite
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
