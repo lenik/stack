@@ -6,7 +6,7 @@ import com.bee32.plover.servlet.context.ContextLocation;
 public interface IAction
         extends IComponent {
 
-    ContextLocation getActionTarget();
+    ContextLocation getTarget();
 
     boolean isEnabled();
 

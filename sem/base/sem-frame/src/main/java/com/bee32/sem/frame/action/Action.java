@@ -8,16 +8,16 @@ public class Action
         implements IAction {
 
     private boolean enabled = true;
-    private ContextLocation actionTarget;
+    private ContextLocation target;
 
     public Action(ContextLocation actionTarget) {
         super();
-        this.actionTarget = actionTarget;
+        this.target = actionTarget;
     }
 
-    public Action(String name, ContextLocation actionTarget) {
+    public Action(String name, ContextLocation target) {
         super(name);
-        this.actionTarget = actionTarget;
+        this.target = target;
     }
 
     public boolean isEnabled() {
@@ -28,20 +28,20 @@ public class Action
         this.enabled = enabled;
     }
 
-    public ContextLocation getActionTarget() {
-        return actionTarget;
+    public ContextLocation getTarget() {
+        return target;
     }
 
-    public void setActionTarget(ContextLocation actionTarget) {
-        this.actionTarget = actionTarget;
+    public void setTarget(ContextLocation target) {
+        this.target = target;
     }
 
     @Override
     public String toString() {
-        String target = String.valueOf(actionTarget);
+        String targetStr = String.valueOf(target);
         if (!enabled)
-            target += " (disabled)";
-        return target;
+            targetStr += " (disabled)";
+        return targetStr;
     }
 
 }
