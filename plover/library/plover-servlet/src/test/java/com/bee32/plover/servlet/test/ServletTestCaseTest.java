@@ -2,8 +2,6 @@ package com.bee32.plover.servlet.test;
 
 import java.io.IOException;
 
-import org.junit.Test;
-
 public class ServletTestCaseTest
         extends ServletTestCase {
 
@@ -11,10 +9,9 @@ public class ServletTestCaseTest
     protected void configureServlets() {
     }
 
-    @Test
-    public void browse()
+    public static void main(String[] args)
             throws IOException {
-        super.browseAndWait();
+        new ServletTestCaseTest().browseAndWait();
     }
 
 }

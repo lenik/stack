@@ -42,7 +42,8 @@ public abstract class WiredServletTestCase
             mergedLocations.addAll(baseLocations);
         }
 
-        Collection<String> userLocations = ContextConfigurationUtil.getContextConfigurationLocations(getClass());
+        Class<?> configClass = getClass();
+        Collection<String> userLocations = ContextConfigurationUtil.getContextConfigurationLocations(configClass);
         mergedLocations.addAll(userLocations);
 
         StringBuilder locations = new StringBuilder();

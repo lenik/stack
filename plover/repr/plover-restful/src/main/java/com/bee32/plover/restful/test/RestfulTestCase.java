@@ -5,6 +5,7 @@ import javax.free.IllegalUsageException;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.springframework.context.ApplicationContext;
 
+import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.restful.DispatchFilter;
 import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
 import com.bee32.plover.servlet.test.WiredServletTestCase;
@@ -18,7 +19,7 @@ public abstract class RestfulTestCase
     private boolean checkAdditionalServlets;
 
     protected RestfulTestCase() {
-        this((ApplicationContext) null);
+        this(WiredDaoTestCase.class, (ApplicationContext) null);
     }
 
     protected RestfulTestCase(Class<?> altBaseClass) {
@@ -26,8 +27,7 @@ public abstract class RestfulTestCase
     }
 
     protected RestfulTestCase(ApplicationContext applicationContext) {
-        super();
-        this.applicationContext = applicationContext;
+        this(WiredDaoTestCase.class, applicationContext);
     }
 
     protected RestfulTestCase(Class<?> altBaseClass, ApplicationContext applicationContext) {
