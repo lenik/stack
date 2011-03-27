@@ -4,17 +4,14 @@ import javax.free.Nullables;
 
 import com.bee32.plover.arch.ui.Appearance;
 import com.bee32.plover.arch.ui.IAppearance;
-import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.AutoNaming;
 import com.bee32.plover.arch.util.ExceptionSupport;
-import com.bee32.plover.arch.util.res.IPropertyDispatcher;
-import com.bee32.plover.arch.util.res.IPropertyDispatcherAware;
 
 /**
  * A component is bound with appearance, and optionally an alternative exception support.
  */
 public abstract class Component
-        implements IComponent, IPropertyDispatcherAware {
+        implements IComponent {
 
     /**
      * The name is readable/writable to support entity design.
@@ -43,26 +40,6 @@ public abstract class Component
         return name;
     }
 
-    /**
-     * Set property-dispatcher on the component will override the one set on the
-     * injected-appearance.
-     *
-     * @param propertyDispatcher
-     *            The new proeprty dispatcher to use.
-     */
-    @Override
-    public void setPropertyDispatcher(IPropertyDispatcher propertyDispatcher) {
-        InjectedAppearance injected;
-        if (appearance instanceof InjectedAppearance)
-            injected = (InjectedAppearance) appearance;
-        else { // using this.getClass() as default resource resolver.
-            injected = new InjectedAppearance(this, appearance, getClass());
-            this.appearance = injected;
-        }
-
-        injected.setPropertyDispatcher(propertyDispatcher);
-    }
-
     @Override
     public IAppearance getAppearance() {
         if (appearance == null) {
@@ -78,7 +55,7 @@ public abstract class Component
      * @param appearance
      *            The new appearance. Specify <code>null</code> to restore the default appearance.
      */
-    protected void setAppearance(IAppearance appearance) {
+    void setAppearance(IAppearance appearance) {
         this.appearance = appearance;
     }
 
