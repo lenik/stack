@@ -1,6 +1,7 @@
 package com.bee32.sem.frame.menu;
 
 import com.bee32.plover.arch.Component;
+import com.bee32.plover.arch.ComponentBuilder;
 import com.bee32.sem.frame.action.IAction;
 
 public class MenuItem
@@ -91,7 +92,7 @@ public class MenuItem
         this.preferredStyle = other.getPreferredStyle();
         this.action = other.getAction();
 
-        this.setAppearance(other.getAppearance());
+        ComponentBuilder.setAppearance(this, other.getAppearance());
 
         return this;
     }
