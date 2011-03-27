@@ -1,13 +1,73 @@
 package com.bee32.plover.arch.util.res;
 
+import javax.free.IllegalUsageException;
+
 public interface IPropertyDispatcher {
 
-    IPropertyDispatchStrategy getStrategy();
+    /**
+     * Get the root (default) property acceptor.
+     *
+     * @return <code>null</code> If root acceptor isn't defined.
+     */
+    IPropertyAcceptor getRootAcceptor();
 
+    /**
+     * Set the root (default) property acceptor.
+     */
+    void setRootAcceptor(IPropertyAcceptor acceptor);
+
+    /**
+     * Get the property acceptor for specifc prefix.
+     *
+     * @return <code>null</code> If the property acceptor for specific prefix isn't defined.
+     */
+    IPropertyAcceptor getPrefixAcceptor(String prefix);
+
+    /**
+     * Register a new prefix acceptor.
+     *
+     * <p>
+     * Prefixes are not overlapped. That is, if the longest-matching-prefix are handled, then any
+     * shorter-matching prefix acceptor are ignored.
+     *
+     * <p>
+     * It's your responsibility to chain the acceptor to allow overlapping,
+     *
+     * @param prefix
+     *            Only properties whose name starts with the prefix are accepted by the specific
+     *            acceptor.
+     * @throws IllegalUsageException
+     *             If there's existing acceptor with the same prefix.
+     */
+    void addPrefixAcceptor(String prefix, IPropertyAcceptor acceptor)
+            throws IllegalUsageException;
+
+    /**
+     * Remove a specific prefix acceptor.
+     *
+     * @return <code>null</code> if the prefix isn't registered.
+     */
+    IPropertyAcceptor removePrefixAcceptor(String prefix);
+
+    /**
+     * Dispatch a property.
+     * <p>
+     * You can also explicitly dispatch a given proeprty by calling this method directly.
+     *
+     * @param key
+     *            The key of property.
+     * @param content
+     *            The content of property.
+     */
+    void dispatch(String key, String content);
+
+    /**
+     * The bound resource to this dispatcher.
+     */
     Object getBoundResource();
 
     /**
-     * Do the bound dispatch.
+     * Dispatch all properties defined in the bound resource.
      */
     void dispatch();
 
@@ -15,5 +75,9 @@ public interface IPropertyDispatcher {
      * The same as {@link #dispatch()}, however, only dispatch once.
      */
     void require();
+
+    void addPropertyRefreshListener(IPropertyRefreshListener listener);
+
+    void removePropertyRefreshListener(IPropertyRefreshListener listener);
 
 }
