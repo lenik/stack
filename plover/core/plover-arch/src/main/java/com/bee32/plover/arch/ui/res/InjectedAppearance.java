@@ -9,7 +9,6 @@ import com.bee32.plover.arch.ui.IRefdocs;
 import com.bee32.plover.arch.util.res.ClassResourceResolver;
 import com.bee32.plover.arch.util.res.IPropertyAcceptor;
 import com.bee32.plover.arch.util.res.IPropertyDispatcher;
-import com.bee32.plover.arch.util.res.IPropertyDispatcherAware;
 import com.bee32.plover.arch.util.res.IResourceResolver;
 
 /**
@@ -17,7 +16,7 @@ import com.bee32.plover.arch.util.res.IResourceResolver;
  */
 public class InjectedAppearance
         extends Appearance
-        implements IPropertyAcceptor, IPropertyDispatcherAware {
+        implements IPropertyAcceptor {
 
     private String displayName;
     private String description;
@@ -39,11 +38,6 @@ public class InjectedAppearance
             throw new NullPointerException("resourceResolver");
 
         this.resourceResolver = resourceResolver;
-    }
-
-    @Override
-    public void setPropertyDispatcher(IPropertyDispatcher propertyDispatcher) {
-        this.propertyDispatcher = propertyDispatcher;
     }
 
     @Override

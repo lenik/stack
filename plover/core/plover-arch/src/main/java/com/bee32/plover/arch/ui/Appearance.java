@@ -14,7 +14,6 @@ import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.LoadFlags32;
 import com.bee32.plover.arch.util.res.ClassResourceResolver;
 import com.bee32.plover.arch.util.res.IResourceResolver;
-import com.bee32.plover.arch.util.res.StemDispatchStrategy;
 
 public abstract class Appearance
         extends AbstractQueryable
@@ -246,4 +245,5 @@ public abstract class Appearance
         }
         return appearance;
     }
+
 }
