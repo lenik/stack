@@ -2,7 +2,6 @@ package com.bee32.plover.arch;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.MissingResourceException;
 import java.util.Properties;
 
 import org.junit.Assert;
@@ -93,7 +92,8 @@ public class CompositeTest
                 basket.banana.getAppearance().getDescription());
     }
 
-    @Test(expected = MissingResourceException.class)
+    @Test
+    // (expected = MissingResourceException.class)
     public void testNoAnnotation() {
         assertNull(basket.pear.getAppearance().getDescription());
     }
