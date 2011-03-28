@@ -1,5 +1,10 @@
 package com.bee32.plover.arch.util;
 
+import java.net.URL;
+
+import javax.free.StringPart;
+import javax.free.UnexpectedException;
+
 public class ClassUtil {
 
     static boolean useContextClassLoader = false;
@@ -16,6 +21,19 @@ public class ClassUtil {
         }
 
         return Class.forName(className, false, classLoader);
+    }
+
+    public static URL getContextURL(Class<?> clazz) {
+        String className = clazz.getName();
+        String baseName = StringPart.afterLast(className, '.');
+        if (baseName == null)
+            baseName = className;
+
+        String fileName = baseName + ".class";
+        URL resource = clazz.getResource(fileName);
+        if (resource == null)
+            throw new UnexpectedException("The .class file doesn't exist or can't be resolved: " + clazz);
+        return resource;
     }
 
 }
