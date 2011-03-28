@@ -31,6 +31,7 @@ public class MenuItem
         return section;
     }
 
+    @Override
     public void setSection(MenuSection section) {
         this.section = section;
     }
@@ -58,6 +59,7 @@ public class MenuItem
         return preferredStyleClass;
     }
 
+    @Override
     public void setPreferredStyleClass(String preferredStyleClass) {
         this.preferredStyleClass = preferredStyleClass;
     }
@@ -67,6 +69,7 @@ public class MenuItem
         return preferredStyle;
     }
 
+    @Override
     public void setPreferredStyle(String preferredStyle) {
         this.preferredStyle = preferredStyle;
     }
