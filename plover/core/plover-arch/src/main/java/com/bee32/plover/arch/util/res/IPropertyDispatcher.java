@@ -13,8 +13,10 @@ public interface IPropertyDispatcher {
 
     /**
      * Set the root (default) property acceptor.
+     *
+     * @return this.
      */
-    void setRootAcceptor(IPropertyAcceptor acceptor);
+    PropertyDispatcher setRootAcceptor(IPropertyAcceptor acceptor);
 
     /**
      * Get the property acceptor for specifc prefix.
@@ -36,10 +38,11 @@ public interface IPropertyDispatcher {
      * @param prefix
      *            Only properties whose name starts with the prefix are accepted by the specific
      *            acceptor.
+     * @return this.
      * @throws IllegalUsageException
      *             If there's existing acceptor with the same prefix.
      */
-    void addPrefixAcceptor(String prefix, IPropertyAcceptor acceptor)
+    PropertyDispatcher addPrefixAcceptor(String prefix, IPropertyAcceptor acceptor)
             throws IllegalUsageException;
 
     /**
@@ -62,9 +65,21 @@ public interface IPropertyDispatcher {
     void dispatch(String key, String content);
 
     /**
-     * The bound resource to this dispatcher.
+     * Get the source properties to be dispatched.
+     *
+     * @return Non-<code>null</code> properties.
+     * @throws IllegalStateException
+     *             If properties hasn't been set.
      */
-    Object getBoundResource();
+    IProperties getProperties();
+
+    /**
+     * Set the source properties to be dispatched.
+     *
+     * @param properties
+     *            Non-<code>null</code> properties.
+     */
+    void setProperties(IProperties properties);
 
     /**
      * Dispatch all properties defined in the bound resource.
@@ -74,7 +89,7 @@ public interface IPropertyDispatcher {
     /**
      * The same as {@link #dispatch()}, however, only dispatch once.
      */
-    void require();
+    void pull();
 
     void addPropertyRefreshListener(IPropertyRefreshListener listener);
 
