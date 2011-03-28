@@ -1,5 +1,7 @@
 package com.bee32.plover.arch;
 
+import java.util.Locale;
+
 import javax.free.Nullables;
 
 import com.bee32.plover.arch.ui.Appearance;
@@ -7,6 +9,7 @@ import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.AutoNaming;
 import com.bee32.plover.arch.util.ExceptionSupport;
+import com.bee32.plover.arch.util.res.ClassResourceProperties;
 import com.bee32.plover.arch.util.res.IPropertyDispatcher;
 import com.bee32.plover.arch.util.res.PropertyDispatcher;
 
@@ -57,13 +60,15 @@ public abstract class Component
 
     IAppearance createAppearance() {
         Class<?> componentClass = getClass();
+
+        ClassResourceProperties properties = new ClassResourceProperties(componentClass, Locale.getDefault());
+        IPropertyDispatcher propertyDispatcher = new PropertyDispatcher(properties);
+
         InjectedAppearance appearance = Appearance.prepareAppearanceCached(componentClass);
 
-        IPropertyDispatcher localDispatcher = new PropertyDispatcher(componentClass);
+        propertyDispatcher.setRootAcceptor(appearance);
 
-        localDispatcher.setRootAcceptor(appearance);
-
-        appearance.setPropertyDispatcher(localDispatcher);
+        appearance.setPropertyDispatcher(propertyDispatcher);
 
         return appearance;
     }
