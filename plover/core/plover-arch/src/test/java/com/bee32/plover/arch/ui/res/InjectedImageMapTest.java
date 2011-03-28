@@ -3,12 +3,12 @@ package com.bee32.plover.arch.ui.res;
 import static org.junit.Assert.assertEquals;
 
 import java.net.URL;
-import java.util.Locale;
 
 import org.junit.Test;
 
 import com.bee32.plover.arch.ui.StandardImageVariant;
-import com.bee32.plover.arch.util.res.StemDispatchStrategy;
+import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.res.PropertyDispatcher;
 
 public class InjectedImageMapTest {
 
@@ -16,11 +16,11 @@ public class InjectedImageMapTest {
     Class<?> clazz = InjectedImageMapTest.class;
 
     public InjectedImageMapTest() {
-        sink = new InjectedImageMap(getClass());
 
-        StemDispatchStrategy strategy = new StemDispatchStrategy(sink);
+        URL contextURL = ClassUtil.getContextURL(getClass());
+        sink = new InjectedImageMap(contextURL);
 
-        strategy.bind(getClass(), Locale.ENGLISH).require();
+        new PropertyDispatcher(getClass()).setRootAcceptor(sink).pull();
     }
 
     @Test

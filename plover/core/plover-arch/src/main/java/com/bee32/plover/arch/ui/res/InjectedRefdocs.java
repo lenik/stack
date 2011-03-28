@@ -7,24 +7,18 @@ import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.ui.RefdocEntry;
 import com.bee32.plover.arch.ui.SimpleRefdocs;
-import com.bee32.plover.arch.util.res.ClassResourceResolver;
 import com.bee32.plover.arch.util.res.IPropertyAcceptor;
-import com.bee32.plover.arch.util.res.IResourceResolver;
 
 public class InjectedRefdocs
         extends SimpleRefdocs
         implements IPropertyAcceptor {
 
-    private IResourceResolver resourceResolver;
+    private URL contextUrl;
 
-    public InjectedRefdocs(Class<?> baseClass) {
-        this(new ClassResourceResolver(baseClass));
-    }
-
-    public InjectedRefdocs(IResourceResolver resourceResolver) {
-        if (resourceResolver == null)
-            throw new NullPointerException("resourceResolver");
-        this.resourceResolver = resourceResolver;
+    public InjectedRefdocs(URL contextUrl) {
+        if (contextUrl == null)
+            throw new NullPointerException("contextUrl");
+        this.contextUrl = contextUrl;
     }
 
     static final int PROP_TITLE = 1;
@@ -67,20 +61,18 @@ public class InjectedRefdocs
 
             case PROP_URL:
                 URL resourceUrl;
-                if (content.contains("//")) // Absolute-URL
+                if (content.contains("://")) // Absolute-URL
                     try {
                         resourceUrl = new URL(content);
                     } catch (MalformedURLException e) {
                         throw new IllegalUsageException(e.getMessage(), e);
                     }
-                else { // Class-Relative URL
+                else {
                     try {
-                        resourceUrl = resourceResolver.resolve(content);
+                        resourceUrl = new URL(contextUrl, content);
                     } catch (MalformedURLException e) {
                         throw new IllegalUsageException(e.getMessage(), e);
                     }
-                    if (resourceUrl == null)
-                        throw new IllegalUsageException("Class resource isn't existed: " + content);
                 }
                 entry.setURL(resourceUrl);
                 break;

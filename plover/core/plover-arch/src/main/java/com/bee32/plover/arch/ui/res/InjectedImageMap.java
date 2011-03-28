@@ -8,25 +8,19 @@ import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.ui.AbstractImageMap;
 import com.bee32.plover.arch.ui.IImageMap;
-import com.bee32.plover.arch.util.res.ClassResourceResolver;
 import com.bee32.plover.arch.util.res.IPropertyAcceptor;
-import com.bee32.plover.arch.util.res.IResourceResolver;
 
 public class InjectedImageMap
         extends AbstractImageMap
         implements IImageMap, IPropertyAcceptor {
 
-    private final IResourceResolver resourceResolver;
+    private final URL contextUrl;
     private final TreeMap<ImageVariant, URL> variantMap;
 
-    public InjectedImageMap(Class<?> baseClass) {
-        this(new ClassResourceResolver(baseClass));
-    }
-
-    public InjectedImageMap(IResourceResolver resourceResolver) {
-        if (resourceResolver == null)
-            throw new NullPointerException("resourceResolver");
-        this.resourceResolver = resourceResolver;
+    public InjectedImageMap(URL contextUrl) {
+        if (contextUrl == null)
+            throw new NullPointerException("contextUrl");
+        this.contextUrl = contextUrl;
         this.variantMap = new TreeMap<ImageVariant, URL>();
     }
 
@@ -85,12 +79,10 @@ public class InjectedImageMap
             }
         else {
             try {
-                url = resourceResolver.resolve(location);
+                url = new URL(contextUrl, location);
             } catch (MalformedURLException e) {
                 throw new IllegalUsageException(e.getMessage(), e);
             }
-            if (url == null)
-                throw new IllegalUsageException("Class resource isn't existed: " + location);
         }
         variantMap.put(variant, url);
     }

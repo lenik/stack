@@ -10,16 +10,13 @@ public class InjectedAppearanceTest {
 
     InjectedAppearance appearance;
 
-    public InjectedAppearanceTest() {
-        Locale.setDefault(new Locale("not-exist-locale"));
-
-        appearance = new InjectedAppearance(InjectedAppearanceTest.class);
-        // set locale?
-    }
-
     @Test
     public void testBasicProperties()
             throws Exception {
+        Locale.setDefault(new Locale("not-exist-locale"));
+
+        appearance = new InjectedAppearance(InjectedAppearanceTest.class, Locale.ROOT);
+
         assertEquals("Display Name", appearance.getDisplayName());
         assertEquals("A descriptive string.", appearance.getDescription());
     }

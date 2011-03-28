@@ -5,24 +5,24 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Locale;
 
 import org.junit.Test;
 
 import com.bee32.plover.arch.ui.IRefdocEntry;
 import com.bee32.plover.arch.ui.RefdocsSample;
-import com.bee32.plover.arch.util.res.StemDispatchStrategy;
+import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.res.PropertyDispatcher;
 
 public class InjectedRefdocsTest {
 
     InjectedRefdocs sink;
 
     public InjectedRefdocsTest() {
-        sink = new InjectedRefdocs(RefdocsSample.class);
+        Class<?> baseClass = RefdocsSample.class;
 
-        StemDispatchStrategy strategy = new StemDispatchStrategy(sink);
+        sink = new InjectedRefdocs(ClassUtil.getContextURL(baseClass));
 
-        strategy.bind(RefdocsSample.class, Locale.ENGLISH).require();
+        new PropertyDispatcher(baseClass).setRootAcceptor(sink).pull();
     }
 
     @Test

@@ -1,20 +1,21 @@
 package com.bee32.plover.arch.ui.res;
 
+import java.net.URL;
 import java.util.Locale;
 
 import javax.inject.Inject;
 
-import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.ui.Appearance;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.ui.IImageMap;
 import com.bee32.plover.arch.ui.IRefdocs;
-import com.bee32.plover.arch.util.res.ClassResourcePropertyDispatcher;
-import com.bee32.plover.arch.util.res.ClassResourceResolver;
+import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.res.ClassResourceProperties;
 import com.bee32.plover.arch.util.res.IPropertyAcceptor;
 import com.bee32.plover.arch.util.res.IPropertyDispatcher;
+import com.bee32.plover.arch.util.res.IPropertyDispatcherAware;
 import com.bee32.plover.arch.util.res.IPropertyRefreshListener;
-import com.bee32.plover.arch.util.res.IResourceResolver;
+import com.bee32.plover.arch.util.res.PropertyDispatcher;
 import com.bee32.plover.arch.util.res.PropertyRefreshEvent;
 
 /**
@@ -22,41 +23,52 @@ import com.bee32.plover.arch.util.res.PropertyRefreshEvent;
  */
 public class InjectedAppearance
         extends Appearance
-        implements IPropertyAcceptor, IPropertyRefreshListener {
+        implements IPropertyAcceptor, IPropertyDispatcherAware, IPropertyRefreshListener {
 
     private String displayName;
     private String description;
     private InjectedImageMap imageMap;
     private InjectedRefdocs refdocs;
 
-    private IResourceResolver resourceResolver;
-
     private IPropertyDispatcher propertyDispatcher;
+    private URL contextURL;
 
-    public InjectedAppearance(Class<?> declaringClass) {
-        this(null, null, new ClassResourceResolver(declaringClass), declaringClass);
+    /**
+     * Don't forget to {@link #setPropertyDispatcher(IPropertyDispatcher) set the property
+     * dispatcher}.
+     */
+    public InjectedAppearance(IAppearance parent, URL contextUrl) {
+        super(parent);
+        this.contextURL = contextUrl;
     }
 
-    public InjectedAppearance(Component target, IAppearance parent, IResourceResolver resourceResolver,
-            Class<?> declaringClass) {
-        super(target, parent);
+    /**
+     * Construct an injected appearance for class-local usage, using the specified locale.
+     */
+    public InjectedAppearance(Class<?> declaringClass, Locale locale) {
+        super(null);
+        this.contextURL = ClassUtil.getContextURL(declaringClass);
 
-        if (resourceResolver == null)
-            throw new NullPointerException("resourceResolver");
+        ClassResourceProperties properties = new ClassResourceProperties(declaringClass, locale);
+        IPropertyDispatcher propertyDispatcher = new PropertyDispatcher(properties);
 
-        this.resourceResolver = resourceResolver;
+        propertyDispatcher.setRootAcceptor(this);
+        this.setPropertyDispatcher(propertyDispatcher);
+    }
 
-        if (declaringClass != null) {
-            ClassResourcePropertyDispatcher dispatcher = new ClassResourcePropertyDispatcher(declaringClass,
-                    Locale.getDefault());
-            dispatcher.setRootAcceptor(this);
+    @Override
+    public IPropertyDispatcher getPropertyDispatcher() {
+        return propertyDispatcher;
+    }
 
-        }
+    @Override
+    public void setPropertyDispatcher(IPropertyDispatcher dispatcher) {
+        this.propertyDispatcher = dispatcher;
     }
 
     @Override
     public void propertyRefresh(PropertyRefreshEvent event) {
-        this.invalidate();
+        super.invalidate();
     }
 
     @Override
@@ -81,7 +93,7 @@ public class InjectedAppearance
         if (imageMap == null) {
             synchronized (this) {
                 if (imageMap == null) {
-                    imageMap = new InjectedImageMap(resourceResolver);
+                    imageMap = new InjectedImageMap(contextURL);
                 }
             }
         }
@@ -92,7 +104,7 @@ public class InjectedAppearance
         if (refdocs == null) {
             synchronized (this) {
                 if (refdocs == null) {
-                    refdocs = new InjectedRefdocs(resourceResolver);
+                    refdocs = new InjectedRefdocs(contextURL);
                 }
             }
         }
@@ -107,32 +119,26 @@ public class InjectedAppearance
 
     @Override
     protected String loadDisplayName() {
-        _propertyDispatcher().require();
+        _propertyDispatcher().pull();
         return displayName;
     }
 
     @Override
     protected String loadDescription() {
-        _propertyDispatcher().require();
+        _propertyDispatcher().pull();
         return description;
     }
 
     @Inject
     protected IImageMap loadImageMap() {
-        _propertyDispatcher().require();
+        _propertyDispatcher().pull();
         return imageMap;
     }
 
     @Inject
     protected IRefdocs loadRefdocs() {
-        _propertyDispatcher().require();
+        _propertyDispatcher().pull();
         return refdocs;
-    }
-
-    @Override
-    public String toString() {
-        Object target = getTarget();
-        return resourceResolver + "<" + target + ">";
     }
 
 }
