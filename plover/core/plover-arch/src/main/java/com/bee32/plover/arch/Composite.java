@@ -24,7 +24,7 @@ public abstract class Composite
 
     static Logger logger = LoggerFactory.getLogger(Composite.class);
 
-    private Class<?> baseClass;
+    // private Class<?> baseClass;
     private URL contextURL;
     private IPropertyDispatcher propertyDispatcher;
 
@@ -80,8 +80,8 @@ public abstract class Composite
     void setBaseClass(Class<?> baseClass) {
         if (baseClass == null)
             baseClass = this.getClass();
+        // this.baseClass = baseClass;
 
-        this.baseClass = baseClass;
         this.contextURL = ClassUtil.getContextURL(baseClass);
         if (propertyDispatcher == null)
             this.propertyDispatcher = new PropertyDispatcher((IProperties) null);
@@ -96,7 +96,7 @@ public abstract class Composite
         propertyDispatcher.setProperties(properties);
     }
 
-    void assemble() {
+    public void assemble() {
         if (!assembled) {
             synchronized (this) {
                 if (!assembled) {
