@@ -21,10 +21,19 @@ public class AnnotatedAppearance
         extends Appearance {
 
     private final AnnotatedElement element;
+    private final URL contextURL;
 
-    public AnnotatedAppearance(IAppearance parent, AnnotatedElement element) {
-        super(null, parent);
+    public AnnotatedAppearance(IAppearance parent, AnnotatedElement element, URL contextURL) {
+        super(parent);
+
+        if (element == null)
+            throw new NullPointerException("element");
+
+        if (contextURL == null)
+            throw new NullPointerException("contextURL");
+
         this.element = element;
+        this.contextURL = contextURL;
     }
 
     @Override
@@ -52,8 +61,7 @@ public class AnnotatedAppearance
             String urlSpec = _image.url();
             URL url;
             try {
-                // XXX - context/spec
-                url = new URL(urlSpec);
+                url = new URL(contextURL, urlSpec);
             } catch (MalformedURLException e) {
                 throw new IllegalUsageException(e.getMessage(), e);
             }
@@ -80,8 +88,7 @@ public class AnnotatedAppearance
                 String urlSpec = _refdoc.url();
                 URL url;
                 try {
-                    // XXX - context/spec
-                    url = new URL(urlSpec);
+                    url = new URL(contextURL, urlSpec);
                 } catch (MalformedURLException e) {
                     throw new IllegalUsageException(e.getMessage(), e);
                 }

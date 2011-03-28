@@ -9,18 +9,14 @@ import java.util.Set;
 import javax.free.AbstractQueryable;
 import javax.free.ClassLocal;
 
-import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.ui.annotated.AnnotatedAppearance;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.LoadFlags32;
-import com.bee32.plover.arch.util.res.ClassResourceResolver;
-import com.bee32.plover.arch.util.res.IResourceResolver;
 
 public abstract class Appearance
         extends AbstractQueryable
         implements IAppearance, IImageMap, IRefdocs {
-
-    private final Component target;
 
     private IAppearance parent;
 
@@ -35,8 +31,7 @@ public abstract class Appearance
     private IRefdocs refdocs;
     private IImageMap imageMap;
 
-    public Appearance(Component target, IAppearance parent) {
-        this.target = target;
+    public Appearance(IAppearance parent) {
         this.parent = parent;
     }
 
@@ -199,14 +194,9 @@ public abstract class Appearance
         return null;
     }
 
-    public Component getTarget() {
-        return target;
-    }
-
     @Override
     public String toString() {
-        String appearanceType = getClass().getSimpleName();
-        return appearanceType + "<" + target + ">";
+        return getDisplayName();
     }
 
     /**
@@ -214,8 +204,6 @@ public abstract class Appearance
      * <p>
      * IA means Inject-first, Annotation-second.
      *
-     * @param target
-     *            Maybe <code>null</code> if this appearance is for static purpose.
      * @param declaringClass
      *            The class whose annotations and resource bundle will be processed.
      * @param resourceResolver
@@ -223,34 +211,31 @@ public abstract class Appearance
      *            refdoc/imagemaps.
      * @return Non-<code>null</code> {@link InjectedAppearance}.
      */
-    public static InjectedAppearance getAppearance_IA(Component target, Class<?> declaringClass,
-            IResourceResolver resourceResolver) {
+    public static InjectedAppearance prepareAppearance(Class<?> declaringClass) {
         if (declaringClass == null)
             throw new NullPointerException("declaringClass");
-        if (resourceResolver == null)
-            throw new NullPointerException("resourceResolver");
 
-        AnnotatedAppearance fallback = new AnnotatedAppearance(null, declaringClass);
+        URL contextURL = ClassUtil.getContextURL(declaringClass);
 
-        InjectedAppearance injected = new InjectedAppearance(target, fallback, resourceResolver, declaringClass);
+        AnnotatedAppearance fallback = new AnnotatedAppearance(null, declaringClass, contextURL);
+
+        InjectedAppearance injected = new InjectedAppearance(fallback, contextURL);
 
         return injected;
     }
 
-    static final ClassLocal<InjectedAppearance> classLocalAppearance_IA = new ClassLocal<InjectedAppearance>();
+    static final ClassLocal<InjectedAppearance> classLocalAppearance = new ClassLocal<InjectedAppearance>();
 
-    public static InjectedAppearance getStaticAppearance(Class<?> declaringType) {
-        InjectedAppearance appearance_IA = classLocalAppearance_IA.get(declaringType);
+    public static InjectedAppearance prepareAppearanceCached(Class<?> declaringType) {
+        InjectedAppearance appearance_IA = classLocalAppearance.get(declaringType);
         if (appearance_IA == null) {
             synchronized (Appearance.class) {
-                appearance_IA = classLocalAppearance_IA.get(declaringType);
+                appearance_IA = classLocalAppearance.get(declaringType);
                 if (appearance_IA == null) {
 
-                    IResourceResolver resourceResolver = new ClassResourceResolver(declaringType);
+                    appearance_IA = prepareAppearance(declaringType);
 
-                    appearance_IA = getAppearance_IA(null, declaringType, resourceResolver);
-
-                    classLocalAppearance_IA.put(declaringType, appearance_IA);
+                    classLocalAppearance.put(declaringType, appearance_IA);
                 }
             }
         }

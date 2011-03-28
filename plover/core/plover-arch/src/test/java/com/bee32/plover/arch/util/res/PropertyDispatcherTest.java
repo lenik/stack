@@ -30,11 +30,11 @@ public class PropertyDispatcherTest {
 
         ResourceBundle bundle = ResourceBundle.getBundle(getClass().getName());
 
-        ResourceBundlePropertyDispatcher dispatcher = new ResourceBundlePropertyDispatcher(bundle);
+        PropertyDispatcher dispatcher = new PropertyDispatcher(bundle);
         dispatcher.addPrefixAcceptor("cat.", catSink);
         dispatcher.addPrefixAcceptor("dog", dogSink);
 
-        dispatcher.require();
+        dispatcher.pull();
 
         assertEquals(catExpected, catSink.getBufferedMap());
         assertEquals(dogExpected, dogSink.getBufferedMap());
@@ -50,11 +50,11 @@ public class PropertyDispatcherTest {
         Properties properties = new Properties();
         properties.load(propertiesURL.openStream());
 
-        PropertiesPropertyDispatcher dispatcher = new PropertiesPropertyDispatcher(properties);
+        PropertyDispatcher dispatcher = new PropertyDispatcher(properties);
         dispatcher.addPrefixAcceptor("cat.", catSink);
         dispatcher.addPrefixAcceptor("dog", dogSink);
 
-        dispatcher.require();
+        dispatcher.pull();
 
         assertEquals(catExpected, catSink.getBufferedMap());
         assertEquals(dogExpected, dogSink.getBufferedMap());

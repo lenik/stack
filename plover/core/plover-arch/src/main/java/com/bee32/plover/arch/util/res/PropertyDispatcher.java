@@ -2,6 +2,10 @@ package com.bee32.plover.arch.util.res;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
 import javax.free.IllegalUsageException;
 import javax.free.PrefixMap;
@@ -10,17 +14,35 @@ import javax.free.StringPart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class PropertyDispatcher
+public class PropertyDispatcher
         implements IPropertyDispatcher {
 
     static Logger logger = LoggerFactory.getLogger(PropertyDispatcher.class);
 
-    private boolean required;
+    private boolean pulled;
 
     private IPropertyAcceptor rootAcceptor;
     private PrefixMap<IPropertyAcceptor> prefixAcceptors;
 
+    private IProperties properties;
+
     private List<IPropertyRefreshListener> propertyRefreshListeners;
+
+    public PropertyDispatcher(IProperties properties) {
+        this.properties = properties;
+    }
+
+    public PropertyDispatcher(Class<?> baseClass) {
+        this(new ClassResourceProperties(baseClass, Locale.getDefault()));
+    }
+
+    public PropertyDispatcher(Properties properties) {
+        this(new MapProperties(properties));
+    }
+
+    public PropertyDispatcher(ResourceBundle resourceBundle) {
+        this(new ResourceBundleProperties(resourceBundle));
+    }
 
     @Override
     public IPropertyAcceptor getRootAcceptor() {
@@ -28,8 +50,9 @@ public abstract class PropertyDispatcher
     }
 
     @Override
-    public void setRootAcceptor(IPropertyAcceptor rootAcceptor) {
+    public PropertyDispatcher setRootAcceptor(IPropertyAcceptor rootAcceptor) {
         this.rootAcceptor = rootAcceptor;
+        return this;
     }
 
     @Override
@@ -40,7 +63,7 @@ public abstract class PropertyDispatcher
     }
 
     @Override
-    public void addPrefixAcceptor(String prefix, IPropertyAcceptor acceptor) {
+    public PropertyDispatcher addPrefixAcceptor(String prefix, IPropertyAcceptor acceptor) {
         if (prefix == null)
             throw new NullPointerException("prefix");
         if (acceptor == null)
@@ -48,7 +71,7 @@ public abstract class PropertyDispatcher
 
         if (prefix.isEmpty()) {
             setRootAcceptor(acceptor);
-            return;
+            return this;
         }
 
         if (prefixAcceptors == null)
@@ -60,6 +83,8 @@ public abstract class PropertyDispatcher
         }
 
         prefixAcceptors.put(prefix, acceptor);
+
+        return this;
     }
 
     @Override
@@ -67,6 +92,32 @@ public abstract class PropertyDispatcher
         if (prefixAcceptors == null)
             return null;
         return prefixAcceptors.remove(prefix);
+    }
+
+    @Override
+    public IProperties getProperties() {
+        if (properties == null)
+            throw new IllegalStateException("Properties hasn't been set.");
+        return properties;
+    }
+
+    @Override
+    public void setProperties(IProperties properties) {
+        if (properties == null)
+            throw new NullPointerException("properties");
+        this.properties = properties;
+    }
+
+    @Override
+    public void dispatch() {
+        if (properties == null)
+            throw new IllegalStateException("Properties hasn't been set.");
+
+        for (Entry<String, String> entry : properties) {
+            String key = entry.getKey();
+            String content = entry.getValue();
+            dispatch(key, content);
+        }
     }
 
     @Override
@@ -89,10 +140,10 @@ public abstract class PropertyDispatcher
     }
 
     @Override
-    public void require() {
-        if (!required) {
+    public void pull() {
+        if (!pulled) {
             synchronized (this) {
-                if (!required) {
+                if (!pulled) {
                     dispatch();
                 }
             }

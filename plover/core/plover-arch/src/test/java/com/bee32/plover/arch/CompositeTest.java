@@ -9,6 +9,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bee32.plover.arch.util.res.MapProperties;
+
 public class CompositeTest
         extends Assert {
 
@@ -28,6 +30,9 @@ public class CompositeTest
 
     public static class Basket
             extends Composite {
+
+        public Basket() {
+        }
 
         @CompositeElement
         Fruit apple = new Fruit("apple");
@@ -66,7 +71,8 @@ public class CompositeTest
         properties.setProperty("banana.description", "A Banana");
         properties.setProperty("pear.description", "A Pear");
 
-        basket.getPropertyBinding().bind(properties);
+        basket.setProperties(new MapProperties(properties));
+        basket.assemble();
     }
 
     @Test

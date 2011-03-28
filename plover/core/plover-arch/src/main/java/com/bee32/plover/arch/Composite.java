@@ -2,6 +2,7 @@ package com.bee32.plover.arch;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.free.ClassLocal;
@@ -12,8 +13,10 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
-import com.bee32.plover.arch.util.res.IPropertyBinding;
-import com.bee32.plover.arch.util.res.UniquePrefixStrategy;
+import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.res.IProperties;
+import com.bee32.plover.arch.util.res.IPropertyDispatcher;
+import com.bee32.plover.arch.util.res.PropertyDispatcher;
 
 public abstract class Composite
         extends Component
@@ -21,16 +24,76 @@ public abstract class Composite
 
     static Logger logger = LoggerFactory.getLogger(Composite.class);
 
-    private UniquePrefixStrategy prefixStrategy = new UniquePrefixStrategy();
+    private Class<?> baseClass;
+    private URL contextURL;
+    private IPropertyDispatcher propertyDispatcher;
 
     private boolean assembled;
 
     public Composite() {
         super();
+        setBaseClass(getClass());
     }
 
     public Composite(String name) {
         super(name);
+        setBaseClass(getClass());
+    }
+
+    /**
+     * Construct the composite with a default name and based on the given base class.
+     * <p>
+     * The elements in this Composite will find resources related to the specified base class.
+     *
+     * @param baseClass
+     *            The new base class. Specify to <code>null</code> to use this class (a.k.a.
+     *            {@link Object#getClass()}.
+     */
+    public Composite(Class<?> baseClass) {
+        super();
+        setBaseClass(baseClass);
+    }
+
+    /**
+     * Construct a named composite and based on the given base class.
+     * <p>
+     * The elements in this Composite will find resources related to the specified base class.
+     *
+     * @param baseClass
+     *            The new base class. Specify to <code>null</code> to use this class (a.k.a.
+     *            {@link Object#getClass()}.
+     */
+    public Composite(String name, Class<?> baseClass) {
+        super(name);
+        setBaseClass(baseClass);
+    }
+
+    /**
+     * Change the base class.
+     * <p>
+     * The elements in this Composite will find resources related to the specified base class.
+     *
+     * @param baseClass
+     *            The new base class. Specify to <code>null</code> to use this class (a.k.a.
+     *            {@link Object#getClass()}.
+     */
+    void setBaseClass(Class<?> baseClass) {
+        if (baseClass == null)
+            baseClass = this.getClass();
+
+        this.baseClass = baseClass;
+        this.contextURL = ClassUtil.getContextURL(baseClass);
+        if (propertyDispatcher == null)
+            this.propertyDispatcher = new PropertyDispatcher((IProperties) null);
+    }
+
+    /**
+     * Inject properties into this composite.
+     */
+    public void setProperties(IProperties properties) {
+        if (properties == null)
+            throw new NullPointerException("properties");
+        propertyDispatcher.setProperties(properties);
     }
 
     void assemble() {
@@ -43,11 +106,6 @@ public abstract class Composite
                 }
             }
         }
-    }
-
-    public IPropertyBinding getPropertyBinding() {
-        assemble();
-        return prefixStrategy;
     }
 
     protected Iterable<Field> getElementFields() {
@@ -98,13 +156,17 @@ public abstract class Composite
         if (isFallbackEnabled())
             fallback = childComponent.getAppearance();
 
-        Class<?> compositeClass = getClass();
-        InjectedAppearance childAppearanceOverride = new InjectedAppearance(this, fallback, compositeClass);
+        InjectedAppearance childOverride = new InjectedAppearance(fallback, contextURL);
+        {
+            String prefix = id;
+            if (!prefix.isEmpty())
+                prefix += ".";
 
-        childComponent.setAppearance(childAppearanceOverride);
+            propertyDispatcher.addPrefixAcceptor(prefix, childOverride);
+            childOverride.setPropertyDispatcher(propertyDispatcher);
+        }
 
-        String prefix = id.isEmpty() ? "" : (id + ".");
-        prefixStrategy.registerPrefix(prefix, childAppearanceOverride);
+        ComponentBuilder.setAppearance(childComponent, childOverride);
     }
 
     protected abstract void preamble();

@@ -23,12 +23,12 @@ public class UniquePrefixDispatcherTest {
         properties.put("aaa", "*");
         properties.put("xyz", "*");
 
-        PropertiesPropertyDispatcher dispatcher = new PropertiesPropertyDispatcher(properties);
+        PropertyDispatcher dispatcher = new PropertyDispatcher(properties);
         dispatcher.addPrefixAcceptor("", _Sink);
         dispatcher.addPrefixAcceptor("a", aSink);
         dispatcher.addPrefixAcceptor("aa", aaSink);
 
-        dispatcher.require();
+        dispatcher.pull();
 
         assertEquals("{=*, b=*, xyz=*}", _Sink.getBufferedMap().toString());
         assertEquals("{=*, b=*}", aSink.getBufferedMap().toString());

@@ -4,8 +4,11 @@ import javax.free.Nullables;
 
 import com.bee32.plover.arch.ui.Appearance;
 import com.bee32.plover.arch.ui.IAppearance;
+import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.AutoNaming;
 import com.bee32.plover.arch.util.ExceptionSupport;
+import com.bee32.plover.arch.util.res.IPropertyDispatcher;
+import com.bee32.plover.arch.util.res.PropertyDispatcher;
 
 /**
  * A component is bound with appearance, and optionally an alternative exception support.
@@ -43,9 +46,25 @@ public abstract class Component
     @Override
     public IAppearance getAppearance() {
         if (appearance == null) {
-            Class<?> componentClass = getClass();
-            appearance = Appearance.getStaticAppearance(componentClass);
+            synchronized (this) {
+                if (appearance == null) {
+                    appearance = createAppearance();
+                }
+            }
         }
+        return appearance;
+    }
+
+    IAppearance createAppearance() {
+        Class<?> componentClass = getClass();
+        InjectedAppearance appearance = Appearance.prepareAppearanceCached(componentClass);
+
+        IPropertyDispatcher localDispatcher = new PropertyDispatcher(componentClass);
+
+        localDispatcher.setRootAcceptor(appearance);
+
+        appearance.setPropertyDispatcher(localDispatcher);
+
         return appearance;
     }
 
