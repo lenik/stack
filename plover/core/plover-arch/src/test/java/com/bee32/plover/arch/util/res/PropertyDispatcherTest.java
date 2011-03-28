@@ -28,13 +28,13 @@ public class PropertyDispatcherTest {
         PropertyBuffer catSink = new PropertyBuffer();
         PropertyBuffer dogSink = new PropertyBuffer();
 
-        UniquePrefixStrategy strategy = new UniquePrefixStrategy();
-        strategy.registerPrefix("cat.", catSink);
-        strategy.registerPrefix("dog", dogSink);
-
         ResourceBundle bundle = ResourceBundle.getBundle(getClass().getName());
 
-        strategy.bind(bundle).require();
+        ResourceBundlePropertyDispatcher dispatcher = new ResourceBundlePropertyDispatcher(bundle);
+        dispatcher.addPrefixAcceptor("cat.", catSink);
+        dispatcher.addPrefixAcceptor("dog", dogSink);
+
+        dispatcher.require();
 
         assertEquals(catExpected, catSink.getBufferedMap());
         assertEquals(dogExpected, dogSink.getBufferedMap());
@@ -46,15 +46,15 @@ public class PropertyDispatcherTest {
         PropertyBuffer catSink = new PropertyBuffer();
         PropertyBuffer dogSink = new PropertyBuffer();
 
-        UniquePrefixStrategy strategy = new UniquePrefixStrategy();
-        strategy.registerPrefix("cat.", catSink);
-        strategy.registerPrefix("dog", dogSink);
-
         URL propertiesURL = getClass().getResource(getClass().getSimpleName() + ".properties");
         Properties properties = new Properties();
         properties.load(propertiesURL.openStream());
 
-        strategy.bind(properties).require();
+        PropertiesPropertyDispatcher dispatcher = new PropertiesPropertyDispatcher(properties);
+        dispatcher.addPrefixAcceptor("cat.", catSink);
+        dispatcher.addPrefixAcceptor("dog", dogSink);
+
+        dispatcher.require();
 
         assertEquals(catExpected, catSink.getBufferedMap());
         assertEquals(dogExpected, dogSink.getBufferedMap());

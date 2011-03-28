@@ -34,6 +34,8 @@ public abstract class PropertyDispatcher
 
     @Override
     public IPropertyAcceptor getPrefixAcceptor(String prefix) {
+        if (prefixAcceptors == null)
+            return null;
         return prefixAcceptors.get(prefix);
     }
 
@@ -49,6 +51,9 @@ public abstract class PropertyDispatcher
             return;
         }
 
+        if (prefixAcceptors == null)
+            prefixAcceptors = new PrefixMap<IPropertyAcceptor>();
+
         if (prefixAcceptors.containsKey(prefix)) {
             IPropertyAcceptor _sink = prefixAcceptors.get(prefix);
             throw new IllegalUsageException("Prefix " + prefix + " is already registered with " + _sink);
@@ -59,22 +64,28 @@ public abstract class PropertyDispatcher
 
     @Override
     public IPropertyAcceptor removePrefixAcceptor(String prefix) {
+        if (prefixAcceptors == null)
+            return null;
         return prefixAcceptors.remove(prefix);
     }
 
     @Override
     public void dispatch(String key, String content) {
-        String prefix = prefixAcceptors.floorKey(key);
-        if (prefix == null || !key.startsWith(prefix)) {
-            logger.debug("Skipped property: " + key);
-            return;
+        if (prefixAcceptors != null) {
+            String prefix = prefixAcceptors.floorKey(key);
+
+            if (prefix != null && key.startsWith(prefix)) {
+                IPropertyAcceptor acceptor = prefixAcceptors.get(prefix);
+
+                String prefixStrippedKey = key.substring(prefix.length());
+                acceptor.receive(prefixStrippedKey, content);
+
+                return;
+            }
         }
 
-        IPropertyAcceptor acceptor = prefixAcceptors.get(prefix);
-        assert acceptor != null : "already checked";
-
-        String prefixStrippedKey = key.substring(prefix.length());
-        acceptor.receive(prefixStrippedKey, content);
+        if (rootAcceptor != null)
+            rootAcceptor.receive(key, content);
     }
 
     @Override

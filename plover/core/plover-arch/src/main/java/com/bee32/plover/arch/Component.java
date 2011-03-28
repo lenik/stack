@@ -44,7 +44,7 @@ public abstract class Component
     public IAppearance getAppearance() {
         if (appearance == null) {
             Class<?> componentClass = getClass();
-            appearance = Appearance.getAppearance(componentClass);
+            appearance = Appearance.getStaticAppearance(componentClass);
         }
         return appearance;
     }

@@ -4,22 +4,15 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Properties;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class UniquePrefixDispatcherTest {
 
-    @Ignore("Should use PrefixMap instead.")
     @Test
     public void testCommonPrefix() {
         PropertyBuffer _Sink = new PropertyBuffer();
         PropertyBuffer aSink = new PropertyBuffer();
         PropertyBuffer aaSink = new PropertyBuffer();
-
-        UniquePrefixStrategy strategy = new UniquePrefixStrategy();
-        strategy.registerPrefix("", _Sink);
-        strategy.registerPrefix("a", aSink);
-        strategy.registerPrefix("aa", aaSink);
 
         Properties properties = new Properties();
         properties.put("", "*");
@@ -29,10 +22,16 @@ public class UniquePrefixDispatcherTest {
         properties.put("ab", "*");
         properties.put("aaa", "*");
         properties.put("xyz", "*");
-        strategy.bind(properties);
 
-        assertEquals("{=*}", _Sink.getBufferedMap().toString());
-        assertEquals("{=*}", aSink.getBufferedMap().toString());
+        PropertiesPropertyDispatcher dispatcher = new PropertiesPropertyDispatcher(properties);
+        dispatcher.addPrefixAcceptor("", _Sink);
+        dispatcher.addPrefixAcceptor("a", aSink);
+        dispatcher.addPrefixAcceptor("aa", aaSink);
+
+        dispatcher.require();
+
+        assertEquals("{=*, b=*, xyz=*}", _Sink.getBufferedMap().toString());
+        assertEquals("{=*, b=*}", aSink.getBufferedMap().toString());
         assertEquals("{=*, a=*}", aaSink.getBufferedMap().toString());
     }
 

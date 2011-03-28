@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.free.AbstractQueryable;
 import javax.free.ClassLocal;
 
+import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.ui.annotated.AnnotatedAppearance;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.LoadFlags32;
@@ -19,7 +20,7 @@ public abstract class Appearance
         extends AbstractQueryable
         implements IAppearance, IImageMap, IRefdocs {
 
-    private final Object target;
+    private final Component target;
 
     private IAppearance parent;
 
@@ -34,9 +35,16 @@ public abstract class Appearance
     private IRefdocs refdocs;
     private IImageMap imageMap;
 
-    public Appearance(Object target, IAppearance parent) {
+    public Appearance(Component target, IAppearance parent) {
         this.target = target;
         this.parent = parent;
+    }
+
+    /**
+     * Force to reload all fields.
+     */
+    protected void invalidate() {
+        flags.checkAndClean(-1);
     }
 
     /**
@@ -191,7 +199,7 @@ public abstract class Appearance
         return null;
     }
 
-    public Object getTarget() {
+    public Component getTarget() {
         return target;
     }
 
@@ -203,47 +211,50 @@ public abstract class Appearance
 
     /**
      * Find resource appearance first, if no available resource, fallback to annotation.
+     * <p>
+     * IA means Inject-first, Annotation-second.
+     *
+     * @param target
+     *            Maybe <code>null</code> if this appearance is for static purpose.
+     * @param declaringClass
+     *            The class whose annotations and resource bundle will be processed.
+     * @param resourceResolver
+     *            The resource resolver used to resolve the resource URLs declared in
+     *            refdoc/imagemaps.
+     * @return Non-<code>null</code> {@link InjectedAppearance}.
      */
-    public static InjectedAppearance getAppearance(Object target, IResourceResolver resourceResolver,
-            Class<?> declaringType) {
-        Appearance fallback = new AnnotatedAppearance(null, declaringType);
+    public static InjectedAppearance getAppearance_IA(Component target, Class<?> declaringClass,
+            IResourceResolver resourceResolver) {
+        if (declaringClass == null)
+            throw new NullPointerException("declaringClass");
+        if (resourceResolver == null)
+            throw new NullPointerException("resourceResolver");
 
-        InjectedAppearance injected = new InjectedAppearance(target, fallback, resourceResolver);
+        AnnotatedAppearance fallback = new AnnotatedAppearance(null, declaringClass);
 
-        new StemDispatchStrategy(injected).bind(declaringType);
+        InjectedAppearance injected = new InjectedAppearance(target, fallback, resourceResolver, declaringClass);
 
         return injected;
     }
 
-    /**
-     * Find annotated appearance first, if no available annotation, fallback to resource.
-     */
-    public static Appearance getAppearance(Object target, Class<?> declaringType, IResourceResolver resourceResolver) {
-        Appearance fallback = new InjectedAppearance(target, null, resourceResolver);
-        Appearance appearance = new AnnotatedAppearance(fallback, declaringType);
-        return appearance;
-    }
+    static final ClassLocal<InjectedAppearance> classLocalAppearance_IA = new ClassLocal<InjectedAppearance>();
 
-    static final ClassLocal<InjectedAppearance> classLocalAppearance = new ClassLocal<InjectedAppearance>();
-
-    public static InjectedAppearance getAppearance(Class<?> declaringType) {
-        InjectedAppearance appearance = classLocalAppearance.get(declaringType);
-        if (appearance == null) {
+    public static InjectedAppearance getStaticAppearance(Class<?> declaringType) {
+        InjectedAppearance appearance_IA = classLocalAppearance_IA.get(declaringType);
+        if (appearance_IA == null) {
             synchronized (Appearance.class) {
-                appearance = classLocalAppearance.get(declaringType);
-                if (appearance == null) {
+                appearance_IA = classLocalAppearance_IA.get(declaringType);
+                if (appearance_IA == null) {
 
                     IResourceResolver resourceResolver = new ClassResourceResolver(declaringType);
 
-                    appearance = getAppearance(null, resourceResolver, declaringType);
+                    appearance_IA = getAppearance_IA(null, declaringType, resourceResolver);
 
-                    new StemDispatchStrategy(appearance).bind(declaringType);
-
-                    classLocalAppearance.put(declaringType, appearance);
+                    classLocalAppearance_IA.put(declaringType, appearance_IA);
                 }
             }
         }
-        return appearance;
+        return appearance_IA;
     }
 
 }
