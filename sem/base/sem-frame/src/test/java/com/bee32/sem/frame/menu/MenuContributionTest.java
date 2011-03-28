@@ -1,22 +1,34 @@
 package com.bee32.sem.frame.menu;
 
-import com.bee32.sem.frame.Contribution;
-import com.bee32.sem.frame.action.Action;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+import java.util.Map.Entry;
+
+import org.junit.Test;
+
+import com.bee32.plover.arch.ui.IAppearance;
 
 public class MenuContributionTest {
 
-    public static class MyMenu
-            extends MenuContribution {
+    @Test
+    public void test1() {
+        MyMenu menu = new MyMenu();
+        List<Entry<String, IMenuItem>> dump = menu.dump();
 
-        Action openFileAction = new Action("file.open", WEB_APP.join("file/open/htm"));
+        Entry<String, IMenuItem> entry = dump.iterator().next();
 
-        @Contribution("menu.file")
-        MenuItem fileOpen = new MenuItem("file.open", openFileAction);
+        String targetPath = entry.getKey();
+        assertEquals("menu.file", targetPath);
 
-        @Override
-        protected void preamble() {
-        }
+        IMenuItem menuItem = entry.getValue();
 
+        IAppearance appearance = menuItem.getAppearance();
+        String displayName = appearance.getDisplayName();
+        String description = appearance.getDescription();
+
+        assertEquals("Open File", displayName);
+        assertEquals("Browse and open a file", description);
     }
 
 }

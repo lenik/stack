@@ -1,12 +1,18 @@
 package com.bee32.sem.frame.menu;
 
 import java.lang.reflect.Field;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.free.IllegalUsageException;
+import javax.free.Pair;
 
 import com.bee32.plover.arch.Composite;
+import com.bee32.plover.arch.util.res.ClassResourceProperties;
+import com.bee32.plover.arch.util.res.IProperties;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.servlet.context.LocationContextConstants;
 import com.bee32.sem.frame.Contribution;
@@ -24,7 +30,7 @@ public abstract class MenuContribution
         extends Composite
         implements LocationContextConstants {
 
-    private Map<String, IMenuItem> contributions = new LinkedHashMap<String, IMenuItem>();
+    private List<Entry<String, IMenuItem>> contributions = new ArrayList<Map.Entry<String, IMenuItem>>();
 
     public MenuContribution() {
         super();
@@ -44,38 +50,41 @@ public abstract class MenuContribution
             if (contribAnn == null)
                 continue;
 
-            String targetPath = contribAnn.value();
-            assert targetPath != null;
+            String parentPath = contribAnn.value();
+            assert parentPath != null;
 
             Class<?> fieldType = field.getType();
-
             if (!IMenuItem.class.isAssignableFrom(fieldType))
                 throw new UnsupportedOperationException("Bad contribution element type: " + field);
 
-            Object fieldValue;
+            IMenuItem menuItem;
             try {
-                fieldValue = field.get(this);
+                menuItem = (IMenuItem) field.get(this);
             } catch (Exception e) {
                 throw new IllegalUsageException(e.getMessage(), e);
             }
 
-            contribute(targetPath, (IMenuItem) fieldValue);
-
+            // String name = menuItem.getName();
+            // String targetPath = parentPath + "/" + name;
+            contribute(parentPath, (IMenuItem) menuItem);
         }
     }
 
     protected void contribute(String parentMenuPath, IMenuItem element) {
-        contributions.put(parentMenuPath, element);
+        Pair<String, IMenuItem> entry = new Pair<String, IMenuItem>(parentMenuPath, element);
+        contributions.add(entry);
     }
 
-    synchronized Map<String, IMenuItem> dump() {
-
+    synchronized List<Entry<String, IMenuItem>> dump() {
         if (this.contributions == null)
             throw new IllegalStateException("Already dumped");
 
-        getPropertyBinding().bind(getClass());
+        assemble();
 
-        Map<String, IMenuItem> retval = this.contributions;
+        IProperties properties = new ClassResourceProperties(getClass(), Locale.getDefault());
+        setProperties(properties);
+
+        List<Entry<String, IMenuItem>> retval = this.contributions;
         this.contributions = null;
         return retval;
     }
