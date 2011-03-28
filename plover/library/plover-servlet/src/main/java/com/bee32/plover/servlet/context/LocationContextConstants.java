@@ -25,7 +25,7 @@ public interface LocationContextConstants {
             if (isAbsolute(location))
                 return location;
 
-            // Since the resolve is request-oriented, so let's just ignore request.
+            // Since the resolve is request-oriented, so let's just echo it..
 
             return location;
         }
