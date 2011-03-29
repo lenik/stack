@@ -4,6 +4,7 @@ import java.net.URL;
 
 import org.zkoss.zul.Menu;
 import org.zkoss.zul.Menupopup;
+import org.zkoss.zul.api.Menuitem;
 
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.servlet.context.ContextLocation;
@@ -12,15 +13,33 @@ import com.bee32.sem.frame.action.IAction;
 
 public class ZkMenuBuilder {
 
+    /**
+     * Build a Zk Menu from the top-level {@link MenuBar} model.
+     */
     public static Menu buildMenu(MenuBar menuBar) {
         for (IMenuEntry topMenu : menuBar) {
-            Menupopup popup = buildPopup(topMenu);
+            Menupopup popup = buildMenupopup(topMenu);
             // ...
         }
         return null;
     }
 
-    public static Menupopup buildPopup(IMenuEntry menuEntry) {
+    /**
+     * Build a Zk popup menu from a starting menu entry, which is a pre-built node in the menu tree.
+     *
+     * The given menu entry should be renderred as the title bar if there's any.
+     *
+     * The children under the given menu entry should be renderred as menu items within the
+     * menupopup.
+     */
+    public static Menupopup buildMenupopup(IMenuEntry menuEntry) {
+        return null;
+    }
+
+    /**
+     * Build a Zk menu item from a specific menu entry.
+     */
+    public static Menuitem buildMenuitem(IMenuEntry menuEntry) {
         IAppearance appearance = menuEntry.getAppearance();
         String id = menuEntry.getName();
         String label = appearance.getDisplayName();
@@ -55,7 +74,6 @@ public class ZkMenuBuilder {
         for (IMenuEntry childEntry : menuEntry) {
             // ...
         }
-
         return null;
     }
 
