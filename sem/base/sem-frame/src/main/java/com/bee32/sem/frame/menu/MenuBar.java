@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.free.IllegalUsageException;
+
 public class MenuBar
         extends MenuEntry {
 
@@ -21,9 +23,11 @@ public class MenuBar
 
             if (menuItem instanceof IMenuEntry) {
                 IMenuEntry menuEntry = (IMenuEntry) menuItem;
-                this.resolveMerge(targetPath, menuEntry);
+                if (!this.resolveMerge(targetPath, menuEntry))
+                    throw new IllegalUsageException("Duplicated menu entry: " + menuEntry);
             } else {
-                this.resolveMerge(targetPath, menuItem);
+                if (!this.resolveMerge(targetPath, menuItem))
+                    throw new IllegalUsageException("Duplicated menu item: " + menuItem);
             }
         }
 
