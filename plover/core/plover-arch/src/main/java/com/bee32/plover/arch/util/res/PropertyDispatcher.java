@@ -64,12 +64,10 @@ public class PropertyDispatcher
 
     @Override
     public PropertyDispatcher addPrefixAcceptor(String prefix, IPropertyAcceptor acceptor) {
-        if (prefix == null)
-            throw new NullPointerException("prefix");
         if (acceptor == null)
             throw new NullPointerException("acceptor");
 
-        if (prefix.isEmpty()) {
+        if (prefix == null || prefix.isEmpty()) {
             setRootAcceptor(acceptor);
             return this;
         }
@@ -84,6 +82,14 @@ public class PropertyDispatcher
 
         prefixAcceptors.put(prefix, acceptor);
 
+        return this;
+    }
+
+    public PropertyDispatcher addKeyAcceptor(String key, IPropertyAcceptor acceptor) {
+        if (key == null || key.isEmpty())
+            setRootAcceptor(acceptor);
+        else
+            addPrefixAcceptor(key + ".", acceptor);
         return this;
     }
 
