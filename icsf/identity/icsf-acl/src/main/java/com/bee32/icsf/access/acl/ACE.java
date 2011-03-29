@@ -2,28 +2,37 @@ package com.bee32.icsf.access.acl;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.orm.entity.EntityBean;
 
-public abstract class ACE
+public class ACE
+        extends EntityBean<Long>
         implements IACL.Entry, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final IPrincipal principal;
-    private final Permission permission;
+    private IPrincipal principal;
+    private Permission permission;
+    private boolean allowed;
 
-    public ACE(IPrincipal principal, Permission permission) {
-        if (principal == null)
-            throw new NullPointerException("principal");
-        if (permission == null)
-            throw new NullPointerException("permission");
-        this.principal = principal;
-        this.permission = permission;
+    public ACE() {
     }
 
+    @ManyToOne(targetEntity = Principal.class)
     public IPrincipal getPrincipal() {
         return principal;
+    }
+
+    @Column(nullable = false, length = 50)
+    public String getPermissionId() {
+
     }
 
     @Override
@@ -31,26 +40,40 @@ public abstract class ACE
         return permission;
     }
 
+    @Basic(optional = false)
+    public boolean isAllowed() {
+        return allowed;
+    }
+
+    @Transient
     @Override
     public boolean isDenied() {
-        return !isAllowed();
+        return !allowed;
+    }
+
+    public void setAllowed(boolean allowed) {
+        this.allowed = allowed;
     }
 
     @Override
-    public int hashCode() {
-        int hash = principal.hashCode();
-        hash ^= permission.hashCode();
-        return hash;
+    protected int hashCodeEntity() {
+        final int prime = 31;
+        int result = 0;
+        result = prime * result + ((permission == null) ? 0 : permission.hashCode());
+        result = prime * result + ((principal == null) ? 0 : principal.hashCode());
+        return result;
     }
 
-    boolean _equals(Object obj) {
-        if (!(obj instanceof ACE))
+    @Override
+    protected boolean equalsEntity(EntityBean<Long> otherEntity) {
+        ACE other = (ACE) otherEntity;
+
+        if (!permission.equals(other.permission))
             return false;
-        ACE that = (ACE) obj;
-        if (!principal.equals(that.principal))
+
+        if (!principal.equals(other.principal))
             return false;
-        if (!principal.equals(that.permission))
-            return false;
+
         return true;
     }
 
