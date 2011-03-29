@@ -45,14 +45,17 @@ public abstract class WiredTestCase
         return beanClass.cast(bean);
     }
 
-    protected void main() {
+    public WiredTestCase wire() {
         ApplicationContext context = new ContextRef(getClass()).buildApplicationContext();
         AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
         factory.autowireBean(this);
-        this.run();
+        return this;
     }
 
-    protected void run() {
+    public void run() {
+    }
+
+    public void dump() {
     }
 
 }
