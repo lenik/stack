@@ -76,7 +76,7 @@ public class CheckpointDiscoverer
         String section = serviceClass.getSimpleName();
         boolean allMethods = false;
 
-        Restricted classAnnotation = serviceClass.getAnnotation(Restricted.class);
+        Checkpoint classAnnotation = serviceClass.getAnnotation(Checkpoint.class);
         if (classAnnotation != null) {
             String name = classAnnotation.name();
             if (!name.isEmpty())
@@ -86,7 +86,7 @@ public class CheckpointDiscoverer
         }
 
         for (Method method : serviceClass.getMethods()) {
-            Restricted annotation = method.getAnnotation(Restricted.class);
+            Checkpoint annotation = method.getAnnotation(Checkpoint.class);
             if (annotation == null && !allMethods)
                 continue;
 
