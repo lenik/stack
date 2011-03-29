@@ -1,13 +1,11 @@
 package com.bee32.sem.frame.menu;
 
-import java.net.URL;
-
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Menu;
 import org.zkoss.zul.Menubar;
-import org.zkoss.zul.Menupopup;
 import org.zkoss.zul.Menuitem;
+import org.zkoss.zul.Menupopup;
 
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.servlet.context.ContextLocation;

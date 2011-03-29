@@ -1,12 +1,7 @@
 package com.bee32.sem.frame.web;
 
-import javax.inject.Inject;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
-import org.zkoss.zul.Menu;
 import org.zkoss.zul.Menubar;
 
 import com.bee32.sem.frame.builtins.MainMenu;
