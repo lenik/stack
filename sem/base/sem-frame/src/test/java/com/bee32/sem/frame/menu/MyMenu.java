@@ -8,7 +8,10 @@ public class MyMenu
 
     Action openFileAction = new Action(WEB_APP.join("file/open/htm"));
 
-    @Contribution("menu.file")
+    @Contribution(".")
+    MenuItem file = new MenuItem("file");
+
+    @Contribution("file")
     MenuItem fileOpen = new MenuItem("open", openFileAction);
 
     @Override
