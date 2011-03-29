@@ -1,7 +1,11 @@
 package com.bee32.plover.web.faces.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.webapp.FacesServlet;
 import javax.free.IllegalUsageException;
+import javax.free.StringArray;
 
 import org.apache.myfaces.webapp.StartupServletContextListener;
 import org.mortbay.jetty.servlet.ServletHolder;
@@ -32,6 +36,8 @@ public class FaceletsTestCase
 
     private boolean checkAdditionalServlets;
 
+    private List<String> taglibs = new ArrayList<String>();
+
     public FaceletsTestCase() {
         super();
         init();
@@ -46,12 +52,22 @@ public class FaceletsTestCase
         OverlappedBases.add("resources/");
     }
 
+    protected void addTagLibrary(String taglib) {
+        taglibs.add(taglib);
+    }
+
     @Override
     protected void configureBuiltinServlets() {
         super.configureBuiltinServlets();
 
         RabbitServletContext context = stl.getServletContext();
         {
+
+            if (!taglibs.isEmpty()) {
+                String libraries = StringArray.join(";", taglibs);
+                context.addInitParam(LIBRARIES, libraries);
+            }
+
             context.addInitParam(RESOURCE_RESOLVER, ClassResourceResolver.class.getName());
 
             // - Use Documents Saved as *.xhtml
