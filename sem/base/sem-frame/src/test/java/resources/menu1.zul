@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window title="Zk Menu Builder Test" border="normal">
+
+    <menubar id="menu1" apply="" />
+
+</window>
