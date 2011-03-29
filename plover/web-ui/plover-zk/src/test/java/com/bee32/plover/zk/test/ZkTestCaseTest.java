@@ -14,7 +14,9 @@ public class ZkTestCaseTest
     public static void main(String[] args)
             throws IOException, Exception {
         new ZkTestCaseTest().wire().browseAndWait(//
-                "/zhello.jsf");
+                // "/zhello.jsf" //
+                "/zhello.zul" //
+        );
     }
 
 }
