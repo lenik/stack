@@ -39,7 +39,8 @@ public class BookStoreTest
     }
 
     @Override
-    public void afterPropertiesSet() {
+    public void afterPropertiesSet()
+            throws Exception {
         Map<String, IModule> map = moduleLoader.getModuleMap();
         if (map.isEmpty())
             throw new Error("No module found, check you test environ.");

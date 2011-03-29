@@ -41,7 +41,7 @@ public abstract class MenuContribution
     }
 
     @Override
-    protected void introduce() {
+    protected final void introduce() {
         super.introduce();
 
         for (Field field : getElementFields()) {
@@ -70,12 +70,12 @@ public abstract class MenuContribution
         }
     }
 
-    protected void contribute(String parentMenuPath, IMenuItem element) {
+    protected final void contribute(String parentMenuPath, IMenuItem element) {
         Pair<String, IMenuItem> entry = new Pair<String, IMenuItem>(parentMenuPath, element);
         contributions.add(entry);
     }
 
-    synchronized List<Entry<String, IMenuItem>> dump() {
+    synchronized final List<Entry<String, IMenuItem>> dump() {
         if (this.contributions == null)
             throw new IllegalStateException("Already dumped");
 
