@@ -23,4 +23,6 @@ public @interface Restricted {
      */
     Class<? extends Permission>[] require() default {};
 
+    boolean allMethods() default true;
+
 }

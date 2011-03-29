@@ -1,5 +1,6 @@
 package com.bee32.icsf.access.builtins;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public final class PointPermission
 
     private static final long serialVersionUID = 1L;
 
-    public PointPermission(String name) {
+    PointPermission(String name) {
         super(name);
     }
 
@@ -39,6 +40,22 @@ public final class PointPermission
     private static final Map<String, PointPermission> pointMap = new HashMap<String, PointPermission>();
 
     /**
+     * Create a new point permission for the given name.
+     *
+     * @return Non-<code>null</code> new created point permission instance.
+     * @throws IllegalStateException
+     *             if the point permission with the given is already existed.
+     */
+    public static synchronized PointPermission create(String pointName) {
+        if (pointMap.containsKey(pointName))
+            throw new IllegalStateException("PointPermission " + pointName + " is already defined");
+
+        PointPermission pointPermission = new PointPermission(pointName);
+        pointMap.put(pointName, pointPermission);
+        return pointPermission;
+    }
+
+    /**
      * Get the named PointPermission.
      * <p>
      * If the PointPermission of the specified point name is existed, it's returned.
@@ -55,7 +72,7 @@ public final class PointPermission
      */
     public static PointPermission getInstance(String pointName, boolean createIfNotExisted) {
         PointPermission pointPermission = pointMap.get(pointName);
-        if (pointPermission == null) {
+        if (pointPermission == null && createIfNotExisted) {
             synchronized (PointPermission.class) {
                 pointPermission = pointMap.get(pointName);
                 if (pointPermission == null) {
@@ -103,6 +120,10 @@ public final class PointPermission
             throw new IllegalStateException("PointPermission " + pointName + " is already defined.");
 
         pointMap.put(pointName, parsedPointPermission);
+    }
+
+    public static Collection<PointPermission> getAllInstances() {
+        return pointMap.values();
     }
 
 }
