@@ -1,0 +1,12 @@
+<window title="hello" border="normal">
+    <button label="Say" onClick='alert("a, world")'/>
+    <zscript>
+        void alert(String message) {
+            Messagebox.show("F" + message);
+        }
+    </zscript>
+
+    Enter: <textbox/>
+    <button label="Retrieve" onClick="alert(System.getProperty(self.getPreviousSibling().getValue()))" />
+
+</window>
