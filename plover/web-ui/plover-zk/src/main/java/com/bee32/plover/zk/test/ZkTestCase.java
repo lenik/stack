@@ -21,6 +21,8 @@ public class ZkTestCase
 
     @Override
     protected void configureBuiltinServlets() {
+        super.configureBuiltinServlets();
+
         HttpSessionListener httpSessionListener = new HttpSessionListener();
         stl.addEventListener(httpSessionListener);
 
@@ -30,9 +32,6 @@ public class ZkTestCase
 
         stl.addServlet(DHtmlUpdateServlet.class, "/zkau/*");
         stl.addServlet(InterpreterServlet.class, "*.dsp");
-
-        addTagLibrary("/WEB-INF/zuljsf.tld");
-        super.configureBuiltinServlets();
     }
 
 }
