@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <window title="Zk Menu Builder Test" border="normal">
 
     <menubar id="menu1" apply="" />
