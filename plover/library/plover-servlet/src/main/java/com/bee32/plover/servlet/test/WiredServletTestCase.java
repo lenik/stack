@@ -61,7 +61,8 @@ public abstract class WiredServletTestCase
     }
 
     /**
-     * Create a new instance of this using JUnit wrapper, and then autowire this using Spring DI.
+     * Create a new instance like this using JUnit wrapper, and then autowire the new instance using
+     * Spring CDI.
      *
      * @return Wrapped & Wired instance.
      */
@@ -70,6 +71,16 @@ public abstract class WiredServletTestCase
         return wire(true);
     }
 
+    /**
+     * Wrap and wire this object, result in a new one if <code>dropThis</code> is specified, or hack
+     * myself if <code>dropThis</code> is disabled. Spring CDI.
+     *
+     * @param dropThis
+     *            Whether should hack into myself.
+     *            <p>
+     *            Currently, keep-this is not supported. A new instance should always be created.
+     * @return Wrapped & Wired instance.
+     */
     protected WiredServletTestCase wire(boolean dropThis)
             throws Exception {
         if (!dropThis)
