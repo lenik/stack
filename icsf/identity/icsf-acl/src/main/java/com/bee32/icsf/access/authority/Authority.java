@@ -3,37 +3,24 @@ package com.bee32.icsf.access.authority;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.bee32.icsf.access.acl.IACL;
+import com.bee32.plover.arch.Component;
 
-public class Authority
+public abstract class Authority
+        extends Component
         implements IAuthority {
 
-    private final String name;
-    private IACL acl;
-    private Set<IAuthority> trustedAuthorities;
+    private Set<IAuthority> trustedAuthorities = new HashSet<IAuthority>();
 
-    public Authority(String name, IACL acl) {
-        if (name == null)
-            throw new NullPointerException("name");
-        if (acl == null)
-            throw new NullPointerException("acl");
-        this.name = name;
-        this.acl = acl;
-        this.trustedAuthorities = new HashSet<IAuthority>();
+    public Authority() {
+        super();
+    }
+
+    public Authority(String name) {
+        super(name);
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public IACL getACL() {
-        return acl;
-    }
-
-    @Override
-    public boolean isTrusted(IAuthority authority) {
+    public boolean trusts(IAuthority authority) {
         return trustedAuthorities.contains(authority);
     }
 

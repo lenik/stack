@@ -1,21 +1,24 @@
 package com.bee32.icsf.access.authority;
 
-import com.bee32.icsf.access.acl.IACL;
+import com.bee32.icsf.access.acl.EmptyACL;
+import com.bee32.icsf.access.acl.PrincipalACL;
+import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.plover.arch.IComponent;
 
-public interface IAuthority {
-
-    String getName();
+public interface IAuthority
+        extends IComponent {
 
     /**
-     * 返回访问控制列表（ACL）。
+     * Get the granted ACL for the principal.
      *
-     * @see {@link IACL#getInheritedACL()}
-     *
-     * @return 非 <code>null</code> 值。
+     * @param principal
+     *            Non-<code>null</code> principal whose granted ACL is queried.
+     * @return Non-<code>null</code> ACL granted to the principal. Returns {@link EmptyACL} if no
+     *         available ACL for the principal.
      */
-    IACL getACL();
+    PrincipalACL getGrantedACL(IPrincipal principal);
 
-    boolean isTrusted(IAuthority authority);
+    boolean trusts(IAuthority authority);
 
     IAuthority ROOT = RootAuthority.getInstance();
 
