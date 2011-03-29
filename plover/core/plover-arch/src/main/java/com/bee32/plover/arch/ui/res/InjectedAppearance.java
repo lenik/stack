@@ -37,9 +37,9 @@ public class InjectedAppearance
      * Don't forget to {@link #setPropertyDispatcher(IPropertyDispatcher) set the property
      * dispatcher}.
      */
-    public InjectedAppearance(IAppearance parent, URL contextUrl) {
+    public InjectedAppearance(IAppearance parent, URL contextURL) {
         super(parent);
-        this.contextURL = contextUrl;
+        this.contextURL = contextURL;
     }
 
     /**
