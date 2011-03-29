@@ -2,6 +2,6 @@
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <window title="Zk Menu Builder Test" border="normal">
 
-    <menubar id="menu1" apply="" />
+    <menubar id="menubar" apply="com.bee32.sem.frame.web.MenuComposer" />
 
 </window>
