@@ -1,12 +1,11 @@
 package com.bee32.plover.test;
 
-import javax.inject.Inject;
-
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -18,16 +17,21 @@ import com.bee32.plover.inject.cref.ContextRef;
 /*            */"/com/bee32/plover/inject/cref/scan-testx-context.xml" })
 public abstract class WiredTestCase
         extends AssembledTestCase
-        implements InitializingBean {
+        implements ApplicationContextAware, InitializingBean {
 
-    @Inject
     protected ApplicationContext application;
-
     protected AutowireCapableBeanFactory beanFactory;
 
     @Override
-    public void afterPropertiesSet() {
-        beanFactory = application.getAutowireCapableBeanFactory();
+    public void setApplicationContext(ApplicationContext applicationContext)
+            throws BeansException {
+        this.application = applicationContext;
+        this.beanFactory = application.getAutowireCapableBeanFactory();
+    }
+
+    @Override
+    public void afterPropertiesSet()
+            throws Exception {
     }
 
     protected <T> T createBean(Class<T> beanClass)
