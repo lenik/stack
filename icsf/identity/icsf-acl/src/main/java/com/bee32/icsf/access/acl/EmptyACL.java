@@ -24,7 +24,7 @@ public final class EmptyACL
 
     @Override
     public IACLPolicy getACLPolicy() {
-        return DenyPriorACLPolicy.getInstance();
+        return DenyFirstACLPolicy.getInstance();
     }
 
     @Override

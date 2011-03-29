@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Array ACL keep the ACE order as they were inserted.
+ */
 public abstract class ArrayACL
         extends AbstractACL {
 

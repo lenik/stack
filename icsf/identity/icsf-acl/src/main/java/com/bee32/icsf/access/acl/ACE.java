@@ -3,17 +3,12 @@ package com.bee32.icsf.access.acl;
 import java.io.Serializable;
 
 import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.orm.entity.EntityBean;
 
 public class ACE
-        extends EntityBean<Long>
         implements IACL.Entry, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -22,17 +17,18 @@ public class ACE
     private Permission permission;
     private boolean allowed;
 
-    public ACE() {
+    public ACE(IPrincipal principal, Permission permission, boolean allowed) {
+        if (principal == null)
+            throw new NullPointerException("principal");
+        if (permission == null)
+            throw new NullPointerException("permission");
+        this.principal = principal;
+        this.permission = permission;
+        this.allowed = allowed;
     }
 
-    @ManyToOne(targetEntity = Principal.class)
     public IPrincipal getPrincipal() {
         return principal;
-    }
-
-    @Column(nullable = false, length = 50)
-    public String getPermissionId() {
-
     }
 
     @Override
@@ -56,17 +52,25 @@ public class ACE
     }
 
     @Override
-    protected int hashCodeEntity() {
+    public int hashCode() {
         final int prime = 31;
         int result = 0;
         result = prime * result + ((permission == null) ? 0 : permission.hashCode());
         result = prime * result + ((principal == null) ? 0 : principal.hashCode());
+        if (allowed)
+            result *= prime;
         return result;
     }
 
     @Override
-    protected boolean equalsEntity(EntityBean<Long> otherEntity) {
-        ACE other = (ACE) otherEntity;
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+
+        if (obj.getClass() != ACE.class)
+            return false;
+
+        ACE other = (ACE) obj;
 
         if (!permission.equals(other.permission))
             return false;
@@ -75,6 +79,18 @@ public class ACE
             return false;
 
         return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(principal);
+        if (allowed)
+            sb.append(" + ");
+        else
+            sb.append(" - ");
+        sb.append(permission);
+        return sb.toString();
     }
 
 }

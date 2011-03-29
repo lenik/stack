@@ -24,7 +24,7 @@ public class ACL
     }
 
     public ACL(IACL parent, Collection<? extends Entry> entries) {
-        this(DenyPriorACLPolicy.getInstance(), parent, entries);
+        this(DenyFirstACLPolicy.getInstance(), parent, entries);
     }
 
     public ACL(IACLPolicy policy, IACL parent, Collection<? extends Entry> entries) {

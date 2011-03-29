@@ -4,12 +4,12 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.PermissionException;
 import com.bee32.icsf.access.acl.IACL.Entry;
 
-public class LastACLPolicy
+public class AlwaysOverrideACLPolicy
         implements IACLPolicy {
 
     private final boolean defaultAllow;
 
-    public LastACLPolicy(boolean defaultAllow) {
+    public AlwaysOverrideACLPolicy(boolean defaultAllow) {
         this.defaultAllow = defaultAllow;
     }
 
@@ -46,9 +46,9 @@ public class LastACLPolicy
         return match;
     }
 
-    private static final LastACLPolicy instance = new LastACLPolicy(false);
+    private static final AlwaysOverrideACLPolicy instance = new AlwaysOverrideACLPolicy(false);
 
-    public static LastACLPolicy getInstance() {
+    public static AlwaysOverrideACLPolicy getInstance() {
         return instance;
     }
 

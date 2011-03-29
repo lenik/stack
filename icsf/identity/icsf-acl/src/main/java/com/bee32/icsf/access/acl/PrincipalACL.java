@@ -6,6 +6,9 @@ import java.util.Set;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.IPrincipal;
 
+/**
+ * Principal-ACL is the ACL subset related to a specific principal.
+ */
 public class PrincipalACL
         extends ArrayACL {
 

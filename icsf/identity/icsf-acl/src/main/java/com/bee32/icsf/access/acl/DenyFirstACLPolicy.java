@@ -4,12 +4,17 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.PermissionException;
 import com.bee32.icsf.access.acl.IACL.Entry;
 
-public class DenyPriorACLPolicy
+/**
+ * If both allow-ACE and deny-ACE are defined, the denied one take the precedence.
+ * <p>
+ * This should be the default ACL policy.
+ */
+public class DenyFirstACLPolicy
         implements IACLPolicy {
 
     private final boolean defaultAllow;
 
-    public DenyPriorACLPolicy(boolean defaultAllow) {
+    public DenyFirstACLPolicy(boolean defaultAllow) {
         this.defaultAllow = defaultAllow;
     }
 
@@ -41,9 +46,9 @@ public class DenyPriorACLPolicy
                 throw new PermissionException("Access denied by default", requiredPermission);
     }
 
-    private static final DenyPriorACLPolicy instance = new DenyPriorACLPolicy(false);
+    private static final DenyFirstACLPolicy instance = new DenyFirstACLPolicy(false);
 
-    public static DenyPriorACLPolicy getInstance() {
+    public static DenyFirstACLPolicy getInstance() {
         return instance;
     }
 
