@@ -4,10 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Transient;
-
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.authority.IAuthority;
 
 public final class PointPermission
         extends Permission {
@@ -19,12 +16,6 @@ public final class PointPermission
     }
 
     // -o accesscontrol.Permission
-
-    @Transient
-    @Override
-    public IAuthority getAuthority() {
-        return null;
-    }
 
     /**
      * A point permission only implies itself.

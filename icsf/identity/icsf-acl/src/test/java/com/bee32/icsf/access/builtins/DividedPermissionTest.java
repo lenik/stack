@@ -2,20 +2,17 @@ package com.bee32.icsf.access.builtins;
 
 import org.junit.Test;
 
-import com.bee32.icsf.access.authority.IAuthority;
-import com.bee32.icsf.access.builtins.DividedPermission;
-
 class CakePermission
         extends DividedPermission {
 
     private static final long serialVersionUID = 1L;
 
     public CakePermission(String name, String description) {
-        super(IAuthority.ROOT, name, description);
+        super(name, description);
     }
 
     protected CakePermission(DividedPermission parent, String name, String description, int... ranges) {
-        super(parent, IAuthority.ROOT, name, description, ranges);
+        super(parent, name, description, ranges);
     }
 
     @Override

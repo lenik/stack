@@ -5,7 +5,6 @@ import java.util.Arrays;
 import javax.free.Nullables;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.authority.IAuthority;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -16,26 +15,21 @@ public abstract class DividedPermission
     private static final long serialVersionUID = 1L;
 
     private final DividedPermission parent;
-    private final IAuthority authority;
     private final String name;
     private final String description;
     private final int[] ranges; // sorted.
 // private final boolean determined;
 
-    public DividedPermission(IAuthority authority, String name, String description) {
-        this(null, authority, name, description, new int[0]);
+    public DividedPermission(String name, String description) {
+        this(null, name, description, new int[0]);
     }
 
-    protected DividedPermission(DividedPermission parent, IAuthority authority, String name, String description,
-            int... ranges) {
-        if (authority == null)
-            throw new NullPointerException("authority");
+    protected DividedPermission(DividedPermission parent, String name, String description, int... ranges) {
         if (name == null)
             throw new NullPointerException("name");
         if (ranges == null)
             throw new NullPointerException("ranges");
         this.parent = parent;
-        this.authority = authority;
         this.name = name;
         this.description = description;
         this.ranges = Arrays.copyOf(ranges, ranges.length);
@@ -46,11 +40,6 @@ public abstract class DividedPermission
             int... ranges);
 
     protected abstract String getRangeName(int rangeId);
-
-    @Override
-    public IAuthority getAuthority() {
-        return authority;
-    }
 
     public DividedPermission getParentPermission() {
         return parent;
@@ -105,9 +94,6 @@ public abstract class DividedPermission
     protected boolean equalsEntity(EntityBean<Integer> entity) {
         DividedPermission other = (DividedPermission) entity;
 
-        if (!Nullables.equals(authority, other.authority))
-            return false;
-
         if (!Nullables.equals(parent, other.parent))
             return false;
 
@@ -120,9 +106,6 @@ public abstract class DividedPermission
     @Override
     protected int hashCodeEntity() {
         int hash = 0x1c3ad4eb;
-
-        if (authority != null)
-            hash += authority.hashCode();
 
         if (parent != null)
             hash += parent.hashCode();

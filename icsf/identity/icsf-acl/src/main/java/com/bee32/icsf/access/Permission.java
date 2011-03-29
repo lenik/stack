@@ -1,8 +1,5 @@
 package com.bee32.icsf.access;
 
-import javax.persistence.Transient;
-
-import com.bee32.icsf.access.authority.IAuthority;
 import com.bee32.plover.orm.entity.EntityBean;
 
 /**
@@ -20,9 +17,6 @@ public abstract class Permission
     public Permission(String name) {
         super(name);
     }
-
-    @Transient
-    public abstract IAuthority getAuthority();
 
     public abstract boolean implies(Permission permission);
 
