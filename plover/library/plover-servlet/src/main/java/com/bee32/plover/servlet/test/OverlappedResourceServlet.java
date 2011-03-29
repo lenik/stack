@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This servlet should be served as the default servlet, which means to replace the default one.
+ */
 public class OverlappedResourceServlet
         extends HttpServlet {
 
