@@ -9,6 +9,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
@@ -38,6 +39,7 @@ public class Role
         super(name);
     }
 
+    @ManyToOne(targetEntity = Role.class, optional = true)
     @JoinColumn(name = "parent")
     @Override
     public IRolePrincipal getInheritedRole() {
