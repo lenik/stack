@@ -11,6 +11,7 @@ import org.apache.myfaces.webapp.StartupServletContextListener;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.DispatcherServlet;
 
 import com.bee32.plover.servlet.test.OverlappedBases;
 import com.bee32.plover.servlet.test.RabbitServletContext;
@@ -98,6 +99,9 @@ public class FaceletsTestCase
         // Faces Servlet, must be load-on-startup, but STL seems not support.
         ServletHolder facesServlet = stl.addServlet(FacesServlet.class, "*.jsf");
         facesServlet.setInitOrder(0);
+
+        // Add spring mvc support along with FTC.
+        stl.addServlet("spring-dispatcher", DispatcherServlet.class, "*.htm");
     }
 
     @Override
