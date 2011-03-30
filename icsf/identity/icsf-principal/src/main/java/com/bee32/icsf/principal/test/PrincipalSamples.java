@@ -8,19 +8,19 @@ import com.bee32.plover.orm.util.EntitySamplesContribution;
 public class PrincipalSamples
         extends EntitySamplesContribution {
 
-    public Group sunCorp;
-    public Group solaGroup;
+    public static Group sunCorp;
+    public static Group solaGroup;
 
-    public Role adminRole;
-    public Role registeredRole;
+    public static Role adminRole;
+    public static Role registeredRole;
 
-    public User eva;
-    public User wallE;
-    public User alice;
-    public User tom;
-    public User kate;
+    public static User eva;
+    public static User wallE;
+    public static User alice;
+    public static User tom;
+    public static User kate;
 
-    public PrincipalSamples() {
+    static {
         adminRole = new Role("Administrator");
         registeredRole = new Role("Registered User");
 
@@ -46,12 +46,6 @@ public class PrincipalSamples
         addNormalSample(sunCorp, solaGroup);
         addNormalSample(adminRole, registeredRole);
         addNormalSample(eva, wallE, alice, tom, kate);
-    }
-
-    static final PrincipalSamples instance = new PrincipalSamples();
-
-    public static PrincipalSamples getInstance() {
-        return instance;
     }
 
 }
