@@ -1,6 +1,7 @@
-package com.bee32.plover.restful.book;
+package com.bee32.plover.orm.test.bookstore;
 
 import javax.free.Nullables;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 
 import com.bee32.plover.orm.entity.EntityBean;
@@ -30,7 +31,7 @@ public class Book
         this.content = content;
     }
 
-// @Basic
+    @Basic
     public String getName() {
         return name;
     }
