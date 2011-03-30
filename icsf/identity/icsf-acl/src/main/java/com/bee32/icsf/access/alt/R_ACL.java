@@ -33,11 +33,12 @@ public class R_ACL
     private Set<R_ACE> entries;
 
     public R_ACL() {
-        super();
+        super("acl");
     }
 
-    public R_ACL(String name) {
-        super(name);
+    public R_ACL(R_ACL parent) {
+        super("acl");
+
     }
 
     @ManyToOne(optional = true)
@@ -50,7 +51,7 @@ public class R_ACL
     }
 
     @NaturalId
-    @Column(length = 30, nullable = false)
+    @Column(length = 50)
     public String getObjType() {
         return objType;
     }
@@ -60,7 +61,6 @@ public class R_ACL
     }
 
     @NaturalId
-    @Column(nullable = false)
     public long getObjId() {
         return objId;
     }
