@@ -15,28 +15,28 @@ public abstract class DividedPermission
     private static final long serialVersionUID = 1L;
 
     private final DividedPermission parent;
-    private final String name;
     private final String description;
     private final int[] ranges; // sorted.
 // private final boolean determined;
 
     public DividedPermission(String name, String description) {
-        this(null, name, description, new int[0]);
+        this(name, description, null, new int[0]);
     }
 
-    protected DividedPermission(DividedPermission parent, String name, String description, int... ranges) {
-        if (name == null)
-            throw new NullPointerException("name");
+    protected DividedPermission(String name, String description, DividedPermission parent, int... ranges) {
+        super(name);
+
         if (ranges == null)
             throw new NullPointerException("ranges");
+
         this.parent = parent;
-        this.name = name;
         this.description = description;
+
         this.ranges = Arrays.copyOf(ranges, ranges.length);
         Arrays.sort(this.ranges);
     }
 
-    protected abstract DividedPermission newInstance(DividedPermission parent, String name, String description,
+    protected abstract DividedPermission newInstance(String name, String description, DividedPermission parent,
             int... ranges);
 
     protected abstract String getRangeName(int rangeId);
@@ -83,11 +83,11 @@ public abstract class DividedPermission
             if (containsRange(range))
                 cross[len++] = range;
         cross = Arrays.copyOf(cross, len);
-        return newInstance(this.parent, this.name, this.description, cross);
+        return newInstance(this.name, this.description, this.parent, cross);
     }
 
     public DividedPermission divide(String subPermissionName, String description, int... ranges) {
-        return newInstance(this, subPermissionName, description, ranges);
+        return newInstance(subPermissionName, description, this, ranges);
     }
 
     @Override

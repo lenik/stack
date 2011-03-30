@@ -11,13 +11,13 @@ class CakePermission
         super(name, description);
     }
 
-    protected CakePermission(DividedPermission parent, String name, String description, int... ranges) {
-        super(parent, name, description, ranges);
+    protected CakePermission(String name, String description, DividedPermission parent, int... ranges) {
+        super(name, description, parent, ranges);
     }
 
     @Override
-    protected CakePermission newInstance(DividedPermission parent, String name, String description, int... ranges) {
-        return new CakePermission(parent, name, description, ranges);
+    protected CakePermission newInstance(String name, String description, DividedPermission parent, int... ranges) {
+        return new CakePermission(name, description, parent, ranges);
     }
 
     public static final int EAT = 1;
