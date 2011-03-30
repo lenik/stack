@@ -9,7 +9,7 @@ import com.bee32.icsf.principal.IPrincipal;
 public class ACL
         extends ArrayACL {
 
-    private IACLPolicy policy;
+    private IACLPolicy policy = DenyFirstACLPolicy.getInstance();
 
     private final IACL parent;
 
