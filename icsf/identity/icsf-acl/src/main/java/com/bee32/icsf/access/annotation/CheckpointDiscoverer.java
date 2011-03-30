@@ -45,7 +45,7 @@ public class CheckpointDiscoverer
         return PointPermission.getAllInstances();
     }
 
-    protected synchronized void scan() {
+    public synchronized void scan() {
         if (scanned)
             return;
 
