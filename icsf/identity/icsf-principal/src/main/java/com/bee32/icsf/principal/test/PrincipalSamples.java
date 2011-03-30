@@ -1,6 +1,12 @@
-package com.bee32.icsf.principal;
+package com.bee32.icsf.principal.test;
 
-public class SamplePrincipals {
+import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.util.EntitySamplesContribution;
+
+public class PrincipalSamples
+        extends EntitySamplesContribution {
 
     public Group sunCorp;
     public Group solaGroup;
@@ -14,7 +20,7 @@ public class SamplePrincipals {
     public User tom;
     public User kate;
 
-    {
+    public PrincipalSamples() {
         adminRole = new Role("Administrator");
         registeredRole = new Role("Registered User");
 
@@ -35,9 +41,16 @@ public class SamplePrincipals {
         alice.addAssignedRole(registeredRole);
     }
 
-    static final SamplePrincipals instance = new SamplePrincipals();
+    @Override
+    protected void preamble() {
+        addNormalSample(sunCorp, solaGroup);
+        addNormalSample(adminRole, registeredRole);
+        addNormalSample(eva, wallE, alice, tom, kate);
+    }
 
-    public static SamplePrincipals getInstance() {
+    static final PrincipalSamples instance = new PrincipalSamples();
+
+    public static PrincipalSamples getInstance() {
         return instance;
     }
 

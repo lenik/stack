@@ -16,8 +16,4 @@ public class PrincipalDao
         return super.deferEntityType(clazz);
     }
 
-    {
-        // addNormalSample(WorldPrincipal.getInstance());
-    }
-
 }
