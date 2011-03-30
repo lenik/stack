@@ -1,31 +1,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-        xmlns:f="http://java.sun.com/jsf/core">
+    xmlns:f="http://java.sun.com/jsf/core">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Superfish Menu Builder Test</title>
 <style type="text/css">
 <!--
 body {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: small;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: small;
 }
 -->
 </style>
 
+<link rel="stylesheet" type="text/css" media="screen"
+    href="${location.LIB_3RDPARTY['superfish-1.4.8/css/superfish.css']}" />
 
-
-<link rel="stylesheet" type="text/css" media="screen" href="http://static.secca-project.com/lib2/superfish-1.4.8/css/superfish.css"/>
-
-<script type="text/javascript" src="http://static.secca-project.com/lib2/jsTree.v.1.0rc/_lib/jquery.js"></script>
-<script type="text/javascript" src="http://static.secca-project.com/lib2/superfish-1.4.8/js/hoverIntent.js"></script>
-<script type="text/javascript" src="http://static.secca-project.com/lib2/superfish-1.4.8/js/superfish.js"></script>
+<script type="text/javascript" src="${location.LIB_3RDPARTY['jsTree.v.1.0rc/_lib/jquery.js']}"></script>
+<script type="text/javascript" src="${location.LIB_3RDPARTY['superfish-1.4.8/js/hoverIntent.js']}"></script>
+<script type="text/javascript" src="${location.LIB_3RDPARTY['superfish-1.4.8/js/superfish.js']}"></script>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-		$.ajaxSetup({cache : false});
-        $("ul.sf-menu").superfish();
-    });
+	$(document).ready(function() {
+		$.ajaxSetup({
+			cache : false
+		});
+		$("ul.sf-menu").superfish();
+	});
 </script>
 
 
@@ -34,7 +35,6 @@ body {
 <body>
 
     <h1>Superfish Menu Builder Test</h1>
-
 
     <f:verbatim>#{html}</f:verbatim>
 
