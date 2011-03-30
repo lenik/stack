@@ -11,7 +11,7 @@ public class SuperFishMenuBuilder {
         StringBuilder sb = new StringBuilder();
         sb.append("<ul class='sf-menu'>");
 
-        for(IMenuEntry menuEntry : menuBar) {
+        for(IMenuNode menuEntry : menuBar) {
             sb.append(buildMenu(menuEntry));
         }
         sb.append("</ul>");
@@ -19,7 +19,7 @@ public class SuperFishMenuBuilder {
         return sb.toString();
     }
 
-    public static String buildMenu(IMenuEntry menuEntry) {
+    public static String buildMenu(IMenuNode menuEntry) {
         StringBuilder sb = new StringBuilder();
         sb.append("<li>");
         sb.append("<a ");
@@ -55,7 +55,7 @@ public class SuperFishMenuBuilder {
         sb.append("</a>");
 
         if(!isLeafNode(menuEntry)) {
-            for(IMenuEntry childEntry : menuEntry) {
+            for(IMenuNode childEntry : menuEntry) {
 
                 sb.append("<ul>");
                 sb.append(buildMenu(childEntry));
@@ -68,7 +68,7 @@ public class SuperFishMenuBuilder {
     }
 
 
-    protected static boolean isLeafNode(IMenuEntry entry) {
+    protected static boolean isLeafNode(IMenuNode entry) {
         if (entry.size() == 0)
             return true;
 

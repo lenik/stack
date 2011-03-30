@@ -14,14 +14,14 @@ public class MenuContributionTest {
     @Test
     public void test1() {
         MyMenu menu = new MyMenu();
-        List<Entry<String, IMenuItem>> dump = menu.dump();
+        List<Entry<String, IMenuEntry>> dump = menu.dump();
 
-        Entry<String, IMenuItem> entry = dump.iterator().next();
+        Entry<String, IMenuEntry> entry = dump.iterator().next();
 
         String targetPath = entry.getKey();
         assertEquals("menu.file", targetPath);
 
-        IMenuItem menuItem = entry.getValue();
+        IMenuEntry menuItem = entry.getValue();
 
         IAppearance appearance = menuItem.getAppearance();
         String displayName = appearance.getDisplayName();

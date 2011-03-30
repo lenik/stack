@@ -2,14 +2,14 @@ package com.bee32.sem.frame.menu;
 
 import javax.free.AbstractNonNullComparator;
 
-public class MenuEntryComparator
-        extends AbstractNonNullComparator<IMenuItem> {
+public class MenuNodeComparator
+        extends AbstractNonNullComparator<IMenuEntry> {
 
-    MenuEntryComparator() {
+    MenuNodeComparator() {
     }
 
     @Override
-    public int compareNonNull(IMenuItem o1, IMenuItem o2) {
+    public int compareNonNull(IMenuEntry o1, IMenuEntry o2) {
         MenuSection section1 = o1.getSection();
         MenuSection section2 = o2.getSection();
 
@@ -28,6 +28,6 @@ public class MenuEntryComparator
         return id1 - id2;
     }
 
-    public static final MenuEntryComparator INSTANCE = new MenuEntryComparator();
+    public static final MenuNodeComparator INSTANCE = new MenuNodeComparator();
 
 }

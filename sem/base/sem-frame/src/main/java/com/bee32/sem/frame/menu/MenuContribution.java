@@ -30,7 +30,7 @@ public abstract class MenuContribution
         extends Composite
         implements LocationContextConstants {
 
-    private List<Entry<String, IMenuItem>> contributions = new ArrayList<Map.Entry<String, IMenuItem>>();
+    private List<Entry<String, IMenuEntry>> contributions = new ArrayList<Map.Entry<String, IMenuEntry>>();
 
     public MenuContribution() {
         super();
@@ -54,28 +54,28 @@ public abstract class MenuContribution
             assert parentPath != null;
 
             Class<?> fieldType = field.getType();
-            if (!IMenuItem.class.isAssignableFrom(fieldType))
+            if (!IMenuEntry.class.isAssignableFrom(fieldType))
                 throw new UnsupportedOperationException("Bad contribution element type: " + field);
 
-            IMenuItem menuItem;
+            IMenuEntry menuItem;
             try {
-                menuItem = (IMenuItem) field.get(this);
+                menuItem = (IMenuEntry) field.get(this);
             } catch (Exception e) {
                 throw new IllegalUsageException(e.getMessage(), e);
             }
 
             // String name = menuItem.getName();
             // String targetPath = parentPath + "/" + name;
-            contribute(parentPath, (IMenuItem) menuItem);
+            contribute(parentPath, (IMenuEntry) menuItem);
         }
     }
 
-    protected final void contribute(String parentMenuPath, IMenuItem element) {
-        Pair<String, IMenuItem> entry = new Pair<String, IMenuItem>(parentMenuPath, element);
+    protected final void contribute(String parentMenuPath, IMenuEntry element) {
+        Pair<String, IMenuEntry> entry = new Pair<String, IMenuEntry>(parentMenuPath, element);
         contributions.add(entry);
     }
 
-    synchronized final List<Entry<String, IMenuItem>> dump() {
+    synchronized final List<Entry<String, IMenuEntry>> dump() {
         if (this.contributions == null)
             throw new IllegalStateException("Already dumped");
 
@@ -84,7 +84,7 @@ public abstract class MenuContribution
         IProperties properties = new ClassResourceProperties(getClass(), Locale.getDefault());
         setProperties(properties);
 
-        List<Entry<String, IMenuItem>> retval = this.contributions;
+        List<Entry<String, IMenuEntry>> retval = this.contributions;
         this.contributions = null;
         return retval;
     }

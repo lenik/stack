@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import org.junit.Test;
 
 import com.bee32.plover.test.WiredTestCase;
-import com.bee32.sem.frame.menu.IMenuEntry;
+import com.bee32.sem.frame.menu.IMenuNode;
 
 public class MainMenuTest
         extends WiredTestCase {
@@ -15,7 +15,7 @@ public class MainMenuTest
 
     @Test
     public void testBuiltinNLS() {
-        IMenuEntry entry = mainMenu.resolve("help/aboutFrame");
+        IMenuNode entry = mainMenu.resolve("help/aboutFrame");
         assertNotNull(entry);
 
         String displayName = entry.getAppearance().getDisplayName();

@@ -1,96 +1,118 @@
 package com.bee32.sem.frame.menu;
 
+import com.bee32.plover.arch.IComponent;
+import com.bee32.sem.frame.action.Action;
+import com.bee32.sem.frame.action.IAction;
+
 public interface IMenuEntry
-        extends IMenuItem, Iterable<IMenuEntry> {
+        extends IComponent {
 
-    int size();
-
-    boolean isEmpty();
-
-    boolean contains(String childName);
-
-    IMenuEntry get(String childName);
+    @Override
+    String getName();
 
     /**
-     * Create a new child if it's not existed.
-     *
-     * @param childName
-     *            Name for the new created child entry.
-     * @return Returns <code>null</code> if child with same name is existed.
+     * Make this menu entry as a separator bar.
      */
-    IMenuEntry create(String childName);
-
-    IMenuEntry getOrCreate(String childName);
-
-    boolean add(IMenuEntry childEntry);
-
-    boolean remove(String childName);
-
-    void clear();
+    int SEPARATOR = 1 << 0;
 
     /**
-     * Populate with a given menu item, without any child.
-     *
-     * @param menuItem
-     *            The source menu item.
-     * @return This menu entry.
+     * Disabled menu entry should be renderred as disabled/grayed.
      */
-    IMenuEntry populate(IMenuItem menuItem);
+    int DISABLED = 1 << 1;
 
     /**
-     * Populate with a given menu entry and all its children.
-     *
-     * @param menuEntry
-     *            The source entry.
-     * @return This menu entry.
+     * Hidden menu entry should not be renderred at all.
      */
-    IMenuEntry populate(IMenuEntry menuEntry);
+    int HIDDEN = 1 << 2;
 
     /**
-     * Resolve the menu path.
+     * Get the menu section.
+     * <p>
+     * The section order will take over the menu item order.
      *
-     * @param path
-     *            The menu path to be resolved.
-     * @return The resolved entry, <code>null</code> if not existed.
+     * @return Instance of {@link MenuSection}, or <code>null</code> if this item doesn't belong to
+     *         any section.
      */
-    IMenuEntry resolve(String path);
+    MenuSection getSection();
 
     /**
-     * Resolve the menu path, create any intermediate nodes if <code>true</code> value of
-     * <code>createIfNotExisted</code> is specified.
+     * Set the menu section.
+     * <p>
+     * The section order will take over the menu item order.
      *
-     * @param path
-     *            The menu path to be resolved.
-     * @param createIfNotExisted
-     *            Whether to create intermediate entries
-     * @return The resolved entry.
+     * @param section
+     *            Instance of {@link MenuSection}, or <code>null</code> if this item doesn't belong
+     *            to any section.
      */
-    IMenuEntry resolve(String path, boolean createIfNotExisted);
+    void setSection(MenuSection section);
 
     /**
-     * Add a menu entry within specific parent menu.
+     * Display order of this menu item within the same section.
      *
-     * This is equiv. to
-     *
-     * <pre>
-     * resolve(parentMenuPath, true).create(menuItem.getName()).populate(menuItem)
-     * </pre>
-     *
-     * @return <code>false</code> if a menu of same path exists.
+     * @return An integer, smaller value will be displayed first.
      */
-    boolean resolveMerge(String parentMenuPath, IMenuItem menuItem);
+    int getOrder();
 
     /**
-     * Add a menu entry and all its children within specific parent menu.
+     * Set the display order of this menu item within the same section.
      *
-     * This is equiv. to
-     *
-     * <pre>
-     * resolve(parentMenuPath, true).create(menuItem.getName()).populate(menuEntry)
-     * </pre>
-     *
-     * @return <code>false</code> if a menu of same path exists.
+     * @param order
+     *            An integer, smaller value will be displayed first.
      */
-    boolean resolveMerge(String parentMenuPath, IMenuEntry menuEntry);
+    void setOrder(int order);
+
+    /**
+     * Get entry flags.
+     *
+     * @see #SEPARATOR
+     * @see #DISABLED
+     * @see #HIDDEN
+     */
+    int getFlags();
+
+    /**
+     * Get preferred CSS class attribute value.
+     *
+     * @return The preferred CSS class. Returns <code>null</code> if no preferred CSS class.
+     */
+    String getPreferredStyleClass();
+
+    /**
+     * Set the preferred CSS class attribute value.
+     *
+     * @param preferredStyleClass
+     *            The preferred CSS class. Set to <code>null</code> if no preferred CSS class.
+     */
+    void setPreferredStyleClass(String preferredStyleClass);
+
+    /**
+     * Get preferred CSS style attribute value.
+     *
+     * @return The preferred CSS style. Returns <code>null</code> if no preferred CSS style.
+     */
+    String getPreferredStyle();
+
+    /**
+     * Set the preferred CSS style attribute value.
+     *
+     * @param preferredStyle
+     *            The preferred CSS style. Set to <code>null</code> if no preferred CSS style.
+     */
+    void setPreferredStyle(String preferredStyle);
+
+    /**
+     * Get the action for this menu item.
+     *
+     * @return {@link Action}, <code>null</code> if none.
+     */
+    IAction getAction();
+
+    /**
+     * Set the action for this menu item.
+     *
+     * @param action
+     *            The action, <code>null</code> if none.
+     */
+    void setAction(IAction action);
 
 }

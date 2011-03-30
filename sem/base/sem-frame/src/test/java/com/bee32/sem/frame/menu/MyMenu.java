@@ -9,10 +9,10 @@ public class MyMenu
     Action openFileAction = new Action(WEB_APP.join("file/open/htm"));
 
     @Contribution(".")
-    MenuItem file = new MenuItem("file");
+    MenuEntry file = new MenuEntry("file");
 
     @Contribution("file")
-    MenuItem fileOpen = new MenuItem("open", openFileAction);
+    MenuEntry fileOpen = new MenuEntry("open", openFileAction);
 
     @Override
     protected void preamble() {

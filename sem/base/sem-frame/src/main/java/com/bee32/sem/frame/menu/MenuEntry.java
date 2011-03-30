@@ -1,188 +1,111 @@
 package com.bee32.sem.frame.menu;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import com.bee32.plover.util.PrettyPrintStream;
+import com.bee32.plover.arch.Component;
+import com.bee32.plover.arch.ComponentBuilder;
+import com.bee32.plover.servlet.context.ContextLocation;
+import com.bee32.sem.frame.action.Action;
 import com.bee32.sem.frame.action.IAction;
 
 public class MenuEntry
-        extends MenuItem
+        extends Component
         implements IMenuEntry {
 
-    private Map<String, IMenuEntry> children = new LinkedHashMap<String, IMenuEntry>();
+    private MenuSection section;
+    private int order;
+
+    private int flags;
+    private String preferredStyleClass;
+    private String preferredStyle;
+
+    private IAction action;
 
     public MenuEntry(String name) {
         super(name);
+        this.action = null;
     }
 
     public MenuEntry(String name, IAction action) {
-        super(name, action);
+        super(name);
+        this.action = action;
+    }
+
+    public MenuEntry(String name, ContextLocation actionLocation) {
+        super(name);
+        this.action = new Action(actionLocation);
     }
 
     @Override
-    public int size() {
-        return children.size();
+    public MenuSection getSection() {
+        return section;
     }
 
     @Override
-    public Iterator<IMenuEntry> iterator() {
-        return children.values().iterator();
+    public void setSection(MenuSection section) {
+        this.section = section;
     }
 
     @Override
-    public boolean isEmpty() {
-        return children.isEmpty();
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 
     @Override
-    public boolean contains(String childName) {
-        return children.containsKey(childName);
+    public int getFlags() {
+        return flags;
+    }
+
+    public void setFlags(int flags) {
+        this.flags = flags;
     }
 
     @Override
-    public IMenuEntry get(String childName) {
-        return children.get(childName);
+    public String getPreferredStyleClass() {
+        return preferredStyleClass;
     }
 
     @Override
-    public synchronized IMenuEntry create(String childName) {
-        if (children.containsKey(childName))
-            return null;
-
-        MenuEntry newChildEntry = new MenuEntry(childName);
-
-        add(newChildEntry);
-
-        return newChildEntry;
+    public void setPreferredStyleClass(String preferredStyleClass) {
+        this.preferredStyleClass = preferredStyleClass;
     }
 
     @Override
-    public synchronized IMenuEntry getOrCreate(String childName) {
-        IMenuEntry childEntry = get(childName);
-
-        if (childEntry == null)
-            childEntry = create(childName);
-
-        return childEntry;
+    public String getPreferredStyle() {
+        return preferredStyle;
     }
 
     @Override
-    public synchronized boolean add(IMenuEntry childEntry) {
-        if (childEntry == null)
-            throw new NullPointerException("childEntry");
-
-        String childName = childEntry.getName();
-        if (children.containsKey(childName))
-            return false;
-
-        children.put(childName, childEntry);
-        return true;
+    public void setPreferredStyle(String preferredStyle) {
+        this.preferredStyle = preferredStyle;
     }
 
     @Override
-    public boolean remove(String childName) {
-        return children.remove(childName) != null;
+    public IAction getAction() {
+        return action;
     }
 
-    @Override
-    public void clear() {
-        children.clear();
+    public void setAction(IAction action) {
+        this.action = action;
     }
 
-    @Override
-    public MenuEntry populate(IMenuItem menuItem) {
-        super.populate(menuItem);
-        return this;
-    }
+    public MenuEntry populate(IMenuEntry other) {
+        if (other == null)
+            throw new NullPointerException("other");
 
-    @Override
-    public MenuEntry populate(IMenuEntry menuEntry) {
-        populate((IMenuItem) menuEntry);
+        this.name = other.getName();
+        this.section = other.getSection();
+        this.order = other.getOrder();
+        this.flags = other.getFlags();
+        this.preferredStyleClass = other.getPreferredStyleClass();
+        this.preferredStyle = other.getPreferredStyle();
+        this.action = other.getAction();
 
-        for (IMenuEntry childEntry : menuEntry) {
-            String childName = childEntry.getName();
-            getOrCreate(childName).populate(childEntry);
-        }
+        ComponentBuilder.setAppearance(this, other.getAppearance());
 
         return this;
-    }
-
-    @Override
-    public IMenuEntry resolve(String path) {
-        return resolve(path, false);
-    }
-
-    @Override
-    public IMenuEntry resolve(String path, boolean createIfNotExisted) {
-        int slash = path.indexOf('/');
-        String head;
-        if (slash == -1) {
-            head = path;
-            path = null;
-        } else {
-            head = path.substring(0, slash);
-            path = path.substring(slash + 1);
-        }
-
-        IMenuEntry next;
-        if (".".equals(head)) {
-            next = this;
-        } else {
-            if (createIfNotExisted)
-                next = this.getOrCreate(head);
-            else
-                next = this.get(head);
-        }
-
-        if (path == null)
-            return next;
-
-        return next.resolve(path, createIfNotExisted);
-    }
-
-    @Override
-    public boolean resolveMerge(String parentMenuPath, IMenuItem menuItem) {
-        IMenuEntry parentMenu = resolve(parentMenuPath, true);
-
-        IMenuEntry newChild = parentMenu.create(menuItem.getName());
-        if (newChild == null)
-            return false;
-
-        newChild.populate(menuItem);
-        return true;
-    }
-
-    @Override
-    public boolean resolveMerge(String parentMenuPath, IMenuEntry menuEntry) {
-        IMenuEntry parentMenu = resolve(parentMenuPath, true);
-
-        IMenuEntry newChild = parentMenu.create(menuEntry.getName());
-        if (newChild == null)
-            return false;
-
-        newChild.populate(menuEntry);
-        return true;
-    }
-
-    protected void format(PrettyPrintStream out) {
-        out.println(name + " -> " + getAction());
-        out.enter();
-        for (Entry<String, IMenuEntry> child : children.entrySet()) {
-            // String childName = child.getKey();
-            MenuEntry childEntry = (MenuEntry) child.getValue(); // XXX interface?
-            childEntry.format(out);
-        }
-        out.leave();
-    }
-
-    @Override
-    public String toString() {
-        PrettyPrintStream out = new PrettyPrintStream();
-        format(out);
-        return out.toString();
     }
 
 }

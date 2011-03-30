@@ -1,6 +1,6 @@
 package com.bee32.sem.frame;
 
-import com.bee32.sem.frame.menu.IMenuEntry;
+import com.bee32.sem.frame.menu.IMenuNode;
 
 public interface IFrameOverlay {
 
@@ -9,6 +9,6 @@ public interface IFrameOverlay {
      *
      * @return <code>null</code> if a top-level menu of with specified menu-id doesn't exist.
      */
-    IMenuEntry getMenu(String menuId);
+    IMenuNode getMenu(String menuId);
 
 }

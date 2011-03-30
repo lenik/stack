@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import javax.free.IllegalUsageException;
 
 public class MenuBar
-        extends MenuEntry {
+        extends MenuNode {
 
     public MenuBar(String name) {
         super(name);
@@ -15,14 +15,14 @@ public class MenuBar
 
     protected void merge(MenuContribution menuContribution) {
 
-        List<Entry<String, IMenuItem>> dumped = menuContribution.dump();
+        List<Entry<String, IMenuEntry>> dumped = menuContribution.dump();
 
-        for (Map.Entry<String, ? extends IMenuItem> contribElement : dumped) {
+        for (Map.Entry<String, ? extends IMenuEntry> contribElement : dumped) {
             String targetPath = contribElement.getKey();
-            IMenuItem menuItem = contribElement.getValue();
+            IMenuEntry menuItem = contribElement.getValue();
 
-            if (menuItem instanceof IMenuEntry) {
-                IMenuEntry menuEntry = (IMenuEntry) menuItem;
+            if (menuItem instanceof IMenuNode) {
+                IMenuNode menuEntry = (IMenuNode) menuItem;
                 if (!this.resolveMerge(targetPath, menuEntry))
                     throw new IllegalUsageException("Duplicated menu entry: " + menuEntry);
             } else {
