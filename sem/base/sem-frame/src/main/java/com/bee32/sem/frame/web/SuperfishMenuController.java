@@ -15,16 +15,17 @@ import com.bee32.sem.frame.builtins.MainMenu;
 import com.bee32.sem.frame.menu.SuperFishMenuBuilder;
 
 /**
- * Date: 11-3-30
- * Time: 下午4:17
+ * Date: 11-3-30 Time: 下午4:17
  */
 @Controller
-public class MenuController extends MultiActionController {
+public class SuperfishMenuController
+        extends MultiActionController {
+
     @Inject
     private MainMenu mainMenu;
 
-    @RequestMapping("/makeMenu.htm")
-    public void makeMenu(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping("sfmenuHtml.htm")
+    public void sfmenuHtml(HttpServletRequest request, HttpServletResponse response) {
 
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out = null;
@@ -34,8 +35,9 @@ public class MenuController extends MultiActionController {
 
         } catch (IOException ex1) {
             ex1.printStackTrace();
-        }finally{
+        } finally {
             out.close();
         }
     }
+
 }
