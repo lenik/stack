@@ -1,6 +1,7 @@
 package com.bee32.icsf.access.alt;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.free.IllegalUsageException;
@@ -163,6 +164,34 @@ public class R_ACL
             return false;
 
         return entries.remove(ace);
+    }
+
+    /**
+     * Remove all ACE entries match the given pattern.
+     *
+     * @param principal
+     *            <code>null</code> to remove all ACE matches <code>permission</code>.
+     * @param permission
+     *            <code>null</code> to remove all ACE matches <code>principal</code>.
+     * @return The ACE entries matched and removed.
+     */
+    public int removeACEs(Principal principal, Permission permission) {
+        Iterator<R_ACE> iterator = entries.iterator();
+        int count = 0;
+        while (iterator.hasNext()) {
+            R_ACE ace = iterator.next();
+            if (principal == null || principal.equals(ace.getPrincipal())) {
+                iterator.remove();
+                count++;
+                continue;
+            }
+            if (permission == null || permission.equals(ace.getPermission())) {
+                iterator.remove();
+                count++;
+                continue;
+            }
+        }
+        return count;
     }
 
     /**
