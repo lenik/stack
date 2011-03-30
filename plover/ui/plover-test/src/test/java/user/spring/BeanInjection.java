@@ -15,7 +15,7 @@ import com.bee32.plover.test.WiredTestCase;
 @ContextConfiguration("context1.xml")
 // @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 // @Transactional
-@Ignore
+// @Ignore
 public class BeanInjection
         extends WiredTestCase {
 
@@ -35,6 +35,15 @@ public class BeanInjection
     @Inject
     @Version("B")
     Book book10;
+
+    @Inject
+    ManyFaces manyFaces;
+
+    @Inject
+    IManyFace1 manyFace1;
+
+    @Inject
+    IManyFace2 manyFace2;
 
     @Test
     public void testBook1() {

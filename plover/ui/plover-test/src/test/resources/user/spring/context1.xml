@@ -7,12 +7,12 @@
         "
     default-lazy-init="true">
 
-    <bean id="book1" class="com.bee32.plover.restful.book.Book">
+    <bean id="book1" class="com.bee32.plover.orm.test.bookstore.Book">
         <constructor-arg value="name1" />
         <constructor-arg value="content1" />
     </bean>
 
-    <bean id="book2" class="com.bee32.plover.restful.book.Book">
+    <bean id="book2" class="com.bee32.plover.orm.test.bookstore.Book">
         <property name="name" value="name2" />
         <property name="content">
             <value>content2</value>
