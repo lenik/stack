@@ -18,7 +18,7 @@ public class SuperfishMenuBuilder {
     private final MenuBar menuBar;
 
     private String html;
-    private PrettyPrintStream buf;
+    private PrettyPrintStream out;
 
     public SuperfishMenuBuilder(MenuBar menuBar) {
         if (menuBar == null)
@@ -29,25 +29,25 @@ public class SuperfishMenuBuilder {
     @Override
     public synchronized String toString() {
         if (html == null) {
-            buf = new PrettyPrintStream();
+            out = new PrettyPrintStream();
             buildMenubar(menuBar);
-            html = buf.toString();
-            buf = null;
+            html = out.toString();
+            out = null;
         }
         return html;
     }
 
     void buildMenubar(IMenuNode menuBarNode) {
-        this.buf = new PrettyPrintStream();
+        this.out = new PrettyPrintStream();
 
-        buf.println("<ul class='sf-menu'>");
-        buf.enter();
+        out.println("<ul class='sf-menu'>");
+        out.enter();
 
         for (IMenuNode menuNode : menuBarNode)
             buildMenu(menuNode);
 
-        buf.leave();
-        buf.println("</ul>");
+        out.leave();
+        out.println("</ul>");
     }
 
     void buildMenu(IMenuNode menuNode) {
@@ -56,10 +56,10 @@ public class SuperfishMenuBuilder {
         String label = appearance.getDisplayName();
         String tooltips = appearance.getDescription();
 
-        buf.println("<li>");
-        buf.enter();
+        out.println("<li>");
+        out.enter();
 
-        buf.print("<a");
+        out.print("<a");
 
         IAction action = menuNode.getAction();
         if (action != null) {
@@ -71,9 +71,9 @@ public class SuperfishMenuBuilder {
 
                 String javascriptEscaped = HtmlUtils.htmlEscape(javascript);
 
-                buf.print(" href='#' onclick=\"");
-                buf.print(javascriptEscaped);
-                buf.print("\"");
+                out.print(" href='#' onclick=\"");
+                out.print(javascriptEscaped);
+                out.print("\"");
 
             } else {
 
@@ -85,36 +85,36 @@ public class SuperfishMenuBuilder {
                     throw new IllegalUsageException(String.format("Bad location in %s: %s", menuNode, href));
                 }
 
-                buf.print(" href='");
-                buf.print(hrefEncoded);
-                buf.print("'");
+                out.print(" href='");
+                out.print(hrefEncoded);
+                out.print("'");
             }
         }
 
         if (tooltips != null && !tooltips.isEmpty()) {
-            buf.print(" title='");
-            buf.print(HtmlUtils.htmlEscape(tooltips));
-            buf.print("'");
+            out.print(" title='");
+            out.print(HtmlUtils.htmlEscape(tooltips));
+            out.print("'");
         }
 
-        buf.print(">");
-        buf.print(label);
-        buf.println("</a>");
+        out.print(">");
+        out.print(label);
+        out.println("</a>");
 
         if (!menuNode.isEmpty()) {
             for (IMenuNode childNode : menuNode) {
-                buf.println("<ul>");
-                buf.enter();
+                out.println("<ul>");
+                out.enter();
 
                 buildMenu(childNode);
 
-                buf.leave();
-                buf.println("</ul>");
+                out.leave();
+                out.println("</ul>");
             }
         }
 
-        buf.leave();
-        buf.println("</li>");
+        out.leave();
+        out.println("</li>");
     }
 
 }
