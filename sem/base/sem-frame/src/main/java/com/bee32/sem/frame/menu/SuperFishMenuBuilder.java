@@ -9,7 +9,7 @@ public class SuperFishMenuBuilder {
 
     public static String buildMenubar(MenuBar menuBar) {
         StringBuilder sb = new StringBuilder();
-        sb.append("<ul id='mainMenu'>");
+        sb.append("<ul class='sf-menu'>");
 
         for(IMenuEntry menuEntry : menuBar) {
             sb.append(buildMenu(menuEntry));

@@ -22,13 +22,13 @@ public class MainMenuTest
         assertEquals("About SEM-Frame", displayName);
     }
 
-    @Override
+    //@Override
     public void dump() {
         mainMenu.getName();
     }
 
     public static void main(String[] args) {
-        new MainMenuTest().wire().dump();
+        //new MainMenuTest().wire().dump();
     }
 
 }
