@@ -6,7 +6,7 @@ import com.bee32.plover.zk.test.ZkTestCase;
 import com.bee32.sem.frame.web.SuperfishMenuController;
 
 /**
- * @see SuperFishMenuBuilder
+ * @see SuperfishMenuBuilder
  * @see SuperfishMenuController
  */
 public class SuperfishMenuBuilderTest

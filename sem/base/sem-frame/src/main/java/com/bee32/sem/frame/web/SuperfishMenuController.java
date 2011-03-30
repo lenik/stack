@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.bee32.sem.frame.builtins.MainMenu;
-import com.bee32.sem.frame.menu.SuperFishMenuBuilder;
+import com.bee32.sem.frame.menu.SuperfishMenuBuilder;
 
 /**
  * Date: 11-3-30 Time: 下午4:17
@@ -31,7 +31,8 @@ public class SuperfishMenuController
         PrintWriter out = null;
         try {
             out = response.getWriter();
-            out.println(SuperFishMenuBuilder.buildMenubar(mainMenu));
+
+            out.println(new SuperfishMenuBuilder(mainMenu));
 
         } catch (IOException ex1) {
             ex1.printStackTrace();

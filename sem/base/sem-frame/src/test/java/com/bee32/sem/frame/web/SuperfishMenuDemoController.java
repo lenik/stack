@@ -10,11 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.bee32.sem.frame.builtins.MainMenu;
-import com.bee32.sem.frame.menu.SuperFishMenuBuilder;
+import com.bee32.sem.frame.menu.SuperfishMenuBuilder;
 
-/**
- * Date: 11-3-30 Time: 下午4:17
- */
 @Controller
 public class SuperfishMenuDemoController
         extends MultiActionController {
@@ -25,7 +22,7 @@ public class SuperfishMenuDemoController
     @RequestMapping("sfmenuDemo.htm")
     public ModelAndView sfmenuDemo(HttpServletRequest request, HttpServletResponse response) {
 
-        String menuHtml = SuperFishMenuBuilder.buildMenubar(mainMenu);
+        String menuHtml = new SuperfishMenuBuilder(mainMenu).toString();
 
         ModelAndView view = new ModelAndView();
         view.addObject("html", menuHtml);
