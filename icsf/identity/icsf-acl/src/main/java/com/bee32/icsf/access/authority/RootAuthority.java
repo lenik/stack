@@ -1,6 +1,8 @@
 package com.bee32.icsf.access.authority;
 
-import com.bee32.icsf.access.alt.ACLDao;
+import com.bee32.icsf.access.acl.PrincipalACL;
+import com.bee32.icsf.access.alt.R_ACLDao;
+import com.bee32.icsf.principal.IPrincipal;
 
 public class RootAuthority
         extends Authority {
@@ -10,11 +12,16 @@ public class RootAuthority
     }
 
     @Override
+    public PrincipalACL getGrantedACL(IPrincipal principal) {
+        return null;
+    }
+
+    @Override
     public boolean trusts(IAuthority authority) {
         if (authority == null)
             throw new NullPointerException("authority");
 
-        if (authority instanceof ACLDao)
+        if (authority instanceof R_ACLDao)
             return true;
 
         return false;
