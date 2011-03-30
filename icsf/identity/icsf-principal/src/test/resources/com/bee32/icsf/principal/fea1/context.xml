@@ -10,6 +10,4 @@
         <qualifier type="com.bee32.plover.inject.qualifier.TestPurpose" />
     </bean>
 
-    <bean id="app" class="com.bee32.icsf.principal.fea1.FeatureMain" />
-
 </beans>
