@@ -25,32 +25,43 @@ public class R_ACE
 
     private static final long serialVersionUID = 1L;
 
-    public R_ACE() {
+    private R_ACL acl;
+    private IPrincipal principal;
+    private String permissionName;
+    private boolean allowed;
+
+    R_ACE() {
         super("ACE");
     }
 
-    public R_ACE(IPrincipal principal, Permission permission, boolean allowed) {
-        this(principal, permission.getName(), allowed);
+    public R_ACE(R_ACL acl, IPrincipal principal, Permission permission, boolean allowed) {
+        this(acl, principal, permission.getName(), allowed);
     }
 
-    public R_ACE(IPrincipal principal, String permissionName, boolean allowed) {
+    public R_ACE(R_ACL acl, IPrincipal principal, String permissionName, boolean allowed) {
         super("ACE");
 
+        if (acl == null)
+            throw new NullPointerException("acl");
         if (principal == null)
             throw new NullPointerException("principal");
         if (permissionName == null)
             throw new NullPointerException("permissionName");
 
+        this.acl = acl;
         this.principal = principal;
         this.permissionName = permissionName;
         this.allowed = allowed;
     }
 
-    private IPrincipal principal;
+    @ManyToOne(optional = false)
+    public R_ACL getAcl() {
+        return acl;
+    }
 
-    private String permissionName;
-
-    private boolean allowed;
+    public void setAcl(R_ACL acl) {
+        this.acl = acl;
+    }
 
     @ManyToOne(targetEntity = Principal.class, optional = false)
     public IPrincipal getPrincipal() {
