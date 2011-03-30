@@ -40,6 +40,8 @@ public abstract class AbstractModuleLoader
     public final synchronized void activate() {
         if (!activated) {
 
+            load();
+
             List<IModule> failedModules = new ArrayList<IModule>();
 
             if (modulePostProcessors == null)
