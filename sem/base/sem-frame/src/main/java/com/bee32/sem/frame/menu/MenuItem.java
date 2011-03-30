@@ -2,6 +2,8 @@ package com.bee32.sem.frame.menu;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.ComponentBuilder;
+import com.bee32.plover.servlet.context.ContextLocation;
+import com.bee32.sem.frame.action.Action;
 import com.bee32.sem.frame.action.IAction;
 
 public class MenuItem
@@ -18,12 +20,18 @@ public class MenuItem
     private IAction action;
 
     public MenuItem(String name) {
-        this(name, null);
+        super(name);
+        this.action = null;
     }
 
     public MenuItem(String name, IAction action) {
         super(name);
         this.action = action;
+    }
+
+    public MenuItem(String name, ContextLocation actionLocation) {
+        super(name);
+        this.action = new Action(actionLocation);
     }
 
     @Override
