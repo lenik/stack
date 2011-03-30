@@ -1,7 +1,7 @@
 package com.bee32.icsf.principal.dao;
 
 import com.bee32.icsf.principal.Group;
-import com.bee32.icsf.principal.SampleStore;
+import com.bee32.icsf.principal.SamplePrincipals;
 import com.bee32.plover.orm.entity.AbstractDao;
 
 public class GroupDao
@@ -12,7 +12,7 @@ public class GroupDao
     }
 
     {
-        SampleStore sampleStore = SampleStore.getInstance();
+        SamplePrincipals sampleStore = SamplePrincipals.getInstance();
 
         addNormalSample(//
                 sampleStore.solaGroup, //

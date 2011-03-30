@@ -1,10 +1,6 @@
 package com.bee32.icsf.principal;
 
-import java.util.Map;
-
-import com.bee32.plover.arch.Component;
-
-public class SampleStore {
+public class SamplePrincipals {
 
     public Group sunCorp;
     public Group solaGroup;
@@ -39,14 +35,9 @@ public class SampleStore {
         alice.addAssignedRole(registeredRole);
     }
 
-    /**
-     * Who git it to me?
-     */
-    static protected Map<String, Component> type;
+    static final SamplePrincipals instance = new SamplePrincipals();
 
-    static final SampleStore instance = new SampleStore();
-
-    public static SampleStore getInstance() {
+    public static SamplePrincipals getInstance() {
         return instance;
     }
 
