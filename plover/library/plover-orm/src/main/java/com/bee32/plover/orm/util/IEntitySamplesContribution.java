@@ -4,9 +4,10 @@ import java.util.Collection;
 
 import com.bee32.plover.orm.entity.IEntity;
 
+/**
+ * Use {@link ImportSamples} annotation to declare the dependencies.
+ */
 public interface IEntitySamplesContribution {
-
-    int getOrder();
 
     /**
      * 获取不参与持久层的样本实例。
@@ -35,5 +36,9 @@ public interface IEntitySamplesContribution {
      * @return 选定的非空的样本集合。
      */
     Collection<? extends IEntity<?>> getTransientSamples(boolean worseCase);
+
+    boolean isLoaded();
+
+    void setLoaded(boolean loaded);
 
 }

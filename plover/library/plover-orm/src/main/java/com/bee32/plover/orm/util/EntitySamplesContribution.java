@@ -18,34 +18,18 @@ public abstract class EntitySamplesContribution
         extends Component
         implements IEntitySamplesContribution {
 
-    private int order;
-
     private List<IEntity<?>> normalSamples;
     private List<IEntity<?>> worseSamples;
 
     private boolean assembled;
+    private boolean loaded;
 
     public EntitySamplesContribution() {
-        this(0);
+        super();
     }
 
     public EntitySamplesContribution(String name) {
-        this(name, 0);
-    }
-
-    public EntitySamplesContribution(int order) {
-        super();
-        this.order = order;
-    }
-
-    public EntitySamplesContribution(String name, int order) {
         super(name);
-        this.order = order;
-    }
-
-    @Override
-    public int getOrder() {
-        return order;
     }
 
     protected abstract void preamble();
@@ -111,6 +95,16 @@ public abstract class EntitySamplesContribution
             else
                 return Collections.emptyList();
         }
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    @Override
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
     }
 
 }
