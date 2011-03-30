@@ -6,6 +6,7 @@ import com.bee32.sem.frame.action.IAction;
 
 
 public class SuperFishMenuBuilder {
+
     public static String buildMenubar(MenuBar menuBar) {
         StringBuilder sb = new StringBuilder();
         sb.append("<ul id='mainMenu'>");
