@@ -1,18 +1,25 @@
-package com.bee32.icsf.principal.dao;
+package com.bee32.icsf.principal.fea1;
 
 import javax.inject.Inject;
 
 import org.junit.Before;
-import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.dao.GroupDao;
+import com.bee32.icsf.principal.dao.RoleDao;
+import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.plover.arch.SpringModuleLoader;
-import com.bee32.plover.orm.util.WiredDaoTestCase;
 
-@Transactional
-public class PrincipalsTest
-        extends WiredDaoTestCase {
+@Scope("prototype")
+@Service
+public class FeaturePlayer {
+
+    static Logger logger = LoggerFactory.getLogger(FeaturePlayer.class);
 
     /**
      * To inject the sample beans.
@@ -34,13 +41,8 @@ public class PrincipalsTest
         loader.load();
     }
 
-    @Test
-    public void testWithSamples() {
-        loadSamples();
-    }
-
     @Transactional
-    void loadSamples() {
+    public void listSamples() {
         for (User user : userDao.list())
             System.out.println("Sample User: " + user);
     }
