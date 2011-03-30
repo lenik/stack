@@ -1,12 +1,9 @@
 package com.bee32.plover.orm.util;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
-import javax.free.IllegalUsageException;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -30,80 +27,39 @@ public class SamplesLoader
     @Inject
     CommonDataManager dataManager;
 
-    boolean prescan = false;
-
-    // prescan == false
-    ApplicationContext applicationContext;
-
-    // prescan == true
-    Set<String> contributionNames;
-    Map<String, Collection<IEntity<?>>> allNormalSamples;
-    Map<String, Collection<IEntity<?>>> allWorseSamples;
+    Map<Class<?>, IEntitySamplesContribution> dependencies;
 
     public SamplesLoader() {
-        if (prescan) {
-            contributionNames = new HashSet<String>();
-            allNormalSamples = new TreeMap<String, Collection<IEntity<?>>>();
-            allWorseSamples = new TreeMap<String, Collection<IEntity<?>>>();
-        }
+        dependencies = new HashMap<Class<?>, IEntitySamplesContribution>();
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
 
-        if (prescan) {
-            // Scan all contributions and import them.
-            for (EntitySamplesContribution contrib : applicationContext.//
-                    getBeansOfType(EntitySamplesContribution.class).values()) {
-
-                String name = contrib.getName();
-                if (!contributionNames.add(name))
-                    throw new IllegalUsageException("Contribution name " + name + " is not unique.");
-
-                Collection<IEntity<?>> normalSamples = contrib.getTransientSamples(true);
-                Collection<IEntity<?>> worseSamples = contrib.getTransientSamples(false);
-
-                if (normalSamples != null && !normalSamples.isEmpty())
-                    allNormalSamples.put(name, normalSamples);
-
-                if (worseSamples != null && !worseSamples.isEmpty())
-                    allWorseSamples.put(name, worseSamples);
-            }
-        } else {
-            this.applicationContext = applicationContext;
-        }
-    }
-
-    static int index = 0;
-
-    public void loadNormalSamples() {
-        if (prescan)
-            throw new UnsupportedOperationException("prescan");
-
+        // Scan all contributions and import them.
         for (EntitySamplesContribution contrib : applicationContext.//
                 getBeansOfType(EntitySamplesContribution.class).values()) {
 
-            logger.info("Load normal sample contribution[" + index++ + "]: " + contrib);
+            Class<?> contribClass = contrib.getClass();
+            dependencies.put(contribClass, contrib);
+        }
+    }
 
+    public void loadNormalSamples() {
+        for (IEntitySamplesContribution contrib : dependencies.values()) {
             loadSamples(contrib, false);
-
         }
     }
 
     public void loadWorseSamples() {
-        if (prescan)
-            throw new UnsupportedOperationException("prescan");
-
-        for (EntitySamplesContribution contrib : applicationContext.//
-                getBeansOfType(EntitySamplesContribution.class).values()) {
-
-            logger.info("Load worse sample contribution[" + index++ + "]: " + contrib);
-
+        for (IEntitySamplesContribution contrib : dependencies.values()) {
             loadSamples(contrib, true);
 
         }
     }
+
+    static int loadIndex = 0;
 
     public synchronized void loadSamples(IEntitySamplesContribution contrib, boolean worseCase) {
 
@@ -112,6 +68,14 @@ public class SamplesLoader
 
         if (contrib.isLoaded())
             return;
+
+        ImportSamples imports = contrib.getClass().getAnnotation(ImportSamples.class);
+        if (imports != null) {
+            for (Class<?> importClass : imports.value()) {
+                IEntitySamplesContribution dependency = dependencies.get(importClass);
+                loadSamples(dependency, worseCase);
+            }
+        }
 
         contrib.getTransientSamples(worseCase);
 
@@ -122,7 +86,8 @@ public class SamplesLoader
         }
 
         if (logger.isDebugEnabled()) {
-            String message = String.format("  Persisting %d samples for %s", samples.size(), contrib);
+            String message = String.format("Loading[%d]: %d %s samples from %s", ++loadIndex, samples.size(), //
+                    worseCase ? "worse" : "normal", contrib);
             logger.debug(message);
         }
 
