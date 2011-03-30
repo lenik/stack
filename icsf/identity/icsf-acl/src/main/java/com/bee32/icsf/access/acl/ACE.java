@@ -6,6 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.Transient;
 
 import com.bee32.icsf.access.Permission;
+import com.bee32.icsf.access.acl.IACL.Entry;
 import com.bee32.icsf.principal.IPrincipal;
 
 public class ACE
@@ -13,9 +14,9 @@ public class ACE
 
     private static final long serialVersionUID = 1L;
 
-    private IPrincipal principal;
-    private Permission permission;
-    private boolean allowed;
+    private final IPrincipal principal;
+    private final Permission permission;
+    private final boolean allowed;
 
     public ACE(IPrincipal principal, Permission permission, boolean allowed) {
         if (principal == null)
@@ -47,16 +48,12 @@ public class ACE
         return !allowed;
     }
 
-    public void setAllowed(boolean allowed) {
-        this.allowed = allowed;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 0;
-        result = prime * result + ((permission == null) ? 0 : permission.hashCode());
-        result = prime * result + ((principal == null) ? 0 : principal.hashCode());
+        result = prime * result + principal.hashCode();
+        result = prime * result + permission.hashCode();
         if (allowed)
             result *= prime;
         return result;
@@ -67,15 +64,18 @@ public class ACE
         if (obj == null)
             return false;
 
-        if (obj.getClass() != ACE.class)
+        if (!(obj instanceof IACL.Entry))
             return false;
 
-        ACE other = (ACE) obj;
+        IACL.Entry other = (Entry) obj;
 
-        if (!permission.equals(other.permission))
+        if (allowed != other.isAllowed())
             return false;
 
-        if (!principal.equals(other.principal))
+        if (!permission.equals(other.getPermission()))
+            return false;
+
+        if (!principal.equals(other.getPrincipal()))
             return false;
 
         return true;
