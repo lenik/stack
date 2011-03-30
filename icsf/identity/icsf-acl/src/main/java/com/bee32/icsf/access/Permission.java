@@ -10,12 +10,24 @@ public abstract class Permission
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Unnamed-permission is not registered.
+     */
     public Permission() {
-        super();
+        super("-");
     }
 
+    /**
+     * Named permission must be unique.
+     *
+     * @param name
+     *            Non-<code>null</code> unique name of the permission.
+     * @throws IllegalStateException
+     *             If the name isn't unique.
+     */
     public Permission(String name) {
         super(name);
+        Permissions.register(this);
     }
 
     public abstract boolean implies(Permission permission);

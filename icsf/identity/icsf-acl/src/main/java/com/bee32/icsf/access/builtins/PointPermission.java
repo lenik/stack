@@ -38,9 +38,6 @@ public final class PointPermission
      *             if the point permission with the given is already existed.
      */
     public static synchronized PointPermission create(String pointName) {
-        if (pointMap.containsKey(pointName))
-            throw new IllegalStateException("PointPermission " + pointName + " is already defined");
-
         PointPermission pointPermission = new PointPermission(pointName);
         pointMap.put(pointName, pointPermission);
         return pointPermission;
@@ -67,8 +64,7 @@ public final class PointPermission
             synchronized (PointPermission.class) {
                 pointPermission = pointMap.get(pointName);
                 if (pointPermission == null) {
-                    pointPermission = new PointPermission(pointName);
-                    pointMap.put(pointName, pointPermission);
+                    pointPermission = create(pointName);
                 }
             }
         }
@@ -105,11 +101,6 @@ public final class PointPermission
     public static void register(PointPermission parsedPointPermission)
             throws IllegalStateException {
         String pointName = parsedPointPermission.getName();
-
-        PointPermission existing = pointMap.get(pointName);
-        if (existing != null)
-            throw new IllegalStateException("PointPermission " + pointName + " is already defined.");
-
         pointMap.put(pointName, parsedPointPermission);
     }
 
