@@ -4,28 +4,32 @@ public interface IcsfOids {
 
     int[] ROOT = { 3, 7 };
 
-    int principal = 1;
-    int acl = 2;
-    int sso = 3;
-    int jaas = 4;
-    int jca = 5;
-    int pkcs11 = 6;
-    int ldap = 7;
-    int kerberos = 8;
-    int smartcard = 9;
+    int Principal = 1;
+    int Acl = 2;
+    int Sso = 3;
+    int Jaas = 4;
+    int Jca = 5;
+    int Pkcs11 = 6;
+    int Ldap = 7;
+    int Kerberos = 8;
+    int Smartcard = 9;
 
-    int rack = 10;
-    int audit = 11;
+    int Rack = 10;
+    int Audit = 11;
 
-    int rackApi = 1;
-    int rackMonitor = 2;
-    int rackAnalyzer = 3;
-    int rackCleaner = 4;
-    int rackDb = 5;
+    interface rack {
+        int Api = 1;
+        int Monitor = 2;
+        int Analyzer = 3;
+        int Cleaner = 4;
+        int Db = 5;
 
-    int rackMonitorAppserv = 1;
-    int rackMonitorSyslogs = 2;
-    int rackMonitorWeblogs = 3;
-    int rackMonitorTcpip = 4;
+        interface monitor {
+            int Appserv = 1;
+            int Syslogs = 2;
+            int Weblogs = 3;
+            int Tcpip = 4;
+        }
+    }
 
 }
