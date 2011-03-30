@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.PermissionException;
 import com.bee32.icsf.principal.IPrincipal;
 
 public abstract class AbstractACL
@@ -55,9 +54,13 @@ public abstract class AbstractACL
     }
 
     @Override
-    public final void checkPermission(Permission requiredPermission)
-            throws PermissionException {
-        getACLPolicy().checkPermission(this, requiredPermission);
+    public final boolean isAllowed(Permission permission) {
+        return getACLPolicy().isAllowed(this, permission);
+    }
+
+    @Override
+    public final boolean isDenied(Permission permission) {
+        return getACLPolicy().isDenied(this, permission);
     }
 
     protected abstract IACL newACLRange();

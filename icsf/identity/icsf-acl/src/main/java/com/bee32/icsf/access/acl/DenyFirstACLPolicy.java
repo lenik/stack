@@ -1,7 +1,6 @@
 package com.bee32.icsf.access.acl;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.PermissionException;
 import com.bee32.icsf.access.acl.IACL.Entry;
 
 /**
@@ -19,31 +18,33 @@ public class DenyFirstACLPolicy
     }
 
     @Override
-    public void checkPermission(IACL acl, Permission requiredPermission)
-            throws PermissionException {
+    public boolean isAllowed(IACL acl, Permission permission) {
         if (acl == null)
             throw new NullPointerException("acl");
-        if (requiredPermission == null)
-            throw new NullPointerException("requiredPermission");
+        if (permission == null)
+            throw new NullPointerException("permission");
 
         boolean allowed = false;
 
         while (acl != null) {
-            for (Entry e : acl.getEntries()) {
-                Permission permission = e.getPermission();
-                if (permission.implies(requiredPermission)) {
-                    if (e.isDenied())
-                        throw new PermissionException("Access denyed: " + e, requiredPermission);
-                    if (e.isAllowed())
+            for (Entry ace : acl.getEntries()) {
+                Permission p = ace.getPermission();
+                if (p.implies(permission)) {
+                    if (ace.isDenied())
+                        return false;
+                    if (ace.isAllowed())
                         allowed = true;
                 }
             }
             acl = acl.getInheritedACL();
         }
 
-        if (!allowed)
-            if (!defaultAllow)
-                throw new PermissionException("Access denied by default", requiredPermission);
+        return allowed || defaultAllow;
+    }
+
+    @Override
+    public boolean isDenied(IACL acl, Permission permission) {
+        return !isAllowed(acl, permission);
     }
 
     private static final DenyFirstACLPolicy instance = new DenyFirstACLPolicy(false);

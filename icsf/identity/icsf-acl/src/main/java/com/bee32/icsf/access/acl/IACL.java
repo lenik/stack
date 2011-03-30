@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.PermissionException;
 import com.bee32.icsf.principal.IPrincipal;
 
 public interface IACL {
@@ -87,13 +86,23 @@ public interface IACL {
      * 等价于
      *
      * <pre>
-     * {@link #getACLPolicy()}.checkPermission(this, requiredPermission);
+     * {@link #getACLPolicy()}.isAllowed(this, permission);
      * </pre>
      *
-     * @see {@link IACLPolicy#checkPermission(IACL, Permission)}
+     * @see {@link IACLPolicy#isAllowed(IACL, Permission)}
      */
-    void checkPermission(Permission requiredPermission)
-            throws PermissionException;
+    boolean isAllowed(Permission permission);
+
+    /**
+     * 等价于
+     *
+     * <pre>
+     * {@link #getACLPolicy()}.isDenied(this, permission);
+     * </pre>
+     *
+     * @see {@link IACLPolicy#isDenied(IACL, Permission)}
+     */
+    boolean isDenied(Permission permission);
 
     /**
      * ACL 的条目（ACE）。

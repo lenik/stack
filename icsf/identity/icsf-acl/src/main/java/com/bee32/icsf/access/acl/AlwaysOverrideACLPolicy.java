@@ -1,7 +1,6 @@
 package com.bee32.icsf.access.acl;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.PermissionException;
 import com.bee32.icsf.access.acl.IACL.Entry;
 
 public class AlwaysOverrideACLPolicy
@@ -14,22 +13,33 @@ public class AlwaysOverrideACLPolicy
     }
 
     @Override
-    public void checkPermission(IACL acl, Permission requiredPermission)
-            throws PermissionException {
+    public boolean isAllowed(IACL acl, Permission permission) {
         if (acl == null)
             throw new NullPointerException("acl");
-        if (requiredPermission == null)
-            throw new NullPointerException("requiredPermission");
+        if (permission == null)
+            throw new NullPointerException("permission");
 
-        Entry entry = searchLastACE(acl, requiredPermission);
+        Entry entry = searchLastACE(acl, permission);
 
-        if (entry == null) {
-            if (!defaultAllow)
-                throw new PermissionException("Access denied by default", requiredPermission);
-        } else {
-            if (entry.isDenied())
-                throw new PermissionException("Access denied: " + entry, requiredPermission);
-        }
+        if (entry == null)
+            return defaultAllow;
+        else
+            return entry.isAllowed();
+    }
+
+    @Override
+    public boolean isDenied(IACL acl, Permission permission) {
+        if (acl == null)
+            throw new NullPointerException("acl");
+        if (permission == null)
+            throw new NullPointerException("permission");
+
+        Entry entry = searchLastACE(acl, permission);
+
+        if (entry == null)
+            return !defaultAllow;
+        else
+            return entry.isDenied();
     }
 
     Entry searchLastACE(IACL acl, Permission requiredPermission) {
