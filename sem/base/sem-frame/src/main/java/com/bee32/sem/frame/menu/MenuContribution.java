@@ -57,22 +57,22 @@ public abstract class MenuContribution
             if (!IMenuEntry.class.isAssignableFrom(fieldType))
                 throw new UnsupportedOperationException("Bad contribution element type: " + field);
 
-            IMenuEntry menuItem;
+            IMenuEntry menuEntry;
             try {
-                menuItem = (IMenuEntry) field.get(this);
+                menuEntry = (IMenuEntry) field.get(this);
             } catch (Exception e) {
                 throw new IllegalUsageException(e.getMessage(), e);
             }
 
-            // String name = menuItem.getName();
+            // String name = menuEntry.getName();
             // String targetPath = parentPath + "/" + name;
-            contribute(parentPath, (IMenuEntry) menuItem);
+            contribute(parentPath, (IMenuEntry) menuEntry);
         }
     }
 
     protected final void contribute(String parentMenuPath, IMenuEntry element) {
-        Pair<String, IMenuEntry> entry = new Pair<String, IMenuEntry>(parentMenuPath, element);
-        contributions.add(entry);
+        Pair<String, IMenuEntry> node = new Pair<String, IMenuEntry>(parentMenuPath, element);
+        contributions.add(node);
     }
 
     synchronized final List<Entry<String, IMenuEntry>> dump() {

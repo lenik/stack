@@ -61,24 +61,24 @@ public class MenuNode
 
     @Override
     public synchronized IMenuNode getOrCreate(String childName) {
-        IMenuNode childEntry = get(childName);
+        IMenuNode childNode = get(childName);
 
-        if (childEntry == null)
-            childEntry = create(childName);
+        if (childNode == null)
+            childNode = create(childName);
 
-        return childEntry;
+        return childNode;
     }
 
     @Override
-    public synchronized boolean add(IMenuNode childEntry) {
-        if (childEntry == null)
-            throw new NullPointerException("childEntry");
+    public synchronized boolean add(IMenuNode childNode) {
+        if (childNode == null)
+            throw new NullPointerException("childNode");
 
-        String childName = childEntry.getName();
+        String childName = childNode.getName();
         if (children.containsKey(childName))
             return false;
 
-        children.put(childName, childEntry);
+        children.put(childName, childNode);
         return true;
     }
 
@@ -93,18 +93,18 @@ public class MenuNode
     }
 
     @Override
-    public MenuNode populate(IMenuEntry menuItem) {
-        super.populate(menuItem);
+    public MenuNode populate(IMenuEntry menuEntry) {
+        super.populate(menuEntry);
         return this;
     }
 
     @Override
-    public MenuNode populate(IMenuNode menuEntry) {
-        populate((IMenuEntry) menuEntry);
+    public MenuNode populate(IMenuNode menuNode) {
+        populate((IMenuEntry) menuNode);
 
-        for (IMenuNode childEntry : menuEntry) {
-            String childName = childEntry.getName();
-            getOrCreate(childName).populate(childEntry);
+        for (IMenuNode childNode : menuNode) {
+            String childName = childNode.getName();
+            getOrCreate(childName).populate(childNode);
         }
 
         return this;
@@ -144,19 +144,7 @@ public class MenuNode
     }
 
     @Override
-    public boolean resolveMerge(String parentMenuPath, IMenuEntry menuItem) {
-        IMenuNode parentMenu = resolve(parentMenuPath, true);
-
-        IMenuNode newChild = parentMenu.create(menuItem.getName());
-        if (newChild == null)
-            return false;
-
-        newChild.populate(menuItem);
-        return true;
-    }
-
-    @Override
-    public boolean resolveMerge(String parentMenuPath, IMenuNode menuEntry) {
+    public boolean resolveMerge(String parentMenuPath, IMenuEntry menuEntry) {
         IMenuNode parentMenu = resolve(parentMenuPath, true);
 
         IMenuNode newChild = parentMenu.create(menuEntry.getName());
@@ -167,13 +155,25 @@ public class MenuNode
         return true;
     }
 
+    @Override
+    public boolean resolveMerge(String parentMenuPath, IMenuNode menuNode) {
+        IMenuNode parentMenu = resolve(parentMenuPath, true);
+
+        IMenuNode newChild = parentMenu.create(menuNode.getName());
+        if (newChild == null)
+            return false;
+
+        newChild.populate(menuNode);
+        return true;
+    }
+
     protected void format(PrettyPrintStream out) {
         out.println(name + " -> " + getAction());
         out.enter();
         for (Entry<String, IMenuNode> child : children.entrySet()) {
             // String childName = child.getKey();
-            MenuNode childEntry = (MenuNode) child.getValue(); // XXX interface?
-            childEntry.format(out);
+            MenuNode childNode = (MenuNode) child.getValue(); // XXX interface?
+            childNode.format(out);
         }
         out.leave();
     }

@@ -25,24 +25,24 @@ public class ZkMenuBuilder {
     }
 
     /**
-     * Build a Zk popup menu from a starting menu entry, which is a pre-built node in the menu tree.
+     * Build a Zk popup menu from a starting menu node, which is a pre-built node in the menu tree.
      *
-     * The given menu entry should be renderred as the title bar if there's any.
+     * The given menu node should be renderred as the title bar if there's any.
      *
-     * The children under the given menu entry should be renderred as menu items within the
+     * The children under the given menu node should be renderred as menu items within the
      * menupopup.
      */
-    public static Menu buildMenu(IMenuNode menuEntry) {
+    public static Menu buildMenu(IMenuNode menuNode) {
         Menu menu = new Menu();
-        menu.setLabel(menuEntry.getAppearance().getDisplayName());
+        menu.setLabel(menuNode.getAppearance().getDisplayName());
         Menupopup popup = new Menupopup();
 
-        for (IMenuNode childEntry : menuEntry) {
-            if (isLeafNode(childEntry)) {
-                Menuitem menuitem = buildMenuitem(childEntry);
+        for (IMenuNode childNode : menuNode) {
+            if (isLeafNode(childNode)) {
+                Menuitem menuitem = buildMenuitem(childNode);
                 popup.appendChild(menuitem);
             } else {
-                Menu subMenu = buildMenu(childEntry);
+                Menu subMenu = buildMenu(childNode);
                 popup.appendChild(subMenu);
             }
         }
@@ -50,24 +50,24 @@ public class ZkMenuBuilder {
         return menu;
     }
 
-    protected static boolean isLeafNode(IMenuNode entry) {
-        if (entry.size() == 0)
+    protected static boolean isLeafNode(IMenuNode node) {
+        if (node.size() == 0)
             return true;
 
-        if (entry.size() > 1)
+        if (node.size() > 1)
             return false;
 
-        return false; // isLeafNode(entry.iterator().next());
+        return false; // isLeafNode(node.iterator().next());
     }
 
     /**
-     * Build a Zk menu item from a specific menu entry.
+     * Build a Zk menu item from a specific menu node.
      */
-    public static Menuitem buildMenuitem(IMenuNode menuEntry) {
+    public static Menuitem buildMenuitem(IMenuNode menuNode) {
         Menuitem menuitem = new Menuitem();
 
-        IAppearance appearance = menuEntry.getAppearance();
-        String id = menuEntry.getName();
+        IAppearance appearance = menuNode.getAppearance();
+        String id = menuNode.getName();
         String label = appearance.getDisplayName();
         String description = appearance.getDescription();
 
@@ -75,15 +75,15 @@ public class ZkMenuBuilder {
 
         menuitem.setLabel(label);
 
-        int order = menuEntry.getOrder();
-        MenuSection section = menuEntry.getSection();
+        int order = menuNode.getOrder();
+        MenuSection section = menuNode.getSection();
         if (section != null)
             order += section.getOrder() * 1000;
 
-        String cssStyle = menuEntry.getPreferredStyle();
-        String cssClass = menuEntry.getPreferredStyleClass();
+        String cssStyle = menuNode.getPreferredStyle();
+        String cssClass = menuNode.getPreferredStyleClass();
 
-        IAction action = menuEntry.getAction();
+        IAction action = menuNode.getAction();
         if (action != null) {
             boolean isEnabled = action.isEnabled();
 

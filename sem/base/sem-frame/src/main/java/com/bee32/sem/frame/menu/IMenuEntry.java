@@ -11,17 +11,17 @@ public interface IMenuEntry
     String getName();
 
     /**
-     * Make this menu entry as a separator bar.
+     * Make this menu node as a separator bar.
      */
     int SEPARATOR = 1 << 0;
 
     /**
-     * Disabled menu entry should be renderred as disabled/grayed.
+     * Disabled menu node should be renderred as disabled/grayed.
      */
     int DISABLED = 1 << 1;
 
     /**
-     * Hidden menu entry should not be renderred at all.
+     * Hidden menu node should not be renderred at all.
      */
     int HIDDEN = 1 << 2;
 
@@ -62,7 +62,7 @@ public interface IMenuEntry
     void setOrder(int order);
 
     /**
-     * Get entry flags.
+     * Get node flags.
      *
      * @see #SEPARATOR
      * @see #DISABLED

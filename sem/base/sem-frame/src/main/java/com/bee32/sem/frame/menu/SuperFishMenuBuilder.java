@@ -11,20 +11,20 @@ public class SuperFishMenuBuilder {
         StringBuilder sb = new StringBuilder();
         sb.append("<ul class='sf-menu'>");
 
-        for(IMenuNode menuEntry : menuBar) {
-            sb.append(buildMenu(menuEntry));
+        for(IMenuNode menuNode : menuBar) {
+            sb.append(buildMenu(menuNode));
         }
         sb.append("</ul>");
 
         return sb.toString();
     }
 
-    public static String buildMenu(IMenuNode menuEntry) {
+    public static String buildMenu(IMenuNode menuNode) {
         StringBuilder sb = new StringBuilder();
         sb.append("<li>");
         sb.append("<a ");
 
-        IAction action = menuEntry.getAction();
+        IAction action = menuNode.getAction();
         if (action != null) {
             boolean isEnabled = action.isEnabled();
 
@@ -51,14 +51,14 @@ public class SuperFishMenuBuilder {
 
         }
         sb.append(">");
-        sb.append(menuEntry.getAppearance().getDisplayName());
+        sb.append(menuNode.getAppearance().getDisplayName());
         sb.append("</a>");
 
-        if(!isLeafNode(menuEntry)) {
-            for(IMenuNode childEntry : menuEntry) {
+        if(!isLeafNode(menuNode)) {
+            for(IMenuNode childNode : menuNode) {
 
                 sb.append("<ul>");
-                sb.append(buildMenu(childEntry));
+                sb.append(buildMenu(childNode));
                 sb.append("</ul>");
             }
         }
@@ -68,13 +68,13 @@ public class SuperFishMenuBuilder {
     }
 
 
-    protected static boolean isLeafNode(IMenuNode entry) {
-        if (entry.size() == 0)
+    protected static boolean isLeafNode(IMenuNode node) {
+        if (node.size() == 0)
             return true;
 
-        if (entry.size() > 1)
+        if (node.size() > 1)
             return false;
 
-        return false; //isLeafNode(entry.iterator().next());
+        return false; //isLeafNode(node.iterator().next());
     }
 }

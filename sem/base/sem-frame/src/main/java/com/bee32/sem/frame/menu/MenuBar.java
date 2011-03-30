@@ -19,15 +19,15 @@ public class MenuBar
 
         for (Map.Entry<String, ? extends IMenuEntry> contribElement : dumped) {
             String targetPath = contribElement.getKey();
-            IMenuEntry menuItem = contribElement.getValue();
+            IMenuEntry menuEntry = contribElement.getValue();
 
-            if (menuItem instanceof IMenuNode) {
-                IMenuNode menuEntry = (IMenuNode) menuItem;
-                if (!this.resolveMerge(targetPath, menuEntry))
-                    throw new IllegalUsageException("Duplicated menu entry: " + menuEntry);
+            if (menuEntry instanceof IMenuNode) {
+                IMenuNode menuNode = (IMenuNode) menuEntry;
+                if (!this.resolveMerge(targetPath, menuNode))
+                    throw new IllegalUsageException("Duplicated menu node: " + menuNode);
             } else {
-                if (!this.resolveMerge(targetPath, menuItem))
-                    throw new IllegalUsageException("Duplicated menu item: " + menuItem);
+                if (!this.resolveMerge(targetPath, menuEntry))
+                    throw new IllegalUsageException("Duplicated menu item: " + menuEntry);
             }
         }
 
