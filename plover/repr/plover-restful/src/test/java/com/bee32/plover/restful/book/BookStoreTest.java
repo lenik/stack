@@ -1,16 +1,14 @@
 package com.bee32.plover.restful.book;
 
-import java.util.Map;
-
 import javax.inject.Inject;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.bee32.plover.arch.IModule;
-import com.bee32.plover.arch.IModuleLoader;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.util.DispatchUtil;
+import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.restful.ModuleManager;
@@ -21,10 +19,10 @@ public class BookStoreTest
     static String bookModuleOid = OidUtil.getOid(BookModule.class).toPath();
 
     @Inject
-    IModuleLoader moduleLoader;
+    ModuleManager mm;
 
     @Inject
-    ModuleManager mm;
+    SamplesLoader samplesLoader;
 
     /**
      * The dispatcher is self-managed, not have to be injected.
@@ -38,21 +36,14 @@ public class BookStoreTest
         super(SimpleBooks.unit);
     }
 
-    @Override
-    public void afterPropertiesSet()
-            throws Exception {
-        Map<String, IModule> map = moduleLoader.getModuleMap();
-        if (map.isEmpty())
-            throw new Error("No module found, check you test environ.");
-
-        super.afterPropertiesSet();
+    @Before
+    public void loadSamples() {
+        samplesLoader.loadNormalSamples();
     }
 
     @Test
     public void testDispatchToBookStore()
             throws DispatchException {
-
-        mm.activate();
 
         Object dispatchedStore = DispatchUtil.dispatch(dispatcher, mm, bookModuleOid + "/book");
 
@@ -62,8 +53,6 @@ public class BookStoreTest
     @Test
     public void testDispatchToBook()
             throws DispatchException {
-
-        mm.activate();
 
         int id = SimpleBooks.helloWorld.getId();
         Object got = DispatchUtil.dispatch(dispatcher, mm, bookModuleOid + "/book/" + id);
@@ -76,8 +65,6 @@ public class BookStoreTest
     public void testReverseBookStore()
             throws DispatchException {
 
-        mm.activate();
-
         String path = mm.getReversedPath(bookStore);
         assertEquals(bookModuleOid + "/book", path);
     }
@@ -85,8 +72,6 @@ public class BookStoreTest
     @Test
     public void testReverseBook()
             throws DispatchException {
-
-        mm.activate();
 
         String path = mm.getReversedPath(SimpleBooks.helloWorld);
 
