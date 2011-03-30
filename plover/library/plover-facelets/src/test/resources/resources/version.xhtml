@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:pc="http://bee32.com/plover/core"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://java.sun.com/jsf/facelets    http://localhost/~lenik/public/spec/myfaces_core.xsd
+        http://java.sun.com/jsf/html        http://localhost/~lenik/public/spec/myfaces-html.xsd
+        "
+    template="/template.xhtml">
+
+    <ui:define name="title">
+            Plover-Facelets Version
+        </ui:define>
+
+    <ui:define name="body">
+
+        <div>#{pc:version()}</div>
+
+        <table>
+            <tr>
+                <th>LocationContext</th>
+                <th>Sample</th>
+            </tr>
+            <tr>
+                <td>WEB_APP</td>
+                <td>${location.WEB_APP['hello/world']}</td>
+            </tr>
+            <tr>
+                <td>REQUEST</td>
+                <td>${location.REQUEST['hello/world']}</td>
+            </tr>
+            <tr>
+                <td>STYLE_ROOT</td>
+                <td>${location.STYLE_ROOT['hello/world']}</td>
+            </tr>
+            <tr>
+                <td>STYLE</td>
+                <td>${location.STYLE['hello/world']}</td>
+            </tr>
+            <tr>
+                <td>LIB_3RDPARTY</td>
+                <td>${location.LIB_3RDPARTY['hello/world']}</td>
+            </tr>
+        </table>
+    </ui:define>
+
+</ui:composition>

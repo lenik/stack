@@ -5,7 +5,7 @@ public class FaceletsTestCaseTest
 
     public static void main(String[] args)
             throws Exception {
-        new FaceletsTestCaseTest().wire().browseAndWait("/guess.jsf");
+        new FaceletsTestCaseTest().wire().browseAndWait("/version.jsf");
     }
 
 }
