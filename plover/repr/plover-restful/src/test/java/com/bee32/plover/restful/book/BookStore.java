@@ -2,6 +2,7 @@ package com.bee32.plover.restful.book;
 
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.util.IStruct;
+import com.bee32.plover.orm.test.bookstore.Book;
 
 public class BookStore
         extends DaoBookStore {
@@ -24,12 +25,6 @@ public class BookStore
         instance.setName((String) struct.getScalar("name"));
         instance.setContent((String) struct.getScalar("content"));
         return true;
-    }
-
-    {
-        addNormalSample(SimpleBooks.tom);
-        addNormalSample(SimpleBooks.jerry);
-        addNormalSample(SimpleBooks.helloWorld);
     }
 
 }

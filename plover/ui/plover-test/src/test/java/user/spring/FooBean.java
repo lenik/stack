@@ -2,7 +2,7 @@ package user.spring;
 
 import javax.inject.Inject;
 
-import com.bee32.plover.restful.book.Book;
+import com.bee32.plover.orm.test.bookstore.Book;
 
 public class FooBean
         extends ComponentBase {

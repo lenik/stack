@@ -1,6 +1,7 @@
 package com.bee32.plover.restful.book;
 
 import com.bee32.plover.orm.entity.MapEntityRepository;
+import com.bee32.plover.orm.test.bookstore.Book;
 
 public class MemoryBookStore
         extends MapEntityRepository<Book, Integer> {

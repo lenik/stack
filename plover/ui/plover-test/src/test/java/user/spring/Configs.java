@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.bee32.plover.restful.book.Book;
+import com.bee32.plover.orm.test.bookstore.Book;
 
 @Configuration
 public class Configs
