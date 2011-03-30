@@ -6,10 +6,10 @@ import java.nio.CharBuffer;
 import java.util.Locale;
 
 import javax.free.BCharOut;
-import javax.free.ITextIndention;
 import javax.free.IndentedOutImpl;
 
-public class PrettyPrintStream {
+public class PrettyPrintStream
+        implements Appendable {
 
     private BCharOut buf;
     private IndentedOutImpl out;
@@ -19,16 +19,30 @@ public class PrettyPrintStream {
         out = new IndentedOutImpl(buf);
     }
 
+    @Override
+    public Appendable append(CharSequence csq)
+            throws IOException {
+        print(csq.toString());
+        return this;
+    }
+
+    @Override
+    public Appendable append(CharSequence csq, int start, int end)
+            throws IOException {
+        String s = csq.subSequence(start, end).toString();
+        print(s);
+        return this;
+    }
+
+    @Override
+    public Appendable append(char c)
+            throws IOException {
+        print(c);
+        return this;
+    }
+
     public int enter() {
         return out.enter();
-    }
-
-    public boolean equals(Object obj) {
-        return out.equals(obj);
-    }
-
-    public ITextIndention getTextIndention() {
-        return out.getTextIndention();
     }
 
     public int leave() {
