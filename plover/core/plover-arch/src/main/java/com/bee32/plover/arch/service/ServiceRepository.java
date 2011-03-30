@@ -27,7 +27,6 @@ public class ServiceRepository
 
     @Override
     public <C extends IServiceContribution<C>> Iterable<C> getContributions(Class<C> contributionClass) {
-        @SuppressWarnings("unchecked")
         List<C> contributionsList = (List<C>) contributionsMap.get(contributionClass);
 
         if (contributionsList == null)

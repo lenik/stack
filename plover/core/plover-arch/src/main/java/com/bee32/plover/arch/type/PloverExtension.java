@@ -27,7 +27,6 @@ public class PloverExtension {
             @SuppressWarnings("unchecked")
             Class<? extends Annotation> annotationClass = (Class<? extends Annotation>) extension;
 
-            @SuppressWarnings("unchecked")
             T annotation = (T) clazz.getAnnotation(annotationClass);
 
             return annotation;

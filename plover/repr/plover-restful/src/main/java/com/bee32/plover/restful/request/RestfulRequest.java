@@ -69,7 +69,6 @@ public class RestfulRequest
         this.dispatchContext = dispatchContext;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T getObject() {
         if (dispatchContext == null)

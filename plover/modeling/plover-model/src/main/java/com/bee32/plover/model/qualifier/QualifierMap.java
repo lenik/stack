@@ -38,7 +38,6 @@ public class QualifierMap
 
     @Override
     public <Q extends Qualifier<Q>> Iterable<Q> getQualifiers(Class<Q> qualifierType) {
-        @SuppressWarnings("unchecked")
         Collection<Q> set = (Collection<Q>) getMap().get(qualifierType);
 
         if (set == null)

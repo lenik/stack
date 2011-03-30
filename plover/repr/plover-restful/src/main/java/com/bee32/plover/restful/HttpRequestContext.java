@@ -10,7 +10,6 @@ import com.bee32.plover.arch.operation.OperationContext;
 public class HttpRequestContext
         extends OperationContext {
 
-    @SuppressWarnings("unchecked")
     public HttpRequestContext(HttpServletRequest req, HttpServletResponse resp) {
         super(req.getParameterMap());
 

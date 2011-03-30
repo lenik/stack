@@ -43,7 +43,6 @@ public class DecoratedHttpServletRequest
         return proxy.getCookies();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Enumeration<String> getAttributeNames() {
         return proxy.getAttributeNames();
@@ -80,7 +79,6 @@ public class DecoratedHttpServletRequest
         return proxy.getContentType();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Enumeration<String> getHeaders(String name) {
         return proxy.getHeaders(name);
@@ -97,7 +95,6 @@ public class DecoratedHttpServletRequest
         return proxy.getParameter(name);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Enumeration<String> getHeaderNames() {
         return proxy.getHeaderNames();
@@ -108,7 +105,6 @@ public class DecoratedHttpServletRequest
         return proxy.getIntHeader(name);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Enumeration<String> getParameterNames() {
         return proxy.getParameterNames();
@@ -129,7 +125,6 @@ public class DecoratedHttpServletRequest
         return proxy.getPathInfo();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Map<String, String[]> getParameterMap() {
         return proxy.getParameterMap();
@@ -226,7 +221,6 @@ public class DecoratedHttpServletRequest
         return proxy.getLocale();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Enumeration<Locale> getLocales() {
         return proxy.getLocales();

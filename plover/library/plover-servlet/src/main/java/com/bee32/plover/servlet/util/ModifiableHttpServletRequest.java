@@ -21,7 +21,6 @@ public class ModifiableHttpServletRequest
         /**
          * The map returned by getParameterMap() is immutable.
          */
-        @SuppressWarnings("unchecked")
         Map<String, String[]> origMap = proxy.getParameterMap();
 
         copy = new TreeMap<String, String[]>(origMap);

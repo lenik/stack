@@ -79,7 +79,6 @@ public class MultiLevel
 
         while (ceil != null) {
 
-            @SuppressWarnings("unchecked")
             VerifyPolicy<IContextLimit, ?> policy = (VerifyPolicy<IContextLimit, ?>) rangeMap.get(ceil);
 
             // Already scanned, skip to avoid cyclic ref.
