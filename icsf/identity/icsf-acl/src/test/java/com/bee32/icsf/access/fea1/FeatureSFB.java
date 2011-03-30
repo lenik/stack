@@ -1,5 +1,7 @@
 package com.bee32.icsf.access.fea1;
 
+import java.util.Properties;
+
 import com.bee32.icsf.access.alt.R_ACE;
 import com.bee32.icsf.access.alt.R_ACL;
 import com.bee32.icsf.principal.Group;
@@ -20,6 +22,13 @@ public class FeatureSFB
 
         addPersistedClass(R_ACL.class);
         addPersistedClass(R_ACE.class);
+    }
+
+    @Override
+    protected void populateHibernateProperties(Properties properties) {
+        super.populateHibernateProperties(properties);
+
+        properties.put(hbm2ddlAuto, "create-drop");
     }
 
 }
