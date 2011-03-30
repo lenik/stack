@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.bee32.icsf.principal.IPrincipal;
 
-public final class EmptyACL
+public class EmptyACL
         extends AbstractACL {
 
     EmptyACL() {
