@@ -21,48 +21,48 @@ public class SuperFishMenuBuilder {
 
     public static String buildMenu(IMenuEntry menuEntry) {
         StringBuilder sb = new StringBuilder();
+        sb.append("<li>");
+        sb.append("<a ");
 
-        for(IMenuEntry childEntry : menuEntry) {
-            sb.append("<li>");
-            sb.append("<a ");
+        IAction action = menuEntry.getAction();
+        if (action != null) {
+            boolean isEnabled = action.isEnabled();
 
+            String onClick;
+            String href;
 
-            IAction action = childEntry.getAction();
-            if (action != null) {
-                boolean isEnabled = action.isEnabled();
+            ContextLocation target = action.getTarget();
+            if (target.getContext() == LocationContextConstants.JAVASCRIPT) {
+                onClick = target.getLocation();
+                href = null;
 
-                String onClick;
-                String href;
+                sb.append("href='#' onclick=\"");
+                sb.append(onClick);
+                sb.append("\"");
 
-                ContextLocation target = action.getTarget();
-                if (target.getContext() == LocationContextConstants.JAVASCRIPT) {
-                    onClick = target.getLocation();
-                    href = null;
-
-                    sb.append("href='#' onclick='");
-                    sb.append(onClick);
-                    sb.append("'");
-
-                } else {
-                    onClick = null;
-                    href = target.getLocation();
-                    sb.append("href='");
-                    sb.append(href);
-                    sb.append("'");
-                }
+            } else {
+                onClick = null;
+                href = target.getLocation();
+                sb.append("href='");
+                sb.append(href);
+                sb.append("'");
             }
-            sb.append("'>");
-            sb.append(childEntry.getAppearance().getDisplayName());
-            sb.append("</a>");
+        } else {
 
-            if(!isLeafNode(childEntry)) {
+        }
+        sb.append(">");
+        sb.append(menuEntry.getAppearance().getDisplayName());
+        sb.append("</a>");
+
+        if(!isLeafNode(menuEntry)) {
+            for(IMenuEntry childEntry : menuEntry) {
+
                 sb.append("<ul>");
                 sb.append(buildMenu(childEntry));
                 sb.append("</ul>");
             }
-
-            sb.append("</li>");
         }
+        sb.append("</li>");
 
         return sb.toString();
     }
