@@ -10,7 +10,8 @@ import com.bee32.icsf.principal.IPrincipal;
  * Principal-ACL is the ACL subset related to a specific principal.
  */
 public class PrincipalACL
-        extends ArrayACL {
+        extends ArrayACL
+        implements IPrincipalACL {
 
     private final IACL outer;
     private final IPrincipal principal;
@@ -24,6 +25,11 @@ public class PrincipalACL
             throw new NullPointerException("principal");
         this.outer = outer;
         this.principal = principal;
+    }
+
+    @Override
+    public IPrincipal getPrincipal() {
+        return principal;
     }
 
     @Override
