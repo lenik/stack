@@ -65,7 +65,6 @@ public class JUnitHelper {
         if (staticCheck)
             if (!Modifier.isStatic(modifiers))
                 return false;
-        ;
 
         // TODO - JUnit allow non-public @BeforeClass??
         if (!Modifier.isPublic(modifiers))
@@ -154,15 +153,15 @@ public class JUnitHelper {
     static class WrapIntereceptor
             implements MethodInterceptor {
 
-        static Set<Class<? extends Annotation>> junitAnnotations;
+        static Set<Class<? extends Annotation>> junitInternalAnnotations;
 
         static {
             // TODO - typehierset? for interface inheritance?
-            junitAnnotations = new HashSet<Class<? extends Annotation>>();
-            junitAnnotations.add(BeforeClass.class);
-            junitAnnotations.add(AfterClass.class);
-            junitAnnotations.add(Before.class);
-            junitAnnotations.add(After.class);
+            junitInternalAnnotations = new HashSet<Class<? extends Annotation>>();
+            junitInternalAnnotations.add(BeforeClass.class);
+            junitInternalAnnotations.add(AfterClass.class);
+            junitInternalAnnotations.add(Before.class);
+            junitInternalAnnotations.add(After.class);
         }
 
         static boolean topLevel = false;
@@ -171,18 +170,18 @@ public class JUnitHelper {
         public Object intercept(final Object obj, final Method method, final Object[] args, final MethodProxy proxy)
                 throws Throwable {
 
-            boolean isJunitMethod = false;
+            boolean isInternalJunitMethod = false;
 
             L: for (Annotation ann : method.getAnnotations()) {
                 Class<?> annClass = ann.getClass();
-                for (Class<?> junitAnnClass : junitAnnotations)
-                    if (junitAnnClass.isAssignableFrom(annClass)) {
-                        isJunitMethod = true;
+                for (Class<?> junitInternal : junitInternalAnnotations)
+                    if (junitInternal.isAssignableFrom(annClass)) {
+                        isInternalJunitMethod = true;
                         break L;
                     }
             }
 
-            if (isJunitMethod)
+            if (isInternalJunitMethod)
                 return proxy.invokeSuper(obj, args);
 
             if (topLevel)
