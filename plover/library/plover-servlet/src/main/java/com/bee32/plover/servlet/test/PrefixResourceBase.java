@@ -34,6 +34,38 @@ public class PrefixResourceBase
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (hasTrailingSlash ? 1231 : 1237);
+        result = prime * result + loader.hashCode();
+        result = prime * result + prefix.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+
+        PrefixResourceBase other = (PrefixResourceBase) obj;
+        if (hasTrailingSlash != other.hasTrailingSlash)
+            return false;
+
+        if (!loader.equals(other.loader))
+            return false;
+
+        if (!prefix.equals(other.prefix))
+            return false;
+
+        return true;
+    }
+
+    @Override
     public String toString() {
         return prefix;
     }

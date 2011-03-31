@@ -19,6 +19,23 @@ public class ClassResourceBase
     }
 
     @Override
+    public int hashCode() {
+        return clazz.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (!(obj instanceof ClassResourceBase))
+            return false;
+        ClassResourceBase o = (ClassResourceBase) obj;
+        if (clazz != o.clazz)
+            return false;
+        return true;
+    }
+
+    @Override
     public String toString() {
         return clazz.getName();
     }

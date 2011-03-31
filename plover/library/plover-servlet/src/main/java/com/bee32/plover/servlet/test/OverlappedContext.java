@@ -7,9 +7,13 @@ import java.net.URL;
 import org.mortbay.jetty.servlet.Context;
 import org.mortbay.log.Log;
 import org.mortbay.resource.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OverlappedContext
         extends Context {
+
+    static Logger logger = LoggerFactory.getLogger(OverlappedContext.class);
 
     public OverlappedContext(int options) {
         super(options);
@@ -19,8 +23,13 @@ public class OverlappedContext
     public Resource getResource(String path)
             throws MalformedURLException {
 
+        // logger.debug("OC::GET " + path);
+
         if (path == null || !path.startsWith("/"))
             throw new MalformedURLException(path);
+
+        // Remove the leading /
+        path = path.substring(1);
 
         URL resourceUrl = OverlappedBases.searchResource(path);
 

@@ -62,6 +62,8 @@ public class OverlappedBases {
     }
 
     public static URL searchResource(String path) {
+        if (path.startsWith("/"))
+            path = path.substring(1);
         for (IResourceBase base : searchBases) {
             URL resource = base.getResource(path);
             if (resource != null)
