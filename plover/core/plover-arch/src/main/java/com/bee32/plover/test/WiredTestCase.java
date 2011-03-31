@@ -16,7 +16,7 @@ import com.bee32.plover.inject.cref.ContextRef;
 /*            */"/com/bee32/plover/inject/cref/auto-context.xml",
 /*            */"/com/bee32/plover/inject/cref/scan-testx-context.xml" })
 public abstract class WiredTestCase
-        extends AssembledTestCase
+        extends AssembledTestCase<WiredTestCase>
         implements ApplicationContextAware, InitializingBean {
 
     protected ApplicationContext application;
@@ -45,17 +45,15 @@ public abstract class WiredTestCase
         return beanClass.cast(bean);
     }
 
-    public WiredTestCase wire() {
+    public WiredTestCase wire()
+            throws Exception {
+        WiredTestCase unit = super.unit();
+
         ApplicationContext context = new ContextRef(getClass()).buildApplicationContext();
         AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
-        factory.autowireBean(this);
-        return this;
-    }
+        factory.autowireBean(unit);
 
-    public void run() {
-    }
-
-    public void dump() {
+        return unit;
     }
 
 }

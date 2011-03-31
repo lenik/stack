@@ -14,7 +14,7 @@ public class SuperfishMenuBuilderTest
 
     public static void main(String[] args)
             throws IOException, Exception {
-        new SuperfishMenuBuilderTest().wire().browseAndWait("sfmenuDemo.htm");
+        new SuperfishMenuBuilderTest().browseAndWait("sfmenuDemo.htm");
     }
 
 }

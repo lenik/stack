@@ -4,13 +4,12 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 
 import com.bee32.plover.arch.ISupportLibrary;
 
-public class AssembledTestCase
-        extends Assert {
+public class AssembledTestCase<T>
+        extends UnitTestCase<T> {
 
     private Set<ISupportLibrary> libraries;
 

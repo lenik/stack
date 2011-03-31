@@ -13,7 +13,7 @@ public class ZkTestCaseTest
 
     public static void main(String[] args)
             throws IOException, Exception {
-        new ZkTestCaseTest().wire().browseAndWait(//
+        new ZkTestCaseTest().browseAndWait(//
                 // "/zhello.jsf" //
                 "/zhello.zul" //
         );

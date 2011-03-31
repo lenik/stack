@@ -11,7 +11,7 @@ import org.mortbay.jetty.testing.HttpTester;
 import com.bee32.plover.test.AssembledTestCase;
 
 public abstract class ServletTestCase
-        extends AssembledTestCase {
+        extends AssembledTestCase<ServletTestCase> {
 
     public static final boolean searchClassLocalResources = true;
 
@@ -111,14 +111,24 @@ public abstract class ServletTestCase
         return stl.httpPost(uri, content, map);
     }
 
+    /**
+     * This function bypass any state of current object.
+     *
+     * Instead, it creates another instance of the same class.
+     */
     public void browseAndWait()
             throws IOException {
-        stl.browseAndWait();
+        unit().stl.browseAndWait();
     }
 
+    /**
+     * This function bypass any state of current object.
+     *
+     * Instead, it creates another instance of the same class.
+     */
     public void browseAndWait(String location)
             throws IOException {
-        stl.browseAndWait(location);
+        unit().stl.browseAndWait(location);
     }
 
 }

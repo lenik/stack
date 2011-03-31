@@ -32,7 +32,7 @@ public class BookModuleTest
 
     public static void main(String[] args)
             throws Exception {
-        new BookModuleTest().wire().browseAndWait();
+        new BookModuleTest().browseAndWait();
     }
 
 }

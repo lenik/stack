@@ -57,6 +57,18 @@ public class FaceletsTestCase
         taglibs.add(taglib);
     }
 
+    protected boolean isDebugMode() {
+        return true;
+    }
+
+    protected boolean isStrictMode() {
+        return false;
+    }
+
+    protected int getRefreshPeriod() {
+        return 0;
+    }
+
     @Override
     protected void configureBuiltinServlets() {
         super.configureBuiltinServlets();
@@ -75,13 +87,16 @@ public class FaceletsTestCase
             context.addInitParam(DEFAULT_SUFFIX, ".xhtml");
 
             // Special Debug Output for Development
-            context.addInitParam(DEVELOPMENT, "true");
+            if (isDebugMode())
+                context.addInitParam(DEVELOPMENT, "true");
 
-            context.addInitParam(REFRESH_PERIOD, "0");
+            context.addInitParam(REFRESH_PERIOD, String.valueOf(getRefreshPeriod()));
 
-            // Optional JSF-RI Parameters to Help Debug
-            // sm.addInitParam(VALIDATE_XML, "true");
-            // sm.addInitParam(VERIFY_OBJECTS, "true");
+            if (isStrictMode()) {
+                // Optional JSF-RI Parameters to Help Debug
+                context.addInitParam(VALIDATE_XML, "true");
+                context.addInitParam(VERIFY_OBJECTS, "true");
+            }
         }
 
         switch (faceletsProvider) {

@@ -4,13 +4,9 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 
-import com.bee32.plover.inject.cref.ContextRef;
 import com.bee32.plover.inject.spring.ContextConfigurationUtil;
-import com.bee32.plover.test.JUnitHelper;
 import com.bee32.plover.test.WiredTestCase;
 
 public abstract class WiredServletTestCase
@@ -58,41 +54,6 @@ public abstract class WiredServletTestCase
 
         RabbitServletContext context = stl.getServletContext();
         context.addInitParam("contextConfigLocation", locations.toString());
-    }
-
-    /**
-     * Create a new instance like this using JUnit wrapper, and then autowire the new instance using
-     * Spring CDI.
-     *
-     * @return Wrapped & Wired instance.
-     */
-    protected WiredServletTestCase wire()
-            throws Exception {
-        return wire(true);
-    }
-
-    /**
-     * Wrap and wire this object, result in a new one if <code>dropThis</code> is specified, or hack
-     * myself if <code>dropThis</code> is disabled. Spring CDI.
-     *
-     * @param dropThis
-     *            Whether should hack into myself.
-     *            <p>
-     *            Currently, keep-this is not supported. A new instance should always be created.
-     * @return Wrapped & Wired instance.
-     */
-    protected WiredServletTestCase wire(boolean dropThis)
-            throws Exception {
-        if (!dropThis)
-            throw new UnsupportedOperationException("Sorry, it's unsupported to reuse this object.");
-
-        WiredServletTestCase wrapped = JUnitHelper.createWrappedInstance(getClass());
-
-        ApplicationContext context = new ContextRef(getClass()).buildApplicationContext();
-        AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
-        factory.autowireBean(wrapped);
-
-        return wrapped;
     }
 
 }
