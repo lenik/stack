@@ -118,7 +118,7 @@ public abstract class ServletTestCase
      */
     public void browseAndWait()
             throws IOException {
-        unit().stl.browseAndWait();
+        unit()._browseAndWait();
     }
 
     /**
@@ -128,7 +128,17 @@ public abstract class ServletTestCase
      */
     public void browseAndWait(String location)
             throws IOException {
-        unit().stl.browseAndWait(location);
+        unit()._browseAndWait(location);
+    }
+
+    public void _browseAndWait()
+            throws IOException {
+        stl.browseAndWait();
+    }
+
+    public void _browseAndWait(String location)
+            throws IOException {
+        stl.browseAndWait(location);
     }
 
 }
