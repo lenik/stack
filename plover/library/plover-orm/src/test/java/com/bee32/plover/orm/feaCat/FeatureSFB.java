@@ -14,8 +14,4 @@ public class FeatureSFB
         // properties.put(hbm2ddlAuto, "validate");
     }
 
-    {
-        testUnit = Animals.getInstance();
-    }
-
 }

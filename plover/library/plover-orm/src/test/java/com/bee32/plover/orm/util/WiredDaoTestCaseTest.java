@@ -14,16 +14,14 @@ import com.bee32.plover.orm.dao.CatDao;
 import com.bee32.plover.orm.feaCat.Animals;
 import com.bee32.plover.orm.feaCat.Cat;
 import com.bee32.plover.orm.feaCat.Tiger;
+import com.bee32.plover.orm.unit.ImportUnit;
 
+@ImportUnit(Animals.class)
 public class WiredDaoTestCaseTest
         extends WiredDaoTestCase {
 
     @Inject
     DaoService service;
-
-    public WiredDaoTestCaseTest() {
-        super(Animals.getInstance());
-    }
 
     @Test
     public void testCreateReload() {

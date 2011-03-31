@@ -7,8 +7,9 @@ import java.util.Properties;
 import org.hibernate.transaction.JDBCTransactionFactory;
 
 import com.bee32.plover.orm.PloverNamingStrategy;
-import com.bee32.plover.orm.unit.PersistenceUnitSelection;
+import com.bee32.plover.orm.unit.PUnit;
 import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
+import com.bee32.plover.thirdparty.hibernate.util.MappingResourceUtil;
 
 public abstract class CustomizedSessionFactoryBean
         extends LazySessionFactoryBean
@@ -34,6 +35,14 @@ public abstract class CustomizedSessionFactoryBean
 
     static boolean usingAnnotation = true;
 
+    static PUnit staticUnit = PUnit.getDefault();
+
+    public static void setForceUnit(PUnit forceUnit) {
+        if (forceUnit == null)
+            throw new NullPointerException("forceUnit");
+        CustomizedSessionFactoryBean.staticUnit = forceUnit;
+    }
+
     @Override
     protected void lazyConfigure() {
 
@@ -51,20 +60,19 @@ public abstract class CustomizedSessionFactoryBean
         this.setNamingStrategy(PloverNamingStrategy.getInstance(hibernateDialect));
 
         // Merge mapping resources
-        PersistenceUnitSelection selection = getPersistenceUnitSelection();
 
         if (usingAnnotation) {
 
             // this.setConfigurationClass(AnnotationConfiguration.class);
             // see newConfiguration overrides.
 
-            Collection<Class<?>> persistentClasses = selection.mergePersistentClasses();
+            Collection<Class<?>> persistentClasses = staticUnit.getClasses();
 
             Class<?>[] persistentClassArray = persistentClasses.toArray(new Class<?>[0]);
             this.setAnnotatedClasses(persistentClassArray);
 
         } else {
-            Collection<String> allResources = selection.mergeMappingResources();
+            String[] allResources = MappingResourceUtil.getMappingResources(staticUnit);
 
             if (logger.isInfoEnabled()) {
                 logger.info("Resource mappings for SFB " + getName());
@@ -72,20 +80,8 @@ public abstract class CustomizedSessionFactoryBean
                     logger.info("Resource for mapping: " + resource);
             }
 
-            if (!allResources.isEmpty()) {
-                String[] resourceArray = allResources.toArray(new String[0]);
-                this.setMappingResources(resourceArray);
-            }
+            this.setMappingResources(allResources);
         }
-    }
-
-    /**
-     * The persistence units for the session.
-     */
-    protected PersistenceUnitSelection getPersistenceUnitSelection() {
-        Class<?> sfbClass = getClass();
-
-        return PersistenceUnitSelection.getContextSelection(sfbClass);
     }
 
     /**

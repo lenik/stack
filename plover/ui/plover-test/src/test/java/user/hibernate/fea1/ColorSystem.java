@@ -8,18 +8,17 @@ import java.util.List;
 
 import javax.free.UnexpectedException;
 
-import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.orm.unit.PUnit;
 
-public class ColorSystem {
+public class ColorSystem
+        extends PUnit {
 
-    static PersistenceUnit unit;
-
-    static {
-        unit = new PersistenceUnit("color-system");
-        unit.addPersistedClass(Color.class);
-        unit.addPersistedClass(RGB.class);
-        unit.addPersistedClass(ARGB.class);
-        unit.addPersistedClass(CMYK.class);
+    @Override
+    protected void preamble() {
+        add(Color.class);
+        add(RGB.class);
+        add(ARGB.class);
+        add(CMYK.class);
     }
 
     static CMYK white = new CMYK("White", 0, 0, 0, 0);

@@ -1,17 +1,25 @@
 package com.bee32.plover.orm.unit;
 
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import com.bee32.plover.arch.util.ClassCatalog;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
+public class PUnit
+        extends ClassCatalog {
 
-import javax.inject.Qualifier;
+    public PUnit(ClassCatalog... imports) {
+        super(imports);
+    }
 
-@Retention(RUNTIME)
-@Documented
-@Qualifier
-public @interface PUnit {
+    public PUnit(String name, ClassCatalog... imports) {
+        super(name, imports);
+    }
 
-    String value();
+    protected void preamble() {
+    }
+
+    static final PUnit defaultUnit = new PUnit();
+
+    public static PUnit getDefault() {
+        return defaultUnit;
+    }
 
 }

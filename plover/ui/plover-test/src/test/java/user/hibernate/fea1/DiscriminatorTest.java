@@ -6,15 +6,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bee32.plover.orm.dao.HibernateTemplate;
+import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.p6spy.engine.common.P6SpyOptions;
 
+@ImportUnit(ColorSystem.class)
 public class DiscriminatorTest
         extends WiredDaoTestCase {
-
-    public DiscriminatorTest() {
-        super(ColorSystem.unit);
-    }
 
     @Test
     @Ignore

@@ -8,11 +8,13 @@ import org.junit.Test;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.util.DispatchUtil;
+import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.restful.ModuleManager;
 
+@ImportUnit(BookStoreUnit.class)
 public class BookStoreTest
         extends WiredDaoTestCase {
 
@@ -31,10 +33,6 @@ public class BookStoreTest
 
     @Inject
     BookStore bookStore;
-
-    public BookStoreTest() {
-        super(SimpleBooks.unit);
-    }
 
     @Before
     public void loadSamples() {

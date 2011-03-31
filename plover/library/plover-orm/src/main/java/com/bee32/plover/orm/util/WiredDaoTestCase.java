@@ -5,11 +5,11 @@ import javax.inject.Inject;
 import org.hibernate.SessionFactory;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.bee32.plover.orm.config.test.DefaultTestSessionFactoryBean;
+import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
-import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.unit.PersistenceUnitSelection;
+import com.bee32.plover.orm.unit.ImportUnitUtil;
+import com.bee32.plover.orm.unit.PUnit;
 import com.bee32.plover.test.WiredTestCase;
 
 @ContextConfiguration({
@@ -24,14 +24,9 @@ public abstract class WiredDaoTestCase
 
     private transient HibernateDaoSupport support;
 
-    public WiredDaoTestCase(PersistenceUnit... persistenceUnits) {
-        PersistenceUnitSelection puSelection = PersistenceUnitSelection.getContextSelection(//
-                DefaultTestSessionFactoryBean.class);
-
-        for (PersistenceUnit unit : persistenceUnits)
-            puSelection.remove(unit);
-
-        puSelection.add(persistenceUnits);
+    public WiredDaoTestCase() {
+        PUnit unit = ImportUnitUtil.getImportUnit(getClass());
+        CustomizedSessionFactoryBean.setForceUnit(unit);
     }
 
     protected HibernateDaoSupport getSupport() {

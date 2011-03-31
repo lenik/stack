@@ -10,8 +10,6 @@ import org.hibernate.dialect.H2Dialect;
 
 import com.bee32.plover.inject.qualifier.TestPurpose;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
-import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.unit.PersistenceUnitSelection;
 
 public abstract class TestPurposeSessionFactoryBean
         extends CustomizedSessionFactoryBean {
@@ -50,23 +48,6 @@ public abstract class TestPurposeSessionFactoryBean
         // Performance
         properties.setProperty(connectionPoolSize, "1");
         properties.setProperty(cacheProviderClass, NoCacheProvider.class.getName());
-    }
-
-    protected PersistenceUnit testUnit = new PersistenceUnit("test-unit");;
-
-    public void addPersistedClass(Class<?> clazz) {
-        testUnit.addPersistedClass(clazz);
-    }
-
-    public void removePersistedClass(Class<?> clazz) {
-        testUnit.removePersistedClass(clazz);
-    }
-
-    @Override
-    protected PersistenceUnitSelection getPersistenceUnitSelection() {
-        PersistenceUnitSelection selection = new PersistenceUnitSelection();
-        selection.add(testUnit);
-        return selection;
     }
 
 }
