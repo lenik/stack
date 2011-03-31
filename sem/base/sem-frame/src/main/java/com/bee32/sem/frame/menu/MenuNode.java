@@ -159,11 +159,22 @@ public class MenuNode
     public boolean resolveMerge(String parentMenuPath, IMenuNode menuNode) {
         IMenuNode parentMenu = resolve(parentMenuPath, true);
 
-        IMenuNode newChild = parentMenu.create(menuNode.getName());
-        if (newChild == null)
-            return false;
+        String nodeName = menuNode.getName();
+        IMenuNode existing = parentMenu.get(nodeName);
+        IMenuNode target;
 
-        newChild.populate(menuNode);
+        if (existing != null) {
+            String existingDisp = existing.getAppearance().getDisplayName();
+            if (existingDisp != null) {
+                // Don't throw anything here.
+                return false;
+            }
+            target = existing;
+        } else {
+            target = parentMenu.create(nodeName);
+        }
+
+        target.populate(menuNode);
         return true;
     }
 
