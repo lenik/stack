@@ -29,6 +29,9 @@ public class ClassUtil {
         if (baseName == null)
             baseName = className;
 
+        if (baseName.contains("$$"))
+            return getContextURL(clazz.getSuperclass());
+
         String fileName = baseName + ".class";
         URL resource = clazz.getResource(fileName);
         if (resource == null)
