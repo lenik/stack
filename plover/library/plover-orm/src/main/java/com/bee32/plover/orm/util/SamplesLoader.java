@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.apache.commons.collections15.Closure;
+import org.apache.commons.collections15.functors.NOPClosure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -46,22 +48,35 @@ public class SamplesLoader
         }
     }
 
+    private static Closure<IEntitySamplesContribution> NO_PROGRESS;
+    static {
+        NO_PROGRESS = NOPClosure.getInstance();
+    }
+
     public void loadNormalSamples() {
+        loadNormalSamples(NO_PROGRESS);
+    }
+
+    public void loadNormalSamples(Closure<IEntitySamplesContribution> progress) {
         for (IEntitySamplesContribution contrib : dependencies.values()) {
-            loadSamples(contrib, false);
+            loadSamples(contrib, false, progress);
         }
     }
 
     public void loadWorseSamples() {
-        for (IEntitySamplesContribution contrib : dependencies.values()) {
-            loadSamples(contrib, true);
+        loadWorseSamples(NO_PROGRESS);
+    }
 
+    public void loadWorseSamples(Closure<IEntitySamplesContribution> progress) {
+        for (IEntitySamplesContribution contrib : dependencies.values()) {
+            loadSamples(contrib, true, progress);
         }
     }
 
     static int loadIndex = 0;
 
-    public synchronized void loadSamples(IEntitySamplesContribution contrib, boolean worseCase) {
+    public synchronized void loadSamples(IEntitySamplesContribution contrib, boolean worseCase,
+            Closure<IEntitySamplesContribution> progress) {
 
         if (contrib == null)
             throw new NullPointerException("contrib");
@@ -73,7 +88,7 @@ public class SamplesLoader
         if (imports != null) {
             for (Class<?> importClass : imports.value()) {
                 IEntitySamplesContribution dependency = dependencies.get(importClass);
-                loadSamples(dependency, worseCase);
+                loadSamples(dependency, worseCase, progress);
             }
         }
 
@@ -90,6 +105,8 @@ public class SamplesLoader
                     worseCase ? "worse" : "normal", contrib);
             logger.debug(message);
         }
+
+        progress.execute(contrib);
 
         dataManager.saveAll(samples);
 
