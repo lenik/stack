@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.free.AnnotationUtil;
 import javax.free.IllegalUsageException;
 
+import net.sf.cglib.core.NamingPolicy;
+import net.sf.cglib.core.Predicate;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -207,11 +209,59 @@ public class JUnitHelper {
         static final WrapIntereceptor INSTANCE = new WrapIntereceptor();
     }
 
+    /**
+     * Instead of generate an ugly "$$EnhancerByCGLIB$$38abe9c5" suffixes,
+     */
+    static class HelperNamingPolicy
+            implements NamingPolicy {
+
+        /**
+         * Choose a name for a generated class.
+         *
+         * @param prefix
+         *            a dotted-name chosen by the generating class (possibly to put the generated
+         *            class in a particular package)
+         * @param source
+         *            the fully-qualified class name of the generating class (for example
+         *            "net.sf.cglib.Enhancer")
+         * @param key
+         *            A key object representing the state of the parameters; for caching to work
+         *            properly, equal keys should result in the same generated class name. The
+         *            default policy incorporates <code>key.hashCode()</code> into the class name.
+         * @param exists
+         *            a predicate that returns true if the given classname has already been used in
+         *            the same ClassLoader.
+         * @return the fully-qualified class name
+         */
+        @Override
+        public String getClassName(String prefix, String source, Object key, Predicate exists) {
+            // $$EnhancerByCGLIB$$38abe9c5.
+
+            String base = prefix + "-JUnitWrapper";
+
+            String attempt = base;
+
+            int index = 1;
+            while (exists.evaluate(attempt))
+                attempt = base + "_" + index++;
+
+            return attempt;
+        }
+
+    }
+
+    static NamingPolicy namingPolicy = new HelperNamingPolicy();
+
     public static <T> T createWrappedInstance(Class<T> targetClass) {
         Enhancer enhancer = new Enhancer();
+
+        enhancer.setNamingPolicy(namingPolicy);
+
         enhancer.setSuperclass(targetClass);
         enhancer.setCallback(WrapIntereceptor.INSTANCE);
+
         Object instance = enhancer.create();
+
         return targetClass.cast(instance);
     }
 
