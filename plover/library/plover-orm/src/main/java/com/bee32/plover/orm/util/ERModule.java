@@ -6,7 +6,6 @@ import com.bee32.plover.arch.Module;
 import com.bee32.plover.orm.entity.HibernateEntityRepository;
 import com.bee32.plover.orm.entity.IEntity;
 import com.bee32.plover.orm.entity.IEntityRepository;
-import com.bee32.plover.orm.unit.PUnit;
 
 public abstract class ERModule
         extends Module {
@@ -24,11 +23,6 @@ public abstract class ERModule
 
         // declare the restful token
         declare(location, entityRepository);
-
-        // contribute to the global persistence unit.
-        Class<? extends E> entityType = entityRepository.getEntityType();
-
-        PUnit.getDefault().add(entityType);
     }
 
     protected <E extends IEntity<K>, K extends Serializable> //

@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.hibernate.transaction.JDBCTransactionFactory;
 
 import com.bee32.plover.orm.PloverNamingStrategy;
-import com.bee32.plover.orm.unit.PUnit;
+import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
 import com.bee32.plover.thirdparty.hibernate.util.MappingResourceUtil;
 
@@ -35,9 +35,9 @@ public abstract class CustomizedSessionFactoryBean
 
     static boolean usingAnnotation = true;
 
-    static PUnit staticUnit = PUnit.getDefault();
+    static PersistenceUnit staticUnit = PersistenceUnit.getDefault();
 
-    public static void setForceUnit(PUnit forceUnit) {
+    public static void setForceUnit(PersistenceUnit forceUnit) {
         if (forceUnit == null)
             throw new NullPointerException("forceUnit");
         CustomizedSessionFactoryBean.staticUnit = forceUnit;

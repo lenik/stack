@@ -1,9 +1,9 @@
 package com.bee32.icsf.principal;
 
-import com.bee32.plover.orm.unit.PUnit;
+import com.bee32.plover.orm.unit.PersistenceUnit;
 
 public class IcsfPrincipalUnit
-        extends PUnit {
+        extends PersistenceUnit {
 
     @Override
     protected void preamble() {

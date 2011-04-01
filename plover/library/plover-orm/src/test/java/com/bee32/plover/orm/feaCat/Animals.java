@@ -1,9 +1,9 @@
 package com.bee32.plover.orm.feaCat;
 
-import com.bee32.plover.orm.unit.PUnit;
+import com.bee32.plover.orm.unit.PersistenceUnit;
 
 public class Animals
-        extends PUnit {
+        extends PersistenceUnit {
 
     public Animals() {
         super("animals");

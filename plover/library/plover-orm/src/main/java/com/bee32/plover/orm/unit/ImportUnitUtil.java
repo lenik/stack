@@ -7,16 +7,16 @@ public class ImportUnitUtil {
     /**
      * @return <code>null</code> If no {@link ImportUnit} is declared on the class.
      */
-    public static PUnit getImportUnit(Class<?> clazz) {
+    public static PersistenceUnit getImportUnit(Class<?> clazz) {
 
         ImportUnit importUnit = clazz.getAnnotation(ImportUnit.class);
         if (importUnit == null)
-            return PUnit.getDefault();
+            return PersistenceUnit.getDefault();
 
-        Class<? extends PUnit> unitClass = importUnit.value();
+        Class<? extends PersistenceUnit> unitClass = importUnit.value();
         assert unitClass != null;
 
-        PUnit unit;
+        PersistenceUnit unit;
         try {
             unit = unitClass.newInstance();
         } catch (Exception e) {

@@ -8,10 +8,10 @@ import java.util.List;
 
 import javax.free.UnexpectedException;
 
-import com.bee32.plover.orm.unit.PUnit;
+import com.bee32.plover.orm.unit.PersistenceUnit;
 
 public class ColorSystem
-        extends PUnit {
+        extends PersistenceUnit {
 
     @Override
     protected void preamble() {
