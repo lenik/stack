@@ -1,7 +1,14 @@
 package com.bee32.plover.orm.unit;
 
+import java.util.Set;
+
+import javax.free.IllegalUsageException;
+
 import com.bee32.plover.arch.util.ClassCatalog;
 
+/**
+ * ImportUnit is merged by PersistenceUnit implementation.
+ */
 public abstract class PersistenceUnit
         extends ClassCatalog {
 
@@ -11,6 +18,33 @@ public abstract class PersistenceUnit
 
     public PersistenceUnit(String name, ClassCatalog... imports) {
         super(name, imports);
+    }
+
+    @Override
+    protected void internalAssemble() {
+        merge(getClass());
+    }
+
+    private void merge(Class<?> clazz) {
+        Class<?> superclass = clazz.getSuperclass();
+        if (superclass != null)
+            merge(superclass);
+
+        ImportUnit importUnitAnnotation = clazz.getAnnotation(ImportUnit.class);
+        if (importUnitAnnotation != null) {
+            Class<? extends PersistenceUnit> unitClass = importUnitAnnotation.value();
+            assert unitClass != null;
+
+            PersistenceUnit importUnit;
+            try {
+                importUnit = unitClass.newInstance();
+            } catch (Exception e) {
+                throw new IllegalUsageException("Failed to instantiate imported unit " + unitClass, e);
+            }
+
+            Set<Class<?>> importClasses = importUnit.getClasses();
+            addAll(importClasses);
+        }
     }
 
     protected abstract void preamble();

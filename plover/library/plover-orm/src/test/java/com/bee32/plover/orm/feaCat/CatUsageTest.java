@@ -11,10 +11,10 @@ import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.util.IStruct;
 import com.bee32.plover.arch.util.MapStruct;
 import com.bee32.plover.orm.dao.CatDao;
-import com.bee32.plover.orm.unit.ImportUnit;
+import com.bee32.plover.orm.unit.UseUnit;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 
-@ImportUnit(Animals.class)
+@UseUnit(Animals.class)
 @ContextConfiguration("context.xml")
 public class CatUsageTest
         extends WiredDaoTestCase {

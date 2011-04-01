@@ -14,9 +14,9 @@ import com.bee32.plover.orm.dao.CatDao;
 import com.bee32.plover.orm.feaCat.Animals;
 import com.bee32.plover.orm.feaCat.Cat;
 import com.bee32.plover.orm.feaCat.Tiger;
-import com.bee32.plover.orm.unit.ImportUnit;
+import com.bee32.plover.orm.unit.UseUnit;
 
-@ImportUnit(Animals.class)
+@UseUnit(Animals.class)
 public class WiredDaoTestCaseTest
         extends WiredDaoTestCase {
 

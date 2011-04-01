@@ -2,18 +2,20 @@ package com.bee32.plover.orm.unit;
 
 import javax.free.IllegalUsageException;
 
-public class ImportUnitUtil {
+public class UseUnitUtil {
 
     /**
-     * @return <code>null</code> If no {@link ImportUnit} is declared on the class.
+     * UseUnit is inherited using Annotation-Inheritance.
+     *
+     * @return <code>null</code> If no {@link UseUnit} is declared on the class.
      */
-    public static PersistenceUnit getImportUnit(Class<?> clazz) {
+    public static PersistenceUnit getUseUnit(Class<?> clazz) {
 
-        ImportUnit importUnit = clazz.getAnnotation(ImportUnit.class);
-        if (importUnit == null)
+        UseUnit useUnit = clazz.getAnnotation(UseUnit.class);
+        if (useUnit == null)
             return PersistenceUnit.getDefault();
 
-        Class<? extends PersistenceUnit> unitClass = importUnit.value();
+        Class<? extends PersistenceUnit> unitClass = useUnit.value();
         assert unitClass != null;
 
         PersistenceUnit unit;
