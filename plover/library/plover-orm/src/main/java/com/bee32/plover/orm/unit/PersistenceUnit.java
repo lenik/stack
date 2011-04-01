@@ -51,7 +51,7 @@ public abstract class PersistenceUnit
 
     protected abstract void preamble();
 
-    static final PersistenceUnit defaultUnit = new SimplePUnit();
+    static final PersistenceUnit defaultUnit = new SimplePUnit("DEFAULT");
 
     public static PersistenceUnit getDefault() {
         return defaultUnit;
