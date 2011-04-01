@@ -9,6 +9,15 @@ public class ClassUtil {
 
     static boolean useContextClassLoader = false;
 
+    static Class<?> cglibFactoryClass;
+    static {
+        try {
+            cglibFactoryClass = Class.forName("net.sf.cglib.proxy.Factory");
+        } catch (ClassNotFoundException e) {
+            cglibFactoryClass = null;
+        }
+    }
+
     public static Class<?> forName(String className)
             throws ClassNotFoundException {
 
@@ -29,8 +38,11 @@ public class ClassUtil {
         if (baseName == null)
             baseName = className;
 
-        if (baseName.contains("$$"))
-            return getContextURL(clazz.getSuperclass());
+        // if (baseName.contains("$$"))
+        // return getContextURL(clazz.getSuperclass());
+        if (cglibFactoryClass != null)
+            if (cglibFactoryClass.isAssignableFrom(clazz))
+                return getContextURL(clazz.getSuperclass());
 
         String fileName = baseName + ".class";
         URL resource = clazz.getResource(fileName);
