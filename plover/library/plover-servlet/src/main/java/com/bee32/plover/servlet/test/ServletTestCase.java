@@ -5,15 +5,23 @@ import java.util.Map;
 
 import javax.free.IllegalUsageException;
 import javax.free.Strings;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 import org.mortbay.jetty.testing.HttpTester;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.test.AssembledTestCase;
 
 public abstract class ServletTestCase
-        extends AssembledTestCase<ServletTestCase> {
+        extends AssembledTestCase<ServletTestCase>
+        implements ServletContextListener {
 
     public static final boolean searchClassLocalResources = true;
+
+    protected final Logger logger;
 
     protected ServletTestLibrary stl;
 
@@ -21,7 +29,15 @@ public abstract class ServletTestCase
     private boolean checkBuiltinServlets;
     private boolean checkFallbackServlets;
 
+    /**
+     * This ServletContext is read from in-memory server.
+     */
+    protected ServletContext servletContext;
+
     public ServletTestCase() {
+
+        logger = LoggerFactory.getLogger(getClass());
+
         install(stl = new LocalSTL());
 
         Class<?> head = getClass();
@@ -41,7 +57,7 @@ public abstract class ServletTestCase
         }
     }
 
-    final class LocalSTL
+    private final class LocalSTL
             extends ServletTestLibrary {
 
         private LocalSTL() {
@@ -85,10 +101,25 @@ public abstract class ServletTestCase
                 throw new IllegalUsageException("configureFallbackServlets is overrided.");
         }
 
+        @Override
+        public void startup()
+                throws Exception {
+            super.startup();
+            ServletTestCase.this.onServerStarted();
+        }
+
+        @Override
+        public void shutdown()
+                throws Exception {
+            ServletTestCase.this.onServerShutdown();
+            super.shutdown();
+        }
+
     }
 
     protected void configureContext() {
         checkContext = true;
+        stl.addEventListener(this);
     }
 
     protected void configureBuiltinServlets() {
@@ -100,6 +131,24 @@ public abstract class ServletTestCase
     }
 
     protected abstract void configureServlets();
+
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        servletContext = sce.getServletContext();
+        logger.info("STC:: Initialize");
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        logger.info("STC:: Destroy");
+        servletContext = null;
+    }
+
+    protected void onServerStarted() {
+    }
+
+    protected void onServerShutdown() {
+    }
 
     public HttpTester httpGet(String uriOrPath)
             throws Exception {
