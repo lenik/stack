@@ -1,5 +1,6 @@
 package com.bee32.plover.arch.util;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -40,6 +41,10 @@ public abstract class ClassCatalog
         classes.add(clazz);
     }
 
+    public void addAll(Collection<? extends Class<?>> classes) {
+        this.classes.addAll(classes);
+    }
+
     public void remove(Class<?> clazz) {
         getClasses().remove(clazz);
     }
@@ -48,10 +53,13 @@ public abstract class ClassCatalog
         if (assembled)
             return;
 
+        internalAssemble();
         preamble();
 
         assembled = true;
     }
+
+    protected abstract void internalAssemble();
 
     protected abstract void preamble();
 
