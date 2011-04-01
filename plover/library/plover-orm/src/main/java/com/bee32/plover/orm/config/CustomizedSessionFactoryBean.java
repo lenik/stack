@@ -7,6 +7,7 @@ import java.util.Properties;
 import org.hibernate.transaction.JDBCTransactionFactory;
 
 import com.bee32.plover.orm.PloverNamingStrategy;
+import com.bee32.plover.orm.unit.PUnitDumper;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
 import com.bee32.plover.thirdparty.hibernate.util.MappingResourceUtil;
@@ -60,6 +61,10 @@ public abstract class CustomizedSessionFactoryBean
         this.setNamingStrategy(PloverNamingStrategy.getInstance(hibernateDialect));
 
         // Merge mapping resources
+
+        if (logger.isDebugEnabled()) {
+            logger.info("Static Unit Dump:\n" + PUnitDumper.format(staticUnit));
+        }
 
         if (usingAnnotation) {
 
