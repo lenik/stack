@@ -11,7 +11,7 @@ public class IcsfPrincipalUnit
         add(User.class);
         add(Group.class);
         add(Role.class);
-        // addPersistedClass(Realm.class);
+        // add(Realm.class);
     }
 
 }

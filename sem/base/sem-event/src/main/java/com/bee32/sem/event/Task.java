@@ -1,5 +1,8 @@
 package com.bee32.sem.event;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Task
         extends EnterpriseEvent
         implements ITask {

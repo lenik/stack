@@ -3,6 +3,7 @@ package com.bee32.plover.orm.util;
 import java.io.Serializable;
 
 import com.bee32.plover.arch.Module;
+import com.bee32.plover.orm.entity.EntityRepository;
 import com.bee32.plover.orm.entity.HibernateEntityRepository;
 import com.bee32.plover.orm.entity.IEntity;
 import com.bee32.plover.orm.entity.IEntityRepository;
@@ -16,6 +17,12 @@ public abstract class ERModule
 
     public ERModule(String name) {
         super(name);
+    }
+
+    protected <ER extends EntityRepository<?, ?>> //
+    void export(Class<ER> erClass, String location) {
+        // declare the restful token
+        // declare(location, entityRepository);
     }
 
     protected <E extends IEntity<K>, K extends Serializable> //

@@ -8,14 +8,14 @@ import com.bee32.sem.process.verify.builtin.dao.MultiLevelDao;
 import com.bee32.sem.process.verify.builtin.dao.PassToNextDao;
 
 @Oid({ 3, 15, SEMOids.Process, SEMOids.process.Process })
-public class SemProcessModule
+public class SEMProcessModule
         extends EnterpriseModule {
 
     @Override
     protected void preamble() {
-        export(new AllowListDao(), "list");
-        export(new MultiLevelDao(), "level");
-        export(new PassToNextDao(), "p2next");
+        export(AllowListDao.class, "list");
+        export(MultiLevelDao.class, "level");
+        export(PassToNextDao.class, "p2next");
     }
 
 }
