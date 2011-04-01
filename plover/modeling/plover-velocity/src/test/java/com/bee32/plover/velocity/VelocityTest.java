@@ -6,9 +6,9 @@ import org.junit.Test;
 public class VelocityTest
         extends Assert {
 
-    static Person tom;
+    static SimplePerson tom;
     static {
-        tom = new Person("Tom", 17, false, "USA");
+        tom = new SimplePerson("Tom", 17, false, "USA");
     }
 
     @Test

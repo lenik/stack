@@ -1,13 +1,13 @@
 package com.bee32.plover.velocity;
 
-public class Person {
+public class SimplePerson {
 
     private String name;
     private int age;
     private boolean isFemale;
     private String loc;
 
-    public Person(String name, int age, boolean isFemale, String location) {
+    public SimplePerson(String name, int age, boolean isFemale, String location) {
         this.name = name;
         this.age = age;
         this.isFemale = isFemale;
