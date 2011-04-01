@@ -14,6 +14,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.orm.dao.CommonDataManager;
@@ -88,6 +89,10 @@ public class SamplesLoader
         if (imports != null) {
             for (Class<?> importClass : imports.value()) {
                 IEntitySamplesContribution dependency = dependencies.get(importClass);
+                if (dependency == null) {
+                    logger.warn("Samples contribution " + contrib + " imports non-existing contribution " + importClass);
+                    continue;
+                }
                 loadSamples(dependency, worseCase, progress);
             }
         }
@@ -108,7 +113,11 @@ public class SamplesLoader
 
         progress.execute(contrib);
 
-        dataManager.saveAll(samples);
+        try {
+            dataManager.saveAll(samples);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Failed to load samples from " + contrib, e);
+        }
 
         contrib.setLoaded(true);
     }
