@@ -16,7 +16,7 @@ public class ZkMenuBuilderTest
     public static void main(String[] args)
             throws IOException, Exception {
         new ZkMenuBuilderTest().browseAndWait(//
-                "menu1.zul");
+                "main-menu.zul");
     }
 
 }
