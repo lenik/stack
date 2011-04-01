@@ -15,6 +15,6 @@ import javax.inject.Qualifier;
 @Qualifier
 public @interface ImportUnit {
 
-    Class<? extends PersistenceUnit> value();
+    Class<? extends PersistenceUnit>[] value();
 
 }

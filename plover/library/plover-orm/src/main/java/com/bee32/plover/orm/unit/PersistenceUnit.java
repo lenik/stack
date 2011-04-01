@@ -32,18 +32,20 @@ public abstract class PersistenceUnit
 
         ImportUnit importUnitAnnotation = clazz.getAnnotation(ImportUnit.class);
         if (importUnitAnnotation != null) {
-            Class<? extends PersistenceUnit> unitClass = importUnitAnnotation.value();
-            assert unitClass != null;
+            Class<? extends PersistenceUnit>[] unitClasses = importUnitAnnotation.value();
+            assert unitClasses != null;
 
-            PersistenceUnit importUnit;
-            try {
-                importUnit = unitClass.newInstance();
-            } catch (Exception e) {
-                throw new IllegalUsageException("Failed to instantiate imported unit " + unitClass, e);
+            for (Class<? extends PersistenceUnit> unitClass : unitClasses) {
+                PersistenceUnit importUnit;
+                try {
+                    importUnit = unitClass.newInstance();
+                } catch (Exception e) {
+                    throw new IllegalUsageException("Failed to instantiate imported unit " + unitClass, e);
+                }
+
+                Set<Class<?>> importClasses = importUnit.getClasses();
+                addAll(importClasses);
             }
-
-            Set<Class<?>> importClasses = importUnit.getClasses();
-            addAll(importClasses);
         }
     }
 
