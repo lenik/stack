@@ -28,9 +28,6 @@ public class OverlappedContext
         if (path == null || !path.startsWith("/"))
             throw new MalformedURLException(path);
 
-        // Remove the leading /
-        path = path.substring(1);
-
         URL resourceUrl = OverlappedBases.searchResource(path);
 
         // Not in search-bases, fallback to the default one (which is resource-base based).

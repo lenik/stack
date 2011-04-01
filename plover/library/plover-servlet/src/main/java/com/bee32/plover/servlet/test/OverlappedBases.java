@@ -61,9 +61,19 @@ public class OverlappedBases {
         return searchBases.iterator();
     }
 
+    /**
+     * Search resource.
+     *
+     * @param path
+     *            The leading / is ignored.
+     * @return The resolved resource, <code>null</code> if resource denoted by the given
+     *         <code>path</code> doesn't exist.
+     */
     public static URL searchResource(String path) {
+        // Always remove the leading /.
         if (path.startsWith("/"))
             path = path.substring(1);
+
         for (IResourceBase base : searchBases) {
             URL resource = base.getResource(path);
             if (resource != null)
