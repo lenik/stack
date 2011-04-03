@@ -7,10 +7,10 @@ import javax.servlet.http.HttpSession;
 
 import com.bee32.plover.arch.operation.OperationContext;
 
-public class HttpRequestContext
+public class HttpOperationContext
         extends OperationContext {
 
-    public HttpRequestContext(HttpServletRequest req, HttpServletResponse resp) {
+    public HttpOperationContext(HttpServletRequest req, HttpServletResponse resp) {
         super(req.getParameterMap());
 
         registerContext(HttpServletRequest.class, req);
