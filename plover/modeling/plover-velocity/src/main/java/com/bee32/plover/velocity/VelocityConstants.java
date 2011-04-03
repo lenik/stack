@@ -25,7 +25,7 @@ package com.bee32.plover.velocity;
  *      href="http://velocity.apache.org/engine/releases/velocity-1.5/developer-guide.html#velocity_configuration_keys_and_values">Configuration
  *      keys and values</a>
  */
-public interface VelocityConfig {
+public interface VelocityConstants {
 
     // Runtime Log
 
@@ -198,8 +198,8 @@ public interface VelocityConfig {
     String _LOADER_DESCRIPTION = ".loader.description";
 
     /**
-     * <code>&lt;name&gt;.resource.loader.class
-= org.apache.velocity.runtime.resource.loader.FileResourceLoader</code><br>
+     * <code>&lt;name&gt;.resource.loader.class = org.apache.velocity.runtime.resource.loader.FileResourceLoader</code>
+     * <br>
      * </br> Name of implementation class for the loader. The default loader is the file loader.
      * </p>
      */

@@ -10,18 +10,13 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.exception.VelocityException;
-import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-public class Velocity {
+public class VelocityUtil {
 
     static VelocityEngine velocityEngine;
 
     static {
-        velocityEngine = new VelocityEngine();
-
-        velocityEngine.setProperty("file.resource.loader.class", ClasspathResourceLoader.class.getName());
-        velocityEngine.setProperty("runtime.references.strict", "true");
-
+        velocityEngine = PloverVelocityEngine.getInstance();
         velocityEngine.init();
     }
 
@@ -64,7 +59,7 @@ public class Velocity {
         if (template == null)
             return false;
 
-        VelocityContext context = new VelocityContext();
+        VelocityContext context = new PloverVelocityContext();
         context.put("it", it);
 
         template.merge(context, writer);
