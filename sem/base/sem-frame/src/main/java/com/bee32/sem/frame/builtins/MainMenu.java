@@ -1,5 +1,7 @@
 package com.bee32.sem.frame.builtins;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -15,6 +17,8 @@ public class MainMenu
         extends MenuBar
         implements ApplicationContextAware {
 
+    static Logger logger = LoggerFactory.getLogger(MainMenu.class);
+
     MainMenu() {
         super("main");
     }
@@ -24,6 +28,7 @@ public class MainMenu
             throws BeansException {
 
         for (MenuContribution contribution : applicationContext.getBeansOfType(MenuContribution.class).values()) {
+            logger.debug("Merge menu contribution: " + contribution);
             merge(contribution);
         }
 

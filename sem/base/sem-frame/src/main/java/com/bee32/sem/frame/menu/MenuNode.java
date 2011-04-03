@@ -1,5 +1,6 @@
 package com.bee32.sem.frame.menu;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -45,6 +46,11 @@ public class MenuNode
     @Override
     public IMenuNode get(String childName) {
         return children.get(childName);
+    }
+
+    @Override
+    public Collection<IMenuNode> getChildren() {
+        return children.values();
     }
 
     @Override
@@ -147,9 +153,8 @@ public class MenuNode
     public boolean resolveMerge(String parentMenuPath, IMenuEntry menuEntry) {
         IMenuNode parentMenu = resolve(parentMenuPath, true);
 
-        IMenuNode newChild = parentMenu.create(menuEntry.getName());
-        if (newChild == null)
-            return false;
+        IMenuNode newChild = parentMenu.getOrCreate(menuEntry.getName());
+        assert newChild != null;
 
         newChild.populate(menuEntry);
         return true;

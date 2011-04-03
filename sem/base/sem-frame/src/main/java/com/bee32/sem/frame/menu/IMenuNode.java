@@ -1,5 +1,7 @@
 package com.bee32.sem.frame.menu;
 
+import java.util.Collection;
+
 public interface IMenuNode
         extends IMenuEntry, Iterable<IMenuNode> {
 
@@ -10,6 +12,8 @@ public interface IMenuNode
     boolean contains(String childName);
 
     IMenuNode get(String childName);
+
+    Collection<IMenuNode> getChildren();
 
     /**
      * Create a new child if it's not existed.
