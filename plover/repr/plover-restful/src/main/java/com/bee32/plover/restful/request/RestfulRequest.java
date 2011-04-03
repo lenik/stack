@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.bee32.plover.disp.IDispatchContext;
+import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.disp.util.TokenQueue;
 import com.bee32.plover.model.profile.Profile;
@@ -24,7 +24,7 @@ public class RestfulRequest
 
     private String path;
     private ITokenQueue tokenQueue;
-    private IDispatchContext dispatchContext;
+    private IArrival arrival;
 
     private Profile profile = StandardProfiles.CONTENT;
     private Mime contentType = Mimes.text_html;
@@ -61,19 +61,19 @@ public class RestfulRequest
     }
 
     @Override
-    public IDispatchContext getDispatchContext() {
-        return dispatchContext;
+    public IArrival getArrival() {
+        return arrival;
     }
 
-    public void setDispatchContext(IDispatchContext dispatchContext) {
-        this.dispatchContext = dispatchContext;
+    public void setArrival(IArrival arrival) {
+        this.arrival = arrival;
     }
 
     @Override
-    public <T> T getObject() {
-        if (dispatchContext == null)
+    public <T> T getTarget() {
+        if (arrival == null)
             return null;
-        return (T) dispatchContext.getObject();
+        return (T) arrival.getTarget();
     }
 
     @Override

@@ -7,16 +7,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.orm.test.bookstore.Book;
 import com.bee32.plover.restful.request.RestfulRequest;
-import com.bee32.plover.velocity.Velocity;
+import com.bee32.plover.velocity.VelocityUtil;
 
 public class BookStoreWeb {
 
     public String list(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         RestfulRequest rreq = (RestfulRequest) req;
-        BookStore store = rreq.getObject();
+        BookStore store = rreq.getTarget();
 
-        String list = Velocity.merge("index", store);
+        String list = VelocityUtil.merge("index", store);
 
         resp.getWriter().println(list);
         return list;
@@ -25,7 +25,7 @@ public class BookStoreWeb {
     public void create(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         RestfulRequest rreq = (RestfulRequest) req;
-        BookStore store = rreq.getObject();
+        BookStore store = rreq.getTarget();
 
         String name = req.getParameter("name");
         String content = req.getParameter("content");

@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.ServiceLoader;
 
 import com.bee32.plover.disp.AbstractDispatcher;
-import com.bee32.plover.disp.DispatchContext;
+import com.bee32.plover.disp.Arrival;
 import com.bee32.plover.disp.DispatchException;
-import com.bee32.plover.disp.IDispatchContext;
+import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.restful.DispatchFilter;
 import com.bee32.plover.restful.ModuleManager;
@@ -34,14 +34,14 @@ public class ResourceDispatcher
     /**
      * The root context should be module manager.
      *
-     * @param context
+     * @param arrival
      *            Not used actually, because this resource dispatcher manages children resources by
      *            itself.
      * @see DispatchFilter#getRootContext()
      * @see ModuleManager
      */
     @Override
-    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
+    public IArrival dispatch(IArrival arrival, ITokenQueue tokens)
             throws DispatchException {
         // The context object is ignored.
         // Object obj = context.getObject();
@@ -71,7 +71,7 @@ public class ResourceDispatcher
             consumedTokens[i] = tokens.shift();
         }
 
-        return new DispatchContext(context, resource, consumedTokens);
+        return new Arrival(arrival, resource, consumedTokens);
     }
 
     private static final ResourceDispatcher instance;

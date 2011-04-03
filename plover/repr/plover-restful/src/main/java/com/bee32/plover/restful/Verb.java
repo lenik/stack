@@ -7,7 +7,7 @@ import java.util.List;
 import com.bee32.plover.arch.operation.IOperation;
 import com.bee32.plover.arch.operation.IOperationContext;
 import com.bee32.plover.arch.operation.OperationFusion;
-import com.bee32.plover.disp.IDispatchContext;
+import com.bee32.plover.disp.IArrival;
 
 public class Verb
         implements Serializable {
@@ -102,7 +102,7 @@ public class Verb
         return lastIndexOf(str, ch, index, count);
     }
 
-    public Object operate(IDispatchContext dc, IOperationContext context)
+    public Object operate(IArrival dc, IOperationContext context)
             throws Exception {
         List<String> pathRevList = new ArrayList<String>();
         return operate(dc, context, pathRevList);
@@ -114,27 +114,27 @@ public class Verb
      * @throws UnsupportedVerbException
      *             If there is no implementation for any object in the dispatch-chain.
      */
-    public Object operate(IDispatchContext dc, IOperationContext context, List<String> pathRevList)
+    public Object operate(IArrival dc, IOperationContext context, List<String> pathRevList)
             throws UnsupportedVerbException, Exception {
-        Object obj = dc.getObject();
+        Object target = dc.getTarget();
 
         // XXX - parent = null??
-        if (obj != null) {
+        if (target != null) {
             OperationFusion fusion = OperationFusion.getInstance();
-            IOperation operation = fusion.getOperation(obj, name);
+            IOperation operation = fusion.getOperation(target, name);
 
             if (operation != null) {
                 String path = pathreverse(pathRevList);
                 context.setPath(path);
 
-                Object retval = operation.execute(obj, context);
+                Object retval = operation.execute(target, context);
                 context.setReturnValue(retval);
 
-                return obj;
+                return target;
             }
         }
 
-        IDispatchContext parent = dc.getParent();
+        IArrival parent = dc.getParent();
         if (parent == null)
             throw new UnsupportedVerbException(name);
 

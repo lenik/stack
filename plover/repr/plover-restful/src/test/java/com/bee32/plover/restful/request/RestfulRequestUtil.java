@@ -12,7 +12,7 @@ public class RestfulRequestUtil {
         RestfulRequest rreq = new RestfulRequest(req0);
 
         DispatchContext context = new DispatchContext(obj);
-        rreq.setDispatchContext(context);
+        rreq.setArrival(context);
 
         return rreq;
     }

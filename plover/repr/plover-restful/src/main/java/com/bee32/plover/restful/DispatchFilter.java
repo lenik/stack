@@ -22,16 +22,17 @@ import org.apache.velocity.VelocityContext;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
 
 import overlay.OverlayUtil;
 
 import com.bee32.plover.arch.naming.ReverseLookupRegistry;
 import com.bee32.plover.arch.operation.IOperation;
 import com.bee32.plover.arch.operation.OperationFusion;
-import com.bee32.plover.disp.DispatchContext;
+import com.bee32.plover.disp.Arrival;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
-import com.bee32.plover.disp.IDispatchContext;
+import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.model.IModel;
 import com.bee32.plover.model.profile.Profile;
@@ -41,7 +42,7 @@ import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
 import com.bee32.plover.restful.request.RestfulRequest;
 import com.bee32.plover.restful.request.RestfulRequestBuilder;
 import com.bee32.plover.servlet.context.ServletContainer;
-import com.bee32.plover.velocity.Velocity;
+import com.bee32.plover.velocity.VelocityUtil;
 
 /**
  * The overall modules dispatcher.
@@ -54,6 +55,7 @@ import com.bee32.plover.velocity.Velocity;
  * In the filter-mapping form, the dispatched namespace is mess up with the ordinary servlets and
  * jsp urls.
  */
+@ContextConfiguration
 public class DispatchFilter
         extends HttpServlet
         implements Filter, InitializingBean {
@@ -139,21 +141,23 @@ public class DispatchFilter
             // throw new IllegalStateException("Root object isn't set");
             rootObject = ModuleManager.getInstance();
 
-        IDispatchContext rootContext = new DispatchContext(rootObject);
+        IArrival rootContext = new Arrival(rootObject);
         Dispatcher dispatcher = Dispatcher.getInstance();
-        IDispatchContext resultContext;
+        IArrival arrival;
         try {
-            resultContext = dispatcher.dispatch(rootContext, tq);
+            arrival = dispatcher.dispatch(rootContext, tq);
         } catch (DispatchException e) {
             // resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
             throw new ServletException(e.getMessage(), e);
         }
 
-        if (resultContext == null)
+        if (arrival == null)
             return false;
 
-        HttpRequestContext requestContext = new HttpRequestContext(req, resp);
-
+        HttpOperationContext requestContext = new HttpOperationContext(req, resp);
+// }
+//
+// protected void process(IDispatchContext resultContext, HttpRequestContext requestContext) {
         Verb verb = rreq.getVerb();
 
         if (verb != null) {
@@ -161,7 +165,7 @@ public class DispatchFilter
             Object redirectObject;
 
             try {
-                verbImpl = verb.operate(resultContext, requestContext);
+                verbImpl = verb.operate(arrival, requestContext);
             } catch (UnsupportedVerbException e) {
                 throw e;
             } catch (Exception e) {
@@ -171,7 +175,7 @@ public class DispatchFilter
             redirectObject = requestContext.getReturnValue();
 
             if (redirectObject == null)
-                redirectObject = resultContext.getReachedObject(); // verbImpl?
+                redirectObject = arrival.getLastNonNullTarget(); // verbImpl?
 
             String message = "Operation done";
 
@@ -195,16 +199,16 @@ public class DispatchFilter
 
         // No verb, do GET/READ.
 
-        Object result = resultContext.getObject();
+        Object target = arrival.getTarget();
         // Date expires = resultContext.getExpires();
 
-        if (result == null) {
+        if (target == null) {
             // ERROR 404??
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return true;
         }
 
-        rreq.setDispatchContext(resultContext);
+        rreq.setArrival(arrival);
 
         // 3, Render the specific Profile, or default if none.
         if (resp.isCommitted())
@@ -215,7 +219,7 @@ public class DispatchFilter
         if (profile != null)
             profileName = profile.getName();
 
-        Class<? extends Object> resultClass = result.getClass();
+        Class<? extends Object> resultClass = target.getClass();
         Class<?> webClass = OverlayUtil.getOverlay(resultClass, "web");
         if (webClass != null) {
             Object webImpl;
@@ -242,10 +246,10 @@ public class DispatchFilter
             }
         }
 
-        Template template = Velocity.getTemplate(resultClass, profileName);
+        Template template = VelocityUtil.getTemplate(resultClass, profileName);
         if (template != null) {
             VelocityContext context = new VelocityContext();
-            context.put("it", result);
+            context.put("it", target);
             PrintWriter writer = resp.getWriter();
             template.merge(context, writer);
             writer.flush();
@@ -253,14 +257,14 @@ public class DispatchFilter
         }
 
         if (!skipped) {
-            if (result instanceof Servlet) {
-                Servlet resultServlet = (Servlet) result;
+            if (target instanceof Servlet) {
+                Servlet resultServlet = (Servlet) target;
                 resultServlet.service(request, response);
                 return true;
             }
 
-            if (result instanceof IModel) {
-                IModel targetModel = (IModel) result;
+            if (target instanceof IModel) {
+                IModel targetModel = (IModel) target;
 
                 ServletContainer container = new ServletContainer(servletContext, request, response);
                 ModelStage stage = new ModelStage(container);

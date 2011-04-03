@@ -2,7 +2,7 @@ package com.bee32.plover.restful.request;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.bee32.plover.disp.IDispatchContext;
+import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.restful.Verb;
@@ -41,11 +41,11 @@ public interface IRestfulRequest
 
     ITokenQueue getTokenQueue();
 
-    IDispatchContext getDispatchContext();
+    IArrival getArrival();
 
     /**
-     * The same as dispatchContext.object.
+     * The same as arrival.target.
      */
-    <T> T getObject();
+    <T> T getTarget();
 
 }
