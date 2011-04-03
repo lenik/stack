@@ -1,6 +1,9 @@
 package com.bee32.sem.frame.menu;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.free.IllegalUsageException;
 
@@ -62,10 +65,9 @@ public class SuperfishMenuBuilder {
         out.print("<a");
 
         IAction action = menuNode.getAction();
-        if (action != null) {
-            boolean isEnabled = action.isEnabled();
+        if (action != null && action.isEnabled()) {
 
-            ContextLocation target = action.getTarget();
+            ContextLocation target = action.getTargetLocation();
             if (target.getContext() == LocationContextConstants.JAVASCRIPT) {
                 String javascript = target.getLocation();
 
@@ -102,7 +104,10 @@ public class SuperfishMenuBuilder {
         out.println("</a>");
 
         if (!menuNode.isEmpty()) {
-            for (IMenuNode childNode : menuNode) {
+            List<IMenuNode> children = new ArrayList<IMenuNode>(menuNode.getChildren());
+            Collections.sort(children, MenuEntryComparator.INSTANCE);
+
+            for (IMenuNode childNode : children) {
                 out.println("<ul>");
                 out.enter();
 
