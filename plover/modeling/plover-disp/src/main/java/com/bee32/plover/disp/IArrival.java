@@ -2,14 +2,14 @@ package com.bee32.plover.disp;
 
 import java.util.Date;
 
-public interface IDispatchContext {
+public interface IArrival {
 
     /**
-     * The parent dispatch context.
+     * Get the previous arrival node.
      *
      * @return Parent dispatch context, <code>null</code> if none.
      */
-    IDispatchContext getParent();
+    IArrival getParent();
 
     /**
      * The partial path tokens consumed by this context.
@@ -26,19 +26,18 @@ public interface IDispatchContext {
     String getConsumedPath();
 
     /**
-     * The dispatched object.
+     * Get the target object.
      *
-     * @return The dispatched object, <code>null</code> if the final object is dispatched to
-     *         <code>null</code>.
+     * @return The dispatched object, only the final target can be <code>null</code>.
      */
-    Object getObject();
+    Object getTarget();
 
     /**
-     * Get the first non-<code>null</code> object in the dispatched-chain.
+     * Get the last non-<code>null</code> target in the chain.
      *
-     * @return <code>null</code> if none reached.
+     * @return <code>null</code> if none.
      */
-    Object getReachedObject();
+    Object getLastNonNullTarget();
 
     /**
      * The latest expires date gathered in the context chain.

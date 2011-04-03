@@ -37,13 +37,13 @@ public abstract class DispatchModule
     }
 
     @Override
-    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
+    public IArrival dispatch(IArrival context, ITokenQueue tokens)
             throws DispatchException {
         return loadDispatcher().dispatch(context, tokens);
     }
 
     @Override
-    public IDispatchContext dispatch(IDispatchContext context, String path)
+    public IArrival dispatch(IArrival context, String path)
             throws DispatchException {
         return loadDispatcher().dispatch(context, path);
     }

@@ -3,7 +3,7 @@ package com.bee32.plover.disp.dyna;
 import com.bee32.plover.disp.AbstractDispatcher;
 import com.bee32.plover.disp.DispatchConfig;
 import com.bee32.plover.disp.DispatchException;
-import com.bee32.plover.disp.IDispatchContext;
+import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.IDispatchable;
 import com.bee32.plover.disp.util.ITokenQueue;
 
@@ -24,9 +24,9 @@ public class DynamicDispatcher
     }
 
     @Override
-    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
+    public IArrival dispatch(IArrival context, ITokenQueue tokens)
             throws DispatchException {
-        Object obj = context.getObject();
+        Object obj = context.getTarget();
         if (!(obj instanceof IDispatchable))
             return null;
 

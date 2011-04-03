@@ -46,7 +46,7 @@ public class Dispatcher
     private static int maxDispatches = 100;
 
     @Override
-    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
+    public IArrival dispatch(IArrival context, ITokenQueue tokens)
             throws DispatchException {
         if (context == null)
             throw new NullPointerException("context");
@@ -62,7 +62,7 @@ public class Dispatcher
             boolean processed = false;
 
             for (IDispatcher dispatcher : dispatchers) {
-                IDispatchContext next = dispatcher.dispatch(context, tokens);
+                IArrival next = dispatcher.dispatch(context, tokens);
                 if (next != null) {
                     context = next;
                     processed = true;

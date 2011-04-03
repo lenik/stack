@@ -3,9 +3,9 @@ package com.bee32.plover.disp.tree;
 import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.disp.AbstractDispatcher;
 import com.bee32.plover.disp.DispatchConfig;
-import com.bee32.plover.disp.DispatchContext;
+import com.bee32.plover.disp.Arrival;
 import com.bee32.plover.disp.DispatchException;
-import com.bee32.plover.disp.IDispatchContext;
+import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 
 public class NamedNodeDispatcher
@@ -25,9 +25,9 @@ public class NamedNodeDispatcher
     }
 
     @Override
-    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
+    public IArrival dispatch(IArrival context, ITokenQueue tokens)
             throws DispatchException {
-        Object obj = context.getObject();
+        Object obj = context.getTarget();
 
         if (!(obj instanceof INamedNode))
             return null;
@@ -43,7 +43,7 @@ public class NamedNodeDispatcher
             return null;
 
         tokens.shift();
-        return new DispatchContext(context, result, key);
+        return new Arrival(context, result, key);
     }
 
 }

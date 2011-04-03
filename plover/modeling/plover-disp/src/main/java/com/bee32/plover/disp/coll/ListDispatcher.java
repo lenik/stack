@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.bee32.plover.disp.AbstractDispatcher;
 import com.bee32.plover.disp.DispatchConfig;
-import com.bee32.plover.disp.DispatchContext;
+import com.bee32.plover.disp.Arrival;
 import com.bee32.plover.disp.DispatchException;
-import com.bee32.plover.disp.IDispatchContext;
+import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 
 public class ListDispatcher
@@ -26,9 +26,9 @@ public class ListDispatcher
     }
 
     @Override
-    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
+    public IArrival dispatch(IArrival context, ITokenQueue tokens)
             throws DispatchException {
-        Object obj = context.getObject();
+        Object obj = context.getTarget();
 
         if (!(obj instanceof List<?>))
             return null;
@@ -44,7 +44,7 @@ public class ListDispatcher
             throw new DispatchException("Index out of range: " + index);
 
         Object result = list.get(index);
-        return new DispatchContext(context, result, mayConsume);
+        return new Arrival(context, result, mayConsume);
     }
 
 }

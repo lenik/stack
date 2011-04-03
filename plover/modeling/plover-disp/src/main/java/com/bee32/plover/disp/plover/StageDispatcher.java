@@ -2,7 +2,7 @@ package com.bee32.plover.disp.plover;
 
 import com.bee32.plover.disp.AbstractDispatcher;
 import com.bee32.plover.disp.DispatchException;
-import com.bee32.plover.disp.IDispatchContext;
+import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.model.stage.IModelStage;
 
@@ -18,9 +18,9 @@ public class StageDispatcher
     }
 
     @Override
-    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
+    public IArrival dispatch(IArrival context, ITokenQueue tokens)
             throws DispatchException {
-        Object obj = context.getObject();
+        Object obj = context.getTarget();
 
         if (!(obj instanceof IModelStage))
             return null;

@@ -9,9 +9,9 @@ import java.util.Map;
 
 import com.bee32.plover.disp.AbstractDispatcher;
 import com.bee32.plover.disp.DispatchConfig;
-import com.bee32.plover.disp.DispatchContext;
+import com.bee32.plover.disp.Arrival;
 import com.bee32.plover.disp.DispatchException;
-import com.bee32.plover.disp.IDispatchContext;
+import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 
 public class PropertyDispatcher
@@ -36,9 +36,9 @@ public class PropertyDispatcher
     }
 
     @Override
-    public IDispatchContext dispatch(IDispatchContext context, ITokenQueue tokens)
+    public IArrival dispatch(IArrival context, ITokenQueue tokens)
             throws DispatchException {
-        Object obj = context.getObject();
+        Object obj = context.getTarget();
         if (obj == null)
             return null;
 
@@ -81,7 +81,7 @@ public class PropertyDispatcher
             throw new DispatchException(e);
         }
 
-        return new DispatchContext(context, result, propertyName);
+        return new Arrival(context, result, propertyName);
     }
 
 }

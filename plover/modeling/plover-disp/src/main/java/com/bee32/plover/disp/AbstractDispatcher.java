@@ -21,10 +21,10 @@ public abstract class AbstractDispatcher
     }
 
     @Override
-    public IDispatchContext dispatch(IDispatchContext context, String path)
+    public IArrival dispatch(IArrival context, String path)
             throws DispatchException {
         TokenQueue tq = new TokenQueue(path);
-        IDispatchContext target = dispatch(context, tq);
+        IArrival target = dispatch(context, tq);
         if (!tq.isEmpty())
             throw new DispatchException("Dispatch isn't completed: " + tq);
         return target;

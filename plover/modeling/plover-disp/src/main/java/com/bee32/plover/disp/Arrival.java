@@ -5,44 +5,37 @@ import java.util.Date;
 
 import javax.free.StringArray;
 
-public class DispatchContext
-        implements IDispatchContext {
+public class Arrival
+        implements IArrival {
 
-    private final IDispatchContext parent;
+    private final IArrival parent;
 
-    private static final String[] emptyStringArray = new String[0];
-    private String[] consumedTokens = emptyStringArray;
+    private String[] consumedTokens = new String[0];
 
-    private Object reachedObject;
+    private Object target;
 
     private Date expires;
 
-    public DispatchContext(Object startObject) {
+    public Arrival(Object startTarget) {
+        if (startTarget == null)
+            throw new NullPointerException("startTarget");
         this.parent = null;
-        this.reachedObject = startObject;
+        this.target = startTarget;
     }
 
-    public DispatchContext(IDispatchContext parent) {
-        if (parent == null)
-            throw new NullPointerException("parent");
-        this.parent = parent;
-        this.expires = parent.getExpires();
-    }
-
-    public DispatchContext(IDispatchContext parent, Object reachedObject, String... consumedTokens) {
-        this(parent);
-
-        if (reachedObject == null)
-            throw new NullPointerException("reachedObject");
+    public Arrival(IArrival parent, Object target, String... consumedTokens) {
+        if (target == null)
+            throw new NullPointerException("target");
         if (consumedTokens == null)
             throw new NullPointerException("consumedTokens");
 
-        this.reachedObject = reachedObject;
+        this.parent = parent;
+        this.target = target;
         this.consumedTokens = consumedTokens;
     }
 
     @Override
-    public IDispatchContext getParent() {
+    public IArrival getParent() {
         return parent;
     }
 
@@ -61,23 +54,23 @@ public class DispatchContext
     }
 
     @Override
-    public Object getObject() {
-        return reachedObject;
+    public Object getTarget() {
+        return target;
     }
 
     public void setObject(Object object) {
-        this.reachedObject = object;
+        this.target = object;
     }
 
     @Override
-    public Object getReachedObject() {
-        if (reachedObject != null)
-            return reachedObject;
+    public Object getLastNonNullTarget() {
+        if (target != null)
+            return target;
 
         if (parent == null)
             return null;
 
-        return parent.getReachedObject();
+        return parent.getLastNonNullTarget();
     }
 
     @Override
@@ -103,7 +96,7 @@ public class DispatchContext
         result = prime * result + Arrays.hashCode(consumedTokens);
         result = prime * result + ((expires == null) ? 0 : expires.hashCode());
         result = prime * result + ((parent == null) ? 0 : parent.hashCode());
-        result = prime * result + ((reachedObject == null) ? 0 : reachedObject.hashCode());
+        result = prime * result + ((target == null) ? 0 : target.hashCode());
         return result;
     }
 
@@ -115,30 +108,36 @@ public class DispatchContext
             return false;
         if (getClass() != obj.getClass())
             return false;
-        DispatchContext other = (DispatchContext) obj;
+
+        Arrival other = (Arrival) obj;
+
         if (!Arrays.equals(consumedTokens, other.consumedTokens))
             return false;
+
         if (expires == null) {
             if (other.expires != null)
                 return false;
         } else if (!expires.equals(other.expires))
             return false;
+
         if (parent == null) {
             if (other.parent != null)
                 return false;
         } else if (!parent.equals(other.parent))
             return false;
-        if (reachedObject == null) {
-            if (other.reachedObject != null)
+
+        if (target == null) {
+            if (other.target != null)
                 return false;
-        } else if (!reachedObject.equals(other.reachedObject))
+        } else if (!target.equals(other.target))
             return false;
+
         return true;
     }
 
     @Override
     public String toString() {
-        return getConsumedPath() + " -> " + reachedObject;
+        return getConsumedPath() + " -> " + target;
     }
 
 }
