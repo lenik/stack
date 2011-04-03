@@ -135,12 +135,12 @@ public abstract class ServletTestCase
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         servletContext = sce.getServletContext();
-        logger.info("STC:: Initialize");
+        logger.info("Test servlet context is initialized.");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        logger.info("STC:: Destroy");
+        logger.info("Test servlet context is destroyed.");
         servletContext = null;
     }
 
