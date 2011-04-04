@@ -2,6 +2,9 @@ package com.bee32.plover.restful;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.free.NotImplementedException;
 import javax.inject.Inject;
@@ -26,22 +29,13 @@ import org.springframework.test.context.ContextConfiguration;
 
 import overlay.OverlayUtil;
 
-import com.bee32.plover.arch.naming.ReverseLookupRegistry;
-import com.bee32.plover.arch.operation.IOperation;
-import com.bee32.plover.arch.operation.OperationFusion;
 import com.bee32.plover.disp.Arrival;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
-import com.bee32.plover.model.IModel;
-import com.bee32.plover.model.profile.Profile;
-import com.bee32.plover.model.stage.ModelStage;
-import com.bee32.plover.model.stage.ModelStageException;
 import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
-import com.bee32.plover.restful.request.RestfulRequest;
 import com.bee32.plover.restful.request.RestfulRequestBuilder;
-import com.bee32.plover.servlet.context.ServletContainer;
 import com.bee32.plover.velocity.VelocityUtil;
 
 /**
@@ -120,173 +114,6 @@ public class DispatchFilter
         chain.doFilter(request, response);
     }
 
-    protected boolean processOrNot(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException, RestfulException {
-
-        if (!(request instanceof HttpServletRequest))
-            return false;
-
-        // 1, Build the restful-request
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse resp = (HttpServletResponse) response;
-
-        RestfulRequestBuilder requestBuilder = RestfulRequestBuilder.getInstance();
-        RestfulRequest rreq = requestBuilder.build(req);
-
-        // 2, Path-dispatch
-        ITokenQueue tq = rreq.getTokenQueue();
-
-        Object rootObject = root == null ? moduleManager : root;
-        if (rootObject == null)
-            // throw new IllegalStateException("Root object isn't set");
-            rootObject = ModuleManager.getInstance();
-
-        IArrival rootContext = new Arrival(rootObject);
-        Dispatcher dispatcher = Dispatcher.getInstance();
-        IArrival arrival;
-        try {
-            arrival = dispatcher.dispatch(rootContext, tq);
-        } catch (DispatchException e) {
-            // resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
-            throw new ServletException(e.getMessage(), e);
-        }
-
-        if (arrival == null)
-            return false;
-
-        HttpOperationContext requestContext = new HttpOperationContext(req, resp);
-// }
-//
-// protected void process(IDispatchContext resultContext, HttpRequestContext requestContext) {
-        Verb verb = rreq.getVerb();
-
-        if (verb != null) {
-            Object verbImpl;
-            Object redirectObject;
-
-            try {
-                verbImpl = verb.operate(arrival, requestContext);
-            } catch (UnsupportedVerbException e) {
-                throw e;
-            } catch (Exception e) {
-                throw new RestfulException(e.getMessage(), e);
-            }
-
-            redirectObject = requestContext.getReturnValue();
-
-            if (redirectObject == null)
-                redirectObject = arrival.getLastNonNullTarget(); // verbImpl?
-
-            String message = "Operation done";
-
-            if (redirectObject != null) {
-                if (redirectObject instanceof String)
-                    message = (String) redirectObject;
-
-                // redirect...
-                String relativeLocation = ReverseLookupRegistry.getInstance().getLocation(redirectObject);
-                if (relativeLocation != null) {
-                    String location = req.getContextPath() + "/" + relativeLocation;
-                    resp.sendRedirect(location);
-                    return true;
-                }
-            }
-
-            resp.getWriter().println(message);
-            resp.flushBuffer();
-            return true;
-        }
-
-        // No verb, do GET/READ.
-
-        Object target = arrival.getTarget();
-        // Date expires = resultContext.getExpires();
-
-        if (target == null) {
-            // ERROR 404??
-            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return true;
-        }
-
-        rreq.setArrival(arrival);
-
-        // 3, Render the specific Profile, or default if none.
-        if (resp.isCommitted())
-            return true;
-
-        String profileName = "content";
-        Profile profile = rreq.getProfile();
-        if (profile != null)
-            profileName = profile.getName();
-
-        Class<? extends Object> resultClass = target.getClass();
-        Class<?> webClass = OverlayUtil.getOverlay(resultClass, "web");
-        if (webClass != null) {
-            Object webImpl;
-            try {
-                // webImpl = StatelessUtil.createOrReuse(webClass);
-                webImpl = applicationContext.getAutowireCapableBeanFactory().createBean(webClass);
-            } catch (Exception e) {
-                throw new ServletException(e.getMessage(), e);
-            }
-
-            OperationFusion fusion = OperationFusion.getInstance();
-            IOperation profileOperation = fusion.getOperation(webImpl, profileName);
-
-            if (profileOperation != null) {
-                try {
-                    // XXX - Return value is ignored here.
-                    profileOperation.execute(webImpl, requestContext);
-                } catch (ServletException e) {
-                    throw e;
-                } catch (Exception e) {
-                    throw new ServletException(e.getMessage(), e);
-                }
-                return true;
-            }
-        }
-
-        Template template = VelocityUtil.getTemplate(resultClass, profileName);
-        if (template != null) {
-            VelocityContext context = new VelocityContext();
-            context.put("it", target);
-            PrintWriter writer = resp.getWriter();
-            template.merge(context, writer);
-            writer.flush();
-            return true;
-        }
-
-        if (!skipped) {
-            if (target instanceof Servlet) {
-                Servlet resultServlet = (Servlet) target;
-                resultServlet.service(request, response);
-                return true;
-            }
-
-            if (target instanceof IModel) {
-                IModel targetModel = (IModel) target;
-
-                ServletContainer container = new ServletContainer(servletContext, request, response);
-                ModelStage stage = new ModelStage(container);
-                // ... stage.setView(tq.rest()); ...
-                try {
-                    targetModel.stage(stage);
-                } catch (ModelStageException e) {
-                    throw new ServletException(e.getMessage(), e);
-                }
-
-                // stage.getElements() -> Tree-Convert...
-                // display...
-            }
-
-            throw new NotImplementedException();
-        } // skipped
-
-        return false;
-    } // processOrNot
-
-    static boolean skipped = true;
-
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -298,6 +125,117 @@ public class DispatchFilter
         } catch (RestfulException e) {
             throw new ServletException(e.getMessage(), e);
         }
+    }
+
+    protected boolean processOrNot(ServletRequest _request, ServletResponse _response)
+            throws IOException, ServletException, RestfulException {
+
+        if (!(_request instanceof HttpServletRequest))
+            return false;
+        if (!(_response instanceof HttpServletResponse))
+            return false;
+
+        // 1, Build the restful-request
+        HttpServletRequest request = (HttpServletRequest) _request;
+        HttpServletResponse response = (HttpServletResponse) _response;
+
+        RestfulRequestBuilder requestBuilder = RestfulRequestBuilder.getInstance();
+        RestfulRequest req = requestBuilder.build(request);
+        RestfulResponse resp = new RestfulResponse(response);
+
+        // 2, Path-dispatch
+        ITokenQueue tq = req.getTokenQueue();
+        IArrival arrival = dispatch(tq);
+        if (arrival == null)
+            return false;
+
+        // No verb, do GET/READ.
+
+        Object origin = arrival.getTarget();
+        // Date expires = resultContext.getExpires();
+
+        if (origin == null) {
+            // ERROR 404??
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return true;
+        }
+
+        // 3, Render the specific Profile, or default if none.
+        if (origin instanceof Servlet) {
+            Servlet resultServlet = (Servlet) origin;
+            resultServlet.service(_request, _response);
+            return true;
+        }
+
+        req.setArrival(arrival);
+
+        Class<? extends Object> targetClass = origin.getClass();
+        Class<?> controllerClass = OverlayUtil.getOverlay(targetClass, "controller");
+        if (controllerClass != null) {
+            Object controller;
+            try {
+                // webImpl = StatelessUtil.createOrReuse(webClass);
+                controller = applicationContext.getBean(controllerClass);
+            } catch (Exception e) {
+                throw new ServletException(e.getMessage(), e);
+            }
+        }
+
+        String methodName = req.getMethod();
+        Method method = getControllerMethod(targetClass, methodName);
+        Object target = method.invoke(origin, req, resp);
+        if (target == null)
+            target = resp.getTarget();
+
+        Template template = VelocityUtil.getTemplate(targetClass);
+        if (template != null) {
+            VelocityContext context = new VelocityContext();
+            context.put("it", origin);
+            PrintWriter writer = response.getWriter();
+            template.merge(context, writer);
+            writer.flush();
+            return true;
+        }
+
+        throw new NotImplementedException();
+    } // processOrNot
+
+    private IArrival dispatch(ITokenQueue tq)
+            throws ServletException {
+        Object rootObject = root == null ? moduleManager : root;
+        if (rootObject == null)
+            // throw new IllegalStateException("Root object isn't set");
+            rootObject = ModuleManager.getInstance();
+
+        Dispatcher dispatcher = Dispatcher.getInstance();
+        IArrival arrival;
+        try {
+            arrival = dispatcher.dispatch(new Arrival(rootObject), tq);
+        } catch (DispatchException e) {
+            // resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
+            throw new ServletException(e.getMessage(), e);
+        }
+        return arrival;
+    }
+
+    static MethodPattern controllerPattern = new MethodPattern(ServletRequest.class, ServletResponse.class);
+    static Map<Class<?>, Map<String, Method>> classControllerMethods = new HashMap<Class<?>, Map<String, Method>>();
+
+    static Map<String, Method> getControllerMethods(Class<?> resourceClass) {
+        if (resourceClass == null)
+            throw new NullPointerException("resourceClass");
+
+        Map<String, Method> methods = classControllerMethods.get(resourceClass);
+        if (methods == null) {
+            methods = controllerPattern.searchOverlayMethods(resourceClass, "controller");
+            classControllerMethods.put(resourceClass, methods);
+        }
+        return methods;
+    }
+
+    static Method getControllerMethod(Class<?> resourceClass, String method) {
+        Map<String, Method> map = getControllerMethods(resourceClass);
+        return map.get(method);
     }
 
 }
