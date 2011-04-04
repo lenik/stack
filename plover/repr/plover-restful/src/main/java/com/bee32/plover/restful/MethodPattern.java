@@ -30,9 +30,11 @@ public class MethodPattern {
         while (clazz != null) {
             Class<?> overlay = OverlayUtil.getOverlay(clazz, extension);
 
-            searchMethods(each, false, overlay);
-            all.putAll(each);
-            each.clear();
+            if (overlay != null) {
+                searchMethods(each, false, overlay);
+                all.putAll(each);
+                each.clear();
+            }
 
             clazz = clazz.getSuperclass();
         }
