@@ -3,8 +3,11 @@ package com.bee32.plover.restful;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
+import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
 import javax.inject.Inject;
 import javax.servlet.Filter;
@@ -29,6 +32,8 @@ import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
+import com.bee32.plover.disp.util.MethodLazyInjector;
+import com.bee32.plover.disp.util.MethodPattern;
 import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
 import com.bee32.plover.restful.request.RestfulRequestBuilder;
 
@@ -164,39 +169,22 @@ public class DispatchFilter
         req.setArrival(arrival);
 
         // origin<method> -> target
-        //  -> null: terminate
+        // -> null: terminate
         // -> object -> object.view ()
 
         Class<? extends Object> originClass = origin.getClass();
-        Object target = null;
 
-        Method method = getControllerMethod(originClass, req.getMethod());
-        if (method != null) {
+        if (doControllerMethod(originClass, req, resp)) {
+        } else if (doInplaceMethod(originClass, req, resp)) {
+        } else
+            throw new NotImplementedException();
 
-            Class<?> controllerClass = method.getDeclaringClass();
-            if (controllerClass != null) {
-                Object controller;
-                try {
-                    // webImpl = StatelessUtil.createOrReuse(webClass);
-                    controller = applicationContext.getBean(controllerClass);
-                } catch (Exception e) {
-                    throw new ServletException(e.getMessage(), e);
-                }
+        Object target = resp.getTarget();
 
-                try {
-                    target = method.invoke(controller, req, resp);
-                } catch (RuntimeException e) {
-                    throw e;
-                } catch (Exception e) {
-                    throw new ServletException(e.getMessage(), e);
-                }
-            }
-        }
+        if (target != null)
+            ;
 
-        if (target == null)
-            target = resp.getTarget();
-
-        throw new NotImplementedException();
+        return true;
     } // processOrNot
 
     private IArrival dispatch(ITokenQueue tq)
@@ -217,6 +205,69 @@ public class DispatchFilter
         return arrival;
     }
 
+    boolean doControllerMethod(Class<?> originClass, RestfulRequest req, RestfulResponse resp)
+            throws ServletException {
+        Method method = getControllerMethod(originClass, req.getMethod());
+        if (method == null)
+            return false;
+
+        // Get the controller instance.
+        Class<?> controllerClass = method.getDeclaringClass();
+        assert controllerClass != null;
+
+        Object controller;
+        try {
+            // webImpl = StatelessUtil.createOrReuse(webClass);
+            controller = applicationContext.getBean(controllerClass);
+        } catch (Exception e) {
+            throw new ServletException(e.getMessage(), e);
+        }
+
+        Object target;
+        try {
+            target = method.invoke(controller, req, resp);
+        } catch (Exception e) {
+            throw new ServletException(e.getMessage(), e);
+        }
+
+        if (target != null)
+            resp.setTarget(target);
+        return true;
+    }
+
+    boolean doInplaceMethod(Object origin, final RestfulRequest req, final RestfulResponse resp)
+            throws ServletException {
+        Class<?> originClass = origin.getClass();
+        final Method singleMethod = getSingleMethod(originClass, req.getMethod());
+        if (singleMethod == null)
+            return false;
+
+        MethodLazyInjector injector = new MethodLazyInjector() {
+            @Override
+            protected Object require(Class<?> declType) {
+                if (ServletRequest.class.isAssignableFrom(declType))
+                    return req;
+
+                if (ServletResponse.class.isAssignableFrom(declType))
+                    return resp;
+
+                throw new IllegalUsageException("Don't know how to inject parameter " + declType + " in "
+                        + singleMethod);
+            }
+        };
+
+        Object target;
+        try {
+            target = injector.invoke(origin, singleMethod);
+        } catch (Exception e) {
+            throw new ServletException(e.getMessage(), e);
+        }
+
+        if (target != null)
+            resp.setTarget(target);
+        return true;
+    }
+
     static MethodPattern controllerPattern = new MethodPattern(ServletRequest.class, ServletResponse.class);
     static Map<Class<?>, Map<String, Method>> classControllerMethods = new HashMap<Class<?>, Map<String, Method>>();
 
@@ -235,6 +286,33 @@ public class DispatchFilter
     static Method getControllerMethod(Class<?> resourceClass, String method) {
         Map<String, Method> map = getControllerMethods(resourceClass);
         return map.get(method);
+    }
+
+    static Map<Class<?>, Map<String, Method>> classSingleMethods = new HashMap<Class<?>, Map<String, Method>>();
+
+    static Method getSingleMethod(Class<?> clazz, String name) {
+        Map<String, Method> singleMethods = classSingleMethods.get(clazz);
+        if (singleMethods == null) {
+            synchronized (classSingleMethods) {
+                singleMethods = classSingleMethods.get(clazz);
+                if (singleMethods == null) {
+                    singleMethods = new HashMap<String, Method>();
+
+                    Set<String> nameset = new HashSet<String>();
+                    for (Method method : clazz.getMethods()) {
+                        String _name = method.getName();
+                        if (nameset.add(_name))
+                            singleMethods.put(_name, method);
+                        else
+                            singleMethods.remove(method);
+                    }
+
+                    classSingleMethods.put(clazz, singleMethods);
+                }
+            }
+        }
+
+        return singleMethods.get(name);
     }
 
 }
