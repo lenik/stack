@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.apache.commons.collections15.iterators.IteratorEnumeration;
 
+/**
+ * @deprecated Please use request attributes instead of parameters.
+ */
+@Deprecated
 public class ModifiableHttpServletRequest
         extends HttpServletRequestWrapper {
 
