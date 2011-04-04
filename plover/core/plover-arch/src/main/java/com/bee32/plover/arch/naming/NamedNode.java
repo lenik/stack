@@ -1,11 +1,6 @@
 package com.bee32.plover.arch.naming;
 
-import java.util.Collection;
-import java.util.Map;
-
 import com.bee32.plover.arch.Component;
-import com.bee32.plover.arch.operation.IOperation;
-import com.bee32.plover.arch.operation.OperationBuilder;
 
 public abstract class NamedNode
         extends Component
@@ -13,8 +8,6 @@ public abstract class NamedNode
 
     private INamedNode parent;
     private final Class<?> childType;
-
-    private transient Map<String, IOperation> operationMap;
 
     /**
      * <ul>
@@ -76,6 +69,8 @@ public abstract class NamedNode
     public boolean hasChild(Object obj) {
         return getChildName(obj) != null;
     }
+/*
+    private transient Map<String, IOperation> operationMap;
 
     @Override
     public Collection<IOperation> getOperations() {
@@ -106,5 +101,5 @@ public abstract class NamedNode
         // builder.discover(getClass());
         // builder.discover(this);
     }
-
+*/
 }

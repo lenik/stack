@@ -8,7 +8,6 @@ import java.util.TreeMap;
 
 import com.bee32.plover.arch.operation.AbstractOperation;
 import com.bee32.plover.arch.operation.IOperationContext;
-import com.bee32.plover.arch.operation.OperationBuilder;
 
 public class TreeMapNode<T>
         extends NamedNode
@@ -77,12 +76,12 @@ public class TreeMapNode<T>
     public Iterable<?> getChildren() {
         return map.values();
     }
-
+/*
     @Override
     protected void buildOperation(OperationBuilder builder) {
         builder.add(deleteOperation);
     }
-
+*/
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
