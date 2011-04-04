@@ -40,4 +40,11 @@ public interface IRestfulResponse
      */
     void setException(Throwable exception);
 
+    /**
+     * Repeat another method.
+     */
+    String getMethod();
+
+    void setMethod(String method);
+
 }
