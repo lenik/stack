@@ -114,9 +114,9 @@ public class Verb
      * @throws UnsupportedVerbException
      *             If there is no implementation for any object in the dispatch-chain.
      */
-    public Object operate(IArrival dc, IOperationContext context, List<String> pathRevList)
+    public Object operate(IArrival arrival, IOperationContext context, List<String> pathRevList)
             throws UnsupportedVerbException, Exception {
-        Object target = dc.getTarget();
+        Object target = arrival.getTarget();
 
         // XXX - parent = null??
         if (target != null) {
@@ -134,11 +134,11 @@ public class Verb
             }
         }
 
-        IArrival parent = dc.getParent();
+        IArrival parent = arrival.getParent();
         if (parent == null)
             throw new UnsupportedVerbException(name);
 
-        String[] consumedTokens = dc.getConsumedTokens();
+        String[] consumedTokens = arrival.getConsumedTokens();
         for (int i = consumedTokens.length - 1; i >= 0; i--)
             pathRevList.add(consumedTokens[i]);
 
