@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.free.IllegalUsageException;
-import javax.free.NotImplementedException;
 import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -147,8 +146,7 @@ public class DispatchFilter
         IArrival arrival = dispatch(tq);
         if (arrival == null)
             return false;
-
-        // No verb, do GET/READ.
+        req.setArrival(arrival);
 
         Object origin = arrival.getTarget();
         // Date expires = resultContext.getExpires();
@@ -159,30 +157,50 @@ public class DispatchFilter
             return true;
         }
 
-        // 3, Render the specific Profile, or default if none.
-        if (origin instanceof Servlet) {
-            Servlet resultServlet = (Servlet) origin;
-            resultServlet.service(_request, _response);
-            return true;
+        Object target;
+        while (true) {
+
+            // 3, origin is a servlet delegate?
+            if (origin instanceof Servlet) {
+                Servlet resultServlet = (Servlet) origin;
+                resultServlet.service(_request, _response);
+                return true;
+            }
+
+            // 3.1, otherwise execute origin..method-> target
+            target = origin;
+
+            if (request.getMethod() != null) {
+                Class<? extends Object> originClass = origin.getClass();
+
+                if (doControllerMethod(originClass, req, resp)) {
+                } else if (doInplaceMethod(originClass, req, resp)) {
+                } else {
+                    throw new RestfulException("Invalid method " + req.getMethod() + " on " + originClass);
+                }
+                target = resp.getTarget();
+            }
+
+            String respMethod = resp.getMethod();
+            resp.setMethod(null);
+            if (respMethod == null)
+                break;
+
+            origin = target;
+            break; /* Currently recursive method isn't supported */
         }
 
-        req.setArrival(arrival);
+        // 4, show the target
+        // NOTICE: user should not write to response, if any target is returned.
+        if (target != null) {
+            if (target instanceof String) {
+                String location = (String) target;
+                resp.sendRedirect(location);
+                return true;
+            }
 
-        // origin<method> -> target
-        // -> null: terminate
-        // -> object -> object.view ()
-
-        Class<? extends Object> originClass = origin.getClass();
-
-        if (doControllerMethod(originClass, req, resp)) {
-        } else if (doInplaceMethod(originClass, req, resp)) {
-        } else
-            throw new NotImplementedException();
-
-        Object target = resp.getTarget();
-
-        if (target != null)
-            ;
+            renderObject(target, req, resp);
+        }
 
         return true;
     } // processOrNot
@@ -205,7 +223,7 @@ public class DispatchFilter
         return arrival;
     }
 
-    boolean doControllerMethod(Class<?> originClass, RestfulRequest req, RestfulResponse resp)
+    private boolean doControllerMethod(Class<?> originClass, RestfulRequest req, RestfulResponse resp)
             throws ServletException {
         Method method = getControllerMethod(originClass, req.getMethod());
         if (method == null)
@@ -235,7 +253,7 @@ public class DispatchFilter
         return true;
     }
 
-    boolean doInplaceMethod(Object origin, final RestfulRequest req, final RestfulResponse resp)
+    private boolean doInplaceMethod(Object origin, final RestfulRequest req, final RestfulResponse resp)
             throws ServletException {
         Class<?> originClass = origin.getClass();
         final Method singleMethod = getSingleMethod(originClass, req.getMethod());
@@ -266,6 +284,14 @@ public class DispatchFilter
         if (target != null)
             resp.setTarget(target);
         return true;
+    }
+
+    /**
+     *
+     */
+    private void renderObject(Object object, IRestfulRequest req, IRestfulResponse respF) {
+        Class<?> clazz = object.getClass();
+
     }
 
     static MethodPattern controllerPattern = new MethodPattern(ServletRequest.class, ServletResponse.class);

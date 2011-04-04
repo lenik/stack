@@ -9,10 +9,10 @@ import javax.free.UnexpectedException;
 
 public class MethodNames {
 
+    public static final String READ = null;
+
     public static final String CREATE = "create";
     public static final String CREATE_FORM = "new";
-
-    public static final String READ = "read";
 
     public static final String UPDATE = "update";
     public static final String UPDATE_FORM = "edit";
@@ -41,7 +41,8 @@ public class MethodNames {
                 throw new UnexpectedException("read static field " + field, e);
             }
 
-            reverseMap.put(value, name);
+            if (value != null)
+                reverseMap.put(value, name);
         }
     }
 
