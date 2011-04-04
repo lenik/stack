@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import com.bee32.plover.orm.util.WiredDaoTestCase;
-import com.bee32.plover.restful.request.RestfulRequest;
+import com.bee32.plover.restful.RestfulRequest;
 import com.bee32.plover.restful.request.RestfulRequestUtil;
 
 /**

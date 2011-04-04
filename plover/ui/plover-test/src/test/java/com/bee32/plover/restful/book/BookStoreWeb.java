@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.orm.test.bookstore.Book;
-import com.bee32.plover.restful.request.RestfulRequest;
+import com.bee32.plover.restful.RestfulRequest;
 import com.bee32.plover.velocity.VelocityUtil;
 
 public class BookStoreWeb {
