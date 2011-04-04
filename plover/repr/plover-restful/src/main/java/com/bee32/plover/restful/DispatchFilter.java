@@ -1,7 +1,6 @@
 package com.bee32.plover.restful;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,14 +19,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
-
-import overlay.OverlayUtil;
 
 import com.bee32.plover.disp.Arrival;
 import com.bee32.plover.disp.DispatchException;
@@ -36,7 +31,6 @@ import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
 import com.bee32.plover.restful.request.RestfulRequestBuilder;
-import com.bee32.plover.velocity.VelocityUtil;
 
 /**
  * The overall modules dispatcher.
@@ -169,33 +163,38 @@ public class DispatchFilter
 
         req.setArrival(arrival);
 
-        Class<? extends Object> targetClass = origin.getClass();
-        Class<?> controllerClass = OverlayUtil.getOverlay(targetClass, "controller");
-        if (controllerClass != null) {
-            Object controller;
-            try {
-                // webImpl = StatelessUtil.createOrReuse(webClass);
-                controller = applicationContext.getBean(controllerClass);
-            } catch (Exception e) {
-                throw new ServletException(e.getMessage(), e);
+        // origin<method> -> target
+        //  -> null: terminate
+        // -> object -> object.view ()
+
+        Class<? extends Object> originClass = origin.getClass();
+        Object target = null;
+
+        Method method = getControllerMethod(originClass, req.getMethod());
+        if (method != null) {
+
+            Class<?> controllerClass = method.getDeclaringClass();
+            if (controllerClass != null) {
+                Object controller;
+                try {
+                    // webImpl = StatelessUtil.createOrReuse(webClass);
+                    controller = applicationContext.getBean(controllerClass);
+                } catch (Exception e) {
+                    throw new ServletException(e.getMessage(), e);
+                }
+
+                try {
+                    target = method.invoke(controller, req, resp);
+                } catch (RuntimeException e) {
+                    throw e;
+                } catch (Exception e) {
+                    throw new ServletException(e.getMessage(), e);
+                }
             }
         }
 
-        String methodName = req.getMethod();
-        Method method = getControllerMethod(targetClass, methodName);
-        Object target = method.invoke(origin, req, resp);
         if (target == null)
             target = resp.getTarget();
-
-        Template template = VelocityUtil.getTemplate(targetClass);
-        if (template != null) {
-            VelocityContext context = new VelocityContext();
-            context.put("it", origin);
-            PrintWriter writer = response.getWriter();
-            template.merge(context, writer);
-            writer.flush();
-            return true;
-        }
 
         throw new NotImplementedException();
     } // processOrNot
