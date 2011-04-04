@@ -1,7 +1,6 @@
 package com.bee32.plover.arch;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Lazy;
@@ -9,7 +8,6 @@ import org.springframework.context.annotation.Lazy;
 import com.bee32.plover.arch.credit.Credit;
 import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.arch.naming.TreeMapNode;
-import com.bee32.plover.arch.operation.IOperation;
 import com.bee32.plover.arch.service.IServiceContribution;
 import com.bee32.plover.arch.service.PloverService;
 import com.bee32.plover.inject.ComponentTemplate;
@@ -145,21 +143,6 @@ public abstract class Module
     @Override
     public Iterable<?> getChildren() {
         return nodeImpl.getChildren();
-    }
-
-    @Override
-    public IOperation getOperation(String name) {
-        return nodeImpl.getOperation(name);
-    }
-
-    @Override
-    public Collection<IOperation> getOperations() {
-        return nodeImpl.getOperations();
-    }
-
-    @Override
-    public Map<String, IOperation> getOperationMap() {
-        return nodeImpl.getOperationMap();
     }
 
 }
