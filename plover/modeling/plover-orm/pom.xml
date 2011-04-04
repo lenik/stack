@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.plover</groupId>
-        <artifactId>library</artifactId>
+        <artifactId>modeling</artifactId>
         <version>0.2.1-SNAPSHOT</version>
     </parent>
     <artifactId>plover-orm</artifactId>
@@ -99,5 +99,5 @@
             <version>0.2.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
-    <name>Plover :: Library :: Orm</name>
+    <name>Plover :: Modeling :: Orm</name>
 </project>
