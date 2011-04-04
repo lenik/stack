@@ -1,5 +1,6 @@
 package com.bee32.plover.restful.request;
 
+import com.bee32.plover.restful.RestfulRequest;
 import com.bee32.plover.util.Mime;
 
 public class ContentTypeDissolver

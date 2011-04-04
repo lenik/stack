@@ -1,11 +1,9 @@
-package com.bee32.plover.restful.request;
+package com.bee32.plover.restful;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
-import com.bee32.plover.model.profile.Profile;
-import com.bee32.plover.restful.Verb;
 import com.bee32.plover.util.Mime;
 
 public interface IRestfulRequest
@@ -23,14 +21,15 @@ public interface IRestfulRequest
      *
      * @return Non-<code>null</code> verb literal on the resource.
      */
-    Verb getVerb();
+    // Verb getVerb();
+    String getMethod();
 
     /**
      * The profile to be staged.
      *
      * @return Non-<code>null</code> profile literal.
      */
-    Profile getProfile();
+    // Profile getProfile();
 
     /**
      * The output format.

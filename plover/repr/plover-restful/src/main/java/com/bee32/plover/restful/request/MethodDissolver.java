@@ -3,6 +3,7 @@ package com.bee32.plover.restful.request;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bee32.plover.restful.RestfulRequest;
 import com.bee32.plover.restful.Verb;
 import com.bee32.plover.restful.VerbNames;
 

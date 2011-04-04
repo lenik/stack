@@ -1,32 +1,28 @@
-package com.bee32.plover.restful.request;
+package com.bee32.plover.restful;
 
 import java.io.Serializable;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.disp.util.TokenQueue;
-import com.bee32.plover.model.profile.Profile;
-import com.bee32.plover.model.profile.StandardProfiles;
-import com.bee32.plover.restful.Verb;
-import com.bee32.plover.servlet.util.ModifiableHttpServletRequest;
 import com.bee32.plover.util.Mime;
 import com.bee32.plover.util.Mimes;
 
 public class RestfulRequest
-        extends ModifiableHttpServletRequest
+        extends HttpServletRequestWrapper
         implements IRestfulRequest, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Verb verb;
-
+    private String method;
     private String path;
     private ITokenQueue tokenQueue;
     private IArrival arrival;
 
-    private Profile profile = StandardProfiles.CONTENT;
+    // private Profile profile = StandardProfiles.CONTENT;
     private Mime contentType = Mimes.text_html;
 
     public RestfulRequest(HttpServletRequest request) {
@@ -34,12 +30,12 @@ public class RestfulRequest
     }
 
     @Override
-    public Verb getVerb() {
-        return verb;
+    public String getMethod() {
+        return method;
     }
 
-    public void setVerb(Verb verb) {
-        this.verb = verb;
+    public void setMethod(String method) {
+        this.method = method;
     }
 
     @Override
@@ -77,15 +73,6 @@ public class RestfulRequest
     }
 
     @Override
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
-
-    @Override
     public Mime getTargetContentType() {
         return contentType;
     }
@@ -98,18 +85,6 @@ public class RestfulRequest
         StringBuilder buf = new StringBuilder();
 
         buf.append(path);
-
-        if (profile != StandardProfiles.CONTENT) {
-            buf.append('~');
-            buf.append(profile);
-        }
-
-        if (verb != null) {
-            // int level = verb.getLevel();
-            // while (level-- > 0)
-            buf.append('*');
-            buf.append(verb);
-        }
 
         if (contentType != Mimes.text_html) {
             buf.append('.');

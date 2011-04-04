@@ -8,6 +8,7 @@ import javax.free.UnexpectedException;
 
 import com.bee32.plover.model.profile.Profile;
 import com.bee32.plover.model.profile.StandardProfiles;
+import com.bee32.plover.restful.RestfulRequest;
 
 /**
  * Only standard profile names are supported.
