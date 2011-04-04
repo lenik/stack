@@ -5,13 +5,13 @@ import javax.servlet.ServletException;
 
 import com.bee32.plover.model.stage.ModelStage;
 import com.bee32.plover.model.stage.ModelStageException;
-import com.bee32.plover.restful.RestfulRequest;
-import com.bee32.plover.restful.RestfulResponse;
+import com.bee32.plover.restful.IRestfulRequest;
+import com.bee32.plover.restful.IRestfulResponse;
 import com.bee32.plover.servlet.context.ServletContainer;
 
 public class ModelController {
 
-    public void get(RestfulRequest req, RestfulResponse resp)
+    public void read(IRestfulRequest req, IRestfulResponse resp)
             throws ServletException {
 
         Object target = req.getTarget();
@@ -33,7 +33,6 @@ public class ModelController {
 
         // stage.getElements() -> Tree-Convert...
         // display...
-
     }
 
 }
