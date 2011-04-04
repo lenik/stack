@@ -5,7 +5,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import javax.free.IllegalUsageException;
 import javax.free.ParseException;
@@ -17,12 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.Repository;
 import com.bee32.plover.arch.naming.INamedNode;
-import com.bee32.plover.arch.naming.NamedNode;
 import com.bee32.plover.arch.naming.ReverseLookupRegistry;
-import com.bee32.plover.arch.operation.AbstractOperation;
-import com.bee32.plover.arch.operation.IOperation;
-import com.bee32.plover.arch.operation.IOperationContext;
-import com.bee32.plover.arch.operation.OperationBuilder;
 import com.bee32.plover.arch.util.IStruct;
 
 public abstract class EntityRepository<E extends IEntity<K>, K extends Serializable>
@@ -249,107 +243,6 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
     @Override
     public Iterable<?> getChildren() {
         return list();
-    }
-
-    /**
-     * @see NamedNode#getOperationMap()
-     */
-    private Map<String, IOperation> operationMap;
-
-    @Override
-    public Collection<IOperation> getOperations() {
-        return getOperationMap().values();
-    }
-
-    @Override
-    public IOperation getOperation(String name) {
-        IOperation operation = getOperationMap().get(name);
-        return operation;
-    }
-
-    public Map<String, IOperation> getOperationMap() {
-        if (operationMap == null) {
-            synchronized (this) {
-                if (operationMap == null) {
-                    OperationBuilder operationBuilder = new OperationBuilder();
-                    buildOperation(operationBuilder);
-                    operationMap = operationBuilder.getMap();
-                }
-            }
-        }
-        return operationMap;
-    }
-
-    protected void buildOperation(OperationBuilder builder) {
-        builder.add(CreateOperation.instance);
-        builder.add(UpdateOperation.instance);
-        builder.add(DeleteOperation.instance);
-    }
-
-    static class CreateOperation
-            extends AbstractOperation {
-
-        @SuppressWarnings({ "unchecked", "rawtypes" })
-        @Override
-        public Object execute(Object instance, IOperationContext context)
-                throws Exception {
-            IEntityRepository repo = (EntityRepository) instance;
-
-            Object entity = repo.populate(context);
-
-            repo.saveOrUpdate(entity);
-
-            return entity;
-        }
-
-        static final CreateOperation instance = new CreateOperation();
-
-    }
-
-    static class UpdateOperation
-            extends AbstractOperation {
-
-        @SuppressWarnings({ "unchecked", "rawtypes" })
-        @Override
-        public Object execute(Object instance, IOperationContext context)
-                throws Exception {
-            EntityRepository repo = (EntityRepository) instance;
-
-            String keyString = context.getPath();
-            Serializable key = repo.parseKey(keyString);
-
-            Object entity = repo.retrieve(key);
-            repo.populate(entity, context);
-
-            repo.update(entity);
-
-            return entity;
-        }
-
-        static final UpdateOperation instance = new UpdateOperation();
-
-    }
-
-    static class DeleteOperation
-            extends AbstractOperation {
-
-        @SuppressWarnings({ "rawtypes" })
-        @Override
-        public Object execute(Object instance, IOperationContext context)
-                throws Exception {
-
-            EntityRepository repo = (EntityRepository) instance;
-
-            String keyString = context.getPath();
-            Serializable key = repo.parseKey(keyString);
-
-            repo.deleteByKey(key);
-
-            return repo;
-        }
-
-        static final DeleteOperation instance = new DeleteOperation();
-
     }
 
 }
