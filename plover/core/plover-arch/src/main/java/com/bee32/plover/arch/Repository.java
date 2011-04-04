@@ -2,8 +2,11 @@ package com.bee32.plover.arch;
 
 import java.io.Serializable;
 
+import javax.servlet.ServletRequest;
+
 import com.bee32.plover.arch.util.BeanPopulater;
 import com.bee32.plover.arch.util.IStruct;
+import com.bee32.plover.arch.util.MapStruct;
 import com.bee32.plover.inject.NotAComponent;
 
 @NotAComponent
@@ -79,6 +82,20 @@ public abstract class Repository<K extends Serializable, V>
         }
 
         populate(instance, struct);
+        return instance;
+    }
+
+    @Override
+    public V populate(ServletRequest request)
+            throws BuildException {
+        V instance;
+        try {
+            instance = instanceType.newInstance();
+        } catch (Exception e) {
+            throw new BuildException(e);
+        }
+
+        populate(instance, new MapStruct(request.getParameterMap()));
         return instance;
     }
 

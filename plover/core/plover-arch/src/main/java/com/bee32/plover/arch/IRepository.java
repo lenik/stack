@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
+
 import com.bee32.plover.arch.util.IStruct;
 
 public interface IRepository<K, V>
@@ -52,11 +54,19 @@ public interface IRepository<K, V>
     Collection<? extends V> list();
 
     /**
-     * Create and populate a new instance with a struct.
+     * Create and populate a new instance from a struct.
      *
      * @return Non-<code>null</code> instantiated instance.
      */
     V populate(IStruct struct)
+            throws BuildException;
+
+    /**
+     * Create and populate a new instance from a servlet request.
+     *
+     * @return Non-<code>null</code> instantiated instance.
+     */
+    V populate(ServletRequest request)
             throws BuildException;
 
     /**
