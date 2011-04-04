@@ -6,7 +6,6 @@ import java.util.ServiceLoader;
 import java.util.TreeSet;
 
 import javax.free.IllegalUsageException;
-import javax.free.StringPart;
 import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.restful.RestfulRequest;
@@ -14,18 +13,14 @@ import com.bee32.plover.util.Mime;
 
 public class RestfulRequestBuilder {
 
-    private static IMethodDissolver methodDissolver;
     private static Map<Character, ISuffixDissolver> suffixDissolvers;
 
-    private static ProfileDissolver profileDissolver = new ProfileDissolver();
-    private static VerbDissolver verbDissolver = new VerbDissolver();
-    private static ContentTypeDissolver contentTypeDissolver = new ContentTypeDissolver();
+    private static MethodSuffixDissolver methodSuffixDissolver = MethodSuffixDissolver.INSTANCE;
+    private static ContentTypeDissolver contentTypeDissolver = ContentTypeDissolver.INSTANCE;
 
     static {
-        methodDissolver = new MethodDissolver();
-
         suffixDissolvers = new HashMap<Character, ISuffixDissolver>();
-        suffixDissolvers.put('*', verbDissolver);
+        suffixDissolvers.put('*', methodSuffixDissolver);
         suffixDissolvers.put('.', contentTypeDissolver);
     }
 
@@ -47,46 +42,56 @@ public class RestfulRequestBuilder {
         reloadServices();
     }
 
-    public RestfulRequest build(HttpServletRequest request) {
-        RestfulRequest model = new RestfulRequest(request);
+    public RestfulRequest build(HttpServletRequest _request) {
+
+        RestfulRequest request = new RestfulRequest(_request);
 
         // Translate http method
-        String httpMethod = request.getMethod();
-        methodDissolver.desolveMethod(httpMethod, model);
+        String method = _request.getParameter(".method");
+        if (method == null) {
+            method = request.getParameter("method");
+            if (method == null) {
+                method = request.getParameter("X");
+                if (method == null)
+                    method = HttpMethodNames.getMethodName(_request.getMethod());
+            }
+        }
+        assert method != null;
+        request.setMethod(method);
 
-        String acceptContentType = request.getHeader("Accept-Content-Type");
+        // Content-type by browser.
+        String acceptContentType = _request.getHeader("Accept-Content-Type");
         if (acceptContentType != null) {
             Mime contentType = Mime.getInstance(acceptContentType);
             if (contentType != null)
-                model.setTargetContentType(contentType);
+                request.setTargetContentType(contentType);
         }
 
-        // Prepare resource path
-        // dir/base*~.suffix
-        // dir/*~.suffix => base=""
-        String rawPath = request.getPathInfo();
-        if (rawPath == null)
-            rawPath = request.getRequestURI();
+        String path = _request.getPathInfo();
+        if (path == null)
+            path = _request.getRequestURI();
 
-        String dirName = StringPart.beforeLast(rawPath, '/');
-        String baseName = StringPart.afterLast(rawPath, '/');
+        // boolean endsWithSlash = path.endsWith("/");
+        // if (endsWithSlash) profile = INDEX;
 
-        // Prepare to parse suffixes
-        SuffixTokenizer tokens = new SuffixTokenizer(baseName, true);
-        baseName = tokens.next();
+        int lastSlash = path.lastIndexOf('/');
+        assert lastSlash != -1;
+        String dirName = path.substring(0, lastSlash);
+        String baseName = path.substring(lastSlash + 1);
 
-        String path;
-        if (baseName.isEmpty()) { // index?
-            path = dirName;
-            model.setProfile(StandardProfiles.INDEX);
-        } else {
-            path = dirName + '/' + baseName;
-        }
-        model.setDispatchPath(path);
+        SuffixTokenizer baseTokens = new SuffixTokenizer(baseName, true);
 
-        // Process suffixes
-        while (tokens.hasNext()) {
-            String suffix = tokens.next();
+        // Remove the first token as the base stem
+        String baseStem = baseTokens.next();
+
+        String pathStem = dirName;
+        if (!baseStem.isEmpty())
+            pathStem += "/" + baseStem;
+        request.setDispatchPath(pathStem);
+
+        // Process the rest tokens
+        while (baseTokens.hasNext()) {
+            String suffix = baseTokens.next();
 
             char delim = suffix.charAt(0);
             ISuffixDissolver dissolver = suffixDissolvers.get(delim);
@@ -94,26 +99,16 @@ public class RestfulRequestBuilder {
                 throw new IllegalUsageException("Bad suffix: " + suffix);
 
             String suffixName = suffix.substring(1);
-
-            dissolver.dissolveSuffix(suffixName, model);
+            dissolver.dissolveSuffix(suffixName, request);
         }
-
-        // X-Y param
-        String x = request.getParameter("X");
-        if (x != null)
-            verbDissolver.dissolveSuffix(x, model);
-
-        String y = request.getParameter("Y");
-        if (y != null)
-            profileDissolver.dissolveSuffix(y, model);
 
         // other preprocessors.
         if (preprocessors != null) {
             for (IRequestPreprocessor preprocessor : preprocessors)
-                preprocessor.preprocess(model);
+                preprocessor.preprocess(request);
         }
 
-        return model;
+        return request;
     }
 
     private static final RestfulRequestBuilder instance = new RestfulRequestBuilder();
