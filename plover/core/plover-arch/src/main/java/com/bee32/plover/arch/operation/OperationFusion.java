@@ -4,6 +4,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * <ul>
+ * <li>direct(OperationContext)
+ * <li>@Name method(...)
+ * <li>overlay: FooOperations
+ * </ul>
+ */
 public class OperationFusion
         extends ClassOperationDiscoverer {
 
