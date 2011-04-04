@@ -1,8 +1,6 @@
 com.bee32.plover.disp.coll.ListDispatcher
 com.bee32.plover.disp.coll.MapDispatcher
 com.bee32.plover.disp.dyna.DynamicDispatcher
-com.bee32.plover.disp.plover.ModelDispatcher
-com.bee32.plover.disp.plover.StageDispatcher
 com.bee32.plover.disp.tree.NamedNodeDispatcher
 com.bee32.plover.disp.tree.OidDispatcher
 com.bee32.plover.disp.type.FieldDispatcher

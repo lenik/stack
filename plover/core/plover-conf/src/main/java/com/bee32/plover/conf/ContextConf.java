@@ -4,10 +4,10 @@ import java.util.Collection;
 
 import javax.free.IContext;
 
-import com.bee32.plover.model.Model;
+import com.bee32.plover.arch.Component;
 
 public class ContextConf
-        extends Model
+        extends Component
         implements IConf {
 
     private static final long serialVersionUID = 1L;

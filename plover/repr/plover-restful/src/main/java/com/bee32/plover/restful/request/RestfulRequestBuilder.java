@@ -9,7 +9,6 @@ import javax.free.IllegalUsageException;
 import javax.free.StringPart;
 import javax.servlet.http.HttpServletRequest;
 
-import com.bee32.plover.model.profile.StandardProfiles;
 import com.bee32.plover.restful.RestfulRequest;
 import com.bee32.plover.util.Mime;
 
@@ -26,7 +25,6 @@ public class RestfulRequestBuilder {
         methodDissolver = new MethodDissolver();
 
         suffixDissolvers = new HashMap<Character, ISuffixDissolver>();
-        suffixDissolvers.put('~', profileDissolver);
         suffixDissolvers.put('*', verbDissolver);
         suffixDissolvers.put('.', contentTypeDissolver);
     }

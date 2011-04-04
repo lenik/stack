@@ -95,7 +95,7 @@
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-restful</artifactId>
+            <artifactId>plover-servlet</artifactId>
             <version>0.2.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

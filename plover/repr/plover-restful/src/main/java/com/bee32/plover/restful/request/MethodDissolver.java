@@ -3,9 +3,9 @@ package com.bee32.plover.restful.request;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bee32.plover.restful.MethodNames;
 import com.bee32.plover.restful.RestfulRequest;
 import com.bee32.plover.restful.Verb;
-import com.bee32.plover.restful.VerbNames;
 
 public class MethodDissolver
         implements IMethodDissolver {
@@ -14,14 +14,15 @@ public class MethodDissolver
 
     static {
         verbByMethod = new HashMap<String, Verb>();
-        verbByMethod.put("put", new Verb(VerbNames.CREATE));
-        verbByMethod.put("post", new Verb(VerbNames.UPDATE));
-        verbByMethod.put("delete", new Verb(VerbNames.DELETE));
-        verbByMethod.put("head", new Verb(VerbNames.ESTATE));
+        verbByMethod.put("get", new Verb(MethodNames.READ));
+        verbByMethod.put("put", new Verb(MethodNames.CREATE));
+        verbByMethod.put("post", new Verb(MethodNames.UPDATE));
+        verbByMethod.put("delete", new Verb(MethodNames.DELETE));
+        verbByMethod.put("head", new Verb(MethodNames.ESTATE));
     }
 
     @Override
-    public void desolveMethod(String httpMethod, RestfulRequest model) {
+    public void desolveMethod(String httpMethod, RestfulRequest request) {
         if (httpMethod == null)
             throw new NullPointerException("httpMethod");
 
@@ -29,7 +30,7 @@ public class MethodDissolver
 
         Verb verb = verbByMethod.get(methodName);
         if (verb != null)
-            model.setVerb(verb);
+            request.setMethod(verb.getName());
     }
 
 }

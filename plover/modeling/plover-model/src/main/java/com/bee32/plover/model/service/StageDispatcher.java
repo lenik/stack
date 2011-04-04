@@ -1,4 +1,4 @@
-package com.bee32.plover.disp.plover;
+package com.bee32.plover.model.service;
 
 import com.bee32.plover.disp.AbstractDispatcher;
 import com.bee32.plover.disp.DispatchException;

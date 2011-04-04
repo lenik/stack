@@ -3,13 +3,12 @@ package com.bee32.plover.arch;
 import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.ComponentTemplate;
-import com.bee32.plover.model.qualifier.Qualified;
 
 @ComponentTemplate
 // @Transactional
 @Lazy
 public abstract class EnterpriseService
-        extends Qualified {
+        extends Component {
 
     public EnterpriseService() {
         super();

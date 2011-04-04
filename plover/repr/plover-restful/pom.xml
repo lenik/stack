@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.plover</groupId>
@@ -21,11 +22,6 @@
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-inject</artifactId>
-            <version>0.2.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.plover</groupId>
             <artifactId>plover-servlet</artifactId>
             <version>0.2.1-SNAPSHOT</version>
         </dependency>
@@ -34,19 +30,10 @@
             <artifactId>plover-cache</artifactId>
             <version>0.2.2</version>
         </dependency>
+        <!-- test -->
         <dependency>
             <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-disp</artifactId>
-            <version>0.2.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-view</artifactId>
-            <version>0.2.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-velocity</artifactId>
+            <artifactId>plover-orm</artifactId>
             <version>0.2.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

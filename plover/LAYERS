@@ -16,8 +16,6 @@ core/
 
 library/
     plover-commons      公共库
-    plover-orm          对象关系映射辅助工具
-    plover-or_ext       ORM 扩展实体类
     plover-internet     互联网应用工具
     plover-javascript   轻量级 JavaScript 组件 （类似与Google GWT）
     plover-ajax         AJAX 扩展库
@@ -33,6 +31,8 @@ modeling/
     plover-model        组件模型结构
     plover-disp         资源分发与定位
     plover-form         中间表单模型
+    plover-orm          对象关系映射辅助工具
+    plover-or_ext       ORM 扩展实体类
     plover-view         公共视图模型
     plover-velocity     Velocity 模版工具
 

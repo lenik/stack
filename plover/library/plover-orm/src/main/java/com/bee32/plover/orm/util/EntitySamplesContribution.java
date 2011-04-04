@@ -9,10 +9,9 @@ import java.util.List;
 import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.arch.Component;
-import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.entity.IEntity;
 
-@ComponentTemplate
+//@ComponentTemplate
 @Lazy
 public abstract class EntitySamplesContribution
         extends Component
