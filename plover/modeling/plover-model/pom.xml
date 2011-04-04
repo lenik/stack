@@ -28,6 +28,11 @@
             <artifactId>plover-disp</artifactId>
             <version>0.2.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-servlet</artifactId>
+            <version>0.2.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <name>Plover :: Modeling :: Model</name>
 </project>

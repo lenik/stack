@@ -7,16 +7,18 @@ public class ContentTypeDissolver
         implements ISuffixDissolver {
 
     @Override
-    public boolean dissolveSuffix(String name, RestfulRequest model) {
-        if (name == null)
+    public boolean dissolveSuffix(String extension, RestfulRequest model) {
+        if (extension == null)
             throw new NullPointerException("extension");
 
-        Mime contentType = Mime.getInstanceByExtension(name);
+        Mime contentType = Mime.getInstanceByExtension(extension);
         if (contentType == null)
             return false;
 
         model.setTargetContentType(contentType);
         return true;
     }
+
+    public static final ContentTypeDissolver INSTANCE = new ContentTypeDissolver();
 
 }
