@@ -9,7 +9,7 @@ import com.bee32.plover.orm.test.bookstore.Book;
 import com.bee32.plover.restful.RestfulRequest;
 import com.bee32.plover.velocity.VelocityUtil;
 
-public class BookStoreWeb {
+public class BookStoreController {
 
     public String list(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
