@@ -7,7 +7,7 @@ import java.util.List;
 import com.bee32.plover.arch.operation.IOperation;
 import com.bee32.plover.arch.operation.IOperationContext;
 import com.bee32.plover.arch.operation.OperationFusion;
-import com.bee32.plover.disp.IArrival;
+import com.bee32.plover.disp.util.IArrival;
 
 public class Verb
         implements Serializable {
@@ -118,13 +118,12 @@ public class Verb
             throws UnsupportedVerbException, Exception {
         Object target = arrival.getTarget();
 
-        // XXX - parent = null??
         if (target != null) {
             OperationFusion fusion = OperationFusion.getInstance();
             IOperation operation = fusion.getOperation(target, name);
 
             if (operation != null) {
-                String path = pathreverse(pathRevList);
+                String path = toReversedPath(pathRevList);
                 context.setPath(path);
 
                 Object retval = operation.execute(target, context);
@@ -145,7 +144,7 @@ public class Verb
         return operate(parent, context, pathRevList);
     }
 
-    static String pathreverse(List<String> stack) {
+    static String toReversedPath(List<String> stack) {
         int size = stack.size();
         StringBuilder buf = new StringBuilder(size * 30);
 
