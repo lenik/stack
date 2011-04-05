@@ -26,13 +26,15 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.bee32.plover.disp.Arrival;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
-import com.bee32.plover.disp.IArrival;
+import com.bee32.plover.disp.util.Arrival;
+import com.bee32.plover.disp.util.ArrivalBacktraceCallback;
+import com.bee32.plover.disp.util.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.disp.util.MethodLazyInjector;
 import com.bee32.plover.disp.util.MethodPattern;
+import com.bee32.plover.disp.util.ReversedPathTokens;
 import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
 import com.bee32.plover.restful.request.RestfulRequestBuilder;
 
@@ -134,12 +136,12 @@ public class DispatchFilter
             return false;
 
         // 1, Build the restful-request
-        HttpServletRequest request = (HttpServletRequest) _request;
-        HttpServletResponse response = (HttpServletResponse) _response;
+        final HttpServletRequest request = (HttpServletRequest) _request;
+        final HttpServletResponse response = (HttpServletResponse) _response;
 
         RestfulRequestBuilder requestBuilder = RestfulRequestBuilder.getInstance();
-        RestfulRequest req = requestBuilder.build(request);
-        RestfulResponse resp = new RestfulResponse(response);
+        final RestfulRequest req = requestBuilder.build(request);
+        final RestfulResponse resp = new RestfulResponse(response);
 
         // 2, Path-dispatch
         ITokenQueue tq = req.getTokenQueue();
@@ -148,37 +150,46 @@ public class DispatchFilter
             return false;
         req.setArrival(arrival);
 
-        Object origin = arrival.getTarget();
-        // Date expires = resultContext.getExpires();
+        final Object origin = arrival.getTarget();
 
-        if (origin == null) {
-            // ERROR 404??
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        // 3, origin is a servlet delegate?
+        if (origin instanceof Servlet) {
+            Servlet resultServlet = (Servlet) origin;
+            resultServlet.service(_request, _response);
             return true;
         }
 
-        Object target;
+        // 3.1, otherwise execute origin..method-> target
+
+        Object target=null;
+        // Date expires = arrival.getExpires();
+
+        class Callback
+                implements ArrivalBacktraceCallback {
+
+            @Override
+            public boolean arriveBack(IArrival arrival, ReversedPathTokens consumedRpt)
+                    throws ServletException {
+
+                Object obj = arrival.getTarget();
+
+                Class<? extends Object> objClass = obj.getClass();
+
+                if (doControllerMethod(objClass, req, resp))
+                    return true;
+
+                if (doInplaceMethod(objClass, req, resp))
+                    return true;
+
+                return false;
+            }
+        }
+        Callback callback = new Callback();
+
         while (true) {
 
-            // 3, origin is a servlet delegate?
-            if (origin instanceof Servlet) {
-                Servlet resultServlet = (Servlet) origin;
-                resultServlet.service(_request, _response);
-                return true;
-            }
-
-            // 3.1, otherwise execute origin..method-> target
-            target = origin;
-
-            if (request.getMethod() != null) {
-                Class<? extends Object> originClass = origin.getClass();
-
-                if (doControllerMethod(originClass, req, resp)) {
-                } else if (doInplaceMethod(originClass, req, resp)) {
-                } else {
-                    throw new RestfulException("Invalid method " + req.getMethod() + " on " + originClass);
-                }
-                target = resp.getTarget();
+            if (!arrival.backtrace(callback)) {
+                throw new RestfulException("Invalid method " + req.getMethod() + " from " + arrival);
             }
 
             String respMethod = resp.getMethod();
@@ -186,7 +197,7 @@ public class DispatchFilter
             if (respMethod == null)
                 break;
 
-            origin = target;
+            target = resp.getTarget();
             break; /* Currently recursive method isn't supported */
         }
 
@@ -199,7 +210,7 @@ public class DispatchFilter
                 return true;
             }
 
-            renderObject(target, req, resp);
+            doRender(target, req, resp);
         }
 
         return true;
@@ -287,11 +298,23 @@ public class DispatchFilter
     }
 
     /**
-     *
+     * @throws IOException
+     * @throws RestfulException
      */
-    private void renderObject(Object object, IRestfulRequest req, IRestfulResponse respF) {
+    private void doRender(Object object, IRestfulRequest req, IRestfulResponse resp)
+            throws IOException, RestfulException {
         Class<?> clazz = object.getClass();
+        boolean handled = false;
 
+        for (IRestfulView view : RestfulViewFactory.getViews()) {
+            if (view.render(clazz, object, req, resp)) {
+                handled = true;
+                break;
+            }
+        }
+
+        if (!handled)
+            throw new RestfulException("No available view for " + clazz);
     }
 
     static MethodPattern controllerPattern = new MethodPattern(ServletRequest.class, ServletResponse.class);
