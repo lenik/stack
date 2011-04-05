@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import com.bee32.plover.disp.IArrival;
+import com.bee32.plover.disp.util.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.disp.util.TokenQueue;
 import com.bee32.plover.util.Mime;
@@ -18,6 +18,7 @@ public class RestfulRequest
     private static final long serialVersionUID = 1L;
 
     private String method;
+    private String view;
     private String path;
     private ITokenQueue tokenQueue;
     private IArrival arrival;
@@ -36,6 +37,15 @@ public class RestfulRequest
 
     public void setMethod(String method) {
         this.method = method;
+    }
+
+    @Override
+    public String getView() {
+        return view;
+    }
+
+    public void setView(String view) {
+        this.view = view;
     }
 
     @Override

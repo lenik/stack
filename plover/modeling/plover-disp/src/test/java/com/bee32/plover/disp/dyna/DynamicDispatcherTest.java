@@ -3,12 +3,12 @@ package com.bee32.plover.disp.dyna;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.disp.Arrival;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.DispatchModule;
-import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.IDispatcher;
 import com.bee32.plover.disp.type.FieldDispatcher;
+import com.bee32.plover.disp.util.Arrival;
+import com.bee32.plover.disp.util.IArrival;
 
 public class DynamicDispatcherTest
         extends DispatchModule {

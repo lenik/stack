@@ -1,6 +1,7 @@
 package com.bee32.plover.disp;
 
 import com.bee32.plover.arch.Component;
+import com.bee32.plover.disp.util.IArrival;
 import com.bee32.plover.disp.util.TokenQueue;
 
 public abstract class AbstractDispatcher

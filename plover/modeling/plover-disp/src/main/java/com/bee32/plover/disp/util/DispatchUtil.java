@@ -1,8 +1,6 @@
 package com.bee32.plover.disp.util;
 
-import com.bee32.plover.disp.Arrival;
 import com.bee32.plover.disp.DispatchException;
-import com.bee32.plover.disp.IArrival;
 import com.bee32.plover.disp.IDispatcher;
 
 public class DispatchUtil {

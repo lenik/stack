@@ -2,7 +2,9 @@ package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
 
-import com.bee32.plover.disp.IArrival;
+import javax.free.ParseException;
+
+import com.bee32.plover.disp.util.IArrival;
 import com.bee32.plover.restful.IRestfulRequest;
 import com.bee32.plover.restful.IRestfulResponse;
 
@@ -40,12 +42,15 @@ public class EntityRepositoryController {
     }
 
     public <E extends IEntity<K>, K extends Serializable> //
-    Object delete(IRestfulRequest req, IRestfulResponse resp) {
+    Object delete(IRestfulRequest req, IRestfulResponse resp)
+            throws ParseException {
 
-        Object target = req.getTarget();
         EntityRepository<E, K> repo = (EntityRepository<E, K>) req.getTarget();
 
-        String keyString = arrival.getPath();
+        IArrival arrival = req.getArrival();
+        String path = arrival.getConsumedPath();
+
+        String keyString = path;
         Serializable key = repo.parseKey(keyString);
 
         repo.deleteByKey(key);

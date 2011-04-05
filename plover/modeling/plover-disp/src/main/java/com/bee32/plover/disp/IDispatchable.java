@@ -1,5 +1,6 @@
 package com.bee32.plover.disp;
 
+import com.bee32.plover.disp.util.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 
 public interface IDispatchable {

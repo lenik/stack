@@ -4,9 +4,9 @@ import java.util.Map;
 
 import com.bee32.plover.disp.AbstractDispatcher;
 import com.bee32.plover.disp.DispatchConfig;
-import com.bee32.plover.disp.Arrival;
 import com.bee32.plover.disp.DispatchException;
-import com.bee32.plover.disp.IArrival;
+import com.bee32.plover.disp.util.Arrival;
+import com.bee32.plover.disp.util.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 
 public class MapDispatcher
