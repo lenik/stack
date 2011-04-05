@@ -2,8 +2,8 @@ package com.bee32.plover.restful.request;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import com.bee32.plover.disp.Arrival;
-import com.bee32.plover.disp.IArrival;
+import com.bee32.plover.disp.util.Arrival;
+import com.bee32.plover.disp.util.IArrival;
 import com.bee32.plover.restful.RestfulRequest;
 
 public class RestfulRequestUtil {
