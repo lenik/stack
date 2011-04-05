@@ -1,4 +1,4 @@
-package com.bee32.plover.disp;
+package com.bee32.plover.disp.util;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -17,18 +17,13 @@ public class Arrival
     private Date expires;
 
     public Arrival(Object startTarget) {
-        if (startTarget == null)
-            throw new NullPointerException("startTarget");
         this.parent = null;
         this.target = startTarget;
     }
 
     public Arrival(IArrival parent, Object target, String... consumedTokens) {
-        if (target == null)
-            throw new NullPointerException("target");
         if (consumedTokens == null)
             throw new NullPointerException("consumedTokens");
-
         this.parent = parent;
         this.target = target;
         this.consumedTokens = consumedTokens;
@@ -51,6 +46,26 @@ public class Arrival
     @Override
     public String getConsumedPath() {
         return StringArray.join("/", consumedTokens);
+    }
+
+    @Override
+    public boolean backtrace(ArrivalBacktraceCallback callback) {
+        ReversedPathTokens consumedRpt = new ReversedPathTokens();
+
+        IArrival node = this;
+        while (node != null) {
+
+            String[] tokens = node.getConsumedTokens();
+            for (int i = tokens.length - 1; i >= 0; i--)
+                consumedRpt.add(tokens[i]);
+
+            if (callback.arriveBack(node, consumedRpt))
+                return true;
+
+            node = node.getParent();
+        }
+
+        return false;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.bee32.plover.disp;
+package com.bee32.plover.disp.util;
 
 import java.util.Date;
 
@@ -24,6 +24,16 @@ public interface IArrival {
      * @return Non-<code>null</code> consumed path.
      */
     String getConsumedPath();
+
+    /**
+     * Back trace the dispatch arrivals.
+     *
+     * @param callback
+     *            Non-<code>null</code> callback on each arrival.
+     * @return Whether any of arrival is handled by the callback, <code>false</code> if not handled
+     *         at all.
+     */
+    boolean backtrace(ArrivalBacktraceCallback callback);
 
     /**
      * Get the target object.
