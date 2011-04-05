@@ -1,6 +1,8 @@
 package com.bee32.plover.arch.util;
 
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.free.StringPart;
 import javax.free.UnexpectedException;
@@ -49,6 +51,15 @@ public class ClassUtil {
         if (resource == null)
             throw new UnexpectedException("The .class file doesn't exist or can't be resolved: " + clazz);
         return resource;
+    }
+
+    public static Set<Class<?>> getClasses(Iterable<? extends Object> objects) {
+        Set<Class<?>> set = new HashSet<Class<?>>();
+
+        for (Object obj : objects)
+            set.add(obj.getClass());
+
+        return set;
     }
 
 }
