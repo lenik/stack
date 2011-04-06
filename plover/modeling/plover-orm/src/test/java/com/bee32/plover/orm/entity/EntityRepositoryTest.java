@@ -42,12 +42,18 @@ class Foo
         return null;
     }
 
+    @Override
+    public void setId(Integer id) {
+    }
+
 }
 
 interface Bar
         extends IEntity<Integer> {
+
     @Override
     Integer getId();
+
 }
 
 class BarImpl
@@ -58,6 +64,10 @@ class BarImpl
     @Override
     public Integer getId() {
         return null;
+    }
+
+    @Override
+    public void setId(Integer id) {
     }
 
 }

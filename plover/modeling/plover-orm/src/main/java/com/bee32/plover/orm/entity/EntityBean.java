@@ -54,7 +54,8 @@ public abstract class EntityBean<K extends Serializable>
         return id;
     }
 
-    protected void setId(K id) {
+    @Override
+    public void setId(K id) {
         this.id = id;
     }
 
