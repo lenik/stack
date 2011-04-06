@@ -14,6 +14,8 @@ public class Arrival
 
     private Object target;
 
+    private String parameterPath;
+
     private Date expires;
 
     public Arrival(Object startTarget) {
@@ -49,20 +51,42 @@ public class Arrival
     }
 
     @Override
-    public boolean backtrace(ArrivalBacktraceCallback callback) {
+    public String getRestPath() {
+        return parameterPath;
+    }
+
+    public void setRestPath(String parameterPath) {
+        this.parameterPath = parameterPath;
+    }
+
+    /**
+     * For example:
+     *
+     * <pre>
+     * foo/book/123 => foo/bookStore/book
+     * -> book: ""
+     * -> bookStore: "123"
+     * -> foo: "book/123"
+     * </pre>
+     */
+    @Override
+    public <E extends Exception> boolean backtrace(ArrivalBacktraceCallback<E> callback)
+            throws E {
         ReversedPathTokens consumedRpt = new ReversedPathTokens();
 
         IArrival node = this;
         while (node != null) {
 
+            if (callback.arriveBack(node))
+                return true;
+
             String[] tokens = node.getConsumedTokens();
             for (int i = tokens.length - 1; i >= 0; i--)
                 consumedRpt.add(tokens[i]);
 
-            if (callback.arriveBack(node, consumedRpt))
-                return true;
-
             node = node.getParent();
+            if (node != null)
+                node.setRestPath(consumedRpt.toString());
         }
 
         return false;
@@ -73,8 +97,8 @@ public class Arrival
         return target;
     }
 
-    public void setObject(Object object) {
-        this.target = object;
+    public void setTarget(Object target) {
+        this.target = target;
     }
 
     @Override

@@ -26,6 +26,15 @@ public interface IArrival {
     String getConsumedPath();
 
     /**
+     * Get the rest path.
+     *
+     * @return <code>null</code> if this is the final arrival.
+     */
+    String getRestPath();
+
+    void setRestPath(String parameterPath);
+
+    /**
      * Back trace the dispatch arrivals.
      *
      * @param callback
@@ -33,7 +42,8 @@ public interface IArrival {
      * @return Whether any of arrival is handled by the callback, <code>false</code> if not handled
      *         at all.
      */
-    boolean backtrace(ArrivalBacktraceCallback callback);
+    <E extends Exception> boolean backtrace(ArrivalBacktraceCallback<E> callback)
+            throws E;
 
     /**
      * Get the target object.
