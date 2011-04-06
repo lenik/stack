@@ -18,6 +18,7 @@ public class RestfulRequest
     private static final long serialVersionUID = 1L;
 
     private String method;
+    private String preferredView = "content";
     private String view;
     private String path;
     private ITokenQueue tokenQueue;
@@ -39,9 +40,13 @@ public class RestfulRequest
         this.method = method;
     }
 
+    public void setPreferredView(String preferredView) {
+        this.preferredView = view;
+    }
+
     @Override
     public String getView() {
-        return view;
+        return view == null ? preferredView : view;
     }
 
     public void setView(String view) {
