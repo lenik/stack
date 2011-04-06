@@ -24,9 +24,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.bee32.plover.arch.naming.ReverseLookupRegistry;
+import com.bee32.plover.cache.annotation.StatelessUtil;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.util.Arrival;
@@ -186,7 +188,15 @@ public class DispatchFilter
         // Date expires = arrival.getExpires();
 
         String method = req.getMethod();
-        if (method != null) {
+        if (method == null) {
+            if (!tq.isEmpty())
+                return false;
+
+            // No controller method, is it a special view?
+            req.setArrival(arrival);
+            req.setView(method);
+
+        } else {
             Callback callback = new Callback();
 
             // controller method chaining isn't supported, yet.
@@ -217,19 +227,9 @@ public class DispatchFilter
                     resp.sendRedirect(location);
                     return true;
                 }
-
-            } else {
-                // No controller method, is it a special view?
-                req.setArrival(arrival);
-                req.setView(method);
             }
         }
 
-        String view = req.getView();
-        if (view == null) {
-            view = "content";
-            req.setView(view);
-        }
         doRender(renderObject, req, resp);
         return true;
     } // processOrNot
@@ -267,8 +267,11 @@ public class DispatchFilter
 
         Object controller;
         try {
-            // webImpl = StatelessUtil.createOrReuse(webClass);
-            controller = applicationContext.getBean(controllerClass);
+            boolean wired = controllerClass.getAnnotation(Controller.class) != null;
+            if (wired)
+                controller = applicationContext.getBean(controllerClass);
+            else
+                controller = StatelessUtil.createOrReuse(controllerClass);
         } catch (Exception e) {
             throw new ServletException(e.getMessage(), e);
         }
