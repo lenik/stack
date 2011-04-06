@@ -65,4 +65,9 @@ public interface IRestfulRequest
      */
     <T> T getTarget();
 
+    /**
+     * The same as arrival.restPath.
+     */
+    String getRestPath();
+
 }

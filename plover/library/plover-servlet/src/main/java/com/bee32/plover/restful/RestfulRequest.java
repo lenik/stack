@@ -49,6 +49,15 @@ public class RestfulRequest
     }
 
     @Override
+    public Mime getTargetContentType() {
+        return contentType;
+    }
+
+    public void setTargetContentType(Mime contentType) {
+        this.contentType = contentType;
+    }
+
+    @Override
     public String getDispatchPath() {
         return path;
     }
@@ -83,12 +92,10 @@ public class RestfulRequest
     }
 
     @Override
-    public Mime getTargetContentType() {
-        return contentType;
-    }
-
-    public void setTargetContentType(Mime contentType) {
-        this.contentType = contentType;
+    public String getRestPath() {
+        if (arrival == null)
+            return null;
+        return arrival.getRestPath();
     }
 
     public String getRestfulPath() {
