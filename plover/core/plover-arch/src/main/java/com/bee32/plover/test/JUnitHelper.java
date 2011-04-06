@@ -236,8 +236,9 @@ public class JUnitHelper {
         @Override
         public String getClassName(String prefix, String source, Object key, Predicate exists) {
             // $$EnhancerByCGLIB$$38abe9c5.
+            // EnhancerKey ekey=(EnhancerKey) key;
 
-            String base = prefix + "-JUnitWrapper";
+            String base = prefix + "-JUW-" + key.hashCode();
 
             String attempt = base;
 
