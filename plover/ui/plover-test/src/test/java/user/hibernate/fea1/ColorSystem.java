@@ -45,12 +45,7 @@ public class ColorSystem
                 throw new UnexpectedException(e);
             }
 
-            RGB rgb = new RGB(colorName);
-
-            rgb.setRed(color.getRed());
-            rgb.setGreen(color.getGreen());
-            rgb.setBlue(color.getBlue());
-
+            RGB rgb = new RGB(colorName, color);
             colors.add(rgb);
         }
 

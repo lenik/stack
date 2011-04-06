@@ -30,6 +30,14 @@ public class RGB
         super(name);
     }
 
+    public RGB(String name, java.awt.Color color) {
+        if (color == null)
+            throw new NullPointerException("color");
+        this.red = color.getRed();
+        this.green = color.getGreen();
+        this.blue = color.getBlue();
+    }
+
     public RGB(String name, int red, int green, int blue) {
         super(name);
         this.red = red;
