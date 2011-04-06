@@ -26,6 +26,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
+import com.bee32.plover.arch.naming.ReverseLookupRegistry;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.util.Arrival;
@@ -34,7 +35,6 @@ import com.bee32.plover.disp.util.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.disp.util.MethodLazyInjector;
 import com.bee32.plover.disp.util.MethodPattern;
-import com.bee32.plover.disp.util.ReversedPathTokens;
 import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
 import com.bee32.plover.restful.request.RestfulRequestBuilder;
 
@@ -161,19 +161,20 @@ public class DispatchFilter
 
         // 3.1, otherwise execute origin..method-> target
 
-        Object target=null;
+        Object target = null;
         // Date expires = arrival.getExpires();
 
         class Callback
-                implements ArrivalBacktraceCallback {
+                implements ArrivalBacktraceCallback<ServletException> {
 
             @Override
-            public boolean arriveBack(IArrival arrival, ReversedPathTokens consumedRpt)
+            public boolean arriveBack(IArrival arrival)
                     throws ServletException {
 
                 Object obj = arrival.getTarget();
+                Class<?> objClass = obj.getClass();
 
-                Class<? extends Object> objClass = obj.getClass();
+                req.setArrival(arrival);
 
                 if (doControllerMethod(objClass, req, resp))
                     return true;
@@ -188,31 +189,53 @@ public class DispatchFilter
 
         while (true) {
 
-            if (!arrival.backtrace(callback)) {
-                throw new RestfulException("Invalid method " + req.getMethod() + " from " + arrival);
+            if (arrival.backtrace(callback)) {
+                String respMethod = resp.getMethod();
+                resp.setMethod(null);
+                if (respMethod == null)
+                    break;
+
+                target = resp.getTarget();
+                break; /* Currently recursive method isn't supported */
             }
 
-            String respMethod = resp.getMethod();
-            resp.setMethod(null);
-            if (respMethod == null)
-                break;
+            // Do the render if no controller method is defined.
+            req.setArrival(arrival);
 
-            target = resp.getTarget();
-            break; /* Currently recursive method isn't supported */
+            String view = req.getView();
+            if (view == null) {
+                view = req.getMethod();
+                if (view == null)
+                    view = "index";
+                req.setView(view);
+            }
+            doRender(origin, req, resp);
+            return true;
         }
 
         // 4, show the target
         // NOTICE: user should not write to response, if any target is returned.
-        if (target != null) {
-            if (target instanceof String) {
-                String location = (String) target;
-                resp.sendRedirect(location);
-                return true;
-            }
 
-            doRender(target, req, resp);
+        // Treat if the response have already been done.
+        if (target == null) {
+            // assert resp.isCommitted();
+            return true;
         }
 
+        if (target instanceof String) {
+            String location = (String) target;
+            resp.sendRedirect(location);
+            return true;
+        }
+
+        String location = ReverseLookupRegistry.getInstance().getLocation(target);
+        if (location != null) {
+            resp.sendRedirect(location);
+            return true;
+        }
+
+        req.setArrival(arrival);
+        doRender(target, req, resp);
         return true;
     } // processOrNot
 
