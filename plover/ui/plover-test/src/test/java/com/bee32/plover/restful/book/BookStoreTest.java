@@ -8,13 +8,13 @@ import org.junit.Test;
 import com.bee32.plover.disp.DispatchException;
 import com.bee32.plover.disp.Dispatcher;
 import com.bee32.plover.disp.util.DispatchUtil;
-import com.bee32.plover.orm.unit.UseUnit;
+import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.restful.ModuleManager;
 
-@UseUnit(BookStoreUnit.class)
+@Using(BookStoreUnit.class)
 public class BookStoreTest
         extends WiredDaoTestCase {
 

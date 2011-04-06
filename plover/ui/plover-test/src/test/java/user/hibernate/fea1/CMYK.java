@@ -1,6 +1,7 @@
 package user.hibernate.fea1;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import com.bee32.plover.orm.entity.EntityBean;
@@ -8,6 +9,7 @@ import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
 @Entity
+@DiscriminatorValue("CMYK")
 public class CMYK
         extends Color {
 

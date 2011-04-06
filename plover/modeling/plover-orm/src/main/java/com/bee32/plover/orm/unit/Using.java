@@ -15,7 +15,7 @@ import javax.inject.Qualifier;
 @Retention(RUNTIME)
 @Documented
 @Qualifier
-public @interface UseUnit {
+public @interface Using {
 
     Class<? extends PersistenceUnit> value();
 

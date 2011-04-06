@@ -1,6 +1,7 @@
 package user.hibernate.fea1;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import org.hibernate.annotations.BatchSize;
@@ -10,6 +11,7 @@ import com.bee32.plover.orm.entity.EntityFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
 @Entity
+@DiscriminatorValue("ARGB")
 @BatchSize(size = 10)
 public class ARGB
         extends RGB {
