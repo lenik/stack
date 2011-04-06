@@ -1,5 +1,7 @@
 package com.bee32.plover.restful.test;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 import com.bee32.plover.pub.oid.OidUtil;
@@ -23,6 +25,11 @@ public class RestfulTestCaseTest
 
         System.out.println(credit);
         assertTrue(credit.contains("99"));
+    }
+
+    public static void main(String[] args)
+            throws IOException {
+        new RestfulTestCaseTest().browseAndWait();
     }
 
 }
