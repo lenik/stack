@@ -10,7 +10,7 @@ import com.bee32.plover.velocity.VelocityUtil;
 
 public class BookStoreController {
 
-    public String list(IRestfulRequest req, ServletResponse resp)
+    public String content(IRestfulRequest req, ServletResponse resp)
             throws IOException {
         BookStore store = (BookStore) req.getTarget();
 

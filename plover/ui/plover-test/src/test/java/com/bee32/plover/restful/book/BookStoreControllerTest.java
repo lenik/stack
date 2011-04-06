@@ -26,7 +26,7 @@ public class BookStoreControllerTest
         RestfulRequest req = RestfulRequestUtil.wrapDispatched(store);
         MockHttpServletResponse resp = new MockHttpServletResponse();
 
-        String list = controller.list(req, resp);
+        String list = controller.content(req, resp);
         System.out.println(list);
     }
 
