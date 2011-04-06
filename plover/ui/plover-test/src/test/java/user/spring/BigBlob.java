@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Lazy
 public class BigBlob
-        implements InitializingBean {
+        implements InitializingBean, IBigBlob {
 
     String contents;
 
@@ -15,10 +15,12 @@ public class BigBlob
         System.out.println("Creating BigBlob...");
     }
 
+    @Override
     public String getContents() {
         return contents;
     }
 
+    @Override
     public void setContents(String contents) {
         System.out.println("Set contents to " + contents);
         this.contents = contents;

@@ -2,9 +2,11 @@ package user.spring.proxy;
 
 import javax.inject.Inject;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
+@Lazy
 public class Employee {
 
     private String name;

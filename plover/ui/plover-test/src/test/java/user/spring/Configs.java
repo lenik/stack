@@ -4,10 +4,12 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.orm.test.bookstore.Book;
 
 @Configuration
+@Lazy
 public class Configs
         implements InitializingBean {
 

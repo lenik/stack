@@ -2,8 +2,11 @@ package user.spring;
 
 import javax.inject.Inject;
 
+import org.springframework.context.annotation.Lazy;
+
 import com.bee32.plover.orm.test.bookstore.Book;
 
+@Lazy
 public class FooBean
         extends ComponentBase {
 
