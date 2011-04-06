@@ -4,27 +4,26 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
 
 import com.bee32.plover.arch.IModule;
 import com.bee32.plover.arch.IModuleLoader;
-import com.bee32.plover.inject.ContextException;
-import com.bee32.plover.inject.IContainer;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
-import com.bee32.plover.restful.annotation.WebCase;
+import com.bee32.plover.restful.annotation.IRestfulController;
 
-public class ModuleManagerWeb
-        implements WebCase {
+@Controller
+@Lazy
+public class ModuleManagerController
+        implements IRestfulController {
 
     @Inject
     IModuleLoader moduleLoader;
 
-    public void index(IContainer container)
-            throws IOException, ContextException {
-        final HttpServletRequest req = container.require(HttpServletRequest.class);
-        final HttpServletResponse resp = container.require(HttpServletResponse.class);
+    public void content(IRestfulRequest req, IRestfulResponse resp)
+            throws IOException {
 
         resp.setContentType("text/html");
 
