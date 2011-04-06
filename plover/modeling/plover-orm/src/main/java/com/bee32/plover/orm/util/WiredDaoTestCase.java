@@ -3,6 +3,7 @@ package com.bee32.plover.orm.util;
 import javax.inject.Inject;
 
 import org.hibernate.SessionFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
@@ -48,6 +49,12 @@ public abstract class WiredDaoTestCase
 
     public HibernateTemplate getHibernateTemplate() {
         return getSupport().getHibernateTemplateEx();
+    }
+
+    @Override
+    protected void applicationInitialized(ApplicationContext applicationContext) {
+        SamplesLoader samplesLoader = applicationContext.getBean(SamplesLoader.class);
+        samplesLoader.loadNormalSamples();
     }
 
 }
