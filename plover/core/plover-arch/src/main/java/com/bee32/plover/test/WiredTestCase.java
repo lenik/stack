@@ -1,17 +1,14 @@
 package com.bee32.plover.test;
 
-import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.bee32.plover.inject.cref.ContextRef;
+import com.bee32.plover.inject.spring.ContextConfiguration;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ //
 /*            */"/com/bee32/plover/inject/cref/auto-context.xml",
 /*            */"/com/bee32/plover/inject/cref/scan-testx-context.xml" })
