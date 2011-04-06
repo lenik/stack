@@ -12,7 +12,7 @@ public class ReversedPathTokens
         StringBuilder buf = new StringBuilder(size * 30);
 
         for (int index = size - 1; index >= 0; index--) {
-            if (index != 0)
+            if (buf.length() != 0)
                 buf.append('/');
             buf.append(this.get(index));
         }
