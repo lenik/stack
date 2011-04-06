@@ -75,7 +75,7 @@ public class RestfulRequestBuilder {
         }
 
         String path = _request.getPathInfo();
-        if (path == null)
+        //if (path == null)
             path = _request.getRequestURI();
 
         // boolean endsWithSlash = path.endsWith("/");
@@ -92,7 +92,9 @@ public class RestfulRequestBuilder {
         String baseStem = baseTokens.next();
 
         String pathStem = dirName;
-        if (!baseStem.isEmpty())
+        if (baseStem.isEmpty())
+            request.setPreferredView("index");
+        else
             pathStem += "/" + baseStem;
         request.setDispatchPath(pathStem);
 
