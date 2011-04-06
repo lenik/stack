@@ -26,11 +26,26 @@ public class ObjectDumpView
         out.println("<html><head><title>Object Dump</title></head>");
         out.println("<body><h1>Object Dump: " + ObjectInfo.getObjectId(obj) + "</h1>");
         out.println("<hr/>");
-
         String string = String.valueOf(obj);
         String html = HtmlUtils.htmlEscape(string);
-        out.println(html);
 
+        out.println("<pre>");
+        out.println(html);
+        out.println("</pre>");
+
+        out.println("<hr/>");
+        out.println("<h2>Request Info</h2>");
+        out.println("<pre>");
+
+        out.println("Context-Path: " + req.getContextPath());
+        out.println("Dispatch-Path: " + req.getDispatchPath());
+        out.println("Arrival: " + req.getArrival());
+        out.println("Rest-Path: " + req.getRestPath());
+        out.println("View: " + req.getView());
+        out.println("Target: " + req.getTarget());
+        out.println(req);
+
+        out.println("</pre>");
         return true;
     }
 
