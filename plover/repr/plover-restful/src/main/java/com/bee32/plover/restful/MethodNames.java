@@ -12,10 +12,10 @@ public class MethodNames {
     public static final String READ = null;
 
     public static final String CREATE = "create";
-    public static final String CREATE_FORM = "new";
+    public static final String CREATE_FORM = "createForm";
 
     public static final String UPDATE = "update";
-    public static final String UPDATE_FORM = "edit";
+    public static final String UPDATE_FORM = "editForm";
 
     public static final String DELETE = "delete";
 
