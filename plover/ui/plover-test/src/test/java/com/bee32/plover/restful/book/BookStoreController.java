@@ -4,11 +4,18 @@ import java.io.IOException;
 
 import javax.servlet.ServletResponse;
 
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+
 import com.bee32.plover.orm.test.bookstore.Book;
 import com.bee32.plover.restful.IRestfulRequest;
+import com.bee32.plover.restful.annotation.IRestfulController;
 import com.bee32.plover.velocity.VelocityUtil;
 
-public class BookStoreController {
+@Component
+@Lazy
+public class BookStoreController
+        implements IRestfulController {
 
     public String content(IRestfulRequest req, ServletResponse resp)
             throws IOException {

@@ -15,10 +15,11 @@ import com.bee32.plover.restful.request.RestfulRequestUtil;
 public class BookStoreControllerTest
         extends WiredDaoTestCase {
 
-    BookStoreController controller = new BookStoreController();
-
     @Inject
     BookStore store;
+
+    @Inject
+    BookStoreController controller;
 
     @Test
     public void testList()
