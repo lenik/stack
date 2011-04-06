@@ -49,15 +49,22 @@ public class RestfulRequestBuilder {
         // Translate http method
         String method = _request.getParameter(".method");
         if (method == null) {
-            method = request.getParameter("method");
+            method = _request.getParameter("method");
             if (method == null) {
-                method = request.getParameter("X");
+                method = _request.getParameter("X");
                 if (method == null)
                     method = HttpMethodNames.getMethodName(_request.getMethod());
             }
         }
-        assert method != null;
         request.setMethod(method);
+
+        String view = _request.getParameter(".view");
+        if (view == null) {
+            view = _request.getParameter("view");
+            if (view == null)
+                view = _request.getParameter("Y");
+        }
+        request.setView(view);
 
         // Content-type by browser.
         String acceptContentType = _request.getHeader("Accept-Content-Type");
