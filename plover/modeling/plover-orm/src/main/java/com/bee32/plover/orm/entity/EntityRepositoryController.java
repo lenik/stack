@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.free.ParseException;
 
-import com.bee32.plover.disp.util.IArrival;
 import com.bee32.plover.restful.IRestfulRequest;
 import com.bee32.plover.restful.IRestfulResponse;
 
@@ -29,12 +28,11 @@ public class EntityRepositoryController {
 
         EntityRepository<E, K> repo = (EntityRepository<E, K>) req.getTarget();
 
-        IArrival arrival = req.getArrival();
-
-        String keyString = req.getDispatchPath();
-        Serializable key = repo.parseKey(keyString);
+        String keyString = req.getRestPath();
+        K key = repo.parseKey(keyString);
 
         E entity = repo.populate(req);
+        entity.setId(key);
 
         repo.update(entity);
 
@@ -47,11 +45,8 @@ public class EntityRepositoryController {
 
         EntityRepository<E, K> repo = (EntityRepository<E, K>) req.getTarget();
 
-        IArrival arrival = req.getArrival();
-        String path = arrival.getConsumedPath();
-
-        String keyString = path;
-        Serializable key = repo.parseKey(keyString);
+        String keyString = req.getRestPath();
+        K key = repo.parseKey(keyString);
 
         repo.deleteByKey(key);
 

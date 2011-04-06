@@ -2,19 +2,17 @@ package com.bee32.plover.restful.book;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletResponse;
 
 import com.bee32.plover.orm.test.bookstore.Book;
-import com.bee32.plover.restful.RestfulRequest;
+import com.bee32.plover.restful.IRestfulRequest;
 import com.bee32.plover.velocity.VelocityUtil;
 
 public class BookStoreController {
 
-    public String list(HttpServletRequest req, HttpServletResponse resp)
+    public String list(IRestfulRequest req, ServletResponse resp)
             throws IOException {
-        RestfulRequest rreq = (RestfulRequest) req;
-        BookStore store = rreq.getTarget();
+        BookStore store = (BookStore) req.getTarget();
 
         String list = VelocityUtil.merge("index", store);
 
@@ -22,10 +20,9 @@ public class BookStoreController {
         return list;
     }
 
-    public void create(HttpServletRequest req, HttpServletResponse resp)
+    public Object create(IRestfulRequest req, ServletResponse resp)
             throws IOException {
-        RestfulRequest rreq = (RestfulRequest) req;
-        BookStore store = rreq.getTarget();
+        BookStore store = (BookStore) req.getTarget();
 
         String name = req.getParameter("name");
         String content = req.getParameter("content");
@@ -33,7 +30,7 @@ public class BookStoreController {
         Book book = new Book(name, content);
         store.addBook(book);
 
-        resp.sendRedirect("~index");
+        return store;
     }
 
 }
