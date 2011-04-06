@@ -14,7 +14,7 @@ public class Arrival
 
     private Object target;
 
-    private String parameterPath;
+    private String restPath;
 
     private Date expires;
 
@@ -52,11 +52,11 @@ public class Arrival
 
     @Override
     public String getRestPath() {
-        return parameterPath;
+        return restPath;
     }
 
     public void setRestPath(String parameterPath) {
-        this.parameterPath = parameterPath;
+        this.restPath = parameterPath;
     }
 
     /**
