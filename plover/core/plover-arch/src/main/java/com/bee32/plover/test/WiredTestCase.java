@@ -27,11 +27,16 @@ public abstract class WiredTestCase
             throws BeansException {
         this.application = applicationContext;
         this.beanFactory = application.getAutowireCapableBeanFactory();
+
+        applicationInitialized(applicationContext);
     }
 
     @Override
     public void afterPropertiesSet()
             throws Exception {
+    }
+
+    protected void applicationInitialized(ApplicationContext applicationContext) {
     }
 
     protected <T> T createBean(Class<T> beanClass)
