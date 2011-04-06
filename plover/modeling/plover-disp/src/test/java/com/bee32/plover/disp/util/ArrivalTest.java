@@ -15,10 +15,10 @@ public class ArrivalTest
         Arrival e = new Arrival(d, null, "xyz");
 
         class FindC
-                implements ArrivalBacktraceCallback {
+                implements ArrivalBacktraceCallback<RuntimeException> {
 
             @Override
-            public boolean arriveBack(IArrival arrival, ReversedPathTokens consumedRpt) {
+            public boolean arriveBack(IArrival arrival) {
                 Object target = arrival.getTarget();
                 return "c".equals(target);
             }

@@ -1,13 +1,11 @@
 package com.bee32.plover.disp.util;
 
-import javax.servlet.ServletException;
-
-public interface ArrivalBacktraceCallback {
+public interface ArrivalBacktraceCallback<E extends Exception> {
 
     /**
      * @return <code>false</code> to terminate the traversion.
      */
-    boolean arriveBack(IArrival arrival, ReversedPathTokens consumedRpt)
-            throws ServletException;
+    boolean arriveBack(IArrival arrival)
+            throws E;
 
 }
