@@ -143,27 +143,6 @@ public class DispatchFilter
         final RestfulRequest req = requestBuilder.build(request);
         final RestfulResponse resp = new RestfulResponse(response);
 
-        // 2, Path-dispatch
-        ITokenQueue tq = req.getTokenQueue();
-        IArrival arrival = dispatch(tq);
-        if (arrival == null)
-            return false;
-        req.setArrival(arrival);
-
-        final Object origin = arrival.getTarget();
-
-        // 3, origin is a servlet delegate?
-        if (origin instanceof Servlet) {
-            Servlet resultServlet = (Servlet) origin;
-            resultServlet.service(_request, _response);
-            return true;
-        }
-
-        // 3.1, otherwise execute origin..method-> target
-
-        Object target = null;
-        // Date expires = arrival.getExpires();
-
         class Callback
                 implements ArrivalBacktraceCallback<ServletException> {
 
@@ -185,57 +164,73 @@ public class DispatchFilter
                 return false;
             }
         }
-        Callback callback = new Callback();
 
-        while (true) {
+        // 2, Path-dispatch
+        ITokenQueue tq = req.getTokenQueue();
+        IArrival arrival = dispatch(tq);
+        if (arrival == null)
+            return false;
+
+        final Object origin = arrival.getTarget();
+
+        // 3, origin is a servlet delegate?
+        if (origin instanceof Servlet) {
+            Servlet resultServlet = (Servlet) origin;
+            resultServlet.service(_request, _response);
+            return true;
+        }
+
+        // 3.1, otherwise execute origin..method-> target
+
+        Object renderObject = origin;
+        // Date expires = arrival.getExpires();
+
+        String method = req.getMethod();
+        if (method != null) {
+            Callback callback = new Callback();
+
+            // controller method chaining isn't supported, yet.
+            // while (true) {}
 
             if (arrival.backtrace(callback)) {
                 String respMethod = resp.getMethod();
-                resp.setMethod(null);
-                if (respMethod == null)
-                    break;
+                if (respMethod != null)
+                    throw new RestfulException("Controller method chaining isn't supported yet.");
 
-                target = resp.getTarget();
-                break; /* Currently recursive method isn't supported */
+                // NOTICE: user should not write to response, if any target is returned.
+                Object target = resp.getTarget();
+
+                // Treat if the response have already been done.
+                if (target == null) {
+                    // assert resp.isCommitted();
+                    return true;
+                }
+
+                if (target instanceof String) {
+                    String location = (String) target;
+                    resp.sendRedirect(location);
+                    return true;
+                }
+
+                String location = ReverseLookupRegistry.getInstance().getLocation(target);
+                if (location != null) {
+                    resp.sendRedirect(location);
+                    return true;
+                }
+
+            } else {
+                // No controller method, is it a special view?
+                req.setArrival(arrival);
+                req.setView(method);
             }
-
-            // Do the render if no controller method is defined.
-            req.setArrival(arrival);
-
-            String view = req.getView();
-            if (view == null) {
-                view = req.getMethod();
-                if (view == null)
-                    view = "index";
-                req.setView(view);
-            }
-            doRender(origin, req, resp);
-            return true;
         }
 
-        // 4, show the target
-        // NOTICE: user should not write to response, if any target is returned.
-
-        // Treat if the response have already been done.
-        if (target == null) {
-            // assert resp.isCommitted();
-            return true;
+        String view = req.getView();
+        if (view == null) {
+            view = "content";
+            req.setView(view);
         }
-
-        if (target instanceof String) {
-            String location = (String) target;
-            resp.sendRedirect(location);
-            return true;
-        }
-
-        String location = ReverseLookupRegistry.getInstance().getLocation(target);
-        if (location != null) {
-            resp.sendRedirect(location);
-            return true;
-        }
-
-        req.setArrival(arrival);
-        doRender(target, req, resp);
+        doRender(renderObject, req, resp);
         return true;
     } // processOrNot
 
@@ -257,6 +252,9 @@ public class DispatchFilter
         return arrival;
     }
 
+    /**
+     * @return <code>true</code> if any controller method exists and the method is handled.
+     */
     private boolean doControllerMethod(Class<?> originClass, RestfulRequest req, RestfulResponse resp)
             throws ServletException {
         Method method = getControllerMethod(originClass, req.getMethod());
@@ -287,6 +285,9 @@ public class DispatchFilter
         return true;
     }
 
+    /**
+     * @return <code>true</code> if any inplace method exists and the method is handled.
+     */
     private boolean doInplaceMethod(Object origin, final RestfulRequest req, final RestfulResponse resp)
             throws ServletException {
         Class<?> originClass = origin.getClass();
