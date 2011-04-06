@@ -2,55 +2,51 @@ package user.hibernate.fea1;
 
 import java.util.List;
 
-import org.junit.Ignore;
+import javax.inject.Inject;
+
 import org.junit.Test;
 
-import com.bee32.plover.orm.dao.HibernateTemplate;
-import com.bee32.plover.orm.unit.UseUnit;
+import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
-import com.p6spy.engine.common.P6SpyOptions;
 
-@UseUnit(ColorSystem.class)
+@Using(ColorSystem.class)
 public class DiscriminatorTest
         extends WiredDaoTestCase {
 
+    @Inject
+    CommonDataManager dataManager;
+
     @Test
-    @Ignore
     public void listAllColors() {
-        HibernateTemplate template = getHibernateTemplate();
-
         for (Color color : ColorSystem.getPredefinedColors())
-            template.save(color);
+            dataManager.save(color);
 
-        List<Color> list = template.loadAll(Color.class);
+        List<Color> list = dataManager.loadAll(Color.class);
+        // for (Color c : list)
+        // System.out.println("Color: " + c);
         assertTrue(list.contains(ColorSystem.black));
     }
 
     @Test
-    @Ignore
     public void listCMYKOnly() {
-        HibernateTemplate template = getHibernateTemplate();
-
         for (Color color : ColorSystem.getPredefinedColors())
-            template.save(color);
+            dataManager.save(color);
 
-        List<CMYK> list = template.loadAll(CMYK.class);
-        assertEquals(2, list.size());
+        List<CMYK> list = dataManager.loadAll(CMYK.class);
+        assertTrue(list.contains(ColorSystem.black));
     }
 
     @Test
     public void listRGBBased() {
-        String inc = P6SpyOptions.getIncludecategories();
-        System.err.println("[" + inc + "]");
-
-        HibernateTemplate template = getHibernateTemplate();
-
         for (Color color : ColorSystem.getPredefinedColors())
-            template.save(color);
+            dataManager.save(color);
 
-        List<RGB> list = template.loadAll(RGB.class);
-        for (RGB rgb : list)
-            System.err.println("RGB: " + rgb);
+        List<RGB> list = dataManager.loadAll(RGB.class);
+        // for (RGB rgb : list)
+        // System.err.println("RGB: " + rgb);
+        RGB cyan = new RGB("CYAN", java.awt.Color.CYAN);
+        list.contains(cyan);
     }
 
 }
