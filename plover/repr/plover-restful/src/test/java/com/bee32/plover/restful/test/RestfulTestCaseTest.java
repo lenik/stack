@@ -24,7 +24,7 @@ public class RestfulTestCaseTest
         assertNotNull(credit);
 
         System.out.println(credit);
-        assertTrue(credit.contains("99"));
+        assertTrue(credit.contains("Object Dump"));
     }
 
     public static void main(String[] args)
