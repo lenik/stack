@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import com.bee32.plover.inject.cref.ContextRef;
+import com.bee32.plover.inject.spring.ApplicationContextBuilder;
 import com.bee32.plover.inject.spring.ContextConfiguration;
 
 @ContextConfiguration({ //
@@ -18,6 +19,10 @@ public abstract class WiredTestCase
 
     protected ApplicationContext application;
     protected AutowireCapableBeanFactory beanFactory;
+
+    public WiredTestCase() {
+        ApplicationContextBuilder.selfWire(this);
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext)

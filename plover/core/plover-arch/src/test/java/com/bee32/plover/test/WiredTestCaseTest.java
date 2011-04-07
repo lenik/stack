@@ -3,7 +3,8 @@ package com.bee32.plover.test;
 import javax.inject.Inject;
 
 import org.junit.Test;
-import org.springframework.context.annotation.Import;
+
+import com.bee32.plover.inject.cref.Import;
 
 @Import(FooConfig.class)
 public class WiredTestCaseTest
