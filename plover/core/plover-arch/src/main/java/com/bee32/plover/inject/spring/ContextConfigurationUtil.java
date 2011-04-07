@@ -7,11 +7,23 @@ import java.util.Set;
 import javax.free.AnnotationUtil;
 import javax.free.IllegalUsageException;
 
+import com.bee32.plover.inject.cref.Import;
+
 public class ContextConfigurationUtil {
 
-    public static Collection<String> getContextConfigurationLocations(Class<?> clazz) {
+    public static String[] getContextConfigurationLocationArray(Class<?> clazz) {
+        Collection<String> locations = getContextConfigurationLocations(clazz);
+        String[] array = locations.toArray(new String[0]);
+        return array;
+    }
 
+    public static Collection<String> getContextConfigurationLocations(Class<?> clazz) {
         Set<String> allLocations = new HashSet<String>();
+        scan(clazz, allLocations);
+        return allLocations;
+    }
+
+    static void scan(Class<?> clazz, Set<String> allLocations) {
         while (clazz != null) {
             String[] locations = null;
             String[] value = null;
@@ -46,10 +58,16 @@ public class ContextConfigurationUtil {
                     break;
             }
 
+            Import _import = clazz.getAnnotation(Import.class);
+            if (_import != null) {
+                for (Class<?> importClass : _import.value()) {
+                    scan(importClass, allLocations);
+                }
+            }
+
             clazz = clazz.getSuperclass();
         }
 
-        return allLocations;
     }
 
     static String canonicalizeResourceName(Class<?> clazz, String spec) {
