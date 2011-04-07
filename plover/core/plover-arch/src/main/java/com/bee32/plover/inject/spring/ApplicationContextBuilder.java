@@ -7,24 +7,23 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class ApplicationContextBuilder {
 
-    public static ApplicationContext buildSelfHostedContext(Class<?> clazz) {
+    public static ApplicationContext buildSelfHostedContext1(Class<?> clazz) {
         AnnotationConfigApplicationContext annContext = null;
         // Find all annotated config classes by ImportUtil.
         Class<?>[] configClasses = ImportUtil.flatten(clazz);
         if (configClasses.length != 0) {
             annContext = new AnnotationConfigApplicationContext(configClasses);
-            // include/exclude?
-            annContext.scan("com.bee32");
+            // include/exclude?AnnotationConfigApplicationContext
+            // annContext.scan("com.bee32");
         }
 
         // Find all context config xmls by ContextConfigUtil.
         String[] locations = ContextConfigurationUtil.getContextConfigurationLocationArray(clazz);
         ClassPathXmlApplicationContext xmlContext = new ClassPathXmlApplicationContext(locations, annContext);
-
         return xmlContext;
     }
 
-    public static ApplicationContext buildSelfHostedContext2(Class<?> clazz) {
+    public static ApplicationContext buildSelfHostedContext(Class<?> clazz) {
         ApplicationContext appContext;
 
         // Find all context config xmls by ContextConfigUtil.
@@ -38,20 +37,36 @@ public class ApplicationContextBuilder {
         if (configClasses.length != 0) {
             annContext = new AnnotationConfigApplicationContext(configClasses);
             annContext.setParent(xmlContext);
-            annContext.refresh();
+            // annContext.refresh();
             appContext = annContext;
         }
 
         return appContext;
     }
 
-    public static void selfWire(Object bean) {
+    /**
+     * @return self.
+     */
+    public static <T> T create(Class<T> beanClass) {
+        if (beanClass == null)
+            throw new NullPointerException("clazz");
+
+        ApplicationContext context = buildSelfHostedContext(beanClass);
+        AutowireCapableBeanFactory beanFactory = context.getAutowireCapableBeanFactory();
+        return beanFactory.createBean(beanClass);
+    }
+
+    /**
+     * @return self.
+     */
+    public static <T> T selfWire(T bean) {
         if (bean == null)
             throw new NullPointerException("bean");
 
         ApplicationContext context = buildSelfHostedContext(bean.getClass());
         AutowireCapableBeanFactory beanFactory = context.getAutowireCapableBeanFactory();
         beanFactory.autowireBean(bean);
+        return bean;
     }
 
 }
