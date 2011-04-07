@@ -21,20 +21,7 @@ public interface IRestfulRequest
      *
      * @return Non-<code>null</code> verb literal on the resource.
      */
-    // Verb getVerb();
     String getMethod();
-
-    /**
-     * The profile to be staged.
-     *
-     * @return Non-<code>null</code> profile literal.
-     */
-    // Profile getProfile();
-
-    /**
-     * Get the view name.
-     */
-    String getView();
 
     /**
      * The MIME type for the desired output.

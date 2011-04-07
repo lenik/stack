@@ -18,13 +18,10 @@ public class RestfulRequest
     private static final long serialVersionUID = 1L;
 
     private String method;
-    private String preferredView = "content";
-    private String view;
     private String path;
     private ITokenQueue tokenQueue;
     private IArrival arrival;
 
-    // private Profile profile = StandardProfiles.CONTENT;
     private Mime contentType = Mimes.text_html;
 
     public RestfulRequest(HttpServletRequest request) {
@@ -38,19 +35,6 @@ public class RestfulRequest
 
     public void setMethod(String method) {
         this.method = method;
-    }
-
-    public void setPreferredView(String preferredView) {
-        this.preferredView = view;
-    }
-
-    @Override
-    public String getView() {
-        return view == null ? preferredView : view;
-    }
-
-    public void setView(String view) {
-        this.view = view;
     }
 
     @Override
