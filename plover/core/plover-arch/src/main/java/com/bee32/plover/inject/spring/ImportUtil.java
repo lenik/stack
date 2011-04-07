@@ -12,17 +12,12 @@ import com.bee32.plover.inject.cref.Import;
 public class ImportUtil {
 
     public static Class<?>[] flatten(Class<?> clazz) {
-        return flatten(clazz, false);
-    }
-
-    public static Class<?>[] flatten(Class<?> clazz, boolean includeSelf) {
         if (clazz == null)
             throw new NullPointerException("clazz");
 
         Set<Class<?>> classes = new HashSet<Class<?>>();
 
-        if (includeSelf)
-            classes.add(clazz);
+        // if (includeSelf) classes.add(clazz);
 
         scan(clazz, classes);
 
@@ -30,6 +25,12 @@ public class ImportUtil {
     }
 
     static void scan(Class<?> clazz, Set<Class<?>> allClasses) {
+        if (allClasses.contains(clazz))
+            return;
+
+        if (!isEmptyConfig(clazz))
+            allClasses.add(clazz);
+
         Import _import = clazz.getAnnotation(Import.class);
         if (_import == null)
             return;
@@ -39,15 +40,6 @@ public class ImportUtil {
             return;
 
         for (Class<?> importClass : importClasses) {
-            boolean included = true;
-
-            if (isEmptyConfig(importClass))
-                included = false;
-
-            if (included)
-                if (!allClasses.add(importClass))
-                    continue;
-
             scan(importClass, allClasses);
         }
     }
