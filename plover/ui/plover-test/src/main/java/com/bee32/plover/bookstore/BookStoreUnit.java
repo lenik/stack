@@ -1,6 +1,5 @@
-package com.bee32.plover.restful.book;
+package com.bee32.plover.bookstore;
 
-import com.bee32.plover.orm.test.bookstore.Book;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
 public class BookStoreUnit

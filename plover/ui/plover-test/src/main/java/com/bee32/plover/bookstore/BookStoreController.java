@@ -1,15 +1,17 @@
-package com.bee32.plover.restful.book;
+package com.bee32.plover.bookstore;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.servlet.ServletResponse;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.orm.test.bookstore.Book;
 import com.bee32.plover.restful.IRestfulRequest;
-import com.bee32.plover.restful.annotation.IRestfulController;
+import com.bee32.plover.restful.IRestfulResponse;
+import com.bee32.plover.restful.MethodNames;
+import com.bee32.plover.restful.util.IRestfulController;
 import com.bee32.plover.velocity.VelocityUtil;
 
 @Component
@@ -17,6 +19,7 @@ import com.bee32.plover.velocity.VelocityUtil;
 public class BookStoreController
         implements IRestfulController {
 
+    @Inject
     public String content(IRestfulRequest req, ServletResponse resp)
             throws IOException {
         BookStore store = (BookStore) req.getTarget();
@@ -27,7 +30,7 @@ public class BookStoreController
         return list;
     }
 
-    public Object create(IRestfulRequest req, ServletResponse resp)
+    public Object create(IRestfulRequest req, IRestfulResponse resp)
             throws IOException {
         BookStore store = (BookStore) req.getTarget();
 
@@ -37,6 +40,7 @@ public class BookStoreController
         Book book = new Book(name, content);
         store.addBook(book);
 
+        resp.setMethod(MethodNames.INDEX);
         return store;
     }
 

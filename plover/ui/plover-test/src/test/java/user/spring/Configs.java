@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
-import com.bee32.plover.orm.test.bookstore.Book;
+import com.bee32.plover.bookstore.Book;
 
 @Configuration
 @Lazy

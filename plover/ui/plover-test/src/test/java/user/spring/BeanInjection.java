@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.bee32.plover.orm.test.bookstore.Book;
+import com.bee32.plover.bookstore.Book;
 import com.bee32.plover.test.WiredTestCase;
 
 @ContextConfiguration("context1.xml")

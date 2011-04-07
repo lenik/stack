@@ -1,8 +1,7 @@
-package com.bee32.plover.restful.book;
+package com.bee32.plover.bookstore;
 
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.util.IStruct;
-import com.bee32.plover.orm.test.bookstore.Book;
 
 public class BookStore
         extends DaoBookStore {

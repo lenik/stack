@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.test.bookstore;
+package com.bee32.plover.bookstore;
 
 import javax.free.Nullables;
 import javax.persistence.Basic;

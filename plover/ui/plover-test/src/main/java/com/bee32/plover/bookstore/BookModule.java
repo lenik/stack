@@ -1,4 +1,4 @@
-package com.bee32.plover.restful.book;
+package com.bee32.plover.bookstore;
 
 import javax.inject.Inject;
 
