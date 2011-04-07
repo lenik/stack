@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.dao.CatDao;
 
+@Import(FeatureConfig.class)
 @Scope("prototype")
 @Service
 public class FeaturePlayer {
@@ -37,7 +39,6 @@ public class FeaturePlayer {
 
     @Transactional
     public void tcPrepare() {
-
         dao.deleteAll();
 
         Cat kate = new Cat("kate", "yellow");

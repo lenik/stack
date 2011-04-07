@@ -11,6 +11,7 @@ public class FeatureSFB
     protected void populateHibernateProperties(Properties properties) {
         super.populateHibernateProperties(properties);
 
+        setForceUnit(Animals.getInstance());
         // properties.put(hbm2ddlAuto, "validate");
     }
 

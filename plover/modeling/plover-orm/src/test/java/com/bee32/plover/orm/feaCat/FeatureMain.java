@@ -3,18 +3,12 @@ package com.bee32.plover.orm.feaCat;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import org.springframework.context.ApplicationContext;
-
-import com.bee32.plover.inject.cref.ContextRefs;
-import com.bee32.plover.orm.context.TxContext;
+import com.bee32.plover.inject.spring.ApplicationContextBuilder;
 
 public class FeatureMain {
 
     public static void main(String[] args)
             throws Exception {
-
-        ApplicationContext applicationContext = new FeatureContext(//
-                new TxContext(ContextRefs.SCAN_TESTX)).getApplicationContext();
 
         // applicationContext.getBean(FeatureMain.class).runAop();
 
@@ -22,7 +16,9 @@ public class FeatureMain {
         while (true) {
 
             try {
-                FeaturePlayer player = applicationContext.getBean(FeaturePlayer.class);
+                FeaturePlayer player = new FeaturePlayer();
+                ApplicationContextBuilder.selfWire(player);
+
                 System.err.println("Got player: " + player);
 
                 player.tcPrepare();
