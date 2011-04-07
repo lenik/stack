@@ -12,7 +12,7 @@ import com.bee32.plover.arch.IModule;
 import com.bee32.plover.arch.IModuleLoader;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
-import com.bee32.plover.restful.annotation.IRestfulController;
+import com.bee32.plover.restful.util.IRestfulController;
 
 @Controller
 @Lazy
@@ -22,7 +22,7 @@ public class ModuleManagerController
     @Inject
     IModuleLoader moduleLoader;
 
-    public void content(IRestfulRequest req, IRestfulResponse resp)
+    public void index(IRestfulRequest req, IRestfulResponse resp)
             throws IOException {
 
         resp.setContentType("text/html");

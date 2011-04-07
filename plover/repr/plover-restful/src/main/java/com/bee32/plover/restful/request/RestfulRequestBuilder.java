@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import javax.free.IllegalUsageException;
 import javax.servlet.http.HttpServletRequest;
 
+import com.bee32.plover.restful.MethodNames;
 import com.bee32.plover.restful.RestfulRequest;
 import com.bee32.plover.util.Mime;
 
@@ -46,25 +47,25 @@ public class RestfulRequestBuilder {
 
         RestfulRequest request = new RestfulRequest(_request);
 
+        String path = _request.getPathInfo();
+        // if (path == null)
+        path = _request.getRequestURI();
+
         // Translate http method
         String method = _request.getParameter(".method");
         if (method == null) {
             method = _request.getParameter("method");
             if (method == null) {
                 method = _request.getParameter("X");
-                if (method == null)
-                    method = HttpMethodNames.getMethodName(_request.getMethod());
+                if (method == null) {
+                    if (path.endsWith("/"))
+                        method = MethodNames.INDEX;
+                    else
+                        method = HttpMethodNames.getMethodName(_request.getMethod());
+                }
             }
         }
         request.setMethod(method);
-
-        String view = _request.getParameter(".view");
-        if (view == null) {
-            view = _request.getParameter("view");
-            if (view == null)
-                view = _request.getParameter("Y");
-        }
-        request.setView(view);
 
         // Content-type by browser.
         String acceptContentType = _request.getHeader("Accept-Content-Type");
@@ -73,13 +74,6 @@ public class RestfulRequestBuilder {
             if (contentType != null)
                 request.setTargetContentType(contentType);
         }
-
-        String path = _request.getPathInfo();
-        //if (path == null)
-            path = _request.getRequestURI();
-
-        // boolean endsWithSlash = path.endsWith("/");
-        // if (endsWithSlash) profile = INDEX;
 
         int lastSlash = path.lastIndexOf('/');
         assert lastSlash != -1;
@@ -92,9 +86,7 @@ public class RestfulRequestBuilder {
         String baseStem = baseTokens.next();
 
         String pathStem = dirName;
-        if (baseStem.isEmpty())
-            request.setPreferredView("index");
-        else
+        if (!baseStem.isEmpty())
             pathStem += "/" + baseStem;
         request.setDispatchPath(pathStem);
 
