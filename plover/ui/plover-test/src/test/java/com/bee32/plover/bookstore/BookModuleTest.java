@@ -35,7 +35,7 @@ public class BookModuleTest
 
     public static void main(String[] args)
             throws Exception {
-        new BookModuleTest().browseAndWait("/" + bookModuleOid + "/");
+        new BookModuleTest().browseAndWait(BookModule.class);
     }
 
 }
