@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 
 import com.bee32.plover.orm.dao.JpaTemplate;
 
-public abstract class JpaEntityRepository<E extends IEntity<K>, K extends Serializable>
+public abstract class JpaEntityRepository<E extends EntityBean<K>, K extends Serializable>
         extends EntityRepository<E, K> {
 
     private JpaTemplate template;

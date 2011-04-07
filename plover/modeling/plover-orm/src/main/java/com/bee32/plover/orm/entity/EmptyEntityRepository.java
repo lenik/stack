@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-public class EmptyEntityRepository<E extends IEntity<K>, K extends Serializable>
+public class EmptyEntityRepository<E extends EntityBean<K>, K extends Serializable>
         extends EntityRepository<E, K> {
 
     public EmptyEntityRepository(Class<E> instanceType, Class<K> keyType) {

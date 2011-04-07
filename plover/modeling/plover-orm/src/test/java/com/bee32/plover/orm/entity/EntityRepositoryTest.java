@@ -13,12 +13,6 @@ public class EntityRepositoryTest
     }
 
     @Test
-    public void testGetEntityClassBar() {
-        BarRepo repo = new BarRepo();
-        assertEquals(BarImpl.class, repo.getEntityType());
-    }
-
-    @Test
     public void testGetEntityClassBarImpl() {
         BarImplRepo repo = new BarImplRepo();
         assertEquals(BarImpl.class, repo.getEntityType());
@@ -33,18 +27,10 @@ interface IFoo
 }
 
 class Foo
+        extends EntityBean<Integer>
         implements IFoo {
 
     private static final long serialVersionUID = 1L;
-
-    @Override
-    public Integer getId() {
-        return null;
-    }
-
-    @Override
-    public void setId(Integer id) {
-    }
 
 }
 
@@ -57,35 +43,18 @@ interface Bar
 }
 
 class BarImpl
+        extends EntityBean<Integer>
         implements Bar {
 
     private static final long serialVersionUID = 1L;
 
-    @Override
-    public Integer getId() {
-        return null;
-    }
-
-    @Override
-    public void setId(Integer id) {
-    }
-
 }
 
 class FooRepo
-        extends EmptyEntityRepository<IFoo, Integer> {
+        extends EmptyEntityRepository<Foo, Integer> {
 
     public FooRepo() {
-        super(IFoo.class, Integer.class);
-    }
-
-}
-
-class BarRepo
-        extends EmptyEntityRepository<Bar, Integer> {
-
-    public BarRepo() {
-        super(Bar.class, Integer.class);
+        super(Foo.class, Integer.class);
     }
 
 }
