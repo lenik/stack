@@ -38,6 +38,10 @@ public abstract class CustomizedSessionFactoryBean
 
     static PersistenceUnit staticUnit = PersistenceUnit.getDefault();
 
+    public static PersistenceUnit getForceUnit() {
+        return staticUnit;
+    }
+
     public static void setForceUnit(PersistenceUnit forceUnit) {
         if (forceUnit == null)
             throw new NullPointerException("forceUnit");
