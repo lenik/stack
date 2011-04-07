@@ -22,6 +22,11 @@ public abstract class RestfulView
     }
 
     @Override
+    public boolean isFallback() {
+        return false;
+    }
+
+    @Override
     public boolean render(Object obj, IRestfulRequest req, IRestfulResponse resp)
             throws IOException {
         if (obj == null)

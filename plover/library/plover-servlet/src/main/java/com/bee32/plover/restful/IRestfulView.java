@@ -11,6 +11,8 @@ public interface IRestfulView {
      */
     int getPriority();
 
+    boolean isFallback();
+
     /**
      * Render the object of specific class.
      *
