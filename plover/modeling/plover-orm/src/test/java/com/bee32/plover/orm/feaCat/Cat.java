@@ -38,16 +38,6 @@ public class Cat
     }
 
     @Override
-    public void setId(Long id) {
-        super.setId(id);
-    }
-
-    @Override
-    public void setVersion(int version) {
-        super.setVersion(version);
-    }
-
-    @Override
     public String getName() {
         return name;
     }
