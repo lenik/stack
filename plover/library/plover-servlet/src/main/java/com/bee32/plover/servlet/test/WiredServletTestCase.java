@@ -17,14 +17,16 @@ import com.bee32.plover.test.WiredTestCase;
 public abstract class WiredServletTestCase
         extends ServletTestCase {
 
-    private final Class<?> altBaseClass;
+    private final Class<?> configClass;
 
     protected WiredServletTestCase() {
         this(WiredTestCase.class);
     }
 
-    protected WiredServletTestCase(Class<?> altBaseClass) {
-        this.altBaseClass = altBaseClass;
+    protected WiredServletTestCase(Class<?> configClass) {
+        if (configClass == null)
+            throw new NullPointerException("configClass");
+        this.configClass = configClass;
     }
 
     @Override
@@ -58,8 +60,8 @@ public abstract class WiredServletTestCase
 
         Set<String> mergedLocations = new LinkedHashSet<String>();
 
-        if (altBaseClass != null) {
-            Collection<String> baseLocations = ContextConfigurationUtil.getContextConfigurationLocations(altBaseClass);
+        if (configClass != null) {
+            Collection<String> baseLocations = ContextConfigurationUtil.getContextConfigurationLocations(configClass);
             mergedLocations.addAll(baseLocations);
         }
 
