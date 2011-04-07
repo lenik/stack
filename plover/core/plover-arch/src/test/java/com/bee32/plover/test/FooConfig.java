@@ -1,13 +1,8 @@
 package com.bee32.plover.test;
 
-import org.springframework.context.annotation.Bean;
+import com.bee32.plover.inject.cref.Import;
 
-// @Configuration
+@Import(Foo2Config.class)
 public class FooConfig {
-
-    @Bean
-    FooBean foo() {
-        return new FooBean();
-    }
 
 }

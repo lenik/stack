@@ -1,6 +1,7 @@
 package com.bee32.plover.test;
 
-// @Component
+
+//@Component
 public class FooBean {
 
 }
