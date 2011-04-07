@@ -7,7 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class ApplicationContextBuilder {
 
-    public static ApplicationContext buildSelfHostedContext1(Class<?> clazz) {
+    public static ApplicationContext buildSelfHostedContext(Class<?> clazz) {
         AnnotationConfigApplicationContext annContext = null;
         // Find all annotated config classes by ImportUtil.
         Class<?>[] configClasses = ImportUtil.flatten(clazz);
@@ -23,7 +23,7 @@ public class ApplicationContextBuilder {
         return xmlContext;
     }
 
-    public static ApplicationContext buildSelfHostedContext(Class<?> clazz) {
+    public static ApplicationContext buildSelfHostedContext2(Class<?> clazz) {
         ApplicationContext appContext;
 
         // Find all context config xmls by ContextConfigUtil.
@@ -37,6 +37,7 @@ public class ApplicationContextBuilder {
         if (configClasses.length != 0) {
             annContext = new AnnotationConfigApplicationContext(configClasses);
             annContext.setParent(xmlContext);
+            // annContext.scan("com.bee32", "user");
             // annContext.refresh();
             appContext = annContext;
         }
