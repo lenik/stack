@@ -35,6 +35,7 @@ public class RestfulRequest
 
     public void setMethod(String method) {
         this.method = method;
+        this.setAttribute("method", method);
     }
 
     @Override
@@ -44,6 +45,7 @@ public class RestfulRequest
 
     public void setTargetContentType(Mime contentType) {
         this.contentType = contentType;
+        this.setAttribute("contentType", contentType);
     }
 
     @Override
@@ -57,6 +59,7 @@ public class RestfulRequest
             tokenQueue = null;
         else
             tokenQueue = new TokenQueue(path);
+        this.setAttribute("dispatchPath", path);
     }
 
     @Override
@@ -71,6 +74,8 @@ public class RestfulRequest
 
     public void setArrival(IArrival arrival) {
         this.arrival = arrival;
+        this.setAttribute("target", getTarget());
+        this.setAttribute("restPath", getRestPath());
     }
 
     @Override
