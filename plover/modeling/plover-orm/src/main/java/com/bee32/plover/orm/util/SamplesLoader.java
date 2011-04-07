@@ -1,8 +1,11 @@
 package com.bee32.plover.orm.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -17,8 +20,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.IEntity;
+import com.bee32.plover.orm.unit.PersistenceUnit;
 
 @Component
 @Lazy
@@ -32,8 +37,13 @@ public class SamplesLoader
 
     Map<Class<?>, IEntitySamplesContribution> dependencies;
 
+    Set<Class<?>> unitClasses;
+
     public SamplesLoader() {
         dependencies = new HashMap<Class<?>, IEntitySamplesContribution>();
+
+        PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
+        unitClasses = unit.getClasses();
     }
 
     @Override
@@ -99,14 +109,22 @@ public class SamplesLoader
 
         contrib.getTransientSamples(worseCase);
 
+        List<IEntity<?>> selection = new ArrayList<IEntity<?>>();
+
         Collection<? extends IEntity<?>> samples = contrib.getTransientSamples(false);
         if (samples == null || samples.isEmpty()) {
             logger.debug("  No sample defined in " + contrib);
             return;
         }
 
+        for (IEntity<?> sample : samples) {
+            Class<?> sampleClass = sample.getClass();
+            if (unitClasses.contains(sampleClass))
+                selection.add(sample);
+        }
+
         if (logger.isDebugEnabled()) {
-            String message = String.format("Loading[%d]: %d %s samples from %s", ++loadIndex, samples.size(), //
+            String message = String.format("Loading[%d]: %d %s samples from %s", ++loadIndex, selection.size(), //
                     worseCase ? "worse" : "normal", contrib);
             logger.debug(message);
         }
@@ -114,12 +132,11 @@ public class SamplesLoader
         progress.execute(contrib);
 
         try {
-            dataManager.saveAll(samples);
+            dataManager.saveAll(selection);
         } catch (DataAccessException e) {
             throw new RuntimeException("Failed to load samples from " + contrib, e);
         }
 
         contrib.setLoaded(true);
     }
-
 }
