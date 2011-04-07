@@ -8,14 +8,12 @@ import javax.sql.DataSource;
 import org.hibernate.cache.NoCacheProvider;
 import org.hibernate.dialect.H2Dialect;
 
-import com.bee32.plover.inject.qualifier.TestPurpose;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 
 public abstract class TestPurposeSessionFactoryBean
         extends CustomizedSessionFactoryBean {
 
     @Inject
-    @TestPurpose
     DataSource dataSource;
 
     public TestPurposeSessionFactoryBean() {
