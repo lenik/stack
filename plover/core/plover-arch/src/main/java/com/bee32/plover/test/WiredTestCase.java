@@ -1,23 +1,26 @@
 package com.bee32.plover.test;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
-import com.bee32.plover.inject.cref.ContextRef;
+import com.bee32.plover.inject.cref.Import;
+import com.bee32.plover.inject.cref.ScanTestxContext;
 import com.bee32.plover.inject.spring.ApplicationContextBuilder;
-import com.bee32.plover.inject.spring.ContextConfiguration;
 
-@ContextConfiguration({ //
-/*            */"/com/bee32/plover/inject/cref/auto-context.xml",
-/*            */"/com/bee32/plover/inject/cref/scan-testx-context.xml" })
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(loader = MyLoader.class)
+@Import(ScanTestxContext.class)
 public abstract class WiredTestCase
         extends AssembledTestCase<WiredTestCase>
-        implements ApplicationContextAware, InitializingBean {
+        implements InitializingBean {
 
+    @Inject
     protected ApplicationContext application;
+
     protected AutowireCapableBeanFactory beanFactory;
 
     public WiredTestCase() {
@@ -25,17 +28,10 @@ public abstract class WiredTestCase
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext)
-            throws BeansException {
-        this.application = applicationContext;
-        this.beanFactory = application.getAutowireCapableBeanFactory();
-
-        applicationInitialized(applicationContext);
-    }
-
-    @Override
     public void afterPropertiesSet()
             throws Exception {
+        this.beanFactory = application.getAutowireCapableBeanFactory();
+        applicationInitialized(application);
     }
 
     protected void applicationInitialized(ApplicationContext applicationContext) {
@@ -55,12 +51,7 @@ public abstract class WiredTestCase
     public WiredTestCase wire()
             throws Exception {
         WiredTestCase unit = super.unit();
-
-        ApplicationContext context = new ContextRef(getClass()).buildApplicationContext();
-        AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
-        factory.autowireBean(unit);
-
-        return unit;
+        return ApplicationContextBuilder.selfWire(unit);
     }
 
 }
