@@ -10,6 +10,6 @@ public interface IEntity<K extends Serializable>
 
     K getId();
 
-    void setId(K id);
+    // void setId(K id);
 
 }
