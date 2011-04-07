@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -39,6 +41,7 @@ import com.bee32.plover.disp.util.MethodLazyInjector;
 import com.bee32.plover.disp.util.MethodPattern;
 import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
 import com.bee32.plover.restful.request.RestfulRequestBuilder;
+import com.bee32.plover.servlet.context.LocationContextConstants;
 
 /**
  * The overall modules dispatcher.
@@ -57,6 +60,8 @@ public class DispatchFilter
         implements Filter, InitializingBean {
 
     private static final long serialVersionUID = 1L;
+
+    static Logger logger = LoggerFactory.getLogger(DispatchFilter.class);
 
     private ServletContext servletContext;
     protected String contextPath; // Not used.
@@ -145,28 +150,6 @@ public class DispatchFilter
         final RestfulRequest req = requestBuilder.build(request);
         final RestfulResponse resp = new RestfulResponse(response);
 
-        class Callback
-                implements ArrivalBacktraceCallback<ServletException> {
-
-            @Override
-            public boolean arriveBack(IArrival arrival)
-                    throws ServletException {
-
-                Object obj = arrival.getTarget();
-                Class<?> objClass = obj.getClass();
-
-                req.setArrival(arrival);
-
-                if (doControllerMethod(objClass, req, resp))
-                    return true;
-
-                if (doInplaceMethod(objClass, req, resp))
-                    return true;
-
-                return false;
-            }
-        }
-
         // 2, Path-dispatch
         ITokenQueue tq = req.getTokenQueue();
         IArrival arrival = dispatch(tq);
@@ -188,49 +171,84 @@ public class DispatchFilter
         // Date expires = arrival.getExpires();
 
         String method = req.getMethod();
-        if (method == null) {
+        if (method == null)
+            throw new NullPointerException("method");
+
+        if (MethodNames.READ.equals(method)) {
             if (!tq.isEmpty())
                 return false;
 
             // No controller method, is it a special view?
             req.setArrival(arrival);
-            req.setView(method);
 
-        } else {
-            Callback callback = new Callback();
+            doRender(renderObject, req, resp, null);
+            return true;
+        }
 
-            // controller method chaining isn't supported, yet.
-            // while (true) {}
+        class Callback
+                implements ArrivalBacktraceCallback<ServletException> {
 
-            if (arrival.backtrace(callback)) {
-                String respMethod = resp.getMethod();
-                if (respMethod != null)
-                    throw new RestfulException("Controller method chaining isn't supported yet.");
+            @Override
+            public boolean arriveBack(IArrival arrival)
+                    throws ServletException {
 
-                // NOTICE: user should not write to response, if any target is returned.
-                Object target = resp.getTarget();
+                Object obj = arrival.getTarget();
+                Class<?> objClass = obj.getClass();
 
-                // Treat if the response have already been done.
-                if (target == null) {
-                    // assert resp.isCommitted();
+                req.setArrival(arrival);
+
+                if (doRender(obj, req, resp, false))
                     return true;
-                }
 
-                if (target instanceof String) {
-                    String location = (String) target;
-                    resp.sendRedirect(location);
+                if (doControllerMethod(objClass, req, resp))
                     return true;
-                }
 
-                String location = ReverseLookupRegistry.getInstance().getLocation(target);
-                if (location != null) {
-                    resp.sendRedirect(location);
+                if (doInplaceMethod(objClass, req, resp))
                     return true;
-                }
+
+                return false;
             }
         }
 
-        doRender(renderObject, req, resp);
+        Callback callback = new Callback();
+
+        // controller method chaining isn't supported, yet.
+        // while (true) {}
+
+        if (arrival.backtrace(callback)) {
+            // NOTICE: user should not write to response, if any target is returned.
+            Object target = resp.getTarget();
+
+            // Treat if the response have already been done.
+            if (target == null) {
+                // assert resp.isCommitted();
+                return true;
+            }
+
+            if (target instanceof String) {
+                String location = (String) target;
+                resp.sendRedirect(location);
+                return true;
+            }
+
+            String location = ReverseLookupRegistry.getInstance().getLocation(target);
+            if (location != null) {
+                location = LocationContextConstants.WEB_APP.join(location).resolve(request);
+
+                String additionMethod = resp.getMethod();
+                if (additionMethod != null) {
+                    if (MethodNames.INDEX.equals(additionMethod))
+                        location += "/";
+                    else
+                        location += "?X=" + additionMethod;
+                }
+
+                resp.sendRedirect(location);
+                return true;
+            }
+        }
+
+        doRender(origin, req, resp, null);
         return true;
     } // processOrNot
 
@@ -257,6 +275,7 @@ public class DispatchFilter
      */
     private boolean doControllerMethod(Class<?> originClass, RestfulRequest req, RestfulResponse resp)
             throws ServletException {
+
         Method method = getControllerMethod(originClass, req.getMethod());
         if (method == null)
             return false;
@@ -328,20 +347,30 @@ public class DispatchFilter
      * @throws IOException
      * @throws RestfulException
      */
-    private void doRender(Object object, IRestfulRequest req, IRestfulResponse resp)
-            throws IOException, RestfulException {
-        Class<?> clazz = object.getClass();
-        boolean handled = false;
+    private boolean doRender(Object object, IRestfulRequest req, IRestfulResponse resp, Boolean fallback)
+            throws ServletException {
 
-        for (IRestfulView view : RestfulViewFactory.getViews()) {
-            if (view.render(clazz, object, req, resp)) {
-                handled = true;
-                break;
+        if (logger.isDebugEnabled()) {
+            String objectId = object + "(" + object.getClass().getSimpleName() + ")";
+            logger.debug("Render " + objectId + ", view=" + req.getMethod());
+        }
+
+        Class<?> clazz = object.getClass();
+
+        Set<IRestfulView> views = RestfulViewFactory.getViews();
+        for (IRestfulView view : views) {
+            if (fallback != null && fallback != view.isFallback())
+                continue;
+
+            try {
+                if (view.render(clazz, object, req, resp))
+                    return true;
+            } catch (IOException e) {
+                throw new ServletException(e.getMessage(), e);
             }
         }
 
-        if (!handled)
-            throw new RestfulException("No available view for " + clazz);
+        return false;
     }
 
     static MethodPattern controllerPattern = new MethodPattern(ServletRequest.class, ServletResponse.class);
