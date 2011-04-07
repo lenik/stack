@@ -1,20 +1,19 @@
 package user.spring.aop;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.inject.cref.ContextRefs;
+import com.bee32.plover.inject.cref.Import;
+import com.bee32.plover.inject.cref.ScanStdContext;
+import com.bee32.plover.inject.spring.ApplicationContextBuilder;
 
+@Import(ScanStdContext.class)
 @Component
 @Lazy
 public class AopPlayer {
 
     public static void main(String[] args) {
-
-        ApplicationContext context = ContextRefs.SCAN_STD.getApplicationContext();
-
-        AopPlayer player = context.getBean(AopPlayer.class);
+        AopPlayer player = ApplicationContextBuilder.create(AopPlayer.class);
         player.main();
         player.run();
     }
