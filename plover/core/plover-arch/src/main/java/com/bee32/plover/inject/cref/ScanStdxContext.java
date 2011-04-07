@@ -5,14 +5,6 @@ import com.bee32.plover.inject.spring.ContextConfiguration;
 @Import(AutoContext.class)
 @ContextConfiguration({ "scan-stdx-context.xml" })
 public class ScanStdxContext
-        extends ContextRef {
-
-    ScanStdxContext() {
-        super();
-    }
-
-    ScanStdxContext(ContextRef... parents) {
-        super(parents);
-    }
+        extends ConfigSupport {
 
 }
