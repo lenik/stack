@@ -3,6 +3,7 @@ package com.bee32.plover.disp.util;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.free.IllegalUsageException;
 
@@ -32,7 +33,16 @@ public class MethodPattern {
 
             if (overlay != null) {
                 searchMethods(each, false, overlay);
-                all.putAll(each);
+
+                for (Entry<String, Method> entry : each.entrySet()) {
+                    String methodName = entry.getKey();
+
+                    // Don't overwrite the methods defined in subclass
+                    if (all.containsKey(methodName))
+                        continue;
+
+                    all.put(methodName, entry.getValue());
+                }
                 each.clear();
             }
 
