@@ -1,53 +1,18 @@
 package com.bee32.plover.restful;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
+public interface MethodNames {
 
-import javax.free.UnexpectedException;
+    String READ = "content";
+    String INDEX = "index";
 
-public class MethodNames {
+    String CREATE = "create";
+    String CREATE_FORM = "createForm";
 
-    public static final String READ = null;
+    String UPDATE = "update";
+    String UPDATE_FORM = "editForm";
 
-    public static final String CREATE = "create";
-    public static final String CREATE_FORM = "createForm";
+    String DELETE = "delete";
 
-    public static final String UPDATE = "update";
-    public static final String UPDATE_FORM = "editForm";
-
-    public static final String DELETE = "delete";
-
-    public static final String ESTATE = "head";
-
-    static Map<String, String> reverseMap;
-    static {
-        reverseMap = new HashMap<String, String>();
-
-        for (Field field : MethodNames.class.getFields()) {
-            int modifiers = field.getModifiers();
-            if (!Modifier.isPublic(modifiers))
-                continue;
-
-            if (!Modifier.isStatic(modifiers))
-                continue;
-
-            String name = field.getName();
-            String value;
-            try {
-                value = (String) field.get(null);
-            } catch (Exception e) {
-                throw new UnexpectedException("read static field " + field, e);
-            }
-
-            if (value != null)
-                reverseMap.put(value, name);
-        }
-    }
-
-    public static boolean isDefined(String name) {
-        return reverseMap.containsKey(name);
-    }
+    String ESTATE = "head";
 
 }

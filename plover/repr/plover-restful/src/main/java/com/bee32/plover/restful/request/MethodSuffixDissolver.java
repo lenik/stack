@@ -1,14 +1,14 @@
 package com.bee32.plover.restful.request;
 
-import com.bee32.plover.restful.MethodNames;
 import com.bee32.plover.restful.RestfulRequest;
+import com.bee32.plover.restful.util.MethodNameUtil;
 
 public class MethodSuffixDissolver
         implements ISuffixDissolver {
 
     @Override
     public boolean dissolveSuffix(String name, RestfulRequest request) {
-        if (!MethodNames.isDefined(name))
+        if (!MethodNameUtil.isDefined(name))
             return false;
 
         request.setMethod(name);
