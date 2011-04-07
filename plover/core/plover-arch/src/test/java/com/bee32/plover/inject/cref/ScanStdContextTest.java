@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.core.io.Resource;
 
-public class StdScanContextTest
+public class ScanStdContextTest
         extends Assert {
 
     @Test
