@@ -19,6 +19,11 @@ public class ObjectDumpView
     }
 
     @Override
+    public boolean isFallback() {
+        return true;
+    }
+
+    @Override
     public boolean render(Class<?> clazz, Object obj, IRestfulRequest req, IRestfulResponse resp)
             throws IOException {
         PrintWriter out = resp.getWriter();
@@ -41,7 +46,7 @@ public class ObjectDumpView
         out.println("Dispatch-Path: " + req.getDispatchPath());
         out.println("Arrival: " + req.getArrival());
         out.println("Rest-Path: " + req.getRestPath());
-        out.println("View: " + req.getView());
+        out.println("Method: " + req.getMethod());
         out.println("Target: " + req.getTarget());
         out.println(req);
 

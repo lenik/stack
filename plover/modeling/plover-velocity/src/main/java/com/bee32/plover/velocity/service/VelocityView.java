@@ -22,7 +22,7 @@ public class VelocityView
     @Override
     public boolean render(Class<?> clazz, Object obj, IRestfulRequest req, IRestfulResponse resp)
             throws IOException {
-        String view = req.getView();
+        String view = req.getMethod();
 
         Template template = VelocityUtil.getTemplate(clazz, view);
         if (template == null)
