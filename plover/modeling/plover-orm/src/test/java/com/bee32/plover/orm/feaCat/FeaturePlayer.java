@@ -10,8 +10,7 @@ import javax.inject.Inject;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +18,14 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.spring.ApplicationContextBuilder;
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
+import com.bee32.plover.orm.config.test.DefaultTestSessionFactoryBean;
 import com.bee32.plover.orm.dao.CatDao;
+import com.bee32.plover.orm.util.WiredDaoTestCase;
 
-@Import(FeatureConfig.class)
-@Scope("prototype")
+@Import(WiredDaoTestCase.class)
 @Service
+@Scope("prototype")
+@Lazy
 public class FeaturePlayer {
 
     static Logger logger = LoggerFactory.getLogger(FeaturePlayer.class);
@@ -102,23 +103,14 @@ public class FeaturePlayer {
     public static void main(String[] args)
             throws Exception {
 
+        DefaultTestSessionFactoryBean.setForceUnit(Animals.getInstance());
+
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
 
             try {
                 FeaturePlayer player = new FeaturePlayer();
-
-                ApplicationContext context = ApplicationContextBuilder.buildSelfHostedContext(player.getClass());
-                Object b1 = context.getBean("mybook");
-                System.out.println(b1);
-                b1 = context.getBean("featureSFB");
-                b1 = context.getBean(CustomizedSessionFactoryBean.class);
-                b1 = context.getBean(SessionFactory.class);
-                AutowireCapableBeanFactory beanFactory = context.getAutowireCapableBeanFactory();
-
-                beanFactory.autowireBean(player);
-
-                // ApplicationContextBuilder.selfWire(player);
+                ApplicationContextBuilder.selfWire(player);
 
                 System.err.println("Got player: " + player);
 

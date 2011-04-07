@@ -8,9 +8,12 @@ import org.springframework.aop.target.LazyInitTargetSource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-//@Configuration
+import com.bee32.plover.inject.cref.Import;
+import com.bee32.plover.inject.cref.ScanTestxContext;
+import com.bee32.plover.inject.spring.ApplicationContextBuilder;
+
+@Import(ScanTestxContext.class)
 @Lazy
 public class Main {
 
@@ -58,13 +61,12 @@ public class Main {
     }
 
     public static void main(String args[]) {
-        // Initializing context
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-                new String[] { "applicationContext.xml" }, Main.class);
+
+        ApplicationContext context = ApplicationContextBuilder.buildSelfHostedContext(Main.class);
 
         System.out.println("After initialization");
 
-        Employee employee = applicationContext.getBean(Employee.class);
+        Employee employee = context.getBean(Employee.class);
         System.out.println(employee);
         System.out.println("Street: " + employee.getAddress().getStreet());
     }

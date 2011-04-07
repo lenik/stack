@@ -7,13 +7,14 @@ import org.springframework.context.ApplicationContext;
 
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.config.test.DefaultTestSessionFactoryBean;
+import com.bee32.plover.orm.context.TestDataConfig;
 import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UseUnitUtil;
 import com.bee32.plover.test.WiredTestCase;
 
-@Import(WiredDaoTestConfig.class)
+@Import({ TestDataConfig.class })
 public abstract class WiredDaoTestCase
         extends WiredTestCase {
 
