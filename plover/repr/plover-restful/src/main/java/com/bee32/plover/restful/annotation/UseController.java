@@ -6,6 +6,8 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 
+import com.bee32.plover.restful.util.IRestfulController;
+
 @Inherited
 @Retention(RUNTIME)
 @Documented
