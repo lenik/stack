@@ -5,17 +5,17 @@ import javax.inject.Inject;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.context.ContextConfiguration;
 
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.util.IStruct;
 import com.bee32.plover.arch.util.MapStruct;
+import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.dao.CatDao;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 
+@Import(FeatureConfig.class)
 @Using(Animals.class)
-@ContextConfiguration("context.xml")
 public class CatUsageTest
         extends WiredDaoTestCase {
 

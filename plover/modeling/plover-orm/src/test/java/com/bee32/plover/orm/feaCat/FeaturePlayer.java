@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.feaCat;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,12 +10,16 @@ import javax.inject.Inject;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.bee32.plover.inject.cref.Import;
+import com.bee32.plover.inject.spring.ApplicationContextBuilder;
+import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CatDao;
 
 @Import(FeatureConfig.class)
@@ -91,6 +97,41 @@ public class FeaturePlayer {
 
         logger.warn("End of catDao.list()");
 
+    }
+
+    public static void main(String[] args)
+            throws Exception {
+
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        while (true) {
+
+            try {
+                FeaturePlayer player = new FeaturePlayer();
+
+                ApplicationContext context = ApplicationContextBuilder.buildSelfHostedContext(player.getClass());
+                Object b1 = context.getBean("mybook");
+                System.out.println(b1);
+                b1 = context.getBean("featureSFB");
+                b1 = context.getBean(CustomizedSessionFactoryBean.class);
+                b1 = context.getBean(SessionFactory.class);
+                AutowireCapableBeanFactory beanFactory = context.getAutowireCapableBeanFactory();
+
+                beanFactory.autowireBean(player);
+
+                // ApplicationContextBuilder.selfWire(player);
+
+                System.err.println("Got player: " + player);
+
+                player.tcPrepare();
+                player.tcList();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("Press enter to try again");
+            stdin.readLine();
+        }
     }
 
 }

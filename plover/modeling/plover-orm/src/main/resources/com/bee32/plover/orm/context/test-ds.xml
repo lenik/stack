@@ -9,4 +9,8 @@
         <qualifier type="com.bee32.plover.inject.qualifier.TestPurpose" />
     </bean>
 
+    <bean name="testSessionFactory" class="com.bee32.plover.orm.config.test.DefaultTestSessionFactoryBean"
+        lazy-init="true">
+    </bean>
+
 </beans>

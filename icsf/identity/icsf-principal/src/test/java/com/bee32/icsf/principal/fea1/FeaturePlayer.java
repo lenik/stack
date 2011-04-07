@@ -13,10 +13,16 @@ import com.bee32.icsf.principal.dao.GroupDao;
 import com.bee32.icsf.principal.dao.RoleDao;
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.test.PrincipalSamples;
+import com.bee32.plover.inject.cref.Import;
+import com.bee32.plover.inject.cref.ScanTestxContext;
+import com.bee32.plover.inject.spring.ContextConfiguration;
+import com.bee32.plover.orm.context.TestDataConfig;
 import com.bee32.plover.orm.util.SamplesLoader;
 
-@Scope("prototype")
+@Import({ ScanTestxContext.class, TestDataConfig.class })
+@ContextConfiguration("context.xml")
 @Service
+@Scope("prototype")
 public class FeaturePlayer {
 
     static Logger logger = LoggerFactory.getLogger(FeaturePlayer.class);

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.cref.ScanTestxContext;
+import com.bee32.plover.orm.test.bookstore.Book;
 
 @Import(ScanTestxContext.class)
 @Lazy
@@ -16,14 +17,14 @@ public class FeatureConfig {
     @Inject
     ApplicationContext context;
 
-//    @Inject
-//    @TestPurpose
-//    DataSource tds;
+    @Bean
+    FeatureSFB sessionFactory() {
+        return new FeatureSFB();
+    }
 
     @Bean
-    FeatureSFB featureSFB() {
-        // return new FeatureSFB();
-        return context.getAutowireCapableBeanFactory().createBean(FeatureSFB.class);
+    Book mybook() {
+        return new Book("my", "book");
     }
 
 }
