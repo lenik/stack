@@ -5,6 +5,10 @@ import javax.free.IllegalUsageException;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.springframework.context.ApplicationContext;
 
+import com.bee32.plover.orm.config.test.DefaultTestSessionFactoryBean;
+import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.orm.unit.UseUnitUtil;
+import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.restful.DispatchFilter;
 import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
@@ -22,17 +26,26 @@ public abstract class RestfulTestCase
         this(WiredDaoTestCase.class, (ApplicationContext) null);
     }
 
-    protected RestfulTestCase(Class<?> altBaseClass) {
-        this(altBaseClass, null);
+    protected RestfulTestCase(Class<?> configClass) {
+        this(configClass, null);
     }
 
     protected RestfulTestCase(ApplicationContext applicationContext) {
         this(WiredDaoTestCase.class, applicationContext);
     }
 
-    protected RestfulTestCase(Class<?> altBaseClass, ApplicationContext applicationContext) {
-        super(altBaseClass);
+    protected RestfulTestCase(Class<?> configClass, ApplicationContext applicationContext) {
+        super(configClass);
         this.applicationContext = applicationContext;
+
+        PersistenceUnit unit = UseUnitUtil.getUseUnit(getClass());
+        DefaultTestSessionFactoryBean.setForceUnit(unit);
+    }
+
+    @Override
+    protected void applicationInitialized(ApplicationContext applicationContext) {
+        SamplesLoader samplesLoader = applicationContext.getBean(SamplesLoader.class);
+        samplesLoader.loadNormalSamples();
     }
 
     @Override
