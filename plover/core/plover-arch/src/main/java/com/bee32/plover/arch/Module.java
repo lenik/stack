@@ -2,7 +2,10 @@ package com.bee32.plover.arch;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.arch.credit.Credit;
@@ -30,6 +33,9 @@ public abstract class Module
     private TreeMapNode<Object> nodeImpl = new TreeMapNode<Object>(Object.class);
 
     private Credit credit = Credit.dummy;
+
+    @Inject
+    protected ApplicationContext applicationContext;
 
     public Module() {
         super();

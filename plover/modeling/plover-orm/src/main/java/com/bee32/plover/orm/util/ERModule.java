@@ -22,7 +22,8 @@ public abstract class ERModule
     protected <ER extends EntityRepository<?, ?>> //
     void export(Class<ER> erClass, String location) {
         // declare the restful token
-        // declare(location, entityRepository);
+        ER repo = applicationContext.getBean(erClass);
+        declare(location, repo);
     }
 
     protected <E extends EntityBean<K>, K extends Serializable> //
