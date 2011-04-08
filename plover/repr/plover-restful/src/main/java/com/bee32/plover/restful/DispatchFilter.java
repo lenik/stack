@@ -75,7 +75,10 @@ public class DispatchFilter
     ApplicationContext applicationContext;
 
     @Inject
-    private transient ModuleManager moduleManager;
+    ModuleManager moduleManager;
+
+    @Inject
+    RestfulViewManager viewManager;
 
     @Override
     public void afterPropertiesSet()
@@ -357,13 +360,15 @@ public class DispatchFilter
 
         Class<?> clazz = object.getClass();
 
-        Set<IRestfulView> views = RestfulViewFactory.getViews();
+        // Set<IRestfulView> views = RestfulViewFactory.getViews();
+        Set<IRestfulView> views = viewManager.getViews();
+
         for (IRestfulView view : views) {
             if (fallback != null && fallback != view.isFallback())
                 continue;
 
             try {
-                if (view.render(clazz, object, req, resp))
+                if (view.renderTx(clazz, object, req, resp))
                     return true;
             } catch (IOException e) {
                 throw new ServletException(e.getMessage(), e);
