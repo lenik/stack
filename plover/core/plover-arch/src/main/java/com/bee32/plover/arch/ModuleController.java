@@ -35,6 +35,9 @@ public class ModuleController {
         }
 
         out.println("        <hr />");
+        out.println("        <div>");
+        out.println("        <a href=\"/\">INDEX</a>");
+        out.println("        </div>");
         out.println("        <a href=\"credit\">CREDIT</a>");
         out.println("    </body>");
         out.println("</html>");
