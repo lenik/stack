@@ -9,7 +9,7 @@ public class RestfulViewFactory {
 
     static Set<IRestfulView> views;
     static {
-        views = new TreeSet<IRestfulView>(ViewComparator.INSTANCE);
+        views = new TreeSet<IRestfulView>(RestfulViewComparator.INSTANCE);
 
         for (IRestfulView view : ServiceLoader.load(IRestfulView.class))
             views.add(view);

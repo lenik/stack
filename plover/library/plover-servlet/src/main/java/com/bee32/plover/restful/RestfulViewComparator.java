@@ -2,7 +2,7 @@ package com.bee32.plover.restful;
 
 import javax.free.AbstractNonNullComparator;
 
-public class ViewComparator
+public class RestfulViewComparator
         extends AbstractNonNullComparator<IRestfulView> {
 
     @Override
@@ -18,6 +18,6 @@ public class ViewComparator
         return cmp;
     }
 
-    public static final ViewComparator INSTANCE = new ViewComparator();
+    public static final RestfulViewComparator INSTANCE = new RestfulViewComparator();
 
 }
