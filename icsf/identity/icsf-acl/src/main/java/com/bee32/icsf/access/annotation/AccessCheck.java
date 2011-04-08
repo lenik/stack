@@ -7,27 +7,37 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.bee32.icsf.access.Permission;
+import com.bee32.icsf.access.resource.AccessPoint;
 
+/**
+ * Checked access point.
+ */
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.FIELD })
-public @interface Checkpoint {
+public @interface AccessCheck {
 
     /**
-     * The permission name implicit defined.
+     * The name of implicit defined access point.
      * <p>
      * If not specified, or specify an empty string (""), the default name (field name or method
      * name) is then choosed.
+     *
+     * @see AccessPoint
      */
     String name() default "";
 
     /**
-     * Instead of define an implicit
+     * (Optional) Instead of define an implicit
      */
-    Class<? extends Permission>[] require() default {};
+    Class<? extends String>[] require() default {};
 
+    /**
+     * Only used on type annotation.
+     *
+     * This attribute is ignored if declared on methods.
+     */
     boolean allMethods() default true;
 
 }

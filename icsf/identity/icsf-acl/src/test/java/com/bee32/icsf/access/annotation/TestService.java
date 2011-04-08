@@ -1,12 +1,13 @@
 package com.bee32.icsf.access.annotation;
 
+
 public class TestService {
 
-    @Checkpoint
+    @AccessCheck
     public void method1() {
     }
 
-    @Checkpoint(name = "foo")
+    @AccessCheck(name = "foo")
     public void method2() {
     }
 

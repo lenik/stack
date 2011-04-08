@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.free.IllegalUsageException;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -17,6 +16,7 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.ACL;
 import com.bee32.icsf.access.acl.IACL;
+import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.entity.EntityBean;
 
@@ -28,9 +28,7 @@ public class R_ACL
 
     private R_ACL parent;
 
-    private String objType;
-    private long objId;
-
+    private Resource resource;
     private Set<R_ACE> entries;
 
     public R_ACL() {
@@ -39,7 +37,6 @@ public class R_ACL
 
     public R_ACL(R_ACL parent) {
         super("acl");
-
     }
 
     @ManyToOne(optional = true)
@@ -52,22 +49,13 @@ public class R_ACL
     }
 
     @NaturalId
-    @Column(length = 50)
-    public String getObjType() {
-        return objType;
+    @ManyToOne
+    public Resource getResource() {
+        return resource;
     }
 
-    public void setObjType(String objType) {
-        this.objType = objType;
-    }
-
-    @NaturalId
-    public long getObjId() {
-        return objId;
-    }
-
-    public void setObjId(long objId) {
-        this.objId = objId;
+    public void setResource(Resource resource) {
+        this.resource = resource;
     }
 
     @OneToMany(mappedBy = "acl")

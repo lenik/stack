@@ -25,8 +25,10 @@ public class R_ACE
     private static final long serialVersionUID = 1L;
 
     private R_ACL acl;
+
     private Principal principal;
     private String permissionName;
+
     private boolean allowed;
 
     R_ACE() {
@@ -71,7 +73,7 @@ public class R_ACE
         this.principal = principal;
     }
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 30, nullable = false)
     public String getPermissionName() {
         return permissionName;
     }

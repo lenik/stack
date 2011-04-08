@@ -1,4 +1,4 @@
-package com.bee32.icsf.access.annotation;
+package com.bee32.icsf.access.resource;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -16,7 +16,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.bee32.icsf.access.builtins.PointPermission;
+import com.bee32.icsf.access.annotation.AccessCheck;
 import com.bee32.plover.arch.ComponentBuilder;
 import com.bee32.plover.arch.EnterpriseService;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
@@ -25,10 +25,10 @@ import com.bee32.plover.arch.util.res.PropertyDispatcher;
 
 @Component
 @Lazy
-public class CheckpointDiscoverer
+public class AccessPointManager
         implements ApplicationContextAware {
 
-    static Logger logger = LoggerFactory.getLogger(CheckpointDiscoverer.class);
+    static Logger logger = LoggerFactory.getLogger(AccessPointManager.class);
 
     private boolean scanned;
     private ApplicationContext context;
@@ -40,9 +40,9 @@ public class CheckpointDiscoverer
         this.scanned = false;
     }
 
-    public Collection<PointPermission> getCheckpoints() {
+    public Collection<AccessPoint> getAccessPoints() {
         scan();
-        return PointPermission.getAllInstances();
+        return AccessPoint.getInstances();
     }
 
     public synchronized void scan() {
@@ -76,7 +76,7 @@ public class CheckpointDiscoverer
         String section = serviceClass.getSimpleName();
         boolean allMethods = false;
 
-        Checkpoint classAnnotation = serviceClass.getAnnotation(Checkpoint.class);
+        AccessCheck classAnnotation = serviceClass.getAnnotation(AccessCheck.class);
         if (classAnnotation != null) {
             String name = classAnnotation.name();
             if (!name.isEmpty())
@@ -86,7 +86,7 @@ public class CheckpointDiscoverer
         }
 
         for (Method method : serviceClass.getMethods()) {
-            Checkpoint annotation = method.getAnnotation(Checkpoint.class);
+            AccessCheck annotation = method.getAnnotation(AccessCheck.class);
             if (annotation == null && !allMethods)
                 continue;
 
@@ -101,7 +101,7 @@ public class CheckpointDiscoverer
             pointAppearance.setPropertyDispatcher(dispatcher);
 
             logger.debug("Create point " + pointName);
-            PointPermission point = PointPermission.create(pointName);
+            AccessPoint point = AccessPoint.create(pointName);
 
             ComponentBuilder.setAppearance(point, pointAppearance);
         }

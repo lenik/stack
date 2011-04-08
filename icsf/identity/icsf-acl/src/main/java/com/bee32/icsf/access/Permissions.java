@@ -5,7 +5,7 @@ import java.util.TreeMap;
 
 import javax.free.IllegalUsageException;
 
-import com.bee32.icsf.access.builtins.PointPermission;
+import com.bee32.icsf.access.resource.AccessPoint;
 
 public class Permissions {
 
@@ -31,7 +31,7 @@ public class Permissions {
      * @return Non-<code>null</code> permission instance.
      * @throws IllegalUsageException
      *             If the permission name is undefined.
-     * @see PointPermission#create(String)
+     * @see AccessPoint#create(String)
      */
     public static Permission getPermission(String permissionName) {
         if (permissionName == null)
