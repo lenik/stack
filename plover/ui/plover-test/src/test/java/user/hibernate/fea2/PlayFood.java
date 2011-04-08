@@ -1,12 +1,9 @@
 package user.hibernate.fea2;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
 import javax.inject.Inject;
 
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import user.hibernate.fea2.ext.Banana;
@@ -15,16 +12,17 @@ import user.hibernate.fea2.ext.Food;
 import user.hibernate.fea2.ext.FoodDao;
 
 import com.bee32.plover.inject.cref.Import;
-import com.bee32.plover.inject.cref.ScanTestxContext;
-import com.bee32.plover.inject.spring.ApplicationContextBuilder;
-import com.bee32.plover.inject.spring.ContextConfiguration;
+import com.bee32.plover.orm.unit.Using;
+import com.bee32.plover.orm.util.WiredDaoTestCase;
+import com.bee32.plover.test.FeaturePlayer;
 
-@Import(ScanTestxContext.class)
-@ContextConfiguration("context.xml")
+@Import(WiredDaoTestCase.class)
+@Using(Fea2Unit.class)
 @Scope("prototype")
-@Component
 @Transactional
-public class FeaturePlayer {
+@Service
+public class PlayFood
+        extends FeaturePlayer<PlayFood> {
 
     @Inject
     FoodDao foodDao;
@@ -34,11 +32,6 @@ public class FeaturePlayer {
 
     @Inject
     BananaDao bananaDao;
-
-    public void run() {
-        prepare();
-        listFood();
-    }
 
     @Transactional
     public void prepare() {
@@ -69,18 +62,16 @@ public class FeaturePlayer {
             System.out.println("Food: " + fruit);
     }
 
+    @Override
+    protected void main(PlayFood player)
+            throws Exception {
+        player.prepare();
+        player.listFood();
+    }
+
     public static void main(String[] args)
             throws Exception {
-
-        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
-            FeaturePlayer player = ApplicationContextBuilder.create(FeaturePlayer.class);
-
-            player.run();
-
-            System.out.println("Press enter to try again");
-            stdin.readLine();
-        }
+        new PlayFood().mainLoop();
     }
 
 }

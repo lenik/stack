@@ -1,7 +1,5 @@
 package com.bee32.plover.orm.feaCat;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,18 +15,20 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.bee32.plover.inject.cref.Import;
-import com.bee32.plover.inject.spring.ApplicationContextBuilder;
-import com.bee32.plover.orm.config.test.DefaultTestSessionFactoryBean;
 import com.bee32.plover.orm.dao.CatDao;
+import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
+import com.bee32.plover.test.FeaturePlayer;
 
+@Using(Animals.class)
 @Import(WiredDaoTestCase.class)
-@Service
 @Scope("prototype")
 @Lazy
-public class FeaturePlayer {
+@Service
+public class PlaySessionCache
+        extends FeaturePlayer<PlaySessionCache> {
 
-    static Logger logger = LoggerFactory.getLogger(FeaturePlayer.class);
+    static Logger logger = LoggerFactory.getLogger(PlaySessionCache.class);
 
     @Inject
     SessionFactory sessionFactory;
@@ -102,28 +102,14 @@ public class FeaturePlayer {
 
     public static void main(String[] args)
             throws Exception {
+        new PlaySessionCache().mainLoop();
+    }
 
-        DefaultTestSessionFactoryBean.setForceUnit(Animals.getInstance());
-
-        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
-
-            try {
-                FeaturePlayer player = new FeaturePlayer();
-                ApplicationContextBuilder.selfWire(player);
-
-                System.err.println("Got player: " + player);
-
-                player.tcPrepare();
-                player.tcList();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            System.out.println("Press enter to try again");
-            stdin.readLine();
-        }
+    @Override
+    protected void main(PlaySessionCache player)
+            throws Exception {
+        player.tcPrepare();
+        player.tcList();
     }
 
 }

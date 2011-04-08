@@ -1,32 +1,31 @@
 package com.bee32.icsf.access.fea1;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.IOException;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.icsf.access.IcsfAccessUnit;
 import com.bee32.icsf.access.alt.R_ACE;
 import com.bee32.icsf.access.alt.R_ACEDao;
 import com.bee32.icsf.access.alt.R_ACLDao;
 import com.bee32.plover.inject.cref.Import;
-import com.bee32.plover.inject.spring.ApplicationContextBuilder;
+import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
+import com.bee32.plover.test.FeaturePlayer;
 
 @Import(WiredDaoTestCase.class)
+@Using(IcsfAccessUnit.class)
 @Scope("prototype")
 @Lazy
 @Service
-public class FeaturePlayer {
-
-    static Logger logger = LoggerFactory.getLogger(FeaturePlayer.class);
+public class PlayACL
+        extends FeaturePlayer<PlayACL> {
 
     /**
      * To inject the sample beans.
@@ -49,24 +48,15 @@ public class FeaturePlayer {
         }
     }
 
-    public static void main(String[] args)
+    @Override
+    protected void main(PlayACL player)
             throws Exception {
+        player.listSamples();
+    }
 
-        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
-
-            try {
-                FeaturePlayer player = ApplicationContextBuilder.create(FeaturePlayer.class);
-
-                player.listSamples();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            System.out.println("Press enter to try again");
-            stdin.readLine();
-        }
+    public static void main(String[] args)
+            throws IOException {
+        new PlayACL().mainLoop();
     }
 
 }

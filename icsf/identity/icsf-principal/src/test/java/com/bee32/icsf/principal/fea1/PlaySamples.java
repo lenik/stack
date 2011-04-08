@@ -1,5 +1,7 @@
 package com.bee32.icsf.principal.fea1;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -8,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.icsf.principal.IcsfPrincipalUnit;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dao.GroupDao;
 import com.bee32.icsf.principal.dao.RoleDao;
@@ -15,17 +18,19 @@ import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.test.PrincipalSamples;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.cref.ScanTestxContext;
-import com.bee32.plover.inject.spring.ContextConfiguration;
 import com.bee32.plover.orm.context.TestDataConfig;
+import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.SamplesLoader;
+import com.bee32.plover.test.FeaturePlayer;
 
+@Using(IcsfPrincipalUnit.class)
 @Import({ ScanTestxContext.class, TestDataConfig.class })
-@ContextConfiguration("context.xml")
-@Service
 @Scope("prototype")
-public class FeaturePlayer {
+@Service
+public class PlaySamples
+        extends FeaturePlayer<PlaySamples> {
 
-    static Logger logger = LoggerFactory.getLogger(FeaturePlayer.class);
+    static Logger logger = LoggerFactory.getLogger(PlaySamples.class);
 
     /**
      * To inject the sample beans.
@@ -49,7 +54,18 @@ public class FeaturePlayer {
         for (User user : userDao.list())
             System.out.println("Sample User: " + user);
 
-        System.out.println("Alicd.id = " + PrincipalSamples.alice.getId());
+        System.out.println("Alice.id = " + PrincipalSamples.alice.getId());
+    }
+
+    @Override
+    protected void main(PlaySamples player)
+            throws Exception {
+        player.listSamples();
+    }
+
+    public static void main(String[] args)
+            throws IOException {
+        new PlaySamples().mainLoop();
     }
 
 }
