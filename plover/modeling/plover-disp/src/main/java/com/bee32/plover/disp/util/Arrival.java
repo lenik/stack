@@ -5,6 +5,9 @@ import java.util.Date;
 
 import javax.free.StringArray;
 
+import com.bee32.plover.util.FormatStyle;
+import com.bee32.plover.util.IMultiFormat;
+
 public class Arrival
         implements IArrival {
 
@@ -176,7 +179,19 @@ public class Arrival
 
     @Override
     public String toString() {
-        return getConsumedPath() + " -> " + target;
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(getConsumedPath());
+        sb.append(" -> ");
+
+        if (target instanceof IMultiFormat) {
+            IMultiFormat mf = (IMultiFormat) target;
+            sb.append(mf.toString(FormatStyle.SIMPLE));
+        } else {
+            sb.append(target);
+        }
+
+        return sb.toString();
     }
 
 }
