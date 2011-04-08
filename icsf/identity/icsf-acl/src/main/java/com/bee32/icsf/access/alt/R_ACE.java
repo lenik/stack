@@ -11,10 +11,9 @@ import org.hibernate.annotations.BatchSize;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.Permissions;
 import com.bee32.icsf.access.acl.IACL;
-import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.EntityFormat;
+import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
 @Entity
@@ -26,7 +25,7 @@ public class R_ACE
     private static final long serialVersionUID = 1L;
 
     private R_ACL acl;
-    private IPrincipal principal;
+    private Principal principal;
     private String permissionName;
     private boolean allowed;
 
@@ -34,11 +33,11 @@ public class R_ACE
         super("ACE");
     }
 
-    public R_ACE(R_ACL acl, IPrincipal principal, Permission permission, boolean allowed) {
+    public R_ACE(R_ACL acl, Principal principal, Permission permission, boolean allowed) {
         this(acl, principal, permission.getName(), allowed);
     }
 
-    public R_ACE(R_ACL acl, IPrincipal principal, String permissionName, boolean allowed) {
+    public R_ACE(R_ACL acl, Principal principal, String permissionName, boolean allowed) {
         super("ACE");
 
         if (acl == null)
@@ -63,12 +62,12 @@ public class R_ACE
         this.acl = acl;
     }
 
-    @ManyToOne(targetEntity = Principal.class, optional = false)
-    public IPrincipal getPrincipal() {
+    @ManyToOne(optional = false)
+    public Principal getPrincipal() {
         return principal;
     }
 
-    public void setPrincipal(IPrincipal principal) {
+    public void setPrincipal(Principal principal) {
         this.principal = principal;
     }
 
@@ -140,8 +139,9 @@ public class R_ACE
     }
 
     @Override
-    public void toString(PrettyPrintStream out, EntityFormat format) {
-        out.print(principal);
+    public void toString(PrettyPrintStream out, FormatStyle format) {
+        principal.toString(out, format);
+
         if (allowed)
             out.print(" + ");
         else
