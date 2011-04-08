@@ -35,9 +35,9 @@ public class ObjectDumpView
         out.println("<html><head><title>Object Dump</title></head>");
         out.println("<body><h1>Object Dump: " + ObjectInfo.getObjectId(obj) + "</h1>");
         out.println("<hr/>");
+
         String string = String.valueOf(obj);
         String html = HtmlUtils.htmlEscape(string);
-
         out.println("<pre>");
         out.println(html);
         out.println("</pre>");
@@ -51,7 +51,6 @@ public class ObjectDumpView
         out.println("Arrival: " + req.getArrival());
         out.println("Rest-Path: " + req.getRestPath());
         out.println("Method: " + req.getMethod());
-        out.println("Target: " + req.getTarget());
         out.println(req);
 
         out.println("</pre>");
