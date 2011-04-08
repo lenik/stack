@@ -1,6 +1,5 @@
 package com.bee32.icsf.access.alt;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -52,7 +51,6 @@ public class R_ACE
         this.acl = acl;
         this.principal = principal;
         this.permissionName = permissionName;
-        this.allowed = allowed;
     }
 
     @ManyToOne(optional = false)
@@ -73,28 +71,13 @@ public class R_ACE
         this.principal = principal;
     }
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 10, nullable = false)
     public String getPermissionName() {
         return permissionName;
     }
 
     public void setPermissionName(String permissionName) {
         this.permissionName = permissionName;
-    }
-
-    @Basic
-    public boolean isAllowed() {
-        return allowed;
-    }
-
-    @Transient
-    @Override
-    public boolean isDenied() {
-        return false;
-    }
-
-    public void setAllowed(boolean allowed) {
-        this.allowed = allowed;
     }
 
     @Transient

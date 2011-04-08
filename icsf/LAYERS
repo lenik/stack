@@ -1,5 +1,4 @@
 identity/   Identity and Access Security
-    icsf-principal
     icsf-acl
     icsf-sso
     icsf-jaas
