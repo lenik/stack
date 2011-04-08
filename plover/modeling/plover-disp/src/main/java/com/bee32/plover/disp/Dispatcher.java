@@ -47,9 +47,9 @@ public class Dispatcher
     private static int maxDispatches = 100;
 
     @Override
-    public IArrival dispatch(IArrival context, ITokenQueue tokens)
+    public IArrival dispatch(IArrival arrival, ITokenQueue tokens)
             throws DispatchException {
-        if (context == null)
+        if (arrival == null)
             throw new NullPointerException("context");
 
         if (dispatchers.isEmpty())
@@ -63,9 +63,9 @@ public class Dispatcher
             boolean processed = false;
 
             for (IDispatcher dispatcher : dispatchers) {
-                IArrival next = dispatcher.dispatch(context, tokens);
+                IArrival next = dispatcher.dispatch(arrival, tokens);
                 if (next != null) {
-                    context = next;
+                    arrival = next;
                     processed = true;
                     break;
                 }
@@ -74,13 +74,13 @@ public class Dispatcher
             if (!processed)
                 break;
 
-            logger.debug("    " + context);
+            logger.debug("    " + arrival);
 
             if (++count > maxDispatches)
                 throw new DispatchException(String.format("Dispatch-deadloop (%d) detected.", maxDispatches));
         }
 
-        return context;
+        return arrival;
     }
 
     private static final Dispatcher instance = new Dispatcher();
