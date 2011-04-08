@@ -20,7 +20,7 @@ public class CatUsageTest
     static Logger logger = LoggerFactory.getLogger(CatUsageTest.class);
 
     @Inject
-    FeaturePlayer catService;
+    PlaySessionCache catService;
 
     @Test
     public void testPopulateStruct()
