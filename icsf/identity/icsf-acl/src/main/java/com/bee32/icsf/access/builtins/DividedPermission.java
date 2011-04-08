@@ -6,7 +6,7 @@ import javax.free.Nullables;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.EntityFormat;
+import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public abstract class DividedPermission
@@ -117,7 +117,7 @@ public abstract class DividedPermission
     }
 
     @Override
-    public void toString(PrettyPrintStream out, EntityFormat format) {
+    public void toString(PrettyPrintStream out, FormatStyle format) {
         out.print(name);
         out.print("(");
         for (int i = 0; i < ranges.length; i++) {

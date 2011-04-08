@@ -5,7 +5,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.EntityFormat;
+import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
 @Entity
@@ -98,7 +98,7 @@ public class CMYK
     }
 
     @Override
-    public void toString(PrettyPrintStream out, EntityFormat format) {
+    public void toString(PrettyPrintStream out, FormatStyle format) {
         String hex = String.format("%s (%02x%02x%02x%02x)", name, cyan, magenta, yellow, black);
         out.print(hex);
     }

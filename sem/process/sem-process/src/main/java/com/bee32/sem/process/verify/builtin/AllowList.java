@@ -17,7 +17,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalBeanConfig;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.EntityFormat;
+import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.result.ErrorResult;
@@ -134,7 +134,7 @@ public class AllowList
     }
 
     @Override
-    public void toString(PrettyPrintStream out, EntityFormat format) {
+    public void toString(PrettyPrintStream out, FormatStyle format) {
         out.print("Allow-List: ");
         if (responsibles != null)
             for (Principal responsible : responsibles) {

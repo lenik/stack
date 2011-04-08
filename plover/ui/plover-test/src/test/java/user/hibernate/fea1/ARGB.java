@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import org.hibernate.annotations.BatchSize;
 
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.EntityFormat;
+import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
 @Entity
@@ -60,7 +60,7 @@ public class ARGB
     }
 
     @Override
-    public void toString(PrettyPrintStream out, EntityFormat format) {
+    public void toString(PrettyPrintStream out, FormatStyle format) {
         super.toString(out, format);
         out.print(" alpha=" + alpha);
     }

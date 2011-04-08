@@ -5,7 +5,7 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.EntityFormat;
+import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
 @Entity
@@ -71,7 +71,7 @@ public class Book
     }
 
     @Override
-    public void toString(PrettyPrintStream out, EntityFormat format) {
+    public void toString(PrettyPrintStream out, FormatStyle format) {
         String s = id + ") " + name + " :: " + content;
         out.print(s);
     }

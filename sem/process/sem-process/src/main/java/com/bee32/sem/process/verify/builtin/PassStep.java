@@ -2,7 +2,7 @@ package com.bee32.sem.process.verify.builtin;
 
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.EntityFormat;
+import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
 /**
@@ -42,7 +42,7 @@ public class PassStep
     }
 
     @Override
-    public void toString(PrettyPrintStream out, EntityFormat format) {
+    public void toString(PrettyPrintStream out, FormatStyle format) {
         out.print(responsible);
         if (optional)
             out.print("?");

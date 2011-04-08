@@ -1,27 +1,27 @@
-package com.bee32.plover.orm.entity;
+package com.bee32.plover.util;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.free.IllegalUsageError;
 
-public class EntityFormat {
+public class FormatStyle {
 
-    public static final EntityFormat SIMPLE = new EntityFormat(true, false, false, false, 0);
-    public static final EntityFormat SHORT = new EntityFormat(true, true, false, false, 0);
-    public static final EntityFormat NORMAL = new EntityFormat(true, true, true, true, 0, SIMPLE);
-    public static final EntityFormat VERBOSE = new EntityFormat(true, true, true, true, 1, SIMPLE);
-    public static final EntityFormat LOG_ENTRY = new EntityFormat(true, true, true, false, 1, SIMPLE);
-    public static final EntityFormat FULL = new EntityFormat(true, true, true, true, 1000);
+    public static final FormatStyle SIMPLE = new FormatStyle(true, false, false, false, 0);
+    public static final FormatStyle SHORT = new FormatStyle(true, true, false, false, 0);
+    public static final FormatStyle NORMAL = new FormatStyle(true, true, true, true, 0, SIMPLE);
+    public static final FormatStyle VERBOSE = new FormatStyle(true, true, true, true, 1, SIMPLE);
+    public static final FormatStyle LOG_ENTRY = new FormatStyle(true, true, true, false, 1, SIMPLE);
+    public static final FormatStyle FULL = new FormatStyle(true, true, true, true, 1000);
 
     private final boolean includeIdentity;
     private final boolean includeFields;
     private final boolean includeFieldNames;
     private final boolean multiLine;
     private final int depth;
-    private EntityFormat reducedFormat;
+    private FormatStyle reducedFormat;
 
-    private EntityFormat(boolean includeIdentity, boolean includeFields, boolean includeFieldNames, boolean multiLine,
+    private FormatStyle(boolean includeIdentity, boolean includeFields, boolean includeFieldNames, boolean multiLine,
             int depth) {
         this.includeIdentity = includeIdentity;
         this.includeFields = includeFields;
@@ -31,8 +31,8 @@ public class EntityFormat {
         this.reducedFormat = this;
     }
 
-    private EntityFormat(boolean includeIdentity, boolean includeFields, boolean includeFieldNames, boolean multiLine,
-            int depth, EntityFormat reducedFormat) {
+    private FormatStyle(boolean includeIdentity, boolean includeFields, boolean includeFieldNames, boolean multiLine,
+            int depth, FormatStyle reducedFormat) {
         this(includeIdentity, includeFields, includeFieldNames, multiLine, depth);
         this.reducedFormat = reducedFormat;
     }
@@ -57,17 +57,17 @@ public class EntityFormat {
         return depth;
     }
 
-    public EntityFormat reduce() {
+    public FormatStyle reduce() {
         return reducedFormat;
     }
 
     public static final String DEFAULT_PROPERTY = "plover.entity.format";
 
-    public static EntityFormat DEFAULT = NORMAL;
+    public static FormatStyle DEFAULT = NORMAL;
 
-    static Map<String, EntityFormat> map;
+    static Map<String, FormatStyle> map;
     static {
-        map = new HashMap<String, EntityFormat>();
+        map = new HashMap<String, FormatStyle>();
         map.put("SIMPLE", SIMPLE);
         map.put("SHORT", SHORT);
         map.put("NORMAL", NORMAL);
@@ -76,7 +76,7 @@ public class EntityFormat {
         map.put("FULL", FULL);
     }
 
-    public static EntityFormat valueOf(String formatName) {
+    public static FormatStyle valueOf(String formatName) {
         return map.get(formatName);
     }
 
@@ -84,7 +84,7 @@ public class EntityFormat {
         String formatProperty = System.getProperty(DEFAULT_PROPERTY);
 
         if (formatProperty != null) {
-            EntityFormat format = valueOf(formatProperty);
+            FormatStyle format = valueOf(formatProperty);
 
             if (format == null)
                 throw new IllegalUsageError("Bad entity format: " + formatProperty);

@@ -19,6 +19,8 @@ import javax.persistence.Version;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.model.Model;
+import com.bee32.plover.util.FormatStyle;
+import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
 /**
@@ -31,7 +33,7 @@ import com.bee32.plover.util.PrettyPrintStream;
 @MappedSuperclass
 public abstract class EntityBean<K extends Serializable>
         extends Model
-        implements IEntity<K>, IPopulatable, IFormatString {
+        implements IEntity<K>, IPopulatable, IMultiFormat {
 
     private static final long serialVersionUID = 1L;
 
@@ -124,11 +126,23 @@ public abstract class EntityBean<K extends Serializable>
     }
 
     @Override
-    public void toString(final PrettyPrintStream out, final EntityFormat format) {
+    public final String toString() {
+        return toString(FormatStyle.DEFAULT);
+    }
+
+    @Override
+    public final String toString(FormatStyle format) {
+        PrettyPrintStream out = new PrettyPrintStream();
+        toString(out, format);
+        return out.toString();
+    }
+
+    @Override
+    public void toString(final PrettyPrintStream out, final FormatStyle format) {
         toString(out, format, null, 0);
     }
 
-    void toString(final PrettyPrintStream out, final EntityFormat format, final Set<Object> occurred, final int depth) {
+    void toString(final PrettyPrintStream out, final FormatStyle format, final Set<Object> occurred, final int depth) {
         if (format == null)
             return;
 
@@ -214,7 +228,12 @@ public abstract class EntityBean<K extends Serializable>
                                     out.print('=');
                             }
 
-                            walkVal(fieldValue, format, depth);
+                            try {
+                                walkVal(fieldValue, format, depth);
+                            } catch (Exception e) {
+                                out.print("<error: " + e.getMessage() + ">");
+                                e.printStackTrace();
+                            }
 
                             out.print("; ");
                             if (multiLine)
@@ -223,7 +242,7 @@ public abstract class EntityBean<K extends Serializable>
 
                     } // walk()
 
-                    void walkVal(Object val, EntityFormat format, int depth) {
+                    void walkVal(Object val, FormatStyle format, int depth) {
                         if (!mark(val)) {
                             // duplicated occurence, avoid if acyclic.
                             int dupId = System.identityHashCode(val);
@@ -232,7 +251,7 @@ public abstract class EntityBean<K extends Serializable>
                             return;
                         }
 
-                        EntityFormat childFormat;
+                        FormatStyle childFormat;
                         int childDepth;
                         if (depth < maxDepth) {
                             childFormat = format;
@@ -371,17 +390,6 @@ public abstract class EntityBean<K extends Serializable>
                 out.print(' ');
             out.print("}");
         }
-    }
-
-    @Override
-    public final String toString() {
-        return toString(EntityFormat.DEFAULT);
-    }
-
-    public final String toString(EntityFormat format) {
-        PrettyPrintStream out = new PrettyPrintStream();
-        toString(out, format);
-        return out.toString();
     }
 
     @SuppressWarnings("unchecked")
