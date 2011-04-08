@@ -22,8 +22,6 @@ public class User
 
     private static final long serialVersionUID = 1L;
 
-    protected Long id;
-
     protected IGroupPrincipal primaryGroup;
     protected IRolePrincipal primaryRole;
 

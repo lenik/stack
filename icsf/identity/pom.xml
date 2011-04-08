@@ -15,7 +15,6 @@
         <module>icsf-kerberos</module>
         <module>icsf-ldap</module>
         <module>icsf-pkcs11</module>
-        <module>icsf-principal</module>
         <module>icsf-smartcard</module>
         <module>icsf-sso</module>
     </modules>
