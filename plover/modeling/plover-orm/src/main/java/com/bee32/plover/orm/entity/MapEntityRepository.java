@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapEntityRepository<E extends EntityBean<K>, K extends Serializable>
+public class MapEntityRepository<E extends IEntity<K>, K extends Serializable>
         extends EntityRepository<E, K>
         implements Serializable {
 

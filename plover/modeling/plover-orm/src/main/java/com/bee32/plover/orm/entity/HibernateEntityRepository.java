@@ -14,7 +14,7 @@ import org.springframework.dao.DataAccessException;
 import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 
-public class HibernateEntityRepository<E extends EntityBean<K>, K extends Serializable>
+public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializable>
         extends EntityRepository<E, K> {
 
     static class Support

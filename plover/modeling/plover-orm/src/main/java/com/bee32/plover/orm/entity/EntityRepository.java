@@ -19,7 +19,7 @@ import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.arch.naming.ReverseLookupRegistry;
 import com.bee32.plover.arch.util.IStruct;
 
-public abstract class EntityRepository<E extends EntityBean<K>, K extends Serializable>
+public abstract class EntityRepository<E extends IEntity<K>, K extends Serializable>
         extends Repository<K, E>
         implements IEntityRepository<E, K> {
 

@@ -12,7 +12,7 @@ import com.bee32.plover.inject.ComponentTemplate;
  */
 @ComponentTemplate
 @Lazy
-public abstract class AbstractDao<E extends EntityBean<K>, K extends Serializable>
+public abstract class AbstractDao<E extends IEntity<K>, K extends Serializable>
         extends GenericEntityRepository<E, K> {
 
     public AbstractDao(Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
