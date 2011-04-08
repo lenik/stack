@@ -1,0 +1,360 @@
+package com.bee32.plover.restful;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.free.IllegalUsageException;
+import javax.free.ObjectInfo;
+import javax.inject.Inject;
+import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.bee32.plover.arch.naming.ReverseLookupRegistry;
+import com.bee32.plover.cache.annotation.StatelessUtil;
+import com.bee32.plover.disp.DispatchException;
+import com.bee32.plover.disp.Dispatcher;
+import com.bee32.plover.disp.util.Arrival;
+import com.bee32.plover.disp.util.ArrivalBacktraceCallback;
+import com.bee32.plover.disp.util.ClassMethod;
+import com.bee32.plover.disp.util.IArrival;
+import com.bee32.plover.disp.util.ITokenQueue;
+import com.bee32.plover.disp.util.MethodLazyInjector;
+import com.bee32.plover.disp.util.MethodPattern;
+import com.bee32.plover.restful.request.RestfulRequestBuilder;
+import com.bee32.plover.servlet.context.LocationContextConstants;
+
+@Lazy
+@Service
+public class RestfulService {
+
+    static Logger logger = LoggerFactory.getLogger(RestfulService.class);
+
+    private transient Object root;
+
+    @Inject
+    ApplicationContext applicationContext;
+
+    @Inject
+    ModuleManager moduleManager;
+
+    @Inject
+    RestfulViewManager viewManager;
+
+    public void setRoot(Object root) {
+        if (root == null)
+            throw new NullPointerException("root");
+        this.root = root;
+    }
+
+    /**
+     * So make it Open Session In View.
+     */
+    @Transactional
+    public boolean processOrNot(ServletRequest _request, ServletResponse _response)
+            throws IOException, ServletException, RestfulException {
+
+        if (!(_request instanceof HttpServletRequest))
+            return false;
+        if (!(_response instanceof HttpServletResponse))
+            return false;
+
+        // 1, Build the restful-request
+        final HttpServletRequest request = (HttpServletRequest) _request;
+        final HttpServletResponse response = (HttpServletResponse) _response;
+
+        RestfulRequestBuilder requestBuilder = RestfulRequestBuilder.getInstance();
+        final RestfulRequest req = requestBuilder.build(request);
+        final RestfulResponse resp = new RestfulResponse(response);
+
+        // 2, Path-dispatch
+        ITokenQueue tq = req.getTokenQueue();
+        IArrival arrival = dispatch(tq);
+        if (arrival == null)
+            return false;
+
+        final Object origin = arrival.getTarget();
+
+        // 3, origin is a servlet delegate?
+        if (origin instanceof Servlet) {
+            Servlet resultServlet = (Servlet) origin;
+            resultServlet.service(_request, _response);
+            return true;
+        }
+
+        // 3.1, otherwise execute origin..method-> target
+
+        // Object renderObject = origin;
+        // Date expires = arrival.getExpires();
+
+        String method = req.getMethod();
+        if (method == null)
+            throw new NullPointerException("method");
+
+        // No controller method, is it a special view?
+        req.setArrival(arrival);
+
+        if (MethodNames.READ.equals(method)) {
+            // READ may also use the rest-path?
+            if (!tq.isEmpty())
+                return false;
+        }
+
+        class Callback
+                implements ArrivalBacktraceCallback<ServletException> {
+
+            @Override
+            public boolean arriveBack(IArrival arrival)
+                    throws ServletException {
+
+                Object obj = arrival.getTarget();
+                Class<?> objClass = obj.getClass();
+
+                req.setArrival(arrival);
+
+                if (doRender(obj, req, resp, false))
+                    return true;
+
+                if (doControllerMethod(objClass, req, resp))
+                    return true;
+
+                if (doInplaceMethod(objClass, req, resp))
+                    return true;
+
+                return false;
+            }
+        }
+
+        Callback callback = new Callback();
+
+        // controller method chaining isn't supported, yet.
+        // while (true) {}
+
+        if (arrival.backtrace(callback)) {
+            // NOTICE: user should not write to response, if any target is returned.
+            Object target = resp.getTarget();
+
+            // Treat if the response have already been done.
+            if (target == null) {
+                // assert resp.isCommitted();
+                return true;
+            }
+
+            if (target instanceof String) {
+                String location = (String) target;
+                resp.sendRedirect(location);
+                return true;
+            }
+
+            String location = ReverseLookupRegistry.getInstance().getLocation(target);
+            if (location != null) {
+                location = LocationContextConstants.WEB_APP.join(location).resolve(request);
+
+                String additionMethod = resp.getMethod();
+                if (additionMethod != null) {
+                    if (MethodNames.INDEX.equals(additionMethod))
+                        location += "/";
+                    else
+                        location += "?X=" + additionMethod;
+                }
+
+                resp.sendRedirect(location);
+                return true;
+            }
+        }
+
+        doRender(origin, req, resp, true);
+        return true;
+    } // processOrNot
+
+    private IArrival dispatch(ITokenQueue tq)
+            throws ServletException {
+        Object rootObject = root == null ? moduleManager : root;
+        if (rootObject == null)
+            // throw new IllegalStateException("Root object isn't set");
+            rootObject = ModuleManager.getInstance();
+
+        Dispatcher dispatcher = Dispatcher.getInstance();
+        IArrival arrival;
+        try {
+            arrival = dispatcher.dispatch(new Arrival(rootObject), tq);
+        } catch (DispatchException e) {
+            // resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
+            throw new ServletException(e.getMessage(), e);
+        }
+        return arrival;
+    }
+
+    /**
+     * @return <code>true</code> if any controller method exists and the method is handled.
+     */
+    private boolean doControllerMethod(Class<?> originClass, RestfulRequest req, RestfulResponse resp)
+            throws ServletException {
+
+        ClassMethod cmethod = getControllerMethod(originClass, req.getMethod());
+        if (cmethod == null)
+            return false;
+
+        // Get the controller instance.
+        Class<?> controllerClass = cmethod.getType();
+        Method method = cmethod.getMethod();
+
+        Object controller;
+        try {
+            boolean wired = controllerClass.getAnnotation(Controller.class) != null;
+            if (wired)
+                controller = applicationContext.getBean(controllerClass);
+            else
+                controller = StatelessUtil.createOrReuse(controllerClass);
+        } catch (Exception e) {
+            throw new ServletException(e.getMessage(), e);
+        }
+
+        Object target;
+        try {
+            target = method.invoke(controller, req, resp);
+        } catch (Exception e) {
+            throw new ServletException(e.getMessage(), e);
+        }
+
+        if (target != null)
+            resp.setTarget(target);
+        return true;
+    }
+
+    /**
+     * @return <code>true</code> if any inplace method exists and the method is handled.
+     */
+    private boolean doInplaceMethod(Object origin, final RestfulRequest req, final RestfulResponse resp)
+            throws ServletException {
+        Class<?> originClass = origin.getClass();
+        final Method singleMethod = getSingleMethod(originClass, req.getMethod());
+        if (singleMethod == null)
+            return false;
+
+        MethodLazyInjector injector = new MethodLazyInjector() {
+            @Override
+            protected Object require(Class<?> declType) {
+                if (ServletRequest.class.isAssignableFrom(declType))
+                    return req;
+
+                if (ServletResponse.class.isAssignableFrom(declType))
+                    return resp;
+
+                throw new IllegalUsageException("Don't know how to inject parameter " + declType + " in "
+                        + singleMethod);
+            }
+        };
+
+        Object target;
+        try {
+            target = injector.invoke(origin, singleMethod);
+        } catch (Exception e) {
+            throw new ServletException(e.getMessage(), e);
+        }
+
+        if (target != null)
+            resp.setTarget(target);
+        return true;
+    }
+
+    /**
+     * @throws IOException
+     * @throws RestfulException
+     */
+    private boolean doRender(Object object, IRestfulRequest req, IRestfulResponse resp, Boolean fallback)
+            throws ServletException {
+
+        if (logger.isDebugEnabled()) {
+            String objectId = ObjectInfo.getObjectId(object);
+            // object + "(" + object.getClass().getSimpleName() + ")";
+            logger.debug("Render " + objectId + ", view=" + req.getMethod());
+        }
+
+        Class<?> clazz = object.getClass();
+
+        // Set<IRestfulView> views = RestfulViewFactory.getViews();
+        Set<IRestfulView> views = viewManager.getViews();
+
+        for (IRestfulView view : views) {
+            if (fallback != null && fallback != view.isFallback())
+                continue;
+
+            try {
+                if (view.renderTx(clazz, object, req, resp))
+                    return true;
+            } catch (IOException e) {
+                throw new ServletException(e.getMessage(), e);
+            }
+        }
+
+        return false;
+    }
+
+    static MethodPattern controllerPattern;
+    static Map<Class<?>, Map<String, ClassMethod>> classControllerMethods;
+    static {
+        controllerPattern = new MethodPattern(ServletRequest.class, ServletResponse.class);
+        classControllerMethods = new HashMap<Class<?>, Map<String, ClassMethod>>();
+    }
+
+    static Map<String, ClassMethod> getControllerMethods(Class<?> resourceClass) {
+        if (resourceClass == null)
+            throw new NullPointerException("resourceClass");
+
+        Map<String, ClassMethod> methods = classControllerMethods.get(resourceClass);
+        if (methods == null) {
+            methods = controllerPattern.searchOverlayMethods(resourceClass, "controller");
+            classControllerMethods.put(resourceClass, methods);
+        }
+        return methods;
+    }
+
+    static ClassMethod getControllerMethod(Class<?> resourceClass, String method) {
+        Map<String, ClassMethod> map = getControllerMethods(resourceClass);
+        return map.get(method);
+    }
+
+    static Map<Class<?>, Map<String, Method>> classSingleMethods = new HashMap<Class<?>, Map<String, Method>>();
+
+    static Method getSingleMethod(Class<?> clazz, String name) {
+        Map<String, Method> singleMethods = classSingleMethods.get(clazz);
+        if (singleMethods == null) {
+            synchronized (classSingleMethods) {
+                singleMethods = classSingleMethods.get(clazz);
+                if (singleMethods == null) {
+                    singleMethods = new HashMap<String, Method>();
+
+                    Set<String> nameset = new HashSet<String>();
+                    for (Method method : clazz.getMethods()) {
+                        String _name = method.getName();
+                        if (nameset.add(_name))
+                            singleMethods.put(_name, method);
+                        else
+                            singleMethods.remove(method);
+                    }
+
+                    classSingleMethods.put(clazz, singleMethods);
+                }
+            }
+        }
+
+        return singleMethods.get(name);
+    }
+
+}
