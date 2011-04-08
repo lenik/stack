@@ -5,12 +5,16 @@ import java.io.PrintWriter;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
 
 import com.bee32.plover.restful.IRestfulRequest;
 import com.bee32.plover.restful.IRestfulResponse;
 import com.bee32.plover.restful.RestfulView;
 import com.bee32.plover.velocity.VelocityUtil;
 
+@Lazy
+@Controller
 public class VelocityView
         extends RestfulView {
 

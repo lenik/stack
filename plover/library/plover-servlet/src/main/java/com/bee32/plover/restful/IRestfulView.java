@@ -46,4 +46,10 @@ public interface IRestfulView {
     boolean render(Object obj, IRestfulRequest req, IRestfulResponse resp)
             throws IOException;
 
+    boolean renderTx(Class<?> clazz, Object obj, IRestfulRequest req, IRestfulResponse resp)
+            throws IOException;
+
+    boolean renderTx(Object obj, IRestfulRequest req, IRestfulResponse resp)
+            throws IOException;
+
 }

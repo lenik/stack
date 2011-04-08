@@ -2,6 +2,8 @@ package com.bee32.plover.restful;
 
 import java.io.IOException;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.bee32.plover.arch.Component;
 
 public abstract class RestfulView
@@ -35,6 +37,20 @@ public abstract class RestfulView
         Class<?> clazz = obj.getClass();
 
         return render(clazz, obj, req, resp);
+    }
+
+    @Transactional
+    @Override
+    public boolean renderTx(Class<?> clazz, Object obj, IRestfulRequest req, IRestfulResponse resp)
+            throws IOException {
+        return render(clazz, obj, req, resp);
+    }
+
+    @Transactional
+    @Override
+    public boolean renderTx(Object obj, IRestfulRequest req, IRestfulResponse resp)
+            throws IOException {
+        return render(obj, req, resp);
     }
 
 }

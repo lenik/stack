@@ -5,8 +5,12 @@ import java.io.PrintWriter;
 
 import javax.free.ObjectInfo;
 
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
 
+@Lazy
+@Controller
 public class ObjectDumpView
         extends RestfulView {
 
