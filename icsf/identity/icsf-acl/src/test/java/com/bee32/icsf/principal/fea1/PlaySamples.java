@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.principal.IcsfPrincipalUnit;
+import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dao.GroupDao;
 import com.bee32.icsf.principal.dao.RoleDao;
 import com.bee32.icsf.principal.dao.UserDao;
-import com.bee32.icsf.principal.test.PrincipalSamples;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.cref.ScanTestxContext;
 import com.bee32.plover.orm.context.TestDataConfig;
@@ -54,7 +54,7 @@ public class PlaySamples
         for (User user : userDao.list())
             System.out.println("Sample User: " + user);
 
-        System.out.println("Alice.id = " + PrincipalSamples.alice.getId());
+        System.out.println("Alice.id = " + IcsfPrincipalSamples.alice.getId());
     }
 
     @Override
