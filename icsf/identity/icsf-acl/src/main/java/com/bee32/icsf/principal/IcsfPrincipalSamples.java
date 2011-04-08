@@ -1,14 +1,8 @@
-package com.bee32.icsf.principal.test;
+package com.bee32.icsf.principal;
 
-import com.bee32.icsf.principal.Group;
-import com.bee32.icsf.principal.IcsfPrincipalUnit;
-import com.bee32.icsf.principal.Role;
-import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 
-@Using(IcsfPrincipalUnit.class)
-public class PrincipalSamples
+public class IcsfPrincipalSamples
         extends EntitySamplesContribution {
 
     public static Group sunCorp;
