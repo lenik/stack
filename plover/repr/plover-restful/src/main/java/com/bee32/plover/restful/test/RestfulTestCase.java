@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.bee32.plover.orm.config.test.DefaultTestSessionFactoryBean;
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.unit.UseUnitUtil;
+import com.bee32.plover.orm.unit.UsingUtil;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.restful.DispatchFilter;
@@ -38,7 +38,7 @@ public abstract class RestfulTestCase
         super(configClass);
         this.applicationContext = applicationContext;
 
-        PersistenceUnit unit = UseUnitUtil.getUseUnit(getClass());
+        PersistenceUnit unit = UsingUtil.getUsedUnit(getClass());
         DefaultTestSessionFactoryBean.setForceUnit(unit);
     }
 

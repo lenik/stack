@@ -11,7 +11,7 @@ import com.bee32.plover.orm.context.TestDataConfig;
 import com.bee32.plover.orm.dao.HibernateDaoSupport;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.unit.UseUnitUtil;
+import com.bee32.plover.orm.unit.UsingUtil;
 import com.bee32.plover.test.WiredTestCase;
 
 @Import({ TestDataConfig.class })
@@ -24,7 +24,7 @@ public abstract class WiredDaoTestCase
     private transient HibernateDaoSupport support;
 
     public WiredDaoTestCase() {
-        PersistenceUnit unit = UseUnitUtil.getUseUnit(getClass());
+        PersistenceUnit unit = UsingUtil.getUsedUnit(getClass());
         DefaultTestSessionFactoryBean.setForceUnit(unit);
     }
 
