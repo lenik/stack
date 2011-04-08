@@ -19,14 +19,14 @@ public class MethodPattern {
         this.pattern = pattern;
     }
 
-    public Map<String, Method> searchOverlayMethods(Class<?> clazz, String extension) {
+    public Map<String, ClassMethod> searchOverlayMethods(Class<?> clazz, String extension) {
         if (clazz == null)
             throw new NullPointerException("clazz");
         if (extension == null)
             throw new NullPointerException("extension");
 
-        Map<String, Method> all = new HashMap<String, Method>();
-        Map<String, Method> each = new HashMap<String, Method>();
+        Map<String, ClassMethod> all = new HashMap<String, ClassMethod>();
+        Map<String, ClassMethod> each = new HashMap<String, ClassMethod>();
 
         while (clazz != null) {
             Class<?> overlay = OverlayUtil.getOverlay(clazz, extension);
@@ -34,7 +34,7 @@ public class MethodPattern {
             if (overlay != null) {
                 searchMethods(each, false, overlay);
 
-                for (Entry<String, Method> entry : each.entrySet()) {
+                for (Entry<String, ClassMethod> entry : each.entrySet()) {
                     String methodName = entry.getKey();
 
                     // Don't overwrite the methods defined in subclass
@@ -52,13 +52,13 @@ public class MethodPattern {
         return all;
     }
 
-    public Map<String, Method> searchMethods(Class<?> clazz) {
-        Map<String, Method> methods = new HashMap<String, Method>();
+    public Map<String, ClassMethod> searchMethods(Class<?> clazz) {
+        Map<String, ClassMethod> methods = new HashMap<String, ClassMethod>();
         searchMethods(methods, false, clazz);
         return methods;
     }
 
-    public void searchMethods(Map<String, Method> all, boolean canOverride, Class<?> clazz) {
+    public void searchMethods(Map<String, ClassMethod> all, boolean canOverride, Class<?> clazz) {
         for (Method method : clazz.getMethods()) {
             if (!isAssignable(pattern, method.getParameterTypes()))
                 continue;
@@ -66,12 +66,12 @@ public class MethodPattern {
             String methodName = method.getName();
 
             if (!canOverride) {
-                Method existing = all.get(method.getName());
+                ClassMethod existing = all.get(method.getName());
                 if (existing != null)
                     throw new IllegalUsageException("Ambiguous methods: " + existing + " and " + method);
             }
 
-            all.put(methodName, method);
+            all.put(methodName, new ClassMethod(clazz, method));
         }
     }
 
