@@ -49,6 +49,13 @@ public abstract class PersistenceUnit
         }
     }
 
+    /**
+     * Publish entity classes here.
+     *
+     * @see #add(Class)
+     * @see #remove(Class)
+     */
+    @Override
     protected abstract void preamble();
 
     static final PersistenceUnit defaultUnit = new SimplePUnit("DEFAULT");
