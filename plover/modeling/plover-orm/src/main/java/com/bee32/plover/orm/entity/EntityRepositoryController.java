@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.entity;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 
 import javax.free.ParseException;
@@ -27,6 +29,12 @@ public class EntityRepositoryController<E extends EntityBean<K>, K extends Seria
 
     @Inject
     CommonDataManager dataManager;
+
+    public void index(IRestfulRequest req, IRestfulResponse resp)
+            throws IOException {
+        PrintWriter out = resp.getWriter();
+        out.println("TODO...");
+    }
 
     public Object create(IRestfulRequest req, IRestfulResponse resp)
             throws Exception {
