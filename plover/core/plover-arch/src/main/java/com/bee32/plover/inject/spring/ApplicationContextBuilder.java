@@ -1,7 +1,9 @@
 package com.bee32.plover.inject.spring;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -57,6 +59,8 @@ public class ApplicationContextBuilder {
         return beanFactory.createBean(beanClass);
     }
 
+    static final boolean postInitBySpring = true;
+
     /**
      * @return self.
      */
@@ -67,6 +71,24 @@ public class ApplicationContextBuilder {
         ApplicationContext context = buildSelfHostedContext(bean.getClass());
         AutowireCapableBeanFactory beanFactory = context.getAutowireCapableBeanFactory();
         beanFactory.autowireBean(bean);
+
+        if (postInitBySpring) {
+            return (T) beanFactory.initializeBean(bean, "*anyName");
+        } else {
+            if (bean instanceof ApplicationContextAware) {
+                ((ApplicationContextAware) bean).setApplicationContext(context);
+            }
+            if (bean instanceof InitializingBean) {
+                try {
+                    ((InitializingBean) bean).afterPropertiesSet();
+                } catch (RuntimeException e) {
+                    throw e;
+                } catch (Exception e) {
+                    throw new RuntimeException(e.getMessage(), e);
+                }
+            }
+        }
+
         return bean;
     }
 
