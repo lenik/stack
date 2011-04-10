@@ -18,13 +18,8 @@ public class EmptyACL
     }
 
     @Override
-    public Set<? extends IPrincipal> getDeclaredRelatedPrincipals() {
+    public Set<? extends IPrincipal> getDeclaredPrincipals() {
         return Collections.emptySet();
-    }
-
-    @Override
-    public IACLPolicy getACLPolicy() {
-        return DenyFirstACLPolicy.getInstance();
     }
 
     @Override

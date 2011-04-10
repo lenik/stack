@@ -8,8 +8,8 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.BatchSize;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.access.Permissions;
-import com.bee32.icsf.access.acl.IACL;
+import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.access.resource.ResourceRegistry;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.util.FormatStyle;
@@ -18,48 +18,53 @@ import com.bee32.plover.util.PrettyPrintStream;
 @Entity
 @BatchSize(size = 100)
 public class R_ACE
-        extends EntityBean<Long>
-        implements IACL.Entry {
+        extends EntityBean<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    private R_ACL acl;
-
+    private String resourceName;
     private Principal principal;
-    private String permissionName;
-
-    private boolean allowed;
+    private String mode;
 
     R_ACE() {
         super("ACE");
     }
 
-    public R_ACE(R_ACL acl, Principal principal, Permission permission, boolean allowed) {
-        this(acl, principal, permission.getName(), allowed);
+    public R_ACE(Resource resource, Principal principal, Permission permission) {
+        this(ResourceRegistry.toName(resource), principal, permission.toString());
     }
 
-    public R_ACE(R_ACL acl, Principal principal, String permissionName, boolean allowed) {
+    public R_ACE(String resourceName, Principal principal, String mode) {
         super("ACE");
 
-        if (acl == null)
-            throw new NullPointerException("acl");
+        if (resourceName == null)
+            throw new NullPointerException("resourceName");
         if (principal == null)
             throw new NullPointerException("principal");
-        if (permissionName == null)
-            throw new NullPointerException("permissionName");
+        if (mode == null)
+            throw new NullPointerException("mode");
 
-        this.acl = acl;
+        this.resourceName = resourceName;
         this.principal = principal;
-        this.permissionName = permissionName;
+        this.mode = mode;
     }
 
-    @ManyToOne(optional = false)
-    public R_ACL getAcl() {
-        return acl;
+    @Column(length = 100, nullable = false)
+    public String getResourceName() {
+        return resourceName;
     }
 
-    public void setAcl(R_ACL acl) {
-        this.acl = acl;
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
+    }
+
+    @Transient
+    public Resource getResource() {
+        return ResourceRegistry.query(resourceName);
+    }
+
+    public void setResource(Resource resource) {
+        this.resourceName = resource.getName();
     }
 
     @ManyToOne(optional = false)
@@ -71,39 +76,33 @@ public class R_ACE
         this.principal = principal;
     }
 
-    @Column(length = 10, nullable = false)
-    public String getPermissionName() {
-        return permissionName;
+    @Column(length = 32, nullable = false)
+    public String getMode() {
+        return mode;
     }
 
-    public void setPermissionName(String permissionName) {
-        this.permissionName = permissionName;
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 
     @Transient
     public Permission getPermission() {
-        return Permissions.getPermission(permissionName);
+        return new Permission(mode);
     }
 
     public void setPermission(Permission permission) {
         if (permission == null)
             throw new NullPointerException("permission");
-        this.permissionName = permission.getName();
-    }
-
-    public IACL.Entry toACE() {
-        // IACL.Entry ace = new ACE(principal, getPermission(), allowed);
-        IACL.Entry ace = this;
-        return ace;
+        this.mode = permission.toString();
     }
 
     @Override
     protected int hashCodeEntity() {
         final int prime = 31;
         int result = 0;
-        result = prime * result + (allowed ? 1231 : 1237);
-        result = prime * result + ((permissionName == null) ? 0 : permissionName.hashCode());
-        result = prime * result + ((principal == null) ? 0 : principal.hashCode());
+        result = prime * result + resourceName.hashCode();
+        result = prime * result + principal.hashCode();
+        result = prime * result + mode.hashCode();
         return result;
     }
 
@@ -111,10 +110,7 @@ public class R_ACE
     protected boolean equalsEntity(EntityBean<Long> otherEntity) {
         R_ACE other = (R_ACE) otherEntity;
 
-        if (allowed != other.allowed)
-            return false;
-
-        if (!permissionName.equals(other.permissionName))
+        if (!mode.equals(other.mode))
             return false;
 
         if (!principal.equals(other.principal))
@@ -125,13 +121,14 @@ public class R_ACE
 
     @Override
     public void toString(PrettyPrintStream out, FormatStyle format) {
-        principal.toString(out, format);
+        // ap:foo.Bar: Tom +rw
+        out.print(resourceName);
+        out.print(": ");
 
-        if (allowed)
-            out.print(" + ");
-        else
-            out.print(" - ");
-        out.print(permissionName);
+        out.print(principal.getName());
+
+        out.print(" +");
+        out.print(mode);
     }
 
 }

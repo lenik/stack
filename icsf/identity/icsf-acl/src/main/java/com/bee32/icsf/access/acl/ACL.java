@@ -3,36 +3,32 @@ package com.bee32.icsf.access.acl;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.IPrincipal;
 
 public class ACL
-        extends ArrayACL {
-
-    private IACLPolicy policy = DenyFirstACLPolicy.getInstance();
+        extends AbstractACL {
 
     private final IACL parent;
-
-    private Map<IPrincipal, PrincipalACL> _pmap;
+    private final Map<IPrincipal, Permission> map;
 
     public ACL() {
-        this(null);
+        this((IACL) null);
     }
 
     public ACL(IACL parent) {
-        this(parent, null);
-    }
-
-    public ACL(IACL parent, Collection<? extends Entry> entries) {
-        this(DenyFirstACLPolicy.getInstance(), parent, entries);
-    }
-
-    public ACL(IACLPolicy policy, IACL parent, Collection<? extends Entry> entries) {
-        super(entries);
-        if (policy == null)
-            throw new NullPointerException("policy");
-        this.policy = policy;
         this.parent = parent;
+        this.map = new HashMap<IPrincipal, Permission>();
+    }
+
+    public ACL(Map<IPrincipal, Permission> map) {
+        if (map == null)
+            throw new NullPointerException("map");
+        this.parent = null;
+        this.map = map;
     }
 
     @Override
@@ -41,58 +37,64 @@ public class ACL
     }
 
     @Override
-    public IACLPolicy getACLPolicy() {
-        return policy;
+    public Set<? extends IPrincipal> getDeclaredPrincipals() {
+        return map.keySet();
     }
 
     @Override
-    protected IACL newACLRange() {
-        return new ACL(policy, parent, null);
-    }
-
-    protected Map<IPrincipal, PrincipalACL> getPMap() {
-        if (_pmap == null) {
-            synchronized (this) {
-                if (_pmap == null) {
-                    _pmap = new HashMap<IPrincipal, PrincipalACL>();
-
-                    for (Entry entry : getEntries())
-                        onEntryChanged(entry, false);
-                }
-            }
-        }
-        return _pmap;
+    public Permission getDeclaredPermission(IPrincipal principal) {
+        return map.get(principal);
     }
 
     @Override
-    protected void onEntryChanged(Entry entry, boolean removed) {
-        if (_pmap == null)
-            return;
+    public Collection<? extends Entry<? extends IPrincipal, Permission>> getEntries() {
+        return map.entrySet();
+    }
 
-        IPrincipal principal = entry.getPrincipal();
-        PrincipalACL pacl = _pmap.get(principal);
+    @Override
+    public int size() {
+        return map.size();
+    }
 
-        if (removed) {
-            if (pacl == null)
-                return;
-            else
-                _pmap = null; // invalidate immediately.
+    @Override
+    public void add(Entry<? extends IPrincipal, Permission> entry) {
+        if (entry == null)
+            throw new NullPointerException("entry");
+        map.put(entry.getKey(), entry.getValue());
+    }
+
+    @Override
+    public Permission add(IPrincipal principal, Permission permission) {
+        Permission existing = map.get(principal);
+        if (existing == null) {
+            map.put(principal, permission);
+            return permission;
         } else {
-            if (pacl == null) {
-                pacl = new PrincipalACL(this, principal);
-                _pmap.put(principal, pacl);
-            }
-            pacl.add(entry);
+            existing.merge(permission);
+            return existing;
         }
     }
 
-    /**
-     * XXX - imply-relation
-     */
     @Override
-    public PrincipalACL select(IPrincipal principal) {
-        PrincipalACL principalACL = getPMap().get(principal);
-        return principalACL;
+    public boolean remove(Entry<? extends IPrincipal, Permission> entry) {
+        if (entry == null)
+            return false;
+
+        IPrincipal principal = entry.getKey();
+        Permission existing = map.get(principal);
+        if (existing != null) {
+            if (existing.equals(entry.getValue())) {
+                map.remove(principal);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean remove(IPrincipal principal) {
+        Permission existing = map.remove(principal);
+        return existing != null;
     }
 
 }

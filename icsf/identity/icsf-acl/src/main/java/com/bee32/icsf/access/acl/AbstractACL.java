@@ -1,6 +1,10 @@
 package com.bee32.icsf.access.acl;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
@@ -10,121 +14,92 @@ public abstract class AbstractACL
         implements IACL {
 
     @Override
-    public Set<? extends IPrincipal> getDeclaredRelatedPrincipals() {
-        Set<IPrincipal> declaredPrincipals;
-        declaredPrincipals = new HashSet<IPrincipal>();
-        for (Entry entry : getEntries()) {
-            IPrincipal p = entry.getPrincipal();
-            declaredPrincipals.add(p);
+    public IACL flatten() {
+        IACL inheritedACL = getInheritedACL();
+        if (inheritedACL == null)
+            return this;
+
+        Map<IPrincipal, Permission> all = new HashMap<IPrincipal, Permission>();
+        merge(all, this);
+
+        return new ACL(all);
+    }
+
+    static void merge(Map<IPrincipal, Permission> all, IACL acl) {
+        for (Entry<? extends IPrincipal, Permission> entry : acl.getEntries()) {
+            IPrincipal principal = entry.getKey();
+            Permission permission = entry.getValue();
+
+            Permission existing = all.get(principal);
+            if (existing == null) {
+                all.put(principal, permission);
+            } else {
+                existing.merge(permission);
+            }
         }
-        return declaredPrincipals;
+
+        IACL inheritedACL = acl.getInheritedACL();
+        if (inheritedACL == null)
+            return;
+
+        merge(all, inheritedACL);
     }
 
     @Override
-    public final Set<? extends IPrincipal> getRelatedPrincipals() {
+    public final Set<? extends IPrincipal> getPrincipals() {
         Set<IPrincipal> all = new HashSet<IPrincipal>();
         IACL acl = this;
         while (acl != null) {
-            all.addAll(acl.getDeclaredRelatedPrincipals());
+            all.addAll(acl.getDeclaredPrincipals());
             acl = getInheritedACL();
         }
         return all;
     }
 
     @Override
-    public boolean isDeclaredRelated(IPrincipal principal) {
-        for (Entry entry : getEntries()) {
-            IPrincipal declaredPrincipal = entry.getPrincipal();
-            if (declaredPrincipal.equals(principal))
-                return true;
+    public Permission getPermission(IPrincipal principal) {
+        Permission permission = new Permission(0);
+
+        for (Entry<? extends IPrincipal, Permission> entry : getEntries()) {
+            IPrincipal declaredPrincipal = entry.getKey();
+            Permission declaredPermission = entry.getValue();
+            if (principal.implies(declaredPrincipal))
+                permission.merge(declaredPermission);
         }
-        return false;
+
+        return permission;
     }
 
     @Override
-    public boolean isRelated(IPrincipal principal) {
-        if (isDeclaredRelated(principal))
-            return true;
-
-        IACL inheritedACL = getInheritedACL();
-        if (inheritedACL == null)
-            return false;
-
-        return inheritedACL.isRelated(principal);
-    }
-
-    @Override
-    public final boolean isAllowed(Permission permission) {
-        return getACLPolicy().isAllowed(this, permission);
-    }
-
-    @Override
-    public final boolean isDenied(Permission permission) {
-        return getACLPolicy().isDenied(this, permission);
-    }
-
-    protected abstract IACL newACLRange();
-
-    @Override
-    public IACL select(IPrincipal selectPrincipal) {
-        IACL acl = newACLRange();
-        for (Entry entry : getEntries()) {
-            IPrincipal declaredPrincipal = entry.getPrincipal();
-            if (selectPrincipal.implies(declaredPrincipal))
-                acl.add(entry);
+    public Collection<? extends IPrincipal> findPrincipals(Permission requiredPermission) {
+        Set<IPrincipal> principals = new HashSet<IPrincipal>();
+        for (Entry<? extends IPrincipal, Permission> entry : getEntries()) {
+            Permission declaredPermission = entry.getValue();
+            if (declaredPermission.implies(requiredPermission))
+                principals.add(entry.getKey());
         }
-        return acl;
+        Collection<? extends IPrincipal> inherited = getInheritedACL().findPrincipals(requiredPermission);
+        principals.addAll(inherited);
+        return principals;
     }
 
     @Override
-    public IACL select(Permission selectPermission) {
-        IACL acl = newACLRange();
-        for (Entry entry : getEntries()) {
-            Permission declaredPermission = entry.getPermission();
-            if (declaredPermission.implies(selectPermission))
-                acl.add(entry);
-        }
-        return acl;
+    public Collection<? extends IPrincipal> findPrincipals(String requiredMode) {
+        return findPrincipals(new Permission(requiredMode));
     }
 
     @Override
-    public IACL select(IPrincipal selectPrincipal, Permission selectPermission) {
-        IACL acl = newACLRange();
-        for (Entry entry : getEntries()) {
-            IPrincipal declaredPrincipal = entry.getPrincipal();
-            Permission declaredPermission = entry.getPermission();
-            if (selectPrincipal.implies(declaredPrincipal) && declaredPermission.implies(selectPermission))
-                acl.add(entry);
-        }
-        return acl;
+    public Permission add(IPrincipal principal, String mode) {
+        Permission permission = new Permission(mode);
+        return add(principal, permission);
     }
 
     @Override
-    public int remove(IPrincipal principal, Permission permission) {
-        int count = 0;
-        for (Entry entry : this.select(principal, permission).getEntries())
-            if (this.remove(entry))
-                count++;
-        return count;
-    }
-
-    @Override
-    public int remove(IPrincipal principal) {
-        int count = 0;
-        for (Entry entry : this.select(principal).getEntries())
-            if (this.remove(entry))
-                count++;
-        return count;
-
-    }
-
-    @Override
-    public int remove(Permission permission) {
-        int count = 0;
-        for (Entry entry : this.select(permission).getEntries())
-            if (this.remove(entry))
-                count++;
-        return count;
+    public boolean remove(Entry<? extends IPrincipal, Permission> entry) {
+        if (entry == null)
+            throw new NullPointerException("entry");
+        IPrincipal principal = entry.getKey();
+        return remove(principal);
     }
 
 }

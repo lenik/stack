@@ -1,45 +1,29 @@
 package com.bee32.icsf.access.alt;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.io.Serializable;
 
 import javax.free.IllegalUsageException;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.NaturalId;
-
-import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.ACL;
-import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.access.resource.Resource;
-import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.orm.entity.EntityBean;
 
-@Entity
 public class R_ACL
-        extends EntityBean<Long> {
+        extends ACL
+        implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private R_ACL parent;
-
     private Resource resource;
-    private Set<R_ACE> entries;
 
     public R_ACL() {
-        super("acl");
     }
 
-    public R_ACL(R_ACL parent) {
-        super("acl");
+    public R_ACL(R_ACL parent, Resource resource) {
+        this.parent = parent;
+        this.resource = resource;
     }
 
-    @ManyToOne(optional = true)
     public R_ACL getParent() {
         return parent;
     }
@@ -48,31 +32,12 @@ public class R_ACL
         this.parent = parent;
     }
 
-    @NaturalId
-    @ManyToOne
     public Resource getResource() {
         return resource;
     }
 
     public void setResource(Resource resource) {
         this.resource = resource;
-    }
-
-    @OneToMany(mappedBy = "acl")
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public Set<R_ACE> getEntries() {
-        if (entries == null) {
-            synchronized (this) {
-                if (entries == null) {
-                    entries = new HashSet<R_ACE>();
-                }
-            }
-        }
-        return entries;
-    }
-
-    public void setEntries(Set<R_ACE> entries) {
-        this.entries = entries;
     }
 
     /**
@@ -85,53 +50,10 @@ public class R_ACL
      * @throws IllegalUsageException
      *             If the ACE is bound to another ACL.
      */
-    public boolean addACE(R_ACE ace) {
+    public void addACE(R_ACE ace) {
         if (ace == null)
             throw new NullPointerException("ace");
-
-        R_ACL acl = ace.getAcl();
-        if (acl == null)
-            ace.setAcl(this);
-        else if (acl != this)
-            throw new IllegalUsageException("Add an ACE bound to another ACL: " + ace);
-
-        return getEntries().add(ace);
-    }
-
-    /**
-     * Add an Allow-ACE to this ACL.
-     * <p>
-     * Duplicated ACE are skipped.
-     *
-     * @param principal
-     *            The principal for the new ACE.
-     * @param permission
-     *            The allowed permission for the new ACE.
-     * @return The created allowed ACE, returns <code>null</code> if the ACE is already defined.
-     */
-    public R_ACE addAllowACE(Principal principal, Permission permission) {
-        R_ACE ace = new R_ACE(this, principal, permission, true);
-        if (!addACE(ace))
-            return null;
-        return ace;
-    }
-
-    /**
-     * Add an Deny-ACE to this ACL.
-     * <p>
-     * Duplicated ACE are skipped.
-     *
-     * @param principal
-     *            The principal for the new ACE.
-     * @param permission
-     *            The denied permission for the new ACE.
-     * @return The created deny ACE, returns <code>null</code> if the ACE is already defined.
-     */
-    public R_ACE addDenyACE(Principal principal, Permission permission) {
-        R_ACE ace = new R_ACE(this, principal, permission, false);
-        if (!addACE(ace))
-            return null;
-        return ace;
+        add(ace.getPrincipal(), ace.getPermission());
     }
 
     /**
@@ -147,39 +69,7 @@ public class R_ACL
     public boolean removeACE(R_ACE ace) {
         if (ace == null)
             throw new NullPointerException("ace");
-
-        if (entries == null)
-            return false;
-
-        return entries.remove(ace);
-    }
-
-    /**
-     * Remove all ACE entries match the given pattern.
-     *
-     * @param principal
-     *            <code>null</code> to remove all ACE matches <code>permission</code>.
-     * @param permission
-     *            <code>null</code> to remove all ACE matches <code>principal</code>.
-     * @return The ACE entries matched and removed.
-     */
-    public int removeACEs(Principal principal, Permission permission) {
-        Iterator<R_ACE> iterator = entries.iterator();
-        int count = 0;
-        while (iterator.hasNext()) {
-            R_ACE ace = iterator.next();
-            if (principal == null || principal.equals(ace.getPrincipal())) {
-                iterator.remove();
-                count++;
-                continue;
-            }
-            if (permission == null || permission.equals(ace.getPermission())) {
-                iterator.remove();
-                count++;
-                continue;
-            }
-        }
-        return count;
+        return this.remove(ace.getPrincipal());
     }
 
     /**
@@ -188,17 +78,7 @@ public class R_ACL
      * @return Non-<code>null</code> underlying ACL.
      */
     public ACL toACL() {
-        ACL inheritedACL = null;
-        if (parent != null)
-            inheritedACL = getParent().toACL();
-
-        ACL acl = new ACL(inheritedACL);
-        for (R_ACE r_ace : entries) {
-            IACL.Entry ace = r_ace.toACE();
-            acl.add(ace);
-        }
-
-        return acl;
+        return this;
     }
 
 }

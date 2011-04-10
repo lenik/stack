@@ -1,6 +1,7 @@
 package com.bee32.icsf.access.acl;
 
 import java.util.Collection;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
@@ -18,13 +19,22 @@ public interface IACL {
     IACL getInheritedACL();
 
     /**
+     * 平面化，合并本 ACL 与继承的 ACL。
+     *
+     * 平面化可提高 ACL 的搜索效率。
+     *
+     * @return Non-<code>null</code> flatten ACL.
+     */
+    IACL flatten();
+
+    /**
      * 本 ACL 的有效主体集（局部）。
      *
      * 这个集合并不表明所含的主体具有对应权限，而仅仅表明本 ACL 对列出的主体集有影响力。
      *
      * @return 非 <code>null</code> {@link IPrincipal} 集合。
      */
-    Set<? extends IPrincipal> getDeclaredRelatedPrincipals();
+    Set<? extends IPrincipal> getDeclaredPrincipals();
 
     /**
      * 本 ACL 的有效主体集（包括继承项）。
@@ -33,7 +43,7 @@ public interface IACL {
      *
      * @return 非 <code>null</code> {@link IPrincipal} 集合。
      */
-    Set<? extends IPrincipal> getRelatedPrincipals();
+    Set<? extends IPrincipal> getPrincipals();
 
     /**
      * Test if given principal is declared in this ACL.
@@ -42,82 +52,37 @@ public interface IACL {
      *            Non-<code>null</code> principal.
      * @return <code>true</code> If given principal is declared in this ACL.
      */
-    boolean isDeclaredRelated(IPrincipal principal);
-
-    /**
-     * Test if given principal in declared in this ACL or in the inherited ACLs.
-     *
-     * @param principal
-     *            Non-<code>null</code> principal.
-     * @return <code>true</code> If given principal is declared in this ACL or one of the inherited
-     *         ACLs.
-     */
-    boolean isRelated(IPrincipal principal);
+    Permission getDeclaredPermission(IPrincipal principal);
 
     /**
      * 选取指定主体相关的 ACL 子集。
      *
-     * @return 非 <code>null</code> 值。
+     * @param principal
+     *            The principal whose permission is to be queried.
+     * @return <code>null</code> if the specified <code>principal</code> isn't listed in this ACL,
+     *         nor in the inherited ACLs.
      */
-    IACL select(IPrincipal selectPrincipal);
+    Permission getPermission(IPrincipal principal);
 
     /**
-     * 选取蕴涵指定权限的 ACL 子集。
+     * Find principals with the required permission.
      *
-     * @return 非 <code>null</code> 值。
+     * @param requiredPermission
+     *            The required permission.
+     * @return Non-<code>null</code> principal collection who has the given permission to the
+     *         resource described by this ACL.
      */
-    IACL select(Permission selectPermission);
+    Collection<? extends IPrincipal> findPrincipals(Permission requiredPermission);
 
     /**
-     * 选取指定主体的蕴涵的指定权限的子集。
+     * Find principals with the required permission.
      *
-     * @return 非 <code>null</code> 值。
+     * @param requiredMode
+     *            The permission mode required.
+     * @return Non-<code>null</code> principal collection who has the given permission to the
+     *         resource described by this ACL.
      */
-    IACL select(IPrincipal selectPrincipal, Permission selectPermission);
-
-    /**
-     * 获取 ACL 解释策略。
-     *
-     * @return 非 <code>null</code> {@link IACLPolicy}。
-     */
-    IACLPolicy getACLPolicy();
-
-    /**
-     * 等价于
-     *
-     * <pre>
-     * {@link #getACLPolicy()}.isAllowed(this, permission);
-     * </pre>
-     *
-     * @see {@link IACLPolicy#isAllowed(IACL, Permission)}
-     */
-    boolean isAllowed(Permission permission);
-
-    /**
-     * 等价于
-     *
-     * <pre>
-     * {@link #getACLPolicy()}.isDenied(this, permission);
-     * </pre>
-     *
-     * @see {@link IACLPolicy#isDenied(IACL, Permission)}
-     */
-    boolean isDenied(Permission permission);
-
-    /**
-     * ACL 的条目（ACE）。
-     */
-    interface Entry {
-
-        IPrincipal getPrincipal();
-
-        Permission getPermission();
-
-        boolean isAllowed();
-
-        boolean isDenied();
-
-    }
+    Collection<? extends IPrincipal> findPrincipals(String requiredMode);
 
     /**
      * 获取本 ACL （局部）定义的权限条目数。
@@ -129,7 +94,7 @@ public interface IACL {
      *
      * @return 非 <code>null</code> 的 {@link Entry} 集合。。
      */
-    Collection<? extends Entry> getEntries();
+    Collection<? extends Entry<? extends IPrincipal, Permission>> getEntries();
 
     /**
      * 添加一个局部权限条目。
@@ -137,59 +102,45 @@ public interface IACL {
      * @throws UnsupportedOperationException
      *             如果本 ACL 是只读的。
      */
-    void add(Entry entry);
+    void add(Entry<? extends IPrincipal, Permission> entry);
 
     /**
-     * 删除一个局部权限条目。
+     * 添加一个局部权限条目。
+     *
+     * 如果在局部 ACL 中已经定义了 principal 的权限，那么这两个权限条目将合并为一个。
      *
      * @throws UnsupportedOperationException
      *             如果本 ACL 是只读的。
      */
-    boolean remove(Entry entry);
+    Permission add(IPrincipal principal, Permission permission);
 
     /**
-     * 等价于：
+     * 添加一个局部权限条目。
      *
-     * <pre>
-     * int count = 0;
-     * for (Entry entry : this.select(principal).getEntries())
-     *     if (acl.remove(entry))
-     *         count++;
-     * return count;
-     * </pre>
+     * 如果在局部 ACL 中已经定义了 principal 的权限，那么这两个权限条目将合并为一个。
      *
-     * @return 删除的记录数。
+     * @throws UnsupportedOperationException
+     *             如果本 ACL 是只读的。
      */
-    int remove(IPrincipal principal);
+    Permission add(IPrincipal principal, String mode);
 
     /**
-     * 等价于：
+     * 删除一个局部权限条目。
      *
-     * <pre>
-     * int count = 0;
-     * for (Entry entry : this.select(permission).getEntries())
-     *     if (acl.remove(entry))
-     *         count++;
-     * return count;
-     * </pre>
-     *
-     * @return 删除的记录数。
+     * @throws NullPointerException
+     *             如果 <code>entry</code> 为 <code>null</code>.
+     * @throws UnsupportedOperationException
+     *             如果本 ACL 是只读的。
      */
-    int remove(Permission permission);
+    boolean remove(Entry<? extends IPrincipal, Permission> entry);
 
     /**
-     * 等价于：
+     * 从局部 ACL 中删除含有指定 principal 的权限条目。
      *
-     * <pre>
-     * int count = 0;
-     * for (Entry entry : this.select(principal, permission).getEntries())
-     *     if (acl.remove(entry))
-     *         count++;
-     * return count;
-     * </pre>
-     *
-     * @return 删除的记录数。
+     * @return <code>true</code> 存在 principal 的条目并且成功删除，否则返回 <code>false</code>。
+     * @throws NullPointerException
+     *             如果 <code>principal</code> 为 <code>null</code>.
      */
-    int remove(IPrincipal principal, Permission permission);
+    boolean remove(IPrincipal principal);
 
 }
