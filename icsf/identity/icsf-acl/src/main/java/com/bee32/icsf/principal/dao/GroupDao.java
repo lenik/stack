@@ -1,10 +1,10 @@
 package com.bee32.icsf.principal.dao;
 
 import com.bee32.icsf.principal.Group;
-import com.bee32.plover.orm.entity.AbstractDao;
+import com.bee32.plover.orm.entity.EntityDao;
 
 public class GroupDao
-        extends AbstractDao<Group, Long> {
+        extends EntityDao<Group, Long> {
 
     public GroupDao() {
         super(Group.class, Long.class);

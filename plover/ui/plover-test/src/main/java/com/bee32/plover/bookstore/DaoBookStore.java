@@ -1,11 +1,11 @@
 package com.bee32.plover.bookstore;
 
 import com.bee32.plover.inject.NotAComponent;
-import com.bee32.plover.orm.entity.AbstractDao;
+import com.bee32.plover.orm.entity.EntityDao;
 
 @NotAComponent
 public class DaoBookStore
-        extends AbstractDao<Book, Integer> {
+        extends EntityDao<Book, Integer> {
 
     private static final long serialVersionUID = 1L;
 

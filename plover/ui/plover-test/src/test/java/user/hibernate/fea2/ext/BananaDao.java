@@ -1,9 +1,9 @@
 package user.hibernate.fea2.ext;
 
-import com.bee32.plover.orm.entity.AbstractDao;
+import com.bee32.plover.orm.entity.EntityDao;
 
 public class BananaDao
-        extends AbstractDao<Banana, Integer> {
+        extends EntityDao<Banana, Integer> {
 
     public BananaDao() {
         super(Banana.class, Integer.class);

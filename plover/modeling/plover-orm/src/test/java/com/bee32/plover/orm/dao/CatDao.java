@@ -2,11 +2,11 @@ package com.bee32.plover.orm.dao;
 
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.util.IStruct;
-import com.bee32.plover.orm.entity.AbstractDao;
+import com.bee32.plover.orm.entity.EntityDao;
 import com.bee32.plover.orm.feaCat.Cat;
 
 public class CatDao
-        extends AbstractDao<Cat, Long> {
+        extends EntityDao<Cat, Long> {
 
     public CatDao() {
         super(Cat.class, Long.class);
