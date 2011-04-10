@@ -5,12 +5,15 @@ import javax.inject.Inject;
 import org.junit.Test;
 
 import com.bee32.icsf.IcsfIdentityUnit;
-import com.bee32.icsf.access.resource.AccessPointManager;
+import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.access.resource.ScannedResourceRegistry;
 import com.bee32.plover.orm.unit.Using;
+import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 
 @Using(IcsfIdentityUnit.class)
+@ImportSamples(R_ACLSamples.class)
 public class R_AuthorityTest
         extends WiredDaoTestCase {
 
@@ -18,12 +21,16 @@ public class R_AuthorityTest
     R_Authority authority;
 
     @Inject
-    AccessPointManager apManager;
+    ScannedResourceRegistry registry;
 
     @Test
-    public void testBuildACL() {
-        Resource resource = null;
-        authority.getACL(resource);
+    public void testQueryACL() {
+        Resource method1 = registry.query("ap:TestService.method1");
+        if (method1 == null)
+            throw new NullPointerException("method1");
+
+        IACL acl = authority.getACL(method1);
+        System.out.println(acl);
     }
 
 }
