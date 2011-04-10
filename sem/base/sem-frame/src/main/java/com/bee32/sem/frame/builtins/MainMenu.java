@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.sem.frame.menu.MenuBar;
 import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.SuperfishMenuBuilder;
 
 @Component
 @Lazy
@@ -32,6 +33,12 @@ public class MainMenu
             merge(contribution);
         }
 
+    }
+
+    SuperfishMenuBuilder superfishMenuBuilder = new SuperfishMenuBuilder(this);
+
+    public String getSuperfishHtml() {
+        return superfishMenuBuilder.toString();
     }
 
 }
