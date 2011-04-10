@@ -59,7 +59,7 @@ public class ResourceRegistry {
      *            The resource object whose name would be generated.
      * @return <code>null</code> If resource is <code>null</code>.
      */
-    public static String toName(Resource resource) {
+    public static String qualify(Resource resource) {
         if (resource == null)
             return null;
 

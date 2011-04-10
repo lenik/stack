@@ -31,7 +31,7 @@ public class R_ACE
     }
 
     public R_ACE(Resource resource, Principal principal, Permission permission) {
-        this(ResourceRegistry.toName(resource), principal, permission.toString());
+        this(ResourceRegistry.qualify(resource), principal, permission.toString());
     }
 
     public R_ACE(String resourceName, Principal principal, String mode) {

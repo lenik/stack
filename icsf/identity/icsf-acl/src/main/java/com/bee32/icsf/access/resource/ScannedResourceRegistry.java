@@ -28,7 +28,7 @@ public class ScannedResourceRegistry
     }
 
     public String toName(Resource resource) {
-        return ResourceRegistry.toName(resource);
+        return ResourceRegistry.qualify(resource);
     }
 
 }

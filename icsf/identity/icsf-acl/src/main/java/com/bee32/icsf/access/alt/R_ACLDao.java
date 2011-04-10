@@ -27,7 +27,7 @@ public class R_ACLDao
         if (resource == null)
             throw new NullPointerException("resource");
 
-        String resourceName = ResourceRegistry.toName(resource);
+        String resourceName = ResourceRegistry.qualify(resource);
 
         R_ACL acl = new R_ACL(null, resource);
 
@@ -49,7 +49,7 @@ public class R_ACLDao
         HibernateTemplate template = getHibernateTemplate();
 
         Resource resource = acl.getResource();
-        String resourceName = ResourceRegistry.toName(resource);
+        String resourceName = ResourceRegistry.qualify(resource);
 
         List<R_ACE> existing = template.findByNamedParam(//
                 "from R_ACE where" //
@@ -83,7 +83,7 @@ public class R_ACLDao
         if (principal == null)
             throw new NullPointerException("principal");
 
-        String resourceName = ResourceRegistry.toName(resource);
+        String resourceName = ResourceRegistry.qualify(resource);
 
         Long principalId = principal.getId();
         List<R_ACE> list = getHibernateTemplate().findByNamedParam(// ,
