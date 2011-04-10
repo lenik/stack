@@ -24,12 +24,19 @@ public abstract class WiredTestCase
     protected AutowireCapableBeanFactory beanFactory;
 
     public WiredTestCase() {
+        prewire();
         ApplicationContextBuilder.selfWire(this);
+        logger.debug("WiredTestCase wired");
+    }
+
+    protected void prewire() {
     }
 
     @Override
     public void afterPropertiesSet()
             throws Exception {
+        logger.debug("WiredTestCase - afterPropertiesSet.");
+
         this.beanFactory = application.getAutowireCapableBeanFactory();
         applicationInitialized(application);
     }
