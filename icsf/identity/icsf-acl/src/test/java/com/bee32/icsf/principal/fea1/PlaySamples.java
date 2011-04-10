@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.icsf.principal.IcsfPrincipalUnit;
+import com.bee32.icsf.IcsfIdentityUnit;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dao.GroupDao;
@@ -23,7 +23,7 @@ import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.test.FeaturePlayer;
 
-@Using(IcsfPrincipalUnit.class)
+@Using(IcsfIdentityUnit.class)
 @Import({ ScanTestxContext.class, TestDataConfig.class })
 @Scope("prototype")
 @Service
