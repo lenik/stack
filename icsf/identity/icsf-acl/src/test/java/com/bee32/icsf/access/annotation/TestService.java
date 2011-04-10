@@ -1,7 +1,9 @@
 package com.bee32.icsf.access.annotation;
 
+import com.bee32.plover.arch.EnterpriseService;
 
-public class TestService {
+public class TestService
+        extends EnterpriseService {
 
     @AccessCheck
     public void method1() {
