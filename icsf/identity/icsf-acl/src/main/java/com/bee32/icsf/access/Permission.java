@@ -199,8 +199,12 @@ public final class Permission
         StringBuilder sb = new StringBuilder(32);
         int bits = this.bits;
         for (int index = 31; index >= 0; index--) {
-            if (bits < 0)
-                sb.append(i2c[index]);
+            if (bits < 0) {
+                char ch = i2c[index];
+                if (ch != '\0')
+                    sb.append(ch);
+            }
+
             bits <<= 1;
         }
         return sb.toString();
