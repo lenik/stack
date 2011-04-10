@@ -11,7 +11,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import com.bee32.icsf.access.alt.R_ACL;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
 
@@ -103,20 +102,6 @@ public class User
 
     public void setAssignedRoles(Set<? extends IRolePrincipal> assignedRoles) {
         this.assignedRoles = assignedRoles;
-    }
-
-    private R_ACL systemAcl;
-
-    @ManyToMany()
-    @JoinTable(name = "Permissions", //
-    /*            */joinColumns = @JoinColumn(name = "person"), //
-    /*            */inverseJoinColumns = @JoinColumn(name = "permissionInst"))
-    public R_ACL getSystemAcl() {
-        return systemAcl;
-    }
-
-    public void setSystemAcl(R_ACL systemAcl) {
-        this.systemAcl = systemAcl;
     }
 
     @Override
