@@ -9,9 +9,19 @@ import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.plover.arch.Component;
 
 public abstract class AbstractACL
+        extends Component
         implements IACL {
+
+    public AbstractACL() {
+        super();
+    }
+
+    public AbstractACL(String name) {
+        super(name);
+    }
 
     @Override
     public IACL flatten() {
@@ -100,6 +110,20 @@ public abstract class AbstractACL
             throw new NullPointerException("entry");
         IPrincipal principal = entry.getKey();
         return remove(principal);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ACL(" + getName() + ")");
+
+        for (Entry<? extends IPrincipal, Permission> entry : getEntries()) {
+            IPrincipal principal = entry.getKey();
+            Permission permission = entry.getValue();
+            sb.append("\n    " + principal + " +" + permission);
+        }
+
+        return sb.toString();
     }
 
 }
