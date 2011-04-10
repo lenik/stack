@@ -72,4 +72,5 @@ public class ResourceRegistry {
         String localName = resource.getName();
         return ns + ":" + localName;
     }
+
 }

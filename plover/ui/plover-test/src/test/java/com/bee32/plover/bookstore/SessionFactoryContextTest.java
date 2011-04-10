@@ -8,8 +8,8 @@ public class SessionFactoryContextTest
         extends WiredDaoTestCase {
 
     @Test
-    public void testContext() {
-        assertNotNull(getSessionFactory());
+    public void testConfig() {
+        assertNotNull(dataManager);
     }
 
 }

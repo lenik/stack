@@ -4,9 +4,9 @@ import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.ComponentTemplate;
 
-@ComponentTemplate
-// @Transactional
 @Lazy
+@ComponentTemplate
+// @Transactional(readOnly = true)
 public abstract class EnterpriseService
         extends Component {
 

@@ -50,7 +50,7 @@ public interface IACL {
      *
      * @param principal
      *            Non-<code>null</code> principal.
-     * @return <code>true</code> If given principal is declared in this ACL.
+     * @return <code>null</code> If principal isn't declared in the local acl.
      */
     Permission getDeclaredPermission(IPrincipal principal);
 
