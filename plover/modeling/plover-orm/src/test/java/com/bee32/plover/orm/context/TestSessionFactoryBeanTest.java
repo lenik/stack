@@ -8,9 +8,8 @@ public class TestSessionFactoryBeanTest
         extends WiredDaoTestCase {
 
     @Test
-    public void gotAnySessionFactory() {
-        assertNotNull(sessionFactory);
-        System.err.println("End of test");
+    public void gotConfig() {
+        assertNotNull(dataManager);
     }
 
 }

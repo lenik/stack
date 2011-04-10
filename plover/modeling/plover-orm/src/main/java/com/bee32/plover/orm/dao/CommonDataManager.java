@@ -4,11 +4,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
-import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -20,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.entity.IEntity;
 
-@Service
 @Lazy
+@Service
 public class CommonDataManager
         extends HibernateDaoSupport {
 
@@ -29,11 +26,6 @@ public class CommonDataManager
 
     // XXX - how to not use dao-support?
     // SessionFactory sessionFactory;
-
-    @Inject
-    public void initSessionFactory(SessionFactory sessionFactory) {
-        this.setSessionFactory(sessionFactory);
-    }
 
     /**
      * Set <code>true</code> for debug purpose.

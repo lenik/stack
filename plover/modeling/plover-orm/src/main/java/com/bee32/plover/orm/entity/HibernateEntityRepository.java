@@ -11,26 +11,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.dao.DataAccessException;
 
-import com.bee32.plover.orm.dao.HibernateDaoSupport;
+import com.bee32.plover.orm.dao.HibernateDaoSupportUtil;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 
 public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializable>
         extends EntityRepository<E, K> {
-
-    static class Support
-            extends HibernateDaoSupport {
-
-        Session _getSession() {
-            return super.getSession();
-        }
-
-        Session _getSession(boolean allowCreate) {
-            return super.getSession(allowCreate);
-        }
-
-    }
-
-    private Support support = new Support();
 
     public HibernateEntityRepository(Class<E> entityType, Class<K> keyType) {
         super(entityType, keyType);
@@ -47,6 +32,8 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
     public HibernateEntityRepository(String name, Class<E> instanceType, Class<K> keyType) {
         super(name, instanceType, keyType);
     }
+
+    private HibernateDaoSupportUtil support = new HibernateDaoSupportUtil();
 
     @Inject
     public final void setSessionFactory(SessionFactory sessionFactory) {
@@ -151,8 +138,8 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
         HibernateTemplate template = getHibernateTemplate();
         template.bulkUpdate("delete from " + entityType.getSimpleName());
 
-//        List<? extends E> list = template.loadAll(entityType);
-//        template.deleteAll(list);
+// List<? extends E> list = template.loadAll(entityType);
+// template.deleteAll(list);
     }
 
     public void merge(E entity)

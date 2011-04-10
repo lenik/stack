@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.ComponentTemplate;
 
+@Lazy
 @ComponentTemplate
 // @RepositoryTemplate
-@Lazy
 public abstract class GenericEntityRepository<E extends IEntity<K>, K extends Serializable>
         extends HibernateEntityRepository<E, K> {
 
