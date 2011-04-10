@@ -2,12 +2,16 @@ package com.bee32.icsf.access.acl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.free.ReadOnlyException;
+
+import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.IPrincipal;
 
 public class EmptyACL
-        extends AbstractACL {
+        implements IACL {
 
     EmptyACL() {
     }
@@ -18,13 +22,38 @@ public class EmptyACL
     }
 
     @Override
+    public IACL flatten() {
+        return this;
+    }
+
+    @Override
     public Set<? extends IPrincipal> getDeclaredPrincipals() {
         return Collections.emptySet();
     }
 
     @Override
-    protected IACL newACLRange() {
-        return this;
+    public Set<? extends IPrincipal> getPrincipals() {
+        return Collections.emptySet();
+    }
+
+    @Override
+    public Collection<? extends IPrincipal> findPrincipals(Permission requiredPermission) {
+        return Collections.emptySet();
+    }
+
+    @Override
+    public Collection<? extends IPrincipal> findPrincipals(String requiredMode) {
+        return Collections.emptySet();
+    }
+
+    @Override
+    public Permission getDeclaredPermission(IPrincipal principal) {
+        return null;
+    }
+
+    @Override
+    public Permission getPermission(IPrincipal principal) {
+        return null;
     }
 
     @Override
@@ -33,18 +62,33 @@ public class EmptyACL
     }
 
     @Override
-    public Collection<? extends Entry> getEntries() {
+    public Collection<? extends Entry<? extends IPrincipal, Permission>> getEntries() {
         return Collections.emptyList();
     }
 
     @Override
-    public void add(Entry entry) {
-        throw new UnsupportedOperationException("Read-only ACL");
+    public Permission add(IPrincipal principal, Permission permission) {
+        throw new ReadOnlyException();
     }
 
     @Override
-    public boolean remove(Entry entry) {
-        return false;
+    public Permission add(IPrincipal principal, String mode) {
+        throw new ReadOnlyException();
+    }
+
+    @Override
+    public void add(Entry<? extends IPrincipal, Permission> entry) {
+        throw new ReadOnlyException();
+    }
+
+    @Override
+    public boolean remove(Entry<? extends IPrincipal, Permission> entry) {
+        throw new ReadOnlyException();
+    }
+
+    @Override
+    public boolean remove(IPrincipal principal) {
+        throw new ReadOnlyException();
     }
 
     static final EmptyACL instance = new EmptyACL();
