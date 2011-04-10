@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.bee32.icsf.access.Permission;
+import com.bee32.icsf.access.ResourcePermission;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
 import com.bee32.icsf.principal.IPrincipal;
@@ -77,6 +78,30 @@ public class R_ACLDao
         template.saveOrUpdateAll(reorg);
     }
 
+    public List<ResourcePermission> getResourcePermissions(IPrincipal principal) {
+        if (principal == null)
+            throw new NullPointerException("principal");
+
+        Long principalId = principal.getId();
+        List<R_ACE> list = getHibernateTemplate().findByNamedParam(// ,
+                "from R_ACE where principal = :principalId", //
+                "principalId", principalId);
+
+        List<ResourcePermission> resources = new ArrayList<ResourcePermission>(list.size());
+
+        for (R_ACE ace : list) {
+            Resource resource = ace.getResource();
+            Permission permission = ace.getPermission();
+            ResourcePermission rp = new ResourcePermission(resource, permission);
+            resources.add(rp);
+        }
+
+        return resources;
+    }
+
+    /**
+     * @return <code>null</code> if undefined.
+     */
     public Permission getPermission(Resource resource, IPrincipal principal) {
         if (resource == null)
             throw new NullPointerException("resource");
