@@ -42,7 +42,7 @@ public abstract class EntityBean<K extends Serializable>
     int version;
 
     public EntityBean() {
-        super();
+        super(null);
     }
 
     public EntityBean(String name) {
