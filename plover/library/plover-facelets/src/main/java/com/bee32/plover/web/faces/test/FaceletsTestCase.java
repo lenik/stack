@@ -40,16 +40,6 @@ public class FaceletsTestCase
     private List<String> taglibs = new ArrayList<String>();
 
     public FaceletsTestCase() {
-        super();
-        init();
-    }
-
-    public FaceletsTestCase(Class<?> altBaseClass) {
-        super(altBaseClass);
-        init();
-    }
-
-    private void init() {
         OverlappedBases.add("resources/");
     }
 

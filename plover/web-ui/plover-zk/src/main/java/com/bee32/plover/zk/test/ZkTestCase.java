@@ -11,14 +11,6 @@ import com.bee32.plover.web.faces.test.FaceletsTestCase;
 public class ZkTestCase
         extends FaceletsTestCase {
 
-    public ZkTestCase() {
-        super();
-    }
-
-    public ZkTestCase(Class<?> altBaseClass) {
-        super(altBaseClass);
-    }
-
     @Override
     protected void configureBuiltinServlets() {
         super.configureBuiltinServlets();

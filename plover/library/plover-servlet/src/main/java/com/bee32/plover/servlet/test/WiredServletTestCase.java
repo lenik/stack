@@ -11,16 +11,18 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.spring.ContextConfigurationUtil;
 import com.bee32.plover.test.WiredTestCase;
 
+@Import(WiredTestCase.class)
 public abstract class WiredServletTestCase
         extends ServletTestCase {
 
     private final Class<?> configClass;
 
     protected WiredServletTestCase() {
-        this(WiredTestCase.class);
+        this.configClass = getClass();
     }
 
     protected WiredServletTestCase(Class<?> configClass) {
