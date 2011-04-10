@@ -231,7 +231,7 @@ public abstract class EntityBean<K extends Serializable>
                             try {
                                 walkVal(fieldValue, format, depth);
                             } catch (Exception e) {
-                                out.print("<error: " + e.getMessage() + ">");
+                                out.print("(error: " + e.getMessage() + ")");
                                 e.printStackTrace();
                             }
 
