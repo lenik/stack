@@ -22,11 +22,11 @@ public class User
 
     private static final long serialVersionUID = 1L;
 
-    protected IGroupPrincipal primaryGroup;
-    protected IRolePrincipal primaryRole;
+    protected Group primaryGroup;
+    protected Role primaryRole;
 
-    protected Set<? extends IGroupPrincipal> assignedGroups;
-    protected Set<? extends IRolePrincipal> assignedRoles;
+    protected Set<Group> assignedGroups;
+    protected Set<Role> assignedRoles;
 
     public User() {
     }
@@ -35,7 +35,7 @@ public class User
         super(name);
     }
 
-    public User(String name, IGroupPrincipal primaryGroup, IRolePrincipal primaryRole) {
+    public User(String name, Group primaryGroup, Role primaryRole) {
         super(name);
         this.primaryGroup = primaryGroup;
         this.primaryRole = primaryRole;
@@ -44,64 +44,62 @@ public class User
     @ManyToOne(targetEntity = Group.class)
     @JoinColumn(name = "group1")
     @Override
-    public IGroupPrincipal getPrimaryGroup() {
+    public Group getPrimaryGroup() {
         return primaryGroup;
     }
 
     public void setPrimaryGroup(IGroupPrincipal primaryGroup) {
-        this.primaryGroup = primaryGroup;
+        this.primaryGroup = (Group) primaryGroup;
     }
 
     @ManyToOne(targetEntity = Role.class)
     @JoinColumn(name = "role1")
     @Override
-    public IRolePrincipal getPrimaryRole() {
+    public Role getPrimaryRole() {
         return primaryRole;
     }
 
     public void setPrimaryRole(IRolePrincipal primaryRole) {
-        this.primaryRole = primaryRole;
+        this.primaryRole = (Role) primaryRole;
     }
 
-    @SuppressWarnings("unchecked")
     @ManyToMany(targetEntity = Group.class, mappedBy = "memberUsers")
     // @Cascade(CascadeType.SAVE_UPDATE)
     @Override
-    public Set<IGroupPrincipal> getAssignedGroups() {
+    public Set<Group> getAssignedGroups() {
         if (assignedGroups == null) {
             synchronized (this) {
                 if (assignedGroups == null) {
-                    assignedGroups = new HashSet<IGroupPrincipal>();
+                    assignedGroups = new HashSet<Group>();
                 }
             }
         }
-        return (Set<IGroupPrincipal>) assignedGroups;
+        return assignedGroups;
     }
 
-    public void setAssignedGroups(Set<? extends IGroupPrincipal> assignedGroups) {
-        this.assignedGroups = assignedGroups;
+    public void setAssignedGroups(Set<Group> assignedGroups) {
+        this.assignedGroups = (Set<Group>) assignedGroups;
     }
 
-    @SuppressWarnings("unchecked")
     @ManyToMany(targetEntity = Role.class)
     // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "UserRole", //
     /*            */joinColumns = @JoinColumn(name = "user"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "role"))
     @Override
-    public Set<IRolePrincipal> getAssignedRoles() {
+    public Set<Role> getAssignedRoles() {
         if (assignedRoles == null) {
             synchronized (this) {
                 if (assignedRoles == null) {
-                    assignedRoles = new HashSet<IRolePrincipal>();
+                    assignedRoles = new HashSet<Role>();
                 }
             }
         }
-        return (Set<IRolePrincipal>) assignedRoles;
+        return assignedRoles;
     }
 
-    public void setAssignedRoles(Set<? extends IRolePrincipal> assignedRoles) {
-        this.assignedRoles = assignedRoles;
+    public void setAssignedRoles(Set<Role> assignedRoles) {
+        this.assignedRoles = (Set<Role>) assignedRoles;
     }
 
     @Override

@@ -46,11 +46,13 @@ public abstract class AbstractUser
     }
 
     @Override
-    public abstract Set<IGroupPrincipal> getAssignedGroups() ;
+    public abstract Set<? extends IGroupPrincipal> getAssignedGroups();
 
+    @SuppressWarnings("unchecked")
     @Override
     public void addAssignedGroup(IGroupPrincipal group) {
-        getAssignedGroups().add(group);
+        Set<IGroupPrincipal> assignedGroups = (Set<IGroupPrincipal>) getAssignedGroups();
+        assignedGroups.add(group);
     }
 
     @Override
@@ -59,11 +61,13 @@ public abstract class AbstractUser
     }
 
     @Override
-    public abstract Set<IRolePrincipal> getAssignedRoles();
+    public abstract Set<? extends IRolePrincipal> getAssignedRoles();
 
+    @SuppressWarnings("unchecked")
     @Override
     public void addAssignedRole(IRolePrincipal role) {
-        getAssignedRoles().add(role);
+        Set<IRolePrincipal> assignedRoles = (Set<IRolePrincipal>) getAssignedRoles();
+        assignedRoles.add(role);
     }
 
     @Override

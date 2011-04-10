@@ -24,14 +24,14 @@ public class Group
 
     private static final long serialVersionUID = 1L;
 
-    protected IGroupPrincipal inheritedGroup;
-    protected IUserPrincipal owner;
-    protected IRolePrincipal primaryRole;
+    protected Group inheritedGroup;
+    protected User owner;
+    protected Role primaryRole;
 
-    protected Set<? extends IGroupPrincipal> derivedGroups;
+    protected Set<Group> derivedGroups;
 
-    protected Set<? extends IRolePrincipal> assignedRoles;
-    protected Set<? extends IUserPrincipal> memberUsers;
+    protected Set<Role> assignedRoles;
+    protected Set<User> memberUsers;
 
     public Group() {
     }
@@ -40,7 +40,7 @@ public class Group
         super(name);
     }
 
-    public Group(String name, IUserPrincipal owner, IUserPrincipal... memberUsers) {
+    public Group(String name, User owner, User... memberUsers) {
         super(name);
         this.owner = owner;
 
@@ -53,31 +53,31 @@ public class Group
     @ManyToOne(targetEntity = Group.class)
     @JoinColumn(name = "parent")
     @Override
-    public IGroupPrincipal getInheritedGroup() {
+    public Group getInheritedGroup() {
         return inheritedGroup;
     }
 
-    public void setInheritedGroup(IGroupPrincipal inheritedGroup) {
+    public void setInheritedGroup(Group inheritedGroup) {
         this.inheritedGroup = cast(inheritedGroup);
     }
 
-    @SuppressWarnings("unchecked")
     @Transient
     @OneToMany(targetEntity = Group.class, mappedBy = "inheritedGroup")
     @Override
-    public Set<IGroupPrincipal> getDerivedGroups() {
+    public Set<Group> getDerivedGroups() {
         if (derivedGroups == null) {
             synchronized (this) {
                 if (derivedGroups == null) {
-                    derivedGroups = new HashSet<IGroupPrincipal>();
+                    derivedGroups = new HashSet<Group>();
                 }
             }
         }
-        return (Set<IGroupPrincipal>) derivedGroups;
+        return derivedGroups;
     }
 
-    public void setDerivedGroups(Set<? extends IGroupPrincipal> derivedGroups) {
-        this.derivedGroups = derivedGroups;
+    @SuppressWarnings("unchecked")
+    public void setDerivedGroups(Set<? extends Group> derivedGroups) {
+        this.derivedGroups = (Set<Group>) derivedGroups;
     }
 
     @ManyToOne(targetEntity = User.class)
@@ -87,63 +87,62 @@ public class Group
     }
 
     public void setOwner(IUserPrincipal owner) {
-        this.owner = owner;
+        this.owner = (User) owner;
     }
 
     @ManyToOne(targetEntity = Role.class)
     @JoinColumn(name = "role1")
     @Override
-    public IRolePrincipal getPrimaryRole() {
+    public Role getPrimaryRole() {
         return primaryRole;
     }
 
     public void setPrimaryRole(IRolePrincipal primaryRole) {
-        this.primaryRole = primaryRole;
+        this.primaryRole = (Role) primaryRole;
     }
 
-    @SuppressWarnings("unchecked")
     @ManyToMany(targetEntity = User.class)
     // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "GroupMember", //
     /*            */joinColumns = @JoinColumn(name = "group"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "member"))
     @Override
-    public Set<IUserPrincipal> getMemberUsers() {
+    public Set<User> getMemberUsers() {
         if (memberUsers == null) {
             synchronized (this) {
                 if (memberUsers == null) {
-                    memberUsers = new HashSet<IUserPrincipal>();
+                    memberUsers = new HashSet<User>();
                 }
             }
         }
-        return (Set<IUserPrincipal>) memberUsers;
+        return memberUsers;
     }
 
     @SuppressWarnings("unchecked")
-    public void setMemberUsers(Set<? extends IUserPrincipal> memberUsers) {
-        this.memberUsers = (Set<IUserPrincipal>) memberUsers;
+    public void setMemberUsers(Set<? extends User> memberUsers) {
+        this.memberUsers = (Set<User>) memberUsers;
     }
 
-    @SuppressWarnings("unchecked")
     @ManyToMany(targetEntity = Role.class)
     // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "GroupRole", //
     /*            */joinColumns = @JoinColumn(name = "group"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "role"))
     @Override
-    public Set<IRolePrincipal> getAssignedRoles() {
+    public Set<Role> getAssignedRoles() {
         if (assignedRoles == null) {
             synchronized (this) {
                 if (assignedRoles == null) {
-                    assignedRoles = new HashSet<IRolePrincipal>();
+                    assignedRoles = new HashSet<Role>();
                 }
             }
         }
-        return (Set<IRolePrincipal>) assignedRoles;
+        return assignedRoles;
     }
 
-    public void setAssignedRoles(Set<? extends IRolePrincipal> assignedRoles) {
-        this.assignedRoles = assignedRoles;
+    @SuppressWarnings("unchecked")
+    public void setAssignedRoles(Set<? extends Role> assignedRoles) {
+        this.assignedRoles = (Set<Role>) assignedRoles;
     }
 
     @Override
