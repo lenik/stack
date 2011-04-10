@@ -1,9 +1,17 @@
 package com.bee32.plover.test;
 
 import org.junit.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UnitTestCase<T>
         extends Assert {
+
+    protected final Logger logger;
+
+    public UnitTestCase() {
+        logger = LoggerFactory.getLogger(getClass());
+    }
 
     /**
      * Create a new instance like this using JUnit wrapper,
