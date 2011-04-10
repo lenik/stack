@@ -1,20 +1,19 @@
-package com.bee32.icsf.access.authority;
+package com.bee32.icsf.access;
+
+import java.util.Collection;
+import java.util.Collections;
 
 import com.bee32.icsf.access.acl.EmptyACL;
 import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.access.alt.R_Authority;
 import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.principal.IPrincipal;
 
 public class RootAuthority
         extends Authority {
 
     RootAuthority() {
         super("Root");
-    }
-
-    @Override
-    public IACL getACL(Resource resource) {
-        return EmptyACL.getInstance();
     }
 
     @Override
@@ -26,6 +25,16 @@ public class RootAuthority
             return true;
 
         return false;
+    }
+
+    @Override
+    public IACL getACL(Resource resource) {
+        return EmptyACL.getInstance();
+    }
+
+    @Override
+    public Collection<ResourcePermission> getResourcePermissions(IPrincipal principal) {
+        return Collections.emptySet();
     }
 
     private static final RootAuthority instance = new RootAuthority();

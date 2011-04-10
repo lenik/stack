@@ -1,9 +1,8 @@
-package com.bee32.icsf.access.authority;
+package com.bee32.icsf.access;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.principal.IPrincipal;
