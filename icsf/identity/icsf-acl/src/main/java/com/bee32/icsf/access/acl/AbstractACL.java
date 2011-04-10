@@ -120,7 +120,7 @@ public abstract class AbstractACL
         for (Entry<? extends IPrincipal, Permission> entry : getEntries()) {
             IPrincipal principal = entry.getKey();
             Permission permission = entry.getValue();
-            sb.append("\n    " + principal + " +" + permission);
+            sb.append("\n    " + principal.getName() + " +" + permission);
         }
 
         return sb.toString();
