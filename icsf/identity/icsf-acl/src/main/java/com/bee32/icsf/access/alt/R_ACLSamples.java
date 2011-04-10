@@ -1,6 +1,8 @@
 package com.bee32.icsf.access.alt;
 
 import static com.bee32.icsf.principal.IcsfPrincipalSamples.kate;
+import static com.bee32.icsf.principal.IcsfPrincipalSamples.registeredRole;
+import static com.bee32.icsf.principal.IcsfPrincipalSamples.tom;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
@@ -10,20 +12,21 @@ import com.bee32.plover.orm.util.ImportSamples;
 public class R_ACLSamples
         extends EntitySamplesContribution {
 
-    // public R_ACL kate_ACL;
-    public R_ACE kate_CanRead;
-
-    // public R_ACE kate_NoExecute;
+    public R_ACE service_tom_x;
+    public R_ACE method1_kate_rx;
+    public R_ACE foo_reguser_w;
 
     public R_ACLSamples() {
-        // kate_ACL = new R_ACL();
-        kate_CanRead = new R_ACE(null, kate, "r");
-        // kate_NoExecute = kate_ACL.addDenyACE(kate, "x");
+        service_tom_x = new R_ACE("ap:TestService", tom, "x");
+        method1_kate_rx = new R_ACE("ap:TestService.method1", kate, "rx");
+        foo_reguser_w = new R_ACE("ap:TestService.foo", registeredRole, "w");
     }
 
     @Override
     protected void preamble() {
-        addNormalSample(kate_CanRead);
+        addNormalSample(service_tom_x);
+        addNormalSample(method1_kate_rx);
+        addNormalSample(foo_reguser_w);
     }
 
 }
