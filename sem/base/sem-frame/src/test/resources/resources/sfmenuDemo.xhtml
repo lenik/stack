@@ -21,12 +21,12 @@ body {
 <script type="text/javascript" src="${location.LIB_3RDPARTY['superfish-1.4.8/js/superfish.js']}"></script>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		$.ajaxSetup({
-			cache : false
-		});
-		$("ul.sf-menu").superfish();
-	});
+    $(document).ready(function() {
+        $.ajaxSetup({
+            cache : false
+        });
+        $("ul.sf-menu").superfish();
+    });
 </script>
 
 
@@ -37,6 +37,11 @@ body {
     <h1>Superfish Menu Builder Test</h1>
 
     <f:verbatim>#{html}</f:verbatim>
+
+    <hr />
+
+    <h1>Menu from injection</h1>
+    <f:verbatim>#{mainMenu.superfishHtml}</f:verbatim>
 
 </body>
 

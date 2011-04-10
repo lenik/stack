@@ -8,6 +8,9 @@ import java.lang.annotation.Retention;
 
 import javax.inject.Qualifier;
 
+/**
+ * Import context config classes.
+ */
 @Inherited
 @Retention(RUNTIME)
 @Documented
