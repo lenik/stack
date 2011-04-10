@@ -18,4 +18,10 @@ public class AccessPointNS
         return AccessPoint.getInstance(localName);
     }
 
+    private static final AccessPointNS instance = new AccessPointNS();
+
+    public static AccessPointNS getInstance() {
+        return instance;
+    }
+
 }
