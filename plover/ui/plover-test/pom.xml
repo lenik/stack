@@ -47,7 +47,6 @@
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-velocity</artifactId>
             <version>0.2.1-SNAPSHOT</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
     <name>Plover :: Ui :: Test</name>
