@@ -11,6 +11,12 @@ public class MyMenu
     @Contribution("file")
     MenuEntry fileOpen = new MenuEntry("open", WEB_APP.join("file/open.htm"));
 
+    @Contribution("file")
+    MenuEntry fileSave = new MenuEntry("save", WEB_APP.join("file/save.htm"));
+
+    @Contribution("file")
+    MenuEntry fileClose = new MenuEntry("close", WEB_APP.join("file/close.htm"));
+
     @Override
     protected void preamble() {
     }

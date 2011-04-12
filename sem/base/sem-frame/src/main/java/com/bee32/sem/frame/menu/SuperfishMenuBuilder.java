@@ -107,15 +107,14 @@ public class SuperfishMenuBuilder {
             List<IMenuNode> children = new ArrayList<IMenuNode>(menuNode.getChildren());
             Collections.sort(children, MenuEntryComparator.INSTANCE);
 
+
+            out.println("<ul>");
+            out.enter();
             for (IMenuNode childNode : children) {
-                out.println("<ul>");
-                out.enter();
-
                 buildMenu(childNode);
-
-                out.leave();
-                out.println("</ul>");
             }
+            out.leave();
+            out.println("</ul>");
         }
 
         out.leave();
