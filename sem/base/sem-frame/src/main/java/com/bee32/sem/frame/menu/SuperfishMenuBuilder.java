@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.free.IllegalUsageException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.util.HtmlUtils;
 import org.springframework.web.util.UriUtils;
@@ -13,20 +14,31 @@ import org.springframework.web.util.UriUtils;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.servlet.context.ContextLocation;
 import com.bee32.plover.servlet.context.LocationContextConstants;
+import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.frame.action.IAction;
 
 public class SuperfishMenuBuilder {
 
     private final MenuBar menuBar;
+    private final HttpServletRequest request;
 
     private String html;
     private PrettyPrintStream out;
 
     public SuperfishMenuBuilder(MenuBar menuBar) {
+        this(menuBar, null);
+    }
+
+    public SuperfishMenuBuilder(MenuBar menuBar, HttpServletRequest request) {
         if (menuBar == null)
             throw new NullPointerException("menuBar");
         this.menuBar = menuBar;
+
+        if (request != null)
+            this.request = request;
+        else
+            this.request = ThreadServletContext.requireRequest();
     }
 
     @Override
@@ -79,7 +91,7 @@ public class SuperfishMenuBuilder {
 
             } else {
 
-                String href = target.getLocation();
+                String href = target.resolve(request);
                 String hrefEncoded;
                 try {
                     hrefEncoded = UriUtils.encodeUri(href, "utf-8");
@@ -106,7 +118,6 @@ public class SuperfishMenuBuilder {
         if (!menuNode.isEmpty()) {
             List<IMenuNode> children = new ArrayList<IMenuNode>(menuNode.getChildren());
             Collections.sort(children, MenuEntryComparator.INSTANCE);
-
 
             out.println("<ul>");
             out.enter();
