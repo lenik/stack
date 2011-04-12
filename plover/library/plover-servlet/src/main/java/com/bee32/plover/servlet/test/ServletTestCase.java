@@ -13,7 +13,6 @@ import org.mortbay.jetty.testing.HttpTester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.test.AssembledTestCase;
 
 public abstract class ServletTestCase
@@ -179,13 +178,6 @@ public abstract class ServletTestCase
     public void browseAndWait(String location)
             throws IOException {
         unit()._browseAndWait(location);
-    }
-
-    public void browseAndWait(Class<?> moduleClass)
-            throws IOException {
-        String modulePath = OidUtil.getOid(moduleClass).toPath();
-        String location = "/" + modulePath + "/";
-        browseAndWait(location);
     }
 
     public void _browseAndWait()
