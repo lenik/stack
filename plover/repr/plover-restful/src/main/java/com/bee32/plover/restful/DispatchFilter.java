@@ -17,11 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
+import com.bee32.plover.pub.oid.OidUtil;
+import com.bee32.plover.servlet.context.ServletContextUtil;
 
 /**
  * The overall modules dispatcher.
@@ -47,7 +46,7 @@ public class DispatchFilter
     protected String contextPath; // Not used.
 
     @Inject
-    RestfulService restfulService;
+    RESTfulService restfulService;
 
     public DispatchFilter() {
     }
@@ -63,12 +62,7 @@ public class DispatchFilter
         servletContext = filterConfig.getServletContext();
         contextPath = servletContext.getContextPath();
 
-        ApplicationContext context = SimpleApplicationContextUtil.getApplicationContext(servletContext);
-        if (context == null)
-            throw new ServletException("Application context isn't set up");
-
-        AutowireCapableBeanFactory beanFactory = context.getAutowireCapableBeanFactory();
-        beanFactory.autowireBean(this);
+        ServletContextUtil.wire(servletContext, this);
     }
 
     @Override
@@ -77,30 +71,30 @@ public class DispatchFilter
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilter(ServletRequest _request, ServletResponse _response, FilterChain chain)
             throws IOException, ServletException {
 
-        try {
-            if (restfulService.processOrNot(request, response))
-                return;
-        } catch (RestfulException e) {
-            throw new ServletException(e.getMessage(), e);
+        HttpServletRequest request = (HttpServletRequest) _request;
+        HttpServletResponse response = (HttpServletResponse) _response;
+
+        if (prefilter(request)) {
+            try {
+                if (restfulService.processOrNot(request, response))
+                    return;
+            } catch (RESTfulException e) {
+                throw new ServletException(e.getMessage(), e);
+            }
         }
 
-        chain.doFilter(request, response);
+        chain.doFilter(_request, _response);
     }
 
-    @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        try {
-            if (!restfulService.processOrNot(req, resp)) {
-                // Dispatched to nothing.
-                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            }
-        } catch (RestfulException e) {
-            throw new ServletException(e.getMessage(), e);
-        }
+    protected boolean prefilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        int slash = path.indexOf('/');
+        String first = slash == -1 ? path : path.substring(0, slash);
+
+        return OidUtil.isNumber(first);
     }
 
 }
