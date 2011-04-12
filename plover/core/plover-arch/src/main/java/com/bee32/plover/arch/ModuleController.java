@@ -29,16 +29,19 @@ public class ModuleController {
             Object child = module.getChild(childLoc);
             out.println("        <div>");
             out.println("            " + childLoc + " - " + child);
-            out.println("            <a href=\"" + childLoc + "\">contents</a>");
-            out.println("            <a href=\"" + childLoc + "/\">index</a>");
+            out.println("            <a href='" + childLoc + "'>contents</a>");
+            out.println("            <a href='" + childLoc + "/'>index</a>");
             out.println("        </div>");
         }
 
         out.println("        <hr />");
         out.println("        <div>");
-        out.println("        <a href=\"/\">INDEX</a>");
+
+        String servletPath = req.getServletPath();
+
+        out.println("        <a href='" + servletPath + "/'>INDEX</a>");
         out.println("        </div>");
-        out.println("        <a href=\"credit\">CREDIT</a>");
+        out.println("        <a href='credit'>CREDIT</a>");
         out.println("    </body>");
         out.println("</html>");
     }
