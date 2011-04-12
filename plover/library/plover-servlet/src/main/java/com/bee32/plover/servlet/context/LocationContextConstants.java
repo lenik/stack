@@ -3,6 +3,8 @@ package com.bee32.plover.servlet.context;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import com.bee32.plover.restful.RESTfulConfig;
+
 public interface LocationContextConstants {
 
     LocationContext JAVASCRIPT = new LocationContext("<<JAVASCRIPT>>") {
@@ -50,6 +52,9 @@ public interface LocationContextConstants {
         }
 
     };
+
+    LocationContext MM = new PredefinedLocationContext("MODULE-MANAGER", //
+            RESTfulConfig.preferredPrefix);
 
     LocationContext STYLE_ROOT = new PredefinedLocationContext("STYLE-ROOT", //
             "http://static.secca-project.com/style/");
