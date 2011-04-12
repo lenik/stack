@@ -79,6 +79,9 @@ public interface LocationContextConstants {
     LocationContext STYLE = new PredefinedLocationContext("STYLE", //
             "http://static.secca-project.com/style/default/");
 
+    LocationContext ICON = new PredefinedLocationContext("STYLE-ICON", //
+            "http://static.secca-project.com/style/default/icons");
+
     LocationContext LIB_3RDPARTY = new PredefinedLocationContext("LIB-3RDPARTY", //
             "http://static.secca-project.com/lib2/");
 
