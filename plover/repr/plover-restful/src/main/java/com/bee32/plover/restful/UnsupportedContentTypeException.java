@@ -1,7 +1,7 @@
 package com.bee32.plover.restful;
 
 public class UnsupportedContentTypeException
-        extends RestfulException {
+        extends RESTfulException {
 
     private static final long serialVersionUID = 1L;
 

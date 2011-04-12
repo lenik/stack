@@ -12,7 +12,7 @@ import org.springframework.web.util.HtmlUtils;
 @Lazy
 @Controller
 public class ObjectDumpView
-        extends RestfulView {
+        extends RESTfulView {
 
     /**
      * Returns the lowest priority.
@@ -28,7 +28,7 @@ public class ObjectDumpView
     }
 
     @Override
-    public boolean render(Class<?> clazz, Object obj, IRestfulRequest req, IRestfulResponse resp)
+    public boolean render(Class<?> clazz, Object obj, IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException {
         PrintWriter out = resp.getWriter();
 

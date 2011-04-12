@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.bee32.plover.orm.dao.CommonDataManager;
-import com.bee32.plover.restful.IRestfulRequest;
-import com.bee32.plover.restful.IRestfulResponse;
+import com.bee32.plover.restful.IRESTfulRequest;
+import com.bee32.plover.restful.IRESTfulResponse;
 
 /**
  * ERController 中实际执行动作的是 CDM，
@@ -30,13 +30,13 @@ public class EntityRepositoryController<E extends EntityBean<K>, K extends Seria
     @Inject
     CommonDataManager dataManager;
 
-    public void index(IRestfulRequest req, IRestfulResponse resp)
+    public void index(IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException {
         PrintWriter out = resp.getWriter();
         out.println("TODO...");
     }
 
-    public Object create(IRestfulRequest req, IRestfulResponse resp)
+    public Object create(IRESTfulRequest req, IRESTfulResponse resp)
             throws Exception {
 
         EntityRepository<E, K> repo = (EntityRepository<E, K>) req.getTarget();
@@ -48,7 +48,7 @@ public class EntityRepositoryController<E extends EntityBean<K>, K extends Seria
         return entity;
     }
 
-    public Object update(IRestfulRequest req, IRestfulResponse resp)
+    public Object update(IRESTfulRequest req, IRESTfulResponse resp)
             throws Exception {
 
         EntityRepository<E, K> repo = (EntityRepository<E, K>) req.getTarget();
@@ -69,7 +69,7 @@ public class EntityRepositoryController<E extends EntityBean<K>, K extends Seria
         return entity;
     }
 
-    public Object delete(IRestfulRequest req, IRestfulResponse resp)
+    public Object delete(IRESTfulRequest req, IRESTfulResponse resp)
             throws ParseException {
 
         EntityRepository<E, K> repo = (EntityRepository<E, K>) req.getTarget();

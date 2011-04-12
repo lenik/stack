@@ -8,8 +8,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bee32.plover.orm.util.WiredDaoTestCase;
-import com.bee32.plover.restful.RestfulRequest;
-import com.bee32.plover.restful.request.RestfulRequestUtil;
+import com.bee32.plover.restful.RESTfulRequest;
+import com.bee32.plover.restful.request.RESTfulRequestUtil;
 import com.bee32.plover.servlet.mock.MockRestfulResponse;
 
 public class BookStoreControllerTest
@@ -24,7 +24,7 @@ public class BookStoreControllerTest
     @Test
     public void testList()
             throws IOException {
-        RestfulRequest req = RestfulRequestUtil.wrapDispatched(store);
+        RESTfulRequest req = RESTfulRequestUtil.wrapDispatched(store);
         MockRestfulResponse resp = new MockRestfulResponse();
 
         String list = controller.content(req, resp);
@@ -35,7 +35,7 @@ public class BookStoreControllerTest
     @Test
     public void testCreateForm()
             throws IOException {
-        RestfulRequest req = RestfulRequestUtil.wrapDispatched(store);
+        RESTfulRequest req = RESTfulRequestUtil.wrapDispatched(store);
         MockRestfulResponse resp = new MockRestfulResponse();
 
         controller.create(req, resp);

@@ -2,11 +2,11 @@ package com.bee32.plover.servlet.mock;
 
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import com.bee32.plover.restful.IRestfulResponse;
+import com.bee32.plover.restful.IRESTfulResponse;
 
 public class MockRestfulResponse
         extends MockHttpServletResponse
-        implements IRestfulResponse {
+        implements IRESTfulResponse {
 
     private Object target;
     private Throwable exception;

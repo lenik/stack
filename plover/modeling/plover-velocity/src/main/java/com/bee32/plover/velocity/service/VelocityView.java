@@ -8,15 +8,15 @@ import org.apache.velocity.VelocityContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.bee32.plover.restful.IRestfulRequest;
-import com.bee32.plover.restful.IRestfulResponse;
-import com.bee32.plover.restful.RestfulView;
+import com.bee32.plover.restful.IRESTfulRequest;
+import com.bee32.plover.restful.IRESTfulResponse;
+import com.bee32.plover.restful.RESTfulView;
 import com.bee32.plover.velocity.VelocityUtil;
 
 @Lazy
 @Controller
 public class VelocityView
-        extends RestfulView {
+        extends RESTfulView {
 
     @Override
     public int getPriority() {
@@ -24,7 +24,7 @@ public class VelocityView
     }
 
     @Override
-    public boolean render(Class<?> clazz, Object obj, IRestfulRequest req, IRestfulResponse resp)
+    public boolean render(Class<?> clazz, Object obj, IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException {
         String view = req.getMethod();
 

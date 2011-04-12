@@ -26,7 +26,7 @@ public class ModuleManagerController
     @Inject
     IModuleLoader moduleLoader;
 
-    public void index(IRestfulRequest req, IRestfulResponse resp)
+    public void index(IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException {
 
         PrintWriter out = resp.getWriter();

@@ -1,9 +1,9 @@
 package com.bee32.plover.restful.request;
 
-import com.bee32.plover.restful.RestfulRequest;
+import com.bee32.plover.restful.RESTfulRequest;
 
 public interface ISuffixDissolver {
 
-    boolean dissolveSuffix(String name, RestfulRequest model);
+    boolean dissolveSuffix(String name, RESTfulRequest model);
 
 }

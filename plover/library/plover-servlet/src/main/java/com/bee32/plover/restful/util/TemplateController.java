@@ -1,10 +1,10 @@
 package com.bee32.plover.restful.util;
 
-import com.bee32.plover.restful.IRestfulRequest;
-import com.bee32.plover.restful.IRestfulResponse;
+import com.bee32.plover.restful.IRESTfulRequest;
+import com.bee32.plover.restful.IRESTfulResponse;
 
 public abstract class TemplateController<T>
-        extends RestfulController<T> {
+        extends RESTfulController<T> {
 
     public static final int CONTENT = 0;
     public static final int CREATE = 1;
@@ -14,7 +14,7 @@ public abstract class TemplateController<T>
         super(clazz);
     }
 
-    protected abstract void template(int mode, IRestfulRequest req, IRestfulResponse resp)
+    protected abstract void template(int mode, IRESTfulRequest req, IRESTfulResponse resp)
             throws Exception;
 
     /**
@@ -22,7 +22,7 @@ public abstract class TemplateController<T>
      *
      * INIT-LABEL
      */
-    public void content(IRestfulRequest req, IRestfulResponse resp)
+    public void content(IRESTfulRequest req, IRESTfulResponse resp)
             throws Exception {
         template(CONTENT, req, resp);
     }
@@ -30,7 +30,7 @@ public abstract class TemplateController<T>
     /**
      * INIT-NONE
      */
-    public void createForm(IRestfulRequest req, IRestfulResponse resp)
+    public void createForm(IRESTfulRequest req, IRESTfulResponse resp)
             throws Exception {
         template(CREATE, req, resp);
     }
@@ -38,7 +38,7 @@ public abstract class TemplateController<T>
     /**
      * INIT-EDIT
      */
-    public void editForm(IRestfulRequest req, IRestfulResponse resp)
+    public void editForm(IRESTfulRequest req, IRESTfulResponse resp)
             throws Exception {
         template(EDIT, req, resp);
     }

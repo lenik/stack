@@ -8,8 +8,8 @@ import javax.servlet.ServletResponse;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.restful.IRestfulRequest;
-import com.bee32.plover.restful.IRestfulResponse;
+import com.bee32.plover.restful.IRESTfulRequest;
+import com.bee32.plover.restful.IRESTfulResponse;
 import com.bee32.plover.restful.MethodNames;
 import com.bee32.plover.restful.util.IRestfulController;
 import com.bee32.plover.velocity.VelocityUtil;
@@ -20,7 +20,7 @@ public class BookStoreController
         implements IRestfulController {
 
     @Inject
-    public String content(IRestfulRequest req, ServletResponse resp)
+    public String content(IRESTfulRequest req, ServletResponse resp)
             throws IOException {
         BookStore store = (BookStore) req.getTarget();
 
@@ -30,7 +30,7 @@ public class BookStoreController
         return list;
     }
 
-    public Object create(IRestfulRequest req, IRestfulResponse resp)
+    public Object create(IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException {
         BookStore store = (BookStore) req.getTarget();
 

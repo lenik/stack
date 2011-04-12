@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.restful.IRestfulRequest;
-import com.bee32.plover.restful.IRestfulResponse;
+import com.bee32.plover.restful.IRESTfulRequest;
+import com.bee32.plover.restful.IRESTfulResponse;
 import com.bee32.plover.restful.util.TemplateController;
 
 @Scope("prototype")
@@ -23,12 +23,12 @@ public class UserController
     }
 
     @Override
-    protected void template(int mode, IRestfulRequest req, IRestfulResponse resp)
+    protected void template(int mode, IRESTfulRequest req, IRESTfulResponse resp)
             throws Exception {
     }
 
     @Transactional(readOnly = true)
-    public void content(IRestfulRequest req, IRestfulResponse resp)
+    public void content(IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException {
 
         PrintWriter out = resp.getWriter();

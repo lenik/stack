@@ -5,13 +5,13 @@ import javax.servlet.ServletException;
 
 import com.bee32.plover.model.stage.ModelStage;
 import com.bee32.plover.model.stage.ModelStageException;
-import com.bee32.plover.restful.IRestfulRequest;
-import com.bee32.plover.restful.IRestfulResponse;
+import com.bee32.plover.restful.IRESTfulRequest;
+import com.bee32.plover.restful.IRESTfulResponse;
 import com.bee32.plover.servlet.context.ServletContainer;
 
 public class ModelController {
 
-    public void read(IRestfulRequest req, IRestfulResponse resp)
+    public void read(IRESTfulRequest req, IRESTfulResponse resp)
             throws ServletException {
 
         Object target = req.getTarget();

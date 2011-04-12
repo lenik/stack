@@ -1,13 +1,13 @@
 package com.bee32.plover.restful.request;
 
-import com.bee32.plover.restful.RestfulRequest;
+import com.bee32.plover.restful.RESTfulRequest;
 import com.bee32.plover.util.Mime;
 
 public class ContentTypeDissolver
         implements ISuffixDissolver {
 
     @Override
-    public boolean dissolveSuffix(String extension, RestfulRequest model) {
+    public boolean dissolveSuffix(String extension, RESTfulRequest model) {
         if (extension == null)
             throw new NullPointerException("extension");
 

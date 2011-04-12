@@ -6,11 +6,11 @@ import org.junit.Test;
 
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.pub.oid.OidUtil;
-import com.bee32.plover.restful.test.RestfulTestCase;
+import com.bee32.plover.restful.test.RESTfulTestCase;
 
 @Using(BookStoreUnit.class)
 public class BookModuleTest
-        extends RestfulTestCase {
+        extends RESTfulTestCase {
 
     static String bookModuleOid = OidUtil.getOid(BookModule.class).toPath();
 
@@ -25,7 +25,7 @@ public class BookModuleTest
             throws Exception {
         setupH2Console();
 
-        String creditUri = "/" + bookModuleOid + "/credit";
+        String creditUri = PREFIX + "/" + bookModuleOid + "/credit";
         String credit = stl.httpGet(creditUri).getContent();
 
         System.out.println(credit);
