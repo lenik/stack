@@ -9,10 +9,10 @@ import javax.free.IllegalUsageException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.restful.MethodNames;
-import com.bee32.plover.restful.RestfulRequest;
+import com.bee32.plover.restful.RESTfulRequest;
 import com.bee32.plover.util.Mime;
 
-public class RestfulRequestBuilder {
+public class RESTfulRequestBuilder {
 
     private static Map<Character, ISuffixDissolver> suffixDissolvers;
 
@@ -43,13 +43,22 @@ public class RestfulRequestBuilder {
         reloadServices();
     }
 
-    public RestfulRequest build(HttpServletRequest _request) {
+    public static RESTfulRequest build(HttpServletRequest _request) {
 
-        RestfulRequest request = new RestfulRequest(_request);
+        RESTfulRequest request = new RESTfulRequest(_request);
 
+        // Prefix-mapping?
         String path = _request.getPathInfo();
-        // if (path == null)
-        path = _request.getRequestURI();
+        if (path == null) {
+            // Not prefix mapping, use the entire URL.
+            path = _request.getRequestURI();
+
+            String servletPath = _request.getServletPath();
+            if (servletPath != null && servletPath.equals(path))
+                // Prefix-mapping, but chopped the ending '/'.
+                // Not a restful-request.
+                return null;
+        }
 
         // Translate http method
         String method = _request.getParameter(".method");
@@ -110,12 +119,6 @@ public class RestfulRequestBuilder {
         }
 
         return request;
-    }
-
-    private static final RestfulRequestBuilder instance = new RestfulRequestBuilder();
-
-    public static RestfulRequestBuilder getInstance() {
-        return instance;
     }
 
 }
