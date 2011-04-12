@@ -27,7 +27,7 @@ public class LocationContextCM
         String location = String.valueOf(verb);
         ContextLocation cl = locationContext.join(location);
 
-        HttpServletRequest request = ThreadServletContext.getRequest();
+        HttpServletRequest request = ThreadServletContext.requireRequest();
 
         return cl.resolve(request);
     }

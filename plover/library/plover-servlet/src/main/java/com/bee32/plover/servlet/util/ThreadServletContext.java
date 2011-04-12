@@ -10,7 +10,7 @@ public class ThreadServletContext {
     static final ThreadLocal<HttpServletRequest> threadLocalRequests = new ThreadLocal<HttpServletRequest>();
     static final ThreadLocal<HttpServletResponse> threadLocalResponses = new ThreadLocal<HttpServletResponse>();
 
-    public static HttpServletRequest getRequest() {
+    public static HttpServletRequest requireRequest() {
         HttpServletRequest request = threadLocalRequests.get();
 
         if (request == null)
@@ -23,7 +23,7 @@ public class ThreadServletContext {
         threadLocalRequests.set(request);
     }
 
-    public static HttpServletResponse getResponse() {
+    public static HttpServletResponse requireResponse() {
         HttpServletResponse response = threadLocalResponses.get();
 
         if (response == null)
@@ -36,16 +36,16 @@ public class ThreadServletContext {
         threadLocalResponses.set(response);
     }
 
-    public static HttpSession getSession() {
-        return getRequest().getSession();
+    public static HttpSession requireSession() {
+        return requireRequest().getSession();
     }
 
-    public static ServletContext getServletContext() {
-        return getSession().getServletContext();
+    public static ServletContext requireServletContext() {
+        return requireSession().getServletContext();
     }
 
-    public static ServletContext getApplication() {
-        return getServletContext();
+    public static ServletContext requireApplication() {
+        return requireServletContext();
     }
 
 }
