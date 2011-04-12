@@ -26,7 +26,7 @@ public class OSIVFilter
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request)
             throws ServletException {
-        return super.shouldNotFilter(request);
+        return false;
     }
 
 }
