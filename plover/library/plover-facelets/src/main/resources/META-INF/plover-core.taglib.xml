@@ -19,4 +19,10 @@
         <function-signature>String version()</function-signature>
     </function>
 
+    <function>
+        <function-name>safeEmail</function-name>
+        <function-class>com.bee32.plover.internet.spam.EmailUtil</function-class>
+        <function-signature>String obfuscate(java.lang.String)</function-signature>
+    </function>
+
 </facelet-taglib>

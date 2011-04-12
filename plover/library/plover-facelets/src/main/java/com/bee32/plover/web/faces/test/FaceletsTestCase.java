@@ -43,7 +43,14 @@ public class FaceletsTestCase
         OverlappedBases.add("resources/");
     }
 
-    protected void addTagLibrary(String taglib) {
+    /**
+     * Please call this method in constructore, or configContext.
+     *
+     * TODO META-INF taglib.xml isn't read by myfaces-impl?
+     *
+     * It's recommendded to export taglib by declare taglib.xml files under META-INF/.
+     */
+    protected final void addTagLibrary(String taglib) {
         taglibs.add(taglib);
     }
 
