@@ -1,16 +1,11 @@
 package com.bee32.plover.web.faces.el;
 
-import com.bee32.plover.servlet.context.LocationContext;
 import com.bee32.plover.servlet.context.LocationContextConstants;
 
 public class CoreConstants
         implements LocationContextConstants {
 
     static final CoreConstants INSTANCE = new CoreConstants();
-
-    public LocationContext getJAVASCRIPT() {
-        return JAVASCRIPT;
-    }
 
     /**
      * pc:consts()
