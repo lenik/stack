@@ -53,8 +53,25 @@ public interface LocationContextConstants {
 
     };
 
-    LocationContext MM = new PredefinedLocationContext("MODULE-MANAGER", //
-            RESTfulConfig.preferredPrefix);
+    LocationContext MM = new LocationContext("<<module-manager>>") {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public String resolve(HttpServletRequest request, String location) {
+            if (isAbsolute(location))
+                return location;
+
+            ServletContext servletContext = request.getSession().getServletContext();
+
+            // context-path == /* or ""
+            String contextPath = servletContext.getContextPath();
+
+            // TODO set REST-PREFIX as context attribute.
+            return contextPath + RESTfulConfig.preferredPrefix + "/" + location;
+        }
+
+    };
 
     LocationContext STYLE_ROOT = new PredefinedLocationContext("STYLE-ROOT", //
             "http://static.secca-project.com/style/");
