@@ -1,43 +1,34 @@
 package com.bee32.plover.restful.test;
 
+import java.io.IOException;
+
 import javax.free.IllegalUsageException;
 
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.springframework.context.ApplicationContext;
 
+import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.config.test.DefaultTestSessionFactoryBean;
+import com.bee32.plover.orm.context.OSIVFilter;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UsingUtil;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
-import com.bee32.plover.restful.DispatchFilter;
-import com.bee32.plover.restful.context.SimpleApplicationContextUtil;
+import com.bee32.plover.pub.oid.OidUtil;
+import com.bee32.plover.restful.DispatchServlet;
+import com.bee32.plover.restful.RESTfulConfig;
 import com.bee32.plover.servlet.test.WiredServletTestCase;
 import com.bee32.plover.servlet.util.LazyLoadServlet;
 
-public abstract class RestfulTestCase
+@Import(WiredDaoTestCase.class)
+public abstract class RESTfulTestCase
         extends WiredServletTestCase {
-
-    private ApplicationContext applicationContext;
 
     private boolean checkAdditionalServlets;
 
-    protected RestfulTestCase() {
-        this(WiredDaoTestCase.class, (ApplicationContext) null);
-    }
+    public String PREFIX = RESTfulConfig.preferredPrefix;
 
-    protected RestfulTestCase(Class<?> configClass) {
-        this(configClass, null);
-    }
-
-    protected RestfulTestCase(ApplicationContext applicationContext) {
-        this(WiredDaoTestCase.class, applicationContext);
-    }
-
-    protected RestfulTestCase(Class<?> configClass, ApplicationContext applicationContext) {
-        super(configClass);
-        this.applicationContext = applicationContext;
-
+    protected RESTfulTestCase() {
         PersistenceUnit unit = UsingUtil.getUsedUnit(getClass());
         DefaultTestSessionFactoryBean.setForceUnit(unit);
     }
@@ -49,22 +40,14 @@ public abstract class RestfulTestCase
     }
 
     @Override
-    protected void configureContext() {
-        super.configureContext();
-
-        if (applicationContext != null) {
-            String key = SimpleApplicationContextUtil.rootApplicationContextKey;
-            stl.setAttribute(key, applicationContext);
-        }
-
-        // String wacAttr=WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE;
-    }
-
-    @Override
     protected void configureBuiltinServlets() {
         super.configureBuiltinServlets();
 
-        stl.addFilter(DispatchFilter.class, "/*", 0);
+        // OSIV filter should before dispatch filter.
+        stl.addFilter(OSIVFilter.class, "/*", 0);
+
+        // stl.addFilter(DispatchFilter.class, "/*", 0);
+        stl.addServlet(DispatchServlet.class, PREFIX + "/*");
 
         setupH2Console();
     }
@@ -92,6 +75,13 @@ public abstract class RestfulTestCase
         // servlet.setInitParameter("webAllowOthers", "");
         // servlet.setInitParameter("trace", "");
         // servlet.loadOnStartup?
+    }
+
+    public void browseAndWait(Class<?> moduleClass)
+            throws IOException {
+        String modulePath = OidUtil.getOid(moduleClass).toPath();
+        String location = PREFIX + "/" + modulePath + "/";
+        browseAndWait(location);
     }
 
 }
