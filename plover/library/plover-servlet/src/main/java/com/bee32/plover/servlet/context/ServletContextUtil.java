@@ -1,13 +1,14 @@
-package com.bee32.plover.restful.context;
+package com.bee32.plover.servlet.context;
 
 import javax.free.IllegalUsageException;
 import javax.servlet.ServletContext;
 
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-public class SimpleApplicationContextUtil {
+public class ServletContextUtil {
 
     /**
      * @see org.springframework.web.context.WebApplicationContext
@@ -21,15 +22,15 @@ public class SimpleApplicationContextUtil {
     }
 
     public static ApplicationContext getApplicationContext(ServletContext servletContext) {
-        Object obj = servletContext.getAttribute(rootApplicationContextKey);
+        Object rootAppCtx = servletContext.getAttribute(rootApplicationContextKey);
 
-        if (obj == null)
+        if (rootAppCtx == null)
             return WebApplicationContextUtils.getWebApplicationContext(servletContext);
 
-        if (!(obj instanceof ApplicationContext))
+        if (!(rootAppCtx instanceof ApplicationContext))
             throw new IllegalUsageException("The root application context is not an instance of ApplicationContext");
 
-        ApplicationContext applicationContext = (ApplicationContext) obj;
+        ApplicationContext applicationContext = (ApplicationContext) rootAppCtx;
         return applicationContext;
     }
 
@@ -43,6 +44,15 @@ public class SimpleApplicationContextUtil {
             servletContext.removeAttribute(webRootApplicationContextKey);
             servletContext.setAttribute(rootApplicationContextKey, applicationContext);
         }
+    }
+
+    public static void wire(ServletContext servletContext, Object bean) {
+        ApplicationContext applicationContext = getApplicationContext(servletContext);
+        if (applicationContext == null)
+            throw new IllegalStateException("Servlet context " + servletContext + " doesn't have application context");
+
+        AutowireCapableBeanFactory factory = applicationContext.getAutowireCapableBeanFactory();
+        factory.autowireBean(bean);
     }
 
 }
