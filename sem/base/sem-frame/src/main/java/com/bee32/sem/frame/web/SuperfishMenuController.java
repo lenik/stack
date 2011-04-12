@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
@@ -14,10 +15,8 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import com.bee32.sem.frame.builtins.MainMenu;
 import com.bee32.sem.frame.menu.SuperfishMenuBuilder;
 
-/**
- * Date: 11-3-30 Time: 下午4:17
- */
 @Controller
+@Lazy
 public class SuperfishMenuController
         extends MultiActionController {
 
