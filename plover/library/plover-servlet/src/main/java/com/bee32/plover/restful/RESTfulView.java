@@ -6,15 +6,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.Component;
 
-public abstract class RestfulView
+public abstract class RESTfulView
         extends Component
-        implements IRestfulView {
+        implements IRESTfulView {
 
-    public RestfulView() {
+    public RESTfulView() {
         super();
     }
 
-    public RestfulView(String name) {
+    public RESTfulView(String name) {
         super(name);
     }
 
@@ -29,7 +29,7 @@ public abstract class RestfulView
     }
 
     @Override
-    public boolean render(Object obj, IRestfulRequest req, IRestfulResponse resp)
+    public boolean render(Object obj, IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException {
         if (obj == null)
             throw new NullPointerException("obj");
@@ -41,14 +41,14 @@ public abstract class RestfulView
 
     @Transactional
     @Override
-    public boolean renderTx(Class<?> clazz, Object obj, IRestfulRequest req, IRestfulResponse resp)
+    public boolean renderTx(Class<?> clazz, Object obj, IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException {
         return render(clazz, obj, req, resp);
     }
 
     @Transactional
     @Override
-    public boolean renderTx(Object obj, IRestfulRequest req, IRestfulResponse resp)
+    public boolean renderTx(Object obj, IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException {
         return render(obj, req, resp);
     }

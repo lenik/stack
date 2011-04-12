@@ -1,23 +1,23 @@
 package com.bee32.plover.restful;
 
-public class RestfulException
+public class RESTfulException
         extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    public RestfulException() {
+    public RESTfulException() {
         super();
     }
 
-    public RestfulException(String message, Throwable cause) {
+    public RESTfulException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public RestfulException(String message) {
+    public RESTfulException(String message) {
         super(message);
     }
 
-    public RestfulException(Throwable cause) {
+    public RESTfulException(Throwable cause) {
         super(cause);
     }
 

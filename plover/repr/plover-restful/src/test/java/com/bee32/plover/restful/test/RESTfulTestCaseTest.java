@@ -7,15 +7,15 @@ import org.junit.Test;
 import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.restful.builtin.CoreInfoModule;
 
-public class RestfulTestCaseTest
-        extends RestfulTestCase {
+public class RESTfulTestCaseTest
+        extends RESTfulTestCase {
 
-    static final String corePath = OidUtil.getOid(CoreInfoModule.class).toPath();
+    static final String corePath = "/" + OidUtil.getOid(CoreInfoModule.class).toPath();
 
     @Test
     public void testCoreInfoCreditText()
             throws Exception {
-        String prefix = "http://localhost:" + stl.getPort() + "/";
+        String prefix = "http://localhost:" + stl.getPort() + PREFIX;
         String creditUri = prefix + corePath + "/credit";
 
         // System.out.println(creditUri);
@@ -29,7 +29,7 @@ public class RestfulTestCaseTest
 
     public static void main(String[] args)
             throws IOException {
-        new RestfulTestCaseTest().browseAndWait();
+        new RESTfulTestCaseTest().browseAndWait();
     }
 
 }

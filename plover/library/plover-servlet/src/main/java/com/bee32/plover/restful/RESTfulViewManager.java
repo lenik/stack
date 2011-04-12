@@ -12,24 +12,24 @@ import org.springframework.stereotype.Service;
 
 @Lazy
 @Service
-public class RestfulViewManager
+public class RESTfulViewManager
         implements ApplicationContextAware {
 
-    private final Set<IRestfulView> views;
+    private final Set<IRESTfulView> views;
 
-    public RestfulViewManager() {
-        views = new TreeSet<IRestfulView>(RestfulViewComparator.INSTANCE);
+    public RESTfulViewManager() {
+        views = new TreeSet<IRESTfulView>(RESTfulViewComparator.INSTANCE);
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
-        for (IRestfulView view : applicationContext.getBeansOfType(IRestfulView.class).values()) {
+        for (IRESTfulView view : applicationContext.getBeansOfType(IRESTfulView.class).values()) {
             views.add(view);
         }
     }
 
-    public Set<IRestfulView> getViews() {
+    public Set<IRESTfulView> getViews() {
         return Collections.unmodifiableSet(views);
     }
 

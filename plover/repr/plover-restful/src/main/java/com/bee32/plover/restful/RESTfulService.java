@@ -23,7 +23,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.naming.ReverseLookupRegistry;
 import com.bee32.plover.cache.annotation.StatelessUtil;
@@ -36,14 +35,14 @@ import com.bee32.plover.disp.util.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.disp.util.MethodLazyInjector;
 import com.bee32.plover.disp.util.MethodPattern;
-import com.bee32.plover.restful.request.RestfulRequestBuilder;
+import com.bee32.plover.restful.request.RESTfulRequestBuilder;
 import com.bee32.plover.servlet.context.LocationContextConstants;
 
 @Lazy
 @Service
-public class RestfulService {
+public class RESTfulService {
 
-    static Logger logger = LoggerFactory.getLogger(RestfulService.class);
+    static Logger logger = LoggerFactory.getLogger(RESTfulService.class);
 
     private transient Object root;
 
@@ -54,7 +53,7 @@ public class RestfulService {
     ModuleManager moduleManager;
 
     @Inject
-    RestfulViewManager viewManager;
+    RESTfulViewManager viewManager;
 
     public void setRoot(Object root) {
         if (root == null)
@@ -65,22 +64,16 @@ public class RestfulService {
     /**
      * So make it Open Session In View.
      */
-    @Transactional
-    public boolean processOrNot(ServletRequest _request, ServletResponse _response)
-            throws IOException, ServletException, RestfulException {
+    // By using OSIV pattern, transactional here is unnecessary.
+    // @Transactional
+    public boolean processOrNot(final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException, ServletException, RESTfulException {
 
-        if (!(_request instanceof HttpServletRequest))
+        final RESTfulRequest req = RESTfulRequestBuilder.build(request);
+        if (req == null)
             return false;
-        if (!(_response instanceof HttpServletResponse))
-            return false;
 
-        // 1, Build the restful-request
-        final HttpServletRequest request = (HttpServletRequest) _request;
-        final HttpServletResponse response = (HttpServletResponse) _response;
-
-        RestfulRequestBuilder requestBuilder = RestfulRequestBuilder.getInstance();
-        final RestfulRequest req = requestBuilder.build(request);
-        final RestfulResponse resp = new RestfulResponse(response);
+        final RESTfulResponse resp = new RESTfulResponse(response);
 
         // 2, Path-dispatch
         ITokenQueue tq = req.getTokenQueue();
@@ -93,7 +86,7 @@ public class RestfulService {
         // 3, origin is a servlet delegate?
         if (origin instanceof Servlet) {
             Servlet resultServlet = (Servlet) origin;
-            resultServlet.service(_request, _response);
+            resultServlet.service(request, response);
             return true;
         }
 
@@ -203,7 +196,7 @@ public class RestfulService {
     /**
      * @return <code>true</code> if any controller method exists and the method is handled.
      */
-    private boolean doControllerMethod(Class<?> originClass, RestfulRequest req, RestfulResponse resp)
+    private boolean doControllerMethod(Class<?> originClass, RESTfulRequest req, RESTfulResponse resp)
             throws ServletException {
 
         ClassMethod cmethod = getControllerMethod(originClass, req.getMethod());
@@ -240,7 +233,7 @@ public class RestfulService {
     /**
      * @return <code>true</code> if any inplace method exists and the method is handled.
      */
-    private boolean doInplaceMethod(Object origin, final RestfulRequest req, final RestfulResponse resp)
+    private boolean doInplaceMethod(Object origin, final RESTfulRequest req, final RESTfulResponse resp)
             throws ServletException {
         Class<?> originClass = origin.getClass();
         final Method singleMethod = getSingleMethod(originClass, req.getMethod());
@@ -275,9 +268,9 @@ public class RestfulService {
 
     /**
      * @throws IOException
-     * @throws RestfulException
+     * @throws RESTfulException
      */
-    private boolean doRender(Object object, IRestfulRequest req, IRestfulResponse resp, Boolean fallback)
+    private boolean doRender(Object object, IRESTfulRequest req, IRESTfulResponse resp, Boolean fallback)
             throws ServletException {
 
         if (logger.isDebugEnabled()) {
@@ -289,9 +282,9 @@ public class RestfulService {
         Class<?> clazz = object.getClass();
 
         // Set<IRestfulView> views = RestfulViewFactory.getViews();
-        Set<IRestfulView> views = viewManager.getViews();
+        Set<IRESTfulView> views = viewManager.getViews();
 
-        for (IRestfulView view : views) {
+        for (IRESTfulView view : views) {
             if (fallback != null && fallback != view.isFallback())
                 continue;
 

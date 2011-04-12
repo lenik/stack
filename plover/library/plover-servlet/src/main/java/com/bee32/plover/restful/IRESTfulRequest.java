@@ -6,7 +6,7 @@ import com.bee32.plover.disp.util.IArrival;
 import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.util.Mime;
 
-public interface IRestfulRequest
+public interface IRESTfulRequest
         extends HttpServletRequest {
 
     /**

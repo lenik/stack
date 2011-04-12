@@ -4,14 +4,14 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.bee32.plover.disp.util.Arrival;
 import com.bee32.plover.disp.util.IArrival;
-import com.bee32.plover.restful.RestfulRequest;
+import com.bee32.plover.restful.RESTfulRequest;
 
-public class RestfulRequestUtil {
+public class RESTfulRequestUtil {
 
-    public static RestfulRequest wrapDispatched(Object obj) {
+    public static RESTfulRequest wrapDispatched(Object obj) {
         MockHttpServletRequest req0 = new MockHttpServletRequest();
 
-        RestfulRequest rreq = new RestfulRequest(req0);
+        RESTfulRequest rreq = new RESTfulRequest(req0);
 
         IArrival  arrival = new Arrival(obj);
         rreq.setArrival(arrival);

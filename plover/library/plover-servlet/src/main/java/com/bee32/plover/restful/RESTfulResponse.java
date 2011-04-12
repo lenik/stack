@@ -3,15 +3,15 @@ package com.bee32.plover.restful;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-public class RestfulResponse
+public class RESTfulResponse
         extends HttpServletResponseWrapper
-        implements IRestfulResponse {
+        implements IRESTfulResponse {
 
     private Object target;
     private Throwable exception;
     private String method;
 
-    public RestfulResponse(HttpServletResponse response) {
+    public RESTfulResponse(HttpServletResponse response) {
         super(response);
     }
 

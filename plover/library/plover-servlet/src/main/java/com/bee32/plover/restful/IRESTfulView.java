@@ -2,7 +2,7 @@ package com.bee32.plover.restful;
 
 import java.io.IOException;
 
-public interface IRestfulView {
+public interface IRESTfulView {
 
     /**
      * Get the order in which the available view is queried.
@@ -27,11 +27,11 @@ public interface IRestfulView {
      * @return <code>true</code> if the corresponding view is defined and processed. Otherwise,
      *         <code>false</code> is returned.
      */
-    boolean render(Class<?> clazz, Object obj, IRestfulRequest req, IRestfulResponse resp)
+    boolean render(Class<?> clazz, Object obj, IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException;
 
     /**
-     * The same as {@link #render(Class, Object, IRestfulRequest, IRestfulResponse)}, with the
+     * The same as {@link #render(Class, Object, IRESTfulRequest, IRESTfulResponse)}, with the
      * actual object class.
      *
      * @param obj
@@ -43,13 +43,13 @@ public interface IRestfulView {
      * @return <code>true</code> if the corresponding view is defined and processed. Otherwise,
      *         <code>false</code> is returned.
      */
-    boolean render(Object obj, IRestfulRequest req, IRestfulResponse resp)
+    boolean render(Object obj, IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException;
 
-    boolean renderTx(Class<?> clazz, Object obj, IRestfulRequest req, IRestfulResponse resp)
+    boolean renderTx(Class<?> clazz, Object obj, IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException;
 
-    boolean renderTx(Object obj, IRestfulRequest req, IRestfulResponse resp)
+    boolean renderTx(Object obj, IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException;
 
 }

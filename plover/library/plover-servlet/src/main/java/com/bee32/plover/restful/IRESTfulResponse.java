@@ -2,7 +2,7 @@ package com.bee32.plover.restful;
 
 import javax.servlet.http.HttpServletResponse;
 
-public interface IRestfulResponse
+public interface IRESTfulResponse
         extends HttpServletResponse {
 
     /**

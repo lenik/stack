@@ -2,11 +2,11 @@ package com.bee32.plover.restful;
 
 import javax.free.AbstractNonNullComparator;
 
-public class RestfulViewComparator
-        extends AbstractNonNullComparator<IRestfulView> {
+public class RESTfulViewComparator
+        extends AbstractNonNullComparator<IRESTfulView> {
 
     @Override
-    public int compareNonNull(IRestfulView o1, IRestfulView o2) {
+    public int compareNonNull(IRESTfulView o1, IRESTfulView o2) {
         int priority1 = o1.getPriority();
         int priority2 = o2.getPriority();
 
@@ -18,6 +18,6 @@ public class RestfulViewComparator
         return cmp;
     }
 
-    public static final RestfulViewComparator INSTANCE = new RestfulViewComparator();
+    public static final RESTfulViewComparator INSTANCE = new RESTfulViewComparator();
 
 }

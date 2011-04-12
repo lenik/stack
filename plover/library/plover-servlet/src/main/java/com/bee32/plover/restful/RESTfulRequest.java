@@ -11,9 +11,9 @@ import com.bee32.plover.disp.util.TokenQueue;
 import com.bee32.plover.util.Mime;
 import com.bee32.plover.util.Mimes;
 
-public class RestfulRequest
+public class RESTfulRequest
         extends HttpServletRequestWrapper
-        implements IRestfulRequest, Serializable {
+        implements IRESTfulRequest, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,7 +24,7 @@ public class RestfulRequest
 
     private Mime contentType = Mimes.text_html;
 
-    public RestfulRequest(HttpServletRequest request) {
+    public RESTfulRequest(HttpServletRequest request) {
         super(request);
     }
 
