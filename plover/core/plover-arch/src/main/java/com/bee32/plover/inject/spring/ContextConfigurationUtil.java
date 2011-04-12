@@ -23,6 +23,22 @@ public class ContextConfigurationUtil {
         return allLocations;
     }
 
+    public static String getConcatConfigLocations(Class<?> clazz) {
+        Collection<String> configLocations = ContextConfigurationUtil.getContextConfigurationLocations(clazz);
+
+        StringBuilder concatLocations = new StringBuilder();
+        for (String location : configLocations) {
+            String respath = "classpath:" + location;
+
+            if (concatLocations.length() != 0)
+                concatLocations.append(", ");
+
+            concatLocations.append(respath);
+        }
+
+        return concatLocations.toString();
+    }
+
     static void scan(Class<?> clazz, Set<String> allLocations) {
         while (clazz != null) {
             String[] locations = null;
