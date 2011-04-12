@@ -8,7 +8,9 @@ import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 
 import javax.free.IllegalUsageException;
@@ -149,6 +151,18 @@ public class ServletTestLibrary
     }
 
     protected void configureContext() {
+        List<String> list = new ArrayList<String>();
+
+        String[] welcomeFiles = getServletContext().getWelcomeFiles();
+        if (welcomeFiles != null)
+            for (String welcomeFile : welcomeFiles)
+                list.add(welcomeFile);
+
+        if (!list.contains("index.html"))
+            list.add(0, "index.html");
+
+        welcomeFiles = list.toArray(new String[0]);
+        getServletContext().setWelcomeFiles(welcomeFiles);
     }
 
     protected void configureBuiltinServlets() {
