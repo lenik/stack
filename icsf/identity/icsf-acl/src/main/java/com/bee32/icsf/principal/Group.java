@@ -11,7 +11,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
@@ -61,7 +60,6 @@ public class Group
         this.inheritedGroup = cast(inheritedGroup);
     }
 
-    @Transient
     @OneToMany(targetEntity = Group.class, mappedBy = "inheritedGroup")
     @Override
     public Set<Group> getDerivedGroups() {
