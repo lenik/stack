@@ -60,6 +60,9 @@ public class MultiLevelRange
         this.verifyPolicy = verifyPolicy;
     }
 
+    /**
+     * The same as {@link #getLimit()}
+     */
     @Transient
     @Override
     public Long getBoundary() {
