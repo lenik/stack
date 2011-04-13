@@ -33,6 +33,11 @@
             <artifactId>plover-indexing</artifactId>
             <version>0.2.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.bee32.sems</groupId>
+            <artifactId>type-ublock</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <name>SEM :: Process :: Process</name>
 </project>
