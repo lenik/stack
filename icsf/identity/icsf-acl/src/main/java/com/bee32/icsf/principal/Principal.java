@@ -72,8 +72,8 @@ public class Principal
 
     @ManyToMany(targetEntity = Principal.class)
     // @Cascade(CascadeType.SAVE_UPDATE)
-    @JoinTable(name = "PrincipalImpl", //
-    /*            */joinColumns = @JoinColumn(name = "impl"), //
+    @JoinTable(name = "PrincipalImp", //
+    /*            */joinColumns = @JoinColumn(name = "imp"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "principal"))
     public Collection<Principal> getImpliedPrincipals() {
         if (impliedPrincipals == null) {
