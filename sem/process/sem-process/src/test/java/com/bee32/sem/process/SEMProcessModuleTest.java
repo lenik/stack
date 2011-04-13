@@ -4,9 +4,11 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.restful.test.RESTfulTestCase;
 
-public class SemProcessModuleTest
+@Using(SEMProcessUnit.class)
+public class SEMProcessModuleTest
         extends RESTfulTestCase {
 
     @Test
@@ -19,7 +21,7 @@ public class SemProcessModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SemProcessModuleTest().browseAndWait(SEMProcessModule.class);
+        new SEMProcessModuleTest().browseAndWait(SEMProcessModule.class);
     }
 
 }
