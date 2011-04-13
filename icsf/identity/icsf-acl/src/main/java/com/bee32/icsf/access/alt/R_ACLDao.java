@@ -28,14 +28,14 @@ public class R_ACLDao
         if (resource == null)
             throw new NullPointerException("resource");
 
-        String resourceName = ResourceRegistry.qualify(resource);
+        String qualifiedName = ResourceRegistry.qualify(resource);
 
         R_ACL acl = new R_ACL(null, resource);
 
         List<R_ACE> list = getHibernateTemplate().findByNamedParam(//
                 "from R_ACE where" //
-                        + "   (:q = resourceName or :q like resourceName || '.%')", //
-                "q", resourceName);
+                        + "   ( :q like qualifiedName || '%' )", //
+                "q", qualifiedName);
 
         for (R_ACE ace : list)
             acl.add(ace.getPrincipal(), ace.getPermission());
@@ -50,12 +50,12 @@ public class R_ACLDao
         HibernateTemplate template = getHibernateTemplate();
 
         Resource resource = acl.getResource();
-        String resourceName = ResourceRegistry.qualify(resource);
+        String qualifiedName = ResourceRegistry.qualify(resource);
 
         List<R_ACE> existing = template.findByNamedParam(//
                 "from R_ACE where" //
-                        + "   (:q = resourceName or :q like resourceName || '.%')", //
-                "q", resourceName);
+                        + "   ( :q like qualifiedName || '%' )", //
+                "q", qualifiedName);
 
         Map<IPrincipal, R_ACE> existingMap = new HashMap<IPrincipal, R_ACE>();
         for (R_ACE ace : existing)
@@ -108,15 +108,15 @@ public class R_ACLDao
         if (principal == null)
             throw new NullPointerException("principal");
 
-        String resourceName = ResourceRegistry.qualify(resource);
+        String qualifiedName = ResourceRegistry.qualify(resource);
 
         Long principalId = principal.getId();
         List<R_ACE> list = getHibernateTemplate().findByNamedParam(// ,
                 "from R_ACE where" //
-                        + "   (:q = resourceName or :q like resourceName || '.%')" //
+                        + "   ( :q like qualifiedName || '%' )" //
                         + "   and principal.id = :principalId", //
                 new String[] { "q", "principalId" }, //
-                new Object[] { resourceName, principalId });
+                new Object[] { qualifiedName, principalId });
 
         // Only the first matching entry is returned.
         for (R_ACE ace : list)

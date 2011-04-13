@@ -29,23 +29,26 @@ public class ResourceRegistry {
     /**
      * Query resource using full qualified name.
      *
-     * @param fullName
-     *            Qualified name in `namespace:local-name` format.
+     * @param qualifiedName
+     *            Qualified name in `namespace:local-name.` format.
      * @return <code>null</code> If local-name is undefined with-in the namespace.
      * @throws IllegalArgumentException
      *             If namespace is undefined.
      */
-    public static Resource query(String fullName) {
+    public static Resource query(String qualifiedName) {
         String ns = defaultNS;
         String localName;
 
-        int colon = fullName.indexOf(':');
+        int colon = qualifiedName.indexOf(':');
         if (colon != -1) {
-            ns = fullName.substring(0, colon);
-            localName = fullName.substring(colon + 1);
+            ns = qualifiedName.substring(0, colon);
+            localName = qualifiedName.substring(colon + 1);
         } else {
-            localName = fullName;
+            localName = qualifiedName;
         }
+
+        if (localName.endsWith("."))
+            localName = localName.substring(0, localName.length() - 1);
 
         IResourceNamespace namespace = namespaces.get(ns);
         if (namespace == null)
@@ -70,7 +73,7 @@ public class ResourceRegistry {
 
         String ns = rn.getNamespace();
         String localName = resource.getName();
-        return ns + ":" + localName;
+        return ns + ":" + localName + ".";
     }
 
 }

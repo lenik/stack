@@ -20,9 +20,9 @@ public class R_ACLSamples
 
     public R_ACLSamples() {
         admin_all = new R_ACE("ap:", adminRole, "Slcdrwx");
-        service_tom_x = new R_ACE("ap:TestService", tom, "x");
-        method1_kate_rx = new R_ACE("ap:TestService.method1", kate, "rx");
-        foo_reguser_w = new R_ACE("ap:TestService.foo", registeredRole, "w");
+        service_tom_x = new R_ACE("ap:TestService.", tom, "x");
+        method1_kate_rx = new R_ACE("ap:TestService.method1.", kate, "rx");
+        foo_reguser_w = new R_ACE("ap:TestService.foo.", registeredRole, "w");
     }
 
     @Override

@@ -22,7 +22,7 @@ public class R_ACE
 
     private static final long serialVersionUID = 1L;
 
-    private String resourceName;
+    private String qualifiedName;
     private Principal principal;
     private String mode;
 
@@ -38,37 +38,49 @@ public class R_ACE
         this(ResourceRegistry.qualify(resource), principal, mode);
     }
 
-    public R_ACE(String resourceName, Principal principal, String mode) {
+    public R_ACE(String qualifiedName, Principal principal, String mode) {
         super("ACE");
 
-        if (resourceName == null)
-            throw new NullPointerException("resourceName");
+        if (qualifiedName == null)
+            throw new NullPointerException("qualifiedName");
         if (principal == null)
             throw new NullPointerException("principal");
         if (mode == null)
             throw new NullPointerException("mode");
 
-        this.resourceName = resourceName;
+        setQualifiedName(qualifiedName);
+
         this.principal = principal;
         this.mode = mode;
     }
 
-    @Column(length = 100, nullable = false)
-    public String getResourceName() {
-        return resourceName;
+    @Column(name = "qName", length = 100, nullable = false)
+    public String getQualifiedName() {
+        return qualifiedName;
     }
 
-    public void setResourceName(String resourceName) {
-        this.resourceName = resourceName;
+    public void setQualifiedName(String qualifiedName) {
+        if (qualifiedName == null)
+            throw new NullPointerException("qualifiedName");
+
+        if (qualifiedName.isEmpty()) {
+            throw new IllegalArgumentException("Qualified name is empty.");
+        } else {
+            char ending = qualifiedName.charAt(qualifiedName.length() - 1);
+            if (ending != '.' && ending != ':')
+                throw new IllegalArgumentException("Qualified name should end with `:` or `.`.");
+        }
+
+        this.qualifiedName = qualifiedName;
     }
 
     @Transient
     public Resource getResource() {
-        return ResourceRegistry.query(resourceName);
+        return ResourceRegistry.query(qualifiedName);
     }
 
     public void setResource(Resource resource) {
-        this.resourceName = resource.getName();
+        this.qualifiedName = ResourceRegistry.qualify(resource);
     }
 
     @ManyToOne(optional = false)
@@ -104,7 +116,7 @@ public class R_ACE
     protected int hashCodeEntity() {
         final int prime = 31;
         int result = 0;
-        result = prime * result + resourceName.hashCode();
+        result = prime * result + qualifiedName.hashCode();
         result = prime * result + principal.hashCode();
         result = prime * result + mode.hashCode();
         return result;
@@ -113,6 +125,9 @@ public class R_ACE
     @Override
     protected boolean equalsEntity(EntityBean<Long> otherEntity) {
         R_ACE other = (R_ACE) otherEntity;
+
+        if (!qualifiedName.equals(other.qualifiedName))
+            return false;
 
         if (!mode.equals(other.mode))
             return false;
@@ -126,7 +141,7 @@ public class R_ACE
     @Override
     public void toString(PrettyPrintStream out, FormatStyle format) {
         // ap:foo.Bar: Tom +rw
-        out.print(resourceName);
+        out.print(qualifiedName);
         out.print(": ");
 
         out.print(principal.getName());
