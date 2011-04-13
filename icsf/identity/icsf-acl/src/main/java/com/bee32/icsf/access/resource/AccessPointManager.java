@@ -41,7 +41,6 @@ public class AccessPointManager
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
         context = applicationContext;
-        scanned = false;
     }
 
     public Collection<AccessPoint> getAccessPoints() {
