@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.model.Model;
@@ -60,7 +59,7 @@ public abstract class EntityBean<K extends Serializable>
         this.id = id;
     }
 
-    @Version
+    // @Version
     public int getVersion() {
         return version;
     }
