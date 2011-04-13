@@ -3,10 +3,9 @@ package com.bee32.plover.orm.entity;
 import java.io.Serializable;
 
 import com.bee32.plover.arch.IRepository;
-import com.bee32.plover.arch.naming.INamedNode;
 
 public interface IEntityRepository<E extends IEntity<K>, K extends Serializable>
-        extends IRepository<K, E>, INamedNode {
+        extends IRepository<K, E> {
 
     /**
      * Or the storage class.
@@ -32,15 +31,9 @@ public interface IEntityRepository<E extends IEntity<K>, K extends Serializable>
     void refresh(E entity);
 
     @Override
-    K saveOrUpdate(E entity);
+    void saveOrUpdate(E entity);
 
     @Override
     void delete(Object entity);
-
-    @Override
-    boolean hasChild(Object entity);
-
-    @Override
-    String getChildName(Object entity);
 
 }

@@ -13,20 +13,12 @@ public class MapEntityRepository<E extends IEntity<K>, K extends Serializable>
 
     private Map<K, E> map;
 
-    public MapEntityRepository(Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
-        super(instanceType, entityType, keyType);
+    public MapEntityRepository() {
+        super();
     }
 
-    public MapEntityRepository(Class<E> instanceType, Class<K> keyType) {
-        super(instanceType, keyType);
-    }
-
-    public MapEntityRepository(String name, Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
-        super(name, instanceType, entityType, keyType);
-    }
-
-    public MapEntityRepository(String name, Class<E> instanceType, Class<K> keyType) {
-        super(name, instanceType, keyType);
+    public MapEntityRepository(String name) {
+        super(name);
     }
 
     public Map<K, E> getMap() {
@@ -59,7 +51,7 @@ public class MapEntityRepository<E extends IEntity<K>, K extends Serializable>
     }
 
     @Override
-    public E retrieve(Serializable key) {
+    public E get(K key) {
         return getMap().get(key);
     }
 

@@ -11,8 +11,12 @@ public abstract class JpaEntityRepository<E extends IEntity<K>, K extends Serial
 
     private JpaTemplate template;
 
-    public JpaEntityRepository(Class<E> entityType, Class<K> keyType) {
-        super(entityType, keyType);
+    public JpaEntityRepository() {
+        super();
+    }
+
+    public JpaEntityRepository(String name) {
+        super(name);
     }
 
     public EntityManager getEntityManager() {
@@ -33,14 +37,17 @@ public abstract class JpaEntityRepository<E extends IEntity<K>, K extends Serial
     }
 
     @Override
-    public boolean containsKey(Serializable key) {
-        return retrieve(key) != null;
+    public boolean containsKey(Serializable _key) {
+        if (!(keyType.isInstance(_key)))
+            return false;
+        K key = keyType.cast(_key);
+        return get(key) != null;
     }
 
     @Override
-    public E retrieve(Serializable key) {
+    public E get(K key) {
         // TODO SHOULD convert key -> serializable.
-        E entity = template.find(instanceType, key);
+        E entity = template.find(entityType, key);
         return entity;
     }
 
@@ -61,8 +68,8 @@ public abstract class JpaEntityRepository<E extends IEntity<K>, K extends Serial
     }
 
     @Override
-    public void deleteByKey(Serializable key) {
-        E entity = retrieve(key);
+    public void deleteByKey(K key) {
+        E entity = get(key);
         if (entity != null)
             template.remove(entity);
     }

@@ -13,25 +13,17 @@ import com.bee32.plover.orm.dao.GenericDao;
  *
  * @see GenericDao
  */
-@Lazy
 @ComponentTemplate
-public abstract class EntityDao<E extends IEntity<K>, K extends Serializable>
-        extends GenericEntityRepository<E, K> {
+@Lazy
+public abstract class EntityDao<E extends EntityBean<K>, K extends Serializable>
+        extends HibernateEntityRepository<E, K> {
 
-    public EntityDao(Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
-        super(instanceType, entityType, keyType);
+    public EntityDao() {
+        super();
     }
 
-    public EntityDao(Class<E> entityType, Class<K> keyType) {
-        super(entityType, keyType);
-    }
-
-    public EntityDao(String name, Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
-        super(name, instanceType, entityType, keyType);
-    }
-
-    public EntityDao(String name, Class<E> instanceType, Class<K> keyType) {
-        super(name, instanceType, keyType);
+    public EntityDao(String name) {
+        super(name);
     }
 
 }

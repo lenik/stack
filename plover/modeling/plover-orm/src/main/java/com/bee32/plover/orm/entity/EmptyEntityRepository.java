@@ -7,14 +7,6 @@ import java.util.List;
 public class EmptyEntityRepository<E extends EntityBean<K>, K extends Serializable>
         extends EntityRepository<E, K> {
 
-    public EmptyEntityRepository(Class<E> instanceType, Class<K> keyType) {
-        super(instanceType, keyType);
-    }
-
-    public EmptyEntityRepository(String name, Class<E> instanceType, Class<K> keyType) {
-        super(name, instanceType, keyType);
-    }
-
     @Override
     public boolean containsKey(Serializable key) {
         return false;
@@ -30,7 +22,7 @@ public class EmptyEntityRepository<E extends EntityBean<K>, K extends Serializab
     }
 
     @Override
-    public E retrieve(Serializable key) {
+    public E get(K key) {
         return null;
     }
 

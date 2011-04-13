@@ -17,23 +17,15 @@ import com.bee32.plover.orm.dao.HibernateTemplate;
 public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializable>
         extends EntityRepository<E, K> {
 
-    public HibernateEntityRepository(Class<E> entityType, Class<K> keyType) {
-        super(entityType, keyType);
-    }
-
-    public HibernateEntityRepository(Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
-        super(instanceType, entityType, keyType);
-    }
-
-    public HibernateEntityRepository(String name, Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
-        super(name, instanceType, entityType, keyType);
-    }
-
-    public HibernateEntityRepository(String name, Class<E> instanceType, Class<K> keyType) {
-        super(name, instanceType, keyType);
-    }
-
     private HibernateDaoSupportUtil support = new HibernateDaoSupportUtil();
+
+    public HibernateEntityRepository() {
+        super();
+    }
+
+    public HibernateEntityRepository(String name) {
+        super(name);
+    }
 
     @Inject
     public final void setSessionFactory(SessionFactory sessionFactory) {
@@ -62,14 +54,13 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
 
     @Override
     public List<? extends E> list() {
-        // XXX - wrap with a Session to make "dynamic" Collection to work?
         return getHibernateTemplate().loadAll(entityType);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<? extends K> listKeys() {
-        List<?> _list = getHibernateTemplate().find("select ID from " + entityType.getName());
+        List<?> _list = getHibernateTemplate().find("select id from " + entityType.getName());
         return (List<? extends K>) _list;
     }
 
@@ -85,12 +76,12 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
     }
 
     @Override
-    public E retrieve(Serializable key) {
+    public E get(K key) {
         E entity = getHibernateTemplate().get(entityType, key);
         return entity;
     }
 
-    public E retrieve(Serializable key, LockMode lockMode)
+    public E retrieve(K key, LockMode lockMode)
             throws DataAccessException {
         return getHibernateTemplate().get(entityType, key, lockMode);
     }
@@ -117,6 +108,10 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
         getHibernateTemplate().refresh(entity);
     }
 
+    public void saveOrUpdate(E entity) {
+        getHibernateTemplate().saveOrUpdate(entity);
+    }
+
     @Override
     public void delete(Object entity) {
         getHibernateTemplate().delete(entity);
@@ -128,8 +123,8 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
     }
 
     @Override
-    public void deleteByKey(Serializable key) {
-        E entity = retrieve(key);
+    public void deleteByKey(K key) {
+        E entity = get(key);
         delete(entity);
     }
 

@@ -77,7 +77,7 @@ public class EntityRepositoryController<E extends EntityBean<K>, K extends Seria
         String keyString = req.getRestPath();
         K key = repo.parseKey(keyString);
 
-        E entity = repo.retrieve(key);
+        E entity = repo.get(key);
         dataManager.delete(entity);
 
         // MethodNames.INDEX isn't imported.

@@ -21,7 +21,7 @@ import com.bee32.plover.arch.util.IStruct;
 
 public abstract class EntityRepository<E extends IEntity<K>, K extends Serializable>
         extends Repository<K, E>
-        implements IEntityRepository<E, K> {
+        implements IEntityRepository<E, K>, INamedNode {
 
     static Logger logger = LoggerFactory.getLogger(EntityRepository.class);
 
@@ -29,42 +29,30 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
 
     private INamedNode parentLocator;
 
-    public EntityRepository(Class<E> instanceType, Class<K> keyType) {
-        super(keyType, instanceType);
-        init();
+    public EntityRepository() {
+        super();
     }
 
-    public EntityRepository(Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
-        super(keyType, instanceType);
-        this.entityType = entityType;
-        init();
+    public EntityRepository(String name) {
+        super(name);
     }
 
-    public EntityRepository(String name, Class<E> instanceType, Class<K> keyType) {
-        super(name, keyType, instanceType);
-        init();
-    }
-
-    public EntityRepository(String name, Class<E> instanceType, Class<? extends E> entityType, Class<K> keyType) {
-        super(name, keyType, instanceType);
-        this.entityType = entityType;
-        init();
-    }
-
-    @SuppressWarnings("unchecked")
-    void init() {
+    {
         if (this.entityType == null) {
             Class<?> entityType;
             try {
-                entityType = deferEntityType(instanceType);
+                entityType = deferEntityType(valueType);
             } catch (ClassNotFoundException e) {
-                throw new IllegalUsageException("No implementation type for " + instanceType);
+                throw new IllegalUsageException("No implementation type for " + valueType);
             }
 
-            if (!instanceType.isAssignableFrom(entityType))
-                throw new IllegalUsageException("Incompatible implementation " + entityType + " for " + instanceType);
+            if (!valueType.isAssignableFrom(entityType))
+                throw new IllegalUsageException("Incompatible implementation " + entityType + " for " + valueType);
 
-            this.entityType = (Class<? extends E>) entityType;
+            @SuppressWarnings("unchecked")
+            Class<? extends E> entityClass = (Class<? extends E>) entityType;
+
+            this.entityType = entityClass;
         }
         ReverseLookupRegistry.getInstance().register(this);
     }
@@ -188,7 +176,7 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
 
     @Override
     public Class<?> getChildType() {
-        return instanceType;
+        return valueType;
     }
 
     @Override
@@ -201,7 +189,7 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
                 logger.warn("Bad location token: " + location + ", for " + this, e);
             return null;
         }
-        return retrieve(parsedKey);
+        return get(parsedKey);
     }
 
     @Override
@@ -209,7 +197,7 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
         if (entity == null)
             return false;
 
-        if (!instanceType.isInstance(entity))
+        if (!entityType.isInstance(entity))
             return false;
 
         return true;
@@ -217,7 +205,7 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
 
     @Override
     public String getChildName(Object entity) {
-        E instance = instanceType.cast(entity);
+        E instance = entityType.cast(entity);
         K key = instance.getId();
         String keyLocation = formatKey(key);
         return keyLocation;
