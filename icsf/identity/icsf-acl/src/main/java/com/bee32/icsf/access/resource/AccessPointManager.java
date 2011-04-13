@@ -30,14 +30,18 @@ public class AccessPointManager
 
     static Logger logger = LoggerFactory.getLogger(AccessPointManager.class);
 
-    private boolean scanned;
+    /**
+     * XXX - 对于不同装载器装入的 EnterpriseService 或许有不同？可能 ClassLoader-local<scanned> 或许更好。
+     */
+    static boolean scanned;
+
     private ApplicationContext context;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
-        this.context = applicationContext;
-        this.scanned = false;
+        context = applicationContext;
+        scanned = false;
     }
 
     public Collection<AccessPoint> getAccessPoints() {
@@ -56,6 +60,8 @@ public class AccessPointManager
             for (Object checkInstance : context.getBeansOfType(checkBaseClass).values()) {
 
                 Class<?> checkClass = checkInstance.getClass();
+                checkClass = ClassUtil.skipProxies(checkClass);
+
                 if (!once.add(checkClass))
                     continue;
 
@@ -68,6 +74,7 @@ public class AccessPointManager
     }
 
     protected void scanAnnotatedPoints(Class<?> serviceClass) {
+        logger.debug("Scan service access points: " + serviceClass);
 
         URL contextURL = ClassUtil.getContextURL(serviceClass);
 
@@ -100,7 +107,7 @@ public class AccessPointManager
             dispatcher.addKeyAcceptor(name, pointAppearance);
             pointAppearance.setPropertyDispatcher(dispatcher);
 
-            logger.debug("Create point " + pointName);
+            logger.debug("Create access point " + pointName);
             AccessPoint point = AccessPoint.create(pointName);
 
             ComponentBuilder.setAppearance(point, pointAppearance);
