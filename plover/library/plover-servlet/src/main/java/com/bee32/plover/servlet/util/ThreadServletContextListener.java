@@ -9,8 +9,8 @@ public class ThreadServletContextListener
         implements ServletRequestListener {
 
     @Override
-    public void requestInitialized(ServletRequestEvent sre) {
-        ServletRequest request = sre.getServletRequest();
+    public void requestInitialized(ServletRequestEvent event) {
+        ServletRequest request = event.getServletRequest();
 
         if (request instanceof HttpServletRequest) {
             HttpServletRequest req = (HttpServletRequest) request;
@@ -19,9 +19,8 @@ public class ThreadServletContextListener
     }
 
     @Override
-    public void requestDestroyed(ServletRequestEvent sre) {
+    public void requestDestroyed(ServletRequestEvent event) {
         ThreadServletContext.setRequest(null);
-        ThreadServletContext.setResponse(null);
     }
 
 }

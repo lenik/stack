@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.ISupportLibrary;
-import com.bee32.plover.servlet.util.ThreadServletContextListener;
+import com.bee32.plover.servlet.util.ThreadServletContextFilter;
 
 public class ServletTestLibrary
         extends RabbitServer
@@ -174,7 +174,9 @@ public class ServletTestLibrary
         addFilter(Welcome.class, "/", 0);
         addServlet(Logo.class, "/logo/*");
 
-        addEventListener(new ThreadServletContextListener());
+        // Use filter to get the reponse object.
+        // addEventListener(new ThreadServletContextListener());
+        addFilter(ThreadServletContextFilter.class, "/*", 0);
     }
 
     /**
