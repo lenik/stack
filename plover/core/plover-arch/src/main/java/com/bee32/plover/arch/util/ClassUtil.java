@@ -34,17 +34,26 @@ public class ClassUtil {
         return Class.forName(className, false, classLoader);
     }
 
-    public static URL getContextURL(Class<?> clazz) {
-        String className = clazz.getName();
-        String baseName = StringPart.afterLast(className, '.');
-        if (baseName == null)
-            baseName = className;
+    public static Class<?> skipProxies(Class<?> clazz) {
+        if (clazz == null)
+            return null;
 
         // if (baseName.contains("$$"))
         // return getContextURL(clazz.getSuperclass());
         if (cglibFactoryClass != null)
             if (cglibFactoryClass.isAssignableFrom(clazz))
-                return getContextURL(clazz.getSuperclass());
+                return skipProxies(clazz.getSuperclass());
+
+        return clazz;
+    }
+
+    public static URL getContextURL(Class<?> clazz) {
+        clazz = skipProxies(clazz);
+
+        String className = clazz.getName();
+        String baseName = StringPart.afterLast(className, '.');
+        if (baseName == null)
+            baseName = className;
 
         String fileName = baseName + ".class";
         URL resource = clazz.getResource(fileName);
