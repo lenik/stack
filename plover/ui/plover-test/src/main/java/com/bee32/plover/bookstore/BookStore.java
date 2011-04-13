@@ -6,14 +6,6 @@ import com.bee32.plover.arch.util.IStruct;
 public class BookStore
         extends DaoBookStore {
 
-    public Book getBook(String name) {
-        return retrieve(name);
-    }
-
-    public void removeBook(String name) {
-        deleteByKey(name);
-    }
-
     public void clear() {
         deleteAll();
     }

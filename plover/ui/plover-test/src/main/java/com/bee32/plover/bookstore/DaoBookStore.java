@@ -9,10 +9,6 @@ public class DaoBookStore
 
     private static final long serialVersionUID = 1L;
 
-    public DaoBookStore() {
-        super(Book.class, Integer.class);
-    }
-
     public void addBook(Book book) {
         save(book);
     }

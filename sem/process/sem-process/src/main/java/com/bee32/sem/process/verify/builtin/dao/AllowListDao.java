@@ -6,8 +6,4 @@ import com.bee32.sem.process.verify.builtin.AllowList;
 public class AllowListDao
         extends EntityDao<AllowList, Integer> {
 
-    public AllowListDao() {
-        super(AllowList.class, Integer.class);
-    }
-
 }

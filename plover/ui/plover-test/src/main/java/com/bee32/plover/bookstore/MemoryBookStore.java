@@ -7,10 +7,6 @@ public class MemoryBookStore
 
     private static final long serialVersionUID = 1L;
 
-    public MemoryBookStore() {
-        super(Book.class, Integer.class);
-    }
-
     public void addBook(Book book) {
         getMap().put(book.getId(), book);
     }

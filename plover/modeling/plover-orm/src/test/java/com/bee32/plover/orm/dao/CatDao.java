@@ -8,10 +8,6 @@ import com.bee32.plover.orm.feaCat.Cat;
 public class CatDao
         extends EntityDao<Cat, Long> {
 
-    public CatDao() {
-        super(Cat.class, Long.class);
-    }
-
     @Override
     public boolean populate(Cat cat, IStruct struct)
             throws BuildException {

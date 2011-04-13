@@ -6,8 +6,4 @@ import com.bee32.plover.orm.entity.EntityDao;
 public class RoleDao
         extends EntityDao<Role, Long> {
 
-    public RoleDao() {
-        super(Role.class, Long.class);
-    }
-
 }

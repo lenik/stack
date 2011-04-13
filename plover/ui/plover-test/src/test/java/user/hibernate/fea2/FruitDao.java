@@ -5,8 +5,4 @@ import com.bee32.plover.orm.entity.EntityDao;
 public class FruitDao
         extends EntityDao<Fruit, Integer> {
 
-    public FruitDao() {
-        super(Fruit.class, Integer.class);
-    }
-
 }

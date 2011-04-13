@@ -52,17 +52,8 @@ class BarImpl
 
 class FooRepo
         extends EmptyEntityRepository<Foo, Integer> {
-
-    public FooRepo() {
-        super(Foo.class, Integer.class);
-    }
-
 }
 
 class BarImplRepo
         extends EmptyEntityRepository<BarImpl, Integer> {
-    public BarImplRepo() {
-        super(BarImpl.class, Integer.class);
-    }
-
 }
