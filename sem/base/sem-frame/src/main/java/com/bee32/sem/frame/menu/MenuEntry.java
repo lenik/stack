@@ -34,6 +34,21 @@ public class MenuEntry
         this.action = new Action(actionLocation);
     }
 
+    public MenuEntry(int order, String name) {
+        this(name);
+        this.order = order;
+    }
+
+    public MenuEntry(int order, String name, IAction action) {
+        this(name, action);
+        this.order = order;
+    }
+
+    public MenuEntry(int order, String name, ContextLocation actionLocation) {
+        this(name, actionLocation);
+        this.order = order;
+    }
+
     @Override
     public MenuSection getSection() {
         return section;
