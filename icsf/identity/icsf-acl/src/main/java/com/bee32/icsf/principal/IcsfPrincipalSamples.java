@@ -2,11 +2,20 @@ package com.bee32.icsf.principal;
 
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 
+/**
+ * Sample principals:
+ *
+ * <pre>
+ * sola(eva*, wallE, alice)
+ * sun(tom*, kate, alice)
+ * </pre>
+ */
 public class IcsfPrincipalSamples
         extends EntitySamplesContribution {
 
-    public static Group sunCorp;
     public static Group solaGroup;
+
+    public static Group sunCorp;
 
     public static Role adminRole;
     public static Role registeredRole;
