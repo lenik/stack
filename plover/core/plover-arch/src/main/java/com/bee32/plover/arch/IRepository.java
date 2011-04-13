@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.free.IllegalUsageException;
 import javax.servlet.ServletRequest;
 
 import com.bee32.plover.arch.util.IStruct;
@@ -47,7 +48,17 @@ public interface IRepository<K, V>
      * @return The retrieved object, <code>null</code> if the specific key doesn't exist.
      * @see Map#get(Object)
      */
-    V retrieve(Serializable key);
+    V get(K key);
+
+    /**
+     * Retrieve an object by key.
+     *
+     * Assume the object is existed.
+     *
+     * @throws IllegalUsageException
+     *             If object doesn't exist.
+     */
+    V load(K key);
 
     Collection<? extends K> listKeys();
 
@@ -106,7 +117,7 @@ public interface IRepository<K, V>
      *            Non-<code>null</code> object object.
      * @see Map#put(Object, Object)
      */
-    K saveOrUpdate(V obj);
+    void saveOrUpdate(V obj);
 
     /**
      * Delete an object from underlying persistent layer by object key.
@@ -117,7 +128,7 @@ public interface IRepository<K, V>
      *            Non-<code>null</code> object object.
      * @see Map#remove(Object)
      */
-    void deleteByKey(Serializable key);
+    void deleteByKey(K key);
 
     /**
      * Delete an object from underlying persistent layer.

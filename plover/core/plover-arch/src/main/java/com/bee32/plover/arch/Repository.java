@@ -1,7 +1,10 @@
 package com.bee32.plover.arch;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
+import javax.free.IllegalUsageException;
 import javax.servlet.ServletRequest;
 
 import com.bee32.plover.arch.util.BeanPopulater;
@@ -15,26 +18,28 @@ public abstract class Repository<K extends Serializable, V>
         implements IRepository<K, V> {
 
     protected final Class<K> keyType;
-    protected final Class<V> instanceType;
+    protected final Class<V> valueType;
 
-    public Repository(Class<K> keyType, Class<V> instanceType) {
-        super();
-        if (keyType == null)
-            throw new NullPointerException("keyType");
-        if (instanceType == null)
-            throw new NullPointerException("instanceType");
-        this.keyType = keyType;
-        this.instanceType = instanceType;
+    {
+        ParameterizedType superclass = (ParameterizedType) getClass().getGenericSuperclass();
+        Type[] actualTypeArguments = superclass.getActualTypeArguments();
+
+        @SuppressWarnings("unchecked")
+        Class<K> keyClass = (Class<K>) actualTypeArguments[0];
+
+        @SuppressWarnings("unchecked")
+        Class<V> valueClass = (Class<V>) actualTypeArguments[1];
+
+        keyType = keyClass;
+        valueType = valueClass;
     }
 
-    public Repository(String name, Class<K> keyType, Class<V> instanceType) {
+    public Repository() {
+        super();
+    }
+
+    public Repository(String name) {
         super(name);
-        if (keyType == null)
-            throw new NullPointerException("keyType");
-        if (instanceType == null)
-            throw new NullPointerException("instanceType");
-        this.keyType = keyType;
-        this.instanceType = instanceType;
     }
 
     @Override
@@ -44,31 +49,38 @@ public abstract class Repository<K extends Serializable, V>
 
     @Override
     public Class<V> getInstanceType() {
-        return instanceType;
+        return valueType;
     }
 
     @Override
     public boolean contains(Object obj) {
-        V instance = instanceType.cast(obj);
+        V instance = valueType.cast(obj);
         K key = getKey(instance);
         return containsKey(key);
     }
 
     @Override
+    public V load(K key) {
+        V value = get(key);
+        if (value == null)
+            throw new IllegalUsageException("No record with key=" + key);
+        return value;
+    }
+
+    @Override
     public void delete(Object obj) {
-        V instance = instanceType.cast(obj);
+        V instance = valueType.cast(obj);
         K key = getKey(instance);
         deleteByKey(key);
     }
 
     @Override
-    public K saveOrUpdate(V obj) {
+    public void saveOrUpdate(V obj) {
         K key = getKey(obj);
         if (containsKey(key))
             update(obj);
         else
             save(obj);
-        return key;
     }
 
     @Override
@@ -76,7 +88,7 @@ public abstract class Repository<K extends Serializable, V>
             throws BuildException {
         V instance;
         try {
-            instance = instanceType.newInstance();
+            instance = valueType.newInstance();
         } catch (Exception e) {
             throw new BuildException(e);
         }
@@ -90,7 +102,7 @@ public abstract class Repository<K extends Serializable, V>
             throws BuildException {
         V instance;
         try {
-            instance = instanceType.newInstance();
+            instance = valueType.newInstance();
         } catch (Exception e) {
             throw new BuildException(e);
         }
@@ -102,7 +114,7 @@ public abstract class Repository<K extends Serializable, V>
     @Override
     public boolean populate(V instance, IStruct struct)
             throws BuildException {
-        int changes = BeanPopulater.populate(instanceType, instance, struct);
+        int changes = BeanPopulater.populate(valueType, instance, struct);
         return changes != 0;
     }
 
