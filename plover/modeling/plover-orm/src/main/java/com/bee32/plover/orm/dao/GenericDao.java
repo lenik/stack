@@ -4,8 +4,8 @@ import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.ComponentTemplate;
 
-@Lazy
 @ComponentTemplate
+@Lazy
 public class GenericDao
         extends HibernateDaoSupport {
 
