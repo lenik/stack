@@ -5,6 +5,8 @@ import com.bee32.plover.orm.feaCat.Tiger;
 public class TigerDto
         extends DataTransferObject<Tiger, Long> {
 
+    private static final long serialVersionUID = 1L;
+
     String name;
     String color;
     int power;

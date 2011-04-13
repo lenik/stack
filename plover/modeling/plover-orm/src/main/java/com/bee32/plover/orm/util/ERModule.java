@@ -54,7 +54,7 @@ public abstract class ERModule
      */
     protected <E extends EntityBean<K>, K extends Serializable> //
     void exportEntityByHibernate(Class<E> entityType, Class<K> keyType) {
-        IEntityRepository<E, K> repository = new HibernateEntityRepository<E, K>(entityType, keyType);
+        IEntityRepository<E, K> repository = new HibernateEntityRepository<E, K>();
         export(repository);
     }
 

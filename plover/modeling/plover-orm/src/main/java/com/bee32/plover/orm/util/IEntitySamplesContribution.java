@@ -22,7 +22,7 @@ public interface IEntitySamplesContribution {
      * <p>
      * 这里返回的实例应该是用程序精心构造的领域对象，而不是从持久层获得的实际实例。
      * <p>
-     * 本 Repository 的 {@link #list()}、{@link #retrieve(Object)} 等方法不必要涉及本集合。
+     * 本 Repository 的 {@link #list()}、{@link #get(Object)} 等方法不必要涉及本集合。
      *
      * @param worseCase
      *            对样本实例的择取。
