@@ -43,6 +43,13 @@ public class MultiLevel
     @Sort(type = SortType.NATURAL)
     @Column(name = "verifyPolicy")
     public Map<Long, VerifyPolicy<?, ?>> getRangeMap() {
+        if (rangeMap == null) {
+            synchronized (this) {
+                if (rangeMap == null) {
+                    rangeMap = new MultiLevelRanges();
+                }
+            }
+        }
         return rangeMap;
     }
 
@@ -54,10 +61,13 @@ public class MultiLevel
         if (verifyPolicy == null)
             throw new NullPointerException("verifyPolicy for " + getName());
 
-        rangeMap.put(limit, verifyPolicy);
+        getRangeMap().put(limit, verifyPolicy);
     }
 
     public boolean removeRange(long limit) {
+        if (rangeMap == null)
+            return false;
+
         VerifyPolicy<?, ?> definedPolicy = rangeMap.remove(limit);
         return definedPolicy != null;
     }
@@ -72,6 +82,9 @@ public class MultiLevel
         DummyContextLimit compatibleContext = new DummyContextLimit("dummy", limit);
 
         Set<Principal> allDeclared = new HashSet<Principal>();
+        if (rangeMap == null)
+            return null;
+
         Long ceil = rangeMap.ceilingKey(limit);
 
         IdentityHashSet markSet = new IdentityHashSet();
