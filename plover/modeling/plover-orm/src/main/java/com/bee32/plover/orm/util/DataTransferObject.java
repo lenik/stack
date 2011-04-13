@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.free.IllegalUsageException;
+import javax.free.NotImplementedException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.orm.entity.EntityAccessor;
@@ -20,8 +21,8 @@ public abstract class DataTransferObject<E extends EntityBean<K>, K extends Seri
 
     private Class<E> entityClass;
 
-    private K id;
-    private Integer version;
+    protected K id;
+    protected Integer version;
 
     @SuppressWarnings("unchecked")
     public DataTransferObject() {
@@ -54,9 +55,10 @@ public abstract class DataTransferObject<E extends EntityBean<K>, K extends Seri
         this.version = version;
     }
 
-    public void clearId() {
+    public DataTransferObject<E, K> clearId() {
         this.id = null;
         this.version = null;
+        return this;
     }
 
     public void marshal(E entity) {
@@ -109,6 +111,8 @@ public abstract class DataTransferObject<E extends EntityBean<K>, K extends Seri
      *
      * @param entity
      *            Non-<code>null</code> target entity bean.
+     * @throws NotImplementedException
+     *             If unmarshal isn't supported for this DTO.
      */
     protected abstract void unmarshalNonNull(E entity);
 
@@ -175,9 +179,7 @@ public abstract class DataTransferObject<E extends EntityBean<K>, K extends Seri
      *            Entities to be marshalled.
      * @return <code>null</code>.
      */
-    @SuppressWarnings("unchecked")
     public static <D extends DataTransferObject<Ed, Kd>, Ed extends EntityBean<Kd>, Kd extends Serializable> //
-    // List<D> marshalList(Class<D> dtoClass, Iterable<? extends Ed> entities) {
     /*    */List<D> marshalList(Class<D> dtoClass, Iterable<?> entities) {
 
         if (entities == null)
@@ -186,13 +188,16 @@ public abstract class DataTransferObject<E extends EntityBean<K>, K extends Seri
         List<D> dtoList = new ArrayList<D>();
 
         try {
-            for (Object entity : entities) {
+            for (Object _entity : entities) {
                 D dto;
-                if (entity == null)
+                if (_entity == null)
                     dto = null;
                 else {
+                    @SuppressWarnings("unchecked")
+                    Ed entity = (Ed) _entity;
+
                     dto = dtoClass.newInstance();
-                    dto.marshal((Ed) entity);
+                    dto.marshal(entity);
                 }
                 dtoList.add(dto);
             }
