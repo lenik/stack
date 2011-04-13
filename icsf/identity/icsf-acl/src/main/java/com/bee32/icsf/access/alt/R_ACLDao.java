@@ -84,7 +84,7 @@ public class R_ACLDao
 
         Long principalId = principal.getId();
         List<R_ACE> list = getHibernateTemplate().findByNamedParam(// ,
-                "from R_ACE where principal = :principalId", //
+                "from R_ACE where principal.id = :principalId", //
                 "principalId", principalId);
 
         List<ResourcePermission> resources = new ArrayList<ResourcePermission>(list.size());
@@ -114,7 +114,7 @@ public class R_ACLDao
         List<R_ACE> list = getHibernateTemplate().findByNamedParam(// ,
                 "from R_ACE where" //
                         + "   (:q = resourceName or :q like resourceName || '.%')" //
-                        + "   and principal = :principalId", //
+                        + "   and principal.id = :principalId", //
                 new String[] { "q", "principalId" }, //
                 new Object[] { resourceName, principalId });
 
