@@ -28,6 +28,11 @@
             <artifactId>plover-collections</artifactId>
             <version>0.2.2</version>
         </dependency>
+        <dependency>
+            <groupId>net.sourceforge</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.0</version>
+        </dependency>
     </dependencies>
     <name>Plover :: Library :: Commons</name>
 </project>

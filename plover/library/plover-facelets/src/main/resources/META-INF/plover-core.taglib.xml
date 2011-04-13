@@ -25,4 +25,10 @@
         <function-signature>String obfuscate(java.lang.String)</function-signature>
     </function>
 
+    <function>
+        <function-name>pinyinAbbr</function-name>
+        <function-class>com.bee32.plover.util.zh.ZhUtil</function-class>
+        <function-signature>String getPinyinAbbreviation(java.lang.String)</function-signature>
+    </function>
+
 </facelet-taglib>
