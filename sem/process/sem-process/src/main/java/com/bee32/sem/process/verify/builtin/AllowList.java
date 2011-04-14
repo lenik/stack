@@ -79,8 +79,8 @@ public class AllowList
         return responsibles;
     }
 
-    public void setResponsibles(Collection<? extends Principal> responsibles) {
-        this.responsibles = new HashSet<Principal>(responsibles);
+    public void setResponsibles(Set<Principal> responsibles) {
+        this.responsibles = responsibles;
     }
 
     public void addResponsible(Principal responsible) {
