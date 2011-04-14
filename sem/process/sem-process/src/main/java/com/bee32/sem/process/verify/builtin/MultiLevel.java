@@ -2,18 +2,16 @@ package com.bee32.sem.process.verify.builtin;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.free.IdentityHashSet;
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
-import org.hibernate.annotations.MapKey;
-import org.hibernate.annotations.Sort;
-import org.hibernate.annotations.SortType;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
@@ -31,45 +29,81 @@ public class MultiLevel
 
     private static final long serialVersionUID = 1L;
 
-    private MultiLevelRanges rangeMap;
+    private Set<MultiLevelRange> ranges;
+    private MultiLevelRangeMap rangeMap;
 
     public MultiLevel() {
         super(AllowState.class);
     }
 
+    /**
+     * @return Non-null range set.
+     */
     @OneToMany(mappedBy = "multiLevel")
-    // @Cascade(CascadeType.DELETE_ORPHAN)
-    @MapKey(columns = @Column(name = "limit"))
-    @Sort(type = SortType.NATURAL)
-    @Column(name = "verifyPolicy")
-    public Map<Long, VerifyPolicy<?, ?>> getRangeMap() {
-        if (rangeMap == null) {
-            synchronized (this) {
-                if (rangeMap == null) {
-                    rangeMap = new MultiLevelRanges();
-                }
+    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public synchronized Set<MultiLevelRange> getRanges() {
+        if (ranges == null) {
+            if (rangeMap == null) {
+                ranges = new HashSet<MultiLevelRange>();
+            } else {
+                ranges = convertToRanges(rangeMap);
+                rangeMap = null;
             }
         }
+        return ranges;
+    }
+
+    public synchronized void setRanges(Set<MultiLevelRange> ranges) {
+        this.ranges = ranges;
+        this.rangeMap = null;
+    }
+
+    /**
+     * @return Non-<code>null</code> RangeMap.
+     */
+    @Transient
+    public synchronized MultiLevelRangeMap getRangeMap() {
+        if (rangeMap == null)
+            if (ranges == null) {
+                rangeMap = new MultiLevelRangeMap();
+            } else {
+                rangeMap = convertToRangeMap(ranges);
+                ranges = null;
+            }
         return rangeMap;
     }
 
-    public void setRangeMap(Map<Long, VerifyPolicy<?, ?>> rangeMap) {
-        this.rangeMap = new MultiLevelRanges(rangeMap);
+    public synchronized void setRangeMap(MultiLevelRangeMap rangeMap) {
+        this.rangeMap = rangeMap;
+        this.ranges = null;
+    }
+
+    static MultiLevelRangeMap convertToRangeMap(Collection<MultiLevelRange> ranges) {
+        MultiLevelRangeMap map = new MultiLevelRangeMap();
+        if (ranges != null)
+            for (MultiLevelRange range : ranges) {
+                long limit = range.getLimit();
+                map.put(limit, range);
+            }
+        return map;
+    }
+
+    static Set<MultiLevelRange> convertToRanges(MultiLevelRangeMap map) {
+        Set<MultiLevelRange> ranges = new HashSet<MultiLevelRange>();
+        ranges.addAll(map.values());
+        return ranges;
     }
 
     public void addRange(long limit, VerifyPolicy<?, ?> verifyPolicy) {
         if (verifyPolicy == null)
             throw new NullPointerException("verifyPolicy for " + getName());
 
-        getRangeMap().put(limit, verifyPolicy);
+        MultiLevelRange range = new MultiLevelRange(this, limit, verifyPolicy);
+        getRangeMap().put(limit, range);
     }
 
     public boolean removeRange(long limit) {
-        if (rangeMap == null)
-            return false;
-
-        VerifyPolicy<?, ?> definedPolicy = rangeMap.remove(limit);
-        return definedPolicy != null;
+        return getRangeMap().remove(limit) != null;
     }
 
     @Override
@@ -92,7 +126,8 @@ public class MultiLevel
 
         while (ceil != null) {
 
-            VerifyPolicy<IContextLimit, ?> policy = (VerifyPolicy<IContextLimit, ?>) rangeMap.get(ceil);
+            MultiLevelRange range = rangeMap.get(ceil);
+            VerifyPolicy<IContextLimit, ?> policy = (VerifyPolicy<IContextLimit, ?>) range.getTargetPolicy();
 
             // Already scanned, skip to avoid cyclic ref.
             if (!markSet.add(policy))
@@ -131,4 +166,5 @@ public class MultiLevel
 
         return null;
     }
+
 }
