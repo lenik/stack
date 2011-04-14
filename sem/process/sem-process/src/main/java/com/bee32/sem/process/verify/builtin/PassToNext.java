@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +49,8 @@ public class PassToNext
         this.sequence = sequence;
     }
 
+    @OneToMany(mappedBy = "policy")
+    @OrderBy("order")
     public List<PassStep> getSequence() {
         return sequence;
     }

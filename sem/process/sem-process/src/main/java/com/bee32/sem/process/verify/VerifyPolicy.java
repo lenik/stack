@@ -7,6 +7,7 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.AccessType;
 
@@ -45,6 +46,7 @@ public abstract class VerifyPolicy<C, S extends VerifyState>
      *
      * @return The required context class for this verify policy, non-<code>null</code>.
      */
+    @Transient
     public Class<?> getContextClass() {
         Class<?> contextClass = ContextClassUtil.getContextClass(getClass());
         return contextClass;
@@ -64,6 +66,7 @@ public abstract class VerifyPolicy<C, S extends VerifyState>
         return state;
     }
 
+    @Transient
     protected ErrorResult getNullResult() {
         return PendingResult.getInstance();
     }

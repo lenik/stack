@@ -1,6 +1,7 @@
 package com.bee32.sem.process.verify.builtin;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -8,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
@@ -24,8 +24,7 @@ public class AllowListController
     AllowListDao allowListDao;
 
     @RequestMapping("/process/verify/allowListIndex.htm")
-    @Transactional(readOnly = true)
-    public ModelMap allowListIndex(HttpServletRequest req, HttpServletResponse resp) {
+    public Map<String, Object> allowListIndex(HttpServletRequest req, HttpServletResponse resp) {
         ModelMap mm = new ModelMap();
 
         List<? extends AllowList> list = allowListDao.list();

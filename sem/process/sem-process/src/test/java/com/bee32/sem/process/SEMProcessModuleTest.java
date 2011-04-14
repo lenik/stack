@@ -5,11 +5,11 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.plover.restful.test.RESTfulTestCase;
+import com.bee32.sems.test.SEMTestCase;
 
 @Using(SEMProcessUnit.class)
 public class SEMProcessModuleTest
-        extends RESTfulTestCase {
+        extends SEMTestCase {
 
     @Test
     public void testUser()
@@ -21,7 +21,10 @@ public class SEMProcessModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMProcessModuleTest().browseAndWait(SEMProcessModule.class);
+        new SEMProcessModuleTest().browseAndWait(//
+                // SEMProcessModule.class//
+                "process/verify/allowListIndex.htm"//
+                );
     }
 
 }
