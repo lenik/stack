@@ -14,9 +14,9 @@ public class SimpleRole
     private static final long serialVersionUID = 1L;
 
     private final String name;
-    private final IRolePrincipal parent;
+    private final Role parent;
 
-    public SimpleRole(String name, IRolePrincipal parent) {
+    public SimpleRole(String name, Role parent) {
         if (name == null)
             throw new NullPointerException("name");
         this.name = name;
@@ -29,22 +29,22 @@ public class SimpleRole
     }
 
     @Override
-    public IRolePrincipal getInheritedRole() {
+    public Role getInheritedRole() {
         return parent;
     }
 
     @Override
-    public Set<? extends IRolePrincipal> getDerivedRoles() {
+    public Set<Role> getDerivedRoles() {
         return Collections.emptySet();
     }
 
     @Override
-    public Set<IUserPrincipal> getResponsibleUsers() {
+    public Set<User> getResponsibleUsers() {
         return Collections.emptySet();
     }
 
     @Override
-    public Set<IGroupPrincipal> getResponsibleGroups() {
+    public Set<Group> getResponsibleGroups() {
         return Collections.emptySet();
     }
 

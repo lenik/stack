@@ -56,7 +56,7 @@ public class Group
         return inheritedGroup;
     }
 
-    public void setInheritedGroup(Group inheritedGroup) {
+    public void setInheritedGroup(IGroupPrincipal inheritedGroup) {
         this.inheritedGroup = cast(inheritedGroup);
     }
 
@@ -80,10 +80,11 @@ public class Group
 
     @ManyToOne(targetEntity = User.class)
     @Override
-    public IUserPrincipal getOwner() {
+    public User getOwner() {
         return owner;
     }
 
+    @Override
     public void setOwner(IUserPrincipal owner) {
         this.owner = (User) owner;
     }
@@ -95,6 +96,7 @@ public class Group
         return primaryRole;
     }
 
+    @Override
     public void setPrimaryRole(IRolePrincipal primaryRole) {
         this.primaryRole = (Role) primaryRole;
     }

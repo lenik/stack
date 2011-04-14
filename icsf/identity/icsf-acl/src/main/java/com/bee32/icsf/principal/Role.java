@@ -24,12 +24,11 @@ public class Role
 
     private static final long serialVersionUID = 1L;
 
-    protected IRolePrincipal inheritedRole;
+    protected Role inheritedRole;
 
-    protected Set<? extends IRolePrincipal> derivedRoles;
-
-    protected Set<? extends IUserPrincipal> responsibleUsers;
-    protected Set<? extends IGroupPrincipal> responsibleGroups;
+    protected Set<Role> derivedRoles;
+    protected Set<User> responsibleUsers;
+    protected Set<Group> responsibleGroups;
 
     public Role() {
         super();
@@ -42,63 +41,61 @@ public class Role
     @ManyToOne(targetEntity = Role.class, optional = true)
     @JoinColumn(name = "parent")
     @Override
-    public IRolePrincipal getInheritedRole() {
+    public Role getInheritedRole() {
         return inheritedRole;
     }
 
     public void setInheritedRole(IRolePrincipal inheritedRole) {
-        this.inheritedRole = inheritedRole;
+        this.inheritedRole = cast(inheritedRole);
     }
 
     @Transient
     @OneToMany(targetEntity = Role.class, mappedBy = "inheritedRole")
     @Override
-    public Set<? extends IRolePrincipal> getDerivedRoles() {
+    public Set<Role> getDerivedRoles() {
         if (derivedRoles == null)
             return null;
         else
             return Collections.unmodifiableSet(derivedRoles);
     }
 
-    public void setDerivedRoles(Set<? extends IRolePrincipal> derivedRoles) {
+    public void setDerivedRoles(Set<Role> derivedRoles) {
         this.derivedRoles = derivedRoles;
     }
 
-    @SuppressWarnings("unchecked")
     @ManyToMany(targetEntity = User.class, mappedBy = "assignedRoles")
     // @Cascade(CascadeType.SAVE_UPDATE)
     @Override
-    public Set<IUserPrincipal> getResponsibleUsers() {
+    public Set<User> getResponsibleUsers() {
         if (responsibleUsers == null) {
             synchronized (this) {
                 if (responsibleUsers == null) {
-                    responsibleUsers = new HashSet<IUserPrincipal>();
+                    responsibleUsers = new HashSet<User>();
                 }
             }
         }
-        return (Set<IUserPrincipal>) responsibleUsers;
+        return responsibleUsers;
     }
 
-    public void setResponsibleUsers(Set<? extends IUserPrincipal> responsibleUsers) {
+    public void setResponsibleUsers(Set<User> responsibleUsers) {
         this.responsibleUsers = responsibleUsers;
     }
 
-    @SuppressWarnings("unchecked")
     @ManyToMany(targetEntity = Group.class, mappedBy = "assignedRoles")
     // @Cascade(CascadeType.SAVE_UPDATE)
     @Override
-    public Set<IGroupPrincipal> getResponsibleGroups() {
+    public Set<Group> getResponsibleGroups() {
         if (responsibleGroups == null) {
             synchronized (this) {
                 if (responsibleGroups == null) {
-                    responsibleGroups = new HashSet<IGroupPrincipal>();
+                    responsibleGroups = new HashSet<Group>();
                 }
             }
         }
-        return (Set<IGroupPrincipal>) responsibleGroups;
+        return responsibleGroups;
     }
 
-    public void setResponsibleGroups(Set<? extends IGroupPrincipal> responsibleGroups) {
+    public void setResponsibleGroups(Set<Group> responsibleGroups) {
         this.responsibleGroups = responsibleGroups;
     }
 
