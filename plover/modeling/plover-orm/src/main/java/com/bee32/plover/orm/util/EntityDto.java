@@ -14,20 +14,22 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
     protected K id;
     protected Integer version;
 
+    // protected String name;
+
     public EntityDto() {
         super();
     }
 
-    public EntityDto(E source, int selection) {
-        super(source, selection);
+    public EntityDto(int selection) {
+        super(selection);
     }
 
     public EntityDto(E source) {
         super(source);
     }
 
-    public EntityDto(int selection) {
-        super(selection);
+    public EntityDto(E source, int selection) {
+        super(source, selection);
     }
 
     public K getId() {
@@ -53,10 +55,16 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
     }
 
     @Override
-    public void marshal(E source) {
+    public <D extends DataTransferObject<E>> D marshal(E source) {
         id = source.getId();
         version = source.getVersion();
+
         _marshal(source);
+
+        @SuppressWarnings("unchecked")
+        D self = (D) this;
+
+        return self;
     }
 
     @Override
