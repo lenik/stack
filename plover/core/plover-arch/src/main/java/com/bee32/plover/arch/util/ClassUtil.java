@@ -74,6 +74,15 @@ public class ClassUtil {
         return set;
     }
 
+    public static Type[] getImmediatePV(Class<?> clazz) {
+        Type superclass = clazz.getGenericSuperclass();
+        if (superclass instanceof ParameterizedType) {
+            ParameterizedType psuper = (ParameterizedType) superclass;
+            return psuper.getActualTypeArguments();
+        } else
+            return null;
+    }
+
     public static Type[] getOriginPV(Type type) {
         if (type instanceof ParameterizedType) {
             ParameterizedType ptype = (ParameterizedType) type;
