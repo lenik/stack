@@ -2,6 +2,7 @@ package com.bee32.plover.arch;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.free.IllegalUsageException;
@@ -60,9 +61,9 @@ public interface IRepository<K, V>
      */
     V load(K key);
 
-    Collection<? extends K> listKeys();
+    Collection<K> keys();
 
-    Collection<? extends V> list();
+    List<V> list();
 
     /**
      * Create and populate a new instance from a struct.

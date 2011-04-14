@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,11 +14,12 @@ public class EmptyEntityRepository<E extends EntityBean<K>, K extends Serializab
     }
 
     @Override
-    public List<? extends E> list() {
+    public Collection<K> keys() {
         return Collections.emptyList();
     }
 
-    public List<? extends K> listKeys() {
+    @Override
+    public List<E> list() {
         return Collections.emptyList();
     }
 

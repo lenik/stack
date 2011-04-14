@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -53,15 +54,15 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
     }
 
     @Override
-    public List<? extends E> list() {
-        return getHibernateTemplate().loadAll(entityType);
+    public List<E> list() {
+        return (List<E>) getHibernateTemplate().loadAll(entityType);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<? extends K> listKeys() {
+    public Collection<K> keys() {
         List<?> _list = getHibernateTemplate().find("select id from " + entityType.getName());
-        return (List<? extends K>) _list;
+        return (Collection<K>) _list;
     }
 
     @Override

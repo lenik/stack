@@ -1,9 +1,11 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MapEntityRepository<E extends IEntity<K>, K extends Serializable>
         extends EntityRepository<E, K>
@@ -41,12 +43,14 @@ public class MapEntityRepository<E extends IEntity<K>, K extends Serializable>
     }
 
     @Override
-    public Collection<? extends E> list() {
-        return getMap().values();
+    public List<E> list() {
+        List<E> list=new ArrayList<E>();
+        list.addAll(getMap().values());
+        return list;
     }
 
     @Override
-    public Collection<? extends K> listKeys() {
+    public Set<K> keys() {
         return getMap().keySet();
     }
 

@@ -1,13 +1,13 @@
 package com.bee32.plover.arch;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import javax.free.IllegalUsageException;
 import javax.servlet.ServletRequest;
 
 import com.bee32.plover.arch.util.BeanPopulater;
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.IStruct;
 import com.bee32.plover.arch.util.MapStruct;
 import com.bee32.plover.inject.NotAComponent;
@@ -21,14 +21,13 @@ public abstract class Repository<K extends Serializable, V>
     protected final Class<V> valueType;
 
     {
-        ParameterizedType superclass = (ParameterizedType) getClass().getGenericSuperclass();
-        Type[] actualTypeArguments = superclass.getActualTypeArguments();
+        Type[] pv = ClassUtil.getOriginPV(getClass());
 
         @SuppressWarnings("unchecked")
-        Class<K> keyClass = (Class<K>) actualTypeArguments[0];
+        Class<K> keyClass = (Class<K>) pv[0];
 
         @SuppressWarnings("unchecked")
-        Class<V> valueClass = (Class<V>) actualTypeArguments[1];
+        Class<V> valueClass = (Class<V>) pv[1];
 
         keyType = keyClass;
         valueType = valueClass;
