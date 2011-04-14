@@ -45,7 +45,7 @@ public abstract class RangeMap<V, T>
 
         for (IRangeMapEntry<V, T> entry : entries) {
 
-            V boundary = entry.getBoundary();
+            V boundary = entry.getX();
             T target = entry.getTarget();
 
             this.put(boundary, target);

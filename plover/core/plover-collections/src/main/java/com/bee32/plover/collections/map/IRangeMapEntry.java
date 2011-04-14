@@ -1,13 +1,13 @@
 package com.bee32.plover.collections.map;
 
-public interface IRangeMapEntry<V, T> {
+public interface IRangeMapEntry<X, T> {
 
     /**
      * Get the boundary point.
      *
      * @return Boundary point.
      */
-    V getBoundary();
+    X getX();
 
     /**
      * Get the target entity.
