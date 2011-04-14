@@ -11,6 +11,8 @@ import com.bee32.sem.process.verify.builtin.dao.PassToNextDao;
 public class SEMProcessModule
         extends EnterpriseModule {
 
+    public static final String PREFIX = "3/15/2/1";
+
     @Override
     protected void preamble() {
         export(AllowListDao.class, "list");
