@@ -16,7 +16,7 @@ import com.bee32.sem.process.verify.result.PendingResult;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "policy", length = 10)
+@DiscriminatorColumn(name = "stereo", length = 4)
 public abstract class VerifyPolicy<C, S extends VerifyState>
         extends EntityBean<Integer>
         implements IVerifyPolicy<C, S> {

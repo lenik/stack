@@ -23,7 +23,7 @@ import com.bee32.sem.process.verify.result.PendingResult;
  */
 @ContextClass(ICurrentStep.class)
 @Entity
-@DiscriminatorValue("NEXT")
+@DiscriminatorValue("NXT")
 public class PassToNext
         extends VerifyPolicy<ICurrentStep, PassLog> {
 

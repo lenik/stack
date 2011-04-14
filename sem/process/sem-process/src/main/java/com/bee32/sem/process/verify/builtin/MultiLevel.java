@@ -25,7 +25,7 @@ import com.bee32.sem.process.verify.result.UnauthorizedResult;
 
 @ContextClass(IContextLimit.class)
 @Entity
-@DiscriminatorValue("LEVEL")
+@DiscriminatorValue("ML")
 public class MultiLevel
         extends VerifyPolicy<IContextLimit, AllowState> {
 
