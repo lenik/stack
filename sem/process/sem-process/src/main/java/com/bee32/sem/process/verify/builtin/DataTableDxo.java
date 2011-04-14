@@ -3,6 +3,7 @@ package com.bee32.sem.process.verify.builtin;
 import java.util.Map;
 
 import javax.free.IVariantLookupMap;
+import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.DataExchangeObject;
 
@@ -22,7 +23,8 @@ public class DataTableDxo
     Object data;
 
     @Override
-    public void parse(IVariantLookupMap<String> map) {
+    public void parse(IVariantLookupMap<String> map)
+            throws ParseException {
         displayStart = map.getLong("iDisplayStart");
         displayLength = map.getLong("iDisplayLength");
         columns = map.getInt("iColumns");

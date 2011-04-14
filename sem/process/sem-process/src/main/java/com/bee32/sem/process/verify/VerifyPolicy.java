@@ -41,6 +41,10 @@ public abstract class VerifyPolicy<C, S extends VerifyState>
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     /**
      * This is a shortcut to {@link ContextClassUtil#getContextClass(Class)}.
      *
