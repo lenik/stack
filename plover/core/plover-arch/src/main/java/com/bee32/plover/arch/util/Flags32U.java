@@ -5,7 +5,10 @@ import java.util.List;
 
 import com.bee32.plover.arch.ui.IAppearance;
 
-public abstract class LoadFlags {
+public class Flags32U
+        extends Flags32 {
+
+    private static final long serialVersionUID = 1L;
 
     private List<IAppearance> appearances;
 
@@ -16,16 +19,14 @@ public abstract class LoadFlags {
     }
 
     public void setAppearance(int index, IAppearance appearance) {
-        if (appearances == null)
-            appearances = new ArrayList<IAppearance>();
+        if (appearances == null) {
+            synchronized (this) {
+                if (appearances == null) {
+                    appearances = new ArrayList<IAppearance>();
+                }
+            }
+        }
         appearances.set(index, appearance);
-    }
-
-    public abstract String getBitsString();
-
-    @Override
-    public String toString() {
-        return getBitsString();
     }
 
 }

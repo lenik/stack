@@ -18,7 +18,7 @@ import javax.free.Traits;
 import javax.free.ValidateException;
 
 import com.bee32.plover.arch.Component;
-import com.bee32.plover.arch.util.LoadFlags32;
+import com.bee32.plover.arch.util.Flags32;
 import com.bee32.plover.model.qualifier.Qualifier;
 import com.bee32.plover.model.qualifier.QualifierMap;
 import com.bee32.plover.model.stereo.StereoType;
@@ -43,7 +43,7 @@ public abstract class AbstractSchema
     private transient Map<SchemaKey, ISchema> children;
     private transient boolean childrenLoaded;
 
-    private transient LoadFlags32 flags;
+    private transient Flags32 flags;
     private static final int HAVE_TRAITS = 1 << 0;
     private static final int HAVE_PARSER = 1 << 1;
     private static final int HAVE_FORMATTER = 1 << 2;

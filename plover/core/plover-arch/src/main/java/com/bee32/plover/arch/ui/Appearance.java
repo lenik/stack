@@ -12,7 +12,7 @@ import javax.free.ClassLocal;
 import com.bee32.plover.arch.ui.annotated.AnnotatedAppearance;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.arch.util.LoadFlags32;
+import com.bee32.plover.arch.util.Flags32;
 
 public abstract class Appearance
         extends AbstractQueryable
@@ -24,7 +24,7 @@ public abstract class Appearance
     private static final int HAVE_DESCRIPTION = 1 << 1;
     private static final int HAVE_REFDOCS = 1 << 2;
     private static final int HAVE_IMAGE_MAP = 1 << 3;
-    private LoadFlags32 flags = new LoadFlags32();
+    private Flags32 flags = new Flags32();
 
     private String displayName;
     private String description;
