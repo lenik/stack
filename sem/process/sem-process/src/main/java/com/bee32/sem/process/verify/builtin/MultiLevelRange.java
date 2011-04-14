@@ -19,7 +19,7 @@ public class MultiLevelRange
 
     private MultiLevel multiLevel;
     private long limit;
-    private VerifyPolicy<?, ?> verifyPolicy;
+    private VerifyPolicy<?, ?> targetPolicy;
 
     public MultiLevelRange(MultiLevel multiLevel, long limit, VerifyPolicy<?, ?> verifyPolicy) {
         if (multiLevel == null)
@@ -29,7 +29,7 @@ public class MultiLevelRange
 
         this.multiLevel = multiLevel;
         this.limit = limit;
-        this.verifyPolicy = verifyPolicy;
+        this.targetPolicy = verifyPolicy;
     }
 
     @NaturalId
@@ -52,27 +52,32 @@ public class MultiLevelRange
     }
 
     @ManyToOne(optional = false)
-    public VerifyPolicy<?, ?> getVerifyPolicy() {
-        return verifyPolicy;
+    public VerifyPolicy<?, ?> getTargetPolicy() {
+        return targetPolicy;
     }
 
-    public void setVerifyPolicy(VerifyPolicy<?, ?> verifyPolicy) {
-        this.verifyPolicy = verifyPolicy;
+    public void setTargetPolicy(VerifyPolicy<?, ?> verifyPolicy) {
+        this.targetPolicy = verifyPolicy;
     }
+
+    // --o IRangeMapEntry
 
     /**
-     * The same as {@link #getLimit()}
+     * The same as {@link #getLimit()}.
      */
     @Transient
     @Override
-    public Long getBoundary() {
+    public Long getX() {
         return limit;
     }
 
+    /**
+     * The same as {@link #getTargetPolicy()}.
+     */
     @Transient
     @Override
     public VerifyPolicy<?, ?> getTarget() {
-        return verifyPolicy;
+        return targetPolicy;
     }
 
 }
