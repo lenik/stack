@@ -2,6 +2,7 @@ package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.BuildException;
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.IStruct;
 
 public abstract class EntityRepository<E extends IEntity<K>, K extends Serializable>
@@ -30,23 +32,33 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
         super(name);
     }
 
-    {
-        if (this.entityType == null) {
-            Class<?> entityType;
-            try {
-                entityType = deferEntityType(valueType);
-            } catch (ClassNotFoundException e) {
-                throw new IllegalUsageException("No implementation type for " + valueType);
-            }
+    @Override
+    protected void introspect() {
+        Type[] pv = ClassUtil.getOriginPV(getClass());
 
-            if (!valueType.isAssignableFrom(entityType))
-                throw new IllegalUsageException("Incompatible implementation " + entityType + " for " + valueType);
+        @SuppressWarnings("unchecked")
+        Class<K> keyClass = (Class<K>) pv[1];
 
-            @SuppressWarnings("unchecked")
-            Class<? extends E> entityClass = (Class<? extends E>) entityType;
+        @SuppressWarnings("unchecked")
+        Class<E> valueClass = (Class<E>) pv[0];
 
-            this.entityType = entityClass;
+        keyType = keyClass;
+        valueType = valueClass;
+
+        Class<?> deferredEntityType;
+        try {
+            deferredEntityType = deferEntityType(valueType);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalUsageException("No implementation type for " + valueType);
         }
+
+        if (!valueType.isAssignableFrom(deferredEntityType))
+            throw new IllegalUsageException("Incompatible implementation " + deferredEntityType + " for " + valueType);
+
+        @SuppressWarnings("unchecked")
+        Class<? extends E> entityClass = (Class<? extends E>) deferredEntityType;
+
+        this.entityType = entityClass;
     }
 
     public Class<? extends E> getEntityType() {

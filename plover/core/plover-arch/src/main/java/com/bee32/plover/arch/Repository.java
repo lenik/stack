@@ -17,10 +17,20 @@ public abstract class Repository<K extends Serializable, V>
         extends Component
         implements IRepository<K, V> {
 
-    protected final Class<K> keyType;
-    protected final Class<V> valueType;
+    protected Class<K> keyType;
+    protected Class<V> valueType;
 
-    {
+    public Repository() {
+        super();
+        introspect();
+    }
+
+    public Repository(String name) {
+        super(name);
+        introspect();
+    }
+
+    protected void introspect() {
         Type[] pv = ClassUtil.getOriginPV(getClass());
 
         @SuppressWarnings("unchecked")
@@ -31,14 +41,6 @@ public abstract class Repository<K extends Serializable, V>
 
         keyType = keyClass;
         valueType = valueClass;
-    }
-
-    public Repository() {
-        super();
-    }
-
-    public Repository(String name) {
-        super(name);
     }
 
     @Override
