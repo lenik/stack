@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.free.IVariantLookupMap;
 import javax.free.NotImplementedException;
+import javax.free.ParseException;
 
 public abstract class DataExchangeObject<T>
         extends DataTransferObject<T> {
@@ -21,7 +22,8 @@ public abstract class DataExchangeObject<T>
     }
 
     @Override
-    public abstract void parse(IVariantLookupMap<String> map);
+    public abstract void parse(IVariantLookupMap<String> map)
+            throws ParseException;
 
     @Override
     public abstract void export(Map<String, Object> map);
