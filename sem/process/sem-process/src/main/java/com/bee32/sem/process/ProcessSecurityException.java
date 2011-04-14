@@ -1,7 +1,7 @@
 package com.bee32.sem.process;
 
 public class ProcessSecurityException
-        extends Throwable {
+        extends Exception {
 
     private static final long serialVersionUID = 1L;
 
