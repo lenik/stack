@@ -1,19 +1,18 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.arch.util;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.free.IVariantLookupMap;
 import javax.free.IllegalUsageException;
+import javax.free.Map2VariantLookupMap;
 import javax.free.NotImplementedException;
 import javax.servlet.http.HttpServletRequest;
-
-import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.arch.util.Flags32;
-import com.bee32.plover.orm.entity.EntityBean;
 
 public abstract class DataTransferObject<T>
         implements Serializable {
@@ -106,17 +105,29 @@ public abstract class DataTransferObject<T>
      * @param request
      *            Non-<code>null</code> request object.
      */
-    public void parse(HttpServletRequest request) {
+    public final void parse(HttpServletRequest request) {
         parse(request.getParameterMap());
     }
 
     /**
      * Parse parameters from a map, and put the parsed result into this object.
      *
-     * @param request
+     * @param map
      *            Non-<code>null</code> request object.
      */
-    public void parse(Map<String, ?> request) {
+    public final void parse(Map<String, ?> map) {
+        if (map == null)
+            throw new NullPointerException("map");
+        parse(new Map2VariantLookupMap<String>(map));
+    }
+
+    public void parse(IVariantLookupMap<String> map) {
+    }
+
+    public Map<String, Object> exportMap() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        export(map);
+        return map;
     }
 
     /**
@@ -125,8 +136,7 @@ public abstract class DataTransferObject<T>
     public void export(Map<String, Object> map) {
     }
 
-    public static <D extends DataTransferObject<T>, T extends EntityBean<Kd>, Kd extends Serializable> //
-    /*    */D marshal(Class<D> dtoClass, T source) {
+    public static <D extends DataTransferObject<T>, T> D marshal(Class<D> dtoClass, T source) {
         if (source == null)
             return null;
 
