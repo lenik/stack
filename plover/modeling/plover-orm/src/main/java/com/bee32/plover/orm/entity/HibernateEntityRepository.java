@@ -4,12 +4,16 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import javax.free.UnexpectedException;
 import javax.inject.Inject;
 
+import org.hibernate.Criteria;
 import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Projections;
 import org.springframework.dao.DataAccessException;
 
 import com.bee32.plover.orm.dao.HibernateDaoSupportUtil;
@@ -157,6 +161,27 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
 
     public void flush() {
         getHibernateTemplate().flush();
+    }
+
+    public long count() {
+        return count((Criterion[]) null);
+    }
+
+    public long count(Criterion... restrictions) {
+        Criteria criteria = getSession().createCriteria(entityType);
+
+        if (restrictions != null)
+            for (Criterion restriction : restrictions)
+                criteria.add(restriction);
+
+        criteria.setProjection(Projections.count("*"));
+
+        Object result = criteria.uniqueResult();
+
+        if (result == null)
+            throw new UnexpectedException("Count() returns null");
+
+        return (Long) result;
     }
 
 }
