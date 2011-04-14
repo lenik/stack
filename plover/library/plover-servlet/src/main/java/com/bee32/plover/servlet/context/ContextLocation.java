@@ -10,7 +10,7 @@ import javax.free.Nullables;
 import javax.servlet.http.HttpServletRequest;
 
 public class ContextLocation
-        implements Serializable {
+        implements ITextForRequest, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,6 +46,7 @@ public class ContextLocation
         this.location = location;
     }
 
+    @Override
     public String resolve(HttpServletRequest request) {
         return context.resolve(request, location);
     }

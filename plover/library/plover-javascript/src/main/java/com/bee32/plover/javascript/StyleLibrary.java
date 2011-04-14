@@ -7,12 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.servlet.context.ContextLocation;
 
-public class JavascriptLibrary
+public class StyleLibrary
         extends ScriptElement {
 
     ContextLocation location;
 
-    public JavascriptLibrary(ContextLocation location) {
+    public StyleLibrary(ContextLocation location) {
         if (location == null)
             throw new NullPointerException("location");
     }
@@ -28,13 +28,13 @@ public class JavascriptLibrary
     @Override
     protected void formatHeader(HttpServletRequest req, IIndentedOut out)
             throws IOException {
-        out.print("<script language='javascript' src='" + location.resolve(req) + "'>");
+        out.print("<style type='text/css' src='" + location.resolve(req) + "'>");
     }
 
     @Override
     protected void formatFooter(HttpServletRequest req, IIndentedOut out)
             throws IOException {
-        out.println("</script>");
+        out.println("</style>");
     }
 
 }

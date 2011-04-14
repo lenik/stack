@@ -1,13 +1,13 @@
 package com.bee32.plover.javascript;
 
-import java.util.Collection;
+import java.util.Set;
 
 public interface IDependent<T extends IDependent<T>> {
 
-    Collection<T> getDependencies();
+    Set<? extends T> getDependencies();
 
-    Collection<T> getReducedDependencies();
+    Set<? extends T> mergeDependencies();
 
-    boolean isDepended(T dependency);
+    boolean dependsOn(T dependency);
 
 }

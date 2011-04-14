@@ -5,18 +5,19 @@ import java.io.IOException;
 import javax.free.IIndentedOut;
 import javax.servlet.http.HttpServletRequest;
 
-public class JavascriptChunk
+public class StyleChunk
         extends ScriptElement {
 
     @Override
-    public void formatHeader(HttpServletRequest req, IIndentedOut out) {
-        out.println("<script language='javascript'><!-- /* <![CDATA[ */");
+    protected void formatHeader(HttpServletRequest req, IIndentedOut out)
+            throws IOException {
+        out.println("<style text='text/css'>");
     }
 
     @Override
     protected void formatFooter(HttpServletRequest req, IIndentedOut out)
             throws IOException {
-        out.println("/* ]]> */ --></script>");
+        out.println("</style>");
     }
 
 }

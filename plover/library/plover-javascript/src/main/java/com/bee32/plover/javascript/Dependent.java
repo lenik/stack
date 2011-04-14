@@ -1,6 +1,5 @@
 package com.bee32.plover.javascript;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,27 +19,27 @@ public class Dependent<T extends IDependent<T>>
     }
 
     @Override
-    public Collection<T> getDependencies() {
+    public Set<T> getDependencies() {
         return dependencies;
     }
 
     @Override
-    public Collection<T> getReducedDependencies() {
-        Set<T> onceSet = new HashSet<T>();
+    public Set<T> mergeDependencies() {
+        Set<T> all = new HashSet<T>();
         for (T dependency : dependencies) {
-            for (T once : onceSet) {
-                boolean implied = once.isDepended(dependency);
-                if (!implied)
-                    onceSet.add(dependency);
+            for (T a : all) {
+                if (a.dependsOn(dependency))
+                    continue;
+                all.add(dependency);
             }
         }
-        return onceSet;
+        return all;
     }
 
     @Override
-    public boolean isDepended(T dependency) {
+    public boolean dependsOn(T dependency) {
         for (T declared : dependencies)
-            if (declared.isDepended(dependency))
+            if (declared.dependsOn(dependency))
                 return true;
         return false;
     }
