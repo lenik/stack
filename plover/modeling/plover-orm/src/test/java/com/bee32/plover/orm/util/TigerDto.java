@@ -3,7 +3,7 @@ package com.bee32.plover.orm.util;
 import com.bee32.plover.orm.feaCat.Tiger;
 
 public class TigerDto
-        extends DataTransferObject<Tiger, Long> {
+        extends EntityDto<Tiger, Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,14 +44,14 @@ public class TigerDto
     }
 
     @Override
-    protected void marshalNonNull(Tiger entity) {
+    protected void _marshal(Tiger entity) {
         this.name = entity.getName();
         this.color = entity.getColor();
         this.power = entity.getPower();
     }
 
     @Override
-    protected void unmarshalNonNull(Tiger entity) {
+    protected void _unmarshalTo(Tiger entity) {
         entity.setName(name);
         entity.setColor(color);
         entity.setPower(power);

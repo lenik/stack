@@ -13,141 +13,92 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.Flags32;
-import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBean;
 
-public abstract class DataTransferObject<E extends EntityBean<K>, K extends Serializable>
+public abstract class DataTransferObject<T>
         implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Class<E> entityClass;
+    protected final Class<T> dataType;
+    {
+        Type[] pv = ClassUtil.getOriginPV(getClass());
+
+        @SuppressWarnings("unchecked")
+        Class<T> dataType = (Class<T>) pv[0];
+
+        this.dataType = dataType;
+    }
 
     protected final Flags32 selection;
-
-    protected K id;
-    protected Integer version;
 
     public DataTransferObject() {
         this(0);
     }
 
-    @SuppressWarnings("unchecked")
     public DataTransferObject(int selection) {
-        Type[] pv = ClassUtil.getOriginPV(getClass());
-        entityClass = (Class<E>) pv[0];
-
         this.selection = new Flags32(selection);
     }
 
-    public DataTransferObject(E entity) {
+    public DataTransferObject(T source) {
         this();
 
-        if (entity == null)
-            throw new NullPointerException("entity");
+        if (source == null)
+            throw new NullPointerException("source");
 
-        marshal(entity);
+        marshal(source);
     }
 
-    public DataTransferObject(E entity, int selection) {
+    public DataTransferObject(T source, int selection) {
         this(selection);
 
-        if (entity == null)
-            throw new NullPointerException("entity");
+        if (source == null)
+            throw new NullPointerException("source");
 
-        marshal(entity);
+        marshal(source);
     }
 
-    public K getId() {
-        return id;
-    }
-
-    public void setId(K id) {
-        this.id = id;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public DataTransferObject<E, K> clearId() {
-        this.id = null;
-        this.version = null;
-        return this;
-    }
-
-    protected <D extends DataTransferObject<E, K>> D birth() {
-        Class<D> selfType = (Class<D>) getClass();
-
-        D vcopy;
-        try {
-            vcopy = selfType.newInstance();
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-
-        vcopy.selection.set(selection);
-        return vcopy;
-    }
-
-    public void marshal(E entity) {
-        if (entity == null)
-            throw new NullPointerException("entity");
-
-        this.id = entity.getId();
-        this.version = entity.getVersion();
-
-        marshalNonNull(entity);
+    public void marshal(T source) {
+        _marshal(source);
     }
 
     /**
-     * Read some properties from the specified entity bean into this object.
+     * Read some properties from the specified source bean into this object.
      *
-     * @param entity
-     *            Non-null source entity whose properties are read into this object.
+     * @param source
+     *            Non-null source source whose properties are read into this object.
      */
-    protected abstract void marshalNonNull(E entity);
+    protected abstract void _marshal(T source);
 
     /**
-     * Write properties from this object into a new entity bean.
+     * Write properties from this object into a new source bean.
      *
-     * @return Non-<code>null</code> entity bean.
+     * @return Non-<code>null</code> source bean.
      */
-    public final E unmarshal() {
-        E entity;
+    public final T unmarshal() {
+        T target;
         try {
-            entity = entityClass.newInstance();
+            target = dataType.newInstance();
         } catch (ReflectiveOperationException e) {
-            throw new IllegalUsageException("Failed to instantiate entity bean " + entityClass.getName(), e);
+            throw new IllegalUsageException("Failed to instantiate source bean " + dataType.getName(), e);
         }
-        unmarshalTo(entity);
-        return entity;
+        unmarshalTo(target);
+        return target;
     }
 
-    public final void unmarshalTo(E entity) {
-        if (entity == null)
-            throw new NullPointerException("entity");
-
-        EntityAccessor.setId(entity, id);
-        if (version != null)
-            EntityAccessor.setVersion(entity, version);
-
-        unmarshalNonNull(entity);
+    public void unmarshalTo(T target) {
+        _unmarshalTo(target);
     }
 
     /**
-     * Write some properties from this object into the specified entity bean.
+     * Write some properties from this object into the specified source bean.
      *
-     * @param entity
-     *            Non-<code>null</code> target entity bean.
+     * @param target
+     *            Non-<code>null</code> target source bean.
      * @throws NotImplementedException
      *             If unmarshal isn't supported for this DTO.
      */
-    protected abstract void unmarshalNonNull(E entity);
+    protected abstract void _unmarshalTo(T target);
 
     /**
      * Parse parameters from servlet-request, and put the parsed result into this object.
@@ -174,14 +125,14 @@ public abstract class DataTransferObject<E extends EntityBean<K>, K extends Seri
     public void export(Map<String, Object> map) {
     }
 
-    public static <D extends DataTransferObject<Ed, Kd>, Ed extends EntityBean<Kd>, Kd extends Serializable> //
-    /*    */D marshal(Class<D> dtoClass, Ed entity) {
-        if (entity == null)
+    public static <D extends DataTransferObject<T>, T extends EntityBean<Kd>, Kd extends Serializable> //
+    /*    */D marshal(Class<D> dtoClass, T source) {
+        if (source == null)
             return null;
 
         try {
             D dto = dtoClass.newInstance();
-            dto.marshal(entity);
+            dto.marshal(source);
             return dto;
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Failed to instantiate DTO " + dtoClass.getName(), e);
@@ -189,84 +140,82 @@ public abstract class DataTransferObject<E extends EntityBean<K>, K extends Seri
     }
 
     /**
-     * Marshal each entity to a DTO object.
+     * Marshal each source to a DTO object.
      *
      * @param dtoClass
      *            The DTO type to be marshalled to.
-     * @param entities
+     * @param values
      *            Entity array to be marshalled.
      * @return <code>null</code>.
      */
-    public static <D extends DataTransferObject<Ed, Kd>, Ed extends EntityBean<Kd>, Kd extends Serializable> //
-    /*    */List<D> marshalList(Class<D> dtoClass, Ed... entities) {
-        List<Ed> entityList = Arrays.asList(entities);
-        return marshalList(dtoClass, null, entityList);
+    public static <D extends DataTransferObject<T>, T> List<D> marshalList(Class<D> dtoClass, T... values) {
+        List<T> sourceList = Arrays.asList(values);
+        return marshalList(dtoClass, null, sourceList);
     }
 
     /**
-     * Marshal each entity to a DTO object.
+     * Marshal each source to a DTO object.
      *
      * @param dtoClass
      *            The DTO type to be marshalled to.
      * @param selection
-     *            Selection for each entity.
-     * @param entities
+     *            Selection for each source.
+     * @param values
      *            Entity array to be marshalled.
      * @return <code>null</code>.
      */
-    public static <D extends DataTransferObject<Ed, Kd>, Ed extends EntityBean<Kd>, Kd extends Serializable> //
-    /*    */List<D> marshalList(Class<D> dtoClass, int selection, Ed... entities) {
-        List<Ed> entityList = Arrays.asList(entities);
-        return marshalList(dtoClass, selection, entityList);
+    public static <D extends DataTransferObject<T>, T> List<D> marshalList(Class<D> dtoClass, int selection,
+            T... values) {
+        List<T> sourceList = Arrays.asList(values);
+        return marshalList(dtoClass, selection, sourceList);
     }
 
     /**
-     * Marshal each entity to a DTO object.
+     * Marshal each source to a DTO object.
      *
      * @param dtoClass
      *            The DTO type to be marshalled to.
-     * @param entities
+     * @param values
      *            Entities to be marshalled.
      * @return <code>null</code>.
      */
-    public static <D extends DataTransferObject<Ed, Kd>, Ed extends EntityBean<Kd>, Kd extends Serializable> //
-    /*    */List<D> marshalList(Class<D> dtoClass, Iterable<?> entities) {
-        return marshalList(dtoClass, null, entities);
+    public static <D extends DataTransferObject<T>, T> List<D> marshalList(Class<D> dtoClass, Iterable<?> values) {
+        return marshalList(dtoClass, null, values);
     }
 
     /**
-     * Marshal each entity to a DTO object.
+     * Marshal each source to a DTO object.
      *
      * @param dtoClass
      *            The DTO type to be marshalled to.
      * @param selection
-     *            Selection for each entity.
-     * @param entities
+     *            Selection for each source.
+     * @param values
      *            Entities to be marshalled.
      * @return <code>null</code>.
      */
-    public static <D extends DataTransferObject<Ed, Kd>, Ed extends EntityBean<Kd>, Kd extends Serializable> //
-    /*    */List<D> marshalList(Class<D> dtoClass, Integer selection, Iterable<?> entities) {
+    public static <D extends DataTransferObject<T>, T> List<D> marshalList(Class<D> dtoClass, Integer selection,
+            Iterable<?> values) {
 
-        if (entities == null)
+        if (values == null)
             return null;
 
         List<D> dtoList = new ArrayList<D>();
 
         try {
-            for (Object _entity : entities) {
+            for (Object _source : values) {
                 D dto;
-                if (_entity == null)
+                if (_source == null)
                     dto = null;
                 else {
                     @SuppressWarnings("unchecked")
-                    Ed entity = (Ed) _entity;
+                    T source = (T) _source;
 
                     dto = dtoClass.newInstance();
                     if (selection != null)
                         dto.selection.set(selection);
 
-                    dto.marshal(entity);
+                    dto.marshal(source);
                 }
                 dtoList.add(dto);
             }
@@ -277,24 +226,24 @@ public abstract class DataTransferObject<E extends EntityBean<K>, K extends Seri
         return dtoList;
     }
 
-    public static <D extends DataTransferObject<Ed, Kd>, Ed extends EntityBean<Kd>, Kd extends Serializable> //
-    /*    */List<Ed> unmarshalList(Iterable<? extends DataTransferObject<Ed, Kd>> dataTransferObjects) {
+    public static <D extends DataTransferObject<T>, T> List<T> unmarshalList(
+            Iterable<? extends DataTransferObject<T>> dtoList) {
 
-        if (dataTransferObjects == null)
+        if (dtoList == null)
             return null;
 
-        List<Ed> entities = new ArrayList<Ed>();
+        List<T> values = new ArrayList<T>();
 
-        for (DataTransferObject<Ed, Kd> dto : dataTransferObjects) {
-            Ed entity;
+        for (DataTransferObject<T> dto : dtoList) {
+            T source;
             if (dto == null)
-                entity = null;
+                source = null;
             else
-                entity = dto.unmarshal();
-            entities.add(entity);
+                source = dto.unmarshal();
+            values.add(source);
         }
 
-        return entities;
+        return values;
     }
 
 }
