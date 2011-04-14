@@ -68,6 +68,14 @@ public abstract class EntityBean<K extends Serializable>
         this.version = version;
     }
 
+    String _internalName() {
+        return this.name;
+    }
+
+    void _internalName(String name) {
+        this.name = name;
+    }
+
     @Override
     public void populate(Object source) {
     }

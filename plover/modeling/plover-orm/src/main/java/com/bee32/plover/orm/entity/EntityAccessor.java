@@ -12,4 +12,8 @@ public class EntityAccessor {
         entity.version = version;
     }
 
+    public static void setName(EntityBean<?> entity, String name) {
+        entity._internalName(name);
+    }
+
 }
