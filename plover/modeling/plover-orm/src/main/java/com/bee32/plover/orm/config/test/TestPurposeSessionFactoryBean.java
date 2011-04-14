@@ -36,7 +36,7 @@ public abstract class TestPurposeSessionFactoryBean
         setDataSource(dataSource);
 
         // Mapping
-        properties.setProperty(hbm2ddlAuto, "create");
+        properties.setProperty(hbm2ddlAuto, "create-drop");
 
         // Debug
         properties.setProperty(showSql, "true");
