@@ -4,6 +4,11 @@ import java.util.Collection;
 
 import com.bee32.icsf.principal.Principal;
 
+/**
+ * 在寻找责任人时，需要对某一策略遍历。遍历的过程中需要上下文变量的参与。
+ *
+ * 在这一过程中，上下文变量的定义域比较中，使用本类型辅助进行。
+ */
 public class DummyContext<C> {
 
     private Class<C> contextClass;
