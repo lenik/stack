@@ -12,13 +12,21 @@
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-javascript</artifactId>
             <version>0.2.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-servlet</artifactId>
             <version>0.2.1-SNAPSHOT</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-commons</artifactId>
+            <version>0.2.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>1.4</version>
         </dependency>
     </dependencies>
     <name>Plover :: Library :: Ajax</name>

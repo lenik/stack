@@ -19,11 +19,6 @@
             <version>0.2.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-ajax</artifactId>
             <version>0.2.1-SNAPSHOT</version>
