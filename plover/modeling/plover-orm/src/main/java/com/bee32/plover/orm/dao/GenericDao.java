@@ -6,7 +6,7 @@ import com.bee32.plover.inject.ComponentTemplate;
 
 @ComponentTemplate
 @Lazy
-public class GenericDao
+public abstract class GenericDao
         extends HibernateDaoSupport {
 
 }
