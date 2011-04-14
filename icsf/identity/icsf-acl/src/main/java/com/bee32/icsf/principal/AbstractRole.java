@@ -17,11 +17,13 @@ public abstract class AbstractRole
     }
 
     @Override
-    public abstract Set<IUserPrincipal> getResponsibleUsers();
+    public abstract Set<? extends IUserPrincipal> getResponsibleUsers();
 
+    @SuppressWarnings("unchecked")
     @Override
     public void addResponsibleUser(IUserPrincipal user) {
-        getResponsibleUsers().add(user);
+        Set<IUserPrincipal> responsibleUsers = (Set<IUserPrincipal>) getResponsibleUsers();
+        responsibleUsers.add(user);
     }
 
     @Override
@@ -30,16 +32,20 @@ public abstract class AbstractRole
     }
 
     @Override
-    public abstract Set<IGroupPrincipal> getResponsibleGroups();
+    public abstract Set<? extends IGroupPrincipal> getResponsibleGroups();
 
+    @SuppressWarnings("unchecked")
     @Override
     public void addResponsibleGroup(IGroupPrincipal group) {
-        getResponsibleGroups().add(group);
+        Set<IGroupPrincipal> responsibleGroups = (Set<IGroupPrincipal>) getResponsibleGroups();
+        responsibleGroups.add(group);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void removeResponsibleGroup(IGroupPrincipal group) {
-        getResponsibleGroups().remove(group);
+        Set<IGroupPrincipal> responsibleGroups = (Set<IGroupPrincipal>) getResponsibleGroups();
+        responsibleGroups.remove(group);
     }
 
     @Override
