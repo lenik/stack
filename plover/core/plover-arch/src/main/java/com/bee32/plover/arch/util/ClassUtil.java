@@ -1,9 +1,12 @@
 package com.bee32.plover.arch.util;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.free.IllegalUsageException;
 import javax.free.StringPart;
 import javax.free.UnexpectedException;
 
@@ -69,6 +72,19 @@ public class ClassUtil {
             set.add(obj.getClass());
 
         return set;
+    }
+
+    public static Type[] getOriginPV(Type type) {
+        if (type instanceof ParameterizedType) {
+            ParameterizedType ptype = (ParameterizedType) type;
+            return ptype.getActualTypeArguments();
+        }
+        if (type instanceof Class<?>) {
+            Class<?> clazz = (Class<?>) type;
+            Type superclass = clazz.getGenericSuperclass();
+            return getOriginPV(superclass);
+        }
+        throw new IllegalUsageException("Not a generic type");
     }
 
 }
