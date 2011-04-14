@@ -2,6 +2,7 @@ package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
 
+import com.bee32.plover.arch.util.DataTransferObject;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBean;
 
@@ -67,5 +68,11 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
 
         _unmarshalTo(target);
     }
+
+    @Override
+    protected abstract void _marshal(E source);
+
+    @Override
+    protected abstract void _unmarshalTo(E target);
 
 }
