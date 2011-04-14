@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.entity.IEntity;
 
-@Lazy
 @Service
+@Lazy
 public class CommonDataManager
         extends HibernateDaoSupport {
 
