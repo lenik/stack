@@ -4,24 +4,35 @@ import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.free.IVariantLookupMap;
 import javax.free.IllegalUsageException;
 import javax.free.Map2VariantLookupMap;
 import javax.free.NotImplementedException;
+import javax.free.ParseException;
+import javax.free.TypeConvertException;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 public abstract class DataTransferObject<T>
-        implements Serializable {
+        implements IDataTransferObject<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     protected final Class<T> dataType;
     {
-        Type[] pv = ClassUtil.getOriginPV(getClass());
+        Type[] pv = ClassUtil.getImmediatePV(getClass());
+        if (pv == null) {
+            Class<?> superclass = getClass().getSuperclass();
+            // DTO class foo.Bar must be declared with type parameter.
+            throw new IllegalUsageException("DTO " + superclass + " must be declared with type parameter");
+        }
 
         @SuppressWarnings("unchecked")
         Class<T> dataType = (Class<T>) pv[0];
@@ -57,8 +68,25 @@ public abstract class DataTransferObject<T>
         marshal(source);
     }
 
-    public void marshal(T source) {
+    /**
+     * Marshal the given source object into this object.
+     *
+     * @param source
+     *            Source object to be marshalled, maybe <code>null</code>.
+     * @return The marshalled object. it should return this self, or <code>null</code> if the
+     *         specified <code>source</code> object is <code>null</code>.
+     */
+    @Override
+    public <D extends DataTransferObject<T>> D marshal(T source) {
+        if (source == null)
+            return null;
+
         _marshal(source);
+
+        @SuppressWarnings("unchecked")
+        D self = (D) this;
+
+        return self;
     }
 
     /**
@@ -69,11 +97,19 @@ public abstract class DataTransferObject<T>
      */
     protected abstract void _marshal(T source);
 
+    public static <D extends DataTransferObject<T>, T> T unmarshal(D dto) {
+        if (dto == null)
+            return null;
+        else
+            return dto.unmarshal();
+    }
+
     /**
      * Write properties from this object into a new source bean.
      *
      * @return Non-<code>null</code> source bean.
      */
+    @Override
     public final T unmarshal() {
         T target;
         try {
@@ -85,6 +121,7 @@ public abstract class DataTransferObject<T>
         return target;
     }
 
+    @Override
     public void unmarshalTo(T target) {
         _unmarshalTo(target);
     }
@@ -104,9 +141,16 @@ public abstract class DataTransferObject<T>
      *
      * @param request
      *            Non-<code>null</code> request object.
+     * @throws ServletException
+     *             If parse errors.
      */
-    public final void parse(HttpServletRequest request) {
-        parse(request.getParameterMap());
+    public final void parse(HttpServletRequest request)
+            throws ServletException {
+        try {
+            parse(request.getParameterMap());
+        } catch (ParseException e) {
+            throw new ServletException("Parse error: " + e.getMessage(), e);
+        }
     }
 
     /**
@@ -115,13 +159,27 @@ public abstract class DataTransferObject<T>
      * @param map
      *            Non-<code>null</code> request object.
      */
-    public final void parse(Map<String, ?> map) {
+    public final void parse(Map<String, ?> map)
+            throws ParseException {
         if (map == null)
             throw new NullPointerException("map");
-        parse(new Map2VariantLookupMap<String>(map));
+        try {
+            parse(new Map2VariantLookupMap<String>(map));
+        } catch (TypeConvertException e) {
+            throw new ParseException(e.getMessage(), e);
+        }
     }
 
-    public void parse(IVariantLookupMap<String> map) {
+    /**
+     * Parse parameters from a variant lookup map.
+     *
+     * @throws TypeConvertException
+     *             If type conversion failure inside the variant lookup map.
+     * @throws ParseException
+     *             Other parse exception caused by user implementation.
+     */
+    public void parse(IVariantLookupMap<String> map)
+            throws ParseException, TypeConvertException {
     }
 
     public Map<String, Object> exportMap() {
@@ -202,7 +260,7 @@ public abstract class DataTransferObject<T>
      *            Selection for each source.
      * @param values
      *            Entities to be marshalled.
-     * @return <code>null</code>.
+     * @return <code>null</code> if <code>values</code> is <code>null</code>.
      */
     public static <D extends DataTransferObject<T>, T> List<D> marshalList(Class<D> dtoClass, Integer selection,
             Iterable<?> values) {
@@ -236,13 +294,11 @@ public abstract class DataTransferObject<T>
         return dtoList;
     }
 
-    public static <D extends DataTransferObject<T>, T> List<T> unmarshalList(
-            Iterable<? extends DataTransferObject<T>> dtoList) {
+    public static <C extends Collection<T>, D extends DataTransferObject<T>, T> //
+    C unmarshal(C collection, Iterable<? extends DataTransferObject<T>> dtoList) {
 
         if (dtoList == null)
             return null;
-
-        List<T> values = new ArrayList<T>();
 
         for (DataTransferObject<T> dto : dtoList) {
             T source;
@@ -250,10 +306,20 @@ public abstract class DataTransferObject<T>
                 source = null;
             else
                 source = dto.unmarshal();
-            values.add(source);
+            collection.add(source);
         }
 
-        return values;
+        return collection;
+    }
+
+    public static <D extends DataTransferObject<T>, T> List<T> unmarshalList(
+            Iterable<? extends DataTransferObject<T>> dtoList) {
+        return unmarshal(new ArrayList<T>(), dtoList);
+    }
+
+    public static <D extends DataTransferObject<T>, T> Set<T> unmarshalSet(
+            Iterable<? extends DataTransferObject<T>> dtoList) {
+        return unmarshal(new HashSet<T>(), dtoList);
     }
 
 }
