@@ -109,8 +109,8 @@ public class GroupDto
             target.setMemberUsers(UserDto.unmarshalSet(memberUsers));
     }
 
-    public static List<GroupDto> marshalList(int selection, Iterable<? extends Group> entities) {
-        return marshalList(GroupDto.class, selection, entities);
+    public static <D> List<D> marshalList(int selection, Iterable<?> entities) {
+        return (List<D>) marshalList(GroupDto.class, selection, entities);
     }
 
 }

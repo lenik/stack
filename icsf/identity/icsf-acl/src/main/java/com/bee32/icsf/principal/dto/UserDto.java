@@ -94,8 +94,8 @@ public class UserDto
             target.setAssignedRoles(RoleDto.unmarshalSet(assignedRoles));
     }
 
-    public static List<UserDto> marshalList(int selection, Iterable<? extends User> entities) {
-        return marshalList(UserDto.class, selection, entities);
+    public static <D> List<D> marshalList(int selection, Iterable<?> entities) {
+        return (List<D>) marshalList(UserDto.class, selection, entities);
     }
 
 }

@@ -55,8 +55,8 @@ public class RoleDto
             target.setResponsibleGroups(GroupDto.unmarshalSet(responsibleGroups));
     }
 
-    public static List<RoleDto> marshalList(int selection, Iterable<? extends Role> entities) {
-        return marshalList(RoleDto.class, selection, entities);
+    public static <D> List<D> marshalList(int selection, Iterable<?> entities) {
+        return (List<D>) marshalList(RoleDto.class, selection, entities);
     }
 
 }

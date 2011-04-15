@@ -74,7 +74,7 @@ public class PrincipalDto<E extends Principal>
     }
 
     @SuppressWarnings("unchecked")
-    public static List<PrincipalDto<?>> marshalList(int selection, Iterable<? extends Principal> entities) {
+    public static <D> List<D> marshalList(int selection, Iterable<?> entities) {
         return marshalList(PrincipalDto.class, selection, entities);
     }
 
