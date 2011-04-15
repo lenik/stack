@@ -2,6 +2,10 @@ package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
 
+import javax.free.IVariantLookupMap;
+import javax.free.ParseException;
+import javax.free.TypeConvertException;
+
 import com.bee32.plover.arch.util.DataTransferObject;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBean;
@@ -55,16 +59,11 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
     }
 
     @Override
-    public <D extends DataTransferObject<E>> D marshal(E source) {
+    protected final void __marshal(E source) {
         id = source.getId();
         version = source.getVersion();
 
         _marshal(source);
-
-        @SuppressWarnings("unchecked")
-        D self = (D) this;
-
-        return self;
     }
 
     @Override
@@ -83,5 +82,11 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
 
     @Override
     protected abstract void _unmarshalTo(E target);
+
+    @Override
+    public void parse(IVariantLookupMap<String> map)
+            throws ParseException, TypeConvertException {
+        super.parse(map);
+    }
 
 }
