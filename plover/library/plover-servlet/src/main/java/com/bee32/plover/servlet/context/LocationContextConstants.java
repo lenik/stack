@@ -48,7 +48,14 @@ public interface LocationContextConstants {
 
             // context-path == /* or ""
             String contextPath = servletContext.getContextPath();
-            return contextPath + "/" + location;
+
+            if (location.isEmpty())
+                return contextPath;
+            else if (location.startsWith("/"))
+                // WARNING.
+                return contextPath + location;
+            else
+                return contextPath + "/" + location;
         }
 
     };
