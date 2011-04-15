@@ -69,7 +69,8 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
 
     @Override
     public void unmarshalTo(E target) {
-        EntityAccessor.setId(target, id);
+        if (id != null)
+            EntityAccessor.setId(target, id);
 
         if (version != null)
             EntityAccessor.setVersion(target, version);
