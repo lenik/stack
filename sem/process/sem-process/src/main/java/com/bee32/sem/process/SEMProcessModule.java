@@ -15,9 +15,9 @@ public class SEMProcessModule
 
     @Override
     protected void preamble() {
-        export(AllowListDao.class, "list");
-        export(MultiLevelDao.class, "level");
-        export(PassToNextDao.class, "p2next");
+        export(AllowListDao.class);
+        export(MultiLevelDao.class);
+        export(PassToNextDao.class);
     }
 
 }

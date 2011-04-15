@@ -2,6 +2,8 @@ package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
 
+import javax.free.IllegalUsageException;
+
 import com.bee32.plover.arch.Module;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityRepository;
@@ -17,6 +19,20 @@ public abstract class ERModule
 
     public ERModule(String name) {
         super(name);
+    }
+
+    protected <ER extends EntityRepository<?, ?>> //
+    void export(Class<ER> erClass) {
+        // declare the restful token
+        ER repo = applicationContext.getBean(erClass);
+
+        // Type[] pv = ClassUtil.getOriginPV(erClass);
+        Class<?> entityType = repo.getEntityType();
+        Alias aliasAnn = entityType.getAnnotation(Alias.class);
+        if (aliasAnn == null)
+            throw new IllegalUsageException("No @Alias defined on " + entityType);
+
+        export(erClass, aliasAnn.value());
     }
 
     protected <ER extends EntityRepository<?, ?>> //

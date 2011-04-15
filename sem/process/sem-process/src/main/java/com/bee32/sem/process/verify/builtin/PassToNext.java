@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.util.Alias;
 import com.bee32.sem.process.verify.ContextClass;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.result.ErrorResult;
@@ -26,6 +27,7 @@ import com.bee32.sem.process.verify.result.PendingResult;
 @ContextClass(ICurrentStep.class)
 @Entity
 @DiscriminatorValue("NXT")
+@Alias("p2next")
 public class PassToNext
         extends VerifyPolicy<ICurrentStep, PassLog> {
 

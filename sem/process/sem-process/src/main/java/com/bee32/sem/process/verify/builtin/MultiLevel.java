@@ -15,6 +15,7 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.util.Alias;
 import com.bee32.sem.process.verify.ContextClass;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.result.ErrorResult;
@@ -24,6 +25,7 @@ import com.bee32.sem.process.verify.result.UnauthorizedResult;
 @ContextClass(IContextLimit.class)
 @Entity
 @DiscriminatorValue("ML")
+@Alias("level")
 public class MultiLevel
         extends VerifyPolicy<IContextLimit, AllowState> {
 

@@ -17,6 +17,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalBeanConfig;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -29,6 +30,7 @@ import com.bee32.sem.process.verify.result.UnauthorizedResult;
  */
 @Entity
 @DiscriminatorValue("LS")
+@Alias("list")
 public class AllowList
         extends VerifyPolicy<Object, AllowState> {
 
