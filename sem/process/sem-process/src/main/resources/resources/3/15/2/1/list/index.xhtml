@@ -28,6 +28,7 @@
                 <tr>
                     <th>标识</th>
                     <th>名称</th>
+                    <th>责任人</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -35,6 +36,7 @@
                 <tr>
                     <th>标识</th>
                     <th>名称</th>
+                    <th>责任人</th>
                     <th>操作</th>
                 </tr>
             </tfoot>
@@ -68,9 +70,9 @@
                     "sPaginationType": "full_numbers",
                     "bFilter" : false,
                     "bInfo" : true,
-                    "sAjaxSource" : "${location.WEB_APP['json.htm']}",
+                    "sAjaxSource" : "data.htm",
                     "fnServerData" : function(sSource, aoData, fnCallback) {
-                        aoData.push({"name" : "material_category_id", "value" : "-1"});
+                        // aoData.push({"name" : "material_category_id", "value" : "-1"});
                         $.ajax({
                             "dataType" : 'json',
                             "type" : "POST",
@@ -82,17 +84,18 @@
                     "aoColumns" : [
                         {"bVisible" : false},
                         null,
+                        null,
                         {
                             "sWidth" : "160px",
                             "fnRender" : function(obj) {
                                 var id = obj.aData[0];
                                 return "\
-                                    <a title='查看' href='view.htm?id=" + id + "'>\
+                                    <a title='查看' href='content.htm?id=" + id + "'>\
                                         <img \
                                             border=0 alt='查看' \
                                             src='${location.ICON['etool16/insp_sbook.gif']}'/>\
                                     </a>\
-                                    <a title='修改' href='modify.htm?id=" + id + "'>\
+                                    <a title='修改' href='editForm.htm?id=" + id + "'>\
                                         <img \
                                             border=0 alt='修改' \
                                             src='${location.ICON['etool16/editor_area.gif']}'/>\
@@ -120,6 +123,7 @@
                         "sProcessing" : "正在处理..."
                     }
                 });
+            });
         /* ]]> */
         </script>
 
