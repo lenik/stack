@@ -1,7 +1,7 @@
 package com.bee32.plover.arch.util;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.free.AbstractVariantLookupMap;
 import javax.free.IVariantLookupMap;
 import javax.free.IllegalUsageException;
 import javax.free.Map2VariantLookupMap;
@@ -27,7 +28,7 @@ public abstract class DataTransferObject<T>
 
     protected final Class<T> dataType;
     {
-        Type[] pv = ClassUtil.getImmediatePV(getClass());
+        Class<?>[] pv = ClassUtil.getOriginPVClass(getClass());
         if (pv == null) {
             Class<?> superclass = getClass().getSuperclass();
             // DTO class foo.Bar must be declared with type parameter.
@@ -147,7 +148,11 @@ public abstract class DataTransferObject<T>
     public final void parse(HttpServletRequest request)
             throws ServletException {
         try {
-            parse(request.getParameterMap());
+            Map<String, ?> requestMap = request.getParameterMap();
+            ReqLookMap lookupMap = new ReqLookMap(requestMap);
+            parse(lookupMap);
+        } catch (TypeConvertException e) {
+            throw new ServletException("Parse error: " + e.getMessage(), e);
         } catch (ParseException e) {
             throw new ServletException("Parse error: " + e.getMessage(), e);
         }
@@ -320,6 +325,64 @@ public abstract class DataTransferObject<T>
     public static <D extends DataTransferObject<T>, T> Set<T> unmarshalSet(
             Iterable<? extends DataTransferObject<T>> dtoList) {
         return unmarshal(new HashSet<T>(), dtoList);
+    }
+
+}
+
+class ReqLookMap
+        extends AbstractVariantLookupMap<String> {
+
+    Map<String, ?> map;
+
+    public ReqLookMap(Map<String, ?> map) {
+        if (map == null)
+            throw new NullPointerException("map");
+        this.map = map;
+    }
+
+    @Override
+    public boolean containsKey(String key) {
+        return map.containsKey(key);
+    }
+
+    @Override
+    public Object get(String key) {
+        Object value = map.get(key);
+
+        if (value == null)
+            return null;
+
+        if (value.getClass().isArray()) {
+            // if (Array.getLength(value) == 0)
+            // return null;
+            return Array.get(value, 0);
+        }
+
+        return value;
+    }
+
+    @Override
+    public String[] getStringArray(String key) {
+        return getStringArray(key, null);
+    }
+
+    @Override
+    public String[] getStringArray(String key, String[] defaultValue) {
+        Object value = map.get(key);
+
+        if (value == null)
+            return defaultValue;
+
+        if (value.getClass().isArray())
+            return (String[]) value;
+
+        String[] array = { String.valueOf(value) };
+        return array;
+    }
+
+    @Override
+    public Set<String> keySet() {
+        return map.keySet();
     }
 
 }
