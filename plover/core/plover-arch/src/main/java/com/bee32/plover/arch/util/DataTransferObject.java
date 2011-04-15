@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -69,25 +70,56 @@ public abstract class DataTransferObject<T>
         marshal(source);
     }
 
+    private static ThreadLocal<Map<Object, Object>> threadLocalGraph;
+    static {
+        threadLocalGraph = new ThreadLocal<Map<Object, Object>>();
+    }
+
     /**
      * Marshal the given source object into this object.
      *
      * @param source
      *            Source object to be marshalled, maybe <code>null</code>.
-     * @return The marshalled object. it should return this self, or <code>null</code> if the
+     * @return The marshalled object. it may be this, or flyweight, or <code>null</code> if the
      *         specified <code>source</code> object is <code>null</code>.
      */
     @Override
-    public <D extends DataTransferObject<T>> D marshal(T source) {
+    public final <D extends DataTransferObject<T>> D marshal(T source) {
         if (source == null)
             return null;
 
-        _marshal(source);
+        Map<Object, Object> graph = threadLocalGraph.get();
+        boolean topLevel = graph == null;
+        if (topLevel) {
+            graph = new IdentityHashMap<Object, Object>();
+            threadLocalGraph.set(graph);
+        }
+
+        D marshalledFlyWeight = (D) graph.get(source);
+        if (marshalledFlyWeight != null)
+            return marshalledFlyWeight;
+
+        try {
+            // Do the real marshal work.
+            // logger.debug("marshal begin");
+
+            graph.put(source, this);
+            __marshal(source);
+
+            // logger.debug("marshal end");
+        } finally {
+            if (topLevel)
+                threadLocalGraph.remove();
+        }
 
         @SuppressWarnings("unchecked")
         D self = (D) this;
 
         return self;
+    }
+
+    protected void __marshal(T source) {
+        _marshal(source);
     }
 
     /**
