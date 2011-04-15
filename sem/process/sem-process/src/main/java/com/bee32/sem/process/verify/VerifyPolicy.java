@@ -3,13 +3,12 @@ package com.bee32.sem.process.verify;
 import javax.free.DecodeException;
 import javax.free.EncodeException;
 import javax.free.XMLs;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.AccessType;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.sem.process.verify.result.ErrorResult;
@@ -26,6 +25,8 @@ public abstract class VerifyPolicy<C, S extends VerifyState>
 
     private final Class<S> verifyStateClass;
 
+    private String description;
+
     /**
      * Initialize the policy name from the class name.
      */
@@ -35,7 +36,7 @@ public abstract class VerifyPolicy<C, S extends VerifyState>
         this.verifyStateClass = verifyStateClass;
     }
 
-    @AccessType("field")
+    @Column(length = 50)
     @Override
     public String getName() {
         return name;
@@ -43,6 +44,15 @@ public abstract class VerifyPolicy<C, S extends VerifyState>
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Column(length = 200)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
