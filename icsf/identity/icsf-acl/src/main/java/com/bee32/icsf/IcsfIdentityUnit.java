@@ -1,7 +1,6 @@
 package com.bee32.icsf;
 
 import com.bee32.icsf.access.alt.R_ACE;
-import com.bee32.icsf.access.alt.R_ACL;
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Role;
@@ -20,7 +19,7 @@ public class IcsfIdentityUnit
         add(Role.class);
         // add(Realm.class);
 
-        add(R_ACL.class);
+        // add(R_ACL.class);
         add(R_ACE.class);
     }
 
