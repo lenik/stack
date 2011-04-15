@@ -144,4 +144,6 @@ public interface IRepository<K, V>
      */
     void deleteAll();
 
+    long count();
+
 }

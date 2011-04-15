@@ -91,7 +91,8 @@ public class MapEntityRepository<E extends IEntity<K>, K extends Serializable>
         getMap().clear();
     }
 
-    public int count() {
+    @Override
+    public long count() {
         return getMap().size();
     }
 

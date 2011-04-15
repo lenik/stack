@@ -50,4 +50,9 @@ public class EmptyEntityRepository<E extends EntityBean<K>, K extends Serializab
     public void refresh(E entity) {
     }
 
+    @Override
+    public long count() {
+        return 0;
+    }
+
 }

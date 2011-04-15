@@ -163,6 +163,7 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
         getHibernateTemplate().flush();
     }
 
+    @Override
     public long count() {
         return count((Criterion[]) null);
     }
@@ -174,7 +175,7 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
             for (Criterion restriction : restrictions)
                 criteria.add(restriction);
 
-        criteria.setProjection(Projections.count("*"));
+        criteria.setProjection(Projections.rowCount());
 
         Object result = criteria.uniqueResult();
 
