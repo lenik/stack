@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.bee32.plover.orm.unit.Using;
+import com.bee32.sem.process.verify.builtin.AllowListController;
 import com.bee32.sems.test.SEMTestCase;
 
 @Using(SEMProcessUnit.class)
@@ -23,7 +24,7 @@ public class SEMProcessModuleTest
             throws IOException {
         new SEMProcessModuleTest().browseAndWait(//
                 // SEMProcessModule.class//
-                "process/verify/allowListIndex.htm"//
+                AllowListController.PREFIX + "index.htm"//
                 );
     }
 

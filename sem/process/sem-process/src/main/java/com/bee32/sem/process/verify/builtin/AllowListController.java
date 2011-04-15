@@ -31,7 +31,7 @@ import com.bee32.sem.process.verify.builtin.dao.AllowListDao;
 public class AllowListController
         extends MultiActionController {
 
-    static final String PREFIX = SEMProcessModule.PREFIX + "/list/";
+    public static final String PREFIX = SEMProcessModule.PREFIX + "/list/";
 
     @Inject
     AllowListDao allowListDao;
@@ -39,8 +39,8 @@ public class AllowListController
     @Inject
     PrincipalDao principalDao;
 
-    @RequestMapping(SEMProcessModule.PREFIX + "index.htm")
-    public Map<String, Object> allowListIndex(HttpServletRequest req, HttpServletResponse resp) {
+    @RequestMapping(PREFIX + "index.htm")
+    public Map<String, Object> index(HttpServletRequest req, HttpServletResponse resp) {
         ModelMap mm = new ModelMap();
 
         // Index by data-table:
@@ -51,7 +51,7 @@ public class AllowListController
     }
 
     @RequestMapping(PREFIX + "data.htm")
-    public void tableJson(HttpServletRequest req, HttpServletResponse resp)
+    public void data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         DataTableDxo opts = new DataTableDxo();

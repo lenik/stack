@@ -36,8 +36,4 @@ public class SEMProcessSamples
         addNormalSample(macLevel);
     }
 
-    public static void main(String[] args) {
-        System.out.println(robotList);
-    }
-
 }

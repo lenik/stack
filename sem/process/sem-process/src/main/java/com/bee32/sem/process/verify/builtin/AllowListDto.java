@@ -20,12 +20,20 @@ public class AllowListDto
     String name;
     List<PrincipalDto<?>> responsibles;
 
-    public AllowListDto(AllowList source, int selection) {
-        super(source, selection);
+    public AllowListDto() {
+        super();
+    }
+
+    public AllowListDto(AllowList source) {
+        super(source);
     }
 
     public AllowListDto(int selection) {
         super(selection);
+    }
+
+    public AllowListDto(AllowList source, int selection) {
+        super(source, selection);
     }
 
     public String getName() {
