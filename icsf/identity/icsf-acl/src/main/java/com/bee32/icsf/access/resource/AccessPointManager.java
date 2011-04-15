@@ -101,6 +101,11 @@ public class AccessPointManager
                 name = method.getName();
             String pointName = section + "." + name;
 
+            // Skip existing.
+            AccessPoint existing = AccessPoint.getInstance(pointName);
+            if (existing != null)
+                continue;
+
             InjectedAppearance pointAppearance = new InjectedAppearance(null, contextURL);
 
             dispatcher.addKeyAcceptor(name, pointAppearance);
