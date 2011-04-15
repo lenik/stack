@@ -1,8 +1,8 @@
 package com.bee32.plover.arch.util;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import com.bee32.plover.arch.Component;
@@ -11,7 +11,7 @@ public abstract class ClassCatalog
         extends Component
         implements Iterable<Class<?>> {
 
-    private final Set<Class<?>> classes = new HashSet<Class<?>>();
+    private final Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
 
     private boolean assembled;
 
