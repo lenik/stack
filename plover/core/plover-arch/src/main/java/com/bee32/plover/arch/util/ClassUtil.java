@@ -2,6 +2,7 @@ package com.bee32.plover.arch.util;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
@@ -84,16 +85,56 @@ public class ClassUtil {
     }
 
     public static Type[] getOriginPV(Type type) {
+        if (type == null)
+            throw new NullPointerException("type");
+
         if (type instanceof ParameterizedType) {
             ParameterizedType ptype = (ParameterizedType) type;
             return ptype.getActualTypeArguments();
         }
+
         if (type instanceof Class<?>) {
             Class<?> clazz = (Class<?>) type;
             Type superclass = clazz.getGenericSuperclass();
             return getOriginPV(superclass);
         }
+
         throw new IllegalUsageException("Not a generic type");
+    }
+
+    public static Class<?>[] getOriginPVClass(Type type) {
+        Type[] pv = getOriginPV(type);
+        if (pv == null)
+            return null;
+
+        Class<?>[] pvClasses = new Class<?>[pv.length];
+        for (int i = 0; i < pv.length; i++)
+            pvClasses[i] = getBound(pv[i]);
+
+        return pvClasses;
+    }
+
+    /**
+     * @throws Error
+     *             If failed to get the type bound.
+     */
+    public static Class<?> getBound(Type type) {
+        while (type instanceof TypeVariable<?>) {
+            Type[] bounds = ((TypeVariable<?>) type).getBounds();
+
+            // super or extends?
+            Type bound1 = bounds[0];
+
+            type = bound1;
+        }
+
+        if (type instanceof ParameterizedType)
+            type = ((ParameterizedType) type).getRawType();
+
+        if (!(type instanceof Class<?>))
+            throw new Error("Failed to get type bound: " + type);
+
+        return (Class<?>) type;
     }
 
 }
