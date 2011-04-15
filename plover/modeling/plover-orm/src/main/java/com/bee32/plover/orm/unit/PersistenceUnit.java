@@ -22,13 +22,13 @@ public abstract class PersistenceUnit
 
     @Override
     protected void internalAssemble() {
-        merge(getClass());
+        loadImports(getClass());
     }
 
-    private void merge(Class<?> clazz) {
+    private void loadImports(Class<?> clazz) {
         Class<?> superclass = clazz.getSuperclass();
         if (superclass != null)
-            merge(superclass);
+            loadImports(superclass);
 
         ImportUnit importUnitAnnotation = clazz.getAnnotation(ImportUnit.class);
         if (importUnitAnnotation != null) {
