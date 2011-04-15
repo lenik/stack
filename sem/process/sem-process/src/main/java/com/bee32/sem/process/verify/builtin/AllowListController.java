@@ -20,7 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dao.PrincipalDao;
@@ -33,8 +32,9 @@ import com.bee32.sem.process.verify.builtin.dao.AllowListDao;
 
 @Controller
 @Lazy
+@RequestMapping(AllowListController.PREFIX + "*")
 public class AllowListController
-        extends MultiActionController {
+        extends GenericController {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "/list/";
 
@@ -50,18 +50,7 @@ public class AllowListController
     @Inject
     UserDao userDao;
 
-    @RequestMapping(PREFIX + "index.htm")
-    public Map<String, Object> index(HttpServletRequest req, HttpServletResponse resp) {
-        ModelMap mm = new ModelMap();
-
-        // Index by data-table:
-        // List<AllowListDto> list = AllowListDto.marshalList(0, allowListDao.list());
-        // mm.put("list", list);
-
-        return mm;
-    }
-
-    @RequestMapping(PREFIX + "content.htm")
+    @RequestMapping("content.htm")
     public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp) {
         int id = Integer.parseInt(req.getParameter("id"));
 
@@ -74,7 +63,7 @@ public class AllowListController
         return modelMap;
     }
 
-    @RequestMapping(PREFIX + "data.htm")
+    @RequestMapping("data.htm")
     public void data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
@@ -123,35 +112,8 @@ public class AllowListController
         JsonUtil.dump(resp, opts.exportMap());
     }
 
-    @RequestMapping(PREFIX + "createForm.htm")
-    public ModelAndView createForm(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException {
-        req.setAttribute("create", true);
-
-        Map<String, Object> map = form(req, resp);
-
-        map.put("verb", "create");
-        map.put("verb_en", "Create");
-        map.put("verb_zh", "创建");
-
-        return new ModelAndView(PREFIX + "form", map);
-    }
-
-    @RequestMapping(PREFIX + "editForm.htm")
-    public ModelAndView editForm(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException {
-        req.setAttribute("create", false);
-
-        Map<String, Object> map = form(req, resp);
-
-        map.put("verb", "update");
-        map.put("verb_en", "Edit");
-        map.put("verb_zh", "编辑");
-
-        return new ModelAndView(PREFIX + "form", map);
-    }
-
-    Map<String, Object> form(HttpServletRequest req, HttpServletResponse resp)
+    @Override
+    protected Map<String, Object> form(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
 
         boolean create = (Boolean) req.getAttribute("create");
@@ -181,21 +143,8 @@ public class AllowListController
         return map;
     }
 
-    @RequestMapping(PREFIX + "create.htm")
-    public void create(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        req.setAttribute("create", true);
-        createOrUpdate(req, resp);
-    }
-
-    @RequestMapping(PREFIX + "update.htm")
-    public void update(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        req.setAttribute("create", false);
-        createOrUpdate(req, resp);
-    }
-
-    void createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
+    @Override
+    protected ModelAndView createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         boolean create = (Boolean) req.getAttribute("create");
@@ -235,11 +184,11 @@ public class AllowListController
 
         dataManager.saveOrUpdate(entity);
 
-        resp.sendRedirect("index.htm");
+        return new ModelAndView(viewOf("index"));
     }
 
-    @RequestMapping(PREFIX + "delete.htm")
-    public void delete(HttpServletRequest req, HttpServletResponse resp)
+    @RequestMapping("delete.htm")
+    public String delete(HttpServletRequest req, HttpServletResponse resp)
             throws Exception {
 
         int id = Integer.parseInt(req.getParameter("id"));
@@ -258,10 +207,10 @@ public class AllowListController
                 out.println("alert('" + message + "'); ");
                 out.println("history.back(); ");
                 out.println("</script>");
-                return;
+                return null;
             }
 
-        resp.sendRedirect("index.htm");
+        return viewOf("index");
     }
 
 }
