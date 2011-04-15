@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalBeanConfig;
@@ -66,10 +66,10 @@ public class AllowList
         return getResponsibles();
     }
 
-    @OneToMany(targetEntity = Principal.class, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Principal.class, fetch = FetchType.EAGER)
     @JoinTable(name = "AllowListResponsible", //
-    /*        */joinColumns = @JoinColumn(name = "responsible"), //
-    /*        */inverseJoinColumns = @JoinColumn(name = "allowList"))
+    /*        */joinColumns = @JoinColumn(name = "allowList"), //
+    /*        */inverseJoinColumns = @JoinColumn(name = "responsible"))
     public Set<Principal> getResponsibles() {
         if (responsibles == null) {
             synchronized (this) {

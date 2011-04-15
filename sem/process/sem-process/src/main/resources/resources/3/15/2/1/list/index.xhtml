@@ -15,27 +15,35 @@
 
         <script type="text/javascript" src="${location.LIB_3RDPARTY['dataTables-1.7/media/js/jquery.dataTables.js']}"></script>
         <link rel="stylesheet" type="text/css"
-            href="${location.LIB_3RDPARTY['/dataTables-1.7/media/css/demo_page.css']}" />
+            href="${location.LIB_3RDPARTY['dataTables-1.7/media/css/demo_page.css']}" />
         <link rel="stylesheet" type="text/css"
-            href="${location.LIB_3RDPARTY['/dataTables-1.7/media/css/demo_table.css']}" />
+            href="${location.LIB_3RDPARTY['dataTables-1.7/media/css/demo_table.css']}" />
     </ui:define>
 
     <ui:define name="body">
         <h2>白名单策略</h2>
 
+        <div>
+            <a href="createForm.htm">建立新的白名单策略</a>
+        </div>
+
         <table id="table1" cellpadding="0" cellspacing="0" border="0" class="display">
             <thead>
                 <tr>
-                    <th>标识</th>
+                    <th>id</th>
+                    <th>version</th>
                     <th>名称</th>
+                    <th>描述</th>
                     <th>责任人</th>
                     <th>操作</th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <th>标识</th>
+                    <th>id</th>
+                    <th>version</th>
                     <th>名称</th>
+                    <th>描述</th>
                     <th>责任人</th>
                     <th>操作</th>
                 </tr>
@@ -83,10 +91,12 @@
                     },
                     "aoColumns" : [
                         {"bVisible" : false},
+                        {"bVisible" : false},
+                        null,
                         null,
                         null,
                         {
-                            "sWidth" : "160px",
+                            "sWidth" : "60px",
                             "fnRender" : function(obj) {
                                 var id = obj.aData[0];
                                 return "\

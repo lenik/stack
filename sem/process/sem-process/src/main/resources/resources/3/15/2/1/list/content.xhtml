@@ -26,8 +26,16 @@
                 <td>${it.name}</td>
             </tr>
             <tr>
+                <td>描述:</td>
+                <td>${it.description}</td>
+            </tr>
+            <tr>
                 <td>责任人:</td>
-                <td>${it.responsibles}</td>
+                <td>
+                    <c:forEach var="r" items="${it.responsibleNames}">
+                        <div>${r}</div>
+                    </c:forEach>
+                </td>
             </tr>
         </table>
     </ui:define>

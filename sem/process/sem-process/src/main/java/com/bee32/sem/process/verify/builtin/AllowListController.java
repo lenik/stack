@@ -1,6 +1,7 @@
 package com.bee32.sem.process.verify.builtin;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,15 +15,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dao.PrincipalDao;
-import com.bee32.icsf.principal.dto.PrincipalDto;
+import com.bee32.icsf.principal.dao.UserDao;
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.ajax.JsonUtil;
+import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.dao.AllowListDao;
 
@@ -34,10 +39,16 @@ public class AllowListController
     public static final String PREFIX = SEMProcessModule.PREFIX + "/list/";
 
     @Inject
+    CommonDataManager dataManager;
+
+    @Inject
     AllowListDao allowListDao;
 
     @Inject
     PrincipalDao principalDao;
+
+    @Inject
+    UserDao userDao;
 
     @RequestMapping(PREFIX + "index.htm")
     public Map<String, Object> index(HttpServletRequest req, HttpServletResponse resp) {
@@ -48,6 +59,19 @@ public class AllowListController
         // mm.put("list", list);
 
         return mm;
+    }
+
+    @RequestMapping(PREFIX + "content.htm")
+    public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp) {
+        int id = Integer.parseInt(req.getParameter("id"));
+
+        AllowList entity = allowListDao.load(id);
+
+        AllowListDto dto = new AllowListDto(AllowListDto.RESPONSIBLES).marshal(entity);
+
+        ModelMap modelMap = new ModelMap();
+        modelMap.put("it", dto);
+        return modelMap;
     }
 
     @RequestMapping(PREFIX + "data.htm")
@@ -66,13 +90,15 @@ public class AllowListController
         List<Object[]> rows = new ArrayList<Object[]>();
 
         for (AllowListDto alist : all) {
-            Object[] row = new Object[3];
+            Object[] row = new Object[5 + 1];
             row[0] = alist.getId();
-            row[1] = alist.getName();
+            row[1] = alist.getVersion();
+            row[2] = alist.getName();
+            row[3] = alist.getDescription();
 
             int max = 3;
             StringBuilder names = null;
-            for (PrincipalDto<?> responsible : alist.getResponsibles()) {
+            for (String responsible : alist.getResponsibleNames()) {
                 if (max <= 0) {
                     names.append(", etc.");
                     break;
@@ -83,11 +109,11 @@ public class AllowListController
                 else
                     names.append(", ");
 
-                names.append(responsible.getName());
+                names.append(responsible);
 
                 max--;
             }
-            row[2] = names == null ? "" : names.toString();
+            row[4] = names == null ? "" : names.toString();
 
             rows.add(row);
         }
@@ -98,17 +124,31 @@ public class AllowListController
     }
 
     @RequestMapping(PREFIX + "createForm.htm")
-    public Map<?, ?> createForm(HttpServletRequest req, HttpServletResponse resp)
+    public ModelAndView createForm(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
         req.setAttribute("create", true);
-        return form(req, resp);
+
+        Map<String, Object> map = form(req, resp);
+
+        map.put("verb", "create");
+        map.put("verb_en", "Create");
+        map.put("verb_zh", "创建");
+
+        return new ModelAndView(PREFIX + "form", map);
     }
 
     @RequestMapping(PREFIX + "editForm.htm")
-    public Map<?, ?> editForm(HttpServletRequest req, HttpServletResponse resp)
+    public ModelAndView editForm(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
         req.setAttribute("create", false);
-        return form(req, resp);
+
+        Map<String, Object> map = form(req, resp);
+
+        map.put("verb", "update");
+        map.put("verb_en", "Edit");
+        map.put("verb_zh", "编辑");
+
+        return new ModelAndView(PREFIX + "form", map);
     }
 
     Map<String, Object> form(HttpServletRequest req, HttpServletResponse resp)
@@ -121,12 +161,22 @@ public class AllowListController
         map.put("_create", create);
         map.put("_verb", create ? "Create" : "Modify");
 
-        if (!create) {
+        AllowListDto dto;
+        if (create) {
+            dto = new AllowListDto();
+            dto.setName("");
+            dto.setDescription("");
+            dto.setResponsibleIds(new ArrayList<Long>());
+            map.put("it", dto);
+        } else {
             int id = Integer.parseInt(req.getParameter("id"));
             AllowList entity = allowListDao.load(id);
-            AllowListDto dto = new AllowListDto(AllowListDto.RESPONSIBLES).marshal(entity);
-            map.put("it", dto);
+            dto = new AllowListDto(AllowListDto.RESPONSIBLES).marshal(entity);
         }
+        map.put("it", dto);
+
+        List<Object> users = UserDto.marshalList(0, userDao.list());
+        map.put("users", users);
 
         return map;
     }
@@ -153,14 +203,14 @@ public class AllowListController
         AllowListDto dto = new AllowListDto(AllowListDto.RESPONSIBLES);
         dto.parse(req);
 
-        Integer id = dto.getId();
-        if (id == null)
-            throw new ServletException("id isn't specified");
-
         AllowList entity;
         if (create) {
             entity = new AllowList();
         } else {
+            Integer id = dto.getId();
+            if (id == null)
+                throw new ServletException("id isn't specified");
+
             entity = allowListDao.get(id);
             if (entity == null)
                 throw new IllegalStateException("No allow list whose id=" + id);
@@ -173,15 +223,17 @@ public class AllowListController
 
         { /* unmarshal */
             entity.setName(dto.name);
+            entity.setDescription(dto.description);
+
             Set<Principal> responsibles = new HashSet<Principal>();
-            for (PrincipalDto<?> p : dto.responsibles) {
-                Principal responsible = principalDao.get(p.getId());
+            for (Long responsibleId : dto.getResponsibleIds()) {
+                Principal responsible = principalDao.get(responsibleId);
                 responsibles.add(responsible);
             }
             entity.setResponsibles(responsibles);
         }
 
-        allowListDao.saveOrUpdate(entity);
+        dataManager.saveOrUpdate(entity);
 
         resp.sendRedirect("index.htm");
     }
@@ -192,7 +244,22 @@ public class AllowListController
 
         int id = Integer.parseInt(req.getParameter("id"));
 
-        allowListDao.deleteByKey(id);
+        AllowList allowList = allowListDao.get(id);
+        if (allowList != null)
+            try {
+                dataManager.delete(allowList);
+            } catch (DataIntegrityViolationException e) {
+                resp.setCharacterEncoding("utf-8");
+
+                PrintWriter out = resp.getWriter();
+
+                String message = "白名单策略 " + allowList.getName() + " 正在被其它对象使用中，删除失败。";
+                out.println("<script language='javascript'>");
+                out.println("alert('" + message + "'); ");
+                out.println("history.back(); ");
+                out.println("</script>");
+                return;
+            }
 
         resp.sendRedirect("index.htm");
     }
