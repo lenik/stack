@@ -1,15 +1,19 @@
 package com.bee32.plover.orm.util;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Iterator;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 
+import com.bee32.plover.arch.util.DataTransferObject;
 import com.bee32.plover.orm.feaCat.Tiger;
 
-public class DataTransferObjectTest {
+/**
+ * @see DataTransferObject
+ */
+public class DataTransferObjectTest
+        extends Assert {
 
     @Test
     public void testConvertSingle() {
