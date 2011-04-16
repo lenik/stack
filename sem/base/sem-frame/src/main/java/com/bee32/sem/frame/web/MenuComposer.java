@@ -1,9 +1,12 @@
 package com.bee32.sem.frame.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Menubar;
 
+import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.sem.frame.builtins.MainMenu;
 import com.bee32.sem.frame.menu.ZkMenuBuilder;
 
@@ -24,7 +27,10 @@ public class MenuComposer
             throws Exception {
         super.doAfterCompose(comp);
 
-        ZkMenuBuilder.buildMenubar(menubar, mainMenu);
+        // XXX - Zk Composer 怎么获取有用的 ServletRequest?
+        HttpServletRequest request = ThreadServletContext.requireRequest();
+
+        new ZkMenuBuilder(mainMenu, menubar, request).buildMenubar();
     }
 
 }

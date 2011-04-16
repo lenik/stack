@@ -31,7 +31,7 @@ public class SuperfishMenuController
         try {
             out = response.getWriter();
 
-            out.println(new SuperfishMenuBuilder(mainMenu));
+            out.println(new SuperfishMenuBuilder(mainMenu, request));
 
         } catch (IOException ex1) {
             ex1.printStackTrace();

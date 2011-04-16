@@ -4,22 +4,22 @@ import org.apache.commons.collections15.Closure;
 import org.zkoss.zk.ui.event.Event;
 
 import com.bee32.plover.arch.Component;
-import com.bee32.plover.servlet.context.ContextLocation;
+import com.bee32.plover.servlet.context.ILocationContext;
 
 public class Action
         extends Component
         implements IAction {
 
     private boolean enabled = true;
-    private ContextLocation target;
+    private ILocationContext target;
     private Closure<Event> zkCallback;
 
-    public Action(ContextLocation actionTarget) {
+    public Action(ILocationContext actionTarget) {
         super();
         this.target = actionTarget;
     }
 
-    public Action(String name, ContextLocation target) {
+    public Action(String name, ILocationContext target) {
         super(name);
         this.target = target;
     }
@@ -32,11 +32,11 @@ public class Action
         this.enabled = enabled;
     }
 
-    public ContextLocation getTargetLocation() {
+    public ILocationContext getTargetLocation() {
         return target;
     }
 
-    public void setTarget(ContextLocation target) {
+    public void setTarget(ILocationContext target) {
         this.target = target;
     }
 

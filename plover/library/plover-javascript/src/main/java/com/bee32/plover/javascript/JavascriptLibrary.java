@@ -5,23 +5,23 @@ import java.io.IOException;
 import javax.free.IIndentedOut;
 import javax.servlet.http.HttpServletRequest;
 
-import com.bee32.plover.servlet.context.ContextLocation;
+import com.bee32.plover.servlet.context.ILocationContext;
 
 public class JavascriptLibrary
         extends ScriptElement {
 
-    ContextLocation location;
+    ILocationContext location;
 
-    public JavascriptLibrary(ContextLocation location) {
+    public JavascriptLibrary(ILocationContext location) {
         if (location == null)
             throw new NullPointerException("location");
     }
 
-    public ContextLocation getLocation() {
+    public ILocationContext getLocation() {
         return location;
     }
 
-    public void setLocation(ContextLocation location) {
+    public void setLocation(ILocationContext location) {
         this.location = location;
     }
 

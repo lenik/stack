@@ -14,18 +14,61 @@ public abstract class LocationContext
 
     private static final long serialVersionUID = 1L;
 
-    private final String name;
+    protected final String name;
+    protected final String base;
 
     public LocationContext(String name) {
         this.name = name;
+        this.base = "";
+    }
+
+    public LocationContext(String name, String base) {
+        this.name = name;
+        this.base = base;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getBase() {
+        return base;
+    }
+
+    protected abstract LocationContext create(String base);
+
+    /**
+     * Join two urls.
+     *
+     * @param base
+     *            Non-<code>null</code> base url.
+     * @param spec
+     *            Non-<code>null</code> spec url.
+     */
+    protected String join(String base, String spec) {
+        if (base == null)
+            return spec;
+
+        if (spec.equals("/"))
+            if (base.endsWith("/"))
+                return base;
+            else
+                return base + "/";
+
+        else {
+            while (spec.startsWith("/"))
+                spec = spec.substring(1);
+
+            return base + spec;
+        }
     }
 
     @Override
-    public ContextLocation join(String location) {
+    public LocationContext join(String location) {
         if (location == null)
             throw new NullPointerException("location");
 
-        return new ContextLocation(this, location);
+        return create(join(base, location));
     }
 
     /**
@@ -39,20 +82,25 @@ public abstract class LocationContext
     }
 
     @Override
-    public URL resolveUrl(HttpServletRequest request, String location)
-            throws MalformedURLException {
-        URL contextUrl = getContextUrl(request);
-        return new URL(contextUrl, location);
+    public String resolveAbsolute(HttpServletRequest request) {
+        return resolve(request);
     }
 
     @Override
-    public final URI resolveUri(HttpServletRequest request, String location)
+    public URL resolveUrl(HttpServletRequest request)
+            throws MalformedURLException {
+        URL contextUrl = getContextUrl(request);
+        return new URL(contextUrl, base);
+    }
+
+    @Override
+    public final URI resolveUri(HttpServletRequest request)
             throws URISyntaxException {
         try {
-            URL url = resolveUrl(request, location);
+            URL url = resolveUrl(request);
             return url.toURI();
         } catch (MalformedURLException e) {
-            throw new URISyntaxException(location, e.getMessage());
+            throw new URISyntaxException(base, e.getMessage());
         }
     }
 
@@ -71,7 +119,7 @@ public abstract class LocationContext
 
     @Override
     public String toString() {
-        return "Context<" + name + ">";
+        return "Context<" + name + ">" + " :: " + base;
     }
 
 }

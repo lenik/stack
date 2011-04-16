@@ -2,7 +2,7 @@ package com.bee32.sem.frame.menu;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.ComponentBuilder;
-import com.bee32.plover.servlet.context.ContextLocation;
+import com.bee32.plover.servlet.context.ILocationContext;
 import com.bee32.sem.frame.action.Action;
 import com.bee32.sem.frame.action.IAction;
 
@@ -29,7 +29,7 @@ public class MenuEntry
         this.action = action;
     }
 
-    public MenuEntry(String name, ContextLocation actionLocation) {
+    public MenuEntry(String name, ILocationContext actionLocation) {
         super(name);
         this.action = new Action(actionLocation);
     }
@@ -44,7 +44,7 @@ public class MenuEntry
         this.order = order;
     }
 
-    public MenuEntry(int order, String name, ContextLocation actionLocation) {
+    public MenuEntry(int order, String name, ILocationContext actionLocation) {
         this(name, actionLocation);
         this.order = order;
     }

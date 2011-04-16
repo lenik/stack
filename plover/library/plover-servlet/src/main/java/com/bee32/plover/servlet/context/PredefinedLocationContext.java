@@ -11,38 +11,57 @@ public class PredefinedLocationContext
 
     private static final long serialVersionUID = 1L;
 
-    private final URL base;
+    private final URL root;
 
-    public PredefinedLocationContext(String name, String base) {
-        this(name, _parse(base));
+    public PredefinedLocationContext(String name, String rootPath) {
+        this(name, _parse(rootPath));
     }
 
-    static URL _parse(String base) {
+    static URL _parse(String rootPath) {
+        if (rootPath == null)
+            throw new NullPointerException("rootPath");
+
         try {
-            return new URL(base);
+            return new URL(rootPath);
         } catch (MalformedURLException e) {
             throw new IllegalUsageException(e.getMessage(), e);
         }
     }
 
-    public PredefinedLocationContext(String name, URL base) {
-        super("<#" + name + ">");
-        this.base = base;
+    public PredefinedLocationContext(String name, URL root) {
+        this(name, root, null);
+    }
+
+    public PredefinedLocationContext(String name, URL root, String base) {
+        super(name, base);
+
+        if (root == null)
+            throw new NullPointerException("root");
+
+        this.root = root;
     }
 
     @Override
-    public String resolve(HttpServletRequest request, String location) {
+    protected LocationContext create(String base) {
+        return new PredefinedLocationContext(name, root, base);
+    }
+
+    @Override
+    public String resolve(HttpServletRequest request) {
         try {
-            return resolveUrl(request, location).toString();
+            return resolveUrl(request).toString();
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
     }
 
     @Override
-    public URL resolveUrl(HttpServletRequest request, String location)
+    public URL resolveUrl(HttpServletRequest request)
             throws MalformedURLException {
-        return new URL(base, location);
+        if (base == null)
+            return root;
+        else
+            return new URL(root, base);
     }
 
 }

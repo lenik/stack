@@ -12,40 +12,42 @@ import org.springframework.web.util.HtmlUtils;
 import org.springframework.web.util.UriUtils;
 
 import com.bee32.plover.arch.ui.IAppearance;
-import com.bee32.plover.servlet.context.ContextLocation;
-import com.bee32.plover.servlet.context.LocationContextConstants;
+import com.bee32.plover.servlet.context.ILocationContext;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.frame.action.IAction;
 
 public class SuperfishMenuBuilder {
 
-    private final MenuBar menuBar;
+    private final MenuModel menuModel;
     private final HttpServletRequest request;
 
     private String html;
     private PrettyPrintStream out;
 
-    public SuperfishMenuBuilder(MenuBar menuBar) {
-        this(menuBar, null);
+    public SuperfishMenuBuilder(MenuModel menuModel) {
+        this(menuModel, null);
     }
 
-    public SuperfishMenuBuilder(MenuBar menuBar, HttpServletRequest request) {
-        if (menuBar == null)
-            throw new NullPointerException("menuBar");
-        this.menuBar = menuBar;
+    public SuperfishMenuBuilder(MenuModel menuModel, HttpServletRequest request) {
+        if (menuModel == null)
+            throw new NullPointerException("menuModel");
+        this.menuModel = menuModel;
+        this.request = request;
+    }
 
-        if (request != null)
-            this.request = request;
+    public HttpServletRequest getRequest() {
+        if (request == null)
+            return ThreadServletContext.requireRequest();
         else
-            this.request = ThreadServletContext.requireRequest();
+            return request;
     }
 
     @Override
     public synchronized String toString() {
         if (html == null) {
             out = new PrettyPrintStream();
-            buildMenubar(menuBar);
+            buildMenubar(menuModel);
             html = out.toString();
             out = null;
         }
@@ -79,30 +81,18 @@ public class SuperfishMenuBuilder {
         IAction action = menuNode.getAction();
         if (action != null && action.isEnabled()) {
 
-            ContextLocation target = action.getTargetLocation();
-            if (target.getContext() == LocationContextConstants.JAVASCRIPT) {
-                String javascript = target.getLocation();
-
-                String javascriptEscaped = HtmlUtils.htmlEscape(javascript);
-
-                out.print(" href='#' onclick=\"");
-                out.print(javascriptEscaped);
-                out.print("\"");
-
-            } else {
-
-                String href = target.resolve(request);
-                String hrefEncoded;
-                try {
-                    hrefEncoded = UriUtils.encodeUri(href, "utf-8");
-                } catch (UnsupportedEncodingException e) {
-                    throw new IllegalUsageException(String.format("Bad location in %s: %s", menuNode, href));
-                }
-
-                out.print(" href='");
-                out.print(hrefEncoded);
-                out.print("'");
+            ILocationContext target = action.getTargetLocation();
+            String href = target.resolve(getRequest());
+            String hrefEncoded;
+            try {
+                hrefEncoded = UriUtils.encodeUri(href, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new IllegalUsageException(String.format("Bad location in %s: %s", menuNode, href));
             }
+
+            out.print(" href='");
+            out.print(hrefEncoded);
+            out.print("'");
         }
 
         if (tooltips != null && !tooltips.isEmpty()) {

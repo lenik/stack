@@ -7,78 +7,15 @@ import com.bee32.plover.restful.RESTfulConfig;
 
 public interface LocationContextConstants {
 
-    LocationContext JAVASCRIPT = new LocationContext("<<JAVASCRIPT>>") {
+    LocationContext JAVASCRIPT = new JavascriptLocationContext(null);
 
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public String resolve(HttpServletRequest request, String location) {
-            return "javascript:" + location;
-        }
-
-    };
-
-    LocationContext REQUEST = new LocationContext("<<request>>") {
-
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public String resolve(HttpServletRequest request, String location) {
-            if (isAbsolute(location))
-                return location;
-
-            // Since the resolve is request-oriented, so let's just echo it..
-
-            return location;
-        }
-    };
+    LocationContext REQUEST = new RequestLocationContext(null);
 
     LocationContext URL = REQUEST;
 
-    LocationContext WEB_APP = new LocationContext("<<servlet-context>>") {
+    LocationContext WEB_APP = new ServletLocationContext(null);
 
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public String resolve(HttpServletRequest request, String location) {
-            if (isAbsolute(location))
-                return location;
-
-            ServletContext servletContext = request.getSession().getServletContext();
-
-            // context-path == /* or ""
-            String contextPath = servletContext.getContextPath();
-
-            if (location.isEmpty())
-                return contextPath;
-            else if (location.startsWith("/"))
-                // WARNING.
-                return contextPath + location;
-            else
-                return contextPath + "/" + location;
-        }
-
-    };
-
-    LocationContext MM = new LocationContext("<<module-manager>>") {
-
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public String resolve(HttpServletRequest request, String location) {
-            if (isAbsolute(location))
-                return location;
-
-            ServletContext servletContext = request.getSession().getServletContext();
-
-            // context-path == /* or ""
-            String contextPath = servletContext.getContextPath();
-
-            // TODO set REST-PREFIX as context attribute.
-            return contextPath + RESTfulConfig.preferredPrefix + "/" + location;
-        }
-
-    };
+    LocationContext MM = new ModuleManagerLocationContext(null);
 
     LocationContext STYLE_ROOT = new PredefinedLocationContext("STYLE-ROOT", //
             "http://static.secca-project.com/style/");
@@ -91,5 +28,116 @@ public interface LocationContextConstants {
 
     LocationContext LIB_3RDPARTY = new PredefinedLocationContext("LIB-3RDPARTY", //
             "http://static.secca-project.com/lib2/");
+
+}
+
+class JavascriptLocationContext
+        extends LocationContext {
+
+    private static final long serialVersionUID = 1L;
+
+    public JavascriptLocationContext(String script) {
+        super("<<JAVASCRIPT>>", script);
+    }
+
+    @Override
+    protected LocationContext create(String script) {
+        return new JavascriptLocationContext(script);
+    }
+
+    @Override
+    public String resolve(HttpServletRequest request) {
+        return "javascript:" + base;
+    }
+
+}
+
+class RequestLocationContext
+        extends LocationContext {
+
+    private static final long serialVersionUID = 1L;
+
+    public RequestLocationContext(String base) {
+        super("<<request>>", base);
+    }
+
+    @Override
+    protected LocationContext create(String base) {
+        return new RequestLocationContext(base);
+    }
+
+    @Override
+    public String resolve(HttpServletRequest request) {
+        if (isAbsolute(base))
+            return base;
+
+        // Since the resolve is request-oriented, so let's just echo it..
+        return base;
+    }
+
+}
+
+class ServletLocationContext
+        extends LocationContext {
+
+    private static final long serialVersionUID = 1L;
+
+    public ServletLocationContext(String base) {
+        super("<<servlet-context>>", base);
+    }
+
+    @Override
+    protected LocationContext create(String base) {
+        return new ServletLocationContext(base);
+    }
+
+    @Override
+    public String resolve(HttpServletRequest request) {
+        if (isAbsolute(base))
+            return base;
+
+        ServletContext servletContext = request.getSession().getServletContext();
+
+        // context-path == /* or ""
+        String contextPath = servletContext.getContextPath();
+
+        if (base.isEmpty())
+            return contextPath;
+        else if (base.startsWith("/"))
+            // WARNING.
+            return contextPath + base;
+        else
+            return contextPath + "/" + base;
+    }
+
+}
+
+class ModuleManagerLocationContext
+        extends LocationContext {
+
+    private static final long serialVersionUID = 1L;
+
+    public ModuleManagerLocationContext(String base) {
+        super("<<module-manager>>", base);
+    }
+
+    @Override
+    protected LocationContext create(String base) {
+        return new ModuleManagerLocationContext(base);
+    }
+
+    @Override
+    public String resolve(HttpServletRequest request) {
+        if (isAbsolute(base))
+            return base;
+
+        ServletContext servletContext = request.getSession().getServletContext();
+
+        // context-path == /* or ""
+        String contextPath = servletContext.getContextPath();
+
+        // TODO set REST-PREFIX as context attribute.
+        return contextPath + RESTfulConfig.preferredPrefix + "/" + base;
+    }
 
 }
