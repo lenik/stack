@@ -28,7 +28,7 @@ public class LocationContextCM
     static final int ABSOLUTE = 1;
     static final int FULL_QUALIFIED = 2;
 
-    private final int mode = DEFAULT;
+    private final int mode;
 
     public LocationContextCM(ILocationContext locationContext) {
         this(locationContext, DEFAULT);
@@ -38,6 +38,7 @@ public class LocationContextCM
         if (locationContext == null)
             throw new NullPointerException("locationContext");
         this.location = locationContext;
+        this.mode = mode;
     }
 
     @Override
