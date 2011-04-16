@@ -1,13 +1,16 @@
 package com.bee32.plover.orm.util;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.Map;
 
+import javax.free.ClassLocal;
+import javax.free.DisplayNameUtil;
+import javax.free.IVariantLookupMap;
 import javax.free.IllegalUsageException;
+import javax.free.Map2VariantLookupMap;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,17 +22,16 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-import org.springframework.web.util.HtmlUtils;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.inject.ComponentTemplate;
-import com.bee32.plover.javascript.JavascriptChunk;
+import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.EntityBean;
 
 @ComponentTemplate
 @Lazy
-public abstract class EntityController<E extends EntityBean<K>, K extends Serializable>
+public abstract class EntityController<E extends EntityBean<?>>
         extends MultiActionController {
 
     private final String _prefix;
@@ -41,9 +43,8 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
     {
         Class<?>[] pv = ClassUtil.getOriginPVClass(getClass());
         if (pv == null) {
-            Class<?> superclass = getClass().getSuperclass();
             // DTO class foo.Bar must be declared with type parameter.
-            throw new IllegalUsageException("EntityController" + superclass + " must be declared with type parameter");
+            throw new IllegalUsageException("No entity class bound to " + getClass());
         }
 
         @SuppressWarnings("unchecked")
@@ -65,6 +66,58 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
             throw new Error("PREFIX isn't defined in " + getClass());
         }
     }
+
+    static final ClassLocal<IVariantLookupMap<String>> controllerLocalMetaData;
+    static {
+        controllerLocalMetaData = new ClassLocal<IVariantLookupMap<String>>();
+    }
+
+    final IVariantLookupMap<String> metaData;
+    {
+        IVariantLookupMap<String> local = controllerLocalMetaData.get(getClass());
+        if (local == null) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            _buildMetaData(map);
+            local = new Map2VariantLookupMap<String>(map);
+            controllerLocalMetaData.put(getClass(), local);
+        }
+        metaData = local;
+    }
+
+    protected static final String ENTITY_TYPE_NAME = "entity.name";
+
+    protected static final String VERB_CREATE_EN = "v.create";
+    protected static final String VERB_CREATE_LANG = "v.create.lang";
+    protected static final String VERB_EDIT_EN = "v.update";
+    protected static final String VERB_EDIT_LANG = "v.update.lang";
+
+    /**
+     * Build all meta data.
+     *
+     * Implicit build the user meta data, too.
+     *
+     * @see #preamble(Map)
+     */
+    protected void _buildMetaData(Map<String, Object> metaData) {
+        String annDisplayName = DisplayNameUtil.getDisplayName(entityType);
+        metaData.put(ENTITY_TYPE_NAME, annDisplayName);
+
+        metaData.put(VERB_CREATE_EN, "Create");
+        metaData.put(VERB_CREATE_LANG, "创建");
+
+        metaData.put(VERB_EDIT_EN, "Update");
+        metaData.put(VERB_EDIT_LANG, "编辑");
+
+        preamble(metaData);
+    }
+
+    /**
+     * Build user meta data.
+     *
+     * @param metaData
+     *            (Output) The result meta data.
+     */
+    protected abstract void preamble(Map<String, Object> metaData);
 
     protected String viewOf(String localView) {
         return _prefix + localView;
@@ -89,8 +142,8 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
         Map<String, Object> map = form(req, resp);
 
         map.put("verb", "create");
-        map.put("verb_en", "Create");
-        map.put("verb_zh", "创建");
+        map.put("verb_en", metaData.getString(VERB_CREATE_EN));
+        map.put("verb_zh", metaData.getString(VERB_CREATE_LANG));
 
         return new ModelAndView(viewOf("form"), map);
     }
@@ -103,8 +156,8 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
         Map<String, Object> map = form(req, resp);
 
         map.put("verb", "update");
-        map.put("verb_en", "Edit");
-        map.put("verb_zh", "编辑");
+        map.put("verb_en", metaData.getString(VERB_EDIT_EN));
+        map.put("verb_zh", metaData.getString(VERB_EDIT_LANG));
 
         return new ModelAndView(viewOf("form"), map);
     }
