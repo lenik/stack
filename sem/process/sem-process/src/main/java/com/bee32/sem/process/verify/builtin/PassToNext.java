@@ -35,11 +35,11 @@ public class PassToNext
 
     static Logger logger = LoggerFactory.getLogger(PassToNext.class);
 
-    private List<PassStep> sequence;
+    private List<PassStep> sequences;
 
     public PassToNext() {
         super(PassLog.class);
-        this.sequence = new ArrayList<PassStep>();
+        this.sequences = new ArrayList<PassStep>();
     }
 
     public PassToNext(List<PassStep> sequence) {
@@ -48,23 +48,23 @@ public class PassToNext
         if (sequence == null)
             throw new NullPointerException("sequence");
 
-        this.sequence = sequence;
+        this.sequences = sequence;
     }
 
     @OneToMany(mappedBy = "policy")
     @OrderBy("order")
-    public List<PassStep> getSequence() {
-        return sequence;
+    public List<PassStep> getSequences() {
+        return sequences;
     }
 
-    public void setSequence(List<PassStep> sequence) {
-        this.sequence = sequence;
+    public void setSequences(List<PassStep> sequences) {
+        this.sequences = sequences;
     }
 
     @Override
     public Collection<? extends Principal> getDeclaredResponsibles(ICurrentStep context) {
         int stepIndex = context.getCurrentStepIndex();
-        if (sequence == null)
+        if (sequences == null)
             return null;
         return null;
     }
@@ -78,12 +78,12 @@ public class PassToNext
         while (personIndex < passLog.size()) {
             AllowState stepState = passLog.get(personIndex);
 
-            if (stepIndex == sequence.size()) {
+            if (stepIndex == sequences.size()) {
                 // 次序中要求的步骤均已经实现审核，忽略多余的审核数据。
                 break;
             }
 
-            PassStep step = sequence.get(stepIndex);
+            PassStep step = sequences.get(stepIndex);
             User stepUser = stepState.getUser();
 
             IPrincipal responsible = step.getResponsible();
@@ -105,8 +105,8 @@ public class PassToNext
         }
 
         // 分析完成。
-        if (stepIndex < sequence.size()) {
-            PassStep nextStepWanted = sequence.get(stepIndex);
+        if (stepIndex < sequences.size()) {
+            PassStep nextStepWanted = sequences.get(stepIndex);
             return new PendingResult("审核未完成，下一步应该是 " + nextStepWanted);
         }
 
