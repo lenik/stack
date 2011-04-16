@@ -1,12 +1,16 @@
 package com.bee32.plover.javascript;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.free.IIndentedOut;
+import javax.free.IndentedOutImpl;
+import javax.free.WriterPrintOut;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.servlet.context.ITextForRequest;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -20,9 +24,9 @@ public abstract class ScriptElement
     public ScriptElement() {
     }
 
-    public synchronized ScriptElement append(ITextForRequest text) {
-        if (text == null)
-            throw new NullPointerException("text");
+    public ScriptElement append(Object content) {
+        if (content == null)
+            throw new NullPointerException("content");
 
         if (contents == null) {
             synchronized (this) {
@@ -32,8 +36,17 @@ public abstract class ScriptElement
             }
         }
 
-        contents.add(text);
+        contents.add(content);
         return this;
+    }
+
+    public void print(Object content) {
+        append(content);
+    }
+
+    public void println(Object content) {
+        append(content);
+        append("\n");
     }
 
     protected abstract void formatHeader(HttpServletRequest req, IIndentedOut out)
@@ -73,6 +86,13 @@ public abstract class ScriptElement
         }
 
         formatFooter(req, out);
+    }
+
+    public void dump(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        PrintWriter out = resp.getWriter();
+        IndentedOutImpl _out = new IndentedOutImpl(new WriterPrintOut(out));
+        format(req, _out);
     }
 
     @Override
