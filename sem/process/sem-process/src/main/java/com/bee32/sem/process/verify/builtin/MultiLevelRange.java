@@ -21,6 +21,9 @@ public class MultiLevelRange
     private long limit;
     private VerifyPolicy<?, ?> targetPolicy;
 
+    public MultiLevelRange() {
+    }
+
     public MultiLevelRange(MultiLevel multiLevel, long limit, VerifyPolicy<?, ?> verifyPolicy) {
         if (multiLevel == null)
             throw new NullPointerException("multiLevel");
