@@ -3,6 +3,23 @@ package com.bee32.plover.web.faces.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The verb map will convert the series of get() invocation to a verb execution:
+ *
+ * <pre>
+ * verb-exec: verb verb-param*
+ * verb: get
+ * verb-param: get
+ * </pre>
+ *
+ * We'll refer verb-exec as <code>verb(verb-param, ...)</code>.
+ * <p>
+ *
+ * The count of verb-param is determined by {@link #getRequiredArgumentCount(verb)}.
+ *
+ * You can chain verb-executions by return the map itself in the {@link #execute(Object)}
+ * implementation.
+ */
 public abstract class VerbMap
         extends YesMap {
 

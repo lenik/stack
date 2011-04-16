@@ -3,6 +3,15 @@ package com.bee32.plover.web.faces.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Callable-map constructs two kind of verb usage: push and invoke.
+ *
+ * <pre>
+ * method-call: push-verb* invoke-verb
+ * push-verb: push(method-param)
+ * invoke-verb: invoke()
+ * </pre>
+ */
 public abstract class CallableMap
         extends VerbMap {
 
