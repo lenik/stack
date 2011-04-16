@@ -2,7 +2,6 @@ package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,7 +33,7 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
 
     @Override
     protected void introspect() {
-        Type[] pv = ClassUtil.getOriginPV(getClass());
+        Class<?>[] pv = ClassUtil.getOriginPVClass(getClass());
 
         @SuppressWarnings("unchecked")
         Class<K> keyClass = (Class<K>) pv[1];
@@ -67,6 +66,9 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
 
     protected Class<?> deferEntityType(Class<?> clazz)
             throws ClassNotFoundException {
+
+        if (EntityBean.class.isAssignableFrom(clazz))
+            return clazz;
 
         int modifiers = clazz.getModifiers();
         if (!Modifier.isAbstract(modifiers))
