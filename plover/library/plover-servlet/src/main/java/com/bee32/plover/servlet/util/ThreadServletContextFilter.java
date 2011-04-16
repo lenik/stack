@@ -12,8 +12,15 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bee32.plover.servlet.test.Welcome;
+
 public class ThreadServletContextFilter
         implements Filter {
+
+    static Logger logger = LoggerFactory.getLogger(Welcome.class);
 
     @Override
     public void init(FilterConfig filterConfig)
@@ -34,13 +41,21 @@ public class ThreadServletContextFilter
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
+        logger.debug("Thread servlet context enter");
+
         if (request instanceof HttpServletRequest)
             ThreadServletContext.setRequest((HttpServletRequest) request);
 
         if (response instanceof HttpServletResponse)
             ThreadServletContext.setResponse((HttpServletResponse) response);
 
-        chain.doFilter(request, response);
+        try {
+            chain.doFilter(request, response);
+        } finally {
+            ThreadServletContext.setRequest(null);
+            ThreadServletContext.setResponse(null);
+        }
+
     }
 
 }
