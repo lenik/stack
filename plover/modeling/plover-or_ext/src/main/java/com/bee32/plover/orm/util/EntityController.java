@@ -1,25 +1,58 @@
-package com.bee32.sem.process.verify.builtin;
+package com.bee32.plover.orm.util;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 
+import javax.free.IllegalUsageException;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+import org.springframework.web.util.HtmlUtils;
 
-public abstract class GenericController
+import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.inject.ComponentTemplate;
+import com.bee32.plover.javascript.JavascriptChunk;
+import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.entity.EntityBean;
+
+@ComponentTemplate
+@Lazy
+public abstract class EntityController<E extends EntityBean<K>, K extends Serializable>
         extends MultiActionController {
 
     private final String _prefix;
 
-    public GenericController() {
+    @Inject
+    protected CommonDataManager dataManager;
+
+    protected final Class<E> entityType;
+    {
+        Class<?>[] pv = ClassUtil.getOriginPVClass(getClass());
+        if (pv == null) {
+            Class<?> superclass = getClass().getSuperclass();
+            // DTO class foo.Bar must be declared with type parameter.
+            throw new IllegalUsageException("EntityController" + superclass + " must be declared with type parameter");
+        }
+
+        @SuppressWarnings("unchecked")
+        Class<E> entityType = (Class<E>) pv[0];
+
+        this.entityType = entityType;
+    }
+
+    public EntityController() {
         try {
             Field prefixField = getClass().getDeclaredField("PREFIX");
 
@@ -95,5 +128,33 @@ public abstract class GenericController
 
     protected abstract ModelAndView createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException;
+
+    @RequestMapping("delete.htm")
+    public String delete(HttpServletRequest req, HttpServletResponse resp)
+            throws Exception {
+
+        int id = Integer.parseInt(req.getParameter("id"));
+
+        E entity = dataManager.load(entityType, id);
+        if (entity != null)
+            try {
+                dataManager.delete(entity);
+            } catch (DataIntegrityViolationException e) {
+                resp.setCharacterEncoding("utf-8");
+
+                PrintWriter out = resp.getWriter();
+
+                String message = "分级审核策略 " + entity.getName() + " 正在被其它对象使用中，删除失败。";
+
+                JavascriptChunk chunk = new JavascriptChunk();
+                chunk.println("alert('" + HtmlUtils.htmlEscape(message) + "'); ");
+                chunk.println("history.back(); ");
+                chunk.dump(req, resp);
+
+                return null;
+            }
+
+        return viewOf("index");
+    }
 
 }
