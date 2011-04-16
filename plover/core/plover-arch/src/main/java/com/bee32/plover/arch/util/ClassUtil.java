@@ -96,6 +96,8 @@ public class ClassUtil {
         if (type instanceof Class<?>) {
             Class<?> clazz = (Class<?>) type;
             Type superclass = clazz.getGenericSuperclass();
+            if (superclass == null)
+                return null;
             return getOriginPV(superclass);
         }
 
