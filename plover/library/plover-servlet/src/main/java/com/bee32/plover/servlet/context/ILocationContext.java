@@ -37,7 +37,7 @@ public interface ILocationContext
      *            Non-<code>null</code> http servlet request object.
      * @return Non-<code>null</code> resolved location URI.
      */
-    URI resolveUri(HttpServletRequest request)
+    URI resolveURI(HttpServletRequest request)
             throws URISyntaxException;
 
     /**
@@ -47,7 +47,7 @@ public interface ILocationContext
      *            Non-<code>null</code> http servlet request object.
      * @return Non-<code>null</code> resolved location URL.
      */
-    URL resolveUrl(HttpServletRequest request)
+    URL resolveURL(HttpServletRequest request)
             throws MalformedURLException;
 
 }

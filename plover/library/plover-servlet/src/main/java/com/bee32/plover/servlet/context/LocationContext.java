@@ -6,7 +6,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import javax.free.IllegalUsageException;
 import javax.servlet.http.HttpServletRequest;
 
 public abstract class LocationContext
@@ -38,29 +37,78 @@ public abstract class LocationContext
     protected abstract LocationContext create(String base);
 
     /**
-     * Join two urls.
+     * Join urls in relative-only mode.
      *
-     * @param base
+     * <pre>
+     * foo/ + null  => foo/
+     * foo  + null  => foo
+     * foo/ + /     => foo/
+     * foo  + /     => foo/
+     *
+     * foo  + /bar  => foo/bar
+     * foo  + bar   => foobar
+     * foo/ + /bar  => foo/bar
+     * foo/ + bar   => foo/bar
+     * </pre>
+     *
+     * @param context
      *            Non-<code>null</code> base url.
      * @param spec
-     *            Non-<code>null</code> spec url.
+     *            spec url, <code>null</code> to return the context path.
      */
-    protected String join(String base, String spec) {
-        if (base == null)
-            return spec;
+    protected String join(String context, String spec) {
+        if (spec == null)
+            return context;
 
-        if (spec.equals("/"))
-            if (base.endsWith("/"))
-                return base;
+        if (spec.equals("/")) {
+            if (context.endsWith("/"))
+                return context;
             else
-                return base + "/";
+                return context + "/";
+        }
 
-        else {
-            while (spec.startsWith("/"))
+        if (context.endsWith("/") && spec.startsWith("/"))
+            spec = spec.substring(1);
+
+        return context + spec;
+    }
+
+    /**
+     * Join urls in relative-only mode.
+     *
+     * <pre>
+     * foo/ + null  => foo/
+     * foo  + null  => foo
+     * foo/ + /     => foo/
+     * foo  + /     => foo/
+     *
+     * foo  + /bar  => foo/bar
+     * foo  + bar   => foobar
+     * foo/ + /bar  => foo/bar
+     * foo/ + bar   => foo/bar
+     * </pre>
+     *
+     * @param buffer
+     *            Non-<code>null</code> base url in the string buffer.
+     * @param spec
+     *            spec url, <code>null</code> to use the context path.
+     */
+    protected String join(StringBuffer buffer, String spec) {
+        if (spec != null) {
+            int len = buffer.length();
+            boolean contextSlash = len > 0 && buffer.charAt(len - 1) == '/';
+
+            if (spec.equals("/")) {
+                if (!contextSlash)
+                    buffer.append('/');
+            }
+
+            else if (contextSlash && spec.startsWith("/"))
                 spec = spec.substring(1);
 
-            return base + spec;
+            buffer.append(spec);
         }
+        return buffer.toString();
     }
 
     @Override
@@ -71,50 +119,61 @@ public abstract class LocationContext
         return create(join(base, location));
     }
 
+    protected final StringBuffer getContext(HttpServletRequest request) {
+        StringBuffer buffer = new StringBuffer();
+        getContext(buffer, request);
+        return buffer;
+    }
+
+    protected abstract void getContext(StringBuffer sb, HttpServletRequest request);
+
     /**
      * Get the base URL of this context.
      *
      * @return Non-<code>null</code> context URL, or <code>null</code> if this context can't be
      *         converted to a URL.
      */
-    protected URL getContextUrl(HttpServletRequest request) {
-        throw new IllegalUsageException("Can't convert " + this + " context to URL.");
+    protected StringBuffer getContextURL(HttpServletRequest request) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(request.getScheme());
+        sb.append("://");
+        sb.append(request.getServerName());
+        if (request.getServerPort() != 80) {
+            sb.append(':');
+            sb.append(request.getServerPort());
+        }
+        getContext(sb, request);
+        return sb;
+    }
+
+    @Override
+    public String resolve(HttpServletRequest request) {
+        return resolveAbsolute(request);
     }
 
     @Override
     public String resolveAbsolute(HttpServletRequest request) {
-        return resolve(request);
+        StringBuffer context = getContext(request);
+        return join(context, base);
     }
 
     @Override
-    public URL resolveUrl(HttpServletRequest request)
+    public URL resolveURL(HttpServletRequest request)
             throws MalformedURLException {
-        URL contextUrl = getContextUrl(request);
-        return new URL(contextUrl, base);
+        StringBuffer urlBuffer = getContextURL(request);
+        join(urlBuffer, base);
+        return new URL(urlBuffer.toString());
     }
 
     @Override
-    public final URI resolveUri(HttpServletRequest request)
+    public final URI resolveURI(HttpServletRequest request)
             throws URISyntaxException {
         try {
-            URL url = resolveUrl(request);
+            URL url = resolveURL(request);
             return url.toURI();
         } catch (MalformedURLException e) {
             throw new URISyntaxException(base, e.getMessage());
         }
-    }
-
-    protected boolean isAbsolute(String spec) {
-        if (spec == null)
-            throw new NullPointerException("spec");
-
-        if (spec.contains("://"))
-            return true;
-
-        if (spec.startsWith("/"))
-            return true;
-
-        return false;
     }
 
     @Override

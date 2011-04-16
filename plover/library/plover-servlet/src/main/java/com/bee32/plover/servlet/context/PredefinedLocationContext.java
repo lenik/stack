@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.free.IllegalUsageException;
+import javax.free.UnexpectedException;
 import javax.servlet.http.HttpServletRequest;
 
 public class PredefinedLocationContext
@@ -47,16 +48,21 @@ public class PredefinedLocationContext
     }
 
     @Override
-    public String resolve(HttpServletRequest request) {
+    protected void getContext(StringBuffer sb, HttpServletRequest request) {
+        throw new UnexpectedException("Not Used");
+    }
+
+    @Override
+    public String resolveAbsolute(HttpServletRequest request) {
         try {
-            return resolveUrl(request).toString();
+            return resolveURL(request).toString();
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
     }
 
     @Override
-    public URL resolveUrl(HttpServletRequest request)
+    public URL resolveURL(HttpServletRequest request)
             throws MalformedURLException {
         if (base == null)
             return root;
