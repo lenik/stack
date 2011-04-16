@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.builtin;
+package com.bee32.sem.process.verify.builtin.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,9 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,14 +25,14 @@ import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
+import com.bee32.sem.process.verify.builtin.AllowList;
 import com.bee32.sem.process.verify.builtin.dao.AllowListDao;
 
-@Controller
-@Lazy
 @RequestMapping(AllowListController.PREFIX + "*")
 public class AllowListController
-        extends GenericController {
+        extends EntityController {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "/list/";
 

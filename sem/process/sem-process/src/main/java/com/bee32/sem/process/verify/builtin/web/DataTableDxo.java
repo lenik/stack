@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.builtin;
+package com.bee32.sem.process.verify.builtin.web;
 
 import java.util.Map;
 

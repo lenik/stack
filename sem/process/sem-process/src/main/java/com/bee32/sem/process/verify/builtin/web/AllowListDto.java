@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.builtin;
+package com.bee32.sem.process.verify.builtin.web;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.sem.process.verify.builtin.AllowList;
 
 public class AllowListDto
         extends EntityDto<AllowList, Integer> {
