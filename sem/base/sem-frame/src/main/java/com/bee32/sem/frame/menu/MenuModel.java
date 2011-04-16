@@ -7,10 +7,10 @@ import java.util.Map.Entry;
 
 import javax.free.IllegalUsageException;
 
-public class MenuBar
+public class MenuModel
         extends MenuNode {
 
-    public MenuBar(String name) {
+    public MenuModel(String name) {
         super(name);
     }
 

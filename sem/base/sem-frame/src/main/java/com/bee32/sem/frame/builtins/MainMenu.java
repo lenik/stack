@@ -8,14 +8,14 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.bee32.sem.frame.menu.MenuBar;
 import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuModel;
 import com.bee32.sem.frame.menu.SuperfishMenuBuilder;
 
 @Component
 @Lazy
 public class MainMenu
-        extends MenuBar
+        extends MenuModel
         implements ApplicationContextAware {
 
     static Logger logger = LoggerFactory.getLogger(MainMenu.class);
@@ -35,7 +35,7 @@ public class MainMenu
 
     }
 
-    SuperfishMenuBuilder superfishMenuBuilder = new SuperfishMenuBuilder(this);
+    SuperfishMenuBuilder superfishMenuBuilder = new SuperfishMenuBuilder(this, null);
 
     public String getSuperfishHtml() {
         return superfishMenuBuilder.toString();
