@@ -52,11 +52,13 @@ public abstract class LocationContext
      * </pre>
      *
      * @param context
-     *            Non-<code>null</code> base url.
+     *            context url. <code>null</code> to return the spec.
      * @param spec
      *            spec url, <code>null</code> to return the context path.
      */
     protected String join(String context, String spec) {
+        if (context == null)
+            return spec;
         if (spec == null)
             return context;
 
@@ -137,12 +139,25 @@ public abstract class LocationContext
         StringBuffer sb = new StringBuffer();
         sb.append(request.getScheme());
         sb.append("://");
+
         sb.append(request.getServerName());
+
         if (request.getServerPort() != 80) {
             sb.append(':');
             sb.append(request.getServerPort());
         }
+        sb.append('/');
+        int jointPos = sb.length();
+
         getContext(sb, request);
+        if (sb.length() > jointPos) {
+            // FIX: http://foo:80/ + / => http://foo/80/
+            boolean twice = sb.charAt(jointPos) == '/';
+
+            if (twice)
+                sb.deleteCharAt(jointPos); // Uncessary '/'.
+        }
+
         return sb;
     }
 

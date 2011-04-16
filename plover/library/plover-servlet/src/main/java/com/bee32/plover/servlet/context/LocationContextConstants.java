@@ -140,6 +140,7 @@ class ServletLocationContext
         // context-path == /* or ""
         String contextPath = servletContext.getContextPath();
         sb.append(contextPath);
+        sb.append("/");
     }
 
 }
