@@ -11,13 +11,13 @@
     <ui:define name="title">Pass To Next Index</ui:define>
 
     <ui:define name="head">
-        <script type="text/javascript" src="${location.LIB_3RDPARTY['jsTree.v.1.0rc2/jquery.jstree.js']}"></script>
+        <script type="text/javascript" src="${location.LIB_3RDPARTY}/jsTree.v.1.0rc2/jquery.jstree.js"></script>
 
-        <script type="text/javascript" src="${location.LIB_3RDPARTY['dataTables-1.7/media/js/jquery.dataTables.js']}"></script>
+        <script type="text/javascript" src="${location.LIB_3RDPARTY}/dataTables-1.7/media/js/jquery.dataTables.js"></script>
         <link rel="stylesheet" type="text/css"
-            href="${location.LIB_3RDPARTY['dataTables-1.7/media/css/demo_page.css']}" />
+            href="${location.LIB_3RDPARTY}/dataTables-1.7/media/css/demo_page.css" />
         <link rel="stylesheet" type="text/css"
-            href="${location.LIB_3RDPARTY['dataTables-1.7/media/css/demo_table.css']}" />
+            href="${location.LIB_3RDPARTY}/dataTables-1.7/media/css/demo_table.css" />
     </ui:define>
 
     <ui:define name="body">
@@ -103,17 +103,17 @@
                                     <a title='查看' href='content.htm?id=" + id + "'>\
                                         <img \
                                             border=0 alt='查看' \
-                                            src='${location.ICON['etool16/insp_sbook.gif']}'/>\
+                                            src='${location.ICON}/etool16/insp_sbook.gif'/>\
                                     </a>\
                                     <a title='修改' href='editForm.htm?id=" + id + "'>\
                                         <img \
                                             border=0 alt='修改' \
-                                            src='${location.ICON['etool16/editor_area.gif']}'/>\
+                                            src='${location.ICON}/etool16/editor_area.gif'/>\
                                     </a>\
                                     <a title='删除' href='#' onclick='javascript:delete1(" + id + ")'>\
                                         <img \
                                             border=0 alt='删除' \
-                                            src='${location.ICON['etool16/delete_edit.gif']}'/>\
+                                            src='${location.ICON}/etool16/delete_edit.gif'/>\
                                     </a>\
                                 ";
                             }
