@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.free.ClassLocal;
-import javax.free.DisplayNameUtil;
 import javax.free.IVariantLookupMap;
 import javax.free.IllegalUsageException;
 import javax.free.Map2VariantLookupMap;
@@ -99,8 +98,10 @@ public abstract class EntityController<E extends EntityBean<?>>
      * @see #preamble(Map)
      */
     protected void _buildMetaData(Map<String, Object> metaData) {
-        String annDisplayName = DisplayNameUtil.getDisplayName(entityType);
-        metaData.put(ENTITY_TYPE_NAME, annDisplayName);
+
+        String entityTypeName = entityType.getSimpleName();
+        // String entityTypeName = DisplayNameUtil.getDisplayName(entityType);
+        metaData.put(ENTITY_TYPE_NAME, entityTypeName);
 
         metaData.put(VERB_CREATE_EN, "Create");
         metaData.put(VERB_CREATE_LANG, "创建");
