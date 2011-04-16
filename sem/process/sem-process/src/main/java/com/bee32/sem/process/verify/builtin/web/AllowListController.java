@@ -1,7 +1,6 @@
 package com.bee32.sem.process.verify.builtin.web;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,7 +22,6 @@ import com.bee32.icsf.principal.dao.PrincipalDao;
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.ajax.JsonUtil;
-import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.AllowList;
@@ -32,12 +29,9 @@ import com.bee32.sem.process.verify.builtin.dao.AllowListDao;
 
 @RequestMapping(AllowListController.PREFIX + "*")
 public class AllowListController
-        extends EntityController {
+        extends EntityController<AllowList> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "/list/";
-
-    @Inject
-    CommonDataManager dataManager;
 
     @Inject
     AllowListDao allowListDao;
@@ -47,6 +41,11 @@ public class AllowListController
 
     @Inject
     UserDao userDao;
+
+    @Override
+    protected void preamble(Map<String, Object> metaData) {
+        metaData.put(ENTITY_TYPE_NAME, "白名单策略");
+    }
 
     @RequestMapping("content.htm")
     public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp) {
@@ -183,32 +182,6 @@ public class AllowListController
         dataManager.saveOrUpdate(entity);
 
         return new ModelAndView(viewOf("index"));
-    }
-
-    @RequestMapping("delete.htm")
-    public String delete(HttpServletRequest req, HttpServletResponse resp)
-            throws Exception {
-
-        int id = Integer.parseInt(req.getParameter("id"));
-
-        AllowList allowList = allowListDao.get(id);
-        if (allowList != null)
-            try {
-                dataManager.delete(allowList);
-            } catch (DataIntegrityViolationException e) {
-                resp.setCharacterEncoding("utf-8");
-
-                PrintWriter out = resp.getWriter();
-
-                String message = "白名单策略 " + allowList.getName() + " 正在被其它对象使用中，删除失败。";
-                out.println("<script language='javascript'>");
-                out.println("alert('" + message + "'); ");
-                out.println("history.back(); ");
-                out.println("</script>");
-                return null;
-            }
-
-        return viewOf("index");
     }
 
 }

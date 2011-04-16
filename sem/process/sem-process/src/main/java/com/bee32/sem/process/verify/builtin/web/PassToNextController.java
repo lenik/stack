@@ -3,10 +3,8 @@ package com.bee32.sem.process.verify.builtin.web;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -17,44 +15,43 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.dao.PrincipalDao;
 import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.orm.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
-import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.VerifyState;
-import com.bee32.sem.process.verify.builtin.MultiLevel;
-import com.bee32.sem.process.verify.builtin.MultiLevelRange;
-import com.bee32.sem.process.verify.builtin.dao.MultiLevelDao;
-import com.bee32.sem.process.verify.builtin.dao.MultiLevelRangeDao;
-import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
+import com.bee32.sem.process.verify.builtin.PassStep;
+import com.bee32.sem.process.verify.builtin.PassToNext;
+import com.bee32.sem.process.verify.builtin.dao.PassStepDao;
+import com.bee32.sem.process.verify.builtin.dao.PassToNextDao;
 
-@RequestMapping(MultiLevelController.PREFIX + "*")
-public class MultiLevelController
-        extends EntityController<MultiLevel> {
+@RequestMapping(PassToNextController.PREFIX + "*")
+public class PassToNextController
+        extends EntityController<PassToNext> {
 
-    public static final String PREFIX = SEMProcessModule.PREFIX + "/level/";
+    public static final String PREFIX = SEMProcessModule.PREFIX + "/p2next/";
 
     @Inject
-    MultiLevelDao multiLevelDao;
+    PassToNextDao PassToNextDao;
 
     @Inject
-    MultiLevelRangeDao rangeDao;
+    PassStepDao seqDao;
 
     @Inject
-    VerifyPolicyDao verifyPolicyDao;
+    PrincipalDao principalDao;
 
     @Override
     protected void preamble(Map<String, Object> metaData) {
-        metaData.put(ENTITY_TYPE_NAME, "分级审核策略");
+        metaData.put(ENTITY_TYPE_NAME, "下一步策略");
     }
 
     @RequestMapping("content.htm")
     public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp) {
         int id = Integer.parseInt(req.getParameter("id"));
 
-        MultiLevel entity = multiLevelDao.load(id);
+        PassToNext entity = PassToNextDao.load(id);
 
-        MultiLevelDto dto = new MultiLevelDto(MultiLevelDto.RANGES).marshal(entity);
+        PassToNextDto dto = new PassToNextDto(PassToNextDto.SEQUENCES).marshal(entity);
 
         ModelMap modelMap = new ModelMap();
         modelMap.put("it", dto);
@@ -68,15 +65,15 @@ public class MultiLevelController
         DataTableDxo opts = new DataTableDxo();
         opts.parse(req);
 
-        List<MultiLevelDto> all = MultiLevelDto.marshalList(//
-                MultiLevelDto.RANGES, multiLevelDao.list());
+        List<PassToNextDto> all = PassToNextDto.marshalList(//
+                PassToNextDto.SEQUENCES, PassToNextDao.list());
 
         opts.totalRecords = all.size();
         opts.totalDisplayRecords = opts.totalRecords;
 
         List<Object[]> rows = new ArrayList<Object[]>();
 
-        for (MultiLevelDto alist : all) {
+        for (PassToNextDto alist : all) {
             Object[] row = new Object[5 + 1];
             row[0] = alist.getId();
             row[1] = alist.getVersion();
@@ -84,23 +81,23 @@ public class MultiLevelController
             row[3] = alist.getDescription();
 
             int max = 3;
-            StringBuilder limits = null;
-            for (MultiLevelRangeDto range : alist.getRanges()) {
+            StringBuilder responsibles = null;
+            for (PassStepDto seq : alist.getSequences()) {
                 if (max <= 0) {
-                    limits.append(", etc.");
+                    responsibles.append(", etc.");
                     break;
                 }
 
-                if (limits == null)
-                    limits = new StringBuilder();
+                if (responsibles == null)
+                    responsibles = new StringBuilder();
                 else
-                    limits.append(", ");
+                    responsibles.append(", ");
 
-                limits.append(range.getLimit());
+                responsibles.append(seq.getResponsible());
 
                 max--;
             }
-            row[4] = limits == null ? "" : limits.toString();
+            row[4] = responsibles == null ? "" : responsibles.toString();
 
             rows.add(row);
         }
@@ -121,17 +118,17 @@ public class MultiLevelController
         map.put("_create", create);
         map.put("_verb", create ? "Create" : "Modify");
 
-        MultiLevelDto dto;
+        PassToNextDto dto;
         if (create) {
-            dto = new MultiLevelDto(MultiLevelDto.RANGES);
+            dto = new PassToNextDto(PassToNextDto.SEQUENCES);
             dto.setName("");
             dto.setDescription("");
-            dto.setRanges(new ArrayList<MultiLevelRangeDto>());
+            dto.setSequences(new ArrayList<PassStepDto>());
             map.put("it", dto);
         } else {
             int id = Integer.parseInt(req.getParameter("id"));
-            MultiLevel entity = multiLevelDao.load(id);
-            dto = new MultiLevelDto(MultiLevelDto.RANGES).marshal(entity);
+            PassToNext entity = PassToNextDao.load(id);
+            dto = new PassToNextDto(PassToNextDto.SEQUENCES).marshal(entity);
         }
         map.put("it", dto);
 
@@ -144,20 +141,20 @@ public class MultiLevelController
 
         boolean create = (Boolean) req.getAttribute("create");
 
-        MultiLevelDto dto = new MultiLevelDto(MultiLevelDto.RANGES);
+        PassToNextDto dto = new PassToNextDto(PassToNextDto.SEQUENCES);
         dto.parse(req);
 
-        MultiLevel entity;
+        PassToNext entity;
         if (create) {
-            entity = new MultiLevel();
+            entity = new PassToNext();
         } else {
             Integer id = dto.getId();
             if (id == null)
                 throw new ServletException("id isn't specified");
 
-            entity = multiLevelDao.get(id);
+            entity = PassToNextDao.get(id);
             if (entity == null)
-                throw new IllegalStateException("No multi-level whose id=" + id);
+                throw new IllegalStateException("No pass-to-next whose id=" + id);
 
             Integer requestVersion = dto.getVersion();
             if (requestVersion != null && requestVersion != entity.getVersion()) {
@@ -169,18 +166,19 @@ public class MultiLevelController
             entity.setName(dto.name);
             entity.setDescription(dto.description);
 
-            Set<MultiLevelRange> ranges = new HashSet<MultiLevelRange>();
-            for (MultiLevelRangeDto range : dto.getRanges()) {
-                long limit = range.getLimit();
-                int targetPolicyId = range.getTargetPolicyId();
+            List<PassStep> sequences = new ArrayList<PassStep>();
+            for (PassStepDto seq : dto.getSequences()) {
+                int order = seq.getOrder();
+                long responsibleId = seq.getResponsible().getId();
+                boolean optional = seq.isOptional();
 
-                VerifyPolicy<?, VerifyState> targetPolicy = verifyPolicyDao.load(targetPolicyId);
+                Principal responsible = principalDao.load(responsibleId);
 
-                MultiLevelRange rangeEntity = new MultiLevelRange(entity, limit, targetPolicy);
+                PassStep seqEntity = new PassStep(entity, order, responsible, optional);
 
-                ranges.add(rangeEntity);
+                sequences.add(seqEntity);
             }
-            entity.setRanges(ranges);
+            entity.setSequences(sequences);
         }
 
         dataManager.saveOrUpdate(entity);
