@@ -1,5 +1,7 @@
 package com.bee32.plover.web.faces.utils;
 
+import java.net.MalformedURLException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.servlet.context.ILocationContext;
@@ -68,21 +70,14 @@ public class LocationContextCM
 
         switch (mode) {
         case ABSOLUTE:
-            String requestRelative = location.resolve(request);
-            return requestRelative;
+            return location.resolveAbsolute(request);
 
         case FULL_QUALIFIED:
-            StringBuilder sb = new StringBuilder();
-            sb.append(request.getScheme());
-            sb.append("://");
-            sb.append(request.getServerName());
-            if (request.getServerPort() != 80) {
-                sb.append(':');
-                sb.append(request.getServerPort());
+            try {
+                return location.resolveURL(request).toString();
+            } catch (MalformedURLException e) {
+                return "<(error resolve url: " + e.getMessage() + ")>";
             }
-
-            // String requestRelative = location.resolve(request);
-            return sb.toString();
 
         case DEFAULT:
         default:
