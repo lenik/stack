@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.util.FormatStyle;
@@ -24,9 +23,18 @@ public class PassStep
     private Principal responsible;
     public boolean optional;
 
-    public PassStep(IPrincipal responsible, boolean optional) {
+    public PassStep() {
+    }
+
+    public PassStep(PassToNext policy, int order, Principal responsible, boolean optional) {
+        if (policy == null)
+            throw new NullPointerException("policy");
         if (responsible == null)
             throw new NullPointerException("responsible");
+
+        this.policy = policy;
+        this.order = order;
+        this.responsible = responsible;
         this.optional = optional;
     }
 
