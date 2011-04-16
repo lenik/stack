@@ -195,14 +195,8 @@ public abstract class EntityController<E extends EntityBean<?>>
             } catch (DataIntegrityViolationException e) {
                 resp.setCharacterEncoding("utf-8");
 
-                PrintWriter out = resp.getWriter();
-
-                String message = "分级审核策略 " + entity.getName() + " 正在被其它对象使用中，删除失败。";
-
-                JavascriptChunk chunk = new JavascriptChunk();
-                chunk.println("alert('" + HtmlUtils.htmlEscape(message) + "'); ");
-                chunk.println("history.back(); ");
-                chunk.dump(req, resp);
+                String message = metaData.getString(ENTITY_TYPE_NAME) + " " + entity.getName() + " 正在被其它对象使用中，删除失败。";
+                Javascripts.alertAndBack(message).dump(req, resp);
 
                 return null;
             }
