@@ -64,7 +64,7 @@ public abstract class LocationContext
      * Join urls in relative-only mode.
      *
      * <pre>
-     * foo? + null  => foo?
+     * foo? + null  => foo
      * foo? + /bar  => foo/bar
      * foo? + bar   => foo?bar
      * foo? + ""    => foo?
@@ -81,12 +81,8 @@ public abstract class LocationContext
         if (context == null)
             return spec;
 
-        if (spec == null) {
-            if (isdir)
-                return context + "/";
-            else
-                return context;
-        }
+        if (spec == null)
+            return context;
 
         if (spec.startsWith("/"))
             return context + spec;
@@ -113,11 +109,8 @@ public abstract class LocationContext
      *            spec url, <code>null</code> to use the context path.
      */
     protected String join(StringBuffer buffer, boolean isdir, String spec) {
-        if (spec == null) {
-            if (isdir)
-                buffer.append('/');
+        if (spec == null)
             return buffer.toString();
-        }
 
         if (spec.startsWith("/"))
             buffer.append(spec);
