@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
+    xmlns:sem="http://bee32.com/sem/functions">
+
+<ui:composition template="/template.xhtml">
+    <ui:define name="title">Facelets test</ui:define>
+
+    <ui:define name="head">
+    </ui:define>
+
+    <ui:define name="body">
+        <table>
+            <tr>
+                <th>Variable</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>location.WEB_APP</td>
+                <td>${location.WEB_APP}</td>
+            </tr>
+            <tr>
+                <td>location.WEB_APP.__abs__</td>
+                <td>${location.WEB_APP.__abs__}</td>
+            </tr>
+            <tr>
+                <td>location.WEB_APP.__fqn__</td>
+                <td>${location.WEB_APP.__fqn__}</td>
+            </tr>
+            <tr>
+                <td>location.WEB_APP.foo</td>
+                <td>${location.WEB_APP.foo}</td>
+            </tr>
+            <tr>
+                <td>location.WEB_APP.__abs__.foo</td>
+                <td>${location.WEB_APP.__abs__.foo}</td>
+            </tr>
+            <tr>
+                <td>location.WEB_APP.__fqn__.foo</td>
+                <td>${location.WEB_APP.__fqn__.foo}</td>
+            </tr>
+        </table>
+    </ui:define>
+</ui:composition>
+</html>
