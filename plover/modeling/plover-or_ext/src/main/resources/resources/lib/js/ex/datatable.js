@@ -121,7 +121,17 @@ var SEM = {};
         else
             opts = $.extend({}, SEM.dataTableOptions, opts);
 
-        return this.dataTable(opts);
-    };
+        var model = this.dataTable(opts);
 
+        model.getSelection = function() {
+            var selection = [];
+            var trNodes = this.fnGetNodes();
+            for ( var i = 0; i < trNodes.length; i++)
+                if ($(trNodes[i]).hasClass('row_selected'))
+                    selection.push(trNodes[i]);
+            return selection;
+        };
+
+        return this[0].model = model;
+    };
 })(jQuery);
