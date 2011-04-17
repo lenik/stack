@@ -14,48 +14,128 @@
     <ui:define name="title">${verb_en} Multi-Level Verify Policy</ui:define>
 
     <ui:define name="head">
+
+        <script language="javascript">
+        function removeLevels() {
+            $("#levels :selected").remove();
+        }
+
+        function addNewLevel() {
+            var limit = $("#newLimit").val();
+            if (limit.length == 0) {
+                alert("上界不能为空。");
+                return false;
+            }
+
+            var policy = $("#newPolicy :selected");
+            if (policy.length == 0) {
+                return false;
+            }
+
+            var policyId = policy.val();
+            var policyName = policy.text();
+
+            policyName = policyName
+                    .substr(0, policyName.indexOf(' | '));
+
+            var levels = $("#levels");
+            var option = $("&lt;option /&gt;");
+            option.val(limit + "," + policyId);
+            option.text(limit + " - " + policyName);
+            levels.append(option);
+        }
+
+        function submitForm() {
+            $('#levels option').attr('selected', true);
+            return true;
+        }
+        </script>
+
     </ui:define>
 
     <ui:define name="body">
 
         <h2>${verb_zh}分级审核策略</h2>
 
-
-        <form action="${verb}.htm" method="post">
+        <form action="${verb}.htm" method="post" onsubmit="submitForm()">
             <input type="hidden" name="id" value="${it.id}" />
             <input type="hidden" name="version" value="${it.version}" />
 
             <table width="100%" bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
                 <tr>
-                    <td align="right">名称 :</td>
+                    <td align="right" style="width: 4em">名称 :</td>
                     <td>
                         <input name="name" type="text" size="20" maxlength="50" value="${it.name}" />
                     </td>
-                    <td>&nbsp;</td>
                 </tr>
                 <tr>
                     <td align="right">描述 :</td>
                     <td>
                         <input name="description" type="text" size="60" maxlength="200" value="${it.description}" />
                     </td>
-                    <td>&nbsp;</td>
                 </tr>
 
                 <tr>
                     <td align="right">定义 :</td>
                     <td>
+
+                        <h:selectManyListbox id="levels" value="#{it.levels}" size="6">
+                            <c:forEach var="level" items="${it.levels}">
+                                <f:selectItem itemLabel="${level.limit} - ${level.targetPolicyName}"
+                                    itemValue="${level.limit},${level.targetPolicyId}" />
+                            </c:forEach>
+                        </h:selectManyListbox>
+
+                        <div>
+                            <input type="button" value="删除选中的" onclick="removeLevels()" />
+                        </div>
                     </td>
-                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <hr />
+                        <p>
+                            级别上界（整数）:
+                            <input type="text" id="newLimit" size="10" maxlength="20" />
+                        </p>
+
+                        <p />
+                        级别对应的审核策略：
+                        <h:selectOneMenu id="newPolicy" value="" size="10">
+                            <c:forEach var="policy" items="${policies}">
+                                <f:selectItem itemLabel="${policy.name} | ${policy.description}"
+                                    itemValue="${policy.id}" />
+                            </c:forEach>
+                        </h:selectOneMenu>
+
+                        <p />
+                        <strong> 约束结构： </strong>
+                        <ol format="ML-#">
+                            <li>级别不可重复：如果一个级别对应多个策略，新定义的策略将会覆盖原有的策略。</li>
+                            <li>上下文相关：分级策略只能在支持分级审核的业务中使用。 在具体业务中，如果该业务不支持分级审核， 那么分级审核策略不会出现在该业务的审核策略候选项中。</li>
+                            <li>上下文传递：分级策略中定义的具体策略传递依赖于分级策略的上下文。 如果具体业务蕴含的上下文 C 不含有具体策略 L(i) 依赖的上下文
+                                LC(i)，那么该分级策略实际上是无效的。 执行无效的审核策略时系统将会提示错误消息。</li>
+                            <li>禁止循环：您不能定义循环引用的策略。</li>
+                        </ol>
+
+                        <input type="button" value="添加新级别" onclick="addNewLevel()" />
+
+                        <p />
+                        <strong>业务提示：</strong> 请避免定义复杂的审核策略：系统允许您定义复杂的审核策略，并不意味着您就应该这样做。
+                    </td>
                 </tr>
 
                 <tr>
-                    <td>&nbsp;</td>
+                    <td></td>
                     <td>
-                        <input type="submit" value="保存" />
+                        <div>
+                            <input type="submit" value="保存" />
+                        </div>
                     </td>
-                    <td>&nbsp;</td>
                 </tr>
             </table>
+
         </form>
     </ui:define>
 </ui:composition>

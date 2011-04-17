@@ -3,10 +3,8 @@ package com.bee32.sem.process.verify.builtin.web;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -22,10 +20,10 @@ import com.bee32.plover.orm.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyState;
+import com.bee32.sem.process.verify.builtin.Level;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
-import com.bee32.sem.process.verify.builtin.MultiLevelRange;
+import com.bee32.sem.process.verify.builtin.dao.LevelDao;
 import com.bee32.sem.process.verify.builtin.dao.MultiLevelDao;
-import com.bee32.sem.process.verify.builtin.dao.MultiLevelRangeDao;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 
 @RequestMapping(MultiLevelController.PREFIX + "*")
@@ -38,7 +36,7 @@ public class MultiLevelController
     MultiLevelDao multiLevelDao;
 
     @Inject
-    MultiLevelRangeDao rangeDao;
+    LevelDao levelDao;
 
     @Inject
     VerifyPolicyDao verifyPolicyDao;
@@ -54,7 +52,7 @@ public class MultiLevelController
 
         MultiLevel entity = multiLevelDao.load(id);
 
-        MultiLevelDto dto = new MultiLevelDto(MultiLevelDto.RANGES).marshal(entity);
+        MultiLevelDto dto = new MultiLevelDto(MultiLevelDto.LEVELS).marshal(entity);
 
         ModelMap modelMap = new ModelMap();
         modelMap.put("it", dto);
@@ -69,7 +67,7 @@ public class MultiLevelController
         opts.parse(req);
 
         List<MultiLevelDto> all = MultiLevelDto.marshalList(//
-                MultiLevelDto.RANGES, multiLevelDao.list());
+                MultiLevelDto.LEVELS, multiLevelDao.list());
 
         opts.totalRecords = all.size();
         opts.totalDisplayRecords = opts.totalRecords;
@@ -85,7 +83,7 @@ public class MultiLevelController
 
             int max = 3;
             StringBuilder limits = null;
-            for (MultiLevelRangeDto range : alist.getRanges()) {
+            for (LevelDto range : alist.getLevels()) {
                 if (max <= 0) {
                     limits.append(", etc.");
                     break;
@@ -123,17 +121,20 @@ public class MultiLevelController
 
         MultiLevelDto dto;
         if (create) {
-            dto = new MultiLevelDto(MultiLevelDto.RANGES);
+            dto = new MultiLevelDto(MultiLevelDto.LEVELS);
             dto.setName("");
             dto.setDescription("");
-            dto.setRanges(new ArrayList<MultiLevelRangeDto>());
+            dto.setLevels(new ArrayList<LevelDto>());
             map.put("it", dto);
         } else {
             int id = Integer.parseInt(req.getParameter("id"));
             MultiLevel entity = multiLevelDao.load(id);
-            dto = new MultiLevelDto(MultiLevelDto.RANGES).marshal(entity);
+            dto = new MultiLevelDto(MultiLevelDto.LEVELS).marshal(entity);
         }
         map.put("it", dto);
+
+        List<VerifyPolicyDto> allVerifyPolicies = VerifyPolicyDto.marshalList(verifyPolicyDao.list());
+        map.put("policies", allVerifyPolicies);
 
         return map;
     }
@@ -144,7 +145,7 @@ public class MultiLevelController
 
         boolean create = (Boolean) req.getAttribute("create");
 
-        MultiLevelDto dto = new MultiLevelDto(MultiLevelDto.RANGES);
+        MultiLevelDto dto = new MultiLevelDto(MultiLevelDto.LEVELS);
         dto.parse(req);
 
         MultiLevel entity;
@@ -169,23 +170,31 @@ public class MultiLevelController
             entity.setName(dto.name);
             entity.setDescription(dto.description);
 
-            Set<MultiLevelRange> ranges = new HashSet<MultiLevelRange>();
-            for (MultiLevelRangeDto range : dto.getRanges()) {
-                long limit = range.getLimit();
-                int targetPolicyId = range.getTargetPolicyId();
+            List<Level> levels = entity.getLevels();
+            List<Level> newLevels = new ArrayList<Level>();
 
-                VerifyPolicy<?, VerifyState> targetPolicy = verifyPolicyDao.load(targetPolicyId);
+            for (LevelDto newLevel : dto.getLevels()) {
+                long newLimit = newLevel.getLimit();
+                Level oldLevel = entity.getLevel(newLimit);
 
-                MultiLevelRange rangeEntity = new MultiLevelRange(entity, limit, targetPolicy);
+                int newPolicyId = newLevel.getTargetPolicyId();
+                VerifyPolicy<?, VerifyState> newPolicy = verifyPolicyDao.load(newPolicyId);
 
-                ranges.add(rangeEntity);
+                if (oldLevel != null) {
+                    int oldPolicyId = oldLevel.getTargetPolicy().getId();
+                    if (newPolicyId != oldPolicyId)
+                        oldLevel.setTargetPolicy(newPolicy);
+                    newLevels.add(oldLevel);
+                } else
+                    newLevels.add(new Level(entity, newLimit, newPolicy));
             }
-            entity.setRanges(ranges);
+
+            levels.clear();
+            levels.addAll(newLevels);
         }
 
         dataManager.saveOrUpdate(entity);
 
         return new ModelAndView(viewOf("index"));
     }
-
 }

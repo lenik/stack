@@ -37,10 +37,10 @@
                             <th>最大值限</th>
                             <th>使用策略</th>
                         </tr>
-                        <c:forEach var="r" items="${it.ranges}">
+                        <c:forEach var="level" items="${it.levels}">
                             <tr>
-                                <td>${r.limit}</td>
-                                <td>${r.targetPolicy.name}</td>
+                                <td>${level.limit}</td>
+                                <td>${level.targetPolicyName}</td>
                             </tr>
                         </c:forEach>
                     </table>
