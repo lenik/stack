@@ -7,20 +7,20 @@ import javax.free.LongComparator;
 
 import com.bee32.plover.collections.map.RangeToMap;
 
-public class MultiLevelRangeMap
-        extends RangeToMap<Long, MultiLevelRange> {
+public class LevelMap
+        extends RangeToMap<Long, Level> {
 
     private static final long serialVersionUID = 1L;
 
-    public MultiLevelRangeMap(Map<? extends Long, ? extends MultiLevelRange> map) {
+    public LevelMap(Map<? extends Long, ? extends Level> map) {
         super(LongComparator.getInstance(), map);
     }
 
-    public MultiLevelRangeMap(TreeMap<Long, MultiLevelRange> treeMap) {
+    public LevelMap(TreeMap<Long, Level> treeMap) {
         super(LongComparator.getInstance(), treeMap);
     }
 
-    public MultiLevelRangeMap() {
+    public LevelMap() {
         super(LongComparator.getInstance());
     }
 

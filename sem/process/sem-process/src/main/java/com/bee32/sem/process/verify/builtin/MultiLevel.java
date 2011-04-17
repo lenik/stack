@@ -1,13 +1,16 @@
 package com.bee32.sem.process.verify.builtin;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.free.IdentityHashSet;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
@@ -31,8 +34,8 @@ public class MultiLevel
 
     private static final long serialVersionUID = 1L;
 
-    private Set<MultiLevelRange> ranges;
-    private MultiLevelRangeMap rangeMap;
+    private List<Level> levels;
+    private LevelMap levelMap;
 
     public MultiLevel() {
         super(AllowState.class);
@@ -42,70 +45,84 @@ public class MultiLevel
      * @return Non-null range set.
      */
     @OneToMany(mappedBy = "multiLevel")
+    @OrderBy("limit_ asc")
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public synchronized Set<MultiLevelRange> getRanges() {
-        if (ranges == null) {
-            if (rangeMap == null) {
-                ranges = new HashSet<MultiLevelRange>();
+    public synchronized List<Level> getLevels() {
+        if (levels == null) {
+            if (levelMap == null) {
+                levels = new ArrayList<Level>();
             } else {
-                ranges = convertToRanges(rangeMap);
-                rangeMap = null;
+                levels = convertToLevels(levelMap);
+                levelMap = null;
             }
         }
-        return ranges;
+        return levels;
     }
 
-    public synchronized void setRanges(Set<MultiLevelRange> ranges) {
-        this.ranges = ranges;
-        this.rangeMap = null;
+    public synchronized void setLevels(List<Level> levels) {
+        this.levels = levels;
+        this.levelMap = null;
+    }
+
+    public Level getLevel(long limit) {
+        if (levelMap != null)
+            return levelMap.get(limit);
+
+        if (levels != null) {
+            for (Level level : levels)
+                if (level.getLimit() == limit)
+                    return level;
+        }
+
+        return null;
     }
 
     /**
-     * @return Non-<code>null</code> RangeMap.
+     * @return Non-<code>null</code> LevelMap.
      */
     @Transient
-    public synchronized MultiLevelRangeMap getRangeMap() {
-        if (rangeMap == null)
-            if (ranges == null) {
-                rangeMap = new MultiLevelRangeMap();
+    public synchronized LevelMap getLevelMap() {
+        if (levelMap == null)
+            if (levels == null) {
+                levelMap = new LevelMap();
             } else {
-                rangeMap = convertToRangeMap(ranges);
-                ranges = null;
+                levelMap = convertToRangeMap(levels);
+                levels = null;
             }
-        return rangeMap;
+        return levelMap;
     }
 
-    public synchronized void setRangeMap(MultiLevelRangeMap rangeMap) {
-        this.rangeMap = rangeMap;
-        this.ranges = null;
+    public synchronized void setLevelMap(LevelMap levelMap) {
+        this.levelMap = levelMap;
+        this.levels = null;
     }
 
-    static MultiLevelRangeMap convertToRangeMap(Collection<MultiLevelRange> ranges) {
-        MultiLevelRangeMap map = new MultiLevelRangeMap();
-        if (ranges != null)
-            for (MultiLevelRange range : ranges) {
+    static LevelMap convertToRangeMap(Collection<Level> levels) {
+        LevelMap map = new LevelMap();
+        if (levels != null)
+            for (Level range : levels) {
                 long limit = range.getLimit();
                 map.put(limit, range);
             }
         return map;
     }
 
-    static Set<MultiLevelRange> convertToRanges(MultiLevelRangeMap map) {
-        Set<MultiLevelRange> ranges = new HashSet<MultiLevelRange>();
-        ranges.addAll(map.values());
-        return ranges;
+    static List<Level> convertToLevels(LevelMap map) {
+        List<Level> levels = new ArrayList<Level>();
+        levels.addAll(map.values());
+        return levels;
     }
 
-    public void addRange(long limit, VerifyPolicy<?, ?> verifyPolicy) {
+    public void addLevel(long limit, VerifyPolicy<?, ?> verifyPolicy) {
         if (verifyPolicy == null)
             throw new NullPointerException("verifyPolicy for " + getName());
 
-        MultiLevelRange range = new MultiLevelRange(this, limit, verifyPolicy);
-        getRangeMap().put(limit, range);
+        Level range = new Level(this, limit, verifyPolicy);
+        getLevelMap().put(limit, range);
     }
 
-    public boolean removeRange(long limit) {
-        return getRangeMap().remove(limit) != null;
+    public boolean removeLevel(long limit) {
+        return getLevelMap().remove(limit) != null;
     }
 
     @Override
@@ -118,17 +135,17 @@ public class MultiLevel
         DummyContextLimit compatibleContext = new DummyContextLimit("dummy", limit);
 
         Set<Principal> allDeclared = new HashSet<Principal>();
-        if (rangeMap == null)
+        if (levelMap == null)
             return null;
 
-        Long ceil = rangeMap.ceilingKey(limit);
+        Long ceil = levelMap.ceilingKey(limit);
 
         IdentityHashSet markSet = new IdentityHashSet();
         markSet.add(this);
 
         while (ceil != null) {
 
-            MultiLevelRange range = rangeMap.get(ceil);
+            Level range = levelMap.get(ceil);
 
             @SuppressWarnings("unchecked")
             VerifyPolicy<IContextLimit, ?> policy = (VerifyPolicy<IContextLimit, ?>) range.getTargetPolicy();
@@ -147,7 +164,7 @@ public class MultiLevel
                 allDeclared.addAll(subset);
             }
 
-            ceil = rangeMap.higherKey(ceil);
+            ceil = levelMap.higherKey(ceil);
         }
 
         return allDeclared;

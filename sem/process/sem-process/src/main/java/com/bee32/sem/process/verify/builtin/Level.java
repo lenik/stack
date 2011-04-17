@@ -4,14 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.NaturalId;
-
 import com.bee32.plover.collections.map.IRangeMapEntry;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.sem.process.verify.VerifyPolicy;
 
 @Entity
-public class MultiLevelRange
+public class Level
         extends EntityBean<Integer>
         implements IRangeMapEntry<Long, VerifyPolicy<?, ?>> {
 
@@ -21,10 +19,10 @@ public class MultiLevelRange
     private long limit;
     private VerifyPolicy<?, ?> targetPolicy;
 
-    public MultiLevelRange() {
+    public Level() {
     }
 
-    public MultiLevelRange(MultiLevel multiLevel, long limit, VerifyPolicy<?, ?> verifyPolicy) {
+    public Level(MultiLevel multiLevel, long limit, VerifyPolicy<?, ?> verifyPolicy) {
         if (multiLevel == null)
             throw new NullPointerException("multiLevel");
         if (verifyPolicy == null)
@@ -35,7 +33,7 @@ public class MultiLevelRange
         this.targetPolicy = verifyPolicy;
     }
 
-    @NaturalId
+    // @NaturalId
     @ManyToOne(optional = false)
     public MultiLevel getMultiLevel() {
         return multiLevel;
@@ -45,7 +43,19 @@ public class MultiLevelRange
         this.multiLevel = multiLevel;
     }
 
-    @NaturalId
+    /**
+     * Fix: HQL keyword not work in &#64;OrderBy clause.
+     */
+    // @NaturalId
+    long getLimit_() {
+        return limit;
+    }
+
+    void setLimit_(long limit) {
+        this.limit = limit;
+    }
+
+    @Transient
     public long getLimit() {
         return limit;
     }

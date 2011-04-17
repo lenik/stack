@@ -5,10 +5,10 @@ import java.util.List;
 import javax.free.NotImplementedException;
 
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.sem.process.verify.builtin.MultiLevelRange;
+import com.bee32.sem.process.verify.builtin.Level;
 
-public class MultiLevelRangeDto
-        extends EntityDto<MultiLevelRange, Integer> {
+public class LevelDto
+        extends EntityDto<Level, Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -16,11 +16,11 @@ public class MultiLevelRangeDto
     private int targetPolicyId;
     private String targetPolicyName;
 
-    public MultiLevelRangeDto() {
+    public LevelDto() {
         super();
     }
 
-    public MultiLevelRangeDto(MultiLevelRange source) {
+    public LevelDto(Level source) {
         super(source);
     }
 
@@ -49,21 +49,21 @@ public class MultiLevelRangeDto
     }
 
     @Override
-    protected void _marshal(MultiLevelRange source) {
+    protected void _marshal(Level source) {
         limit = source.getLimit();
         targetPolicyId = source.getTargetPolicy().getId();
         targetPolicyName = source.getTargetPolicy().getName();
     }
 
     @Override
-    protected void _unmarshalTo(MultiLevelRange target) {
+    protected void _unmarshalTo(Level target) {
         target.setLimit(limit);
         // target.setTargetPolicy(verifyPolicy)
         throw new NotImplementedException();
     }
 
-    public static List<MultiLevelRangeDto> marshalList(Iterable<? extends MultiLevelRange> entities) {
-        return marshalList(MultiLevelRangeDto.class, entities);
+    public static List<LevelDto> marshalList(Iterable<? extends Level> entities) {
+        return marshalList(LevelDto.class, entities);
     }
 
 }

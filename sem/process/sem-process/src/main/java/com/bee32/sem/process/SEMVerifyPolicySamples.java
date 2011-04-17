@@ -37,8 +37,8 @@ public class SEMVerifyPolicySamples
         macLevel = new MultiLevel();
         macLevel.setName("Mac 分级策略");
         macLevel.setDescription("1千以内由凯特好友审批，1万以内由机器人审批。");
-        macLevel.addRange(1000, plainList);
-        macLevel.addRange(10000, robotList);
+        macLevel.addLevel(1000, plainList);
+        macLevel.addLevel(10000, robotList);
     }
 
     @Override

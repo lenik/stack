@@ -5,7 +5,7 @@ import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.process.verify.builtin.AllowList;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
-import com.bee32.sem.process.verify.builtin.MultiLevelRange;
+import com.bee32.sem.process.verify.builtin.Level;
 import com.bee32.sem.process.verify.builtin.PassStep;
 import com.bee32.sem.process.verify.builtin.PassToNext;
 
@@ -17,7 +17,7 @@ public class SEMProcessUnit
     protected void preamble() {
         add(AllowList.class);
         add(MultiLevel.class);
-        add(MultiLevelRange.class);
+        add(Level.class);
         add(PassToNext.class);
         add(PassStep.class);
     }
