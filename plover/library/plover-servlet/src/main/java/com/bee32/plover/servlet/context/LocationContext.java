@@ -6,7 +6,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import javax.free.StringPart;
 import javax.servlet.http.HttpServletRequest;
 
 public abstract class LocationContext
@@ -16,14 +15,24 @@ public abstract class LocationContext
 
     protected final String name;
     protected final String base;
+    protected final boolean directory;
 
     public LocationContext(String name) {
         this.name = name;
         this.base = "";
+        this.directory = false;
     }
 
     public LocationContext(String name, String base) {
         this.name = name;
+
+        if (base == null)
+            this.directory = false;
+        else {
+            this.directory = base.endsWith("/");
+            if (directory)
+                base = base.substring(0, base.length() - 1);
+        }
         this.base = base;
     }
 
@@ -35,90 +44,88 @@ public abstract class LocationContext
         return base;
     }
 
+    public boolean isDirectory() {
+        return directory;
+    }
+
     protected abstract LocationContext create(String base);
 
-    /**
-     * Join urls in relative-only mode.
-     *
-     * <pre>
-     * foo/ + null  => foo
-     * foo  + null  => foo
-     * foo/ + ""    => foo/
-     * foo  + ""    => foo
-     * foo/ + /     => foo/
-     * foo  + /     => foo/
-     * foo  + /bar  => foo/bar
-     * foo  + bar   => foobar
-     * foo/ + /bar  => foo/bar
-     * foo/ + bar   => foo/bar
-     * </pre>
-     *
-     * @param context
-     *            context url. <code>null</code> to return the spec.
-     * @param spec
-     *            spec url, <code>null</code> to return the context path.
-     */
-    protected String join(String context, String spec) {
-        if (context == null)
-            return spec;
-
-        if (spec == null) {
-            if (context.endsWith("/"))
-                return StringPart.chop(context);
-            else
-                return context;
+    protected final String join(StringBuffer context, String spec) {
+        boolean isdir = false;
+        int len = context.length();
+        if (len > 0 && context.charAt(len - 1) == '/') {
+            context.setLength(--len);
+            isdir = true;
         }
-
-        if (spec.equals("/")) {
-            if (context.endsWith("/"))
-                return context;
-            else
-                return context + "/";
-        }
-
-        if (context.endsWith("/") && spec.startsWith("/"))
-            spec = spec.substring(1);
-
-        return context + spec;
+        return join(context, isdir, spec);
     }
 
     /**
      * Join urls in relative-only mode.
      *
      * <pre>
-     * foo/ + null  => foo/
-     * foo  + null  => foo
-     * foo/ + /     => foo/
-     * foo  + /     => foo/
+     * foo? + null  => foo?
+     * foo? + /bar  => foo/bar
+     * foo? + bar   => foo?bar
+     * foo? + ""    => foo?
+     * </pre>
      *
-     * foo  + /bar  => foo/bar
-     * foo  + bar   => foobar
-     * foo/ + /bar  => foo/bar
-     * foo/ + bar   => foo/bar
+     * @param context
+     *            context url. <code>null</code> to return the spec.
+     * @param isdir
+     *            Whether context is ended with /.
+     * @param spec
+     *            spec url, <code>null</code> to return the context path.
+     */
+    protected String join(String context, boolean isdir, String spec) {
+        if (context == null)
+            return spec;
+
+        if (spec == null) {
+            if (isdir)
+                return context + "/";
+            else
+                return context;
+        }
+
+        if (spec.startsWith("/"))
+            return context + spec;
+
+        if (isdir)
+            return context + "/" + spec;
+        else
+            return context + spec;
+    }
+
+    /**
+     * Join urls in relative-only mode.
+     *
+     * <pre>
+     * foo? + null  => foo?
+     * foo? + /bar  => foo/bar
+     * foo? + bar   => foo?bar
+     * foo? + ""    => foo?
      * </pre>
      *
      * @param buffer
-     *            Non-<code>null</code> base url in the string buffer.
+     *            Non-<code>null</code> context url in the string buffer.
      * @param spec
      *            spec url, <code>null</code> to use the context path.
      */
-    protected String join(StringBuffer buffer, String spec) {
-        int len = buffer.length();
-        boolean contextSlash = len > 0 && buffer.charAt(len - 1) == '/';
-
+    protected String join(StringBuffer buffer, boolean isdir, String spec) {
         if (spec == null) {
-            if (contextSlash)
-                buffer.setLength(len - 1);
+            if (isdir)
+                buffer.append('/');
             return buffer.toString();
         }
 
-        if (spec.equals("/")) {
-            if (!contextSlash)
+        if (spec.startsWith("/"))
+            buffer.append(spec);
+        else {
+            if (isdir)
                 buffer.append('/');
-        } else if (contextSlash && spec.startsWith("/"))
-            buffer.setLength(len - 1);
-
-        buffer.append(spec);
+            buffer.append(spec);
+        }
         return buffer.toString();
     }
 
@@ -127,7 +134,7 @@ public abstract class LocationContext
         if (location == null)
             throw new NullPointerException("location");
 
-        return create(join(base, location));
+        return create(join(base, directory, location));
     }
 
     protected final StringBuffer getContext(HttpServletRequest request) {
