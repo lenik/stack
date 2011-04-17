@@ -1,7 +1,11 @@
 package com.bee32.plover.orm.context;
 
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewFilter;
@@ -27,6 +31,12 @@ public class OSIVFilter
     protected boolean shouldNotFilter(HttpServletRequest request)
             throws ServletException {
         return false;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        super.doFilterInternal(request, response, filterChain);
     }
 
 }
