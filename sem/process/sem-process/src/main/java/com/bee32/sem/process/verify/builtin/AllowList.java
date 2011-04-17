@@ -67,7 +67,7 @@ public class AllowList
     }
 
     @ManyToMany(targetEntity = Principal.class, fetch = FetchType.EAGER)
-    @JoinTable(name = "AllowListResponsible", //
+    @JoinTable(name = "AllowList", //
     /*        */joinColumns = @JoinColumn(name = "allowList"), //
     /*        */inverseJoinColumns = @JoinColumn(name = "responsible"))
     public Set<Principal> getResponsibles() {

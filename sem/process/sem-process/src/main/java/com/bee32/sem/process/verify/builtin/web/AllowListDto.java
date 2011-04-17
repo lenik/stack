@@ -104,8 +104,6 @@ public class AllowListDto
 
         if (map.containsKey("id") && !map.getString("id").isEmpty())
             id = map.getInt("id");
-        if (map.containsKey("version") && !map.getString("version").isEmpty())
-            version = map.getInt("version");
 
         name = map.getString("name");
         description = map.getString("description");
