@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.sem.process.verify.builtin.web.AllowListController;
+import com.bee32.sem.process.verify.builtin.web.MultiLevelController;
 import com.bee32.sems.test.SEMTestCase;
 
 @Using(SEMProcessUnit.class)
@@ -15,7 +15,6 @@ public class SEMProcessModuleTest
     @Test
     public void testUser()
             throws Exception {
-
         String loc = "http://localhost:" + stl.getPort() + PREFIX + "/";
         System.out.println(loc);
     }
@@ -27,14 +26,15 @@ public class SEMProcessModuleTest
 
     @Override
     protected int getRefreshPeriod() {
-        return 60;
+        return 5;
     }
 
     public static void main(String[] args)
             throws IOException {
         new SEMProcessModuleTest().browseAndWait(//
                 // SEMProcessModule.class//
-                AllowListController.PREFIX + "index.htm"//
+                // AllowListController.PREFIX + "index.htm"//
+                MultiLevelController.PREFIX + "index.htm"//
                 );
     }
 
