@@ -87,6 +87,32 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
     public void parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
         super.parse(map);
+
+        String _id = map.getString("id");
+        if (_id == null)
+            id = null;
+        else
+            id = parseId(_id);
+
+        String _version = map.getString("version");
+        if (_version == null)
+            version = null;
+        else
+            try {
+                version = Integer.parseInt(_version);
+            } catch (NumberFormatException e) {
+                throw new ParseException("Version isn't an integer: " + _version);
+            }
+    }
+
+    /**
+     * TODO Get the key type.
+     *
+     * @param s
+     *            Non-<code>null</code> string contains the id.
+     */
+    protected K parseId(String s) {
+        return null;
     }
 
 }
