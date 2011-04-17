@@ -13,11 +13,10 @@
     <ui:define name="head">
         <script type="text/javascript" src="${location.LIB_3RDPARTY}/jsTree.v.1.0rc2/jquery.jstree.js"></script>
 
+        <link rel="stylesheet" type="text/css" href="${location.LIB_3RDPARTY}/dataTables-1.7/media/css/demo_page.css" />
+        <link rel="stylesheet" type="text/css" href="${location.LIB_3RDPARTY}/dataTables-1.7/media/css/demo_table.css" />
         <script type="text/javascript" src="${location.LIB_3RDPARTY}/dataTables-1.7/media/js/jquery.dataTables.js"></script>
-        <link rel="stylesheet" type="text/css"
-            href="${location.LIB_3RDPARTY}/dataTables-1.7/media/css/demo_page.css" />
-        <link rel="stylesheet" type="text/css"
-            href="${location.LIB_3RDPARTY}/dataTables-1.7/media/css/demo_table.css" />
+        <script type="text/javascript" src="${location.LIB_JS}/ex/datatable.js"></script>
     </ui:define>
 
     <ui:define name="body">
@@ -30,8 +29,8 @@
         <table id="table1" cellpadding="0" cellspacing="0" border="0" class="display">
             <thead>
                 <tr>
-                    <th>id</th>
-                    <th>version</th>
+                    <th class="id">id</th>
+                    <th class="version">version</th>
                     <th>名称</th>
                     <th>描述</th>
                     <th>定义</th>
@@ -53,88 +52,12 @@
         </table>
 
         <script type="text/javascript">
-        /* <![CDATA[ */
-            function delete1(id) {
-                if (! window.confirm("确定要删除此分级审核策略吗？"))
-                    return;
-                window.location = "delete.htm?id="+ id;
-            }
-
-            $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallback )
-            {
-                if ( typeof sNewSource != 'undefined' )
-                {
-                    oSettings.sAjaxSource = sNewSource;
-                }
-                this.fnDraw(this);
-            }
-
             $(document).ready(function() {
-                var oTable = $("#table1").dataTable({
-                    "bProcessing" : true,
+                var oTable = $("#table1").dataTable_SEM({
                     "bServerSide" : true,
-                    "bAutoWidth" : false,
-                    "bPaginate" : true,
-                    "sPaginationType": "full_numbers",
-                    "bFilter" : false,
-                    "bInfo" : true,
-                    "sAjaxSource" : "data.htm",
-                    "fnServerData" : function(sSource, aoData, fnCallback) {
-                        // aoData.push({"name" : "material_category_id", "value" : "-1"});
-                        $.ajax({
-                            "dataType" : 'json',
-                            "type" : "POST",
-                            "url" : sSource,
-                            "data" : aoData,
-                            "success" : fnCallback
-                        });
-                    },
-                    "aoColumns" : [
-                        {"bVisible" : false},
-                        {"bVisible" : false},
-                        null,
-                        null,
-                        null,
-                        {
-                            "sWidth" : "60px",
-                            "fnRender" : function(obj) {
-                                var id = obj.aData[0];
-                                return "\
-                                    <a title='查看' href='content.htm?id=" + id + "'>\
-                                        <img \
-                                            border=0 alt='查看' \
-                                            src='${location.ICON}/etool16/insp_sbook.gif'/>\
-                                    </a>\
-                                    <a title='修改' href='editForm.htm?id=" + id + "'>\
-                                        <img \
-                                            border=0 alt='修改' \
-                                            src='${location.ICON}/etool16/editor_area.gif'/>\
-                                    </a>\
-                                    <a title='删除' href='#' onclick='javascript:delete1(" + id + ")'>\
-                                        <img \
-                                            border=0 alt='删除' \
-                                            src='${location.ICON}/etool16/delete_edit.gif'/>\
-                                    </a>\
-                                ";
-                            }
-                        }
-                    ],
-                    "oLanguage" : {
-                        "oPaginate" : {
-                            "sFirst" : "首页",
-                            "sLast" : "末页",
-                            "sNext" : "后页",
-                            "sPrevious" : "前页"
-                        },
-                        "sInfo" : "_START_ 到 _END_, 共 _TOTAL_",
-                        "sInfoEmpty" : "没有记录可显示",
-                        "sLengthMenu" : "显示_MENU_条",
-                        "sEmptyTable" : "没有记录",
-                        "sProcessing" : "正在处理..."
-                    }
+                    "sAjaxSource" : "data.htm"
                 });
             });
-        /* ]]> */
         </script>
 
     </ui:define>
