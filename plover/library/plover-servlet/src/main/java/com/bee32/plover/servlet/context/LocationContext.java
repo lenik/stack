@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import javax.free.StringPart;
 import javax.servlet.http.HttpServletRequest;
 
 public abstract class LocationContext
@@ -40,11 +41,12 @@ public abstract class LocationContext
      * Join urls in relative-only mode.
      *
      * <pre>
-     * foo/ + null  => foo/
+     * foo/ + null  => foo
      * foo  + null  => foo
+     * foo/ + ""    => foo/
+     * foo  + ""    => foo
      * foo/ + /     => foo/
      * foo  + /     => foo/
-     *
      * foo  + /bar  => foo/bar
      * foo  + bar   => foobar
      * foo/ + /bar  => foo/bar
@@ -59,8 +61,13 @@ public abstract class LocationContext
     protected String join(String context, String spec) {
         if (context == null)
             return spec;
-        if (spec == null)
-            return context;
+
+        if (spec == null) {
+            if (context.endsWith("/"))
+                return StringPart.chop(context);
+            else
+                return context;
+        }
 
         if (spec.equals("/")) {
             if (context.endsWith("/"))
@@ -96,20 +103,22 @@ public abstract class LocationContext
      *            spec url, <code>null</code> to use the context path.
      */
     protected String join(StringBuffer buffer, String spec) {
-        if (spec != null) {
-            int len = buffer.length();
-            boolean contextSlash = len > 0 && buffer.charAt(len - 1) == '/';
+        int len = buffer.length();
+        boolean contextSlash = len > 0 && buffer.charAt(len - 1) == '/';
 
-            if (spec.equals("/")) {
-                if (!contextSlash)
-                    buffer.append('/');
-            }
-
-            else if (contextSlash && spec.startsWith("/"))
-                spec = spec.substring(1);
-
-            buffer.append(spec);
+        if (spec == null) {
+            if (contextSlash)
+                buffer.setLength(len - 1);
+            return buffer.toString();
         }
+
+        if (spec.equals("/")) {
+            if (!contextSlash)
+                buffer.append('/');
+        } else if (contextSlash && spec.startsWith("/"))
+            buffer.setLength(len - 1);
+
+        buffer.append(spec);
         return buffer.toString();
     }
 
@@ -169,7 +178,8 @@ public abstract class LocationContext
     @Override
     public String resolveAbsolute(HttpServletRequest request) {
         StringBuffer context = getContext(request);
-        return join(context, base);
+        String absolute = join(context, base);
+        return absolute;
     }
 
     @Override

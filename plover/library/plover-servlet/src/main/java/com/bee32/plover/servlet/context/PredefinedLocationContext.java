@@ -55,7 +55,8 @@ public class PredefinedLocationContext
     @Override
     public String resolveAbsolute(HttpServletRequest request) {
         try {
-            return resolveURL(request).toString();
+            URL url = resolveURL(request);
+            return url.toString();
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }

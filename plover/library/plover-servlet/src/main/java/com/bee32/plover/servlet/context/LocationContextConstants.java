@@ -16,19 +16,21 @@ public interface LocationContextConstants {
 
     LocationContext WEB_APP = new ServletLocationContext(null);
 
+    LocationContext LIB_JS = new ServletLocationContext("lib/js");
+
     LocationContext MM = new ModuleManagerLocationContext(null);
 
     LocationContext STYLE_ROOT = new PredefinedLocationContext("STYLE-ROOT", //
-            "http://static.secca-project.com/style/");
+            "http://static.secca-project.com/style");
 
     LocationContext STYLE = new PredefinedLocationContext("STYLE", //
-            "http://static.secca-project.com/style/default/");
+            "http://static.secca-project.com/style/default");
 
     LocationContext ICON = new PredefinedLocationContext("STYLE-ICON", //
-            "http://static.secca-project.com/style/default/icons/");
+            "http://static.secca-project.com/style/default/icons");
 
     LocationContext LIB_3RDPARTY = new PredefinedLocationContext("LIB-3RDPARTY", //
-            "http://static.secca-project.com/lib2/");
+            "http://static.secca-project.com/lib2");
 
 }
 
