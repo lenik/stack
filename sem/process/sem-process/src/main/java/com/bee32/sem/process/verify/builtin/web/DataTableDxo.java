@@ -15,18 +15,18 @@ public class DataTableDxo
     /**
      * int iDisplayStart Display start point
      */
-    Long displayStart;
+    int displayStart;
 
     /**
      * int iDisplayLength Number of records to display
      */
-    Long displayLength;
+    int displayLength;
 
     /**
      * int iColumns Number of columns being displayed (useful for getting individual column search
      * info)
      */
-    Integer columnCount;
+    int columnCount;
 
     /**
      * string sSearch Global search field
@@ -36,12 +36,12 @@ public class DataTableDxo
     /**
      * boolean bEscapeRegex Global search is regex or not
      */
-    Boolean escapeRegex;
+    boolean escapeRegex;
 
     /**
      * int iSortingCols Number of columns to sort on
      */
-    Integer sortingCols;
+    int sortingCols;
 
     static class ColumnOption {
 
@@ -49,13 +49,13 @@ public class DataTableDxo
          * boolean bSortable_(int) Indicator for if a column is flagged as sortable or not on the
          * client-side
          */
-        Boolean sortable;
+        boolean sortable;
 
         /**
          * boolean bSearchable_(int) Indicator for if a column is flagged as searchable or not on
          * the client-side
          */
-        Boolean searchable;
+        boolean searchable;
 
         /**
          * string sSearch_(int) Individual column filter
@@ -65,19 +65,19 @@ public class DataTableDxo
         /**
          * boolean bEscapeRegex_(int) Individual column filter is regex or not
          */
-        Boolean escapeRegex;
+        boolean escapeRegex;
 
         /**
          * int iSortCol_(int) Column being sorted on (you will need to decode this number for your
          * database)
          */
-        Integer sortCol;
+        int sortCol;
 
         /**
          * string sSortDir_(int) Direction to be sorted - "desc" or "asc". Note that the prefix for
          * this variable is wrong in 1.5.x where iSortDir_(int) was used)
          */
-        Integer sortDir;
+        String sortDir;
 
     }
 
@@ -103,14 +103,14 @@ public class DataTableDxo
      * int iTotalRecords Total records, before filtering (i.e. the total number of records in the
      * database)
      */
-    Long totalRecords;
+    Integer totalRecords;
 
     /**
      * int iTotalDisplayRecords Total records, after filtering (i.e. the total number of records
      * after filtering has been applied - not just the number of records being returned in this
      * result set)
      */
-    Long totalDisplayRecords;
+    Integer totalDisplayRecords;
 
     /**
      * string sColumns Optional - this is a string of column names, comma separated (used in
@@ -127,8 +127,8 @@ public class DataTableDxo
     @Override
     public void parse(IVariantLookupMap<String> map)
             throws ParseException {
-        displayStart = map.getLong("iDisplayStart");
-        displayLength = map.getLong("iDisplayLength");
+        displayStart = map.getInt("iDisplayStart");
+        displayLength = map.getInt("iDisplayLength");
         columnCount = map.getInt("iColumns");
         search = map.getString("sSearch");
         escapeRegex = map.getBoolean("bEscapeRegex");
