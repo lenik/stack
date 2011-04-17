@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <title>DataTables example</title>
+        <style type="text/css" title="currentStyle">
+            @import
+            "http://static.secca-project.com/lib2/dataTables-1.7/media/css/demo_page.css";
+
+            @import
+            "http://static.secca-project.com/lib2/dataTables-1.7/media/css/demo_table.css";
+        </style>
+        <script type="text/javascript" language="javascript" src="http://code.jquery.com/jquery-1.4.4.js"></script>
+        <!-- <script type="text/javascript" language="javascript" src="http://static.secca-project.com/lib2/dataTables-1.7/media/js/jquery.js"></script> -->
+        <script type="text/javascript" language="javascript"
+            src="http://static.secca-project.com/lib2/dataTables-1.7/media/js/jquery.dataTables.js"></script>
+
+        <script type="text/javascript" src="lib/js/ex/datatable.js"></script>
+
+        <script type="text/javascript" charset="utf-8">
+            var exampleTools = {};
+            jQuery.extend(exampleTools,
+            SEM.entityTools);
+
+            $(document).ready(function() {
+            $('#example').dataTable_SEM();
+            });
+        </script>
+    </head>
+    <body id="dt_example">
+        <div id="container">
+            <div class="full_width big">
+                <i>DataTables</i>
+                zero configuration example
+            </div>
+
+            <h1>Live example</h1>
+            <div id="demo">
+                <div class="dataTables_wrapper" id="example_wrapper">
+                    <div id="example_length" class="dataTables_length">
+                        Show
+                        <select size="1" name="example_length">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        entries
+                    </div>
+                    <div id="example_filter" class="dataTables_filter">
+                        Search:
+                        <input type="text" />
+                    </div>
+
+                    <div class="tst" onclick="alert(1)">Test div</div>
+
+                    <table id="example" title="浏览器资料" cellpadding="0" cellspacing="0" border="0" class="display">
+                        <thead>
+                            <tr>
+                                <th style="width: 129px;">Rendering engine</th>
+                                <th style="width: 177px;">Browser</th>
+                                <th class="sorting_asc" style="width: 170px;">Platform(s)</th>
+                                <th style="width: 108px;">Engine version</th>
+                                <th style="width: 76px;">CSS grade</th>
+                                <th class="tools" style="width: 76px;">Tools</th>
+                            </tr>
+                        </thead>
+
+                        <tfoot>
+                            <tr>
+                                <th>Rendering engine</th>
+                                <th>Browser</th>
+                                <th>Platform(s)</th>
+                                <th>Engine version</th>
+                                <th>CSS grade</th>
+                                <th>Tools</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr class="gradeU odd">
+                                <td class="">Other browsers</td>
+                                <td class="">All others</td>
+                                <td class=" sorting_1">-</td>
+                                <td class="center">-</td>
+                                <td class="center">U</td>
+                                <td></td>
+                            </tr>
+                            <tr class="gradeA even">
+                                <td class="">Misc</td>
+                                <td class="">NetFront 3.4</td>
+                                <td class=" sorting_1">Embedded devices</td>
+                                <td class="center">-</td>
+                                <td class="center">A</td>
+                                <td></td>
+                            </tr>
+                            <tr class="gradeA odd">
+                                <td class="">Misc</td>
+                                <td class="">NetFront 3.1</td>
+                                <td class=" sorting_1">Embedded devices</td>
+                                <td class="center">-</td>
+                                <td class="center">C</td>
+                                <td></td>
+                            </tr>
+                            <tr class="gradeX even">
+                                <td class="">Misc</td>
+                                <td class="">Dillo 0.8</td>
+                                <td class=" sorting_1">Embedded devices</td>
+                                <td class="center">-</td>
+                                <td class="center">X</td>
+                                <td></td>
+                            </tr>
+                            <tr class="gradeA odd">
+                                <td class="">Gecko</td>
+                                <td class="">Epiphany 2.20</td>
+                                <td class=" sorting_1">Gnome</td>
+                                <td class="center">1.8</td>
+                                <td class="center">A</td>
+                                <td></td>
+                            </tr>
+                            <tr class="gradeA even">
+                                <td class="">Webkit</td>
+                                <td class="">iPod Touch / iPhone</td>
+                                <td class=" sorting_1">iPod</td>
+                                <td class="center">420.1</td>
+                                <td class="center">A</td>
+                                <td></td>
+                            </tr>
+                            <tr class="gradeC odd">
+                                <td class="">KHTML</td>
+                                <td class="">Konqureror 3.1</td>
+                                <td class=" sorting_1">KDE 3.1</td>
+                                <td class="center">3.1</td>
+                                <td class="center">C</td>
+                                <td></td>
+                            </tr>
+                            <tr class="gradeA even">
+                                <td class="">KHTML</td>
+                                <td class="">Konqureror 3.3</td>
+                                <td class=" sorting_1">KDE 3.3</td>
+                                <td class="center">3.3</td>
+                                <td class="center">A</td>
+                                <td></td>
+                            </tr>
+                            <tr class="gradeA odd">
+                                <td class="">KHTML</td>
+                                <td class="">Konqureror 3.5</td>
+                                <td class=" sorting_1">KDE 3.5</td>
+                                <td class="center">3.5</td>
+                                <td class="center">A</td>
+                                <td></td>
+                            </tr>
+                            <tr class="gradeC even">
+                                <td class="">Tasman</td>
+                                <td class="">Internet Explorer 5.1</td>
+                                <td class=" sorting_1">Mac OS 7.6-9</td>
+                                <td class="center">1</td>
+                                <td class="center">C</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="dataTables_info" id="example_info">Showing 1 to 10 of 57 entries</div>
+                    <div class="dataTables_paginate paging_two_button" id="example_paginate">
+                        <div class="paginate_disabled_previous" title="Previous" id="example_previous"></div>
+                        <div class="paginate_enabled_next" title="Next" id="example_next"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="spacer"></div>
+
+        </div>
+
+    </body>
+</html>
