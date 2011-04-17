@@ -11,15 +11,29 @@ var SEM = {};
             sPaginationType : "full_numbers",
             bFilter : false,
             bInfo : true,
+            aoColumnDefs : [ {
+                aTargets : [ 'id', 'version' ],
+                bVisible : false
+            }, ],
             fnRowCallback : function(node, aData, iDisplayIndex, iDisplayIndexFull) {
                 var id = aData[0];
-
-                var toolboxNode = $('td', node).eq(-1);
-                var tableNode = toolboxNode.parents('table');
+                var tableNode = this;
                 var tableId = tableNode.attr('id');
 
-                var tools = eval(tableId + 'Tools');
+                var toolboxNode = $('td.toolbox', node);
+                if (toolboxNode.length == 0) {
+                    toolboxNode = $('td', node).eq(-1);
+                    if (toolboxNode.length == 0)
+                        throw "Where is toolbox cell?";
+                }
                 toolboxNode.html('');
+
+                var tools;
+                try {
+                    tools = eval(tableId + 'Tools');
+                } catch (e) {
+                    tools = SEM.entityTools;
+                }
 
                 for ( var toolname in tools) {
                     var tool = tools[toolname];
@@ -54,13 +68,13 @@ var SEM = {};
             oLanguage : {
                 oPaginate : {
                     sFirst : "首页",
-                    sLast : "末页",
+                    sPrevious : "前页",
                     sNext : "后页",
-                    sPrevious : "前页"
+                    sLast : "末页"
                 },
                 sInfo : "_START_ 到 _END_, 共 _TOTAL_",
                 sInfoEmpty : "没有记录可显示",
-                sLengthMenu : "显示_MENU_条",
+                sLengthMenu : "显示 _MENU_ 条",
                 sEmptyTable : "没有记录",
                 sProcessing : "正在处理..."
             }
