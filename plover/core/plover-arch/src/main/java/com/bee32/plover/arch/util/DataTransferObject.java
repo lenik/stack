@@ -2,7 +2,6 @@ package com.bee32.plover.arch.util;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,8 +29,7 @@ public abstract class DataTransferObject<T>
 
     protected final Class<T> dataType;
     {
-        Type[] dtoArgs = ClassUtil.getTypeArgs(getClass(), DataTransferObject.class);
-        dataType = ClassUtil.bound1(dtoArgs[0]);
+        dataType = ClassUtil.infer1(getClass(), DataTransferObject.class, 0);
     }
 
     protected final Flags32 selection;
@@ -67,16 +65,11 @@ public abstract class DataTransferObject<T>
         threadLocalGraph = new ThreadLocal<Map<Object, Object>>();
     }
 
-    /**
-     * Marshal the given source object into this object.
-     *
-     * @param source
-     *            Source object to be marshalled, maybe <code>null</code>.
-     * @return The marshalled object. it may be this, or flyweight, or <code>null</code> if the
-     *         specified <code>source</code> object is <code>null</code>.
-     */
     @Override
-    public final <D extends DataTransferObject<T>> D marshal(T source) {
+    public final <D extends DataTransferObject<T>> D marshal(T source, boolean checkCyclicReferences) {
+        if (!checkCyclicReferences)
+            return marshal(source);
+
         if (source == null)
             return null;
 
@@ -91,18 +84,26 @@ public abstract class DataTransferObject<T>
         if (marshalledFlyWeight != null)
             return marshalledFlyWeight;
 
+        graph.put(source, this);
+
         try {
-            // Do the real marshal work.
-            // logger.debug("marshal begin");
-
-            graph.put(source, this);
-            __marshal(source);
-
-            // logger.debug("marshal end");
+            return marshal(source);
         } finally {
             if (topLevel)
                 threadLocalGraph.remove();
         }
+    }
+
+    public final <D extends DataTransferObject<T>> D marshal(T source) {
+        if (source == null)
+            return null;
+
+        // Do the real marshal work.
+        // logger.debug("marshal begin");
+
+        __marshal(source);
+
+        // logger.debug("marshal end");
 
         @SuppressWarnings("unchecked")
         D self = (D) this;
@@ -129,11 +130,6 @@ public abstract class DataTransferObject<T>
             return dto.unmarshal();
     }
 
-    /**
-     * Write properties from this object into a new source bean.
-     *
-     * @return Non-<code>null</code> source bean.
-     */
     @Override
     public final T unmarshal() {
         T target;
