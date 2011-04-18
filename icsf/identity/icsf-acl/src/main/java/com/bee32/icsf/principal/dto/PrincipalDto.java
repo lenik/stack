@@ -1,7 +1,5 @@
 package com.bee32.icsf.principal.dto;
 
-import java.util.List;
-
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.util.EntityDto;
 
@@ -71,11 +69,6 @@ public class PrincipalDto<E extends Principal>
         target.setName(name);
         target.setDisplayName(displayName);
         target.setDescription(description);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <D> List<D> marshalList(int selection, Iterable<?> entities) {
-        return marshalList(PrincipalDto.class, selection, entities);
     }
 
 }

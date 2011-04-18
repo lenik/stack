@@ -70,14 +70,14 @@ public class UserDto
     protected void _marshal(User source) {
         super._marshal(source);
 
-        primaryGroup = new GroupDto(selection.bits).marshal(source.getPrimaryGroup());
-        primaryRole = new RoleDto(selection.bits).marshal(source.getPrimaryRole());
+        primaryGroup = new GroupDto(selection.bits).marshalRec(source.getPrimaryGroup());
+        primaryRole = new RoleDto(selection.bits).marshalRec(source.getPrimaryRole());
 
         if (selection.contains(GROUPS))
-            assignedGroups = GroupDto.marshalList(selection.bits, source.getAssignedGroups());
+            assignedGroups = marshalListRec(GroupDto.class, selection.bits, source.getAssignedGroups());
 
         if (selection.contains(ROLES))
-            assignedRoles = RoleDto.marshalList(selection.bits, source.getAssignedRoles());
+            assignedRoles = marshalListRec(RoleDto.class, selection.bits, source.getAssignedRoles());
     }
 
     @Override
@@ -92,10 +92,6 @@ public class UserDto
 
         if (selection.contains(ROLES))
             target.setAssignedRoles(RoleDto.unmarshalSet(assignedRoles));
-    }
-
-    public static <D> List<D> marshalList(int selection, Iterable<?> entities) {
-        return (List<D>) marshalList(UserDto.class, selection, entities);
     }
 
 }

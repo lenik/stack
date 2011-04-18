@@ -27,16 +27,16 @@ public class RoleDto
     protected void _marshal(Role source) {
         super._marshal(source);
 
-        inheritedRole = new RoleDto(selection.bits).marshal(source.getInheritedRole());
+        inheritedRole = new RoleDto(selection.bits).marshalRec(source.getInheritedRole());
 
         if (selection.contains(ROLES))
-            derivedRoles = RoleDto.marshalList(selection.bits, source.getDerivedRoles());
+            derivedRoles = marshalListRec(RoleDto.class, selection.bits, source.getDerivedRoles());
 
         if (selection.contains(USERS))
-            responsibleUsers = UserDto.marshalList(selection.bits, source.getResponsibleUsers());
+            responsibleUsers = marshalListRec(UserDto.class, selection.bits, source.getResponsibleUsers());
 
         if (selection.contains(GROUPS))
-            responsibleGroups = GroupDto.marshalList(selection.bits, source.getResponsibleGroups());
+            responsibleGroups = marshalListRec(GroupDto.class, selection.bits, source.getResponsibleGroups());
     }
 
     @Override
@@ -53,10 +53,6 @@ public class RoleDto
 
         if (selection.contains(GROUPS))
             target.setResponsibleGroups(GroupDto.unmarshalSet(responsibleGroups));
-    }
-
-    public static <D> List<D> marshalList(int selection, Iterable<?> entities) {
-        return (List<D>) marshalList(RoleDto.class, selection, entities);
     }
 
 }
