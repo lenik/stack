@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.free.NotImplementedException;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -16,7 +17,6 @@ import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
-import com.bee32.sem.process.verify.ContextClass;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.result.ErrorResult;
 import com.bee32.sem.process.verify.result.PendingResult;
@@ -24,12 +24,11 @@ import com.bee32.sem.process.verify.result.PendingResult;
 /**
  * 依序审核策略
  */
-@ContextClass(ICurrentStep.class)
 @Entity
 @DiscriminatorValue("NXT")
 @Alias("p2next")
 public class PassToNext
-        extends VerifyPolicy<ICurrentStep, PassLog> {
+        extends VerifyPolicy<IPassEvents> {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,16 +37,12 @@ public class PassToNext
     private List<PassStep> sequences;
 
     public PassToNext() {
-        super(PassLog.class);
-        this.sequences = new ArrayList<PassStep>();
+        this(new ArrayList<PassStep>());
     }
 
     public PassToNext(List<PassStep> sequence) {
-        super(PassLog.class);
-
         if (sequence == null)
             throw new NullPointerException("sequence");
-
         this.sequences = sequence;
     }
 
@@ -61,22 +56,25 @@ public class PassToNext
         this.sequences = sequences;
     }
 
+    /**
+     * TODO
+     */
     @Override
-    public Collection<? extends Principal> getDeclaredResponsibles(ICurrentStep context) {
-        int stepIndex = context.getCurrentStepIndex();
+    public Collection<? extends Principal> getDeclaredResponsibles(IPassEvents context) {
+        int position = context.getPosition();
         if (sequences == null)
             return null;
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
-    public ErrorResult checkState(ICurrentStep context, PassLog passLog) {
+    public ErrorResult check(IPassEvents passLogs) {
 
         // 分析审核数据
         int stepIndex = 0; // 审核步骤
         int personIndex = 0; // 实际审核者
-        while (personIndex < passLog.size()) {
-            AllowState stepState = passLog.get(personIndex);
+        while (personIndex < passLogs.size()) {
+            VerifyEvent event = passLogs.getEvent(personIndex);
 
             if (stepIndex == sequences.size()) {
                 // 次序中要求的步骤均已经实现审核，忽略多余的审核数据。
@@ -84,7 +82,7 @@ public class PassToNext
             }
 
             PassStep step = sequences.get(stepIndex);
-            User stepUser = stepState.getUser();
+            User stepUser = event.getUser();
 
             IPrincipal responsible = step.getResponsible();
             assert responsible != null;

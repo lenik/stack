@@ -1,40 +1,24 @@
 package com.bee32.sem.process.verify;
 
-import javax.free.DecodeException;
-import javax.free.EncodeException;
-import javax.free.XMLs;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.sem.process.verify.result.ErrorResult;
-import com.bee32.sem.process.verify.result.PendingResult;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
-public abstract class VerifyPolicy<C, S extends VerifyState>
+public abstract class VerifyPolicy<C extends IVerifyContext>
         extends EntityBean<Integer>
-        implements IVerifyPolicy<C, S> {
+        implements IVerifyPolicy<C> {
 
     private static final long serialVersionUID = 1L;
 
-    private final Class<S> verifyStateClass;
-
     private String description;
-
-    /**
-     * Initialize the policy name from the class name.
-     */
-    public VerifyPolicy(Class<S> verifyStateClass) {
-        if (verifyStateClass == null)
-            throw new NullPointerException("verifyStateClass");
-        this.verifyStateClass = verifyStateClass;
-    }
 
     @Column(length = 50)
     @Override
@@ -55,37 +39,7 @@ public abstract class VerifyPolicy<C, S extends VerifyState>
         this.description = description;
     }
 
-    /**
-     * This is a shortcut to {@link ContextClassUtil#getContextClass(Class)}.
-     *
-     * @return The required context class for this verify policy, non-<code>null</code>.
-     */
-    @Transient
-    public Class<?> getContextClass() {
-        Class<?> contextClass = ContextClassUtil.getContextClass(getClass());
-        return contextClass;
-    }
-
-    @Override
-    public String encodeState(C context, S state)
-            throws EncodeException {
-        return XMLs.encode(state);
-    }
-
-    @Override
-    public S decodeState(C context, String stateClob)
-            throws DecodeException {
-        Object object = XMLs.decode(stateClob);
-        S state = verifyStateClass.cast(object);
-        return state;
-    }
-
-    @Transient
-    protected ErrorResult getNullResult() {
-        return PendingResult.getInstance();
-    }
-
-    public ErrorResult validateState(C context, S state) {
+    public ErrorResult validate(C context) {
         return null;
     }
 
@@ -94,38 +48,33 @@ public abstract class VerifyPolicy<C, S extends VerifyState>
      *
      * @param context
      *            当前审核状态的上下文对象（通常是审核数据所属的 Entity）。
-     * @param state
-     *            审核状态，非 <code>null</code> 值。
      * @return <code>null</code> means verified, otherwise the error message.
      */
-    public abstract ErrorResult checkState(C context, S state);
+    public abstract ErrorResult check(C context);
 
-    ErrorResult _verify(C context, S state) {
-
-        if (state == null)
-            return getNullResult();
+    ErrorResult _verify(C context) {
 
         // policy-consistency validation.
-        ErrorResult errorResult = validateState(context, state);
+        ErrorResult errorResult = validate(context);
 
         // Continue to check if the state is validated.
         if (errorResult == null)
-            errorResult = checkState(context, state);
+            errorResult = check(context);
 
         return errorResult;
     }
 
-    public void verify(C context, S state)
+    public void verify(C context)
             throws VerifyException {
 
-        ErrorResult errorResult = _verify(context, state);
+        ErrorResult errorResult = _verify(context);
 
         if (errorResult != null)
             throw new VerifyException(String.valueOf(errorResult));
     }
 
-    public boolean isVerified(C context, S state) {
-        ErrorResult errorResult = _verify(context, state);
+    public boolean isVerified(C context) {
+        ErrorResult errorResult = _verify(context);
         return errorResult == null;
     }
 

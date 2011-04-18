@@ -20,6 +20,7 @@ import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
+import com.bee32.sem.process.verify.ISimpleVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.result.ErrorResult;
 import com.bee32.sem.process.verify.result.RejectedResult;
@@ -32,37 +33,36 @@ import com.bee32.sem.process.verify.result.UnauthorizedResult;
 @DiscriminatorValue("LS")
 @Alias("list")
 public class AllowList
-        extends VerifyPolicy<Object, AllowState> {
+        extends VerifyPolicy<ISimpleVerifyContext> {
 
     private static final long serialVersionUID = 1L;
 
     private Set<Principal> responsibles;
 
     public AllowList() {
-        super(AllowState.class);
     }
 
     public AllowList(Principal singleManager) {
-        super(AllowState.class);
         addResponsible(singleManager);
     }
 
     public AllowList(Principal... responsibles) {
-        super(AllowState.class);
         if (responsibles == null)
             throw new NullPointerException("responsibles");
         this.responsibles = new HashSet<Principal>(Arrays.asList(responsibles));
     }
 
     public AllowList(Collection<? extends Principal> responsibles) {
-        super(AllowState.class);
         if (responsibles == null)
             throw new NullPointerException("responsibles");
         this.responsibles = new HashSet<Principal>(responsibles);
     }
 
+    /**
+     * Allow-List 为静态责任人列别，从不考虑实体类定义的额外名单。 故 context 参数被忽略。
+     */
     @Override
-    public Collection<? extends Principal> getDeclaredResponsibles(Object context) {
+    public Collection<? extends Principal> getDeclaredResponsibles(ISimpleVerifyContext context) {
         return getResponsibles();
     }
 
@@ -94,8 +94,8 @@ public class AllowList
     }
 
     @Override
-    public ErrorResult validateState(Object context, AllowState state) {
-        User user = state.getUser();
+    public ErrorResult validate(ISimpleVerifyContext context) {
+        User user = context.getUser();
 
         if (!user.impliesOneOf(responsibles))
             return new UnauthorizedResult(user);
@@ -104,9 +104,9 @@ public class AllowList
     }
 
     @Override
-    public ErrorResult checkState(Object context, AllowState state) {
-        if (!state.isAllowed())
-            return new RejectedResult(state.getUser(), state.getMessage());
+    public ErrorResult check(ISimpleVerifyContext context) {
+        if (!context.isAllowed())
+            return new RejectedResult(context.getUser(), context.getMessage());
 
         return null;
     }

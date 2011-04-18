@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bee32.sem.process.verify.builtin.AllowList;
-import com.bee32.sem.process.verify.builtin.IContextLimit;
+import com.bee32.sem.process.verify.builtin.IValueHolder;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 import com.bee32.sem.process.verify.builtin.PassToNext;
 
@@ -15,7 +15,7 @@ public class VerifyPolicyManagerTest
 
     @Test
     public void testListAll() {
-        Collection<Class<? extends IVerifyPolicy<?, ?>>> all //
+        Collection<Class<? extends IVerifyPolicy<?>>> all //
         = VerifyPolicyManager.getAvailableVerifyPoliicyClasses();
 
         assertTrue(all.contains(AllowList.class));
@@ -25,7 +25,7 @@ public class VerifyPolicyManagerTest
 
     @Test
     public void testMatch() {
-        Collection<Class<? extends IVerifyPolicy<?, ?>>> all //
+        Collection<Class<? extends IVerifyPolicy<?>>> all //
         = VerifyPolicyManager.getAvailableVerifyPoliicyClasses(SimpleBean.class);
 
         assertTrue(all.contains(AllowList.class));
@@ -34,15 +34,15 @@ public class VerifyPolicyManagerTest
     }
 
     static class SimpleBean
-            implements IContextLimit {
+            implements IValueHolder {
 
         @Override
-        public String getLimitName() {
-            return "Money Limit";
+        public String getValueDescription() {
+            return "金额";
         }
 
         @Override
-        public long getContextLimit() {
+        public long getLongValue() {
             return 1000;
         }
 

@@ -19,7 +19,6 @@ import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.orm.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.VerifyState;
 import com.bee32.sem.process.verify.builtin.Level;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 import com.bee32.sem.process.verify.builtin.dao.LevelDao;
@@ -178,7 +177,7 @@ public class MultiLevelController
                 Level oldLevel = entity.getLevel(newLimit);
 
                 int newPolicyId = newLevel.getTargetPolicyId();
-                VerifyPolicy<?, VerifyState> newPolicy = verifyPolicyDao.load(newPolicyId);
+                VerifyPolicy<?> newPolicy = verifyPolicyDao.load(newPolicyId);
 
                 if (oldLevel != null) {
                     int oldPolicyId = oldLevel.getTargetPolicy().getId();
@@ -197,4 +196,5 @@ public class MultiLevelController
 
         return new ModelAndView(viewOf("index"));
     }
+
 }

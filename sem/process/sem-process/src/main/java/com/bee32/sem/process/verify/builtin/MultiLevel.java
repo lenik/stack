@@ -19,27 +19,21 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
-import com.bee32.sem.process.verify.ContextClass;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.result.ErrorResult;
 import com.bee32.sem.process.verify.result.RejectedResult;
 import com.bee32.sem.process.verify.result.UnauthorizedResult;
 
-@ContextClass(IContextLimit.class)
 @Entity
 @DiscriminatorValue("ML")
 @Alias("level")
 public class MultiLevel
-        extends VerifyPolicy<IContextLimit, AllowState> {
+        extends VerifyPolicy<IValueHolder> {
 
     private static final long serialVersionUID = 1L;
 
     private List<Level> levels;
     private LevelMap levelMap;
-
-    public MultiLevel() {
-        super(AllowState.class);
-    }
 
     /**
      * @return Non-null range set.
@@ -113,7 +107,7 @@ public class MultiLevel
         return levels;
     }
 
-    public void addLevel(long limit, VerifyPolicy<?, ?> verifyPolicy) {
+    public void addLevel(long limit, VerifyPolicy<?> verifyPolicy) {
         if (verifyPolicy == null)
             throw new NullPointerException("verifyPolicy for " + getName());
 
@@ -126,13 +120,13 @@ public class MultiLevel
     }
 
     @Override
-    public Collection<? extends Principal> getDeclaredResponsibles(IContextLimit context) {
-        long limit = context.getContextLimit();
+    public Collection<? extends Principal> getDeclaredResponsibles(IValueHolder valueHolder) {
+        long limit = valueHolder.getLongValue();
         return getResponsiblesWithinLimit(limit);
     }
 
     public Collection<? extends Principal> getResponsiblesWithinLimit(long limit) {
-        DummyContextLimit compatibleContext = new DummyContextLimit("dummy", limit);
+        DummyValue compatibleContext = new DummyValue("dummy", limit);
 
         Set<Principal> allDeclared = new HashSet<Principal>();
         if (levelMap == null)
@@ -145,10 +139,9 @@ public class MultiLevel
 
         while (ceil != null) {
 
-            Level range = levelMap.get(ceil);
+            Level level = levelMap.get(ceil);
 
-            @SuppressWarnings("unchecked")
-            VerifyPolicy<IContextLimit, ?> policy = (VerifyPolicy<IContextLimit, ?>) range.getTargetPolicy();
+            VerifyPolicy<IValueHolder> policy = (VerifyPolicy<IValueHolder>) level.getTargetPolicy();
 
             // Already scanned, skip to avoid cyclic ref.
             if (!markSet.add(policy))
@@ -171,19 +164,19 @@ public class MultiLevel
     }
 
     @Override
-    public ErrorResult validateState(IContextLimit context, AllowState state) {
-        User user = state.getUser();
+    public ErrorResult validate(IValueHolder context) {
+        User user = context.getUser();
 
-        if (!user.impliesOneOf(getDeclaredResponsibles(context)))
+        if (!user.impliesOneOf(getDeclaredResponsibles(valueHolder)))
             return new UnauthorizedResult(user);
 
         return null;
     }
 
     @Override
-    public ErrorResult checkState(IContextLimit context, AllowState state) {
-        if (!state.isAllowed())
-            return new RejectedResult(state.getUser(), state.getMessage());
+    public ErrorResult check(IValueHolder context) {
+        if (!context.isAllowed())
+            return new RejectedResult(context.getUser(), context.getMessage());
 
         return null;
     }

@@ -8,10 +8,9 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.VerifyState;
 
 public class VerifyPolicyDto
-        extends EntityDto<VerifyPolicy<?, VerifyState>, Integer> {
+        extends EntityDto<VerifyPolicy<?>, Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,13 +34,13 @@ public class VerifyPolicyDto
     }
 
     @Override
-    protected void _marshal(VerifyPolicy<?, VerifyState> source) {
+    protected void _marshal(VerifyPolicy<?> source) {
         name = source.getName();
         description = source.getDescription();
     }
 
     @Override
-    protected void _unmarshalTo(VerifyPolicy<?, VerifyState> target) {
+    protected void _unmarshalTo(VerifyPolicy<?> target) {
         target.setName(name);
         target.setDescription(description);
     }
@@ -54,7 +53,7 @@ public class VerifyPolicyDto
         description = map.getString("description");
     }
 
-    public static List<VerifyPolicyDto> marshalList(Iterable<? extends VerifyPolicy<?, ?>> entities) {
+    public static List<VerifyPolicyDto> marshalList(Iterable<? extends VerifyPolicy<?>> entities) {
         return marshalList(VerifyPolicyDto.class, entities);
     }
 
