@@ -18,6 +18,6 @@ public @interface ContextClass {
      *
      * @return 需要支持的上下文类。如果不需要支持应该返回 <code>{@link Object}.class</code>.
      */
-    Class<?> value();
+    Class<? extends IVerifyContext> value();
 
 }

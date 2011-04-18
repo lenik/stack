@@ -39,11 +39,12 @@ public class VerifyPolicyManager {
         return verifyPoliicyClasses;
     }
 
-    public static Collection<Class<? extends IVerifyPolicy<?>>> getAvailableVerifyPoliicyClasses(Class<?> instanceClass) {
-        List<Class<? extends IVerifyPolicy<?>>> matchedPolicyClasses = new ArrayList<Class<? extends IVerifyPolicy<?>>>();
+    public static Collection<Class<IVerifyPolicy<?>>> getAvailableVerifyPoliicyClasses(
+            Class<? extends IVerifiable<IVerifyContext>> instanceClass) {
+        List<Class<IVerifyPolicy<?>>> matchedPolicyClasses = new ArrayList<Class<IVerifyPolicy<?>>>();
 
         for (Class<? extends IVerifyPolicy<?>> policyClass : verifyPoliicyClasses) {
-            Class<?> contextClass = ContextClassUtil.getContextClass(policyClass);
+            Class<? extends IVerifyContext> contextClass = ContextClassUtil.getContextClass(policyClass);
             if (contextClass.isAssignableFrom(instanceClass))
                 matchedPolicyClasses.add(policyClass);
         }

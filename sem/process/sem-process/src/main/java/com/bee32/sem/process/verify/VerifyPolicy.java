@@ -39,8 +39,30 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
         this.description = description;
     }
 
-    public ErrorResult validate(C context) {
-        return null;
+    @Override
+    public final void verify(C context)
+            throws VerifyException {
+        ErrorResult errorResult = validateAndEvaluate(context);
+        if (errorResult != null)
+            throw new VerifyException(String.valueOf(errorResult));
+    }
+
+    @Override
+    public final boolean isVerified(C context) {
+        ErrorResult errorResult = validateAndEvaluate(context);
+        return errorResult == null;
+    }
+
+    ErrorResult validateAndEvaluate(C context) {
+
+        // policy-consistency validation.
+        ErrorResult errorResult = validate(context);
+
+        // Continue to check if the state is validated.
+        if (errorResult == null)
+            errorResult = evaluate(context);
+
+        return errorResult;
     }
 
     /**
@@ -50,32 +72,17 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
      *            当前审核状态的上下文对象（通常是审核数据所属的 Entity）。
      * @return <code>null</code> means verified, otherwise the error message.
      */
-    public abstract ErrorResult check(C context);
-
-    ErrorResult _verify(C context) {
-
-        // policy-consistency validation.
-        ErrorResult errorResult = validate(context);
-
-        // Continue to check if the state is validated.
-        if (errorResult == null)
-            errorResult = check(context);
-
-        return errorResult;
+    public ErrorResult validate(C context) {
+        return null;
     }
 
-    public void verify(C context)
-            throws VerifyException {
-
-        ErrorResult errorResult = _verify(context);
-
-        if (errorResult != null)
-            throw new VerifyException(String.valueOf(errorResult));
-    }
-
-    public boolean isVerified(C context) {
-        ErrorResult errorResult = _verify(context);
-        return errorResult == null;
-    }
+    /**
+     * 计算审核状态，如果未审核给出审核失败的消息。
+     *
+     * @param context
+     *            当前审核状态的上下文对象（通常是审核数据所属的 Entity）。
+     * @return <code>null</code> means verified, otherwise the error message.
+     */
+    public abstract ErrorResult evaluate(C context);
 
 }

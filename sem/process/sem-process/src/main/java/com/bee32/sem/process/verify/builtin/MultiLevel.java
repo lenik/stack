@@ -19,6 +19,7 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
+import com.bee32.sem.process.verify.AllowedByContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.result.ErrorResult;
 import com.bee32.sem.process.verify.result.RejectedResult;
@@ -28,7 +29,7 @@ import com.bee32.sem.process.verify.result.UnauthorizedResult;
 @DiscriminatorValue("ML")
 @Alias("level")
 public class MultiLevel
-        extends VerifyPolicy<IValueHolder> {
+        extends VerifyPolicy<IMultiLevelContext> {
 
     private static final long serialVersionUID = 1L;
 
@@ -120,8 +121,8 @@ public class MultiLevel
     }
 
     @Override
-    public Collection<? extends Principal> getDeclaredResponsibles(IValueHolder valueHolder) {
-        long limit = valueHolder.getLongValue();
+    public Collection<? extends Principal> getDeclaredResponsibles(IMultiLevelContext context) {
+        long limit = context.getLongValue();
         return getResponsiblesWithinLimit(limit);
     }
 
@@ -141,7 +142,8 @@ public class MultiLevel
 
             Level level = levelMap.get(ceil);
 
-            VerifyPolicy<IValueHolder> policy = (VerifyPolicy<IValueHolder>) level.getTargetPolicy();
+            VerifyPolicy<? extends AllowedByContext> policy = (VerifyPolicy<? extends AllowedByContext>) level
+                    .getTargetPolicy();
 
             // Already scanned, skip to avoid cyclic ref.
             if (!markSet.add(policy))
@@ -164,17 +166,17 @@ public class MultiLevel
     }
 
     @Override
-    public ErrorResult validate(IValueHolder context) {
+    public ErrorResult validate(IMultiLevelContext context) {
         User user = context.getUser();
 
-        if (!user.impliesOneOf(getDeclaredResponsibles(valueHolder)))
+        if (!user.impliesOneOf(getDeclaredResponsibles(context)))
             return new UnauthorizedResult(user);
 
         return null;
     }
 
     @Override
-    public ErrorResult check(IValueHolder context) {
+    public ErrorResult evaluate(IMultiLevelContext context) {
         if (!context.isAllowed())
             return new RejectedResult(context.getUser(), context.getMessage());
 

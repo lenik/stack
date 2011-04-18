@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bee32.icsf.principal.User;
+import com.bee32.sem.process.verify.VerifyContext;
 
 public class PassEvents
+        extends VerifyContext
         implements IPassEvents {
 
     private static final long serialVersionUID = 1L;

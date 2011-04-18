@@ -5,7 +5,7 @@ import com.bee32.icsf.principal.User;
 /**
  * Used by single man verify policies.
  */
-public interface ISimpleVerifyContext
+public interface IAllowedByContext
         extends IVerifyContext {
 
     boolean isAllowed();

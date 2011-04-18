@@ -6,8 +6,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bee32.sem.process.verify.builtin.AllowList;
-import com.bee32.sem.process.verify.builtin.IValueHolder;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
+import com.bee32.sem.process.verify.builtin.MultiLevelContext;
 import com.bee32.sem.process.verify.builtin.PassToNext;
 
 public class VerifyPolicyManagerTest
@@ -34,16 +34,23 @@ public class VerifyPolicyManagerTest
     }
 
     static class SimpleBean
-            implements IValueHolder {
+            implements IVerifiable<MultiLevelContext> {
 
-        @Override
-        public String getValueDescription() {
-            return "金额";
+        MultiLevelContext context = new MultiLevelContext();
+
+        public SimpleBean() {
+            context.setValueDescription("金额");
+            context.setLongValue(1000);
         }
 
         @Override
-        public long getLongValue() {
-            return 1000;
+        public IVerifyPolicy<MultiLevelContext> getVerifyPolicy() {
+            return null;
+        }
+
+        @Override
+        public MultiLevelContext getVerifyContext() {
+            return context;
         }
 
     }

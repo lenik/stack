@@ -68,7 +68,7 @@ public class PassToNext
     }
 
     @Override
-    public ErrorResult check(IPassEvents passLogs) {
+    public ErrorResult evaluate(IPassEvents passLogs) {
 
         // 分析审核数据
         int stepIndex = 0; // 审核步骤

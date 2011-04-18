@@ -20,7 +20,7 @@ import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
-import com.bee32.sem.process.verify.ISimpleVerifyContext;
+import com.bee32.sem.process.verify.IAllowedByContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.result.ErrorResult;
 import com.bee32.sem.process.verify.result.RejectedResult;
@@ -33,7 +33,7 @@ import com.bee32.sem.process.verify.result.UnauthorizedResult;
 @DiscriminatorValue("LS")
 @Alias("list")
 public class AllowList
-        extends VerifyPolicy<ISimpleVerifyContext> {
+        extends VerifyPolicy<IAllowedByContext> {
 
     private static final long serialVersionUID = 1L;
 
@@ -62,7 +62,7 @@ public class AllowList
      * Allow-List 为静态责任人列别，从不考虑实体类定义的额外名单。 故 context 参数被忽略。
      */
     @Override
-    public Collection<? extends Principal> getDeclaredResponsibles(ISimpleVerifyContext context) {
+    public Collection<? extends Principal> getDeclaredResponsibles(IAllowedByContext context) {
         return getResponsibles();
     }
 
@@ -94,7 +94,7 @@ public class AllowList
     }
 
     @Override
-    public ErrorResult validate(ISimpleVerifyContext context) {
+    public ErrorResult validate(IAllowedByContext context) {
         User user = context.getUser();
 
         if (!user.impliesOneOf(responsibles))
@@ -104,7 +104,7 @@ public class AllowList
     }
 
     @Override
-    public ErrorResult check(ISimpleVerifyContext context) {
+    public ErrorResult evaluate(IAllowedByContext context) {
         if (!context.isAllowed())
             return new RejectedResult(context.getUser(), context.getMessage());
 
