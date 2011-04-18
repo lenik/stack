@@ -173,6 +173,11 @@ public class ClassUtil {
         return bounds;
     }
 
+    public static <T> Class<T> infer1(Class<?> clazz, Class<?> interesting, int index) {
+        Type[] typeArgs = getTypeArgs(clazz, interesting);
+        return bound1(typeArgs[index]);
+    }
+
     /**
      * This is the same as {@link #mapTypeArgsRec(Class, Class, Type[])} with <code>argv</code> set
      * to <code>clazz.getTypeParameters()</code>.

@@ -3,7 +3,6 @@ package com.bee32.plover.orm.util;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,8 +39,7 @@ public abstract class EntityController<E extends EntityBean<?>>
 
     protected final Class<E> entityType;
     {
-        Type[] controllerArgs = ClassUtil.getTypeArgs(getClass(), EntityController.class);
-        entityType = ClassUtil.bound1(controllerArgs[0]);
+        entityType = ClassUtil.infer1(getClass(), EntityController.class, 0);
     }
 
     public EntityController() {
