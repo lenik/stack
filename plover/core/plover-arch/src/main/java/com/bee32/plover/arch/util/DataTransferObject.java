@@ -66,10 +66,7 @@ public abstract class DataTransferObject<T>
     }
 
     @Override
-    public final <D extends DataTransferObject<T>> D marshal(T source, boolean checkCyclicReferences) {
-        if (!checkCyclicReferences)
-            return marshal(source);
-
+    public final <D extends DataTransferObject<T>> D marshalRec(T source) {
         if (source == null)
             return null;
 
@@ -222,10 +219,21 @@ public abstract class DataTransferObject<T>
     public static <D extends DataTransferObject<T>, T> D marshal(Class<D> dtoClass, T source) {
         if (source == null)
             return null;
-
         try {
             D dto = dtoClass.newInstance();
             dto.marshal(source);
+            return dto;
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException("Failed to instantiate DTO " + dtoClass.getName(), e);
+        }
+    }
+
+    public static <D extends DataTransferObject<T>, T> D marshalRec(Class<D> dtoClass, T source) {
+        if (source == null)
+            return null;
+        try {
+            D dto = dtoClass.newInstance();
+            dto.marshalRec(source);
             return dto;
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Failed to instantiate DTO " + dtoClass.getName(), e);
@@ -251,6 +259,20 @@ public abstract class DataTransferObject<T>
      *
      * @param dtoClass
      *            The DTO type to be marshalled to.
+     * @param values
+     *            Entity array to be marshalled.
+     * @return <code>null</code>.
+     */
+    public static <D extends DataTransferObject<T>, T> List<D> marshalListRec(Class<D> dtoClass, T... values) {
+        List<T> sourceList = Arrays.asList(values);
+        return marshalListRec(dtoClass, null, sourceList);
+    }
+
+    /**
+     * Marshal each source to a DTO object.
+     *
+     * @param dtoClass
+     *            The DTO type to be marshalled to.
      * @param selection
      *            Selection for each source.
      * @param values
@@ -268,12 +290,33 @@ public abstract class DataTransferObject<T>
      *
      * @param dtoClass
      *            The DTO type to be marshalled to.
+     * @param selection
+     *            Selection for each source.
+     * @param values
+     *            Entity array to be marshalled.
+     * @return <code>null</code>.
+     */
+    public static <D extends DataTransferObject<T>, T> List<D> marshalListRec(Class<D> dtoClass, int selection,
+            T... values) {
+        List<T> sourceList = Arrays.asList(values);
+        return marshalListRec(dtoClass, selection, sourceList);
+    }
+
+    /**
+     * Marshal each source to a DTO object.
+     *
+     * @param dtoClass
+     *            The DTO type to be marshalled to.
      * @param values
      *            Entities to be marshalled.
      * @return <code>null</code>.
      */
     public static <D extends DataTransferObject<T>, T> List<D> marshalList(Class<D> dtoClass, Iterable<?> values) {
-        return marshalList(dtoClass, null, values);
+        return _marshalList(false, dtoClass, null, values);
+    }
+
+    public static <D extends DataTransferObject<T>, T> List<D> marshalListRec(Class<D> dtoClass, Iterable<?> values) {
+        return _marshalList(true, dtoClass, null, values);
     }
 
     /**
@@ -288,6 +331,16 @@ public abstract class DataTransferObject<T>
      * @return <code>null</code> if <code>values</code> is <code>null</code>.
      */
     public static <D extends DataTransferObject<T>, T> List<D> marshalList(Class<D> dtoClass, Integer selection,
+            Iterable<?> values) {
+        return _marshalList(false, dtoClass, selection, values);
+    }
+
+    public static <D extends DataTransferObject<T>, T> List<D> marshalListRec(Class<D> dtoClass, Integer selection,
+            Iterable<?> values) {
+        return _marshalList(true, dtoClass, selection, values);
+    }
+
+    static <D extends DataTransferObject<T>, T> List<D> _marshalList(boolean rec, Class<D> dtoClass, Integer selection,
             Iterable<?> values) {
 
         if (values == null)
@@ -320,7 +373,7 @@ public abstract class DataTransferObject<T>
     }
 
     public static <C extends Collection<T>, D extends DataTransferObject<T>, T> //
-    C unmarshal(C collection, Iterable<? extends DataTransferObject<T>> dtoList) {
+    /*    */C unmarshal(C collection, Iterable<? extends DataTransferObject<T>> dtoList) {
 
         if (dtoList == null)
             return null;
