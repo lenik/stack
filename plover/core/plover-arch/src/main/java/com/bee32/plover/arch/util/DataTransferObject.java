@@ -2,6 +2,7 @@ package com.bee32.plover.arch.util;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,17 +30,8 @@ public abstract class DataTransferObject<T>
 
     protected final Class<T> dataType;
     {
-        Class<?>[] pv = ClassUtil.getOriginPVClass(getClass());
-        if (pv == null) {
-            Class<?> superclass = getClass().getSuperclass();
-            // DTO class foo.Bar must be declared with type parameter.
-            throw new IllegalUsageException("DTO " + superclass + " must be declared with type parameter");
-        }
-
-        @SuppressWarnings("unchecked")
-        Class<T> dataType = (Class<T>) pv[0];
-
-        this.dataType = dataType;
+        Type[] dtoArgs = ClassUtil.getTypeArgs(getClass(), DataTransferObject.class);
+        dataType = ClassUtil.bound1(dtoArgs[0]);
     }
 
     protected final Flags32 selection;

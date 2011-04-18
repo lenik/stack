@@ -2,6 +2,7 @@ package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.BuildException;
+import com.bee32.plover.arch.Repository;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.IStruct;
 
@@ -33,16 +35,9 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
 
     @Override
     protected void introspect() {
-        Class<?>[] pv = ClassUtil.getOriginPVClass(getClass());
-
-        @SuppressWarnings("unchecked")
-        Class<K> keyClass = (Class<K>) pv[1];
-
-        @SuppressWarnings("unchecked")
-        Class<E> valueClass = (Class<E>) pv[0];
-
-        keyType = keyClass;
-        valueType = valueClass;
+        Type[] repositoryArgs = ClassUtil.getTypeArgs(getClass(), Repository.class);
+        keyType = ClassUtil.bound1(repositoryArgs[0]);
+        valueType = ClassUtil.bound1(repositoryArgs[1]);
 
         Class<?> deferredEntityType;
         try {

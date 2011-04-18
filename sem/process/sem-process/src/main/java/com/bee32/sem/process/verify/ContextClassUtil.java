@@ -1,6 +1,6 @@
 package com.bee32.sem.process.verify;
 
-import javax.free.IllegalUsageException;
+import java.lang.reflect.Type;
 
 import com.bee32.plover.arch.util.ClassUtil;
 
@@ -12,13 +12,9 @@ public class ContextClassUtil {
         if (contextClassAnn != null)
             return contextClassAnn.value();
 
-        Class<?>[] pv = ClassUtil.getOriginPVClass(verifyPolicyClass);
-        Class<?> tv = pv[0];
+        Type[] verifyPolicyArgs = ClassUtil.getTypeArgs(verifyPolicyClass, VerifyPolicy.class);
 
-        if (IVerifyContext.class.isAssignableFrom(tv))
-            return (Class<? extends IVerifyContext>) IVerifyContext.class.asSubclass(tv);
-
-        throw new IllegalUsageException("Context class is unknown for " + verifyPolicyClass);
+        return ClassUtil.bound1(verifyPolicyArgs[0]);
     }
 
 }
