@@ -1,30 +1,38 @@
 package com.bee32.sem.process.verify.builtin;
 
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
+import java.io.Serializable;
+import java.util.Date;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.arch.Component;
-import com.bee32.sem.process.verify.VerifyState;
 
-public class AllowState
-        extends VerifyState {
+public class VerifyEvent
+        implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private Date timestamp;
     private boolean isAllowed;
     private User user;
     private String message;
 
-    public AllowState() {
+    public VerifyEvent() {
     }
 
-    public AllowState(boolean isAllowed, User user) {
+    public VerifyEvent(boolean isAllowed, User user) {
         if (user == null)
             throw new NullPointerException("user");
 
+        this.timestamp = new Date();
         this.isAllowed = isAllowed;
         this.user = user;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
     public boolean isAllowed() {
@@ -35,7 +43,6 @@ public class AllowState
         this.isAllowed = isAllowed;
     }
 
-    @ManyToOne(optional = false)
     public User getUser() {
         return user;
     }
@@ -44,7 +51,6 @@ public class AllowState
         this.user = user;
     }
 
-    @Column(length = 200)
     public String getMessage() {
         return message;
     }
@@ -54,26 +60,7 @@ public class AllowState
     }
 
     @Override
-    protected int hashCodeSpecific() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((user == null) ? 0 : user.hashCode());
-        return result;
-    }
-
-    @Override
-    protected boolean equalsSpecific(Component obj) {
-        AllowState other = (AllowState) obj;
-        if (user == null) {
-            if (other.user != null)
-                return false;
-        } else if (!user.equals(other.user))
-            return false;
-        return true;
-    }
-
-    @Override
-    public String getStateMessage() {
+    public String toString() {
         String verb = isAllowed ? "[允许]" : "[拒绝]";
         return verb + " 由： " + user;
     }
