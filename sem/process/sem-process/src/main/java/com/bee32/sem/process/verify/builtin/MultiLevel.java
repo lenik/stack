@@ -127,7 +127,9 @@ public class MultiLevel
     }
 
     public Collection<? extends Principal> getResponsiblesWithinLimit(long limit) {
-        DummyValue compatibleContext = new DummyValue("dummy", limit);
+        MultiLevelContext hintContext = new MultiLevelContext();
+        hintContext.setValueDescription("hint");
+        hintContext.setLongValue(limit);
 
         Set<Principal> allDeclared = new HashSet<Principal>();
         if (levelMap == null)
@@ -142,21 +144,21 @@ public class MultiLevel
 
             Level level = levelMap.get(ceil);
 
-            VerifyPolicy<? extends AllowedByContext> policy = (VerifyPolicy<? extends AllowedByContext>) level
-                    .getTargetPolicy();
+            VerifyPolicy<?> subPolicy = (VerifyPolicy<?>) level.getTargetPolicy();
 
             // Already scanned, skip to avoid cyclic ref.
-            if (!markSet.add(policy))
+            if (!markSet.add(subPolicy))
                 continue;
 
-            if (policy instanceof MultiLevel) {
-                MultiLevel mlist = (MultiLevel) policy;
-                Collection<? extends Principal> subset = mlist.getResponsiblesWithinLimit(limit);
+            if (subPolicy instanceof MultiLevel) {
+                MultiLevel subML = (MultiLevel) subPolicy;
+                Collection<? extends Principal> subset = subML.getResponsiblesWithinLimit(limit);
                 allDeclared.addAll(subset);
 
-            } else if (compatibleContext.isCompatibleWith(policy)) {
-                Collection<? extends Principal> subset = compatibleContext.getDeclaredResponsibles(policy);
-                allDeclared.addAll(subset);
+            } else if (subPolicy.isUsefulFor(AllowedByContext.class)) {
+                @SuppressWarnings("unchecked")
+                VerifyPolicy<AllowedByContext> abcPolicy = (VerifyPolicy<AllowedByContext>) subPolicy;
+                allDeclared.addAll(abcPolicy.getDeclaredResponsibles(hintContext));
             }
 
             ceil = levelMap.higherKey(ceil);

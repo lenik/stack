@@ -5,7 +5,9 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Transient;
 
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.sem.process.verify.result.ErrorResult;
 
@@ -19,6 +21,12 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
     private static final long serialVersionUID = 1L;
 
     private String description;
+
+    private final Class<C> contextClass;
+
+    public VerifyPolicy() {
+        contextClass = ClassUtil.infer1(getClass(), VerifyPolicy.class, 0);
+    }
 
     @Column(length = 50)
     @Override
@@ -37,6 +45,18 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Transient
+    @Override
+    public Class<C> getRequiredContext() {
+        return contextClass;
+    }
+
+    public boolean isUsefulFor(Class<? extends IVerifyContext> providedContext) {
+        if (providedContext == null)
+            throw new NullPointerException("providedContext");
+        return contextClass.isAssignableFrom(providedContext);
     }
 
     @Override
