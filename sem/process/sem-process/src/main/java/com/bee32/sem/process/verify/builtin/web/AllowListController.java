@@ -22,6 +22,7 @@ import com.bee32.icsf.principal.dao.PrincipalDao;
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.ajax.JsonUtil;
+import com.bee32.plover.arch.util.DTOs;
 import com.bee32.plover.orm.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.AllowList;
@@ -134,7 +135,7 @@ public class AllowListController
         }
         map.put("it", dto);
 
-        List<Object> users = UserDto.marshalList(0, userDao.list());
+        List<UserDto> users = DTOs.marshalList(UserDto.class, 0, userDao.list());
         map.put("users", users);
 
         return map;

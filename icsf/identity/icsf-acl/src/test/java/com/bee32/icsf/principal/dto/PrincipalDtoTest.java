@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.arch.util.DTOUtil;
+import com.bee32.plover.arch.util.DTOs;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public class PrincipalDtoTest
@@ -17,14 +17,14 @@ public class PrincipalDtoTest
     @Test
     public void testNew() {
         PrincipalDto<Principal> principalDto = new PrincipalDto<Principal>();
-        Class<?> dataType = DTOUtil.getDataType(principalDto);
+        Class<?> dataType = DTOs.getDataType(principalDto);
         assertEquals(Principal.class, dataType);
     }
 
     @Test
     public void testChild() {
         UserDto userDto = new UserDto();
-        Class<?> dataType = DTOUtil.getDataType(userDto);
+        Class<?> dataType = DTOs.getDataType(userDto);
         assertEquals(User.class, dataType);
     }
 
