@@ -35,6 +35,14 @@ public abstract class TreeRepository<E extends IEntity<K>, K extends Serializabl
         super(name);
     }
 
+    public TreeRepository(Class<K> keyType, Class<E> valueType) {
+        super(keyType, valueType);
+    }
+
+    public TreeRepository(String name, Class<K> keyType, Class<E> valueType) {
+        super(name, keyType, valueType);
+    }
+
     // --o INamedNode
 
     protected K parseKey(String keyString)

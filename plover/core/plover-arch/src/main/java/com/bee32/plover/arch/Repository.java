@@ -30,17 +30,34 @@ public abstract class Repository<K extends Serializable, V>
         introspect();
     }
 
+    public Repository(Class<K> keyType, Class<V> valueType) {
+        super();
+
+        if (keyType == null)
+            throw new NullPointerException("keyType");
+        if (valueType == null)
+            throw new NullPointerException("valueType");
+
+        this.keyType = keyType;
+        this.valueType = valueType;
+    }
+
+    public Repository(String name, Class<K> keyType, Class<V> valueType) {
+        super(name);
+
+        if (keyType == null)
+            throw new NullPointerException("keyType");
+        if (valueType == null)
+            throw new NullPointerException("valueType");
+
+        this.keyType = keyType;
+        this.valueType = valueType;
+    }
+
     protected void introspect() {
-        Type[] pv = ClassUtil.getOriginPV(getClass());
-
-        @SuppressWarnings("unchecked")
-        Class<K> keyClass = (Class<K>) pv[0];
-
-        @SuppressWarnings("unchecked")
-        Class<V> valueClass = (Class<V>) pv[1];
-
-        keyType = keyClass;
-        valueType = valueClass;
+        Type[] repositoryArgs = ClassUtil.getTypeArgs(getClass(), Repository.class);
+        keyType = ClassUtil.bound1(repositoryArgs[0]);
+        valueType = ClassUtil.bound1(repositoryArgs[1]);
     }
 
     @Override

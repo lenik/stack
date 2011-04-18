@@ -32,6 +32,14 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
         super(name);
     }
 
+    public HibernateEntityRepository(Class<E> entityType, Class<K> keyType) {
+        super(entityType, keyType);
+    }
+
+    public HibernateEntityRepository(String name, Class<E> entityType, Class<K> keyType) {
+        super(name, entityType, keyType);
+    }
+
     @Inject
     public final void setSessionFactory(SessionFactory sessionFactory) {
         support.setSessionFactory(sessionFactory);
