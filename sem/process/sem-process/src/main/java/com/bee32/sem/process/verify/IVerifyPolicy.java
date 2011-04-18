@@ -7,10 +7,17 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.model.IModel;
 
 /**
- * 审核策略用于检验业务实体是否被审核，但不对业务的具体审核行为作出规定。即策略用于“只读”、“判断”的目的；而不是对业务执行”审核“动作、并形成审核结果的”写入“目的。
+ * 审核策略用于检验业务实体是否被审核，但不对业务的具体审核行为作出规定。
+ *
+ * 即策略用于“只读”、 “判断”的目的；而不是对业务执行”审核“动作、并形成审核结果的”写入“目的。
  */
 public interface IVerifyPolicy<C extends IVerifyContext>
         extends IModel, Serializable {
+
+    /**
+     * 获取必要的上下文类型。
+     */
+    Class<C> getRequiredContext();
 
     /**
      * 检验业务实体是否已被审核。 如果未审核或审核失败，抛出 {@link VerifyException} 异常。
