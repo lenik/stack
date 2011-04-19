@@ -9,7 +9,7 @@ public class UsingUtil {
      *
      * @return <code>null</code> If no {@link Using} is declared on the class.
      */
-    public static PersistenceUnit getUsedUnit(Class<?> clazz) {
+    public static PersistenceUnit getUsingUnit(Class<?> clazz) {
 
         Using useUnit = clazz.getAnnotation(Using.class);
         if (useUnit == null)

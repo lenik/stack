@@ -24,7 +24,7 @@ public abstract class WiredDaoTestCase
 
     @Override
     protected void prewire() {
-        PersistenceUnit unit = UsingUtil.getUsedUnit(getClass());
+        PersistenceUnit unit = UsingUtil.getUsingUnit(getClass());
         DefaultTestSessionFactoryBean.setForceUnit(unit);
     }
 

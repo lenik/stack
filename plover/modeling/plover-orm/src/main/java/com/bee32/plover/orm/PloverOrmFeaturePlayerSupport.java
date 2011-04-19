@@ -10,7 +10,7 @@ public class PloverOrmFeaturePlayerSupport
 
     @Override
     public void setup(Class<?> playerClass) {
-        PersistenceUnit usedUnit = UsingUtil.getUsedUnit(playerClass);
+        PersistenceUnit usedUnit = UsingUtil.getUsingUnit(playerClass);
 
         logger.debug("Plover-ORM FPS: Force unit to " + usedUnit);
 

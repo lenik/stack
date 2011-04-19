@@ -29,7 +29,7 @@ public abstract class RESTfulTestCase
     public String PREFIX = RESTfulConfig.preferredPrefix;
 
     protected RESTfulTestCase() {
-        PersistenceUnit unit = UsingUtil.getUsedUnit(getClass());
+        PersistenceUnit unit = UsingUtil.getUsingUnit(getClass());
         DefaultTestSessionFactoryBean.setForceUnit(unit);
     }
 
