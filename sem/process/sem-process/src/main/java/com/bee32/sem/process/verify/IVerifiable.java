@@ -38,4 +38,21 @@ public interface IVerifiable<C extends IVerifyContext> {
      */
     C getVerifyContext();
 
+    /**
+     * The same as
+     *
+     * <pre>
+     * getVerifyPolicy().verify(getVerifyContext());
+     * </pre>
+     */
+    void verify()
+            throws VerifyException;
+
+    /**
+     * <pre>
+     * getVerifyPolicy().isVerified(getVerifyContext());
+     * </pre>
+     */
+    boolean isVerified();
+
 }
