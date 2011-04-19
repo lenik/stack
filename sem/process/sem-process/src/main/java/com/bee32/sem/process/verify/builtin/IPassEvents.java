@@ -2,6 +2,7 @@ package com.bee32.sem.process.verify.builtin;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.sem.process.verify.IVerifyContext;
+import com.bee32.sem.process.verify.VerifyEvent;
 
 interface IPassEvents
         extends IVerifyContext {

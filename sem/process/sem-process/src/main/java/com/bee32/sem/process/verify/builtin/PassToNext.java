@@ -17,6 +17,7 @@ import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
+import com.bee32.sem.process.verify.VerifyEvent;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.result.ErrorResult;
 import com.bee32.sem.process.verify.result.PendingResult;

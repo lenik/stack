@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.builtin;
+package com.bee32.sem.process.verify;
 
 import java.io.Serializable;
 import java.util.Date;
