@@ -1,8 +1,12 @@
 package com.bee32.plover.orm.unit;
 
+import java.util.ServiceLoader;
 import java.util.Set;
 
 import javax.free.IllegalUsageException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.util.ClassCatalog;
 
@@ -12,12 +16,42 @@ import com.bee32.plover.arch.util.ClassCatalog;
 public abstract class PersistenceUnit
         extends ClassCatalog {
 
+    static Logger logger = LoggerFactory.getLogger(PersistenceUnit.class);
+
+    private boolean postProcessed;
+
     public PersistenceUnit(ClassCatalog... imports) {
         super(imports);
     }
 
     public PersistenceUnit(String name, ClassCatalog... imports) {
         super(name, imports);
+    }
+
+    @Override
+    public Set<Class<?>> getClasses() {
+        Set<Class<?>> classes = super.getClasses();
+
+        if (!postProcessed) {
+            synchronized (this) {
+                if (!postProcessed) {
+                    postProcessed = true;
+
+                    logger.info("Post process persistence unit " + getName());
+
+                    postProcess();
+                }
+            }
+        }
+        return classes;
+    }
+
+    void postProcess() {
+        for (IPersistenceUnitPostProcessor postProcessor : ServiceLoader.load(IPersistenceUnitPostProcessor.class)) {
+            logger.debug("    Post process by " + postProcessor);
+
+            postProcessor.process(this);
+        }
     }
 
     @Override
