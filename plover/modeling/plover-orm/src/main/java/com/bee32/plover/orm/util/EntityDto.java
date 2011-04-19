@@ -9,6 +9,7 @@ import javax.free.TypeConvertException;
 import com.bee32.plover.arch.util.DataTransferObject;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.IEntity;
 
 public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
         extends DataTransferObject<E> {
@@ -24,12 +25,12 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
         super();
     }
 
-    public EntityDto(int selection) {
-        super(selection);
-    }
-
     public EntityDto(E source) {
         super(source);
+    }
+
+    public EntityDto(int selection) {
+        super(selection);
     }
 
     public EntityDto(E source, int selection) {
@@ -59,29 +60,19 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
     }
 
     @Override
-    protected final void __marshal(E source) {
+    protected void __marshal(E source) {
         id = source.getId();
         version = source.getVersion();
-
-        _marshal(source);
     }
 
     @Override
-    public void unmarshalTo(E target) {
+    protected void __unmarshalTo(E target) {
         if (id != null)
             EntityAccessor.setId(target, id);
 
         if (version != null)
             EntityAccessor.setVersion(target, version);
-
-        _unmarshalTo(target);
     }
-
-    @Override
-    protected abstract void _marshal(E source);
-
-    @Override
-    protected abstract void _unmarshalTo(E target);
 
     @Override
     public void parse(IVariantLookupMap<String> map)
@@ -113,6 +104,13 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
      */
     protected K parseId(String s) {
         return null;
+    }
+
+    protected static <E extends IEntity<K>, K extends Serializable> K id(E entity) {
+        if (entity == null)
+            return null;
+        else
+            return entity.getId();
     }
 
 }

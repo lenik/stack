@@ -99,6 +99,7 @@ public abstract class DataTransferObject<T>
         // logger.debug("marshal begin");
 
         __marshal(source);
+        _marshal(source);
 
         // logger.debug("marshal end");
 
@@ -108,12 +109,17 @@ public abstract class DataTransferObject<T>
         return self;
     }
 
+    /**
+     * Read some internal properties from the specified source bean into this object.
+     *
+     * @param source
+     *            Non-null source source whose properties are read into this object.
+     */
     protected void __marshal(T source) {
-        _marshal(source);
     }
 
     /**
-     * Read some properties from the specified source bean into this object.
+     * Read some user properties from the specified source bean into this object.
      *
      * @param source
      *            Non-null source source whose properties are read into this object.
@@ -140,12 +146,24 @@ public abstract class DataTransferObject<T>
     }
 
     @Override
-    public void unmarshalTo(T target) {
+    public final void unmarshalTo(T target) {
+        __unmarshalTo(target);
         _unmarshalTo(target);
     }
 
     /**
-     * Write some properties from this object into the specified source bean.
+     * Write some internal properties from this object into the specified source bean.
+     *
+     * @param target
+     *            Non-<code>null</code> target source bean.
+     * @throws NotImplementedException
+     *             If unmarshal isn't supported for this DTO.
+     */
+    protected void __unmarshalTo(T target) {
+    }
+
+    /**
+     * Write some user properties from this object into the specified source bean.
      *
      * @param target
      *            Non-<code>null</code> target source bean.
