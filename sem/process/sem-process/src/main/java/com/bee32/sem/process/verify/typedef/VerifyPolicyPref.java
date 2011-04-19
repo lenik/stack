@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify;
+package com.bee32.sem.process.verify.typedef;
 
 import javax.free.IllegalUsageException;
 import javax.persistence.Column;
@@ -7,15 +7,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.sem.process.verify.IAllowedByContext;
+import com.bee32.sem.process.verify.VerifyPolicy;
+import com.bee32.sem.process.verify.util.AllowedBySupport;
 
 @Entity
 public class VerifyPolicyPref
-        extends EntityBean<String> {
+        extends AllowedBySupport<String, IAllowedByContext> {
 
     private static final long serialVersionUID = 1L;
 
     private String entityType;
-    private VerifyPolicy<?> policy;
+    private String displayName;
+    private String description;
+    private VerifyPolicy<?> preferredPolicy;
 
     @Column(length = 80, nullable = false)
     public String getEntityType() {
@@ -51,13 +56,31 @@ public class VerifyPolicyPref
             entityType = entityClass.getName();
     }
 
-    @ManyToOne
-    public VerifyPolicy<?> getPolicy() {
-        return policy;
+    @Transient
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setPolicy(VerifyPolicy<?> policy) {
-        this.policy = policy;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    @Transient
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @ManyToOne
+    public VerifyPolicy<?> getPreferredPolicy() {
+        return preferredPolicy;
+    }
+
+    public void setPreferredPolicy(VerifyPolicy<?> preferredPolicy) {
+        this.preferredPolicy = preferredPolicy;
     }
 
 }

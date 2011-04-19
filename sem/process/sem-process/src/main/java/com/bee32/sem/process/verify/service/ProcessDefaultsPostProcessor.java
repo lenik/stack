@@ -11,7 +11,7 @@ import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicyManager;
-import com.bee32.sem.process.verify.VerifyPolicyPref;
+import com.bee32.sem.process.verify.typedef.VerifyPolicyPref;
 
 public class ProcessDefaultsPostProcessor
         implements IPersistenceUnitPostProcessor {

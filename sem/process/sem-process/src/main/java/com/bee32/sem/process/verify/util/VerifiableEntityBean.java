@@ -10,7 +10,7 @@ import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.IVerifyPolicy;
 import com.bee32.sem.process.verify.VerifyException;
-import com.bee32.sem.process.verify.VerifyPolicyManager;
+import com.bee32.sem.process.verify.typedef.VerifyPolicyPrefs;
 
 @MappedSuperclass
 public abstract class VerifiableEntityBean<K extends Serializable, C extends IVerifyContext>
@@ -31,7 +31,7 @@ public abstract class VerifiableEntityBean<K extends Serializable, C extends IVe
     @Override
     public IVerifyPolicy<C> getVerifyPolicy() {
         Class<? extends IVerifiable<C>> cast = (Class<? extends IVerifiable<C>>) getClass();
-        return VerifyPolicyManager.forEntityType(cast);
+        return VerifyPolicyPrefs.forEntityType(cast);
     }
 
     @Transient
