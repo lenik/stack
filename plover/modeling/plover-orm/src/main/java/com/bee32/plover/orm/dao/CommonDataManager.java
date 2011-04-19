@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.dao;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
@@ -56,7 +57,22 @@ public class CommonDataManager
             else
                 template.save(entityName, entity);
 
-        template.flush();
+        try {
+            template.flush();
+        } catch (DataAccessException e) {
+            Throwable spec = e.getMostSpecificCause();
+            if (spec instanceof SQLException) {
+                SQLException sqle = (SQLException) spec;
+                SQLException next;
+                while ((next = sqle.getNextException()) != null) {
+                    System.err.println("The next exception in " + sqle);
+                    sqle.printStackTrace();
+                    sqle = next;
+                }
+            }
+            Throwable root = e.getRootCause();
+            root.printStackTrace();
+        }
 
         if (evictImmediately) {
             for (Object entity : entities)
