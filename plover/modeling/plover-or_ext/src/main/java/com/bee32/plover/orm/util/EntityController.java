@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.util;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 import javax.free.ClassLocal;
 import javax.free.IVariantLookupMap;
 import javax.free.Map2VariantLookupMap;
+import javax.free.NotImplementedException;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,10 +28,11 @@ import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.EntityUtil;
 
 @ComponentTemplate
 @Lazy
-public abstract class EntityController<E extends EntityBean<?>>
+public abstract class EntityController<E extends EntityBean<K>, K extends Serializable>
         extends MultiActionController {
 
     private final String _prefix;
@@ -125,6 +128,19 @@ public abstract class EntityController<E extends EntityBean<?>>
         return mm;
     }
 
+    public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Should construct a JSON response.
+     */
+    public void data(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        throw new NotImplementedException();
+    }
+
     @RequestMapping("createForm.htm")
     public ModelAndView createForm(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
@@ -170,6 +186,9 @@ public abstract class EntityController<E extends EntityBean<?>>
         return createOrUpdate(req, resp);
     }
 
+    /**
+     * Use <code>req.getAttribute("create"): Boolean</code> to distinguish create and update.
+     */
     protected abstract ModelAndView createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException;
 
@@ -177,7 +196,8 @@ public abstract class EntityController<E extends EntityBean<?>>
     public String delete(HttpServletRequest req, HttpServletResponse resp)
             throws Exception {
 
-        int id = Integer.parseInt(req.getParameter("id"));
+        String idString = req.getParameter("id");
+        K id = EntityUtil.parseId(entityType, idString);
 
         E entity = dataManager.load(entityType, id);
         if (entity != null)

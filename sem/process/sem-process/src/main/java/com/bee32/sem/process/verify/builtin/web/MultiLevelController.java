@@ -28,7 +28,7 @@ import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 
 @RequestMapping(MultiLevelController.PREFIX + "*")
 public class MultiLevelController
-        extends EntityController<MultiLevel> {
+        extends EntityController<MultiLevel, Integer> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "/level/";
 

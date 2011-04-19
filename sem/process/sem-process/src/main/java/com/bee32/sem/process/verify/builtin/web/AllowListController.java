@@ -30,7 +30,7 @@ import com.bee32.sem.process.verify.builtin.dao.AllowListDao;
 
 @RequestMapping(AllowListController.PREFIX + "*")
 public class AllowListController
-        extends EntityController<AllowList> {
+        extends EntityController<AllowList, Integer> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "/list/";
 
@@ -49,7 +49,9 @@ public class AllowListController
     }
 
     @RequestMapping("content.htm")
-    public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp) {
+    @Override
+    public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
 
         AllowList entity = allowListDao.load(id);
@@ -62,6 +64,7 @@ public class AllowListController
     }
 
     @RequestMapping("data.htm")
+    @Override
     public void data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
