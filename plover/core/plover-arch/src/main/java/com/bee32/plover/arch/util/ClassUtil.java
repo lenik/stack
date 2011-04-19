@@ -195,6 +195,8 @@ public class ClassUtil {
         return mapTypeArgsRec(clazz, interesting, argv);
     }
 
+    static Type[] EMPTY = {};
+
     /**
      * Traverse and search interested base class (<code>interesting</code>) with-in the start class
      * (<code>clazz</code>), and map the type parameters (<code>argv</code>) to be the parameters
@@ -223,7 +225,7 @@ public class ClassUtil {
             return argv;
 
         if (interesting.getTypeParameters().length == 0)
-            return new Type[0];
+            return EMPTY;
 
         TypeVariable<?>[] declVars = clazz.getTypeParameters();
 
@@ -243,7 +245,9 @@ public class ClassUtil {
                 if (!interesting.isAssignableFrom(ifaceRaw))
                     continue;
 
-                Type[] actualv = iface__.getActualTypeArguments();
+                Type[] actualv = EMPTY;
+                if (iface__ != null)
+                    actualv = iface__.getActualTypeArguments();
 
                 Type[] mapped = mapTypeArgs(declVars, actualv, argv);
 
@@ -263,7 +267,7 @@ public class ClassUtil {
 
             superArgs = mapTypeArgs(declVars, actualv, argv);
         } else {
-            superArgs = new Type[0];
+            superArgs = EMPTY;
         }
 
         return mapTypeArgsRec(clazz.getSuperclass(), interesting, superArgs);
