@@ -15,28 +15,25 @@ public class AllowedByContext
         return allowed;
     }
 
-    @Override
     public void setAllowed(boolean allowed) {
         this.allowed = allowed;
     }
 
     @Override
-    public User getUser() {
+    public User getVerifier() {
         return user;
     }
 
-    @Override
-    public void setUser(User user) {
+    public void setVerifier(User user) {
         this.user = user;
     }
 
     @Override
-    public String getMessage() {
+    public String getRejectReason() {
         return message;
     }
 
-    @Override
-    public void setMessage(String message) {
+    public void setRejectReason(String message) {
         this.message = message;
     }
 

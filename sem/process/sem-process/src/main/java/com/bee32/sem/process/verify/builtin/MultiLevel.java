@@ -19,7 +19,7 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
-import com.bee32.sem.process.verify.AllowedByContext;
+import com.bee32.sem.process.verify.IAllowedByContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.result.ErrorResult;
 import com.bee32.sem.process.verify.result.RejectedResult;
@@ -155,9 +155,9 @@ public class MultiLevel
                 Collection<? extends Principal> subset = subML.getResponsiblesWithinLimit(limit);
                 allDeclared.addAll(subset);
 
-            } else if (subPolicy.isUsefulFor(AllowedByContext.class)) {
+            } else if (subPolicy.isUsefulFor(IAllowedByContext.class)) {
                 @SuppressWarnings("unchecked")
-                VerifyPolicy<AllowedByContext> abcPolicy = (VerifyPolicy<AllowedByContext>) subPolicy;
+                VerifyPolicy<IAllowedByContext> abcPolicy = (VerifyPolicy<IAllowedByContext>) subPolicy;
                 allDeclared.addAll(abcPolicy.getDeclaredResponsibles(hintContext));
             }
 
@@ -169,7 +169,7 @@ public class MultiLevel
 
     @Override
     public ErrorResult validate(IMultiLevelContext context) {
-        User user = context.getUser();
+        User user = context.getVerifier();
 
         if (!user.impliesOneOf(getDeclaredResponsibles(context)))
             return new UnauthorizedResult(user);
@@ -179,8 +179,11 @@ public class MultiLevel
 
     @Override
     public ErrorResult evaluate(IMultiLevelContext context) {
+        if (context.getVerifier() == null)
+            return PENDING;
+
         if (!context.isAllowed())
-            return new RejectedResult(context.getUser(), context.getMessage());
+            return new RejectedResult(context.getVerifier(), context.getRejectReason());
 
         return null;
     }

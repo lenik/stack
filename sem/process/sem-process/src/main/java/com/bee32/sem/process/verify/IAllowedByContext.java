@@ -8,16 +8,23 @@ import com.bee32.icsf.principal.User;
 public interface IAllowedByContext
         extends IVerifyContext {
 
+    /**
+     * 审核用户。
+     *
+     * @return 返回 <code>null</code> 表示尚未审核。
+     */
+    User getVerifier();
+
+    /**
+     * 返回 <code>true</code> 表示允许，<code>false</code> 表示被拒绝。
+     */
     boolean isAllowed();
 
-    void setAllowed(boolean isAllowed);
-
-    User getUser();
-
-    void setUser(User user);
-
-    String getMessage();
-
-    void setMessage(String message);
+    /**
+     * 获取被拒绝的原因。
+     *
+     * @return 被拒绝的原因，如果没有原因或审核被允许则返回 <code>null</code>。
+     */
+    String getRejectReason();
 
 }

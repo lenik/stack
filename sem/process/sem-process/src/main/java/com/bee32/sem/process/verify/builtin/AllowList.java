@@ -95,7 +95,7 @@ public class AllowList
 
     @Override
     public ErrorResult validate(IAllowedByContext context) {
-        User user = context.getUser();
+        User user = context.getVerifier();
 
         if (!user.impliesOneOf(responsibles))
             return new UnauthorizedResult(user);
@@ -105,8 +105,11 @@ public class AllowList
 
     @Override
     public ErrorResult evaluate(IAllowedByContext context) {
+        if (context.getVerifier() == null)
+            return PENDING;
+
         if (!context.isAllowed())
-            return new RejectedResult(context.getUser(), context.getMessage());
+            return new RejectedResult(context.getVerifier(), context.getRejectReason());
 
         return null;
     }
