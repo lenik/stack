@@ -10,6 +10,7 @@ import javax.persistence.Transient;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.sem.process.verify.result.ErrorResult;
+import com.bee32.sem.process.verify.result.PendingResult;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -19,6 +20,8 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
         implements IVerifyPolicy<C> {
 
     private static final long serialVersionUID = 1L;
+
+    protected static final PendingResult PENDING = PendingResult.getInstance();
 
     private String description;
 
