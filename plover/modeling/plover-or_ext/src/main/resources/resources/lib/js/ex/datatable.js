@@ -36,6 +36,9 @@ var SEM = {};
                 }
 
                 for ( var toolname in tools) {
+                    if (toolname.substr(0, 1) == '_')
+                        continue;
+
                     var tool = tools[toolname];
 
                     var a = $('<a />');
@@ -83,26 +86,26 @@ var SEM = {};
         entityTools : {
             view : {
                 name : "查看",
-                href : "content.htm?id=$id",
-                icon : "etool16/insp_sbook.gif"
+                icon : "etool16/insp_sbook.gif",
+                href : "content.htm?id=$id"
             },
 
             edit : {
                 name : "编辑",
-                href : "editForm.htm?id=$id",
-                icon : "etool16/editor_area.gif"
+                icon : "etool16/editor_area.gif",
+                href : "editForm.htm?id=$id"
             },
 
             del : {
                 name : "删除",
+                icon : "etool16/delete_edit.gif",
                 callback : function(node, aData) {
                     var id = aData[0];
                     var info = $(node).parents("table").attr('title');
                     if (!window.confirm("您确定要删除该 " + info + " 记录吗？"))
                         return;
                     window.location = "delete.htm?id=" + id;
-                },
-                icon : "etool16/delete_edit.gif"
+                }
             }
         }, // entityTools
         _dummy : null
