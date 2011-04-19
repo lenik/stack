@@ -57,4 +57,9 @@ public class VerifyPolicyManager {
         return forContext(contextClass);
     }
 
+    public static <P extends IVerifyPolicy<C>, C extends IVerifyContext> P forEntityType(
+            Class<? extends IVerifiable<C>> entityType) {
+        return null;
+    }
+
 }
