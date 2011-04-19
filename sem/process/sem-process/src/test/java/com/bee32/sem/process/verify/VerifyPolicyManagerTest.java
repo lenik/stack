@@ -6,9 +6,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bee32.sem.process.verify.builtin.AllowList;
+import com.bee32.sem.process.verify.builtin.IMultiLevelContext;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
-import com.bee32.sem.process.verify.builtin.MultiLevelContext;
 import com.bee32.sem.process.verify.builtin.PassToNext;
+import com.bee32.sem.process.verify.util.AllowedBySupport;
 
 public class VerifyPolicyManagerTest
         extends Assert {
@@ -34,23 +35,25 @@ public class VerifyPolicyManagerTest
     }
 
     static class SimpleBean
-            implements IVerifiable<MultiLevelContext> {
+            extends AllowedBySupport<Long, IMultiLevelContext>
+            implements IMultiLevelContext {
 
-        MultiLevelContext context = new MultiLevelContext();
+        private static final long serialVersionUID = 1L;
+
+        long longValue;
 
         public SimpleBean() {
-            context.setValueDescription("金额");
-            context.setLongValue(1000);
+            longValue = 1000;
         }
 
         @Override
-        public IVerifyPolicy<MultiLevelContext> getVerifyPolicy() {
-            return null;
+        public String getValueDescription() {
+            return "金额";
         }
 
         @Override
-        public MultiLevelContext getVerifyContext() {
-            return context;
+        public long getLongValue() {
+            return longValue;
         }
 
     }

@@ -44,7 +44,7 @@ public class VerifyPolicyPref
         return entityClass;
     }
 
-    public void setEntityClass(Class<? extends EntityBean<?>> entityClass) {
+    public void setEntityClass(Class<?> entityClass) {
         if (entityClass == null)
             entityType = null;
         else
