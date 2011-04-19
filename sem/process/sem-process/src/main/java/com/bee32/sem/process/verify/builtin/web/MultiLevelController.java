@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.ajax.JsonUtil;
+import com.bee32.plover.arch.util.DTOs;
 import com.bee32.plover.orm.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -65,7 +66,7 @@ public class MultiLevelController
         DataTableDxo opts = new DataTableDxo();
         opts.parse(req);
 
-        List<MultiLevelDto> all = MultiLevelDto.marshalList(//
+        List<MultiLevelDto> all = DTOs.marshalList(MultiLevelDto.class, //
                 MultiLevelDto.LEVELS, multiLevelDao.list());
 
         opts.totalRecords = all.size();
@@ -132,7 +133,7 @@ public class MultiLevelController
         }
         map.put("it", dto);
 
-        List<VerifyPolicyDto> allVerifyPolicies = VerifyPolicyDto.marshalList(verifyPolicyDao.list());
+        List<VerifyPolicyDto> allVerifyPolicies = DTOs.marshalList(VerifyPolicyDto.class, verifyPolicyDao.list());
         map.put("policies", allVerifyPolicies);
 
         return map;

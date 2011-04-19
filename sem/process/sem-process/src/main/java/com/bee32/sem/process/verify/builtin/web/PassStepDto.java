@@ -1,7 +1,5 @@
 package com.bee32.sem.process.verify.builtin.web;
 
-import java.util.List;
-
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.orm.util.EntityDto;
@@ -61,10 +59,6 @@ public class PassStepDto
         target.setOptional(optional);
         if (responsible != null)
             target.setResponsible(responsible.unmarshal());
-    }
-
-    public static List<PassStepDto> marshalList(Iterable<? extends PassStep> entities) {
-        return marshalList(PassStepDto.class, entities);
     }
 
 }

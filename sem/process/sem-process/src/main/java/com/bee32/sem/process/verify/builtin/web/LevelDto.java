@@ -1,7 +1,5 @@
 package com.bee32.sem.process.verify.builtin.web;
 
-import java.util.List;
-
 import javax.free.NotImplementedException;
 
 import com.bee32.plover.orm.util.EntityDto;
@@ -60,10 +58,6 @@ public class LevelDto
         target.setLimit(limit);
         // target.setTargetPolicy(verifyPolicy)
         throw new NotImplementedException();
-    }
-
-    public static List<LevelDto> marshalList(Iterable<? extends Level> entities) {
-        return marshalList(LevelDto.class, entities);
     }
 
 }

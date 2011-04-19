@@ -84,7 +84,7 @@ public class MultiLevelDto
         description = source.getDescription();
 
         if (selection.contains(LEVELS))
-            setLevels(LevelDto.marshalList(source.getLevels()));
+            setLevels(marshalListRec(LevelDto.class, source.getLevels()));
     }
 
     @Override
@@ -125,10 +125,6 @@ public class MultiLevelDto
                     levels.add(level);
                 }
         }
-    }
-
-    public static List<MultiLevelDto> marshalList(int selection, Iterable<? extends MultiLevel> entities) {
-        return marshalList(MultiLevelDto.class, selection, entities);
     }
 
 }

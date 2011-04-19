@@ -68,7 +68,7 @@ public class AllowListController
         DataTableDxo opts = new DataTableDxo();
         opts.parse(req);
 
-        List<AllowListDto> all = AllowListDto.marshalList(//
+        List<AllowListDto> all = DTOs.marshalList(AllowListDto.class, //
                 AllowListDto.RESPONSIBLES, allowListDao.list());
 
         opts.totalRecords = all.size();

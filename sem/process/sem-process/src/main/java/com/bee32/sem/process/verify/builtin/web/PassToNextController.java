@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dao.PrincipalDao;
 import com.bee32.plover.ajax.JsonUtil;
+import com.bee32.plover.arch.util.DTOs;
 import com.bee32.plover.orm.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.PassStep;
@@ -65,7 +66,7 @@ public class PassToNextController
         DataTableDxo opts = new DataTableDxo();
         opts.parse(req);
 
-        List<PassToNextDto> all = PassToNextDto.marshalList(//
+        List<PassToNextDto> all = DTOs.marshalList(PassToNextDto.class, //
                 PassToNextDto.SEQUENCES, PassToNextDao.list());
 
         opts.totalRecords = all.size();

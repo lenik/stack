@@ -68,7 +68,7 @@ public class PassToNextDto
         description = source.getDescription();
 
         if (selection.contains(SEQUENCES))
-            sequences = PassStepDto.marshalList(source.getSequences());
+            sequences = marshalList(PassStepDto.class, source.getSequences());
     }
 
     @Override
@@ -77,7 +77,7 @@ public class PassToNextDto
         target.setDescription(description);
 
         if (selection.contains(SEQUENCES))
-            target.setSequences(PassStepDto.unmarshalList(sequences));
+            target.setSequences(unmarshalList(sequences));
     }
 
     @Override
@@ -96,10 +96,6 @@ public class PassToNextDto
                     sequences.add(range);
                 }
         }
-    }
-
-    public static List<PassToNextDto> marshalList(int selection, Iterable<? extends PassToNext> entities) {
-        return marshalList(PassToNextDto.class, selection, entities);
     }
 
 }

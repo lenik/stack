@@ -1,7 +1,5 @@
 package com.bee32.sem.process.verify.builtin.web;
 
-import java.util.List;
-
 import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
@@ -51,10 +49,6 @@ public class VerifyPolicyDto
         super.parse(map);
         name = map.getString("name");
         description = map.getString("description");
-    }
-
-    public static List<VerifyPolicyDto> marshalList(Iterable<? extends VerifyPolicy<?>> entities) {
-        return marshalList(VerifyPolicyDto.class, entities);
     }
 
 }

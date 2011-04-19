@@ -120,8 +120,4 @@ public class AllowListDto
         }
     }
 
-    public static List<AllowListDto> marshalList(int selection, Iterable<? extends AllowList> entities) {
-        return marshalList(AllowListDto.class, selection, entities);
-    }
-
 }
