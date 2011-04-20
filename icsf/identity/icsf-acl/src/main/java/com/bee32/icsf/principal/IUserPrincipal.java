@@ -12,16 +12,12 @@ public interface IUserPrincipal
      */
     IRolePrincipal getPrimaryRole();
 
-    void setPrimaryRole(IRolePrincipal role);
-
     /**
      * The primary group which this user stands for.
      *
      * @return The primary group assigned. <code>null</code> if none.
      */
     IGroupPrincipal getPrimaryGroup();
-
-    void setPrimaryGroup(IGroupPrincipal group);
 
     /**
      * 授予该用户的角色集。
