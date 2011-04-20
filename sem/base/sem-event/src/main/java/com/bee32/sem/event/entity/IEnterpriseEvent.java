@@ -10,13 +10,27 @@ import com.bee32.icsf.principal.IPrincipal;
 public interface IEnterpriseEvent {
 
     /**
-     * The source class which initiated the event.
+     * The source category name.
      *
-     * @return The source class, <code>null</code> if not applicable.
+     * Usually it's a class name.
+     *
+     * @return The category name, should not be <code>null</code>.
      */
-    Class<?> getCategory();
+    String getCategory();
 
     /**
+     * The category class.
+     */
+    Class<?> getCategoryClass();
+
+    /**
+     * Source id if fittable in a long integer.
+     */
+    long getSource();
+
+    /**
+     * Alternative source key. (REDUNDENT)
+     *
      * Get the unique of the source object which is intance of the category class.
      *
      * <strike>For combined keys, the serialization form may be used.</strike>
@@ -24,7 +38,7 @@ public interface IEnterpriseEvent {
      * @return Key of the source object, <code>null</code> if not applicable. (Thus, null-key is not
      *         supported)
      */
-    String getSource();
+    String getSourceAlt();
 
     /**
      * The start time of the event.

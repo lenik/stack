@@ -17,6 +17,9 @@ public class TaskPriority
     private String displayName;
     private int priority;
 
+    public TaskPriority() {
+    }
+
     public TaskPriority(String name, int priority) {
         if (name == null)
             throw new NullPointerException("name");
@@ -50,9 +53,5 @@ public class TaskPriority
     public void setPriority(int priority) {
         this.priority = priority;
     }
-
-    public static final TaskPriority HIGH = new TaskPriority("high", -100);
-    public static final TaskPriority NORMAL = new TaskPriority("normal", 0);
-    public static final TaskPriority LOW = new TaskPriority("low", 100);
 
 }

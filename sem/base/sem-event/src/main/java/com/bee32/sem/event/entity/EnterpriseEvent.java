@@ -4,12 +4,17 @@ import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.util.AliasUtil;
 
 @Entity
 @Inheritance(strategy = SINGLE_TABLE)
@@ -20,8 +25,11 @@ public class EnterpriseEvent
 
     private static final long serialVersionUID = 1L;
 
-    private Class<?> sourceClass;
-    private String sourceKey;
+    private String category;
+    private Class<?> categoryClass;
+
+    private long source;
+    private String sourceAlt;
 
     private Date beginTime;
     private Date endTime;
@@ -39,24 +47,61 @@ public class EnterpriseEvent
         super(name);
     }
 
+    @Column(length = 20)
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+        this.categoryClass = null;
+    }
+
+    @Transient
     @Override
-    public Class<?> getCategory() {
-        return sourceClass;
+    public Class<?> getCategoryClass() {
+        if (categoryClass == null) {
+            if (category == null)
+                return null;
+            else {
+                categoryClass = AliasUtil.getAliasedType(category);
+                if (categoryClass == null)
+                    try {
+                        // Entity-Alias? ...
+                        categoryClass = Class.forName(category);
+                    } catch (ClassNotFoundException e) {
+                        categoryClass = null;
+                    }
+            }
+        }
+        return categoryClass;
     }
 
-    public void setSourceClass(Class<?> sourceClass) {
-        this.sourceClass = sourceClass;
+    public void setCategoryClass(Class<?> categoryClass) {
+        this.categoryClass = categoryClass;
+        this.category = categoryClass == null ? null : categoryClass.getName();
     }
 
     @Override
-    public String getSource() {
-        return sourceKey;
+    public long getSource() {
+        return source;
     }
 
-    public void setSourceKey(String sourceKey) {
-        this.sourceKey = sourceKey;
+    public void setSource(long source) {
+        this.source = source;
     }
 
+    @Column(length = 50)
+    @Override
+    public String getSourceAlt() {
+        return sourceAlt;
+    }
+
+    public void setSourceAlt(String source) {
+        this.sourceAlt = source;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getBeginTime() {
         return beginTime;
     }
@@ -65,6 +110,7 @@ public class EnterpriseEvent
         this.beginTime = beginTime;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Override
     public Date getEndTime() {
         return endTime;
