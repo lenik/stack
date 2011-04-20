@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>com.bee32.sem</groupId>
-            <artifactId>sem-user</artifactId>
+            <artifactId>sem-event</artifactId>
             <version>0.2.1-SNAPSHOT</version>
         </dependency>
         <dependency>
