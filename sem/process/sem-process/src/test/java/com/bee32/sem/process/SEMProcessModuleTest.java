@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.sem.process.verify.builtin.web.MultiLevelController;
-import com.bee32.sems.test.SEMTestCase;
+import com.bee32.sem.test.SEMTestCase;
 
 @Using(SEMProcessUnit.class)
 public class SEMProcessModuleTest
