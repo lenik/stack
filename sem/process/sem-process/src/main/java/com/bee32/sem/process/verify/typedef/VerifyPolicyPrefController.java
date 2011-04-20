@@ -13,9 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.orm.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
-import com.bee32.sem.process.verify.builtin.web.AllowListController;
 
-@RequestMapping(AllowListController.PREFIX + "*")
+@RequestMapping(VerifyPolicyPrefController.PREFIX + "*")
 public class VerifyPolicyPrefController
         extends EntityController<VerifyPolicyPref, String> {
 
