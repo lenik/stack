@@ -45,6 +45,12 @@ public class IcsfPrincipalSamples
         alice.addAssignedGroup(sunCorp);
         alice.addAssignedGroup(solaGroup);
         alice.addAssignedRole(registeredRole);
+
+        eva.setEmail("eva@bee32.com");
+        wallE.setEmail("wall-e@bee32.com");
+        tom.setEmail("tom@bee32.com");
+        kate.setEmail("kate@bee32.com");
+        alice.setEmail("alice@bee32.com");
     }
 
     @Override
