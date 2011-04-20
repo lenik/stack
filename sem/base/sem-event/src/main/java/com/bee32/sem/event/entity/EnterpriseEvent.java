@@ -13,7 +13,7 @@ import com.bee32.plover.orm.entity.EntityBean;
 
 @Entity
 @Inheritance(strategy = SINGLE_TABLE)
-@DiscriminatorColumn()
+@DiscriminatorColumn(name = "stereo", length = 4)
 public class EnterpriseEvent
         extends EntityBean<Long>
         implements IEnterpriseEvent {

@@ -1,8 +1,20 @@
 package com.bee32.sem.event.entity;
 
-public class TaskPriority {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+import org.hibernate.annotations.NaturalId;
+
+import com.bee32.plover.orm.entity.EntityBean;
+
+@Entity
+public class TaskPriority
+        extends EntityBean<Integer> {
+
+    private static final long serialVersionUID = 1L;
 
     private String name;
+    private String displayName;
     private int priority;
 
     public TaskPriority(String name, int priority) {
@@ -12,6 +24,8 @@ public class TaskPriority {
         this.priority = priority;
     }
 
+    @NaturalId
+    @Column(length = 10)
     public String getName() {
         return name;
     }
@@ -20,8 +34,13 @@ public class TaskPriority {
         this.name = name;
     }
 
+    @Column(length = 20)
     public String getDisplayName() {
-        return name;
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public int getPriority() {
