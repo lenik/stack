@@ -26,7 +26,7 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>1.4</version>
+            <version>1.7.1</version>
         </dependency>
     </dependencies>
     <name>Plover :: Library :: Ajax</name>
