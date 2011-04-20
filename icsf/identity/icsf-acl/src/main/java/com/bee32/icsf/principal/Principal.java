@@ -68,6 +68,14 @@ public class Principal
         this.displayName = displayName;
     }
 
+    @Transient
+    public String getDisplayName2() {
+        if (displayName != null)
+            return displayName;
+        else
+            return name;
+    }
+
     @Column(length = 200)
     @Override
     public String getDescription() {
