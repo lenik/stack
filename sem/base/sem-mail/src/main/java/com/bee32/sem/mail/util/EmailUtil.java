@@ -7,14 +7,14 @@ public class EmailUtil {
     public static String getFriendlyEmail(User user) {
         if (user == null)
             return null;
-        return getFriendlyEmail(user.getDisplayName(), user.getEmail());
+        return getFriendlyEmail(user.getDisplayName2(), user.getEmail());
     }
 
     public static String getFriendlyEmail(String name, String mailbox) {
-        if (mailbox == null)
-            return name;
         if (name == null)
             return mailbox;
+        if (mailbox == null)
+            return name;
 
         return name + " <" + mailbox + ">";
     }

@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
+    xmlns:sem="http://bee32.com/sem/functions">
+
+<ui:composition template="/template.xhtml">
+
+    <ui:define name="title">Mail Box Index</ui:define>
+
+    <ui:define name="head">
+        <script type="text/javascript" src="${location.LIB_3RDPARTY}/jsTree.v.1.0rc2/jquery.jstree.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="${location.LIB_3RDPARTY}/dataTables-1.7/media/css/demo_page.css" />
+        <link rel="stylesheet" type="text/css" href="${location.LIB_3RDPARTY}/dataTables-1.7/media/css/demo_table.css" />
+        <script type="text/javascript" src="${location.LIB_3RDPARTY}/dataTables-1.7/media/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="${location.LIB_JS}/ex/datatable.js"></script>
+    </ui:define>
+
+    <ui:define name="body">
+        <h2>邮箱管理</h2>
+
+        <div>
+            <a href="createForm.htm">建立新的邮箱</a>
+        </div>
+
+        <table id="table1" cellpadding="0" cellspacing="0" border="0" class="display">
+            <thead>
+                <tr>
+                    <th class="id">id</th>
+                    <th class="version">version</th>
+                    <th>名称</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>id</th>
+                    <th>version</th>
+                    <th>名称</th>
+                    <th>操作</th>
+                </tr>
+            </tfoot>
+            <tbody>
+            </tbody>
+        </table>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var oTable = $("#table1").dataTable_SEM({
+                    "bServerSide" : true,
+                    "sAjaxSource" : "data.htm"
+                });
+            });
+        </script>
+
+    </ui:define>
+</ui:composition>
+</html>
