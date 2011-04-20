@@ -16,12 +16,31 @@ public class Flags32
         this.bits = flags;
     }
 
-    public final void set(Flags32 flags32) {
+    public final void init(Flags32 flags32) {
         this.bits = flags32.bits;
     }
 
-    public final void set(int flags) {
-        this.bits = flags;
+    public final void init(int bits) {
+        this.bits = bits;
+    }
+
+    public final void set(int mask, boolean on) {
+        if (on)
+            this.bits |= mask;
+        else
+            this.bits &= ~mask;
+    }
+
+    public final void set(int mask) {
+        this.bits |= mask;
+    }
+
+    public final void clear(int mask) {
+        this.bits &= ~mask;
+    }
+
+    public final void toggle(int mask) {
+        this.bits ^= mask;
     }
 
     /**
@@ -44,7 +63,7 @@ public class Flags32
     }
 
     public final boolean checkAndUnload(int mask) {
-        return checkAndClean(mask);
+        return checkAndClear(mask);
     }
 
     public final boolean checkAndSet(int mask) {
@@ -54,7 +73,7 @@ public class Flags32
         return true;
     }
 
-    public final boolean checkAndClean(int mask) {
+    public final boolean checkAndClear(int mask) {
         if ((bits & mask) == 0)
             return false;
         bits &= ~mask;

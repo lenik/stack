@@ -377,7 +377,7 @@ public abstract class DataTransferObject<T>
 
                     dto = dtoClass.newInstance();
                     if (selection != null)
-                        dto.selection.set(selection);
+                        dto.selection.init(selection);
 
                     dto.marshal(source);
                 }

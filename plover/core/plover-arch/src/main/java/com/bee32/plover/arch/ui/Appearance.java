@@ -39,7 +39,7 @@ public abstract class Appearance
      * Force to reload all fields.
      */
     protected void invalidate() {
-        flags.checkAndClean(-1);
+        flags.checkAndClear(-1);
     }
 
     /**
