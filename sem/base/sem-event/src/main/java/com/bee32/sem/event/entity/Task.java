@@ -1,4 +1,4 @@
-package com.bee32.sem.event;
+package com.bee32.sem.event.entity;
 
 import javax.persistence.Entity;
 

@@ -1,10 +1,19 @@
-package com.bee32.sem.event;
+package com.bee32.sem.event.entity;
+
+import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
 import java.util.Date;
 
-import com.bee32.icsf.principal.IPrincipal;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+
+import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.entity.EntityBean;
 
+@Entity
+@Inheritance(strategy = SINGLE_TABLE)
+@DiscriminatorColumn()
 public class EnterpriseEvent
         extends EntityBean<Long>
         implements IEnterpriseEvent {
@@ -12,12 +21,12 @@ public class EnterpriseEvent
     private static final long serialVersionUID = 1L;
 
     private Class<?> sourceClass;
-    private Object sourceKey;
+    private String sourceKey;
 
-    private Date time;
+    private Date beginTime;
     private Date endTime;
 
-    private IPrincipal actor;
+    private Principal actor;
 
     private String subject;
     private String message;
@@ -31,7 +40,7 @@ public class EnterpriseEvent
     }
 
     @Override
-    public Class<?> getSourceClass() {
+    public Class<?> getCategory() {
         return sourceClass;
     }
 
@@ -40,21 +49,20 @@ public class EnterpriseEvent
     }
 
     @Override
-    public Object getSourceKey() {
+    public String getSource() {
         return sourceKey;
     }
 
-    public void setSourceKey(Object sourceKey) {
+    public void setSourceKey(String sourceKey) {
         this.sourceKey = sourceKey;
     }
 
-    @Override
-    public Date getTime() {
-        return time;
+    public Date getBeginTime() {
+        return beginTime;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
     }
 
     @Override
@@ -67,11 +75,11 @@ public class EnterpriseEvent
     }
 
     @Override
-    public IPrincipal getActor() {
+    public Principal getActor() {
         return actor;
     }
 
-    public void setActor(IPrincipal actor) {
+    public void setActor(Principal actor) {
         this.actor = actor;
     }
 

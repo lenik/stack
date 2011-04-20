@@ -1,4 +1,4 @@
-package com.bee32.sem.event;
+package com.bee32.sem.event.entity;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ public interface ITask
      * @return Non-<code>null</code> scheduled start time.
      */
     @Override
-    public Date getTime();
+    public Date getBeginTime();
 
     /**
      * Get the scheduled end time.
