@@ -12,6 +12,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBean;
 
@@ -26,6 +27,13 @@ public class Principal
 
     private String displayName;
     private String description;
+
+    public static final char EMAIL_INIT = '?';
+    public static final char EMAIL_VERIFYING = '1';
+    public static final char EMAIL_VERIFIED = 'V';
+
+    protected String email;
+    protected char emailStatus = EMAIL_INIT;
 
     private Collection<Principal> impliedPrincipals;
 
@@ -68,6 +76,30 @@ public class Principal
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Column(length = 40)
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Basic(optional = false)
+    @Column(nullable = false)
+    public char getEmailStatus() {
+        return emailStatus;
+    }
+
+    public void setEmailStatus(char emailStatus) {
+        this.emailStatus = emailStatus;
+    }
+
+    @Transient
+    public boolean isEmailVerified() {
+        return emailStatus == EMAIL_VERIFIED;
     }
 
     @ManyToMany(targetEntity = Principal.class)

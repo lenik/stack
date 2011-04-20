@@ -4,14 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.free.Nullables;
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
@@ -29,13 +27,6 @@ public class User
 
     protected Set<Group> assignedGroups;
     protected Set<Role> assignedRoles;
-
-    public static final char EMAIL_INIT = '?';
-    public static final char EMAIL_VERIFYING = '1';
-    public static final char EMAIL_VERIFIED = 'V';
-
-    protected String email;
-    protected char emailStatus = EMAIL_INIT;
 
     public User() {
     }
@@ -109,29 +100,6 @@ public class User
 
     public void setAssignedRoles(Set<Role> assignedRoles) {
         this.assignedRoles = (Set<Role>) assignedRoles;
-    }
-
-    @Column(length = 40)
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Column(nullable = false)
-    public char getEmailStatus() {
-        return emailStatus;
-    }
-
-    public void setEmailStatus(char emailStatus) {
-        this.emailStatus = emailStatus;
-    }
-
-    @Transient
-    public boolean isEmailVerified() {
-        return emailStatus == EMAIL_VERIFIED;
     }
 
     @Override
