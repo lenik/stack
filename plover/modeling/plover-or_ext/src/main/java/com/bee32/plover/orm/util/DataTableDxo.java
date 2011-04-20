@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.builtin.web;
+package com.bee32.plover.orm.util;
 
 import java.util.Map;
 
@@ -15,28 +15,28 @@ public class DataTableDxo
     /**
      * int iDisplayStart Display start point
      */
-    int displayStart;
+    public int displayStart;
 
     /**
      * int iDisplayLength Number of records to display
      */
-    int displayLength;
+    public int displayLength;
 
     /**
      * int iColumns Number of columns being displayed (useful for getting individual column search
      * info)
      */
-    int columnCount;
+    public int columnCount;
 
     /**
      * string sSearch Global search field
      */
-    String search;
+    public String search;
 
     /**
      * boolean bEscapeRegex Global search is regex or not
      */
-    boolean escapeRegex;
+    public boolean escapeRegex;
 
     /**
      * int iSortingCols Number of columns to sort on
@@ -49,39 +49,39 @@ public class DataTableDxo
          * boolean bSortable_(int) Indicator for if a column is flagged as sortable or not on the
          * client-side
          */
-        boolean sortable;
+        public boolean sortable;
 
         /**
          * boolean bSearchable_(int) Indicator for if a column is flagged as searchable or not on
          * the client-side
          */
-        boolean searchable;
+        public boolean searchable;
 
         /**
          * string sSearch_(int) Individual column filter
          */
-        String search;
+        public String search;
 
         /**
          * boolean bEscapeRegex_(int) Individual column filter is regex or not
          */
-        boolean escapeRegex;
+        public boolean escapeRegex;
 
         /**
          * int iSortCol_(int) Column being sorted on (you will need to decode this number for your
          * database)
          */
-        int sortCol;
+        public int sortCol;
 
         /**
          * string sSortDir_(int) Direction to be sorted - "desc" or "asc". Note that the prefix for
          * this variable is wrong in 1.5.x where iSortDir_(int) was used)
          */
-        String sortDir;
+        public String sortDir;
 
     }
 
-    ColumnOption[] columnOptions;
+    public ColumnOption[] columnOptions;
 
     // REQUEST & REPLY
 
@@ -96,33 +96,33 @@ public class DataTableDxo
      * Note that it strongly recommended for security reasons that you 'cast' this parameter to an
      * integer in order to prevent Cross Site Scripting (XSS) attacks.
      */
-    String echo;
+    public String echo;
 
     // ** REPLY-ONLY **
     /**
      * int iTotalRecords Total records, before filtering (i.e. the total number of records in the
      * database)
      */
-    Integer totalRecords;
+    public Integer totalRecords;
 
     /**
      * int iTotalDisplayRecords Total records, after filtering (i.e. the total number of records
      * after filtering has been applied - not just the number of records being returned in this
      * result set)
      */
-    Integer totalDisplayRecords;
+    public Integer totalDisplayRecords;
 
     /**
      * string sColumns Optional - this is a string of column names, comma separated (used in
      * combination with sName) which will allow DataTables to reorder data on the client-side if
      * required for display
      */
-    String columns;
+    public String columns;
 
     /**
      * array array mixed aaData The data in a 2D array
      */
-    Object data;
+    public Object data;
 
     @Override
     public void parse(IVariantLookupMap<String> map)
