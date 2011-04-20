@@ -7,6 +7,12 @@
     </parent>
     <artifactId>sem-mail</artifactId>
     <version>0.2.1-SNAPSHOT</version>
-    <dependencies/>
+    <dependencies>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-user</artifactId>
+            <version>0.2.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
     <name>SEM :: Base :: Mail</name>
 </project>
