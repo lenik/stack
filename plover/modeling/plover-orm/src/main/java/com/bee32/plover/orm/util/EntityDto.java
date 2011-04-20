@@ -86,7 +86,7 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
             id = parseId(_id);
 
         String _version = map.getString("version");
-        if (_version == null)
+        if (_version == null || _version.isEmpty())
             version = null;
         else
             try {
