@@ -23,6 +23,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
                     <failOnError>true</failOnError>
                 </configuration>
@@ -30,6 +31,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
+                <version>2.0</version>
                 <configuration>
                     <tagBase>${svn.base.dev}/semd/tags</tagBase>
                 </configuration>
