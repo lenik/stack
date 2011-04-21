@@ -8,19 +8,24 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import com.bee32.icsf.principal.Principal;
+import org.hibernate.annotations.Index;
+
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.util.AliasUtil;
+import com.bee32.plover.orm.util.TypeAbbr;
 
 @Entity
 @Inheritance(strategy = SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
-@DiscriminatorValue("EVT")
+@DiscriminatorValue("")
 public class Event
         extends EntityBean<Long>
         implements IEvent {
@@ -28,18 +33,20 @@ public class Event
     private static final long serialVersionUID = 1L;
 
     private String category;
-    private Class<?> categoryClass;
+    private int priority;
+    private String state;
 
-    private long source;
-    private String sourceAlt;
-
-    private Date beginTime;
-    private Date endTime;
-
-    private Principal actor;
+    private User actor;
 
     private String subject;
     private String message;
+    private Date beginTime;
+    private Date endTime;
+
+    private String refType;
+    private transient Class<?> refClass;
+    private long refId;
+    private String refAlt;
 
     public Event() {
         super();
@@ -49,88 +56,47 @@ public class Event
         super(name);
     }
 
-    @Column(length = 20)
+    @Index(name = "category")
+    @Column(length = TypeAbbr.DEFAULT_SIZE, nullable = false)
     public String getCategory() {
         return category;
     }
 
     public void setCategory(String category) {
         this.category = category;
-        this.categoryClass = null;
     }
 
-    @Transient
-    @Override
-    public Class<?> getCategoryClass() {
-        if (categoryClass == null) {
-            if (category == null)
-                return null;
-            else {
-                categoryClass = AliasUtil.getAliasedType(category);
-                if (categoryClass == null)
-                    try {
-                        // Entity-Alias? ...
-                        categoryClass = Class.forName(category);
-                    } catch (ClassNotFoundException e) {
-                        categoryClass = null;
-                    }
-            }
-        }
-        return categoryClass;
+    @Column(nullable = false)
+    public int getPriority() {
+        return priority;
     }
 
-    public void setCategoryClass(Class<?> categoryClass) {
-        this.categoryClass = categoryClass;
-        this.category = categoryClass == null ? null : categoryClass.getName();
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
-    @Override
-    public long getSource() {
-        return source;
+    @Index(name = "state")
+    @Column(length = 10)
+    public String getState() {
+        return state;
     }
 
-    public void setSource(long source) {
-        this.source = source;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    @Column(length = 50)
-    @Override
-    public String getSourceAlt() {
-        return sourceAlt;
-    }
-
-    public void setSourceAlt(String source) {
-        this.sourceAlt = source;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Override
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    @Override
-    public Principal getActor() {
+    @Index(name = "actor")
+    @ManyToOne(fetch = FetchType.LAZY)
+    public User getActor() {
         return actor;
     }
 
-    public void setActor(Principal actor) {
+    public void setActor(User actor) {
         this.actor = actor;
     }
 
+    @Index(name = "subject")
+    @Column(length = 100)
     @Override
     public String getSubject() {
         return subject;
@@ -140,6 +106,7 @@ public class Event
         this.subject = subject;
     }
 
+    @Column(length = 1000)
     @Override
     public String getMessage() {
         return message;
@@ -147,6 +114,78 @@ public class Event
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @Index(name = "event_beginTime")
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    @Index(name = "event_endTime")
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    @Column(length = TypeAbbr.DEFAULT_SIZE)
+    public String getRefType() {
+        return refType;
+    }
+
+    public void setRefType(String refType) {
+        this.refType = refType;
+    }
+
+    @Column(length = 30)
+    @Transient
+    @Override
+    public Class<?> getRefClass() {
+        if (refClass == null) {
+            if (refType == null)
+                return null;
+            else {
+                refClass = AliasUtil.getAliasedType(refType);
+                if (refClass == null)
+                    try {
+                        // Entity-Alias? ...
+                        refClass = Class.forName(refType);
+                    } catch (ClassNotFoundException e) {
+                        refClass = null;
+                    }
+            }
+        }
+        return refClass;
+    }
+
+    public void setRefClass(Class<?> refClass) {
+        this.refClass = refClass;
+        this.refType = refClass == null ? null : refClass.getName();
+    }
+
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
+    }
+
+    @Column(length = 30)
+    public String getRefAlt() {
+        return refAlt;
+    }
+
+    public void setRefAlt(String refAlt) {
+        this.refAlt = refAlt;
     }
 
 }
