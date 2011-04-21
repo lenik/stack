@@ -2,6 +2,7 @@ package com.bee32.plover.ajax;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,7 +12,30 @@ public class JsonUtil {
 
     static Gson gson = new Gson();
 
+    public static String dump(Object obj) {
+        return dump(obj == null ? null : obj.getClass(), obj);
+    }
+
+    public static String dump(Type typeOfSrc, Object obj) {
+        StringBuilder buf = new StringBuilder();
+        dump(buf, typeOfSrc, obj);
+        return buf.toString();
+    }
+
+    public static void dump(Appendable out, Object obj) {
+        gson.toJson(obj, obj == null ? null : obj.getClass(), out);
+    }
+
+    public static void dump(Appendable out, Type typeOfSrc, Object obj) {
+        gson.toJson(obj, typeOfSrc, out);
+    }
+
     public static void dump(HttpServletResponse resp, Object obj)
+            throws IOException {
+        dump(resp, obj == null ? null : obj.getClass(), obj);
+    }
+
+    public static void dump(HttpServletResponse resp, Type typeOfSrc, Object obj)
             throws IOException {
 
         resp.setContentType("application/json; charset=UTF-8");
@@ -19,7 +43,7 @@ public class JsonUtil {
         PrintWriter out = resp.getWriter();
 
         try {
-            gson.toJson(obj, out);
+            gson.toJson(obj, typeOfSrc, out);
 
             /*
              * Don't flush immediately. to make use of any servlet filter.
