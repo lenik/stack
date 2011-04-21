@@ -13,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -53,15 +52,11 @@ public class AllowListController
     @Override
     public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
 
+        int id = Integer.parseInt(req.getParameter("id"));
         AllowList entity = allowListDao.load(id);
 
-        AllowListDto dto = new AllowListDto(AllowListDto.RESPONSIBLES).marshal(entity);
-
-        ModelMap modelMap = new ModelMap();
-        modelMap.put("it", dto);
-        return modelMap;
+        return it(new AllowListDto(entity, AllowListDto.RESPONSIBLES));
     }
 
     @RequestMapping("data.htm")

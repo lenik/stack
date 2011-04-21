@@ -215,4 +215,12 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
         return viewOf("index");
     }
 
+    // Utils...
+
+    protected static Map<String, Object> it(Object it) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("it", it);
+        return map;
+    }
+
 }
