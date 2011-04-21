@@ -21,7 +21,7 @@ public class MailBoxDto
     String name;
     String displayName;
     int color;
-    List<MailDto> mails;
+    List<MailCopyDto> mails;
 
     public MailBoxDto() {
         super();
@@ -48,7 +48,7 @@ public class MailBoxDto
         color = source.getColor();
 
         if (selection.contains(MAILS))
-            mails = marshalList(MailDto.class, selection.bits & ~MAILS, source.getMails());
+            mails = marshalList(MailCopyDto.class, selection.bits & ~MAILS, source.getMails());
     }
 
     @Override
@@ -117,11 +117,11 @@ public class MailBoxDto
         this.color = color;
     }
 
-    public List<MailDto> getMails() {
+    public List<MailCopyDto> getMails() {
         return mails;
     }
 
-    public void setMails(List<MailDto> mails) {
+    public void setMails(List<MailCopyDto> mails) {
         this.mails = mails;
     }
 

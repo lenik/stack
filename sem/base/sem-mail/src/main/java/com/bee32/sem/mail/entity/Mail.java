@@ -1,6 +1,6 @@
 package com.bee32.sem.mail.entity;
 
-import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -9,13 +9,13 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.sem.mail.MailFlags;
 import com.bee32.sem.mail.MailType;
 import com.bee32.sem.mail.util.EmailUtil;
 
@@ -28,15 +28,11 @@ public class Mail
 
     protected MailType type = MailType.USER;
 
-    protected MailBox mailBox;
-
     public static final byte PRIORITY_URGENT = 10;
     public static final byte PRIORITY_HIGH = 20;
     public static final byte PRIORITY_NORMAL = 30;
     public static final byte PRIORITY_LOW = 40;
     protected byte priority = PRIORITY_NORMAL;
-
-    protected final MailFlags flags = new MailFlags();
 
     String from;
     String to;
@@ -54,11 +50,10 @@ public class Mail
 
     Mail referrer;
 
-    Date sentDate;
-    String sendError;
+    // Date createDate;
+    // Date modifiedDate;
 
-    Date receivedDate;
-    Date receiptDate;
+    List<MailCopy> copies;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -70,15 +65,6 @@ public class Mail
         this.type = type;
     }
 
-    @ManyToOne
-    public MailBox getMailBox() {
-        return mailBox;
-    }
-
-    public void setMailBox(MailBox mailBox) {
-        this.mailBox = mailBox;
-    }
-
     @Column(nullable = false)
     public byte getPriority() {
         return priority;
@@ -86,23 +72,6 @@ public class Mail
 
     public void setPriority(byte priority) {
         this.priority = priority;
-    }
-
-    @Column(name = "flags", nullable = false)
-    public int getFlagBits() {
-        return flags.bits;
-    }
-
-    public void setFlagBits(int flags) {
-        this.flags.bits = flags;
-    }
-
-    /**
-     * TODO: How to map value type MailFlags to SQL INT?
-     */
-    @Transient
-    public MailFlags getFlags() {
-        return flags;
     }
 
     @Column(length = 50, nullable = false)
@@ -207,45 +176,14 @@ public class Mail
         this.referrer = referrer;
     }
 
-    @Transient
-    public boolean isSent() {
-        return sentDate != null;
+    @OneToMany(mappedBy = "mail")
+    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<MailCopy> getCopies() {
+        return copies;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getSentDate() {
-        return sentDate;
-    }
-
-    public void setSentDate(Date sentDate) {
-        this.sentDate = sentDate;
-    }
-
-    @Column(length = 200)
-    public String getSendError() {
-        return sendError;
-    }
-
-    public void setSendError(String sendError) {
-        this.sendError = sendError;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getReceivedDate() {
-        return receivedDate;
-    }
-
-    public void setReceivedDate(Date receivedDate) {
-        this.receivedDate = receivedDate;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getReceiptDate() {
-        return receiptDate;
-    }
-
-    public void setReceiptDate(Date receiptDate) {
-        this.receiptDate = receiptDate;
+    public void setCopies(List<MailCopy> copies) {
+        this.copies = copies;
     }
 
 }

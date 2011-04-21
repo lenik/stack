@@ -27,7 +27,7 @@ public class MailBox
 
     int color;
 
-    List<Mail> mails;
+    List<MailCopy> mails;
 
     @Column(nullable = false)
     public byte getPriority() {
@@ -76,11 +76,11 @@ public class MailBox
     }
 
     @OneToMany(mappedBy = "mailBox", cascade = {})
-    public List<Mail> getMails() {
+    public List<MailCopy> getMails() {
         return mails;
     }
 
-    public void setMails(List<Mail> mails) {
+    public void setMails(List<MailCopy> mails) {
         this.mails = mails;
     }
 

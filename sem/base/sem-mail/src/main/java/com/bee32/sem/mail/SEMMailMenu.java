@@ -11,10 +11,13 @@ public class SEMMailMenu
     static ILocationContext MAIL = WEB_APP.join(SEMMailModule.PREFIX + "/");
 
     @Contribution("sa")
-    MenuEntry mailAdmin = new MenuEntry("mailAdmin");
+    MenuEntry mailAdmin = new MenuEntry("mailadmin");
 
-    @Contribution("sa/mailAdmin")
-    MenuEntry filter = new MenuEntry("filter", MAIL.join("filter/index.htm"));
+    @Contribution("sa/mailadmin")
+    MenuEntry mailbox = new MenuEntry(10, "mailbox", MAIL.join("mailbox/index.htm"));
+
+    @Contribution("sa/mailadmin")
+    MenuEntry filter = new MenuEntry(20, "filter", MAIL.join("filter/index.htm"));
 
     @Contribution(".")
     MenuEntry mail = new MenuEntry("mail");

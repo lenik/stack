@@ -1,14 +1,11 @@
 package com.bee32.sem.mail.web;
 
-import java.util.Date;
-
 import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.sem.mail.MailFlags;
 import com.bee32.sem.mail.MailType;
 import com.bee32.sem.mail.entity.Mail;
 
@@ -18,14 +15,11 @@ public class MailDto
     private static final long serialVersionUID = 1L;
 
     public static final int REFERRER_MASK = 0x0000000f;
+    public static final int COPIES = 1 << 16;
 
     MailType type;
-    MailBoxDto mailBox;
-
     byte priority;
     // String priorityName;
-
-    final MailFlags flags = new MailFlags();
 
     String from;
     String to;
@@ -42,12 +36,6 @@ public class MailDto
     String body;
 
     MailDto referrer;
-
-    Date sentDate;
-    String sendError;
-
-    Date receivedDate;
-    Date receiptDate;
 
     public MailDto() {
         super();
@@ -68,10 +56,8 @@ public class MailDto
     @Override
     protected void _marshal(Mail source) {
         type = source.getType();
-        mailBox = new MailBoxDto(0).marshal(source.getMailBox());
 
         priority = source.getPriority();
-        flags.bits = source.getFlags().bits;
 
         from = source.getFrom();
         to = source.getTo();
@@ -88,11 +74,6 @@ public class MailDto
         if (refs > 0)
             referrer = new MailDto(otherbits | --refs).marshal(source.getReferrer());
 
-        sentDate = source.getSentDate();
-        sendError = source.getSendError();
-
-        receivedDate = source.getReceiptDate();
-        receiptDate = source.getReceiptDate();
     }
 
     @Override
@@ -100,7 +81,6 @@ public class MailDto
         target.setType(type);
         // target.setMailbox(mailbox);
         target.setPriority(priority);
-        target.setFlagBits(flags.bits);
 
         target.setFrom(from);
         target.setTo(to);
@@ -115,10 +95,6 @@ public class MailDto
         if (refs > 0)
             target.setReferrer(referrer.unmarshal());
 
-        target.setSentDate(sentDate);
-        target.setSendError(sendError);
-        target.setReceivedDate(receivedDate);
-        target.setReceiptDate(receiptDate);
     }
 
     @Override
@@ -132,7 +108,6 @@ public class MailDto
         // String _mailbox = map.getString("mailbox");
 
         priority = map.getByte("priority");
-        flags.bits = map.getInt("flags");
 
         from = map.getString("from");
         to = map.getString("to");
@@ -154,24 +129,12 @@ public class MailDto
         this.type = type;
     }
 
-    public MailBoxDto getMailBox() {
-        return mailBox;
-    }
-
-    public void setMailBox(MailBoxDto mailbox) {
-        this.mailBox = mailbox;
-    }
-
     public byte getPriority() {
         return priority;
     }
 
     public void setPriority(byte priority) {
         this.priority = priority;
-    }
-
-    public MailFlags getFlags() {
-        return flags;
     }
 
     public String getFrom() {
@@ -260,38 +223,6 @@ public class MailDto
 
     public void setReferrer(MailDto referrer) {
         this.referrer = referrer;
-    }
-
-    public Date getSentDate() {
-        return sentDate;
-    }
-
-    public void setSentDate(Date sentDate) {
-        this.sentDate = sentDate;
-    }
-
-    public String getSendError() {
-        return sendError;
-    }
-
-    public void setSendError(String sendError) {
-        this.sendError = sendError;
-    }
-
-    public Date getReceivedDate() {
-        return receivedDate;
-    }
-
-    public void setReceivedDate(Date receivedDate) {
-        this.receivedDate = receivedDate;
-    }
-
-    public Date getReceiptDate() {
-        return receiptDate;
-    }
-
-    public void setReceiptDate(Date receiptDate) {
-        this.receiptDate = receiptDate;
     }
 
 }
