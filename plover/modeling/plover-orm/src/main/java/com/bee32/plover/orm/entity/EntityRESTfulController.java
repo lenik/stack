@@ -25,7 +25,7 @@ import com.bee32.plover.restful.IRESTfulResponse;
  */
 @Controller
 @Lazy
-public class EntityRepositoryController<E extends EntityBean<K>, K extends Serializable> {
+public class EntityRESTfulController<E extends EntityBean<K>, K extends Serializable> {
 
     @Inject
     CommonDataManager dataManager;
@@ -53,8 +53,8 @@ public class EntityRepositoryController<E extends EntityBean<K>, K extends Seria
 
         EntityRepository<E, K> repo = (EntityRepository<E, K>) req.getTarget();
 
-        String keyString = req.getRestPath();
-        K key = repo.parseKey(keyString);
+        String refName = req.getRestPath();
+        K key = repo.convertRefNameToKey(refName);
 
         E entity = repo.populate(req);
         entity.setId(key);
@@ -74,8 +74,8 @@ public class EntityRepositoryController<E extends EntityBean<K>, K extends Seria
 
         EntityRepository<E, K> repo = (EntityRepository<E, K>) req.getTarget();
 
-        String keyString = req.getRestPath();
-        K key = repo.parseKey(keyString);
+        String refName = req.getRestPath();
+        K key = repo.convertRefNameToKey(refName);
 
         E entity = repo.get(key);
         dataManager.delete(entity);

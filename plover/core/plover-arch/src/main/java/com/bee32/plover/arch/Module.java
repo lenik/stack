@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.arch.credit.Credit;
+import com.bee32.plover.arch.naming.INamed;
 import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.arch.naming.TreeMapNode;
 import com.bee32.plover.arch.service.IServiceContribution;
@@ -28,7 +29,7 @@ import com.bee32.plover.inject.ComponentTemplate;
 @Lazy
 public abstract class Module
         extends Component
-        implements IModule, InitializingBean {
+        implements IModule, INamed, InitializingBean {
 
     private TreeMapNode<Object> nodeImpl = new TreeMapNode<Object>(Object.class);
 
@@ -45,6 +46,11 @@ public abstract class Module
     public Module(String name) {
         super(name);
         // preamble();
+    }
+
+    @Override
+    public String refName() {
+        return getName();
     }
 
     @Override

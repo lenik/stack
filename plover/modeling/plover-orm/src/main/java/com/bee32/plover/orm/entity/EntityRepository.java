@@ -12,10 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.BuildException;
+import com.bee32.plover.arch.naming.RepositoryNode;
 import com.bee32.plover.arch.util.IStruct;
 
 public abstract class EntityRepository<E extends IEntity<K>, K extends Serializable>
-        extends TreeRepository<E, K>
+        extends RepositoryNode<K, E>
         implements IEntityRepository<E, K> {
 
     static Logger logger = LoggerFactory.getLogger(EntityRepository.class);
@@ -38,28 +39,28 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
         super(name, keyType, entityType);
     }
 
+    public Class<? extends E> getEntityType() {
+        return entityType;
+    }
+
     @Override
     protected void introspect() {
         super.introspect();
 
         Class<?> deferredEntityType;
         try {
-            deferredEntityType = deferEntityType(valueType);
+            deferredEntityType = deferEntityType(objectType);
         } catch (ClassNotFoundException e) {
-            throw new IllegalUsageException("No implementation type for " + valueType);
+            throw new IllegalUsageException("No implementation type for " + objectType);
         }
 
-        if (!valueType.isAssignableFrom(deferredEntityType))
-            throw new IllegalUsageException("Incompatible implementation " + deferredEntityType + " for " + valueType);
+        if (!objectType.isAssignableFrom(deferredEntityType))
+            throw new IllegalUsageException("Incompatible implementation " + deferredEntityType + " for " + objectType);
 
         @SuppressWarnings("unchecked")
         Class<? extends E> entityClass = (Class<? extends E>) deferredEntityType;
 
         this.entityType = entityClass;
-    }
-
-    public Class<? extends E> getEntityType() {
-        return entityType;
     }
 
     protected Class<?> deferEntityType(Class<?> clazz)

@@ -15,7 +15,6 @@ import javax.free.IllegalUsageException;
 import javax.free.Nullables;
 import javax.free.PrefetchedIterator;
 
-import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.arch.naming.NamedNode;
 
@@ -288,16 +287,20 @@ public class OidTree<T>
     }
 
     @Override
-    protected int hashCodeSpecific() {
+    public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((children == null) ? 0 : children.hashCode());
         result = prime * result + ((data == null) ? 0 : data.hashCode());
         return result;
     }
 
     @Override
-    protected boolean equalsSpecific(Component obj) {
+    public boolean equals(Object obj) {
+        if (!(obj instanceof OidTree<?>))
+            return false;
+
         OidTree<?> other = (OidTree<?>) obj;
 
         if (!Nullables.equals(children, other.children))
@@ -312,7 +315,7 @@ public class OidTree<T>
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(getName() + " => { ");
+        sb.append(name + " => { ");
 
         for (String name : getChildNames()) {
             Object node = getChild(name);

@@ -9,7 +9,7 @@ public class EmptyEntityRepository<E extends EntityBean<K>, K extends Serializab
         extends EntityRepository<E, K> {
 
     @Override
-    public boolean containsKey(Serializable key) {
+    public boolean containsKey(Object key) {
         return false;
     }
 

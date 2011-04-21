@@ -37,7 +37,7 @@ public abstract class JpaEntityRepository<E extends IEntity<K>, K extends Serial
     }
 
     @Override
-    public boolean containsKey(Serializable _key) {
+    public boolean containsKey(Object _key) {
         if (!(keyType.isInstance(_key)))
             return false;
         K key = keyType.cast(_key);

@@ -1,6 +1,5 @@
 package com.bee32.plover.arch;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,7 @@ import javax.servlet.ServletRequest;
 
 import com.bee32.plover.arch.util.IStruct;
 
-public interface IRepository<K, V>
+public interface IRepository<K, T>
         extends IComponent // IModel ??
 {
 
@@ -19,26 +18,30 @@ public interface IRepository<K, V>
      *
      * @return Non-<code>null</code> class of the key.
      */
-    Class<K> getKeyType();
+//    Class<K> getKeyType();
 
     /**
-     * Get the object instance type.
+     * Get the instance type.
      *
      * @return Non-<code>null</code> class of the instance.
      */
-    Class<V> getInstanceType();
+//    Class<? extends T> getObjectType();
 
     /**
      * Get the primary key of an object.
      */
-    K getKey(V obj);
+    K getKey(T obj);
 
     /**
+     * Test if any object with the given key is existed in the repository.
+     *
      * @see Map#containsKey(Object)
      */
-    boolean containsKey(Serializable key);
+    boolean containsKey(Object key);
 
     /**
+     * Test if given object is existed in the repository.
+     *
      * @see Map#containsValue(Object)
      */
     boolean contains(Object obj);
@@ -49,7 +52,7 @@ public interface IRepository<K, V>
      * @return The retrieved object, <code>null</code> if the specific key doesn't exist.
      * @see Map#get(Object)
      */
-    V get(K key);
+    T get(K key);
 
     /**
      * Retrieve an object by key.
@@ -59,18 +62,19 @@ public interface IRepository<K, V>
      * @throws IllegalUsageException
      *             If object doesn't exist.
      */
-    V load(K key);
+    T load(K key);
+
 
     Collection<K> keys();
 
-    List<V> list();
+    List<T> list();
 
     /**
      * Create and populate a new instance from a struct.
      *
      * @return Non-<code>null</code> instantiated instance.
      */
-    V populate(IStruct struct)
+    T populate(IStruct struct)
             throws BuildException;
 
     /**
@@ -78,7 +82,7 @@ public interface IRepository<K, V>
      *
      * @return Non-<code>null</code> instantiated instance.
      */
-    V populate(ServletRequest request)
+    T populate(ServletRequest request)
             throws BuildException;
 
     /**
@@ -86,7 +90,7 @@ public interface IRepository<K, V>
      *
      * @return <code>true</code> if anything changed.
      */
-    boolean populate(V instance, IStruct struct)
+    boolean populate(T obj, IStruct struct)
             throws BuildException;
 
     /**
@@ -95,21 +99,21 @@ public interface IRepository<K, V>
      * @see javax.persist.EntityManager#persist(Object)
      * @see
      */
-    K save(V obj);
+    K save(T obj);
 
     /**
      * Update the entity in the persistence layer.
      *
      * @see javax.persist.EntityManager#persist(Object)
      */
-    void update(V obj);
+    void update(T obj);
 
     /**
      * Revert the entity to the persisted state.
      *
      * @see javax.persist.EntityManager#refresh(Object)
      */
-    void refresh(V obj);
+    void refresh(T obj);
 
     /**
      * Save the object to the underlying persistence layer.
@@ -118,7 +122,7 @@ public interface IRepository<K, V>
      *            Non-<code>null</code> object object.
      * @see Map#put(Object, Object)
      */
-    void saveOrUpdate(V obj);
+    void saveOrUpdate(T obj);
 
     /**
      * Delete an object from underlying persistent layer by object key.

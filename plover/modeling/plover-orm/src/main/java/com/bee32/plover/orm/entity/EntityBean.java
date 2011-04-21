@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import com.bee32.plover.arch.Component;
+import com.bee32.plover.arch.naming.INamed;
 import com.bee32.plover.model.Model;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.IMultiFormat;
@@ -32,7 +33,7 @@ import com.bee32.plover.util.PrettyPrintStream;
 @MappedSuperclass
 public abstract class EntityBean<K extends Serializable>
         extends Model
-        implements IEntity<K>, IPopulatable, IMultiFormat {
+        implements IEntity<K>, INamed, IPopulatable, IMultiFormat {
 
     private static final long serialVersionUID = 1L;
 
@@ -74,6 +75,14 @@ public abstract class EntityBean<K extends Serializable>
 
     void _internalName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String refName() {
+        if (id == null)
+            return null;
+        else
+            return id.toString();
     }
 
     @Override

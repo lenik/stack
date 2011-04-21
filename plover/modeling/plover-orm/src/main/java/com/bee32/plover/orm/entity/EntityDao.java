@@ -13,7 +13,8 @@ import com.bee32.plover.inject.ComponentTemplate;
 @ComponentTemplate
 @Lazy
 public abstract class EntityDao<E extends EntityBean<K>, K extends Serializable>
-        extends HibernateEntityRepository<E, K> {
+        extends EntityDao_H<E, K>
+        implements IEntityDao<E, K> {
 
     public EntityDao() {
         super();

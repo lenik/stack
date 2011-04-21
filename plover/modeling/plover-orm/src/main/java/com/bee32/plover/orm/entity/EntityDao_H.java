@@ -19,24 +19,24 @@ import org.springframework.dao.DataAccessException;
 import com.bee32.plover.orm.dao.HibernateDaoSupportUtil;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 
-public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializable>
+public class EntityDao_H<E extends IEntity<K>, K extends Serializable>
         extends EntityRepository<E, K> {
 
     private HibernateDaoSupportUtil support = new HibernateDaoSupportUtil();
 
-    public HibernateEntityRepository() {
+    public EntityDao_H() {
         super();
     }
 
-    public HibernateEntityRepository(String name) {
+    public EntityDao_H(String name) {
         super(name);
     }
 
-    public HibernateEntityRepository(Class<E> entityType, Class<K> keyType) {
+    public EntityDao_H(Class<E> entityType, Class<K> keyType) {
         super(entityType, keyType);
     }
 
-    public HibernateEntityRepository(String name, Class<E> entityType, Class<K> keyType) {
+    public EntityDao_H(String name, Class<E> entityType, Class<K> keyType) {
         super(name, entityType, keyType);
     }
 
@@ -83,7 +83,8 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
     }
 
     @Override
-    public boolean containsKey(Serializable key) {
+    public boolean containsKey(Object _key) {
+        K key = keyType.cast(_key);
         E entity = getHibernateTemplate().get(entityType, key);
         return entity != null;
     }

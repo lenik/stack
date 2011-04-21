@@ -38,7 +38,7 @@ public class MapEntityRepository<E extends IEntity<K>, K extends Serializable>
     }
 
     @Override
-    public boolean containsKey(Serializable key) {
+    public boolean containsKey(Object key) {
         return getMap().containsKey(key);
     }
 

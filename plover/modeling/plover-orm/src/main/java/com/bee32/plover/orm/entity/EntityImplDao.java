@@ -11,15 +11,15 @@ import com.bee32.plover.inject.ComponentTemplate;
  */
 @ComponentTemplate
 @Lazy
-public class DaoRepository<E extends IEntity<K>, K extends Serializable>
-        extends HibernateEntityRepository<E, K>
-        implements IDaoRepository<E, K> {
+public class EntityImplDao<E extends IEntity<K>, K extends Serializable>
+        extends EntityDao_H<E, K>
+        implements IEntityDao<E, K> {
 
-    public DaoRepository() {
+    public EntityImplDao() {
         super();
     }
 
-    public DaoRepository(String name) {
+    public EntityImplDao(String name) {
         super(name);
     }
 

@@ -2,10 +2,8 @@ package com.bee32.plover.arch.naming;
 
 import java.util.Collection;
 
-import com.bee32.plover.arch.IComponent;
-
 public interface INamedNode
-        extends IComponent/*, IOperational*/ {
+        extends INamed/*, IOperational*/ {
 
     /**
      * The priority is used for reversed object lookup.

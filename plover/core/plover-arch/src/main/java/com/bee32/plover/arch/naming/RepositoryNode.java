@@ -1,6 +1,5 @@
-package com.bee32.plover.orm.entity;
+package com.bee32.plover.arch.naming;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,14 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.Repository;
-import com.bee32.plover.arch.naming.INamedNode;
-import com.bee32.plover.arch.naming.ReverseLookupRegistry;
 
-public abstract class TreeRepository<E extends IEntity<K>, K extends Serializable>
-        extends Repository<K, E>
+public abstract class RepositoryNode<K, Tn extends INamed>
+        extends Repository<K, Tn>
         implements INamedNode {
 
-    static Logger logger = LoggerFactory.getLogger(TreeRepository.class);
+    static Logger logger = LoggerFactory.getLogger(RepositoryNode.class);
 
     private INamedNode parentLocator;
 
@@ -27,44 +24,49 @@ public abstract class TreeRepository<E extends IEntity<K>, K extends Serializabl
         ReverseLookupRegistry.getInstance().register(this);
     }
 
-    public TreeRepository() {
+    public RepositoryNode() {
         super();
     }
 
-    public TreeRepository(String name) {
+    public RepositoryNode(String name) {
         super(name);
     }
 
-    public TreeRepository(Class<K> keyType, Class<E> valueType) {
-        super(keyType, valueType);
+    public RepositoryNode(Class<K> keyType, Class<Tn> objectType) {
+        super(keyType, objectType);
     }
 
-    public TreeRepository(String name, Class<K> keyType, Class<E> valueType) {
-        super(name, keyType, valueType);
+    public RepositoryNode(String name, Class<K> keyType, Class<Tn> objectType) {
+        super(name, keyType, objectType);
     }
 
     // --o INamedNode
 
-    protected K parseKey(String keyString)
+    public K convertRefNameToKey(String refName)
             throws ParseException {
         if (keyType == String.class)
-            return keyType.cast(keyString);
+            return keyType.cast(refName);
 
         if (keyType == Integer.class) {
-            Integer integerId = Integer.valueOf(keyString);
+            Integer integerId = Integer.valueOf(refName);
             return keyType.cast(integerId);
         }
 
         if (keyType == Long.class) {
-            Long longId = Long.valueOf(keyString);
+            Long longId = Long.valueOf(refName);
             return keyType.cast(longId);
         }
 
-        return ParserUtil.parse(keyType, keyString);
+        return ParserUtil.parse(keyType, refName);
     }
 
-    protected String formatKey(K key) {
+    public String convertKeyToRefName(K key) {
         return String.valueOf(key);
+    }
+
+    @Override
+    public String refName() {
+        return getName();
     }
 
     @Override
@@ -83,14 +85,14 @@ public abstract class TreeRepository<E extends IEntity<K>, K extends Serializabl
 
     @Override
     public Class<?> getChildType() {
-        return valueType;
+        return objectType;
     }
 
     @Override
     public Object getChild(String location) {
         K parsedKey;
         try {
-            parsedKey = parseKey(location);
+            parsedKey = convertRefNameToKey(location);
         } catch (ParseException e) {
             if (logger.isDebugEnabled())
                 logger.warn("Bad location token: " + location + ", for " + this, e);
@@ -100,22 +102,20 @@ public abstract class TreeRepository<E extends IEntity<K>, K extends Serializabl
     }
 
     @Override
-    public boolean hasChild(Object entity) {
-        if (entity == null)
+    public boolean hasChild(Object obj) {
+        if (obj == null)
             return false;
 
-        if (!valueType.isInstance(entity))
+        if (!objectType.isInstance(obj))
             return false;
 
         return true;
     }
 
     @Override
-    public String getChildName(Object entity) {
-        E instance = valueType.cast(entity);
-        K key = instance.getId();
-        String keyLocation = formatKey(key);
-        return keyLocation;
+    public String getChildName(Object obj) {
+        Tn instance = objectType.cast(obj);
+        return instance.refName();
     }
 
     @SuppressWarnings("unchecked")
@@ -128,7 +128,7 @@ public abstract class TreeRepository<E extends IEntity<K>, K extends Serializabl
 
         List<String> keyStrings = new ArrayList<String>(keys.size());
         for (K key : keys) {
-            String keyString = formatKey(key);
+            String keyString = convertKeyToRefName(key);
             keyStrings.add(keyString);
         }
 
