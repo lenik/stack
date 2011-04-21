@@ -106,6 +106,10 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
         return keyType.cast(key);
     }
 
+    public void saveOrUpdateAll(Collection<? extends E> entities) {
+        getHibernateTemplate().saveOrUpdateAll(entities);
+    }
+
     @Override
     public void update(E entity) {
         getHibernateTemplate().update(entity);
@@ -190,7 +194,7 @@ public class HibernateEntityRepository<E extends IEntity<K>, K extends Serializa
         if (result == null)
             throw new UnexpectedException("Count() returns null");
 
-        return (Long) result;
+        return ((Number) result).longValue();
     }
 
 }
