@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import javax.free.IllegalUsageException;
 import javax.free.StringPart;
@@ -280,12 +282,14 @@ public class ServletTestLibrary
         out.println(http.getContent());
     }
 
+    static final String DEFAULT_LOCATION = "";
+
     public void browse()
             throws IOException {
-        browse("");
+        browse(DEFAULT_LOCATION);
     }
 
-    public void browse(String location)
+    public URL browse(String location)
             throws IOException {
 
         String root = "http://localhost:" + this.getPort();
@@ -301,24 +305,64 @@ public class ServletTestLibrary
             throw new RuntimeException(e.getMessage(), e);
         }
         Desktop.getDesktop().browse(uri);
+
+        return url;
+    }
+
+    static enum Command {
+        HELP, SHOW_LOCATION, BROWSE, QUIT
+    }
+
+    static Map<String, Command> commands = new TreeMap<String, Command>();
+    static {
+        commands.put("?", Command.HELP);
+        commands.put("h", Command.HELP);
+        commands.put("l", Command.SHOW_LOCATION);
+        commands.put("b", Command.BROWSE);
+        commands.put("", Command.QUIT);
+        commands.put("q", Command.QUIT);
     }
 
     public void browseAndWait()
             throws IOException {
-        browse();
-        readLine();
+        browseAndWait(DEFAULT_LOCATION);
     }
 
     public void browseAndWait(String location)
             throws IOException {
-        browse(location);
-        readLine();
-    }
-
-    private String readLine()
-            throws IOException {
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-        return stdin.readLine();
+
+        URL url = browse(location);
+
+        while (true) {
+            String line = stdin.readLine();
+            if (line == null)
+                break;
+
+            switch (commands.get(line.trim())) {
+            case SHOW_LOCATION:
+                System.out.println("<<URL>> :: " + url);
+                System.out.println("<<WebApp>> :: " + location);
+                break;
+
+            case BROWSE:
+                browse(location);
+                break;
+
+            case HELP:
+                System.out.println("Shortcuts: ");
+                for (Entry<String, Command> cmd : commands.entrySet()) {
+                    String key = cmd.getKey();
+                    if (key.isEmpty())
+                        key = "(empty)";
+                    System.out.println("    " + key + ": " + cmd.getValue());
+                }
+                break;
+
+            case QUIT:
+                return;
+            }
+        }
     }
 
 }
