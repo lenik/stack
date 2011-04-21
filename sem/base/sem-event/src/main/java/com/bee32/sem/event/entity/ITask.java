@@ -3,7 +3,7 @@ package com.bee32.sem.event.entity;
 import java.util.Date;
 
 public interface ITask
-        extends IEnterpriseEvent {
+        extends IEvent {
 
     TaskPriority getPriority();
 

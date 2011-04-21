@@ -4,10 +4,13 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+/**
+ *
+ */
 @Entity
 @DiscriminatorValue("TSK")
 public class Task
-        extends EnterpriseEvent
+        extends Event
         implements ITask {
 
     private static final long serialVersionUID = 1L;
