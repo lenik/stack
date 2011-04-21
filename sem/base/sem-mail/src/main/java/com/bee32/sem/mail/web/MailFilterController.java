@@ -1,7 +1,6 @@
 package com.bee32.sem.mail.web;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,31 +60,26 @@ public class MailFilterController
     public void data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        DataTableDxo opts = new DataTableDxo();
-        opts.parse(req);
+        DataTableDxo tab = new DataTableDxo();
+        tab.parse(req);
 
         List<MailFilterDto> all = DTOs.marshalList(MailFilterDto.class, //
                 mailFilterDao.list());
 
-        opts.totalRecords = all.size();
-        opts.totalDisplayRecords = opts.totalRecords;
-
-        List<Object[]> rows = new ArrayList<Object[]>();
+        tab.totalRecords = all.size();
+        tab.totalDisplayRecords = tab.totalRecords;
 
         for (MailFilterDto filter : all) {
-            Object[] row = new Object[6 + 1];
-            row[0] = filter.getId();
-            row[1] = filter.getVersion();
-            row[2] = filter.getName();
-            row[3] = filter.getExpr();
-            row[4] = filter.getSource() == null ? null : filter.getSource().getName();
-            row[5] = filter.getTarget() == null ? null : filter.getTarget().getName();
-            rows.add(row);
+            tab.push(filter.getId());
+            tab.push(filter.getVersion());
+            tab.push(filter.getName());
+            tab.push(filter.getExpr());
+            tab.push(filter.getSource() == null ? null : filter.getSource().getName());
+            tab.push(filter.getTarget() == null ? null : filter.getTarget().getName());
+            tab.next();
         }
 
-        opts.data = rows;
-
-        JsonUtil.dump(resp, opts.exportMap());
+        JsonUtil.dump(resp, tab.exportMap());
     }
 
     @Override

@@ -1,9 +1,14 @@
 package com.bee32.plover.orm.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.arch.util.DataExchangeObject;
 
@@ -124,6 +129,60 @@ public class DataTableDxo
      */
     public Object data;
 
+    transient List<List<Object>> _rows;
+    transient Object[] _row;
+    transient int _index;
+
+    public DataTableDxo() {
+    }
+
+    public DataTableDxo(HttpServletRequest request)
+            throws ServletException {
+        parse(request);
+    }
+
+    /**
+     * Append an object to the current row.
+     *
+     * @param val
+     *            The object to be appended.
+     * @return This object.
+     */
+    public synchronized DataTableDxo push(Object val) {
+        if (_row == null) {
+            _row = new Object[columnCount];
+            _index = 0;
+        }
+        _row[_index++] = val;
+        return this;
+    }
+
+    /**
+     * Commit the current row. So the next call to {@link #push(Object)} will append to a new row.
+     *
+     * @return This object.
+     */
+    public synchronized DataTableDxo next() {
+        if (_rows == null)
+            _rows = new ArrayList<List<Object>>();
+        _rows.add(Arrays.asList(_row));
+        _row = null;
+        return this;
+    }
+
+    /**
+     * Done with the table data. This will compose all shifted out rows to a 2-dimension array,
+     * which you can access it by {@link #data} field.
+     *
+     * @return This object.
+     */
+    public synchronized DataTableDxo commit() {
+        if (_rows == null)
+            _rows = new ArrayList<List<Object>>();
+        data = _rows;
+        return this;
+    }
+
     @Override
     public void parse(IVariantLookupMap<String> map)
             throws ParseException {
@@ -149,12 +208,17 @@ public class DataTableDxo
     public void export(Map<String, Object> map) {
         if (totalRecords != null)
             map.put("iTotalRecords", totalRecords);
+
         if (totalDisplayRecords != null)
             map.put("iTotalDisplayRecords", totalDisplayRecords);
+
         if (echo != null)
             map.put("sEcho", echo);
+
         if (columns != null)
             map.put("sColumns", columns);
+
+        commit();
         if (data != null)
             map.put("aaData", data);
     }

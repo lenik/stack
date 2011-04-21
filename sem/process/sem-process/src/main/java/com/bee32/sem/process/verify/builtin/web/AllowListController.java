@@ -69,23 +69,19 @@ public class AllowListController
     public void data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        DataTableDxo opts = new DataTableDxo();
-        opts.parse(req);
+        DataTableDxo tab = new DataTableDxo(req);
 
         List<AllowListDto> all = DTOs.marshalList(AllowListDto.class, //
                 AllowListDto.RESPONSIBLES, allowListDao.list());
 
-        opts.totalRecords = all.size();
-        opts.totalDisplayRecords = opts.totalRecords;
-
-        List<Object[]> rows = new ArrayList<Object[]>();
+        tab.totalRecords = all.size();
+        tab.totalDisplayRecords = tab.totalRecords;
 
         for (AllowListDto alist : all) {
-            Object[] row = new Object[5 + 1];
-            row[0] = alist.getId();
-            row[1] = alist.getVersion();
-            row[2] = alist.getName();
-            row[3] = alist.getDescription();
+            tab.push(alist.getId());
+            tab.push(alist.getVersion());
+            tab.push(alist.getName());
+            tab.push(alist.getDescription());
 
             int max = 3;
             StringBuilder names = null;
@@ -104,14 +100,11 @@ public class AllowListController
 
                 max--;
             }
-            row[4] = names == null ? "" : names.toString();
-
-            rows.add(row);
+            tab.push(names == null ? "" : names.toString());
+            tab.next();
         }
 
-        opts.data = rows;
-
-        JsonUtil.dump(resp, opts.exportMap());
+        JsonUtil.dump(resp, tab.exportMap());
     }
 
     @Override

@@ -64,23 +64,19 @@ public class PassToNextController
     public void data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        DataTableDxo opts = new DataTableDxo();
-        opts.parse(req);
+        DataTableDxo tab = new DataTableDxo(req);
 
         List<PassToNextDto> all = DTOs.marshalList(PassToNextDto.class, //
                 PassToNextDto.SEQUENCES, PassToNextDao.list());
 
-        opts.totalRecords = all.size();
-        opts.totalDisplayRecords = opts.totalRecords;
-
-        List<Object[]> rows = new ArrayList<Object[]>();
+        tab.totalRecords = all.size();
+        tab.totalDisplayRecords = tab.totalRecords;
 
         for (PassToNextDto alist : all) {
-            Object[] row = new Object[5 + 1];
-            row[0] = alist.getId();
-            row[1] = alist.getVersion();
-            row[2] = alist.getName();
-            row[3] = alist.getDescription();
+            tab.push(alist.getId());
+            tab.push(alist.getVersion());
+            tab.push(alist.getName());
+            tab.push(alist.getDescription());
 
             int max = 3;
             StringBuilder responsibles = null;
@@ -99,14 +95,11 @@ public class PassToNextController
 
                 max--;
             }
-            row[4] = responsibles == null ? "" : responsibles.toString();
-
-            rows.add(row);
+            tab.push(responsibles == null ? "" : responsibles.toString());
+            tab.next();
         }
 
-        opts.data = rows;
-
-        JsonUtil.dump(resp, opts.exportMap());
+        JsonUtil.dump(resp, tab.exportMap());
     }
 
     @Override
