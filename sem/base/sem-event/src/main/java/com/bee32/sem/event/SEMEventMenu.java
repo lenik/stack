@@ -8,7 +8,7 @@ public class SEMEventMenu
         extends MenuContribution {
 
     @Contribution("sa")
-    MenuEntry eventAdmin = new MenuEntry("eventAdmin");
+    MenuEntry eventAdmin = new MenuEntry("event");
 
     @Contribution("sa/event")
     MenuEntry priorities = new MenuEntry(0, "priorities");
