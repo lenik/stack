@@ -6,13 +6,13 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 
-import com.bee32.plover.restful.util.IRestfulController;
+import com.bee32.plover.restful.util.IRESTfulController;
 
 @Inherited
 @Retention(RUNTIME)
 @Documented
 public @interface UseController {
 
-    Class<? extends IRestfulController> value();
+    Class<? extends IRESTfulController> value();
 
 }

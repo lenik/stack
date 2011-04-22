@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 import com.bee32.plover.restful.IRESTfulRequest;
 import com.bee32.plover.restful.IRESTfulResponse;
 import com.bee32.plover.restful.MethodNames;
-import com.bee32.plover.restful.util.IRestfulController;
+import com.bee32.plover.restful.util.IRESTfulController;
 import com.bee32.plover.velocity.VelocityUtil;
 
 @Component
 @Lazy
 public class BookStoreController
-        implements IRestfulController {
+        implements IRESTfulController {
 
     @Inject
     public String content(IRESTfulRequest req, ServletResponse resp)
