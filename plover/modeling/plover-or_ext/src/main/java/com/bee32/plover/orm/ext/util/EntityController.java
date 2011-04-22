@@ -22,43 +22,49 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
     @RequestMapping("index.htm")
     public ModelAndView index(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        return super._index(req, resp);
+        return _index(req, resp);
     }
 
     @RequestMapping("content.htm")
     public ModelAndView content(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        return super._content(req, resp);
+        return _content(req, resp);
+    }
+
+    @RequestMapping("data.htm")
+    public ModelAndView data(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        return _data(req, resp);
     }
 
     @RequestMapping("createForm.htm")
     public ModelAndView createForm(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        return super._createForm(req, resp);
+        return _createForm(req, resp);
     }
 
     @RequestMapping("editForm.htm")
     public ModelAndView editForm(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        return super._editForm(req, resp);
+        return _editForm(req, resp);
     }
 
     @RequestMapping("save.htm")
     public ModelAndView create(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        return super._save(req, resp);
+        return _save(req, resp);
     }
 
     @RequestMapping("update.htm")
     public ModelAndView update(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        return super._update(req, resp);
+        return _update(req, resp);
     }
 
     @RequestMapping("delete.htm")
     public ModelAndView delete(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        return super._delete(req, resp);
+        return _delete(req, resp);
     }
 
 }
