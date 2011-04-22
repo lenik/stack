@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.ext.util;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -16,23 +16,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityUtil;
 
-@ComponentTemplate
-@Lazy
-public abstract class EntityController<E extends EntityBean<K>, K extends Serializable>
+public abstract class _EntityController<E extends EntityBean<K>, K extends Serializable>
         extends MultiActionController {
 
     private final String _prefix;
@@ -42,10 +37,10 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
 
     protected final Class<E> entityType;
     {
-        entityType = ClassUtil.infer1(getClass(), EntityController.class, 0);
+        entityType = ClassUtil.infer1(getClass(), _EntityController.class, 0);
     }
 
-    public EntityController() {
+    public _EntityController() {
         try {
             Field prefixField = getClass().getDeclaredField("PREFIX");
 
@@ -93,7 +88,7 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
     protected void _buildMetaData(Map<String, Object> metaData) {
 
         String entityTypeName = entityType.getSimpleName();
-        // String entityTypeName = DisplayNameUtil.getDisplayName(entityType);
+// String entityTypeName = DisplayNameUtil.getDisplayName(entityType);
         metaData.put(ENTITY_TYPE_NAME, entityTypeName);
 
         metaData.put(VERB_CREATE_EN, "Create");
@@ -117,8 +112,8 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
         return _prefix + localView;
     }
 
-    @RequestMapping("index.htm")
-    public Map<String, Object> index(HttpServletRequest req, HttpServletResponse resp) {
+    protected Map<String, Object> _index(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         ModelMap mm = new ModelMap();
 
         // Index by data-table:
@@ -128,7 +123,7 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
         return mm;
     }
 
-    public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp)
+    protected Map<String, Object> _content(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         throw new NotImplementedException();
     }
@@ -136,17 +131,16 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
     /**
      * Should construct a JSON response.
      */
-    public void data(HttpServletRequest req, HttpServletResponse resp)
+    protected void _data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         throw new NotImplementedException();
     }
 
-    @RequestMapping("createForm.htm")
-    public ModelAndView createForm(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException {
+    protected ModelAndView _createForm(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         req.setAttribute("create", true);
 
-        Map<String, Object> map = form(req, resp);
+        Map<String, Object> map = _createOrEditForm(req, resp);
 
         map.put("verb", "create");
         map.put("verb_en", metaData.getString(VERB_CREATE_EN));
@@ -155,12 +149,11 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
         return new ModelAndView(viewOf("form"), map);
     }
 
-    @RequestMapping("editForm.htm")
-    public ModelAndView editForm(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException {
+    protected ModelAndView _editForm(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         req.setAttribute("create", false);
 
-        Map<String, Object> map = form(req, resp);
+        Map<String, Object> map = _createOrEditForm(req, resp);
 
         map.put("verb", "update");
         map.put("verb_en", metaData.getString(VERB_EDIT_EN));
@@ -169,32 +162,29 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
         return new ModelAndView(viewOf("form"), map);
     }
 
-    protected abstract Map<String, Object> form(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException;
+    protected abstract Map<String, Object> _createOrEditForm(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException;
 
-    @RequestMapping("create.htm")
-    public ModelAndView create(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _create(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setAttribute("create", true);
-        return createOrUpdate(req, resp);
+        return _createOrUpdate(req, resp);
     }
 
-    @RequestMapping("update.htm")
-    public ModelAndView update(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _update(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setAttribute("create", false);
-        return createOrUpdate(req, resp);
+        return _createOrUpdate(req, resp);
     }
 
     /**
      * Use <code>req.getAttribute("create"): Boolean</code> to distinguish create and update.
      */
-    protected abstract ModelAndView createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
+    protected abstract ModelAndView _createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException;
 
-    @RequestMapping("delete.htm")
-    public String delete(HttpServletRequest req, HttpServletResponse resp)
-            throws Exception {
+    protected String _delete(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
         String idString = req.getParameter("id");
         K id = EntityUtil.parseId(entityType, idString);
