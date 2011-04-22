@@ -184,7 +184,11 @@ public class MenuNode
     }
 
     protected void format(PrettyPrintStream out) {
-        out.println(name + " -> " + getAction());
+        String displayName = getAppearance().getDisplayName();
+        if (displayName == null)
+            displayName = "\\" + name;
+
+        out.println(displayName + " -> " + getAction());
         out.enter();
         for (Entry<String, IMenuNode> child : children.entrySet()) {
             // String childName = child.getKey();
