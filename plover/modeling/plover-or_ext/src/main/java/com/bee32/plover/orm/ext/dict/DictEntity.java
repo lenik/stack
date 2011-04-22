@@ -26,7 +26,10 @@ public abstract class DictEntity<K extends Serializable>
         this.icon = icon;
     }
 
-    public abstract String getName();
+    @Column(length = 20, unique = true)
+    public String getName() {
+        return name;
+    }
 
     public void setName(String name) {
         this.name = name;

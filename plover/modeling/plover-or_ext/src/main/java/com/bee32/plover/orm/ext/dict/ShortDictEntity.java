@@ -2,10 +2,13 @@ package com.bee32.plover.orm.ext.dict;
 
 import java.io.Serializable;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
+@AttributeOverrides(@AttributeOverride(name = "name", column = @Column(length = 10)))
 public abstract class ShortDictEntity<K extends Serializable>
         extends DictEntity<K> {
 
@@ -17,13 +20,6 @@ public abstract class ShortDictEntity<K extends Serializable>
 
     public ShortDictEntity(String name, String description, String icon) {
         super(name, description, icon);
-    }
-
-    @Column(length = 10, unique = true)
-    // @Index("name")
-    @Override
-    public String getName() {
-        return name;
     }
 
 }
