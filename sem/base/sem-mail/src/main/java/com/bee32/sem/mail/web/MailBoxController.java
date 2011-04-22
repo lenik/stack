@@ -1,16 +1,13 @@
 package com.bee32.sem.mail.web;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,11 +30,6 @@ public class MailBoxController
     MailBoxDao mailBoxDao;
     @Inject
     MailDao mailDao;
-
-    @Override
-    protected void preamble(Map<String, Object> metaData) {
-        metaData.put(ENTITY_TYPE_NAME, "邮箱管理");
-    }
 
     @RequestMapping("inbox.htm")
     public ModelAndView inbox(HttpServletRequest req, HttpServletResponse resp)
@@ -65,22 +57,18 @@ public class MailBoxController
 
     @RequestMapping("content.htm")
     @Override
-    public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp)
+    public ModelAndView content(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
 
         MailBox entity = mailBoxDao.load(id);
 
-        MailBoxDto dto = new MailBoxDto().marshal(entity);
-
-        ModelMap modelMap = new ModelMap();
-        modelMap.put("it", dto);
-        return modelMap;
+        return it(new MailBoxDto().marshal(entity));
     }
 
     @RequestMapping("data.htm")
     @Override
-    public void _data(HttpServletRequest req, HttpServletResponse resp)
+    public ModelAndView _data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         DataTableDxo tab = new DataTableDxo();
@@ -99,40 +87,38 @@ public class MailBoxController
             tab.next();
         }
 
-        JsonUtil.dump(resp, tab.exportMap());
+        return JsonUtil.dump(resp, tab.exportMap());
     }
 
     @Override
-    protected Map<String, Object> _createOrEditForm(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _createOrEditForm(ViewData view, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
 
-        boolean create = (Boolean) req.getAttribute("create");
+        boolean create = view.isMethod("create");
 
-        Map<String, Object> map = new HashMap<String, Object>();
-
-        map.put("_create", create);
-        map.put("_verb", create ? "Create" : "Modify");
+        view.put("_create", create);
+        view.put("_verb", create ? "Create" : "Modify");
 
         MailBoxDto dto;
         if (create) {
             dto = new MailBoxDto();
             dto.setName("");
-            map.put("it", dto);
+            view.put("it", dto);
         } else {
             int id = Integer.parseInt(req.getParameter("id"));
             MailBox entity = mailBoxDao.load(id);
             dto = new MailBoxDto().marshal(entity);
         }
-        map.put("it", dto);
+        view.put("it", dto);
 
-        return map;
+        return view;
     }
 
     @Override
-    protected ModelAndView _createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _saveOrUpdate(ViewData view, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        boolean create = (Boolean) req.getAttribute("create");
+        boolean create = view.isMethod("create");
 
         MailBoxDto dto = new MailBoxDto();
         dto.parse(req);

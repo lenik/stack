@@ -2,10 +2,8 @@ package com.bee32.sem.process.verify.builtin.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -44,12 +42,7 @@ public class AllowListController
     UserDao userDao;
 
     @Override
-    protected void preamble(Map<String, Object> metaData) {
-        metaData.put(ENTITY_TYPE_NAME, "白名单策略");
-    }
-
-    @Override
-    protected Map<String, Object> _content(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         int id = Integer.parseInt(req.getParameter("id"));
@@ -59,7 +52,7 @@ public class AllowListController
     }
 
     @Override
-    public void _data(HttpServletRequest req, HttpServletResponse resp)
+    public ModelAndView _data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         DataTableDxo tab = new DataTableDxo(req);
@@ -97,19 +90,17 @@ public class AllowListController
             tab.next();
         }
 
-        JsonUtil.dump(resp, tab.exportMap());
+        return JsonUtil.dump(resp, tab.exportMap());
     }
 
     @Override
-    protected Map<String, Object> _createOrEditForm(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _createOrEditForm(ViewData view, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
 
-        boolean create = (Boolean) req.getAttribute("create");
+        boolean create = view.isMethod("create");
 
-        Map<String, Object> map = new HashMap<String, Object>();
-
-        map.put("_create", create);
-        map.put("_verb", create ? "Create" : "Modify");
+        view.put("_create", create);
+        view.put("_verb", create ? "Create" : "Modify");
 
         AllowListDto dto;
         if (create) {
@@ -117,25 +108,24 @@ public class AllowListController
             dto.setName("");
             dto.setDescription("");
             dto.setResponsibleIds(new ArrayList<Long>());
-            map.put("it", dto);
         } else {
             int id = Integer.parseInt(req.getParameter("id"));
             AllowList entity = allowListDao.load(id);
             dto = new AllowListDto(AllowListDto.RESPONSIBLES).marshal(entity);
         }
-        map.put("it", dto);
+        view.put("it", dto);
 
         List<UserDto> users = DTOs.marshalList(UserDto.class, 0, userDao.list());
-        map.put("users", users);
+        view.put("users", users);
 
-        return map;
+        return view;
     }
 
     @Override
-    protected ModelAndView _createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _saveOrUpdate(ViewData view, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        boolean create = (Boolean) req.getAttribute("create");
+        boolean create = view.isMethod("create");
 
         AllowListDto dto = new AllowListDto(AllowListDto.RESPONSIBLES);
         dto.parse(req);
@@ -172,7 +162,7 @@ public class AllowListController
 
         dataManager.saveOrUpdate(entity);
 
-        return new ModelAndView(viewOf("index"));
+        return view;
     }
 
 }

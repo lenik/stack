@@ -2,7 +2,6 @@ package com.bee32.plover.orm.ext.util;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,13 +20,13 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
         extends _EntityController<E, K> {
 
     @RequestMapping("index.htm")
-    public Map<String, Object> index(HttpServletRequest req, HttpServletResponse resp)
+    public ModelAndView index(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         return super._index(req, resp);
     }
 
     @RequestMapping("content.htm")
-    public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp)
+    public ModelAndView content(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         return super._content(req, resp);
     }
@@ -44,10 +43,10 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
         return super._editForm(req, resp);
     }
 
-    @RequestMapping("create.htm")
+    @RequestMapping("save.htm")
     public ModelAndView create(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        return super._create(req, resp);
+        return super._save(req, resp);
     }
 
     @RequestMapping("update.htm")
@@ -57,7 +56,7 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
     }
 
     @RequestMapping("delete.htm")
-    public String delete(HttpServletRequest req, HttpServletResponse resp)
+    public ModelAndView delete(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         return super._delete(req, resp);
     }

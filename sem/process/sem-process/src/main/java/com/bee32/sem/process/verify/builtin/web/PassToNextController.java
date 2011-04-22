@@ -2,16 +2,13 @@ package com.bee32.sem.process.verify.builtin.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -43,25 +40,16 @@ public class PassToNextController
     PrincipalDao principalDao;
 
     @Override
-    protected void preamble(Map<String, Object> metaData) {
-        metaData.put(ENTITY_TYPE_NAME, "下一步策略");
-    }
-
-    @Override
-    protected Map<String, Object> _content(HttpServletRequest req, HttpServletResponse resp) {
+    protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp) {
         int id = Integer.parseInt(req.getParameter("id"));
 
         PassToNext entity = PassToNextDao.load(id);
 
-        PassToNextDto dto = new PassToNextDto(PassToNextDto.SEQUENCES).marshal(entity);
-
-        ModelMap modelMap = new ModelMap();
-        modelMap.put("it", dto);
-        return modelMap;
+        return it(new PassToNextDto(entity, PassToNextDto.SEQUENCES));
     }
 
     @Override
-    public void _data(HttpServletRequest req, HttpServletResponse resp)
+    public ModelAndView _data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         DataTableDxo tab = new DataTableDxo(req);
@@ -99,19 +87,17 @@ public class PassToNextController
             tab.next();
         }
 
-        JsonUtil.dump(resp, tab.exportMap());
+        return JsonUtil.dump(resp, tab.exportMap());
     }
 
     @Override
-    protected Map<String, Object> _createOrEditForm(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException {
+    protected ModelAndView _createOrEditForm(ViewData view, HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-        boolean create = (Boolean) req.getAttribute("create");
+        boolean create = view.isMethod("create");
 
-        Map<String, Object> map = new HashMap<String, Object>();
-
-        map.put("_create", create);
-        map.put("_verb", create ? "Create" : "Modify");
+        view.put("_create", create);
+        view.put("_verb", create ? "Create" : "Modify");
 
         PassToNextDto dto;
         if (create) {
@@ -119,22 +105,20 @@ public class PassToNextController
             dto.setName("");
             dto.setDescription("");
             dto.setSequences(new ArrayList<PassStepDto>());
-            map.put("it", dto);
         } else {
             int id = Integer.parseInt(req.getParameter("id"));
             PassToNext entity = PassToNextDao.load(id);
             dto = new PassToNextDto(PassToNextDto.SEQUENCES).marshal(entity);
         }
-        map.put("it", dto);
-
-        return map;
+        view.put("it", dto);
+        return view;
     }
 
     @Override
-    protected ModelAndView _createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _saveOrUpdate(ViewData view, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        boolean create = (Boolean) req.getAttribute("create");
+        boolean create = view.isMethod("create");
 
         PassToNextDto dto = new PassToNextDto(PassToNextDto.SEQUENCES);
         dto.parse(req);
@@ -178,7 +162,7 @@ public class PassToNextController
 
         dataManager.saveOrUpdate(entity);
 
-        return new ModelAndView(viewOf("index"));
+        return view;
     }
 
 }

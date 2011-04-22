@@ -2,7 +2,6 @@ package com.bee32.plover.orm.ext.util;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Map;
 
 import javax.free.IllegalUsageException;
 import javax.servlet.ServletException;
@@ -10,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,8 +25,7 @@ public abstract class GenericEntityController<E extends EntityBean<K>, K extends
 
     protected static final String TYPE = "type";
 
-    protected void initType(HttpServletRequest req) {
-        String typeAbbr = req.getParameter("type");
+    protected void initType(HttpServletRequest req, String typeAbbr) {
         if (typeAbbr == null)
             throw new NullPointerException("typeAbbr");
 
@@ -40,59 +39,58 @@ public abstract class GenericEntityController<E extends EntityBean<K>, K extends
         req.setAttribute(TYPE, type);
     }
 
-    @RequestMapping("*/index.htm")
-    public Map<String, Object> index(HttpServletRequest req, HttpServletResponse resp)
+    @RequestMapping("{type}/index.htm")
+    public ModelAndView index(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-// initType(req);
-// return super._index(req, resp);
-        return null;
+        initType(req, type);
+        return super._index(req, resp);
     }
 
-    @RequestMapping("*/content.htm")
-    public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp)
+    @RequestMapping("{type}/content.htm")
+    public ModelAndView content(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        initType(req);
+        initType(req, type);
         return super._content(req, resp);
     }
 
-    @RequestMapping("*/data.htm")
-    public void data(HttpServletRequest req, HttpServletResponse resp)
+    @RequestMapping("{type}/data.htm")
+    public ModelAndView data(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        super._data(req, resp);
+        return super._data(req, resp);
     }
 
-    @RequestMapping("*/createForm.htm")
-    public ModelAndView createForm(HttpServletRequest req, HttpServletResponse resp)
+    @RequestMapping("{type}/createForm.htm")
+    public ModelAndView createForm(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        initType(req);
+        initType(req, type);
         return super._createForm(req, resp);
     }
 
     @RequestMapping("(type)/create.htm")
-    public ModelAndView create(HttpServletRequest req, HttpServletResponse resp)
+    public ModelAndView create(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        initType(req);
-        return super._create(req, resp);
+        initType(req, type);
+        return super._save(req, resp);
     }
 
-    @RequestMapping("*/editForm.htm")
-    public ModelAndView editForm(HttpServletRequest req, HttpServletResponse resp)
+    @RequestMapping("{type}/editForm.htm")
+    public ModelAndView editForm(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        initType(req);
+        initType(req, type);
         return super._editForm(req, resp);
     }
 
-    @RequestMapping("*/update.htm")
-    public ModelAndView update(HttpServletRequest req, HttpServletResponse resp)
+    @RequestMapping("{type}/update.htm")
+    public ModelAndView update(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        initType(req);
+        initType(req, type);
         return super._update(req, resp);
     }
 
-    @RequestMapping("*/delete.htm")
-    public String delete(HttpServletRequest req, HttpServletResponse resp)
+    @RequestMapping("{type}/delete.htm")
+    public ModelAndView delete(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        initType(req);
+        initType(req, type);
         return super._delete(req, resp);
     }
 
