@@ -8,7 +8,7 @@
 
 <ui:composition template="/template.xhtml">
 
-    <ui:define name="title">Pass To Next Index</ui:define>
+    <ui:define name="title">${meta.name}</ui:define>
 
     <ui:define name="head">
         <script type="text/javascript" src="${location.LIB_3RDPARTY}/jsTree.v.1.0rc2/jquery.jstree.js"></script>
@@ -20,7 +20,7 @@
     </ui:define>
 
     <ui:define name="body">
-        <h2>顺序审核策略</h2>
+        <h2>${meta.name}</h2>
 
         <div>
             <a href="createForm.htm">建立新的顺序审核策略</a>

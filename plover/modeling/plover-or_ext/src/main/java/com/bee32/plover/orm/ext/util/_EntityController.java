@@ -109,7 +109,7 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
      */
     protected void loadMetaData(Map<String, Object> metaData) {
         String entityTypeName = ClassUtil.getDisplayName(entityType);
-        metaData.put("typeName", entityTypeName);
+        metaData.put("name", entityTypeName);
     }
 
     /**

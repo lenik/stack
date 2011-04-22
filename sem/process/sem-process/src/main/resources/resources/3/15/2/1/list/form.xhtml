@@ -11,17 +11,17 @@
 
 <ui:composition template="/template.xhtml">
 
-    <ui:define name="title">${verb_en} White List</ui:define>
+    <ui:define name="title">${METHOD} White List</ui:define>
 
     <ui:define name="head">
     </ui:define>
 
     <ui:define name="body">
 
-        <h2>${verb_zh}白名单策略</h2>
+        <h2>${METHOD} ${meta.name}</h2>
 
 
-        <form action="${verb}.htm" method="post">
+        <form action="${method}.htm" method="post">
             <input type="hidden" name="id" value="${it.id}" />
             <input type="hidden" name="version" value="${it.version}" />
 

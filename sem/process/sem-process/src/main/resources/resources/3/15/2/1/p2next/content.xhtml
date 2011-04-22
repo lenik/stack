@@ -12,14 +12,14 @@
 <ui:composition template="/template.xhtml">
 
     <ui:define name="title">
-        Pass To Next Policy
+        ${meta.name}
     </ui:define>
 
     <ui:define name="head">
     </ui:define>
 
     <ui:define name="body">
-        <h2>顺序审核策略 详情</h2>
+        <h2>${meta.name}</h2>
         <table cellpadding="5" cellspacing="0" rules="all">
             <tr>
                 <td>名称:</td>

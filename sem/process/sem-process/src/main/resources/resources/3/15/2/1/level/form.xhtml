@@ -11,7 +11,7 @@
 
 <ui:composition template="/template.xhtml">
 
-    <ui:define name="title">${verb_en} Multi-Level Verify Policy</ui:define>
+    <ui:define name="title">${METHOD} ${meta.name}</ui:define>
 
     <ui:define name="head">
 
@@ -55,9 +55,9 @@
 
     <ui:define name="body">
 
-        <h2>${verb_zh}分级审核策略</h2>
+        <h2>${METHOD} ${meta.name}</h2>
 
-        <form action="${verb}.htm" method="post" onsubmit="submitForm()">
+        <form action="${method}.htm" method="post" onsubmit="submitForm()">
             <input type="hidden" name="id" value="${it.id}" />
             <input type="hidden" name="version" value="${it.version}" />
 
