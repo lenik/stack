@@ -142,14 +142,14 @@ public abstract class Composite
     }
 
     protected boolean isUsingComponentName() {
-        return true;
+        return false;
     }
 
     protected boolean isFallbackEnabled() {
         return false;
     }
 
-    protected void declare(String id, Component childComponent) {
+    protected void declare(String propId, Component childComponent) {
         // logger.debug("declare " + id + " in " + this);
 
         IAppearance fallback = null;
@@ -158,7 +158,7 @@ public abstract class Composite
 
         InjectedAppearance childOverride = new InjectedAppearance(fallback, contextURL);
         {
-            String prefix = id;
+            String prefix = propId;
             if (!prefix.isEmpty())
                 prefix += ".";
 
