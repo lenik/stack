@@ -339,7 +339,13 @@ public class ServletTestLibrary
             if (line == null)
                 break;
 
-            switch (commands.get(line.trim())) {
+            Command command = commands.get(line.trim());
+            if (command == null) {
+                System.err.println("No such command: " + line);
+                continue;
+            }
+
+            switch (command) {
             case SHOW_LOCATION:
                 System.out.println("<<URL>> :: " + url);
                 System.out.println("<<WebApp>> :: " + location);
