@@ -27,6 +27,14 @@ public class MailFilterDto
     int chMask;
     int chBits;
 
+    public MailFilterDto() {
+        super();
+    }
+
+    public MailFilterDto(MailFilter source) {
+        super(source);
+    }
+
     @Override
     protected void _marshal(MailFilter source) {
         name = source.getName();
