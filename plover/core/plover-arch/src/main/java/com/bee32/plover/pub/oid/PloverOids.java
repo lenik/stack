@@ -36,9 +36,10 @@ public interface PloverOids {
 
     interface library {
         int Commons = 1;
-        int ORM = 2;
+        int Internet = 2;
         int Javascript = 3;
-        int Internet = 4;
+        int ORM = 4;
+        int ORMExt = 5;
     }
 
     interface lifecycle {
