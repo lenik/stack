@@ -19,8 +19,8 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dao.PrincipalDao;
 import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.arch.util.DTOs;
-import com.bee32.plover.orm.util.DataTableDxo;
-import com.bee32.plover.orm.util.EntityController;
+import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.ext.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.PassStep;
 import com.bee32.sem.process.verify.builtin.PassToNext;
@@ -47,8 +47,8 @@ public class PassToNextController
         metaData.put(ENTITY_TYPE_NAME, "下一步策略");
     }
 
-    @RequestMapping("content.htm")
-    public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp) {
+    @Override
+    protected Map<String, Object> _content(HttpServletRequest req, HttpServletResponse resp) {
         int id = Integer.parseInt(req.getParameter("id"));
 
         PassToNext entity = PassToNextDao.load(id);
@@ -60,8 +60,8 @@ public class PassToNextController
         return modelMap;
     }
 
-    @RequestMapping("data.htm")
-    public void data(HttpServletRequest req, HttpServletResponse resp)
+    @Override
+    public void _data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         DataTableDxo tab = new DataTableDxo(req);
@@ -103,7 +103,7 @@ public class PassToNextController
     }
 
     @Override
-    protected Map<String, Object> form(HttpServletRequest req, HttpServletResponse resp)
+    protected Map<String, Object> _createOrEditForm(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
 
         boolean create = (Boolean) req.getAttribute("create");
@@ -131,7 +131,7 @@ public class PassToNextController
     }
 
     @Override
-    protected ModelAndView createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         boolean create = (Boolean) req.getAttribute("create");

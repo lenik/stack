@@ -22,8 +22,8 @@ import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.arch.util.DTOs;
-import com.bee32.plover.orm.util.DataTableDxo;
-import com.bee32.plover.orm.util.EntityController;
+import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.ext.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.AllowList;
 import com.bee32.sem.process.verify.builtin.dao.AllowListDao;
@@ -48,9 +48,8 @@ public class AllowListController
         metaData.put(ENTITY_TYPE_NAME, "白名单策略");
     }
 
-    @RequestMapping("content.htm")
     @Override
-    public Map<String, Object> content(HttpServletRequest req, HttpServletResponse resp)
+    protected Map<String, Object> _content(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         int id = Integer.parseInt(req.getParameter("id"));
@@ -59,9 +58,8 @@ public class AllowListController
         return it(new AllowListDto(entity, AllowListDto.RESPONSIBLES));
     }
 
-    @RequestMapping("data.htm")
     @Override
-    public void data(HttpServletRequest req, HttpServletResponse resp)
+    public void _data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         DataTableDxo tab = new DataTableDxo(req);
@@ -103,7 +101,7 @@ public class AllowListController
     }
 
     @Override
-    protected Map<String, Object> form(HttpServletRequest req, HttpServletResponse resp)
+    protected Map<String, Object> _createOrEditForm(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
 
         boolean create = (Boolean) req.getAttribute("create");
@@ -134,7 +132,7 @@ public class AllowListController
     }
 
     @Override
-    protected ModelAndView createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         boolean create = (Boolean) req.getAttribute("create");

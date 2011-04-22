@@ -16,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.arch.util.DTOs;
-import com.bee32.plover.orm.util.DataTableDxo;
-import com.bee32.plover.orm.util.EntityController;
+import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.ext.util.EntityController;
 import com.bee32.sem.mail.SEMMailModule;
 import com.bee32.sem.mail.dao.MailBoxDao;
 import com.bee32.sem.mail.dao.MailFilterDao;
@@ -57,7 +57,7 @@ public class MailFilterController
 
     @RequestMapping("data.htm")
     @Override
-    public void data(HttpServletRequest req, HttpServletResponse resp)
+    public void _data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         DataTableDxo tab = new DataTableDxo();
@@ -83,7 +83,7 @@ public class MailFilterController
     }
 
     @Override
-    protected Map<String, Object> form(HttpServletRequest req, HttpServletResponse resp)
+    protected Map<String, Object> _createOrEditForm(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
 
         boolean create = (Boolean) req.getAttribute("create");
@@ -114,7 +114,7 @@ public class MailFilterController
     }
 
     @Override
-    protected ModelAndView createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         boolean create = (Boolean) req.getAttribute("create");

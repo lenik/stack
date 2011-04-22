@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bee32.plover.orm.util.EntityController;
+import com.bee32.plover.orm.ext.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
 
 @RequestMapping(VerifyPolicyPrefController.PREFIX + "*")
@@ -26,19 +26,19 @@ public class VerifyPolicyPrefController
     }
 
     @Override
-    public void data(HttpServletRequest req, HttpServletResponse resp)
+    public void _data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         throw new NotImplementedException();
     }
 
     @Override
-    protected Map<String, Object> form(HttpServletRequest req, HttpServletResponse resp)
+    protected Map<String, Object> _createOrEditForm(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
         return null;
     }
 
     @Override
-    protected ModelAndView createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _createOrUpdate(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Boolean createMode = (Boolean) req.getAttribute("create");
         if (createMode)
