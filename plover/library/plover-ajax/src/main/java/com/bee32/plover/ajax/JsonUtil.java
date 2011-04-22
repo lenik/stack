@@ -30,12 +30,13 @@ public class JsonUtil {
         gson.toJson(obj, typeOfSrc, out);
     }
 
-    public static void dump(HttpServletResponse resp, Object obj)
+    public static <T> T dump(HttpServletResponse resp, Object obj)
             throws IOException {
         dump(resp, obj == null ? null : obj.getClass(), obj);
+        return null;
     }
 
-    public static void dump(HttpServletResponse resp, Type typeOfSrc, Object obj)
+    public static <T> T dump(HttpServletResponse resp, Type typeOfSrc, Object obj)
             throws IOException {
 
         resp.setContentType("application/json; charset=UTF-8");
@@ -59,6 +60,7 @@ public class JsonUtil {
             else
                 throw e;
         }
+        return null;
     }
 
 }
