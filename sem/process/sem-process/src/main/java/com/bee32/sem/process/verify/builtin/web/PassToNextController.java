@@ -28,7 +28,7 @@ import com.bee32.sem.process.verify.builtin.dao.PassToNextDao;
 public class PassToNextController
         extends EntityController<PassToNext, Integer> {
 
-    public static final String PREFIX = SEMProcessModule.PREFIX + "/p2next/";
+    public static final String PREFIX = SEMProcessModule.PREFIX + "p2next/";
 
     @Inject
     PassToNextDao PassToNextDao;

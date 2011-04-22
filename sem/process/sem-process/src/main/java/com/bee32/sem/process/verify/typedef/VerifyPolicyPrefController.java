@@ -17,7 +17,7 @@ import com.bee32.sem.process.SEMProcessModule;
 public class VerifyPolicyPrefController
         extends EntityController<VerifyPolicyPref, String> {
 
-    public static final String PREFIX = SEMProcessModule.PREFIX + "/pref/";
+    public static final String PREFIX = SEMProcessModule.PREFIX + "pref/";
 
     @Override
     public ModelAndView _data(HttpServletRequest req, HttpServletResponse resp)

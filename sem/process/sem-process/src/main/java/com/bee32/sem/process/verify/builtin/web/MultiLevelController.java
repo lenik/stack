@@ -28,7 +28,7 @@ import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 public class MultiLevelController
         extends EntityController<MultiLevel, Integer> {
 
-    public static final String PREFIX = SEMProcessModule.PREFIX + "/level/";
+    public static final String PREFIX = SEMProcessModule.PREFIX + "level/";
 
     @Inject
     MultiLevelDao multiLevelDao;

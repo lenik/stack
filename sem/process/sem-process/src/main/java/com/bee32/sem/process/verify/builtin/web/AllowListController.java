@@ -30,7 +30,7 @@ import com.bee32.sem.process.verify.builtin.dao.AllowListDao;
 public class AllowListController
         extends EntityController<AllowList, Integer> {
 
-    public static final String PREFIX = SEMProcessModule.PREFIX + "/list/";
+    public static final String PREFIX = SEMProcessModule.PREFIX + "list/";
 
     @Inject
     AllowListDao allowListDao;
