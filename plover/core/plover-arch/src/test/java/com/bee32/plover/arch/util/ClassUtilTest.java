@@ -2,7 +2,6 @@ package com.bee32.plover.arch.util;
 
 import static com.bee32.plover.arch.util.ClassUtil.getTypeArgs;
 import static com.bee32.plover.arch.util.ClassUtil.mapTypeArgs;
-import static com.bee32.plover.arch.util.ClassUtil.traceBound;
 import static com.bee32.plover.arch.util.ClassUtil.traceBounds;
 
 import java.io.Serializable;
@@ -15,6 +14,7 @@ import java.util.List;
 import java.util.jar.JarFile;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 public class ClassUtilTest
         extends Assert {
@@ -54,9 +54,20 @@ public class ClassUtilTest
             implements EventListener {
     }
 
-    public static void main(String[] args) {
-        for (Type arg : getTypeArgs(P.class, Z.class))
-            System.out.println(traceBound(arg));
+    @Test
+    public void testBound() {
+        Type[] typeArgs = getTypeArgs(R.class, Z.class);
+        assertEquals(3, typeArgs.length);
+
+        // interface java.security.Key
+        // class java.lang.Long
+        // J(class java.util.jar.JarFile)
+        Class<Object> v1 = ClassUtil.bound1(typeArgs[0]);
+        Class<Object> v2 = ClassUtil.bound1(typeArgs[1]);
+        Class<Object> v3 = ClassUtil.bound1(typeArgs[2]);
+        assertEquals(Key.class, v1);
+        assertEquals(Long.class, v2);
+        assertEquals(JarFile.class, v3);
     }
 
     class Z<T1, T2, T3> {
@@ -109,6 +120,19 @@ public class ClassUtilTest
 
         Type[] Rsss_args = mapTypeArgs(P_decl_args, Psup_args, Rss_args);
         String[] Rsss_bounds = traceBounds(Rsss_args);
+    }
+
+    @Test
+    public void testGetDisplayName_Type() {
+        String typeDisplayName = ClassUtil.getDisplayName(ClassUtilTest.class);
+        assertEquals("Class Util Test", typeDisplayName);
+    }
+
+    @Test
+    public void testGetDisplayName_Package() {
+        // *.ClassUtil$Foo.displayName..
+        String typeDisplayName = ClassUtil.getDisplayName(Foo.class);
+        assertEquals("Wonderful Foo!", typeDisplayName);
     }
 
 }
