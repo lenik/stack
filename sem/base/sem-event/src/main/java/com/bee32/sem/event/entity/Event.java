@@ -20,7 +20,7 @@ import org.hibernate.annotations.Index;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.util.AliasUtil;
-import com.bee32.plover.orm.util.TypeAbbr;
+import com.bee32.plover.orm.util.ITypeAbbrAware;
 
 @Entity
 @Inheritance(strategy = SINGLE_TABLE)
@@ -28,7 +28,7 @@ import com.bee32.plover.orm.util.TypeAbbr;
 @DiscriminatorValue("")
 public class Event
         extends EntityBean<Long>
-        implements IEvent {
+        implements IEvent, ITypeAbbrAware {
 
     private static final long serialVersionUID = 1L;
 
@@ -57,7 +57,8 @@ public class Event
     }
 
     @Index(name = "category")
-    @Column(length = TypeAbbr.DEFAULT_SIZE, nullable = false)
+    @Column(length = ABBR_LEN, nullable = false)
+    @Override
     public String getCategory() {
         return category;
     }
@@ -67,6 +68,7 @@ public class Event
     }
 
     @Column(nullable = false)
+    @Override
     public int getPriority() {
         return priority;
     }
@@ -77,6 +79,7 @@ public class Event
 
     @Index(name = "state")
     @Column(length = 10)
+    @Override
     public String getState() {
         return state;
     }
@@ -87,6 +90,7 @@ public class Event
 
     @Index(name = "actor")
     @ManyToOne(fetch = FetchType.LAZY)
+    @Override
     public User getActor() {
         return actor;
     }
@@ -118,6 +122,7 @@ public class Event
 
     @Index(name = "event_beginTime")
     @Temporal(TemporalType.TIMESTAMP)
+    @Override
     public Date getBeginTime() {
         return beginTime;
     }
@@ -128,6 +133,7 @@ public class Event
 
     @Index(name = "event_endTime")
     @Temporal(TemporalType.TIMESTAMP)
+    @Override
     public Date getEndTime() {
         return endTime;
     }
@@ -136,7 +142,7 @@ public class Event
         this.endTime = endTime;
     }
 
-    @Column(length = TypeAbbr.DEFAULT_SIZE)
+    @Column(length = ABBR_LEN)
     public String getRefType() {
         return refType;
     }
@@ -171,6 +177,7 @@ public class Event
         this.refType = refClass == null ? null : refClass.getName();
     }
 
+    @Override
     public long getRefId() {
         return refId;
     }
@@ -180,6 +187,7 @@ public class Event
     }
 
     @Column(length = 30)
+    @Override
     public String getRefAlt() {
         return refAlt;
     }

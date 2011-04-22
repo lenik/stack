@@ -20,7 +20,14 @@ public class TypeAbbr {
 
     static char[] tab = "0123456789abcdef".toCharArray();
 
-    protected String compress(String name) {
+    public String abbr(Class<?> clazz) {
+        if (clazz == null)
+            return null;
+        else
+            return abbr(clazz.getSimpleName());
+    }
+
+    public String abbr(String name) {
         if (name.length() <= length)
             return name;
 
@@ -38,7 +45,10 @@ public class TypeAbbr {
     }
 
     public void register(Class<?> clazz) {
-        String abbr = compress(clazz.getSimpleName());
+        if (clazz == null)
+            throw new NullPointerException("clazz");
+
+        String abbr = abbr(clazz);
         Class<?> existing = map.get(abbr);
         if (existing != null)
             throw new IllegalStateException("Abbreviation collision: " + clazz + " and " + existing);
@@ -49,8 +59,5 @@ public class TypeAbbr {
     public Class<?> expand(String abbr) {
         return map.get(abbr);
     }
-
-    public static final int DEFAULT_SIZE = 10;
-    public static final TypeAbbr DEFAULT = new TypeAbbr(DEFAULT_SIZE);
 
 }
