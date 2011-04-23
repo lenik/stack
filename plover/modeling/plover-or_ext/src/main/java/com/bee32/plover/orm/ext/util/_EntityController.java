@@ -51,31 +51,23 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
             extends ModelAndViewEx {
 
         public ViewData() {
-            super();
+            super(_EntityController.this);
         }
 
         public ViewData(String viewName, Map<String, ?> model) {
-            super(viewName, model);
-        }
-
-        public ViewData(String viewName, String modelName, Object modelObject) {
-            super(viewName, modelName, modelObject);
+            super(_EntityController.this, viewName, model);
         }
 
         public ViewData(String viewName) {
-            super(viewName);
+            super(_EntityController.this, viewName);
         }
 
         public ViewData(View view, Map<String, ?> model) {
-            super(view, model);
-        }
-
-        public ViewData(View view, String modelName, Object modelObject) {
-            super(view, modelName, modelObject);
+            super(_EntityController.this, view, model);
         }
 
         public ViewData(View view) {
-            super(view);
+            super(_EntityController.this, view);
         }
 
         @Override

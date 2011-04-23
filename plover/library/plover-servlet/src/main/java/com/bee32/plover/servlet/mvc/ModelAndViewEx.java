@@ -2,6 +2,7 @@ package com.bee32.plover.servlet.mvc;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.free.ClassLocal;
 import javax.free.IVariantLookupMap;
@@ -15,7 +16,7 @@ import com.bee32.plover.arch.util.res.ResourceBundleEx;
 /**
  * Extension of model&view with meta-data and vocabulary support.
  *
- * It may be called Mavex in the controller implementations.
+ * It may be called ViewData in the controller implementations.
  *
  * Examples:
  *
@@ -27,36 +28,36 @@ import com.bee32.plover.arch.util.res.ResourceBundleEx;
 public abstract class ModelAndViewEx
         extends org.springframework.web.servlet.ModelAndView {
 
-    protected final Class<?> hintClass;
+    private Object controller;
+    private final Class<?> hintClass;
+
+    public final Map<String, Object> _meta;
     public final IVariantLookupMap<String> meta;
     public final Map<String, String> V;
 
-    public ModelAndViewEx() {
+    public ModelAndViewEx(Object controller) {
         super();
+        this.controller = controller;
     }
 
-    public ModelAndViewEx(String viewName, Map<String, ?> model) {
+    public ModelAndViewEx(Object controller, String viewName, Map<String, ?> model) {
         super(viewName, model);
+        this.controller = controller;
     }
 
-    public ModelAndViewEx(String viewName, String modelName, Object modelObject) {
-        super(viewName, modelName, modelObject);
-    }
-
-    public ModelAndViewEx(String viewName) {
+    public ModelAndViewEx(Object controller, String viewName) {
         super(viewName);
+        this.controller = controller;
     }
 
-    public ModelAndViewEx(View view, Map<String, ?> model) {
+    public ModelAndViewEx(Object controller, View view, Map<String, ?> model) {
         super(view, model);
+        this.controller = controller;
     }
 
-    public ModelAndViewEx(View view, String modelName, Object modelObject) {
-        super(view, modelName, modelObject);
-    }
-
-    public ModelAndViewEx(View view) {
+    public ModelAndViewEx(Object controller, View view) {
         super(view);
+        this.controller = controller;
     }
 
     {
@@ -70,9 +71,19 @@ public abstract class ModelAndViewEx
             classLocalClassDataEx.put(hintClass, local);
         }
 
+        _meta = local.metaData;
+        meta = local.metaDataLookup;
+        V = local.vocab;
+
         Map<String, Object> model = getModel();
-        model.put("meta", meta = local.metaDataLookup);
-        model.put("V", V = local.vocab);
+        model.put("reflect", this);
+        model.put("this", controller);
+        model.put("meta", local.metaData);
+        model.put("V", local.vocab);
+    }
+
+    public Set<String> getMetaKeys() {
+        return _meta.keySet();
     }
 
     /**
@@ -81,10 +92,14 @@ public abstract class ModelAndViewEx
      * @return Non-<code>null</code> hint class.
      */
     protected Class<?> getHintClass() {
-        Class<?> enclosingClass = getClass().getEnclosingClass();
-        if (enclosingClass == null)
-            throw new IllegalUsageException("Should be used as inner class Mavex.");
-        return enclosingClass;
+        if (controller != null) {
+            return controller.getClass();
+        } else {
+            Class<?> enclosingClass = getClass().getEnclosingClass();
+            if (enclosingClass == null)
+                throw new IllegalUsageException("Should be used as inner class Mavex.");
+            return enclosingClass;
+        }
     }
 
     /**
@@ -111,6 +126,11 @@ public abstract class ModelAndViewEx
      */
     public void put(String name, Object value) {
         addObject(name, value);
+    }
+
+    @Override
+    public String toString() {
+        return "ToString called";
     }
 
     static class ClassDataEx {
