@@ -9,52 +9,42 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 
-<ui:composition template="/template.xhtml">
+<ui:composition template="/template/entity/form.xhtml">
 
     <ui:define name="title">${METHOD} ${meta.name}</ui:define>
 
     <ui:define name="head">
     </ui:define>
 
-    <ui:define name="body">
+    <ui:define name="table">
+        <table width="100%" bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+                <td align="right">名称 :</td>
+                <td>
+                    <input name="name" type="text" size="20" maxlength="50" value="${it.name}" />
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="right">描述 :</td>
+                <td>
+                    <input name="description" type="text" size="60" maxlength="200" value="${it.description}" />
+                </td>
+                <td>&nbsp;</td>
+            </tr>
 
-        <h2>${METHOD} ${meta.name}</h2>
-
-
-        <form action="${method}.htm" method="post">
-            <input type="hidden" name="id" value="${it.id}" /> <input type="hidden" name="version"
-                value="${it.version}" />
-
-            <table width="100%" bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
-                <tr>
-                    <td align="right">名称 :</td>
-                    <td><input name="name" type="text" size="20" maxlength="50" value="${it.name}" /></td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td align="right">描述 :</td>
-                    <td><input name="description" type="text" size="60" maxlength="200" value="${it.description}" />
-                    </td>
-                    <td>&nbsp;</td>
-                </tr>
-
-                <tr>
-                    <td align="right">次序表 :</td>
-                    <td><h:selectManyListbox id="sequences" value="#{it.sequences}" size="10">
-                            <c:forEach var="seq" items="${it.sequences}">
-                                <f:selectItem itemLabel="${seq.name}" itemValue="${seq.id}" />
-                            </c:forEach>
-                        </h:selectManyListbox></td>
-                    <td>&nbsp;</td>
-                </tr>
-
-                <tr>
-                    <td>&nbsp;</td>
-                    <td><input type="submit" value="保存" /></td>
-                    <td>&nbsp;</td>
-                </tr>
-            </table>
-        </form>
+            <tr>
+                <td align="right">次序表 :</td>
+                <td>
+                    <h:selectManyListbox id="sequences" value="#{it.sequences}" size="10">
+                        <c:forEach var="seq" items="${it.sequences}">
+                            <f:selectItem itemLabel="${seq.name}" itemValue="${seq.id}" />
+                        </c:forEach>
+                    </h:selectManyListbox>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
     </ui:define>
 </ui:composition>
 </html>

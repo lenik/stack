@@ -9,17 +9,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 
-<ui:composition template="/template.xhtml">
-
-    <ui:define name="title">
-        ${meta.name}
-    </ui:define>
-
-    <ui:define name="head">
-    </ui:define>
-
-    <ui:define name="body">
-        <h2>${meta.name}</h2>
+<ui:composition template="/template/entity/content.xhtml">
+    <ui:define name="table">
         <table cellpadding="5" cellspacing="0" rules="all">
             <tr>
                 <td>名称:</td>
@@ -39,6 +30,5 @@
             </tr>
         </table>
     </ui:define>
-
 </ui:composition>
 </html>
