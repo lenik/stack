@@ -315,11 +315,11 @@ public class ServletTestLibrary
 
     static Map<String, Command> commands = new TreeMap<String, Command>();
     static {
-        commands.put("?", Command.HELP);
+        commands.put("", Command.HELP);
         commands.put("h", Command.HELP);
+        commands.put("?", Command.HELP);
         commands.put("l", Command.SHOW_LOCATION);
         commands.put("b", Command.BROWSE);
-        commands.put("", Command.QUIT);
         commands.put("q", Command.QUIT);
     }
 
