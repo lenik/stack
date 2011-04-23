@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
-        http://java.sun.com/jsf/facelets    http://localhost/~lenik/public/spec/myfaces_core.xsd
-        http://java.sun.com/jsf/html        http://localhost/~lenik/public/spec/myfaces-html.xsd
-        "
-    template="/template.xhtml">
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:pc="http://bee32.com/plover/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    template="play/template.xhtml">
 
     <ui:define name="title">
             Plover-Facelets Version
@@ -16,7 +12,9 @@
 
         <div>#{pc:version()}</div>
 
-        <div>#{pc:safeEmail("abc@dog.com")}</div>
+        <div>
+            <f:verbatim>#{pc:safeEmail('abc@dog.com')}</f:verbatim>
+        </div>
 
         <table>
             <tr>

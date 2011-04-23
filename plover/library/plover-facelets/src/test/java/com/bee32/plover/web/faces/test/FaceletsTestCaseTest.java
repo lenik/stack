@@ -15,7 +15,7 @@ public class FaceletsTestCaseTest
 
     public static void main(String[] args)
             throws Exception {
-        new FaceletsTestCaseTest().browseAndWait("/info.jsf");
+        new FaceletsTestCaseTest().browseAndWait("/version.jsf");
     }
 
 }

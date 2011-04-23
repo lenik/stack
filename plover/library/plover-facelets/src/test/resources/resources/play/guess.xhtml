@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
-        http://java.sun.com/jsf/facelets    http://localhost/~lenik/public/spec/myfaces_core.xsd
-        http://java.sun.com/jsf/html        http://localhost/~lenik/public/spec/myfaces-html.xsd
-        "
-    template="/template.xhtml">
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" template="template.xhtml">
 
     <ui:define name="title">
-            I'm thinking of a number from #{NumberBean.min} to #{NumberBean.max}.  Can you guess it?
-        </ui:define>
+        I'm thinking of a number from #{NumberBean.min} to #{NumberBean.max}.  Can you guess it?
+    </ui:define>
 
     <ui:define name="body">
         <h:form id="helloForm">
