@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>
+    <ui:insert name="title">无标题</ui:insert>
+</title>
+
+<ui:insert name="styles">
+    <ui:insert name="styles.user" />
+</ui:insert>
+
+<script language="javascript" src="http://code.jquery.com/jquery-1.4.4.js"></script>
+<!-- <script language="javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script> -->
+
+<script language="javascript" src="${location.LIB_JS}/jquery.sha1.js"></script>
+<script language="javascript" src="${location.LIB_JS}/jquery.ajaxex.js"></script>
+
+<script language="javascript">
+    document.contextPath = "${location.WEB_APP}/";
+    document.WEB_APP = "${location.WEB_APP}/";
+</script>
+
+<script language="javascript" src="${location.WEB_APP}/site/frame.js"></script>
+
+<ui:insert name="pre-scripts">
+    <ui:insert name="pre-scripts.user" />
+</ui:insert>
+</head>
+
+<body>
+    <div style="margin: 0; width: 100%;">
+        <img src="${location.STYLE}/banner.gif" />
+    </div>
+
+    <div>
+        <f:verbatim>#{mainMenu.superfishHtml}</f:verbatim>
+        <div style="clear: both" />
+    </div>
+
+    <h2>
+        <ui:insert name="title" />
+    </h2>
+    <hr />
+
+    <ui:insert name="content">正在构建中……</ui:insert>
+
+    <div style="display: inline;">当前公司: #{loginInfo.currentCorp.name}</div>
+    <div style="display: inline; margin-left: 100px;">当前用户: #{loginInfo.currentUser.name}</div>
+    <div style="display: inline; margin-left: 100px;">
+        <a id="aQuit" name="aQuit" href="#">退出</a>
+    </div>
+
+    <div style="clear: both;" />
+    <div style="height: 5px; background-image: url(${location.STYLE}/split.gif); background-repeat: repeat-y"></div>
+    <div style="margin-top: 10px;">
+        <div style="display: inline">版权所有©2010-2011 海宁市智恒软件有限公司</div>
+        <div style="display: inline; margin-left: 50px;">
+            <a href="${location.WEB_APP}/site/contact.jsf">联系我们</a>
+        </div>
+    </div>
+
+    <ui:insert name="scripts.frame">
+
+        <ui:insert name="scripts.superfish">
+            <link rel="stylesheet" type="text/css" media="screen"
+                href="${location.LIB_3RDPARTY}/superfish-1.4.8/css/superfish.css" />
+
+            <script language="javascript" src="${location.LIB_3RDPARTY}/superfish-1.4.8/js/hoverIntent.js"></script>
+            <script language="javascript" src="${location.LIB_3RDPARTY}/superfish-1.4.8/js/superfish.js"></script>
+        </ui:insert>
+    </ui:insert>
+
+    <ui:insert name="scripts.jquery.ui">
+        <c:set var="JQUERY_UI" value="${location.LIB_3RDPARTY}/jquery-ui-1.8.2.custom/development-bundle" />
+
+        <script language="javascript" src="${JQUERY_UI}/external/jquery.bgiframe-2.1.1.js"></script>
+        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.core.js"></script>
+        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.widget.js"></script>
+        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.mouse.js"></script>
+        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.button.js"></script>
+        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.draggable.js"></script>
+        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.position.js"></script>
+        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.resizable.js"></script>
+        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.dialog.js"></script>
+        <script language="javascript" src="${JQUERY_UI}/ui/jquery.effects.core.js"></script>
+        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.autocomplete.js"></script>
+        <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.datepicker.js"></script>
+        <script language="javascript" src="${JQUERY_UI}/ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
+
+        <ui:insert name="scripts.jquery.ui.user" />
+    </ui:insert>
+
+    <ui:insert name="scripts">
+        <ui:insert name="scripts.user" />
+    </ui:insert>
+
+</body>
+</html>

@@ -14,6 +14,7 @@
 
 <script type="text/javascript">
     document.contextPath = "${location.WEB_APP}/";
+    document.WEB_APP = "${location.WEB_APP}/";
 </script>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.js"></script>
@@ -22,43 +23,12 @@
 <script type="text/javascript" src="${location.LIB_JS}/jquery.sha1.js"></script>
 <script type="text/javascript" src="${location.LIB_JS}/jquery.ajaxex.js"></script>
 
-<script type="text/javascript">
-    $(function() {
-        $("#aQuit").click(function() {
-            $.ajax({
-                "dataType" : "json",
-                "type" : "POST",
-                "url" : "${location.WEB_APP}/logout.htm",
-                "success" : function(data) {
-                    if (data.result.toUpperCase() == "SUCCESS") {
-                        alert("成功退出!");
-                        window.location = data.gotoAddress;
-                    } else {
-                        alert(data.message);
-                    }
-                },
-                "error" : function() {
-                    alert(arguments[1]);
-                }
-            });
-            return false;
-        });
-    });
-</script>
-
 <link rel="stylesheet" type="text/css" media="screen" href="${location.LIB_3RDPARTY}/superfish-1.4.8/css/superfish.css" />
 
 <script type="text/javascript" src="${location.LIB_3RDPARTY}/superfish-1.4.8/js/hoverIntent.js"></script>
 <script type="text/javascript" src="${location.LIB_3RDPARTY}/superfish-1.4.8/js/superfish.js"></script>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        $.ajaxSetup({
-            cache : false
-        });
-        $("ul.sf-menu").superfish();
-    });
-</script>
+<script type="text/javascript" src="${location.WEB_APP}/site/frame.js"></script>
 
 <ui:insert name="head"></ui:insert>
 </head>
@@ -89,10 +59,7 @@
     <div style="margin-top: 10px;">
         <div style="display: inline">版权所有©2010-2011 海宁市智恒软件有限公司</div>
         <div style="display: inline; margin-left: 50px;">
-            联系我们:
-            <f:verbatim>#{pc:safeEmail('xjl@99jsj.com')}</f:verbatim>
-            ,
-            <f:verbatim>#{pc:safeEmail('superjwl@gmail.com')}</f:verbatim>
+            <a href="${location.WEB_APP}/site/contact.jsf">联系我们</a>
         </div>
     </div>
 </body>
