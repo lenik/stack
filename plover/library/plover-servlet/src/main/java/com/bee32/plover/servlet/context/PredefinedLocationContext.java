@@ -15,7 +15,7 @@ public class PredefinedLocationContext
     private final URL root;
 
     public PredefinedLocationContext(String name, String rootPath) {
-        this(name, _parse(rootPath));
+        this(name, _parse(rootPath), null);
     }
 
     static URL _parse(String rootPath) {
@@ -27,10 +27,6 @@ public class PredefinedLocationContext
         } catch (MalformedURLException e) {
             throw new IllegalUsageException(e.getMessage(), e);
         }
-    }
-
-    public PredefinedLocationContext(String name, URL root) {
-        this(name, root, null);
     }
 
     public PredefinedLocationContext(String name, URL root, String base) {
@@ -45,6 +41,20 @@ public class PredefinedLocationContext
     @Override
     protected LocationContext create(String base) {
         return new PredefinedLocationContext(name, root, base);
+    }
+
+    @Override
+    public PredefinedLocationContext join(String location) {
+        return (PredefinedLocationContext) super.join(location);
+    }
+
+    public PredefinedLocationContext merge() {
+        try {
+            URL newRoot = new URL(root, base);
+            return new PredefinedLocationContext(name + " | " + base, newRoot, null);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
     }
 
     @Override

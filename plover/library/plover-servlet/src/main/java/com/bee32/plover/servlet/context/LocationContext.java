@@ -17,11 +17,11 @@ public abstract class LocationContext
     protected final String base;
     protected final boolean directory;
 
-    public LocationContext(String name) {
-        this.name = name;
-        this.base = "";
-        this.directory = false;
-    }
+// public LocationContext(String name) {
+// this.name = name;
+// this.base = null;
+// this.directory = false;
+// }
 
     public LocationContext(String name, String base) {
         this.name = name;
@@ -65,9 +65,9 @@ public abstract class LocationContext
      *
      * <pre>
      * foo? + null  => foo
+     * foo? + ""    => foo
      * foo? + /bar  => foo/bar
      * foo? + bar   => foo?bar
-     * foo? + ""    => foo?
      * </pre>
      *
      * @param context
@@ -81,7 +81,7 @@ public abstract class LocationContext
         if (context == null)
             return spec;
 
-        if (spec == null)
+        if (spec == null || spec.isEmpty())
             return context;
 
         if (spec.startsWith("/"))
@@ -109,7 +109,7 @@ public abstract class LocationContext
      *            spec url, <code>null</code> to use the context path.
      */
     protected String join(StringBuffer buffer, boolean isdir, String spec) {
-        if (spec == null)
+        if (spec == null || spec.isEmpty())
             return buffer.toString();
 
         if (spec.startsWith("/"))
