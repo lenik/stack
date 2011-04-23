@@ -1,6 +1,7 @@
 package com.bee32.plover.servlet.test;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 
 import javax.free.FilePath;
@@ -31,6 +32,11 @@ public class OverlappedResourceServlet
         super();
     }
 
+    static final boolean listIndex;
+    static {
+        listIndex = false;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -50,6 +56,35 @@ public class OverlappedResourceServlet
         }
 
         URLResource resource = new URLResource(resourceUrl);
+
+        if (resourceUrl.getPath().endsWith("/")) {
+            resp.setContentType("text/html");
+            resp.setCharacterEncoding("utf-8");
+
+            String dirName = req.getRequestURI();
+
+            PrintWriter out = resp.getWriter();
+            out.println("<html>");
+            out.println("<head><title>" + "Index of " + dirName + "</title></head>");
+            out.println("<body>");
+            out.println("<h1>" + "Index of " + dirName + "</h1>");
+            out.println("<hr />");
+
+            for (String baseName : resource.forRead().listLines()) {
+                baseName = baseName.trim();
+                if (baseName.isEmpty())
+                    continue;
+
+                out.print("<div>");
+                out.print("<a href='" + baseName + "'>" + baseName + "</a>");
+                out.println("</div>");
+            }
+
+            out.println("</body>");
+            out.println("</html>");
+            return;
+        }
+
         String extension = FilePath.getExtension(path);
         Mime mime = Mime.getInstanceByExtension(extension);
 
@@ -58,10 +93,10 @@ public class OverlappedResourceServlet
             resp.setContentType(contentType);
         }
 
+        // Also guess the encoding?
+
         ServletOutputStream out = resp.getOutputStream();
         new OutputStreamTarget(out).forWrite().writeBytes(resource);
-
-        // Also guess the encoding?
     }
 
     static URL searchClassInherited(Class<?> clazz, String path) {
