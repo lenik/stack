@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<ui:composition template="/template/newsite.xhtml">
+    <ui:define name="title">智恒软件联系信息</ui:define>
+
+    <ui:define name="content">
+        <table border="0">
+            <tr>
+                <td colspan="3">
+                    <h2>研发部</h2>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>谢继雷</td>
+                <td>
+                    <f:verbatim>#{pc:safeEmail('xjl@99jsj.com')}</f:verbatim>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>金卫林</td>
+                <td>
+                    <f:verbatim>#{pc:safeEmail('superjwl@gmail.com')}</f:verbatim>
+                </td>
+            </tr>
+        </table>
+    </ui:define>
+</ui:composition>
+</html>
