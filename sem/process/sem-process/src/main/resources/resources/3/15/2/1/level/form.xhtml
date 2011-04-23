@@ -78,41 +78,41 @@
         </table>
     </ui:define>
 
-    <ui:define name="script">
+    <ui:define name="scripts.user">
         <script language="javascript">
-        function removeLevels() {
-            $("#levels :selected").remove();
-        }
-
-        function addNewLevel() {
-            var limit = $("#newLimit").val();
-            if (limit.length == 0) {
-                alert("上界不能为空。");
-                return false;
+            function removeLevels() {
+                $("#levels :selected").remove();
             }
 
-            var policy = $("#newPolicy :selected");
-            if (policy.length == 0) {
-                return false;
+            function addNewLevel() {
+                var limit = $("#newLimit").val();
+                if (limit.length == 0) {
+                    alert("上界不能为空。");
+                    return false;
+                }
+
+                var policy = $("#newPolicy :selected");
+                if (policy.length == 0) {
+                    return false;
+                }
+
+                var policyId = policy.val();
+                var policyName = policy.text();
+
+                policyName = policyName
+                        .substr(0, policyName.indexOf(' | '));
+
+                var levels = $("#levels");
+                var option = $("&lt;option /&gt;");
+                option.val(limit + "," + policyId);
+                option.text(limit + " - " + policyName);
+                levels.append(option);
             }
 
-            var policyId = policy.val();
-            var policyName = policy.text();
-
-            policyName = policyName
-                    .substr(0, policyName.indexOf(' | '));
-
-            var levels = $("#levels");
-            var option = $("&lt;option /&gt;");
-            option.val(limit + "," + policyId);
-            option.text(limit + " - " + policyName);
-            levels.append(option);
-        }
-
-        function submitForm() {
-            $('#levels option').attr('selected', true);
-            return true;
-        }
+            $('form').submit(function() {
+                $('#levels option').attr('selected', true);
+                return true;
+            });
         </script>
     </ui:define>
 

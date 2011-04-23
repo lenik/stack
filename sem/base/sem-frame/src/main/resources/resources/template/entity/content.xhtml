@@ -12,19 +12,17 @@
         ${V.DETAIL} ${meta.name}
     </ui:define>
 
-    <ui:define name="head">
+    <ui:define name="commands">
     </ui:define>
 
     <ui:define name="body">
-        <h2>${V.DETAIL} ${meta.name}</h2>
-
         <!-- id: ${it.id} -->
         <!-- version: ${it.version} -->
         <input type="hidden" name="id" value="${it.id}" />
         <input type="hidden" name="version" value="${it.version}" />
 
         <ui:insert name="table" />
-
+        <ui:insert name="commands" />
     </ui:define>
 
 </ui:composition>

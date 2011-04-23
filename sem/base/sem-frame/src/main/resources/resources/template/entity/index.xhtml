@@ -6,27 +6,32 @@
     xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
     xmlns:sem="http://bee32.com/sem/functions">
 
-<ui:composition template="/template/site.xhtml">
+<ui:composition template="/template/newsite.xhtml">
 
     <ui:define name="title">${meta.name}</ui:define>
 
-    <ui:define name="head">
-        <script type="text/javascript" src="${location.LIB_3RDPARTY}/jsTree.v.1.0rc2/jquery.jstree.js"></script>
-
+    <ui:define name="styles">
         <link rel="stylesheet" type="text/css" href="${location.LIB_3RDPARTY}/dataTables-1.7/media/css/demo_page.css" />
         <link rel="stylesheet" type="text/css" href="${location.LIB_3RDPARTY}/dataTables-1.7/media/css/demo_table.css" />
-        <script type="text/javascript" src="${location.LIB_3RDPARTY}/dataTables-1.7/media/js/jquery.dataTables.js"></script>
-        <script type="text/javascript" src="${location.LIB_JS}/ex/datatable.js"></script>
+
+        <ui:insert name="styles.user" />
     </ui:define>
 
-    <ui:define name="body">
-        <h2>${meta.name}</h2>
+    <ui:define name="content">
+        <ui:insert name="commands">
+            <div>
+                <button id='createForm'>添加新的${meta.name}</button>
+            </div>
+        </ui:insert>
 
-        <div>
-            <a href="createForm.htm">添加新的${meta.name}</a>
-        </div>
+        <ui:insert name="table" />
+    </ui:define>
 
-        <ui:insert name="table1" />
+    <ui:define name="scripts">
+        <script type="text/javascript" src="${location.LIB_3RDPARTY}/jsTree.v.1.0rc2/jquery.jstree.js"></script>
+
+        <script type="text/javascript" src="${location.LIB_3RDPARTY}/dataTables-1.7/media/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="${location.LIB_JS}/ex/datatable.js"></script>
 
         <script type="text/javascript">
             $(document).ready(function() {
@@ -35,7 +40,12 @@
                     "sAjaxSource" : "data.htm"
                 });
             });
+
+            $('#createForm').button().click(function() {
+                location.href = 'createForm.htm';
+            });
         </script>
+        <ui:insert name="scripts.user" />
     </ui:define>
 
 </ui:composition>
