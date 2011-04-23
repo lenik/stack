@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<ui:composition template="/template/site.xhtml">
+
+    <ui:define name="title">
+        ${V.DETAIL} ${meta.name}
+    </ui:define>
+
+    <ui:define name="head">
+    </ui:define>
+
+    <ui:define name="body">
+        <h2>${V.DETAIL} ${meta.name}</h2>
+
+        <!-- id: ${it.id} -->
+        <!-- version: ${it.version} -->
+        <input type="hidden" name="id" value="${it.id}" />
+        <input type="hidden" name="version" value="${it.version}" />
+
+        <ui:insert name="table" />
+
+    </ui:define>
+
+</ui:composition>
+</html>
