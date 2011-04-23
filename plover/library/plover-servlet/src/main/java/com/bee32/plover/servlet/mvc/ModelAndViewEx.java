@@ -29,39 +29,40 @@ public abstract class ModelAndViewEx
         extends org.springframework.web.servlet.ModelAndView {
 
     private Object controller;
-    private final Class<?> hintClass;
+    private Class<?> hintClass;
 
-    public final Map<String, Object> _meta;
-    public final IVariantLookupMap<String> meta;
-    public final Map<String, String> V;
+    public Map<String, Object> _meta;
+    public IVariantLookupMap<String> meta;
+    public Map<String, String> V;
 
     public ModelAndViewEx(Object controller) {
         super();
-        this.controller = controller;
+        initController(controller);
     }
 
     public ModelAndViewEx(Object controller, String viewName, Map<String, ?> model) {
         super(viewName, model);
-        this.controller = controller;
+        initController(controller);
     }
 
     public ModelAndViewEx(Object controller, String viewName) {
         super(viewName);
-        this.controller = controller;
+        initController(controller);
     }
 
     public ModelAndViewEx(Object controller, View view, Map<String, ?> model) {
         super(view, model);
-        this.controller = controller;
+        initController(controller);
     }
 
     public ModelAndViewEx(Object controller, View view) {
         super(view);
-        this.controller = controller;
+        initController(controller);
     }
 
-    {
-        hintClass = getHintClass();
+    private void initController(Object controller) {
+        this.controller = controller;
+        this.hintClass = getHintClass();
 
         ClassDataEx local = classLocalClassDataEx.get(hintClass);
         if (local == null) {
