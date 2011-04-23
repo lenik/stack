@@ -163,32 +163,32 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
     protected abstract ModelAndView _createOrEditForm(ViewData view, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException;
 
-    protected ModelAndView _save(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _create(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         ViewData view = new ViewData();
         view.setViewName(viewOf("index"));
-        view.put("method", "save");
-        view.put("METHOD", view.V.get("save"));
+        view.put("method", "create");
+        view.put("METHOD", view.V.get("create"));
 
-        return _saveOrUpdate(view, req, resp);
+        return _createOrEdit(view, req, resp);
     }
 
-    protected ModelAndView _update(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _edit(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         ViewData view = new ViewData();
         view.setViewName(viewOf("index"));
-        view.put("method", "update");
-        view.put("METHOD", view.V.get("update"));
+        view.put("method", "edit");
+        view.put("METHOD", view.V.get("edit"));
 
-        return _saveOrUpdate(view, req, resp);
+        return _createOrEdit(view, req, resp);
     }
 
     /**
      * Use <code>req.getAttribute("create"): Boolean</code> to distinguish create and update.
      */
-    protected abstract ModelAndView _saveOrUpdate(ViewData data, HttpServletRequest req, HttpServletResponse resp)
+    protected abstract ModelAndView _createOrEdit(ViewData data, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException;
 
     protected ModelAndView _delete(HttpServletRequest req, HttpServletResponse resp)

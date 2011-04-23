@@ -40,10 +40,10 @@ public class DictController<E extends DictEntity<K>, K extends Serializable>
     }
 
     @Override
-    protected ModelAndView _saveOrUpdate(ViewData data, HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _createOrEdit(ViewData data, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         PrintWriter out = resp.getWriter();
-        out.println("createOrUpdate|Type: " + req.getAttribute("type"));
+        out.println("createOrEdit|Type: " + req.getAttribute("type"));
         return null;
     }
 

@@ -49,16 +49,16 @@ public abstract class EntityController<E extends EntityBean<K>, K extends Serial
         return _editForm(req, resp);
     }
 
-    @RequestMapping("save.htm")
+    @RequestMapping("create.htm")
     public ModelAndView create(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        return _save(req, resp);
+        return _create(req, resp);
     }
 
-    @RequestMapping("update.htm")
-    public ModelAndView update(HttpServletRequest req, HttpServletResponse resp)
+    @RequestMapping("edit.htm")
+    public ModelAndView edit(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        return _update(req, resp);
+        return _edit(req, resp);
     }
 
     @RequestMapping("delete.htm")

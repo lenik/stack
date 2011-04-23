@@ -70,7 +70,7 @@ public abstract class GenericEntityController<E extends EntityBean<K>, K extends
     public ModelAndView create(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         initType(req, type);
-        return _save(req, resp);
+        return _create(req, resp);
     }
 
     @RequestMapping("{type}/editForm.htm")
@@ -80,11 +80,11 @@ public abstract class GenericEntityController<E extends EntityBean<K>, K extends
         return _editForm(req, resp);
     }
 
-    @RequestMapping("{type}/update.htm")
-    public ModelAndView update(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
+    @RequestMapping("{type}/edit.htm")
+    public ModelAndView edit(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         initType(req, type);
-        return _update(req, resp);
+        return _edit(req, resp);
     }
 
     @RequestMapping("{type}/delete.htm")
