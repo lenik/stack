@@ -1,10 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" template="template.xhtml">
+<ui:composition template="/template/newsite.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:define name="title">ABC TemplateX
-        <ui:insert name="title1">  Default1</ui:insert>
+    <!-- default title defined in template.xhtml is: -->
+    <!-- No Title -->
+
+    <ui:define name="title">
+        ABC Title Override:
+        <ui:insert name="subtitle">No sub-title</ui:insert>
+        <ui:insert name="title">Nested Title Test</ui:insert>
     </ui:define>
 
 </ui:composition>
