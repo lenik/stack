@@ -46,6 +46,7 @@ public abstract class CustomizedSessionFactoryBean
         if (forceUnit == null)
             throw new NullPointerException("forceUnit");
         CustomizedSessionFactoryBean.staticUnit = forceUnit;
+        forceUnit.select();
     }
 
     @Override

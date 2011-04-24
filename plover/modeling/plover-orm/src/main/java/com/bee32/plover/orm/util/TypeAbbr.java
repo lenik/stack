@@ -58,16 +58,17 @@ public class TypeAbbr {
         return sb.toString();
     }
 
-    public void register(Class<?> clazz) {
+    public String register(Class<?> clazz) {
         if (clazz == null)
             throw new NullPointerException("clazz");
 
         String abbr = abbr(clazz);
         Class<?> existing = map.get(abbr);
-        if (existing != null)
+        if (existing != null && existing != clazz)
             throw new IllegalStateException("Abbreviation collision: " + clazz + " and " + existing);
 
         map.put(abbr, clazz);
+        return abbr;
     }
 
     public Class<?> expand(String abbr)

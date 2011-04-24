@@ -31,7 +31,13 @@ public abstract class PersistenceUnit
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> classes = super.getClasses();
+        return classes;
+    }
 
+    /**
+     * Called by user when he selected this unit.
+     */
+    public void select() {
         if (!postProcessed) {
             synchronized (this) {
                 if (!postProcessed) {
@@ -43,13 +49,11 @@ public abstract class PersistenceUnit
                 }
             }
         }
-        return classes;
     }
 
     void postProcess() {
         for (IPersistenceUnitPostProcessor postProcessor : ServiceLoader.load(IPersistenceUnitPostProcessor.class)) {
             logger.debug("    Post process by " + postProcessor);
-
             postProcessor.process(this);
         }
     }
