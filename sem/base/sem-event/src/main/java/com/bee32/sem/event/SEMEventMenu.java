@@ -3,7 +3,7 @@ package com.bee32.sem.event;
 import com.bee32.plover.orm.ext.dict.CommonDictController;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.servlet.context.LocationContext;
-import com.bee32.sem.event.entity.EventState;
+import com.bee32.sem.event.entity.EventStatus;
 import com.bee32.sem.event.web.EventController;
 import com.bee32.sem.event.web.EventPriorityController;
 import com.bee32.sem.frame.Contribution;
@@ -26,7 +26,7 @@ public class SEMEventMenu
 
     @Contribution("sa/event")
     MenuEntry states = new MenuEntry(0, "states", //
-            DICT.join(ABBR.abbr(EventState.class) + "/index.htm"));
+            DICT.join(ABBR.abbr(EventStatus.class) + "/index.htm"));
 
     @Contribution(".")
     MenuEntry event = new MenuEntry("event");

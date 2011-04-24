@@ -8,7 +8,13 @@ import com.bee32.plover.orm.util.Accessors;
 
 public class EntityDaoUtil {
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Find DAO class using heuristic alg.
+     *
+     * @return Non-<code>null</code> DAO accessor type.
+     * @throws IllegalUsageException
+     *             If no DAO class is found.
+     */
     public static <Dao extends EntityDao<E, K>, E extends EntityBean<K>, K extends Serializable> Class<Dao> getDaoTypeHeuristic(
             Class<E> entityType) {
 
@@ -17,7 +23,9 @@ public class EntityDaoUtil {
 
         Accessors accessorsAnn = entityType.getAnnotation(Accessors.class);
         if (accessorsAnn != null) {
-            return (Class<Dao>) accessorsAnn.value()[0];
+            @SuppressWarnings("unchecked")
+            Class<Dao> accessor1 = (Class<Dao>) accessorsAnn.value()[0];
+            return accessor1;
         }
 
         String entity_Name = entityType.getName();
