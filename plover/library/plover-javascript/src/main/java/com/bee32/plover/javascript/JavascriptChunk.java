@@ -16,7 +16,7 @@ public class JavascriptChunk
     @Override
     protected void formatFooter(HttpServletRequest req, IIndentedOut out)
             throws IOException {
-        out.println("/* ]]> */ --></script>");
+        out.println("\n/* ]]> */ --></script>");
     }
 
 }
