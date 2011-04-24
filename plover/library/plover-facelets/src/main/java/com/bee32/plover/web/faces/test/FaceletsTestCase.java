@@ -55,7 +55,7 @@ public class FaceletsTestCase
     }
 
     protected boolean isDebugMode() {
-        return true;
+        return false;
     }
 
     protected boolean isStrictMode() {
@@ -63,7 +63,7 @@ public class FaceletsTestCase
     }
 
     protected int getRefreshPeriod() {
-        return 0;
+        return 10;
     }
 
     @Override
