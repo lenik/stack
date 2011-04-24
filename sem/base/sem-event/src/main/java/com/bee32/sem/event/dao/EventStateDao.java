@@ -1,9 +1,9 @@
 package com.bee32.sem.event.dao;
 
 import com.bee32.plover.orm.entity.EntityDao;
-import com.bee32.sem.event.entity.EventState;
+import com.bee32.sem.event.entity.EventStatus;
 
 public class EventStateDao
-        extends EntityDao<EventState, Integer> {
+        extends EntityDao<EventStatus, Integer> {
 
 }
