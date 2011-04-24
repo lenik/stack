@@ -9,6 +9,7 @@ import javax.free.TypeConvertException;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
+import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Event;
 
 public abstract class AbstractEventDto<E extends Event>
@@ -20,7 +21,7 @@ public abstract class AbstractEventDto<E extends Event>
     private int priority;
 
     private int flags;
-    private int state;
+    private int stateIndex;
     private boolean closed;
 
     private int statusId;
@@ -36,6 +37,7 @@ public abstract class AbstractEventDto<E extends Event>
 
     private long refId;
     private String refAlt;
+    private String controlPage;
 
     public AbstractEventDto() {
         super();
@@ -49,7 +51,7 @@ public abstract class AbstractEventDto<E extends Event>
     protected void _marshal(E source) {
         category = source.getCategory();
         priority = source.getPriority();
-        state = source.getState();
+        stateIndex = source.getState();
 
         actorId = id(actor = new UserDto().marshal(source.getActor()));
 
@@ -66,7 +68,7 @@ public abstract class AbstractEventDto<E extends Event>
     protected void _unmarshalTo(IUnmarshalContext context, E target) {
         target.setCategory(category);
         target.setPriority(priority);
-        target.setState(state);
+        target.setState(stateIndex);
 
         target.setSubject(subject);
         target.setMessage(message);
@@ -88,7 +90,7 @@ public abstract class AbstractEventDto<E extends Event>
         priority = map.getInt("priority");
 
         flags = map.getInt("flags");
-        state = map.getInt("state");
+        stateIndex = map.getInt("state");
         closed = map.getBoolean("closed");
         statusId = map.getInt("statusId");
 
@@ -129,11 +131,11 @@ public abstract class AbstractEventDto<E extends Event>
     }
 
     public int getState() {
-        return state;
+        return stateIndex;
     }
 
     public void setState(int state) {
-        this.state = state;
+        this.stateIndex = state;
     }
 
     public boolean isClosed() {
@@ -160,6 +162,25 @@ public abstract class AbstractEventDto<E extends Event>
         this.status = status;
     }
 
+    public String getStatusText() {
+        String statusText = null;
+        if (status != null)
+            statusText = status.getDisplayName();
+
+        if (statusText == null && stateIndex != 0) {
+            EventState eventState = EventState.get(stateIndex);
+            statusText = eventState.getName();
+        }
+
+        if (statusText == null)
+            statusText = "";
+
+        if (!closed)
+            statusText = statusText + "+";
+
+        return statusText;
+    }
+
     public Long getActorId() {
         return actorId;
     }
@@ -174,6 +195,13 @@ public abstract class AbstractEventDto<E extends Event>
 
     public void setActor(UserDto actor) {
         this.actor = actor;
+    }
+
+    public String getActorName() {
+        if (actor == null)
+            return null;
+        else
+            return actor.getDisplayName();
     }
 
     public String getSubject() {
@@ -222,6 +250,14 @@ public abstract class AbstractEventDto<E extends Event>
 
     public void setRefAlt(String refAlt) {
         this.refAlt = refAlt;
+    }
+
+    public String getControlPage() {
+        return controlPage;
+    }
+
+    public void setControlPage(String controlPage) {
+        this.controlPage = controlPage;
     }
 
 }
