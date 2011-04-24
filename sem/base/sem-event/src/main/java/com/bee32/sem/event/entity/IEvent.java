@@ -1,8 +1,11 @@
 package com.bee32.sem.event.entity;
 
 import java.util.Date;
+import java.util.Set;
 
+import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.IUserPrincipal;
+import com.bee32.sem.event.EventFlags;
 
 /**
  * Base type for all enterprise events.
@@ -27,17 +30,33 @@ public interface IEvent {
      */
     int getPriority();
 
-    public static final String EVENT_NOTICE = "notice";
-    public static final String EVENT_WARNING = "warning";
-    public static final String EVENT_ERROR = "error";
-    public static final String EVENT_CLEARED = "cleared";
+    /**
+     * Event flags.
+     *
+     * @see EventFlags
+     */
+    int getFlags();
 
     /**
-     * Get the event state.
+     * Whether the event is closed.
      *
-     * @return State name, should be non-<code>null</code> string.
+     * Only open events will be listed.
      */
-    String getState();
+    boolean isClosed();
+
+    /**
+     * Get the internal event state.
+     *
+     * @return Internal event state.
+     */
+    int getState();
+
+    /**
+     * Get the user event status
+     *
+     * @return User event status.
+     */
+    EventStatus getStatus();
 
     /**
      * Get the actor who initiated the event.
@@ -105,5 +124,12 @@ public interface IEvent {
      *         null-key is not supported)
      */
     String getRefAlt();
+
+    /**
+     * Get the set of observers.
+     *
+     * @return Set of observer principals.
+     */
+    Set<? extends IPrincipal> getObservers();
 
 }

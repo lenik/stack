@@ -3,6 +3,8 @@ package com.bee32.sem.event.entity;
 import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -11,16 +13,20 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 
+import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.util.AliasUtil;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
+import com.bee32.sem.event.EventFlags;
 
 @Entity
 @Inheritance(strategy = SINGLE_TABLE)
@@ -34,7 +40,11 @@ public class Event
 
     private String category;
     private int priority;
-    private String state;
+
+    private final EventFlags flags = new EventFlags();
+    private boolean closed;
+    private int state;
+    private EventStatus status; // status -> flags, closed, state.
 
     private User actor;
 
@@ -47,6 +57,8 @@ public class Event
     private transient Class<?> refClass;
     private long refId;
     private String refAlt;
+
+    private Set<Principal> observers;
 
     public Event() {
         super();
@@ -77,15 +89,46 @@ public class Event
         this.priority = priority;
     }
 
-    @Index(name = "state")
-    @Column(length = 10)
+    @Column(nullable = false)
     @Override
-    public String getState() {
+    public int getFlags() {
+        return flags.bits;
+    }
+
+    public void setFlags(int bits) {
+        flags.bits = bits;
+    }
+
+    @Index(name = "closed")
+    @Column(nullable = false)
+    @Override
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
+    }
+
+    @Index(name = "state")
+    @Column(nullable = false)
+    @Override
+    public int getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(int state) {
         this.state = state;
+    }
+
+    @ManyToOne
+    @Override
+    public EventStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EventStatus status) {
+        this.status = status;
     }
 
     @Index(name = "actor")
@@ -195,5 +238,36 @@ public class Event
     public void setRefAlt(String refAlt) {
         this.refAlt = refAlt;
     }
+
+    @OneToMany
+    @Override
+    public Set<Principal> getObservers() {
+        if (observers == null) {
+            synchronized (this) {
+                if (observers == null) {
+                    observers = new HashSet<Principal>();
+                }
+            }
+        }
+        return observers;
+    }
+
+    public void setObservers(Set<Principal> observers) {
+        this.observers = observers;
+    }
+
+    public static PropertyAccessor<Event, User> actorProperty = new PropertyAccessor<Event, User>(User.class) {
+
+        @Override
+        public User get(Event event) {
+            return event.actor;
+        }
+
+        @Override
+        public void set(Event event, User actor) {
+            event.actor = actor;
+        }
+
+    };
 
 }

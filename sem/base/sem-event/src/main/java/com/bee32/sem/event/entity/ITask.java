@@ -19,18 +19,13 @@ public interface ITask
     @Override
     int getPriority();
 
-    public static final String TASK_OPEN = "open";
-    public static final String TASK_CLOSED = "closed";
-    public static final String TASK_PENDING = "pending";
-    public static final String TASK_DONE = EVENT_CLEARED;
-
     /**
      * Get the state of task.
      *
-     * @return Task state name.
+     * @return Task state index.
      */
     @Override
-    String getState();
+    int getState();
 
     /**
      * Get the scheduled start time.

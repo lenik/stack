@@ -19,7 +19,7 @@ public class EventController<E extends Event, Dto extends AbstractEventDto<E>>
         tab.push(event.getPriority());
         tab.push(event.getState());
 
-        tab.push(event.getActor().getName());
+        tab.push(event.getActor().getDisplayName());
 
         tab.push(event.getSubject());
         tab.push(event.getMessage());

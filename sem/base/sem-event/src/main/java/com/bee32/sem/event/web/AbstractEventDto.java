@@ -18,8 +18,15 @@ public abstract class AbstractEventDto<E extends Event>
 
     private String category;
     private int priority;
-    private String state;
 
+    private int flags;
+    private int state;
+    private boolean closed;
+
+    private int statusId;
+    private EventStatusDto status;
+
+    private Long actorId;
     private UserDto actor;
 
     private String subject;
@@ -44,7 +51,7 @@ public abstract class AbstractEventDto<E extends Event>
         priority = source.getPriority();
         state = source.getState();
 
-        actor = new UserDto().marshal(source.getActor());
+        actorId = id(actor = new UserDto().marshal(source.getActor()));
 
         subject = source.getSubject();
         message = source.getMessage();
@@ -61,12 +68,12 @@ public abstract class AbstractEventDto<E extends Event>
         target.setPriority(priority);
         target.setState(state);
 
-        target.setActor(unmarshal(actor));
-
         target.setSubject(subject);
         target.setMessage(message);
         target.setBeginTime(beginTime);
         target.setEndTime(endTime);
+
+        unmarshal(context, target, Event.actorProperty, actorId, actor);
 
         target.setRefId(refId);
         target.setRefAlt(refAlt);
@@ -79,15 +86,22 @@ public abstract class AbstractEventDto<E extends Event>
 
         category = map.getString("category");
         priority = map.getInt("priority");
-        state = map.getString("state");
+
+        flags = map.getInt("flags");
+        state = map.getInt("state");
+        closed = map.getBoolean("closed");
+        statusId = map.getInt("statusId");
 
         subject = map.getString("subject");
         message = map.getString("message");
         beginTime = map.getDate("beginTime");
         endTime = map.getDate("endTime");
 
-        refId = map.getLong("refId");
-        refAlt = map.getString("refAlt");
+        String _refId = map.getString("refId");
+        if (_refId != null)
+            refId = Long.parseLong(_refId);
+        else
+            refAlt = map.getString("refAlt");
     }
 
     public String getCategory() {
@@ -106,12 +120,52 @@ public abstract class AbstractEventDto<E extends Event>
         this.priority = priority;
     }
 
-    public String getState() {
+    public int getFlags() {
+        return flags;
+    }
+
+    public void setFlags(int flags) {
+        this.flags = flags;
+    }
+
+    public int getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(int state) {
         this.state = state;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
+    public EventStatusDto getStatus() {
+        return status;
+    }
+
+    public void setStatus(EventStatusDto status) {
+        this.status = status;
+    }
+
+    public Long getActorId() {
+        return actorId;
+    }
+
+    public void setActorId(Long actorId) {
+        this.actorId = actorId;
     }
 
     public UserDto getActor() {
