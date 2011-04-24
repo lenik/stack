@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.orm.ext.dict.ShortDictEntity;
 
+/**
+ * 事件状态
+ */
 @Entity
 public class EventState
         extends ShortDictEntity<Integer> {
@@ -14,8 +17,12 @@ public class EventState
         super();
     }
 
-    public EventState(String name, String description, String icon) {
-        super(name, description, icon);
+    public EventState(String name, String displayName) {
+        super(name, displayName);
+    }
+
+    public EventState(String name, String displayName, String icon) {
+        super(name, displayName, icon);
     }
 
 }

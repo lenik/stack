@@ -6,10 +6,7 @@ import javax.persistence.Entity;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.ext.dict.ShortDictEntity;
-import com.bee32.plover.orm.util.Accessors;
-import com.bee32.sem.event.dao.EventPriorityDao;
 
-@Accessors(EventPriorityDao.class)
 @Entity
 public class EventPriority
         extends ShortDictEntity<Integer> {
@@ -21,10 +18,11 @@ public class EventPriority
     public EventPriority() {
     }
 
-    public EventPriority(String name, int priority) {
+    public EventPriority(String name, String displayName, int priority) {
         if (name == null)
             throw new NullPointerException("name");
         this.name = name;
+        this.displayName = displayName;
         this.priority = priority;
     }
 
