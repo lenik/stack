@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bee32.plover.orm.entity.EntityDao;
 import com.bee32.plover.orm.ext.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
 
@@ -19,13 +18,6 @@ public class VerifyPolicyPrefController
         extends EntityController<VerifyPolicyPref, String, VerifyPolicyPrefDto> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "pref/";
-
-    VerifyPolicyPrefDao verifyPolicyPrefDao;
-
-    @Override
-    protected EntityDao<VerifyPolicyPref, String> getAccessor() {
-        return verifyPolicyPrefDao;
-    }
 
     @Override
     public ModelAndView _data(HttpServletRequest req, HttpServletResponse resp)
