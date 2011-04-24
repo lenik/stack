@@ -34,7 +34,7 @@ public class ServletDiag {
         return list;
     }
 
-    public static void dump(HttpServletRequest req, HttpServletResponse resp)
+    public static <T> T dump(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
         resp.setContentType("text/plain");
@@ -195,7 +195,9 @@ public class ServletDiag {
 
             out.leave();
         }
+
         resp.getWriter().print(out.toString());
+        return null;
     }
 
     static void dumpProperties(Class<?> type, String var) {
