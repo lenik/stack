@@ -31,7 +31,7 @@ public abstract class DataTransferObject<T, C>
 
     protected final Flags32 selection = new Flags32();
 
-    public DataTransferObject(Class<? extends T> sourceType) {
+    protected DataTransferObject(Class<? extends T> sourceType) {
         setSourceType(sourceType);
     }
 
@@ -69,6 +69,10 @@ public abstract class DataTransferObject<T, C>
     private static ThreadLocal<Map<Object, Object>> threadLocalGraph;
     static {
         threadLocalGraph = new ThreadLocal<Map<Object, Object>>();
+    }
+
+    protected C defaultContext() {
+        return null;
     }
 
     @Override
@@ -141,11 +145,12 @@ public abstract class DataTransferObject<T, C>
 
     @Override
     public final T unmarshal() {
-        return unmarshal((C) null);
+        return unmarshal(null);
     }
 
-    public void unmarshalTo(T target) {
-        unmarshalTo((C) null, target);
+    @Override
+    public final void unmarshalTo(T target) {
+        unmarshalTo(null, target);
     }
 
     @Override
@@ -156,12 +161,16 @@ public abstract class DataTransferObject<T, C>
         } catch (ReflectiveOperationException e) {
             throw new IllegalUsageException("Failed to instantiate source bean " + sourceType.getName(), e);
         }
+
         unmarshalTo(context, target);
         return target;
     }
 
     @Override
     public final void unmarshalTo(C context, T target) {
+        if (context == null)
+            context = defaultContext();
+
         __unmarshalTo(context, target);
         _unmarshalTo(context, target);
     }
@@ -169,6 +178,8 @@ public abstract class DataTransferObject<T, C>
     /**
      * Write some internal properties from this object into the specified source bean.
      *
+     * @param context
+     *            Non-<code>null</code> unmarshal context.
      * @param target
      *            Non-<code>null</code> target source bean.
      * @throws NotImplementedException
@@ -180,6 +191,8 @@ public abstract class DataTransferObject<T, C>
     /**
      * Write some user properties from this object into the specified source bean.
      *
+     * @param context
+     *            Non-<code>null</code> unmarshal context.
      * @param target
      *            Non-<code>null</code> target source bean.
      * @throws NotImplementedException
