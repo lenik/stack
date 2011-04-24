@@ -92,49 +92,73 @@ public class CommonDataManager
         return getHibernateTemplate().executeFind(action);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
+    public <T> T get(Class<T> entityClass, Serializable id)
+            throws DataAccessException {
+        return getHibernateTemplate().get(entityClass, id);
+    }
+
+    @Transactional(readOnly = true)
+    public <T> T get(Class<T> entityClass, Serializable id, LockMode lockMode)
+            throws DataAccessException {
+        return getHibernateTemplate().get(entityClass, id, lockMode);
+    }
+
+    @Transactional(readOnly = true)
+    public Object get(String entityName, Serializable id)
+            throws DataAccessException {
+        return getHibernateTemplate().get(entityName, id);
+    }
+
+    @Transactional(readOnly = true)
+    public Object get(String entityName, Serializable id, LockMode lockMode)
+            throws DataAccessException {
+        return getHibernateTemplate().get(entityName, id, lockMode);
+    }
+
+    @Transactional(readOnly = true)
     public <T> T load(Class<T> entityClass, Serializable id)
             throws DataAccessException {
         return getHibernateTemplate().load(entityClass, id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public <T> T load(Class<T> entityClass, Serializable id, LockMode lockMode)
             throws DataAccessException {
         return getHibernateTemplate().load(entityClass, id, lockMode);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Object load(String entityName, Serializable id)
             throws DataAccessException {
         return getHibernateTemplate().load(entityName, id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Object load(String entityName, Serializable id, LockMode lockMode)
             throws DataAccessException {
         return getHibernateTemplate().load(entityName, id, lockMode);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public <T> List<T> loadAll(Class<T> entityClass)
             throws DataAccessException {
         return getHibernateTemplate().loadAll(entityClass);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public void load(Object entity, Serializable id)
             throws DataAccessException {
         getHibernateTemplate().load(entity, id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public void refresh(Object entity)
             throws DataAccessException {
         getHibernateTemplate().refresh(entity);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public void refresh(Object entity, LockMode lockMode)
             throws DataAccessException {
         getHibernateTemplate().refresh(entity, lockMode);
