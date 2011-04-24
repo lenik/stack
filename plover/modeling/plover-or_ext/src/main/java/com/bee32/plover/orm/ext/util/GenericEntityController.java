@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityUtil;
@@ -72,7 +73,8 @@ public abstract class GenericEntityController<E extends EntityBean<K>, K extends
         if (transferBy != null)
             requestGenerics.transferType = transferBy.value();
         else
-            requestGenerics.transferType = null;
+            // fallback to the declared Dto.
+            requestGenerics.transferType = ClassUtil.infer1(getClass(), GenericEntityController.class, 2);
 
         tlRequestGenerics.set(requestGenerics);
     }
