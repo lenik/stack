@@ -25,13 +25,7 @@ public class EntityUtil {
         entityKeyTypeMap = new HashMap<Class<? extends IEntity<?>>, KeyTypeEnum>();
     }
 
-    public static <E extends IEntity<K>, K extends Serializable> K parseId(Class<E> entityClass, String idString) {
-        if (entityClass == null)
-            throw new NullPointerException("entityClass");
-
-        if (idString == null)
-            return null;
-
+    public static <E extends IEntity<K>, K extends Serializable> K parseIdOfEntity(Class<E> entityClass, String idString) {
         KeyTypeEnum keyTypeEnum = entityKeyTypeMap.get(entityClass);
         if (keyTypeEnum == null) {
             synchronized (EntityUtil.class) {
@@ -41,23 +35,47 @@ public class EntityUtil {
                     if (keyTypeEnum == null)
                         throw new IllegalUsageException(//
                                 "Unsupported primary key type of Entity " + entityClass + ": " + keyType);
+                    entityKeyTypeMap.put(entityClass, keyTypeEnum);
                 }
             }
         }
+        return _parseId(keyTypeEnum, idString);
+    }
 
+    public static <K extends Serializable> K parseId(Class<K> keyType, String idString) {
+        if (keyType == null)
+            throw new NullPointerException("keyType");
+
+        if (idString == null)
+            return null;
+
+        KeyTypeEnum keyTypeEnum = getTypeEnum(keyType);
+        if (keyTypeEnum == null)
+            throw new IllegalUsageException(//
+                    "Unsupported primary key type: " + keyType);
+
+        return _parseId(keyTypeEnum, idString);
+    }
+
+    static <K extends Serializable> K _parseId(KeyTypeEnum keyTypeEnum, String idString) {
         Serializable key;
 
         switch (keyTypeEnum) {
         case INT:
+            if (idString.isEmpty())
+                return null;
             key = Integer.parseInt(idString);
             break;
 
         case LONG:
+            if (idString.isEmpty())
+                return null;
             key = Long.parseLong(idString);
             break;
 
         case STRING:
         default:
+            // XXX Should empty-string be converted to null?
             key = idString;
         }
 
