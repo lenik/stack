@@ -7,7 +7,7 @@ public class EmailUtil {
     public static String getFriendlyEmail(User user) {
         if (user == null)
             return null;
-        return getFriendlyEmail(user.getDisplayName2(), user.getEmail());
+        return getFriendlyEmail(user.getDisplayName(), user.getEmail());
     }
 
     public static String getFriendlyEmail(String name, String mailbox) {

@@ -17,16 +17,15 @@ public class EventController<E extends Event, Dto extends AbstractEventDto<E>>
     protected void fillDataRow(DataTableDxo tab, Dto event) {
         tab.push(event.getCategory());
         tab.push(event.getPriority());
-        tab.push(event.getState());
-
-        tab.push(event.getActor().getDisplayName());
-
+        tab.push(event.getStatusText());
+        tab.push(event.getActorName());
         tab.push(event.getSubject());
         tab.push(event.getMessage());
         tab.push(event.getBeginTime());
-        tab.push(event.getEndTime());
+        // tab.push(event.getEndTime());
 
-        // push ref-entity url...
+        String controlUrl = null;
+        tab.push(controlUrl);
     }
 
     @Override
@@ -34,7 +33,7 @@ public class EventController<E extends Event, Dto extends AbstractEventDto<E>>
     }
 
     protected void fillEntity(E entity, Dto dto) {
-        dto.unmarshalTo(entity);
+        dto.unmarshalTo(this, entity);
     }
 
 }

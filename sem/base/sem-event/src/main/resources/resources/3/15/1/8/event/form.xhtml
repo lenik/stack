@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
+    xmlns:sem="http://bee32.com/sem/functions">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<ui:composition template="/template/entity/form.xhtml">
+    <ui:define name="table">
+        <table width="100%" bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+                <td align="right">类别 :</td>
+                <td>
+                    <input name="category" type="text" size="20" maxlength="50" value="${it.category}" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">优先级 :</td>
+                <td>
+                    <input name="priority" type="text" size="4" maxlength="10" value="${it.priority}" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">状态 :</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td align="right">行为主体 :</td>
+                <td>
+                    <input name="actorId" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">标题 :</td>
+                <td>
+                    <input name="subject" type="text" size="60" maxlength="200" value="${it.subject}" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">消息 :</td>
+                <td>
+                    <input name="message" type="text" size="60" maxlength="200" value="${it.message}" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">开始时间 :</td>
+                <td>
+                    <input name="beginTime" type="text" size="15" maxlength="30" value="${it.beginTime}" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">结束时间 :</td>
+                <td>
+                    <input name="endTime" type="text" size="15" maxlength="30" value="${it.endTime}" />
+                </td>
+            </tr>
+        </table>
+    </ui:define>
+</ui:composition>
+</html>
