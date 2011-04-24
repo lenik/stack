@@ -8,7 +8,7 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.orm.util.EntityDto;
 
-public class DictDto<E extends DictEntity<K>, K extends Serializable>
+public class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
         extends EntityDto<E, K> {
 
     private static final long serialVersionUID = 1L;
@@ -17,11 +17,11 @@ public class DictDto<E extends DictEntity<K>, K extends Serializable>
     protected String description;
     protected String icon;
 
-    public DictDto() {
+    public DictEntityDto() {
         super();
     }
 
-    public DictDto(E source) {
+    public DictEntityDto(E source) {
         super(source);
     }
 
