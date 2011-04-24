@@ -23,10 +23,12 @@ import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.plover.servlet.mvc.ModelAndViewEx;
 
 public abstract class _EntityController<E extends EntityBean<K>, K extends Serializable, Dto extends EntityDto<E, K>>
-        extends Component {
+        extends Component
+        implements IUnmarshalContext {
 
     @Inject
     protected CommonDataManager dataManager;
@@ -51,6 +53,11 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
                 throw new Error("PREFIX isn't defined in " + getClass());
             }
         this.prefix = prefix;
+    }
+
+    @Override
+    public <_E extends EntityBean<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id) {
+        return dataManager.load(entityType, id);
     }
 
     protected abstract Class<? extends K> getKeyType();
