@@ -7,9 +7,9 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.DataTransferObject;
+import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.EntityDao;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntity;
 
@@ -75,6 +75,11 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
     }
 
     @Override
+    protected IUnmarshalContext defaultContext() {
+        return IUnmarshalContext.NULL;
+    }
+
+    @Override
     protected void __marshal(E source) {
         id = source.getId();
         version = source.getVersion();
@@ -87,26 +92,6 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
 
         if (version != null)
             EntityAccessor.setVersion(target, version);
-    }
-
-    static <E extends EntityBean<K>, K extends Serializable, Dao extends EntityDao<E, K>> //
-    E unmarshalMember(IUnmarshalContext context, Class<E> entityType, E oldValue, K newId, EntityDto<E, K> newDto) {
-
-        EntityDao<E, K> dao = context.getDao(entityType);
-
-        if (newId != null)
-            return dao.get(newId);
-
-        if (newDto == null)
-            return null;
-
-        K existingId = newDto.getId();
-        if (existingId == null)
-            return newDto.unmarshal(); // unmarshalContext
-
-        E existing = dao.load(existingId);
-        newDto.unmarshalTo(existing);
-        return existing;
     }
 
     @Override
@@ -151,6 +136,44 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
             return null;
         else
             return entity.getId();
+    }
+
+    protected static <D extends EntityDto<?, K>, K extends Serializable> K id(D dto) {
+        if (dto == null)
+            return null;
+        else
+            return dto.getId();
+    }
+
+    protected static <E extends EntityBean<K>, K extends Serializable> //
+    E unmarshal(IUnmarshalContext context, Class<E> entityType, E oldEntity, K newId, EntityDto<E, K> newDto) {
+
+        if (newId != null)
+            return context.loadEntity(entityType, newId);
+
+        if (newDto == null)
+            return null;
+
+        K existingId = newDto.getId();
+        if (existingId == null)
+            return newDto.unmarshal(); // unmarshalContext
+
+        E existing = context.loadEntity(entityType, existingId);
+        newDto.unmarshalTo(existing);
+        return existing;
+    }
+
+    protected static <E extends EntityBean<?>, Ei extends EntityBean<Ki>, Ki extends Serializable> void unmarshal(
+            IUnmarshalContext context, E target, PropertyAccessor<E, Ei> property, //
+            Ki newId, EntityDto<Ei, Ki> newDto) {
+
+        Class<Ei> propertyType = property.getType();
+
+        Ei oldProperty = property.get(target);
+        Ei newProperty = unmarshal(context, propertyType, oldProperty, newId, newDto);
+
+        if (newProperty != oldProperty)
+            property.set(target, newProperty);
     }
 
 }
