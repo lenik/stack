@@ -17,15 +17,15 @@ public class PrincipalDtoTest
     @Test
     public void testNew() {
         PrincipalDto<Principal> principalDto = new PrincipalDto<Principal>();
-        Class<?> dataType = DTOs.getDataType(principalDto);
-        assertEquals(Principal.class, dataType);
+        Class<?> sourceType = DTOs.getSourceType(principalDto);
+        assertEquals(Principal.class, sourceType);
     }
 
     @Test
     public void testChild() {
         UserDto userDto = new UserDto();
-        Class<?> dataType = DTOs.getDataType(userDto);
-        assertEquals(User.class, dataType);
+        Class<?> sourceType = DTOs.getSourceType(userDto);
+        assertEquals(User.class, sourceType);
     }
 
     static String dumpGenericTree(Type type) {

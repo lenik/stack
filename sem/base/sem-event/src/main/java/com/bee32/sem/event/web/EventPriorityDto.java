@@ -4,11 +4,11 @@ import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import com.bee32.plover.orm.ext.dict.DictDto;
+import com.bee32.plover.orm.ext.dict.DictEntityDto;
 import com.bee32.sem.event.entity.EventPriority;
 
 public class EventPriorityDto
-        extends DictDto<EventPriority, Integer> {
+        extends DictEntityDto<EventPriority, Integer> {
 
     private static final long serialVersionUID = 1L;
 

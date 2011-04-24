@@ -9,6 +9,7 @@ import javax.free.IVariantLookupMap;
 import javax.free.IllegalUsageException;
 import javax.free.Map2VariantLookupMap;
 
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
 import com.bee32.plover.arch.util.res.ResourceBundleEx;
@@ -26,7 +27,7 @@ import com.bee32.plover.arch.util.res.ResourceBundleEx;
  * </pre>
  */
 public abstract class ModelAndViewEx
-        extends org.springframework.web.servlet.ModelAndView {
+        extends ModelAndView {
 
     private Object controller;
     private Class<?> hintClass;
