@@ -47,7 +47,7 @@ public abstract class BasicEntityController<E extends EntityBean<K>, K extends S
 
         Integer selection = dtoSelection;
         List<? extends Dto> list = DTOs.marshalList(getTransferType(), //
-                selection.intValue(), entityList);
+                selection == null ? null : selection.intValue(), entityList);
 
         tab.totalRecords = list.size();
         tab.totalDisplayRecords = tab.totalRecords;
