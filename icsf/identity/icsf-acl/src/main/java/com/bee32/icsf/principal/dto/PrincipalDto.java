@@ -15,7 +15,7 @@ public class PrincipalDto<E extends Principal>
     public static final int IMPS = 8;
 
     String name;
-    String displayName;
+    String fullName;
     String description;
 
     public PrincipalDto() {
@@ -42,12 +42,16 @@ public class PrincipalDto<E extends Principal>
         this.name = name;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getDisplayName() {
+        return fullName != null ? fullName : name;
     }
 
     public String getDescription() {
@@ -61,14 +65,14 @@ public class PrincipalDto<E extends Principal>
     @Override
     protected void _marshal(E source) {
         name = source.getName();
-        displayName = source.getDisplayName();
+        fullName = source.getFullName();
         description = source.getDescription();
     }
 
     @Override
     protected void _unmarshalTo(IUnmarshalContext context, E target) {
         target.setName(name);
-        target.setDisplayName(displayName);
+        target.setFullName(fullName);
         target.setDescription(description);
     }
 

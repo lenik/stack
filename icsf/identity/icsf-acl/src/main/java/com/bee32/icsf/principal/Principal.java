@@ -25,7 +25,7 @@ public class Principal
 
     private static final long serialVersionUID = 1L;
 
-    private String displayName;
+    private String fullName;
     private String description;
 
     public static final char EMAIL_INIT = '?';
@@ -59,21 +59,19 @@ public class Principal
     }
 
     @Column(length = 50)
-    @Override
-    public String getDisplayName() {
-        return displayName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     @Transient
-    public String getDisplayName2() {
-        if (displayName != null)
-            return displayName;
-        else
-            return name;
+    public String getDisplayName() {
+        if (fullName != null)
+            return fullName;
+        return name;
     }
 
     @Column(length = 200)
