@@ -27,7 +27,7 @@ public class CommonDictController<E extends DictEntity<K>, K extends Serializabl
     protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         K id = parseId(req.getParameter("id"));
-        E entity = getAccessor().load(id);
+        E entity = dataManager.load(getEntityType(), id);
         return it(newDto().marshal(entity));
     }
 
@@ -37,7 +37,7 @@ public class CommonDictController<E extends DictEntity<K>, K extends Serializabl
 
         DataTableDxo tab = new DataTableDxo(req);
 
-        List<? extends Dto> all = DTOs.marshalList(getTransferType(), getAccessor().list());
+        List<? extends Dto> all = DTOs.marshalList(getTransferType(), dataManager.loadAll(getEntityType()));
 
         tab.totalRecords = all.size();
         tab.totalDisplayRecords = tab.totalRecords;
@@ -69,7 +69,7 @@ public class CommonDictController<E extends DictEntity<K>, K extends Serializabl
             dto.setDescription("");
         } else {
             K id = parseId(req.getParameter("id"));
-            E entity = getAccessor().load(id);
+            E entity = dataManager.load(getEntityType(), id);
             dto = newDto().marshal(entity);
         }
         view.put("it", dto);
@@ -94,7 +94,7 @@ public class CommonDictController<E extends DictEntity<K>, K extends Serializabl
             if (id == null)
                 throw new ServletException("id isn't specified");
 
-            entity = getAccessor().get(id);
+            entity = dataManager.get(getEntityType(), id);
             if (entity == null)
                 throw new IllegalStateException("No entity whose id=" + id);
 
@@ -105,7 +105,8 @@ public class CommonDictController<E extends DictEntity<K>, K extends Serializabl
         }
 
         dto.unmarshalTo(entity);
-        getAccessor().saveOrUpdate(entity);
+        dataManager.saveOrUpdate(entity);
         return view;
     }
+
 }

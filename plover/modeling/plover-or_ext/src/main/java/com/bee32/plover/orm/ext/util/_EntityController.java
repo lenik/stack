@@ -12,28 +12,26 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
+import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.javascript.util.Javascripts;
+import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.EntityDao;
-import com.bee32.plover.orm.entity.EntityDaoUtil;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.servlet.mvc.ModelAndViewEx;
 
-public abstract class _EntityController<E extends EntityBean<K>, K extends Serializable, Dto extends EntityDto<E, K>> {
+public abstract class _EntityController<E extends EntityBean<K>, K extends Serializable, Dto extends EntityDto<E, K>>
+        extends Component {
 
     @Inject
-    protected ApplicationContext applicationContext;
+    protected CommonDataManager dataManager;
 
     protected final String prefix;
-
-    protected EntityDao<E, K> _accessor;
 
     public _EntityController() {
         this(null);
@@ -60,16 +58,6 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
     protected abstract Class<? extends E> getEntityType();
 
     protected abstract Class<? extends Dto> getTransferType();
-
-    protected synchronized EntityDao<E, K> getAccessor() {
-        if (_accessor == null) {
-            Class<?> accessorType = EntityDaoUtil.getDaoTypeHeuristic(getEntityType());
-            assert accessorType != null;
-
-            _accessor = (EntityDao<E, K>) applicationContext.getBean(accessorType);
-        }
-        return _accessor;
-    }
 
     protected class ViewData
             extends ModelAndViewEx {
@@ -219,10 +207,10 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
 
         ViewData view = new ViewData(viewOf("index"));
 
-        E entity = getAccessor().load(id);
+        E entity = dataManager.load(getEntityType(), id);
         if (entity != null)
             try {
-                getAccessor().delete(entity);
+                dataManager.delete(entity);
             } catch (DataIntegrityViolationException e) {
                 resp.setCharacterEncoding("utf-8");
                 String entityName = view.meta.getString("typeName") + " " + entity.getName();

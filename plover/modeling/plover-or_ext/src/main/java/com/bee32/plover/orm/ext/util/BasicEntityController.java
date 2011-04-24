@@ -18,15 +18,11 @@ import com.bee32.plover.orm.util.EntityDto;
 public abstract class BasicEntityController<E extends EntityBean<K>, K extends Serializable, Dto extends EntityDto<E, K>>
         extends EntityController<E, K, Dto> {
 
-    protected Integer content_getSelection() {
-        return null;
+    Integer dtoSelection;
+
+    protected void setDtoSelection(Integer dtoSelection) {
+        this.dtoSelection = dtoSelection;
     }
-
-    protected abstract void data_buildRow(DataTableDxo tab, Dto item);
-
-    protected abstract void create_template(Dto dto);
-
-    protected abstract void doUnmarshal(Dto dto, E entity);
 
     @Override
     protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp)
@@ -34,9 +30,9 @@ public abstract class BasicEntityController<E extends EntityBean<K>, K extends S
         String _id = req.getParameter("id");
         K id = parseId(_id);
 
-        E entity = getAccessor().load(id);
+        E entity = dataManager.load(getEntityType(), id);
 
-        Dto dto = newDto(content_getSelection());
+        Dto dto = newDto(dtoSelection);
 
         return it(dto.marshal(entity));
     }
@@ -47,9 +43,9 @@ public abstract class BasicEntityController<E extends EntityBean<K>, K extends S
 
         DataTableDxo tab = new DataTableDxo(req);
 
-        List<E> entityList = getAccessor().list();
+        List<? extends E> entityList = dataManager.loadAll(getEntityType());
 
-        Integer selection = content_getSelection();
+        Integer selection = dtoSelection;
         List<? extends Dto> list = DTOs.marshalList(getTransferType(), //
                 selection.intValue(), entityList);
 
@@ -60,7 +56,7 @@ public abstract class BasicEntityController<E extends EntityBean<K>, K extends S
             tab.push(item.getId());
             tab.push(item.getVersion());
 
-            data_buildRow(tab, item);
+            fillDataRow(tab, item);
 
             tab.next();
         }
@@ -79,14 +75,14 @@ public abstract class BasicEntityController<E extends EntityBean<K>, K extends S
 
         Dto dto;
         if (create) {
-            dto = newDto(content_getSelection());
-            create_template(dto);
+            dto = newDto(dtoSelection);
+            fillTemplate(dto);
         } else {
             String _id = req.getParameter("id");
             K id = parseId(_id);
 
-            E entity = getAccessor().load(id);
-            dto = newDto(content_getSelection()).marshal(entity);
+            E entity = dataManager.load(getEntityType(), id);
+            dto = newDto(dtoSelection).marshal(entity);
         }
 
         view.put("it", dto);
@@ -99,7 +95,7 @@ public abstract class BasicEntityController<E extends EntityBean<K>, K extends S
 
         boolean create = view.isMethod("create");
 
-        Dto dto = newDto(content_getSelection());
+        Dto dto = newDto(dtoSelection);
         dto.parse(req);
 
         E entity;
@@ -110,7 +106,7 @@ public abstract class BasicEntityController<E extends EntityBean<K>, K extends S
             if (id == null)
                 throw new ServletException("id isn't specified");
 
-            entity = getAccessor().get(id);
+            entity = dataManager.get(getEntityType(), id);
             if (entity == null)
                 throw new IllegalStateException("No allow list whose id=" + id);
 
@@ -120,11 +116,29 @@ public abstract class BasicEntityController<E extends EntityBean<K>, K extends S
             }
         }
 
-        doUnmarshal(dto, entity);
+        fillEntity(entity, dto);
 
-        getAccessor().saveOrUpdate(entity);
+        dataManager.saveOrUpdate(entity);
 
         return view;
+    }
+
+    protected abstract void fillDataRow(DataTableDxo tab, Dto dto);
+
+    protected abstract void fillTemplate(Dto dto);
+
+    /**
+     * Fill the entity with parameters comes from dto.
+     *
+     * The entity is unmarshalled from the dto in default implementattion.
+     *
+     * @param entity
+     *            The entity which would be filled.
+     * @param dto
+     *            The incoming dto.
+     */
+    protected void fillEntity(E entity, Dto dto) {
+        dto.unmarshalTo(entity);
     }
 
 }
