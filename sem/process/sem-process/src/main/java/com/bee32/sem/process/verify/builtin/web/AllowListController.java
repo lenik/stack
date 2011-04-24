@@ -18,22 +18,17 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dao.PrincipalDao;
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.dto.UserDto;
-import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.arch.util.DTOs;
+import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
-import com.bee32.plover.orm.ext.util.EntityController;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.AllowList;
-import com.bee32.sem.process.verify.builtin.dao.AllowListDao;
 
 @RequestMapping(AllowListController.PREFIX + "*")
 public class AllowListController
-        extends EntityController<AllowList, Integer> {
+        extends BasicEntityController<AllowList, Integer, AllowListDto> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "list/";
-
-    @Inject
-    AllowListDao allowListDao;
 
     @Inject
     PrincipalDao principalDao;
@@ -42,127 +37,66 @@ public class AllowListController
     UserDao userDao;
 
     @Override
-    protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        int id = Integer.parseInt(req.getParameter("id"));
-        AllowList entity = allowListDao.load(id);
-
-        return it(new AllowListDto(entity, AllowListDto.RESPONSIBLES));
+    protected Integer content_getSelection() {
+        return AllowListDto.RESPONSIBLES;
     }
 
     @Override
-    public ModelAndView _data(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void data_buildRow(DataTableDxo tab, AllowListDto item) {
+        tab.push(item.getName());
+        tab.push(item.getDescription());
 
-        DataTableDxo tab = new DataTableDxo(req);
-
-        List<AllowListDto> all = DTOs.marshalList(AllowListDto.class, //
-                AllowListDto.RESPONSIBLES, allowListDao.list());
-
-        tab.totalRecords = all.size();
-        tab.totalDisplayRecords = tab.totalRecords;
-
-        for (AllowListDto alist : all) {
-            tab.push(alist.getId());
-            tab.push(alist.getVersion());
-            tab.push(alist.getName());
-            tab.push(alist.getDescription());
-
-            int max = 3;
-            StringBuilder names = null;
-            for (String responsible : alist.getResponsibleNames()) {
-                if (max <= 0) {
-                    names.append(", etc.");
-                    break;
-                }
-
-                if (names == null)
-                    names = new StringBuilder();
-                else
-                    names.append(", ");
-
-                names.append(responsible);
-
-                max--;
+        int max = 3;
+        StringBuilder names = null;
+        for (String responsible : item.getResponsibleNames()) {
+            if (max <= 0) {
+                names.append(", etc.");
+                break;
             }
-            tab.push(names == null ? "" : names.toString());
-            tab.next();
-        }
 
-        return JsonUtil.dump(resp, tab.exportMap());
+            if (names == null)
+                names = new StringBuilder();
+            else
+                names.append(", ");
+
+            names.append(responsible);
+
+            max--;
+        }
+        tab.push(names == null ? "" : names.toString());
+    }
+
+    @Override
+    protected void create_template(AllowListDto dto) {
+        dto.setName("");
+        dto.setDescription("");
+        dto.setResponsibleIds(new ArrayList<Long>());
     }
 
     @Override
     protected ModelAndView _createOrEditForm(ViewData view, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException {
+            throws ServletException, IOException {
 
-        boolean create = view.isMethod("create");
-
-        view.put("_create", create);
-        view.put("_verb", create ? "Create" : "Modify");
-
-        AllowListDto dto;
-        if (create) {
-            dto = new AllowListDto();
-            dto.setName("");
-            dto.setDescription("");
-            dto.setResponsibleIds(new ArrayList<Long>());
-        } else {
-            int id = Integer.parseInt(req.getParameter("id"));
-            AllowList entity = allowListDao.load(id);
-            dto = new AllowListDto(AllowListDto.RESPONSIBLES).marshal(entity);
-        }
-        view.put("it", dto);
+        ModelAndView mav = super._createOrEdit(view, req, resp);
 
         List<UserDto> users = DTOs.marshalList(UserDto.class, 0, userDao.list());
-        view.put("users", users);
+        mav.addObject("users", users);
 
         return view;
     }
 
     @Override
-    protected ModelAndView _createOrEdit(ViewData view, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doUnmarshal(AllowListDto dto, AllowList entity) {
+        /* unmarshal */
+        entity.setName(dto.name);
+        entity.setDescription(dto.description);
 
-        boolean create = view.isMethod("create");
-
-        AllowListDto dto = new AllowListDto(AllowListDto.RESPONSIBLES);
-        dto.parse(req);
-
-        AllowList entity;
-        if (create) {
-            entity = new AllowList();
-        } else {
-            Integer id = dto.getId();
-            if (id == null)
-                throw new ServletException("id isn't specified");
-
-            entity = allowListDao.get(id);
-            if (entity == null)
-                throw new IllegalStateException("No allow list whose id=" + id);
-
-            Integer requestVersion = dto.getVersion();
-            if (requestVersion != null && requestVersion != entity.getVersion()) {
-                throw new IllegalStateException("Version obsoleted");
-            }
+        Set<Principal> responsibles = new HashSet<Principal>();
+        for (Long responsibleId : dto.getResponsibleIds()) {
+            Principal responsible = principalDao.get(responsibleId);
+            responsibles.add(responsible);
         }
-
-        { /* unmarshal */
-            entity.setName(dto.name);
-            entity.setDescription(dto.description);
-
-            Set<Principal> responsibles = new HashSet<Principal>();
-            for (Long responsibleId : dto.getResponsibleIds()) {
-                Principal responsible = principalDao.get(responsibleId);
-                responsibles.add(responsible);
-            }
-            entity.setResponsibles(responsibles);
-        }
-
-        dataManager.saveOrUpdate(entity);
-
-        return view;
+        entity.setResponsibles(responsibles);
     }
 
 }

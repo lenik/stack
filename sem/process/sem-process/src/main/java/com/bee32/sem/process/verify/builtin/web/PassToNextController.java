@@ -22,16 +22,12 @@ import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.PassStep;
 import com.bee32.sem.process.verify.builtin.PassToNext;
 import com.bee32.sem.process.verify.builtin.dao.PassStepDao;
-import com.bee32.sem.process.verify.builtin.dao.PassToNextDao;
 
 @RequestMapping(PassToNextController.PREFIX + "*")
 public class PassToNextController
-        extends EntityController<PassToNext, Integer> {
+        extends EntityController<PassToNext, Integer, PassToNextDto> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "p2next/";
-
-    @Inject
-    PassToNextDao PassToNextDao;
 
     @Inject
     PassStepDao seqDao;
@@ -43,7 +39,7 @@ public class PassToNextController
     protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp) {
         int id = Integer.parseInt(req.getParameter("id"));
 
-        PassToNext entity = PassToNextDao.load(id);
+        PassToNext entity = getAccessor().load(id);
 
         return it(new PassToNextDto(entity, PassToNextDto.SEQUENCES));
     }
@@ -55,7 +51,7 @@ public class PassToNextController
         DataTableDxo tab = new DataTableDxo(req);
 
         List<PassToNextDto> all = DTOs.marshalList(PassToNextDto.class, //
-                PassToNextDto.SEQUENCES, PassToNextDao.list());
+                PassToNextDto.SEQUENCES, getAccessor().list());
 
         tab.totalRecords = all.size();
         tab.totalDisplayRecords = tab.totalRecords;
@@ -107,7 +103,7 @@ public class PassToNextController
             dto.setSequences(new ArrayList<PassStepDto>());
         } else {
             int id = Integer.parseInt(req.getParameter("id"));
-            PassToNext entity = PassToNextDao.load(id);
+            PassToNext entity = getAccessor().load(id);
             dto = new PassToNextDto(PassToNextDto.SEQUENCES).marshal(entity);
         }
         view.put("it", dto);
@@ -131,7 +127,7 @@ public class PassToNextController
             if (id == null)
                 throw new ServletException("id isn't specified");
 
-            entity = PassToNextDao.get(id);
+            entity = getAccessor().get(id);
             if (entity == null)
                 throw new IllegalStateException("No pass-to-next whose id=" + id);
 
@@ -160,7 +156,7 @@ public class PassToNextController
             entity.setSequences(sequences);
         }
 
-        dataManager.saveOrUpdate(entity);
+        getAccessor().saveOrUpdate(entity);
 
         return view;
     }

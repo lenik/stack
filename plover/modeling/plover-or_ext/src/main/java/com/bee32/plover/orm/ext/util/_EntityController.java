@@ -2,33 +2,38 @@ package com.bee32.plover.orm.ext.util;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 
-import javax.free.NotImplementedException;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.javascript.util.Javascripts;
-import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.EntityDao;
+import com.bee32.plover.orm.entity.EntityDaoUtil;
 import com.bee32.plover.orm.entity.EntityUtil;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.servlet.mvc.ModelAndViewEx;
 
-public abstract class _EntityController<E extends EntityBean<K>, K extends Serializable> {
+public abstract class _EntityController<E extends EntityBean<K>, K extends Serializable, Dto extends EntityDto<E, K>> {
 
     @Inject
-    protected CommonDataManager dataManager;
+    protected ApplicationContext applicationContext;
 
     protected final String prefix;
+
+    protected EntityDao<E, K> _accessor;
 
     public _EntityController() {
         this(null);
@@ -144,18 +149,14 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
         return view;
     }
 
-    protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        throw new NotImplementedException();
-    }
+    protected abstract ModelAndView _content(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException;
 
     /**
      * Should construct a JSON response.
      */
-    protected ModelAndView _data(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        throw new NotImplementedException();
-    }
+    protected abstract ModelAndView _data(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException;
 
     protected ModelAndView _createForm(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -218,10 +219,10 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
 
         ViewData view = new ViewData(viewOf("index"));
 
-        E entity = dataManager.load(getEntityType(), id);
+        E entity = getAccessor().load(id);
         if (entity != null)
             try {
-                dataManager.delete(entity);
+                getAccessor().delete(entity);
             } catch (DataIntegrityViolationException e) {
                 resp.setCharacterEncoding("utf-8");
                 String entityName = view.meta.getString("typeName") + " " + entity.getName();
@@ -248,6 +249,28 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
         } catch (ReflectiveOperationException e) {
             throw new ServletException(e.getMessage(), e);
         }
+    }
+
+    protected Dto newDto()
+            throws ServletException {
+        return newDto(null);
+    }
+
+    protected Dto newDto(Integer selection)
+            throws ServletException {
+        Dto dto;
+        try {
+            if (selection == null)
+                dto = getTransferType().newInstance();
+            else {
+                Constructor<? extends Dto> selectionCtor = getTransferType().getConstructor(int.class);
+                dto = selectionCtor.newInstance(selection.intValue());
+            }
+        } catch (ReflectiveOperationException e) {
+            throw new ServletException(e.getMessage(), e);
+        }
+        dto.setEntityType(getEntityType());
+        return dto;
     }
 
     protected ViewData it(Object it) {

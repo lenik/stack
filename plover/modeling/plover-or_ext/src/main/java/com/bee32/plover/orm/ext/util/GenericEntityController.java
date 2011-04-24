@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.EntityUtil;
@@ -24,16 +23,13 @@ import com.bee32.plover.servlet.context.LocationContextConstants;
 
 @ComponentTemplate
 @Lazy
-public abstract class GenericEntityController<E extends EntityBean<K>, D extends EntityDto<E, K>, K extends Serializable>
-        extends _EntityController<E, K>
+public abstract class GenericEntityController<E extends EntityBean<K>, K extends Serializable, Dto extends EntityDto<E, K>>
+        extends _EntityController<E, K, Dto>
         implements ITypeAbbrAware, LocationContextConstants {
 
     static ThreadLocal<RequestGenerics> tlRequestGenerics = new ThreadLocal<RequestGenerics>();
 
-    protected final Class<D> defaultDtoType;
-
     public GenericEntityController() {
-        defaultDtoType = ClassUtil.infer1(getClass(), GenericEntityController.class, 1);
     }
 
     @Override
@@ -46,8 +42,9 @@ public abstract class GenericEntityController<E extends EntityBean<K>, D extends
         return tlRequestGenerics.get().<E, K> getEntityType();
     }
 
-    protected Class<? extends D> getDtoType() {
-        return tlRequestGenerics.get().<D, E, K> getDtoType();
+    @Override
+    protected Class<? extends Dto> getTransferType() {
+        return tlRequestGenerics.get().<Dto, E, K> getTransferType();
     }
 
     protected void preinit(String type, HttpServletRequest req, HttpServletResponse resp) {
@@ -73,9 +70,9 @@ public abstract class GenericEntityController<E extends EntityBean<K>, D extends
 
         TransferBy transferBy = entityType.getAnnotation(TransferBy.class);
         if (transferBy != null)
-            requestGenerics.dtoType = transferBy.value();
+            requestGenerics.transferType = transferBy.value();
         else
-            requestGenerics.dtoType = defaultDtoType;
+            requestGenerics.transferType = null;
 
         tlRequestGenerics.set(requestGenerics);
     }
@@ -173,25 +170,13 @@ public abstract class GenericEntityController<E extends EntityBean<K>, D extends
         return postfix("delete", view);
     }
 
-    protected D newDto()
-            throws ServletException {
-        D dto;
-        try {
-            dto = getDtoType().newInstance();
-        } catch (ReflectiveOperationException e) {
-            throw new ServletException(e.getMessage(), e);
-        }
-        dto.setEntityType(getEntityType());
-        return dto;
-    }
-
 }
 
 class RequestGenerics {
 
     Class<? extends EntityBean<? extends Serializable>> entityType;
     Class<? extends Serializable> keyType;
-    Class<? extends EntityDto<? extends EntityBean<? extends Serializable>, ? extends Serializable>> dtoType;
+    Class<? extends EntityDto<? extends EntityBean<? extends Serializable>, ? extends Serializable>> transferType;
 
     @SuppressWarnings("unchecked")
     public <E extends EntityBean<K>, K extends Serializable> Class<E> getEntityType() {
@@ -212,12 +197,13 @@ class RequestGenerics {
     }
 
     @SuppressWarnings("unchecked")
-    public <D extends EntityDto<E, K>, E extends EntityBean<K>, K extends Serializable> Class<D> getDtoType() {
-        return (Class<D>) dtoType;
+    public <Dto extends EntityDto<E, K>, E extends EntityBean<K>, K extends Serializable> Class<Dto> getTransferType() {
+        return (Class<Dto>) transferType;
     }
 
-    public <E extends EntityBean<K>, D extends EntityDto<E, K>, K extends Serializable> void setDtoType(Class<D> dtoType) {
-        this.dtoType = dtoType;
+    public <Dto extends EntityDto<E, K>, E extends EntityBean<K>, K extends Serializable> void setTransferType(
+            Class<Dto> transferType) {
+        this.transferType = transferType;
     }
 
 }

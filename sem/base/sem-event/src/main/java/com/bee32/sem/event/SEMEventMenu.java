@@ -1,10 +1,11 @@
 package com.bee32.sem.event;
 
-import com.bee32.plover.orm.ext.dict.DictController;
+import com.bee32.plover.orm.ext.dict.CommonDictController;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.servlet.context.LocationContext;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.EventState;
+import com.bee32.sem.event.web.EventController;
 import com.bee32.sem.frame.Contribution;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuEntry;
@@ -13,8 +14,8 @@ public class SEMEventMenu
         extends MenuContribution
         implements ITypeAbbrAware {
 
-    static LocationContext EVENT = WEB_APP.join(SEMEventModule.PREFIX);
-    static LocationContext DICT = WEB_APP.join(DictController.PREFIX);
+    static LocationContext EVENT = WEB_APP.join(EventController.PREFIX);
+    static LocationContext DICT = WEB_APP.join(CommonDictController.PREFIX);
 
     @Contribution("sa")
     MenuEntry eventAdmin = new MenuEntry("event");

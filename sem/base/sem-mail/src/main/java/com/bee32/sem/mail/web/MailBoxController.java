@@ -22,12 +22,13 @@ import com.bee32.sem.mail.entity.MailBox;
 
 @RequestMapping(MailBoxController.PREFIX + "*")
 public class MailBoxController
-        extends EntityController<MailBox, Integer> {
+        extends EntityController<MailBox, Integer, MailBoxDto> {
 
     public static final String PREFIX = SEMMailModule.PREFIX + "/mailbox/";
 
     @Inject
     MailBoxDao mailBoxDao;
+
     @Inject
     MailDao mailDao;
 
@@ -55,9 +56,8 @@ public class MailBoxController
         return model;
     }
 
-    @RequestMapping("content.htm")
     @Override
-    public ModelAndView content(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
 
@@ -145,7 +145,7 @@ public class MailBoxController
             entity.setName(dto.name);
         }
 
-        dataManager.saveOrUpdate(entity);
+        getAccessor().saveOrUpdate(entity);
 
         return new ModelAndView(viewOf("index"));
     }

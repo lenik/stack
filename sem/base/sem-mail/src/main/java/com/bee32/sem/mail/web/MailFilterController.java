@@ -22,7 +22,7 @@ import com.bee32.sem.mail.entity.MailFilter;
 
 @RequestMapping(MailFilterController.PREFIX + "*")
 public class MailFilterController
-        extends EntityController<MailFilter, Integer> {
+        extends EntityController<MailFilter, Integer, MailFilterDto> {
 
     public static final String PREFIX = SEMMailModule.PREFIX + "/filter/";
 
@@ -32,9 +32,8 @@ public class MailFilterController
     @Inject
     MailBoxDao mailBoxDao;
 
-    @RequestMapping("content.htm")
     @Override
-    public ModelAndView content(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
 
@@ -43,7 +42,6 @@ public class MailFilterController
         return it(new MailFilterDto(entity));
     }
 
-    @RequestMapping("data.htm")
     @Override
     public ModelAndView _data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -128,7 +126,7 @@ public class MailFilterController
 
         dto.unmarshalTo(entity);
 
-        dataManager.saveOrUpdate(entity);
+        getAccessor().saveOrUpdate(entity);
 
         return view;
     }

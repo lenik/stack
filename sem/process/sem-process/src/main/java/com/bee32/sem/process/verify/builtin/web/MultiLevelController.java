@@ -21,17 +21,13 @@ import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.Level;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 import com.bee32.sem.process.verify.builtin.dao.LevelDao;
-import com.bee32.sem.process.verify.builtin.dao.MultiLevelDao;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 
 @RequestMapping(MultiLevelController.PREFIX + "*")
 public class MultiLevelController
-        extends EntityController<MultiLevel, Integer> {
+        extends EntityController<MultiLevel, Integer, MultiLevelDto> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "level/";
-
-    @Inject
-    MultiLevelDao multiLevelDao;
 
     @Inject
     LevelDao levelDao;
@@ -43,7 +39,7 @@ public class MultiLevelController
     protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp) {
 
         int id = Integer.parseInt(req.getParameter("id"));
-        MultiLevel entity = multiLevelDao.load(id);
+        MultiLevel entity = getAccessor().load(id);
 
         return it(new MultiLevelDto(MultiLevelDto.LEVELS).marshal(entity));
     }
@@ -55,7 +51,7 @@ public class MultiLevelController
         DataTableDxo tab = new DataTableDxo(req);
 
         List<MultiLevelDto> all = DTOs.marshalList(MultiLevelDto.class, //
-                MultiLevelDto.LEVELS, multiLevelDao.list());
+                MultiLevelDto.LEVELS, getAccessor().list());
 
         tab.totalRecords = all.size();
         tab.totalDisplayRecords = tab.totalRecords;
@@ -107,7 +103,7 @@ public class MultiLevelController
             view.put("it", dto);
         } else {
             int id = Integer.parseInt(req.getParameter("id"));
-            MultiLevel entity = multiLevelDao.load(id);
+            MultiLevel entity = getAccessor().load(id);
             dto = new MultiLevelDto(MultiLevelDto.LEVELS).marshal(entity);
         }
         view.put("it", dto);
@@ -135,7 +131,7 @@ public class MultiLevelController
             if (id == null)
                 throw new ServletException("id isn't specified");
 
-            entity = multiLevelDao.get(id);
+            entity = getAccessor().get(id);
             if (entity == null)
                 throw new IllegalStateException("No multi-level whose id=" + id);
 
@@ -172,7 +168,7 @@ public class MultiLevelController
             levels.addAll(newLevels);
         }
 
-        dataManager.saveOrUpdate(entity);
+        getAccessor().saveOrUpdate(entity);
 
         return view;
     }
