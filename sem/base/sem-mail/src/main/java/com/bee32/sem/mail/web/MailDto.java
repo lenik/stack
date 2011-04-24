@@ -6,6 +6,7 @@ import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.mail.MailType;
 import com.bee32.sem.mail.entity.Mail;
 
@@ -77,7 +78,7 @@ public class MailDto
     }
 
     @Override
-    protected void _unmarshalTo(Mail target) {
+    protected void _unmarshalTo(IUnmarshalContext context, Mail target) {
         target.setType(type);
         // target.setMailbox(mailbox);
         target.setPriority(priority);

@@ -4,6 +4,7 @@ import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.builtin.web.VerifyPolicyDto;
 import com.bee32.sem.process.verify.util.AllowedBySupportDto;
 
@@ -26,7 +27,7 @@ public class VerifyPolicyPrefDto
     }
 
     @Override
-    protected void _unmarshalTo(VerifyPolicyPref target) {
+    protected void _unmarshalTo(IUnmarshalContext context, VerifyPolicyPref target) {
         target.setEntityType(entityType);
         target.setDisplayName(displayName);
         target.setDescription(description);

@@ -10,6 +10,7 @@ import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.builtin.AllowList;
 
 public class AllowListDto
@@ -89,7 +90,7 @@ public class AllowListDto
     }
 
     @Override
-    protected void _unmarshalTo(AllowList target) {
+    protected void _unmarshalTo(IUnmarshalContext context, AllowList target) {
         target.setName(name);
         target.setDescription(description);
 

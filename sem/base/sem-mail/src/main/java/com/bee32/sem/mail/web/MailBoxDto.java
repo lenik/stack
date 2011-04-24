@@ -7,6 +7,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.mail.entity.MailBox;
 
 public class MailBoxDto
@@ -52,7 +53,7 @@ public class MailBoxDto
     }
 
     @Override
-    protected void _unmarshalTo(MailBox target) {
+    protected void _unmarshalTo(IUnmarshalContext context, MailBox target) {
         target.setPriority(priority);
         target.setOrder(order);
         target.setName(name);

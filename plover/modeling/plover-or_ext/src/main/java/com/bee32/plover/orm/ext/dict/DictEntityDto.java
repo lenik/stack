@@ -7,6 +7,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
         extends EntityDto<E, K> {
@@ -35,7 +36,7 @@ public class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
     }
 
     @Override
-    protected void _unmarshalTo(E target) {
+    protected void _unmarshalTo(IUnmarshalContext context, E target) {
         target.setName(name);
         target.setDisplayName(displayName);
         target.setDescription(description);

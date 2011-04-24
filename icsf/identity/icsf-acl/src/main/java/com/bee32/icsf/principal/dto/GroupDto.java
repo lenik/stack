@@ -3,6 +3,7 @@ package com.bee32.icsf.principal.dto;
 import java.util.List;
 
 import com.bee32.icsf.principal.Group;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class GroupDto
         extends PrincipalDto<Group> {
@@ -92,8 +93,8 @@ public class GroupDto
     }
 
     @Override
-    protected void _unmarshalTo(Group target) {
-        super._unmarshalTo(target);
+    protected void _unmarshalTo(IUnmarshalContext context, Group target) {
+        super._unmarshalTo(context, target);
 
         target.setInheritedGroup(GroupDto.unmarshal(inheritedGroup));
         target.setOwner(UserDto.unmarshal(owner));

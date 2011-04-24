@@ -8,6 +8,7 @@ import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.mail.MailFlags;
 import com.bee32.sem.mail.MailOwnerType;
 import com.bee32.sem.mail.entity.MailCopy;
@@ -48,7 +49,7 @@ public class MailCopyDto
     }
 
     @Override
-    protected void _unmarshalTo(MailCopy target) {
+    protected void _unmarshalTo(IUnmarshalContext context, MailCopy target) {
         target.setMail(unmarshal(mail));
         target.setOwner(unmarshal(owner));
         target.setOwnerType(ownerType);

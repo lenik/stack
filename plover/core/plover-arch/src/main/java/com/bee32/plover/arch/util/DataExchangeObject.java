@@ -7,7 +7,7 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 public abstract class DataExchangeObject<T>
-        extends DataTransferObject<T> {
+        extends DataTransferObject<T, Void> {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,7 +17,7 @@ public abstract class DataExchangeObject<T>
     }
 
     @Override
-    protected void _unmarshalTo(T target) {
+    protected void _unmarshalTo(Void context, T target) {
         throw new NotImplementedException();
     }
 

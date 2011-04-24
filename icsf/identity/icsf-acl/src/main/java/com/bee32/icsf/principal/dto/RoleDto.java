@@ -3,6 +3,7 @@ package com.bee32.icsf.principal.dto;
 import java.util.List;
 
 import com.bee32.icsf.principal.Role;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class RoleDto
         extends PrincipalDto<Role> {
@@ -40,8 +41,8 @@ public class RoleDto
     }
 
     @Override
-    protected void _unmarshalTo(Role target) {
-        super._unmarshalTo(target);
+    protected void _unmarshalTo(IUnmarshalContext context, Role target) {
+        super._unmarshalTo(context, target);
 
         target.setInheritedRole(GroupDto.unmarshal(inheritedRole));
 

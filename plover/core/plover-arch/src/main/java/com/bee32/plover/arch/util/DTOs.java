@@ -1,7 +1,7 @@
 package com.bee32.plover.arch.util;
 
 public class DTOs
-        extends DataTransferObject<Void> {
+        extends DataTransferObject<Void, Void> {
 
     private static final long serialVersionUID = 1L;
 
@@ -10,10 +10,10 @@ public class DTOs
     }
 
     @Override
-    protected void _unmarshalTo(Void target) {
+    protected void _unmarshalTo(Void context, Void target) {
     }
 
-    public static Class<?> getSourceType(DataTransferObject<?> dto) {
+    public static Class<?> getSourceType(DataTransferObject<?, ?> dto) {
         return dto.sourceType;
     }
 

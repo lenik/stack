@@ -5,6 +5,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.orm.ext.dict.DictEntityDto;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.event.entity.EventPriority;
 
 public class EventPriorityDto
@@ -29,8 +30,8 @@ public class EventPriorityDto
     }
 
     @Override
-    protected void _unmarshalTo(EventPriority target) {
-        super._unmarshalTo(target);
+    protected void _unmarshalTo(IUnmarshalContext context, EventPriority target) {
+        super._unmarshalTo(context, target);
         target.setPriority(priority);
     }
 

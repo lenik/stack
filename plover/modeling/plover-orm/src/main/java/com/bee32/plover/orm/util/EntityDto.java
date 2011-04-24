@@ -9,11 +9,12 @@ import javax.free.TypeConvertException;
 import com.bee32.plover.arch.util.DataTransferObject;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.EntityDao;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntity;
 
 public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
-        extends DataTransferObject<E> {
+        extends DataTransferObject<E, IUnmarshalContext> {
 
     private static final long serialVersionUID = 1L;
 
@@ -80,12 +81,32 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
     }
 
     @Override
-    protected void __unmarshalTo(E target) {
+    protected void __unmarshalTo(IUnmarshalContext context, E target) {
         if (id != null)
             EntityAccessor.setId(target, id);
 
         if (version != null)
             EntityAccessor.setVersion(target, version);
+    }
+
+    static <E extends EntityBean<K>, K extends Serializable, Dao extends EntityDao<E, K>> //
+    E unmarshalMember(IUnmarshalContext context, Class<E> entityType, E oldValue, K newId, EntityDto<E, K> newDto) {
+
+        EntityDao<E, K> dao = context.getDao(entityType);
+
+        if (newId != null)
+            return dao.get(newId);
+
+        if (newDto == null)
+            return null;
+
+        K existingId = newDto.getId();
+        if (existingId == null)
+            return newDto.unmarshal(); // unmarshalContext
+
+        E existing = dao.load(existingId);
+        newDto.unmarshalTo(existing);
+        return existing;
     }
 
     @Override

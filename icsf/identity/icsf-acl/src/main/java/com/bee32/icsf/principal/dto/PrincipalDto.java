@@ -2,6 +2,7 @@ package com.bee32.icsf.principal.dto;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class PrincipalDto<E extends Principal>
         extends EntityDto<E, Long> {
@@ -65,7 +66,7 @@ public class PrincipalDto<E extends Principal>
     }
 
     @Override
-    protected void _unmarshalTo(E target) {
+    protected void _unmarshalTo(IUnmarshalContext context, E target) {
         target.setName(name);
         target.setDisplayName(displayName);
         target.setDescription(description);

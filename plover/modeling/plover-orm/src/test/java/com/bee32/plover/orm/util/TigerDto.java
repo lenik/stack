@@ -51,7 +51,7 @@ public class TigerDto
     }
 
     @Override
-    protected void _unmarshalTo(Tiger entity) {
+    protected void _unmarshalTo(IUnmarshalContext context, Tiger entity) {
         entity.setName(name);
         entity.setColor(color);
         entity.setPower(power);

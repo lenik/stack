@@ -3,6 +3,7 @@ package com.bee32.icsf.principal.dto;
 import java.util.List;
 
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class UserDto
         extends PrincipalDto<User> {
@@ -81,8 +82,8 @@ public class UserDto
     }
 
     @Override
-    protected void _unmarshalTo(User target) {
-        super._unmarshalTo(target);
+    protected void _unmarshalTo(IUnmarshalContext context, User target) {
+        super._unmarshalTo(context, target);
 
         target.setPrimaryGroup(GroupDto.unmarshal(primaryGroup));
         target.setPrimaryRole(RoleDto.unmarshal(primaryRole));

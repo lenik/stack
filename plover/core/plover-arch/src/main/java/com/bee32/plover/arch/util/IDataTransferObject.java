@@ -1,6 +1,6 @@
 package com.bee32.plover.arch.util;
 
-public interface IDataTransferObject<T> {
+public interface IDataTransferObject<T, C> {
 
     /**
      * Marshal the given source object into this object.
@@ -14,7 +14,7 @@ public interface IDataTransferObject<T> {
      * @return The marshalled object. it may be this, or flyweight, or <code>null</code> if the
      *         specified <code>source</code> object is <code>null</code>.
      */
-    <D extends DataTransferObject<T>> D marshal(T source);
+    <D extends DataTransferObject<T, ?>> D marshal(T source);
 
     /**
      * Marshal the given source object into this object, with cyclic references checked and avoided.
@@ -24,7 +24,7 @@ public interface IDataTransferObject<T> {
      * @return The marshalled object. it may be this, or flyweight, or <code>null</code> if the
      *         specified <code>source</code> object is <code>null</code>.
      */
-    <D extends DataTransferObject<T>> D marshalRec(T source);
+    <D extends DataTransferObject<T, ?>> D marshalRec(T source);
 
     /**
      * Create a new entity bean and populate with properties defined in this object.
@@ -40,5 +40,9 @@ public interface IDataTransferObject<T> {
      *            Non-<code>null</code> target entity bean.
      */
     void unmarshalTo(T target);
+
+    T unmarshal(C context);
+
+    void unmarshalTo(C context, T target);
 
 }

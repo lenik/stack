@@ -22,8 +22,8 @@ import javax.free.TypeConvertException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-public abstract class DataTransferObject<T>
-        implements IDataTransferObject<T>, Serializable {
+public abstract class DataTransferObject<T, C>
+        implements IDataTransferObject<T, C>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -72,7 +72,7 @@ public abstract class DataTransferObject<T>
     }
 
     @Override
-    public final <D extends DataTransferObject<T>> D marshalRec(T source) {
+    public final <D extends DataTransferObject<T, ?>> D marshalRec(T source) {
         if (source == null)
             return null;
 
@@ -97,7 +97,7 @@ public abstract class DataTransferObject<T>
         }
     }
 
-    public final <D extends DataTransferObject<T>> D marshal(T source) {
+    public final <D extends DataTransferObject<T, ?>> D marshal(T source) {
         if (source == null)
             return null;
 
@@ -132,7 +132,7 @@ public abstract class DataTransferObject<T>
      */
     protected abstract void _marshal(T source);
 
-    public static <D extends DataTransferObject<T>, T> T unmarshal(D dto) {
+    public static <D extends DataTransferObject<T, ?>, T> T unmarshal(D dto) {
         if (dto == null)
             return null;
         else
@@ -141,20 +141,29 @@ public abstract class DataTransferObject<T>
 
     @Override
     public final T unmarshal() {
+        return unmarshal((C) null);
+    }
+
+    public void unmarshalTo(T target) {
+        unmarshalTo((C) null, target);
+    }
+
+    @Override
+    public final T unmarshal(C context) {
         T target;
         try {
             target = sourceType.newInstance();
         } catch (ReflectiveOperationException e) {
             throw new IllegalUsageException("Failed to instantiate source bean " + sourceType.getName(), e);
         }
-        unmarshalTo(target);
+        unmarshalTo(context, target);
         return target;
     }
 
     @Override
-    public final void unmarshalTo(T target) {
-        __unmarshalTo(target);
-        _unmarshalTo(target);
+    public final void unmarshalTo(C context, T target) {
+        __unmarshalTo(context, target);
+        _unmarshalTo(context, target);
     }
 
     /**
@@ -165,7 +174,7 @@ public abstract class DataTransferObject<T>
      * @throws NotImplementedException
      *             If unmarshal isn't supported for this DTO.
      */
-    protected void __unmarshalTo(T target) {
+    protected void __unmarshalTo(C context, T target) {
     }
 
     /**
@@ -176,7 +185,7 @@ public abstract class DataTransferObject<T>
      * @throws NotImplementedException
      *             If unmarshal isn't supported for this DTO.
      */
-    protected abstract void _unmarshalTo(T target);
+    protected abstract void _unmarshalTo(C context, T target);
 
     /**
      * Parse parameters from servlet-request, and put the parsed result into this object.
@@ -240,7 +249,7 @@ public abstract class DataTransferObject<T>
     public void export(Map<String, Object> map) {
     }
 
-    public static <D extends DataTransferObject<T>, T> D marshal(Class<D> dtoClass, T source) {
+    public static <D extends DataTransferObject<T, ?>, T> D marshal(Class<D> dtoClass, T source) {
         if (source == null)
             return null;
         try {
@@ -252,7 +261,7 @@ public abstract class DataTransferObject<T>
         }
     }
 
-    public static <D extends DataTransferObject<T>, T> D marshalRec(Class<D> dtoClass, T source) {
+    public static <D extends DataTransferObject<T, ?>, T> D marshalRec(Class<D> dtoClass, T source) {
         if (source == null)
             return null;
         try {
@@ -273,7 +282,7 @@ public abstract class DataTransferObject<T>
      *            Entity array to be marshalled.
      * @return <code>null</code>.
      */
-    public static <D extends DataTransferObject<T>, T> List<D> marshalList(Class<D> dtoClass, T... values) {
+    public static <D extends DataTransferObject<T, ?>, T> List<D> marshalList(Class<D> dtoClass, T... values) {
         List<T> sourceList = Arrays.asList(values);
         return marshalList(dtoClass, null, sourceList);
     }
@@ -287,7 +296,7 @@ public abstract class DataTransferObject<T>
      *            Entity array to be marshalled.
      * @return <code>null</code>.
      */
-    public static <D extends DataTransferObject<T>, T> List<D> marshalListRec(Class<D> dtoClass, T... values) {
+    public static <D extends DataTransferObject<T, ?>, T> List<D> marshalListRec(Class<D> dtoClass, T... values) {
         List<T> sourceList = Arrays.asList(values);
         return marshalListRec(dtoClass, null, sourceList);
     }
@@ -303,7 +312,7 @@ public abstract class DataTransferObject<T>
      *            Entity array to be marshalled.
      * @return <code>null</code>.
      */
-    public static <D extends DataTransferObject<T>, T> List<D> marshalList(Class<D> dtoClass, int selection,
+    public static <D extends DataTransferObject<T, ?>, T> List<D> marshalList(Class<D> dtoClass, int selection,
             T... values) {
         List<T> sourceList = Arrays.asList(values);
         return marshalList(dtoClass, selection, sourceList);
@@ -320,7 +329,7 @@ public abstract class DataTransferObject<T>
      *            Entity array to be marshalled.
      * @return <code>null</code>.
      */
-    public static <D extends DataTransferObject<T>, T> List<D> marshalListRec(Class<D> dtoClass, int selection,
+    public static <D extends DataTransferObject<T, ?>, T> List<D> marshalListRec(Class<D> dtoClass, int selection,
             T... values) {
         List<T> sourceList = Arrays.asList(values);
         return marshalListRec(dtoClass, selection, sourceList);
@@ -335,11 +344,11 @@ public abstract class DataTransferObject<T>
      *            Entities to be marshalled.
      * @return <code>null</code>.
      */
-    public static <D extends DataTransferObject<T>, T> List<D> marshalList(Class<D> dtoClass, Iterable<?> values) {
+    public static <D extends DataTransferObject<T, ?>, T> List<D> marshalList(Class<D> dtoClass, Iterable<?> values) {
         return _marshalList(false, dtoClass, null, values);
     }
 
-    public static <D extends DataTransferObject<T>, T> List<D> marshalListRec(Class<D> dtoClass, Iterable<?> values) {
+    public static <D extends DataTransferObject<T, ?>, T> List<D> marshalListRec(Class<D> dtoClass, Iterable<?> values) {
         return _marshalList(true, dtoClass, null, values);
     }
 
@@ -354,18 +363,18 @@ public abstract class DataTransferObject<T>
      *            Entities to be marshalled.
      * @return <code>null</code> if <code>values</code> is <code>null</code>.
      */
-    public static <D extends DataTransferObject<T>, T> List<D> marshalList(Class<D> dtoClass, Integer selection,
+    public static <D extends DataTransferObject<T, ?>, T> List<D> marshalList(Class<D> dtoClass, Integer selection,
             Iterable<?> values) {
         return _marshalList(false, dtoClass, selection, values);
     }
 
-    public static <D extends DataTransferObject<T>, T> List<D> marshalListRec(Class<D> dtoClass, Integer selection,
+    public static <D extends DataTransferObject<T, ?>, T> List<D> marshalListRec(Class<D> dtoClass, Integer selection,
             Iterable<?> values) {
         return _marshalList(true, dtoClass, selection, values);
     }
 
-    static <D extends DataTransferObject<T>, T> List<D> _marshalList(boolean rec, Class<D> dtoClass, Integer selection,
-            Iterable<?> values) {
+    static <D extends DataTransferObject<T, ?>, T> List<D> _marshalList(boolean rec, Class<D> dtoClass,
+            Integer selection, Iterable<?> values) {
 
         if (values == null)
             return null;
@@ -396,32 +405,47 @@ public abstract class DataTransferObject<T>
         return dtoList;
     }
 
-    public static <C extends Collection<T>, D extends DataTransferObject<T>, T> //
-    /*    */C unmarshal(C collection, Iterable<? extends DataTransferObject<T>> dtoList) {
+    public static <Coll extends Collection<T>, D extends DataTransferObject<T, C>, T, C> //
+    /*    */Coll unmarshal(C context, Coll collection, Iterable<? extends D> dtoList) {
 
         if (dtoList == null)
             return null;
 
-        for (DataTransferObject<T> dto : dtoList) {
+        for (DataTransferObject<T, C> dto : dtoList) {
             T source;
             if (dto == null)
                 source = null;
             else
-                source = dto.unmarshal();
+                source = dto.unmarshal(context);
             collection.add(source);
         }
 
         return collection;
     }
 
-    public static <D extends DataTransferObject<T>, T> List<T> unmarshalList(
-            Iterable<? extends DataTransferObject<T>> dtoList) {
-        return unmarshal(new ArrayList<T>(), dtoList);
+    public static <Coll extends Collection<T>, D extends DataTransferObject<T, C>, T, C> //
+    /*    */Coll unmarshal(Coll collection, Iterable<? extends D> dtoList) {
+        return unmarshal((C) null, collection, dtoList);
     }
 
-    public static <D extends DataTransferObject<T>, T> Set<T> unmarshalSet(
-            Iterable<? extends DataTransferObject<T>> dtoList) {
-        return unmarshal(new HashSet<T>(), dtoList);
+    public static <D extends DataTransferObject<T, C>, T, C> //
+    /*    */List<T> unmarshalList(Iterable<? extends D> dtoList) {
+        return unmarshal(null, new ArrayList<T>(), dtoList);
+    }
+
+    public static <D extends DataTransferObject<T, C>, T, C> //
+    /*    */List<T> unmarshalList(C context, Iterable<? extends D> dtoList) {
+        return unmarshal(context, new ArrayList<T>(), dtoList);
+    }
+
+    public static <D extends DataTransferObject<T, C>, T, C> //
+    /*    */Set<T> unmarshalSet(Iterable<? extends D> dtoList) {
+        return unmarshal(null, new HashSet<T>(), dtoList);
+    }
+
+    public static <D extends DataTransferObject<T, C>, T, C> //
+    /*    */Set<T> unmarshalSet(C context, Iterable<? extends D> dtoList) {
+        return unmarshal(context, new HashSet<T>(), dtoList);
     }
 
 }

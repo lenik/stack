@@ -5,6 +5,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.mail.entity.MailFilter;
 
 public class MailFilterDto
@@ -53,7 +54,7 @@ public class MailFilterDto
     }
 
     @Override
-    protected void _unmarshalTo(MailFilter target) {
+    protected void _unmarshalTo(IUnmarshalContext context, MailFilter target) {
         target.setName(name);
         target.setDescription(description);
 

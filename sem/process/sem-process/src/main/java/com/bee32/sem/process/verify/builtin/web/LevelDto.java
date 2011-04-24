@@ -3,6 +3,7 @@ package com.bee32.sem.process.verify.builtin.web;
 import javax.free.NotImplementedException;
 
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.builtin.Level;
 
 public class LevelDto
@@ -54,7 +55,7 @@ public class LevelDto
     }
 
     @Override
-    protected void _unmarshalTo(Level target) {
+    protected void _unmarshalTo(IUnmarshalContext context, Level target) {
         target.setLimit(limit);
         // target.setTargetPolicy(verifyPolicy)
         throw new NotImplementedException();

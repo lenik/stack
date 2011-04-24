@@ -10,6 +10,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 
 public class MultiLevelDto
@@ -88,7 +89,7 @@ public class MultiLevelDto
     }
 
     @Override
-    protected void _unmarshalTo(MultiLevel target) {
+    protected void _unmarshalTo(IUnmarshalContext context, MultiLevel target) {
         target.setName(name);
         target.setDescription(description);
 

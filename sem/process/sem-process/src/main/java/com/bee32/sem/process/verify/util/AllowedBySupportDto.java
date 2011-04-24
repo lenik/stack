@@ -10,6 +10,7 @@ import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.IAllowedByContext;
 
 public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extends IAllowedByContext>, K extends Serializable>
@@ -94,8 +95,8 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
     }
 
     @Override
-    protected void __unmarshalTo(E target) {
-        super.__unmarshalTo(target);
+    protected void __unmarshalTo(IUnmarshalContext context, E target) {
+        super.__unmarshalTo(context, target);
 
         target.setVerifiedDate(verifiedDate);
         target.setAllowed(allowed);
