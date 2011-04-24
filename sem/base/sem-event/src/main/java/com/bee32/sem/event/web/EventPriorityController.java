@@ -1,46 +1,30 @@
 package com.bee32.sem.event.web;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.bee32.plover.orm.ext.util.EntityController;
+import com.bee32.plover.orm.ext.util.BasicEntityController;
+import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.sem.event.SEMEventModule;
 import com.bee32.sem.event.entity.EventPriority;
 
 @RequestMapping(EventPriorityController.PREFIX + "*")
 public class EventPriorityController
-        extends EntityController<EventPriority, Integer, EventPriorityDto> {
+        extends BasicEntityController<EventPriority, Integer, EventPriorityDto> {
 
     public static final String PREFIX = SEMEventModule.PREFIX + "priority/";
 
     @Override
-    protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        return null;
+    protected void fillDataRow(DataTableDxo tab, EventPriorityDto dto) {
+        tab.push(dto.getPriority());
+        tab.push(dto.getName());
+        tab.push(dto.getDescription());
     }
 
     @Override
-    protected ModelAndView _data(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        return null;
-    }
-
-    @Override
-    protected ModelAndView _createOrEditForm(ViewData data, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        return null;
-    }
-
-    @Override
-    protected ModelAndView _createOrEdit(ViewData data, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        return null;
+    protected void fillTemplate(EventPriorityDto dto) {
+        dto.setPriority(0);
+        dto.setName("");
+        dto.setDescription("");
     }
 
 }

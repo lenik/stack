@@ -14,15 +14,27 @@ public class EventController<E extends Event, Dto extends AbstractEventDto<E>>
     public static final String PREFIX = SEMEventModule.PREFIX + "event/";
 
     @Override
-    protected void data_buildRow(DataTableDxo tab, Dto item) {
+    protected void fillDataRow(DataTableDxo tab, Dto event) {
+        tab.push(event.getCategory());
+        tab.push(event.getPriority());
+        tab.push(event.getState());
+
+        tab.push(event.getActor().getName());
+
+        tab.push(event.getSubject());
+        tab.push(event.getMessage());
+        tab.push(event.getBeginTime());
+        tab.push(event.getEndTime());
+
+        // push ref-entity url...
     }
 
     @Override
-    protected void create_template(Dto dto) {
+    protected void fillTemplate(Dto event) {
     }
 
-    @Override
-    protected void doUnmarshal(Dto dto, E entity) {
+    protected void fillEntity(E entity, Dto dto) {
+        dto.unmarshalTo(entity);
     }
 
 }

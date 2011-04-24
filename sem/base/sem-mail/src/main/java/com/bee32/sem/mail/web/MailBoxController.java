@@ -145,7 +145,7 @@ public class MailBoxController
             entity.setName(dto.name);
         }
 
-        getAccessor().saveOrUpdate(entity);
+        dataManager.saveOrUpdate(entity);
 
         return new ModelAndView(viewOf("index"));
     }

@@ -36,13 +36,12 @@ public class AllowListController
     @Inject
     UserDao userDao;
 
-    @Override
-    protected Integer content_getSelection() {
-        return AllowListDto.RESPONSIBLES;
+    public AllowListController() {
+        setDtoSelection(AllowListDto.RESPONSIBLES);
     }
 
     @Override
-    protected void data_buildRow(DataTableDxo tab, AllowListDto item) {
+    protected void fillDataRow(DataTableDxo tab, AllowListDto item) {
         tab.push(item.getName());
         tab.push(item.getDescription());
 
@@ -67,10 +66,24 @@ public class AllowListController
     }
 
     @Override
-    protected void create_template(AllowListDto dto) {
+    protected void fillTemplate(AllowListDto dto) {
         dto.setName("");
         dto.setDescription("");
         dto.setResponsibleIds(new ArrayList<Long>());
+    }
+
+    @Override
+    protected void fillEntity(AllowList entity, AllowListDto dto) {
+        /* unmarshal */
+        entity.setName(dto.name);
+        entity.setDescription(dto.description);
+
+        Set<Principal> responsibles = new HashSet<Principal>();
+        for (Long responsibleId : dto.getResponsibleIds()) {
+            Principal responsible = principalDao.get(responsibleId);
+            responsibles.add(responsible);
+        }
+        entity.setResponsibles(responsibles);
     }
 
     @Override
@@ -83,20 +96,6 @@ public class AllowListController
         mav.addObject("users", users);
 
         return view;
-    }
-
-    @Override
-    protected void doUnmarshal(AllowListDto dto, AllowList entity) {
-        /* unmarshal */
-        entity.setName(dto.name);
-        entity.setDescription(dto.description);
-
-        Set<Principal> responsibles = new HashSet<Principal>();
-        for (Long responsibleId : dto.getResponsibleIds()) {
-            Principal responsible = principalDao.get(responsibleId);
-            responsibles.add(responsible);
-        }
-        entity.setResponsibles(responsibles);
     }
 
 }

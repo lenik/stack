@@ -126,7 +126,7 @@ public class MailFilterController
 
         dto.unmarshalTo(entity);
 
-        getAccessor().saveOrUpdate(entity);
+        dataManager.saveOrUpdate(entity);
 
         return view;
     }
