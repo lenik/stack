@@ -27,19 +27,21 @@ public abstract class DataTransferObject<T>
 
     private static final long serialVersionUID = 1L;
 
-    protected final Class<T> dataType;
-    {
-        dataType = ClassUtil.infer1(getClass(), DataTransferObject.class, 0);
+    protected Class<? extends T> sourceType;
+
+    protected final Flags32 selection = new Flags32();
+
+    public DataTransferObject(Class<? extends T> sourceType) {
+        setSourceType(sourceType);
     }
 
-    protected final Flags32 selection;
-
     public DataTransferObject() {
-        this(0);
+        setSourceType(ClassUtil.<T> infer1(getClass(), DataTransferObject.class, 0));
     }
 
     public DataTransferObject(int selection) {
-        this.selection = new Flags32(selection);
+        this();
+        this.selection.set(selection);
     }
 
     public DataTransferObject(T source) {
@@ -58,6 +60,10 @@ public abstract class DataTransferObject<T>
             throw new NullPointerException("source");
 
         marshal(source);
+    }
+
+    public void setSourceType(Class<? extends T> sourceType) {
+        this.sourceType = sourceType;
     }
 
     private static ThreadLocal<Map<Object, Object>> threadLocalGraph;
@@ -137,9 +143,9 @@ public abstract class DataTransferObject<T>
     public final T unmarshal() {
         T target;
         try {
-            target = dataType.newInstance();
+            target = sourceType.newInstance();
         } catch (ReflectiveOperationException e) {
-            throw new IllegalUsageException("Failed to instantiate source bean " + dataType.getName(), e);
+            throw new IllegalUsageException("Failed to instantiate source bean " + sourceType.getName(), e);
         }
         unmarshalTo(target);
         return target;

@@ -9,6 +9,7 @@ import javax.free.TypeConvertException;
 import com.bee32.plover.arch.util.DataTransferObject;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntity;
 
 public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
@@ -19,7 +20,7 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
     protected K id;
     protected Integer version;
 
-    // protected String name;
+    protected Class<? extends K> keyType;
 
     public EntityDto() {
         super();
@@ -35,6 +36,19 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
 
     public EntityDto(E source, int selection) {
         super(source, selection);
+    }
+
+    public void setEntityType(Class<? extends E> entityType) {
+        super.setSourceType(entityType);
+        keyType = EntityUtil.getKeyType(entityType);
+    }
+
+    protected Class<? extends E> getEntityType() {
+        return sourceType;
+    }
+
+    protected Class<? extends K> getKeyType() {
+        return keyType;
     }
 
     public K getId() {
@@ -80,9 +94,12 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
         super.parse(map);
 
         String _id = map.getString("id");
-        if (_id == null)
+        if (_id == null || _id.isEmpty()) {
+            // 虽然 EntityUtil 中定义了 int/long 类型主键对空字串的解释，
+            // 但 DTO 在这里重新将空字串定义为 “不可用”。
+            // 如果实体需要支持“空字串"作为主键使用，相应的 DTO 需要推翻此方法。
             id = null;
-        else
+        } else
             id = parseId(_id);
 
         String _version = map.getString("version");
@@ -97,13 +114,15 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
     }
 
     /**
-     * TODO Get the key type.
+     * Parse the id string. The string should be valid and non-empty.
      *
-     * @param s
-     *            Non-<code>null</code> string contains the id.
+     * @param idString
+     *            Formatted id string.
+     * @return Parsed key, maybe <code>null</code>.
+     * @see EntityUtil#parseId(Class, String)
      */
-    protected K parseId(String s) {
-        return null;
+    protected K parseId(String idString) {
+        return EntityUtil.parseId(getKeyType(), idString);
     }
 
     protected static <E extends IEntity<K>, K extends Serializable> K id(E entity) {

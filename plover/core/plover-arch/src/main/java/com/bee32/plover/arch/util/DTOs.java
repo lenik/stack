@@ -13,8 +13,8 @@ public class DTOs
     protected void _unmarshalTo(Void target) {
     }
 
-    public static Class<?> getDataType(DataTransferObject<?> dto) {
-        return dto.dataType;
+    public static Class<?> getSourceType(DataTransferObject<?> dto) {
+        return dto.sourceType;
     }
 
 }
