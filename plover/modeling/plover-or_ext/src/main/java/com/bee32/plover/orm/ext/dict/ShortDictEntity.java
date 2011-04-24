@@ -18,8 +18,12 @@ public abstract class ShortDictEntity<K extends Serializable>
         super();
     }
 
-    public ShortDictEntity(String name, String description, String icon) {
-        super(name, description, icon);
+    public ShortDictEntity(String name, String displayName) {
+        super(name, displayName);
+    }
+
+    public ShortDictEntity(String name, String displayName, String icon) {
+        super(name, displayName, icon);
     }
 
 }

@@ -14,6 +14,7 @@ public class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
     private static final long serialVersionUID = 1L;
 
     protected String name;
+    protected String displayName;
     protected String description;
     protected String icon;
 
@@ -28,6 +29,7 @@ public class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
     @Override
     protected void _marshal(E source) {
         name = source.getName();
+        displayName = source.getDisplayName();
         description = source.getDescription();
         icon = source.getIcon();
     }
@@ -35,6 +37,7 @@ public class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
     @Override
     protected void _unmarshalTo(E target) {
         target.setName(name);
+        target.setDisplayName(displayName);
         target.setDescription(description);
         target.setIcon(icon);
     }
@@ -45,6 +48,7 @@ public class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
         super.parse(map);
 
         name = map.getString("name");
+        displayName = map.getString("displayName");
         description = map.getString("description");
         icon = map.getString("icon");
     }
@@ -55,6 +59,14 @@ public class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getDescription() {

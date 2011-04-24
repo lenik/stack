@@ -18,8 +18,12 @@ public abstract class LongDictEntity<K extends Serializable>
         super();
     }
 
-    public LongDictEntity(String name, String description, String icon) {
-        super(name, description, icon);
+    public LongDictEntity(String name, String displayName) {
+        super(name, displayName);
+    }
+
+    public LongDictEntity(String name, String displayName, String icon) {
+        super(name, displayName, icon);
     }
 
 }
