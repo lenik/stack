@@ -8,7 +8,7 @@ import com.bee32.sem.module.EnterpriseModule;
 public class SEMMailModule
         extends EnterpriseModule {
 
-    public static final String PREFIX = "3/15/1/7";
+    public static final String PREFIX = "/3/15/1/7";
 
     @Override
     protected void preamble() {
