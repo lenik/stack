@@ -54,6 +54,18 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
 
     protected abstract Class<? extends E> getEntityType();
 
+    protected abstract Class<? extends Dto> getTransferType();
+
+    protected synchronized EntityDao<E, K> getAccessor() {
+        if (_accessor == null) {
+            Class<?> accessorType = EntityDaoUtil.getDaoTypeHeuristic(getEntityType());
+            assert accessorType != null;
+
+            _accessor = (EntityDao<E, K>) applicationContext.getBean(accessorType);
+        }
+        return _accessor;
+    }
+
     protected class ViewData
             extends ModelAndViewEx {
 
