@@ -17,13 +17,15 @@ public class EventPriorityController
     protected void fillDataRow(DataTableDxo tab, EventPriorityDto dto) {
         tab.push(dto.getPriority());
         tab.push(dto.getName());
+        tab.push(dto.getDisplayName());
         tab.push(dto.getDescription());
     }
 
     @Override
     protected void fillTemplate(EventPriorityDto dto) {
-        dto.setPriority(0);
         dto.setName("");
+        dto.setDisplayName("");
+        dto.setPriority(0);
         dto.setDescription("");
     }
 

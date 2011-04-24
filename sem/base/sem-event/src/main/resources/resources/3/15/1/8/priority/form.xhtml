@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
+    xmlns:sem="http://bee32.com/sem/functions">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<ui:composition template="/template/entity/form.xhtml">
+    <ui:define name="table">
+        <table width="100%" bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+                <td align="right">优先级 :</td>
+                <td>
+                    <input name="priority" type="text" size="4" maxlength="10" value="${it.priority}" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">代码 :</td>
+                <td>
+                    <input name="name" type="text" size="20" maxlength="50" value="${it.name}" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">显示名称 :</td>
+                <td>
+                    <input name="displayName" type="text" size="20" maxlength="50" value="${it.displayName}" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">描述 :</td>
+                <td>
+                    <input name="description" type="text" size="60" maxlength="200" value="${it.description}" />
+                </td>
+            </tr>
+        </table>
+    </ui:define>
+</ui:composition>
+</html>
