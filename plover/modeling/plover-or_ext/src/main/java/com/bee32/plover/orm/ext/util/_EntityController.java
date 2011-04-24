@@ -28,24 +28,31 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
     @Inject
     protected CommonDataManager dataManager;
 
-    private final String _PREFIX;
-    protected final Class<E> entityType;
+    protected final String prefix;
 
     public _EntityController() {
-        entityType = ClassUtil.infer1(getClass(), _EntityController.class, 0);
-
-        try {
-            Field prefixField = getClass().getDeclaredField("PREFIX");
-
-            int modifiers = prefixField.getModifiers();
-            if (!Modifier.isStatic(modifiers))
-                throw new Error(prefixField + " must be static");
-
-            _PREFIX = (String) prefixField.get(null);
-        } catch (Exception e) {
-            throw new Error("PREFIX isn't defined in " + getClass());
-        }
+        this(null);
     }
+
+    public _EntityController(String prefix) {
+        if (prefix == null)
+            try {
+                Field prefixField = getClass().getDeclaredField("PREFIX");
+
+                int modifiers = prefixField.getModifiers();
+                if (!Modifier.isStatic(modifiers))
+                    throw new Error(prefixField + " must be static");
+
+                prefix = (String) prefixField.get(null);
+            } catch (Exception e) {
+                throw new Error("PREFIX isn't defined in " + getClass());
+            }
+        this.prefix = prefix;
+    }
+
+    protected abstract Class<? extends K> getKeyType();
+
+    protected abstract Class<? extends E> getEntityType();
 
     protected class ViewData
             extends ModelAndViewEx {
@@ -100,7 +107,7 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
      * @see #preamble(Map)
      */
     protected void loadMetaData(Map<String, Object> metaData) {
-        String entityTypeName = ClassUtil.getDisplayName(entityType);
+        String entityTypeName = ClassUtil.getDisplayName(getEntityType());
         metaData.put("name", entityTypeName);
     }
 
@@ -111,7 +118,7 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
     }
 
     protected String viewOf(String localView) {
-        return _PREFIX + localView;
+        return prefix + localView;
     }
 
     protected ModelAndView _index(HttpServletRequest req, HttpServletResponse resp)
@@ -195,11 +202,11 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
             throws ServletException, IOException {
 
         String idString = req.getParameter("id");
-        K id = EntityUtil.parseId(entityType, idString);
+        K id = parseId(idString);
 
         ViewData view = new ViewData(viewOf("index"));
 
-        E entity = dataManager.load(entityType, id);
+        E entity = dataManager.load(getEntityType(), id);
         if (entity != null)
             try {
                 dataManager.delete(entity);
@@ -215,7 +222,22 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
         return view;
     }
 
-    // Utils...
+    // Utilities...
+
+    protected K parseId(String idString) {
+        K id = EntityUtil.parseId(getKeyType(), idString);
+        return id;
+    }
+
+    protected E newEntity()
+            throws ServletException {
+        try {
+            return getEntityType().newInstance();
+        } catch (ReflectiveOperationException e) {
+            throw new ServletException(e.getMessage(), e);
+        }
+    }
+
     protected ViewData it(Object it) {
         ViewData view = new ViewData();
         view.put("it", it);
