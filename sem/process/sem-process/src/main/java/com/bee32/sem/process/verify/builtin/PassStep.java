@@ -5,6 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -19,9 +20,11 @@ public class PassStep
     private static final long serialVersionUID = 1L;
 
     private PassToNext policy;
-    private int order;
-    private Principal responsible;
+
     public boolean optional;
+    private int order;
+
+    private Principal responsible;
 
     public PassStep() {
     }
@@ -51,6 +54,18 @@ public class PassStep
     }
 
     /**
+     * 步骤可选
+     */
+    // @Column(nullable = false)
+    public boolean isOptional() {
+        return optional;
+    }
+
+    public void setOptional(boolean optional) {
+        this.optional = optional;
+    }
+
+    /**
      * 步骤顺序
      */
     public int getOrder() {
@@ -73,18 +88,6 @@ public class PassStep
         this.responsible = responsible;
     }
 
-    /**
-     * 步骤可选
-     */
-    // @Column(nullable = false)
-    public boolean isOptional() {
-        return optional;
-    }
-
-    public void setOptional(boolean optional) {
-        this.optional = optional;
-    }
-
     @Override
     public void toString(PrettyPrintStream out, FormatStyle format) {
         if (optional)
@@ -93,5 +96,20 @@ public class PassStep
         out.print(" - ");
         out.print(responsible);
     }
+
+    public static final PropertyAccessor<PassStep, Principal> responsibleProperty = new PropertyAccessor<PassStep, Principal>(
+            Principal.class) {
+
+        @Override
+        public Principal get(PassStep obj) {
+            return obj.responsible;
+        }
+
+        @Override
+        public void set(PassStep obj, Principal value) {
+            obj.responsible = value;
+        }
+
+    };
 
 }
