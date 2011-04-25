@@ -37,13 +37,17 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
         return it(dto.marshal(entity));
     }
 
+    protected List<? extends E> __list() {
+        return dataManager.loadAll(getEntityType());
+    }
+
     @Override
     protected ModelAndView _data(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         DataTableDxo tab = new DataTableDxo(req);
 
-        List<? extends E> entityList = dataManager.loadAll(getEntityType());
+        List<? extends E> entityList = __list();
 
         Integer selection = dtoSelection;
         List<? extends Dto> list = DTOs.marshalList(getTransferType(), //
