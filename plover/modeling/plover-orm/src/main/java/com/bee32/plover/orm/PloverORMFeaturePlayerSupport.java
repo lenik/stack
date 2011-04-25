@@ -5,7 +5,7 @@ import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UsingUtil;
 import com.bee32.plover.test.FeaturePlayerSupport;
 
-public class PloverOrmFeaturePlayerSupport
+public class PloverORMFeaturePlayerSupport
         extends FeaturePlayerSupport {
 
     @Override
