@@ -3,18 +3,22 @@ package com.bee32.plover.test;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.ServiceLoader;
 import java.util.Set;
 
+import org.junit.Assert;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 
+import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.inject.cref.Import;
+import com.bee32.plover.inject.cref.ScanTestxContext;
 import com.bee32.plover.inject.spring.ApplicationContextBuilder;
 
-public abstract class FeaturePlayer<T> {
+@Import(ScanTestxContext.class)
+public abstract class FeaturePlayer<T>
+        extends Assert {
 
     static Set<IFeaturePlayerSupport> supports;
 
@@ -53,11 +57,7 @@ public abstract class FeaturePlayer<T> {
     protected void mainLoop()
             throws IOException {
 
-        ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
-        Type[] typeArgs = genericSuperclass.getActualTypeArguments();
-
-        @SuppressWarnings("unchecked")
-        Class<T> playerClass = (Class<T>) typeArgs[0];
+        Class<T> playerClass = ClassUtil.infer1(getClass(), FeaturePlayer.class, 0);
 
         fireSetup(playerClass);
 
