@@ -27,7 +27,7 @@ public class ProcessDefaultsPostProcessor
                 Class<? extends IVerifyContext> contextClass = ClassUtil.infer1(entityClass, IVerifiable.class, 0);
 
                 VerifyPolicyPref verifyPolicyPref = new VerifyPolicyPref();
-                verifyPolicyPref.setEntityClass(entityClass);
+                verifyPolicyPref.setType(entityClass);
 
                 VerifyPolicyManager.forContext(contextClass);
 

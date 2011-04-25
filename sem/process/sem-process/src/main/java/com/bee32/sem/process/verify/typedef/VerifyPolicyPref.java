@@ -1,78 +1,20 @@
 package com.bee32.sem.process.verify.typedef;
 
-import javax.free.IllegalUsageException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
-import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.sem.process.verify.IAllowedByContext;
+import com.bee32.plover.orm.ext.typepref.TypePrefEntity;
 import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.util.AllowedBySupport;
 
 @Entity
 public class VerifyPolicyPref
-        extends AllowedBySupport<String, IAllowedByContext> {
+        extends TypePrefEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private String entityType;
-    private String displayName;
-    private String description;
     private VerifyPolicy<?> preferredPolicy;
-
-    @Column(length = 80, nullable = false)
-    public String getEntityType() {
-        return entityType;
-    }
-
-    public void setEntityType(String entityType) {
-        this.entityType = entityType;
-    }
-
-    @Transient
-    public Class<? extends EntityBean<?>> getEntityClass() {
-        if (entityType == null)
-            return null;
-
-        Class<? extends EntityBean<?>> entityClass;
-        try {
-            entityClass = (Class<? extends EntityBean<?>>) Class.forName(entityType);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalUsageException("Undefined entity type " + entityType);
-        }
-
-        if (!EntityBean.class.isAssignableFrom(entityClass))
-            throw new IllegalUsageException("Invalid entity type: " + entityType);
-
-        return entityClass;
-    }
-
-    public void setEntityClass(Class<?> entityClass) {
-        if (entityClass == null)
-            entityType = null;
-        else
-            entityType = entityClass.getName();
-    }
-
-    @Transient
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    @Transient
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    private String description;
 
     @ManyToOne
     public VerifyPolicy<?> getPreferredPolicy() {
@@ -81,6 +23,15 @@ public class VerifyPolicyPref
 
     public void setPreferredPolicy(VerifyPolicy<?> preferredPolicy) {
         this.preferredPolicy = preferredPolicy;
+    }
+
+    @Column(length = 200)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }
