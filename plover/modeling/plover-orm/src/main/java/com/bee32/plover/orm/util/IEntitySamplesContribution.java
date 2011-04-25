@@ -41,4 +41,8 @@ public interface IEntitySamplesContribution {
 
     void setLoaded(boolean loaded);
 
+    void beginLoad();
+
+    void endLoad();
+
 }

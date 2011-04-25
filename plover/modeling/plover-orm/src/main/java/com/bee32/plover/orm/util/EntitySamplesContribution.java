@@ -109,4 +109,12 @@ public abstract class EntitySamplesContribution
         this.loaded = loaded;
     }
 
+    @Override
+    public void beginLoad() {
+    }
+
+    @Override
+    public void endLoad() {
+    }
+
 }

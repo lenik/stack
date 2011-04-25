@@ -120,6 +120,8 @@ public class SamplesLoader
         } else {
             List<IEntity<?>> selection = new ArrayList<IEntity<?>>();
 
+            contrib.beginLoad();
+
             Collection<? extends IEntity<?>> samples = contrib.getTransientSamples(worseCase);
             if (samples == null || samples.isEmpty()) {
                 logger.debug("  No sample defined in " + contrib);
@@ -142,9 +144,15 @@ public class SamplesLoader
 
             try {
                 dataManager.saveAll(selection);
+
+                confManager.setConf(loadKey, "1");
+
+                dataManager.flush();
             } catch (DataAccessException e) {
                 throw new RuntimeException("Failed to load samples from " + contrib, e);
             }
+
+            contrib.endLoad();
         }
 
         contrib.setLoaded(true);
