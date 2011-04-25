@@ -65,7 +65,11 @@ public class TypePrefEntity
 
     public void setType(Class<?> type) {
         this.type = type;
-        this.typeId = ABBR.abbr(type);
+        this.typeId = typeId(type);
+    }
+
+    public static String typeId(Class<?> type) {
+        return ABBR.abbr(type);
     }
 
     protected Class<?> resolveType(String typeId) {
