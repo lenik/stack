@@ -253,16 +253,19 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
 
     protected Dto newDto(Integer selection)
             throws ServletException {
+
+        Class<? extends Dto> dtoType = getTransferType();
         Dto dto;
+
         try {
             if (selection == null)
-                dto = getTransferType().newInstance();
+                dto = dtoType.newInstance();
             else {
-                Constructor<? extends Dto> selectionCtor = getTransferType().getConstructor(int.class);
+                Constructor<? extends Dto> selectionCtor = dtoType.getConstructor(int.class);
                 dto = selectionCtor.newInstance(selection.intValue());
             }
         } catch (ReflectiveOperationException e) {
-            throw new ServletException(e.getMessage(), e);
+            throw new ServletException("Failed to create DTO of " + dtoType, e);
         }
         dto.setEntityType(getEntityType());
         return dto;
