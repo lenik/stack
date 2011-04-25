@@ -1,6 +1,9 @@
 package com.bee32.sem.process.verify.builtin.web;
 
-import com.bee32.icsf.principal.Principal;
+import javax.free.IVariantLookupMap;
+import javax.free.ParseException;
+import javax.free.TypeConvertException;
+
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
@@ -11,9 +14,11 @@ public class PassStepDto
 
     private static final long serialVersionUID = 1L;
 
-    private int order;
-    private PrincipalDto<Principal> responsible;
     public boolean optional;
+    private int order;
+
+    private Long responsibleId;
+    private PrincipalDto responsible;
 
     public PassStepDto() {
         super();
@@ -21,22 +26,6 @@ public class PassStepDto
 
     public PassStepDto(PassStep source) {
         super(source);
-    }
-
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
-    public PrincipalDto<Principal> getResponsible() {
-        return responsible;
-    }
-
-    public void setResponsible(PrincipalDto<Principal> responsible) {
-        this.responsible = responsible;
     }
 
     public boolean isOptional() {
@@ -47,19 +36,56 @@ public class PassStepDto
         this.optional = optional;
     }
 
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public Long getResponsibleId() {
+        return responsibleId;
+    }
+
+    public void setResponsibleId(Long responsibleId) {
+        this.responsibleId = responsibleId;
+    }
+
+    public PrincipalDto getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(PrincipalDto responsible) {
+        this.responsible = responsible;
+    }
+
     @Override
     protected void _marshal(PassStep source) {
-        order = source.getOrder();
-        responsible = new PrincipalDto<Principal>().marshal(source.getResponsible());
         optional = source.isOptional();
+        order = source.getOrder();
+
+        responsibleId = id(source.getResponsible());
+        responsible = new PrincipalDto().marshal(source.getResponsible());
     }
 
     @Override
     protected void _unmarshalTo(IUnmarshalContext context, PassStep target) {
-        target.setOrder(order);
         target.setOptional(optional);
-        if (responsible != null)
-            target.setResponsible(responsible.unmarshal());
+        target.setOrder(order);
+
+        with(context, target)//
+                .unmarshal(PassStep.responsibleProperty, responsibleId, responsible);
+    }
+
+    @Override
+    public void parse(IVariantLookupMap<String> map)
+            throws ParseException, TypeConvertException {
+        super.parse(map);
+
+        optional = map.getBoolean("optional");
+        order = map.getInt("order");
+        responsibleId = map.getLong("responsibleId");
     }
 
 }
