@@ -18,6 +18,8 @@ public abstract class EntitySamplesContribution
         extends Component
         implements IEntitySamplesContribution {
 
+    public static final String CONF_LOADED = "esc.loaded";
+
     private List<IEntity<?>> normalSamples;
     private List<IEntity<?>> worseSamples;
 

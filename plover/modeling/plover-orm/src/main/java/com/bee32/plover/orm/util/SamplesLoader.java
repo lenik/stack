@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.orm.builtin.PloverConfManager;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.IEntity;
@@ -31,6 +32,9 @@ public class SamplesLoader
         implements ApplicationContextAware {
 
     static Logger logger = LoggerFactory.getLogger(SamplesLoader.class);
+
+    @Inject
+    PloverConfManager confManager;
 
     @Inject
     CommonDataManager dataManager;
@@ -107,34 +111,40 @@ public class SamplesLoader
             }
         }
 
-        contrib.getTransientSamples(worseCase);
+        String loadKey = "loaded." + contrib.getClass().getName();
+        String loadedState = confManager.getConfValue(loadKey);
 
-        List<IEntity<?>> selection = new ArrayList<IEntity<?>>();
+        if ("1".equals(loadedState)) {
+            logger.debug("  Already loaded: " + loadKey);
 
-        Collection<? extends IEntity<?>> samples = contrib.getTransientSamples(false);
-        if (samples == null || samples.isEmpty()) {
-            logger.debug("  No sample defined in " + contrib);
-            return;
-        }
+        } else {
+            List<IEntity<?>> selection = new ArrayList<IEntity<?>>();
 
-        for (IEntity<?> sample : samples) {
-            Class<?> sampleClass = sample.getClass();
-            if (unitClasses.contains(sampleClass))
-                selection.add(sample);
-        }
+            Collection<? extends IEntity<?>> samples = contrib.getTransientSamples(worseCase);
+            if (samples == null || samples.isEmpty()) {
+                logger.debug("  No sample defined in " + contrib);
+                return;
+            }
 
-        if (logger.isDebugEnabled()) {
-            String message = String.format("Loading[%d]: %d %s samples from %s", ++loadIndex, selection.size(), //
-                    worseCase ? "worse" : "normal", contrib);
-            logger.debug(message);
-        }
+            for (IEntity<?> sample : samples) {
+                Class<?> sampleClass = sample.getClass();
+                if (unitClasses.contains(sampleClass))
+                    selection.add(sample);
+            }
 
-        progress.execute(contrib);
+            if (logger.isDebugEnabled()) {
+                String message = String.format("Loading[%d]: %d %s samples from %s", ++loadIndex, selection.size(), //
+                        worseCase ? "worse" : "normal", contrib);
+                logger.debug(message);
+            }
 
-        try {
-            dataManager.saveAll(selection);
-        } catch (DataAccessException e) {
-            throw new RuntimeException("Failed to load samples from " + contrib, e);
+            progress.execute(contrib);
+
+            try {
+                dataManager.saveAll(selection);
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Failed to load samples from " + contrib, e);
+            }
         }
 
         contrib.setLoaded(true);
