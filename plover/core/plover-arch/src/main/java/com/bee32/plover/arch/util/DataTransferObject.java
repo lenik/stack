@@ -33,6 +33,8 @@ public abstract class DataTransferObject<T, C>
 
     protected final Flags32 selection = new Flags32();
 
+    private boolean referenceOnly;
+
     protected DataTransferObject(Class<? extends T> sourceType) {
         setSourceType(sourceType);
     }
@@ -66,6 +68,14 @@ public abstract class DataTransferObject<T, C>
 
     public void setSourceType(Class<? extends T> sourceType) {
         this.sourceType = sourceType;
+    }
+
+    public boolean isReferenceOnly() {
+        return referenceOnly;
+    }
+
+    public void setReferenceOnly(boolean referenceOnly) {
+        this.referenceOnly = referenceOnly;
     }
 
     private static ThreadLocal<Map<Object, Object>> threadLocalGraph;
