@@ -38,7 +38,7 @@ public class SEMEventSamples
         rain.setState(EventState.UNKNOWN);
         rain.setClosed(true);
         rain.setSubject("明天早晨会有流星雨，请大家出门带上望远镜。");
-        rain.setMessage("你以为带上望远镜就能看到流行雨吗？少年哟，别做梦了，那是不可能的。");
+        rain.setMessage("你以为带上望远镜就能看到土卫3的流行雨吗？少年哟，别做梦了，那是不可能的。");
         rain.setBeginTime(new Date(System.currentTimeMillis() - 7200));
         rain.setBeginTime(new Date(System.currentTimeMillis() + 7200));
         // rain.setObservers(Arrays.asList(IcsfPrincipalSamples.solaRobots));

@@ -11,6 +11,7 @@ public class MapProperties
 
     private final Map<String, String> map;
 
+    @SuppressWarnings("unchecked")
     public MapProperties(Properties properties) {
         if (properties == null)
             throw new NullPointerException("properties");

@@ -39,7 +39,6 @@ public abstract class AbstractEventController<E extends Event, Dto extends Abstr
         tab.push(event.getStatusText());
         tab.push(event.getActorName());
         tab.push(event.getSubject());
-        tab.push(event.getMessage());
         tab.push(event.getBeginTime());
         // tab.push(event.getEndTime());
 

@@ -107,7 +107,7 @@ public class ClassUtil {
                     try {
                         sibling = Class.forName(fqcn);
                     } catch (ClassNotFoundException e) {
-                        logger.error("Failed to resolve class: " + fqcn, e);
+                        logger.error("(skipped) bad entry in Types.properties: failed to resolve class: " + fqcn, e);
                         continue;
                     }
 
