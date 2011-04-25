@@ -18,6 +18,7 @@ import org.springframework.web.servlet.View;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.javascript.JavascriptChunk;
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
@@ -228,6 +229,15 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
             }
 
         return view;
+    }
+
+    // Utility pages
+
+    protected ModelAndView notApplicable(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        JavascriptChunk chunk = Javascripts.alertAndBack("Not applicable");
+        chunk.dump(req, resp);
+        return null;
     }
 
     // Utilities...
