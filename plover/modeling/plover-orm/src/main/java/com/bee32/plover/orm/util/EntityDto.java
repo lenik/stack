@@ -146,7 +146,8 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
     }
 
     protected static <E extends EntityBean<K>, K extends Serializable> //
-    E unmarshal(IUnmarshalContext context, Class<E> entityType, E oldEntity, K newId, EntityDto<E, K> newDto) {
+    /**/E unmarshal(IUnmarshalContext context, Class<E> entityType, E oldEntity, //
+            K newId, EntityDto<E, K> newDto) {
 
         if (newId != null)
             return context.loadEntity(entityType, newId);
@@ -163,9 +164,9 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
         return existing;
     }
 
-    protected static <E extends EntityBean<?>, Ei extends EntityBean<Ki>, Ki extends Serializable> void unmarshal(
-            IUnmarshalContext context, E target, PropertyAccessor<E, Ei> property, //
-            Ki newId, EntityDto<Ei, Ki> newDto) {
+    protected static <E extends EntityBean<?>, Ei extends EntityBean<Ki>, Ki extends Serializable> //
+    /**/void unmarshalProperty(IUnmarshalContext context, E target, PropertyAccessor<E, Ei> property, Ki newId,
+            EntityDto<Ei, Ki> newDto) {
 
         Class<Ei> propertyType = property.getType();
 
@@ -174,6 +175,31 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
 
         if (newProperty != oldProperty)
             property.set(target, newProperty);
+    }
+
+    protected static class WithContext<E extends EntityBean<?>> {
+
+        IUnmarshalContext context;
+        E target;
+
+        public WithContext(IUnmarshalContext context, E target) {
+            this.context = context;
+            this.target = target;
+        }
+
+        public <Ei extends EntityBean<Ki>, Ki extends Serializable> //
+        /**/WithContext<E> unmarshal(PropertyAccessor<E, Ei> property, //
+                Ki newId, EntityDto<Ei, Ki> newDto) {
+
+            EntityDto.unmarshalProperty(context, target, property, newId, newDto);
+
+            return this;
+        }
+
+    }
+
+    public <Et extends EntityBean<?>> WithContext<Et> with(IUnmarshalContext context, Et target) {
+        return new WithContext<Et>(context, target);
     }
 
 }
