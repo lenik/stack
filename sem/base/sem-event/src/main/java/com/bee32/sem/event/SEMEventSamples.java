@@ -41,7 +41,7 @@ public class SEMEventSamples
         rain.setMessage("你以为带上望远镜就能看到流行雨吗？少年哟，别做梦了，那是不可能的。");
         rain.setBeginTime(new Date(System.currentTimeMillis() - 7200));
         rain.setBeginTime(new Date(System.currentTimeMillis() + 7200));
-        rain.setObservers(Arrays.asList(IcsfPrincipalSamples.solaRobots));
+        // rain.setObservers(Arrays.asList(IcsfPrincipalSamples.solaRobots));
 
         killAngel = new Task();
         killAngel.setCategory("特种");
