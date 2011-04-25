@@ -5,6 +5,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.free.AbstractVariantLookupMap;
+import javax.free.Dates;
 import javax.free.IVariantLookupMap;
 import javax.free.IllegalUsageException;
 import javax.free.Map2VariantLookupMap;
@@ -475,6 +477,11 @@ class ReqLookMap
     }
 
     @Override
+    public Set<String> keySet() {
+        return map.keySet();
+    }
+
+    @Override
     public boolean containsKey(String key) {
         return map.containsKey(key);
     }
@@ -515,8 +522,21 @@ class ReqLookMap
     }
 
     @Override
-    public Set<String> keySet() {
-        return map.keySet();
+    public Date getDate(String key, Date defaultValue) {
+        String s = getString(key);
+        if (s == null)
+            return defaultValue;
+
+        try {
+            return Dates.YYYY_MM_DD.parse(s);
+        } catch (java.text.ParseException e) {
+            return defaultValue;
+        }
+    }
+
+    @Override
+    public Date getDate(String key) {
+        return getDate(key, null);
     }
 
 }
