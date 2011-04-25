@@ -31,7 +31,7 @@ import com.bee32.sem.event.EventFlags;
 @Entity
 @Inheritance(strategy = SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
-@DiscriminatorValue("")
+@DiscriminatorValue("EVT")
 public class Event
         extends EntityBean<Long>
         implements IEvent, ITypeAbbrAware {
