@@ -147,12 +147,12 @@ public abstract class DataTransferObject<T, C>
 
     @Override
     public final T unmarshal() {
-        return unmarshal(null);
+        return unmarshal((C) null);
     }
 
     @Override
     public final void unmarshalTo(T target) {
-        unmarshalTo(null, target);
+        unmarshalTo((C) null, target);
     }
 
     @Override
