@@ -22,12 +22,12 @@ public interface IRolePrincipal
 
     Set<? extends IGroupPrincipal> getResponsibleGroups();
 
-    void addResponsibleUser(IUserPrincipal user);
+    boolean addResponsibleUser(IUserPrincipal user);
 
-    void removeResponsibleUser(IUserPrincipal user);
+    boolean removeResponsibleUser(IUserPrincipal user);
 
-    void addResponsibleGroup(IGroupPrincipal group);
+    boolean addResponsibleGroup(IGroupPrincipal group);
 
-    void removeResponsibleGroup(IGroupPrincipal group);
+    boolean removeResponsibleGroup(IGroupPrincipal group);
 
 }

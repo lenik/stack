@@ -53,9 +53,9 @@ public interface IGroupPrincipal
      */
     Set<? extends IRolePrincipal> getAssignedRoles();
 
-    void addAssignedRole(IRolePrincipal role);
+    boolean addAssignedRole(IRolePrincipal role);
 
-    void removeAssignedRole(IRolePrincipal role);
+    boolean removeAssignedRole(IRolePrincipal role);
 
     /**
      * 获取成员用户。
@@ -64,8 +64,8 @@ public interface IGroupPrincipal
      */
     Set<? extends IUserPrincipal> getMemberUsers();
 
-    void addMemberUser(IUserPrincipal user);
+    boolean addMemberUser(IUserPrincipal user);
 
-    void removeMemberUser(IUserPrincipal user);
+    boolean removeMemberUser(IUserPrincipal user);
 
 }

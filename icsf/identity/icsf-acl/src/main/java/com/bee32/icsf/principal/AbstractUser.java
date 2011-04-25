@@ -50,14 +50,30 @@ public abstract class AbstractUser
 
     @SuppressWarnings("unchecked")
     @Override
-    public void addAssignedGroup(IGroupPrincipal group) {
+    public boolean addAssignedGroup(IGroupPrincipal group) {
+        if (group == null)
+            throw new NullPointerException("group");
+
         Set<IGroupPrincipal> assignedGroups = (Set<IGroupPrincipal>) getAssignedGroups();
-        assignedGroups.add(group);
+        if (!assignedGroups.add(group))
+            return false;
+
+        group.addMemberUser(this);
+        return true;
     }
 
     @Override
-    public void removeAssignedGroup(IGroupPrincipal group) {
-        getAssignedGroups().remove(group);
+    public boolean removeAssignedGroup(IGroupPrincipal group) {
+        if (group == null)
+            throw new NullPointerException("group");
+
+        if (!group.removeMemberUser(this))
+            return false;
+
+        if (getAssignedGroups().remove(group))
+            group.removeMemberUser(this);
+
+        return true;
     }
 
     @Override
@@ -65,22 +81,46 @@ public abstract class AbstractUser
 
     @SuppressWarnings("unchecked")
     @Override
-    public void addAssignedRole(IRolePrincipal role) {
+    public boolean addAssignedRole(IRolePrincipal role) {
+        if (role == null)
+            throw new NullPointerException("role");
+
         Set<IRolePrincipal> assignedRoles = (Set<IRolePrincipal>) getAssignedRoles();
-        assignedRoles.add(role);
+        if (!assignedRoles.add(role))
+            return false;
+
+        role.removeResponsibleUser(this);
+        return true;
     }
 
     @Override
-    public void removeAssignedRole(IRolePrincipal role) {
-        getAssignedRoles().remove(role);
+    public boolean removeAssignedRole(IRolePrincipal role) {
+        if (role == null)
+            throw new NullPointerException("role");
+
+        if (!getAssignedRoles().remove(role))
+            return false;
+
+        role.removeResponsibleUser(this);
+        return true;
+    }
+
+    @Override
+    public AbstractUser detach() {
+        super.detach();
+
+        for (IGroupPrincipal group : flyOver(getAssignedGroups()))
+            group.removeMemberUser(this);
+
+        for (IRolePrincipal role : flyOver(getAssignedRoles()))
+            role.removeResponsibleUser(this);
+
+        return this;
     }
 
     @Override
     public boolean implies(IPrincipal principal) {
-        if (principal == null)
-            throw new NullPointerException("principal");
-
-        if (this.equals(principal))
+        if (super.implies(principal))
             return true;
 
         for (IGroupPrincipal group : getAssignedGroups())

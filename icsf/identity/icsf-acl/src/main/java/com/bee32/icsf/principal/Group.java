@@ -78,7 +78,7 @@ public class Group
         this.derivedGroups = (Set<Group>) derivedGroups;
     }
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne
     @Override
     public User getOwner() {
         return owner;
@@ -89,7 +89,7 @@ public class Group
         this.owner = (User) owner;
     }
 
-    @ManyToOne(targetEntity = Role.class)
+    @ManyToOne
     @JoinColumn(name = "role1")
     @Override
     public Role getPrimaryRole() {
@@ -101,8 +101,9 @@ public class Group
         this.primaryRole = (Role) primaryRole;
     }
 
-    @ManyToMany(targetEntity = User.class)
+    @ManyToMany
     // @Cascade(CascadeType.SAVE_UPDATE)
+    // @Cascade(CascadeType.ALL)
     @JoinTable(name = "GroupMember", //
     /*            */joinColumns = @JoinColumn(name = "group"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "member"))
@@ -123,7 +124,7 @@ public class Group
         this.memberUsers = (Set<User>) memberUsers;
     }
 
-    @ManyToMany(targetEntity = Role.class)
+    @ManyToMany
     // @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "GroupRole", //
     /*            */joinColumns = @JoinColumn(name = "group"), //

@@ -30,9 +30,9 @@ public interface IUserPrincipal
      */
     Set<? extends IRolePrincipal> getAssignedRoles();
 
-    void addAssignedRole(IRolePrincipal role);
+    boolean addAssignedRole(IRolePrincipal role);
 
-    void removeAssignedRole(IRolePrincipal role);
+    boolean removeAssignedRole(IRolePrincipal role);
 
     /**
      * 授予该用户的组集。
@@ -45,8 +45,8 @@ public interface IUserPrincipal
      */
     Set<? extends IGroupPrincipal> getAssignedGroups();
 
-    void addAssignedGroup(IGroupPrincipal group);
+    boolean addAssignedGroup(IGroupPrincipal group);
 
-    void removeAssignedGroup(IGroupPrincipal group);
+    boolean removeAssignedGroup(IGroupPrincipal group);
 
 }

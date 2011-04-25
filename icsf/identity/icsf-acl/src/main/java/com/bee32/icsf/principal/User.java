@@ -103,33 +103,6 @@ public class User
     }
 
     @Override
-    public boolean implies(IPrincipal principal) {
-        if (principal == null)
-            throw new NullPointerException("principal");
-
-        if (this.equals(principal))
-            return true;
-
-        if (primaryGroup != null)
-            if (primaryGroup.implies(principal))
-                return true;
-
-        if (primaryRole != null)
-            if (primaryRole.implies(principal))
-                return true;
-
-        for (IGroupPrincipal group : getAssignedGroups())
-            if (group.implies(principal))
-                return true;
-
-        for (IRolePrincipal role : getAssignedRoles())
-            if (role.implies(principal))
-                return true;
-
-        return false;
-    }
-
-    @Override
     protected int hashCodeEntity() {
         if (!PrincipalBeanConfig.fullEquality)
             return super.hashCodeEntity();

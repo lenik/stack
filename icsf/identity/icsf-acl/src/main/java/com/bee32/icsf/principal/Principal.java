@@ -129,13 +129,23 @@ public class Principal
     }
 
     @Override
-    public boolean implies(IPrincipal principal) {
-        if (impliedPrincipals == null)
-            return false;
+    public Principal detach() {
+        super.detach();
+        return this;
+    }
 
-        for (IPrincipal impliedPrincipal : impliedPrincipals)
-            if (impliedPrincipal.implies(principal))
-                return true;
+    @Override
+    public boolean implies(IPrincipal principal) {
+        if (principal == null)
+            throw new NullPointerException("principal");
+
+        if (this.equals(principal))
+            return true;
+
+        if (impliedPrincipals != null)
+            for (IPrincipal impliedPrincipal : impliedPrincipals)
+                if (impliedPrincipal.implies(principal))
+                    return true;
 
         return false;
     }
