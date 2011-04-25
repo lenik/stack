@@ -6,7 +6,7 @@ import com.bee32.icsf.principal.Group;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class GroupDto
-        extends PrincipalDto<Group> {
+        extends AbstractPrincipalDto<Group> {
 
     private static final long serialVersionUID = 1L;
 

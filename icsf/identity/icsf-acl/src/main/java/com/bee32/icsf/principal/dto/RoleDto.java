@@ -6,7 +6,7 @@ import com.bee32.icsf.principal.Role;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class RoleDto
-        extends PrincipalDto<Role> {
+        extends AbstractPrincipalDto<Role> {
 
     private static final long serialVersionUID = 1L;
 

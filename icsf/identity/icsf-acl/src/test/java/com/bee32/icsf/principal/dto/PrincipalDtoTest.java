@@ -16,7 +16,7 @@ public class PrincipalDtoTest
 
     @Test
     public void testNew() {
-        PrincipalDto<Principal> principalDto = new PrincipalDto<Principal>();
+        AbstractPrincipalDto<Principal> principalDto = new AbstractPrincipalDto<Principal>();
         Class<?> sourceType = DTOs.getSourceType(principalDto);
         assertEquals(Principal.class, sourceType);
     }
