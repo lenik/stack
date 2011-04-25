@@ -14,4 +14,11 @@ public interface IEntity<K extends Serializable>
 
     // void setId(K id);
 
+    /**
+     * Detach.
+     *
+     * @return This object itself.
+     */
+    IEntity<K> detach();
+
 }

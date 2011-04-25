@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -75,6 +76,11 @@ public abstract class Entity<K extends Serializable>
 
     @Override
     public void populate(Object source) {
+    }
+
+    @Override
+    public Entity<K> detach() {
+        return this;
     }
 
     @Override
@@ -421,6 +427,10 @@ public abstract class Entity<K extends Serializable>
             copy.add(child);
         }
         return copy;
+    }
+
+    protected static <T> Iterable<T> flyOver(Collection<? extends T> it) {
+        return new ArrayList<T>(it);
     }
 
 }
