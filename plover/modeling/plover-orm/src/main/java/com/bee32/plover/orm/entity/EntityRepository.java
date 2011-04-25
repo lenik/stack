@@ -66,7 +66,7 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
     protected Class<?> deferEntityType(Class<?> clazz)
             throws ClassNotFoundException {
 
-        if (EntityBean.class.isAssignableFrom(clazz))
+        if (Entity.class.isAssignableFrom(clazz))
             return clazz;
 
         int modifiers = clazz.getModifiers();

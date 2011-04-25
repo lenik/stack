@@ -15,7 +15,7 @@ public class EntityDaoUtil {
      * @throws IllegalUsageException
      *             If no DAO class is found.
      */
-    public static <Dao extends EntityDao<E, K>, E extends EntityBean<K>, K extends Serializable> Class<Dao> getDaoTypeHeuristic(
+    public static <Dao extends EntityDao<E, K>, E extends Entity<K>, K extends Serializable> Class<Dao> getDaoTypeHeuristic(
             Class<E> entityType) {
 
         if (entityType == null)

@@ -25,7 +25,7 @@ import com.bee32.plover.restful.IRESTfulResponse;
  */
 @Controller
 @Lazy
-public class EntityRESTfulController<E extends EntityBean<K>, K extends Serializable> {
+public class EntityRESTfulController<E extends Entity<K>, K extends Serializable> {
 
     @Inject
     CommonDataManager dataManager;

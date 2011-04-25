@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class EmptyEntityRepository<E extends EntityBean<K>, K extends Serializable>
+public class EmptyEntityRepository<E extends Entity<K>, K extends Serializable>
         extends EntityRepository<E, K> {
 
     @Override

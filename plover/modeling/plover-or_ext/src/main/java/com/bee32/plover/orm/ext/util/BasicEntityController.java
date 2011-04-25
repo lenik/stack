@@ -12,10 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.arch.util.DTOs;
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
 
-public abstract class BasicEntityController<E extends EntityBean<K>, K extends Serializable, Dto extends EntityDto<E, K>>
+public abstract class BasicEntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
         extends EntityController<E, K, Dto> {
 
     Integer dtoSelection;

@@ -20,13 +20,13 @@ import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.dao.CommonDataManager;
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.plover.servlet.mvc.ModelAndViewEx;
 
-public abstract class _EntityController<E extends EntityBean<K>, K extends Serializable, Dto extends EntityDto<E, K>>
+public abstract class _EntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
         extends Component
         implements IUnmarshalContext {
 
@@ -56,7 +56,7 @@ public abstract class _EntityController<E extends EntityBean<K>, K extends Seria
     }
 
     @Override
-    public <_E extends EntityBean<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id) {
+    public <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id) {
         return dataManager.load(entityType, id);
     }
 

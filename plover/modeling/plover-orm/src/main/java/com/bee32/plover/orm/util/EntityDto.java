@@ -9,11 +9,11 @@ import javax.free.TypeConvertException;
 import com.bee32.plover.arch.util.DataTransferObject;
 import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.entity.EntityAccessor;
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntity;
 
-public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
+public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         extends DataTransferObject<E, IUnmarshalContext> {
 
     private static final long serialVersionUID = 1L;
@@ -145,7 +145,7 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
             return dto.getId();
     }
 
-    protected static <E extends EntityBean<K>, K extends Serializable> //
+    protected static <E extends Entity<K>, K extends Serializable> //
     /**/E unmarshal(IUnmarshalContext context, Class<E> entityType, E oldEntity, //
             K newId, EntityDto<E, K> newDto) {
 
@@ -164,7 +164,7 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
         return existing;
     }
 
-    protected static <E extends EntityBean<?>, Ei extends EntityBean<Ki>, Ki extends Serializable> //
+    protected static <E extends Entity<?>, Ei extends Entity<Ki>, Ki extends Serializable> //
     /**/void unmarshalProperty(IUnmarshalContext context, E target, PropertyAccessor<E, Ei> property, Ki newId,
             EntityDto<Ei, Ki> newDto) {
 
@@ -177,7 +177,7 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
             property.set(target, newProperty);
     }
 
-    protected static class WithContext<E extends EntityBean<?>> {
+    protected static class WithContext<E extends Entity<?>> {
 
         IUnmarshalContext context;
         E target;
@@ -187,7 +187,7 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
             this.target = target;
         }
 
-        public <Ei extends EntityBean<Ki>, Ki extends Serializable> //
+        public <Ei extends Entity<Ki>, Ki extends Serializable> //
         /**/WithContext<E> unmarshal(PropertyAccessor<E, Ei> property, //
                 Ki newId, EntityDto<Ei, Ki> newDto) {
 
@@ -198,7 +198,7 @@ public abstract class EntityDto<E extends EntityBean<K>, K extends Serializable>
 
     }
 
-    public <Et extends EntityBean<?>> WithContext<Et> with(IUnmarshalContext context, Et target) {
+    public <Et extends Entity<?>> WithContext<Et> with(IUnmarshalContext context, Et target) {
         return new WithContext<Et>(context, target);
     }
 

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.free.IllegalUsageException;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.Entity;
 
 public interface IUnmarshalContext {
 
@@ -17,7 +17,7 @@ public interface IUnmarshalContext {
      *            The primary key of the entity.
      * @return Non-<code>null</code> loaded entity.
      */
-    <E extends EntityBean<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id);
+    <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id);
 
     // <E extends EntityBean<K>, K extends Serializable> E mergeEntity(Class<E> entityType, K id);
 
@@ -28,7 +28,7 @@ class NullUnmarshalContext
         implements IUnmarshalContext {
 
     @Override
-    public <E extends EntityBean<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {
+    public <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {
         throw new IllegalUsageException("No unmarshal context");
     }
 

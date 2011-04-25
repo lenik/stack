@@ -20,7 +20,7 @@ import com.bee32.plover.arch.util.ExceptionSupport;
 import com.bee32.plover.arch.util.IStruct;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 
-public class DecoratedEntityDao<E extends EntityBean<K>, K extends Serializable> {
+public class DecoratedEntityDao<E extends Entity<K>, K extends Serializable> {
 
     private final EntityDao<E, K> impl;
 

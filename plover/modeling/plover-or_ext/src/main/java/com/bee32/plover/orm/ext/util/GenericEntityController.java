@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.inject.ComponentTemplate;
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
@@ -24,7 +24,7 @@ import com.bee32.plover.servlet.context.LocationContextConstants;
 
 @ComponentTemplate
 @Lazy
-public abstract class GenericEntityController<E extends EntityBean<K>, K extends Serializable, Dto extends EntityDto<E, K>>
+public abstract class GenericEntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
         extends _EntityController<E, K, Dto>
         implements ITypeAbbrAware, LocationContextConstants {
 
@@ -62,7 +62,7 @@ public abstract class GenericEntityController<E extends EntityBean<K>, K extends
         if (entityType == null)
             throw new IllegalUsageException("Bad entity abbrev: " + type);
 
-        if (!EntityBean.class.isAssignableFrom(entityType))
+        if (!Entity.class.isAssignableFrom(entityType))
             throw new IllegalUsageException("Not subclass of entity: " + entityType);
 
         RequestGenerics requestGenerics = new RequestGenerics();
@@ -176,16 +176,16 @@ public abstract class GenericEntityController<E extends EntityBean<K>, K extends
 
 class RequestGenerics {
 
-    Class<? extends EntityBean<? extends Serializable>> entityType;
+    Class<? extends Entity<? extends Serializable>> entityType;
     Class<? extends Serializable> keyType;
-    Class<? extends EntityDto<? extends EntityBean<? extends Serializable>, ? extends Serializable>> transferType;
+    Class<? extends EntityDto<? extends Entity<? extends Serializable>, ? extends Serializable>> transferType;
 
     @SuppressWarnings("unchecked")
-    public <E extends EntityBean<K>, K extends Serializable> Class<E> getEntityType() {
+    public <E extends Entity<K>, K extends Serializable> Class<E> getEntityType() {
         return (Class<E>) entityType;
     }
 
-    public <E extends EntityBean<K>, K extends Serializable> void setEntityType(Class<E> entityType) {
+    public <E extends Entity<K>, K extends Serializable> void setEntityType(Class<E> entityType) {
         this.entityType = entityType;
     }
 
@@ -199,11 +199,11 @@ class RequestGenerics {
     }
 
     @SuppressWarnings("unchecked")
-    public <Dto extends EntityDto<E, K>, E extends EntityBean<K>, K extends Serializable> Class<Dto> getTransferType() {
+    public <Dto extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> Class<Dto> getTransferType() {
         return (Class<Dto>) transferType;
     }
 
-    public <Dto extends EntityDto<E, K>, E extends EntityBean<K>, K extends Serializable> void setTransferType(
+    public <Dto extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> void setTransferType(
             Class<Dto> transferType) {
         this.transferType = transferType;
     }

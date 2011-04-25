@@ -14,12 +14,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.inject.ComponentTemplate;
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
 
 @ComponentTemplate
 @Lazy
-public abstract class EntityController<E extends EntityBean<K>, K extends Serializable, Dto extends EntityDto<E, K>>
+public abstract class EntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
         extends _EntityController<E, K, Dto> {
 
     private final Class<E> entityType;
