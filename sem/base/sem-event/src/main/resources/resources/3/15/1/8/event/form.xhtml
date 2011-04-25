@@ -10,6 +10,20 @@
 </head>
 
 <ui:composition template="/template/entity/form.xhtml">
+
+    <ui:define name="scripts.user">
+        <!-- <link rel="stylesheet" type="text/css" href="${location.WEB_APP}/css/jquery-datepicker.css" /> -->
+        <!-- <script type="text/javascript" src="${location.WEB_APP}/js/jquery-datepicker.js"></script> -->
+        <script language="javascript">
+            $("#beginTime, #endTime").datepicker({
+                showOn : "button",
+                // buttonImage : "${location.WEB_APP}/css/images/calendar.gif",
+                // buttonImageOnly : true,
+                dateFormat : 'yy-mm-dd'
+            });
+        </script>
+    </ui:define>
+
     <ui:define name="table">
         <table width="100%" bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
             <tr>
@@ -21,17 +35,31 @@
             <tr>
                 <td align="right">优先级 :</td>
                 <td>
-                    <input name="priority" type="text" size="4" maxlength="10" value="${it.priority}" />
+                    <h:selectOneMenu id="priority" value="#{it.priority}">
+                        <c:forEach var="priority" items="${priorityList}">
+                            <f:selectItem itemValue="${priority.priority}" itemLabel="${priority.name}" />
+                        </c:forEach>
+                    </h:selectOneMenu>
                 </td>
             </tr>
             <tr>
                 <td align="right">状态 :</td>
-                <td></td>
+                <td>
+                    <h:selectOneMenu id="statusId" value="#{it.statusId}">
+                        <c:forEach var="status" items="${statusList}">
+                            <f:selectItem itemValue="${status.id}" itemLabel="${status.name}" />
+                        </c:forEach>
+                    </h:selectOneMenu>
+                </td>
             </tr>
             <tr>
                 <td align="right">行为主体 :</td>
                 <td>
-                    <input name="actorId" />
+                    <h:selectOneMenu id="actorId" value="#{it.actorId}">
+                        <c:forEach var="user" items="${userList}">
+                            <f:selectItem itemValue="${user.id}" itemLabel="${user.displayName}" />
+                        </c:forEach>
+                    </h:selectOneMenu>
                 </td>
             </tr>
             <tr>
@@ -49,13 +77,13 @@
             <tr>
                 <td align="right">开始时间 :</td>
                 <td>
-                    <input name="beginTime" type="text" size="15" maxlength="30" value="${it.beginTime}" />
+                    <input id="beginTime" name="beginTime" type="text" size="15" maxlength="30" value="${it.beginTime}" />
                 </td>
             </tr>
             <tr>
                 <td align="right">结束时间 :</td>
                 <td>
-                    <input name="endTime" type="text" size="15" maxlength="30" value="${it.endTime}" />
+                    <input id="endTime" name="endTime" type="text" size="15" maxlength="30" value="${it.endTime}" />
                 </td>
             </tr>
         </table>

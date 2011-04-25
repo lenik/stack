@@ -41,6 +41,14 @@
                 <td>${it.endTime}</td>
             </tr>
             <tr>
+                <td>观察者:</td>
+                <td>
+                    <c:forEach var="observer" items="${it.observers}">
+                        <div>${observer.displayName}</div>
+                    </c:forEach>
+                </td>
+            </tr>
+            <tr>
                 <td>控制页:</td>
                 <td>${it.controlPage}</td>
             </tr>
