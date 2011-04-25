@@ -5,8 +5,11 @@ import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.PloverORMUnit;
+import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
+@ImportUnit(PloverORMUnit.class)
 public class IcsfIdentityUnit
         extends PersistenceUnit {
 
