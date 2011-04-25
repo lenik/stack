@@ -6,7 +6,7 @@ var table1Tools = {
     },
 
     edit : {
-        name : "编辑",
+        name : "保存",
         icon : "etool16/editor_area.gif",
         callback : function(node, aData) {
             var id = aData[0];
@@ -15,7 +15,7 @@ var table1Tools = {
         }
     },
 
-    del : {
+    _del : {
         name : "删除",
         icon : "etool16/delete_edit.gif",
         callback : function(node, aData) {

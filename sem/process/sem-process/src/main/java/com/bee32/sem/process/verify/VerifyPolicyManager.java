@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.free.ClassLocal;
 import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.service.ServicePrototypeLoader;
@@ -55,6 +56,27 @@ public class VerifyPolicyManager {
     public static Collection<Class<? extends IVerifyPolicy<?>>> forBean(Class<? extends IVerifiable<?>> beanType) {
         Class<? extends IVerifyContext> contextClass = ClassUtil.infer1(beanType, IVerifiable.class, 0);
         return forContext(contextClass);
+    }
+
+    static final ClassLocal<Collection<Class<? extends IVerifyPolicy<?>>>> candidateMap;
+    static {
+        candidateMap = new ClassLocal<Collection<Class<? extends IVerifyPolicy<?>>>>();
+    }
+
+    public static synchronized void addVerifiableType(Class<?> entityClass) {
+        Class<? extends IVerifyContext> contextClass = ClassUtil.infer1(entityClass, IVerifiable.class, 0);
+
+        Collection<Class<? extends IVerifyPolicy<?>>> candidates = forContext(contextClass);
+
+        candidateMap.put(entityClass, candidates);
+    }
+
+    public static Collection<Class<?>> getVerifiableTypes() {
+        return candidateMap.keySet();
+    }
+
+    public static Collection<Class<? extends IVerifyPolicy<?>>> getCandidates(Class<?> verifiableType) {
+        return candidateMap.get(verifiableType);
     }
 
 }

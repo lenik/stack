@@ -37,7 +37,24 @@ public class VerifyPolicyPrefDto
 
         preferredPolicy = new VerifyPolicyDto();
         preferredPolicy.setReferenceOnly(true);
-        preferredPolicy.setId(map.getInt("preferredPolicyId"));
+
+        preferredPolicy.setId(parseId(map.getString("preferredPolicyId")));
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public VerifyPolicyDto getPreferredPolicy() {
+        return preferredPolicy;
+    }
+
+    public void setPreferredPolicy(VerifyPolicyDto preferredPolicy) {
+        this.preferredPolicy = preferredPolicy;
     }
 
 }
