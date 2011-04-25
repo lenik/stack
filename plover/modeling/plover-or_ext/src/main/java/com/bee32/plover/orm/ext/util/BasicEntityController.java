@@ -30,7 +30,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
         String _id = req.getParameter("id");
         K id = parseId(_id);
 
-        E entity = dataManager.load(getEntityType(), id);
+        E entity = dataManager.fetch(getEntityType(), id);
 
         Dto dto = newDto(dtoSelection);
 
@@ -81,7 +81,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
             String _id = req.getParameter("id");
             K id = parseId(_id);
 
-            E entity = dataManager.load(getEntityType(), id);
+            E entity = dataManager.fetch(getEntityType(), id);
             dto = newDto(dtoSelection).marshal(entity);
         }
 

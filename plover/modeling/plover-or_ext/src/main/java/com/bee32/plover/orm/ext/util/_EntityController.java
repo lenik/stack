@@ -57,7 +57,7 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
 
     @Override
     public <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id) {
-        return dataManager.load(entityType, id);
+        return dataManager.fetch(entityType, id);
     }
 
     protected abstract Class<? extends K> getKeyType();
@@ -214,7 +214,7 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
 
         ViewData view = new ViewData(viewOf("index"));
 
-        E entity = dataManager.load(getEntityType(), id);
+        E entity = dataManager.fetch(getEntityType(), id);
         if (entity != null)
             try {
                 dataManager.delete(entity);
