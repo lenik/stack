@@ -4,6 +4,7 @@ import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -27,6 +28,7 @@ import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.util.AliasUtil;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.sem.event.EventFlags;
+import com.bee32.sem.event.EventState;
 
 @Entity
 @Inheritance(strategy = SINGLE_TABLE)
@@ -43,7 +45,7 @@ public class Event
 
     private final EventFlags flags = new EventFlags();
     private boolean closed;
-    private int state;
+    private int stateIndex;
     private EventStatus status; // status -> flags, closed, state.
 
     private User actor;
@@ -89,6 +91,10 @@ public class Event
         this.priority = priority;
     }
 
+    public void setPriority(EventPriority priority) {
+        this.priority = priority == null ? 0 : priority.getPriority();
+    }
+
     @Column(nullable = false)
     @Override
     public int getFlags() {
@@ -114,11 +120,15 @@ public class Event
     @Column(nullable = false)
     @Override
     public int getState() {
-        return state;
+        return stateIndex;
     }
 
     public void setState(int state) {
-        this.state = state;
+        this.stateIndex = state;
+    }
+
+    public void setState(EventState state) {
+        this.stateIndex = state == null ? 0 : state.getIndex();
     }
 
     @ManyToOne
@@ -254,6 +264,10 @@ public class Event
 
     public void setObservers(Set<Principal> observers) {
         this.observers = observers;
+    }
+
+    public void setObservers(List<? extends Principal> observers) {
+        this.observers = new HashSet<Principal>(observers);
     }
 
     public static PropertyAccessor<Event, User> actorProperty = new PropertyAccessor<Event, User>(User.class) {
