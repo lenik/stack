@@ -1,7 +1,7 @@
 package com.bee32.plover.orm.dao;
 
 import java.io.Serializable;
-import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class CommonDataManager
     /**
      * Set <code>true</code> for debug purpose.
      */
-    private boolean evictImmediately = true;
+    public boolean evictImmediately = true;
 
     public boolean isEvictImmediately() {
         return evictImmediately;
@@ -48,31 +48,31 @@ public class CommonDataManager
     }
 
     @Transactional
+    public void saveAll(IEntity<?>... entities) {
+        saveAll(null, Arrays.asList(entities));
+    }
+
+    @Transactional
     public void saveAll(String entityName, Collection<?> entities) {
         HibernateTemplate template = getHibernateTemplate();
         // HibernateTemplate getHibernateTemplate() = new HibernateTemplate(sessionFactory);
 
-        for (Object entity : entities)
-            if (entityName == null)
-                template.save(entity);
-            else
-                template.save(entityName, entity);
+        boolean _saveOrUpdate = true;
+
+        if (_saveOrUpdate)
+            template.saveOrUpdateAll(entities);
+
+        else
+            for (Object entity : entities)
+                if (entityName == null)
+                    template.save(entity);
+                else
+                    template.save(entityName, entity);
 
         try {
             template.flush();
         } catch (DataAccessException e) {
-            Throwable spec = e.getMostSpecificCause();
-            if (spec instanceof SQLException) {
-                SQLException sqle = (SQLException) spec;
-                SQLException next;
-                while ((next = sqle.getNextException()) != null) {
-                    System.err.println("The next exception in " + sqle);
-                    sqle.printStackTrace();
-                    sqle = next;
-                }
-            }
-            Throwable root = e.getRootCause();
-            root.printStackTrace();
+            DataAccessExceptionUtil.dumpAndThrow(e);
         }
 
         if (evictImmediately) {
@@ -236,9 +236,27 @@ public class CommonDataManager
     }
 
     @Transactional
+    public void saveOrUpdateAll(IEntity<?>... entities)
+            throws DataAccessException {
+        saveOrUpdateAll(Arrays.asList(entities));
+    }
+
+    @Transactional
     public void saveOrUpdateAll(Collection<? extends IEntity<?>> entities)
             throws DataAccessException {
-        getHibernateTemplate().saveOrUpdateAll(entities);
+
+        HibernateTemplate template = getHibernateTemplate();
+
+        try {
+            template.saveOrUpdateAll(entities);
+        } catch (DataAccessException e) {
+            DataAccessExceptionUtil.dumpAndThrow(e);
+        }
+
+        if (evictImmediately) {
+            for (Object entity : entities)
+                template.evict(entity);
+        }
     }
 
     @Transactional
@@ -305,6 +323,12 @@ public class CommonDataManager
     public void deleteAll(Collection<? extends IEntity<?>> entities)
             throws DataAccessException {
         getHibernateTemplate().deleteAll(entities);
+    }
+
+    @Transactional
+    public void deleteAll(IEntity<?>... entities)
+            throws DataAccessException {
+        getHibernateTemplate().deleteAll(Arrays.asList(entities));
     }
 
     @Transactional
