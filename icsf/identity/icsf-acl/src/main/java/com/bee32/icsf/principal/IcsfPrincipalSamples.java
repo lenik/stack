@@ -13,8 +13,7 @@ import com.bee32.plover.orm.util.EntitySamplesContribution;
 public class IcsfPrincipalSamples
         extends EntitySamplesContribution {
 
-    public static Group solaGroup;
-
+    public static Group solaRobots;
     public static Group sunCorp;
 
     public static Role adminRole;
@@ -31,9 +30,9 @@ public class IcsfPrincipalSamples
         registeredRole = new Role("Registered User");
 
         eva = new User("Eva", null, adminRole);
-        solaGroup = new Group("Sola AV Club", eva);
-        eva.setPrimaryGroup(solaGroup);
-        wallE = new User("Wall-E", solaGroup, registeredRole);
+        solaRobots = new Group("Sola Robots Club", eva);
+        eva.setPrimaryGroup(solaRobots);
+        wallE = new User("Wall-E", solaRobots, registeredRole);
 
         tom = new User("Tom", null, adminRole);
         sunCorp = new Group("Sun Corp", tom);
@@ -43,7 +42,7 @@ public class IcsfPrincipalSamples
 
         alice = new User("Alice", null, null);
         alice.addAssignedGroup(sunCorp);
-        alice.addAssignedGroup(solaGroup);
+        alice.addAssignedGroup(solaRobots);
         alice.addAssignedRole(registeredRole);
 
         eva.setEmail("eva@bee32.com");
@@ -55,7 +54,7 @@ public class IcsfPrincipalSamples
 
     @Override
     protected void preamble() {
-        addNormalSample(sunCorp, solaGroup);
+        addNormalSample(sunCorp, solaRobots);
         addNormalSample(adminRole, registeredRole);
         addNormalSample(eva, wallE, alice, tom, kate);
     }
