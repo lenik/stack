@@ -1,11 +1,17 @@
 package com.bee32.sem.event.web;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
@@ -16,6 +22,8 @@ public abstract class AbstractEventDto<E extends Event>
         extends EntityDto<E, Long> {
 
     private static final long serialVersionUID = 1L;
+
+    public static final int OBSERVERS = 1;
 
     private String category;
     private int priority;
@@ -37,6 +45,10 @@ public abstract class AbstractEventDto<E extends Event>
 
     private long refId;
     private String refAlt;
+
+    private List<PrincipalDto> observers;
+    private List<Long> observerIds;
+
     private String controlPage;
 
     public AbstractEventDto() {
@@ -62,6 +74,9 @@ public abstract class AbstractEventDto<E extends Event>
 
         refId = source.getRefId();
         refAlt = source.getRefAlt();
+
+        if (selection.contains(OBSERVERS))
+            observers = marshalList(PrincipalDto.class, source.getObservers());
     }
 
     @Override
@@ -75,10 +90,21 @@ public abstract class AbstractEventDto<E extends Event>
         target.setBeginTime(beginTime);
         target.setEndTime(endTime);
 
-        unmarshal(context, target, Event.actorProperty, actorId, actor);
-
         target.setRefId(refId);
         target.setRefAlt(refAlt);
+
+        WithContext<Event> wc = with(context, (Event) target);
+        wc.unmarshal(Event.actorProperty, actorId, actor);
+
+        if (selection.contains(OBSERVERS))
+            if (observerIds != null) {
+                Set<Principal> observers = new HashSet<Principal>();
+                for (Long observerId : observerIds) {
+                    Principal observer = context.loadEntity(Principal.class, observerId);
+                    observers.add(observer);
+                }
+                target.setObservers(observers);
+            }
     }
 
     @Override
@@ -94,6 +120,8 @@ public abstract class AbstractEventDto<E extends Event>
         closed = map.getBoolean("closed");
         statusId = map.getInt("statusId");
 
+        actorId = map.getLong("actorId");
+
         subject = map.getString("subject");
         message = map.getString("message");
         beginTime = map.getDate("beginTime");
@@ -104,6 +132,15 @@ public abstract class AbstractEventDto<E extends Event>
             refId = Long.parseLong(_refId);
         else
             refAlt = map.getString("refAlt");
+
+        if (selection.contains(OBSERVERS)) {
+            String[] _observerIds = map.getStringArray("observerIds");
+            observerIds = new ArrayList<Long>();
+            for (String _observerId : _observerIds) {
+                long observerId = Long.parseLong(_observerId);
+                observerIds.add(observerId);
+            }
+        }
     }
 
     public String getCategory() {
@@ -250,6 +287,22 @@ public abstract class AbstractEventDto<E extends Event>
 
     public void setRefAlt(String refAlt) {
         this.refAlt = refAlt;
+    }
+
+    public List<PrincipalDto> getObservers() {
+        return observers;
+    }
+
+    public void setObservers(List<PrincipalDto> observers) {
+        this.observers = observers;
+    }
+
+    public List<Long> getObserverIds() {
+        return observerIds;
+    }
+
+    public void setObserverIds(List<Long> observerIds) {
+        this.observerIds = observerIds;
     }
 
     public String getControlPage() {
