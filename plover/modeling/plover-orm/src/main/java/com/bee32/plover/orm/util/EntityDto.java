@@ -3,6 +3,7 @@ package com.bee32.plover.orm.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -107,6 +108,19 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
         this.id = entity.getId();
         this.version = entity.getVersion();
+        this.filled = false;
+
+        @SuppressWarnings("unchecked")
+        D self = (D) this;
+        return self;
+    }
+
+    public <D extends EntityDto<E, K>> D ref(D dto) {
+        if (dto == null)
+            throw new NullPointerException("dto");
+
+        this.id = dto.getId();
+        this.version = dto.getVersion();
         this.filled = false;
 
         @SuppressWarnings("unchecked")
@@ -493,6 +507,146 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             property.set(target, newProperty);
     }
 
+    static boolean nullElementsEnabled = false;
+
+    /**
+     * It's not append, but assign to the collection.
+     *
+     * <pre>
+     * null                     skip
+     * *    not-filled  null    count(null)++
+     * *    not-filled  id      if (! contains(id)) add(deref)
+     * *    filled      null    add(unmarshal())
+     * *    filled      id      if (contains(id)) unmarshalTo(existing)
+     *                             else add(unmarshalTo(deref))
+     * </pre>
+     *
+     * deref
+     */
+    static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    /*    */Coll unmarshalCollection(IUnmarshalContext context, Coll collection, Iterable<? extends D> dtoList) {
+
+        if (collection == null)
+            throw new NullPointerException("collection");
+
+        if (dtoList == null)
+            return collection;
+
+        int nullCount = 0;
+
+        List<E> removeList = new ArrayList<E>(collection);
+        List<E> addList = new ArrayList<E>();
+
+        Map<K, E> keyMap = new HashMap<K, E>();
+        for (E each : collection) {
+            K id = each.getId();
+            if (id != null)
+                keyMap.put(id, each);
+        }
+
+        Map<E, E> contentMap = new HashMap<E, E>();
+        for (E each : collection)
+            if (each != null)
+                contentMap.put(each, each);
+
+        for (D dto : dtoList) {
+            if (dto == null)
+                continue;
+
+            E entity;
+
+            if (dto.filled) {
+                if (dto.id == null) {
+                    entity = dto.unmarshal(context);
+
+                    E reuse = contentMap.get(entity);
+                    if (reuse != null) {
+                        // We are not going to partial-modify elements in collection-unmarshalling.
+                        // XXX dto.unmarshalTo(context, reuse);
+                        // XXX reuse.populate(entity); ??
+                        entity = reuse;
+                    }
+
+                    addList.add(entity);
+
+                } else {
+                    E previous = keyMap.get(dto.id);
+                    if (previous != null) {
+                        dto.unmarshalTo(context, previous);
+                        removeList.remove(previous);
+                    } else {
+                        entity = dto.unmarshal(context);
+                        addList.add(entity);
+                    }
+                }
+            } else {
+                if (dto.id == null)
+                    nullCount++;
+                else {
+                    E previous = keyMap.get(dto.id);
+                    if (previous != null)
+                        removeList.remove(previous);
+                    else {
+                        entity = dto.unmarshal(context);
+                        addList.add(entity);
+                    }
+                }
+            } // filled
+        } // for dtoList
+
+        if (removeList != null)
+            collection.removeAll(removeList);
+
+        if (addList != null)
+            collection.addAll(addList);
+
+        if (nullElementsEnabled && nullCount != 0) {
+            while (collection.contains(null))
+                collection.remove(null);
+            for (int i = 0; i < nullCount; i++)
+                collection.add(null);
+        }
+
+        return collection;
+    }
+
+    static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    /*    */Coll unmarshalCollection(Coll collection, Iterable<? extends D> dtoList) {
+        return unmarshalCollection((IUnmarshalContext) null, collection, dtoList);
+    }
+
+    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    /*    */List<E> unmarshalList(IUnmarshalContext context, List<E> list, Iterable<? extends D> dtoList) {
+        if (list == null)
+            list = new ArrayList<E>();
+        return unmarshalCollection(context, list, dtoList);
+    }
+
+    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    /*    */List<E> unmarshalList(List<E> list, Iterable<? extends D> dtoList) {
+        if (list == null)
+            list = new ArrayList<E>();
+        return unmarshalCollection((IUnmarshalContext) null, list, dtoList);
+    }
+
+    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    /*    */Set<E> unmarshalSet(IUnmarshalContext context, Set<E> set, Iterable<? extends D> dtoList) {
+        if (set == null)
+            set = new HashSet<E>();
+        return unmarshalCollection(context, set, dtoList);
+    }
+
+    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    /*    */Set<E> unmarshalSet(Set<E> set, Iterable<? extends D> dtoList) {
+        if (set == null)
+            set = new HashSet<E>();
+        return unmarshalCollection((IUnmarshalContext) null, set, dtoList);
+    }
+
+    public <Et extends Entity<?>> WithContext<Et> with(IUnmarshalContext context, Et target) {
+        return new WithContext<Et>(context, target);
+    }
+
     protected static class WithContext<E extends Entity<?>> {
 
         private final IUnmarshalContext context;
@@ -579,85 +733,44 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
          *             If data access exception happened with calls into the
          *             {@link IUnmarshalContext}.
          */
-        public <Ei extends Entity<Ki>, Ki extends Serializable> //
-        /**/WithContext<E> unmarshal(PropertyAccessor<E, Ei> property, EntityDto<Ei, Ki> dto) {
+        public <_E extends Entity<_K>, _K extends Serializable> //
+        /**/WithContext<E> unmarshal(PropertyAccessor<E, _E> property, EntityDto<_E, _K> dto) {
 
             EntityDto.unmarshal(context, target, property, dto);
 
             return this;
         }
 
-    }
+        public <_D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
+        /*    */WithContext<E> unmarshalList(PropertyAccessor<E, List<_E>> property, Iterable<? extends _D> dtoList) {
 
-    public <Et extends Entity<?>> WithContext<Et> with(IUnmarshalContext context, Et target) {
-        return new WithContext<Et>(context, target);
-    }
+            List<_E> list = property.get(target);
 
-    /**
-     * It's not append, but assign to the collection.
-     */
-    static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Coll unmarshalCollection(IUnmarshalContext context, Coll collection, Iterable<? extends D> dtoList) {
+            if (list == null)
+                list = new ArrayList<_E>();
 
-        if (collection == null)
-            throw new NullPointerException("collection");
+            list = EntityDto.unmarshalList(context, list, dtoList);
 
-        List<E> addList = null;
-        List<E> deleteList = null;
+            property.set(target, list);
 
-        if (dtoList != null) {
-            addList = new ArrayList<E>();
-            deleteList = new ArrayList<E>();
-
-            for (D dto : dtoList) {
-                E entity;
-                if (dto == null)
-                    entity = null;
-                else
-                    entity = dto.unmarshal(context);
-            }
+            return this;
         }
 
-        if (deleteList != null)
-            collection.removeAll(deleteList);
+        public <_D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
+        /*    */WithContext<E> unmarshalSet(PropertyAccessor<E, Set<_E>> property, Iterable<? extends _D> dtoList) {
 
-        if (addList != null)
-            collection.addAll(addList);
+            Set<_E> set = property.get(target);
 
-        return collection;
-    }
+            if (set == null)
+                set = new HashSet<_E>();
 
-    public static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Coll unmarshal(Coll collection, Iterable<? extends D> dtoList) {
-        return unmarshalCollection((IUnmarshalContext) null, collection, dtoList);
-    }
+            set = EntityDto.unmarshalSet(context, set, dtoList);
 
-    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */List<E> unmarshal(IUnmarshalContext context, List<E> list, Iterable<? extends D> dtoList) {
-        if (list == null)
-            list = new ArrayList<E>();
-        return unmarshalCollection(context, list, dtoList);
-    }
+            property.set(target, set);
 
-    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */List<E> unmarshal(List<E> list, Iterable<? extends D> dtoList) {
-        if (list == null)
-            list = new ArrayList<E>();
-        return unmarshalCollection((IUnmarshalContext) null, list, dtoList);
-    }
+            return this;
+        }
 
-    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Set<E> unmarshal(IUnmarshalContext context, Set<E> set, Iterable<? extends D> dtoList) {
-        if (set == null)
-            set = new HashSet<E>();
-        return unmarshalCollection(context, set, dtoList);
-    }
-
-    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Set<E> unmarshal(Set<E> set, Iterable<? extends D> dtoList) {
-        if (set == null)
-            set = new HashSet<E>();
-        return unmarshalCollection((IUnmarshalContext) null, set, dtoList);
     }
 
 }
