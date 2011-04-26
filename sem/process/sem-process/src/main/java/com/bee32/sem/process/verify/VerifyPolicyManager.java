@@ -11,10 +11,11 @@ import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.service.ServicePrototypeLoader;
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.sem.process.verify.service.VerifiableIntroPostProcessor;
 
 public class VerifyPolicyManager {
 
-    static Set<Class<? extends IVerifyPolicy<?>>> policyTypes;
+    static Set<Class<? extends VerifyPolicy<?>>> policyTypes;
 
     static {
         load();
@@ -22,26 +23,28 @@ public class VerifyPolicyManager {
 
     @SuppressWarnings({ "unchecked" })
     static void load() {
-        policyTypes = new HashSet<Class<? extends IVerifyPolicy<?>>>();
+        policyTypes = new HashSet<Class<? extends VerifyPolicy<?>>>();
 
         try {
             for (Class<?> policyClass : ServicePrototypeLoader.load(IVerifyPolicy.class)) {
-                policyTypes.add((Class<? extends IVerifyPolicy<?>>) policyClass);
+                // Ignore non-entity policy types.F
+                if (VerifyPolicy.class.isAssignableFrom(policyClass))
+                    policyTypes.add((Class<? extends VerifyPolicy<?>>) policyClass);
             }
         } catch (Exception e) {
             throw new IllegalUsageException(e.getMessage(), e);
         }
     }
 
-    public static Collection<Class<? extends IVerifyPolicy<?>>> list() {
+    public static Collection<Class<? extends VerifyPolicy<?>>> list() {
         return policyTypes;
     }
 
-    public static Collection<Class<? extends IVerifyPolicy<?>>> forContext(
+    public static Collection<Class<? extends VerifyPolicy<?>>> forContext(
             Class<? extends IVerifyContext> providedContext) {
-        List<Class<? extends IVerifyPolicy<?>>> matchedPolicyTypes = new ArrayList<Class<? extends IVerifyPolicy<?>>>();
+        List<Class<? extends VerifyPolicy<?>>> matchedPolicyTypes = new ArrayList<Class<? extends VerifyPolicy<?>>>();
 
-        for (Class<? extends IVerifyPolicy<?>> policyType : policyTypes) {
+        for (Class<? extends VerifyPolicy<?>> policyType : policyTypes) {
 
             Class<? extends IVerifyContext> requiredContext = ClassUtil.infer1(//
                     policyType, VerifyPolicy.class, 0);
@@ -53,29 +56,32 @@ public class VerifyPolicyManager {
         return matchedPolicyTypes;
     }
 
-    public static Collection<Class<? extends IVerifyPolicy<?>>> forBean(Class<? extends IVerifiable<?>> beanType) {
+    public static Collection<Class<? extends VerifyPolicy<?>>> forBean(Class<? extends IVerifiable<?>> beanType) {
         Class<? extends IVerifyContext> contextClass = ClassUtil.infer1(beanType, IVerifiable.class, 0);
         return forContext(contextClass);
     }
 
-    static final ClassLocal<Collection<Class<? extends IVerifyPolicy<?>>>> candidateMap;
+    static final ClassLocal<Collection<Class<? extends VerifyPolicy<?>>>> candidateMap;
     static {
-        candidateMap = new ClassLocal<Collection<Class<? extends IVerifyPolicy<?>>>>();
+        candidateMap = new ClassLocal<Collection<Class<? extends VerifyPolicy<?>>>>();
     }
 
     public static synchronized void addVerifiableType(Class<?> entityClass) {
         Class<? extends IVerifyContext> contextClass = ClassUtil.infer1(entityClass, IVerifiable.class, 0);
 
-        Collection<Class<? extends IVerifyPolicy<?>>> candidates = forContext(contextClass);
+        Collection<Class<? extends VerifyPolicy<?>>> candidates = forContext(contextClass);
 
         candidateMap.put(entityClass, candidates);
     }
 
+    /**
+     * @see VerifiableIntroPostProcessor
+     */
     public static Collection<Class<?>> getVerifiableTypes() {
         return candidateMap.keySet();
     }
 
-    public static Collection<Class<? extends IVerifyPolicy<?>>> getCandidates(Class<?> verifiableType) {
+    public static Collection<Class<? extends VerifyPolicy<?>>> getCandidates(Class<?> verifiableType) {
         return candidateMap.get(verifiableType);
     }
 

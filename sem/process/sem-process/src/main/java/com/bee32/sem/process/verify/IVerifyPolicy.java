@@ -54,6 +54,8 @@ public interface IVerifyPolicy<C extends IVerifyContext>
     /**
      * 获取显示声明的责任人。
      *
+     * @param context
+     *            上下文，<code>null</code> 适用于无具体的上下文。
      * @return 非 <code>null </code>的显示声明的责任人集合。
      */
     Collection<? extends Principal> getDeclaredResponsibles(C context);

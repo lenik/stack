@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.free.NotImplementedException;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,11 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bee32.plover.arch.util.DTOs;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.sem.process.SEMProcessModule;
+import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyPolicyManager;
+import com.bee32.sem.process.verify.builtin.web.VerifyPolicyDto;
 
 @RequestMapping(VerifyPolicyPrefController.PREFIX + "*")
 public class VerifyPolicyPrefController
@@ -30,6 +32,10 @@ public class VerifyPolicyPrefController
 
     @Inject
     CommonDataManager dataManager;
+
+    public VerifyPolicyPrefController() {
+        _createOTF = true;
+    }
 
     @Override
     protected List<? extends VerifyPolicyPref> __list() {
@@ -53,12 +59,36 @@ public class VerifyPolicyPrefController
     @Override
     protected void fillDataRow(DataTableDxo tab, VerifyPolicyPrefDto dto) {
         tab.push(dto.getDisplayName());
-        tab.push(dto.getPreferredPolicy());
+        tab.push(dto.getPreferredPolicy() == null ? null : dto.getPreferredPolicy().getName());
+        tab.push(dto.getDescription());
     }
 
     @Override
     protected void fillTemplate(VerifyPolicyPrefDto dto) {
-        throw new NotImplementedException();
+        dto.setPreferredPolicy(new VerifyPolicyDto());
+        dto.setDescription("");
+    }
+
+    @Override
+    protected ModelAndView _createOrEditForm(ViewData view, HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        super._createOrEditForm(view, req, resp);
+
+        Class<?> verifiableType = view.entity.getType();
+
+        List<VerifyPolicyDto> candidates = new ArrayList<VerifyPolicyDto>();
+
+        for (Class<? extends VerifyPolicy<?>> candidatePolicyType : VerifyPolicyManager.getCandidates(verifiableType)) {
+
+            List<? extends VerifyPolicy<?>> candidatePolicies = dataManager.loadAll(candidatePolicyType);
+
+            for (VerifyPolicyDto candidate : DTOs.marshalList(VerifyPolicyDto.class, candidatePolicies))
+                candidates.add(candidate);
+        }
+
+        view.put("candidates", candidates);
+
+        return view;
     }
 
     // Not-Applicables
