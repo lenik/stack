@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.free.IVariantLookupMap;
-import javax.free.NotImplementedException;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.IAllowedByContext;
@@ -18,8 +19,8 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
 
     private static final long serialVersionUID = 1L;
 
-    private Long verifierId;
-    private String verifierName;
+    private boolean verified;
+    private UserDto verifier;
 
     private Date verifiedDate;
     private boolean allowed;
@@ -41,20 +42,71 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
         super(source, selection);
     }
 
-    public Long getVerifierId() {
-        return verifierId;
+    @Override
+    protected void __marshal(E source) {
+        super.__marshal(source);
+
+        verifier = new UserDto(source.getVerifier());
+        verifiedDate = source.getVerifiedDate();
+        allowed = source.isAllowed();
+        rejectReason = source.getRejectReason();
     }
 
-    public void setVerifierId(Long verifierId) {
-        this.verifierId = verifierId;
+    @Override
+    protected void __unmarshalTo(IUnmarshalContext context, E target) {
+        super.__unmarshalTo(context, target);
+
+        with(context, target).unmarshal(verifierProperty, verifier);
+
+        target.setVerifiedDate(verifiedDate);
+        target.setAllowed(allowed);
+        target.setRejectReason(rejectReason);
+    }
+
+    @Override
+    public void parse(IVariantLookupMap<String> map)
+            throws ParseException, TypeConvertException {
+        super.parse(map);
+
+        String _verifierId = map.getString("verifierId");
+        if (_verifierId == null)
+            verifier = null;
+        else
+            verifier = new UserDto().ref(Long.parseLong(_verifierId));
+
+        long _verifiedDate = map.getLong("verifiedDate");
+        verifiedDate = new Date(_verifiedDate);
+
+        allowed = map.getBoolean("allowed");
+        rejectReason = map.getString("rejectReason");
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
+    public String getVerificationState() {
+        return verified ? "Verified" : "Not-Verified";
+    }
+
+    public UserDto getVerifier() {
+        return verifier;
+    }
+
+    public Long getVerifierId() {
+        return id(verifier);
     }
 
     public String getVerifierName() {
-        return verifierName;
+        return verifier == null ? null : verifier.getDisplayName();
     }
 
-    public void setVerifierName(String verifierName) {
-        this.verifierName = verifierName;
+    public void setVerifier(UserDto verifier) {
+        this.verifier = verifier;
     }
 
     public Date getVerifiedDate() {
@@ -81,45 +133,21 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
         this.rejectReason = rejectReason;
     }
 
-    @Override
-    protected void __marshal(E source) {
-        super.__marshal(source);
+    final PropertyAccessor<E, User> verifierProperty;
+    {
+        verifierProperty = new PropertyAccessor<E, User>(User.class) {
 
-        User verifier = source.getVerifier();
-        verifierId = verifier == null ? null : verifier.getId();
-        verifierName = verifier == null ? null : verifier.getName();
+            @Override
+            public User get(E entity) {
+                return entity.getVerifier();
+            }
 
-        verifiedDate = source.getVerifiedDate();
-        allowed = source.isAllowed();
-        rejectReason = source.getRejectReason();
-    }
+            @Override
+            public void set(E entity, User verifier) {
+                entity.setVerifier(verifier);
+            }
 
-    @Override
-    protected void __unmarshalTo(IUnmarshalContext context, E target) {
-        super.__unmarshalTo(context, target);
-
-        target.setVerifiedDate(verifiedDate);
-        target.setAllowed(allowed);
-        target.setRejectReason(rejectReason);
-
-        throw new NotImplementedException("unmarshal verifier.");
-    }
-
-    @Override
-    public void parse(IVariantLookupMap<String> map)
-            throws ParseException, TypeConvertException {
-        super.parse(map);
-
-        String _verifierId = map.getString("verifierId");
-        verifierId = _verifierId == null ? null : Long.parseLong(_verifierId);
-
-        verifierName = map.getString("verifierName");
-
-        long _verifiedDate = map.getLong("verifiedDate");
-        verifiedDate = new Date(_verifiedDate);
-
-        allowed = map.getBoolean("allowed");
-        rejectReason = map.getString("rejectReason");
+        };
     }
 
 }

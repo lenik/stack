@@ -16,6 +16,14 @@ public class VerifyPolicyDto
     String name;
     String description;
 
+    public VerifyPolicyDto() {
+        super();
+    }
+
+    public VerifyPolicyDto(VerifyPolicy<?> source) {
+        super(source);
+    }
+
     public String getName() {
         return name;
     }
