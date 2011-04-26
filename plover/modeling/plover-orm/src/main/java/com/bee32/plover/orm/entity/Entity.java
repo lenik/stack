@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.free.IdentityHashSet;
-import javax.free.Nullables;
 import javax.persistence.MappedSuperclass;
 
 import com.bee32.plover.arch.Component;
@@ -85,32 +84,50 @@ public abstract class Entity<K extends Serializable>
 
     @Override
     public final boolean equals(Object obj) {
-        return super.equals(obj);
+        if (obj == null)
+            return false;
+
+        if (getClass() != obj.getClass())
+            return false;
+
+        @SuppressWarnings("unchecked")
+        Entity<K> other = (Entity<K>) obj;
+
+        return equalsEntity(other);
     }
 
+    /**
+     * Not used.
+     */
     @Override
     protected final boolean equalsSpecific(Component obj) {
         @SuppressWarnings("unchecked")
         Entity<K> other = (Entity<K>) obj;
 
-        if (version != other.version)
-            return false;
-
-        if (!Nullables.equals(getId(), other.getId()))
-            return false;
-
         return equalsEntity(other);
     }
 
-    protected boolean equalsEntity(Entity<K> otherEntity) {
-        return false;
+    protected boolean equalsEntity(Entity<K> other) {
+        K id1 = getId();
+        K id2 = other.getId();
+
+        if (id1 == null || id2 == null)
+            return false;
+
+        if (!id1.equals(id2))
+            return false;
+
+        return true;
     }
 
     @Override
     public final int hashCode() {
-        return super.hashCode();
+        return typeHash + hashCodeEntity();
     }
 
+    /**
+     * Not used.
+     */
     @Override
     protected final int hashCodeSpecific() {
         int hash = 0xbabade33 * version;
@@ -125,7 +142,12 @@ public abstract class Entity<K extends Serializable>
     }
 
     protected int hashCodeEntity() {
-        return super.hashCodeSpecific();
+        K id = getId();
+
+        if (id == null)
+            return System.identityHashCode(this);
+        else
+            return id.hashCode();
     }
 
     @Override

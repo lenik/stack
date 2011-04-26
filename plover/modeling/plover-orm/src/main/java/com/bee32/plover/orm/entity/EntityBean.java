@@ -40,7 +40,7 @@ public class EntityBean<K extends Serializable>
     }
 
     protected boolean equalsEntity(EntityBean<K> otherEntity) {
-        return false;
+        return super.equalsEntity(otherEntity);
     }
 
 }

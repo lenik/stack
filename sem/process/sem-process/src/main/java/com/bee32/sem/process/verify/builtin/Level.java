@@ -1,5 +1,6 @@
 package com.bee32.sem.process.verify.builtin;
 
+import javax.free.Nullables;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -71,6 +72,29 @@ public class Level
 
     public void setTargetPolicy(VerifyPolicy<?> verifyPolicy) {
         this.targetPolicy = verifyPolicy;
+    }
+
+    @Override
+    protected boolean equalsEntity(EntityBean<Integer> otherEntity) {
+        Level other = (Level) otherEntity;
+
+        if (limit != other.limit)
+            return false;
+
+        if (!Nullables.equals(multiLevel, other.multiLevel))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    protected int hashCodeEntity() {
+        int hash = new Long(limit).hashCode();
+
+        if (multiLevel != null)
+            hash += multiLevel.getId().hashCode();
+
+        return hash;
     }
 
     // --o IRangeMapEntry
