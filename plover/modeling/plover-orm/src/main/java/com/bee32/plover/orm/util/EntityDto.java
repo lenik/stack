@@ -60,6 +60,15 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         this.id = id;
     }
 
+    public <D extends EntityDto<E, K>> D ref(K id) {
+        this.id = id;
+        this.filled = false;
+
+        @SuppressWarnings("unchecked")
+        D self = (D) this;
+        return self;
+    }
+
     public Integer getVersion() {
         return version;
     }
