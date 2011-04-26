@@ -1,10 +1,14 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.dao.DataAccessException;
 
 import com.bee32.plover.arch.util.DataTransferObject;
 import com.bee32.plover.arch.util.PropertyAccessor;
@@ -60,8 +64,43 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         this.id = id;
     }
 
+    /**
+     * Set this DTO as a "reference pointer", and clear the filled state.
+     *
+     * <p>
+     * All properties except <code>id</code> and <code>version</code> should be ignored by user.
+     *
+     * @param id
+     *            The id to the target entity;
+     * @return This DTO object.
+     * @see #ref(Entity)
+     */
     public <D extends EntityDto<E, K>> D ref(K id) {
         this.id = id;
+        this.version = null;
+        this.filled = false;
+
+        @SuppressWarnings("unchecked")
+        D self = (D) this;
+        return self;
+    }
+
+    /**
+     * Set this DTO as a "reference pointer", and clear the filled state.
+     *
+     * <p>
+     * All properties except <code>id</code> and <code>version</code> should be ignored by user.
+     *
+     * @param entity
+     *            The target entity this DTO would reference to.
+     * @return This DTO.
+     */
+    public <D extends EntityDto<E, K>> D ref(E entity) {
+        if (entity == null)
+            throw new NullPointerException("entity");
+
+        this.id = entity.getId();
+        this.version = entity.getVersion();
         this.filled = false;
 
         @SuppressWarnings("unchecked")
@@ -155,44 +194,78 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     /**
-     * <table>
+     * Unmarshal a property DTO into the corresponding property of an entity in a smart way.
+     * <p>
+     * The contents in the given property DTO may be fully unmarshalled to a new created entity
+     * bean, or unmarshalled to be reference to the existing entity, or between. The behaviour is
+     * determined on the two states of the DTO object: the <i>filled</i> state, and the <i>id</i>
+     * state.
+     * <p>
+     *
+     * Transfer table:
+     * <table border="1">
      * <tr>
      * <th>DTO</th>
      * <th>DTO.filled</th>
      * <th>DTO.id</th>
+     * <th>Meaning</th>
      * <th>Result</th>
      * </tr>
      * <tr>
-     * <td>*</td>
-     * <td>not-filled</td>
-     * <td>null</td>
-     * <td>ENTITY</td>
+     * <td align="center"><code>null</code></td>
+     * <td align="center">(n/a)</td>
+     * <td align="center">(n/a)</td>
+     * <td align="center">Skip, no change</td>
+     * <td align="left">ENTITY</td>
      * </tr>
      * <tr>
-     * <td>*</td>
-     * <td>not-filled</td>
-     * <td>not-null</td>
-     * <td>ENTITY = get(dto.id)</td>
+     * <td align="center">*</td>
+     * <td align="center">not-filled</td>
+     * <td align="center"><code>null</code></td>
+     * <td align="center">Set to null</td>
+     * <td align="left"><code>null</code></td>
      * </tr>
      * <tr>
-     * <td>null</td>
-     * <td>*</td>
-     * <td>*</td>
-     * <td>ENTITY</td>
+     * <td align="center">*</td>
+     * <td align="center">not-filled</td>
+     * <td align="center">id</td>
+     * <td align="center">Reference</td>
+     * <td align="left">ENTITY = reference&lt;dto.id&gt;</td>
      * </tr>
      * <tr>
-     * <td>*</td>
-     * <td>filled</td>
-     * <td>null</td>
-     * <td>ENTITY = unmarshal()</td>
+     * <td align="center">*</td>
+     * <td align="center">filled</td>
+     * <td align="center"><code>null</code></td>
+     * <td align="center">Full Reconstruction</td>
+     * <td align="left">ENTITY = unmarshal()</td>
      * </tr>
      * <tr>
-     * <td>*</td>
-     * <td>filled</td>
-     * <td>not-null</td>
-     * <td>unmarshalTo(ENTITY = get(dto.id))</td>
+     * <td align="center">*</td>
+     * <td align="center">filled</td>
+     * <td align="center">id</td>
+     * <td align="center">Partial Modification</td>
+     * <td align="left">unmarshalTo(ENTITY = reference&lt;dto.id&gt;)</td>
      * </tr>
      * </table>
+     *
+     * The DTO is only filled if:
+     * <ul>
+     * <li>It has been {@link DataTransferObject#marshal(Object) marhsalled} from an entity bean.
+     * <li>It has {@link DataTransferObject#parse(Map) parsed from a Map}, or
+     * {@link DataTransferObject#parse(HttpServletRequest) from an HttpServletRequest}.</li>
+     *
+     * You can always clear the filled state by reference the DTO to a specific id, by calling the
+     * {@link EntityDto#ref(Entity) ref} method.
+     *
+     * @param property
+     *            The property accessor which is used to get the old property value, and set the
+     *            property to a new value.
+     * @param dto
+     *            The data transfer object which will be unmarshalled into the property of the
+     *            context target bean, using the specified property accessor.
+     * @return This {@link WithContext} object, for chaining method calls purpose.
+     * @throws DataAccessException
+     *             If data access exception happened with calls into the {@link IUnmarshalContext}.
      */
     protected static <Ei extends Entity<Ki>, Ki extends Serializable> //
     /**/Ei unmarshal(IUnmarshalContext context, Class<Ei> entityType, //
@@ -213,52 +286,85 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             }
         } else {
             if (id == null)
-                // DTO(null)
-                return oldEntity;
+                return null;
             else
                 return context.loadEntity(entityType, id);
         }
     }
 
     /**
-     * <table>
+     * Unmarshal a property DTO into the corresponding property of an entity in a smart way.
+     * <p>
+     * The contents in the given property DTO may be fully unmarshalled to a new created entity
+     * bean, or unmarshalled to be reference to the existing entity, or between. The behaviour is
+     * determined on the two states of the DTO object: the <i>filled</i> state, and the <i>id</i>
+     * state.
+     * <p>
+     *
+     * Transfer table:
+     * <table border="1">
      * <tr>
      * <th>DTO</th>
      * <th>DTO.filled</th>
      * <th>DTO.id</th>
+     * <th>Meaning</th>
      * <th>Result</th>
      * </tr>
      * <tr>
-     * <td>*</td>
-     * <td>not-filled</td>
-     * <td>null</td>
-     * <td>ENTITY</td>
+     * <td align="center"><code>null</code></td>
+     * <td align="center">(n/a)</td>
+     * <td align="center">(n/a)</td>
+     * <td align="center">Skip, no change</td>
+     * <td align="left">ENTITY</td>
      * </tr>
      * <tr>
-     * <td>*</td>
-     * <td>not-filled</td>
-     * <td>not-null</td>
-     * <td>ENTITY = get(dto.id)</td>
+     * <td align="center">*</td>
+     * <td align="center">not-filled</td>
+     * <td align="center"><code>null</code></td>
+     * <td align="center">Set to null</td>
+     * <td align="left"><code>null</code></td>
      * </tr>
      * <tr>
-     * <td>null</td>
-     * <td>*</td>
-     * <td>*</td>
-     * <td>ENTITY</td>
+     * <td align="center">*</td>
+     * <td align="center">not-filled</td>
+     * <td align="center">id</td>
+     * <td align="center">Reference</td>
+     * <td align="left">ENTITY = reference&lt;dto.id&gt;</td>
      * </tr>
      * <tr>
-     * <td>*</td>
-     * <td>filled</td>
-     * <td>null</td>
-     * <td>ENTITY = unmarshal()</td>
+     * <td align="center">*</td>
+     * <td align="center">filled</td>
+     * <td align="center"><code>null</code></td>
+     * <td align="center">Full Reconstruction</td>
+     * <td align="left">ENTITY = unmarshal()</td>
      * </tr>
      * <tr>
-     * <td>*</td>
-     * <td>filled</td>
-     * <td>not-null</td>
-     * <td>unmarshalTo(ENTITY = get(dto.id))</td>
+     * <td align="center">*</td>
+     * <td align="center">filled</td>
+     * <td align="center">id</td>
+     * <td align="center">Partial Modification</td>
+     * <td align="left">unmarshalTo(ENTITY = reference&lt;dto.id&gt;)</td>
      * </tr>
      * </table>
+     *
+     * The DTO is only filled if:
+     * <ul>
+     * <li>It has been {@link DataTransferObject#marshal(Object) marhsalled} from an entity bean.
+     * <li>It has {@link DataTransferObject#parse(Map) parsed from a Map}, or
+     * {@link DataTransferObject#parse(HttpServletRequest) from an HttpServletRequest}.</li>
+     *
+     * You can always clear the filled state by reference the DTO to a specific id, by calling the
+     * {@link EntityDto#ref(Entity) ref} method.
+     *
+     * @param property
+     *            The property accessor which is used to get the old property value, and set the
+     *            property to a new value.
+     * @param dto
+     *            The data transfer object which will be unmarshalled into the property of the
+     *            context target bean, using the specified property accessor.
+     * @return This {@link WithContext} object, for chaining method calls purpose.
+     * @throws DataAccessException
+     *             If data access exception happened with calls into the {@link IUnmarshalContext}.
      */
     protected static <E extends Entity<?>, Ei extends Entity<Ki>, Ki extends Serializable> //
     /**/void unmarshal(IUnmarshalContext context, E target, //
@@ -275,8 +381,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     protected static class WithContext<E extends Entity<?>> {
 
-        IUnmarshalContext context;
-        E target;
+        private final IUnmarshalContext context;
+        private final E target;
 
         public WithContext(IUnmarshalContext context, E target) {
             this.context = context;
@@ -284,44 +390,80 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         }
 
         /**
-         * <table>
+         * Unmarshal a property DTO into the corresponding property of an entity in a smart way.
+         * <p>
+         * The contents in the given property DTO may be fully unmarshalled to a new created entity
+         * bean, or unmarshalled to be reference to the existing entity, or between. The behaviour
+         * is determined on the two states of the DTO object: the <i>filled</i> state, and the
+         * <i>id</i> state.
+         * <p>
+         *
+         * Transfer table:
+         * <table border="1">
          * <tr>
          * <th>DTO</th>
          * <th>DTO.filled</th>
          * <th>DTO.id</th>
+         * <th>Meaning</th>
          * <th>Result</th>
          * </tr>
          * <tr>
-         * <td>*</td>
-         * <td>not-filled</td>
-         * <td>null</td>
-         * <td>ENTITY</td>
+         * <td align="center"><code>null</code></td>
+         * <td align="center">(n/a)</td>
+         * <td align="center">(n/a)</td>
+         * <td align="center">Skip, no change</td>
+         * <td align="left">ENTITY</td>
          * </tr>
          * <tr>
-         * <td>*</td>
-         * <td>not-filled</td>
-         * <td>not-null</td>
-         * <td>ENTITY = get(dto.id)</td>
+         * <td align="center">*</td>
+         * <td align="center">not-filled</td>
+         * <td align="center"><code>null</code></td>
+         * <td align="center">Set to null</td>
+         * <td align="left"><code>null</code></td>
          * </tr>
          * <tr>
-         * <td>null</td>
-         * <td>*</td>
-         * <td>*</td>
-         * <td>ENTITY</td>
+         * <td align="center">*</td>
+         * <td align="center">not-filled</td>
+         * <td align="center">id</td>
+         * <td align="center">Reference</td>
+         * <td align="left">ENTITY = reference&lt;dto.id&gt;</td>
          * </tr>
          * <tr>
-         * <td>*</td>
-         * <td>filled</td>
-         * <td>null</td>
-         * <td>ENTITY = unmarshal()</td>
+         * <td align="center">*</td>
+         * <td align="center">filled</td>
+         * <td align="center"><code>null</code></td>
+         * <td align="center">Full Reconstruction</td>
+         * <td align="left">ENTITY = unmarshal()</td>
          * </tr>
          * <tr>
-         * <td>*</td>
-         * <td>filled</td>
-         * <td>not-null</td>
-         * <td>unmarshalTo(ENTITY = get(dto.id))</td>
+         * <td align="center">*</td>
+         * <td align="center">filled</td>
+         * <td align="center">id</td>
+         * <td align="center">Partial Modification</td>
+         * <td align="left">unmarshalTo(ENTITY = reference&lt;dto.id&gt;)</td>
          * </tr>
          * </table>
+         *
+         * The DTO is only filled if:
+         * <ul>
+         * <li>It has been {@link DataTransferObject#marshal(Object) marhsalled} from an entity
+         * bean.
+         * <li>It has {@link DataTransferObject#parse(Map) parsed from a Map}, or
+         * {@link DataTransferObject#parse(HttpServletRequest) from an HttpServletRequest}.</li>
+         *
+         * You can always clear the filled state by reference the DTO to a specific id, by calling
+         * the {@link EntityDto#ref(Entity) ref} method.
+         *
+         * @param property
+         *            The property accessor which is used to get the old property value, and set the
+         *            property to a new value.
+         * @param dto
+         *            The data transfer object which will be unmarshalled into the property of the
+         *            context target bean, using the specified property accessor.
+         * @return This {@link WithContext} object, for chaining method calls purpose.
+         * @throws DataAccessException
+         *             If data access exception happened with calls into the
+         *             {@link IUnmarshalContext}.
          */
         public <Ei extends Entity<Ki>, Ki extends Serializable> //
         /**/WithContext<E> unmarshal(PropertyAccessor<E, Ei> property, EntityDto<Ei, Ki> dto) {
