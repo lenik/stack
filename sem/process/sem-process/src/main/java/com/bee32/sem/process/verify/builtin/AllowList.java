@@ -97,6 +97,9 @@ public class AllowList
     public ErrorResult validate(IAllowedByContext context) {
         User user = context.getVerifier();
 
+        if (user == null)
+            return PENDING;
+
         if (!user.impliesOneOf(responsibles))
             return new UnauthorizedResult(user);
 
