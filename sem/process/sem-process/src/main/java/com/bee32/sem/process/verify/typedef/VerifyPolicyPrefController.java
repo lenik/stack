@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bee32.plover.arch.util.DTOs;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyPolicyManager;

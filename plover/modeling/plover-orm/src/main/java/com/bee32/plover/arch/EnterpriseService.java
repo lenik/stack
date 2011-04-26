@@ -7,10 +7,10 @@ import javax.inject.Inject;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.arch.util.DTOs;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 

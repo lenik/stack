@@ -1,5 +1,8 @@
 package com.bee32.plover.orm.builtin;
 
+import javax.free.IVariantLookupMap;
+import javax.free.ParseException;
+
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 
@@ -21,6 +24,27 @@ public class PloverConfDto
     protected void _unmarshalTo(IUnmarshalContext context, PloverConf target) {
         target.setValue(value);
         target.setDescription(description);
+    }
+
+    @Override
+    protected void _parse(IVariantLookupMap<String> map)
+            throws ParseException {
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

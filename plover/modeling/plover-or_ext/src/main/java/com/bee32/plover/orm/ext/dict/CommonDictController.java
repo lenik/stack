@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.ajax.JsonUtil;
-import com.bee32.plover.arch.util.DTOs;
 import com.bee32.plover.orm.ext.PloverORMExtModule;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.plover.orm.ext.util.GenericEntityController;
+import com.bee32.plover.orm.util.DTOs;
 
 @RequestMapping(CommonDictController.PREFIX + "*")
 public class CommonDictController<E extends DictEntity<K>, K extends Serializable, Dto extends DictEntityDto<E, K>>

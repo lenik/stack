@@ -13,9 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.dto.UserDto;
-import com.bee32.plover.arch.util.DTOs;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.event.dao.EventPriorityDao;
 import com.bee32.sem.event.dao.EventStatusDao;
 import com.bee32.sem.event.entity.Event;
