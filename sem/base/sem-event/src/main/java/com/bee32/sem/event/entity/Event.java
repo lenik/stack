@@ -23,7 +23,6 @@ import org.hibernate.annotations.Index;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.util.AliasUtil;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
@@ -269,19 +268,5 @@ public class Event
     public void setObservers(List<? extends Principal> observers) {
         this.observers = new HashSet<Principal>(observers);
     }
-
-    public static PropertyAccessor<Event, User> actorProperty = new PropertyAccessor<Event, User>(User.class) {
-
-        @Override
-        public User get(Event event) {
-            return event.actor;
-        }
-
-        @Override
-        public void set(Event event, User actor) {
-            event.actor = actor;
-        }
-
-    };
 
 }

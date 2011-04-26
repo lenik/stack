@@ -2,21 +2,21 @@ package com.bee32.sem.event.web;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Event;
+import com.bee32.sem.event.entity.EventStatus;
 
 public abstract class AbstractEventDto<E extends Event>
         extends EntityDto<E, Long> {
@@ -32,10 +32,8 @@ public abstract class AbstractEventDto<E extends Event>
     private int stateIndex;
     private boolean closed;
 
-    private int statusId;
     private EventStatusDto status;
 
-    private Long actorId;
     private UserDto actor;
 
     private String subject;
@@ -47,7 +45,6 @@ public abstract class AbstractEventDto<E extends Event>
     private String refAlt;
 
     private List<PrincipalDto> observers;
-    private List<Long> observerIds;
 
     private String controlPage;
 
@@ -65,7 +62,8 @@ public abstract class AbstractEventDto<E extends Event>
         priority = source.getPriority();
         stateIndex = source.getState();
 
-        actorId = id(actor = new UserDto().marshal(source.getActor()));
+        status = new EventStatusDto(source.getStatus());
+        actor = new UserDto(source.getActor());
 
         subject = source.getSubject();
         message = source.getMessage();
@@ -85,6 +83,9 @@ public abstract class AbstractEventDto<E extends Event>
         target.setPriority(priority);
         target.setState(stateIndex);
 
+        with(context, (Event) target)//
+                .unmarshal(statusProperty, status);
+
         target.setSubject(subject);
         target.setMessage(message);
         target.setBeginTime(beginTime);
@@ -93,18 +94,12 @@ public abstract class AbstractEventDto<E extends Event>
         target.setRefId(refId);
         target.setRefAlt(refAlt);
 
-        WithContext<Event> wc = with(context, (Event) target);
-        wc.unmarshal(Event.actorProperty, actorId, actor);
+        with(context, (Event) target)//
+                .unmarshal(actorProperty, actor);
 
         if (selection.contains(OBSERVERS))
-            if (observerIds != null) {
-                Set<Principal> observers = new HashSet<Principal>();
-                for (Long observerId : observerIds) {
-                    Principal observer = context.loadEntity(Principal.class, observerId);
-                    observers.add(observer);
-                }
-                target.setObservers(observers);
-            }
+            if (observers != null)
+                target.setObservers(unmarshalSet(context, observers));
     }
 
     @Override
@@ -118,9 +113,12 @@ public abstract class AbstractEventDto<E extends Event>
         flags = map.getInt("flags");
         stateIndex = map.getInt("state");
         closed = map.getBoolean("closed");
-        statusId = map.getInt("statusId");
 
-        actorId = map.getLong("actorId");
+        int statusId = map.getInt("statusId");
+        status = new EventStatusDto().ref(statusId);
+
+        long actorId = map.getLong("actorId");
+        actor = new UserDto().ref(actorId);
 
         subject = map.getString("subject");
         message = map.getString("message");
@@ -135,10 +133,12 @@ public abstract class AbstractEventDto<E extends Event>
 
         if (selection.contains(OBSERVERS)) {
             String[] _observerIds = map.getStringArray("observerIds");
-            observerIds = new ArrayList<Long>();
+            observers = new ArrayList<PrincipalDto>();
+
             for (String _observerId : _observerIds) {
                 long observerId = Long.parseLong(_observerId);
-                observerIds.add(observerId);
+                PrincipalDto observer = new PrincipalDto().ref(observerId);
+                observers.add(observer);
             }
         }
     }
@@ -183,14 +183,6 @@ public abstract class AbstractEventDto<E extends Event>
         this.closed = closed;
     }
 
-    public int getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
-    }
-
     public EventStatusDto getStatus() {
         return status;
     }
@@ -216,14 +208,6 @@ public abstract class AbstractEventDto<E extends Event>
             statusText = statusText + "+";
 
         return statusText;
-    }
-
-    public Long getActorId() {
-        return actorId;
-    }
-
-    public void setActorId(Long actorId) {
-        this.actorId = actorId;
     }
 
     public UserDto getActor() {
@@ -297,14 +281,6 @@ public abstract class AbstractEventDto<E extends Event>
         this.observers = observers;
     }
 
-    public List<Long> getObserverIds() {
-        return observerIds;
-    }
-
-    public void setObserverIds(List<Long> observerIds) {
-        this.observerIds = observerIds;
-    }
-
     public String getControlPage() {
         return controlPage;
     }
@@ -312,5 +288,34 @@ public abstract class AbstractEventDto<E extends Event>
     public void setControlPage(String controlPage) {
         this.controlPage = controlPage;
     }
+
+    static final PropertyAccessor<Event, EventStatus> statusProperty = new PropertyAccessor<Event, EventStatus>(
+            EventStatus.class) {
+
+        @Override
+        public EventStatus get(Event entity) {
+            return entity.getStatus();
+        }
+
+        @Override
+        public void set(Event entity, EventStatus status) {
+            entity.setStatus(status);
+        }
+
+    };
+
+    static final PropertyAccessor<Event, User> actorProperty = new PropertyAccessor<Event, User>(User.class) {
+
+        @Override
+        public User get(Event entity) {
+            return entity.getActor();
+        }
+
+        @Override
+        public void set(Event entity, User actor) {
+            entity.setActor(actor);
+        }
+
+    };
 
 }

@@ -35,10 +35,9 @@ public class VerifyPolicyPrefDto
 
         description = map.getString("description");
 
-        preferredPolicy = new VerifyPolicyDto();
-        preferredPolicy.setReferenceOnly(true);
-
-        preferredPolicy.setId(parseId(map.getString("preferredPolicyId")));
+        String _policyId = map.getString("preferredPolicyId");
+        int policyId = Integer.parseInt(_policyId);
+        preferredPolicy = new VerifyPolicyDto().ref(policyId);
     }
 
     public String getDescription() {

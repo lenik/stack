@@ -17,7 +17,6 @@ public class PassStepDto
     public boolean optional;
     private int order;
 
-    private Long responsibleId;
     private PrincipalDto responsible;
 
     public PassStepDto() {
@@ -44,14 +43,6 @@ public class PassStepDto
         this.order = order;
     }
 
-    public Long getResponsibleId() {
-        return responsibleId;
-    }
-
-    public void setResponsibleId(Long responsibleId) {
-        this.responsibleId = responsibleId;
-    }
-
     public PrincipalDto getResponsible() {
         return responsible;
     }
@@ -65,7 +56,6 @@ public class PassStepDto
         optional = source.isOptional();
         order = source.getOrder();
 
-        responsibleId = id(source.getResponsible());
         responsible = new PrincipalDto().marshal(source.getResponsible());
     }
 
@@ -75,7 +65,7 @@ public class PassStepDto
         target.setOrder(order);
 
         with(context, target)//
-                .unmarshal(PassStep.responsibleProperty, responsibleId, responsible);
+                .unmarshal(PassStep.responsibleProperty, responsible);
     }
 
     @Override
@@ -85,7 +75,8 @@ public class PassStepDto
 
         optional = map.getBoolean("optional");
         order = map.getInt("order");
-        responsibleId = map.getLong("responsibleId");
+
+        responsible = new PrincipalDto().ref(map.getLong("responsibleId"));
     }
 
 }
