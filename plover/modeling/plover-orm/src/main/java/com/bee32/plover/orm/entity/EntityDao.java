@@ -24,4 +24,25 @@ public abstract class EntityDao<E extends Entity<K>, K extends Serializable>
         super(name);
     }
 
+    @Override
+    public E get(K key) {
+        E entity = super.get(key);
+        if (entity == null)
+            return null;
+        else
+            entity = _preinit(entity);
+        return entity;
+    }
+
+    @Override
+    public E load(K key) {
+        E entity = super.load(key);
+        entity = _preinit(entity);
+        return entity;
+    }
+
+    protected E _preinit(E entity) {
+        return entity;
+    }
+
 }
