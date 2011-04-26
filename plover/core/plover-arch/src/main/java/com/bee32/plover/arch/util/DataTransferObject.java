@@ -84,7 +84,7 @@ public abstract class DataTransferObject<T, C>
         return filled;
     }
 
-    protected void _setFilled(boolean filled) {
+    public void _setFilled(boolean filled) {
         this.filled = filled;
     }
 
