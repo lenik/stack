@@ -12,12 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bee32.plover.arch.util.DTOs;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.process.SEMProcessModule;
-import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.builtin.Level;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 import com.bee32.sem.process.verify.builtin.dao.LevelDao;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
@@ -68,34 +66,6 @@ public class MultiLevelController
         dto.setName("");
         dto.setDescription("");
         dto.setLevels(new ArrayList<LevelDto>());
-    }
-
-    @Override
-    protected void fillEntity(MultiLevel entity, MultiLevelDto dto) {
-        entity.setName(dto.name);
-        entity.setDescription(dto.description);
-
-        List<Level> levels = entity.getLevels();
-        List<Level> newLevels = new ArrayList<Level>();
-
-        for (LevelDto newLevel : dto.getLevels()) {
-            long newLimit = newLevel.getLimit();
-            Level oldLevel = entity.getLevel(newLimit);
-
-            int newPolicyId = newLevel.getTargetPolicyId();
-            VerifyPolicy<?> newPolicy = verifyPolicyDao.load(newPolicyId);
-
-            if (oldLevel != null) {
-                int oldPolicyId = oldLevel.getTargetPolicy().getId();
-                if (newPolicyId != oldPolicyId)
-                    oldLevel.setTargetPolicy(newPolicy);
-                newLevels.add(oldLevel);
-            } else
-                newLevels.add(new Level(entity, newLimit, newPolicy));
-        }
-
-        levels.clear();
-        levels.addAll(newLevels);
     }
 
     @Override

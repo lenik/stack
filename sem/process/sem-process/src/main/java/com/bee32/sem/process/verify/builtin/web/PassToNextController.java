@@ -1,18 +1,15 @@
 package com.bee32.sem.process.verify.builtin.web;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dao.PrincipalDao;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.sem.process.SEMProcessModule;
-import com.bee32.sem.process.verify.builtin.PassStep;
 import com.bee32.sem.process.verify.builtin.PassToNext;
 import com.bee32.sem.process.verify.builtin.dao.PassStepDao;
 
@@ -62,26 +59,6 @@ public class PassToNextController
         dto.setName("");
         dto.setDescription("");
         dto.setSequences(new ArrayList<PassStepDto>());
-    }
-
-    @Override
-    protected void fillEntity(PassToNext entity, PassToNextDto dto) {
-        entity.setName(dto.name);
-        entity.setDescription(dto.description);
-
-        List<PassStep> sequences = new ArrayList<PassStep>();
-        for (PassStepDto seq : dto.getSequences()) {
-            int order = seq.getOrder();
-            long responsibleId = seq.getResponsible().getId();
-            boolean optional = seq.isOptional();
-
-            Principal responsible = principalDao.load(responsibleId);
-
-            PassStep seqEntity = new PassStep(entity, order, responsible, optional);
-
-            sequences.add(seqEntity);
-        }
-        entity.setSequences(sequences);
     }
 
 }
