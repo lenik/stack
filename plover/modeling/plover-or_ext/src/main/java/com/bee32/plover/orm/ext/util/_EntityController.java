@@ -239,12 +239,7 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
             try {
                 dataManager.delete(entity);
             } catch (DataIntegrityViolationException e) {
-                resp.setCharacterEncoding("utf-8");
-                String entityName = view.meta.getString("typeName") + " " + entity.getName();
-                String message = entityName + " 正在被其它对象使用中，删除失败。";
-                Javascripts.alertAndBack(message).dump(req, resp);
-
-                return null;
+                return Javascripts.alertAndBack("不能删除正在使用中的对象。" + hint(entity, id)).dump(req, resp);
             }
 
         return view;
