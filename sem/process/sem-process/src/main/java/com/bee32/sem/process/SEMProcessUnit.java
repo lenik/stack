@@ -8,6 +8,7 @@ import com.bee32.sem.process.verify.builtin.Level;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 import com.bee32.sem.process.verify.builtin.PassStep;
 import com.bee32.sem.process.verify.builtin.PassToNext;
+import com.bee32.sem.process.verify.typedef.VerifyPolicyPref;
 
 @ImportUnit(SEMEventUnit.class)
 public class SEMProcessUnit
@@ -15,11 +16,10 @@ public class SEMProcessUnit
 
     @Override
     protected void preamble() {
+        add(VerifyPolicyPref.class);
         add(AllowList.class);
-        add(MultiLevel.class);
-        add(Level.class);
-        add(PassToNext.class);
-        add(PassStep.class);
+        add(MultiLevel.class, Level.class);
+        add(PassToNext.class, PassStep.class);
     }
 
 }

@@ -41,6 +41,11 @@ public abstract class ClassCatalog
         classes.add(clazz);
     }
 
+    public void add(Class<?>... classes) {
+        for (Class<?> c : classes)
+            this.classes.add(c);
+    }
+
     public void addAll(Collection<? extends Class<?>> classes) {
         this.classes.addAll(classes);
     }
