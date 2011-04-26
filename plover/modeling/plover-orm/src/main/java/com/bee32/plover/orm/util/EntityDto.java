@@ -8,8 +8,8 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.DataTransferObject;
 import com.bee32.plover.arch.util.PropertyAccessor;
-import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntity;
 
@@ -40,7 +40,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     public void setEntityType(Class<? extends E> entityType) {
-        super.setSourceType(entityType);
+        super._setSourceType(entityType);
         keyType = EntityUtil.getKeyType(entityType);
     }
 
@@ -75,7 +75,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    protected IUnmarshalContext defaultContext() {
+    protected IUnmarshalContext _getDefaultContext() {
         return IUnmarshalContext.NULL;
     }
 
@@ -145,33 +145,120 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             return dto.getId();
     }
 
-    protected static <E extends Entity<K>, K extends Serializable> //
-    /**/E unmarshal(IUnmarshalContext context, Class<E> entityType, E oldEntity, //
-            K newId, EntityDto<E, K> newDto) {
+    /**
+     * <table>
+     * <tr>
+     * <th>DTO</th>
+     * <th>DTO.filled</th>
+     * <th>DTO.id</th>
+     * <th>Result</th>
+     * </tr>
+     * <tr>
+     * <td>*</td>
+     * <td>not-filled</td>
+     * <td>null</td>
+     * <td>ENTITY</td>
+     * </tr>
+     * <tr>
+     * <td>*</td>
+     * <td>not-filled</td>
+     * <td>not-null</td>
+     * <td>ENTITY = get(dto.id)</td>
+     * </tr>
+     * <tr>
+     * <td>null</td>
+     * <td>*</td>
+     * <td>*</td>
+     * <td>ENTITY</td>
+     * </tr>
+     * <tr>
+     * <td>*</td>
+     * <td>filled</td>
+     * <td>null</td>
+     * <td>ENTITY = unmarshal()</td>
+     * </tr>
+     * <tr>
+     * <td>*</td>
+     * <td>filled</td>
+     * <td>not-null</td>
+     * <td>unmarshalTo(ENTITY = get(dto.id))</td>
+     * </tr>
+     * </table>
+     */
+    protected static <Ei extends Entity<Ki>, Ki extends Serializable> //
+    /**/Ei unmarshal(IUnmarshalContext context, Class<Ei> entityType, //
+            Ei oldEntity, EntityDto<Ei, Ki> dto) {
 
-        if (newId != null)
-            return context.loadEntity(entityType, newId);
+        if (dto == null)
+            return oldEntity;
 
-        if (newDto == null)
-            return null;
+        Ki id = dto.getId();
 
-        K existingId = newDto.getId();
-        if (existingId == null)
-            return newDto.unmarshal(); // unmarshalContext
-
-        E existing = context.loadEntity(entityType, existingId);
-        newDto.unmarshalTo(existing);
-        return existing;
+        if (dto._isFilled()) {
+            if (id == null)
+                return dto.unmarshal(context); // unmarshalContext
+            else {
+                Ei existing = context.loadEntity(entityType, id);
+                dto.unmarshalTo(context, existing);
+                return existing;
+            }
+        } else {
+            if (id == null)
+                // DTO(null)
+                return oldEntity;
+            else
+                return context.loadEntity(entityType, id);
+        }
     }
 
+    /**
+     * <table>
+     * <tr>
+     * <th>DTO</th>
+     * <th>DTO.filled</th>
+     * <th>DTO.id</th>
+     * <th>Result</th>
+     * </tr>
+     * <tr>
+     * <td>*</td>
+     * <td>not-filled</td>
+     * <td>null</td>
+     * <td>ENTITY</td>
+     * </tr>
+     * <tr>
+     * <td>*</td>
+     * <td>not-filled</td>
+     * <td>not-null</td>
+     * <td>ENTITY = get(dto.id)</td>
+     * </tr>
+     * <tr>
+     * <td>null</td>
+     * <td>*</td>
+     * <td>*</td>
+     * <td>ENTITY</td>
+     * </tr>
+     * <tr>
+     * <td>*</td>
+     * <td>filled</td>
+     * <td>null</td>
+     * <td>ENTITY = unmarshal()</td>
+     * </tr>
+     * <tr>
+     * <td>*</td>
+     * <td>filled</td>
+     * <td>not-null</td>
+     * <td>unmarshalTo(ENTITY = get(dto.id))</td>
+     * </tr>
+     * </table>
+     */
     protected static <E extends Entity<?>, Ei extends Entity<Ki>, Ki extends Serializable> //
-    /**/void unmarshalProperty(IUnmarshalContext context, E target, PropertyAccessor<E, Ei> property, Ki newId,
-            EntityDto<Ei, Ki> newDto) {
+    /**/void unmarshal(IUnmarshalContext context, E target, //
+            PropertyAccessor<E, Ei> property, EntityDto<Ei, Ki> newDto) {
 
         Class<Ei> propertyType = property.getType();
 
         Ei oldProperty = property.get(target);
-        Ei newProperty = unmarshal(context, propertyType, oldProperty, newId, newDto);
+        Ei newProperty = unmarshal(context, propertyType, oldProperty, newDto);
 
         if (newProperty != oldProperty)
             property.set(target, newProperty);
@@ -187,11 +274,50 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             this.target = target;
         }
 
+        /**
+         * <table>
+         * <tr>
+         * <th>DTO</th>
+         * <th>DTO.filled</th>
+         * <th>DTO.id</th>
+         * <th>Result</th>
+         * </tr>
+         * <tr>
+         * <td>*</td>
+         * <td>not-filled</td>
+         * <td>null</td>
+         * <td>ENTITY</td>
+         * </tr>
+         * <tr>
+         * <td>*</td>
+         * <td>not-filled</td>
+         * <td>not-null</td>
+         * <td>ENTITY = get(dto.id)</td>
+         * </tr>
+         * <tr>
+         * <td>null</td>
+         * <td>*</td>
+         * <td>*</td>
+         * <td>ENTITY</td>
+         * </tr>
+         * <tr>
+         * <td>*</td>
+         * <td>filled</td>
+         * <td>null</td>
+         * <td>ENTITY = unmarshal()</td>
+         * </tr>
+         * <tr>
+         * <td>*</td>
+         * <td>filled</td>
+         * <td>not-null</td>
+         * <td>unmarshalTo(ENTITY = get(dto.id))</td>
+         * </tr>
+         * </table>
+         */
         public <Ei extends Entity<Ki>, Ki extends Serializable> //
-        /**/WithContext<E> unmarshal(PropertyAccessor<E, Ei> property, //
-                Ki newId, EntityDto<Ei, Ki> newDto) {
+        /**/WithContext<E> unmarshal(PropertyAccessor<E, Ei> property, EntityDto<Ei, Ki> dto) {
 
-            EntityDto.unmarshalProperty(context, target, property, newId, newDto);
+            EntityDto.unmarshal(context, target, property, dto);
 
             return this;
         }

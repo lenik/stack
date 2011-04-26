@@ -33,14 +33,14 @@ public abstract class DataTransferObject<T, C>
 
     protected final Flags32 selection = new Flags32();
 
-    private boolean referenceOnly;
+    protected boolean filled;
 
     protected DataTransferObject(Class<? extends T> sourceType) {
-        setSourceType(sourceType);
+        _setSourceType(sourceType);
     }
 
     public DataTransferObject() {
-        setSourceType(ClassUtil.<T> infer1(getClass(), DataTransferObject.class, 0));
+        _setSourceType(ClassUtil.<T> infer1(getClass(), DataTransferObject.class, 0));
     }
 
     public DataTransferObject(int selection) {
@@ -51,31 +51,36 @@ public abstract class DataTransferObject<T, C>
     public DataTransferObject(T source) {
         this();
 
-        if (source == null)
-            throw new NullPointerException("source");
-
-        marshal(source);
+        if (source != null)
+            marshal(source);
     }
 
     public DataTransferObject(T source, int selection) {
         this(selection);
 
-        if (source == null)
-            throw new NullPointerException("source");
-
-        marshal(source);
+        if (source != null)
+            marshal(source);
     }
 
-    public void setSourceType(Class<? extends T> sourceType) {
+    /**
+     * When it's a generic DTO, then the source type is not specialized yet. So there should be a
+     * chance to change it.
+     *
+     * One should override {@link #_setSourceType(Class)} as public so it may be changed by user.
+     *
+     * @param sourceType
+     *            New source type.
+     */
+    protected void _setSourceType(Class<? extends T> sourceType) {
         this.sourceType = sourceType;
     }
 
-    public boolean isReferenceOnly() {
-        return referenceOnly;
+    public boolean _isFilled() {
+        return filled;
     }
 
-    public void setReferenceOnly(boolean referenceOnly) {
-        this.referenceOnly = referenceOnly;
+    protected void _setFilled(boolean filled) {
+        this.filled = filled;
     }
 
     private static ThreadLocal<Map<Object, Object>> threadLocalGraph;
@@ -83,7 +88,7 @@ public abstract class DataTransferObject<T, C>
         threadLocalGraph = new ThreadLocal<Map<Object, Object>>();
     }
 
-    protected C defaultContext() {
+    protected C _getDefaultContext() {
         return null;
     }
 
@@ -124,6 +129,8 @@ public abstract class DataTransferObject<T, C>
         _marshal(source);
 
         // logger.debug("marshal end");
+
+        filled = true;
 
         @SuppressWarnings("unchecked")
         D self = (D) this;
@@ -181,7 +188,7 @@ public abstract class DataTransferObject<T, C>
     @Override
     public final void unmarshalTo(C context, T target) {
         if (context == null)
-            context = defaultContext();
+            context = _getDefaultContext();
 
         __unmarshalTo(context, target);
         _unmarshalTo(context, target);
@@ -243,11 +250,14 @@ public abstract class DataTransferObject<T, C>
             throws ParseException {
         if (map == null)
             throw new NullPointerException("map");
+
         try {
             parse(new Map2VariantLookupMap<String>(map));
         } catch (TypeConvertException e) {
             throw new ParseException(e.getMessage(), e);
         }
+
+        filled = true;
     }
 
     /**
