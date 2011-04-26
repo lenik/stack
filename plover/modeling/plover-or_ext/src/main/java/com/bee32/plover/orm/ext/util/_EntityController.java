@@ -86,6 +86,9 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
     protected class ViewData
             extends ModelAndViewEx {
 
+        public E entity;
+        public Dto dto;
+
         public ViewData() {
             super(_EntityController.this);
         }
@@ -261,6 +264,10 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
     protected K parseId(String idString) {
         K id = EntityUtil.parseId(getKeyType(), idString);
         return id;
+    }
+
+    protected String hint(E entity, K id) {
+        return ClassUtil.getDisplayName(getEntityType()) + " [" + id + "]";
     }
 
     protected E newEntity()
