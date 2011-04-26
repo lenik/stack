@@ -150,7 +150,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
             if (entity == null) {
                 if (!_createOTF)
                     return Javascripts.alertAndBack("对象尚未创建，无法保存。" + hint(entity, id) + "\n\n" //
-                            + "这大概是有人在你编辑该对象的时候进行了删除操作引起的。\n" //
+                            + "这大概是有人在你编辑该对象的同时进行了删除操作引起的。\n" //
                             + "点击确定返回上一页。" //
                             + ClassUtil.getDisplayName(getEntityType()) + " [" + id + "]" //
                     ).dump(req, resp);

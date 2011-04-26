@@ -4,29 +4,11 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import org.junit.Assert;
-import org.junit.Test;
 
-import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.User;
-import com.bee32.plover.arch.util.DTOs;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public class PrincipalDtoTest
         extends Assert {
-
-    @Test
-    public void testNew() {
-        AbstractPrincipalDto<Principal> principalDto = new AbstractPrincipalDto<Principal>();
-        Class<?> sourceType = DTOs.getSourceType(principalDto);
-        assertEquals(Principal.class, sourceType);
-    }
-
-    @Test
-    public void testChild() {
-        UserDto userDto = new UserDto();
-        Class<?> sourceType = DTOs.getSourceType(userDto);
-        assertEquals(User.class, sourceType);
-    }
 
     static String dumpGenericTree(Type type) {
         PrettyPrintStream out = new PrettyPrintStream();

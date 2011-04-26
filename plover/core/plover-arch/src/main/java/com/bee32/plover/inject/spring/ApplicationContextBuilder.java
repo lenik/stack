@@ -59,7 +59,7 @@ public class ApplicationContextBuilder {
         return beanFactory.createBean(beanClass);
     }
 
-    static final boolean postInitBySpring = true;
+    static boolean postInitBySpring = true;
 
     /**
      * @return self.
@@ -74,20 +74,19 @@ public class ApplicationContextBuilder {
 
         if (postInitBySpring) {
             return (T) beanFactory.initializeBean(bean, "*anyName");
-        } else {
-            if (bean instanceof ApplicationContextAware) {
-                ((ApplicationContextAware) bean).setApplicationContext(context);
-            }
-            if (bean instanceof InitializingBean) {
-                try {
-                    ((InitializingBean) bean).afterPropertiesSet();
-                } catch (RuntimeException e) {
-                    throw e;
-                } catch (Exception e) {
-                    throw new RuntimeException(e.getMessage(), e);
-                }
-            }
         }
+
+        if (bean instanceof ApplicationContextAware)
+            ((ApplicationContextAware) bean).setApplicationContext(context);
+
+        if (bean instanceof InitializingBean)
+            try {
+                ((InitializingBean) bean).afterPropertiesSet();
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
 
         return bean;
     }
