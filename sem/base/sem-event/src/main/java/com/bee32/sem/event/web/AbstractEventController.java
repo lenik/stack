@@ -51,10 +51,11 @@ public abstract class AbstractEventController<E extends Event, Dto extends Abstr
         event.setCategory("");
         event.setPriority(0);
         event.setState(0);
-        // event.setStatus(SEMEventSamples.UNKNOWN);
+        event.setStatus(new EventStatusDto());
         event.setSubject("");
         event.setMessage("");
         event.setBeginTime(new Date());
+        event.setActor(new UserDto());
     }
 
     protected void fillEntity(E entity, Dto dto) {

@@ -45,7 +45,7 @@
             <tr>
                 <td align="right">状态 :</td>
                 <td>
-                    <h:selectOneMenu id="statusId" value="#{it.statusId}">
+                    <h:selectOneMenu id="statusId" value="#{it.status.id}">
                         <c:forEach var="status" items="${statusList}">
                             <f:selectItem itemValue="${status.id}" itemLabel="${status.name}" />
                         </c:forEach>
@@ -55,7 +55,7 @@
             <tr>
                 <td align="right">行为主体 :</td>
                 <td>
-                    <h:selectOneMenu id="actorId" value="#{it.actorId}">
+                    <h:selectOneMenu id="actorId" value="#{it.actor.id}">
                         <c:forEach var="user" items="${userList}">
                             <f:selectItem itemValue="${user.id}" itemLabel="${user.displayName}" />
                         </c:forEach>
