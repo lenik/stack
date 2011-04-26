@@ -1,9 +1,12 @@
 package com.bee32.sem.process.verify.builtin.web;
 
-import javax.free.NotImplementedException;
+import javax.free.IVariantLookupMap;
+import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
+import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.Level;
 
 public class LevelDto
@@ -12,8 +15,7 @@ public class LevelDto
     private static final long serialVersionUID = 1L;
 
     private long limit;
-    private int targetPolicyId;
-    private String targetPolicyName;
+    private VerifyPolicyDto targetPolicy;
 
     public LevelDto() {
         super();
@@ -21,6 +23,25 @@ public class LevelDto
 
     public LevelDto(Level source) {
         super(source);
+    }
+
+    @Override
+    protected void _marshal(Level source) {
+        limit = source.getLimit();
+        targetPolicy = new VerifyPolicyDto(source.getTargetPolicy());
+    }
+
+    @Override
+    protected void _unmarshalTo(IUnmarshalContext context, Level target) {
+        target.setLimit(limit);
+
+        with(context, target) //
+                .unmarshal(targetPolicyProperty, targetPolicy);
+    }
+
+    @Override
+    protected void _parse(IVariantLookupMap<String> map)
+            throws ParseException {
     }
 
     public long getLimit() {
@@ -31,34 +52,38 @@ public class LevelDto
         this.limit = limit;
     }
 
-    public int getTargetPolicyId() {
-        return targetPolicyId;
+    public VerifyPolicyDto getTargetPolicy() {
+        return targetPolicy;
     }
 
-    public void setTargetPolicyId(int targetPolicyId) {
-        this.targetPolicyId = targetPolicyId;
+    public void setTargetPolicy(VerifyPolicyDto targetPolicy) {
+        this.targetPolicy = targetPolicy;
+    }
+
+    public Integer getTargetPolicyId() {
+        return id(targetPolicy);
     }
 
     public String getTargetPolicyName() {
-        return targetPolicyName;
+        if (targetPolicy == null)
+            return null;
+        else
+            return targetPolicy.getName();
     }
 
-    public void setTargetPolicyName(String targetPolicyName) {
-        this.targetPolicyName = targetPolicyName;
-    }
+    static final PropertyAccessor<Level, VerifyPolicy<?>> targetPolicyProperty = new PropertyAccessor<Level, VerifyPolicy<?>>(
+            VerifyPolicy.class) {
 
-    @Override
-    protected void _marshal(Level source) {
-        limit = source.getLimit();
-        targetPolicyId = source.getTargetPolicy().getId();
-        targetPolicyName = source.getTargetPolicy().getName();
-    }
+        @Override
+        public VerifyPolicy<?> get(Level entity) {
+            return entity.getTargetPolicy();
+        }
 
-    @Override
-    protected void _unmarshalTo(IUnmarshalContext context, Level target) {
-        target.setLimit(limit);
-        // target.setTargetPolicy(verifyPolicy)
-        throw new NotImplementedException();
-    }
+        @Override
+        public void set(Level entity, VerifyPolicy<?> targetPolicy) {
+            entity.setTargetPolicy(targetPolicy);
+        }
+
+    };
 
 }

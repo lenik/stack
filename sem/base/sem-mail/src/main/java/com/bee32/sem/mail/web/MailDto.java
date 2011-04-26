@@ -99,9 +99,8 @@ public class MailDto
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
-        super.parse(map);
 
         String _type = map.getString("type");
         type = MailType.valueOf(_type);

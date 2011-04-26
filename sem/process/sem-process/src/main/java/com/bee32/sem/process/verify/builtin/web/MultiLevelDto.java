@@ -94,11 +94,11 @@ public class MultiLevelDto
         target.setDescription(description);
 
         if (selection.contains(LEVELS))
-            target.setLevels(LevelDto.unmarshalList(levels));
+            target.setLevels(LevelDto.unmarshalList(context, levels));
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
 
         if (map.containsKey("id") && !map.getString("id").isEmpty())
@@ -114,14 +114,15 @@ public class MultiLevelDto
                 for (String levelStr : levelStrs) {
                     int comma = levelStr.indexOf(',');
                     String _limit = levelStr.substring(0, comma);
-                    String _policy = levelStr.substring(comma + 1);
+                    String _policyId = levelStr.substring(comma + 1);
 
                     long limit = Long.parseLong(_limit);
-                    int policy = Integer.parseInt(_policy);
+                    int policyId = Integer.parseInt(_policyId);
+                    VerifyPolicyDto policyRef = new VerifyPolicyDto().ref(policyId);
 
                     LevelDto level = new LevelDto();
                     level.setLimit(limit);
-                    level.setTargetPolicyId(policy);
+                    level.setTargetPolicy(policyRef);
 
                     levels.add(level);
                 }

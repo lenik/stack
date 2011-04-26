@@ -64,9 +64,8 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
-        super.parse(map);
 
         String _verifierId = map.getString("verifierId");
         if (_verifierId == null)

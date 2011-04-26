@@ -71,9 +71,8 @@ public class MailFilterDto
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
-        super.parse(map);
 
         name = map.getString("name");
         description = map.getString("description");

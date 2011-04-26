@@ -103,9 +103,8 @@ public abstract class AbstractEventDto<E extends Event>
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
-        super.parse(map);
 
         category = map.getString("category");
         priority = map.getInt("priority");

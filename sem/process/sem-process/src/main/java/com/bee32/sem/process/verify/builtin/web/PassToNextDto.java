@@ -78,11 +78,11 @@ public class PassToNextDto
         target.setDescription(description);
 
         if (selection.contains(SEQUENCES))
-            target.setSequences(unmarshalList(sequences));
+            target.setSequences(unmarshalList(context, sequences));
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
         name = map.getString("name");
         description = map.getString("description");

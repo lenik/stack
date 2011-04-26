@@ -1,5 +1,9 @@
 package com.bee32.icsf.principal.dto;
 
+import javax.free.IVariantLookupMap;
+import javax.free.ParseException;
+import javax.free.TypeConvertException;
+
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
@@ -34,6 +38,28 @@ public class AbstractPrincipalDto<E extends Principal>
         super(source, selection);
     }
 
+    @Override
+    protected void _marshal(E source) {
+        name = source.getName();
+        fullName = source.getFullName();
+        description = source.getDescription();
+    }
+
+    @Override
+    protected void _unmarshalTo(IUnmarshalContext context, E target) {
+        target.setName(name);
+        target.setFullName(fullName);
+        target.setDescription(description);
+    }
+
+    @Override
+    public void _parse(IVariantLookupMap<String> map)
+            throws ParseException, TypeConvertException {
+        this.name = map.getString("name");
+        this.fullName = map.getString("fullName");
+        this.description = map.getString("description");
+    }
+
     public String getName() {
         return name;
     }
@@ -60,20 +86,6 @@ public class AbstractPrincipalDto<E extends Principal>
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    @Override
-    protected void _marshal(E source) {
-        name = source.getName();
-        fullName = source.getFullName();
-        description = source.getDescription();
-    }
-
-    @Override
-    protected void _unmarshalTo(IUnmarshalContext context, E target) {
-        target.setName(name);
-        target.setFullName(fullName);
-        target.setDescription(description);
     }
 
 }

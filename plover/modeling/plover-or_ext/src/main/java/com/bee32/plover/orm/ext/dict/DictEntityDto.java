@@ -44,9 +44,8 @@ public class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
-        super.parse(map);
         name = map.getString("name");
         displayName = map.getString("displayName");
         description = map.getString("description");

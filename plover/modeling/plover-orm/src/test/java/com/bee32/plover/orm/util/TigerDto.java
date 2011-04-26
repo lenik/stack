@@ -1,5 +1,8 @@
 package com.bee32.plover.orm.util;
 
+import javax.free.IVariantLookupMap;
+import javax.free.ParseException;
+
 import com.bee32.plover.orm.feaCat.Tiger;
 
 public class TigerDto
@@ -17,6 +20,25 @@ public class TigerDto
 
     public TigerDto(Tiger entity) {
         super(entity);
+    }
+
+    @Override
+    protected void _marshal(Tiger entity) {
+        this.name = entity.getName();
+        this.color = entity.getColor();
+        this.power = entity.getPower();
+    }
+
+    @Override
+    protected void _unmarshalTo(IUnmarshalContext context, Tiger entity) {
+        entity.setName(name);
+        entity.setColor(color);
+        entity.setPower(power);
+    }
+
+    @Override
+    protected void _parse(IVariantLookupMap<String> map)
+            throws ParseException {
     }
 
     public String getName() {
@@ -41,20 +63,6 @@ public class TigerDto
 
     public void setPower(int power) {
         this.power = power;
-    }
-
-    @Override
-    protected void _marshal(Tiger entity) {
-        this.name = entity.getName();
-        this.color = entity.getColor();
-        this.power = entity.getPower();
-    }
-
-    @Override
-    protected void _unmarshalTo(IUnmarshalContext context, Tiger entity) {
-        entity.setName(name);
-        entity.setColor(color);
-        entity.setPower(power);
     }
 
 }

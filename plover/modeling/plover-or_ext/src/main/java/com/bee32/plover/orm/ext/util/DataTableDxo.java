@@ -184,7 +184,7 @@ public class DataTableDxo
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    public void _parse(IVariantLookupMap<String> map)
             throws ParseException {
         displayStart = map.getInt("iDisplayStart");
         displayLength = map.getInt("iDisplayLength");

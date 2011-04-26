@@ -33,9 +33,9 @@ public class AttackMissionDto
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
-        super.parse(map);
+        super._parse(map);
         target = map.getString("target");
     }
 

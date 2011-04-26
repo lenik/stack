@@ -71,9 +71,8 @@ public class PassStepDto
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
-        super.parse(map);
 
         optional = map.getBoolean("optional");
         order = map.getInt("order");

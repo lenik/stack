@@ -65,9 +65,8 @@ public class MailBoxDto
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
-        super.parse(map);
 
         priority = map.getByte("priority");
         order = map.getInt("order");

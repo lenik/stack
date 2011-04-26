@@ -22,7 +22,7 @@ public abstract class DataExchangeObject<T>
     }
 
     @Override
-    public abstract void parse(IVariantLookupMap<String> map)
+    public abstract void _parse(IVariantLookupMap<String> map)
             throws ParseException;
 
     @Override

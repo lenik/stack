@@ -64,13 +64,80 @@ public class MailCopyDto
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
-        super.parse(map);
 
         ownerType = MailOwnerType.valueOf(map.getString("ownerType"));
 
         flags.bits = map.getInt("flags");
+    }
+
+    public MailDto getMail() {
+        return mail;
+    }
+
+    public void setMail(MailDto mail) {
+        this.mail = mail;
+    }
+
+    public UserDto getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserDto owner) {
+        this.owner = owner;
+    }
+
+    public MailOwnerType getOwnerType() {
+        return ownerType;
+    }
+
+    public void setOwnerType(MailOwnerType ownerType) {
+        this.ownerType = ownerType;
+    }
+
+    public MailBoxDto getMailBox() {
+        return mailBox;
+    }
+
+    public void setMailBox(MailBoxDto mailBox) {
+        this.mailBox = mailBox;
+    }
+
+    public Date getSentDate() {
+        return sentDate;
+    }
+
+    public void setSentDate(Date sentDate) {
+        this.sentDate = sentDate;
+    }
+
+    public String getSendError() {
+        return sendError;
+    }
+
+    public void setSendError(String sendError) {
+        this.sendError = sendError;
+    }
+
+    public Date getReceivedDate() {
+        return receivedDate;
+    }
+
+    public void setReceivedDate(Date receivedDate) {
+        this.receivedDate = receivedDate;
+    }
+
+    public Date getReceiptDate() {
+        return receiptDate;
+    }
+
+    public void setReceiptDate(Date receiptDate) {
+        this.receiptDate = receiptDate;
+    }
+
+    public MailFlags getFlags() {
+        return flags;
     }
 
 }

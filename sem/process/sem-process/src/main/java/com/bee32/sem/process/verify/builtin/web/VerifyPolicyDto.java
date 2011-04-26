@@ -24,6 +24,25 @@ public class VerifyPolicyDto
         super(source);
     }
 
+    @Override
+    protected void _marshal(VerifyPolicy<?> source) {
+        name = source.getName();
+        description = source.getDescription();
+    }
+
+    @Override
+    protected void _unmarshalTo(IUnmarshalContext context, VerifyPolicy<?> target) {
+        target.setName(name);
+        target.setDescription(description);
+    }
+
+    @Override
+    public void _parse(IVariantLookupMap<String> map)
+            throws ParseException, TypeConvertException {
+        name = map.getString("name");
+        description = map.getString("description");
+    }
+
     public String getName() {
         return name;
     }
@@ -38,26 +57,6 @@ public class VerifyPolicyDto
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    @Override
-    protected void _marshal(VerifyPolicy<?> source) {
-        name = source.getName();
-        description = source.getDescription();
-    }
-
-    @Override
-    protected void _unmarshalTo(IUnmarshalContext context, VerifyPolicy<?> target) {
-        target.setName(name);
-        target.setDescription(description);
-    }
-
-    @Override
-    public void parse(IVariantLookupMap<String> map)
-            throws ParseException, TypeConvertException {
-        super.parse(map);
-        name = map.getString("name");
-        description = map.getString("description");
     }
 
 }
