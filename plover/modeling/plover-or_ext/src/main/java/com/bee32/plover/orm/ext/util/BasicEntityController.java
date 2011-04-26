@@ -11,18 +11,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.ajax.JsonUtil;
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.DTOs;
+import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 
 public abstract class BasicEntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
         extends EntityController<E, K, Dto> {
 
-    Integer dtoSelection;
-
-    protected void setDtoSelection(Integer dtoSelection) {
-        this.dtoSelection = dtoSelection;
-    }
+    protected Integer _dtoSelection;
+    protected boolean _createOTF;
 
     @Override
     protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp)
@@ -30,11 +30,20 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
         String _id = req.getParameter("id");
         K id = parseId(_id);
 
-        E entity = dataManager.fetch(getEntityType(), id);
+        E entity = dataManager.get(getEntityType(), id);
+        if (entity == null)
+            return Javascripts.alertAndBack("查阅的对象不存在。" //
+                    + ClassUtil.getDisplayName(getEntityType()) + " [" + id + "]" //
+            ).dump(req, resp);
 
-        Dto dto = newDto(dtoSelection);
+        Dto dto = newDto(_dtoSelection);
+        dto.marshal(entity);
 
-        return it(dto.marshal(entity));
+        ViewData view = new ViewData();
+        view.entity = entity;
+        view.dto = dto;
+        view.put("it", dto);
+        return view;
     }
 
     protected List<? extends E> __list() {
@@ -49,7 +58,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
         List<? extends E> entityList = __list();
 
-        Integer selection = dtoSelection;
+        Integer selection = _dtoSelection;
         List<? extends Dto> list = DTOs.marshalList(getTransferType(), //
                 selection == null ? null : selection.intValue(), entityList);
 
@@ -74,21 +83,44 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
         boolean create = view.isMethod("create");
 
-        view.put("_create", create);
-        view.put("_verb", create ? "Create" : "Modify");
+        Dto dto = null;
 
-        Dto dto;
-        if (create) {
-            dto = newDto(dtoSelection);
-            fillTemplate(dto);
-        } else {
+        E entity = null;
+        K id = null;
+
+        if (!create) {
             String _id = req.getParameter("id");
-            K id = parseId(_id);
+            id = parseId(_id);
 
-            E entity = dataManager.fetch(getEntityType(), id);
-            dto = newDto(dtoSelection).marshal(entity);
+            entity = dataManager.get(getEntityType(), id);
+
+            if (entity == null) {
+                if (!_createOTF)
+                    return Javascripts.alertAndBack("编辑的对象不存在。" + hint(entity, id)).dump(req, resp);
+
+                create = true;
+
+            } else
+                dto = newDto(_dtoSelection).marshal(entity);
         }
 
+        if (create) {
+            entity = newEntity();
+
+            if (id != null)
+                EntityAccessor.setId(entity, id);
+
+            dto = newDto(_dtoSelection).marshal(entity);
+
+            fillTemplate(dto);
+        }
+
+        String _VERB = create ? "CREATE" : "MODIFY";
+        view.put("_create", create);
+        view.put("_verb", view.V.get(_VERB));
+
+        view.entity = entity;
+        view.dto = dto;
         view.put("it", dto);
         return view;
     }
@@ -99,31 +131,52 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
         boolean create = view.isMethod("create");
 
-        Dto dto = newDto(dtoSelection);
+        Dto dto = newDto(_dtoSelection);
         dto.parse(req);
 
-        E entity;
-        if (create) {
-            entity = newEntity();
-        } else {
-            K id = dto.getId();
+        E entity = null;
+        K id = null;
+
+        if (!create) {
+            id = dto.getId();
             if (id == null)
                 throw new ServletException("id isn't specified");
 
             entity = dataManager.get(getEntityType(), id);
-            if (entity == null)
-                throw new IllegalStateException("No allow list whose id=" + id);
+            if (entity == null) {
+                if (!_createOTF)
+                    return Javascripts.alertAndBack("对象尚未创建，无法保存。" + hint(entity, id) + "\n\n" //
+                            + "这大概是有人在你编辑该对象的时候进行了删除操作引起的。\n" //
+                            + "点击确定返回上一页。" //
+                            + ClassUtil.getDisplayName(getEntityType()) + " [" + id + "]" //
+                    ).dump(req, resp);
 
-            Integer requestVersion = dto.getVersion();
-            if (requestVersion != null && requestVersion != entity.getVersion()) {
-                throw new IllegalStateException("Version obsoleted");
+                create = true;
             }
+
+            else {
+                Integer requestVersion = dto.getVersion();
+                if (requestVersion != null && requestVersion != entity.getVersion())
+                    return Javascripts.alertAndBack("对象版本失效。" + hint(entity, id) + "\n\n" //
+                            + "发生这个错误的原因是有人在你之前提交了这个对象的另一个版本，也可能是系统内部使这个对象的状态发生了改变。\n" //
+                            + "点击确定返回上一页。" //
+                    ).dump(req, resp);
+            }
+        }
+
+        if (create) {
+            entity = newEntity();
+
+            if (id != null)
+                EntityAccessor.setId(entity, id);
         }
 
         fillEntity(entity, dto);
 
         dataManager.saveOrUpdate(entity);
 
+        view.entity = entity;
+        view.dto = dto;
         return view;
     }
 
@@ -142,7 +195,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
      *            The incoming dto.
      */
     protected void fillEntity(E entity, Dto dto) {
-        dto.unmarshalTo(entity);
+        dto.unmarshalTo(this, entity);
     }
 
 }
