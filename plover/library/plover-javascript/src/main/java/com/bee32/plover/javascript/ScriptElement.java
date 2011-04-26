@@ -88,11 +88,24 @@ public abstract class ScriptElement
         formatFooter(req, out);
     }
 
-    public void dump(HttpServletRequest req, HttpServletResponse resp)
+    /**
+     * Dump this element to response and quit.
+     *
+     * @param req
+     *            The servlet request object from which the location context is resolved.
+     * @param resp
+     *            The response where this element will be dumped.
+     * @return Always return <code>null</code>.
+     */
+    public <T> T dump(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
+        resp.setCharacterEncoding("utf-8");
+
         PrintWriter out = resp.getWriter();
         IndentedOutImpl _out = new IndentedOutImpl(new WriterPrintOut(out));
+
         format(req, _out);
+        return null;
     }
 
     @Override
