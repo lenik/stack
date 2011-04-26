@@ -1,5 +1,8 @@
 package com.bee32.plover.orm.ext.typepref;
 
+import javax.persistence.Transient;
+
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.orm.util.IUnmarshalContext;
@@ -11,7 +14,6 @@ public abstract class TypePrefDto<E extends TypePrefEntity>
     private static final long serialVersionUID = 1L;
 
     Class<?> type;
-    String displayName;
 
     public TypePrefDto() {
         super();
@@ -32,7 +34,6 @@ public abstract class TypePrefDto<E extends TypePrefEntity>
     protected void __marshal(E source) {
         super.__marshal(source);
         type = source.getType();
-        displayName = source.getDisplayName();
     }
 
     protected void __unmarshalTo(IUnmarshalContext context, E target) {
@@ -43,8 +44,11 @@ public abstract class TypePrefDto<E extends TypePrefEntity>
         return type;
     }
 
+    @Transient
     public String getDisplayName() {
-        return displayName;
+        if (type == null)
+            return null;
+        return ClassUtil.getDisplayName(type);
     }
 
     public String getTypeName() {
