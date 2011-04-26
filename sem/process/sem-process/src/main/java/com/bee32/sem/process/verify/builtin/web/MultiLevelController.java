@@ -35,7 +35,7 @@ public class MultiLevelController
     VerifyPolicyDao verifyPolicyDao;
 
     public MultiLevelController() {
-        setDtoSelection(MultiLevelDto.LEVELS);
+        _dtoSelection = MultiLevelDto.LEVELS;
     }
 
     @Override

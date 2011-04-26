@@ -29,7 +29,7 @@ public class PassToNextController
     PrincipalDao principalDao;
 
     public PassToNextController() {
-        setDtoSelection(PassToNextDto.SEQUENCES);
+        _dtoSelection = PassToNextDto.SEQUENCES;
     }
 
     @Override

@@ -37,7 +37,7 @@ public class AllowListController
     UserDao userDao;
 
     public AllowListController() {
-        setDtoSelection(AllowListDto.RESPONSIBLES);
+        _dtoSelection = AllowListDto.RESPONSIBLES;
     }
 
     @Override
