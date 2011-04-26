@@ -24,10 +24,15 @@ import javax.free.TypeConvertException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class DataTransferObject<T, C>
         implements IDataTransferObject<T, C>, Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    static Logger logger = LoggerFactory.getLogger(DataTransferObject.class);
 
     protected Class<? extends T> sourceType;
 
@@ -75,7 +80,7 @@ public abstract class DataTransferObject<T, C>
         this.sourceType = sourceType;
     }
 
-    public boolean _isFilled() {
+    public final boolean _isFilled() {
         return filled;
     }
 
@@ -119,8 +124,10 @@ public abstract class DataTransferObject<T, C>
     }
 
     public final <D extends DataTransferObject<T, ?>> D marshal(T source) {
-        if (source == null)
+        if (source == null) {
+            filled = false;
             return null;
+        }
 
         // Do the real marshal work.
         // logger.debug("marshal begin");
@@ -162,6 +169,13 @@ public abstract class DataTransferObject<T, C>
             return dto.unmarshal();
     }
 
+    public static <D extends DataTransferObject<T, C>, T, C> T unmarshal(C context, D dto) {
+        if (dto == null)
+            return null;
+        else
+            return dto.unmarshal(context);
+    }
+
     @Override
     public final T unmarshal() {
         return unmarshal((C) null);
@@ -173,8 +187,9 @@ public abstract class DataTransferObject<T, C>
     }
 
     @Override
-    public final T unmarshal(C context) {
+    public T unmarshal(C context) {
         T target;
+
         try {
             target = sourceType.newInstance();
         } catch (ReflectiveOperationException e) {
@@ -187,6 +202,12 @@ public abstract class DataTransferObject<T, C>
 
     @Override
     public final void unmarshalTo(C context, T target) {
+        if (!filled) {
+            logger.warn("Unmarshal is ignored: unmarshalTo() is called but the DTO is not filled. "
+                    + "You should use unmarshal() instead, to unmarshal non-filled DTOs.");
+            return;
+        }
+
         if (context == null)
             context = _getDefaultContext();
 
@@ -256,8 +277,17 @@ public abstract class DataTransferObject<T, C>
         } catch (TypeConvertException e) {
             throw new ParseException(e.getMessage(), e);
         }
+    }
 
+    public final void parse(IVariantLookupMap<String> map)
+            throws ParseException {
+        __parse(map);
+        _parse(map);
         filled = true;
+    }
+
+    protected void __parse(IVariantLookupMap<String> map)
+            throws ParseException {
     }
 
     /**
@@ -268,9 +298,8 @@ public abstract class DataTransferObject<T, C>
      * @throws ParseException
      *             Other parse exception caused by user implementation.
      */
-    public void parse(IVariantLookupMap<String> map)
-            throws ParseException, TypeConvertException {
-    }
+    protected abstract void _parse(IVariantLookupMap<String> map)
+            throws ParseException;
 
     public Map<String, Object> exportMap() {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -440,20 +469,26 @@ public abstract class DataTransferObject<T, C>
         return dtoList;
     }
 
+    /**
+     * It's not append, but assign to the collection.
+     */
     public static <Coll extends Collection<T>, D extends DataTransferObject<T, C>, T, C> //
     /*    */Coll unmarshal(C context, Coll collection, Iterable<? extends D> dtoList) {
 
-        if (dtoList == null)
-            return null;
+        if (collection == null)
+            throw new NullPointerException("collection");
 
-        for (DataTransferObject<T, C> dto : dtoList) {
-            T source;
-            if (dto == null)
-                source = null;
-            else
-                source = dto.unmarshal(context);
-            collection.add(source);
-        }
+        collection.clear();
+
+        if (dtoList != null)
+            for (D dto : dtoList) {
+                T source;
+                if (dto == null)
+                    source = null;
+                else
+                    source = dto.unmarshal(context);
+                collection.add(source);
+            }
 
         return collection;
     }
