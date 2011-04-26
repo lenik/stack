@@ -122,8 +122,12 @@ public class MultiLevel
 
     @Override
     public Collection<? extends Principal> getDeclaredResponsibles(IMultiLevelContext context) {
-        long limit = context.getLongValue();
-        return getResponsiblesWithinLimit(limit);
+        long longValue = 0;
+
+        if (context != null)
+            longValue = context.getLongValue();
+
+        return getResponsiblesWithinLimit(longValue);
     }
 
     public Collection<? extends Principal> getResponsiblesWithinLimit(long limit) {

@@ -62,9 +62,14 @@ public class PassToNext
      */
     @Override
     public Collection<? extends Principal> getDeclaredResponsibles(IPassEvents context) {
-        int position = context.getPosition();
+        int position = 0;
+
+        if (context != null)
+            position = context.getPosition();
+
         if (sequences == null)
             return null;
+
         throw new NotImplementedException();
     }
 
