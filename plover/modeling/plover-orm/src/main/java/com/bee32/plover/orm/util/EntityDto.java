@@ -1,9 +1,15 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.free.IVariantLookupMap;
+import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 import javax.servlet.http.HttpServletRequest;
@@ -127,6 +133,94 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         return IUnmarshalContext.NULL;
     }
 
+    /**
+     * Unmarshal a property DTO into the corresponding property of an entity in a smart way.
+     * <p>
+     * The contents in the given property DTO may be fully unmarshalled to a new created entity
+     * bean, or unmarshalled to be reference to the existing entity, or between. The behaviour is
+     * determined on the two states of the DTO object: the <i>filled</i> state, and the <i>id</i>
+     * state.
+     * <p>
+     *
+     * Transfer table:
+     * <table border="1">
+     * <tr>
+     * <th>DTO.filled</th>
+     * <th>DTO.id</th>
+     * <th>Meaning</th>
+     * <th>Result</th>
+     * </tr>
+     * <tr>
+     * <td align="center">not-filled</td>
+     * <td align="center"><code>null</code></td>
+     * <td align="center">Set to null</td>
+     * <td align="left"><code>null</code></td>
+     * </tr>
+     * <tr>
+     * <td align="center">not-filled</td>
+     * <td align="center">id</td>
+     * <td align="center">Reference</td>
+     * <td align="left">ENTITY = reference&lt;dto.id&gt;</td>
+     * </tr>
+     * <tr>
+     * <td align="center">filled</td>
+     * <td align="center"><code>null</code></td>
+     * <td align="center">Full Reconstruction</td>
+     * <td align="left">ENTITY = unmarshal()</td>
+     * </tr>
+     * <tr>
+     * <td align="center">filled</td>
+     * <td align="center">id</td>
+     * <td align="center">Partial Modification</td>
+     * <td align="left">unmarshalTo(ENTITY = reference&lt;dto.id&gt;)</td>
+     * </tr>
+     * </table>
+     *
+     * The DTO is only filled if:
+     * <ul>
+     * <li>It has been {@link DataTransferObject#marshal(Object) marhsalled} from an entity bean.
+     * <li>It has {@link DataTransferObject#parse(Map) parsed from a Map}, or
+     * {@link DataTransferObject#parse(HttpServletRequest) from an HttpServletRequest}.</li>
+     *
+     * You can always clear the filled state by reference the DTO to a specific id, by calling the
+     * {@link EntityDto#ref(Entity) ref} method.
+     *
+     * @param property
+     *            The property accessor which is used to get the old property value, and set the
+     *            property to a new value.
+     * @param dto
+     *            The data transfer object which will be unmarshalled into the property of the
+     *            context target bean, using the specified property accessor.
+     * @return This {@link WithContext} object, for chaining method calls purpose.
+     * @throws DataAccessException
+     *             If data access exception happened with calls into the {@link IUnmarshalContext}.
+     */
+    @Override
+    public final E unmarshal(IUnmarshalContext context) {
+        Class<? extends E> entityType = getEntityType();
+        if (filled) {
+            if (id == null) {
+                E newEntity;
+                try {
+                    newEntity = entityType.newInstance();
+                } catch (ReflectiveOperationException e) {
+                    throw new IllegalUsageException("Failed to instantiate source bean " + sourceType.getName(), e);
+                }
+                unmarshalTo(context, newEntity);
+                return newEntity;
+            } else {
+                E existing = context.loadEntity(entityType, id);
+                unmarshalTo(context, existing);
+                return existing;
+            }
+        } else {
+            if (id == null)
+                return null;
+            else
+                return context.loadEntity(entityType, id);
+        }
+    }
+
     @Override
     protected void __marshal(E source) {
         id = source.getId();
@@ -143,9 +237,9 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    public void parse(IVariantLookupMap<String> map)
+    protected void __parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
-        super.parse(map);
+        super.__parse(map);
 
         String _id = map.getString("id");
         if (_id == null || _id.isEmpty()) {
@@ -191,6 +285,26 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             return null;
         else
             return dto.getId();
+    }
+
+    protected static <D extends EntityDto<?, K>, K extends Serializable> List<K> id(Iterable<? extends D> dtos) {
+        List<K> idList = new ArrayList<K>();
+
+        if (dtos != null)
+            for (D dto : dtos)
+                idList.add(id(dto));
+
+        return idList;
+    }
+
+    protected static <E extends IEntity<K>, K extends Serializable> List<K> idOfEntities(Iterable<? extends E> entities) {
+        List<K> idList = new ArrayList<K>();
+
+        if (entities != null)
+            for (E entity : entities)
+                idList.add(id(entity));
+
+        return idList;
     }
 
     /**
@@ -280,7 +394,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             if (id == null)
                 return dto.unmarshal(context); // unmarshalContext
             else {
-                Ei existing = context.loadEntity(entityType, id);
+                Ei existing = oldEntity; // context.loadEntity(entityType, id);
                 dto.unmarshalTo(context, existing);
                 return existing;
             }
@@ -477,6 +591,73 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     public <Et extends Entity<?>> WithContext<Et> with(IUnmarshalContext context, Et target) {
         return new WithContext<Et>(context, target);
+    }
+
+    /**
+     * It's not append, but assign to the collection.
+     */
+    static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    /*    */Coll unmarshalCollection(IUnmarshalContext context, Coll collection, Iterable<? extends D> dtoList) {
+
+        if (collection == null)
+            throw new NullPointerException("collection");
+
+        List<E> addList = null;
+        List<E> deleteList = null;
+
+        if (dtoList != null) {
+            addList = new ArrayList<E>();
+            deleteList = new ArrayList<E>();
+
+            for (D dto : dtoList) {
+                E entity;
+                if (dto == null)
+                    entity = null;
+                else
+                    entity = dto.unmarshal(context);
+            }
+        }
+
+        if (deleteList != null)
+            collection.removeAll(deleteList);
+
+        if (addList != null)
+            collection.addAll(addList);
+
+        return collection;
+    }
+
+    public static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    /*    */Coll unmarshal(Coll collection, Iterable<? extends D> dtoList) {
+        return unmarshalCollection((IUnmarshalContext) null, collection, dtoList);
+    }
+
+    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    /*    */List<E> unmarshal(IUnmarshalContext context, List<E> list, Iterable<? extends D> dtoList) {
+        if (list == null)
+            list = new ArrayList<E>();
+        return unmarshalCollection(context, list, dtoList);
+    }
+
+    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    /*    */List<E> unmarshal(List<E> list, Iterable<? extends D> dtoList) {
+        if (list == null)
+            list = new ArrayList<E>();
+        return unmarshalCollection((IUnmarshalContext) null, list, dtoList);
+    }
+
+    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    /*    */Set<E> unmarshal(IUnmarshalContext context, Set<E> set, Iterable<? extends D> dtoList) {
+        if (set == null)
+            set = new HashSet<E>();
+        return unmarshalCollection(context, set, dtoList);
+    }
+
+    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    /*    */Set<E> unmarshal(Set<E> set, Iterable<? extends D> dtoList) {
+        if (set == null)
+            set = new HashSet<E>();
+        return unmarshalCollection((IUnmarshalContext) null, set, dtoList);
     }
 
 }
