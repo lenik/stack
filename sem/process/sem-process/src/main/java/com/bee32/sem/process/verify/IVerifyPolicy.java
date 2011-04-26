@@ -1,18 +1,15 @@
 package com.bee32.sem.process.verify;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.model.IModel;
 
 /**
  * 审核策略用于检验业务实体是否被审核，但不对业务的具体审核行为作出规定。
  *
  * 即策略用于“只读”、 “判断”的目的；而不是对业务执行”审核“动作、并形成审核结果的”写入“目的。
  */
-public interface IVerifyPolicy<C extends IVerifyContext>
-        extends IModel, Serializable {
+public interface IVerifyPolicy<C extends IVerifyContext> {
 
     /**
      * 获取必要的上下文类型。
