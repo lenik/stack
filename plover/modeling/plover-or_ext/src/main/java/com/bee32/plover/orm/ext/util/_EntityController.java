@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
@@ -56,8 +57,23 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
         this.prefix = prefix;
     }
 
+    /**
+     * Return the persistent instance of the given entity class with the given identifier, throwing
+     * an exception if not found.
+     *
+     * @param entityClass
+     *            a persistent class
+     * @param id
+     *            the identifier of the persistent instance
+     * @return the persistent instance
+     * @throws org.springframework.orm.ObjectRetrievalFailureException
+     *             if not found
+     * @throws org.springframework.dao.DataAccessException
+     *             in case of Hibernate errors
+     */
     @Override
-    public <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id) {
+    public <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id)
+            throws DataAccessException {
         return dataManager.fetch(entityType, id);
     }
 
