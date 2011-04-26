@@ -4,7 +4,9 @@ import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dto.PrincipalDto;
+import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.builtin.PassStep;
@@ -65,7 +67,7 @@ public class PassStepDto
         target.setOrder(order);
 
         with(context, target)//
-                .unmarshal(PassStep.responsibleProperty, responsible);
+                .unmarshal(responsibleProperty, responsible);
     }
 
     @Override
@@ -78,5 +80,20 @@ public class PassStepDto
 
         responsible = new PrincipalDto().ref(map.getLong("responsibleId"));
     }
+
+    static final PropertyAccessor<PassStep, Principal> responsibleProperty = new PropertyAccessor<PassStep, Principal>(
+            Principal.class) {
+
+        @Override
+        public Principal get(PassStep entity) {
+            return entity.getResponsible();
+        }
+
+        @Override
+        public void set(PassStep entity, Principal responsible) {
+            entity.setResponsible(responsible);
+        }
+
+    };
 
 }
