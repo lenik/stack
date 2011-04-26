@@ -9,8 +9,10 @@ import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
+import com.bee32.sem.process.verify.builtin.Level;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 
 public class MultiLevelDto
@@ -39,26 +41,6 @@ public class MultiLevelDto
 
     public MultiLevelDto(MultiLevel source, int selection) {
         super(source, selection);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<LevelDto> getLevels() {
-        return levels;
     }
 
     /**
@@ -94,15 +76,12 @@ public class MultiLevelDto
         target.setDescription(description);
 
         if (selection.contains(LEVELS))
-            target.setLevels(LevelDto.unmarshalList(context, levels));
+            with(context, target).unmarshalList(levelsProperty, levels);
     }
 
     @Override
     public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
-
-        if (map.containsKey("id") && !map.getString("id").isEmpty())
-            id = map.getInt("id");
 
         name = map.getString("name");
         description = map.getString("description");
@@ -121,12 +100,49 @@ public class MultiLevelDto
                     VerifyPolicyDto policyRef = new VerifyPolicyDto().ref(policyId);
 
                     LevelDto level = new LevelDto();
+                    level.setMultiLevel(new MultiLevelDto().ref(this));
                     level.setLimit(limit);
                     level.setTargetPolicy(policyRef);
+                    level._setFilled(true);
 
                     levels.add(level);
                 }
         }
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<LevelDto> getLevels() {
+        return levels;
+    }
+
+    static final PropertyAccessor<MultiLevel, List<Level>> levelsProperty = new PropertyAccessor<MultiLevel, List<Level>>(
+            List.class) {
+
+        @Override
+        public List<Level> get(MultiLevel entity) {
+            return entity.getLevels();
+        }
+
+        @Override
+        public void set(MultiLevel entity, List<Level> levels) {
+            entity.setLevels(levels);
+        }
+
+    };
 
 }

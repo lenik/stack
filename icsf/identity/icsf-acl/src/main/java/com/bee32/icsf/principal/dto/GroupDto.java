@@ -1,8 +1,12 @@
 package com.bee32.icsf.principal.dto;
 
 import java.util.List;
+import java.util.Set;
 
 import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.User;
+import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class GroupDto
@@ -100,14 +104,61 @@ public class GroupDto
         target.setOwner(UserDto.unmarshal(owner));
         target.setPrimaryRole(RoleDto.unmarshal(primaryRole));
 
+        WithContext<Group> with = with(context, target);
+
         if (selection.contains(GROUPS))
-            target.setDerivedGroups(GroupDto.unmarshalSet(derivedGroups));
+            with.unmarshalSet(derivedGroupsProperty, derivedGroups);
 
         if (selection.contains(ROLES))
-            target.setAssignedRoles(RoleDto.unmarshalSet(assignedRoles));
+            with.unmarshalSet(assignedRolesProperty, assignedRoles);
 
         if (selection.contains(USERS))
-            target.setMemberUsers(UserDto.unmarshalSet(memberUsers));
+            with.unmarshalSet(memberUsersProperty, memberUsers);
     }
+
+    static final PropertyAccessor<Group, Set<Group>> derivedGroupsProperty = new PropertyAccessor<Group, Set<Group>>(
+            Set.class) {
+
+        @Override
+        public Set<Group> get(Group entity) {
+            return entity.getDerivedGroups();
+        }
+
+        @Override
+        public void set(Group entity, Set<Group> derivedGroups) {
+            entity.setDerivedGroups(derivedGroups);
+        }
+
+    };
+
+    static final PropertyAccessor<Group, Set<Role>> assignedRolesProperty = new PropertyAccessor<Group, Set<Role>>(
+            Set.class) {
+
+        @Override
+        public Set<Role> get(Group entity) {
+            return entity.getAssignedRoles();
+        }
+
+        @Override
+        public void set(Group entity, Set<Role> assignedRoles) {
+            entity.setAssignedRoles(assignedRoles);
+        }
+
+    };
+
+    static final PropertyAccessor<Group, Set<User>> memberUsersProperty = new PropertyAccessor<Group, Set<User>>(
+            Set.class) {
+
+        @Override
+        public Set<User> get(Group entity) {
+            return entity.getMemberUsers();
+        }
+
+        @Override
+        public void set(Group entity, Set<User> memberUsers) {
+            entity.setMemberUsers(memberUsers);
+        }
+
+    };
 
 }

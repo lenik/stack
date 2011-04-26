@@ -7,8 +7,10 @@ import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
+import com.bee32.sem.process.verify.builtin.PassStep;
 import com.bee32.sem.process.verify.builtin.PassToNext;
 
 public class PassToNextDto
@@ -78,7 +80,7 @@ public class PassToNextDto
         target.setDescription(description);
 
         if (selection.contains(SEQUENCES))
-            target.setSequences(unmarshalList(context, sequences));
+            with(context, target).unmarshalList(sequencesProperty, sequences);
     }
 
     @Override
@@ -98,5 +100,20 @@ public class PassToNextDto
                 }
         }
     }
+
+    static final PropertyAccessor<PassToNext, List<PassStep>> sequencesProperty = new PropertyAccessor<PassToNext, List<PassStep>>(
+            List.class) {
+
+        @Override
+        public List<PassStep> get(PassToNext entity) {
+            return entity.getSequences();
+        }
+
+        @Override
+        public void set(PassToNext entity, List<PassStep> sequences) {
+            entity.setSequences(sequences);
+        }
+
+    };
 
 }

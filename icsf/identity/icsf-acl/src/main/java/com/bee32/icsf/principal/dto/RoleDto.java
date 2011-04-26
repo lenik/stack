@@ -1,8 +1,12 @@
 package com.bee32.icsf.principal.dto;
 
 import java.util.List;
+import java.util.Set;
 
+import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.User;
+import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class RoleDto
@@ -46,14 +50,60 @@ public class RoleDto
 
         target.setInheritedRole(GroupDto.unmarshal(inheritedRole));
 
+        WithContext<Role> with = with(context, target);
+
         if (selection.contains(ROLES))
-            target.setDerivedRoles(RoleDto.unmarshalSet(derivedRoles));
+            with.unmarshalSet(derivedRolesProperty, derivedRoles);
 
         if (selection.contains(USERS))
-            target.setResponsibleUsers(UserDto.unmarshalSet(responsibleUsers));
+            with.unmarshalSet(responsibleUsersProperty, responsibleUsers);
 
         if (selection.contains(GROUPS))
-            target.setResponsibleGroups(GroupDto.unmarshalSet(responsibleGroups));
+            with.unmarshalSet(responsibleGroupsProperty, responsibleGroups);
     }
+
+    static final PropertyAccessor<Role, Set<Role>> derivedRolesProperty = new PropertyAccessor<Role, Set<Role>>(
+            Set.class) {
+
+        @Override
+        public Set<Role> get(Role entity) {
+            return entity.getDerivedRoles();
+        }
+
+        @Override
+        public void set(Role entity, Set<Role> derivedRoles) {
+            entity.setDerivedRoles(derivedRoles);
+        }
+
+    };
+    static final PropertyAccessor<Role, Set<User>> responsibleUsersProperty = new PropertyAccessor<Role, Set<User>>(
+            Set.class) {
+
+        @Override
+        public Set<User> get(Role entity) {
+            return entity.getResponsibleUsers();
+        }
+
+        @Override
+        public void set(Role entity, Set<User> responsibleUsers) {
+            entity.setResponsibleUsers(responsibleUsers);
+        }
+
+    };
+
+    static final PropertyAccessor<Role, Set<Group>> responsibleGroupsProperty = new PropertyAccessor<Role, Set<Group>>(
+            Set.class) {
+
+        @Override
+        public Set<Group> get(Role entity) {
+            return entity.getResponsibleGroups();
+        }
+
+        @Override
+        public void set(Role entity, Set<Group> responsibleGroups) {
+            entity.setResponsibleGroups(responsibleGroups);
+        }
+
+    };
 
 }

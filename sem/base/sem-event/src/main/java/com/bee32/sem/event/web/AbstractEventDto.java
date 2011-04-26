@@ -3,11 +3,13 @@ package com.bee32.sem.event.web;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.icsf.principal.dto.UserDto;
@@ -98,8 +100,8 @@ public abstract class AbstractEventDto<E extends Event>
                 .unmarshal(actorProperty, actor);
 
         if (selection.contains(OBSERVERS))
-            if (observers != null)
-                target.setObservers(unmarshalSet(context, observers));
+            with(context, target)//
+                    .unmarshalSet(observersProperty, observers);
     }
 
     @Override
@@ -313,6 +315,20 @@ public abstract class AbstractEventDto<E extends Event>
         @Override
         public void set(Event entity, User actor) {
             entity.setActor(actor);
+        }
+
+    };
+
+    final PropertyAccessor<E, Set<Principal>> observersProperty = new PropertyAccessor<E, Set<Principal>>(Set.class) {
+
+        @Override
+        public Set<Principal> get(E entity) {
+            return entity.getObservers();
+        }
+
+        @Override
+        public void set(E entity, Set<Principal> observers) {
+            entity.setObservers(observers);
         }
 
     };

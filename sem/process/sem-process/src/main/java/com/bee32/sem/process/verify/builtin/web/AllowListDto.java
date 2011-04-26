@@ -2,12 +2,15 @@ package com.bee32.sem.process.verify.builtin.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dto.PrincipalDto;
+import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.builtin.AllowList;
@@ -55,7 +58,7 @@ public class AllowListDto
         target.setDescription(description);
 
         if (selection.contains(RESPONSIBLES))
-            target.setResponsibles(unmarshalSet(context, responsibles));
+            with(context, target).unmarshalSet(responsiblesProperty, responsibles);
     }
 
     @Override
@@ -109,5 +112,20 @@ public class AllowListDto
     public List<Long> getResponsibleIds() {
         return id(responsibles);
     }
+
+    static final PropertyAccessor<AllowList, Set<Principal>> responsiblesProperty = new PropertyAccessor<AllowList, Set<Principal>>(
+            List.class) {
+
+        @Override
+        public Set<Principal> get(AllowList entity) {
+            return entity.getResponsibles();
+        }
+
+        @Override
+        public void set(AllowList entity, Set<Principal> responsibles) {
+            entity.setResponsibles(responsibles);
+        }
+
+    };
 
 }

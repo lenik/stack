@@ -8,12 +8,14 @@ import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.Level;
+import com.bee32.sem.process.verify.builtin.MultiLevel;
 
 public class LevelDto
         extends EntityDto<Level, Integer> {
 
     private static final long serialVersionUID = 1L;
 
+    private MultiLevelDto multiLevel;
     private long limit;
     private VerifyPolicyDto targetPolicy;
 
@@ -27,21 +29,32 @@ public class LevelDto
 
     @Override
     protected void _marshal(Level source) {
+        multiLevel = new MultiLevelDto().ref(source.getMultiLevel());
         limit = source.getLimit();
         targetPolicy = new VerifyPolicyDto(source.getTargetPolicy());
     }
 
     @Override
     protected void _unmarshalTo(IUnmarshalContext context, Level target) {
+
         target.setLimit(limit);
 
-        with(context, target) //
-                .unmarshal(targetPolicyProperty, targetPolicy);
+        WithContext<Level> with = with(context, target);
+        with.unmarshal(multiLevelProperty, multiLevel);
+        with.unmarshal(targetPolicyProperty, targetPolicy);
     }
 
     @Override
     protected void _parse(IVariantLookupMap<String> map)
             throws ParseException {
+    }
+
+    public MultiLevelDto getMultiLevel() {
+        return multiLevel;
+    }
+
+    public void setMultiLevel(MultiLevelDto multiLevel) {
+        this.multiLevel = multiLevel;
     }
 
     public long getLimit() {
@@ -71,6 +84,20 @@ public class LevelDto
             return targetPolicy.getName();
     }
 
+    static final PropertyAccessor<Level, MultiLevel> multiLevelProperty = new PropertyAccessor<Level, MultiLevel>(
+            MultiLevel.class) {
+
+        @Override
+        public MultiLevel get(Level entity) {
+            return entity.getMultiLevel();
+        }
+
+        @Override
+        public void set(Level entity, MultiLevel multiLevel) {
+            entity.setMultiLevel(multiLevel);
+        }
+
+    };
     static final PropertyAccessor<Level, VerifyPolicy<?>> targetPolicyProperty = new PropertyAccessor<Level, VerifyPolicy<?>>(
             VerifyPolicy.class) {
 
