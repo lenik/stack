@@ -10,10 +10,11 @@ public abstract class PropertyAccessor<S, T> {
 
     private final Class<T> propertyType;
 
-    public PropertyAccessor(Class<T> propertyType) {
+    @SuppressWarnings("unchecked")
+    public PropertyAccessor(Class<?> propertyType) {
         if (propertyType == null)
             throw new NullPointerException("propertyType");
-        this.propertyType = propertyType;
+        this.propertyType = (Class<T>) propertyType;
     }
 
     public Class<T> getType() {
