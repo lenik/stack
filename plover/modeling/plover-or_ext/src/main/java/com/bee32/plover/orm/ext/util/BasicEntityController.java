@@ -12,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.arch.util.DTOs;
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
@@ -37,7 +36,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
             ).dump(req, resp);
 
         Dto dto = newDto(_dtoSelection);
-        dto.marshal(entity);
+        dto = doMarshal(dto, entity);
 
         ViewData view = new ViewData();
         view.entity = entity;
@@ -58,21 +57,23 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
         List<? extends E> entityList = __list();
 
-        Integer selection = _dtoSelection;
-        List<? extends Dto> list = DTOs.marshalList(getTransferType(), //
-                selection == null ? null : selection.intValue(), entityList);
+        int index = 0;
+        for (E entity : entityList) {
+            Dto item = newDto(_dtoSelection);
+            item = doMarshal(item, entity);
 
-        tab.totalRecords = list.size();
-        tab.totalDisplayRecords = tab.totalRecords;
-
-        for (Dto item : list) {
             tab.push(item.getId());
             tab.push(item.getVersion());
 
             fillDataRow(tab, item);
 
             tab.next();
+            index++;
         }
+
+        // assert index == entityList.size();
+        tab.totalRecords = index;
+        tab.totalDisplayRecords = tab.totalRecords;
 
         return JsonUtil.dump(resp, tab.exportMap());
     }
@@ -100,8 +101,10 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
                 create = true;
 
-            } else
-                dto = newDto(_dtoSelection).marshal(entity);
+            } else {
+                dto = newDto(_dtoSelection);
+                dto = doMarshal(dto, entity);
+            }
         }
 
         if (create) {
@@ -110,7 +113,8 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
             if (id != null)
                 EntityAccessor.setId(entity, id);
 
-            dto = newDto(_dtoSelection).marshal(entity);
+            dto = newDto(_dtoSelection);
+            dto = doMarshal(dto, entity);
 
             fillTemplate(dto);
         }
@@ -180,6 +184,14 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
         return view;
     }
 
+    protected Dto doMarshal(Dto dto, E entity) {
+        return dto.marshal(entity);
+    }
+
+    protected void doUnmarshalTo(Dto dto, E entity) {
+        dto.unmarshalTo(this, entity);
+    }
+
     protected abstract void fillDataRow(DataTableDxo tab, Dto dto);
 
     protected abstract void fillTemplate(Dto dto);
@@ -195,7 +207,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
      *            The incoming dto.
      */
     protected void fillEntity(E entity, Dto dto) {
-        dto.unmarshalTo(this, entity);
+        doUnmarshalTo(dto, entity);
     }
 
 }

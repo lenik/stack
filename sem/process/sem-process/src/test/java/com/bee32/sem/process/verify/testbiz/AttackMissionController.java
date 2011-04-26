@@ -20,6 +20,16 @@ public class AttackMissionController
     VerifyPolicyService verifyPolicyService;
 
     @Override
+    protected AttackMissionDto doMarshal(AttackMissionDto dto, AttackMission entity) {
+        super.doMarshal(dto, entity);
+
+        boolean verified = verifyPolicyService.isVerified(entity);
+        dto.setVerified(verified);
+
+        return dto;
+    }
+
+    @Override
     protected void fillDataRow(DataTableDxo tab, AttackMissionDto dto) {
         tab.push(dto.getTarget());
         tab.push(dto.getVerificationState());
