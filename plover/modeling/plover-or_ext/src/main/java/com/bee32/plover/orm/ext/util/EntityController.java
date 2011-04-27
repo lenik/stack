@@ -26,11 +26,15 @@ public abstract class EntityController<E extends Entity<K>, K extends Serializab
     private final Class<K> keyType;
     private final Class<Dto> transferType;
 
+    protected final String entityTypeName;
+
     public EntityController() {
         Type[] typeArgs = ClassUtil.getTypeArgs(getClass(), EntityController.class);
         entityType = ClassUtil.bound1(typeArgs[0]);
         keyType = ClassUtil.bound1(typeArgs[1]);
         transferType = ClassUtil.bound1(typeArgs[2]);
+
+        entityTypeName = ClassUtil.getDisplayName(getEntityType());
     }
 
     @Override

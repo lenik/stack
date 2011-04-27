@@ -239,7 +239,7 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
             try {
                 dataManager.delete(entity);
             } catch (DataIntegrityViolationException e) {
-                return Javascripts.alertAndBack("不能删除正在使用中的对象。" + hint(entity, id)).dump(req, resp);
+                return Javascripts.alertAndBack("不能删除正在使用中的对象。" + hint(id)).dump(req, resp);
             }
 
         return view;
@@ -261,8 +261,13 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
         return id;
     }
 
-    protected String hint(E entity, K id) {
-        return ClassUtil.getDisplayName(getEntityType()) + " [" + id + "]";
+    protected String hint(K id) {
+        String entityTypeName = ClassUtil.getDisplayName(getEntityType());
+        return entityTypeName + " [" + id + "]";
+    }
+
+    protected String hint(Entity<?> entity) {
+        return ClassUtil.getDisplayName(entity.getClass()) + " [" + entity.getId() + "]";
     }
 
     protected E newEntity()
