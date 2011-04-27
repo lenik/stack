@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.free.UnexpectedException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +37,8 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
             ).dump(req, resp);
 
         Dto dto = newDto(_dtoSelection);
-        dto = doMarshal(dto, entity);
+
+        doAction(EntityAction.Load, entity, dto);
 
         ViewData view = new ViewData();
         view.entity = entity;
@@ -60,7 +62,8 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
         int index = 0;
         for (E entity : entityList) {
             Dto item = newDto(_dtoSelection);
-            item = doMarshal(item, entity);
+
+            doAction(EntityAction.Load, entity, item);
 
             tab.push(item.getId());
             tab.push(item.getVersion());
@@ -103,7 +106,8 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
             } else {
                 dto = newDto(_dtoSelection);
-                dto = doMarshal(dto, entity);
+
+                doAction(EntityAction.Load, entity, dto);
             }
         }
 
@@ -114,9 +118,11 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
                 EntityAccessor.setId(entity, id);
 
             dto = newDto(_dtoSelection);
-            dto = doMarshal(dto, entity);
 
-            fillTemplate(dto);
+            // Entity-initializors.
+            doAction(EntityAction.Load, entity, dto);
+
+            doAction(EntityAction.Create, entity, dto);
         }
 
         String _VERB = create ? "CREATE" : "MODIFY";
@@ -175,7 +181,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
                 EntityAccessor.setId(entity, id);
         }
 
-        fillEntity(entity, dto);
+        doAction(EntityAction.Save, entity, dto);
 
         dataManager.saveOrUpdate(entity);
 
@@ -184,30 +190,27 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
         return view;
     }
 
-    protected Dto doMarshal(Dto dto, E entity) {
-        return dto.marshal(entity);
-    }
+    protected void doAction(EntityAction action, E entity, Dto dto) {
+        switch (action) {
+        case Create:
+            fillTemplate(dto);
+            break;
 
-    protected void doUnmarshalTo(Dto dto, E entity) {
-        dto.unmarshalTo(this, entity);
+        case Load:
+            dto.marshal(entity);
+            break;
+
+        case Save:
+            dto.unmarshalTo(this, entity);
+            break;
+
+        default:
+            throw new UnexpectedException("Unknown entity action: " + action);
+        }
     }
 
     protected abstract void fillDataRow(DataTableDxo tab, Dto dto);
 
     protected abstract void fillTemplate(Dto dto);
-
-    /**
-     * Fill the entity with parameters comes from dto.
-     *
-     * The entity is unmarshalled from the dto in default implementattion.
-     *
-     * @param entity
-     *            The entity which would be filled.
-     * @param dto
-     *            The incoming dto.
-     */
-    protected void fillEntity(E entity, Dto dto) {
-        doUnmarshalTo(dto, entity);
-    }
 
 }

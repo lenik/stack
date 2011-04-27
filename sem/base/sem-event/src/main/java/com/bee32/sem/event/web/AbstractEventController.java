@@ -58,10 +58,6 @@ public abstract class AbstractEventController<E extends Event, Dto extends Abstr
         event.setActor(new UserDto());
     }
 
-    protected void fillEntity(E entity, Dto dto) {
-        dto.unmarshalTo(this, entity);
-    }
-
     @Override
     protected ModelAndView _createOrEditForm(ViewData view, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
