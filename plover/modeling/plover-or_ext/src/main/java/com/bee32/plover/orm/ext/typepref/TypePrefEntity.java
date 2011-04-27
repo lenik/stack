@@ -56,6 +56,11 @@ public class TypePrefEntity
             type = null;
     }
 
+    /**
+     * Get the type which as the primary key.
+     *
+     * @return Non-<code>null</code> expanded type.
+     */
     @Transient
     public Class<?> getType() {
         if (type == null && !earlyResolve)

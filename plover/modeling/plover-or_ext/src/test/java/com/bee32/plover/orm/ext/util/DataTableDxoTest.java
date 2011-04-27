@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bee32.plover.ajax.JsonUtil;
-import com.bee32.plover.orm.ext.util.DataTableDxo;
 
 /**
  * Gson won't encode array[ array[] ]. Why? ...

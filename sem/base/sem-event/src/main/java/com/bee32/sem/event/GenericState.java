@@ -3,6 +3,8 @@ package com.bee32.sem.event;
 public class GenericState
         extends EventState {
 
+    private static final long serialVersionUID = 1L;
+
     public GenericState(int id, String name) {
         super(id, name);
     }
