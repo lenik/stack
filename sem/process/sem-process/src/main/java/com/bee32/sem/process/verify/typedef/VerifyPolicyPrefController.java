@@ -9,17 +9,23 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.ext.util.EntityAction;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.process.SEMProcessModule;
+import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyPolicyManager;
 import com.bee32.sem.process.verify.builtin.web.VerifyPolicyDto;
+import com.bee32.sem.process.verify.service.VerifyService;
+import com.bee32.sem.process.verify.util.VerifiableEntityBean;
 
 @RequestMapping(VerifyPolicyPrefController.PREFIX + "*")
 public class VerifyPolicyPrefController
@@ -27,11 +33,13 @@ public class VerifyPolicyPrefController
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "pref/";
 
+    static Logger logger = LoggerFactory.getLogger(VerifyPolicyPrefController.class);
+
     @Inject
     VerifyPolicyPrefDao prefDao;
 
     @Inject
-    CommonDataManager dataManager;
+    VerifyService verifyService;
 
     public VerifyPolicyPrefController() {
         _createOTF = true;
@@ -61,12 +69,6 @@ public class VerifyPolicyPrefController
         tab.push(dto.getDisplayName());
         tab.push(dto.getPreferredPolicy() == null ? null : dto.getPreferredPolicy().getName());
         tab.push(dto.getDescription());
-    }
-
-    @Override
-    protected void fillTemplate(VerifyPolicyPrefDto dto) {
-        dto.setPreferredPolicy(new VerifyPolicyDto());
-        dto.setDescription("");
     }
 
     @Override
@@ -103,6 +105,42 @@ public class VerifyPolicyPrefController
     protected ModelAndView _create(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         return notApplicable(req, resp);
+    }
+
+    // Action.
+
+    @Override
+    protected//
+    void doAction(EntityAction action, VerifyPolicyPref entity, VerifyPolicyPrefDto dto, Object... args) {
+        super.doAction(action, entity, dto, args);
+
+        switch (action.getType()) {
+        case SAVE:
+            // Update all dependencies
+            Class<? extends VerifiableEntityBean<? extends Number, IVerifyContext>> userEntityType;
+            userEntityType = (Class<? extends VerifiableEntityBean<? extends Number, IVerifyContext>>) entity.getType();
+
+            assert IVerifyContext.class.isAssignableFrom(userEntityType);
+
+            refresh(userEntityType);
+
+            break;
+        }
+    }
+
+    <C extends VerifiableEntityBean<? extends Number, IVerifyContext>> //
+    void refresh(Class<? extends C> userEntityType) {
+
+        String typeName = ClassUtil.getDisplayName(userEntityType);
+
+        for (C userEntity : dataManager.loadAll(userEntityType)) {
+            if (logger.isDebugEnabled())
+                logger.debug("Refresh/verify " + typeName + "[" + userEntity.getId() + "]");
+
+            verifyService.verifyEntity(userEntity);
+
+            // should save userEntity?
+        }
     }
 
 }
