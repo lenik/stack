@@ -21,6 +21,10 @@ public class VerifyResult {
         return message;
     }
 
+    public boolean isVerified() {
+        return state == VerifyState.VERIFIED;
+    }
+
     @Override
     public String toString() {
         return message;
@@ -35,11 +39,11 @@ public class VerifyResult {
     }
 
     public static VerifyResult invalid(User user) {
-        return new VerifyResult(VerifyState.INVALID, "无效的审核人：" + user);
+        return new VerifyResult(VerifyState.INVALID, "无效的审核人：" + user.getDisplayName());
     }
 
     public static VerifyResult rejected(Principal principal, String message) {
-        message = "审核被 " + principal + " 拒绝：" + message;
+        message = "审核被 " + principal.getDisplayName() + " 拒绝：" + message;
         return new VerifyResult(VerifyState.REJECTED, message);
     }
 
