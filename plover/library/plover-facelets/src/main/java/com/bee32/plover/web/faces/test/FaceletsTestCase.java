@@ -63,7 +63,7 @@ public class FaceletsTestCase
     }
 
     protected int getRefreshPeriod() {
-        return 10;
+        return 300;
     }
 
     @Override
