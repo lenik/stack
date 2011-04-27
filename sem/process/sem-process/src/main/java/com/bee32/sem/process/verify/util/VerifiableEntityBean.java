@@ -1,6 +1,7 @@
 package com.bee32.sem.process.verify.util;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Task;
 import com.bee32.sem.process.verify.IVerifiable;
 import com.bee32.sem.process.verify.IVerifyContext;
@@ -23,7 +25,7 @@ public abstract class VerifiableEntityBean<K extends Serializable, C extends IVe
 
     private static final long serialVersionUID = 1L;
 
-    VerifyState verifyState = VerifyState.UNKNOWN;
+    int verifyStateId;
     String verifyError;
     Task verifyTask;
 
@@ -43,18 +45,32 @@ public abstract class VerifiableEntityBean<K extends Serializable, C extends IVe
     }
 
     @Column(nullable = false)
-    public VerifyState getVerifyState() {
-        return verifyState;
+    int getVerifyStateId() {
+        return verifyStateId;
     }
 
-    void setVerifyState(VerifyState verifyState) {
-        this.verifyState = verifyState;
+    void setVerifyStateId(int stateId) {
+        verifyStateId = stateId;
     }
+
+    @Transient
+    public EventState getVerifyState() {
+        return EventState.get(verifyStateId);
+    }
+
+    void setVerifyState(EventState verifyState) {
+        if (verifyState == null)
+            throw new NullPointerException("verifyState");
+        this.verifyStateId = verifyState.getId();
+    }
+
+    @Transient
+    public abstract Date getVerifyUpdatedDate();
 
     @Transient
     @Column(nullable = false)
     public boolean isVerified() {
-        return verifyState == VerifyState.VERIFIED;
+        return verifyStateId == VerifyState.VERIFIED.getId();
     }
 
     @Column(length = 100)

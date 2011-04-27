@@ -45,14 +45,14 @@ public class Event
 
     private final EventFlags flags = new EventFlags();
     private boolean closed;
-    private int stateIndex;
+    private int state;
     private EventStatus status; // status -> flags, closed, state.
 
     private User actor;
 
     private String subject;
     private String message;
-    private Date beginTime;
+    private Date beginTime = new Date();
     private Date endTime;
 
     private String refType;
@@ -130,15 +130,15 @@ public class Event
     @Column(nullable = false)
     @Override
     public int getState() {
-        return stateIndex;
+        return state;
     }
 
     public void setState(int state) {
-        this.stateIndex = state;
+        this.state = state;
     }
 
     public void setState(EventState state) {
-        this.stateIndex = state == null ? 0 : state.getIndex();
+        this.state = state == null ? 0 : state.getId();
     }
 
     @ManyToOne

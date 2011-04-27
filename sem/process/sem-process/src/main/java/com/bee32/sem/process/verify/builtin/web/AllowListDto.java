@@ -114,7 +114,7 @@ public class AllowListDto
     }
 
     static final PropertyAccessor<AllowList, Set<Principal>> responsiblesProperty = new PropertyAccessor<AllowList, Set<Principal>>(
-            List.class) {
+            Set.class) {
 
         @Override
         public Set<Principal> get(AllowList entity) {

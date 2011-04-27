@@ -8,7 +8,7 @@ import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.sem.process.SEMProcessModule;
-import com.bee32.sem.process.verify.service.VerifyPolicyService;
+import com.bee32.sem.process.verify.service.VerifyService;
 
 @RequestMapping(AttackMissionController.PREFIX + "*")
 public class AttackMissionController
@@ -17,7 +17,7 @@ public class AttackMissionController
     public static final String PREFIX = SEMProcessModule.PREFIX + "attack/";
 
     @Inject
-    VerifyPolicyService verifyPolicyService;
+    VerifyService verifyPolicyService;
 
     @Override
     protected AttackMissionDto doMarshal(AttackMissionDto dto, AttackMission entity) {

@@ -1,7 +1,7 @@
 package com.bee32.sem.process.verify.service;
 
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.Task;
 import com.bee32.sem.process.verify.IVerifyContext;
@@ -21,7 +22,7 @@ import com.bee32.sem.process.verify.builtin.web.VerifyPolicyDto;
 import com.bee32.sem.process.verify.util.VerifiableEntityAccessor;
 import com.bee32.sem.process.verify.util.VerifiableEntityBean;
 
-public class VerifyPolicyService
+public class VerifyService
         extends EnterpriseService
         implements IVerifyPolicy<IVerifyContext> {
 
@@ -146,17 +147,23 @@ public class VerifyPolicyService
             verifyTask.setPriority(EventPriority.HIGH);
 
             verifyTask.setClosed(result.getState().isClosed());
+            verifyTask.setState(result.getState());
             verifyTask.setActor(null); // session current user.
 
-            String subject = "Please verify";
-            String message = "message";
+            String entityName = ClassUtil.getDisplayName(entity.getClass()) + " [" + entity.getId() + "]";
+
+            String subject = "【作业跟踪】【审核】" + entityName;
+            String message = "（无可用内容）";
 
             verifyTask.setSubject(subject);
             verifyTask.setMessage(message);
             verifyTask.setBeginTime(new Date());
-            // verifyTask.setEndTime(entity.getVerifiedDate());
+            verifyTask.setEndTime(entity.getVerifyUpdatedDate());
 
             verifyTask.setRef(entity);
+
+            Set<Principal> responsibles = getDeclaredResponsibles(entity);
+            verifyTask.setObservers(responsibles);
         }
 
         return result;
@@ -164,7 +171,7 @@ public class VerifyPolicyService
 
     @Transactional(readOnly = true)
     @Override
-    public Collection<? extends Principal> getDeclaredResponsibles(IVerifyContext contextEntity) {
+    public Set<Principal> getDeclaredResponsibles(IVerifyContext contextEntity) {
         VerifyPolicy<IVerifyContext> preferredVerifyPolicy = policyDao.getVerifyPolicy(contextEntity);
         return preferredVerifyPolicy.getDeclaredResponsibles(contextEntity);
     }

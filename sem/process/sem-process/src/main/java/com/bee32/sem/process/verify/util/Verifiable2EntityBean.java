@@ -2,6 +2,7 @@ package com.bee32.sem.process.verify.util;
 
 import java.io.Serializable;
 
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import com.bee32.sem.process.verify.IVerifiable2;
@@ -9,7 +10,8 @@ import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.IVerifyPolicy;
 import com.bee32.sem.process.verify.VerifyException;
 
-public class Verifiable2EntityBean<K extends Serializable, C extends IVerifyContext>
+@MappedSuperclass
+public abstract class Verifiable2EntityBean<K extends Serializable, C extends IVerifyContext>
         extends VerifiableEntityBean<K, C>
         implements IVerifiable2<C> {
 

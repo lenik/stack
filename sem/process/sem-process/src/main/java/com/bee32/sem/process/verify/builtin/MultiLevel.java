@@ -19,9 +19,9 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
-import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.IAllowedByContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
+import com.bee32.sem.process.verify.VerifyResult;
 
 @Entity
 @DiscriminatorValue("ML")
@@ -119,7 +119,7 @@ public class MultiLevel
     }
 
     @Override
-    public Collection<? extends Principal> getDeclaredResponsibles(IMultiLevelContext context) {
+    public Set<Principal> getDeclaredResponsibles(IMultiLevelContext context) {
         long longValue = 0;
 
         if (context != null)
@@ -128,7 +128,7 @@ public class MultiLevel
         return getResponsiblesWithinLimit(longValue);
     }
 
-    public Collection<? extends Principal> getResponsiblesWithinLimit(long limit) {
+    public Set<Principal> getResponsiblesWithinLimit(long limit) {
         MultiLevelContext hintContext = new MultiLevelContext();
         hintContext.setValueDescription("hint");
         hintContext.setLongValue(limit);

@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.free.Nullables;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -20,9 +19,9 @@ import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
-import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.IAllowedByContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
+import com.bee32.sem.process.verify.VerifyResult;
 
 /**
  * 由任一管理员审核策略。
@@ -60,11 +59,11 @@ public class AllowList
      * Allow-List 为静态责任人列别，从不考虑实体类定义的额外名单。 故 context 参数被忽略。
      */
     @Override
-    public Collection<? extends Principal> getDeclaredResponsibles(IAllowedByContext context) {
+    public Set<Principal> getDeclaredResponsibles(IAllowedByContext context) {
         return getResponsibles();
     }
 
-    @ManyToMany(targetEntity = Principal.class, fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "AllowList", //
     /*        */joinColumns = @JoinColumn(name = "allowList"), //
     /*        */inverseJoinColumns = @JoinColumn(name = "responsible"))

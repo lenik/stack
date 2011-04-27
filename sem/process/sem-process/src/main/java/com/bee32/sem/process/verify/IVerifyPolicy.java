@@ -1,6 +1,6 @@
 package com.bee32.sem.process.verify;
 
-import java.util.Collection;
+import java.util.Set;
 
 import com.bee32.icsf.principal.Principal;
 
@@ -57,6 +57,6 @@ public interface IVerifyPolicy<C extends IVerifyContext> {
      *            上下文，<code>null</code> 适用于无具体的上下文。
      * @return 非 <code>null </code>的显示声明的责任人集合。
      */
-    Collection<? extends Principal> getDeclaredResponsibles(C context);
+    Set<Principal> getDeclaredResponsibles(C context);
 
 }

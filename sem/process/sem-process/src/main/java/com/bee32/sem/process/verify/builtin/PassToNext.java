@@ -1,8 +1,8 @@
 package com.bee32.sem.process.verify.builtin;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.free.NotImplementedException;
 import javax.persistence.DiscriminatorValue;
@@ -17,9 +17,9 @@ import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
-import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.VerifyEvent;
 import com.bee32.sem.process.verify.VerifyPolicy;
+import com.bee32.sem.process.verify.VerifyResult;
 
 /**
  * 依序审核策略
@@ -60,7 +60,7 @@ public class PassToNext
      * TODO
      */
     @Override
-    public Collection<? extends Principal> getDeclaredResponsibles(IPassEvents context) {
+    public Set<Principal> getDeclaredResponsibles(IPassEvents context) {
         int position = 0;
 
         if (context != null)
