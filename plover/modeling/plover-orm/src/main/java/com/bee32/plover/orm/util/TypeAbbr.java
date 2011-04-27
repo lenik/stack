@@ -73,10 +73,13 @@ public class TypeAbbr {
 
     public Class<?> expand(String abbr)
             throws ClassNotFoundException {
+        if (abbr == null)
+            return null;
+
         if (abbr.contains("."))
             return Class.forName(abbr);
-        else
-            return map.get(abbr);
+
+        return map.get(abbr);
     }
 
     private static MessageDigest md5;
