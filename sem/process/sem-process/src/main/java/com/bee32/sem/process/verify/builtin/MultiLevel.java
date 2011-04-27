@@ -19,11 +19,9 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
+import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.IAllowedByContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.result.ErrorResult;
-import com.bee32.sem.process.verify.result.RejectedResult;
-import com.bee32.sem.process.verify.result.UnauthorizedResult;
 
 @Entity
 @DiscriminatorValue("ML")
@@ -172,22 +170,22 @@ public class MultiLevel
     }
 
     @Override
-    public ErrorResult validate(IMultiLevelContext context) {
+    public VerifyResult validate(IMultiLevelContext context) {
         User user = context.getVerifier();
 
         if (!user.impliesOneOf(getDeclaredResponsibles(context)))
-            return new UnauthorizedResult(user);
+            return VerifyResult.invalid(user);
 
         return null;
     }
 
     @Override
-    public ErrorResult evaluate(IMultiLevelContext context) {
+    public VerifyResult evaluate(IMultiLevelContext context) {
         if (context.getVerifier() == null)
-            return PENDING;
+            return UNKNOWN;
 
         if (!context.isAllowed())
-            return new RejectedResult(context.getVerifier(), context.getRejectReason());
+            return VerifyResult.rejected(context.getVerifier(), context.getRejectReason());
 
         return null;
     }

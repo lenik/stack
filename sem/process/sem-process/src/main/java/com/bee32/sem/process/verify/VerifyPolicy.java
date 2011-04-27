@@ -9,8 +9,6 @@ import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.sem.process.verify.result.ErrorResult;
-import com.bee32.sem.process.verify.result.PendingResult;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -21,7 +19,7 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
 
     private static final long serialVersionUID = 1L;
 
-    protected static final PendingResult PENDING = PendingResult.getInstance();
+    protected static final VerifyResult UNKNOWN = new VerifyResult(VerifyState.UNKNOWN, null);
 
     private String description;
 
@@ -63,23 +61,24 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
     }
 
     @Override
-    public final void verify(C context)
+    public final void assertVerified(C context)
             throws VerifyException {
-        ErrorResult errorResult = validateAndEvaluate(context);
+        VerifyResult errorResult = verify(context);
         if (errorResult != null)
             throw new VerifyException(String.valueOf(errorResult));
     }
 
     @Override
     public final boolean isVerified(C context) {
-        ErrorResult errorResult = validateAndEvaluate(context);
+        VerifyResult errorResult = verify(context);
         return errorResult == null;
     }
 
-    ErrorResult validateAndEvaluate(C context) {
+    @Override
+    public VerifyResult verify(C context) {
 
         // policy-consistency validation.
-        ErrorResult errorResult = validate(context);
+        VerifyResult errorResult = validate(context);
 
         // Continue to check if the state is validated.
         if (errorResult == null)
@@ -95,7 +94,7 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
      *            当前审核状态的上下文对象（通常是审核数据所属的 Entity）。
      * @return <code>null</code> means verified, otherwise the error message.
      */
-    public ErrorResult validate(C context) {
+    public VerifyResult validate(C context) {
         return null;
     }
 
@@ -106,6 +105,6 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
      *            当前审核状态的上下文对象（通常是审核数据所属的 Entity）。
      * @return <code>null</code> means verified, otherwise the error message.
      */
-    public abstract ErrorResult evaluate(C context);
+    public abstract VerifyResult evaluate(C context);
 
 }

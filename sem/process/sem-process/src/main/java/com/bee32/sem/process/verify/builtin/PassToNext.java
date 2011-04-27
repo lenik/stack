@@ -17,10 +17,9 @@ import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
+import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.VerifyEvent;
 import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.result.ErrorResult;
-import com.bee32.sem.process.verify.result.PendingResult;
 
 /**
  * 依序审核策略
@@ -74,7 +73,7 @@ public class PassToNext
     }
 
     @Override
-    public ErrorResult evaluate(IPassEvents passLogs) {
+    public VerifyResult evaluate(IPassEvents passLogs) {
 
         // 分析审核数据
         int stepIndex = 0; // 审核步骤
@@ -111,7 +110,7 @@ public class PassToNext
         // 分析完成。
         if (stepIndex < sequences.size()) {
             PassStep nextStepWanted = sequences.get(stepIndex);
-            return new PendingResult("审核未完成，下一步应该是 " + nextStepWanted);
+            return VerifyResult.pending("审核未完成，下一步应该是 " + nextStepWanted);
         }
 
         return null;

@@ -20,11 +20,9 @@ import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
+import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.IAllowedByContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.result.ErrorResult;
-import com.bee32.sem.process.verify.result.RejectedResult;
-import com.bee32.sem.process.verify.result.UnauthorizedResult;
 
 /**
  * 由任一管理员审核策略。
@@ -94,25 +92,25 @@ public class AllowList
     }
 
     @Override
-    public ErrorResult validate(IAllowedByContext context) {
+    public VerifyResult validate(IAllowedByContext context) {
         User user = context.getVerifier();
 
         if (user == null)
-            return PENDING;
+            return UNKNOWN;
 
         if (!user.impliesOneOf(responsibles))
-            return new UnauthorizedResult(user);
+            return VerifyResult.invalid(user);
 
         return null;
     }
 
     @Override
-    public ErrorResult evaluate(IAllowedByContext context) {
+    public VerifyResult evaluate(IAllowedByContext context) {
         if (context.getVerifier() == null)
-            return PENDING;
+            return UNKNOWN;
 
         if (!context.isAllowed())
-            return new RejectedResult(context.getVerifier(), context.getRejectReason());
+            return VerifyResult.rejected(context.getVerifier(), context.getRejectReason());
 
         return null;
     }
