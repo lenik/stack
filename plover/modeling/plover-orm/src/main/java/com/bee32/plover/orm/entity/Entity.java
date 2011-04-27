@@ -64,37 +64,59 @@ public abstract class Entity<K extends Serializable>
         if (obj == null)
             return false;
 
-        if (getClass() != obj.getClass())
-            return false;
+        Class<?> class1 = getClass();
+        Class<?> class2 = obj.getClass();
+        if (class1 != class2) {
+            if (!class1.isAssignableFrom(class2)) {
+                if (class2.isAssignableFrom(class1))
+                    return obj.equals(this);
+                else
+                    return false;
+            }
+            // assert class1.isAssignableFrom(class2);
+        }
 
         @SuppressWarnings("unchecked")
         Entity<K> other = (Entity<K>) obj;
 
-        return equalsEntity(other);
+        return equalsSpecific(other);
     }
 
-    /**
-     * Not used.
-     */
     @Override
     protected final boolean equalsSpecific(Component obj) {
         @SuppressWarnings("unchecked")
         Entity<K> other = (Entity<K>) obj;
 
+        Boolean keyEq = equalsKey(other);
+        if (keyEq != null)
+            return keyEq;
+
         return equalsEntity(other);
     }
 
-    protected boolean equalsEntity(Entity<K> other) {
+    protected Boolean equalsKey(Entity<K> other) {
         K id1 = getId();
         K id2 = other.getId();
 
+        if (id1 == null && id2 == null)
+            return null;
+
         if (id1 == null || id2 == null)
-            return false;
+            return Boolean.FALSE;
 
         if (!id1.equals(id2))
-            return false;
+            return Boolean.FALSE;
 
-        return true;
+        return Boolean.TRUE;
+    }
+
+    /**
+     * @param other
+     *            Non-<code>null</code> entity whose contents instead of the key need to be
+     *            compared.
+     */
+    protected boolean equalsEntity(Entity<K> other) {
+        return this == other;
     }
 
     @Override

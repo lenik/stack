@@ -35,6 +35,15 @@ public class EntityBean<K extends Serializable>
     }
 
     @Override
+    protected final Boolean equalsKey(Entity<K> other) {
+        return equalsKey((EntityBean<K>) other);
+    }
+
+    protected Boolean equalsKey(EntityBean<K> other) {
+        return super.equalsKey(other);
+    }
+
+    @Override
     protected final boolean equalsEntity(Entity<K> otherEntity) {
         return equalsEntity((EntityBean<K>) otherEntity);
     }
