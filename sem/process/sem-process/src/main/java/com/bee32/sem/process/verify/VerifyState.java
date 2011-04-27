@@ -7,8 +7,9 @@ import com.bee32.sem.event.EventStateClass;
 public class VerifyState
         extends EventState {
 
+    private static final long serialVersionUID = 1L;
+
     private final boolean closed;
-// private
     private final int eventFlags;
 
     private final String displayName;

@@ -10,6 +10,11 @@ import com.bee32.sem.test.SEMTestCase;
 public class SEMProcessModuleTest
         extends SEMTestCase {
 
+    @Override
+    protected int getRefreshPeriod() {
+        return 10;
+    }
+
     public static void main(String[] args)
             throws IOException {
 
