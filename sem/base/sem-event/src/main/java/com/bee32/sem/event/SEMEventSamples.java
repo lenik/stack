@@ -15,10 +15,10 @@ import com.bee32.sem.event.entity.Task;
 public class SEMEventSamples
         extends EntitySamplesContribution {
 
-    public static final EventPriority URGENT = new EventPriority("urgent", "紧急", 1);
-    public static final EventPriority HIGH = new EventPriority("high", "高", 3);
-    public static final EventPriority NORMAL = new EventPriority("normal", "普通", 5);
-    public static final EventPriority LOW = new EventPriority("low", "低", 10);
+    public static final EventPriority URGENT = new EventPriority("urgent", "紧急", EventPriority.URGENT);
+    public static final EventPriority HIGH = new EventPriority("high", "高", EventPriority.HIGH);
+    public static final EventPriority NORMAL = new EventPriority("normal", "普通", EventPriority.NORMAL);
+    public static final EventPriority LOW = new EventPriority("low", "低", EventPriority.LOW);
 
     public static final EventStatus UNKNOWN = new EventStatus("unknown", "无状态", EventState.UNKNOWN);
     public static final EventStatus RUNNING = new EventStatus("running", "进行中", EventState.RUNNING);
@@ -41,7 +41,7 @@ public class SEMEventSamples
         rain.setMessage("你以为带上望远镜就能看到土卫3的流行雨吗？少年哟，别做梦了，那是不可能的。");
         rain.setBeginTime(new Date(System.currentTimeMillis() - 7200));
         rain.setBeginTime(new Date(System.currentTimeMillis() + 7200));
-        // rain.setObservers(Arrays.asList(IcsfPrincipalSamples.solaRobots));
+        rain.setObservers(Arrays.asList(IcsfPrincipalSamples.solaRobots));
 
         killAngel = new Task();
         killAngel.setCategory("特种");

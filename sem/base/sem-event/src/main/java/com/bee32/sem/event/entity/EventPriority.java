@@ -13,6 +13,11 @@ public class EventPriority
 
     private static final long serialVersionUID = 1L;
 
+    public static final int URGENT = 10;
+    public static final int HIGH = 30;
+    public static final int NORMAL = 50;
+    public static final int LOW = 100;
+
     private int priority;
 
     public EventPriority() {
