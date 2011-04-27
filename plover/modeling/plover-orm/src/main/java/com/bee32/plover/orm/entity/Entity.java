@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -15,10 +13,7 @@ import javax.free.IdentityHashSet;
 import javax.persistence.MappedSuperclass;
 
 import com.bee32.plover.arch.Component;
-import com.bee32.plover.arch.naming.INamed;
-import com.bee32.plover.model.Model;
 import com.bee32.plover.util.FormatStyle;
-import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
 /**
@@ -30,8 +25,7 @@ import com.bee32.plover.util.PrettyPrintStream;
  */
 @MappedSuperclass
 public abstract class Entity<K extends Serializable>
-        extends Model
-        implements IEntity<K>, INamed, IPopulatable, IMultiFormat {
+        extends EntityBase<K> {
 
     private static final long serialVersionUID = 1L;
 
@@ -54,23 +48,6 @@ public abstract class Entity<K extends Serializable>
 
     void setVersion(int version) {
         this.version = version;
-    }
-
-    String _internalName() {
-        return this.name;
-    }
-
-    void _internalName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String refName() {
-        K id = getId();
-        if (id == null)
-            return null;
-        else
-            return id.toString();
     }
 
     @Override
@@ -418,41 +395,11 @@ public abstract class Entity<K extends Serializable>
         }
     }
 
-    @SuppressWarnings("unchecked")
-    protected <T> T cast(Object thisLike) {
-        if (thisLike == null)
-            return null;
-
-        Object derived = getClass().cast(thisLike);
-
-        return (T) derived;
-    }
-
     protected <T extends Entity<K>> T cast(Class<T> thatClass, Entity<K> thatLike) {
         if (thatLike == null)
             return null;
 
         return thatClass.cast(thatLike);
-    }
-
-    protected <C extends IParentAware<P>, P> Set<C> attachCopy(Class<C> childClass, Set<?> children) {
-        @SuppressWarnings("unchecked")
-        P parent = (P) this;
-        return attachCopy(parent, childClass, children);
-    }
-
-    protected <C extends IParentAware<P>, P> Set<C> attachCopy(P parent, Class<C> childClass, Set<?> children) {
-        Set<C> copy = new HashSet<C>();
-        for (Object _child : children) {
-            C child = childClass.cast(_child);
-            child.setParent(parent);
-            copy.add(child);
-        }
-        return copy;
-    }
-
-    protected static <T> Iterable<T> flyOver(Collection<? extends T> it) {
-        return new ArrayList<T>(it);
     }
 
 }
