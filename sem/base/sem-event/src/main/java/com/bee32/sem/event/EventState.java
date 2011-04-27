@@ -1,17 +1,24 @@
 package com.bee32.sem.event;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.service.ServicePrototypeLoader;
 import com.bee32.plover.servlet.context.Location;
 import com.bee32.plover.servlet.context.Locations;
 
-public class EventState {
+public class EventState
+        implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public static final int SEL_MASK = 0xff000000;
     public static final int SEL_EVENT = 0x01000000;
@@ -44,7 +51,13 @@ public class EventState {
     }
 
     protected String _nls(String key, String def) {
-        ResourceBundle rb = ResourceBundle.getBundle(getClass().getName());
+        ResourceBundle rb;
+
+        try {
+            rb = ResourceBundle.getBundle(getClass().getName());
+        } catch (MissingResourceException e) {
+            return def;
+        }
 
         if (rb.containsKey(key))
             return rb.getString(key);
@@ -80,12 +93,35 @@ public class EventState {
         return (id & SEL_TASK) != 0;
     }
 
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof EventState))
+            return false;
+        EventState o = (EventState) obj;
+        return id == o.id;
+    }
+
+    @Override
+    public String toString() {
+        return displayName;
+    }
+
     protected static int __class__(int sel, int facility) {
         return (sel & SEL_MASK) | ((facility << CLASS_SHIFT) & CLASS_MASK);
     }
 
     public static EventState get(int id) {
-        return all.get(id);
+        EventState definedState = all.get(id);
+        if (definedState != null)
+            return definedState;
+
+        String idHex = Integer.toHexString(id);
+        throw new IllegalUsageException("Invalid state: 0x" + idHex);
     }
 
     public static List<Integer> list(int mask) {
