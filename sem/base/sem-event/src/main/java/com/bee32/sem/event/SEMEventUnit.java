@@ -4,6 +4,7 @@ import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.event.entity.Activity;
 import com.bee32.sem.event.entity.Event;
+import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.EventStatus;
 import com.bee32.sem.event.entity.Task;
@@ -20,6 +21,7 @@ public class SEMEventUnit
         add(Task.class);
         add(EventPriority.class);
         add(EventStatus.class);
+        add(EventCategory.class);
     }
 
 }
