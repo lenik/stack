@@ -4,7 +4,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.dto.UserDto;
-import com.bee32.plover.arch.util.ParameterMap;
+import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.mail.MailType;
@@ -99,7 +99,7 @@ public class MailDto
     }
 
     @Override
-    public void _parse(ParameterMap map)
+    public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
 
         String _type = map.getString("type");

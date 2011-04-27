@@ -22,7 +22,7 @@ public abstract class DataExchangeObject<T>
     }
 
     @Override
-    public abstract void _parse(ParameterMap map)
+    public abstract void _parse(TextMap map)
             throws ParseException;
 
     @Override

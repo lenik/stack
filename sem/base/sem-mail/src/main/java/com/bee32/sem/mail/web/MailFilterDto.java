@@ -3,7 +3,7 @@ package com.bee32.sem.mail.web;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import com.bee32.plover.arch.util.ParameterMap;
+import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.mail.entity.MailFilter;
@@ -71,7 +71,7 @@ public class MailFilterDto
     }
 
     @Override
-    public void _parse(ParameterMap map)
+    public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
 
         name = map.getString("name");

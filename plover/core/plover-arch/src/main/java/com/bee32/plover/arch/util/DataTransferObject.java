@@ -246,7 +246,7 @@ public abstract class DataTransferObject<T, C>
             throws ServletException {
         try {
             Map<String, ?> requestMap = request.getParameterMap();
-            ParameterMap lookupMap = new ParameterMap(requestMap);
+            TextMap lookupMap = new TextMap(requestMap);
             parse(lookupMap);
         } catch (TypeConvertException e) {
             throw new ServletException("Parse error: " + e.getMessage(), e);
@@ -267,7 +267,7 @@ public abstract class DataTransferObject<T, C>
             throw new NullPointerException("map");
 
         // Map2VariantLookupMap<String> lookupMap = new Map2VariantLookupMap<String>(map);
-        ParameterMap parameterMap = new ParameterMap(map);
+        TextMap parameterMap = new TextMap(map);
 
         try {
             parse(parameterMap);
@@ -276,14 +276,14 @@ public abstract class DataTransferObject<T, C>
         }
     }
 
-    public final void parse(ParameterMap map)
+    public final void parse(TextMap map)
             throws ParseException {
         __parse(map);
         _parse(map);
         filled = true;
     }
 
-    protected void __parse(ParameterMap map)
+    protected void __parse(TextMap map)
             throws ParseException {
     }
 
@@ -295,7 +295,7 @@ public abstract class DataTransferObject<T, C>
      * @throws ParseException
      *             Other parse exception caused by user implementation.
      */
-    protected abstract void _parse(ParameterMap map)
+    protected abstract void _parse(TextMap map)
             throws ParseException;
 
     public Map<String, Object> exportMap() {

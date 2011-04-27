@@ -13,7 +13,7 @@ import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.arch.util.ParameterMap;
+import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
@@ -32,6 +32,7 @@ public abstract class AbstractEventDto<E extends Event>
     public static final int OBSERVERS = 1;
 
     private EventCategoryDto category;
+    private String sourceAbbr;
     private Class<?> sourceClass;
 
     private int priority;
@@ -67,6 +68,7 @@ public abstract class AbstractEventDto<E extends Event>
     @Override
     protected void _marshal(E source) {
         category = new EventCategoryDto(source.getCategory());
+        sourceAbbr = source.getSource();
         sourceClass = source.getSourceClass();
 
         priority = source.getPriority();
@@ -95,7 +97,8 @@ public abstract class AbstractEventDto<E extends Event>
                 .unmarshal(statusProperty, status)//
                 .unmarshal(actorProperty, actor);
 
-        target.setSourceClass(sourceClass);
+        if (sourceClass != null)
+            target.setSourceClass(sourceClass);
 
         target.setPriority(priority);
         target.setState(stateIndex);
@@ -114,16 +117,11 @@ public abstract class AbstractEventDto<E extends Event>
     }
 
     @Override
-    public void _parse(ParameterMap map)
+    public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
 
         category = new EventCategoryDto().ref(map.getNInt("categoryId"));
-
-        try {
-            sourceClass = ABBR.expand(map.getString("source"));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        sourceAbbr = map.getString("source");
 
         priority = map.getInt("priority");
 
@@ -165,6 +163,10 @@ public abstract class AbstractEventDto<E extends Event>
         this.category = category;
     }
 
+    public String getSource() {
+        return sourceAbbr;
+    }
+
     public Class<?> getSourceClass() {
         return sourceClass;
     }
@@ -174,8 +176,13 @@ public abstract class AbstractEventDto<E extends Event>
     }
 
     public String getSourceName() {
-        String displayName = ClassUtil.getDisplayName(sourceClass);
-        return displayName;
+        if (sourceClass != null)
+            return ClassUtil.getDisplayName(sourceClass);
+
+        if (sourceAbbr != null)
+            return "(unknown)";
+
+        return null;
     }
 
     public int getPriority() {

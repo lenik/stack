@@ -10,7 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.arch.util.DataExchangeObject;
-import com.bee32.plover.arch.util.ParameterMap;
+import com.bee32.plover.arch.util.TextMap;
 
 public class DataTableDxo
         extends DataExchangeObject<Void> {
@@ -184,7 +184,7 @@ public class DataTableDxo
     }
 
     @Override
-    public void _parse(ParameterMap map)
+    public void _parse(TextMap map)
             throws ParseException {
         displayStart = map.getInt("iDisplayStart");
         displayLength = map.getInt("iDisplayLength");

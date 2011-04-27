@@ -85,7 +85,7 @@ public class Event
 
     @Column(length = ABBR_LEN, nullable = false)
     @Index(name = "source")
-    String getSource() {
+    public String getSource() {
         return sourceAbbr;
     }
 

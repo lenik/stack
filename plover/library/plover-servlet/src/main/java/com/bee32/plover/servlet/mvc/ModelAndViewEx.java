@@ -10,7 +10,7 @@ import javax.free.IllegalUsageException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
-import com.bee32.plover.arch.util.ParameterMap;
+import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.res.ResourceBundleEx;
 
 /**
@@ -32,7 +32,7 @@ public abstract class ModelAndViewEx
     private Class<?> hintClass;
 
     public Map<String, Object> _meta;
-    public ParameterMap meta;
+    public TextMap meta;
     public Map<String, String> V;
 
     public ModelAndViewEx(Object controller) {
@@ -137,12 +137,12 @@ public abstract class ModelAndViewEx
     static class ClassDataEx {
 
         public Map<String, Object> metaData;
-        public ParameterMap metaDataLookup;
+        public TextMap metaDataLookup;
         public Map<String, String> vocab;
 
         public ClassDataEx() {
             metaData = new HashMap<String, Object>();
-            metaDataLookup = new ParameterMap(metaData);
+            metaDataLookup = new TextMap(metaData);
             vocab = new HashMap<String, String>();
         }
 

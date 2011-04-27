@@ -8,12 +8,12 @@ import java.util.Set;
 import javax.free.AbstractVariantLookupMap;
 import javax.free.Dates;
 
-public class ParameterMap
+public class TextMap
         extends AbstractVariantLookupMap<String> {
 
     Map<String, ?> map;
 
-    public ParameterMap(Map<String, ?> map) {
+    public TextMap(Map<String, ?> map) {
         if (map == null)
             throw new NullPointerException("map");
         this.map = map;

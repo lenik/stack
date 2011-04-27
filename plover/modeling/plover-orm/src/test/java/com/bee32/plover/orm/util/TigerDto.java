@@ -2,7 +2,7 @@ package com.bee32.plover.orm.util;
 
 import javax.free.ParseException;
 
-import com.bee32.plover.arch.util.ParameterMap;
+import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.feaCat.Tiger;
 
 public class TigerDto
@@ -37,7 +37,7 @@ public class TigerDto
     }
 
     @Override
-    protected void _parse(ParameterMap map)
+    protected void _parse(TextMap map)
             throws ParseException {
     }
 
