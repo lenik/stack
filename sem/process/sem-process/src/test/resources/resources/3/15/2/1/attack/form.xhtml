@@ -2,88 +2,39 @@
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
-    xmlns:sem="http://bee32.com/sem/functions">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <ui:composition template="/template/entity/form.xhtml">
-
-    <ui:define name="scripts.user">
-        <!-- <link rel="stylesheet" type="text/css" href="${location.WEB_APP}/css/jquery-datepicker.css" /> -->
-        <!-- <script type="text/javascript" src="${location.WEB_APP}/js/jquery-datepicker.js"></script> -->
-        <script language="javascript">
-            $("#beginTime, #endTime").datepicker({
-                showOn : "button",
-                // buttonImage : "${location.WEB_APP}/css/images/calendar.gif",
-                // buttonImageOnly : true,
-                dateFormat : 'yy-mm-dd'
-            });
-        </script>
-    </ui:define>
 
     <ui:define name="table">
         <table width="100%" bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
             <tr>
-                <td align="right">类别 :</td>
+                <td align="right">攻击目标:</td>
                 <td>
-                    <input name="category" type="text" size="20" maxlength="50" value="${it.category}" />
+                    <input name="target" type="text" size="50" maxlength="200" value="${it.target}" />
                 </td>
             </tr>
             <tr>
-                <td align="right">优先级 :</td>
+                <td align="right">审核人:</td>
                 <td>
-                    <h:selectOneMenu id="priority" value="#{it.priority}">
-                        <c:forEach var="priority" items="${priorityList}">
-                            <f:selectItem itemValue="${priority.priority}" itemLabel="${priority.name}" />
-                        </c:forEach>
-                    </h:selectOneMenu>
-                </td>
-            </tr>
-            <tr>
-                <td align="right">状态 :</td>
-                <td>
-                    <h:selectOneMenu id="statusId" value="#{it.status.id}">
-                        <c:forEach var="status" items="${statusList}">
-                            <f:selectItem itemValue="${status.id}" itemLabel="${status.name}" />
-                        </c:forEach>
-                    </h:selectOneMenu>
-                </td>
-            </tr>
-            <tr>
-                <td align="right">行为主体 :</td>
-                <td>
-                    <h:selectOneMenu id="actorId" value="#{it.actor.id}">
-                        <c:forEach var="user" items="${userList}">
+                    <h:selectOneMenu id="verifierId" value="#{it.verifier.id}">
+                        <c:forEach var="user" items="${users}">
                             <f:selectItem itemValue="${user.id}" itemLabel="${user.displayName}" />
                         </c:forEach>
                     </h:selectOneMenu>
                 </td>
             </tr>
             <tr>
-                <td align="right">标题 :</td>
+                <td align="right">允许/拒绝:</td>
                 <td>
-                    <input name="subject" type="text" size="60" maxlength="200" value="${it.subject}" />
+                    <h:selectBooleanCheckbox id="allowed" value="${it.allowed}" />
+                    允许
                 </td>
             </tr>
             <tr>
-                <td align="right">消息 :</td>
+                <td align="right">拒绝原因:</td>
                 <td>
-                    <input name="message" type="text" size="60" maxlength="200" value="${it.message}" />
-                </td>
-            </tr>
-            <tr>
-                <td align="right">开始时间 :</td>
-                <td>
-                    <input id="beginTime" name="beginTime" type="text" size="15" maxlength="30" value="${it.beginTime}" />
-                </td>
-            </tr>
-            <tr>
-                <td align="right">结束时间 :</td>
-                <td>
-                    <input id="endTime" name="endTime" type="text" size="15" maxlength="30" value="${it.endTime}" />
+                    <input name="rejectedReason" type="text" size="50" maxlength="200" value="${it.rejectedReason}" />
                 </td>
             </tr>
         </table>

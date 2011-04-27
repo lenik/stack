@@ -17,10 +17,6 @@
                 <td>${it.target}</td>
             </tr>
             <tr>
-                <td>审核状态:</td>
-                <td>${it.verified}</td>
-            </tr>
-            <tr>
                 <td>审核人:</td>
                 <td>${it.verifier.displayName}</td>
             </tr>
@@ -29,12 +25,28 @@
                 <td>${it.verifiedDate}</td>
             </tr>
             <tr>
-                <td>拒绝原因:</td>
-                <td>${it.reason}</td>
+                <td>允许/拒绝:</td>
+                <td>${it.allowed}</td>
             </tr>
             <tr>
-                <td>控制页:</td>
-                <td>${it.controlPage}</td>
+                <td>拒绝原因:</td>
+                <td>${it.rejectedReason}</td>
+            </tr>
+            <tr>
+                <td>选定的审核策略:</td>
+                <td>${it.verifyPolicy.name}</td>
+            </tr>
+            <tr>
+                <td>审核运算结果:</td>
+                <td>${it.verifyState.displayName}</td>
+            </tr>
+            <tr>
+                <td>审核运算错误消息:</td>
+                <td>${it.verifyError}</td>
+            </tr>
+            <tr>
+                <td>审核运算时间:</td>
+                <td>${it.verifyEvalDate}</td>
             </tr>
         </table>
     </ui:define>
