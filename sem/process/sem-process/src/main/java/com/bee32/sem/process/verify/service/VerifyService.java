@@ -1,6 +1,7 @@
 package com.bee32.sem.process.verify.service;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -17,6 +18,7 @@ import com.bee32.sem.process.verify.IVerifyPolicy;
 import com.bee32.sem.process.verify.VerifyException;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
+import com.bee32.sem.process.verify.VerifyState;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 import com.bee32.sem.process.verify.builtin.web.VerifyPolicyDto;
 import com.bee32.sem.process.verify.util.VerifiableEntityAccessor;
@@ -36,9 +38,9 @@ public class VerifyService
     }
 
     @Transactional(readOnly = true)
-    public <C extends IVerifyContext> VerifyPolicyDto getPreferredVerifyPolicy(C entity) {
-        VerifyPolicy<C> preferredVerifyPolicy = policyDao.getVerifyPolicy(entity);
-        return new VerifyPolicyDto().marshal(preferredVerifyPolicy);
+    public <C extends IVerifyContext> VerifyPolicyDto getVerifyPolicy(C entity) {
+        VerifyPolicy<C> verifyPolicy = policyDao.getVerifyPolicy(entity);
+        return new VerifyPolicyDto().marshal(verifyPolicy);
     }
 
     // --o IVerifyPolicy.
@@ -135,6 +137,7 @@ public class VerifyService
 
         VerifiableEntityAccessor.setVerifyState(entity, result.getState());
         VerifiableEntityAccessor.setVerifyError(entity, result.getMessage());
+        VerifiableEntityAccessor.setVerifyEvalDate(entity, new Date());
 
         Task verifyTask = entity.getVerifyTask();
         {
@@ -146,8 +149,9 @@ public class VerifyService
             verifyTask.setCategory(VerifyPolicy.class);
             verifyTask.setPriority(EventPriority.HIGH);
 
-            verifyTask.setClosed(result.getState().isClosed());
-            verifyTask.setState(result.getState());
+            VerifyState state = result.getState();
+            verifyTask.setClosed(state.isClosed());
+            verifyTask.setState(state);
             verifyTask.setActor(null); // session current user.
 
             String entityName = ClassUtil.getDisplayName(entity.getClass()) + " [" + entity.getId() + "]";
@@ -157,12 +161,16 @@ public class VerifyService
 
             verifyTask.setSubject(subject);
             verifyTask.setMessage(message);
-            verifyTask.setBeginTime(new Date());
-            verifyTask.setEndTime(entity.getVerifyUpdatedDate());
+            verifyTask.setBeginTime(new Date()); //
+
+            if (state.isClosed())
+                verifyTask.setEndTime(entity.getVerifyEvalDate());
+            else
+                verifyTask.setEndTime(null);
 
             verifyTask.setRef(entity);
 
-            Set<Principal> responsibles = getDeclaredResponsibles(entity);
+            Set<Principal> responsibles = new HashSet<Principal>(getDeclaredResponsibles(entity));
             verifyTask.setObservers(responsibles);
         }
 
@@ -172,8 +180,8 @@ public class VerifyService
     @Transactional(readOnly = true)
     @Override
     public Set<Principal> getDeclaredResponsibles(IVerifyContext contextEntity) {
-        VerifyPolicy<IVerifyContext> preferredVerifyPolicy = policyDao.getVerifyPolicy(contextEntity);
-        return preferredVerifyPolicy.getDeclaredResponsibles(contextEntity);
+        VerifyPolicy<IVerifyContext> verifyPolicy = policyDao.getVerifyPolicy(contextEntity);
+        return verifyPolicy.getDeclaredResponsibles(contextEntity);
     }
 
 }

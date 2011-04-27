@@ -12,6 +12,9 @@ import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
+import com.bee32.sem.event.EventState;
+import com.bee32.sem.event.entity.Task;
+import com.bee32.sem.event.web.TaskDto;
 import com.bee32.sem.process.verify.IAllowedByContext;
 
 public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extends IAllowedByContext>, K extends Serializable>
@@ -19,12 +22,15 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
 
     private static final long serialVersionUID = 1L;
 
-    private boolean verified;
     private UserDto verifier;
-
     private Date verifiedDate;
     private boolean allowed;
-    private String rejectReason;
+    private String rejectedReason;
+
+    private EventState verifyState;
+    private String verifyError;
+    private Date verifyEvalDate;
+    private TaskDto verifyTask;
 
     public AllowedBySupportDto() {
         super();
@@ -49,18 +55,26 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
         verifier = new UserDto(source.getVerifier());
         verifiedDate = source.getVerifiedDate();
         allowed = source.isAllowed();
-        rejectReason = source.getRejectReason();
+        rejectedReason = source.getRejectedReason();
+
+        verifyState = source.getVerifyState();
+        verifyError = source.getVerifyError();
+        verifyEvalDate = source.getVerifyEvalDate();
+
+        verifyTask = new TaskDto().ref(source.getVerifyTask());
     }
 
     @Override
     protected void __unmarshalTo(IUnmarshalContext context, E target) {
         super.__unmarshalTo(context, target);
 
-        with(context, target).unmarshal(verifierProperty, verifier);
-
         target.setVerifiedDate(verifiedDate);
         target.setAllowed(allowed);
-        target.setRejectReason(rejectReason);
+        target.setRejectedReason(rejectedReason);
+
+        with(context, target)//
+                .unmarshal(verifierProperty, verifier)//
+                .unmarshal(verifyTaskProperty, verifyTask);
     }
 
     @Override
@@ -77,31 +91,11 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
         verifiedDate = new Date(_verifiedDate);
 
         allowed = map.getBoolean("allowed");
-        rejectReason = map.getString("rejectReason");
-    }
-
-    public boolean isVerified() {
-        return verified;
-    }
-
-    public void setVerified(boolean verified) {
-        this.verified = verified;
-    }
-
-    public String getVerificationState() {
-        return verified ? "Verified" : "Not-Verified";
+        rejectedReason = map.getString("rejectedReason");
     }
 
     public UserDto getVerifier() {
         return verifier;
-    }
-
-    public Long getVerifierId() {
-        return id(verifier);
-    }
-
-    public String getVerifierName() {
-        return verifier == null ? null : verifier.getDisplayName();
     }
 
     public void setVerifier(UserDto verifier) {
@@ -124,12 +118,40 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
         this.allowed = allowed;
     }
 
-    public String getRejectReason() {
-        return rejectReason;
+    public String getRejectedReason() {
+        return rejectedReason;
     }
 
-    public void setRejectReason(String rejectReason) {
-        this.rejectReason = rejectReason;
+    public void setRejectedReason(String rejectedReason) {
+        this.rejectedReason = rejectedReason;
+    }
+
+    public EventState getVerifyState() {
+        return verifyState;
+    }
+
+    public void setVerifyState(EventState verifyState) {
+        this.verifyState = verifyState;
+    }
+
+    public String getVerifyError() {
+        return verifyError;
+    }
+
+    public void setVerifyError(String verifyError) {
+        this.verifyError = verifyError;
+    }
+
+    public Date getVerifyEvalDate() {
+        return verifyEvalDate;
+    }
+
+    public void setVerifyEvalDate(Date verifyEvalDate) {
+        this.verifyEvalDate = verifyEvalDate;
+    }
+
+    public String getVerifierName() {
+        return verifier == null ? null : verifier.getName();
     }
 
     final PropertyAccessor<E, User> verifierProperty;
@@ -148,5 +170,19 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
 
         };
     }
+
+    final PropertyAccessor<E, Task> verifyTaskProperty = new PropertyAccessor<E, Task>(Task.class) {
+
+        @Override
+        public Task get(E entity) {
+            return entity.getVerifyTask();
+        }
+
+        @Override
+        public void set(E entity, Task verifyTask) {
+            entity.setVerifyTask(verifyTask);
+        }
+
+    };
 
 }
