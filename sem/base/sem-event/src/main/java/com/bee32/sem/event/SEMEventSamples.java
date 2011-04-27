@@ -7,6 +7,7 @@ import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.event.entity.Event;
+import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.EventStatus;
 import com.bee32.sem.event.entity.Task;
@@ -28,12 +29,15 @@ public class SEMEventSamples
     public static final EventStatus FAILED = new EventStatus("failed", "失败", GenericState.FAILED);
     public static final EventStatus ERRORED = new EventStatus("errored", "异常", GenericState.ERRORED);
 
+    public static final EventCategory weather = new EventCategory("weather", "天气预报");
+    public static final EventCategory special = new EventCategory("special", "特种");
+
     public static Event rain;
     public static Task killAngel;
 
     static {
         rain = new Event();
-        rain.setCategory("天气预报");
+        rain.setCategory(weather);
         rain.setPriority(LOW.getPriority());
         rain.setState(GenericState.UNKNOWN);
         rain.setClosed(true);
@@ -44,7 +48,7 @@ public class SEMEventSamples
         rain.setObservers(Arrays.asList(IcsfPrincipalSamples.solaRobots));
 
         killAngel = new Task();
-        killAngel.setCategory("特种");
+        killAngel.setCategory(special);
         killAngel.setPriority(HIGH.getPriority());
         killAngel.setState(GenericState.RUNNING);
         killAngel.setClosed(false);
@@ -60,6 +64,8 @@ public class SEMEventSamples
     protected void preamble() {
         addNormalSample(URGENT, HIGH, NORMAL, LOW);
         addNormalSample(UNKNOWN, RUNNING, SUSPENDED, CANCELED, DONE, FAILED, ERRORED);
+
+        addNormalSample(weather, special);
 
         addNormalSample(rain);
         addNormalSample(killAngel);
