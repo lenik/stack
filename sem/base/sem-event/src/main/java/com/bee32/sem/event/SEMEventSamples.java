@@ -38,6 +38,7 @@ public class SEMEventSamples
     static {
         rain = new Event();
         rain.setCategory(weather);
+        rain.setSourceClass(SEMEventSamples.class);
         rain.setPriority(LOW.getPriority());
         rain.setState(GenericState.UNKNOWN);
         rain.setClosed(true);
@@ -49,6 +50,7 @@ public class SEMEventSamples
 
         killAngel = new Task();
         killAngel.setCategory(special);
+        killAngel.setSourceClass(SEMEventSamples.class);
         killAngel.setPriority(HIGH.getPriority());
         killAngel.setState(GenericState.RUNNING);
         killAngel.setClosed(false);

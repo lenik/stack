@@ -41,7 +41,8 @@ public class Event
     private static final long serialVersionUID = 1L;
 
     private EventCategory category;
-    private Class<?> source;
+    private String sourceAbbr;
+    private Class<?> sourceClass;
 
     private int priority;
 
@@ -85,22 +86,27 @@ public class Event
     @Column(length = ABBR_LEN, nullable = false)
     @Index(name = "source")
     String getSource() {
-        return ABBR.abbr(source);
+        return sourceAbbr;
     }
 
-    void setSource(String source)
-            throws ClassNotFoundException {
-        this.source = ABBR.expand(source);
+    void setSource(String source) {
+        this.sourceAbbr = source;
+        try {
+            this.sourceClass = ABBR.expand(source);
+        } catch (ClassNotFoundException e) {
+            // Just ignore unknown source classes, here.
+        }
     }
 
     @Transient
     @Override
     public Class<?> getSourceClass() {
-        return source;
+        return sourceClass;
     }
 
     public void setSourceClass(Class<?> sourceClass) {
-        this.source = sourceClass;
+        this.sourceClass = sourceClass;
+        this.sourceAbbr = ABBR.abbr(sourceClass);
     }
 
     @Column(nullable = false)
