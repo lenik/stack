@@ -7,14 +7,14 @@ import javax.free.IllegalUsageException;
 import javax.free.UnexpectedException;
 import javax.servlet.http.HttpServletRequest;
 
-public class PredefinedLocationContext
-        extends LocationContext {
+public class PredefinedContextLocation
+        extends Location {
 
     private static final long serialVersionUID = 1L;
 
     private final URL root;
 
-    public PredefinedLocationContext(String name, String rootPath) {
+    public PredefinedContextLocation(String name, String rootPath) {
         this(name, _parse(rootPath), null);
     }
 
@@ -29,7 +29,7 @@ public class PredefinedLocationContext
         }
     }
 
-    public PredefinedLocationContext(String name, URL root, String base) {
+    public PredefinedContextLocation(String name, URL root, String base) {
         super(name, base);
 
         if (root == null)
@@ -39,19 +39,19 @@ public class PredefinedLocationContext
     }
 
     @Override
-    protected LocationContext create(String base) {
-        return new PredefinedLocationContext(name, root, base);
+    protected Location create(String base) {
+        return new PredefinedContextLocation(name, root, base);
     }
 
     @Override
-    public PredefinedLocationContext join(String location) {
-        return (PredefinedLocationContext) super.join(location);
+    public PredefinedContextLocation join(String location) {
+        return (PredefinedContextLocation) super.join(location);
     }
 
-    public PredefinedLocationContext merge() {
+    public PredefinedContextLocation merge() {
         try {
             URL newRoot = new URL(root, base);
-            return new PredefinedLocationContext(name + " | " + base, newRoot, null);
+            return new PredefinedContextLocation(name + " | " + base, newRoot, null);
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }

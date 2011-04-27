@@ -8,7 +8,7 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletRequest;
 
-public abstract class LocationContext
+public abstract class Location
         implements ILocationContext, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -17,13 +17,13 @@ public abstract class LocationContext
     protected final String base;
     protected final boolean directory;
 
-// public LocationContext(String name) {
-// this.name = name;
-// this.base = null;
-// this.directory = false;
-// }
+    Location(String name) {
+        this.name = name;
+        this.base = null;
+        this.directory = false;
+    }
 
-    public LocationContext(String name, String base) {
+    public Location(String name, String base) {
         this.name = name;
 
         if (base == null)
@@ -48,7 +48,7 @@ public abstract class LocationContext
         return directory;
     }
 
-    protected abstract LocationContext create(String base);
+    protected abstract Location create(String base);
 
     protected final String join(StringBuffer context, String spec) {
         boolean isdir = false;
@@ -123,7 +123,7 @@ public abstract class LocationContext
     }
 
     @Override
-    public LocationContext join(String location) {
+    public Location join(String location) {
         if (location == null)
             throw new NullPointerException("location");
 

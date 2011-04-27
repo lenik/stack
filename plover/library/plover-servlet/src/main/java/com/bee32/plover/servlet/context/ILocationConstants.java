@@ -6,46 +6,46 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.restful.RESTfulConfig;
 
-public interface LocationContextConstants {
+public interface ILocationConstants {
 
-    LocationContext JAVASCRIPT = new JavascriptLocationContext(null);
+    Location JAVASCRIPT = new JavascriptContextLocation(null);
 
-    LocationContext REQUEST = new RequestLocationContext(null);
+    Location REQUEST = new RequestContextLocation(null);
 
-    LocationContext URL = REQUEST;
+    Location URL = REQUEST;
 
-    LocationContext WEB_APP = new ServletLocationContext(null);
+    Location WEB_APP = new ServletContextLocation(null);
 
-    LocationContext LIB_JS = new ServletLocationContext("lib/js/");
+    Location LIB_JS = new ServletContextLocation("lib/js/");
 
-    LocationContext MM = new ModuleManagerLocationContext(null);
+    Location MM = new ModuleManagerContextLocation(null);
 
-    LocationContext STYLE_ROOT = new PredefinedLocationContext("STYLE-ROOT", //
+    Location STYLE_ROOT = new PredefinedContextLocation("STYLE-ROOT", //
             "http://static.secca-project.com/style/");
 
-    LocationContext STYLE = new PredefinedLocationContext("STYLE", //
+    Location STYLE = new PredefinedContextLocation("STYLE", //
             "http://static.secca-project.com/style/default/");
 
-    LocationContext ICON = new PredefinedLocationContext("STYLE-ICON", //
+    Location ICON = new PredefinedContextLocation("STYLE-ICON", //
             "http://static.secca-project.com/style/default/icons/");
 
-    LocationContext LIB_3RDPARTY = new PredefinedLocationContext("LIB-3RDPARTY", //
+    Location LIB_3RDPARTY = new PredefinedContextLocation("LIB-3RDPARTY", //
             "http://static.secca-project.com/lib2/");
 
 }
 
-class JavascriptLocationContext
-        extends LocationContext {
+class JavascriptContextLocation
+        extends Location {
 
     private static final long serialVersionUID = 1L;
 
-    public JavascriptLocationContext(String script) {
-        super("<<JAVASCRIPT>>", script);
+    public JavascriptContextLocation(String script) {
+        super("<JavaScript>", script);
     }
 
     @Override
-    protected LocationContext create(String script) {
-        return new JavascriptLocationContext(script);
+    protected Location create(String script) {
+        return new JavascriptContextLocation(script);
     }
 
     @Override
@@ -62,18 +62,18 @@ class JavascriptLocationContext
 
 }
 
-class RequestLocationContext
-        extends LocationContext {
+class RequestContextLocation
+        extends Location {
 
     private static final long serialVersionUID = 1L;
 
-    public RequestLocationContext(String base) {
-        super("<<request>>", base);
+    public RequestContextLocation(String base) {
+        super("Request", base);
     }
 
     @Override
-    protected LocationContext create(String base) {
-        return new RequestLocationContext(base);
+    protected Location create(String base) {
+        return new RequestContextLocation(base);
     }
 
     /**
@@ -122,18 +122,18 @@ class RequestLocationContext
 
 }
 
-class ServletLocationContext
-        extends LocationContext {
+class ServletContextLocation
+        extends Location {
 
     private static final long serialVersionUID = 1L;
 
-    public ServletLocationContext(String base) {
-        super("<<servlet-context>>", base);
+    public ServletContextLocation(String base) {
+        super("Servlet-Context", base);
     }
 
     @Override
-    protected LocationContext create(String base) {
-        return new ServletLocationContext(base);
+    protected Location create(String base) {
+        return new ServletContextLocation(base);
     }
 
     @Override
@@ -148,18 +148,18 @@ class ServletLocationContext
 
 }
 
-class ModuleManagerLocationContext
-        extends LocationContext {
+class ModuleManagerContextLocation
+        extends Location {
 
     private static final long serialVersionUID = 1L;
 
-    public ModuleManagerLocationContext(String base) {
-        super("<<module-manager>>", base);
+    public ModuleManagerContextLocation(String base) {
+        super("Module-Manager", base);
     }
 
     @Override
-    protected LocationContext create(String base) {
-        return new ModuleManagerLocationContext(base);
+    protected Location create(String base) {
+        return new ModuleManagerContextLocation(base);
     }
 
     @Override

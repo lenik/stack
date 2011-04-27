@@ -20,13 +20,13 @@ import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.orm.util.TransferBy;
-import com.bee32.plover.servlet.context.LocationContextConstants;
+import com.bee32.plover.servlet.context.ILocationConstants;
 
 @ComponentTemplate
 @Lazy
 public abstract class GenericEntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
         extends _EntityController<E, K, Dto>
-        implements ITypeAbbrAware, LocationContextConstants {
+        implements ITypeAbbrAware, ILocationConstants {
 
     static ThreadLocal<RequestGenerics> tlRequestGenerics = new ThreadLocal<RequestGenerics>();
 

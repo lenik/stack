@@ -19,7 +19,7 @@ import com.bee32.plover.servlet.util.ThreadServletContext;
  * WEB_APP.__fqn__[spec]    http://foo.bar/servlet/spec
  * </pre>
  */
-public class LocationContextCM
+public class LocationVmap
         extends VerbMap {
 
     private final ILocationContext location;
@@ -30,11 +30,11 @@ public class LocationContextCM
 
     private final int mode;
 
-    public LocationContextCM(ILocationContext locationContext) {
+    public LocationVmap(ILocationContext locationContext) {
         this(locationContext, DEFAULT);
     }
 
-    public LocationContextCM(ILocationContext locationContext, int mode) {
+    public LocationVmap(ILocationContext locationContext, int mode) {
         if (locationContext == null)
             throw new NullPointerException("locationContext");
         this.location = locationContext;
@@ -46,8 +46,8 @@ public class LocationContextCM
         return 0;
     }
 
-    static LocationContextCM create(ILocationContext locationContext, int mode) {
-        return new LocationContextCM(locationContext, mode);
+    static LocationVmap create(ILocationContext locationContext, int mode) {
+        return new LocationVmap(locationContext, mode);
     }
 
     @Override

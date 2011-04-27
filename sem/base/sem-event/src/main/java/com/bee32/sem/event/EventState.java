@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
-import com.bee32.plover.servlet.context.LocationContext;
+import com.bee32.plover.servlet.context.Location;
+import com.bee32.plover.servlet.context.Locations;
 
 public class EventState {
 

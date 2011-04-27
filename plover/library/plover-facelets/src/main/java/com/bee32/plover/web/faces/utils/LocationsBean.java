@@ -11,8 +11,8 @@ import javax.inject.Named;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.servlet.context.LocationContext;
-import com.bee32.plover.servlet.context.LocationContextConstants;
+import com.bee32.plover.servlet.context.Location;
+import com.bee32.plover.servlet.context.ILocationConstants;
 
 /**
  * e.g., #{location.WEB_APP}
@@ -20,30 +20,30 @@ import com.bee32.plover.servlet.context.LocationContextConstants;
 @Lazy
 @Component
 @Named("location")
-public class LocationContextsBean
+public class LocationsBean
         extends YesMap {
 
-    static final Map<String, LocationContextCM> locations = new HashMap<String, LocationContextCM>();
+    static final Map<String, LocationVmap> locations = new HashMap<String, LocationVmap>();
 
     static {
-        for (Field field : LocationContextConstants.class.getFields()) {
+        for (Field field : ILocationConstants.class.getFields()) {
 
             int modifiers = field.getModifiers();
             if (!Modifier.isPublic(modifiers) || !Modifier.isStatic(modifiers))
                 continue;
 
-            if (!LocationContext.class.isAssignableFrom(field.getType()))
+            if (!Location.class.isAssignableFrom(field.getType()))
                 continue;
 
             String name = field.getName();
-            LocationContext locationContext;
+            Location locationContext;
             try {
-                locationContext = (LocationContext) field.get(null);
+                locationContext = (Location) field.get(null);
             } catch (Exception e) {
                 throw new UnexpectedException(e.getMessage(), e);
             }
 
-            LocationContextCM wrapper = new LocationContextCM(locationContext);
+            LocationVmap wrapper = new LocationVmap(locationContext);
             locations.put(name, wrapper);
         } // for field
     }

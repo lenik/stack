@@ -36,7 +36,7 @@ import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.disp.util.MethodLazyInjector;
 import com.bee32.plover.disp.util.MethodPattern;
 import com.bee32.plover.restful.request.RESTfulRequestBuilder;
-import com.bee32.plover.servlet.context.LocationContextConstants;
+import com.bee32.plover.servlet.context.ILocationConstants;
 
 @Lazy
 @Service
@@ -156,7 +156,7 @@ public class RESTfulService {
 
             String location = ReverseLookupRegistry.getInstance().getLocation(target);
             if (location != null) {
-                location = LocationContextConstants.WEB_APP.join(location).resolve(request);
+                location = ILocationConstants.WEB_APP.join(location).resolve(request);
 
                 String additionMethod = resp.getMethod();
                 if (additionMethod != null) {

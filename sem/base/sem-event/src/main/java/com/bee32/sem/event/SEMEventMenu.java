@@ -2,7 +2,7 @@ package com.bee32.sem.event;
 
 import com.bee32.plover.orm.ext.dict.CommonDictController;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.plover.servlet.context.LocationContext;
+import com.bee32.plover.servlet.context.Location;
 import com.bee32.sem.event.entity.EventStatus;
 import com.bee32.sem.event.web.EventController;
 import com.bee32.sem.event.web.EventPriorityController;
@@ -14,8 +14,8 @@ public class SEMEventMenu
         extends MenuContribution
         implements ITypeAbbrAware {
 
-    static LocationContext EVENT = WEB_APP.join(EventController.PREFIX);
-    static LocationContext DICT = WEB_APP.join(CommonDictController.PREFIX);
+    static Location EVENT = WEB_APP.join(EventController.PREFIX);
+    static Location DICT = WEB_APP.join(CommonDictController.PREFIX);
 
     @Contribution("sa")
     MenuEntry eventAdmin = new MenuEntry("event");
@@ -32,16 +32,16 @@ public class SEMEventMenu
     MenuEntry event = new MenuEntry("event");
 
     @Contribution("event")
-    MenuEntry pendingTasks = new MenuEntry(10, "pendingTasks");
+    MenuEntry pendingTasks = new MenuEntry(10, "pendingTasks", EVENT.join("event/index.htm?cat=pending"));
 
     @Contribution("event")
-    MenuEntry completedTasks = new MenuEntry(20, "completedTasks");
+    MenuEntry completedTasks = new MenuEntry(20, "completedTasks", EVENT.join("event/index.htm?cat=compl"));
 
     @Contribution("event")
-    MenuEntry eventIndex = new MenuEntry(100, "eventIndex");
+    MenuEntry eventIndex = new MenuEntry(100, "eventIndex", EVENT.join("event/index.htm?recent=30"));
 
     @Contribution("event")
-    MenuEntry activityIndex = new MenuEntry(200, "activityIndex");
+    MenuEntry activityIndex = new MenuEntry(200, "activityIndex", EVENT.join("event/index.htm?cat=act&recent=30"));
 
     @Override
     protected void preamble() {

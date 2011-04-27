@@ -11,6 +11,6 @@ public interface IContextLocationResolver {
      *            Where the returned location is relocated to, must be non-<code>null</code>.
      * @return <code>null</code> If specified <code>key</code> is unknown.
      */
-    String getRelativeLocation(LocationContext context, String targetLocation);
+    String getRelativeLocation(Location context, String targetLocation);
 
 }
