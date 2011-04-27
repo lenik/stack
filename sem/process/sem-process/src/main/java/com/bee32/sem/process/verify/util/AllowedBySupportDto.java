@@ -13,8 +13,8 @@ import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.event.EventState;
+import com.bee32.sem.event.dto.TaskDto;
 import com.bee32.sem.event.entity.Task;
-import com.bee32.sem.event.web.TaskDto;
 import com.bee32.sem.process.verify.IAllowedByContext;
 
 public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extends IAllowedByContext>, K extends Serializable>

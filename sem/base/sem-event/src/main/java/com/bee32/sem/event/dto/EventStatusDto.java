@@ -1,4 +1,4 @@
-package com.bee32.sem.event.web;
+package com.bee32.sem.event.dto;
 
 import javax.free.IVariantLookupMap;
 import javax.free.ParseException;

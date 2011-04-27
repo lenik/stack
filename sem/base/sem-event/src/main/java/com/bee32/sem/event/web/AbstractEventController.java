@@ -18,6 +18,9 @@ import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.event.dao.EventPriorityDao;
 import com.bee32.sem.event.dao.EventStatusDao;
+import com.bee32.sem.event.dto.AbstractEventDto;
+import com.bee32.sem.event.dto.EventPriorityDto;
+import com.bee32.sem.event.dto.EventStatusDto;
 import com.bee32.sem.event.entity.Event;
 
 public abstract class AbstractEventController<E extends Event, Dto extends AbstractEventDto<E>>

@@ -1,4 +1,4 @@
-package com.bee32.sem.event.web;
+package com.bee32.sem.event.dto;
 
 import com.bee32.sem.event.entity.Event;
 

@@ -1,4 +1,4 @@
-package com.bee32.sem.event.web;
+package com.bee32.sem.event.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +18,7 @@ import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Event;
+import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventStatus;
 
 public abstract class AbstractEventDto<E extends Event>
@@ -27,7 +28,7 @@ public abstract class AbstractEventDto<E extends Event>
 
     public static final int OBSERVERS = 1;
 
-    private String category;
+    private EventCategoryDto category;
     private int priority;
 
     private int flags;
@@ -60,7 +61,8 @@ public abstract class AbstractEventDto<E extends Event>
 
     @Override
     protected void _marshal(E source) {
-        category = source.getCategory();
+        category = new EventCategoryDto(source.getCategory());
+
         priority = source.getPriority();
         stateIndex = source.getState();
 
@@ -81,7 +83,8 @@ public abstract class AbstractEventDto<E extends Event>
 
     @Override
     protected void _unmarshalTo(IUnmarshalContext context, E target) {
-        target.setCategory(category);
+        target.setCategory(category.unmarshal());
+
         target.setPriority(priority);
         target.setState(stateIndex);
 
@@ -108,7 +111,9 @@ public abstract class AbstractEventDto<E extends Event>
     public void _parse(IVariantLookupMap<String> map)
             throws ParseException, TypeConvertException {
 
-        category = map.getString("category");
+        Integer _categoryId = map.getNInt("categoryId");
+        category = new EventCategoryDto().ref(_categoryId);
+
         priority = map.getInt("priority");
 
         flags = map.getInt("flags");
@@ -290,6 +295,20 @@ public abstract class AbstractEventDto<E extends Event>
         this.controlPage = controlPage;
     }
 
+    static final PropertyAccessor<Event, EventCategory> categoryProperty = new PropertyAccessor<Event, EventCategory>(
+            EventCategory.class) {
+
+        @Override
+        public EventCategory get(Event entity) {
+            return entity.getCategory();
+        }
+
+        @Override
+        public void set(Event entity, EventCategory category) {
+            entity.setCategory(category);
+        }
+
+    };
     static final PropertyAccessor<Event, EventStatus> statusProperty = new PropertyAccessor<Event, EventStatus>(
             EventStatus.class) {
 

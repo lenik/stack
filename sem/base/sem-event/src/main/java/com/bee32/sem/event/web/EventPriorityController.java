@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.sem.event.SEMEventModule;
+import com.bee32.sem.event.dto.EventPriorityDto;
 import com.bee32.sem.event.entity.EventPriority;
 
 @RequestMapping(EventPriorityController.PREFIX + "*")
