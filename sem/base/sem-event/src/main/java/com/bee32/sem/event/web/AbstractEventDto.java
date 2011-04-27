@@ -198,7 +198,7 @@ public abstract class AbstractEventDto<E extends Event>
             statusText = status.getDisplayName();
 
         if (statusText == null && stateIndex != 0) {
-            EventState eventState = EventState.get(stateIndex);
+            EventState eventState = EventState.valueOf(stateIndex);
             statusText = eventState.getName();
         }
 

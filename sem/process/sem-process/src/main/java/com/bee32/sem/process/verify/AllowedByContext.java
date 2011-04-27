@@ -29,7 +29,7 @@ public class AllowedByContext
     }
 
     @Override
-    public String getRejectReason() {
+    public String getRejectedReason() {
         return message;
     }
 

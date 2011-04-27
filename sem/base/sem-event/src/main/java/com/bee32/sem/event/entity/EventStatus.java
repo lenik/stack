@@ -54,7 +54,7 @@ public class EventStatus
     }
 
     public void setState(int state) {
-        this.state = EventState.get(state);
+        this.state = EventState.valueOf(state);
     }
 
 }

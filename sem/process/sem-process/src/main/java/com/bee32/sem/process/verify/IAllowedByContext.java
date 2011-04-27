@@ -25,6 +25,6 @@ public interface IAllowedByContext
      *
      * @return 被拒绝的原因，如果没有原因或审核被允许则返回 <code>null</code>。
      */
-    String getRejectReason();
+    String getRejectedReason();
 
 }

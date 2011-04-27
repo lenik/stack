@@ -185,7 +185,7 @@ public class MultiLevel
             return UNKNOWN;
 
         if (!context.isAllowed())
-            return VerifyResult.rejected(context.getVerifier(), context.getRejectReason());
+            return VerifyResult.rejected(context.getVerifier(), context.getRejectedReason());
 
         return VERIFIED;
     }

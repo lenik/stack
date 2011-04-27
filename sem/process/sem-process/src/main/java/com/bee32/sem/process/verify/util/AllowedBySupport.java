@@ -29,7 +29,7 @@ public abstract class AllowedBySupport<K extends Serializable, C extends IAllowe
     private User verifier;
     private Date verifiedDate;
     private boolean allowed;
-    private String rejectReason;
+    private String rejectedReason;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @Override
@@ -52,12 +52,12 @@ public abstract class AllowedBySupport<K extends Serializable, C extends IAllowe
 
     @Column(length = 80)
     @Override
-    public String getRejectReason() {
-        return rejectReason;
+    public String getRejectedReason() {
+        return rejectedReason;
     }
 
-    public void setRejectReason(String rejectReason) {
-        this.rejectReason = rejectReason;
+    public void setRejectedReason(String rejectedReason) {
+        this.rejectedReason = rejectedReason;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -68,11 +68,6 @@ public abstract class AllowedBySupport<K extends Serializable, C extends IAllowe
 
     public void setVerifiedDate(Date verifiedDate) {
         this.verifiedDate = verifiedDate;
-    }
-
-    @Override
-    public Date getVerifyUpdatedDate() {
-        return verifiedDate;
     }
 
 }

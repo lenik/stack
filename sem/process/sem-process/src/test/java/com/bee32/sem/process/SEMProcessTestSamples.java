@@ -31,7 +31,7 @@ public class SEMProcessTestSamples
         killSimpsons.setTarget("打击猖狂的辛普森一家，必须让巴特彻底崩溃。");
         killSimpsons.setAllowed(false);
         killSimpsons.setVerifier(IcsfPrincipalSamples.wallE);
-        killSimpsons.setRejectReason("无差别拒绝");
+        killSimpsons.setRejectedReason("无差别拒绝");
         killSimpsons.setVerifiedDate(new Date());
 
         rescueMao = new AttackMission();

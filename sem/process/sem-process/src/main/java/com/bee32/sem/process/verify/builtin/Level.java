@@ -75,7 +75,7 @@ public class Level
     }
 
     @Override
-    protected boolean equalsEntity(EntityBean<Integer> otherEntity) {
+    protected Boolean equalsKey(EntityBean<Integer> otherEntity) {
         Level other = (Level) otherEntity;
 
         if (limit != other.limit)

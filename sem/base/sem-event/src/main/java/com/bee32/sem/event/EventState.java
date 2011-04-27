@@ -115,7 +115,7 @@ public class EventState
         return (sel & SEL_MASK) | ((facility << CLASS_SHIFT) & CLASS_MASK);
     }
 
-    public static EventState get(int id) {
+    public static EventState valueOf(int id) {
         EventState definedState = all.get(id);
         if (definedState != null)
             return definedState;
