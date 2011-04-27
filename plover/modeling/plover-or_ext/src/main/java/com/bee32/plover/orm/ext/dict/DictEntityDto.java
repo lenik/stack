@@ -2,10 +2,10 @@ package com.bee32.plover.orm.ext.dict;
 
 import java.io.Serializable;
 
-import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.plover.arch.util.ParameterMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 
@@ -44,7 +44,7 @@ public class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
     }
 
     @Override
-    public void _parse(IVariantLookupMap<String> map)
+    public void _parse(ParameterMap map)
             throws ParseException, TypeConvertException {
         name = map.getString("name");
         displayName = map.getString("displayName");

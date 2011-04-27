@@ -5,12 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.arch.util.DataExchangeObject;
+import com.bee32.plover.arch.util.ParameterMap;
 
 public class DataTableDxo
         extends DataExchangeObject<Void> {
@@ -184,7 +184,7 @@ public class DataTableDxo
     }
 
     @Override
-    public void _parse(IVariantLookupMap<String> map)
+    public void _parse(ParameterMap map)
             throws ParseException {
         displayStart = map.getInt("iDisplayStart");
         displayLength = map.getInt("iDisplayLength");

@@ -3,10 +3,10 @@ package com.bee32.sem.process.verify.builtin.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.plover.arch.util.ParameterMap;
 import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
@@ -84,7 +84,7 @@ public class PassToNextDto
     }
 
     @Override
-    public void _parse(IVariantLookupMap<String> map)
+    public void _parse(ParameterMap map)
             throws ParseException, TypeConvertException {
         name = map.getString("name");
         description = map.getString("description");

@@ -2,9 +2,9 @@ package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
 
-import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.ParameterMap;
 import com.bee32.plover.orm.entity.Entity;
 
 public class DTOs
@@ -21,7 +21,7 @@ public class DTOs
     }
 
     @Override
-    protected void _parse(IVariantLookupMap<String> map)
+    protected void _parse(ParameterMap map)
             throws ParseException {
     }
 

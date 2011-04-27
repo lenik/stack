@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.free.IVariantLookupMap;
 import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
@@ -18,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataAccessException;
 
 import com.bee32.plover.arch.util.DataTransferObject;
+import com.bee32.plover.arch.util.ParameterMap;
 import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
@@ -253,7 +253,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    protected void __parse(IVariantLookupMap<String> map)
+    protected void __parse(ParameterMap map)
             throws ParseException, TypeConvertException {
         super.__parse(map);
 

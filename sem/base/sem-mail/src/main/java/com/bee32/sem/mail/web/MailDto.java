@@ -1,10 +1,10 @@
 package com.bee32.sem.mail.web;
 
-import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.arch.util.ParameterMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.mail.MailType;
@@ -99,7 +99,7 @@ public class MailDto
     }
 
     @Override
-    public void _parse(IVariantLookupMap<String> map)
+    public void _parse(ParameterMap map)
             throws ParseException, TypeConvertException {
 
         String _type = map.getString("type");

@@ -1,9 +1,9 @@
 package com.bee32.sem.event.dto;
 
-import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.plover.arch.util.ParameterMap;
 import com.bee32.plover.orm.ext.dict.DictEntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.event.entity.EventStatus;
@@ -42,7 +42,7 @@ public class EventStatusDto
     }
 
     @Override
-    public void _parse(IVariantLookupMap<String> map)
+    public void _parse(ParameterMap map)
             throws ParseException, TypeConvertException {
         super._parse(map);
         flagsMask = map.getInt("flagsMask");

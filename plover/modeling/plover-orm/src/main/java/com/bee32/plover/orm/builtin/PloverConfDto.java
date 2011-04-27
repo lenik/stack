@@ -1,8 +1,8 @@
 package com.bee32.plover.orm.builtin;
 
-import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.ParameterMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 
@@ -27,7 +27,7 @@ public class PloverConfDto
     }
 
     @Override
-    protected void _parse(IVariantLookupMap<String> map)
+    protected void _parse(ParameterMap map)
             throws ParseException {
     }
 

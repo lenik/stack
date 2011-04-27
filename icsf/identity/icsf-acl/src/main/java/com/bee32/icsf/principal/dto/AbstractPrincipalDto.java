@@ -1,10 +1,10 @@
 package com.bee32.icsf.principal.dto;
 
-import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.arch.util.ParameterMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 
@@ -53,7 +53,7 @@ public class AbstractPrincipalDto<E extends Principal>
     }
 
     @Override
-    public void _parse(IVariantLookupMap<String> map)
+    public void _parse(ParameterMap map)
             throws ParseException, TypeConvertException {
         this.name = map.getString("name");
         this.fullName = map.getString("fullName");

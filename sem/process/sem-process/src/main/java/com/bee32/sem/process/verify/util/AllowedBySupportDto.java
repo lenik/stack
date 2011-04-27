@@ -3,12 +3,12 @@ package com.bee32.sem.process.verify.util;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.arch.util.ParameterMap;
 import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
@@ -78,7 +78,7 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
     }
 
     @Override
-    public void _parse(IVariantLookupMap<String> map)
+    public void _parse(ParameterMap map)
             throws ParseException, TypeConvertException {
 
         String _verifierId = map.getString("verifierId");

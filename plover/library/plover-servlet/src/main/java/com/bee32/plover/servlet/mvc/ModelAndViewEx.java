@@ -5,13 +5,12 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.free.ClassLocal;
-import javax.free.IVariantLookupMap;
 import javax.free.IllegalUsageException;
-import javax.free.Map2VariantLookupMap;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
+import com.bee32.plover.arch.util.ParameterMap;
 import com.bee32.plover.arch.util.res.ResourceBundleEx;
 
 /**
@@ -33,7 +32,7 @@ public abstract class ModelAndViewEx
     private Class<?> hintClass;
 
     public Map<String, Object> _meta;
-    public IVariantLookupMap<String> meta;
+    public ParameterMap meta;
     public Map<String, String> V;
 
     public ModelAndViewEx(Object controller) {
@@ -138,12 +137,12 @@ public abstract class ModelAndViewEx
     static class ClassDataEx {
 
         public Map<String, Object> metaData;
-        public IVariantLookupMap<String> metaDataLookup;
+        public ParameterMap metaDataLookup;
         public Map<String, String> vocab;
 
         public ClassDataEx() {
             metaData = new HashMap<String, Object>();
-            metaDataLookup = new Map2VariantLookupMap<String>(metaData);
+            metaDataLookup = new ParameterMap(metaData);
             vocab = new HashMap<String, String>();
         }
 

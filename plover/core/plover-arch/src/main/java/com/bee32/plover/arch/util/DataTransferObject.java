@@ -1,11 +1,9 @@
 package com.bee32.plover.arch.util;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -13,11 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.free.AbstractVariantLookupMap;
-import javax.free.Dates;
-import javax.free.IVariantLookupMap;
 import javax.free.IllegalUsageException;
-import javax.free.Map2VariantLookupMap;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
@@ -252,7 +246,7 @@ public abstract class DataTransferObject<T, C>
             throws ServletException {
         try {
             Map<String, ?> requestMap = request.getParameterMap();
-            ReqLookMap lookupMap = new ReqLookMap(requestMap);
+            ParameterMap lookupMap = new ParameterMap(requestMap);
             parse(lookupMap);
         } catch (TypeConvertException e) {
             throw new ServletException("Parse error: " + e.getMessage(), e);
@@ -272,21 +266,24 @@ public abstract class DataTransferObject<T, C>
         if (map == null)
             throw new NullPointerException("map");
 
+        // Map2VariantLookupMap<String> lookupMap = new Map2VariantLookupMap<String>(map);
+        ParameterMap parameterMap = new ParameterMap(map);
+
         try {
-            parse(new Map2VariantLookupMap<String>(map));
+            parse(parameterMap);
         } catch (TypeConvertException e) {
             throw new ParseException(e.getMessage(), e);
         }
     }
 
-    public final void parse(IVariantLookupMap<String> map)
+    public final void parse(ParameterMap map)
             throws ParseException {
         __parse(map);
         _parse(map);
         filled = true;
     }
 
-    protected void __parse(IVariantLookupMap<String> map)
+    protected void __parse(ParameterMap map)
             throws ParseException {
     }
 
@@ -298,7 +295,7 @@ public abstract class DataTransferObject<T, C>
      * @throws ParseException
      *             Other parse exception caused by user implementation.
      */
-    protected abstract void _parse(IVariantLookupMap<String> map)
+    protected abstract void _parse(ParameterMap map)
             throws ParseException;
 
     public Map<String, Object> exportMap() {
@@ -440,10 +437,10 @@ public abstract class DataTransferObject<T, C>
     static <D extends DataTransferObject<T, ?>, T> List<D> _marshalList(boolean rec, Class<D> dtoClass,
             Integer selection, Iterable<?> values) {
 
-        if (values == null)
-            return null;
-
         List<D> dtoList = new ArrayList<D>();
+
+        if (values == null)
+            return dtoList;
 
         try {
             for (Object _source : values) {
@@ -516,82 +513,6 @@ public abstract class DataTransferObject<T, C>
     public static <D extends DataTransferObject<T, C>, T, C> //
     /*    */Set<T> unmarshalSet(C context, Iterable<? extends D> dtoList) {
         return unmarshal(context, new HashSet<T>(), dtoList);
-    }
-
-}
-
-class ReqLookMap
-        extends AbstractVariantLookupMap<String> {
-
-    Map<String, ?> map;
-
-    public ReqLookMap(Map<String, ?> map) {
-        if (map == null)
-            throw new NullPointerException("map");
-        this.map = map;
-    }
-
-    @Override
-    public Set<String> keySet() {
-        return map.keySet();
-    }
-
-    @Override
-    public boolean containsKey(String key) {
-        return map.containsKey(key);
-    }
-
-    @Override
-    public Object get(String key) {
-        Object value = map.get(key);
-
-        if (value == null)
-            return null;
-
-        if (value.getClass().isArray()) {
-            // if (Array.getLength(value) == 0)
-            // return null;
-            return Array.get(value, 0);
-        }
-
-        return value;
-    }
-
-    @Override
-    public String[] getStringArray(String key) {
-        return getStringArray(key, null);
-    }
-
-    @Override
-    public String[] getStringArray(String key, String[] defaultValue) {
-        Object value = map.get(key);
-
-        if (value == null)
-            return defaultValue;
-
-        if (value.getClass().isArray())
-            return (String[]) value;
-
-        String[] array = { String.valueOf(value) };
-        return array;
-    }
-
-    @Override
-    public Date getDate(String key, Date defaultValue) {
-        String s = getString(key);
-        if (s == null)
-            return defaultValue;
-
-        try {
-            return Dates.YYYY_MM_DD.parse(s);
-        } catch (java.text.ParseException e) {
-            return defaultValue;
-        }
-    }
-
-    @Override
-    public Date getDate(String key) {
-        return getDate(key, null);
     }
 
 }
