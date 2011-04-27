@@ -16,6 +16,8 @@ public interface IVerifyPolicy<C extends IVerifyContext> {
      */
     Class<C> getRequiredContext();
 
+    VerifyResult verify(C context);
+
     /**
      * 检验业务实体是否已被审核。 如果未审核或审核失败，抛出 {@link VerifyException} 异常。
      *
@@ -24,7 +26,7 @@ public interface IVerifyPolicy<C extends IVerifyContext> {
      * @throws VerifyException
      *             如果未被审核
      */
-    void verify(C context)
+    void assertVerified(C context)
             throws VerifyException;
 
     /**

@@ -17,9 +17,9 @@ public class Verifiable2EntityDao<E extends Verifiable2EntityBean<K, C>, K exten
 
     @Override
     protected E _preinit(E entity) {
-        VerifyPolicy<C> preferredVerifyPolicy = (VerifyPolicy<C>) verifyPolicyDao.getPreferredVerifyPolicy(entity);
+        VerifyPolicy<C> verifyPolicy = (VerifyPolicy<C>) verifyPolicyDao.getVerifyPolicy(entity);
 
-        entity.setVerifyPolicy(preferredVerifyPolicy);
+        entity.setVerifyPolicy(verifyPolicy);
 
         return entity;
     }
