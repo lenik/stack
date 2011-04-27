@@ -13,8 +13,9 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -25,7 +26,6 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
-import com.bee32.plover.orm.util.AliasUtil;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.sem.event.EventFlags;
 import com.bee32.sem.event.EventState;
@@ -55,8 +55,7 @@ public class Event
     private Date beginTime = new Date();
     private Date endTime;
 
-    private String refType;
-    private transient Class<?> refClass;
+    private Class<?> refClass;
     private long refId;
     private String refAlt;
 
@@ -206,38 +205,23 @@ public class Event
     }
 
     @Column(length = ABBR_LEN)
-    public String getRefType() {
-        return refType;
+    String getRefType() {
+        return ABBR.abbr(refClass);
     }
 
-    public void setRefType(String refType) {
-        this.refType = refType;
+    void setRefType(String refType)
+            throws ClassNotFoundException {
+        this.refClass = ABBR.expand(refType);
     }
 
-    @Column(length = 30)
     @Transient
     @Override
     public Class<?> getRefClass() {
-        if (refClass == null) {
-            if (refType == null)
-                return null;
-            else {
-                refClass = AliasUtil.getAliasedType(refType);
-                if (refClass == null)
-                    try {
-                        // Entity-Alias? ...
-                        refClass = Class.forName(refType);
-                    } catch (ClassNotFoundException e) {
-                        refClass = null;
-                    }
-            }
-        }
         return refClass;
     }
 
     public void setRefClass(Class<?> refClass) {
         this.refClass = refClass;
-        this.refType = refClass == null ? null : refClass.getName();
     }
 
     public void setRef(IEntity<?> refEntity) {
@@ -277,7 +261,8 @@ public class Event
         this.refAlt = refAlt;
     }
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(name = "EventObserver")
     @Override
     public Set<Principal> getObservers() {
         if (observers == null) {
