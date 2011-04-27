@@ -34,16 +34,16 @@ public class AttackMissionController
     UserDao userDao;
 
     @Override
-    protected void doAction(EntityAction action, AttackMission entity, AttackMissionDto dto) {
-        super.doAction(action, entity, dto);
+    protected void doAction(EntityAction action, AttackMission entity, AttackMissionDto dto, Object... args) {
+        super.doAction(action, entity, dto, args);
 
-        switch (action) {
-        case Load:
+        switch (action.getType()) {
+        case LOAD:
             VerifyPolicyDto verifyPolicy = verifyService.getVerifyPolicy(entity);
             dto.setVerifyPolicy(verifyPolicy);
             break;
 
-        case Save:
+        case SAVE:
             // Do the verification and all.
             verifyService.verifyEntity(entity);
             // dto.setVerifyState(result.getState());
@@ -73,13 +73,6 @@ public class AttackMissionController
 
         tab.push(dto.getVerifyState().getDisplayName());
         tab.push(dto.getVerifiedDate());
-    }
-
-    @Override
-    protected void fillTemplate(AttackMissionDto dto) {
-        dto.setTarget("");
-        dto.setAllowed(false);
-        dto.setVerifier(new UserDto());
     }
 
 }

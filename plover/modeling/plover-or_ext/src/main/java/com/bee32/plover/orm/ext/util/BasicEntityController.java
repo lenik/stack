@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.free.UnexpectedException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +37,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
         Dto dto = newDto(_dtoSelection);
 
-        doAction(EntityAction.Load, entity, dto);
+        doAction(EntityAction.LOAD, entity, dto);
 
         ViewData view = new ViewData();
         view.entity = entity;
@@ -63,7 +62,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
         for (E entity : entityList) {
             Dto item = newDto(_dtoSelection);
 
-            doAction(EntityAction.Load, entity, item);
+            doAction(EntityAction.LOAD, entity, item);
 
             tab.push(item.getId());
             tab.push(item.getVersion());
@@ -100,29 +99,29 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
             if (entity == null) {
                 if (!_createOTF)
-                    return Javascripts.alertAndBack("编辑的对象不存在。" + hint(entity, id)).dump(req, resp);
+                    return Javascripts.alertAndBack("编辑的对象不存在。" + hint(id)).dump(req, resp);
 
                 create = true;
 
             } else {
                 dto = newDto(_dtoSelection);
 
-                doAction(EntityAction.Load, entity, dto);
+                doAction(EntityAction.LOAD, entity, dto);
             }
         }
 
         if (create) {
-            entity = newEntity();
+            E newEntity = newEntity();
 
             if (id != null)
-                EntityAccessor.setId(entity, id);
+                EntityAccessor.setId(newEntity, id);
 
             dto = newDto(_dtoSelection);
 
-            // Entity-initializors.
-            doAction(EntityAction.Load, entity, dto);
+            // Entity-initializors, so as to populate the transient properties.
+            doAction(EntityAction.LOAD, newEntity, dto);
 
-            doAction(EntityAction.Create, entity, dto);
+            entity = newEntity;
         }
 
         String _VERB = create ? "CREATE" : "MODIFY";
@@ -155,7 +154,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
             entity = dataManager.get(getEntityType(), id);
             if (entity == null) {
                 if (!_createOTF)
-                    return Javascripts.alertAndBack("对象尚未创建，无法保存。" + hint(entity, id) + "\n\n" //
+                    return Javascripts.alertAndBack("对象尚未创建，无法保存。" + hint(id) + "\n\n" //
                             + "这大概是有人在你编辑该对象的同时进行了删除操作引起的。\n" //
                             + "点击确定返回上一页。" //
                             + ClassUtil.getDisplayName(getEntityType()) + " [" + id + "]" //
@@ -167,7 +166,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
             else {
                 Integer requestVersion = dto.getVersion();
                 if (requestVersion != null && requestVersion != entity.getVersion())
-                    return Javascripts.alertAndBack("对象版本失效。" + hint(entity, id) + "\n\n" //
+                    return Javascripts.alertAndBack("对象版本失效。" + hint(id) + "\n\n" //
                             + "发生这个错误的原因是有人在你之前提交了这个对象的另一个版本，也可能是系统内部使这个对象的状态发生了改变。\n" //
                             + "点击确定返回上一页。" //
                     ).dump(req, resp);
@@ -181,36 +180,33 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
                 EntityAccessor.setId(entity, id);
         }
 
-        doAction(EntityAction.Save, entity, dto);
+        doAction(EntityAction.SAVE, entity, dto);
 
         dataManager.saveOrUpdate(entity);
+
+        doAction(EntityAction.POST_SAVE, entity, dto);
 
         view.entity = entity;
         view.dto = dto;
         return view;
     }
 
-    protected void doAction(EntityAction action, E entity, Dto dto) {
-        switch (action) {
-        case Create:
-            fillTemplate(dto);
+    protected void doAction(EntityAction action, E entity, Dto dto, Object... args) {
+        switch (action.getType()) {
+        case CREATE:
+            // fillTemplate(dto);
             break;
 
-        case Load:
+        case LOAD:
             dto.marshal(entity);
             break;
 
-        case Save:
+        case SAVE:
             dto.unmarshalTo(this, entity);
             break;
-
-        default:
-            throw new UnexpectedException("Unknown entity action: " + action);
         }
     }
 
     protected abstract void fillDataRow(DataTableDxo tab, Dto dto);
-
-    protected abstract void fillTemplate(Dto dto);
 
 }

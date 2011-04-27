@@ -1,20 +1,23 @@
 package com.bee32.plover.orm.ext.util;
 
-public enum EntityAction {
+public class EntityAction {
 
-    /**
-     * You should fill the DTO object with initial values.
-     */
-    Create,
+    private final EntityActionType type;
 
-    /**
-     * You should marshal the primary Entity to a primary DTO object, at least.
-     */
-    Load,
+    public EntityAction(EntityActionType type) {
+        if (type == null)
+            throw new NullPointerException("type");
 
-    /**
-     * You should unmarshal the primary DTO into the primary Entity, at least.
-     */
-    Save,
+        this.type = type;
+    }
+
+    public EntityActionType getType() {
+        return type;
+    }
+
+    public static EntityAction CREATE = new EntityAction(EntityActionType.CREATE);
+    public static EntityAction LOAD = new EntityAction(EntityActionType.LOAD);
+    public static EntityAction SAVE = new EntityAction(EntityActionType.SAVE);
+    public static EntityAction POST_SAVE = new EntityAction(EntityActionType.POST_SAVE);
 
 }
