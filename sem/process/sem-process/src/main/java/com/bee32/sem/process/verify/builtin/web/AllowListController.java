@@ -1,7 +1,6 @@
 package com.bee32.sem.process.verify.builtin.web;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -61,13 +60,6 @@ public class AllowListController
             max--;
         }
         tab.push(names == null ? "" : names.toString());
-    }
-
-    @Override
-    protected void fillTemplate(AllowListDto dto) {
-        dto.setName("");
-        dto.setDescription("");
-        dto.setResponsibles(new ArrayList<PrincipalDto>());
     }
 
     @Override

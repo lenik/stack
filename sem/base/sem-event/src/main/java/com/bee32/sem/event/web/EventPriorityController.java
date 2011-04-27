@@ -22,12 +22,4 @@ public class EventPriorityController
         tab.push(dto.getDescription());
     }
 
-    @Override
-    protected void fillTemplate(EventPriorityDto dto) {
-        dto.setName("");
-        dto.setDisplayName("");
-        dto.setPriority(0);
-        dto.setDescription("");
-    }
-
 }

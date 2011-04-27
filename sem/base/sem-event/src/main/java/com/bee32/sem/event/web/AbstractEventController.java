@@ -1,7 +1,6 @@
 package com.bee32.sem.event.web;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,6 +37,7 @@ public abstract class AbstractEventController<E extends Event, Dto extends Abstr
     @Override
     protected void fillDataRow(DataTableDxo tab, Dto event) {
         tab.push(event.getCategory());
+        tab.push(event.getSourceName());
         tab.push(event.getPriority());
         tab.push(event.getStatusText());
         tab.push(event.getActorName());
@@ -47,18 +47,6 @@ public abstract class AbstractEventController<E extends Event, Dto extends Abstr
 
         String controlUrl = null;
         tab.push(controlUrl);
-    }
-
-    @Override
-    protected void fillTemplate(Dto event) {
-        event.setCategory("");
-        event.setPriority(0);
-        event.setState(0);
-        event.setStatus(new EventStatusDto());
-        event.setSubject("");
-        event.setMessage("");
-        event.setBeginTime(new Date());
-        event.setActor(new UserDto());
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.bee32.sem.process.verify.builtin.web;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -59,13 +58,6 @@ public class MultiLevelController
             max--;
         }
         tab.push(limits == null ? "" : limits.toString());
-    }
-
-    @Override
-    protected void fillTemplate(MultiLevelDto dto) {
-        dto.setName("");
-        dto.setDescription("");
-        dto.setLevels(new ArrayList<LevelDto>());
     }
 
     @Override

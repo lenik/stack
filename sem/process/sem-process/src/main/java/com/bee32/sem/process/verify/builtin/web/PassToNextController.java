@@ -1,7 +1,5 @@
 package com.bee32.sem.process.verify.builtin.web;
 
-import java.util.ArrayList;
-
 import javax.inject.Inject;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,13 +50,6 @@ public class PassToNextController
             max--;
         }
         tab.push(responsibles == null ? "" : responsibles.toString());
-    }
-
-    @Override
-    protected void fillTemplate(PassToNextDto dto) {
-        dto.setName("");
-        dto.setDescription("");
-        dto.setSequences(new ArrayList<PassStepDto>());
     }
 
 }
