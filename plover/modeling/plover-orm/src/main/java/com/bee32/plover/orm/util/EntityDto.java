@@ -103,11 +103,13 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * @return This DTO.
      */
     public <D extends EntityDto<E, K>> D ref(E entity) {
-        if (entity == null)
-            throw new NullPointerException("entity");
-
-        this.id = entity.getId();
-        this.version = entity.getVersion();
+        if (entity == null) {
+            this.id = null;
+            this.version = null;
+        } else {
+            this.id = entity.getId();
+            this.version = entity.getVersion();
+        }
         this.filled = false;
 
         @SuppressWarnings("unchecked")
