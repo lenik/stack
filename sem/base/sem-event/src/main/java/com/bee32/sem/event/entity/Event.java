@@ -24,6 +24,7 @@ import org.hibernate.annotations.Index;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.IEntity;
 import com.bee32.plover.orm.util.AliasUtil;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.sem.event.EventFlags;
@@ -78,6 +79,16 @@ public class Event
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Transient
+    public Class<?> getCategoryClass()
+            throws ClassNotFoundException {
+        return ABBR.expand(category);
+    }
+
+    public void setCategory(Class<?> categoryClass) {
+        this.category = ABBR.abbr(categoryClass);
     }
 
     @Column(nullable = false)
@@ -227,6 +238,24 @@ public class Event
     public void setRefClass(Class<?> refClass) {
         this.refClass = refClass;
         this.refType = refClass == null ? null : refClass.getName();
+    }
+
+    public void setRef(IEntity<?> refEntity) {
+        if (refEntity == null) {
+            setRefClass((Class<?>) null);
+            refId = 0L;
+            refAlt = null;
+        } else {
+            setRefClass(refEntity.getClass());
+            Object id = refEntity.getId();
+            if (id instanceof Number) {
+                refId = ((Number) id).longValue();
+                refAlt = null;
+            } else {
+                refId = 0L;
+                refAlt = String.valueOf(id);
+            }
+        }
     }
 
     @Override
