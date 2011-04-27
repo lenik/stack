@@ -20,6 +20,7 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
     private static final long serialVersionUID = 1L;
 
     protected static final VerifyResult UNKNOWN = new VerifyResult(VerifyState.UNKNOWN, null);
+    protected static final VerifyResult VERIFIED = new VerifyResult(VerifyState.VERIFIED, null);
 
     private String description;
 
@@ -64,27 +65,27 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
     public final void assertVerified(C context)
             throws VerifyException {
         VerifyResult errorResult = verify(context);
-        if (errorResult != null)
+        if (!errorResult.isVerified())
             throw new VerifyException(String.valueOf(errorResult));
     }
 
     @Override
     public final boolean isVerified(C context) {
-        VerifyResult errorResult = verify(context);
-        return errorResult == null;
+        VerifyResult result = verify(context);
+        return result.isVerified();
     }
 
     @Override
     public VerifyResult verify(C context) {
 
         // policy-consistency validation.
-        VerifyResult errorResult = validate(context);
+        VerifyResult result = validate(context);
 
         // Continue to check if the state is validated.
-        if (errorResult == null)
-            errorResult = evaluate(context);
+        if (result.isVerified())
+            result = evaluate(context);
 
-        return errorResult;
+        return result;
     }
 
     /**
@@ -92,10 +93,10 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
      *
      * @param context
      *            当前审核状态的上下文对象（通常是审核数据所属的 Entity）。
-     * @return <code>null</code> means verified, otherwise the error message.
+     * @return {@link #VERIFIED} means verified, otherwise the error message.
      */
     public VerifyResult validate(C context) {
-        return null;
+        return VERIFIED;
     }
 
     /**
@@ -103,7 +104,7 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
      *
      * @param context
      *            当前审核状态的上下文对象（通常是审核数据所属的 Entity）。
-     * @return <code>null</code> means verified, otherwise the error message.
+     * @return {@link #VERIFIED} means verified, otherwise the error message.
      */
     public abstract VerifyResult evaluate(C context);
 

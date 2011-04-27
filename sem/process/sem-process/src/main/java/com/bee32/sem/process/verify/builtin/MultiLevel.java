@@ -176,7 +176,7 @@ public class MultiLevel
         if (!user.impliesOneOf(getDeclaredResponsibles(context)))
             return VerifyResult.invalid(user);
 
-        return null;
+        return VERIFIED;
     }
 
     @Override
@@ -187,7 +187,7 @@ public class MultiLevel
         if (!context.isAllowed())
             return VerifyResult.rejected(context.getVerifier(), context.getRejectReason());
 
-        return null;
+        return VERIFIED;
     }
 
 }
