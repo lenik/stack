@@ -50,7 +50,7 @@ public class EventStatus
         if (state == null)
             return 0;
         else
-            return state.getIndex();
+            return state.getId();
     }
 
     public void setState(int state) {
