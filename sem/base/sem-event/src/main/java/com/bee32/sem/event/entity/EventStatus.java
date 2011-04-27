@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.orm.ext.dict.ShortDictEntity;
 import com.bee32.sem.event.EventState;
+import com.bee32.sem.event.GenericState;
 
 /**
  * 事件状态
@@ -17,7 +18,7 @@ public class EventStatus
 
     private int flagsMask;
     private boolean closed;
-    private EventState state;
+    private EventState state = GenericState.UNKNOWN;
 
     public EventStatus() {
         super();
@@ -47,10 +48,7 @@ public class EventStatus
 
     @Column(nullable = false)
     public int getState() {
-        if (state == null)
-            return 0;
-        else
-            return state.getId();
+        return state.getId();
     }
 
     public void setState(int state) {
