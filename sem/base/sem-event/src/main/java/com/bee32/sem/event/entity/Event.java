@@ -40,7 +40,9 @@ public class Event
 
     private static final long serialVersionUID = 1L;
 
-    private String category;
+    private EventCategory category;
+    private Class<?> source;
+
     private int priority;
 
     private final EventFlags flags = new EventFlags();
@@ -69,25 +71,36 @@ public class Event
         super(name);
     }
 
+    @ManyToOne
     @Index(name = "category")
-    @Column(length = ABBR_LEN, nullable = false)
     @Override
-    public String getCategory() {
+    public EventCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(EventCategory category) {
         this.category = category;
     }
 
-    @Transient
-    public Class<?> getCategoryClass()
-            throws ClassNotFoundException {
-        return ABBR.expand(category);
+    @Column(length = ABBR_LEN, nullable = false)
+    @Index(name = "source")
+    String getSource() {
+        return ABBR.abbr(source);
     }
 
-    public void setCategory(Class<?> categoryClass) {
-        this.category = ABBR.abbr(categoryClass);
+    void setSource(String source)
+            throws ClassNotFoundException {
+        this.source = ABBR.expand(source);
+    }
+
+    @Transient
+    @Override
+    public Class<?> getSourceClass() {
+        return source;
+    }
+
+    public void setSourceClass(Class<?> sourceClass) {
+        this.source = sourceClass;
     }
 
     @Column(nullable = false)

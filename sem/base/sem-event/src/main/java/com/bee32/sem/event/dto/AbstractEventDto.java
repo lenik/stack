@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.free.IVariantLookupMap;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
@@ -13,8 +12,11 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.ParameterMap;
 import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Event;
@@ -22,13 +24,16 @@ import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventStatus;
 
 public abstract class AbstractEventDto<E extends Event>
-        extends EntityDto<E, Long> {
+        extends EntityDto<E, Long>
+        implements ITypeAbbrAware {
 
     private static final long serialVersionUID = 1L;
 
     public static final int OBSERVERS = 1;
 
     private EventCategoryDto category;
+    private Class<?> sourceClass;
+
     private int priority;
 
     private int flags;
@@ -62,6 +67,7 @@ public abstract class AbstractEventDto<E extends Event>
     @Override
     protected void _marshal(E source) {
         category = new EventCategoryDto(source.getCategory());
+        sourceClass = source.getSourceClass();
 
         priority = source.getPriority();
         stateIndex = source.getState();
@@ -83,13 +89,16 @@ public abstract class AbstractEventDto<E extends Event>
 
     @Override
     protected void _unmarshalTo(IUnmarshalContext context, E target) {
-        target.setCategory(category.unmarshal());
+
+        with(context, (Event) target) //
+                .unmarshal(categoryProperty, category)//
+                .unmarshal(statusProperty, status)//
+                .unmarshal(actorProperty, actor);
+
+        target.setSourceClass(sourceClass);
 
         target.setPriority(priority);
         target.setState(stateIndex);
-
-        with(context, (Event) target)//
-                .unmarshal(statusProperty, status);
 
         target.setSubject(subject);
         target.setMessage(message);
@@ -99,20 +108,22 @@ public abstract class AbstractEventDto<E extends Event>
         target.setRefId(refId);
         target.setRefAlt(refAlt);
 
-        with(context, (Event) target)//
-                .unmarshal(actorProperty, actor);
-
         if (selection.contains(OBSERVERS))
             with(context, target)//
                     .unmarshalSet(observersProperty, observers);
     }
 
     @Override
-    public void _parse(IVariantLookupMap<String> map)
+    public void _parse(ParameterMap map)
             throws ParseException, TypeConvertException {
 
-        Integer _categoryId = map.getNInt("categoryId");
-        category = new EventCategoryDto().ref(_categoryId);
+        category = new EventCategoryDto().ref(map.getNInt("categoryId"));
+
+        try {
+            sourceClass = ABBR.expand(map.getString("source"));
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
 
         priority = map.getInt("priority");
 
@@ -120,11 +131,8 @@ public abstract class AbstractEventDto<E extends Event>
         stateIndex = map.getInt("state");
         closed = map.getBoolean("closed");
 
-        int statusId = map.getInt("statusId");
-        status = new EventStatusDto().ref(statusId);
-
-        long actorId = map.getLong("actorId");
-        actor = new UserDto().ref(actorId);
+        status = new EventStatusDto().ref(map.getNInt("statusId"));
+        actor = new UserDto().ref(map.getNLong("actorId"));
 
         subject = map.getString("subject");
         message = map.getString("message");
@@ -149,12 +157,25 @@ public abstract class AbstractEventDto<E extends Event>
         }
     }
 
-    public String getCategory() {
+    public EventCategoryDto getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(EventCategoryDto category) {
         this.category = category;
+    }
+
+    public Class<?> getSourceClass() {
+        return sourceClass;
+    }
+
+    public void setSourceClass(Class<?> sourceClass) {
+        this.sourceClass = sourceClass;
+    }
+
+    public String getSourceName() {
+        String displayName = ClassUtil.getDisplayName(sourceClass);
+        return displayName;
     }
 
     public int getPriority() {

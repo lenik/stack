@@ -146,7 +146,7 @@ public class VerifyService
                 entity.setVerifyTask(verifyTask);
             }
 
-            verifyTask.setCategory(VerifyPolicy.class);
+            verifyTask.setSourceClass(VerifyPolicy.class);
             verifyTask.setPriority(EventPriority.HIGH);
 
             VerifyState state = result.getState();

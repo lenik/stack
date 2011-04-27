@@ -11,7 +11,7 @@ public interface ITask
      * @return Task category name.
      */
     @Override
-    String getCategory();
+    EventCategory getCategory();
 
     /**
      * Get the task priority.

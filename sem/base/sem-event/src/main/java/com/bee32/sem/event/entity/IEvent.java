@@ -13,13 +13,18 @@ import com.bee32.sem.event.EventFlags;
 public interface IEvent {
 
     /**
-     * The category name.
+     * The event category.
      *
-     * Usually it's a FQCN or an alias.
-     *
-     * @return The category name, should not be <code>null</code>.
+     * @return The event category, maybe <code>null</code> for uncategorified events.
      */
-    String getCategory();
+    EventCategory getCategory();
+
+    /**
+     * Class of the source which originated the event.
+     *
+     * @return Non-<code>null</code> source class.
+     */
+    Class<?> getSourceClass();
 
     /**
      * Priority of the event.
