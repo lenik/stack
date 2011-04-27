@@ -1,22 +1,18 @@
 package com.bee32.sem.event;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.service.ServicePrototypeLoader;
-import com.bee32.plover.servlet.context.Location;
-import com.bee32.plover.servlet.context.Locations;
+import com.bee32.plover.orm.ext.util.EnumEx;
 
 public class EventState
-        implements Serializable {
+        extends EnumEx<EventState> {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,57 +24,15 @@ public class EventState
     public static final int CLASS_MASK = 0x000ff000;
     public static final int CLASS_SHIFT = 12;
 
-    private final int id;
-    private final String name;
-    private final String displayName;
-    private final Location icon;
-
-    static Map<Integer, EventState> all = new HashMap<Integer, EventState>();
-
     public EventState(int id, String name) {
-        this.id = id;
-        this.name = name;
-
-        this.displayName = _nls(name + ".displayName", name);
-
-        String icon = _nls(name + ".icon", null);
-        if (icon != null)
-            this.icon = Locations.parse(icon);
-        else
-            this.icon = null;
-
-        all.put(id, this);
+        super(id, name);
     }
 
-    protected String _nls(String key, String def) {
-        ResourceBundle rb;
+    static Map<Integer, EventState> eventStates = new HashMap<Integer, EventState>();
 
-        try {
-            rb = ResourceBundle.getBundle(getClass().getName());
-        } catch (MissingResourceException e) {
-            return def;
-        }
-
-        if (rb.containsKey(key))
-            return rb.getString(key);
-        else
-            return def;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public Location getIcon() {
-        return icon;
+    @Override
+    protected Map<Integer, EventState> getMap() {
+        return eventStates;
     }
 
     public boolean isEventRelated() {
@@ -93,30 +47,12 @@ public class EventState
         return (id & SEL_TASK) != 0;
     }
 
-    @Override
-    public int hashCode() {
-        return id;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof EventState))
-            return false;
-        EventState o = (EventState) obj;
-        return id == o.id;
-    }
-
-    @Override
-    public String toString() {
-        return displayName;
-    }
-
-    protected static int __class__(int sel, int facility) {
-        return (sel & SEL_MASK) | ((facility << CLASS_SHIFT) & CLASS_MASK);
+    protected static int __class__(int sel, int classIndex) {
+        return (sel & SEL_MASK) | ((classIndex << CLASS_SHIFT) & CLASS_MASK);
     }
 
     public static EventState valueOf(int id) {
-        EventState definedState = all.get(id);
+        EventState definedState = eventStates.get(id);
         if (definedState != null)
             return definedState;
 
@@ -126,7 +62,7 @@ public class EventState
 
     public static List<Integer> list(int mask) {
         List<Integer> list = new ArrayList<Integer>();
-        for (EventState state : all.values()) {
+        for (EventState state : eventStates.values()) {
             if ((state.id & mask) != 0)
                 list.add(state.id);
         }
@@ -135,7 +71,7 @@ public class EventState
 
     public static List<Integer> listFor(int _class) {
         List<Integer> list = new ArrayList<Integer>();
-        for (EventState state : all.values()) {
+        for (EventState state : eventStates.values()) {
             if ((state.id & CLASS_MASK) >> CLASS_SHIFT == _class)
                 list.add(state.id);
         }
