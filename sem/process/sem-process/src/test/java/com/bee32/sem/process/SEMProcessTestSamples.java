@@ -25,17 +25,17 @@ public class SEMProcessTestSamples
         attackPref.setDescription("必须让机器人统治世界。");
 
         bombAmerica = new AttackMission();
-        bombAmerica.setTarget("轰炸美国大本营");
+        bombAmerica.setTarget("明日黄昏突袭美国东海岸。");
 
         killSimpsons = new AttackMission();
         killSimpsons.setTarget("打击猖狂的辛普森一家，必须让巴特彻底崩溃。");
         killSimpsons.setAllowed(false);
         killSimpsons.setVerifier(IcsfPrincipalSamples.wallE);
-        killSimpsons.setRejectReason("辛普森是好人，拒绝此项任务");
+        killSimpsons.setRejectReason("无差别拒绝");
         killSimpsons.setVerifiedDate(new Date());
 
         rescueMao = new AttackMission();
-        rescueMao.setTarget("拯救四面楚歌的五毛党，你们实在是太邪恶了！");
+        rescueMao.setTarget("联手灭绝师太打倒五毛党。");
         rescueMao.setAllowed(true);
         rescueMao.setVerifier(IcsfPrincipalSamples.kate);
         rescueMao.setVerifiedDate(new Date());
