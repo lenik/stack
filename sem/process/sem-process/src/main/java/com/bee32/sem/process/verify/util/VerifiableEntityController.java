@@ -78,11 +78,15 @@ public abstract class VerifiableEntityController<E extends VerifiableEntityBean<
                 if (!currentUser.impliesOneOf(responsibles))
                     return "您不在责任人列表中，无权执行审核功能。";
 
-                String error = doPreVerify(entity, TextMap.convert(req));
+                TextMap textMap = TextMap.convert(req);
+
+                String error = doPreVerify(entity, textMap);
                 if (error != null)
                     return "审核前置条件失败：" + error;
 
                 verifyService.verifyEntity(entity);
+
+                doPostVerify(entity, textMap);
 
                 return null;
             }
@@ -91,5 +95,7 @@ public abstract class VerifiableEntityController<E extends VerifiableEntityBean<
     }
 
     protected abstract String doPreVerify(E entity, TextMap request);
+
+    protected abstract void doPostVerify(E entity, TextMap request);
 
 }

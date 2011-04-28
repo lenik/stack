@@ -54,7 +54,11 @@
             </tr>
             <tr>
                 <td>控制页:</td>
-                <td>${it.controlPage}</td>
+                <td>
+                    <c:forEach var="seeAlso" items="${it.seeAlsoList}">
+                        <div>${location.WEB_APP[seeAlso]}</div>
+                    </c:forEach>
+                </td>
             </tr>
         </table>
     </ui:define>

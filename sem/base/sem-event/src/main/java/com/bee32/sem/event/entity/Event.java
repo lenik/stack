@@ -62,6 +62,8 @@ public class Event
     private long refId;
     private String refAlt;
 
+    private String seeAlsos;
+
     private Set<Principal> observers;
 
     public Event() {
@@ -278,6 +280,15 @@ public class Event
 
     public void setRefAlt(String refAlt) {
         this.refAlt = refAlt;
+    }
+
+    @Column(length = 1000)
+    public String getSeeAlsos() {
+        return seeAlsos;
+    }
+
+    public void setSeeAlsos(String seeAlsos) {
+        this.seeAlsos = seeAlsos;
     }
 
     @ManyToMany

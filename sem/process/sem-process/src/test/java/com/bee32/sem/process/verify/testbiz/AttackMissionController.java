@@ -17,6 +17,7 @@ import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.event.entity.Task;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.IAllowedByContext;
 import com.bee32.sem.process.verify.util.VerifiableEntityController;
@@ -63,6 +64,14 @@ public class AttackMissionController
         entity.setVerifiedDate(new Date());
 
         return null;
+    }
+
+    @Override
+    protected void doPostVerify(AttackMission entity, TextMap request) {
+        Task task = entity.getVerifyTask();
+
+        String editLocation = AttackMissionController.PREFIX + "editForm?id=" + entity.getId();
+        task.setSeeAlsos(editLocation);
     }
 
 }

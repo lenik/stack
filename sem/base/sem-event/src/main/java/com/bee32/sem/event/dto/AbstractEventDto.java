@@ -13,8 +13,8 @@ import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.PropertyAccessor;
+import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.orm.util.IUnmarshalContext;
@@ -53,9 +53,9 @@ public abstract class AbstractEventDto<E extends Event>
     private long refId;
     private String refAlt;
 
-    private List<PrincipalDto> observers;
+    private String seeAlsos;
 
-    private String controlPage;
+    private List<PrincipalDto> observers;
 
     public AbstractEventDto() {
         super();
@@ -85,6 +85,8 @@ public abstract class AbstractEventDto<E extends Event>
         refId = source.getRefId();
         refAlt = source.getRefAlt();
 
+        seeAlsos = source.getSeeAlsos();
+
         if (selection.contains(OBSERVERS))
             observers = marshalList(PrincipalDto.class, source.getObservers());
     }
@@ -110,6 +112,8 @@ public abstract class AbstractEventDto<E extends Event>
 
         target.setRefId(refId);
         target.setRefAlt(refAlt);
+
+        target.setSeeAlsos(seeAlsos);
 
         if (selection.contains(OBSERVERS))
             with(context, target)//
@@ -142,6 +146,8 @@ public abstract class AbstractEventDto<E extends Event>
             refId = Long.parseLong(_refId);
         else
             refAlt = map.getString("refAlt");
+
+        seeAlsos = map.getString("seeAlsos");
 
         if (selection.contains(OBSERVERS)) {
             String[] _observerIds = map.getStringArray("observerIds");
@@ -315,12 +321,38 @@ public abstract class AbstractEventDto<E extends Event>
         this.observers = observers;
     }
 
-    public String getControlPage() {
-        return controlPage;
+    public String getSeeAlsos() {
+        return seeAlsos;
     }
 
-    public void setControlPage(String controlPage) {
-        this.controlPage = controlPage;
+    public void setSeeAlsos(String seeAlsos) {
+        this.seeAlsos = seeAlsos;
+    }
+
+    public List<String> getSeeAlsoList() {
+        List<String> list = new ArrayList<String>();
+        if (seeAlsos != null)
+            for (String line : seeAlsos.split("\n")) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#"))
+                    continue;
+                list.add(line);
+            }
+        return list;
+    }
+
+    public void setSeeAlsoList(List<String> list) {
+        if (list == null)
+            seeAlsos = null;
+
+        else {
+            StringBuilder sb = new StringBuilder(1000);
+            for (String line : list) {
+                sb.append(line);
+                sb.append("\n");
+            }
+            seeAlsos = sb.toString();
+        }
     }
 
     static final PropertyAccessor<Event, EventCategory> categoryProperty = new PropertyAccessor<Event, EventCategory>(
