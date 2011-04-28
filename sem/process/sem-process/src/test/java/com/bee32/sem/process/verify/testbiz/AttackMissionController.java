@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
@@ -55,10 +56,11 @@ public class AttackMissionController
     }
 
     @Override
-    protected String doPreVerify(AttackMission entity, TextMap request) {
+    protected String doPreVerify(AttackMission entity, User currentUser, TextMap request) {
         boolean allowed = request.getBoolean("allowed");
         String rejectedReason = request.getString("rejectedReason");
 
+        entity.setVerifier(currentUser);
         entity.setAllowed(allowed);
         entity.setRejectedReason(rejectedReason);
         entity.setVerifiedDate(new Date());
@@ -67,7 +69,7 @@ public class AttackMissionController
     }
 
     @Override
-    protected void doPostVerify(AttackMission entity, TextMap request) {
+    protected void doPostVerify(AttackMission entity, User currentUser, TextMap request) {
         Task task = entity.getVerifyTask();
 
         String editLocation = AttackMissionController.PREFIX + "editForm?id=" + entity.getId();

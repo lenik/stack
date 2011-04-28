@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.ajax.SuccessOrFailMessage;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
@@ -58,13 +59,19 @@ public abstract class VerifiableEntityController<E extends VerifiableEntityBean<
             throws ServletException, IOException {
 
         final String _id = req.getParameter("id");
-        final IUserPrincipal currentUser = SessionLoginInfo.getCurrentUser(req.getSession());
 
-        return new SuccessOrFailMessage("审核完成。") {
+        final IUserPrincipal __currentUser = SessionLoginInfo.getCurrentUser(req.getSession());
+
+        SuccessOrFailMessage result = new SuccessOrFailMessage("审核完成。") {
 
             @Override
             protected String eval()
                     throws ServletException {
+
+                if (__currentUser == null)
+                    return "您尚未登陆。";
+
+                User currentUser = dataManager.get(User.class, __currentUser.getId());
 
                 K id = parseRequiredId(_id);
 
@@ -80,22 +87,24 @@ public abstract class VerifiableEntityController<E extends VerifiableEntityBean<
 
                 TextMap textMap = TextMap.convert(req);
 
-                String error = doPreVerify(entity, textMap);
+                String error = doPreVerify(entity, currentUser, textMap);
                 if (error != null)
                     return "审核前置条件失败：" + error;
 
                 verifyService.verifyEntity(entity);
 
-                doPostVerify(entity, textMap);
+                doPostVerify(entity, currentUser, textMap);
 
                 return null;
             }
 
-        }.jsonDump(resp);
+        };
+
+        return result.jsonDump(resp);
     }
 
-    protected abstract String doPreVerify(E entity, TextMap request);
+    protected abstract String doPreVerify(E entity, User currentUser, TextMap request);
 
-    protected abstract void doPostVerify(E entity, TextMap request);
+    protected abstract void doPostVerify(E entity, User currentUser, TextMap request);
 
 }
