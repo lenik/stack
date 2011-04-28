@@ -5,7 +5,6 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.IUnmarshalContext;
-import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.util.AllowedBySupportDto;
 
 public class AttackMissionDto
@@ -14,8 +13,6 @@ public class AttackMissionDto
     private static final long serialVersionUID = 1L;
 
     private String target;
-
-    private VerifyPolicyDto verifyPolicy;
 
     public AttackMissionDto() {
         super();
@@ -48,14 +45,6 @@ public class AttackMissionDto
 
     public void setTarget(String target) {
         this.target = target;
-    }
-
-    public VerifyPolicyDto getVerifyPolicy() {
-        return verifyPolicy;
-    }
-
-    public void setVerifyPolicy(VerifyPolicyDto verifyPolicy) {
-        this.verifyPolicy = verifyPolicy;
     }
 
 }

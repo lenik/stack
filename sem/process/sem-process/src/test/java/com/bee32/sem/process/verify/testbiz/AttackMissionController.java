@@ -1,6 +1,7 @@
 package com.bee32.sem.process.verify.testbiz;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,44 +14,21 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.dto.UserDto;
-import com.bee32.plover.orm.ext.util.BasicEntityController;
+import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
-import com.bee32.plover.orm.ext.util.EntityAction;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.process.SEMProcessModule;
-import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
-import com.bee32.sem.process.verify.service.VerifyService;
+import com.bee32.sem.process.verify.IAllowedByContext;
+import com.bee32.sem.process.verify.util.VerifiableEntityController;
 
 @RequestMapping(AttackMissionController.PREFIX + "*")
 public class AttackMissionController
-        extends BasicEntityController<AttackMission, Integer, AttackMissionDto> {
+        extends VerifiableEntityController<AttackMission, Integer, IAllowedByContext, AttackMissionDto> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "attack/";
 
     @Inject
-    VerifyService verifyService;
-
-    @Inject
     UserDao userDao;
-
-    @Override
-    protected void doAction(EntityAction action, AttackMission entity, AttackMissionDto dto, Object... args) {
-        super.doAction(action, entity, dto, args);
-
-        switch (action.getType()) {
-        case LOAD:
-            VerifyPolicyDto verifyPolicy = verifyService.getVerifyPolicy(entity);
-            dto.setVerifyPolicy(verifyPolicy);
-            break;
-
-        case SAVE:
-            // Do the verification and all.
-            verifyService.verifyEntity(entity);
-            // dto.setVerifyState(result.getState());
-            // dto.setVerifyError(result.getMessage());
-            break;
-        }
-    }
 
     @Override
     protected ModelAndView _createOrEditForm(ViewData view, HttpServletRequest req, HttpServletResponse resp)
@@ -73,6 +51,18 @@ public class AttackMissionController
 
         tab.push(dto.getVerifyState().getDisplayName());
         tab.push(dto.getVerifiedDate());
+    }
+
+    @Override
+    protected String doPreVerify(AttackMission entity, TextMap request) {
+        boolean allowed = request.getBoolean("allowed");
+        String rejectedReason = request.getString("rejectedReason");
+
+        entity.setAllowed(allowed);
+        entity.setRejectedReason(rejectedReason);
+        entity.setVerifiedDate(new Date());
+
+        return null;
     }
 
 }
