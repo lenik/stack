@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import com.bee32.plover.orm.ext.typepref.TypePrefEntity;
+import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 
 @Entity
@@ -13,15 +14,15 @@ public class VerifyPolicyPref
 
     private static final long serialVersionUID = 1L;
 
-    private VerifyPolicy<?> preferredPolicy;
+    private VerifyPolicy<? extends IVerifyContext> preferredPolicy;
     private String description;
 
     @ManyToOne
-    public VerifyPolicy<?> getPreferredPolicy() {
+    public VerifyPolicy<? extends IVerifyContext> getPreferredPolicy() {
         return preferredPolicy;
     }
 
-    public void setPreferredPolicy(VerifyPolicy<?> preferredPolicy) {
+    public void setPreferredPolicy(VerifyPolicy<? extends IVerifyContext> preferredPolicy) {
         this.preferredPolicy = preferredPolicy;
     }
 

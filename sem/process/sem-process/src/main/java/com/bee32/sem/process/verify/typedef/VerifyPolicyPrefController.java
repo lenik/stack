@@ -122,20 +122,23 @@ public class VerifyPolicyPrefController
 
             assert IVerifyContext.class.isAssignableFrom(userEntityType);
 
+            VerifyPolicy<? extends IVerifyContext> preferredPolicy = entity.getPreferredPolicy();
+            assert preferredPolicy != null;
+
             refresh(userEntityType);
 
             break;
         }
     }
 
-    <C extends VerifiableEntityBean<? extends Number, IVerifyContext>> //
-    void refresh(Class<? extends C> userEntityType) {
+    <E extends VerifiableEntityBean<? extends Number, C>, C extends IVerifyContext> //
+    void refresh(Class<? extends E> userEntityType) {
 
         String typeName = ClassUtil.getDisplayName(userEntityType);
 
-        for (C userEntity : dataManager.loadAll(userEntityType)) {
+        for (E userEntity : dataManager.loadAll(userEntityType)) {
             if (logger.isDebugEnabled())
-                logger.debug("Refresh/verify " + typeName + "[" + userEntity.getId() + "]");
+                logger.debug("Refresh/verify " + typeName + " [" + userEntity.getId() + "]");
 
             verifyService.verifyEntity(userEntity);
 

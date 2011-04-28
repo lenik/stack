@@ -61,8 +61,9 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
     }
 
     @Override
-    public void _parse(TextMap map)
+    public void __parse(TextMap map)
             throws ParseException, TypeConvertException {
+        super.__parse(map);
 
         String _verifierId = map.getString("verifierId");
         if (_verifierId == null)

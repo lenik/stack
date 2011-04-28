@@ -103,8 +103,16 @@ public abstract class VerifiableEntityController<E extends VerifiableEntityBean<
         return result.jsonDump(resp);
     }
 
+    /**
+     * 准备实体中的和审核有关的上下文参数。
+     *
+     * @return 成功返回 <code>null</code>，否则返回错误消息。
+     */
     protected abstract String doPreVerify(E entity, User currentUser, TextMap request);
 
+    /**
+     * 审核完成后的设置。
+     */
     protected abstract void doPostVerify(E entity, User currentUser, TextMap request);
 
 }

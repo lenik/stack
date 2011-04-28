@@ -181,6 +181,10 @@ public class VerifyService
     @Override
     public Set<Principal> getDeclaredResponsibles(IVerifyContext contextEntity) {
         VerifyPolicy<IVerifyContext> verifyPolicy = policyDao.getVerifyPolicy(contextEntity);
+
+        if (verifyPolicy == null)
+            return new HashSet<Principal>();
+
         return verifyPolicy.getDeclaredResponsibles(contextEntity);
     }
 
