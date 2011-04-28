@@ -14,7 +14,6 @@ var SEM = {};
 
             fnServerData : function(sSource, aoData, fnCallback) {
                 var map = document.parameterMap;
-
                 if (map != null)
                     for ( var name in map) {
                         var val = map[name];
