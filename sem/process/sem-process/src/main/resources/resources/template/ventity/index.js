@@ -15,17 +15,17 @@ var table1Tools = $.extend({}, SEM.entityTools, {
 $("#verifyDialog").dialog({
     autoOpen : false,
     modal : true,
-    width : 320,
-    height : 240,
+    width : 500,
+    height : 320,
     buttons : {
-        '允许' : function() {
-            doVerify(true);
+        '取消' : function() {
+            $(this).dialog('close');
         },
         '拒绝' : function() {
             doVerify(false);
         },
-        '取消' : function() {
-            $(this).dialog('close');
+        '允许' : function() {
+            doVerify(true);
         }
     }
 });
