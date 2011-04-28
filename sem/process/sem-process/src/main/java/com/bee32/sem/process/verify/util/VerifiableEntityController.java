@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.ajax.SimpleService;
+import com.bee32.plover.ajax.SuccessOrFailMessage;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.EntityAction;
@@ -60,7 +60,7 @@ public abstract class VerifiableEntityController<E extends VerifiableEntityBean<
         final String _id = req.getParameter("id");
         final IUserPrincipal currentUser = SessionLoginInfo.getCurrentUser(req.getSession());
 
-        return new SimpleService("审核完成。") {
+        return new SuccessOrFailMessage("审核完成。") {
 
             @Override
             protected String eval()

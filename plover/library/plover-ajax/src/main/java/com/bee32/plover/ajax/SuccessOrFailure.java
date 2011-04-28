@@ -61,7 +61,7 @@ public abstract class SuccessOrFailure {
         try {
             service();
         } catch (Exception e) {
-            message = e.getMessage();
+            message = "通用保护错误：" + e.getMessage() + " (" + e.getClass().getName() + ")";
             exception = e;
         }
 
@@ -69,7 +69,7 @@ public abstract class SuccessOrFailure {
         return json;
     }
 
-    public void jsonDump(HttpServletResponse resp)
+    public <T> T jsonDump(HttpServletResponse resp)
             throws IOException {
 
         try {
@@ -80,6 +80,7 @@ public abstract class SuccessOrFailure {
         }
 
         JsonUtil.dump(resp, this);
+        return null;
     }
 
 }
