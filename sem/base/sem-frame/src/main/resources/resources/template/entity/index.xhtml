@@ -33,6 +33,12 @@
         <script type="text/javascript" src="${location.LIB_3RDPARTY}/dataTables-1.7/media/js/jquery.dataTables.js"></script>
         <script type="text/javascript" src="${location.LIB_JS}/ex/datatable.js"></script>
 
+        <f:verbatim>&lt;script type="text/javascript"&gt;&lt;!-- /* &lt;![CDATA[ */
+        </f:verbatim>
+            document.parameterMap = <f:verbatim>${parameterMap}</f:verbatim>;
+        <f:verbatim>
+            /* ]]&gt; */ -->&lt;/script&gt;</f:verbatim>
+
         <script type="text/javascript">
             $(document).ready(function() {
                 var oTable1 = $("#table1").dataTable_SEM({

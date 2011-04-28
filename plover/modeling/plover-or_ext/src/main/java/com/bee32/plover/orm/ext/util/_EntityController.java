@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -17,6 +19,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
+import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.javascript.JavascriptChunk;
@@ -160,6 +163,17 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
         // Index by data-table:
         // List<AllowListDto> list = AllowListDto.marshalList(0, allowListDao.list());
         // mm.put("list", list);
+
+        Map<String, String> parameterMap = new HashMap<String, String>();
+        Enumeration<String> paramNames = req.getParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String paramName = paramNames.nextElement();
+            String paramValue = req.getParameter(paramName);
+            parameterMap.put(paramName, paramValue);
+        }
+        String parameterMapJson = JsonUtil.dump(parameterMap);
+
+        view.put("parameterMap", parameterMapJson);
 
         return view;
     }

@@ -11,10 +11,33 @@ var SEM = {};
             sPaginationType : "full_numbers",
             bFilter : false,
             bInfo : true,
+
+            fnServerData : function(sSource, aoData, fnCallback) {
+                var map = document.parameterMap;
+
+                if (map != null)
+                    for ( var name in map) {
+                        var val = map[name];
+                        aoData.push({
+                            name : name,
+                            value : val
+                        });
+                    }
+
+                $.ajax({
+                    "dataType" : 'json',
+                    "type" : "POST",
+                    "url" : sSource,
+                    "data" : aoData,
+                    "success" : fnCallback
+                });
+            },
+
             aoColumnDefs : [ {
                 aTargets : [ 'id', 'version' ],
                 bVisible : false
             }, ],
+
             fnRowCallback : function(node, aData, iDisplayIndex, iDisplayIndexFull) {
                 var id = aData[0];
                 var tableNode = this;
@@ -68,6 +91,7 @@ var SEM = {};
                 }
                 return node;
             },
+
             oLanguage : {
                 oPaginate : {
                     sFirst : "首页",
