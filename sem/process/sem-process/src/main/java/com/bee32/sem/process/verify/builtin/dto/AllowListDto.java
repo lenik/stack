@@ -1,4 +1,4 @@
-package com.bee32.sem.process.verify.builtin.web;
+package com.bee32.sem.process.verify.builtin.dto;
 
 import java.util.ArrayList;
 import java.util.List;

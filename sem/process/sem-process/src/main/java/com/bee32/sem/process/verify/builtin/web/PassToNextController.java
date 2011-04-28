@@ -10,6 +10,8 @@ import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.PassToNext;
 import com.bee32.sem.process.verify.builtin.dao.PassStepDao;
+import com.bee32.sem.process.verify.builtin.dto.PassStepDto;
+import com.bee32.sem.process.verify.builtin.dto.PassToNextDto;
 
 @RequestMapping(PassToNextController.PREFIX + "*")
 public class PassToNextController

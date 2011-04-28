@@ -23,7 +23,7 @@ import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyPolicyManager;
-import com.bee32.sem.process.verify.builtin.web.VerifyPolicyDto;
+import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.service.VerifyService;
 import com.bee32.sem.process.verify.util.VerifiableEntityBean;
 

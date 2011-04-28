@@ -18,6 +18,9 @@ import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 import com.bee32.sem.process.verify.builtin.dao.LevelDao;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
+import com.bee32.sem.process.verify.builtin.dto.LevelDto;
+import com.bee32.sem.process.verify.builtin.dto.MultiLevelDto;
+import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 
 @RequestMapping(MultiLevelController.PREFIX + "*")
 public class MultiLevelController

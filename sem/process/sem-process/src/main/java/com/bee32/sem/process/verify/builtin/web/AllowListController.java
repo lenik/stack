@@ -20,6 +20,7 @@ import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.AllowList;
+import com.bee32.sem.process.verify.builtin.dto.AllowListDto;
 
 @RequestMapping(AllowListController.PREFIX + "*")
 public class AllowListController

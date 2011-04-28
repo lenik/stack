@@ -18,7 +18,7 @@ import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.plover.orm.ext.util.EntityAction;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.process.SEMProcessModule;
-import com.bee32.sem.process.verify.builtin.web.VerifyPolicyDto;
+import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.service.VerifyService;
 
 @RequestMapping(AttackMissionController.PREFIX + "*")

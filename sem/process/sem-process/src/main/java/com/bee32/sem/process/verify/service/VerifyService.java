@@ -20,7 +20,7 @@ import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.VerifyState;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
-import com.bee32.sem.process.verify.builtin.web.VerifyPolicyDto;
+import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.util.VerifiableEntityAccessor;
 import com.bee32.sem.process.verify.util.VerifiableEntityBean;
 
