@@ -244,10 +244,11 @@ public abstract class DataTransferObject<T, C>
      */
     public final void parse(HttpServletRequest request)
             throws ServletException {
+
+        TextMap textMap = TextMap.convert(request);
+
         try {
-            Map<String, ?> requestMap = request.getParameterMap();
-            TextMap lookupMap = new TextMap(requestMap);
-            parse(lookupMap);
+            parse(textMap);
         } catch (TypeConvertException e) {
             throw new ServletException("Parse error: " + e.getMessage(), e);
         } catch (ParseException e) {
@@ -266,11 +267,10 @@ public abstract class DataTransferObject<T, C>
         if (map == null)
             throw new NullPointerException("map");
 
-        // Map2VariantLookupMap<String> lookupMap = new Map2VariantLookupMap<String>(map);
-        TextMap parameterMap = new TextMap(map);
+        TextMap textMap = TextMap.convert(map);
 
         try {
-            parse(parameterMap);
+            parse(textMap);
         } catch (TypeConvertException e) {
             throw new ParseException(e.getMessage(), e);
         }

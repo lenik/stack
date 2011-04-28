@@ -2,7 +2,6 @@ package com.bee32.plover.arch.util;
 
 import java.util.Map;
 
-import javax.free.IVariantLookupMap;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 

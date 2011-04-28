@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.free.AbstractVariantLookupMap;
 import javax.free.Dates;
+import javax.servlet.http.HttpServletRequest;
 
 public class TextMap
         extends AbstractVariantLookupMap<String> {
@@ -128,6 +129,24 @@ public class TextMap
             return null;
         else
             return Double.valueOf(val);
+    }
+
+    public Boolean getNBoolean(String key) {
+        String val = getString(key);
+        if (val == null || val.isEmpty())
+            return null;
+        else
+            return Boolean.valueOf(val);
+    }
+
+    public static TextMap convert(Map<String, ?> map) {
+        TextMap textMap = new TextMap(map);
+        return textMap;
+    }
+
+    public static TextMap convert(HttpServletRequest request) {
+        Map<String, ?> requestMap = request.getParameterMap();
+        return convert(requestMap);
     }
 
 }
