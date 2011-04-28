@@ -74,9 +74,11 @@ var SEM = {};
                         a.attr('href', '#');
 
                     if (tool.callback != null) {
-                        a.click(function() {
-                            return tool.callback(node, aData);
-                        });
+                        a.click((function(cb) {
+                            return function() {
+                                return cb(node, aData);
+                            };
+                        })(tool.callback));
                     }
 
                     if (tool.icon != null) {
