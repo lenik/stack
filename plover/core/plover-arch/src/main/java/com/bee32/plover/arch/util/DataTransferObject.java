@@ -117,10 +117,13 @@ public abstract class DataTransferObject<T, C>
         }
     }
 
-    public final <D extends DataTransferObject<T, ?>> D marshal(T source) {
+    public final <$ extends DataTransferObject<T, ?>> $ marshal(T source) {
+        @SuppressWarnings("unchecked")
+        $ _this = ($) this;
+
         if (source == null) {
             filled = false;
-            return null;
+            return _this;
         }
 
         // Do the real marshal work.
@@ -133,10 +136,7 @@ public abstract class DataTransferObject<T, C>
 
         filled = true;
 
-        @SuppressWarnings("unchecked")
-        D self = (D) this;
-
-        return self;
+        return _this;
     }
 
     /**
