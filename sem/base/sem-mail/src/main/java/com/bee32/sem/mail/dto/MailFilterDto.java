@@ -1,4 +1,4 @@
-package com.bee32.sem.mail.web;
+package com.bee32.sem.mail.dto;
 
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
