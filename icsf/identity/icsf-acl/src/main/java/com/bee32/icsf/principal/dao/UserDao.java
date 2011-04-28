@@ -8,7 +8,7 @@ import com.bee32.plover.orm.entity.EntityDao;
 public class UserDao
         extends EntityDao<User, Long> {
 
-    public User findByName(String name) {
+    public User getByName(String name) {
         User user = (User) getSession().createCriteria(User.class)//
                 .add(Restrictions.eq("name", name)).uniqueResult();
         return user;
