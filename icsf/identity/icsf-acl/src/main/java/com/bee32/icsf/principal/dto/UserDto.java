@@ -35,8 +35,8 @@ public class UserDto
         super(selection);
     }
 
-    public UserDto(User source, int selection) {
-        super(source, selection);
+    public UserDto(int selection, User source) {
+        super(selection, source);
     }
 
     @Override

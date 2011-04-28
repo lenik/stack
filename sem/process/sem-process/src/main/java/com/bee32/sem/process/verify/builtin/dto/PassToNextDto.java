@@ -37,8 +37,8 @@ public class PassToNextDto
         super(selection);
     }
 
-    public PassToNextDto(PassToNext source, int selection) {
-        super(source, selection);
+    public PassToNextDto(int selection, PassToNext source) {
+        super(selection, source);
     }
 
     public String getName() {

@@ -26,8 +26,8 @@ public class GroupDto
         super(selection);
     }
 
-    public GroupDto(Group source, int selection) {
-        super(source, selection);
+    public GroupDto(int selection, Group source) {
+        super(selection, source);
     }
 
     public GroupDto getInheritedGroup() {

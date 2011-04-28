@@ -46,8 +46,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         super(selection);
     }
 
-    public EntityDto(E source, int selection) {
-        super(source, selection);
+    public EntityDto(int selection, E source) {
+        super(selection, source);
     }
 
     public void setEntityType(Class<? extends E> entityType) {

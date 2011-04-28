@@ -35,8 +35,8 @@ public abstract class VerifiableEntityDto<E extends VerifiableEntityBean<K, ? ex
         super(selection);
     }
 
-    public VerifiableEntityDto(E source, int selection) {
-        super(source, selection);
+    public VerifiableEntityDto(int selection, E source) {
+        super(selection, source);
     }
 
     @Override

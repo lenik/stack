@@ -19,8 +19,8 @@ public class PrincipalDto
         super(selection);
     }
 
-    public PrincipalDto(Principal source, int selection) {
-        super(source, selection);
+    public PrincipalDto(int selection, Principal source) {
+        super(selection, source);
     }
 
 }

@@ -39,8 +39,8 @@ public class MultiLevelDto
         super(selection);
     }
 
-    public MultiLevelDto(MultiLevel source, int selection) {
-        super(source, selection);
+    public MultiLevelDto(int selection, MultiLevel source) {
+        super(selection, source);
     }
 
     /**

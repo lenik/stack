@@ -50,8 +50,8 @@ public class MailDto
         super(selection);
     }
 
-    public MailDto(Mail source, int selection) {
-        super(source, selection);
+    public MailDto(int selection, Mail source) {
+        super(selection, source);
     }
 
     @Override

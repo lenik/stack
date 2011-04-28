@@ -54,7 +54,7 @@ public abstract class DataTransferObject<T, C>
             marshal(source);
     }
 
-    public DataTransferObject(T source, int selection) {
+    public DataTransferObject(int selection, T source) {
         this(selection);
 
         if (source != null)

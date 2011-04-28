@@ -38,8 +38,8 @@ public class MailBoxDto
         super(selection);
     }
 
-    public MailBoxDto(MailBox source, int selection) {
-        super(source, selection);
+    public MailBoxDto(int selection, MailBox source) {
+        super(selection, source);
     }
 
     @Override

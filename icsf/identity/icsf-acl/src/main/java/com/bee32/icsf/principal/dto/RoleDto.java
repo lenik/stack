@@ -24,8 +24,8 @@ public class RoleDto
         super(selection);
     }
 
-    public RoleDto(Role source, int selection) {
-        super(source, selection);
+    public RoleDto(int selection, Role source) {
+        super(selection, source);
     }
 
     @Override
