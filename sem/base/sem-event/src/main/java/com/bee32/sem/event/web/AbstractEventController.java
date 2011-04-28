@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.free.ParseException;
+import javax.free.Strings;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,8 +44,14 @@ public abstract class AbstractEventController<E extends Event, Dto extends Abstr
 
     @Override
     protected void fillDataRow(DataTableDxo tab, Dto event) {
-        tab.push(event.getCategory());
-        tab.push(event.getSourceName());
+        String category = event.getSourceName();
+        String cat = event.getCategory().getDisplayName();
+        if (category == null)
+            category = "";
+        if (cat != null)
+            category += "[" + cat + "]";
+        tab.push(category);
+
         tab.push(event.getPriority());
         tab.push(event.getStatusText());
         tab.push(event.getActorName());
@@ -52,8 +59,10 @@ public abstract class AbstractEventController<E extends Event, Dto extends Abstr
         tab.push(event.getBeginTime());
         // tab.push(event.getEndTime());
 
-        String controlUrl = null;
-        tab.push(controlUrl);
+        String seeAlsos = event.getSeeAlsos();
+        if (seeAlsos != null)
+            seeAlsos = Strings.ellipse(seeAlsos, 10);
+        tab.push(seeAlsos);
     }
 
     @Override
