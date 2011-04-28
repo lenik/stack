@@ -3,6 +3,7 @@ package com.bee32.sem.event;
 import com.bee32.plover.orm.ext.dict.CommonDictController;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.servlet.context.Location;
+import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventStatus;
 import com.bee32.sem.event.web.EventController;
 import com.bee32.sem.event.web.EventPriorityController;
@@ -21,27 +22,31 @@ public class SEMEventMenu
     MenuEntry eventAdmin = new MenuEntry("event");
 
     @Contribution("sa/event")
-    MenuEntry priorities = new MenuEntry(0, "priorities", //
+    MenuEntry categories = new MenuEntry(10, "categories", //
+            DICT.join(ABBR.abbr(EventCategory.class) + "/index.htm"));
+
+    @Contribution("sa/event")
+    MenuEntry priorities = new MenuEntry(11, "priorities", //
             WEB_APP.join(EventPriorityController.PREFIX).join("index.htm"));
 
     @Contribution("sa/event")
-    MenuEntry states = new MenuEntry(0, "states", //
+    MenuEntry states = new MenuEntry(12, "states", //
             DICT.join(ABBR.abbr(EventStatus.class) + "/index.htm"));
 
     @Contribution(".")
     MenuEntry event = new MenuEntry("event");
 
     @Contribution("event")
-    MenuEntry pendingTasks = new MenuEntry(10, "pendingTasks", EVENT.join("event/index.htm?cat=pending"));
+    MenuEntry pendingTasks = new MenuEntry(10, "pendingTasks", EVENT.join("index.htm?stereo=TSK&closed=false"));
 
     @Contribution("event")
-    MenuEntry completedTasks = new MenuEntry(20, "completedTasks", EVENT.join("event/index.htm?cat=compl"));
+    MenuEntry completedTasks = new MenuEntry(11, "completedTasks", EVENT.join("index.htm?stereo=TSK&closed=true"));
 
     @Contribution("event")
-    MenuEntry eventIndex = new MenuEntry(100, "eventIndex", EVENT.join("event/index.htm?recent=30"));
+    MenuEntry eventIndex = new MenuEntry(20, "eventIndex", EVENT.join("index.htm?recent=30"));
 
     @Contribution("event")
-    MenuEntry activityIndex = new MenuEntry(200, "activityIndex", EVENT.join("event/index.htm?cat=act&recent=30"));
+    MenuEntry activityIndex = new MenuEntry(30, "activityIndex", EVENT.join("index.htm?stereo=ACT&recent=30"));
 
     @Override
     protected void preamble() {
