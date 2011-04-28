@@ -6,8 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<title>
-    <ui:insert name="title">无标题</ui:insert>
+<title><ui:insert name="title">无标题</ui:insert>
 </title>
 
 <ui:insert name="styles">
@@ -77,6 +76,8 @@
 
     <ui:insert name="scripts.jquery.ui">
         <c:set var="JQUERY_UI" value="${location.LIB_3RDPARTY}/jquery-ui-1.8.2.custom/development-bundle" />
+
+        <link type="text/css" rel="stylesheet" href="${JQUERY_UI}/themes/base/jquery.ui.all.css" />
 
         <script language="javascript" src="${JQUERY_UI}/external/jquery.bgiframe-2.1.1.js"></script>
         <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.core.js"></script>
