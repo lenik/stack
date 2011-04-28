@@ -9,6 +9,11 @@ import com.bee32.sem.test.SEMTestCase;
 public class SEMEventModuleTest
         extends SEMTestCase {
 
+    @Override
+    protected String getLoggedInUser() {
+        return "Eva";
+    }
+
     public static void main(String[] args)
             throws IOException {
 
