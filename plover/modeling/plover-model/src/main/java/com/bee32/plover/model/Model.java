@@ -7,6 +7,7 @@ import com.bee32.plover.model.schema.SchemaLoader;
 import com.bee32.plover.model.stage.IModelStage;
 import com.bee32.plover.model.stage.ModelLoadException;
 import com.bee32.plover.model.stage.ModelStageException;
+import com.bee32.plover.util.ObjectFormatter;
 
 public class Model
         extends Qualified
@@ -47,6 +48,10 @@ public class Model
     @Override
     public void reload(IModelStage stage)
             throws ModelLoadException {
+    }
+
+    static {
+        ObjectFormatter.addStopClass(Model.class);
     }
 
 }

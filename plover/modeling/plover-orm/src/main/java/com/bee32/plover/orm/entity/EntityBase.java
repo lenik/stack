@@ -8,11 +8,10 @@ import java.util.Set;
 
 import com.bee32.plover.arch.naming.INamed;
 import com.bee32.plover.model.Model;
-import com.bee32.plover.util.IMultiFormat;
 
 public abstract class EntityBase<K extends Serializable>
         extends Model
-        implements IEntity<K>, INamed, IPopulatable, IMultiFormat {
+        implements IEntity<K>, INamed, IPopulatable {
 
     private static final long serialVersionUID = 1L;
 

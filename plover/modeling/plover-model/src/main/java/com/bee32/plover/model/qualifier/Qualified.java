@@ -1,6 +1,7 @@
 package com.bee32.plover.model.qualifier;
 
 import com.bee32.plover.arch.Component;
+import com.bee32.plover.util.ObjectFormatter;
 
 public class Qualified
         extends Component
@@ -33,6 +34,10 @@ public class Qualified
     @Override
     public <Q extends Qualifier<Q>> Q getQualifier(Class<Q> qualifierType) {
         return qualifierMap.getQualifier(qualifierType);
+    }
+
+    static {
+        ObjectFormatter.addStopClass(Qualified.class);
     }
 
 }

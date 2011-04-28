@@ -9,14 +9,14 @@ import org.junit.Test;
 import com.bee32.plover.orm.feaCat.Cat;
 import com.bee32.plover.util.FormatStyle;
 
-public class EntityBeanFormatTest
+public class EntityFormatterTest
         extends Assert {
 
     Cat kate = new Cat("kate", "yellow");
     Cat kitty = new Cat("kitty", "pink");
     Cat lily = new Cat("lily", "white");
 
-    public EntityBeanFormatTest() {
+    public EntityFormatterTest() {
         kitty.setParent(kate);
         lily.setParent(kate);
 
