@@ -77,9 +77,10 @@ public abstract class SuccessOrFailure {
         } catch (Exception e) {
             message = e.getMessage();
             exception = e;
+            e.printStackTrace();
         }
 
-        JsonUtil.dump(resp, this);
+        JsonUtil.dump(resp, SuccessOrFailure.class, this);
         return null;
     }
 

@@ -23,10 +23,10 @@ public abstract class SuccessOrFailMessage
 
         if (message == null)
             setResult(SUCCESS);
-        else
+        else {
             setResult(FAILURE);
-
-        setMessage(message);
+            setMessage(message);
+        }
     }
 
     protected abstract String eval()
