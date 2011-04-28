@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataAccessException;
 
 import com.bee32.plover.arch.util.DataTransferObject;
-import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.PropertyAccessor;
+import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityUtil;
@@ -283,9 +283,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * @param idString
      *            Formatted id string.
      * @return Parsed key, maybe <code>null</code>.
+     * @throws ParseException
      * @see EntityUtil#parseId(Class, String)
      */
-    protected K parseId(String idString) {
+    protected K parseId(String idString)
+            throws ParseException {
         return EntityUtil.parseId(getKeyType(), idString);
     }
 

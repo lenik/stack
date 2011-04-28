@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.free.IllegalUsageException;
+import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.ClassUtil;
 
@@ -25,7 +26,9 @@ public class EntityUtil {
         entityKeyTypeMap = new HashMap<Class<? extends IEntity<?>>, KeyTypeEnum>();
     }
 
-    public static <E extends IEntity<K>, K extends Serializable> K parseIdOfEntity(Class<E> entityClass, String idString) {
+    public static <E extends IEntity<K>, K extends Serializable> K parseIdOfEntity(Class<E> entityClass, String idString)
+            throws ParseException {
+
         KeyTypeEnum keyTypeEnum = entityKeyTypeMap.get(entityClass);
         if (keyTypeEnum == null) {
             synchronized (EntityUtil.class) {
@@ -42,7 +45,18 @@ public class EntityUtil {
         return _parseId(keyTypeEnum, idString);
     }
 
-    public static <K extends Serializable> K parseId(Class<K> keyType, String idString) {
+    /**
+     * Parse entity id in the standard format.
+     *
+     * @param keyType
+     *            The key type, only Integer/Long/String is supported here.
+     * @param idString
+     *            The given id string, maybe <code>null</code>.
+     * @return <code>null</code> If the given id string is <code>null</code>.
+     */
+    public static <K extends Serializable> K parseId(Class<K> keyType, String idString)
+            throws ParseException {
+
         if (keyType == null)
             throw new NullPointerException("keyType");
 
@@ -57,20 +71,29 @@ public class EntityUtil {
         return _parseId(keyTypeEnum, idString);
     }
 
-    static <K extends Serializable> K _parseId(KeyTypeEnum keyTypeEnum, String idString) {
+    static <K extends Serializable> K _parseId(KeyTypeEnum keyTypeEnum, String idString)
+            throws ParseException {
         Serializable key;
 
         switch (keyTypeEnum) {
         case INT:
             if (idString.isEmpty())
                 return null;
-            key = Integer.parseInt(idString);
+            try {
+                key = Integer.parseInt(idString);
+            } catch (NumberFormatException e) {
+                throw new ParseException("Bad id (int): " + idString);
+            }
             break;
 
         case LONG:
             if (idString.isEmpty())
                 return null;
-            key = Long.parseLong(idString);
+            try {
+                key = Long.parseLong(idString);
+            } catch (NumberFormatException e) {
+                throw new ParseException("Bad id (long): " + idString);
+            }
             break;
 
         case STRING:

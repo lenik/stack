@@ -34,7 +34,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
     protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String _id = req.getParameter("id");
-        K id = parseId(_id);
+        K id = parseRequiredId(_id);
 
         E entity = dataManager.get(getEntityType(), id);
         if (entity == null)
@@ -122,7 +122,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
         if (!create) {
             String _id = req.getParameter("id");
-            id = parseId(_id);
+            id = parseRequiredId(_id);
 
             entity = dataManager.get(getEntityType(), id);
 

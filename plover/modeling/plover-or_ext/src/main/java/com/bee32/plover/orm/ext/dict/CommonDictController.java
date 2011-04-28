@@ -26,7 +26,7 @@ public class CommonDictController<E extends DictEntity<K>, K extends Serializabl
     @Override
     protected ModelAndView _content(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        K id = parseId(req.getParameter("id"));
+        K id = parseRequiredId(req.getParameter("id"));
         E entity = dataManager.fetch(getEntityType(), id);
         return it(newDto().marshal(entity));
     }
@@ -70,7 +70,7 @@ public class CommonDictController<E extends DictEntity<K>, K extends Serializabl
             dto.setDisplayName("");
             dto.setDescription("");
         } else {
-            K id = parseId(req.getParameter("id"));
+            K id = parseRequiredId(req.getParameter("id"));
             E entity = dataManager.fetch(getEntityType(), id);
             dto = newDto().marshal(entity);
         }
