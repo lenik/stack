@@ -1,40 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
 
-<ui:composition template="/template/entity/form.xhtml">
-
+<ui:composition template="/template/ventity/form.xhtml">
     <ui:define name="table">
         <table width="100%" bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
             <tr>
                 <td align="right">攻击目标:</td>
                 <td>
                     <input name="target" type="text" size="50" maxlength="200" value="${it.target}" />
-                </td>
-            </tr>
-            <tr>
-                <td align="right">审核人:</td>
-                <td>
-                    <h:selectOneMenu id="verifierId" value="#{it.verifier.id}">
-                        <c:forEach var="user" items="${users}">
-                            <f:selectItem itemValue="${user.id}" itemLabel="${user.displayName}" />
-                        </c:forEach>
-                    </h:selectOneMenu>
-                </td>
-            </tr>
-            <tr>
-                <td align="right">允许/拒绝:</td>
-                <td>
-                    <h:selectBooleanCheckbox id="allowed" value="${it.allowed}" />
-                    允许
-                </td>
-            </tr>
-            <tr>
-                <td align="right">拒绝原因:</td>
-                <td>
-                    <input name="rejectedReason" type="text" size="50" maxlength="200" value="${it.rejectedReason}" />
                 </td>
             </tr>
         </table>

@@ -9,44 +9,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 
-<ui:composition template="/template/entity/content.xhtml">
+<ui:composition template="/template/ventity/content.xhtml">
     <ui:define name="table">
         <table cellpadding="5" cellspacing="0" rules="all">
             <tr>
                 <td>攻击目标:</td>
                 <td>${it.target}</td>
-            </tr>
-            <tr>
-                <td>审核人:</td>
-                <td>${it.verifier.displayName}</td>
-            </tr>
-            <tr>
-                <td>审核时间:</td>
-                <td>${it.verifiedDate}</td>
-            </tr>
-            <tr>
-                <td>允许/拒绝:</td>
-                <td>${it.allowed}</td>
-            </tr>
-            <tr>
-                <td>拒绝原因:</td>
-                <td>${it.rejectedReason}</td>
-            </tr>
-            <tr>
-                <td>选定的审核策略:</td>
-                <td>${it.verifyPolicy.name}</td>
-            </tr>
-            <tr>
-                <td>审核运算结果:</td>
-                <td>${it.verifyState.displayName}</td>
-            </tr>
-            <tr>
-                <td>审核运算错误消息:</td>
-                <td>${it.verifyError}</td>
-            </tr>
-            <tr>
-                <td>审核运算时间:</td>
-                <td>${it.verifyEvalDate}</td>
             </tr>
         </table>
     </ui:define>
