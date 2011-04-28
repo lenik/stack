@@ -9,6 +9,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.free.ParseException;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -216,11 +217,13 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
             throws ServletException, IOException {
 
         ViewData view = new ViewData();
-        view.setViewName(viewOf("index"));
         view.put("method", "create");
         view.put("METHOD", view.V.get("create"));
 
-        return _createOrEdit(view, req, resp);
+        _createOrEdit(view, req, resp);
+
+        resp.sendRedirect("index.htm");
+        return null;
     }
 
     protected ModelAndView _edit(HttpServletRequest req, HttpServletResponse resp)
@@ -231,7 +234,10 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
         view.put("method", "edit");
         view.put("METHOD", view.V.get("edit"));
 
-        return _createOrEdit(view, req, resp);
+        _createOrEdit(view, req, resp);
+
+        resp.sendRedirect("index.htm");
+        return null;
     }
 
     /**
@@ -244,9 +250,12 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
             throws ServletException, IOException {
 
         String idString = req.getParameter("id");
-        K id = parseId(idString);
-
-        ViewData view = new ViewData(viewOf("index"));
+        K id;
+        try {
+            id = parseRequiredId(idString);
+        } catch (Exception e) {
+            return Javascripts.alertAndBack("非法对象标识: " + idString + ": " + e.getMessage()).dump(req, resp);
+        }
 
         E entity = dataManager.fetch(getEntityType(), id);
         if (entity != null)
@@ -256,7 +265,8 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
                 return Javascripts.alertAndBack("不能删除正在使用中的对象。" + hint(id)).dump(req, resp);
             }
 
-        return view;
+        resp.sendRedirect("index.htm");
+        return null;
     }
 
     // Utility pages
@@ -270,9 +280,51 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
 
     // Utilities...
 
-    protected K parseId(String idString) {
-        K id = EntityUtil.parseId(getKeyType(), idString);
+    protected static class WithContext {
+
+        final HttpServletRequest req;
+        final HttpServletResponse resp;
+
+        public WithContext(HttpServletRequest req, HttpServletResponse resp) {
+            if (req == null)
+                throw new NullPointerException("req");
+
+            if (resp == null)
+                throw new NullPointerException("resp");
+
+            this.req = req;
+            this.resp = resp;
+        }
+
+        protected <T> T errorAlert(String message)
+                throws IOException {
+            Javascripts.alertAndBack(message).dump(req, resp);
+            return null;
+        }
+
+    }
+
+    /**
+     * Parse the id string in the format of corresponding key type.
+     *
+     * @return <code>null</code> If the given id string is <code>null</code>.
+     */
+    protected K parseId(String idString)
+            throws ServletException {
+        K id;
+        try {
+            id = EntityUtil.parseId(getKeyType(), idString);
+        } catch (ParseException e) {
+            throw new ServletException("无效的标识：" + idString, e);
+        }
         return id;
+    }
+
+    protected K parseRequiredId(String idString)
+            throws ServletException {
+        if (idString == null)
+            throw new ServletException("没有指定标识。");
+        return parseId(idString);
     }
 
     protected String hint(K id) {
