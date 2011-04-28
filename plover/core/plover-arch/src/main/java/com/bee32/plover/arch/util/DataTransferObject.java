@@ -1,6 +1,7 @@
 package com.bee32.plover.arch.util;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -310,28 +311,54 @@ public abstract class DataTransferObject<T, C>
     public void export(Map<String, Object> map) {
     }
 
-    public static <D extends DataTransferObject<T, ?>, T> D marshal(Class<D> dtoClass, T source) {
+    public static <D extends DataTransferObject<T, ?>, T> D marshal(Class<D> dtoClass, Integer selection, T source) {
         if (source == null)
             return null;
         try {
-            D dto = dtoClass.newInstance();
+            D dto;
+            if (selection == null)
+                dto = dtoClass.newInstance();
+            else {
+                Constructor<D> ctor = dtoClass.getConstructor(Integer.class);
+                dto = ctor.newInstance(selection.intValue());
+            }
+
+            // Do the marshal.
             dto.marshal(source);
+
             return dto;
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Failed to instantiate DTO " + dtoClass.getName(), e);
         }
     }
 
-    public static <D extends DataTransferObject<T, ?>, T> D marshalRec(Class<D> dtoClass, T source) {
+    public static <D extends DataTransferObject<T, ?>, T> D marshalRec(Class<D> dtoClass, Integer selection, T source) {
         if (source == null)
             return null;
         try {
-            D dto = dtoClass.newInstance();
+            D dto;
+            if (selection == null)
+                dto = dtoClass.newInstance();
+            else {
+                Constructor<D> ctor = dtoClass.getConstructor(Integer.class);
+                dto = ctor.newInstance(selection.intValue());
+            }
+
+            // Do the marshal.
             dto.marshalRec(source);
+
             return dto;
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Failed to instantiate DTO " + dtoClass.getName(), e);
         }
+    }
+
+    public static <D extends DataTransferObject<T, ?>, T> D marshal(Class<D> dtoClass, T source) {
+        return marshal(dtoClass, null, source);
+    }
+
+    public static <D extends DataTransferObject<T, ?>, T> D marshalRec(Class<D> dtoClass, T source) {
+        return marshalRec(dtoClass, null, source);
     }
 
     /**
