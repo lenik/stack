@@ -14,6 +14,7 @@
         <link rel="stylesheet" type="text/css" href="${location.LIB_3RDPARTY}/dataTables-1.7/media/css/demo_page.css" />
         <link rel="stylesheet" type="text/css" href="${location.LIB_3RDPARTY}/dataTables-1.7/media/css/demo_table.css" />
 
+        <ui:insert name="styles.1" />
         <ui:insert name="styles.user" />
     </ui:define>
 
@@ -25,6 +26,8 @@
         </ui:insert>
 
         <ui:insert name="table" />
+
+        <ui:insert name="content.1"/>
     </ui:define>
 
     <ui:define name="scripts">
@@ -51,6 +54,8 @@
                 location.href = 'createForm.htm';
             });
         </script>
+
+        <ui:insert name="scripts.1" />
         <ui:insert name="scripts.user" />
     </ui:define>
 

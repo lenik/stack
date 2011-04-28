@@ -28,6 +28,7 @@
 <script language="javascript" src="${location.WEB_APP}/site/frame.js"></script>
 
 <ui:insert name="pre-scripts">
+    <ui:insert name="pre-scripts.1" />
     <ui:insert name="pre-scripts.user" />
 </ui:insert>
 </head>
@@ -65,7 +66,6 @@
     </div>
 
     <ui:insert name="scripts.frame">
-
         <ui:insert name="scripts.superfish">
             <link rel="stylesheet" type="text/css" media="screen"
                 href="${location.LIB_3RDPARTY}/superfish-1.4.8/css/superfish.css" />
@@ -96,6 +96,7 @@
     </ui:insert>
 
     <ui:insert name="scripts">
+        <ui:insert name="scripts.1" />
         <ui:insert name="scripts.user" />
     </ui:insert>
 

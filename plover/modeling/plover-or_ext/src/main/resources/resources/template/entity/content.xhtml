@@ -8,22 +8,22 @@
 
 <ui:composition template="/template/newsite.xhtml">
 
-    <ui:define name="title">${METHOD} ${meta.name}</ui:define>
+    <ui:define name="title">
+        ${V.DETAIL} ${meta.name}
+    </ui:define>
 
     <ui:define name="commands">
     </ui:define>
 
-    <ui:define name="content">
-        <form action="${method}.htm" method="post">
-            <input type="hidden" name="id" value="${it.id}" />
-            <input type="hidden" name="version" value="${it.version}" />
+    <ui:define name="body">
+        <!-- id: ${it.id} -->
+        <!-- version: ${it.version} -->
+        <input type="hidden" name="id" value="${it.id}" />
+        <input type="hidden" name="version" value="${it.version}" />
 
-            <ui:insert name="table" />
+        <ui:insert name="table" />
 
-            <div>
-                <input type="submit" value="保存" />
-            </div>
-        </form>
+        <ui:insert name="content.1" />
 
         <ui:insert name="commands" />
     </ui:define>
