@@ -1,7 +1,11 @@
 package com.bee32.sem.test;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.context.ApplicationContext;
 
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.service.UserService;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.context.OSIVFilter;
@@ -12,6 +16,7 @@ import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.restful.DispatchServlet;
 import com.bee32.plover.restful.RESTfulConfig;
 import com.bee32.plover.zk.test.ZkTestCase;
+import com.bee32.sem.user.util.SessionLoginInfo;
 
 /**
  * 关于调试配置：
@@ -34,6 +39,8 @@ public class SEMTestCase
 
     protected String PREFIX = RESTfulConfig.preferredPrefix;
 
+    protected ApplicationContext appContext;
+
     public SEMTestCase() {
         PersistenceUnit unit = UsingUtil.getUsingUnit(getClass());
         CustomizedSessionFactoryBean.setForceUnit(unit);
@@ -51,9 +58,28 @@ public class SEMTestCase
     }
 
     @Override
-    protected void applicationInitialized(ApplicationContext applicationContext) {
-        SamplesLoader samplesLoader = applicationContext.getBean(SamplesLoader.class);
+    protected void applicationInitialized(ApplicationContext context) {
+        this.appContext = context;
+        SamplesLoader samplesLoader = context.getBean(SamplesLoader.class);
         samplesLoader.loadNormalSamples();
+    }
+
+    protected String getLoggedInUser() {
+        return "admin";
+    }
+
+    @Override
+    public void initSession(HttpSession session) {
+        String userName = getLoggedInUser();
+
+        if (userName != null) {
+            if (appContext == null)
+                throw new IllegalStateException("Application context isn't initalized, yet.");
+
+            UserService userService = appContext.getBean(UserService.class);
+            User user = userService.findByName(userName);
+            SessionLoginInfo.setCurrentUser(session, user);
+        }
     }
 
 }

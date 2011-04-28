@@ -15,6 +15,11 @@ public class SEMProcessModuleTest
         return 10;
     }
 
+    @Override
+    protected String getLoggedInUser() {
+        return "eva";
+    }
+
     public static void main(String[] args)
             throws IOException {
 

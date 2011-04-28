@@ -8,6 +8,7 @@ import javax.free.Strings;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.http.HttpSession;
 
 import org.mortbay.jetty.testing.HttpTester;
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ import com.bee32.plover.test.AssembledTestCase;
 
 public abstract class ServletTestCase
         extends AssembledTestCase<ServletTestCase>
-        implements ServletContextListener {
+        implements ServletContextListener, ISessionMonitor {
 
     public static final boolean searchClassLocalResources = true;
 
@@ -55,6 +56,8 @@ public abstract class ServletTestCase
             OverlappedBases.add(chain);
             chain = chain.getSuperclass();
         }
+
+        lastInstance = this;
     }
 
     private final class LocalSTL
@@ -124,6 +127,8 @@ public abstract class ServletTestCase
 
     protected void configureBuiltinServlets() {
         checkBuiltinServlets = true;
+
+        stl.addFilter(SessionMonitorFilter.class, "/*", 0);
     }
 
     protected void configureFallbackServlets() {
@@ -160,6 +165,10 @@ public abstract class ServletTestCase
         return stl.httpPost(uri, content, map);
     }
 
+    @Override
+    public void initSession(HttpSession session) {
+    }
+
     /**
      * This function bypass any state of current object.
      *
@@ -188,6 +197,12 @@ public abstract class ServletTestCase
     public void _browseAndWait(String location)
             throws IOException {
         stl.browseAndWait(location);
+    }
+
+    static ServletTestCase lastInstance;
+
+    public static ServletTestCase getLastInstance() {
+        return lastInstance;
     }
 
 }
