@@ -46,7 +46,7 @@ public class VerifyPolicyPrefController
     }
 
     @Override
-    protected List<? extends VerifyPolicyPref> __list() {
+    protected List<? extends VerifyPolicyPref> __list(HttpServletRequest req) {
         List<VerifyPolicyPref> prefs = new ArrayList<VerifyPolicyPref>();
 
         for (Class<?> verifiableType : VerifyPolicyManager.getVerifiableTypes()) {
