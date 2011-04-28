@@ -4,14 +4,19 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.free.ParseException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.criterion.DetachedCriteria;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
@@ -19,6 +24,8 @@ import com.bee32.plover.orm.util.EntityDto;
 
 public abstract class BasicEntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
         extends EntityController<E, K, Dto> {
+
+    static Logger logger = LoggerFactory.getLogger(BasicEntityController.class);
 
     protected Integer _dtoSelection;
     protected boolean _createOTF;
@@ -46,8 +53,23 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
         return view;
     }
 
-    protected List<? extends E> __list() {
-        return dataManager.loadAll(getEntityType());
+    protected List<? extends E> __list(HttpServletRequest req)
+            throws ParseException, ServletException {
+
+        TextMap textMap = TextMap.convert(req);
+
+        SearchModel searchModel = new SearchModel(getEntityType());
+
+        fillSearchModel(searchModel, textMap);
+
+        if (searchModel.isEmpty())
+            return dataManager.loadAll(getEntityType());
+
+        DetachedCriteria detachedCriteria = searchModel.getDetachedCriteria();
+        int firstResult = searchModel.getFirstResult();
+        int maxResults = searchModel.getMaxResults();
+
+        return dataManager.findByCriteria(detachedCriteria, firstResult, maxResults);
     }
 
     @Override
@@ -56,7 +78,14 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
         DataTableDxo tab = new DataTableDxo(req);
 
-        List<? extends E> entityList = __list();
+        List<? extends E> entityList;
+
+        try {
+            entityList = __list(req);
+        } catch (ParseException e) {
+            // logger.error("Failed to parse search criteria parameters.", e);
+            return Javascripts.alertAndBack("Parse Error: " + e.getMessage()).dump(req, resp);
+        }
 
         int index = 0;
         for (E entity : entityList) {
@@ -208,5 +237,9 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
     }
 
     protected abstract void fillDataRow(DataTableDxo tab, Dto dto);
+
+    protected void fillSearchModel(SearchModel model, TextMap request)
+            throws ParseException {
+    }
 
 }
