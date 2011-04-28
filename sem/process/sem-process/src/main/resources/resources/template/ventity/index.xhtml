@@ -16,9 +16,10 @@
     <ui:define name="content.1">
         <div id="verifyDialog" title="审核执行">
 
+            <input type="hidden" id="selectedId" />
             <p>您确定要对 ${name} 审核吗？点击允许完成审核，或者在这里填写拒绝的原因。 点击取消将放弃本次操作。</p>
 
-            <textarea name="rejectedReason" rows="5" cols="30">此人非常懒惰，不想填写任何拒绝的理由。</textarea>
+            <textarea id="rejectedReason" rows="5" style="width: 100%">此人非常懒惰，不想填写任何拒绝的理由。</textarea>
         </div>
     </ui:define>
 

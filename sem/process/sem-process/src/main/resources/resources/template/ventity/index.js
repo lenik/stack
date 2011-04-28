@@ -5,6 +5,7 @@ var table1Tools = $.extend({}, SEM.entityTools, {
         icon : "obj16/taskmrk_tsk.gif",
         callback : function(node, aData) {
             var id = aData[0];
+            $("#selectedId").val(id);
             $("#verifyDialog").dialog('open');
         }
     }
@@ -30,26 +31,27 @@ $("#verifyDialog").dialog({
 });
 
 function doVerify(allowed) {
+    var id = $("#selectedId").val();
+    var rejectedReason = $("#rejectedReason").val();
+
     $.ajax({
-        dataType : "json",
-        type : "POST",
         url : "verify.htm",
+        type : "POST",
+        dataType : "json",
         data : {
+            'id' : id,
             'allowed' : allowed,
-            'rejectedMessage' : $("#rejectedMessage").val()
+            'rejectedReason' : rejectedReason
         },
         success : function(data) {
-            var table1 = $("#table1");
-            var model = table1.dataTable();
-            model.fnReloadAjax("data.htm");
-            alert(data.message);
-            $(this).dialog('close');
+            var dtab = $("#table1").dataTable();
+            dtab.fnReloadAjax("data.htm");
+            $("#verifyDialog").dialog('close');
         },
-        error : function(data) {
-            alert(arguments[1]);
-            alert("e-dat: "+data);
+        error : function(xhr, errmsg) {
+            alert("向远程发送命令时失败：" + errmsg);
+            $("#verifyDialog").dialog('close');
         }
     });
-    alert("do-verif2y");
     return true;
 }
