@@ -1,7 +1,9 @@
 package com.bee32.sem.event;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
@@ -32,21 +34,37 @@ public class SEMEventSamples
     public static final EventCategory weather = new EventCategory("weather", "天气预报");
     public static final EventCategory special = new EventCategory("special", "特种");
 
-    public static Event rain;
+    public static List<Event> rains = new ArrayList<Event>();
     public static Task killAngel;
 
-    static {
-        rain = new Event();
+    static Event mkRain(double relativeDay, Double duration, String title) {
+        Event rain = new Event();
         rain.setCategory(weather);
         rain.setSourceClass(SEMEventSamples.class);
         rain.setPriority(LOW.getPriority());
         rain.setState(GenericState.UNKNOWN);
-        rain.setClosed(true);
-        rain.setSubject("明天早晨会有流星雨，请大家出门带上望远镜。");
+        rain.setClosed(duration != null);
+
+        long beginMs = (long) (System.currentTimeMillis() + relativeDay * 86400 * 1000);
+        rain.setBeginTime(new Date(beginMs));
+        if (duration != null) {
+            long durMs = (long) (duration * 86400 * 1000);
+            rain.setEndTime(new Date(beginMs + durMs));
+        }
+
+        rain.setSubject("在 " + title + " (" + rain.getBeginTime() + ") 时刻有流星雨，请大家出门带上望远镜。");
         rain.setMessage("你以为带上望远镜就能看到土卫3的流行雨吗？少年哟，别做梦了，那是不可能的。");
-        rain.setBeginTime(new Date(System.currentTimeMillis() - 7200));
-        rain.setBeginTime(new Date(System.currentTimeMillis() + 7200));
+
         rain.setObservers(Arrays.asList(IcsfPrincipalSamples.solaRobots));
+        return rain;
+    }
+
+    static {
+        rains.add(mkRain(-28.5, 1.0, "28.5 天前"));
+        rains.add(mkRain(-29.9, null, "29.9 天前"));
+        rains.add(mkRain(-30.2, 1.0, "30.1 天前"));
+        rains.add(mkRain(0, null, "今天"));
+        rains.add(mkRain(1.5, null, "1.5天之后"));
 
         killAngel = new Task();
         killAngel.setCategory(special);
@@ -69,7 +87,9 @@ public class SEMEventSamples
 
         addNormalSample(weather, special);
 
-        addNormalSample(rain);
+        for (Event rain : rains)
+            addNormalSample(rain);
+
         addNormalSample(killAngel);
     }
 
