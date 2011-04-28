@@ -33,7 +33,7 @@ public class AttackMissionDto
     }
 
     @Override
-    public void _parse(TextMap map)
+    protected void _parse(TextMap map)
             throws ParseException, TypeConvertException {
         target = map.getString("target");
     }

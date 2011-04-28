@@ -159,14 +159,14 @@ public abstract class Entity<K extends Serializable>
     }
 
     @Override
-    public void toString(final PrettyPrintStream out, final FormatStyle format) {
+    public void toString(PrettyPrintStream out, FormatStyle format) {
         toString(out, format, null, 0);
     }
 
     @Overlay
-    public void toString(final PrettyPrintStream out, final FormatStyle format, final Set<Object> occurred,
-            final int depth) {
-        new EntityFormatter(out, occurred).format(this, format, depth);
+    public void toString(PrettyPrintStream out, FormatStyle format, Set<Object> occurred, int depth) {
+        EntityFormatter formatter = new EntityFormatter(out, occurred);
+        formatter.format(this, format, depth);
     }
 
     protected <T extends Entity<K>> T cast(Class<T> thatClass, Entity<K> thatLike) {

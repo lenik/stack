@@ -8,9 +8,12 @@ import javax.inject.Inject;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.dso.UserDso;
 import com.bee32.plover.arch.EnterpriseService;
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.Task;
 import com.bee32.sem.process.verify.IVerifyContext;
@@ -23,6 +26,7 @@ import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.util.VerifiableEntityAccessor;
 import com.bee32.sem.process.verify.util.VerifiableEntityBean;
+import com.bee32.sem.user.util.SessionLoginInfo;
 
 public class VerifyService
         extends EnterpriseService
@@ -30,6 +34,9 @@ public class VerifyService
 
     @Inject
     VerifyPolicyDao policyDao;
+
+    @Inject
+    UserDso userService;
 
     @Transactional(readOnly = true)
     public <C extends IVerifyContext> VerifyPolicyDto getPreferredVerifyPolicy(Class<C> entityClass) {
@@ -48,6 +55,17 @@ public class VerifyService
     @Override
     public Class<IVerifyContext> getRequiredContext() {
         return IVerifyContext.class;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Set<Principal> getDeclaredResponsibles(IVerifyContext contextEntity) {
+        VerifyPolicy<IVerifyContext> verifyPolicy = policyDao.getVerifyPolicy(contextEntity);
+
+        if (verifyPolicy == null)
+            return new HashSet<Principal>();
+
+        return verifyPolicy.getDeclaredResponsibles(contextEntity);
     }
 
     /**
@@ -131,8 +149,14 @@ public class VerifyService
         if (entity == null)
             throw new NullPointerException("entity");
 
+        IUserPrincipal __currentUser = SessionLoginInfo.getCurrentUser(ThreadServletContext.requireSession());
+
+        // XXX
+        userService.get(__currentUser.getId());
+
         C context = entity.getVerifyContext();
 
+        // Do verification.
         VerifyResult result = verify(context);
 
         VerifiableEntityAccessor.setVerifyState(entity, result.getState());
@@ -152,6 +176,7 @@ public class VerifyService
             VerifyState state = result.getState();
             verifyTask.setClosed(state.isClosed());
             verifyTask.setState(state);
+
             verifyTask.setActor(null); // session current user.
 
             String entityName = ClassUtil.getDisplayName(entity.getClass()) + " [" + entity.getId() + "]";
@@ -175,17 +200,6 @@ public class VerifyService
         }
 
         return result;
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Set<Principal> getDeclaredResponsibles(IVerifyContext contextEntity) {
-        VerifyPolicy<IVerifyContext> verifyPolicy = policyDao.getVerifyPolicy(contextEntity);
-
-        if (verifyPolicy == null)
-            return new HashSet<Principal>();
-
-        return verifyPolicy.getDeclaredResponsibles(contextEntity);
     }
 
 }
