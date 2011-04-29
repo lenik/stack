@@ -55,10 +55,14 @@ public class EntityFormatterTest
         String kittyStr = kitty.toString(FormatStyle.NORMAL);
         String expected = "kitty@Cat {\n    color = pink; \n    parent = kate@Cat; \n}";
         assertEquals(expected, kittyStr);
+    }
 
-        String kateStr = kate.toString(FormatStyle.NORMAL);
-        expected = "kate@Cat {\n    color = yellow; \n    children = (\n        kitty@Cat, \n        lily@Cat, \n    ); \n}";
+    @Test
+    public void testToStringVerbose() {
+        String kateStr = kate.toString(FormatStyle.VERBOSE);
+        String expected = "kate@Cat {\n    color = yellow; \n    children = (\n        kitty@Cat, \n        lily@Cat, \n    ); \n}";
         assertEquals(expected, kateStr);
+
     }
 
 }
