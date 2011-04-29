@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bee32.plover</groupId>
     <artifactId>plover-parent</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.5</version>
     <packaging>pom</packaging>
     <dependencyManagement>
         <dependencies>
@@ -44,6 +44,7 @@
                     <artifactId>maven-resources-plugin</artifactId>
                     <configuration>
                         <encoding>utf-8</encoding>
+                        <escapeString>\</escapeString>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -84,6 +85,40 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+            </resource>
+        </resources>
     </build>
     <distributionManagement>
         <repository>
