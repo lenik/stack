@@ -23,9 +23,13 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntity;
+import com.bee32.plover.util.FormatStyle;
+import com.bee32.plover.util.IMultiFormat;
+import com.bee32.plover.util.PrettyPrintStream;
 
 public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
-        extends DataTransferObject<E, IUnmarshalContext> {
+        extends DataTransferObject<E, IUnmarshalContext>
+        implements IMultiFormat {
 
     private static final long serialVersionUID = 1L;
 
@@ -775,6 +779,29 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             return this;
         }
 
+    }
+
+    @Override
+    public String toString() {
+        return toString(FormatStyle.DEFAULT);
+    }
+
+    @Override
+    public String toString(FormatStyle format) {
+        PrettyPrintStream buf = new PrettyPrintStream();
+        toString(buf, format);
+        return buf.toString();
+    }
+
+    @Override
+    public void toString(PrettyPrintStream out, FormatStyle format) {
+        toString(out, format, null, 0);
+    }
+
+    @Override
+    public void toString(PrettyPrintStream out, FormatStyle format, Set<Object> occurred, int depth) {
+        EntityDtoFormatter formatter = new EntityDtoFormatter(out, occurred);
+        formatter.format(this, format, depth);
     }
 
 }

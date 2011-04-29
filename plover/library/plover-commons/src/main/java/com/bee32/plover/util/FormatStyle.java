@@ -7,12 +7,28 @@ import javax.free.IllegalUsageError;
 
 public class FormatStyle {
 
-    public static final FormatStyle SIMPLE = new FormatStyle(true, false, false, false, 0);
-    public static final FormatStyle SHORT = new FormatStyle(true, true, false, false, 0);
-    public static final FormatStyle NORMAL = new FormatStyle(true, true, true, true, 0, SIMPLE);
-    public static final FormatStyle VERBOSE = new FormatStyle(true, true, true, true, 1, SIMPLE);
-    public static final FormatStyle LOG_ENTRY = new FormatStyle(true, true, true, false, 1, SIMPLE);
-    public static final FormatStyle FULL = new FormatStyle(true, true, true, true, 1000);
+    static final boolean IDENTITY = true;
+    static final boolean FIELDS = true;
+    static final boolean FIELD_NAMES = true;
+    static final boolean MULTI_LINE = true;
+
+    public static final FormatStyle SIMPLE //
+    /*    */= new FormatStyle(IDENTITY, false, false, false, 0);
+
+    public static final FormatStyle SHORT //
+    /*    */= new FormatStyle(IDENTITY, FIELDS, false, false, 0);
+
+    public static final FormatStyle NORMAL //
+    /*    */= new FormatStyle(IDENTITY, FIELDS, FIELD_NAMES, MULTI_LINE, 0, SIMPLE);
+
+    public static final FormatStyle VERBOSE //
+    /*    */= new FormatStyle(IDENTITY, FIELDS, FIELD_NAMES, MULTI_LINE, 1, SIMPLE);
+
+    public static final FormatStyle LOG_ENTRY //
+    /*    */= new FormatStyle(IDENTITY, FIELDS, FIELD_NAMES, false, 1, SIMPLE);
+
+    public static final FormatStyle FULL //
+    /*    */= new FormatStyle(IDENTITY, FIELDS, FIELD_NAMES, MULTI_LINE, 1000);
 
     private final boolean includeIdentity;
     private final boolean includeFields;
