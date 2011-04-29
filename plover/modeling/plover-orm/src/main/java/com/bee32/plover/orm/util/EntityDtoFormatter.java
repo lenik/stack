@@ -20,7 +20,8 @@ public class EntityDtoFormatter
 
     @Override
     protected void formatId(FormatStyle format, EntityDto<?, ?> val) {
-        String name = "《DTO》"; // val.getName();
+        String stereo = val._isFilled() ? "DTO" : "DTO/ref";
+        String name = "《" + stereo + "》"; // val.getName();
 
         if (format.isIdentityIncluded()) {
             String typeName = val.getClass().getSimpleName();

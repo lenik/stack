@@ -783,6 +783,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     @Override
     public String toString() {
+        if (!filled) {
+            if (id == null)
+                return "《null-ref》";
+        }
         return toString(FormatStyle.DEFAULT);
     }
 
