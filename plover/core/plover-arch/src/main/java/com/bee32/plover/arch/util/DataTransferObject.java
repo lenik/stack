@@ -326,7 +326,7 @@ public abstract class DataTransferObject<T, C>
             if (selection == null)
                 dto = dtoClass.newInstance();
             else {
-                Constructor<D> ctor = dtoClass.getConstructor(Integer.class);
+                Constructor<D> ctor = dtoClass.getConstructor(int.class);
                 dto = ctor.newInstance(selection.intValue());
             }
 
@@ -347,7 +347,7 @@ public abstract class DataTransferObject<T, C>
             if (selection == null)
                 dto = dtoClass.newInstance();
             else {
-                Constructor<D> ctor = dtoClass.getConstructor(Integer.class);
+                Constructor<D> ctor = dtoClass.getConstructor(int.class);
                 dto = ctor.newInstance(selection.intValue());
             }
 
