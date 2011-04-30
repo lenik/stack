@@ -14,17 +14,19 @@ import org.mortbay.util.Attributes;
 
 public class RabbitServer {
 
-    private final Server server;
-    private final LocalConnector localConnector;
-    private final RabbitServletContext servletContext;
+    private Server server;
+    private LocalConnector localConnector;
+    private RabbitServletContext servletContext;
 
     public RabbitServer() {
         server = new Server();
-        localConnector = new LocalConnector();
-        servletContext = new RabbitServletContext();
-
         server.setSendServerVersion(false);
+
+        localConnector = new LocalConnector();
+        localConnector.setPort(getPort());
         server.addConnector(localConnector);
+
+        servletContext = new RabbitServletContext();
         server.addHandler(servletContext);
     }
 
@@ -35,7 +37,12 @@ public class RabbitServer {
 
     public void stop()
             throws Exception {
-        server.stop();
+        if (server != null)
+            server.stop();
+    }
+
+    protected int getPort() {
+        return 0;
     }
 
     public RabbitServletContext getServletContext() {
@@ -73,6 +80,7 @@ public class RabbitServer {
     public synchronized String createSocketConnector(boolean boundToLocalhostonly)
             throws Exception {
         SelectChannelConnector connector = new SelectChannelConnector();
+        connector.setPort(getPort());
 
         if (boundToLocalhostonly)
             connector.setHost("127.0.0.1");

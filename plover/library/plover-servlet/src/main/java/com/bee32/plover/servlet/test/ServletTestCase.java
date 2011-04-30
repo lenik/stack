@@ -68,6 +68,25 @@ public abstract class ServletTestCase
         }
 
         @Override
+        public void startup()
+                throws Exception {
+            super.startup();
+            ServletTestCase.this.onServerStarted();
+        }
+
+        @Override
+        public void shutdown()
+                throws Exception {
+            ServletTestCase.this.onServerShutdown();
+            super.shutdown();
+        }
+
+        @Override
+        public int getPort() {
+            return ServletTestCase.this.getPort();
+        }
+
+        @Override
         protected void configureContext() {
             super.configureContext();
 
@@ -104,20 +123,10 @@ public abstract class ServletTestCase
                 throw new IllegalUsageException("configureFallbackServlets is overrided.");
         }
 
-        @Override
-        public void startup()
-                throws Exception {
-            super.startup();
-            ServletTestCase.this.onServerStarted();
-        }
+    }
 
-        @Override
-        public void shutdown()
-                throws Exception {
-            ServletTestCase.this.onServerShutdown();
-            super.shutdown();
-        }
-
+    protected int getPort() {
+        return 0;
     }
 
     protected void configureContext() {
@@ -167,6 +176,16 @@ public abstract class ServletTestCase
 
     @Override
     public void initSession(HttpSession session) {
+    }
+
+    public void mainLoop()
+            throws IOException {
+        stl.mainLoop();
+    }
+
+    public void mainLoop(String location)
+            throws IOException {
+        stl.mainLoop(location);
     }
 
     /**

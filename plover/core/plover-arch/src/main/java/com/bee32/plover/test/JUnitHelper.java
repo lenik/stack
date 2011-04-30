@@ -238,7 +238,7 @@ public class JUnitHelper {
             // $$EnhancerByCGLIB$$38abe9c5.
             // EnhancerKey ekey=(EnhancerKey) key;
 
-            String base = prefix + "-JUW-" + key.hashCode();
+            String base = prefix + "_JUW_" + Integer.toHexString(key.hashCode());
 
             String attempt = base;
 

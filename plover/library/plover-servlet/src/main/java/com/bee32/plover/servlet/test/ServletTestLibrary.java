@@ -37,7 +37,7 @@ public class ServletTestLibrary
     protected final Logger logger;
 
     private String host = "localhost";
-    private int socketPort = -1;
+    private int actualPort = -1;
 
     private Class<?> baseClass;
     private String[] hintFilenames = { "WEB-INF/web.xml", "index.html" };
@@ -67,7 +67,7 @@ public class ServletTestLibrary
         String connector = createSocketConnector(false);
         int colon = connector.lastIndexOf(':');
         String portString = connector.substring(colon + 1);
-        socketPort = Integer.parseInt(portString);
+        actualPort = Integer.parseInt(portString);
 
         logger.debug("Start test server: " + this);
         start();
@@ -211,7 +211,7 @@ public class ServletTestLibrary
     }
 
     public int getPort() {
-        return socketPort;
+        return actualPort;
     }
 
     // Delegates.
@@ -284,28 +284,12 @@ public class ServletTestLibrary
 
     static final String DEFAULT_LOCATION = "";
 
-    public void browse()
+    protected URL getURL(String location)
             throws IOException {
-        browse(DEFAULT_LOCATION);
-    }
-
-    public URL browse(String location)
-            throws IOException {
-
-        String root = "http://localhost:" + this.getPort();
+        String root = "http://localhost:" + this.actualPort;
         URL rootUrl = new URL(root);
 
         URL url = new URL(rootUrl, location);
-        logger.warn("Browse " + url);
-
-        URI uri;
-        try {
-            uri = url.toURI();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-        Desktop.getDesktop().browse(uri);
-
         return url;
     }
 
@@ -323,16 +307,16 @@ public class ServletTestLibrary
         commands.put("q", Command.QUIT);
     }
 
-    public void browseAndWait()
+    public void mainLoop()
             throws IOException {
-        browseAndWait(DEFAULT_LOCATION);
+        mainLoop("/");
     }
 
-    public void browseAndWait(String location)
+    public void mainLoop(String location)
             throws IOException {
-        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        URL url = getURL(location);
 
-        URL url = browse(location);
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 
         while (true) {
             String line = stdin.readLine();
@@ -369,6 +353,38 @@ public class ServletTestLibrary
                 return;
             }
         }
+    }
+
+    public void browse()
+            throws IOException {
+        browse(DEFAULT_LOCATION);
+    }
+
+    public URL browse(String location)
+            throws IOException {
+        URL url = getURL(location);
+        logger.warn("Browse " + url);
+
+        URI uri;
+        try {
+            uri = url.toURI();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        Desktop.getDesktop().browse(uri);
+
+        return url;
+    }
+
+    public void browseAndWait()
+            throws IOException {
+        browseAndWait(DEFAULT_LOCATION);
+    }
+
+    public void browseAndWait(String location)
+            throws IOException {
+        browse(location);
+        mainLoop(location);
     }
 
 }
