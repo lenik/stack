@@ -6,7 +6,8 @@ package com.bee32.plover.arch.util;
  * @param T
  *            Type of the property.
  */
-public abstract class PropertyAccessor<S, T> {
+public abstract class PropertyAccessor<S, T>
+        implements IPropertyAccessor<S, T> {
 
     private final Class<T> propertyType;
 
@@ -17,12 +18,9 @@ public abstract class PropertyAccessor<S, T> {
         this.propertyType = (Class<T>) propertyType;
     }
 
+    @Override
     public Class<T> getType() {
         return propertyType;
     }
-
-    public abstract T get(S obj);
-
-    public abstract void set(S obj, T value);
 
 }

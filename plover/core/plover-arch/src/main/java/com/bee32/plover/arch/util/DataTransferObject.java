@@ -71,8 +71,10 @@ public abstract class DataTransferObject<T, C>
      * @param sourceType
      *            New source type.
      */
+    @SuppressWarnings("unchecked")
     protected void _setSourceType(Class<? extends T> sourceType) {
-        this.sourceType = sourceType;
+        // XXX cast?
+        this.sourceType = (Class<T>) sourceType;
     }
 
     public final boolean _isFilled() {
@@ -93,9 +95,14 @@ public abstract class DataTransferObject<T, C>
     }
 
     @Override
-    public final <D extends DataTransferObject<T, ?>> D marshalRec(T source) {
-        if (source == null)
-            return null;
+    public final <$ extends DataTransferObject<T, ?>> $ marshalRec(T source) {
+        @SuppressWarnings("unchecked")
+        $ _this = ($) this;
+
+        if (source == null) {
+            filled = false;
+            return _this;
+        }
 
         Map<Object, Object> graph = threadLocalGraph.get();
         boolean topLevel = graph == null;
@@ -104,7 +111,7 @@ public abstract class DataTransferObject<T, C>
             threadLocalGraph.set(graph);
         }
 
-        D marshalledFlyWeight = (D) graph.get(source);
+        $ marshalledFlyWeight = ($) graph.get(source);
         if (marshalledFlyWeight != null)
             return marshalledFlyWeight;
 

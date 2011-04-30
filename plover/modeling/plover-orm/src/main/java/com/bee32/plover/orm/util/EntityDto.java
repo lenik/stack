@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.util;
 
+import java.beans.IntrospectionException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.free.IllegalUsageError;
 import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
@@ -16,8 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.dao.DataAccessException;
 
+import com.bee32.plover.arch.util.BeanPropertyAccessor;
 import com.bee32.plover.arch.util.DataTransferObject;
-import com.bee32.plover.arch.util.PropertyAccessor;
+import com.bee32.plover.arch.util.IPropertyAccessor;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
@@ -404,7 +407,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      *             If data access exception happened with calls into the {@link IUnmarshalContext}.
      */
     protected static <Ei extends Entity<Ki>, Ki extends Serializable> //
-    /**/Ei unmarshal(IUnmarshalContext context, Class<Ei> entityType, //
+    /**/Ei unmarshal(IUnmarshalContext context, Class<? extends Ei> entityType, //
             Ei oldEntity, EntityDto<Ei, Ki> dto) {
 
         if (dto == null)
@@ -503,10 +506,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      *             If data access exception happened with calls into the {@link IUnmarshalContext}.
      */
     protected static <E extends Entity<?>, Ei extends Entity<Ki>, Ki extends Serializable> //
-    /**/void unmarshal(IUnmarshalContext context, E target, //
-            PropertyAccessor<E, Ei> property, EntityDto<Ei, Ki> newDto) {
+    /**/void unmarshalProperty(IUnmarshalContext context, E target, //
+            IPropertyAccessor<E, Ei> property, EntityDto<Ei, Ki> newDto) {
 
-        Class<Ei> propertyType = property.getType();
+        Class<? extends Ei> propertyType = property.getType();
 
         Ei oldProperty = property.get(target);
         Ei newProperty = unmarshal(context, propertyType, oldProperty, newDto);
@@ -651,11 +654,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         return unmarshalCollection((IUnmarshalContext) null, set, dtoList);
     }
 
-    public <Et extends Entity<?>> WithContext<Et> with(IUnmarshalContext context, Et target) {
-        return new WithContext<Et>(context, target);
+    public WithContext with(IUnmarshalContext context, E target) {
+        return new WithContext(context, target);
     }
 
-    protected static class WithContext<E extends Entity<?>> {
+    protected class WithContext {
 
         private final IUnmarshalContext context;
         private final E target;
@@ -742,15 +745,15 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
          *             {@link IUnmarshalContext}.
          */
         public <_E extends Entity<_K>, _K extends Serializable> //
-        /**/WithContext<E> unmarshal(PropertyAccessor<E, _E> property, EntityDto<_E, _K> dto) {
+        /**/WithContext unmarshal(IPropertyAccessor<E, _E> property, EntityDto<_E, _K> dto) {
 
-            EntityDto.unmarshal(context, target, property, dto);
+            EntityDto.unmarshalProperty(context, target, property, dto);
 
             return this;
         }
 
         public <_D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
-        /*    */WithContext<E> unmarshalList(PropertyAccessor<E, List<_E>> property, Iterable<? extends _D> dtoList) {
+        /*    */WithContext unmarshalList(IPropertyAccessor<E, List<_E>> property, Iterable<? extends _D> dtoList) {
 
             List<_E> list = property.get(target);
 
@@ -765,7 +768,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         }
 
         public <_D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
-        /*    */WithContext<E> unmarshalSet(PropertyAccessor<E, Set<_E>> property, Iterable<? extends _D> dtoList) {
+        /*    */WithContext unmarshalSet(IPropertyAccessor<E, Set<_E>> property, Iterable<? extends _D> dtoList) {
 
             Set<_E> set = property.get(target);
 
@@ -776,6 +779,53 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
             property.set(target, set);
 
+            return this;
+        }
+
+        // unmarshal/reflect
+
+        public <_E extends Entity<_K>, _K extends Serializable> //
+        /**/WithContext unmarshal(String propertyName, EntityDto<_E, _K> dto)
+                throws IllegalUsageError {
+
+            IPropertyAccessor<E, _E> property;
+            try {
+                property = BeanPropertyAccessor.access(sourceType, propertyName);
+            } catch (IntrospectionException e) {
+                // XXX Error message?
+                throw new IllegalUsageException(e.getMessage(), e);
+            }
+
+            EntityDto.unmarshalProperty(context, target, property, dto);
+            return this;
+        }
+
+        public <_D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
+        /*    */WithContext unmarshalList(String propertyName, Iterable<? extends _D> dtoList) {
+
+            IPropertyAccessor<E, List<_E>> property;
+            try {
+                property = BeanPropertyAccessor.access(sourceType, propertyName);
+            } catch (IntrospectionException e) {
+                // XXX check
+                throw new IllegalUsageException(e.getMessage(), e);
+            }
+            unmarshalList(property, dtoList);
+            return this;
+        }
+
+        public <_D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
+        /*    */WithContext unmarshalSet(String propertyName, Iterable<? extends _D> dtoList) {
+
+            IPropertyAccessor<E, Set<_E>> property;
+            try {
+                property = BeanPropertyAccessor.access(sourceType, propertyName);
+            } catch (IntrospectionException e) {
+                // XXX check
+                throw new RuntimeException(e.getMessage(), e);
+            }
+
+            unmarshalSet(property, dtoList);
             return this;
         }
 
