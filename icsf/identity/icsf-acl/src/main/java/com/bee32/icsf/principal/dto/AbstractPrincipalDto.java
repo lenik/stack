@@ -4,6 +4,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.arch.util.Mask32;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
@@ -13,10 +14,19 @@ public class AbstractPrincipalDto<E extends Principal>
 
     private static final long serialVersionUID = 1L;
 
-    public static final int USERS = 1;
-    public static final int ROLES = 2;
-    public static final int GROUPS = 4;
-    public static final int IMPS = 8;
+    public static final int EXT = 1;
+    public static final int USERS = 2;
+    public static final int ROLES = 4;
+    public static final int GROUPS = 8;
+    public static final int IMPS = 16;
+
+    public static final Mask32 DEPTH_MASK = new Mask32(0xff000000);
+
+    public static int depthOf(int depth) {
+        return DEPTH_MASK.compose(depth);
+    }
+
+    protected final int depth = depthOf(selection.bits);
 
     String name;
     String fullName;

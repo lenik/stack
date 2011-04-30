@@ -23,7 +23,7 @@ public class UserDso
     }
 
     public UserDto getByName(String name) {
-        return new UserDto(userDao.getByName(name));
+        return new UserDto(0, userDao.getByName(name));
     }
 
 }
