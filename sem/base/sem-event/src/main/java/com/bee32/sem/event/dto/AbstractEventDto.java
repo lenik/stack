@@ -3,25 +3,19 @@ package com.bee32.sem.event.dto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Event;
-import com.bee32.sem.event.entity.EventCategory;
-import com.bee32.sem.event.entity.EventStatus;
 
 public abstract class AbstractEventDto<E extends Event>
         extends EntityDto<E, Long>
@@ -75,7 +69,7 @@ public abstract class AbstractEventDto<E extends Event>
         stateIndex = source.getState();
 
         status = new EventStatusDto(source.getStatus());
-        actor = new UserDto(source.getActor());
+        actor = new UserDto(0, source.getActor());
 
         subject = source.getSubject();
         message = source.getMessage();
@@ -94,10 +88,10 @@ public abstract class AbstractEventDto<E extends Event>
     @Override
     protected void _unmarshalTo(IUnmarshalContext context, E target) {
 
-        with(context, (Event) target) //
-                .unmarshal(categoryProperty, category)//
-                .unmarshal(statusProperty, status)//
-                .unmarshal(actorProperty, actor);
+        with(context, target) //
+                .unmarshal("category", category)//
+                .unmarshal("status", status)//
+                .unmarshal("actor", actor);
 
         if (sourceClass != null)
             target.setSourceClass(sourceClass);
@@ -117,7 +111,7 @@ public abstract class AbstractEventDto<E extends Event>
 
         if (selection.contains(OBSERVERS))
             with(context, target)//
-                    .unmarshalSet(observersProperty, observers);
+                    .unmarshalSet("observers", observers);
     }
 
     @Override
@@ -134,7 +128,7 @@ public abstract class AbstractEventDto<E extends Event>
         closed = map.getBoolean("closed");
 
         status = new EventStatusDto().ref(map.getNInt("statusId"));
-        actor = new UserDto().ref(map.getNLong("actorId"));
+        actor = new UserDto(0).ref(map.getNLong("actorId"));
 
         subject = map.getString("subject");
         message = map.getString("message");
@@ -354,62 +348,5 @@ public abstract class AbstractEventDto<E extends Event>
             seeAlsos = sb.toString();
         }
     }
-
-    static final PropertyAccessor<Event, EventCategory> categoryProperty = new PropertyAccessor<Event, EventCategory>(
-            EventCategory.class) {
-
-        @Override
-        public EventCategory get(Event entity) {
-            return entity.getCategory();
-        }
-
-        @Override
-        public void set(Event entity, EventCategory category) {
-            entity.setCategory(category);
-        }
-
-    };
-    static final PropertyAccessor<Event, EventStatus> statusProperty = new PropertyAccessor<Event, EventStatus>(
-            EventStatus.class) {
-
-        @Override
-        public EventStatus get(Event entity) {
-            return entity.getStatus();
-        }
-
-        @Override
-        public void set(Event entity, EventStatus status) {
-            entity.setStatus(status);
-        }
-
-    };
-
-    static final PropertyAccessor<Event, User> actorProperty = new PropertyAccessor<Event, User>(User.class) {
-
-        @Override
-        public User get(Event entity) {
-            return entity.getActor();
-        }
-
-        @Override
-        public void set(Event entity, User actor) {
-            entity.setActor(actor);
-        }
-
-    };
-
-    final PropertyAccessor<E, Set<Principal>> observersProperty = new PropertyAccessor<E, Set<Principal>>(Set.class) {
-
-        @Override
-        public Set<Principal> get(E entity) {
-            return entity.getObservers();
-        }
-
-        @Override
-        public void set(E entity, Set<Principal> observers) {
-            entity.setObservers(observers);
-        }
-
-    };
 
 }

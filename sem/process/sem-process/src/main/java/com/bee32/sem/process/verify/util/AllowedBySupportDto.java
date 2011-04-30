@@ -42,7 +42,7 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
     protected void __marshal(E source) {
         super.__marshal(source);
 
-        verifier = new UserDto(source.getVerifier());
+        verifier = new UserDto(0, source.getVerifier());
         verifiedDate = source.getVerifiedDate();
         allowed = source.isAllowed();
         rejectedReason = source.getRejectedReason();
@@ -69,7 +69,7 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
         if (_verifierId == null)
             verifier = null;
         else
-            verifier = new UserDto().ref(Long.parseLong(_verifierId));
+            verifier = new UserDto(0).ref(Long.parseLong(_verifierId));
 
         long _verifiedDate = map.getLong("verifiedDate");
         verifiedDate = new Date(_verifiedDate);

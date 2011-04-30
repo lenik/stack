@@ -2,8 +2,8 @@ package com.bee32.sem.process.verify.builtin.dto;
 
 import javax.free.ParseException;
 
-import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.PropertyAccessor;
+import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -39,7 +39,7 @@ public class LevelDto
 
         target.setLimit(limit);
 
-        WithContext<Level> with = with(context, target);
+        WithContext with = with(context, target);
         with.unmarshal(multiLevelProperty, multiLevel);
         with.unmarshal(targetPolicyProperty, targetPolicy);
     }

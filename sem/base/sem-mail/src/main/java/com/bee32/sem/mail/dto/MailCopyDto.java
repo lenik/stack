@@ -34,11 +34,11 @@ public class MailCopyDto
 
     @Override
     protected void _marshal(MailCopy source) {
-        mail = new MailDto().marshal(source.getMail());
-        owner = new UserDto().marshal(source.getOwner());
+        mail = new MailDto(source.getMail());
+        owner = new UserDto(0, source.getOwner());
         ownerType = source.getOwnerType();
 
-        mailBox = new MailBoxDto(0).marshal(source.getMailBox());
+        mailBox = new MailBoxDto(0, source.getMailBox());
         flags.bits = source.getFlags().bits;
 
         sentDate = source.getSentDate();
