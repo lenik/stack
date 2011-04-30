@@ -5,6 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.postgresql.util.Base64;
+
 public class TypeAbbr {
 
     private final int length;
@@ -16,44 +18,32 @@ public class TypeAbbr {
         this.length = length;
     }
 
-    static char[] tab = "0123456789abcdef".toCharArray();
-
     public String abbr(Class<?> clazz) {
         if (clazz == null)
             return null;
         else
-            return abbr(clazz.getSimpleName());
+            return abbr(clazz.getName());
     }
 
     static final int prefixLen = 4;
 
     public String abbr(String name) {
-        if (name.length() <= length)
-            return name;
+        // if (name.length() <= length) return name;
 
         StringBuilder sb = new StringBuilder(length);
 
         int lastDot = name.lastIndexOf('.');
-        if (lastDot == -1)
-            sb.append(name.substring(0, prefixLen));
-        else {
-            String simpleName = name.substring(lastDot + 1);
-            String prefixName;
-            if (simpleName.length() > prefixLen)
-                prefixName = simpleName.substring(0, prefixLen);
-            else
-                prefixName = simpleName;
-            sb.append(prefixName);
-        }
+        String simpleName = lastDot == -1 ? name : name.substring(lastDot + 1);
+
+        if (simpleName.length() > prefixLen)
+            simpleName = simpleName.substring(0, prefixLen);
+        sb.append(simpleName);
 
         sb.append('_');
 
-        int hash = hash(name);
-        while (sb.length() < length) {
-            int digit = hash & 0xf;
-            sb.append(tab[digit]);
-            hash >>>= 4;
-        }
+        String hash = hash(name);
+        hash = hash.substring(0, length - sb.length());
+        sb.append(hash);
 
         return sb.toString();
     }
@@ -91,14 +81,12 @@ public class TypeAbbr {
         }
     }
 
-    protected static synchronized int hash(String str) {
+    protected static synchronized String hash(String str) {
         byte[] digest;
         digest = md5.digest(str.getBytes());
 
-        int hash = 0;
-        for (int i = 0; i < 4; i++)
-            hash = hash << 8 | (digest[i] & 0xff);
-        return hash;
+        String base64 = Base64.encodeBytes(digest);
+        return base64;
     }
 
 }
