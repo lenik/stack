@@ -5,52 +5,36 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.entity.EntityExp;
 
 @MappedSuperclass
 public abstract class DictEntity<K extends Serializable>
-        extends EntityBean<K> {
+        extends EntityExp<K> {
 
     private static final long serialVersionUID = 1L;
 
-    protected String name;
-    protected String displayName;
+    protected String alias;
     protected String description;
     protected String icon;
 
     public DictEntity() {
     }
 
-    public DictEntity(String name, String displayName) {
-        this.name = name;
-        this.displayName = displayName;
-    }
-
-    public DictEntity(String name, String displayName, String icon) {
-        this.name = name;
-        this.displayName = displayName;
-        this.icon = icon;
-    }
-
-    @Column(length = 20, unique = true)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public DictEntity(String alias, String description) {
+        this.alias = alias;
+        this.description = description;
     }
 
     /**
      * 显示名称：一般用本地语言表示，不能用于搜索。（如果要用显示名称搜索，建议通过全文索引）
      */
     @Column(length = 30)
-    public String getDisplayName() {
-        return displayName;
+    public String getAlias() {
+        return alias;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     @Column(length = 200)

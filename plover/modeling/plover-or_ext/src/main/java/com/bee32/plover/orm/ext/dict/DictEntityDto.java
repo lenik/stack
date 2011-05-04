@@ -9,13 +9,12 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 
-public class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
+public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
         extends EntityDto<E, K> {
 
     private static final long serialVersionUID = 1L;
 
-    protected String name;
-    protected String displayName;
+    protected String alias;
     protected String description;
     protected String icon;
 
@@ -27,45 +26,58 @@ public class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
         super(source);
     }
 
+    public DictEntityDto(int selection) {
+        super(selection);
+    }
+
+    public DictEntityDto(int selection, E source) {
+        super(selection, source);
+    }
+
     @Override
-    protected void _marshal(E source) {
-        name = source.getName();
-        displayName = source.getDisplayName();
+    protected void __marshal(E source) {
+        super.__marshal(source);
+        alias = source.getAlias();
         description = source.getDescription();
         icon = source.getIcon();
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, E target) {
-        target.setName(name);
-        target.setDisplayName(displayName);
+    protected void __unmarshalTo(IUnmarshalContext context, E target) {
+        super.__unmarshalTo(context, target);
+        target.setAlias(alias);
         target.setDescription(description);
         target.setIcon(icon);
     }
 
     @Override
-    public void _parse(TextMap map)
+    protected void __parse(TextMap map)
             throws ParseException, TypeConvertException {
-        name = map.getString("name");
-        displayName = map.getString("displayName");
+        super.__parse(map);
+        alias = map.getString("displayName");
         description = map.getString("description");
         icon = map.getString("icon");
     }
 
-    public String getName() {
-        return name;
+    @Override
+    protected void _marshal(E source) {
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    protected void _unmarshalTo(IUnmarshalContext context, E target) {
     }
 
-    public String getDisplayName() {
-        return displayName;
+    @Override
+    protected void _parse(TextMap map)
+            throws ParseException {
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     public String getDescription() {

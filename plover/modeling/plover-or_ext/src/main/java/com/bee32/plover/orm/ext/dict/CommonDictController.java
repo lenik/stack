@@ -45,8 +45,8 @@ public class CommonDictController<E extends DictEntity<K>, K extends Serializabl
         for (Dto dto : all) {
             tab.push(dto.getId());
             tab.push(dto.getVersion());
-            tab.push(dto.getName());
-            tab.push(dto.getDisplayName());
+            // XXX tab.push(dto.getName());
+            tab.push(dto.getAlias());
             tab.push(dto.getDescription());
             tab.next();
         }
@@ -66,8 +66,8 @@ public class CommonDictController<E extends DictEntity<K>, K extends Serializabl
         Dto dto;
         if (create) {
             dto = newDto();
-            dto.setName("");
-            dto.setDisplayName("");
+            // XXX dto.setName("");
+            dto.setAlias("");
             dto.setDescription("");
         } else {
             K id = parseRequiredId(req.getParameter("id"));
