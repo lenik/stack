@@ -118,7 +118,7 @@ public abstract class AbstractEventDto<E extends Event>
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
 
-        category = new EventCategoryDto().ref(map.getNInt("categoryId"));
+        category = new EventCategoryDto().ref(map.getString("category"));
         sourceAbbr = map.getString("source");
 
         priority = map.getInt("priority");
@@ -228,7 +228,7 @@ public abstract class AbstractEventDto<E extends Event>
     public String getStatusText() {
         String statusText = null;
         if (status != null)
-            statusText = status.getDisplayName();
+            statusText = status.getAlias();
 
         if (statusText == null && stateIndex != 0) {
             EventState eventState = EventState.valueOf(stateIndex);

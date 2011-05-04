@@ -17,8 +17,7 @@ public class EventPriorityController
     @Override
     protected void fillDataRow(DataTableDxo tab, EventPriorityDto dto) {
         tab.push(dto.getPriority());
-        tab.push(dto.getName());
-        tab.push(dto.getDisplayName());
+        tab.push(dto.getAlias());
         tab.push(dto.getDescription());
     }
 

@@ -18,18 +18,18 @@ import com.bee32.sem.event.entity.Task;
 public class SEMEventSamples
         extends EntitySamplesContribution {
 
-    public static final EventPriority URGENT = new EventPriority("urgent", "紧急", EventPriority.URGENT);
-    public static final EventPriority HIGH = new EventPriority("high", "高", EventPriority.HIGH);
-    public static final EventPriority NORMAL = new EventPriority("normal", "普通", EventPriority.NORMAL);
-    public static final EventPriority LOW = new EventPriority("low", "低", EventPriority.LOW);
+    public static final EventPriority URGENT = new EventPriority(EventPriority.URGENT, "urgent", "紧急");
+    public static final EventPriority HIGH = new EventPriority(EventPriority.HIGH, "high", "高");
+    public static final EventPriority NORMAL = new EventPriority(EventPriority.NORMAL, "normal", "普通");
+    public static final EventPriority LOW = new EventPriority(EventPriority.LOW, "low", "低");
 
-    public static final EventStatus UNKNOWN = new EventStatus("unknown", "无状态", GenericState.UNKNOWN);
-    public static final EventStatus RUNNING = new EventStatus("running", "进行中", GenericState.RUNNING);
-    public static final EventStatus SUSPENDED = new EventStatus("suspended", "挂起", GenericState.SUSPENDED);
-    public static final EventStatus CANCELED = new EventStatus("canceled", "取消", GenericState.CANCELED);
-    public static final EventStatus DONE = new EventStatus("done", "成功", GenericState.DONE);
-    public static final EventStatus FAILED = new EventStatus("failed", "失败", GenericState.FAILED);
-    public static final EventStatus ERRORED = new EventStatus("errored", "异常", GenericState.ERRORED);
+    public static final EventStatus UNKNOWN = new EventStatus(GenericState.UNKNOWN, "unknown", "无状态");
+    public static final EventStatus RUNNING = new EventStatus(GenericState.RUNNING, "running", "进行中");
+    public static final EventStatus SUSPENDED = new EventStatus(GenericState.SUSPENDED, "suspended", "挂起");
+    public static final EventStatus CANCELED = new EventStatus(GenericState.CANCELED, "canceled", "取消");
+    public static final EventStatus DONE = new EventStatus(GenericState.DONE, "done", "成功");
+    public static final EventStatus FAILED = new EventStatus(GenericState.FAILED, "failed", "失败");
+    public static final EventStatus ERRORED = new EventStatus(GenericState.ERRORED, "errored", "异常");
 
     public static final EventCategory weather = new EventCategory("weather", "天气预报");
     public static final EventCategory special = new EventCategory("special", "特种");

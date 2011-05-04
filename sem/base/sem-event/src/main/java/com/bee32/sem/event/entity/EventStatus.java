@@ -3,7 +3,7 @@ package com.bee32.sem.event.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import com.bee32.plover.orm.ext.dict.ShortDictEntity;
+import com.bee32.plover.orm.ext.dict.NumberDict;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.GenericState;
 
@@ -12,7 +12,7 @@ import com.bee32.sem.event.GenericState;
  */
 @Entity
 public class EventStatus
-        extends ShortDictEntity<Integer> {
+        extends NumberDict {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,8 +24,8 @@ public class EventStatus
         super();
     }
 
-    public EventStatus(String name, String displayName, EventState state) {
-        super(name, displayName);
+    public EventStatus(EventState state, String alias, String description) {
+        super(state.getId(), alias, description);
     }
 
     @Column(nullable = false)

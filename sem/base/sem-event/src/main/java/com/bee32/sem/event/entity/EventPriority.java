@@ -1,15 +1,13 @@
 package com.bee32.sem.event.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
-import org.hibernate.annotations.NaturalId;
-
-import com.bee32.plover.orm.ext.dict.ShortDictEntity;
+import com.bee32.plover.orm.ext.dict.NumberDict;
 
 @Entity
 public class EventPriority
-        extends ShortDictEntity<Integer> {
+        extends NumberDict {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,27 +16,20 @@ public class EventPriority
     public static final int NORMAL = 50;
     public static final int LOW = 100;
 
-    private int priority;
-
     public EventPriority() {
     }
 
-    public EventPriority(String name, String displayName, int priority) {
-        if (name == null)
-            throw new NullPointerException("name");
-        this.name = name;
-        this.displayName = displayName;
-        this.priority = priority;
+    public EventPriority(int priority, String alias, String description) {
+        super(priority, alias, description);
     }
 
-    @NaturalId
-    @Column(nullable = false)
+    @Transient
     public int getPriority() {
-        return priority;
+        return getNumber();
     }
 
     public void setPriority(int priority) {
-        this.priority = priority;
+        setNumber(priority);
     }
 
 }
