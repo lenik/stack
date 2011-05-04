@@ -576,10 +576,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
                         // XXX dto.unmarshalTo(context, reuse);
                         // XXX reuse.populate(entity); ??
                         entity = reuse;
+                        removeList.remove(reuse);
+                    } else {
+                        addList.add(entity);
                     }
-
-                    addList.add(entity);
-
                 } else {
                     E previous = keyMap.get(dto.id);
                     if (previous != null) {
