@@ -25,20 +25,17 @@ public class EventPriorityDto
 
     @Override
     protected void _marshal(EventPriority source) {
-        super._marshal(source);
         priority = source.getPriority();
     }
 
     @Override
     protected void _unmarshalTo(IUnmarshalContext context, EventPriority target) {
-        super._unmarshalTo(context, target);
         target.setPriority(priority);
     }
 
     @Override
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
-        super._parse(map);
         priority = map.getInt("priority");
     }
 

@@ -29,19 +29,19 @@ public abstract class NameDictDto<E extends NameDict>
     }
 
     @Override
-    protected final void __marshal(E source) {
+    protected void __marshal(E source) {
         super.__marshal(source);
         name = source.getName();
     }
 
     @Override
-    protected final void __unmarshalTo(IUnmarshalContext context, E target) {
+    protected void __unmarshalTo(IUnmarshalContext context, E target) {
         super.__unmarshalTo(context, target);
         target.setName(name);
     }
 
     @Override
-    protected final void __parse(TextMap map)
+    protected void __parse(TextMap map)
             throws ParseException {
         super.__parse(map);
         name = map.getString("name");

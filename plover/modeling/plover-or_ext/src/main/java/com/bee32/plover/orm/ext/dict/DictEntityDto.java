@@ -59,22 +59,6 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
         icon = map.getString("icon");
     }
 
-    @Override
-    protected void _marshal(E source) {
-        // Keep this as empty.
-    }
-
-    @Override
-    protected void _unmarshalTo(IUnmarshalContext context, E target) {
-        // Keep this as empty.
-    }
-
-    @Override
-    protected void _parse(TextMap map)
-            throws ParseException {
-        // Keep this as empty.
-    }
-
     public String getLabel() {
         return label;
     }

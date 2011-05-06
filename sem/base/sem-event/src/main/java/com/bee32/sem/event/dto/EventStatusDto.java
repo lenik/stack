@@ -27,7 +27,6 @@ public class EventStatusDto
 
     @Override
     protected void _marshal(EventStatus source) {
-        super._marshal(source);
         flagsMask = source.getFlagsMask();
         closed = source.isClosed();
         state = source.getState();
@@ -35,7 +34,6 @@ public class EventStatusDto
 
     @Override
     protected void _unmarshalTo(IUnmarshalContext context, EventStatus target) {
-        super._unmarshalTo(context, target);
         target.setFlagsMask(flagsMask);
         target.setClosed(closed);
         target.setState(state);
@@ -44,7 +42,6 @@ public class EventStatusDto
     @Override
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
-        super._parse(map);
         flagsMask = map.getInt("flagsMask");
         closed = map.getBoolean("closed");
         state = map.getInt("state");
