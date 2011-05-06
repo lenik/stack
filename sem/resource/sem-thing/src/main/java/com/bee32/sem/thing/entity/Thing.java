@@ -5,11 +5,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
-import com.bee32.plover.orm.ext.ext.EntityExt;
+import com.bee32.plover.orm.ext.xp.EntityExt;
+import com.bee32.plover.orm.ext.xp.XPool;
 
 @MappedSuperclass
-public abstract class Thing
-        extends EntityExt<Long> {
+public abstract class Thing<X extends XPool<?>>
+        extends EntityExt<Long, X> {
 
     private static final long serialVersionUID = 1L;
 

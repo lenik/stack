@@ -4,12 +4,13 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.ext.EntityExtDto;
+import com.bee32.plover.orm.ext.xp.EntityExtDto;
+import com.bee32.plover.orm.ext.xp.XPool;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.thing.entity.Thing;
 
-public abstract class ThingDto<E extends Thing>
-        extends EntityExtDto<E, Long> {
+public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
+        extends EntityExtDto<E, Long, X> {
 
     private static final long serialVersionUID = 1L;
 
