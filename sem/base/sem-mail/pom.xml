@@ -13,6 +13,11 @@
             <artifactId>sem-user</artifactId>
             <version>0.2.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-file</artifactId>
+            <version>0.2.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <name>SEM :: Base :: Mail</name>
 </project>
