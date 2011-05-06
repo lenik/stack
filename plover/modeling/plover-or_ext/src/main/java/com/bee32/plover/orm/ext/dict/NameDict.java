@@ -52,4 +52,14 @@ public abstract class NameDict
         this.name = name;
     }
 
+    @Override
+    protected Boolean equalsKey(EntityExp<String> other) {
+        return Nullables.equals(name, other.getName());
+    }
+
+    @Override
+    protected boolean equalsEntity(EntityExp<String> otherEntity) {
+        return false;
+    }
+
 }
