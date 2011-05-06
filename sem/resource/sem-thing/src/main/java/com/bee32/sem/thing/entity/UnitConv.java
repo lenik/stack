@@ -1,0 +1,95 @@
+package com.bee32.sem.thing.entity;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
+
+import org.hibernate.annotations.CollectionOfElements;
+
+import com.bee32.plover.orm.ext.dict.NameDict;
+
+/**
+ * 单位换算表
+ */
+public class UnitConv
+        extends NameDict {
+
+    private static final long serialVersionUID = 1L;
+
+    Unit from;
+    Map<Unit, Double> ratioMap;
+
+    public UnitConv() {
+        super();
+    }
+
+    public UnitConv(String name, String label, Unit from) {
+        super(name, label);
+
+        if (from == null)
+            throw new NullPointerException("from");
+        this.from = from;
+    }
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    public Unit getFrom() {
+        return from;
+    }
+
+    public void setFrom(Unit from) {
+        this.from = from;
+    }
+
+    @CollectionOfElements
+    @JoinTable(name = "RatioMap")
+    @MapKey(name = "unit")
+    @Column(name = "ratio", nullable = false, precision = 12, scale = 5)
+    public Map<Unit, Double> getRatioMap() {
+        if (ratioMap == null) {
+            synchronized (this) {
+                if (ratioMap == null) {
+                    ratioMap = new HashMap<Unit, Double>();
+                }
+            }
+        }
+        return ratioMap;
+    }
+
+    public void setRatioMap(Map<Unit, Double> ratioMap) {
+        this.ratioMap = ratioMap;
+    }
+
+    /**
+     * Get the conversion ration to the specified unit.
+     *
+     * @param toUnit
+     *            Non-<code>null</code> unit to whose conversion ratio is asked.
+     * @return <code>null</code> if the conversion ratio to the <code>toUnit</code> is not defined.
+     */
+    public Double getRatio(Unit toUnit) {
+        if (toUnit == null)
+            throw new NullPointerException("toUnit");
+        return getRatioMap().get(toUnit);
+    }
+
+    /**
+     * Set the conversion ration to the specified unit.
+     *
+     * @param toUnit
+     *            Non-<code>null</code> unit to whose conversion ratio is to be set.
+     * @param ratio
+     *            The conversion ratio to the <code>toUnit</code>.
+     */
+    public void setRatio(Unit toUnit, double ratio) {
+        if (toUnit == null)
+            throw new NullPointerException("toUnit");
+        getRatioMap().put(toUnit, ratio);
+    }
+
+}

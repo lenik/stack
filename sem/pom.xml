@@ -12,8 +12,8 @@
     <modules>
         <module>base</module>
         <module>process</module>
-        <!--
         <module>resource</module>
+        <!--
         <module>social</module>
         <module>support</module>
         -->
