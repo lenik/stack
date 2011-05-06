@@ -7,8 +7,8 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 @AttributeOverrides({//
-/*    */@AttributeOverride(name = "name", column = @Column(length = 10)),
-/*    */@AttributeOverride(name = "alias", column = @Column(length = 30)) })
+/*    */@AttributeOverride(name = "id", column = @Column(length = 10)),
+/*    */@AttributeOverride(name = "label", column = @Column(length = 30)) })
 public abstract class ShortNameDict
         extends NameDict {
 

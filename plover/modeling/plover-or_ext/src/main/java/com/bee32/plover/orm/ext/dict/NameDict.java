@@ -31,7 +31,8 @@ public abstract class NameDict
         this.name = name;
     }
 
-    @Transient
+    @Id
+    @Column(length = 20, unique = true)
     @Override
     public String getId() {
         return getName();
@@ -42,8 +43,7 @@ public abstract class NameDict
         setName(id);
     }
 
-    @Id
-    @Column(length = 20, unique = true)
+    @Transient
     public String getName() {
         return name;
     }
