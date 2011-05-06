@@ -2,6 +2,7 @@ package com.bee32.icsf.principal;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBean;
@@ -25,17 +27,13 @@ public class Principal
 
     private static final long serialVersionUID = 1L;
 
-    private String fullName;
-    private String description;
+    String fullName;
+    String description;
 
-    public static final char EMAIL_INIT = '?';
-    public static final char EMAIL_VERIFYING = '1';
-    public static final char EMAIL_VERIFIED = 'V';
+    Email email;
+    List<Email> emails;
 
-    protected String email;
-    protected char emailStatus = EMAIL_INIT;
-
-    private Collection<Principal> impliedPrincipals;
+    Collection<Principal> impliedPrincipals;
 
     public Principal() {
         super();
@@ -84,28 +82,21 @@ public class Principal
         this.description = description;
     }
 
-    @Column(length = 40)
-    public String getEmail() {
+    public Email getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(Email email) {
         this.email = email;
     }
 
-    @Basic(optional = false)
-    @Column(nullable = false)
-    public char getEmailStatus() {
-        return emailStatus;
+    @OneToMany
+    public List<Email> getEmails() {
+        return emails;
     }
 
-    public void setEmailStatus(char emailStatus) {
-        this.emailStatus = emailStatus;
-    }
-
-    @Transient
-    public boolean isEmailVerified() {
-        return emailStatus == EMAIL_VERIFIED;
+    public void setEmails(List<Email> emails) {
+        this.emails = emails;
     }
 
     @ManyToMany(targetEntity = Principal.class)
