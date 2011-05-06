@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.entity.EntityExp;
+import com.bee32.plover.orm.entity.EntitySpec;
 
 /**
  * The id property of the {@link NameDict} equals to the <code>name</code> property.
@@ -53,12 +53,12 @@ public abstract class NameDict
     }
 
     @Override
-    protected Boolean equalsKey(EntityExp<String> other) {
+    protected Boolean equalsKey(EntitySpec<String> other) {
         return Nullables.equals(name, other.getName());
     }
 
     @Override
-    protected boolean equalsEntity(EntityExp<String> otherEntity) {
+    protected boolean equalsEntity(EntitySpec<String> otherEntity) {
         return false;
     }
 

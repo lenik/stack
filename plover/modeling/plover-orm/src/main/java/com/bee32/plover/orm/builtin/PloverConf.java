@@ -3,11 +3,11 @@ package com.bee32.plover.orm.builtin;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.bee32.plover.orm.entity.EntityExp;
+import com.bee32.plover.orm.entity.EntitySpec;
 
 @Entity
 public class PloverConf
-        extends EntityExp<String> {
+        extends EntitySpec<String> {
 
     private static final long serialVersionUID = 1L;
 

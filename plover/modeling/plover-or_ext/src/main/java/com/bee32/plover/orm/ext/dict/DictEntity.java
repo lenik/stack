@@ -5,11 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import com.bee32.plover.orm.entity.EntityExp;
+import com.bee32.plover.orm.entity.EntitySpec;
 
 @MappedSuperclass
 public abstract class DictEntity<K extends Serializable>
-        extends EntityExp<K> {
+        extends EntitySpec<K> {
 
     private static final long serialVersionUID = 1L;
 
