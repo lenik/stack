@@ -24,11 +24,11 @@ public class Role
 
     private static final long serialVersionUID = 1L;
 
-    protected Role inheritedRole;
+    Role inheritedRole;
 
-    protected Set<Role> derivedRoles;
-    protected Set<User> responsibleUsers;
-    protected Set<Group> responsibleGroups;
+    Set<Role> derivedRoles;
+    Set<User> responsibleUsers;
+    Set<Group> responsibleGroups;
 
     public Role() {
         super();

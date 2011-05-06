@@ -23,14 +23,14 @@ public class Group
 
     private static final long serialVersionUID = 1L;
 
-    protected Group inheritedGroup;
-    protected User owner;
-    protected Role primaryRole;
+    Group inheritedGroup;
+    User owner;
+    Role primaryRole;
 
-    protected Set<Group> derivedGroups;
+    Set<Group> derivedGroups;
 
-    protected Set<Role> assignedRoles;
-    protected Set<User> memberUsers;
+    Set<Role> assignedRoles;
+    Set<User> memberUsers;
 
     public Group() {
     }
