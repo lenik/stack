@@ -2,15 +2,12 @@ package com.bee32.sem.process.verify.builtin.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.builtin.AllowList;
@@ -58,15 +55,12 @@ public class AllowListDto
         target.setDescription(description);
 
         if (selection.contains(RESPONSIBLES))
-            with(context, target).unmarshalSet(responsiblesProperty, responsibles);
+            with(context, target).unmarshalSet("responsibles", responsibles);
     }
 
     @Override
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
-
-        if (map.containsKey("id") && !map.getString("id").isEmpty())
-            id = map.getInt("id");
 
         name = map.getString("name");
         description = map.getString("description");
@@ -112,20 +106,5 @@ public class AllowListDto
     public List<Long> getResponsibleIds() {
         return id(responsibles);
     }
-
-    static final PropertyAccessor<AllowList, Set<Principal>> responsiblesProperty = new PropertyAccessor<AllowList, Set<Principal>>(
-            Set.class) {
-
-        @Override
-        public Set<Principal> get(AllowList entity) {
-            return entity.getResponsibles();
-        }
-
-        @Override
-        public void set(AllowList entity, Set<Principal> responsibles) {
-            entity.setResponsibles(responsibles);
-        }
-
-    };
 
 }
