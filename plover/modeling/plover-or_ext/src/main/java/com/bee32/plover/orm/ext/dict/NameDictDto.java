@@ -47,4 +47,12 @@ public abstract class NameDictDto<E extends NameDict>
         name = map.getString("name");
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }
