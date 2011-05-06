@@ -64,5 +64,4 @@ public abstract class AbstractContainer
         throw new NotImplementedException();
     }
 
-
 }

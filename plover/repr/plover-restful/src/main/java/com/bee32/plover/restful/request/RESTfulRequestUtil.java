@@ -13,7 +13,7 @@ public class RESTfulRequestUtil {
 
         RESTfulRequest rreq = new RESTfulRequest(req0);
 
-        IArrival  arrival = new Arrival(obj);
+        IArrival arrival = new Arrival(obj);
         rreq.setArrival(arrival);
 
         return rreq;

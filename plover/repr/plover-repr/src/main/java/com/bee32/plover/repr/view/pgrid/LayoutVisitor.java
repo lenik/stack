@@ -6,5 +6,4 @@ public interface LayoutVisitor {
 
     void endDiv(String path, Object obj);
 
-
 }

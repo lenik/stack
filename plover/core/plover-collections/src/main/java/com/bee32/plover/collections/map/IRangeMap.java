@@ -2,7 +2,6 @@ package com.bee32.plover.collections.map;
 
 import java.util.NavigableMap;
 
-
 /**
  * Map entity divided in sub-ranges.
  *

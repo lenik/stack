@@ -44,7 +44,7 @@ public class MapEntityRepository<E extends IEntity<K>, K extends Serializable>
 
     @Override
     public List<E> list() {
-        List<E> list=new ArrayList<E>();
+        List<E> list = new ArrayList<E>();
         list.addAll(getMap().values());
         return list;
     }

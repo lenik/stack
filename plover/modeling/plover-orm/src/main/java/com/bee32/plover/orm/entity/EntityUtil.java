@@ -75,6 +75,9 @@ public class EntityUtil {
             throws ParseException {
         Serializable key;
 
+        if (idString == null)
+            return null;
+
         switch (keyTypeEnum) {
         case INT:
             if (idString.isEmpty())

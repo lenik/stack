@@ -18,14 +18,14 @@ public interface IRepository<K, T>
      *
      * @return Non-<code>null</code> class of the key.
      */
-//    Class<K> getKeyType();
+    // Class<K> getKeyType();
 
     /**
      * Get the instance type.
      *
      * @return Non-<code>null</code> class of the instance.
      */
-//    Class<? extends T> getObjectType();
+    // Class<? extends T> getObjectType();
 
     /**
      * Get the primary key of an object.
@@ -63,7 +63,6 @@ public interface IRepository<K, T>
      *             If object doesn't exist.
      */
     T load(K key);
-
 
     Collection<K> keys();
 

@@ -27,8 +27,7 @@ public class ClassResourceFactoryTest
     }
 
     /**
-     * scl/com/bee32/...
-     * com/bee32/...
+     * scl/com/bee32/... com/bee32/...
      *
      */
 }

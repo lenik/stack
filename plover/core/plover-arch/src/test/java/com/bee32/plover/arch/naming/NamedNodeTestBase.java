@@ -1,6 +1,5 @@
 package com.bee32.plover.arch.naming;
 
-
 public class NamedNodeTestBase {
 
     TreeMapNode<String> foodMap;

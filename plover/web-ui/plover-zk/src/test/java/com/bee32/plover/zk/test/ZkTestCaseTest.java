@@ -16,7 +16,7 @@ public class ZkTestCaseTest
         new ZkTestCaseTest().browseAndWait(//
                 // "/zhello.jsf" //
                 "/zhello.zul" //
-        );
+                );
     }
 
 }

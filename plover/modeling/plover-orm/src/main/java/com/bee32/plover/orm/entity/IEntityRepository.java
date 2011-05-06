@@ -10,7 +10,7 @@ public interface IEntityRepository<E extends IEntity<K>, K extends Serializable>
     /**
      * Or the storage class.
      */
-//    Class<? extends E> getObjectType();
+    // Class<? extends E> getObjectType();
 
     // Override following methods to get eclipse "generate override methods"
     // to work.

@@ -16,7 +16,7 @@ import com.bee32.plover.test.WiredTestCase;
 @ContextConfiguration("context1.xml")
 // @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 // @Transactional
-    @Ignore
+@Ignore
 public class SpringScanner
         extends WiredTestCase {
 
