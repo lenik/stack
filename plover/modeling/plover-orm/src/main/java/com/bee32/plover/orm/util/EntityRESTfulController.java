@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.entity;
+package com.bee32.plover.orm.util;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,6 +11,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.orm.entity.EntityRepository;
 import com.bee32.plover.restful.IRESTfulRequest;
 import com.bee32.plover.restful.IRESTfulResponse;
 
@@ -57,12 +60,12 @@ public class EntityRESTfulController<E extends Entity<K>, K extends Serializable
         K key = repo.convertRefNameToKey(refName);
 
         E entity = repo.populate(req);
-        entity.setId(key);
+        EntityAccessor.setId(entity, key);
 
         String _version = req.getParameter("version");
         if (_version != null) {
             int version = Integer.parseInt(_version);
-            entity.setVersion(version);
+            EntityAccessor.setVersion(entity, version);
         }
 
         dataManager.update(entity);
