@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
@@ -19,11 +21,7 @@ public class UserCategory
 
     private static final long serialVersionUID = 1L;
 
-    public static final char INTEGER = 'i';
-    public static final char DECIMAL = 'f';
-    public static final char TEXT = 'a';
-
-    char type;
+    UserCategoryTypeEnum type = UserCategoryTypeEnum.TEXT;
     int precision;
     int scale;
 
@@ -33,30 +31,23 @@ public class UserCategory
         super();
     }
 
-    public UserCategory(char type, String name, String label) {
+    public UserCategory(UserCategoryTypeEnum type, String name, String label) {
         super(name, label);
         setType(type);
     }
 
-    public UserCategory(char type, String name, String label, String description) {
+    public UserCategory(UserCategoryTypeEnum type, String name, String label, String description) {
         super(name, label, description);
         setType(type);
     }
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    public char getType() {
+    public UserCategoryTypeEnum getType() {
         return type;
     }
 
-    public void setType(char type) {
-        switch (type) {
-        case INTEGER:
-        case DECIMAL:
-        case TEXT:
-            break;
-        default:
-            throw new IllegalArgumentException("Bad type: " + type);
-        }
+    public void setType(UserCategoryTypeEnum type) {
         this.type = type;
     }
 

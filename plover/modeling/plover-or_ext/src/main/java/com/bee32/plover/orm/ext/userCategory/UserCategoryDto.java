@@ -16,7 +16,7 @@ public class UserCategoryDto
 
     public static final int ITEMS = 1;
 
-    char type;
+    UserCategoryTypeEnum type;
     int precision;
     int scale;
 
@@ -53,7 +53,10 @@ public class UserCategoryDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-        type = map.getChar("type");
+
+        String _type = map.getString("type");
+        type = UserCategoryTypeEnum.valueOf(_type);
+
         precision = map.getInt("precision");
         scale = map.getInt("scale");
 
@@ -68,11 +71,11 @@ public class UserCategoryDto
         }
     }
 
-    public char getType() {
+    public UserCategoryTypeEnum getType() {
         return type;
     }
 
-    public void setType(char type) {
+    public void setType(UserCategoryTypeEnum type) {
         this.type = type;
     }
 

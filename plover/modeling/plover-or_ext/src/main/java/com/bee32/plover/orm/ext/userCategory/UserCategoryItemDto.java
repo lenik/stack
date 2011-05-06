@@ -47,17 +47,18 @@ public class UserCategoryItemDto
         String categoryId = map.getString("category");
         category = new UserCategoryDto().ref(categoryId);
 
-        char categoryType = map.getChar("category.type");
+        String _categoryType = map.getString("category.type");
+        UserCategoryTypeEnum categoryType = UserCategoryTypeEnum.valueOf(_categoryType);
         switch (categoryType) {
-        case UserCategory.INTEGER:
+        case INTEGER:
             intVal = map.getLong("value");
             break;
 
-        case UserCategory.DECIMAL:
+        case DECIMAL:
             floatVal = map.getDouble("value");
             break;
 
-        case UserCategory.TEXT:
+        case TEXT:
             textVal = map.getString("value");
             break;
 
