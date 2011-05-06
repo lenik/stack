@@ -2,7 +2,6 @@ package com.bee32.icsf.principal;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -13,8 +12,11 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.entity.EntityBean;
 
@@ -29,9 +31,7 @@ public class Principal
 
     String fullName;
     String description;
-
-    Email email;
-    List<Email> emails;
+    UserEmail email;
 
     Collection<Principal> impliedPrincipals;
 
@@ -82,21 +82,26 @@ public class Principal
         this.description = description;
     }
 
-    public Email getEmail() {
+    @ManyToOne
+    @Cascade(CascadeType.ALL)
+    public UserEmail getEmail() {
         return email;
     }
 
-    public void setEmail(Email email) {
+    public void setEmail(UserEmail email) {
         this.email = email;
     }
 
-    @OneToMany
-    public List<Email> getEmails() {
-        return emails;
+    @Transient
+    public String getEmailAddress() {
+        if (email == null)
+            return null;
+        else
+            return email.getAddress();
     }
 
-    public void setEmails(List<Email> emails) {
-        this.emails = emails;
+    public void setEmailAddress(String email) {
+        this.email = new UserEmail(this, email);
     }
 
     @ManyToMany(targetEntity = Principal.class)

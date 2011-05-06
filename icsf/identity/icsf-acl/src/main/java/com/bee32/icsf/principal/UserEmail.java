@@ -4,7 +4,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Transient;
 
-public class Email {
+public class UserEmail {
 
     public static final char EMAIL_INIT = '?';
     public static final char EMAIL_VERIFYING = '1';
@@ -15,6 +15,14 @@ public class Email {
     String address;
 
     char status = EMAIL_INIT;
+
+    public UserEmail() {
+    }
+
+    public UserEmail(Principal principal, String address) {
+        this.principal = principal;
+        this.address = address;
+    }
 
     @Column(length = 40)
     public String getAddress() {
