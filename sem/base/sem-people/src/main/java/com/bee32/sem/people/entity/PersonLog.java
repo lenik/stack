@@ -11,4 +11,28 @@ public class PersonLog
     PersonLogCategory category;
     String description;
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public PersonLogCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(PersonLogCategory category) {
+        this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

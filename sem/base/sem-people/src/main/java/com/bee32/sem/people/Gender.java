@@ -1,4 +1,4 @@
-package com.bee32.sem.people.entity;
+package com.bee32.sem.people;
 
 public enum Gender {
 
