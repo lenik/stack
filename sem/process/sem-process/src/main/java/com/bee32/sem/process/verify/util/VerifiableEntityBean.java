@@ -102,4 +102,11 @@ public abstract class VerifiableEntityBean<K extends Serializable, C extends IVe
         this.verifyTask = verifyTask;
     }
 
+    @Override
+    protected boolean isLocked() {
+        if (VerifyState.VERIFIED.equals(verifyState))
+            return true;
+        return super.isLocked();
+    }
+
 }

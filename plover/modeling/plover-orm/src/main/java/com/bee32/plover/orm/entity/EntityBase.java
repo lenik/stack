@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.bee32.plover.arch.naming.INamed;
 import com.bee32.plover.model.Model;
+import com.bee32.plover.orm.util.ErrorResult;
 
 public abstract class EntityBase<K extends Serializable>
         extends Model
@@ -38,6 +39,77 @@ public abstract class EntityBase<K extends Serializable>
             return null;
         else
             return id.toString();
+    }
+
+    /**
+     * Validate this entity.
+     * <p>
+     * Entity can only be saved or updated if it's validated.
+     * <p>
+     * When override this method, you should `return super.validate()` at the end.
+     *
+     * @return <code>null</code> if validated, or non-<code>null</code> error result contains the
+     *         error message.
+     */
+    protected ErrorResult validate() {
+        return null;
+    }
+
+    /**
+     * Test if this entity is locked.
+     *
+     * A locked entity can't be modified or deleted.
+     * <p>
+     * When override this method, you must
+     *
+     * <pre>
+     * return super.{@link #isLocked()};
+     * </pre>
+     *
+     * at the end.
+     *
+     * @return <code>true</code> if this entity is locked.
+     */
+    protected boolean isLocked() {
+        return false;
+    }
+
+    /**
+     * Test if this entity is allowed to be modified.
+     * <p>
+     * When override this method, you must
+     *
+     * <pre>
+     * return super.{@link #checkModify()};
+     * </pre>
+     *
+     * at the end.
+     *
+     * @return <code>false</code> to prevent this entity from being modified.
+     */
+    protected ErrorResult checkModify() {
+        if (isLocked())
+            return ErrorResult.error("Entity is locked");
+        return null;
+    }
+
+    /**
+     * Test if this entity is allowed to be modified.
+     * <p>
+     * When override this method, you must
+     *
+     * <pre>
+     * return super.{@link #checkDelete()};
+     * </pre>
+     *
+     * at the end.
+     *
+     * @return <code>false</code> to prevent this entity from being deleted.
+     */
+    protected ErrorResult checkDelete() {
+        if (isLocked())
+            return ErrorResult.error("Entity is locked");
+        return null;
     }
 
     @SuppressWarnings("unchecked")
