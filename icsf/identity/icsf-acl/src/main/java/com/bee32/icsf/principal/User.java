@@ -1,6 +1,7 @@
 package com.bee32.icsf.principal;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.free.Nullables;
@@ -10,6 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.entity.EntityBean;
 import com.bee32.plover.orm.entity.IEntity;
@@ -22,11 +27,13 @@ public class User
 
     private static final long serialVersionUID = 1L;
 
-    protected Group primaryGroup;
-    protected Role primaryRole;
+    Group primaryGroup;
+    Role primaryRole;
 
-    protected Set<Group> assignedGroups;
-    protected Set<Role> assignedRoles;
+    Set<Group> assignedGroups;
+    Set<Role> assignedRoles;
+
+    List<UserEmail> emails;
 
     public User() {
     }
@@ -100,6 +107,16 @@ public class User
 
     public void setAssignedRoles(Set<Role> assignedRoles) {
         this.assignedRoles = (Set<Role>) assignedRoles;
+    }
+
+    @OneToMany
+    @Cascade(CascadeType.ALL)
+    public List<UserEmail> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<UserEmail> emails) {
+        this.emails = emails;
     }
 
     @Override
