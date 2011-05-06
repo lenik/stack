@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
-import com.bee32.plover.orm.ext.typepref.TypePrefEntity;
+import com.bee32.plover.orm.ext.typePref.TypePrefEntity;
 
 @Entity
 public class EntityInfo

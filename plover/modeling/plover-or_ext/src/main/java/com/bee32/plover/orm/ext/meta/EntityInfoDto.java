@@ -6,7 +6,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.typepref.TypePrefDto;
+import com.bee32.plover.orm.ext.typePref.TypePrefDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class EntityInfoDto

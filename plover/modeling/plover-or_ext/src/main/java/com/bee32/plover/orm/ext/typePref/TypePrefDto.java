@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.ext.typepref;
+package com.bee32.plover.orm.ext.typePref;
 
 import javax.persistence.Transient;
 

@@ -11,7 +11,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.PropertyAccessor;
-import com.bee32.plover.orm.ext.typepref.TypePrefDto;
+import com.bee32.plover.orm.ext.typePref.TypePrefDto;
 import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
