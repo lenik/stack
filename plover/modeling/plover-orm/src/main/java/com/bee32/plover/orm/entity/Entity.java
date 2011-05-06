@@ -91,6 +91,11 @@ public abstract class Entity<K extends Serializable>
         return equalsEntity(other);
     }
 
+    /**
+     * Natural id equality.
+     *
+     * @return <code>null</code> If natural id is unknown.
+     */
     protected Boolean equalsKey(Entity<K> other) {
         K id1 = getId();
         K id2 = other.getId();
