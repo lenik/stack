@@ -4,6 +4,7 @@ import java.beans.IntrospectionException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +25,7 @@ import com.bee32.plover.arch.util.IPropertyAccessor;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntity;
 import com.bee32.plover.util.FormatStyle;
@@ -36,10 +38,18 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
-    protected K id;
-    protected Integer version;
-
     protected Class<? extends K> keyType;
+
+    protected K id;
+    Integer version;
+
+    Date createdDate;
+    Date lastModified;
+    boolean createdDateSet;
+    boolean lastModifiedSet;
+
+    final EntityFlags entityFlags = new EntityFlags();
+    boolean efLoaded;
 
     public EntityDto() {
         super();
@@ -151,6 +161,33 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         return this;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+        this.createdDateSet = true;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+        this.lastModifiedSet = true;
+    }
+
+    public EntityFlags getEntityFlags() {
+        return entityFlags;
+    }
+
+    public void setEntityFlags(int entityFlags) {
+        this.entityFlags.bits = entityFlags;
+        efLoaded = true;
+    }
+
     @Override
     protected IUnmarshalContext _getDefaultContext() {
         return IUnmarshalContext.NULL;
@@ -248,6 +285,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     protected void __marshal(E source) {
         id = source.getId();
         version = source.getVersion();
+        createdDate = source.getCreatedDate();
+        lastModified = source.getLastModified();
+
+        setEntityFlags(EntityAccessor.getFlags(source).bits);
     }
 
     @Override
@@ -257,6 +298,15 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
         if (version != null)
             EntityAccessor.setVersion(target, version);
+
+        if (createdDateSet)
+            EntityAccessor.setCreatedDate(target, createdDate);
+
+        if (lastModifiedSet)
+            EntityAccessor.setLastModified(target, lastModified);
+
+        if (efLoaded)
+            EntityAccessor.getFlags(target).set(entityFlags.bits);
     }
 
     @Override
@@ -282,6 +332,18 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             } catch (NumberFormatException e) {
                 throw new ParseException("Version isn't an integer: " + _version);
             }
+
+        Date createdDate = map.getDate("createdDate");
+        if (createdDate != null)
+            setCreatedDate(createdDate);
+
+        Date lastModified = map.getDate("lastModified");
+        if (lastModified != null)
+            setLastModified(lastModified);
+
+        Integer _entityFlags = map.getNInt("entityFlags");
+        if (_entityFlags != null)
+            setEntityFlags(_entityFlags);
     }
 
     /**

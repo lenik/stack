@@ -1,13 +1,19 @@
 package com.bee32.plover.orm.entity;
 
+import java.beans.Transient;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import overlay.Overlay;
 
 import com.bee32.plover.arch.Component;
+import com.bee32.plover.orm.util.EntityFormatter;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -28,6 +34,11 @@ public abstract class Entity<K extends Serializable>
 
     int version;
 
+    Date createdDate = new Date();
+    Date lastModified = createdDate;
+
+    final EntityFlags eflags = new EntityFlags();
+
     public Entity() {
         super(null);
     }
@@ -45,6 +56,44 @@ public abstract class Entity<K extends Serializable>
 
     void setVersion(int version) {
         this.version = version;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    void setCreatedDate(Date createdDate) {
+        if (createdDate == null)
+            throw new NullPointerException("createdDate");
+        this.createdDate = createdDate;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        if (lastModified == null)
+            throw new NullPointerException("lastModified");
+        this.lastModified = lastModified;
+    }
+
+    @Column(nullable = false)
+    int getEf() {
+        return eflags.bits;
+    }
+
+    void setEf(int eflags) {
+        this.eflags.bits = eflags;
+    }
+
+    @Transient
+    EntityFlags getEntityFlags() {
+        return eflags;
     }
 
     @Override
