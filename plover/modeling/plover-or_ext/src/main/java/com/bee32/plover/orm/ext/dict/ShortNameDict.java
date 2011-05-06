@@ -18,12 +18,12 @@ public abstract class ShortNameDict
         super();
     }
 
-    public ShortNameDict(String name, String alias) {
-        super(name, alias);
+    public ShortNameDict(String name, String label) {
+        super(name, label);
     }
 
-    public ShortNameDict(String name, String alias, String description) {
-        super(name, alias, description);
+    public ShortNameDict(String name, String label, String description) {
+        super(name, label, description);
     }
 
 }

@@ -8,7 +8,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 @AttributeOverrides({//
 /*    */@AttributeOverride(name = "name", column = @Column(length = 30)),
-/*    */@AttributeOverride(name = "alias", column = @Column(length = 30)) })
+/*    */@AttributeOverride(name = "label", column = @Column(length = 50)) })
 public abstract class LongNameDict
         extends NameDict {
 
@@ -18,12 +18,12 @@ public abstract class LongNameDict
         super();
     }
 
-    public LongNameDict(String name, String alias) {
-        super(name, alias);
+    public LongNameDict(String name, String label) {
+        super(name, label);
     }
 
-    public LongNameDict(String name, String alias, String description) {
-        super(name, alias, description);
+    public LongNameDict(String name, String label, String description) {
+        super(name, label, description);
     }
 
 }

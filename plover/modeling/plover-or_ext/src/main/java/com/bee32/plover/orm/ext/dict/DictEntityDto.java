@@ -14,7 +14,7 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
 
     private static final long serialVersionUID = 1L;
 
-    protected String alias;
+    protected String label;
     protected String description;
     protected String icon;
 
@@ -37,7 +37,7 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
     @Override
     protected void __marshal(E source) {
         super.__marshal(source);
-        alias = source.getAlias();
+        label = source.getLabel();
         description = source.getDescription();
         icon = source.getIcon();
     }
@@ -45,7 +45,7 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
     @Override
     protected void __unmarshalTo(IUnmarshalContext context, E target) {
         super.__unmarshalTo(context, target);
-        target.setAlias(alias);
+        target.setLabel(label);
         target.setDescription(description);
         target.setIcon(icon);
     }
@@ -54,30 +54,33 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
     protected void __parse(TextMap map)
             throws ParseException, TypeConvertException {
         super.__parse(map);
-        alias = map.getString("displayName");
+        label = map.getString("label");
         description = map.getString("description");
         icon = map.getString("icon");
     }
 
     @Override
     protected void _marshal(E source) {
+        // Keep this as empty.
     }
 
     @Override
     protected void _unmarshalTo(IUnmarshalContext context, E target) {
+        // Keep this as empty.
     }
 
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+        // Keep this as empty.
     }
 
-    public String getAlias() {
-        return alias;
+    public String getLabel() {
+        return label;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getDescription() {

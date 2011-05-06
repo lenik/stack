@@ -45,7 +45,7 @@ public abstract class AbstractEventController<E extends Event, Dto extends Abstr
     @Override
     protected void fillDataRow(DataTableDxo tab, Dto event) {
         String category = event.getSourceName();
-        String cat = event.getCategory().getAlias();
+        String cat = event.getCategory().getLabel();
         if (category == null)
             category = "";
         if (cat != null)

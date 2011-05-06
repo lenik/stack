@@ -228,7 +228,7 @@ public abstract class AbstractEventDto<E extends Event>
     public String getStatusText() {
         String statusText = null;
         if (status != null)
-            statusText = status.getAlias();
+            statusText = status.getLabel();
 
         if (statusText == null && stateIndex != 0) {
             EventState eventState = EventState.valueOf(stateIndex);

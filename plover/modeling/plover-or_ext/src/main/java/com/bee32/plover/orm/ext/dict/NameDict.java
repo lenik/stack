@@ -1,10 +1,16 @@
 package com.bee32.plover.orm.ext.dict;
 
+import javax.free.Nullables;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import com.bee32.plover.orm.entity.EntityExp;
+
+/**
+ * The id property of the {@link NameDict} equals to the <code>name</code> property.
+ */
 @MappedSuperclass
 public abstract class NameDict
         extends DictEntity<String> {
@@ -14,12 +20,12 @@ public abstract class NameDict
     public NameDict() {
     }
 
-    public NameDict(String name, String alias) {
-        this(name, alias, "");
+    public NameDict(String name, String label) {
+        this(name, label, "");
     }
 
-    public NameDict(String name, String alias, String description) {
-        super(alias, description);
+    public NameDict(String name, String label, String description) {
+        super(label, description);
         if (name == null)
             throw new NullPointerException("name");
         this.name = name;

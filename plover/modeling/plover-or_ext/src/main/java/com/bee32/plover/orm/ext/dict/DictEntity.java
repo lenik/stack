@@ -13,28 +13,28 @@ public abstract class DictEntity<K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
-    protected String alias;
+    protected String label;
     protected String description;
     protected String icon;
 
     public DictEntity() {
     }
 
-    public DictEntity(String alias, String description) {
-        this.alias = alias;
+    public DictEntity(String label, String description) {
+        this.label = label;
         this.description = description;
     }
 
     /**
-     * 显示名称：一般用本地语言表示，不能用于搜索。（如果要用显示名称搜索，建议通过全文索引）
+     * 别名：一般用本地语言表示，不能用于搜索。（如果要用显示名称搜索，建议通过全文索引）
      */
     @Column(length = 30)
-    public String getAlias() {
-        return alias;
+    public String getLabel() {
+        return label;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     @Column(length = 200)

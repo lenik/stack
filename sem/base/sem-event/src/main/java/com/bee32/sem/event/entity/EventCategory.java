@@ -14,12 +14,12 @@ public class EventCategory
         super();
     }
 
-    public EventCategory(String name, String alias) {
-        super(name, alias);
+    public EventCategory(String name, String label) {
+        super(name, label);
     }
 
-    public EventCategory(String name, String alias, String description) {
-        super(name, alias, description);
+    public EventCategory(String name, String label, String description) {
+        super(name, label, description);
     }
 
 }
