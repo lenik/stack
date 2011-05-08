@@ -3,14 +3,14 @@ package com.bee32.sem.process.verify.util;
 import java.util.Date;
 
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
+import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.dto.TaskDto;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyState;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 
-public abstract class VerifiableEntityDto<E extends VerifiableEntityBean<K, ? extends IVerifyContext>, K extends Number>
+public abstract class VerifiableEntityDto<E extends VerifiableEntity<K, ? extends IVerifyContext>, K extends Number>
         extends EntityDto<E, K> {
 
     private static final long serialVersionUID = 1L;
@@ -50,7 +50,7 @@ public abstract class VerifiableEntityDto<E extends VerifiableEntityBean<K, ? ex
     }
 
     @Override
-    protected void __unmarshalTo(IUnmarshalContext context, E target) {
+    protected void __unmarshalTo(IEntityMarshalContext context, E target) {
         super.__unmarshalTo(context, target);
 
         // target.setVerifyState(verifyState);

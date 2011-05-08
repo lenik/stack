@@ -6,15 +6,15 @@ import com.bee32.sem.process.verify.VerifyState;
 
 public class VerifiableEntityAccessor {
 
-    public static void setVerifyState(VerifiableEntityBean<?, ?> entity, VerifyState verifyState) {
+    public static void setVerifyState(VerifiableEntity<?, ?> entity, VerifyState verifyState) {
         entity.setVerifyState(verifyState);
     }
 
-    public static void setVerifyError(VerifiableEntityBean<?, ?> entity, String error) {
+    public static void setVerifyError(VerifiableEntity<?, ?> entity, String error) {
         entity.setVerifyError(error);
     }
 
-    public static void setVerifyEvalDate(VerifiableEntityBean<?, ?> entity, Date evalDate) {
+    public static void setVerifyEvalDate(VerifiableEntity<?, ?> entity, Date evalDate) {
         entity.setVerifyEvalDate(evalDate);
     }
 

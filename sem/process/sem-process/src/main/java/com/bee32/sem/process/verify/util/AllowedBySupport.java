@@ -21,7 +21,7 @@ import com.bee32.sem.process.verify.IAllowedByContext;
  */
 @MappedSuperclass
 public abstract class AllowedBySupport<K extends Serializable, C extends IAllowedByContext>
-        extends VerifiableEntityBean<K, C>
+        extends VerifiableEntity<K, C>
         implements IAllowedByContext {
 
     private static final long serialVersionUID = 1L;

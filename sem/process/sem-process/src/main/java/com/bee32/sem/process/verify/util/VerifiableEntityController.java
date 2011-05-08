@@ -23,7 +23,7 @@ import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.service.VerifyService;
 import com.bee32.sem.user.util.SessionLoginInfo;
 
-public abstract class VerifiableEntityController<E extends VerifiableEntityBean<K, C>, //
+public abstract class VerifiableEntityController<E extends VerifiableEntity<K, C>, //
 /*        */K extends Number, C extends IVerifyContext, Dto extends VerifiableEntityDto<E, K>>
         extends BasicEntityController<E, K, Dto> {
 

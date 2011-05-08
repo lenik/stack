@@ -12,7 +12,7 @@ import com.bee32.sem.process.verify.VerifyException;
 
 @MappedSuperclass
 public abstract class Verifiable2EntityBean<K extends Serializable, C extends IVerifyContext>
-        extends VerifiableEntityBean<K, C>
+        extends VerifiableEntity<K, C>
         implements IVerifiable2<C> {
 
     private static final long serialVersionUID = 1L;

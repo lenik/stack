@@ -22,7 +22,7 @@ import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyState;
 
 @MappedSuperclass
-public abstract class VerifiableEntityBean<K extends Serializable, C extends IVerifyContext>
+public abstract class VerifiableEntity<K extends Serializable, C extends IVerifyContext>
         extends EntityBean<K>
         implements IVerifiable<C>, IVerifyContext {
 
@@ -33,11 +33,11 @@ public abstract class VerifiableEntityBean<K extends Serializable, C extends IVe
     Date verifyEvalDate;
     Task verifyTask;
 
-    public VerifiableEntityBean() {
+    public VerifiableEntity() {
         super();
     }
 
-    public VerifiableEntityBean(String name) {
+    public VerifiableEntity(String name) {
         super(name);
     }
 

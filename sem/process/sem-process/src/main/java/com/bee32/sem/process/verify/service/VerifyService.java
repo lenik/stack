@@ -25,7 +25,7 @@ import com.bee32.sem.process.verify.VerifyState;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.util.VerifiableEntityAccessor;
-import com.bee32.sem.process.verify.util.VerifiableEntityBean;
+import com.bee32.sem.process.verify.util.VerifiableEntity;
 import com.bee32.sem.user.util.SessionLoginInfo;
 
 public class VerifyService
@@ -69,16 +69,16 @@ public class VerifyService
     }
 
     /**
-     * 表上的 {@link VerifiableEntityBean#isVerified() verified} 是缓存的值，仅用于检索用途。
+     * 表上的 {@link VerifiableEntity#isVerified() verified} 是缓存的值，仅用于检索用途。
      * <p>
      * 当需要在业务过程中判断对象是否已审核时，需要调用本方法重新计算审核结果。
      *
-     * 本方法不会更新缓存，如果你需要更新缓存请调用 {@link #verify(VerifiableEntityBean)} 方法。
+     * 本方法不会更新缓存，如果你需要更新缓存请调用 {@link #verify(VerifiableEntity)} 方法。
      *
      * @param context
      *            要计算审核状态的实体对象。
      * @return <code>true</code> 表示成功审核，否则
-     * @see #verify(VerifiableEntityBean)
+     * @see #verify(VerifiableEntity)
      */
     @Transactional(readOnly = true)
     @Override
@@ -92,13 +92,13 @@ public class VerifyService
     /**
      * 重新计算审核状态，除非审核成功否则抛出异常。
      *
-     * 本方法不会更新缓存，如果你需要更新缓存请调用 {@link #verify(VerifiableEntityBean)} 方法。
+     * 本方法不会更新缓存，如果你需要更新缓存请调用 {@link #verify(VerifiableEntity)} 方法。
      *
      * @param context
      *            要计算审核状态的实体对象。
      * @throws VerifyException
      *             当审核不成功时。
-     * @see #verify(VerifiableEntityBean)
+     * @see #verify(VerifiableEntity)
      */
     @Transactional(readOnly = true)
     @Override
@@ -111,12 +111,12 @@ public class VerifyService
     /**
      * 重新计算审核状态，并返回详细的审核结果。
      *
-     * 本方法不会更新缓存，如果你需要更新缓存请调用 {@link #verify(VerifiableEntityBean)} 方法。
+     * 本方法不会更新缓存，如果你需要更新缓存请调用 {@link #verify(VerifiableEntity)} 方法。
      *
      * @param context
      *            要计算审核状态的实体对象。
      * @return {@link VerifyResult} 详细的审核结果。
-     * @see #verify(VerifiableEntityBean)
+     * @see #verify(VerifiableEntity)
      */
     @Transactional(readOnly = true)
     @Override
@@ -145,7 +145,7 @@ public class VerifyService
      * @return 详细的审核结果。
      */
     @Transactional
-    public <C extends IVerifyContext> VerifyResult verifyEntity(VerifiableEntityBean<? extends Number, C> entity) {
+    public <C extends IVerifyContext> VerifyResult verifyEntity(VerifiableEntity<? extends Number, C> entity) {
         if (entity == null)
             throw new NullPointerException("entity");
 
