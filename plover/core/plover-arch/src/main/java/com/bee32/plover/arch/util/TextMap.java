@@ -2,11 +2,13 @@ package com.bee32.plover.arch.util;
 
 import java.lang.reflect.Array;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import javax.free.AbstractVariantLookupMap;
 import javax.free.Dates;
+import javax.free.IllegalUsageException;
 import javax.servlet.http.HttpServletRequest;
 
 public class TextMap
@@ -47,6 +49,10 @@ public class TextMap
 
         String[] array = { String.valueOf(value) };
         return array;
+    }
+
+    public Object getRaw(String key) {
+        return map.get(key);
     }
 
     @Override
@@ -137,6 +143,47 @@ public class TextMap
             return null;
         else
             return Boolean.valueOf(val);
+    }
+
+    public TextMap[] shift(String prefix) {
+        if (prefix == null)
+            throw new NullPointerException("prefix");
+        int n = prefix.length();
+
+        AutoSizeList<Map<String, Object>> maps = new AutoSizeList<Map<String, Object>>();
+
+        for (String key : keySet()) {
+            if (!key.startsWith(prefix))
+                continue;
+
+            Object valueArray = getRaw(key);
+            if (valueArray == null)
+                continue;
+
+            if (!valueArray.getClass().isArray())
+                throw new IllegalUsageException("Not an array: " + key + " => " + valueArray);
+
+            String subKey = key.substring(n);
+
+            int length = Array.getLength(valueArray);
+            for (int i = 0; i < length; i++) {
+                Object value = Array.get(valueArray, i);
+                Map<String, Object> map = maps.get(i);
+                if (map == null) {
+                    map = new HashMap<String, Object>();
+                    maps.set(i, map);
+                }
+                map.put(subKey, value);
+            }
+        }
+
+        TextMap textMaps[] = new TextMap[maps.size()];
+        for (int i = 0; i < maps.size(); i++) {
+            Map<String, Object> map = maps.get(i);
+            textMaps[i] = new TextMap(map);
+        }
+
+        return textMaps;
     }
 
     public static TextMap convert(Map<String, ?> map) {
