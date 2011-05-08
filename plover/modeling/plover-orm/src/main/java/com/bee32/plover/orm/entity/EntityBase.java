@@ -85,7 +85,7 @@ public abstract class EntityBase<K extends Serializable>
      *
      * at the end.
      *
-     * @return <code>false</code> to prevent this entity from being modified.
+     * @return Non-<code>null</code> error result to prevent this entity from being modified.
      */
     protected ErrorResult checkModify() {
         if (isLocked())
@@ -104,12 +104,18 @@ public abstract class EntityBase<K extends Serializable>
      *
      * at the end.
      *
-     * @return <code>false</code> to prevent this entity from being deleted.
+     * @return Non-<code>null</code> error result to prevent this entity from being deleted.
      */
     protected ErrorResult checkDelete() {
         if (isLocked())
             return ErrorResult.error("Entity is locked");
         return null;
+    }
+
+    /**
+     * Called after the entity is removed from the database.
+     */
+    protected void destroy() {
     }
 
     @SuppressWarnings("unchecked")
