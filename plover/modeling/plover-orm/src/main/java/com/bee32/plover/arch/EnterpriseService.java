@@ -12,14 +12,14 @@ import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
+import com.bee32.plover.orm.util.IEntityMarshalContext;
 
 @Transactional(readOnly = true)
 @ComponentTemplate
 @Lazy
 public abstract class EnterpriseService
         extends Component
-        implements IUnmarshalContext {
+        implements IEntityMarshalContext {
 
     @Inject
     protected CommonDataManager dataManager;

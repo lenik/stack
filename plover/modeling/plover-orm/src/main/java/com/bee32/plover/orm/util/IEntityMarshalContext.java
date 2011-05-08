@@ -4,11 +4,9 @@ import java.io.Serializable;
 
 import javassist.tools.rmi.ObjectNotFoundException;
 
-import javax.free.IllegalUsageException;
-
 import com.bee32.plover.orm.entity.Entity;
 
-public interface IUnmarshalContext {
+public interface IEntityMarshalContext {
 
     /**
      * Load entity with the given id.
@@ -24,16 +22,4 @@ public interface IUnmarshalContext {
     <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id);
 
     // <E extends EntityBean<K>, K extends Serializable> E mergeEntity(Class<E> entityType, K id);
-
-    NullUnmarshalContext NULL = new NullUnmarshalContext();
-}
-
-class NullUnmarshalContext
-        implements IUnmarshalContext {
-
-    @Override
-    public <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {
-        throw new IllegalUsageException("No unmarshal context");
-    }
-
 }

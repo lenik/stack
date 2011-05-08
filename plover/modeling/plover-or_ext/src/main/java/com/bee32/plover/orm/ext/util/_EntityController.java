@@ -29,12 +29,12 @@ import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
+import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.servlet.mvc.ModelAndViewEx;
 
 public abstract class _EntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
         extends Component
-        implements IUnmarshalContext {
+        implements IEntityMarshalContext {
 
     @Inject
     protected CommonDataManager dataManager;
@@ -366,7 +366,7 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
         } catch (ReflectiveOperationException e) {
             throw new ServletException("Failed to create DTO of " + dtoType, e);
         }
-        dto.setEntityType(getEntityType());
+        dto.initEntityType(getEntityType());
         return dto;
     }
 
