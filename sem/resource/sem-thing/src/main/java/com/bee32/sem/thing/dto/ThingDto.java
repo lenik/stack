@@ -6,7 +6,6 @@ import javax.free.TypeConvertException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
 import com.bee32.plover.orm.ext.xp.XPool;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.thing.entity.Thing;
 
 public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
@@ -60,8 +59,8 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
     }
 
     @Override
-    protected void __unmarshalTo(IUnmarshalContext context, E target) {
-        super.__unmarshalTo(context, target);
+    protected void __unmarshalTo(E target) {
+        super.__unmarshalTo(target);
 
         target.setSerial(serial);
         target.setName(name);
@@ -69,8 +68,8 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
 
         target.setBarCode(barCode);
 
-        with(context, target).unmarshal("unit", unit);
-        with(context, target).unmarshal("unitConv", unitConv);
+        merge(target, "unit", unit);
+        merge(target, "unitConv", unitConv);
     }
 
     @Override

@@ -13,7 +13,6 @@ import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Event;
 
@@ -86,12 +85,11 @@ public abstract class AbstractEventDto<E extends Event>
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, E target) {
+    protected void _unmarshalTo(E target) {
 
-        with(context, target) //
-                .unmarshal("category", category)//
-                .unmarshal("status", status)//
-                .unmarshal("actor", actor);
+        merge(target, "category", category);
+        merge(target, "status", status);
+        merge(target, "actor", actor);
 
         if (sourceClass != null)
             target.setSourceClass(sourceClass);
@@ -110,8 +108,7 @@ public abstract class AbstractEventDto<E extends Event>
         target.setSeeAlsos(seeAlsos);
 
         if (selection.contains(OBSERVERS))
-            with(context, target)//
-                    .unmarshalSet("observers", observers);
+            mergeSet(target, "observers", observers);
     }
 
     @Override

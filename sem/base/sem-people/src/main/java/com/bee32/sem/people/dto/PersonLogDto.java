@@ -4,7 +4,6 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.people.entity.PersonLog;
 
 public class PersonLogDto
@@ -32,12 +31,11 @@ public class PersonLogDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, PersonLog target) {
+    protected void _unmarshalTo(PersonLog target) {
         target.setDescription(description);
 
-        WithContext w = with(context, target);
-        w.unmarshal("person", person);
-        w.unmarshal("category", category);
+        merge(target, "person", person);
+        merge(target, "category", category);
     }
 
     @Override

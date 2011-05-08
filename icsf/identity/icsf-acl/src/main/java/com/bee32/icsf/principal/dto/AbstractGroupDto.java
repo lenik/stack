@@ -3,7 +3,6 @@ package com.bee32.icsf.principal.dto;
 import java.util.List;
 
 import com.bee32.icsf.principal.Group;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class AbstractGroupDto<G extends Group>
         extends AbstractPrincipalDto<G> {
@@ -85,41 +84,39 @@ public class AbstractGroupDto<G extends Group>
         int _selection = DEPTH_MASK.compose(selection.bits, _depth);
 
         if (selection.contains(EXT)) {
-            inheritedGroup = new GroupDto(_selection).marshalRec(source.getInheritedGroup());
-            owner = new UserDto(_selection).marshalRec(source.getOwner());
-            primaryRole = new RoleDto(_selection).marshalRec(source.getPrimaryRole());
+            inheritedGroup = new GroupDto(_selection).marshal(source.getInheritedGroup());
+            owner = new UserDto(_selection).marshal(source.getOwner());
+            primaryRole = new RoleDto(_selection).marshal(source.getPrimaryRole());
         }
 
         if (selection.contains(GROUPS))
-            derivedGroups = marshalListRec(GroupDto.class, _selection, source.getDerivedGroups());
+            derivedGroups = marshalList(GroupDto.class, _selection, source.getDerivedGroups());
 
         if (selection.contains(ROLES))
-            assignedRoles = marshalListRec(RoleDto.class, _selection, source.getAssignedRoles());
+            assignedRoles = marshalList(RoleDto.class, _selection, source.getAssignedRoles());
 
         if (selection.contains(USERS))
-            memberUsers = marshalListRec(UserDto.class, _selection, source.getMemberUsers());
+            memberUsers = marshalList(UserDto.class, _selection, source.getMemberUsers());
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, G target) {
-        super._unmarshalTo(context, target);
-
-        WithContext with = with(context, target);
+    protected void _unmarshalTo(G target) {
+        super._unmarshalTo(target);
 
         if (selection.contains(EXT)) {
-            with.unmarshal("inheritedGroup", inheritedGroup);
-            with.unmarshal("owner", owner);
-            with.unmarshal("primaryRole", primaryRole);
+            merge(target, "inheritedGroup", inheritedGroup);
+            merge(target, "owner", owner);
+            merge(target, "primaryRole", primaryRole);
         }
 
         if (selection.contains(GROUPS))
-            with.unmarshalSet("derivedGroups", derivedGroups);
+            mergeSet(target, "derivedGroups", derivedGroups);
 
         if (selection.contains(ROLES))
-            with.unmarshalSet("assignedRoles", assignedRoles);
+            mergeSet(target, "assignedRoles", assignedRoles);
 
         if (selection.contains(USERS))
-            with.unmarshalSet("memberUsers", memberUsers);
+            mergeSet(target, "memberUsers", memberUsers);
     }
 
 }

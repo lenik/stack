@@ -8,7 +8,7 @@ import javax.free.ParseException;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
+import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonXP;
@@ -50,7 +50,7 @@ public class AbstractPersonDto<E extends Person>
     String sidType;
     String sid;
 
-    List<ContactDto> contacts;
+    List<AbstractContactDto> contacts;
     List<PersonLogDto> logs;
 
     @Override
@@ -69,11 +69,11 @@ public class AbstractPersonDto<E extends Person>
         sidType = source.getSidType();
         sid = source.getSid();
 
-        contacts = marshalList(ContactDto.class, source.getContacts());
+        contacts = marshalList(AbstractContactDto.class, source.getContacts());
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, E target) {
+    protected void _unmarshalTo(E target) {
     }
 
     @Override

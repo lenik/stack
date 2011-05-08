@@ -9,7 +9,6 @@ import javax.free.TypeConvertException;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.builtin.AllowList;
 
 public class AllowListDto
@@ -50,12 +49,12 @@ public class AllowListDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, AllowList target) {
+    protected void _unmarshalTo(AllowList target) {
         target.setName(name);
         target.setDescription(description);
 
         if (selection.contains(RESPONSIBLES))
-            with(context, target).unmarshalSet("responsibles", responsibles);
+            mergeSet(target, "responsibles", responsibles);
     }
 
     @Override

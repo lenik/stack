@@ -22,8 +22,16 @@ public abstract class DigestNameDict
 
     protected String digestEncoded;
 
+    /**
+     * Get the file digest string.
+     *
+     * @throws IllegalStateException
+     *             If the file digest has not been computed yet.
+     */
     @Transient
     public String getDigest() {
+        if (digestEncoded == null)
+            throw new IllegalStateException("The file digest has not been computed yet.");
         return digestEncoded;
     }
 

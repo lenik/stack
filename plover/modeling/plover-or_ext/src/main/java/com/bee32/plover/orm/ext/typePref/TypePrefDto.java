@@ -5,7 +5,6 @@ import javax.persistence.Transient;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public abstract class TypePrefDto<E extends TypePrefEntity>
         extends EntityDto<E, String>
@@ -33,11 +32,12 @@ public abstract class TypePrefDto<E extends TypePrefEntity>
 
     protected void __marshal(E source) {
         super.__marshal(source);
-        type = source.getType();
+        type = source.getType(); // Transient.
     }
 
-    protected void __unmarshalTo(IUnmarshalContext context, E target) {
-        super.__unmarshalTo(context, target);
+    protected void __unmarshalTo(E target) {
+        super.__unmarshalTo(target);
+        // Transient.: target.setType(type);
     }
 
     public Class<?> getType() {

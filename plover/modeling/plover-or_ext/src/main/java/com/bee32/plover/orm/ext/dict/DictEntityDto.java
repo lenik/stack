@@ -7,7 +7,6 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
         extends EntityDto<E, K> {
@@ -43,8 +42,8 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
     }
 
     @Override
-    protected void __unmarshalTo(IUnmarshalContext context, E target) {
-        super.__unmarshalTo(context, target);
+    protected void __unmarshalTo(E target) {
+        super.__unmarshalTo(target);
         target.setLabel(label);
         target.setDescription(description);
         target.setIcon(icon);

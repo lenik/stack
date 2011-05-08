@@ -5,7 +5,6 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.mail.entity.MailFilter;
 
 public class MailFilterDto
@@ -54,7 +53,7 @@ public class MailFilterDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, MailFilter target) {
+    protected void _unmarshalTo(MailFilter target) {
         target.setName(name);
         target.setDescription(description);
 
@@ -62,8 +61,8 @@ public class MailFilterDto
         target.setOrder(order);
         target.setExpr(expr);
 
-        target.setSource(unmarshal(source));
-        target.setTarget(unmarshal(this.target));
+        merge(target, "source", source);
+        merge(target, "target", this.target);
         target.setTransferTo(transferTo);
 
         target.setChMask(chMask);

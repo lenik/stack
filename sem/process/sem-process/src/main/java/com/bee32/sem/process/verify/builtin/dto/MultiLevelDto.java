@@ -9,10 +9,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
-import com.bee32.sem.process.verify.builtin.Level;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 
 public class MultiLevelDto
@@ -67,16 +64,16 @@ public class MultiLevelDto
         description = source.getDescription();
 
         if (selection.contains(LEVELS))
-            setLevels(marshalListRec(LevelDto.class, source.getLevels()));
+            setLevels(marshalList(LevelDto.class, source.getLevels()));
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, MultiLevel target) {
+    protected void _unmarshalTo(MultiLevel target) {
         target.setName(name);
         target.setDescription(description);
 
         if (selection.contains(LEVELS))
-            with(context, target).unmarshalList(levelsProperty, levels);
+            mergeList(target, "levels", levels);
     }
 
     @Override
@@ -103,7 +100,6 @@ public class MultiLevelDto
                     level.setMultiLevel(new MultiLevelDto().ref(this));
                     level.setLimit(limit);
                     level.setTargetPolicy(policyRef);
-                    level._setFilled(true);
 
                     levels.add(level);
                 }
@@ -129,20 +125,5 @@ public class MultiLevelDto
     public List<LevelDto> getLevels() {
         return levels;
     }
-
-    static final PropertyAccessor<MultiLevel, List<Level>> levelsProperty = new PropertyAccessor<MultiLevel, List<Level>>(
-            List.class) {
-
-        @Override
-        public List<Level> get(MultiLevel entity) {
-            return entity.getLevels();
-        }
-
-        @Override
-        public void set(MultiLevel entity, List<Level> levels) {
-            entity.setLevels(levels);
-        }
-
-    };
 
 }

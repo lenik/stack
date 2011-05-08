@@ -6,7 +6,6 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.dict.NameDictDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.thing.entity.UnitConv;
 
 public class UnitConvDto
@@ -45,8 +44,8 @@ public class UnitConvDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, UnitConv target) {
-        with(context, target).unmarshal("from", from);
+    protected void _unmarshalTo(UnitConv target) {
+        merge(target, "from", from);
 
         if (selection.contains(MAP)) {
             // ....

@@ -7,7 +7,6 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.dict.NameDictDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class UserCategoryDto
         extends NameDictDto<UserCategory> {
@@ -41,13 +40,13 @@ public class UserCategoryDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, UserCategory target) {
+    protected void _unmarshalTo(UserCategory target) {
         target.setType(type);
         target.setPrecision(precision);
         target.setScale(scale);
 
         if (selection.contains(ITEMS))
-            with(context, target).unmarshalList("items", items);
+            mergeList(target, "items", items);
     }
 
     @Override

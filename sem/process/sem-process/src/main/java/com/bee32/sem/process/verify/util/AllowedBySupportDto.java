@@ -5,11 +5,8 @@ import java.util.Date;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.UserDto;
-import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.IAllowedByContext;
 
 public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extends IAllowedByContext>, K extends Number>
@@ -49,15 +46,14 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
     }
 
     @Override
-    protected void __unmarshalTo(IUnmarshalContext context, E target) {
-        super.__unmarshalTo(context, target);
+    protected void __unmarshalTo(E target) {
+        super.__unmarshalTo(target);
 
         target.setVerifiedDate(verifiedDate);
         target.setAllowed(allowed);
         target.setRejectedReason(rejectedReason);
 
-        with(context, target)//
-                .unmarshal(verifierProperty, verifier);
+        merge(target, "verifier", verifier);
     }
 
     @Override
@@ -112,23 +108,6 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
 
     public String getVerifierName() {
         return verifier == null ? null : verifier.getName();
-    }
-
-    final PropertyAccessor<E, User> verifierProperty;
-    {
-        verifierProperty = new PropertyAccessor<E, User>(User.class) {
-
-            @Override
-            public User get(E entity) {
-                return entity.getVerifier();
-            }
-
-            @Override
-            public void set(E entity, User verifier) {
-                entity.setVerifier(verifier);
-            }
-
-        };
     }
 
 }

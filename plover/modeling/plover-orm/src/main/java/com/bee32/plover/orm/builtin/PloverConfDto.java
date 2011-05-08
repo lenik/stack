@@ -4,7 +4,6 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class PloverConfDto
         extends EntityDto<PloverConf, String> {
@@ -21,7 +20,7 @@ public class PloverConfDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, PloverConf target) {
+    protected void _unmarshalTo(PloverConf target) {
         target.setValue(value);
         target.setDescription(description);
     }

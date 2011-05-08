@@ -50,7 +50,7 @@ public abstract class DataTransferObject<S, C>
     public DataTransferObject(S source) {
         this();
         if (source != null)
-            marshalImpl(source);
+            marshal(source);
     }
 
     public DataTransferObject(int selection) {
@@ -61,7 +61,7 @@ public abstract class DataTransferObject<S, C>
     public DataTransferObject(int selection, S source) {
         this(selection);
         if (source != null)
-            marshalImpl(source);
+            marshal(source);
     }
 
     /**

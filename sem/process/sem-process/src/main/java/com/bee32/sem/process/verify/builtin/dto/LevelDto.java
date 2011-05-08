@@ -2,13 +2,9 @@ package com.bee32.sem.process.verify.builtin.dto;
 
 import javax.free.ParseException;
 
-import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
-import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.Level;
-import com.bee32.sem.process.verify.builtin.MultiLevel;
 
 public class LevelDto
         extends EntityDto<Level, Integer> {
@@ -35,13 +31,11 @@ public class LevelDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, Level target) {
-
+    protected void _unmarshalTo(Level target) {
         target.setLimit(limit);
 
-        WithContext with = with(context, target);
-        with.unmarshal(multiLevelProperty, multiLevel);
-        with.unmarshal(targetPolicyProperty, targetPolicy);
+        merge(target, "multiLevel", multiLevel);
+        merge(target, "targetPolicy", targetPolicy);
     }
 
     @Override
@@ -83,34 +77,5 @@ public class LevelDto
         else
             return targetPolicy.getName();
     }
-
-    static final PropertyAccessor<Level, MultiLevel> multiLevelProperty = new PropertyAccessor<Level, MultiLevel>(
-            MultiLevel.class) {
-
-        @Override
-        public MultiLevel get(Level entity) {
-            return entity.getMultiLevel();
-        }
-
-        @Override
-        public void set(Level entity, MultiLevel multiLevel) {
-            entity.setMultiLevel(multiLevel);
-        }
-
-    };
-    static final PropertyAccessor<Level, VerifyPolicy<?>> targetPolicyProperty = new PropertyAccessor<Level, VerifyPolicy<?>>(
-            VerifyPolicy.class) {
-
-        @Override
-        public VerifyPolicy<?> get(Level entity) {
-            return entity.getTargetPolicy();
-        }
-
-        @Override
-        public void set(Level entity, VerifyPolicy<?> targetPolicy) {
-            entity.setTargetPolicy(targetPolicy);
-        }
-
-    };
 
 }

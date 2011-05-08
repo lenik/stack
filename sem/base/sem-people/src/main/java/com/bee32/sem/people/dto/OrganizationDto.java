@@ -4,7 +4,6 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.people.entity.Organization;
 
 public class OrganizationDto
@@ -25,7 +24,7 @@ public class OrganizationDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, Organization target) {
+    protected void _unmarshalTo(Organization target) {
     }
 
     @Override

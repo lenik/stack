@@ -3,7 +3,6 @@ package com.bee32.plover.orm.ext.dict;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class CommonNameDictDto
         extends NameDictDto<NameDict> {
@@ -23,7 +22,7 @@ public class CommonNameDictDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, NameDict target) {
+    protected void _unmarshalTo(NameDict target) {
     }
 
     @Override

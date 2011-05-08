@@ -4,7 +4,6 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.dict.DigestNameDictDto;
-import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.sem.file.blob.FileBlob;
 import com.bee32.sem.file.util.ImageBlob;
 
@@ -51,7 +50,7 @@ public class FileBlobDto
     }
 
     @Override
-    protected void _unmarshalTo(IEntityMarshalContext context, FileBlob target) {
+    protected void _unmarshalTo(FileBlob target) {
         target.setOrigPath(origPath);
 
         if (selection.contains(CONTENT)) {

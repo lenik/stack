@@ -4,7 +4,6 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class UserCategoryItemDto
         extends EntityDto<UserCategoryItem, Long> {
@@ -34,8 +33,8 @@ public class UserCategoryItemDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, UserCategoryItem target) {
-        with(context, target).unmarshal("category", category);
+    protected void _unmarshalTo(UserCategoryItem target) {
+        merge(target, "category", category);
         target.intVal = intVal;
         target.floatVal = floatVal;
         target.textVal = textVal;

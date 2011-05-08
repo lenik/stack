@@ -10,9 +10,7 @@ import javax.free.TypeConvertException;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.ext.typePref.TypePrefDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 
@@ -41,12 +39,11 @@ public class VerifyPolicyPrefDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, VerifyPolicyPref target) {
+    protected void _unmarshalTo(VerifyPolicyPref target) {
 
         target.setDescription(description);
 
-        with(context, target) //
-                .unmarshal(preferredPolicyProperty, preferredPolicy);
+        merge(target, "preferredPolicy", preferredPolicy);
     }
 
     @Override
@@ -78,23 +75,6 @@ public class VerifyPolicyPrefDto
 
     public List<PrincipalDto> getResponsibles() {
         return responsibles;
-    }
-
-    static final PropertyAccessor<VerifyPolicyPref, VerifyPolicy<?>> preferredPolicyProperty;
-    static {
-        preferredPolicyProperty = new PropertyAccessor<VerifyPolicyPref, VerifyPolicy<?>>(VerifyPolicy.class) {
-
-            @Override
-            public VerifyPolicy<?> get(VerifyPolicyPref entity) {
-                return entity.getPreferredPolicy();
-            }
-
-            @Override
-            public void set(VerifyPolicyPref entity, VerifyPolicy<?> preferredPolicy) {
-                entity.setPreferredPolicy(preferredPolicy);
-            }
-
-        };
     }
 
 }

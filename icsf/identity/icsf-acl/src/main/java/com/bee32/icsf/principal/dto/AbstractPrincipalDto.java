@@ -7,7 +7,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.util.Mask32;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
+import com.bee32.plover.orm.util.IEntityMarshalContext;
 
 public class AbstractPrincipalDto<E extends Principal>
         extends EntityDto<E, Long> {
@@ -56,7 +56,7 @@ public class AbstractPrincipalDto<E extends Principal>
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, E target) {
+    protected void _unmarshalTo(E target) {
         target.setName(name);
         target.setFullName(fullName);
         target.setDescription(description);

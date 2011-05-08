@@ -3,7 +3,6 @@ package com.bee32.plover.orm.ext.dict;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public abstract class NumberDictDto<E extends NumberDict>
         extends DictEntityDto<E, Integer> {
@@ -35,8 +34,8 @@ public abstract class NumberDictDto<E extends NumberDict>
     }
 
     @Override
-    protected final void __unmarshalTo(IUnmarshalContext context, E target) {
-        super.__unmarshalTo(context, target);
+    protected final void __unmarshalTo(E target) {
+        super.__unmarshalTo(target);
         target.setNumber(number);
     }
 

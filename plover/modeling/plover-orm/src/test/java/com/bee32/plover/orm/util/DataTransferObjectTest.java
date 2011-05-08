@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.util;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class DataTransferObjectTest
         Tiger b = new Tiger("b", "y");
         Tiger[] tigers = { a, b };
 
-        List<TigerDto> tigerDtos = TigerDto.marshalList(TigerDto.class, tigers);
+        List<TigerDto> tigerDtos = DTOs.marshalList(TigerDto.class, Arrays.asList(tigers));
         Iterator<TigerDto> it = tigerDtos.iterator();
         TigerDto aDto = it.next();
         assertEquals("a", aDto.getName());

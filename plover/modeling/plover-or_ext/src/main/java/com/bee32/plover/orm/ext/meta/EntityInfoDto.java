@@ -4,10 +4,8 @@ import java.util.List;
 
 import javax.free.ParseException;
 
-import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.typePref.TypePrefDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class EntityInfoDto
         extends TypePrefDto<EntityInfo> {
@@ -49,13 +47,13 @@ public class EntityInfoDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, EntityInfo target) {
+    protected void _unmarshalTo(EntityInfo target) {
         target.setNameOtf(nameOtf);
         target.setAlias(alias);
         target.setDescription(description);
 
         if (selection.contains(COLUMNS))
-            with(context, target).unmarshalList(columnsProperty, columns);
+            mergeList(target, "columns", columns);
     }
 
     @Override
@@ -65,20 +63,5 @@ public class EntityInfoDto
         alias = map.getString("alias");
         description = map.getString("description");
     }
-
-    static final PropertyAccessor<EntityInfo, List<EntityColumn>> columnsProperty = new PropertyAccessor<EntityInfo, List<EntityColumn>>(
-            List.class) {
-
-        @Override
-        public List<EntityColumn> get(EntityInfo entity) {
-            return entity.getColumns();
-        }
-
-        @Override
-        public void set(EntityInfo entity, List<EntityColumn> columns) {
-            entity.setColumns(columns);
-        }
-
-    };
 
 }

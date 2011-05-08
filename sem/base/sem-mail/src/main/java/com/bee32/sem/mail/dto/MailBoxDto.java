@@ -6,11 +6,8 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.arch.util.PropertyAccessor;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.mail.entity.MailBox;
-import com.bee32.sem.mail.entity.MailCopy;
 
 public class MailBoxDto
         extends EntityDto<MailBox, Integer> {
@@ -55,7 +52,7 @@ public class MailBoxDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, MailBox target) {
+    protected void _unmarshalTo(MailBox target) {
         target.setPriority(priority);
         target.setOrder(order);
         target.setName(name);
@@ -63,7 +60,7 @@ public class MailBoxDto
         target.setColor(color);
 
         if (selection.contains(MAILS))
-            with(context, target).unmarshalList(mailsProperty, mails);
+            mergeList(target, "mails", mails);
     }
 
     @Override
@@ -126,20 +123,5 @@ public class MailBoxDto
     public void setMails(List<MailCopyDto> mails) {
         this.mails = mails;
     }
-
-    static final PropertyAccessor<MailBox, List<MailCopy>> mailsProperty = new PropertyAccessor<MailBox, List<MailCopy>>(
-            List.class) {
-
-        @Override
-        public List<MailCopy> get(MailBox entity) {
-            return entity.getMails();
-        }
-
-        @Override
-        public void set(MailBox entity, List<MailCopy> mails) {
-            entity.setMails(mails);
-        }
-
-    };
 
 }

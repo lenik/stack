@@ -3,7 +3,6 @@ package com.bee32.icsf.principal.dto;
 import java.util.List;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 
 public class AbstractUserDto<U extends User>
         extends AbstractPrincipalDto<U> {
@@ -35,36 +34,34 @@ public class AbstractUserDto<U extends User>
         int _selection = DEPTH_MASK.compose(selection.bits, _depth);
 
         if (selection.contains(EXT)) {
-            primaryGroup = new GroupDto(_selection).marshalRec(source.getPrimaryGroup());
-            primaryRole = new RoleDto(_selection).marshalRec(source.getPrimaryRole());
+            primaryGroup = new GroupDto(_selection).marshal(source.getPrimaryGroup());
+            primaryRole = new RoleDto(_selection).marshal(source.getPrimaryRole());
         }
 
         if (selection.contains(GROUPS))
-            assignedGroups = marshalListRec(GroupDto.class, _selection, source.getAssignedGroups());
+            assignedGroups = marshalList(GroupDto.class, _selection, source.getAssignedGroups());
 
         if (selection.contains(ROLES))
-            assignedRoles = marshalListRec(RoleDto.class, _selection, source.getAssignedRoles());
+            assignedRoles = marshalList(RoleDto.class, _selection, source.getAssignedRoles());
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, U target) {
-        super._unmarshalTo(context, target);
+    protected void _unmarshalTo(U target) {
+        super._unmarshalTo(target);
 
         if (depth == 0)
             return;
 
-        WithContext with = with(context, target);
-
         if (selection.contains(EXT)) {
-            with.unmarshal("primaryGroup", primaryGroup);
-            with.unmarshal("primaryRole", primaryRole);
+            merge(target, "primaryGroup", primaryGroup);
+            merge(target, "primaryRole", primaryRole);
         }
 
         if (selection.contains(GROUPS))
-            with.unmarshalSet("assignedGroups", assignedGroups);
+            mergeSet(target, "assignedGroups", assignedGroups);
 
         if (selection.contains(ROLES))
-            with.unmarshalSet("assignedRoles", assignedRoles);
+            mergeSet(target, "assignedRoles", assignedRoles);
     }
 
     public GroupDto getPrimaryGroup() {

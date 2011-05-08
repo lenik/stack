@@ -5,7 +5,6 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.dict.DictEntityDto;
-import com.bee32.plover.orm.util.IUnmarshalContext;
 import com.bee32.sem.event.entity.EventStatus;
 
 public class EventStatusDto
@@ -33,7 +32,7 @@ public class EventStatusDto
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, EventStatus target) {
+    protected void _unmarshalTo(EventStatus target) {
         target.setFlagsMask(flagsMask);
         target.setClosed(closed);
         target.setState(state);

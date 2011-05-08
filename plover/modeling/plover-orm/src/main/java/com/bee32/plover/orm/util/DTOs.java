@@ -17,7 +17,7 @@ public class DTOs
     }
 
     @Override
-    protected void _unmarshalTo(IUnmarshalContext context, Entity<Serializable> target) {
+    protected void _unmarshalTo(Entity<Serializable> target) {
     }
 
     @Override

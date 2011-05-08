@@ -3,7 +3,6 @@ package com.bee32.sem.process.verify.util;
 import java.util.Date;
 
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.dto.TaskDto;
 import com.bee32.sem.process.verify.IVerifyContext;
@@ -50,14 +49,14 @@ public abstract class VerifiableEntityDto<E extends VerifiableEntity<K, ? extend
     }
 
     @Override
-    protected void __unmarshalTo(IEntityMarshalContext context, E target) {
-        super.__unmarshalTo(context, target);
+    protected void __unmarshalTo(E target) {
+        super.__unmarshalTo(target);
 
         // target.setVerifyState(verifyState);
         // target.setVerifyError(verifyError);
         // target.setVerifyEvalDate(verifyEvalDate);
 
-        with(context, target).unmarshal("verifyTask", verifyTask);
+        merge(target, "verifyTask", verifyTask);
     }
 
     public EventState getVerifyState() {

@@ -3,7 +3,6 @@ package com.bee32.sem.file.dto;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.sem.file.entity.LocalFileStore;
 import com.bee32.sem.file.util.VariableType;
 
@@ -22,7 +21,7 @@ public class LocalFileStoreDto
     }
 
     @Override
-    protected void _unmarshalTo(IEntityMarshalContext context, LocalFileStore target) {
+    protected void _unmarshalTo(LocalFileStore target) {
         target.setPrefixType(prefixType);
         target.setPath(path);
     }
