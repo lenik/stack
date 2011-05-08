@@ -16,15 +16,15 @@ public abstract class DataExchangeObject<T>
     }
 
     @Override
-    protected void _unmarshalTo(Void context, T target) {
+    protected void _unmarshalTo(T target) {
         throw new NotImplementedException();
     }
 
     @Override
-    public abstract void _parse(TextMap map)
+    protected abstract void _parse(TextMap map)
             throws ParseException;
 
     @Override
-    public abstract void export(Map<String, Object> map);
+    protected abstract void _export(Map<String, Object> map);
 
 }

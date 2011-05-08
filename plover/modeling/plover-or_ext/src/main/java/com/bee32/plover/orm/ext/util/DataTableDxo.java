@@ -184,7 +184,7 @@ public class DataTableDxo
     }
 
     @Override
-    public void _parse(TextMap map)
+    protected void _parse(TextMap map)
             throws ParseException {
         displayStart = map.getInt("iDisplayStart");
         displayLength = map.getInt("iDisplayLength");
@@ -205,7 +205,7 @@ public class DataTableDxo
     }
 
     @Override
-    public void export(Map<String, Object> map) {
+    protected void _export(Map<String, Object> map) {
         if (totalRecords != null)
             map.put("iTotalRecords", totalRecords);
 
