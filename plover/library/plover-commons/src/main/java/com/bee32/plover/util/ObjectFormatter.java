@@ -25,9 +25,9 @@ public abstract class ObjectFormatter<T> {
         this.occurred = occurred;
     }
 
-    public synchronized PrettyPrintStream format(T obj, FormatStyle format, int depth) {
+    public synchronized void format(T obj, FormatStyle format, int depth) {
         if (format == null)
-            return out;
+            return;
 
         if (format.isIdentityIncluded())
             formatId(format, obj);
@@ -51,8 +51,6 @@ public abstract class ObjectFormatter<T> {
                 out.print(' ');
             out.print("}");
         }
-
-        return out;
     }
 
     protected abstract void formatId(FormatStyle format, T val);

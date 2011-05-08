@@ -19,9 +19,45 @@ public class EntityDtoFormatter
     }
 
     @Override
+    public synchronized void format(EntityDto<?, ?> dto, FormatStyle format, int depth) {
+        String stereo;
+
+        switch (dto.getMarshalType()) {
+        case NULL:
+            stereo = "null";
+            break;
+
+        case ID_REF:
+            stereo = "ID:" + dto.getId();
+            break;
+
+        case ID_VER_REF:
+            stereo = "ID-VER:" + dto.getId() + "." + dto.getVersion();
+            break;
+
+        case NAME_REF:
+            stereo = "NAME:?";
+            break;
+
+        case OTHER_REF:
+            stereo = "REF(*)";
+            break;
+
+        case SELECTION:
+        default:
+            stereo = null;
+        }
+
+        if (stereo != null) {
+            out.print("《" + stereo + "》");
+        } else {
+            super.format(dto, format, depth);
+        }
+    }
+
+    @Override
     protected void formatId(FormatStyle format, EntityDto<?, ?> val) {
-        String stereo = val._isFilled() ? "DTO" : "DTO/ref";
-        String name = "《" + stereo + "》"; // val.getName();
+        String name = "《DTO》"; // val.getName();
 
         if (format.isIdentityIncluded()) {
             String typeName = val.getClass().getSimpleName();
