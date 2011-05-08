@@ -7,7 +7,8 @@ import java.util.List;
 import com.bee32.plover.orm.entity.EntityBean;
 
 public abstract class EntityExt<K extends Serializable, X extends XPool<?>>
-        extends EntityBean<K> {
+        extends EntityBean<K>
+        implements IXPoolable<X> {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,7 +26,8 @@ public abstract class EntityExt<K extends Serializable, X extends XPool<?>>
 
     protected abstract void setXPool(List<X> xPool);
 
-    protected final List<X> pool() {
+    @Override
+    public final List<X> pool() {
         if (xPool == null) {
             synchronized (this) {
                 if (xPool == null) {
