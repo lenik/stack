@@ -14,13 +14,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.IEntity;
 
 @Entity
 @DiscriminatorValue("R")
 public class Role
-        extends AbstractRole
-        implements IEntity<Long> {
+        extends AbstractRole {
 
     private static final long serialVersionUID = 1L;
 

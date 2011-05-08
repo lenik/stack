@@ -17,13 +17,11 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.IEntity;
 
 @Entity
 @DiscriminatorValue("U")
 public class User
-        extends AbstractUser
-        implements IEntity<Long> {
+        extends AbstractUser {
 
     private static final long serialVersionUID = 1L;
 

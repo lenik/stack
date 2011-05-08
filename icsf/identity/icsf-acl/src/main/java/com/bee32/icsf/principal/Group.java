@@ -13,13 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.bee32.plover.orm.entity.EntityBean;
-import com.bee32.plover.orm.entity.IEntity;
 
 @Entity
 @DiscriminatorValue("G")
 public class Group
-        extends AbstractGroup
-        implements IEntity<Long> {
+        extends AbstractGroup {
 
     private static final long serialVersionUID = 1L;
 
