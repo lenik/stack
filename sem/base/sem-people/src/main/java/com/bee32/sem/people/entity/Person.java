@@ -54,7 +54,7 @@ public class Person
     String sidType;
     String sid;
 
-    List<Contact> contacts;
+    List<PersonContact> contacts;
     List<PersonLog> logs;
 
     @OneToMany
@@ -248,11 +248,11 @@ public class Person
 
     @OneToMany(mappedBy = "person")
     @Cascade(CascadeType.ALL)
-    public List<Contact> getContacts() {
+    public List<PersonContact> getContacts() {
         return contacts;
     }
 
-    public void setContacts(List<Contact> contacts) {
+    public void setContacts(List<PersonContact> contacts) {
         this.contacts = contacts;
     }
 
