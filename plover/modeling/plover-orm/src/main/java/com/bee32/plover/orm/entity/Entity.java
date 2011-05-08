@@ -92,7 +92,7 @@ public abstract class Entity<K extends Serializable>
     }
 
     @Transient
-    EntityFlags getEntityFlags() {
+    protected EntityFlags getEntityFlags() {
         return eflags;
     }
 
