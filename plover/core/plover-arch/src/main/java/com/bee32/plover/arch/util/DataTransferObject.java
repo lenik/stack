@@ -90,7 +90,7 @@ public abstract class DataTransferObject<S, C>
     }
 
     protected C getDefaultMarshalContext() {
-        throw new IllegalStateException("No marshal context.");
+        return null;
     }
 
     protected IMarshalSession<C> getSession() {

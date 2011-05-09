@@ -12,13 +12,13 @@ public class MarshalSession<C>
     Map<Object, Object> unmarshalled;
 
     public MarshalSession(C context) {
-        if (context == null)
-            throw new NullPointerException("context");
         this.context = context;
     }
 
     @Override
     public C getContext() {
+        if (context == null)
+            throw new IllegalStateException("No marshal context.");
         return context;
     }
 
