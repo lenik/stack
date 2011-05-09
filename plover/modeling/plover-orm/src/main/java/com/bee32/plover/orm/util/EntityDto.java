@@ -400,7 +400,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     public <D extends EntityDto<E, K>> D ref(K id) {
         this.id = id;
         this.version = null;
-        marshalAs(MarshalType.ID_VER_REF);
+        marshalAs(MarshalType.ID_REF);
 
         @SuppressWarnings("unchecked")
         D self = (D) this;
@@ -425,7 +425,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         } else {
             this.id = entity.getId();
             this.version = entity.getVersion();
-            marshalAs(MarshalType.ID_VER_REF);
+            marshalAs(MarshalType.ID_REF); // ID_VER_REF
         }
 
         @SuppressWarnings("unchecked")
@@ -439,7 +439,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
         this.id = dto.getId();
         this.version = dto.getVersion();
-        marshalAs(MarshalType.ID_VER_REF);
+        marshalAs(MarshalType.ID_REF); // ID_VER_REF
 
         @SuppressWarnings("unchecked")
         D self = (D) this;
