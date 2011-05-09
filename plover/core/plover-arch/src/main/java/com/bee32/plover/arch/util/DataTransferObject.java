@@ -558,7 +558,7 @@ public abstract class DataTransferObject<S, C>
      * In the base DTO implementation, no modification / ref is used.
      */
     public static <Coll extends Collection<S>, D extends DataTransferObject<S, C>, S, C> //
-    /*    */Coll unmarshalCollection(IMarshalSession<C> session, Coll collection, Iterable<? extends D> dtoList) {
+    /*    */Coll _unmarshalCollection(IMarshalSession<C> session, Coll collection, Iterable<? extends D> dtoList) {
 
         if (collection == null)
             throw new NullPointerException("collection");
@@ -579,28 +579,28 @@ public abstract class DataTransferObject<S, C>
     }
 
     public static <S, D extends DataTransferObject<S, C>, C> //
-    /*    */List<S> mergeList(IMarshalSession<C> session, Iterable<? extends D> dtoList) {
-        return unmarshalCollection(session, new ArrayList<S>(), dtoList);
+    /*    */List<S> _unmarshalList(IMarshalSession<C> session, Iterable<? extends D> dtoList) {
+        return _unmarshalCollection(session, new ArrayList<S>(), dtoList);
     }
 
     public static <S, D extends DataTransferObject<S, C>, C> //
-    /*    */Set<S> mergeSet(IMarshalSession<C> session, Iterable<? extends D> dtoList) {
-        return unmarshalCollection(session, new HashSet<S>(), dtoList);
+    /*    */Set<S> _unmarshalSet(IMarshalSession<C> session, Iterable<? extends D> dtoList) {
+        return _unmarshalCollection(session, new HashSet<S>(), dtoList);
     }
 
     public static <Coll extends Collection<S>, D extends DataTransferObject<S, C>, S, C> //
-    /*    */Coll merge(Coll collection, Iterable<? extends D> dtoList) {
-        return unmarshalCollection(null, collection, dtoList);
+    /*    */Coll _unmershalCollection(Coll collection, Iterable<? extends D> dtoList) {
+        return _unmarshalCollection(null, collection, dtoList);
     }
 
     public static <S, D extends DataTransferObject<S, C>, C> //
-    /*    */List<S> mergeList(Iterable<? extends D> dtoList) {
-        return unmarshalCollection(null, new ArrayList<S>(), dtoList);
+    /*    */List<S> _unmershalList(Iterable<? extends D> dtoList) {
+        return _unmarshalCollection(null, new ArrayList<S>(), dtoList);
     }
 
     public static <S, D extends DataTransferObject<S, C>, C> //
-    /*    */Set<S> mergeSet(Iterable<? extends D> dtoList) {
-        return unmarshalCollection(null, new HashSet<S>(), dtoList);
+    /*    */Set<S> _unmarshalSet(Iterable<? extends D> dtoList) {
+        return _unmarshalCollection(null, new HashSet<S>(), dtoList);
     }
 
     /**
