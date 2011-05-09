@@ -366,7 +366,9 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
         } catch (ReflectiveOperationException e) {
             throw new ServletException("Failed to create DTO of " + dtoType, e);
         }
-        dto.initSourceType(getEntityType());
+
+        Class<? extends E> entityType = getEntityType();
+        dto.initSourceType(entityType);
         return dto;
     }
 
