@@ -16,6 +16,8 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import org.springframework.context.ApplicationContext;
+
 import com.bee32.plover.arch.util.BeanPropertyAccessor;
 import com.bee32.plover.arch.util.DataTransferObject;
 import com.bee32.plover.arch.util.IMarshalSession;
@@ -27,6 +29,7 @@ import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntity;
+import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -47,8 +50,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     boolean createdDateSet;
     boolean lastModifiedSet;
 
-    final EntityFlags entityFlags = new EntityFlags();
-    boolean efLoaded;
+    EntityFlags entityFlags;
 
     public EntityDto() {
         super();
@@ -66,7 +68,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         super(selection, source);
     }
 
-    public void initEntityType(Class<? extends E> entityType) {
+    @Override
+    public void initSourceType(Class<? extends E> entityType) {
         super.initSourceType(entityType);
         keyType = EntityUtil.getKeyType(entityType);
     }
@@ -81,6 +84,13 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     protected <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id) {
         return getSession().getContext().loadEntity(entityType, id);
+    }
+
+    @Override
+    protected IEntityMarshalContext getDefaultMarshalContext() {
+        ApplicationContext applicationContext = ThreadHttpContext.getApplicationContext();
+        DefaultEntityMarshalContext marshalContext = applicationContext.getBean(DefaultEntityMarshalContext.class);
+        return marshalContext;
     }
 
     /**
@@ -173,12 +183,18 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     public EntityFlags getEntityFlags() {
+        if (entityFlags == null) {
+            synchronized (this) {
+                if (entityFlags == null) {
+                    entityFlags = new EntityFlags();
+                }
+            }
+        }
         return entityFlags;
     }
 
     public void setEntityFlags(int entityFlags) {
-        this.entityFlags.bits = entityFlags;
-        efLoaded = true;
+        this.entityFlags = new EntityFlags(entityFlags);
     }
 
     @Override
@@ -304,7 +320,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         if (lastModifiedSet)
             EntityAccessor.setLastModified(target, lastModified);
 
-        if (efLoaded)
+        if (entityFlags != null)
             EntityAccessor.getFlags(target).set(entityFlags.bits);
     }
 
@@ -357,7 +373,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         if (lastModifiedSet)
             map.put("lastModified", lastModified);
 
-        if (efLoaded)
+        if (entityFlags != null)
             map.put("entityFlags", entityFlags);
     }
 
