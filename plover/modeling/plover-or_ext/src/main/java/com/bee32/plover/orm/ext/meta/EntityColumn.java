@@ -1,11 +1,10 @@
 package com.bee32.plover.orm.ext.meta;
 
-import java.beans.Transient;
-
 import javax.free.ParseException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.NaturalId;

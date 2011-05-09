@@ -1,6 +1,5 @@
 package com.bee32.plover.orm.entity;
 
-import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -9,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import overlay.Overlay;
 

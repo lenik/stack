@@ -1,6 +1,5 @@
 package com.bee32.plover.orm.ext.dict;
 
-import java.beans.Transient;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +10,7 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 @MappedSuperclass
 @AttributeOverrides({//
