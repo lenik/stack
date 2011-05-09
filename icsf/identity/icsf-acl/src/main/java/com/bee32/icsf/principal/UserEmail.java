@@ -2,9 +2,16 @@ package com.bee32.icsf.principal;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Transient;
 
-public class UserEmail {
+import com.bee32.plover.orm.entity.EntityBean;
+
+@Entity
+public class UserEmail
+        extends EntityBean<Long> {
+
+    private static final long serialVersionUID = 1L;
 
     public static final char EMAIL_INIT = '?';
     public static final char EMAIL_VERIFYING = '1';

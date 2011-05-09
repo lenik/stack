@@ -5,6 +5,7 @@ import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserEmail;
 import com.bee32.plover.orm.PloverORMUnit;
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
@@ -21,6 +22,8 @@ public class IcsfIdentityUnit
         add(Group.class);
         add(Role.class);
         // add(Realm.class);
+
+        add(UserEmail.class);
 
         // add(R_ACL.class);
         add(R_ACE.class);
