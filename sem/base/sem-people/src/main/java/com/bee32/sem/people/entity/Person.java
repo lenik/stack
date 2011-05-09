@@ -2,7 +2,9 @@ package com.bee32.sem.people.entity;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -13,6 +15,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -39,6 +44,8 @@ public class Person
     private static final long serialVersionUID = 1L;
 
     User owner;
+
+    Set<PersonTag> tags;
 
     String name;
     String fullName;
@@ -78,6 +85,25 @@ public class Person
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    @ManyToMany
+    @JoinTable(name = "PersonTags", //
+    /*            */joinColumns = @JoinColumn(name = "person"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "tag"))
+    public Set<PersonTag> getTags() {
+        if (tags == null) {
+            synchronized (this) {
+                if (tags == null) {
+                    tags = new HashSet<PersonTag>();
+                }
+            }
+        }
+        return tags;
+    }
+
+    public void setTags(Set<PersonTag> tags) {
+        this.tags = tags;
     }
 
     /**
