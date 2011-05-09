@@ -524,7 +524,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * deref
      */
     static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Coll unmarshalCollection(IMarshalSession<IEntityMarshalContext> session, Coll collection,
+    /*    */Coll mergeCollection(IMarshalSession<IEntityMarshalContext> session, Coll collection,
             Iterable<? extends D> dtoList) {
 
         if (collection == null)
@@ -640,37 +640,37 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Coll unmarshalCollection(Coll collection, Iterable<? extends D> dtoList) {
-        return unmarshalCollection((IMarshalSession<IEntityMarshalContext>) null, collection, dtoList);
+    /*    */Coll mergeCollection(Coll collection, Iterable<? extends D> dtoList) {
+        return mergeCollection((IMarshalSession<IEntityMarshalContext>) null, collection, dtoList);
     }
 
     public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */List<E> unmarshalList(IMarshalSession<IEntityMarshalContext> session, List<E> list,
+    /*    */List<E> mergeList(IMarshalSession<IEntityMarshalContext> session, List<E> list,
             Iterable<? extends D> dtoList) {
         if (list == null)
             list = new ArrayList<E>();
-        return unmarshalCollection(session, list, dtoList);
+        return mergeCollection(session, list, dtoList);
     }
 
     public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */List<E> unmarshalList(List<E> list, Iterable<? extends D> dtoList) {
+    /*    */List<E> mergeList(List<E> list, Iterable<? extends D> dtoList) {
         if (list == null)
             list = new ArrayList<E>();
-        return unmarshalCollection((IMarshalSession<IEntityMarshalContext>) null, list, dtoList);
+        return mergeCollection((IMarshalSession<IEntityMarshalContext>) null, list, dtoList);
     }
 
     public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Set<E> unmarshalSet(IMarshalSession<IEntityMarshalContext> session, Set<E> set, Iterable<? extends D> dtoList) {
+    /*    */Set<E> mergeSet(IMarshalSession<IEntityMarshalContext> session, Set<E> set, Iterable<? extends D> dtoList) {
         if (set == null)
             set = new HashSet<E>();
-        return unmarshalCollection(session, set, dtoList);
+        return mergeCollection(session, set, dtoList);
     }
 
     public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Set<E> unmarshalSet(Set<E> set, Iterable<? extends D> dtoList) {
+    /*    */Set<E> mergeSet(Set<E> set, Iterable<? extends D> dtoList) {
         if (set == null)
             set = new HashSet<E>();
-        return unmarshalCollection((IMarshalSession<IEntityMarshalContext>) null, set, dtoList);
+        return mergeCollection((IMarshalSession<IEntityMarshalContext>) null, set, dtoList);
     }
 
     /**
@@ -695,9 +695,9 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             list = new ArrayList<_e>();
 
         if (session == null)
-            list = EntityDto.unmarshalList(list, dtoList);
+            list = EntityDto.mergeList(list, dtoList);
         else
-            list = EntityDto.unmarshalList(session, list, dtoList);
+            list = EntityDto.mergeList(session, list, dtoList);
 
         property.set(target, list);
     }
@@ -739,9 +739,9 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             set = new HashSet<_e>();
 
         if (session == null)
-            set = EntityDto.unmarshalSet(set, dtoList);
+            set = EntityDto.mergeSet(set, dtoList);
         else
-            set = EntityDto.unmarshalSet(session, set, dtoList);
+            set = EntityDto.mergeSet(session, set, dtoList);
 
         property.set(target, set);
     }
