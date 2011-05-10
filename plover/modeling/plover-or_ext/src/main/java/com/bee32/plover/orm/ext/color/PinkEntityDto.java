@@ -9,4 +9,20 @@ public abstract class PinkEntityDto<E extends PinkEntity<K>, K extends Serializa
 
     private static final long serialVersionUID = 1L;
 
+    public PinkEntityDto() {
+        super();
+    }
+
+    public PinkEntityDto(E source) {
+        super(source);
+    }
+
+    public PinkEntityDto(int selection) {
+        super(selection);
+    }
+
+    public PinkEntityDto(int selection, E source) {
+        super(selection, source);
+    }
+
 }

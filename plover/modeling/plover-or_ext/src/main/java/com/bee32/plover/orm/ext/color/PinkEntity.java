@@ -2,12 +2,9 @@ package com.bee32.plover.orm.ext.color;
 
 import java.io.Serializable;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityAuto;
 
 /**
  * <b>pink</b>
@@ -19,11 +16,9 @@ import com.bee32.plover.orm.entity.Entity;
  */
 @MappedSuperclass
 public abstract class PinkEntity<K extends Serializable>
-        extends Entity<K> {
+        extends EntityAuto<K> {
 
     private static final long serialVersionUID = 1L;
-
-    protected K id;
 
     public PinkEntity() {
         super();
@@ -31,35 +26,6 @@ public abstract class PinkEntity<K extends Serializable>
 
     public PinkEntity(String name) {
         super(name);
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Override
-    public K getId() {
-        return id;
-    }
-
-    protected void setId(K id) {
-        this.id = id;
-    }
-
-    @Override
-    protected final Boolean equalsKey(Entity<K> other) {
-        return equalsKey((PinkEntity<K>) other);
-    }
-
-    protected Boolean equalsKey(PinkEntity<K> other) {
-        return super.equalsKey(other);
-    }
-
-    @Override
-    protected final boolean equalsEntity(Entity<K> otherEntity) {
-        return equalsEntity((PinkEntity<K>) otherEntity);
-    }
-
-    protected boolean equalsEntity(PinkEntity<K> otherEntity) {
-        return super.equalsEntity(otherEntity);
     }
 
 }

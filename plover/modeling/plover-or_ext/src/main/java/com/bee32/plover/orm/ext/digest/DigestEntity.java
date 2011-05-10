@@ -6,20 +6,23 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.ext.color.GreenEntity;
+import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.GreenEntitySpec;
 
 @MappedSuperclass
 public abstract class DigestEntity
-        extends GreenEntity<String> {
+        extends GreenEntitySpec<String> {
 
     private static final long serialVersionUID = 1L;
 
     String digestEncoded;
     Boolean digestValidated;
 
+    @Id
     @Override
     public String getId() {
         return digestEncoded;
@@ -135,6 +138,32 @@ public abstract class DigestEntity
             sb.append(low);
         }
         return sb.toString();
+    }
+
+    @Override
+    protected Boolean naturalEquals(EntityBase<String> other) {
+        DigestEntity o = (DigestEntity) other;
+
+        String digest = getDigest();
+        String otherDigest = o.getDigest();
+
+        if (digest == null || otherDigest == null)
+            return false;
+
+        if (!digest.equals(otherDigest))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        String digest = getDigest();
+
+        if (digest == null)
+            return 0;
+        else
+            return digest.hashCode();
     }
 
 }

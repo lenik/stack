@@ -5,6 +5,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import com.bee32.plover.orm.entity.EntityBase;
+
 @MappedSuperclass
 public abstract class NumberDict
         extends DictEntity<Integer> {
@@ -41,6 +43,12 @@ public abstract class NumberDict
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    @Override
+    protected Boolean naturalEquals(EntityBase<Integer> other) {
+        NumberDict o = (NumberDict) other;
+        return number == o.number;
     }
 
 }

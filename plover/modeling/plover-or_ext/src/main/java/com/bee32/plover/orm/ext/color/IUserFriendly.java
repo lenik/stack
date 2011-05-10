@@ -10,8 +10,4 @@ public interface IUserFriendly {
 
     void setDescription(String description);
 
-    String getIcon();
-
-    void setIcon(String icon);
-
 }

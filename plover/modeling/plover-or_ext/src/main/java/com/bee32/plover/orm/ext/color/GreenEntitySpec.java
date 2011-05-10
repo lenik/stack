@@ -2,29 +2,34 @@ package com.bee32.plover.orm.ext.color;
 
 import java.io.Serializable;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.EntityBase;
 
 /**
- * <b>blue</b>
+ * <b>pink</b>
  * <p>
- * <i>description</i> — Is it simply a catalog-like description which classifies or 'labels' an
- * object? If users of a system are labeled based on the department of a company they work within
- * and this doesn't change the way the system behaves, this would be a description.
+ * <i>moment-interval</i> — Does it represent a moment or interval of time? An example would be an
+ * object that temporarily stores login information during the authentication process.
+ *
+ * @see http://en.wikipedia.org/wiki/UML_colors
  */
 @MappedSuperclass
-public abstract class BlueEntity<K extends Serializable>
-        extends EntityAuto<K> {
+@AttributeOverrides({//
+/*    */@AttributeOverride(name = "label", column = @Column(length = 50)) })
+public abstract class GreenEntitySpec<K extends Serializable>
+        extends UserFriendlyEntity<K> {
 
     private static final long serialVersionUID = 1L;
 
-    public BlueEntity() {
+    public GreenEntitySpec() {
         super();
     }
 
-    public BlueEntity(String name) {
+    public GreenEntitySpec(String name) {
         super(name);
     }
 

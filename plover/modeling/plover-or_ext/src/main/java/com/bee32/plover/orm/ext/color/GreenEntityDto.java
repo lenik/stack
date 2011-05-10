@@ -2,7 +2,7 @@ package com.bee32.plover.orm.ext.color;
 
 import java.io.Serializable;
 
-public abstract class GreenEntityDto<E extends GreenEntity<K>, K extends Serializable>
+public abstract class GreenEntityDto<E extends GreenEntitySpec<K>, K extends Serializable>
         extends UserFriendlyEntityDto<E, K> {
 
     private static final long serialVersionUID = 1L;
