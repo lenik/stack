@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.free.Nullables;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -13,9 +12,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.PrincipalBeanConfig;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.ext.color.BlueEntity;
 import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -112,30 +109,6 @@ public class AllowList
             return VerifyResult.rejected(context.getVerifier(), context.getRejectedReason());
 
         return VERIFIED;
-    }
-
-    @Override
-    protected int hashCodeEntity() {
-        if (!PrincipalBeanConfig.fullEquality)
-            return super.hashCodeEntity();
-
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((responsibles == null) ? 0 : responsibles.hashCode());
-        return result;
-    }
-
-    @Override
-    protected boolean equalsEntity(BlueEntity<Integer> otherEntity) {
-        if (!PrincipalBeanConfig.fullEquality)
-            return false;
-
-        AllowList other = (AllowList) otherEntity;
-
-        if (!Nullables.equals(responsibles, other.responsibles))
-            return false;
-
-        return true;
     }
 
     @Override

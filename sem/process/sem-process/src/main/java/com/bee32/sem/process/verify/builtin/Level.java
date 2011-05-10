@@ -6,6 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import com.bee32.plover.collections.map.IRangeMapEntry;
+import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.BlueEntity;
 import com.bee32.sem.process.verify.VerifyPolicy;
 
@@ -75,20 +76,20 @@ public class Level
     }
 
     @Override
-    protected Boolean equalsKey(BlueEntity<Integer> otherEntity) {
-        Level other = (Level) otherEntity;
+    protected Boolean naturalEquals(EntityBase<Integer> other) {
+        Level o = (Level) other;
 
-        if (limit != other.limit)
+        if (limit != o.limit)
             return false;
 
-        if (!Nullables.equals(multiLevel, other.multiLevel))
+        if (!Nullables.equals(multiLevel, o.multiLevel))
             return false;
 
         return true;
     }
 
     @Override
-    protected int hashCodeEntity() {
+    protected Integer naturalHashCode() {
         int hash = new Long(limit).hashCode();
 
         if (multiLevel != null)

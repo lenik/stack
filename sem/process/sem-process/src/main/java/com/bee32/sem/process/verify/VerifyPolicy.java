@@ -7,14 +7,17 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NaturalId;
+
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.orm.ext.color.BlueEntity;
+import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.GreenEntity;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 public abstract class VerifyPolicy<C extends IVerifyContext>
-        extends BlueEntity<Integer>
+        extends GreenEntity<Integer>
         implements IVerifyPolicy<C> {
 
     private static final long serialVersionUID = 1L;
@@ -30,13 +33,20 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
         contextClass = ClassUtil.infer1(getClass(), VerifyPolicy.class, 0);
     }
 
-    @Column(length = 50)
+    @NaturalId(mutable = true)
+    @Column(length = 50, unique = true)
     @Override
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+
+        if (name.isEmpty())
+            throw new IllegalArgumentException("Name can't be empty");
+
         this.name = name;
     }
 
@@ -107,5 +117,20 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
      * @return {@link #VERIFIED} means verified, otherwise the error message.
      */
     public abstract VerifyResult evaluate(C context);
+
+    @Override
+    protected Boolean naturalEquals(EntityBase<Integer> other) {
+        VerifyPolicy<?> o = (VerifyPolicy<?>) other;
+
+        if (this.name == null || o.name == null)
+            return false;
+
+        return this.name.equals(o.name);
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        return name == null ? 0 : name.hashCode();
+    }
 
 }
