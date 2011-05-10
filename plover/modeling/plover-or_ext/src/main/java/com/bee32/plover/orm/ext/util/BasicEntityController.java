@@ -170,7 +170,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
         boolean create = view.isMethod("create");
 
         Dto dto = newDto(_dtoSelection);
-        dto.parse(req);
+        dto.parse(this, req);
 
         E entity = null;
         K id = null;
@@ -227,7 +227,7 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
             break;
 
         case LOAD:
-            dto.marshal(entity);
+            dto.marshal(this, entity);
             break;
 
         case SAVE:

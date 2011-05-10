@@ -300,17 +300,21 @@ public abstract class DataTransferObject<S, C>
         parse(getDefaultMarshalContext(), map);
     }
 
-    public final void parse(HttpServletRequest request)
+    public final void parse(C context, HttpServletRequest request)
             throws ServletException {
         TextMap textMap = TextMap.convert(request);
-
         try {
-            parse(textMap);
+            parse(context, textMap);
         } catch (TypeConvertException e) {
             throw new ServletException("Parse error: " + e.getMessage(), e);
         } catch (ParseException e) {
             throw new ServletException("Parse error: " + e.getMessage(), e);
         }
+    }
+
+    public final void parse(HttpServletRequest request)
+            throws ServletException {
+        parse(getDefaultMarshalContext(), request);
     }
 
     final void parseImpl(Map<String, ?> map)
