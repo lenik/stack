@@ -10,6 +10,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Index;
+
 import overlay.Overlay;
 
 import com.bee32.plover.arch.Component;
@@ -32,12 +34,17 @@ public abstract class Entity<K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
+    static final int KEYWORD_MAXLEN = 16;
+
     int version;
 
     Date createdDate = new Date();
     Date lastModified = createdDate;
 
-    final EntityFlags eflags = new EntityFlags();
+    final EntityFlags entityFlags = new EntityFlags();
+
+    String keyword;
+    boolean keywordUpdated;
 
     public Entity() {
         super(null);
@@ -47,7 +54,7 @@ public abstract class Entity<K extends Serializable>
         super(name);
     }
 
-    abstract void setId(K id);
+    protected abstract void setId(K id);
 
     // @Version
     public int getVersion() {
@@ -84,16 +91,47 @@ public abstract class Entity<K extends Serializable>
 
     @Column(nullable = false)
     int getEf() {
-        return eflags.bits;
+        return entityFlags.bits;
     }
 
     void setEf(int eflags) {
-        this.eflags.bits = eflags;
+        this.entityFlags.bits = eflags;
     }
 
     @Transient
     protected EntityFlags getEntityFlags() {
-        return eflags;
+        return entityFlags;
+    }
+
+    @Index(name = "keyword")
+    @Column(length = KEYWORD_MAXLEN)
+    protected final String getKeyword() {
+        if (!keywordUpdated) {
+            keyword = buildKeyword();
+            keywordUpdated = true;
+        }
+        return keyword;
+    }
+
+    protected void setKeyword(String keyword) {
+        this.keyword = keyword;
+        this.keywordUpdated = true;
+    }
+
+    protected void invalidate() {
+        invalidateKeyword();
+    }
+
+    protected final void invalidateKeyword() {
+        this.keywordUpdated = false;
+    }
+
+    /**
+     * @see ZhUtil#getPinyinAbbreviation(String).
+     */
+    @Transient
+    protected String buildKeyword() {
+        return null;
     }
 
     @Override
