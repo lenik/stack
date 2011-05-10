@@ -24,8 +24,8 @@ import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.VerifyState;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
-import com.bee32.sem.process.verify.util.VerifiableEntityAccessor;
 import com.bee32.sem.process.verify.util.VerifiableEntity;
+import com.bee32.sem.process.verify.util.VerifiableEntityAccessor;
 import com.bee32.sem.user.util.SessionLoginInfo;
 
 public class VerifyService
@@ -149,7 +149,7 @@ public class VerifyService
         if (entity == null)
             throw new NullPointerException("entity");
 
-        IUserPrincipal __currentUser = SessionLoginInfo.getCurrentUser(ThreadServletContext.requireSession());
+        IUserPrincipal __currentUser = SessionLoginInfo.requireCurrentUser(ThreadServletContext.requireSession());
 
         // XXX
         userService.get(0, __currentUser.getId());

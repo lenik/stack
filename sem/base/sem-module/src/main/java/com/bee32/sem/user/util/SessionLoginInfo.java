@@ -155,16 +155,23 @@ public class SessionLoginInfo {
     }
 
     // Statics.
+    public static IUserPrincipal getCurrentUser(HttpSession session) {
+        return new SessionLoginInfo(session).getCurrentUser();
+    }
+
+    public static IUserPrincipal requireCurrentUser(HttpSession session) {
+        IUserPrincipal currentUser = getCurrentUser(session);
+        if (currentUser == null)
+            throw new IllegalStateException("Not login yet.");
+        return currentUser;
+    }
+
     public static IGroupPrincipal getCurrentCorp(HttpSession session) {
         return new SessionLoginInfo(session).getCurrentCorp();
     }
 
     public static IGroupPrincipal getCurrentDepartment(HttpSession session) {
         return new SessionLoginInfo(session).getCurrentDepartment();
-    }
-
-    public static IUserPrincipal getCurrentUser(HttpSession session) {
-        return new SessionLoginInfo(session).getCurrentUser();
     }
 
     public static void setCurrentCorp(HttpSession session, IGroupPrincipal corp) {
