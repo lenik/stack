@@ -13,7 +13,7 @@ public class LevelDto
 
     private MultiLevelDto multiLevel;
     private long limit;
-    private AbstractVerifyPolicyDto targetPolicy;
+    private VerifyPolicyDto targetPolicy;
 
     public LevelDto() {
         super();
@@ -27,7 +27,7 @@ public class LevelDto
     protected void _marshal(Level source) {
         multiLevel = new MultiLevelDto().ref(source.getMultiLevel());
         limit = source.getLimit();
-        targetPolicy = new AbstractVerifyPolicyDto(source.getTargetPolicy());
+        targetPolicy = new VerifyPolicyDto(source.getTargetPolicy());
     }
 
     @Override
@@ -59,23 +59,12 @@ public class LevelDto
         this.limit = limit;
     }
 
-    public AbstractVerifyPolicyDto getTargetPolicy() {
+    public VerifyPolicyDto getTargetPolicy() {
         return targetPolicy;
     }
 
-    public void setTargetPolicy(AbstractVerifyPolicyDto targetPolicy) {
+    public void setTargetPolicy(VerifyPolicyDto targetPolicy) {
         this.targetPolicy = targetPolicy;
-    }
-
-    public Integer getTargetPolicyId() {
-        return id(targetPolicy);
-    }
-
-    public String getTargetPolicyName() {
-        if (targetPolicy == null)
-            return null;
-        else
-            return targetPolicy.getName();
     }
 
 }

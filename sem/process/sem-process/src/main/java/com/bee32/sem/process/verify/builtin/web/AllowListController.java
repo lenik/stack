@@ -40,7 +40,7 @@ public class AllowListController
 
     @Override
     protected void fillDataRow(DataTableDxo tab, AllowListDto item) {
-        tab.push(item.getName());
+        tab.push(item.getLabel());
         tab.push(item.getDescription());
 
         int max = 3;

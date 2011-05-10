@@ -9,7 +9,6 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 
 public class MultiLevelDto
@@ -35,24 +34,6 @@ public class MultiLevelDto
 
     public MultiLevelDto(int selection, MultiLevel source) {
         super(selection, source);
-    }
-
-    /**
-     * @see MultiLevel#getLevels()
-     */
-    boolean resort = false;
-
-    public void setLevels(List<LevelDto> levels) {
-        if (resort && levels != null)
-            Collections.sort(levels, new AbstractNonNullComparator<LevelDto>() {
-                @Override
-                public int compareNonNull(LevelDto a, LevelDto b) {
-                    Long al = a.getLimit();
-                    Long bl = b.getLimit();
-                    return al.compareTo(bl);
-                }
-            });
-        this.levels = levels;
     }
 
     @Override
@@ -82,7 +63,7 @@ public class MultiLevelDto
 
                     long limit = Long.parseLong(_limit);
                     int policyId = Integer.parseInt(_policyId);
-                    AbstractVerifyPolicyDto<?> policyRef = new AbstractVerifyPolicyDto<VerifyPolicy<?>>().ref(policyId);
+                    VerifyPolicyDto policyRef = new VerifyPolicyDto().ref(policyId);
 
                     LevelDto level = new LevelDto();
                     level.setMultiLevel(new MultiLevelDto().ref(this));
@@ -94,24 +75,26 @@ public class MultiLevelDto
         }
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    /**
+     * @see MultiLevel#getLevels()
+     */
+    boolean resort = false;
 
     public List<LevelDto> getLevels() {
         return levels;
+    }
+
+    public void setLevels(List<LevelDto> levels) {
+        if (resort && levels != null)
+            Collections.sort(levels, new AbstractNonNullComparator<LevelDto>() {
+                @Override
+                public int compareNonNull(LevelDto a, LevelDto b) {
+                    Long al = a.getLimit();
+                    Long bl = b.getLimit();
+                    return al.compareTo(bl);
+                }
+            });
+        this.levels = levels;
     }
 
 }

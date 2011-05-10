@@ -14,8 +14,6 @@ import javax.persistence.ManyToMany;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
-import com.bee32.plover.util.FormatStyle;
-import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.process.verify.IAllowedByContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
@@ -109,16 +107,6 @@ public class AllowList
             return VerifyResult.rejected(context.getVerifier(), context.getRejectedReason());
 
         return VERIFIED;
-    }
-
-    @Override
-    public void toString(PrettyPrintStream out, FormatStyle format) {
-        out.print("Allow-List: ");
-        if (responsibles != null)
-            for (Principal responsible : responsibles) {
-                out.print('\n');
-                out.print(responsible.getName());
-            }
     }
 
 }

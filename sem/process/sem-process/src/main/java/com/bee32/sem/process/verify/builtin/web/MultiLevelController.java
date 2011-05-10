@@ -20,7 +20,7 @@ import com.bee32.sem.process.verify.builtin.dao.LevelDao;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 import com.bee32.sem.process.verify.builtin.dto.LevelDto;
 import com.bee32.sem.process.verify.builtin.dto.MultiLevelDto;
-import com.bee32.sem.process.verify.builtin.dto.AbstractVerifyPolicyDto;
+import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 
 @RequestMapping(MultiLevelController.PREFIX + "*")
 public class MultiLevelController
@@ -40,7 +40,7 @@ public class MultiLevelController
 
     @Override
     protected void fillDataRow(DataTableDxo tab, MultiLevelDto multiLevel) {
-        tab.push(multiLevel.getName());
+        tab.push(multiLevel.getLabel());
         tab.push(multiLevel.getDescription());
 
         int max = 3;
@@ -69,7 +69,8 @@ public class MultiLevelController
 
         super._createOrEditForm(view, req, resp);
 
-        List<AbstractVerifyPolicyDto> allVerifyPolicies = DTOs.marshalList(AbstractVerifyPolicyDto.class, verifyPolicyDao.list());
+        List<VerifyPolicyDto> allVerifyPolicies = DTOs.marshalList(VerifyPolicyDto.class,
+                verifyPolicyDao.list());
         view.put("policies", allVerifyPolicies);
 
         return view;

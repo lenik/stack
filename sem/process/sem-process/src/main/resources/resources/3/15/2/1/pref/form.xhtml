@@ -26,7 +26,7 @@
                     <h:selectOneMenu id="preferredPolicyId" value="#{it.preferredPolicy.id}">
                         <c:forEach var="candidate" items="${candidates}">
                             <f:selectItem itemValue="${candidate.id}"
-                                itemLabel="${candidate.name} - ${candidate.description}" />
+                                itemLabel="${candidate.label} - ${candidate.description}" />
                         </c:forEach>
                     </h:selectOneMenu>
                 </td>

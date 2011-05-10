@@ -23,7 +23,7 @@ import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
 import com.bee32.sem.process.verify.VerifyState;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
-import com.bee32.sem.process.verify.builtin.dto.AbstractVerifyPolicyDto;
+import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.util.VerifiableEntity;
 import com.bee32.sem.process.verify.util.VerifiableEntityAccessor;
 import com.bee32.sem.user.util.SessionLoginInfo;
@@ -39,15 +39,15 @@ public class VerifyService
     UserDso userService;
 
     @Transactional(readOnly = true)
-    public <C extends IVerifyContext> AbstractVerifyPolicyDto getPreferredVerifyPolicy(Class<C> entityClass) {
+    public <C extends IVerifyContext> VerifyPolicyDto getPreferredVerifyPolicy(Class<C> entityClass) {
         VerifyPolicy<C> preferredVerifyPolicy = policyDao.getPreferredVerifyPolicy(entityClass);
-        return new AbstractVerifyPolicyDto().marshal(preferredVerifyPolicy);
+        return new VerifyPolicyDto(preferredVerifyPolicy);
     }
 
     @Transactional(readOnly = true)
-    public <C extends IVerifyContext> AbstractVerifyPolicyDto getVerifyPolicy(C entity) {
+    public <C extends IVerifyContext> VerifyPolicyDto getVerifyPolicy(C entity) {
         VerifyPolicy<C> verifyPolicy = policyDao.getVerifyPolicy(entity);
-        return new AbstractVerifyPolicyDto().marshal(verifyPolicy);
+        return new VerifyPolicyDto(verifyPolicy);
     }
 
     // --o IVerifyPolicy.

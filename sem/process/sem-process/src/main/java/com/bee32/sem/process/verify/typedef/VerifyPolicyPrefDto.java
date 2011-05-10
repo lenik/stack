@@ -12,7 +12,7 @@ import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.typePref.TypePrefDto;
 import com.bee32.sem.process.verify.VerifyPolicy;
-import com.bee32.sem.process.verify.builtin.dto.AbstractVerifyPolicyDto;
+import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 
 public class VerifyPolicyPrefDto
         extends TypePrefDto<VerifyPolicyPref> {
@@ -20,7 +20,7 @@ public class VerifyPolicyPrefDto
     private static final long serialVersionUID = 1L;
 
     String description;
-    AbstractVerifyPolicyDto preferredPolicy;
+    VerifyPolicyDto preferredPolicy;
     List<PrincipalDto> responsibles;
 
     @Override
@@ -28,7 +28,7 @@ public class VerifyPolicyPrefDto
         description = source.getDescription();
 
         VerifyPolicy<?> _preferredPolicy = source.getPreferredPolicy();
-        preferredPolicy = new AbstractVerifyPolicyDto().marshal(_preferredPolicy);
+        preferredPolicy = new VerifyPolicyDto(_preferredPolicy);
 
         if (_preferredPolicy != null) {
             Collection<? extends Principal> _responsibles = _preferredPolicy.getDeclaredResponsibles(null);
@@ -54,7 +54,7 @@ public class VerifyPolicyPrefDto
 
         String _policyId = map.getString("preferredPolicyId");
         int policyId = Integer.parseInt(_policyId);
-        preferredPolicy = new AbstractVerifyPolicyDto().ref(policyId);
+        preferredPolicy = new VerifyPolicyDto().ref(policyId);
     }
 
     public String getDescription() {
@@ -65,11 +65,11 @@ public class VerifyPolicyPrefDto
         this.description = description;
     }
 
-    public AbstractVerifyPolicyDto getPreferredPolicy() {
+    public VerifyPolicyDto getPreferredPolicy() {
         return preferredPolicy;
     }
 
-    public void setPreferredPolicy(AbstractVerifyPolicyDto preferredPolicy) {
+    public void setPreferredPolicy(VerifyPolicyDto preferredPolicy) {
         this.preferredPolicy = preferredPolicy;
     }
 

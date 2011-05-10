@@ -14,7 +14,7 @@
         <table cellpadding="5" cellspacing="0" rules="all">
             <tr>
                 <td>名称:</td>
-                <td>${it.name}</td>
+                <td>${it.label}</td>
             </tr>
             <tr>
                 <td>描述:</td>
@@ -31,7 +31,7 @@
                         <c:forEach var="level" items="${it.levels}">
                             <tr>
                                 <td>${level.limit}</td>
-                                <td>${level.targetPolicyName}</td>
+                                <td>${level.targetPolicy.label}</td>
                             </tr>
                         </c:forEach>
                     </table>

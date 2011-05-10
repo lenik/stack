@@ -19,7 +19,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.EntityAction;
 import com.bee32.sem.process.verify.IVerifyContext;
-import com.bee32.sem.process.verify.builtin.dto.AbstractVerifyPolicyDto;
+import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.service.VerifyService;
 import com.bee32.sem.user.util.SessionLoginInfo;
 
@@ -36,7 +36,7 @@ public abstract class VerifiableEntityController<E extends VerifiableEntity<K, C
 
         switch (action.getType()) {
         case LOAD:
-            AbstractVerifyPolicyDto verifyPolicy = verifyService.getVerifyPolicy(entity);
+            VerifyPolicyDto verifyPolicy = verifyService.getVerifyPolicy(entity);
             dto.setVerifyPolicy(verifyPolicy);
             break;
 

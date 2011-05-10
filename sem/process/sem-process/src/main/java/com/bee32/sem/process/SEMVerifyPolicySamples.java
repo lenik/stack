@@ -23,19 +23,19 @@ public class SEMVerifyPolicySamples
 
     static {
         robotList = new AllowList(eva, wallE);
-        robotList.setName("机器人");
+        robotList.setLabel("机器人");
         robotList.setDescription("机器人统治地球之权威机器人名单");
 
         plainList = new AllowList(kate, alice, eva);
-        plainList.setName("凯特的好友");
+        plainList.setLabel("凯特的好友");
         plainList.setDescription("凯特以及她的好友。");
 
         kateWallE = new AllowList(kate, wallE);
-        kateWallE.setName("凯特和瓦力");
+        kateWallE.setLabel("凯特和瓦力");
         kateWallE.setDescription("凯特和瓦力的双边信任关系");
 
         macLevel = new MultiLevel();
-        macLevel.setName("Mac 分级策略");
+        macLevel.setLabel("Mac 分级策略");
         macLevel.setDescription("1千以内由凯特好友审批，1万以内由机器人审批。");
         macLevel.addLevel(1000, plainList);
         macLevel.addLevel(10000, robotList);

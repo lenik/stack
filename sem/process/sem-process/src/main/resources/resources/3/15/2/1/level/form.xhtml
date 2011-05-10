@@ -15,7 +15,7 @@
             <tr>
                 <td align="right" style="width: 4em">名称 :</td>
                 <td>
-                    <input name="name" type="text" size="20" maxlength="50" value="${it.name}" />
+                    <input name="label" type="text" size="20" maxlength="50" value="${it.label}" />
                 </td>
             </tr>
             <tr>
@@ -31,8 +31,8 @@
 
                     <h:selectManyListbox id="levels" value="#{it.levels}" size="6">
                         <c:forEach var="level" items="${it.levels}">
-                            <f:selectItem itemLabel="${level.limit} - ${level.targetPolicyName}"
-                                itemValue="${level.limit},${level.targetPolicyId}" />
+                            <f:selectItem itemLabel="小于 ${level.limit} 的，依据 ${level.targetPolicy.label}"
+                                itemValue="${level.limit},${level.targetPolicy.id}" />
                         </c:forEach>
                     </h:selectManyListbox>
 
@@ -54,7 +54,7 @@
                     级别对应的审核策略：
                     <h:selectOneMenu id="newPolicy" value="" size="10">
                         <c:forEach var="policy" items="${policies}">
-                            <f:selectItem itemLabel="${policy.name} | ${policy.description}" itemValue="${policy.id}" />
+                            <f:selectItem itemLabel="${policy.label} | ${policy.description}" itemValue="${policy.id}" />
                         </c:forEach>
                     </h:selectOneMenu>
 
@@ -97,15 +97,15 @@
                 }
 
                 var policyId = policy.val();
-                var policyName = policy.text();
+                var policyLabel = policy.text();
 
-                policyName = policyName
-                        .substr(0, policyName.indexOf(' | '));
+                policyLabel = policyLabel
+                        .substr(0, policyLabel.indexOf(' | '));
 
                 var levels = $("#levels");
                 var option = $("&lt;option /&gt;");
                 option.val(limit + "," + policyId);
-                option.text(limit + " - " + policyName);
+                option.text("小于 " + limit + " 的，依据 " + policyLabel);
                 levels.append(option);
             }
 

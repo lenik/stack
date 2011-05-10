@@ -23,7 +23,7 @@ import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyPolicyManager;
-import com.bee32.sem.process.verify.builtin.dto.AbstractVerifyPolicyDto;
+import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.service.VerifyService;
 import com.bee32.sem.process.verify.util.VerifiableEntity;
 
@@ -67,7 +67,7 @@ public class VerifyPolicyPrefController
     @Override
     protected void fillDataRow(DataTableDxo tab, VerifyPolicyPrefDto dto) {
         tab.push(dto.getDisplayName());
-        tab.push(dto.getPreferredPolicy() == null ? null : dto.getPreferredPolicy().getName());
+        tab.push(dto.getPreferredPolicy().getLabel());
         tab.push(dto.getDescription());
     }
 
@@ -78,13 +78,13 @@ public class VerifyPolicyPrefController
 
         Class<?> verifiableType = view.entity.getType();
 
-        List<AbstractVerifyPolicyDto> candidates = new ArrayList<AbstractVerifyPolicyDto>();
+        List<VerifyPolicyDto> candidates = new ArrayList<VerifyPolicyDto>();
 
         for (Class<? extends VerifyPolicy<?>> candidatePolicyType : VerifyPolicyManager.getCandidates(verifiableType)) {
 
             List<? extends VerifyPolicy<?>> candidatePolicies = dataManager.loadAll(candidatePolicyType);
 
-            for (AbstractVerifyPolicyDto candidate : DTOs.marshalList(AbstractVerifyPolicyDto.class, candidatePolicies))
+            for (VerifyPolicyDto candidate : DTOs.marshalList(VerifyPolicyDto.class, candidatePolicies))
                 candidates.add(candidate);
         }
 

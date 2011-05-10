@@ -31,7 +31,7 @@ public class PassToNextController
 
     @Override
     protected void fillDataRow(DataTableDxo tab, PassToNextDto dto) {
-        tab.push(dto.getName());
+        tab.push(dto.getLabel());
         tab.push(dto.getDescription());
 
         int max = 3;
