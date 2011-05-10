@@ -34,18 +34,18 @@ public class Principal
 
     public static final int NAME_MAXLEN = 16;
 
-    boolean nameSet;
+    String name;
     String fullName;
     UserEmail email;
 
     Collection<Principal> impliedPrincipals;
 
     public Principal() {
-        super();
+        this.name = null;
     }
 
     public Principal(String name) {
-        super(name);
+        setName(name);
     }
 
     @NaturalId
@@ -53,7 +53,7 @@ public class Principal
     @Column(length = NAME_MAXLEN, unique = true)
     @Override
     public String getName() {
-        return super.getName();
+        return name;
     }
 
     /**
@@ -71,11 +71,10 @@ public class Principal
 
         name = name.toLowerCase(Locale.ROOT);
 
-        if (nameSet && !this.name.equals(name))
-            throw new IllegalStateException("Principal.name is not mutable.");
+        if (this.name != null && !this.name.equals(name))
+            throw new IllegalStateException("Principal.name is not mutable: " + this.name + " -> " + name);
 
         this.name = name;
-        nameSet = true;
     }
 
     @Column(length = 50)
