@@ -13,8 +13,8 @@ public abstract class UserFriendlyEntityDto<E extends UserFriendlyEntity<K>, K e
 
     private static final long serialVersionUID = 1L;
 
-    protected String label;
-    protected String description;
+    String label;
+    String description;
 
     public UserFriendlyEntityDto() {
         super();
