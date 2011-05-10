@@ -18,7 +18,8 @@ public abstract class NameDict
     }
 
     public NameDict(String name, String label) {
-        this(name, label, "");
+        super(label);
+        setName(name);
     }
 
     public NameDict(String name, String label, String description) {
