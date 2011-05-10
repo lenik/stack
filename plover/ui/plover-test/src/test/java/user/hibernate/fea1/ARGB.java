@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 
 import org.hibernate.annotations.BatchSize;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
@@ -40,23 +39,6 @@ public class ARGB
 
     public void setAlpha(int alpha) {
         this.alpha = alpha;
-    }
-
-    @Override
-    protected int hashCodeEntity() {
-        return super.hashCodeEntity() * 31 + alpha;
-    }
-
-    @Override
-    protected boolean equalsEntity(EntityBean<String> otherEntity) {
-        if (!super.equalsEntity(otherEntity))
-            return false;
-
-        ARGB other = (ARGB) otherEntity;
-        if (alpha != other.alpha)
-            return false;
-
-        return true;
     }
 
     @Override

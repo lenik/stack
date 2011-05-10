@@ -8,11 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
+import com.bee32.plover.orm.ext.color.GreenEntity;
 
 @Entity
 public class Friend
-        extends EntityBean<Integer> {
+        extends GreenEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 

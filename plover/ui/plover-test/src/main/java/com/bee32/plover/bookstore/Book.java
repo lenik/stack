@@ -4,13 +4,12 @@ import javax.free.Nullables;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
-import com.bee32.plover.util.FormatStyle;
-import com.bee32.plover.util.PrettyPrintStream;
+import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.GreenEntity;
 
 @Entity
 public class Book
-        extends EntityBean<Integer> {
+        extends GreenEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,12 +20,6 @@ public class Book
     }
 
     public Book(String name, String content) {
-        this.name = name;
-        this.content = content;
-    }
-
-    public Book(int id, String name, String content) {
-        this.id = id;
         this.name = name;
         this.content = content;
     }
@@ -49,31 +42,21 @@ public class Book
     }
 
     @Override
-    protected int hashCodeEntity() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((content == null) ? 0 : content.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
-
-    @Override
-    protected boolean equalsEntity(EntityBean<Integer> otherEntity) {
+    protected Boolean naturalEquals(EntityBase<Integer> otherEntity) {
         Book o = (Book) otherEntity;
 
         if (!Nullables.equals(name, o.name))
-            return false;
-
-        if (!Nullables.equals(content, o.content))
             return false;
 
         return true;
     }
 
     @Override
-    public void toString(PrettyPrintStream out, FormatStyle format) {
-        String s = id + ") " + name + " :: " + content;
-        out.print(s);
+    protected Integer naturalHashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
     }
 
 }

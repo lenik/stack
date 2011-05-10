@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 
 import org.hibernate.annotations.BatchSize;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
@@ -70,28 +69,6 @@ public class RGB
 
     public void setBlue(int blue) {
         this.blue = blue;
-    }
-
-    @Override
-    protected int hashCodeEntity() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + blue;
-        result = prime * result + green;
-        result = prime * result + red;
-        return result;
-    }
-
-    @Override
-    protected boolean equalsEntity(EntityBean<String> otherEntity) {
-        RGB other = (RGB) otherEntity;
-        if (blue != other.blue)
-            return false;
-        if (green != other.green)
-            return false;
-        if (red != other.red)
-            return false;
-        return true;
     }
 
     @Override

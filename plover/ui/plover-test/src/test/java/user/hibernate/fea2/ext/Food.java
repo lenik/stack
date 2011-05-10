@@ -22,13 +22,14 @@ import org.hibernate.annotations.MapKeyManyToMany;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
+import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.GreenEntity;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "stereo")
 public class Food
-        extends EntityBean<Integer> {
+        extends GreenEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -101,6 +102,21 @@ public class Food
 
     public void removeRelated(String relname) {
         getRelatedFoods().remove(relname);
+    }
+
+    @Override
+    protected Boolean naturalEquals(EntityBase<Integer> other) {
+        Food o = (Food) other;
+
+        if (name == null || o.name == null)
+            return false;
+
+        return name.equals(o.name);
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        return name == null ? 0 : name.hashCode();
     }
 
 }

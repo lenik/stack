@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 
 import user.hibernate.fea2.Fruit;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
-
 @Entity
 @DiscriminatorValue("BNNA")
 public class Banana
@@ -31,17 +29,6 @@ public class Banana
 
     public void setLength(int length) {
         this.length = length;
-    }
-
-    @Override
-    protected int hashCodeEntity() {
-        return length * 31;
-    }
-
-    @Override
-    protected boolean equalsEntity(EntityBean<Integer> other) {
-        Banana o = (Banana) other;
-        return length == o.length;
     }
 
 }

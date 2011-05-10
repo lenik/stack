@@ -1,6 +1,5 @@
 package user.hibernate.fea1;
 
-import javax.free.Nullables;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -8,13 +7,14 @@ import javax.persistence.InheritanceType;
 import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.BatchSize;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
+import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.BlueEntity;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @BatchSize(size = 5)
 public class Color
-        extends EntityBean<String> {
+        extends BlueEntity<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,21 +42,16 @@ public class Color
     }
 
     @Override
-    protected int hashCodeEntity() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((code == null) ? 0 : code.hashCode());
-        return result;
+    protected Boolean naturalEquals(EntityBase<String> other) {
+        Color o = (Color) other;
+        if (code == null || o.code == null)
+            return false;
+        return code.equals(o.code);
     }
 
     @Override
-    protected boolean equalsEntity(EntityBean<String> otherEntity) {
-        Color o = (Color) otherEntity;
-
-        if (!Nullables.equals(code, o.code))
-            return false;
-
-        return true;
+    protected Integer naturalHashCode() {
+        return code == null ? 0 : code.hashCode();
     }
 
 }

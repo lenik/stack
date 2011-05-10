@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
@@ -70,31 +69,6 @@ public class CMYK
 
     public static long getSerialversionuid() {
         return serialVersionUID;
-    }
-
-    @Override
-    protected int hashCodeEntity() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + black;
-        result = prime * result + cyan;
-        result = prime * result + magenta;
-        result = prime * result + yellow;
-        return result;
-    }
-
-    @Override
-    protected boolean equalsEntity(EntityBean<String> otherEntity) {
-        CMYK other = (CMYK) otherEntity;
-        if (black != other.black)
-            return false;
-        if (cyan != other.cyan)
-            return false;
-        if (magenta != other.magenta)
-            return false;
-        if (yellow != other.yellow)
-            return false;
-        return true;
     }
 
     @Override
