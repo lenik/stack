@@ -7,6 +7,14 @@ public class UserDto
 
     private static final long serialVersionUID = 1L;
 
+    public UserDto() {
+        super();
+    }
+
+    public UserDto(User source) {
+        super(source);
+    }
+
     public UserDto(int selection) {
         super(selection);
     }

@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.free.Nullables;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -15,8 +14,6 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-
-import com.bee32.plover.orm.ext.color.EntityBean;
 
 @Entity
 @DiscriminatorValue("U")
@@ -115,43 +112,6 @@ public class User
 
     public void setEmails(List<UserEmail> emails) {
         this.emails = emails;
-    }
-
-    @Override
-    protected int hashCodeEntity() {
-        if (!PrincipalBeanConfig.fullEquality)
-            return super.hashCodeEntity();
-
-        final int prime = 31;
-
-        int result = (name == null) ? 0 : name.hashCode();
-        result = prime * result + ((primaryRole == null) ? 0 : primaryRole.hashCode());
-        result = prime * result + ((primaryGroup == null) ? 0 : primaryGroup.hashCode());
-        result = prime * result + ((assignedRoles == null) ? 0 : assignedRoles.hashCode());
-        result = prime * result + ((assignedGroups == null) ? 0 : assignedGroups.hashCode());
-        return result;
-    }
-
-    @Override
-    protected boolean equalsEntity(EntityBean<Long> obj) {
-        if (!PrincipalBeanConfig.fullEquality)
-            return false;
-
-        User other = (User) obj;
-
-        if (!Nullables.equals(primaryGroup, other.primaryGroup))
-            return false;
-
-        if (!Nullables.equals(primaryRole, other.primaryRole))
-            return false;
-
-        if (!Nullables.equals(assignedGroups, other.assignedGroups))
-            return false;
-
-        if (!Nullables.equals(assignedRoles, other.assignedRoles))
-            return false;
-
-        return true;
     }
 
 }

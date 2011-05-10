@@ -2,6 +2,7 @@ package com.bee32.icsf.principal;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Locale;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,17 +18,21 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
+import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.GreenEntity;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "steoro", length = 3)
 public class Principal
-        extends EntityBean<Long>
+        extends GreenEntity<Long>
         implements IPrincipal {
 
     private static final long serialVersionUID = 1L;
+
+    public static final int NAME_MAXLEN = 16;
 
     String fullName;
     String description;
@@ -43,16 +48,32 @@ public class Principal
         super(name);
     }
 
+    @NaturalId
     @Basic(optional = false)
-    @Column(length = 50, unique = true)
+    @Column(length = NAME_MAXLEN, unique = true)
     @Override
     public String getName() {
         return super.getName();
     }
 
+    /**
+     * You can't change the name of a principal.
+     * <p>
+     * Names are automaticlly converted to lower-case.
+     *
+     * @param name
+     *            Non-<code>null</code> name to set.
+     * @see #NAME_MAXLEN
+     */
     public void setName(String name) {
         if (name == null)
             throw new NullPointerException("name");
+
+        name = name.toLowerCase(Locale.ROOT);
+
+        if (this.name != null && !this.name.equals(name))
+            throw new IllegalStateException("Principal.name is not mutable.");
+
         this.name = name;
     }
 
@@ -189,12 +210,23 @@ public class Principal
     @Override
     public void accept(IPrincipalVisitor visitor) {
     }
-//
-// @Override
-// public void toString(PrettyPrintStream out, EntityFormat format) {
-// String principalType = getClass().getSimpleName();
-// String qname = principalType + " :: " + getName();
-// out.print(qname);
-// }
+
+    @Override
+    protected Boolean naturalEquals(EntityBase<Long> other) {
+        Principal o = (Principal) other;
+
+        if (this.name == null || o.name == null)
+            return false;
+
+        return name.equals(o.name);
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        if (name == null)
+            return 0;
+        else
+            return name.hashCode();
+    }
 
 }

@@ -7,12 +7,20 @@ public class GroupDto
 
     private static final long serialVersionUID = 1L;
 
-    public GroupDto(int selection, Group source) {
-        super(selection, source);
+    public GroupDto() {
+        super();
+    }
+
+    public GroupDto(Group source) {
+        super(source);
     }
 
     public GroupDto(int selection) {
         super(selection);
+    }
+
+    public GroupDto(int selection, Group source) {
+        super(selection, source);
     }
 
 }

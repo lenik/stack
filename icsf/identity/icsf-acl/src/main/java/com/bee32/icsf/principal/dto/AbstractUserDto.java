@@ -15,6 +15,14 @@ public class AbstractUserDto<U extends User>
     List<GroupDto> assignedGroups;
     List<RoleDto> assignedRoles;
 
+    public AbstractUserDto() {
+        super();
+    }
+
+    public AbstractUserDto(U source) {
+        super(source);
+    }
+
     public AbstractUserDto(int selection) {
         super(selection);
     }

@@ -15,6 +15,14 @@ public class AbstractRoleDto<R extends Role>
     List<UserDto> responsibleUsers;
     List<GroupDto> responsibleGroups;
 
+    public AbstractRoleDto() {
+        super();
+    }
+
+    public AbstractRoleDto(R source) {
+        super(source);
+    }
+
     public AbstractRoleDto(int selection) {
         super(selection);
     }

@@ -17,6 +17,14 @@ public class AbstractGroupDto<G extends Group>
     List<RoleDto> assignedRoles;
     List<UserDto> memberUsers;
 
+    public AbstractGroupDto() {
+        super();
+    }
+
+    public AbstractGroupDto(G source) {
+        super(source);
+    }
+
     public AbstractGroupDto(int selection) {
         super(selection);
     }

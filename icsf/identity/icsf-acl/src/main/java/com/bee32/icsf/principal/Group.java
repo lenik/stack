@@ -3,7 +3,6 @@ package com.bee32.icsf.principal;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.free.Nullables;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -11,8 +10,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import com.bee32.plover.orm.ext.color.EntityBean;
 
 @Entity
 @DiscriminatorValue("G")
@@ -142,46 +139,6 @@ public class Group
     @SuppressWarnings("unchecked")
     public void setAssignedRoles(Set<? extends Role> assignedRoles) {
         this.assignedRoles = (Set<Role>) assignedRoles;
-    }
-
-    @Override
-    protected int hashCodeEntity() {
-        if (!PrincipalBeanConfig.fullEquality)
-            return super.hashCodeEntity();
-
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((inheritedGroup == null) ? 0 : inheritedGroup.hashCode());
-        result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-        result = prime * result + ((primaryRole == null) ? 0 : primaryRole.hashCode());
-        result = prime * result + ((assignedRoles == null) ? 0 : assignedRoles.hashCode());
-        result = prime * result + ((memberUsers == null) ? 0 : memberUsers.hashCode());
-        return result;
-    }
-
-    @Override
-    protected boolean equalsEntity(EntityBean<Long> otherEntity) {
-        if (!PrincipalBeanConfig.fullEquality)
-            return false;
-
-        Group other = (Group) otherEntity;
-
-        if (!Nullables.equals(inheritedGroup, other.inheritedGroup))
-            return false;
-
-        if (!Nullables.equals(owner, other.owner))
-            return false;
-
-        if (!Nullables.equals(primaryRole, other.primaryRole))
-            return false;
-
-        if (!Nullables.equals(assignedRoles, other.assignedRoles))
-            return false;
-
-        if (!Nullables.equals(memberUsers, other.memberUsers))
-            return false;
-
-        return true;
     }
 
 }

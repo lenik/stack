@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.free.Nullables;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -13,20 +13,21 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NaturalId;
+
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.IGroupPrincipal;
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.IRolePrincipal;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.PrincipalBeanConfig;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.ext.color.EntityBean;
+import com.bee32.plover.orm.ext.color.GreenEntity;
 
 @Entity
 public class Realm
-        extends EntityBean<Integer>
+        extends GreenEntity<Integer>
         implements IRealm {
 
     private static final long serialVersionUID = 1L;
@@ -42,6 +43,23 @@ public class Realm
 
     public Realm(String name) {
         super(name);
+    }
+
+    @NaturalId
+    @Column(length = 30, unique = true)
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+
+        if (this.name != null && !this.name.equals(name))
+            throw new IllegalStateException("You can't change Realm.name");
+
+        this.name = name;
     }
 
     @Override
@@ -170,29 +188,6 @@ public class Realm
     public void removeRole(IRolePrincipal role) {
         removePrincipal(role);
         getRoles().remove(role);
-    }
-
-    @Override
-    protected int hashCodeEntity() {
-        if (!PrincipalBeanConfig.fullEquality)
-            return super.hashCodeEntity();
-
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((principals == null) ? 0 : principals.hashCode());
-        return result;
-    }
-
-    @Override
-    protected boolean equalsEntity(EntityBean<Integer> otherEntity) {
-        if (!PrincipalBeanConfig.fullEquality)
-            return false;
-
-        Realm other = (Realm) otherEntity;
-        if (!Nullables.equals(principals, other.principals))
-            return false;
-
-        return true;
     }
 
 }

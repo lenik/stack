@@ -5,11 +5,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
+import com.bee32.plover.orm.ext.color.BlueEntity;
 
 @Entity
 public class UserEmail
-        extends EntityBean<Long> {
+        extends BlueEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,9 +18,7 @@ public class UserEmail
     public static final char EMAIL_VERIFIED = 'V';
 
     Principal principal;
-
     String address;
-
     char status = EMAIL_INIT;
 
     public UserEmail() {
