@@ -17,7 +17,7 @@ public class SEMProcessModuleTest
 
     @Override
     protected String getLoggedInUser() {
-        return "Eva";
+        return "eva";
     }
 
     public static void main(String[] args)
