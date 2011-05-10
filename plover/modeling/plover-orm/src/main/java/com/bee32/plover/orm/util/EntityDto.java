@@ -551,7 +551,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
                 contentMap.put(each, each);
 
         for (D dto : dtoList) {
-            if (dto == null)
+            if (dto == null) // DTO == null means ignore.
                 continue;
 
             E entity;

@@ -614,6 +614,10 @@ public abstract class DataTransferObject<S, C>
     public static <S, _s, C> void merge(IMarshalSession<C> session, S target, //
             IPropertyAccessor<S, _s> property, DataTransferObject<_s, C> propertyDto) {
 
+        // DTO == null means ignore.
+        if (propertyDto == null)
+            return;
+
         _s _old = property.get(target);
         _s _new = propertyDto.merge(session, _old);
 
@@ -628,6 +632,10 @@ public abstract class DataTransferObject<S, C>
 
     public static <S, _s, C> void merge(IMarshalSession<C> session, S target, //
             String propertyName, DataTransferObject<_s, C> propertyDto) {
+
+        // DTO == null means ignore.
+        if (propertyDto == null)
+            return;
 
         Class<S> targetType = (Class<S>) target.getClass();
 
