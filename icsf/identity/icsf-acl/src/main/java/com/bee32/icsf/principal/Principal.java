@@ -34,8 +34,8 @@ public class Principal
 
     public static final int NAME_MAXLEN = 16;
 
+    boolean nameSet;
     String fullName;
-    String description;
     UserEmail email;
 
     Collection<Principal> impliedPrincipals;
@@ -71,10 +71,11 @@ public class Principal
 
         name = name.toLowerCase(Locale.ROOT);
 
-        if (this.name != null && !this.name.equals(name))
+        if (nameSet && !this.name.equals(name))
             throw new IllegalStateException("Principal.name is not mutable.");
 
         this.name = name;
+        nameSet = true;
     }
 
     @Column(length = 50)
@@ -91,16 +92,6 @@ public class Principal
         if (fullName != null)
             return fullName;
         return name;
-    }
-
-    @Column(length = 200)
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     @ManyToOne
@@ -121,8 +112,11 @@ public class Principal
             return email.getAddress();
     }
 
-    public void setEmailAddress(String email) {
-        this.email = new UserEmail(this, email);
+    public void setEmailAddress(String emailAddress) {
+        if (email == null)
+            email = new UserEmail(this, emailAddress);
+        else
+            email.setAddress(emailAddress);
     }
 
     @ManyToMany(targetEntity = Principal.class)

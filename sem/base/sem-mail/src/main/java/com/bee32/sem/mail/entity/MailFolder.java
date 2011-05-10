@@ -7,6 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.plover.orm.ext.color.BlueEntity;
 
 @Entity
@@ -76,7 +79,8 @@ public class MailFolder
         this.color = color;
     }
 
-    @OneToMany(mappedBy = "mailBox", cascade = {})
+    @OneToMany(mappedBy = "folder")
+    @Cascade({ CascadeType.ALL })
     public List<MailDelivery> getMails() {
         return mails;
     }

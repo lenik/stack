@@ -26,7 +26,7 @@ public interface IPrincipal
      *
      * 如用户姓名、企业名称、角色名称等。
      */
-    String getDisplayName();;
+    String getDisplayName();
 
     /**
      * 描述信息，如用户全称、企业全称、角色的描述信息等。

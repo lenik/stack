@@ -25,8 +25,6 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
     protected static final VerifyResult UNKNOWN = new VerifyResult(VerifyState.UNKNOWN, null);
     protected static final VerifyResult VERIFIED = new VerifyResult(VerifyState.VERIFIED, null);
 
-    private String description;
-
     private final Class<C> contextClass;
 
     public VerifyPolicy() {
@@ -48,15 +46,6 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
             throw new IllegalArgumentException("Name can't be empty");
 
         this.name = name;
-    }
-
-    @Column(length = 200)
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     @Transient
