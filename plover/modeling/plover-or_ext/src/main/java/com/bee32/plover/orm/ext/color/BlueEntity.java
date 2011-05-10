@@ -2,10 +2,9 @@ package com.bee32.plover.orm.ext.color;
 
 import java.io.Serializable;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-
-import com.bee32.plover.orm.entity.EntityAuto;
-import com.bee32.plover.orm.entity.EntityBase;
 
 /**
  * <b>blue</b>
@@ -16,9 +15,11 @@ import com.bee32.plover.orm.entity.EntityBase;
  */
 @MappedSuperclass
 public abstract class BlueEntity<K extends Serializable>
-        extends EntityAuto<K> {
+        extends BlueEntitySpec<K> {
 
     private static final long serialVersionUID = 1L;
+
+    K id;
 
     public BlueEntity() {
         super();
@@ -28,27 +29,16 @@ public abstract class BlueEntity<K extends Serializable>
         super(name);
     }
 
+    @Id
+    @GeneratedValue
     @Override
-    protected Boolean naturalEquals(EntityBase<K> other) {
-        String name = getName();
-        String otherName = other.getName();
-        if (name == null || otherName == null)
-            return false;
-
-        if (!name.equals(otherName))
-            return false;
-
-        return true;
+    public K getId() {
+        return id;
     }
 
     @Override
-    protected Integer naturalHashCode() {
-        String name = getName();
-
-        if (name == null)
-            return 0;
-        else
-            return name.hashCode();
+    protected void setId(K id) {
+        this.id = id;
     }
 
 }
