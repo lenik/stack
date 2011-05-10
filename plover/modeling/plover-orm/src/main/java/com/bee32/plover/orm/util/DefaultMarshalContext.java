@@ -12,7 +12,7 @@ import com.bee32.plover.orm.entity.Entity;
 
 @Component
 @Lazy
-public class DefaultEntityMarshalContext
+public class DefaultMarshalContext
         implements IEntityMarshalContext {
 
     @Inject
@@ -20,7 +20,7 @@ public class DefaultEntityMarshalContext
 
     @Override
     public <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {
-        E entity = dataManager.load(entityType, id);
+        E entity = dataManager.fetch(entityType, id);
         return entity;
     }
 
