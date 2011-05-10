@@ -15,7 +15,6 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
 
     protected String label;
     protected String description;
-    protected String icon;
 
     public DictEntityDto() {
         super();
@@ -38,7 +37,6 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
         super.__marshal(source);
         label = source.getLabel();
         description = source.getDescription();
-        icon = source.getIcon();
     }
 
     @Override
@@ -46,7 +44,6 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
         super.__unmarshalTo(target);
         target.setLabel(label);
         target.setDescription(description);
-        target.setIcon(icon);
     }
 
     @Override
@@ -55,7 +52,6 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
         super.__parse(map);
         label = map.getString("label");
         description = map.getString("description");
-        icon = map.getString("icon");
     }
 
     public String getLabel() {
@@ -72,14 +68,6 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
     }
 
 }
