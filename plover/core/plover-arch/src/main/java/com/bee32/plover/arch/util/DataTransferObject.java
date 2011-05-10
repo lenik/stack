@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
@@ -21,6 +22,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.parser.Entity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +39,7 @@ public abstract class DataTransferObject<S, C>
     protected final Flags32 selection = new Flags32();
 
     MarshalType marshalType = MarshalType.SELECTION;
-    IMarshalSession<C> session;
+    Stack<IMarshalSession<C>> sessionStack;
 
     protected DataTransferObject(Class<? extends S> sourceType) {
         initSourceType(sourceType);
@@ -94,7 +96,9 @@ public abstract class DataTransferObject<S, C>
     }
 
     protected IMarshalSession<C> getSession() {
-        return session;
+        if (sessionStack == null || sessionStack.isEmpty())
+            throw new IllegalStateException("No marshal session.");
+        return sessionStack.lastElement();
     }
 
     /**
@@ -112,14 +116,27 @@ public abstract class DataTransferObject<S, C>
      * Enter session
      */
     protected final void enter(IMarshalSession<C> session) {
-        this.session = session;
+        if (sessionStack == null)
+            sessionStack = new Stack<IMarshalSession<C>>();
+
+        sessionStack.push(session);
     }
 
     /**
      * Leave a session
      */
     protected final void leave() {
-        this.session = null;
+        if (sessionStack == null || sessionStack.isEmpty())
+            throw new IllegalStateException("Session stack underflow.");
+
+        sessionStack.pop();
+    }
+
+    IMarshalSession<C> createOrReuseSession(C context) {
+        if (sessionStack == null || sessionStack.isEmpty())
+            return new MarshalSession<C>(context);
+        else
+            return sessionStack.lastElement();
     }
 
     @Override
@@ -166,20 +183,20 @@ public abstract class DataTransferObject<S, C>
     // [A] Context/Session wrapper
 
     public final <D extends DataTransferObject<S, C>> D marshal(C context, S source) {
-        return marshal(new MarshalSession<C>(context), source);
+        return marshal(createOrReuseSession(context), source);
     }
 
     public final S merge(C context, S source) {
-        return merge(new MarshalSession<C>(context), source);
+        return merge(createOrReuseSession(context), source);
     }
 
     public final void parse(C context, Map<String, ?> map)
             throws ParseException {
-        parse(new MarshalSession<C>(context), map);
+        parse(createOrReuseSession(context), map);
     }
 
     public final void export(C context, Map<String, Object> map) {
-        export(new MarshalSession<C>(context), map);
+        export(createOrReuseSession(context), map);
     }
 
     // [B] TLS-Context/Session wrapper
@@ -275,7 +292,7 @@ public abstract class DataTransferObject<S, C>
 
     public final void parse(C context, TextMap map)
             throws ParseException {
-        parse(new MarshalSession<C>(context), map);
+        parse(createOrReuseSession(context), map);
     }
 
     public final void parse(TextMap map)
