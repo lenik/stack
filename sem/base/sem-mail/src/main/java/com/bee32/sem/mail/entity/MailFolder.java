@@ -7,27 +7,28 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.BlueEntity;
 
 @Entity
-public class MailBox
-        extends EntityBean<Integer> {
+public class MailFolder
+        extends BlueEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
     public static final byte PRIORITY_HIGH = 1;
     public static final byte PRIORITY_NORMAL = 5;
     public static final byte PRIORITY_LOW = 9;
+
     protected byte priority = PRIORITY_NORMAL;
 
     int order = 100;
 
     String name;
-    String displayName;
+    String label;
 
     int color;
 
-    List<MailCopy> mails;
+    List<MailDelivery> mails;
 
     @Column(nullable = false)
     public byte getPriority() {
@@ -59,12 +60,12 @@ public class MailBox
 
     @Basic(optional = false)
     @Column(length = 50, nullable = false)
-    public String getDisplayName() {
-        return displayName;
+    public String getLabel() {
+        return label;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public int getColor() {
@@ -76,11 +77,11 @@ public class MailBox
     }
 
     @OneToMany(mappedBy = "mailBox", cascade = {})
-    public List<MailCopy> getMails() {
+    public List<MailDelivery> getMails() {
         return mails;
     }
 
-    public void setMails(List<MailCopy> mails) {
+    public void setMails(List<MailDelivery> mails) {
         this.mails = mails;
     }
 

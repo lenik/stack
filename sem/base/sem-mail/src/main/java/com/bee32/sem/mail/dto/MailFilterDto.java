@@ -20,8 +20,8 @@ public class MailFilterDto
 
     String expr;
 
-    MailBoxDto source;
-    MailBoxDto target;
+    MailFolderDto source;
+    MailFolderDto target;
     String transferTo;
 
     int chMask;
@@ -44,8 +44,8 @@ public class MailFilterDto
         order = source.getOrder();
         expr = source.getExpr();
 
-        this.source = new MailBoxDto().marshal(source.getSource());
-        target = new MailBoxDto().marshal(source.getTarget());
+        this.source = new MailFolderDto().marshal(source.getSource());
+        target = new MailFolderDto().marshal(source.getTarget());
         transferTo = source.getTransferTo();
 
         chMask = source.getChMask();
@@ -127,19 +127,19 @@ public class MailFilterDto
         this.expr = expr;
     }
 
-    public MailBoxDto getSource() {
+    public MailFolderDto getSource() {
         return source;
     }
 
-    public void setSource(MailBoxDto source) {
+    public void setSource(MailFolderDto source) {
         this.source = source;
     }
 
-    public MailBoxDto getTarget() {
+    public MailFolderDto getTarget() {
         return target;
     }
 
-    public void setTarget(MailBoxDto target) {
+    public void setTarget(MailFolderDto target) {
         this.target = target;
     }
 

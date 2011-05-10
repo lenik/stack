@@ -13,19 +13,19 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.sem.mail.SEMMailModule;
-import com.bee32.sem.mail.dao.MailBoxDao;
 import com.bee32.sem.mail.dao.MailDao;
-import com.bee32.sem.mail.dto.MailBoxDto;
-import com.bee32.sem.mail.entity.MailBox;
+import com.bee32.sem.mail.dao.MailFolderDao;
+import com.bee32.sem.mail.dto.MailFolderDto;
+import com.bee32.sem.mail.entity.MailFolder;
 
-@RequestMapping(MailBoxController.PREFIX + "*")
-public class MailBoxController
-        extends BasicEntityController<MailBox, Integer, MailBoxDto> {
+@RequestMapping(MailFolderController.PREFIX + "*")
+public class MailFolderController
+        extends BasicEntityController<MailFolder, Integer, MailFolderDto> {
 
-    public static final String PREFIX = SEMMailModule.PREFIX + "/mailbox/";
+    public static final String PREFIX = SEMMailModule.PREFIX + "/folder/";
 
     @Inject
-    MailBoxDao mailBoxDao;
+    MailFolderDao mailFolderDao;
 
     @Inject
     MailDao mailDao;
@@ -55,7 +55,7 @@ public class MailBoxController
     }
 
     @Override
-    protected void fillDataRow(DataTableDxo tab, MailBoxDto dto) {
+    protected void fillDataRow(DataTableDxo tab, MailFolderDto dto) {
         tab.push(dto.getName());
     }
 

@@ -4,11 +4,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.BlueEntity;
 
 @Entity
 public class MailFilter
-        extends EntityBean<Integer> {
+        extends BlueEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,8 +20,8 @@ public class MailFilter
 
     String expr;
 
-    MailBox source;
-    MailBox target;
+    MailFolder source;
+    MailFolder target;
     String transferTo;
 
     int chMask;
@@ -72,20 +72,20 @@ public class MailFilter
     }
 
     @ManyToOne
-    public MailBox getSource() {
+    public MailFolder getSource() {
         return source;
     }
 
-    public void setSource(MailBox source) {
+    public void setSource(MailFolder source) {
         this.source = source;
     }
 
     @ManyToOne
-    public MailBox getTarget() {
+    public MailFolder getTarget() {
         return target;
     }
 
-    public void setTarget(MailBox target) {
+    public void setTarget(MailFolder target) {
         this.target = target;
     }
 

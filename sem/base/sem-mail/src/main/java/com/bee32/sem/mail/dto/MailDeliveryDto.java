@@ -5,25 +5,21 @@ import java.util.Date;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.mail.MailFlags;
-import com.bee32.sem.mail.MailOwnerType;
-import com.bee32.sem.mail.entity.MailCopy;
+import com.bee32.sem.mail.entity.MailDelivery;
+import com.bee32.sem.mail.entity.MailParty;
 
-public class MailCopyDto
-        extends EntityDto<MailCopy, Long> {
+public class MailDeliveryDto
+        extends EntityDto<MailDelivery, Long> {
 
     private static final long serialVersionUID = 1L;
 
     MailDto mail;
-    UserDto owner;
-    MailOwnerType ownerType;
+    MailParty party;
 
-    MailBoxDto mailBox;
-
-    final MailFlags flags = new MailFlags();
+    MailFolderDto folder;
 
     Date sentDate;
     String sendError;
@@ -31,14 +27,15 @@ public class MailCopyDto
     Date receivedDate;
     Date receiptDate;
 
-    @Override
-    protected void _marshal(MailCopy source) {
-        mail = new MailDto(source.getMail());
-        owner = new UserDto(0, source.getOwner());
-        ownerType = source.getOwnerType();
+    final MailFlags flags = new MailFlags();
 
-        mailBox = new MailBoxDto(0, source.getMailBox());
-        flags.bits = source.getFlags().bits;
+    @Override
+    protected void _marshal(MailDelivery source) {
+        mail = new MailDto(source.getMail());
+        folder = new MailFolderDto(0, source.getFolder());
+        party = source.getParty();
+
+        flags.bits = source.getFlags();
 
         sentDate = source.getSentDate();
         sendError = source.getSendError();
@@ -48,13 +45,12 @@ public class MailCopyDto
     }
 
     @Override
-    protected void _unmarshalTo(MailCopy target) {
+    protected void _unmarshalTo(MailDelivery target) {
         merge(target, "mail", mail);
-        merge(target, "owner", owner);
-        target.setOwnerType(ownerType);
+        target.setParty(party);
 
-        merge(target, "mailBox", mailBox);
-        target.setFlagBits(flags.bits);
+        merge(target, "folder", folder);
+        target.setFlags(flags.bits);
 
         target.setSentDate(sentDate);
         target.setSendError(sendError);
@@ -66,7 +62,7 @@ public class MailCopyDto
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
 
-        ownerType = MailOwnerType.valueOf(map.getString("ownerType"));
+        party = MailParty.valueOf(map.getString("party"));
 
         flags.bits = map.getInt("flags");
     }
@@ -79,28 +75,20 @@ public class MailCopyDto
         this.mail = mail;
     }
 
-    public UserDto getOwner() {
-        return owner;
+    public MailParty getParty() {
+        return party;
     }
 
-    public void setOwner(UserDto owner) {
-        this.owner = owner;
+    public void setParty(MailParty party) {
+        this.party = party;
     }
 
-    public MailOwnerType getOwnerType() {
-        return ownerType;
+    public MailFolderDto getFolder() {
+        return folder;
     }
 
-    public void setOwnerType(MailOwnerType ownerType) {
-        this.ownerType = ownerType;
-    }
-
-    public MailBoxDto getMailBox() {
-        return mailBox;
-    }
-
-    public void setMailBox(MailBoxDto mailBox) {
-        this.mailBox = mailBox;
+    public void setFolder(MailFolderDto folder) {
+        this.folder = folder;
     }
 
     public Date getSentDate() {

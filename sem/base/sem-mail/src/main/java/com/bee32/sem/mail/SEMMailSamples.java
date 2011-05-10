@@ -6,16 +6,17 @@ import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.mail.entity.Mail;
-import com.bee32.sem.mail.entity.MailBox;
-import com.bee32.sem.mail.entity.MailCopy;
+import com.bee32.sem.mail.entity.MailDelivery;
+import com.bee32.sem.mail.entity.MailParty;
 import com.bee32.sem.mail.entity.MailFilter;
+import com.bee32.sem.mail.entity.MailFolder;
 
 @ImportSamples(IcsfPrincipalSamples.class)
 public class SEMMailSamples
         extends EntitySamplesContribution {
 
-    public static MailBox favBox = new MailBox();
-    public static MailBox spamBox = new MailBox();
+    public static MailFolder favBox = new MailFolder();
+    public static MailFolder spamBox = new MailFolder();
 
     public static MailFilter spamFilter = new MailFilter();
 
@@ -24,12 +25,12 @@ public class SEMMailSamples
 
     static {
         favBox.setName("fav");
-        favBox.setDisplayName("收藏夹");
-        favBox.setPriority(MailBox.PRIORITY_HIGH);
+        favBox.setLabel("收藏夹");
+        favBox.setPriority(MailFolder.PRIORITY_HIGH);
 
         spamBox.setName("spam");
-        spamBox.setDisplayName("垃圾箱");
-        spamBox.setColor(MailBox.PRIORITY_LOW);
+        spamBox.setLabel("垃圾箱");
+        spamBox.setColor(MailFolder.PRIORITY_LOW);
 
         spamFilter.setName("spam-filter");
         spamFilter.setDescription("将标记为'垃圾'的邮件移动到'垃圾箱'");
@@ -42,9 +43,9 @@ public class SEMMailSamples
         hello.setSubject("Hello!");
         hello.setBody("Hello, world!\n\n这句话的意思是：朋友、再见！");
 
-        MailCopy helloSend = new MailCopy(hello, MailOwnerType.FROM_USER);
+        MailDelivery helloSend = new MailDelivery(hello, MailParty.FROM);
         // helloSend.setSentDate();
-        MailCopy helloRecv = new MailCopy(hello, MailOwnerType.TO_USER);
+        MailDelivery helloRecv = new MailDelivery(hello, MailParty.TO);
         hello.setCopies(Arrays.asList(helloSend, helloRecv));
 
         helloEcho.setFromUser(IcsfPrincipalSamples.eva);
@@ -55,8 +56,8 @@ public class SEMMailSamples
                 "在此之前，我一直以为它是\"你好、世界\"，现在我才知道自己的愚蠢。");
         // helloEcho.setCc("");
 
-        MailCopy helloEchoSend = new MailCopy(helloEcho, MailOwnerType.FROM_USER);
-        MailCopy helloEchoRecv = new MailCopy(helloEcho, MailOwnerType.TO_USER);
+        MailDelivery helloEchoSend = new MailDelivery(helloEcho, MailParty.FROM);
+        MailDelivery helloEchoRecv = new MailDelivery(helloEcho, MailParty.TO);
         helloEcho.setCopies(Arrays.asList(helloEchoSend, helloEchoRecv));
     }
 

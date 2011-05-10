@@ -15,9 +15,9 @@ import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.mail.SEMMailModule;
-import com.bee32.sem.mail.dao.MailBoxDao;
+import com.bee32.sem.mail.dao.MailFolderDao;
 import com.bee32.sem.mail.dao.MailFilterDao;
-import com.bee32.sem.mail.dto.MailBoxDto;
+import com.bee32.sem.mail.dto.MailFolderDto;
 import com.bee32.sem.mail.dto.MailFilterDto;
 import com.bee32.sem.mail.entity.MailFilter;
 
@@ -31,7 +31,7 @@ public class MailFilterController
     MailFilterDao mailFilterDao;
 
     @Inject
-    MailBoxDao mailBoxDao;
+    MailFolderDao mailBoxDao;
 
     @Override
     protected void fillDataRow(DataTableDxo tab, MailFilterDto filter) {
@@ -46,7 +46,7 @@ public class MailFilterController
             throws ServletException, IOException {
         super._createOrEditForm(view, req, resp);
 
-        List<MailBoxDto> mailBoxes = DTOs.marshalList(MailBoxDto.class, 0, mailBoxDao.list());
+        List<MailFolderDto> mailBoxes = DTOs.marshalList(MailFolderDto.class, 0, mailBoxDao.list());
         view.put("mailBoxes", mailBoxes);
 
         return view;

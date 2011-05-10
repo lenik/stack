@@ -2,11 +2,11 @@ package com.bee32.sem.mail.entity;
 
 import javax.free.AbstractNonNullComparator;
 
-public class MailBoxComparator
-        extends AbstractNonNullComparator<MailBox> {
+public class MailFolderComparator
+        extends AbstractNonNullComparator<MailFolder> {
 
     @Override
-    public int compareNonNull(MailBox a, MailBox b) {
+    public int compareNonNull(MailFolder a, MailFolder b) {
         int cmp = a.getPriority() - b.getPriority();
         if (cmp != 0)
             return cmp;
@@ -22,6 +22,6 @@ public class MailBoxComparator
         return System.identityHashCode(a) - System.identityHashCode(b);
     }
 
-    public static final MailBoxComparator INSTANCE = new MailBoxComparator();
+    public static final MailFolderComparator INSTANCE = new MailFolderComparator();
 
 }

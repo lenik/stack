@@ -5,61 +5,40 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.PinkEntity;
 import com.bee32.sem.mail.MailFlags;
-import com.bee32.sem.mail.MailOwnerType;
 
 @Entity
-public class MailCopy
-        extends EntityBean<Long> {
+public class MailDelivery
+        extends PinkEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
     Mail mail;
-
-    User owner;
-    MailOwnerType ownerType = MailOwnerType.FROM_USER;
-    MailBox mailBox;
-
-    final MailFlags flags = new MailFlags();
+    MailFolder folder;
+    MailParty party;
 
     Date sentDate;
     String sendError;
     Date receivedDate;
     Date receiptDate;
 
-    public MailCopy() {
+    public final MailFlags flags = new MailFlags();
+
+    public MailDelivery() {
     }
 
-    public MailCopy(Mail mail, MailOwnerType ownerType) {
+    public MailDelivery(Mail mail, MailParty party) {
         this.mail = mail;
-        this.ownerType = ownerType;
-        switch (ownerType) {
-        case FROM_USER:
-            owner = mail.getFromUser();
-            break;
-
-        case TO_USER:
-            owner = mail.getToUser();
-            break;
-
-        case CC_USER:
-        case BCC_USER:
-            // You should set the owner explicitly.
-        }
-    }
-
-    public MailCopy(Mail mail, MailOwnerType ownerType, User owner) {
-        this.mail = mail;
-        this.ownerType = ownerType;
-        this.owner = owner;
+        this.party = party;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -71,49 +50,35 @@ public class MailCopy
         this.mail = mail;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
     @Basic(optional = false)
     @Column(nullable = false)
-    public MailOwnerType getOwnerType() {
-        return ownerType;
+    @Enumerated(EnumType.STRING)
+    public MailParty getParty() {
+        return party;
     }
 
-    public void setOwnerType(MailOwnerType ownerType) {
-        this.ownerType = ownerType;
+    public void setParty(MailParty party) {
+        if (party == null)
+            throw new NullPointerException("party");
+        this.party = party;
     }
 
     @ManyToOne
-    public MailBox getMailBox() {
-        return mailBox;
+    public MailFolder getFolder() {
+        return folder;
     }
 
-    public void setMailBox(MailBox mailBox) {
-        this.mailBox = mailBox;
+    public void setFolder(MailFolder folder) {
+        this.folder = folder;
     }
 
     @Column(name = "flags", nullable = false)
-    public int getFlagBits() {
+    public int getFlags() {
         return flags.bits;
     }
 
-    public void setFlagBits(int flags) {
+    public void setFlags(int flags) {
         this.flags.bits = flags;
-    }
-
-    /**
-     * TODO: How to map value type MailFlags to SQL INT?
-     */
-    @Transient
-    public MailFlags getFlags() {
-        return flags;
     }
 
     @Transient

@@ -7,10 +7,10 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.sem.mail.entity.MailBox;
+import com.bee32.sem.mail.entity.MailFolder;
 
-public class MailBoxDto
-        extends EntityDto<MailBox, Integer> {
+public class MailFolderDto
+        extends EntityDto<MailFolder, Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,44 +19,44 @@ public class MailBoxDto
     byte priority;
     int order;
     String name;
-    String displayName;
+    String label;
     int color;
-    List<MailCopyDto> mails;
+    List<MailDeliveryDto> mails;
 
-    public MailBoxDto() {
+    public MailFolderDto() {
         super();
     }
 
-    public MailBoxDto(MailBox source) {
+    public MailFolderDto(MailFolder source) {
         super(source);
     }
 
-    public MailBoxDto(int selection) {
+    public MailFolderDto(int selection) {
         super(selection);
     }
 
-    public MailBoxDto(int selection, MailBox source) {
+    public MailFolderDto(int selection, MailFolder source) {
         super(selection, source);
     }
 
     @Override
-    protected void _marshal(MailBox source) {
+    protected void _marshal(MailFolder source) {
         priority = source.getPriority();
         order = source.getOrder();
         name = source.getName();
-        displayName = source.getDisplayName();
+        label = source.getLabel();
         color = source.getColor();
 
         if (selection.contains(MAILS))
-            mails = marshalList(MailCopyDto.class, selection.bits & ~MAILS, source.getMails());
+            mails = marshalList(MailDeliveryDto.class, selection.bits & ~MAILS, source.getMails());
     }
 
     @Override
-    protected void _unmarshalTo(MailBox target) {
+    protected void _unmarshalTo(MailFolder target) {
         target.setPriority(priority);
         target.setOrder(order);
         target.setName(name);
-        target.setDisplayName(displayName);
+        target.setLabel(label);
         target.setColor(color);
 
         if (selection.contains(MAILS))
@@ -70,7 +70,7 @@ public class MailBoxDto
         priority = map.getByte("priority");
         order = map.getInt("order");
         name = map.getString("name");
-        displayName = map.getString("displayName");
+        label = map.getString("label");
         color = map.getInt("color");
 
         // skip ITEMS.
@@ -100,12 +100,12 @@ public class MailBoxDto
         this.name = name;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getLabel() {
+        return label;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public int getColor() {
@@ -116,11 +116,11 @@ public class MailBoxDto
         this.color = color;
     }
 
-    public List<MailCopyDto> getMails() {
+    public List<MailDeliveryDto> getMails() {
         return mails;
     }
 
-    public void setMails(List<MailCopyDto> mails) {
+    public void setMails(List<MailDeliveryDto> mails) {
         this.mails = mails;
     }
 

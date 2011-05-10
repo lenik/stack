@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -15,14 +17,16 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.PinkEntity;
 import com.bee32.sem.mail.MailType;
 import com.bee32.sem.mail.util.EmailUtil;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "stereo", length = 4)
+@DiscriminatorValue("MAIL")
 public class Mail
-        extends EntityBean<Long> {
+        extends PinkEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -53,7 +57,7 @@ public class Mail
     // Date createDate;
     // Date modifiedDate;
 
-    List<MailCopy> copies;
+    List<MailDelivery> copies;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -178,11 +182,11 @@ public class Mail
 
     @OneToMany(mappedBy = "mail")
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public List<MailCopy> getCopies() {
+    public List<MailDelivery> getCopies() {
         return copies;
     }
 
-    public void setCopies(List<MailCopy> copies) {
+    public void setCopies(List<MailDelivery> copies) {
         this.copies = copies;
     }
 
