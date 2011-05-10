@@ -636,7 +636,12 @@ public abstract class DataTransferObject<S, C>
             return;
 
         _s _old = property.get(target);
-        _s _new = propertyDto.merge(session, _old);
+        _s _new;
+
+        if (session == null)
+            _new = propertyDto.merge(_old);
+        else
+            _new = propertyDto.merge(session, _old);
 
         if (_new != _old)
             property.set(target, _new);
