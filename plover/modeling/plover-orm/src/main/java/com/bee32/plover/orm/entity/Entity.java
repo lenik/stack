@@ -20,13 +20,6 @@ import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
-/**
- * You may annotate the concrete entities with:
- * <ul>
- * <li>&#64;Entity
- * <li>&#64;Table
- * </ul>
- */
 @MappedSuperclass
 public abstract class Entity<K extends Serializable>
         extends EntityBase<K>
@@ -143,22 +136,55 @@ public abstract class Entity<K extends Serializable>
         return this;
     }
 
+    /**
+     * 实体的等价关系按照下面的顺序定义：
+     * <ul>
+     * <li>1, 如果 a == b，则 a 与 b 等价。
+     * <li>2, 如果 a 与 b 的自然等价关系有定义，则该自然等价关系作为实体的等价关系。
+     * <li>3, 如果 a 与 b 的自然等价关系无定义，但 a 与 b 的内容相等，则 a 与 b 等价。
+     * <li>3*, 第3条可以强化为：a 与 b 的内容相等，当且仅当 a 与 b 的非瞬态内容相等。
+     * <li>3**, 第3条可以进一步强化为：a 与 b 的内容相等，当且仅当 a 与 b 的第一间接非瞬态内容相等。 </ol>
+     * <p>
+     * <b>自然等价</b>
+     * <p>
+     * 大多数情况下实体应该在其上定义自然键，并实现自然等价关系（通过实现方法 {@link #naturalEquals(EntityBase)} 和
+     * {@link #naturalHashCode()}）。 自然键最好不是自动生成的 id 属性，但必须是唯一的。例如：用户的自然键应该是登录名，订单项的自然键应该是{所属的订单id,
+     * 商品的id} 等等。
+     *
+     * <p>
+     * <b>内容等价</b> 当无法在实体上定义自然键时，可以定义内容等价，通过实现方法 {@link #contentEquals(EntityBase)} 和
+     * {@link #contentHashCode()}。
+     *
+     * 内容等价对两个实体的几乎全部内容进行比较，因而非常低效。您应该尽量避免使用基于内容的等价。
+     *
+     * <p>
+     * <b>等价关系：equals 和 hashCode</b> 当您定义自然等价或内容等价时，必须同时实现对应的 *equals() 和 *hashCode() 两个方法，并且必须满足：
+     * <ul>
+     * <li>交换性：若 a.*equals(b) 则必有 b.*equals(a)。
+     * <li>传递性：若 a.*equals(b) 并且 b.*equals(c) 则必有 a.*equals(c)。
+     * <li>同调性：若 a.*equals(b)，则 a.*hashCode 必须和 b.*hashCode 相等。
+     * </ul>
+     */
     @Override
     public final boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
         if (obj == null)
             return false;
 
-        Class<?> class1 = getClass();
-        Class<?> class2 = obj.getClass();
-        if (class1 != class2) {
-            if (!class1.isAssignableFrom(class2)) {
-                if (class2.isAssignableFrom(class1))
+        Class<?> thisClass = getClass();
+        Class<?> otherClass = obj.getClass();
+        if (thisClass != otherClass) {
+            if (!thisClass.isAssignableFrom(otherClass)) {
+                if (otherClass.isAssignableFrom(thisClass))
                     return obj.equals(this);
                 else
                     return false;
             }
-            // assert class1.isAssignableFrom(class2);
         }
+
+        // assert thisClass < otherClass;
 
         @SuppressWarnings("unchecked")
         Entity<K> other = (Entity<K>) obj;
@@ -166,37 +192,85 @@ public abstract class Entity<K extends Serializable>
         return equalsSpecific(other);
     }
 
+    /**
+     * 实体的等价关系按照下面的顺序定义：
+     * <ul>
+     * <li>1, 如果 a == b，则 a 与 b 等价。
+     * <li>2, 如果 a 与 b 的自然等价关系有定义，则该自然等价关系作为实体的等价关系。
+     * <li>3, 如果 a 与 b 的自然等价关系无定义，但 a 与 b 的内容相等，则 a 与 b 等价。
+     * <li>3*, 第3条可以强化为：a 与 b 的内容相等，当且仅当 a 与 b 的非瞬态内容相等。
+     * <li>3**, 第3条可以进一步强化为：a 与 b 的内容相等，当且仅当 a 与 b 的第一间接非瞬态内容相等。 </ol>
+     * <p>
+     * <b>自然等价</b>
+     * <p>
+     * 大多数情况下实体应该在其上定义自然键，并实现自然等价关系（通过实现方法 {@link #naturalEquals(EntityBase)} 和
+     * {@link #naturalHashCode()}）。 自然键最好不是自动生成的 id 属性，但必须是唯一的。例如：用户的自然键应该是登录名，订单项的自然键应该是{所属的订单id,
+     * 商品的id} 等等。
+     *
+     * <p>
+     * <b>内容等价</b> 当无法在实体上定义自然键时，可以定义内容等价，通过实现方法 {@link #contentEquals(EntityBase)} 和
+     * {@link #contentHashCode()}。
+     *
+     * 内容等价对两个实体的几乎全部内容进行比较，因而非常低效。您应该尽量避免使用基于内容的等价。
+     *
+     * <p>
+     * <b>等价关系：equals 和 hashCode</b> 当您定义自然等价或内容等价时，必须同时实现对应的 *equals() 和 *hashCode() 两个方法，并且必须满足：
+     * <ul>
+     * <li>交换性：若 a.*equals(b) 则必有 b.*equals(a)。
+     * <li>传递性：若 a.*equals(b) 并且 b.*equals(c) 则必有 a.*equals(c)。
+     * <li>同调性：若 a.*equals(b)，则 a.*hashCode 必须和 b.*hashCode 相等。
+     * </ul>
+     */
+    @Override
+    public final int hashCode() {
+        return hashCodeSpecific();
+    }
+
     @Override
     protected final boolean equalsSpecific(Component obj) {
         @SuppressWarnings("unchecked")
         Entity<K> other = (Entity<K>) obj;
 
-        Boolean keyEq = equalsKey(other);
-        if (keyEq != null)
-            return keyEq;
+        Boolean naturalEquals = naturalEquals(other);
+        if (naturalEquals != null)
+            return naturalEquals;
 
-        return equalsEntity(other);
+        return contentEquals(other);
+    }
+
+    @Override
+    protected final int hashCodeSpecific() {
+        Integer idHash = naturalHashCode();
+        if (idHash != null)
+            return idHash;
+        else
+            return contentHashCode();
     }
 
     /**
-     * Natural id equality.
+     * 判断两个实体是否自然等价。
      *
-     * @return <code>null</code> If natural id is unknown.
+     * <p>
+     * 如果实体上无法定义自然键，应该实现此方法并明确地返回 <code>null</code>。
+     *
+     * @return 返回 <code>true</code>或 <code>false</code> 表示自然键等价或不等价。返回<code>null</code>
+     *         表示无法判定是否自然键等价。
      */
-    protected Boolean equalsKey(Entity<K> other) {
+    protected Boolean naturalEquals(EntityBase<K> other) {
         K id1 = getId();
         K id2 = other.getId();
-
-        if (id1 == null && id2 == null)
-            return null;
 
         if (id1 == null || id2 == null)
             return Boolean.FALSE;
 
-        if (!id1.equals(id2))
-            return Boolean.FALSE;
+        return id1.equals(id2);
+    }
 
-        return Boolean.TRUE;
+    protected Integer naturalHashCode() {
+        K id = getId();
+        if (id == null)
+            return null;
+        return id.hashCode();
     }
 
     /**
@@ -204,38 +278,12 @@ public abstract class Entity<K extends Serializable>
      *            Non-<code>null</code> entity whose contents instead of the key need to be
      *            compared.
      */
-    protected boolean equalsEntity(Entity<K> other) {
+    protected boolean contentEquals(EntityBase<K> other) {
         return this == other;
     }
 
-    @Override
-    public final int hashCode() {
-        return typeHash + hashCodeEntity();
-    }
-
-    /**
-     * Not used.
-     */
-    @Override
-    protected final int hashCodeSpecific() {
-        int hash = 0xbabade33 * version;
-
-        K id = getId();
-        if (id != null)
-            hash += id.hashCode();
-        else
-            hash += hashCodeEntity();
-
-        return hash;
-    }
-
-    protected int hashCodeEntity() {
-        K id = getId();
-
-        if (id == null)
-            return System.identityHashCode(this);
-        else
-            return id.hashCode();
+    protected int contentHashCode() {
+        return System.identityHashCode(this);
     }
 
     @Override

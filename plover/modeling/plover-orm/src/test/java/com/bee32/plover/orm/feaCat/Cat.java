@@ -3,7 +3,6 @@ package com.bee32.plover.orm.feaCat;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.free.Nullables;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -11,12 +10,14 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
+import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.entity.EntityBase;
 
 @Entity
 public class Cat
-        extends EntityBean<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,6 +38,7 @@ public class Cat
         this.color = color;
     }
 
+    @NaturalId
     @Override
     public String getName() {
         return name;
@@ -91,29 +93,18 @@ public class Cat
     }
 
     @Override
-    protected boolean equalsEntity(EntityBean<Long> otherEntity) {
-        Cat o = (Cat) otherEntity;
+    protected Boolean naturalEquals(EntityBase<Long> other) {
+        Cat o = (Cat) other;
 
-        if (!Nullables.equals(color, o.color))
+        if (name == null || o.name == null)
             return false;
 
-        if (!Nullables.equals(parent, o.parent))
-            return false;
-
-        if (!Nullables.equals(leader, o.leader))
-            return false;
-
-        return true;
+        return name.equals(o.name);
     }
 
     @Override
-    protected int hashCodeEntity() {
-        final int prime = 31;
-        int result = 0;
-        result = prime * result + ((color == null) ? 0 : color.hashCode());
-        result = prime * result + ((leader == null) ? 0 : leader.hashCode());
-        result = prime * result + ((parent == null) ? 0 : parent.hashCode());
-        return result;
+    protected Integer naturalHashCode() {
+        return name == null ? 0 : name.hashCode();
     }
 
 }

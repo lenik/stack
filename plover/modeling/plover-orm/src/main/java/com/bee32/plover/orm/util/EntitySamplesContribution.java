@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.inject.ComponentTemplate;
-import com.bee32.plover.orm.entity.IEntity;
+import com.bee32.plover.orm.entity.Entity;
 
 @ComponentTemplate
 @Lazy
@@ -20,8 +20,8 @@ public abstract class EntitySamplesContribution
 
     public static final String CONF_LOADED = "esc.loaded";
 
-    private List<IEntity<?>> normalSamples;
-    private List<IEntity<?>> worseSamples;
+    private List<Entity<?>> normalSamples;
+    private List<Entity<?>> worseSamples;
 
     private boolean assembled;
     private boolean loaded;
@@ -45,44 +45,44 @@ public abstract class EntitySamplesContribution
         assembled = true;
     }
 
-    protected <E extends IEntity<K>, K extends Serializable> //
+    protected <E extends Entity<K>, K extends Serializable> //
     void addNormalSample(E... samples) {
-        for (IEntity<?> sample : samples) {
+        for (Entity<?> sample : samples) {
             addNormalSample(sample);
         }
         return;
     }
 
-    protected void addNormalSample(IEntity<? extends Serializable> sample) {
+    protected void addNormalSample(Entity<? extends Serializable> sample) {
         if (normalSamples == null) {
             synchronized (this) {
                 if (normalSamples == null)
-                    normalSamples = new ArrayList<IEntity<?>>();
+                    normalSamples = new ArrayList<Entity<?>>();
             }
         }
         normalSamples.add(sample);
     }
 
-    protected <E extends IEntity<K>, K extends Serializable> //
+    protected <E extends Entity<?>> //
     void addWorseSample(E... samples) {
-        for (IEntity<?> sample : samples) {
+        for (Entity<?> sample : samples) {
             addWorseSample(sample);
         }
         return;
     }
 
-    protected void addWorseSample(IEntity<? extends Serializable> sample) {
+    protected void addWorseSample(Entity<?> sample) {
         if (worseSamples == null) {
             synchronized (this) {
                 if (worseSamples == null)
-                    worseSamples = new ArrayList<IEntity<?>>();
+                    worseSamples = new ArrayList<Entity<?>>();
             }
         }
         worseSamples.add(sample);
     }
 
     @Override
-    public Collection<IEntity<?>> getTransientSamples(boolean worseCase) {
+    public Collection<Entity<?>> getTransientSamples(boolean worseCase) {
 
         assemble();
 

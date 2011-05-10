@@ -2,8 +2,6 @@ package com.bee32.plover.orm.feaCat;
 
 import javax.persistence.Entity;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
-
 @Entity
 public class Tiger
         extends Cat {
@@ -26,23 +24,6 @@ public class Tiger
 
     public void setPower(int power) {
         this.power = power;
-    }
-
-    @Override
-    protected boolean equalsEntity(EntityBean<Long> otherEntity) {
-        if (!super.equalsEntity(otherEntity))
-            return false;
-
-        Tiger o = (Tiger) otherEntity;
-        if (power != o.power)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected int hashCodeEntity() {
-        return super.hashCodeEntity() + power * 31;
     }
 
 }

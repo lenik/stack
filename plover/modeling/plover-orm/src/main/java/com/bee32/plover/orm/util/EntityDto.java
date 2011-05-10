@@ -645,8 +645,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */List<E> mergeList(IMarshalSession<IEntityMarshalContext> session, List<E> list,
-            Iterable<? extends D> dtoList) {
+    /*    */List<E> mergeList(IMarshalSession<IEntityMarshalContext> session, List<E> list, Iterable<? extends D> dtoList) {
         if (list == null)
             list = new ArrayList<E>();
         return mergeCollection(session, list, dtoList);

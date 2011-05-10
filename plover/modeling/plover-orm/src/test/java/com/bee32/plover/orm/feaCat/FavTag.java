@@ -3,11 +3,11 @@ package com.bee32.plover.orm.feaCat;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
+import com.bee32.plover.orm.entity.EntityAuto;
 
 @MappedSuperclass
 public class FavTag<T>
-        extends EntityBean<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

@@ -63,6 +63,9 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
         this.entityType = entityClass;
     }
 
+    /**
+     * This will guess the -impl type from interface type.
+     */
     protected Class<?> deferEntityType(Class<?> clazz)
             throws ClassNotFoundException {
 

@@ -26,7 +26,7 @@ public class EntityUtil {
         entityKeyTypeMap = new HashMap<Class<? extends IEntity<?>>, KeyTypeEnum>();
     }
 
-    public static <E extends IEntity<K>, K extends Serializable> K parseIdOfEntity(Class<E> entityClass, String idString)
+    public static <E extends Entity<K>, K extends Serializable> K parseIdOfEntity(Class<E> entityClass, String idString)
             throws ParseException {
 
         KeyTypeEnum keyTypeEnum = entityKeyTypeMap.get(entityClass);
@@ -110,8 +110,8 @@ public class EntityUtil {
         return _key;
     }
 
-    public static <E extends IEntity<K>, K extends Serializable> Class<K> getKeyType(Class<E> entityClass) {
-        return ClassUtil.infer1(entityClass, IEntity.class, 0);
+    public static <E extends Entity<K>, K extends Serializable> Class<K> getKeyType(Class<E> entityClass) {
+        return ClassUtil.infer1(entityClass, Entity.class, 0);
     }
 
     static KeyTypeEnum getTypeEnum(Class<?> type) {

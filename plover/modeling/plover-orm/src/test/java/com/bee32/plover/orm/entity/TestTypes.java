@@ -1,6 +1,5 @@
 package com.bee32.plover.orm.entity;
 
-import com.bee32.plover.orm.ext.color.EntityBean;
 
 interface IFoo
         extends IEntity<Integer> {
@@ -9,7 +8,7 @@ interface IFoo
 }
 
 class Foo
-        extends EntityBean<Integer>
+        extends EntityAuto<Integer>
         implements IFoo {
 
     private static final long serialVersionUID = 1L;
@@ -25,7 +24,7 @@ interface Bar
 }
 
 class BarImpl
-        extends EntityBean<Integer>
+        extends EntityAuto<Integer>
         implements Bar {
 
     private static final long serialVersionUID = 1L;
