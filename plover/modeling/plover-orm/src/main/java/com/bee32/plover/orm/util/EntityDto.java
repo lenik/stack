@@ -457,6 +457,14 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         case ID_REF:
             if (id == null)
                 throw new IllegalUsageException("ID-REF but id isn't set.");
+
+            if (given != null) {
+                // Return the given entity immediately if id matches.
+                K givenId = given.getId();
+                if (givenId != null && givenId.equals(id))
+                    return given;
+            }
+
             return loadEntity(entityType, id);
 
         case ID_VER_REF:
@@ -477,6 +485,9 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             throw new NotImplementedException("REF by name or other property isn't supportet.");
 
         case SELECTION:
+            if (given != null) // ignore thisDto.id
+                return given;
+
             if (id == null) {
                 E newEntity;
                 try {
@@ -489,7 +500,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
                 E existing = loadEntity(entityType, id);
                 return existing;
             }
-        }
+        } // switch
     }
 
     /**
