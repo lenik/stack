@@ -7,7 +7,7 @@ import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.dto.TaskDto;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyState;
-import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
+import com.bee32.sem.process.verify.builtin.dto.AbstractVerifyPolicyDto;
 
 public abstract class VerifiableEntityDto<E extends VerifiableEntity<K, ? extends IVerifyContext>, K extends Number>
         extends EntityDto<E, K> {
@@ -19,7 +19,7 @@ public abstract class VerifiableEntityDto<E extends VerifiableEntity<K, ? extend
     private Date verifyEvalDate;
     private TaskDto verifyTask;
 
-    private VerifyPolicyDto verifyPolicy;
+    private AbstractVerifyPolicyDto verifyPolicy;
 
     public VerifiableEntityDto() {
         super();
@@ -87,11 +87,11 @@ public abstract class VerifiableEntityDto<E extends VerifiableEntity<K, ? extend
         this.verifyEvalDate = verifyEvalDate;
     }
 
-    public VerifyPolicyDto getVerifyPolicy() {
+    public AbstractVerifyPolicyDto getVerifyPolicy() {
         return verifyPolicy;
     }
 
-    public void setVerifyPolicy(VerifyPolicyDto verifyPolicy) {
+    public void setVerifyPolicy(AbstractVerifyPolicyDto verifyPolicy) {
         this.verifyPolicy = verifyPolicy;
     }
 

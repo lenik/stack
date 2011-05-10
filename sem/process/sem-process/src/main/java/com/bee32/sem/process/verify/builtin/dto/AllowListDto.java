@@ -8,18 +8,14 @@ import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.process.verify.builtin.AllowList;
 
 public class AllowListDto
-        extends EntityDto<AllowList, Integer> {
+        extends AbstractVerifyPolicyDto<AllowList> {
 
     private static final long serialVersionUID = 1L;
 
     public static int RESPONSIBLES = 1;
-
-    String name;
-    String description;
 
     List<PrincipalDto> responsibles;
 
@@ -41,18 +37,12 @@ public class AllowListDto
 
     @Override
     protected void _marshal(AllowList source) {
-        name = source.getName();
-        description = source.getDescription();
-
         if (selection.contains(RESPONSIBLES))
             responsibles = marshalList(PrincipalDto.class, 0, source.getResponsibles());
     }
 
     @Override
     protected void _unmarshalTo(AllowList target) {
-        target.setName(name);
-        target.setDescription(description);
-
         if (selection.contains(RESPONSIBLES))
             mergeSet(target, "responsibles", responsibles);
     }
@@ -60,9 +50,6 @@ public class AllowListDto
     @Override
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
-
-        name = map.getString("name");
-        description = map.getString("description");
 
         if (selection.contains(RESPONSIBLES)) {
             responsibles = new ArrayList<PrincipalDto>();
@@ -76,22 +63,6 @@ public class AllowListDto
                 }
             }
         }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public List<PrincipalDto> getResponsibles() {

@@ -1,13 +1,11 @@
 package com.bee32.sem.process.verify;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.EntityBase;
@@ -16,6 +14,7 @@ import com.bee32.plover.orm.ext.color.GreenEntity;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
+@DiscriminatorValue("-")
 public abstract class VerifyPolicy<C extends IVerifyContext>
         extends GreenEntity<Integer>
         implements IVerifyPolicy<C> {
@@ -29,23 +28,6 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
 
     public VerifyPolicy() {
         contextClass = ClassUtil.infer1(getClass(), VerifyPolicy.class, 0);
-    }
-
-    @NaturalId(mutable = true)
-    @Column(length = 50, unique = true)
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-
-        if (name.isEmpty())
-            throw new IllegalArgumentException("Name can't be empty");
-
-        this.name = name;
     }
 
     @Transient
@@ -109,17 +91,12 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
 
     @Override
     protected Boolean naturalEquals(EntityBase<Integer> other) {
-        VerifyPolicy<?> o = (VerifyPolicy<?>) other;
-
-        if (this.name == null || o.name == null)
-            return false;
-
-        return this.name.equals(o.name);
+        return idEquals(other);
     }
 
     @Override
     protected Integer naturalHashCode() {
-        return name == null ? 0 : name.hashCode();
+        return idHashCode();
     }
 
 }

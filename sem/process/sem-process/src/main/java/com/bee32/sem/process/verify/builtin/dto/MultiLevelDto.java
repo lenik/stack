@@ -9,18 +9,15 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 
 public class MultiLevelDto
-        extends EntityDto<MultiLevel, Integer> {
+        extends AbstractVerifyPolicyDto<MultiLevel> {
 
     private static final long serialVersionUID = 1L;
 
     public static final int LEVELS = 1;
-
-    String name;
-    String description;
 
     List<LevelDto> levels;
 
@@ -60,18 +57,12 @@ public class MultiLevelDto
 
     @Override
     protected void _marshal(MultiLevel source) {
-        name = source.getName();
-        description = source.getDescription();
-
         if (selection.contains(LEVELS))
             setLevels(marshalList(LevelDto.class, source.getLevels()));
     }
 
     @Override
     protected void _unmarshalTo(MultiLevel target) {
-        target.setName(name);
-        target.setDescription(description);
-
         if (selection.contains(LEVELS))
             mergeList(target, "levels", levels);
     }
@@ -79,9 +70,6 @@ public class MultiLevelDto
     @Override
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
-
-        name = map.getString("name");
-        description = map.getString("description");
 
         if (selection.contains(LEVELS)) {
             levels = new ArrayList<LevelDto>();
@@ -94,7 +82,7 @@ public class MultiLevelDto
 
                     long limit = Long.parseLong(_limit);
                     int policyId = Integer.parseInt(_policyId);
-                    VerifyPolicyDto policyRef = new VerifyPolicyDto().ref(policyId);
+                    AbstractVerifyPolicyDto<?> policyRef = new AbstractVerifyPolicyDto<VerifyPolicy<?>>().ref(policyId);
 
                     LevelDto level = new LevelDto();
                     level.setMultiLevel(new MultiLevelDto().ref(this));
