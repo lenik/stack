@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.ext.dict.MD5NameDict;
+import com.bee32.plover.orm.ext.digest.MD5Entity;
 import com.bee32.sem.file.entity.FileStore;
 import com.bee32.sem.file.util.ImageBlob;
 
@@ -20,7 +20,7 @@ import com.bee32.sem.file.util.ImageBlob;
 @AttributeOverrides({//
 /*    */@AttributeOverride(name = "label", column = @Column(length = 100)) })
 public class FileBlob
-        extends MD5NameDict {
+        extends MD5Entity {
 
     private static final long serialVersionUID = 1L;
 

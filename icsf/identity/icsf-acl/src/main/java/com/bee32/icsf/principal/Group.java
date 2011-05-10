@@ -12,7 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.EntityBean;
 
 @Entity
 @DiscriminatorValue("G")

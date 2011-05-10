@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 
 import org.hibernate.annotations.BatchSize;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.EntityBean;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 

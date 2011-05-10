@@ -8,7 +8,7 @@ import javax.persistence.InheritanceType;
 import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.BatchSize;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.EntityBean;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

@@ -22,7 +22,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalBeanConfig;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.EntityBean;
 
 @Entity
 public class Realm

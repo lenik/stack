@@ -3,7 +3,7 @@ package com.bee32.sem.base.tx;
 import java.io.Serializable;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.PinkEntity;
 
 /**
  * 事务性实体所具有的特性：
@@ -14,7 +14,7 @@ import com.bee32.plover.orm.entity.EntityBean;
  * <li>事务的一般属性：标题、制单人、审核策略
  */
 public class TxEntity<K extends Serializable>
-        extends EntityBean<K> {
+        extends PinkEntity<K> {
 
     private static final long serialVersionUID = 1L;
 

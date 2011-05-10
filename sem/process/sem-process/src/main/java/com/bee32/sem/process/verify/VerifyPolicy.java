@@ -8,13 +8,13 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.BlueEntity;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 public abstract class VerifyPolicy<C extends IVerifyContext>
-        extends EntityBean<Integer>
+        extends BlueEntity<Integer>
         implements IVerifyPolicy<C> {
 
     private static final long serialVersionUID = 1L;

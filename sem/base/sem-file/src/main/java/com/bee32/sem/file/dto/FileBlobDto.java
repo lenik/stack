@@ -3,12 +3,12 @@ package com.bee32.sem.file.dto;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.dict.DigestNameDictDto;
+import com.bee32.plover.orm.ext.digest.DigestEntityDto;
 import com.bee32.sem.file.blob.FileBlob;
 import com.bee32.sem.file.util.ImageBlob;
 
 public class FileBlobDto
-        extends DigestNameDictDto<FileBlob> {
+        extends DigestEntityDto<FileBlob> {
 
     private static final long serialVersionUID = 1L;
 

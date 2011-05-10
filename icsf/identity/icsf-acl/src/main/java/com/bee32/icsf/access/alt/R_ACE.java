@@ -11,7 +11,7 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.EntityBean;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 

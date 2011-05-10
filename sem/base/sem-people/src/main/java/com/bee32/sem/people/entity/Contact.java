@@ -1,7 +1,5 @@
 package com.bee32.sem.people.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
@@ -31,16 +29,6 @@ public class Contact
     String fax;
     String email;
     String website;
-
-    @Override
-    protected List<ContactXP> getXPool() {
-        return pool();
-    }
-
-    @Override
-    protected void setXPool(List<ContactXP> xPool) {
-        pool(xPool);
-    }
 
     @ManyToOne
     public ContactCategory getCategory() {

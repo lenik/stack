@@ -22,7 +22,7 @@ import org.hibernate.annotations.MapKeyManyToMany;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.EntityBean;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

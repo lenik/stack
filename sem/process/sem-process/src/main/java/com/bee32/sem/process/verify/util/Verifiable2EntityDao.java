@@ -9,7 +9,8 @@ import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 
-public class Verifiable2EntityDao<E extends Verifiable2EntityBean<K, C>, K extends Serializable, C extends IVerifyContext>
+@Deprecated
+public class Verifiable2EntityDao<E extends Verifiable2Entity<K, C>, K extends Serializable, C extends IVerifyContext>
         extends EntityDao<E, K> {
 
     @Inject

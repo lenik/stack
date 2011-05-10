@@ -64,17 +64,6 @@ public class Person
     List<PersonContact> contacts;
     List<PersonLog> logs;
 
-    @OneToMany
-    @Override
-    protected List<PersonXP> getXPool() {
-        return pool();
-    }
-
-    @Override
-    protected void setXPool(List<PersonXP> xPool) {
-        pool(xPool);
-    }
-
     /**
      * 记录的持有者
      */

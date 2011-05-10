@@ -8,11 +8,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.BlueEntity;
 
 @Entity
 public class UserCategoryItem
-        extends EntityBean<Long> {
+        extends BlueEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 

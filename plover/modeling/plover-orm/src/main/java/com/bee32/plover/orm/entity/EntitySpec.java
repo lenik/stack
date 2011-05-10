@@ -7,8 +7,13 @@ public abstract class EntitySpec<K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
-    @Override
-    protected abstract void setId(K id);
+    public EntitySpec() {
+        super();
+    }
+
+    public EntitySpec(String name) {
+        super(name);
+    }
 
     @Override
     protected final Boolean equalsKey(Entity<K> other) {

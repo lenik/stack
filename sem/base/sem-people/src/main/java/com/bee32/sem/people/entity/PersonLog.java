@@ -1,9 +1,9 @@
 package com.bee32.sem.people.entity;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.BlueEntity;
 
 public class PersonLog
-        extends EntityBean<Long> {
+        extends BlueEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 

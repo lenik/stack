@@ -4,10 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import com.bee32.plover.orm.ext.color.BlueEntity;
 
 public abstract class EntityExt<K extends Serializable, X extends XPool<?>>
-        extends EntityBean<K>
+        extends BlueEntity<K>
         implements IXPoolable<X> {
 
     private static final long serialVersionUID = 1L;
@@ -22,9 +27,15 @@ public abstract class EntityExt<K extends Serializable, X extends XPool<?>>
         super(name);
     }
 
-    protected abstract List<X> getXPool();
+    @OneToMany
+    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    final List<X> getXPool() {
+        return pool();
+    }
 
-    protected abstract void setXPool(List<X> xPool);
+    void setXPool(List<X> xPool) {
+        this.xPool = xPool;
+    }
 
     @Override
     public final List<X> pool() {
@@ -36,10 +47,6 @@ public abstract class EntityExt<K extends Serializable, X extends XPool<?>>
             }
         }
         return xPool;
-    }
-
-    protected final void pool(List<X> xPool) {
-        this.xPool = xPool;
     }
 
 }

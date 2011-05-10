@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 
 import user.hibernate.fea2.ext.Food;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.EntityBean;
 
 @Entity
 public class Fruit

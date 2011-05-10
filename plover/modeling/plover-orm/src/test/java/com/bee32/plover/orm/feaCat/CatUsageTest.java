@@ -20,7 +20,7 @@ public class CatUsageTest
     static Logger logger = LoggerFactory.getLogger(CatUsageTest.class);
 
     @Inject
-    PlaySessionCache catService;
+    SessionCachePlayer catService;
 
     @Test
     public void testPopulateStruct()
@@ -43,7 +43,7 @@ public class CatUsageTest
 
         logger.warn("Do List");
         catService.tcList();
-// catService.tcList();
+        // catService.tcList();
     }
 
 }

@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.entity;
 
+import com.bee32.plover.orm.ext.color.EntityBean;
+
 interface IFoo
         extends IEntity<Integer> {
     @Override

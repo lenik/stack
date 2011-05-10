@@ -4,11 +4,11 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.BlueEntity;
 
 @MappedSuperclass
 public class OrderItem
-        extends EntityBean<Long> {
+        extends BlueEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 

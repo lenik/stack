@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.PinkEntity;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Task;
 import com.bee32.sem.process.verify.IVerifiable;
@@ -23,7 +23,7 @@ import com.bee32.sem.process.verify.VerifyState;
 
 @MappedSuperclass
 public abstract class VerifiableEntity<K extends Serializable, C extends IVerifyContext>
-        extends EntityBean<K>
+        extends PinkEntity<K>
         implements IVerifiable<C>, IVerifyContext {
 
     private static final long serialVersionUID = 1L;

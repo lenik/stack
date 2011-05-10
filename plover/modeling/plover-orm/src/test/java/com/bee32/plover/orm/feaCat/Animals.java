@@ -12,6 +12,7 @@ public class Animals
     protected void preamble() {
         add(Cat.class);
         add(Tiger.class);
+        add(CatFavTag.class);
     }
 
     static final Animals instance = new Animals();

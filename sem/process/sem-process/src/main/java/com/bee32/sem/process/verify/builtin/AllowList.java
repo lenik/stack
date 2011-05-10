@@ -15,7 +15,7 @@ import javax.persistence.ManyToMany;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalBeanConfig;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.BlueEntity;
 import com.bee32.plover.orm.util.Alias;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -126,7 +126,7 @@ public class AllowList
     }
 
     @Override
-    protected boolean equalsEntity(EntityBean<Integer> otherEntity) {
+    protected boolean equalsEntity(BlueEntity<Integer> otherEntity) {
         if (!PrincipalBeanConfig.fullEquality)
             return false;
 

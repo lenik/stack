@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 import user.hibernate.fea2.Fruit;
 
-import com.bee32.plover.orm.entity.EntityBean;
+import com.bee32.plover.orm.ext.color.EntityBean;
 
 @Entity
 @DiscriminatorValue("BNNA")

@@ -11,7 +11,8 @@ import com.bee32.sem.process.verify.IVerifyPolicy;
 import com.bee32.sem.process.verify.VerifyException;
 
 @MappedSuperclass
-public abstract class Verifiable2EntityBean<K extends Serializable, C extends IVerifyContext>
+@Deprecated
+public abstract class Verifiable2Entity<K extends Serializable, C extends IVerifyContext>
         extends VerifiableEntity<K, C>
         implements IVerifiable2<C> {
 
@@ -19,11 +20,11 @@ public abstract class Verifiable2EntityBean<K extends Serializable, C extends IV
 
     private IVerifyPolicy<C> verifyPolicy;
 
-    public Verifiable2EntityBean() {
+    public Verifiable2Entity() {
         super();
     }
 
-    public Verifiable2EntityBean(String name) {
+    public Verifiable2Entity(String name) {
         super(name);
     }
 

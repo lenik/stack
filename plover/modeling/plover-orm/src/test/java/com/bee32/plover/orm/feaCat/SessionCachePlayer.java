@@ -20,15 +20,15 @@ import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.test.FeaturePlayer;
 
-@Using(Animals.class)
-@Import(WiredDaoTestCase.class)
+@Service
 @Scope("prototype")
 @Lazy
-@Service
-public class PlaySessionCache
-        extends FeaturePlayer<PlaySessionCache> {
+@Using(Animals.class)
+@Import(WiredDaoTestCase.class)
+public class SessionCachePlayer
+        extends FeaturePlayer<SessionCachePlayer> {
 
-    static Logger logger = LoggerFactory.getLogger(PlaySessionCache.class);
+    static Logger logger = LoggerFactory.getLogger(SessionCachePlayer.class);
 
     @Inject
     SessionFactory sessionFactory;
@@ -102,11 +102,11 @@ public class PlaySessionCache
 
     public static void main(String[] args)
             throws Exception {
-        new PlaySessionCache().mainLoop();
+        new SessionCachePlayer().mainLoop();
     }
 
     @Override
-    protected void main(PlaySessionCache player)
+    protected void main(SessionCachePlayer player)
             throws Exception {
         player.tcPrepare();
         player.tcList();
