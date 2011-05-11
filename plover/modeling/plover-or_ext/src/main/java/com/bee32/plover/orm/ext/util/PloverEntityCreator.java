@@ -16,6 +16,7 @@ import java.util.Set;
 import javax.free.ClassResource;
 import javax.free.URLResource;
 import javax.free.UnexpectedException;
+import javax.free.UnixStyleVarProcessor;
 
 import com.bee32.plover.arch.type.FriendTypes;
 import com.bee32.plover.orm.entity.Entity;
@@ -53,9 +54,9 @@ public class PloverEntityCreator {
             throws IOException {
         URLResource resource = ClassResource.classData(getClass(), extension);
         String contents = resource.forRead().readTextContents();
-
-
-        return contents;
+        UnixStyleVarProcessor usvp = new UnixStyleVarProcessor(map);
+        String result = usvp.process(contents);
+        return result;
     }
 
     public void createDTOClass() {
