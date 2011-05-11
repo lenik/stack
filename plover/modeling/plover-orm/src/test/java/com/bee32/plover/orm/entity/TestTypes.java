@@ -1,6 +1,5 @@
 package com.bee32.plover.orm.entity;
 
-
 interface IFoo
         extends IEntity<Integer> {
     @Override
