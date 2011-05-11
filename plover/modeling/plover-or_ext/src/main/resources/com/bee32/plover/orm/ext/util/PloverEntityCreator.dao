@@ -1,0 +1,9 @@
+package $daoFQPN;
+
+import $daoParentFQCN;
+import $entityFQCN;
+
+public class $daoCN
+        extends $daoParentCN<$entityCN, $keyCN> {
+
+}

@@ -1,0 +1,43 @@
+package $dtoFQPN;
+
+import javax.free.ParseException;
+
+import com.bee32.plover.arch.util.TextMap;
+import $entityFQCN;
+import $parentFQCN;
+import $parentDtoFQCN;
+
+public class $dtoCN
+        extends $parentDtoCN<$entityCN, $keyType> {
+
+    private static final long serialVersionUID = 1L;
+
+    $lcFields
+
+    public $dtoCN() {
+        super();
+    }
+
+    public $dtoCN($entityCN source) {
+        super(source);
+    }
+
+    @Override
+    protected void _marshal($entityCN source) {
+        $marshal
+    }
+
+    @Override
+    protected void _unmarshalTo($entityCN target) {
+        $unmarshal
+    }
+
+    @Override
+    public void _parse(TextMap map)
+            throws ParseException {
+        $parse
+    }
+
+    $properties
+
+}
