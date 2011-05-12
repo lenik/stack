@@ -42,6 +42,7 @@ blogs                   CNAME   s-dev           ; 开发者日志
 ci                      CNAME   aut-dev         ; 连续集成
 econ                    CNAME   main-dev
 forum                   CNAME   s-dev           ; 用户论坛
+git                     CNAME   main-dev        ; Git仓库/版本控制
 list                    CNAME   s-dev           ; 邮件列表
 m2                      CNAME   aut-dev         ; M2仓库/模快依赖项
 repo                    CNAME   s-dev           ; SDU仓库/预编译部署单元
