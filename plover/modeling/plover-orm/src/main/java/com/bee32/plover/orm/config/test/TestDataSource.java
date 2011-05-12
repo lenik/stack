@@ -5,8 +5,10 @@ import com.bee32.plover.orm.config.CustomizedDataSource;
 public class TestDataSource
         extends CustomizedDataSource {
 
+    public static String NAME = "test";
+
     public TestDataSource() {
-        super("test");
+        super(NAME);
 
         setInitialSize(1);
     }

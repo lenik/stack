@@ -2,8 +2,19 @@ package com.bee32.sem.test;
 
 import java.io.IOException;
 
+import com.bee32.plover.orm.config.test.TestDataSource;
+
 public class SEMUnitServer
         extends SEMTestCase {
+
+    public SEMUnitServer() {
+        String name = getDataSource();
+        TestDataSource.NAME = name;
+    }
+
+    protected String getDataSource() {
+        return "test";
+    }
 
     @Override
     protected int getPort() {
