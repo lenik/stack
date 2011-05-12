@@ -25,7 +25,7 @@ import com.bee32.plover.orm.util.DTOs;
 
 public class PloverEntityCreator {
 
-    Class<? extends Entity<? extends Serializable>> entityType;
+    Class<? extends Entity<Serializable>> entityType;
     File javaDir;
     File resDir;
 
@@ -157,8 +157,8 @@ public class PloverEntityCreator {
 
         String className = args[0];
 
-        Class<? extends Entity<? extends Serializable>> clazz = //
-        (Class<? extends Entity<? extends Serializable>>) Class.forName(className);
+        Class<? extends Entity<Serializable>> clazz = //
+        (Class<? extends Entity<Serializable>>) Class.forName(className);
 
         if (!Entity.class.isAssignableFrom(clazz)) {
             System.err.println("Not an entity: " + clazz);
