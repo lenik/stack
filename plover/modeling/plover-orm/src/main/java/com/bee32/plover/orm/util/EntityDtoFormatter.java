@@ -72,8 +72,8 @@ public class EntityDtoFormatter
                 out.print(':');
                 out.print(id);
 
-                int version = val.getVersion();
-                if (version != 0) {
+                Integer version = val.getVersion();
+                if (version != null) {
                     out.print('.');
                     out.print(version);
                 }
