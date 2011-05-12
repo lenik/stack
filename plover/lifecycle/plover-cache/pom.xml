@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.bee32.plover</groupId>
         <artifactId>lifecycle</artifactId>
-        <version>0.2.1-SNAPSHOT</version>
+        <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>plover-cache</artifactId>
     <version>0.2.2</version>
@@ -11,7 +11,7 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-arch</artifactId>
-            <version>0.2.1-SNAPSHOT</version>
+            <version>0.3.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>

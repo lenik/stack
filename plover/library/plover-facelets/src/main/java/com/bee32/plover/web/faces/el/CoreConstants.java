@@ -18,7 +18,7 @@ public class CoreConstants
      * pc:version()
      */
     public static String version() {
-        return "plover-facelets 0.2.1-SNAPSHOT";
+        return "plover-facelets 0.3.2-SNAPSHOT";
     }
 
 }

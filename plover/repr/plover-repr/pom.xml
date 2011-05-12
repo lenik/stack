@@ -3,10 +3,10 @@
     <parent>
         <groupId>com.bee32.plover</groupId>
         <artifactId>repr</artifactId>
-        <version>0.2.1-SNAPSHOT</version>
+        <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>plover-repr</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.3.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>javax.free</groupId>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-model</artifactId>
-            <version>0.2.1-SNAPSHOT</version>
+            <version>0.3.2-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

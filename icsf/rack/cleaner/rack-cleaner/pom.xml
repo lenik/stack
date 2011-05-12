@@ -3,11 +3,11 @@
     <parent>
         <groupId>com.bee32.icsf</groupId>
         <artifactId>cleaner</artifactId>
-        <version>0.2.1-SNAPSHOT</version>
+        <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>rack-cleaner</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.3.2-SNAPSHOT</version>
     <dependencies/>
     <name>ICSF :: Rack :: Cleaner :: Rack Cleaner</name>
 </project>

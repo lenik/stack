@@ -3,20 +3,20 @@
     <parent>
         <groupId>com.bee32.sem</groupId>
         <artifactId>base</artifactId>
-        <version>0.2.1-SNAPSHOT</version>
+        <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>sem-event</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.3.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>com.bee32.sem</groupId>
             <artifactId>sem-module</artifactId>
-            <version>0.2.1-SNAPSHOT</version>
+            <version>0.3.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.bee32.sem</groupId>
             <artifactId>sem-mail</artifactId>
-            <version>0.2.1-SNAPSHOT</version>
+            <version>0.3.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
