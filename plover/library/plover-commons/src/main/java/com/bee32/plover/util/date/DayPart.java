@@ -15,7 +15,7 @@ public final class DayPart
     private final int start;
     private final int end;
 
-    private DayPartition partition;
+    private final DayPartition partition;
     private final int index;
 
     /**
@@ -56,6 +56,14 @@ public final class DayPart
     public DayPart getNext() {
         int nextIndex = (index + 1) % partition.parts.length;
         return partition.parts[nextIndex];
+    }
+
+    public DayPartition getPartition() {
+        return partition;
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     public boolean isFirst() {

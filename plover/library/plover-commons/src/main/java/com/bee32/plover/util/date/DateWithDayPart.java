@@ -22,6 +22,14 @@ public final class DateWithDayPart
         this.part = part;
     }
 
+    public Date getTruncatedDate() {
+        return _date;
+    }
+
+    public DayPart getPart() {
+        return part;
+    }
+
     public Date getDateOfPartBegin() {
         return part.getStartDate(_date);
     }
