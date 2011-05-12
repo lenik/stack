@@ -1,0 +1,68 @@
+<VirtualHost *:80>
+    ServerName bee32.com
+    ServerAlias *.bee64.com
+    ServerAlias *.seccaproject.com
+    ServerAlias *.bee32.com
+    ServerAlias *.s.com.rad.vapeak.com
+    ServerAlias *.s.com
+    ServerAdmin admin@bee32.com
+
+    LogLevel warn
+    ErrorLog  /var/log/apache2/alias_error.log
+    CustomLog /var/log/apache2/alias_access.log combined
+
+    RewriteEngine On
+
+    RewriteCond %{HTTP_HOST} ^(.*)bee64.com$
+    RewriteRule ^(.*)$ http://%1bee32.com$1 [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(.*)seccaproject.com$
+    RewriteRule ^(.*)$ http://%1bee32.com$1 [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(.*)secca-project.com$
+    RewriteRule ^(.*)$ http://%1bee32.com$1 [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(.*).s.com.rad.vapeak.com
+    RewriteRule ^(.*)$ http://%1.bee32.com$1 [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(.*).s.com$
+    RewriteRule ^(.*)$ http://%1.bee32.com$1 [R=301,L]
+
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName bee32.com
+    ServerAlias *.bee64.com
+    ServerAlias *.seccaproject.com
+    ServerAlias *.bee32.com
+    ServerAlias *.s.com.rad.vapeak.com
+    ServerAlias *.s.com
+    ServerAdmin admin@bee32.com
+
+    SSLEngine on
+    # SSLCertificateFile    /etc/apache2/certs/www.bee32.com.crt
+    SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+    SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+
+    LogLevel warn
+    ErrorLog  /var/log/apache2/alias_error.log
+    CustomLog /var/log/apache2/alias_access.log combined
+
+    RewriteEngine On
+
+    RewriteCond %{HTTP_HOST} ^(.*)bee64.com$
+    RewriteRule ^(.*)$ https://%1bee32.com$1 [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(.*)seccaproject.com$
+    RewriteRule ^(.*)$ https://%1bee32.com$1 [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(.*)secca-project.com$
+    RewriteRule ^(.*)$ https://%1bee32.com$1 [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(.*)s.com.rad.vapeak.com
+    RewriteRule ^(.*)$ http://%1.bee32.com$1 [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(.*).s.com$
+    RewriteRule ^(.*)$ http://%1.bee32.com$1 [R=301,L]
+
+</VirtualHost>

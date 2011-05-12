@@ -10,12 +10,12 @@ sitesdir	= ${sysconfdir}/apache2/sites-available
 
 dist_seccadb_DATA = \
 	named.conf \
-	seccaproject.db \
+	bee.db \
 	rad.db \
 	bia.db
 
 dist_sites_DATA = \
-	secca-aliases.site
+	bee-aliases.site
 
 setup_SCRIPTS = \
 	post-install.sh \
