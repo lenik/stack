@@ -6,7 +6,7 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>plover-vcs</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.100</version>
     <dependencies/>
     <name>Plover :: Core :: Vcs</name>
 </project>

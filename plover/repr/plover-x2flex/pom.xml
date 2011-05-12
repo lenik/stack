@@ -6,7 +6,7 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>plover-x2flex</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.100</version>
     <dependencies>
         <dependency>
             <groupId>com.bee32.plover</groupId>

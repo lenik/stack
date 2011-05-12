@@ -6,12 +6,12 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>plover-expr-sql</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.100</version>
     <dependencies>
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-expr</artifactId>
-            <version>0.2.2</version>
+            <version>0.2.100</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>

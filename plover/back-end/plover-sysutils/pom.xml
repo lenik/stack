@@ -7,7 +7,7 @@
     </parent>
     <artifactId>plover-sysutils</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.3</version>
+    <version>0.2.100</version>
     <dependencies/>
     <name>Plover :: Back End :: Sysutils</name>
 </project>
