@@ -19,7 +19,7 @@ public class UnitTestCase<T>
      * @return Wrapped instance.
      */
     public T unit() {
-        return unit(true);
+        return unit(false);
     }
 
     /**
@@ -33,11 +33,22 @@ public class UnitTestCase<T>
      * @return Wrapped & Wired instance.
      */
     public T unit(boolean dropThis) {
-        if (!dropThis)
-            throw new UnsupportedOperationException("Sorry, it's unsupported to reuse this object.");
+        if (dropThis) {
+            T wrapped = (T) JUnitHelper.createWrappedInstance(getClass());
+            return wrapped;
+        }
 
-        T wrapped = (T) JUnitHelper.createWrappedInstance(getClass());
-        return wrapped;
+        @SuppressWarnings("unchecked")
+        T _this = (T) this;
+
+        try {
+            JUnitHelper.beforeClass(getClass());
+            JUnitHelper.beforeMethod(getClass(), this);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+
+        return _this;
     }
 
     public void run() {
