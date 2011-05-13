@@ -1,12 +1,12 @@
-$TTL            12H
+$TTL            1H
 
 ; The SOA resource record indicates that this DNS name server is the best
 ; source of information for the data within this DNS domain.
 
 @               IN      SOA     (
-                                    main-dev.bee32.com.; db creator host
-                                    admin.bee32.com.; contact e-mail
-                                    3       ; serial
+                                    dns.bee32.com.   ; db creator host
+                                    admin.bee32.com. ; contact e-mail
+                                    4       ; serial
                                     1H      ; sync refresh interval
                                     10M     ; sync retry interval
                                     12H     ; sync expire
@@ -22,39 +22,47 @@ $TTL            12H
 
                         TXT     "t=spf1 A MX include:authsmtp.com ~all"
 
-                        A       50.16.108.115   ; 主开发节点
-main-dev                A       50.16.108.115   ; 主开发节点
+                        A       50.16.108.115   ; 主开发结点
+node-us1                A       50.16.108.115   ; 美国预定点-1
 
-*.app                   CNAME   main-dev        ; 应用节点-1-*
-*.1                     CNAME   main-dev        ; 应用节点-1-*
+dns                     CNAME   node-us1        ; 域名控制器
 
-s-dev                   CNAME   main-dev        ; 开发组支持
-aut-dev                 CNAME   main-dev        ; 综合集成
-backup                  CNAME   main-dev        ; 备份
+app-0                   CNAME   node-us1        ; 应用辅助结点
+app-1                   CNAME   node-us1        ; 应用结点-1
 
-dev                     CNAME   main-dev
-ghs                     CNAME   main-dev
+*.1                     CNAME   app-1           ; 应用结点-1映射
+;;1.1                   CNAME   *.1             ; 【应用】三元机电
+;;2.1                   CNAME   *.1             ; 【应用】秀之莎
+
+dev                     CNAME   node-us1        ; 重要开发数据
+s-dev                   CNAME   dev             ; 次要开发数据
+aut-dev                 CNAME   node-us1        ; 构建辅助
+
+backup                  CNAME   app-0           ; 备份
+ghs                     CNAME   app-0           ; 反墙装置
 mail                    CNAME   ghs             ; 邮件支持
-node                    CNAME   main-dev        ; 节点信息查询
-rproxy                  CNAME   main-dev        ; 反向代理支持
+rproxy                  CNAME   app-0           ; 反向代理支持
+xmpp                    CNAME   app-0           ; XMPP IM 支持
 
-blogs                   CNAME   s-dev           ; 开发者日志
-ci                      CNAME   aut-dev         ; 连续集成
-econ                    CNAME   main-dev
-forum                   CNAME   s-dev           ; 用户论坛
-git                     CNAME   main-dev        ; Git仓库/版本控制
+node                    CNAME   node-us1        ; 结点管理与元信息查询
+econ                    CNAME   node            ;
+webmin                  CNAME   node            ; Web 远程系统监控
+
+sql                     CNAME   node            ; SQL数据管理
+pg                      CNAME   sql             ; PostgreSQL 数据库管理
+my                      CNAME   sql             ; MySQL 数据库管理
+
+blog                    CNAME   s-dev           ; 开发者日志
+*.blog                  CNAME   blog
+
+ci                      CNAME   aut-dev         ; 连续集成系统
+forum                   CNAME   s-dev           ; 工程论坛
+git                     CNAME   dev             ; Git仓库/版本控制
 list                    CNAME   s-dev           ; 邮件列表
 m2                      CNAME   aut-dev         ; M2仓库/模快依赖项
 repo                    CNAME   s-dev           ; SDU仓库/预编译部署单元
-sql                     CNAME   aut-dev         ; SQL数据管理
 static                  CNAME   app-1           ; 静态资源
-svn                     CNAME   main-dev        ; SVN仓库/版本控制
-webapp                  CNAME   app-1
+svn                     CNAME   dev             ; SVN仓库/版本控制
 track                   CNAME   s-dev           ; Trac 项目管理支持
-webmin                  CNAME   main-dev        ; Web 远程系统监控
-www                     CNAME   main-dev        ; SECCA 工程开发网
-xmpp                    CNAME   s-dev           ; XMPP IM 支持
+www                     CNAME   node-us1        ; SECCA 工程开发网
 
-*.blogs                 CNAME   blogs
-pg                      CNAME   sql             ; PostgreSQL 数据库管理
-my                      CNAME   sql             ; MySQL 数据库管理

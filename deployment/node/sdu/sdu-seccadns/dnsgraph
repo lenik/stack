@@ -40,12 +40,28 @@ function setopt() {
 }
 
 function main() {
+    png=`tempfile -s.png`
+    cat "$@" | gen | dot -T png >$png
+    display $png
+    rm -f $png
+}
+
+function gen() {
     echo "digraph {"
     echo '    rankdir = "RL"; '
     echo '    bb = "0, 0, 100, 600"; '
     echo "    node [ shape = box3d ]; "
 
+    # foo A|CNAME bar ;...
     while read name rt parent comment; do
+        if [ "${name:0:1}" = ';' ]; then
+            if [ "${name:1:1}" = ';' ]; then
+                name="${name:2}"
+            else
+                continue
+            fi
+        fi
+
         if [ -z "${rt//[0-9]}" ]; then
             rt="$parent"
             if [ "${comment/;}" = "$comment" ]; then
