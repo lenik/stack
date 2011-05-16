@@ -49,7 +49,7 @@ public class SEMTestCase
     }
 
     @Override
-    protected void configureBuiltinServlets() {
+    protected final void configureBuiltinServlets() {
         super.configureBuiltinServlets();
 
         // OSIV filter should before dispatch filter.

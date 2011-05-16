@@ -71,7 +71,7 @@ public abstract class ServletTestCase
         public void startup()
                 throws Exception {
             super.startup();
-            ServletTestCase.this.onServerStarted();
+            ServletTestCase.this.onServerStartup();
         }
 
         @Override
@@ -158,7 +158,7 @@ public abstract class ServletTestCase
         servletContext = null;
     }
 
-    protected void onServerStarted() {
+    protected void onServerStartup() {
     }
 
     protected void onServerShutdown() {

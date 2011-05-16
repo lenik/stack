@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.webapp.FacesServlet;
-import javax.free.IllegalUsageException;
 import javax.free.StringArray;
 
 import org.apache.myfaces.webapp.StartupServletContextListener;
@@ -117,15 +116,7 @@ public class FaceletsTestCase
     }
 
     @Override
-    protected final void configureServlets() {
-        configureAdditionalServlets();
-
-        if (!checkAdditionalServlets)
-            throw new IllegalUsageException("configureAdditionalServlets is overrided.");
-    }
-
-    protected void configureAdditionalServlets() {
-        checkAdditionalServlets = true;
+    protected void configureServlets() {
     }
 
 }
