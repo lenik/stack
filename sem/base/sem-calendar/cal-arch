@@ -1,27 +1,6 @@
 
 个人日程记录
 
-    Diary
-        owner, category, subject, content
-        address, status, score
 
-    DiaryCategory
-
-    DiaryObserver
-        owner, category, observer
-
-    ICalendarSource
-        getEvents(begin, end) => event*
-
-    ICalendarEvent
-        begin, end, subject, content, style*
-
-    CalendarView
-        event*
-
-    CalendarViewBuilder
-        locale, time-zone
-        -
-        buildView(source*, begin, end) => view
 
 公共事务处理  => ITS 问题跟踪系统

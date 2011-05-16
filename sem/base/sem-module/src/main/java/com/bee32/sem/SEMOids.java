@@ -20,6 +20,7 @@ public interface SEMOids {
         int Mail = 7;
         int Event = 8;
         int Bank = 9;
+        int Calendar = 10;
     }
 
     interface process {
@@ -43,7 +44,6 @@ public interface SEMOids {
     }
 
     interface support {
-        int Calendar = 1;
         int Track = 2;
         int Kb = 3;
     }
