@@ -4,6 +4,7 @@ base/
     sem-desktop
     sem-user
     sem-people
+    sem-calendar
     sem-event
     sem-bank
     sem-file
@@ -27,7 +28,6 @@ social/
     sem-partner
 
 support/
-    sem-calendar
     sem-track
     sem-kb
 
