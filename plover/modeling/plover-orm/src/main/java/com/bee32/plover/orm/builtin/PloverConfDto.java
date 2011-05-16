@@ -28,6 +28,8 @@ public class PloverConfDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+        value = map.getString("value");
+        description = map.getString("description");
     }
 
     public String getValue() {
