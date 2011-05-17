@@ -34,8 +34,6 @@ public class FaceletsTestCase
 
     static Logger logger = LoggerFactory.getLogger(FaceletsTestCase.class);
 
-    private boolean checkAdditionalServlets;
-
     private List<String> taglibs = new ArrayList<String>();
 
     public FaceletsTestCase() {
