@@ -4,11 +4,11 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import $entityFQCN;
-import $parentFQCN;
-import $parentDtoFQCN;
+import $entityParentFQCN;
+import $baseDtoFQCN;
 
 public class $dtoCN
-        extends $parentDtoCN<$entityCN, $keyType> {
+        extends $baseDtoCN<$entityCN, $keyType> {
 
     private static final long serialVersionUID = 1L;
 
