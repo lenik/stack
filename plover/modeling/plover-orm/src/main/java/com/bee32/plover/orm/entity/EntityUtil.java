@@ -7,6 +7,9 @@ import java.util.Map;
 import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.bee32.plover.arch.type.FriendTypes;
 import com.bee32.plover.arch.util.ClassUtil;
 
 enum KeyTypeEnum {
@@ -126,6 +129,44 @@ public class EntityUtil {
 
         if (type == String.class)
             return KeyTypeEnum.STRING;
+
+        return null;
+    }
+
+    /**
+     * Get any DTO type for the nearest ancestor of the given entity type.
+     *
+     * @return <code>null</code> if no DTO type found.
+     */
+    public static Class<?> getDaoType(Class<?> entityType) {
+        return FriendTypes.getInheritedFriendType(entityType, "dao");
+    }
+
+    /**
+     * Get any DTO type for the nearest ancestor of the given entity type.
+     *
+     * @return <code>null</code> if no DTO type found.
+     */
+    public static Class<?> getDtoType(Class<?> entityType) {
+        return FriendTypes.getInheritedFriendType(entityType, "dto");
+    }
+
+    public static Class<?> getControllerType(Class<?> entityType) {
+        return FriendTypes.getInheritedFriendType(entityType, "controller");
+    }
+
+    public static String getControllerPrefix(Class<?> entityType) {
+        Class<?> controllerType = getControllerType(entityType);
+        if (controllerType == null)
+            return null;
+
+        RequestMapping _requestMapping = controllerType.getAnnotation(RequestMapping.class);
+        if (_requestMapping == null)
+            return null;
+
+        String[] paths = _requestMapping.value();
+        if (paths.length == 1)
+            return paths[0];
 
         return null;
     }
