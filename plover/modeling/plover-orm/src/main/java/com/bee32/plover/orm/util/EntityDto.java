@@ -408,6 +408,20 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     /**
+     * Reference by id, the id is parsed from the idString.
+     *
+     * @param idString
+     *            Specify <code>null</code> for null-ref.
+     * @return This DTO object.
+     * @see #ref(Serializable)
+     */
+    public <D extends EntityDto<E, K>> D parseRef(String idString)
+            throws ParseException {
+        K id = parseId(idString);
+        return ref(id);
+    }
+
+    /**
      * Set this DTO as a "reference pointer", and clear the filled state.
      *
      * <p>

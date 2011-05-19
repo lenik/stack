@@ -73,7 +73,7 @@ public class PassStepDto
         optional = map.getBoolean("optional");
         order = map.getInt("order");
 
-        responsible = new PrincipalDto().ref(map.getLong("responsibleId"));
+        responsible = new PrincipalDto().parseRef("responsibleId");
     }
 
 }

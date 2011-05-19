@@ -124,8 +124,8 @@ public abstract class AbstractEventDto<E extends Event>
         stateIndex = map.getInt("state");
         closed = map.getBoolean("closed");
 
-        status = new EventStatusDto().ref(map.getNInt("statusId"));
-        actor = new UserDto(0).ref(map.getNLong("actorId"));
+        status = new EventStatusDto().parseRef(map.getString("statusId"));
+        actor = new UserDto(0).parseRef(map.getString("actorId"));
 
         subject = map.getString("subject");
         message = map.getString("message");
@@ -145,8 +145,7 @@ public abstract class AbstractEventDto<E extends Event>
             observers = new ArrayList<PrincipalDto>();
 
             for (String _observerId : _observerIds) {
-                long observerId = Long.parseLong(_observerId);
-                PrincipalDto observer = new PrincipalDto().ref(observerId);
+                PrincipalDto observer = new PrincipalDto().parseRef(_observerId);
                 observers.add(observer);
             }
         }

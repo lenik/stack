@@ -82,10 +82,9 @@ public class R_ACLDao
         if (principal == null)
             throw new NullPointerException("principal");
 
-        Long principalId = principal.getId();
         List<R_ACE> list = getHibernateTemplate().findByNamedParam(// ,
                 "from R_ACE where principal.id = :principalId", //
-                "principalId", principalId);
+                "principalId", principal.getId());
 
         List<ResourcePermission> resources = new ArrayList<ResourcePermission>(list.size());
 
@@ -110,13 +109,12 @@ public class R_ACLDao
 
         String qualifiedName = ResourceRegistry.qualify(resource);
 
-        Long principalId = principal.getId();
         List<R_ACE> list = getHibernateTemplate().findByNamedParam(// ,
                 "from R_ACE where" //
                         + "   ( :q like qualifiedName || '%' )" //
                         + "   and principal.id = :principalId", //
                 new String[] { "q", "principalId" }, //
-                new Object[] { qualifiedName, principalId });
+                new Object[] { qualifiedName, principal.getId() });
 
         // Only the first matching entry is returned.
         for (R_ACE ace : list)

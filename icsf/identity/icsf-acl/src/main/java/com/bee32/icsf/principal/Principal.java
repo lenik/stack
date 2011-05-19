@@ -27,7 +27,7 @@ import com.bee32.plover.orm.ext.color.GreenEntity;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "steoro", length = 3)
 public class Principal
-        extends GreenEntity<Long>
+        extends GreenEntity<Integer>
         implements IPrincipal {
 
     private static final long serialVersionUID = 1L;
@@ -205,7 +205,7 @@ public class Principal
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Long> other) {
+    protected Boolean naturalEquals(EntityBase<Integer> other) {
         Principal o = (Principal) other;
 
         if (this.name == null || o.name == null)

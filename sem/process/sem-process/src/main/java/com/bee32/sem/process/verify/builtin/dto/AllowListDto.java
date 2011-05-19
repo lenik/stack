@@ -57,8 +57,7 @@ public class AllowListDto
             String[] _userIds = map.getStringArray("r_users");
             if (_userIds != null) {
                 for (String _userId : _userIds) {
-                    long userId = Long.parseLong(_userId);
-                    PrincipalDto responsible = new PrincipalDto().ref(userId);
+                    PrincipalDto responsible = new PrincipalDto().parseRef(_userId);
                     responsibles.add(responsible);
                 }
             }
@@ -71,10 +70,6 @@ public class AllowListDto
 
     public void setResponsibles(List<PrincipalDto> responsibles) {
         this.responsibles = responsibles;
-    }
-
-    public List<Long> getResponsibleIds() {
-        return id(responsibles);
     }
 
 }

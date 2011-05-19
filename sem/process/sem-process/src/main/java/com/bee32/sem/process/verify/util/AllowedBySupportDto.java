@@ -61,11 +61,7 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
             throws ParseException, TypeConvertException {
         super.__parse(map);
 
-        String _verifierId = map.getString("verifierId");
-        if (_verifierId == null)
-            verifier = null;
-        else
-            verifier = new UserDto(0).ref(Long.parseLong(_verifierId));
+        verifier = new UserDto(0).parseRef(map.getString("verifierId"));
 
         long _verifiedDate = map.getLong("verifiedDate");
         verifiedDate = new Date(_verifiedDate);
