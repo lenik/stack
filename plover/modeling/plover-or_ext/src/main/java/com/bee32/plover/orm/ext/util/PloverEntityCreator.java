@@ -21,7 +21,6 @@ import javax.free.UnixStyleVarProcessor;
 import com.bee32.plover.arch.type.FriendTypes;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityUtil;
-import com.bee32.plover.orm.util.DTOs;
 
 public class PloverEntityCreator {
 
@@ -116,7 +115,7 @@ public class PloverEntityCreator {
         Class<?> keyType = EntityUtil.getKeyType(entityType);
         addType(vars, "key", keyType);
 
-        Class<?> dtoParentType = DTOs.getInheritedDtoType(entityType.getSuperclass());
+        Class<?> dtoParentType = EntityUtil.getDtoType(entityType.getSuperclass());
         Class<?> daoParentType = FriendTypes.getInheritedFriendType(entityType.getSuperclass(), "dao");
         addType(vars, "dtoParent", dtoParentType);
         addType(vars, "daoParent", daoParentType);

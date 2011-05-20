@@ -84,14 +84,14 @@ public abstract class GenericEntityController<E extends Entity<K>, K extends Ser
             return null;
 
         String vn = modelAndView.getViewName();
-        if (vn != null && !vn.startsWith(prefix))
+        if (vn != null && !vn.startsWith(_prefix))
             return modelAndView;
 
         if (vn == null)
-            vn = viewOf(defaultView);
+            vn = normalizeView(defaultView);
         else {
-            assert prefix.endsWith("/");
-            String xbase = vn.substring(prefix.length());
+            assert _prefix.endsWith("/");
+            String xbase = vn.substring(_prefix.length());
 
             assert !xbase.startsWith("/");
             int slash = xbase.indexOf('/');
