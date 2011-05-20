@@ -3,8 +3,6 @@ package com.bee32.plover.orm.ext.util;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
 import com.bee32.plover.ajax.JsonUtil;
-import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.javascript.JavascriptChunk;
 import com.bee32.plover.javascript.util.Javascripts;
@@ -30,36 +27,15 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
+import com.bee32.plover.servlet.mvc.CompositeController;
 import com.bee32.plover.servlet.mvc.ModelAndViewEx;
 
 public abstract class _EntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
-        extends Component
+        extends CompositeController
         implements IEntityMarshalContext {
 
     @Inject
     protected CommonDataManager dataManager;
-
-    protected final String prefix;
-
-    public _EntityController() {
-        this(null);
-    }
-
-    public _EntityController(String prefix) {
-        if (prefix == null)
-            try {
-                Field prefixField = getClass().getDeclaredField("PREFIX");
-
-                int modifiers = prefixField.getModifiers();
-                if (!Modifier.isStatic(modifiers))
-                    throw new Error(prefixField + " must be static");
-
-                prefix = (String) prefixField.get(null);
-            } catch (Exception e) {
-                throw new Error("PREFIX isn't defined in " + getClass());
-            }
-        this.prefix = prefix;
-    }
 
     /**
      * Return the persistent instance of the given entity class with the given identifier, throwing
@@ -153,10 +129,6 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
     protected void loadVocab(Map<String, String> vocab) {
     }
 
-    protected String viewOf(String localView) {
-        return prefix + localView;
-    }
-
     protected ModelAndView _index(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         ViewData view = new ViewData();
@@ -192,7 +164,7 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
             throws ServletException, IOException {
 
         ViewData view = new ViewData();
-        view.setViewName(viewOf("form"));
+        view.setViewName(normalizeView("form"));
         view.put("method", "create");
         view.put("METHOD", view.V.get("create"));
 
@@ -203,7 +175,7 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
             throws ServletException, IOException {
 
         ViewData view = new ViewData();
-        view.setViewName(viewOf("form"));
+        view.setViewName(normalizeView("form"));
         view.put("method", "edit");
         view.put("METHOD", view.V.get("edit"));
 
@@ -230,7 +202,7 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
             throws ServletException, IOException {
 
         ViewData view = new ViewData();
-        view.setViewName(viewOf("index"));
+        view.setViewName(normalizeView("index"));
         view.put("method", "edit");
         view.put("METHOD", view.V.get("edit"));
 
@@ -336,6 +308,12 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
         return ClassUtil.getDisplayName(entity.getClass()) + " [" + entity.getId() + "]";
     }
 
+    protected ViewData it(Object it) {
+        ViewData view = new ViewData();
+        view.put("it", it);
+        return view;
+    }
+
     protected E newEntity()
             throws ServletException {
         try {
@@ -370,12 +348,6 @@ public abstract class _EntityController<E extends Entity<K>, K extends Serializa
         Class<? extends E> entityType = getEntityType();
         dto.initSourceType(entityType);
         return dto;
-    }
-
-    protected ViewData it(Object it) {
-        ViewData view = new ViewData();
-        view.put("it", it);
-        return view;
     }
 
 }
