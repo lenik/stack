@@ -6,10 +6,12 @@ import javax.servlet.ServletContextEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.DispatcherServlet;
 
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.spring.ContextConfigurationUtil;
 import com.bee32.plover.servlet.context.ServletContextUtil;
+import com.bee32.plover.servlet.mvc.SpringMVCConfig;
 import com.bee32.plover.test.WiredTestCase;
 
 @Import(WiredTestCase.class)
@@ -48,6 +50,20 @@ public abstract class WiredServletTestCase
                 stl.setAttribute(webRootAppCtx, applicationContext);
             }
 
+        }
+    }
+
+    protected boolean isSpringMVCEnabled() {
+        return true;
+    }
+
+    @Override
+    protected void configureBuiltinServlets() {
+        super.configureBuiltinServlets();
+
+        if (isSpringMVCEnabled()) {
+            // Add spring mvc support here.
+            stl.addServlet("spring-dispatcher", DispatcherServlet.class, "*" + SpringMVCConfig.suffix);
         }
     }
 
