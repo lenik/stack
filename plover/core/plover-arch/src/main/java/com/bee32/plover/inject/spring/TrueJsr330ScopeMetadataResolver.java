@@ -108,8 +108,12 @@ public class TrueJsr330ScopeMetadataResolver
                 return nameByMeta;
         }
 
+        // Test: scopeAnnotationClass < javax.inject.Scope
+
         String simpleName = scopeAnnotationClass.getSimpleName();
         if (simpleName.endsWith("Scope"))
+            simpleName = simpleName.substring(0, simpleName.length() - 5);
+        if (simpleName.endsWith("Local"))
             simpleName = simpleName.substring(0, simpleName.length() - 5);
 
         String scopeName = Strings.lcfirst(simpleName);
