@@ -17,11 +17,17 @@ public abstract class CompositeController
 
     protected final String _prefix;
 
-//    protected Map<String, >
+    /**
+     * Get the prefix string from static field PREFIX.
+     */
     protected CompositeController() {
         this(null);
     }
 
+    /**
+     * @param prefix
+     *            <code>null</code> to get from static field PREFIX.
+     */
     protected CompositeController(String prefix) {
         if (prefix == null)
             try {
