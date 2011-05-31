@@ -16,13 +16,14 @@ import com.bee32.plover.orm.ext.xp.EntityExt;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
-@DiscriminatorValue("BASE")
+@DiscriminatorValue("-")
 public class Contact
         extends EntityExt<Long, ContactXP> {
 
     private static final long serialVersionUID = 1L;
 
     ContactCategory category;
+
     String address;
     String postCode;
     String tel;

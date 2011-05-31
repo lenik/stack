@@ -9,29 +9,29 @@ import javax.persistence.ManyToMany;
 import com.bee32.plover.orm.ext.dict.NameDict;
 
 @Entity
-public class PersonTag
+public class PartyTag
         extends NameDict {
 
     private static final long serialVersionUID = 1L;
 
-    List<PersonTag> instances;
+    List<PartyTag> instances;
 
     /**
-     * @see Person#getTags()
+     * @see Party#getTags()
      */
     @ManyToMany(mappedBy = "tag")
-    public List<PersonTag> getInstances() {
+    public List<PartyTag> getInstances() {
         if (instances == null) {
             synchronized (this) {
                 if (instances == null) {
-                    instances = new ArrayList<PersonTag>();
+                    instances = new ArrayList<PartyTag>();
                 }
             }
         }
         return instances;
     }
 
-    public void setInstances(List<PersonTag> instances) {
+    public void setInstances(List<PartyTag> instances) {
         this.instances = instances;
     }
 
@@ -40,20 +40,20 @@ public class PersonTag
      * @.label Employee
      * @.label.zh_CN 雇员
      */
-    public static final PersonTag EMPLOYEE = new PersonTag();
+    public static final PartyTag EMPLOYEE = new PartyTag();
 
     /**
      * @.name customer
      * @.label Customer
      * @.label.zh_CN 客户
      */
-    public static final PersonTag CUSTOMER = new PersonTag();
+    public static final PartyTag CUSTOMER = new PartyTag();
 
     /**
      * @.name supplier
      * @.label Supplier
      * @.label.zh_CN 供应商
      */
-    public static final PersonTag SUPPLIER = new PersonTag();
+    public static final PartyTag SUPPLIER = new PartyTag();
 
 }

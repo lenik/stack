@@ -1,13 +1,12 @@
 package com.bee32.sem.people.entity;
 
-import javax.free.Person;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-@DiscriminatorValue("PERS")
+@DiscriminatorValue("PRSN")
 public class PersonContact
         extends Contact {
 

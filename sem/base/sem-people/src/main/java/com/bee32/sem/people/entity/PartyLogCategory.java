@@ -2,20 +2,20 @@ package com.bee32.sem.people.entity;
 
 import com.bee32.plover.orm.ext.dict.NameDict;
 
-public class PersonLogCategory
+public class PartyLogCategory
         extends NameDict {
 
     private static final long serialVersionUID = 1L;
 
-    public PersonLogCategory() {
+    public PartyLogCategory() {
         super();
     }
 
-    public PersonLogCategory(String name, String label) {
+    public PartyLogCategory(String name, String label) {
         super(name, label);
     }
 
-    public PersonLogCategory(String name, String label, String description) {
+    public PartyLogCategory(String name, String label, String description) {
         super(name, label, description);
     }
 

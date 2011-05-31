@@ -4,17 +4,13 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
-import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactXP;
-import com.bee32.sem.people.entity.Person;
 
 public class AbstractContactDto<E extends Contact>
         extends EntityExtDto<E, Long, ContactXP> {
 
     private static final long serialVersionUID = 1L;
-
-    public static final int PERSON = 1;
 
     public AbstractContactDto() {
         super();
@@ -32,7 +28,6 @@ public class AbstractContactDto<E extends Contact>
         super(selection, source);
     }
 
-    AbstractPersonDto person;
     ContactCategoryDto category;
 
     String email;
@@ -48,8 +43,6 @@ public class AbstractContactDto<E extends Contact>
 
     @Override
     protected void _marshal(E source) {
-        if (selection.contains(PERSON))
-            person = new AbstractPersonDto<Person>();
     }
 
     @Override

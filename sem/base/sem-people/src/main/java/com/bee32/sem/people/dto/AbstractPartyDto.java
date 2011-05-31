@@ -8,29 +8,28 @@ import javax.free.ParseException;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
-import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.sem.people.Gender;
-import com.bee32.sem.people.entity.Person;
-import com.bee32.sem.people.entity.PersonXP;
+import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.entity.PartyXP;
 
-public class AbstractPersonDto<E extends Person>
-        extends EntityExtDto<E, Integer, PersonXP> {
+public class AbstractPartyDto<E extends Party>
+        extends EntityExtDto<E, Integer, PartyXP> {
 
     private static final long serialVersionUID = 1L;
 
-    public AbstractPersonDto() {
+    public AbstractPartyDto() {
         super();
     }
 
-    public AbstractPersonDto(E source) {
+    public AbstractPartyDto(E source) {
         super(source);
     }
 
-    public AbstractPersonDto(int selection) {
+    public AbstractPartyDto(int selection) {
         super(selection);
     }
 
-    public AbstractPersonDto(int selection, E source) {
+    public AbstractPartyDto(int selection, E source) {
         super(selection, source);
     }
 
@@ -50,8 +49,7 @@ public class AbstractPersonDto<E extends Person>
     String sidType;
     String sid;
 
-    List<AbstractContactDto> contacts;
-    List<PersonLogDto> logs;
+    List<PartyLogDto> logs;
 
     @Override
     protected void _marshal(E source) {
@@ -59,17 +57,9 @@ public class AbstractPersonDto<E extends Person>
         fullName = source.getFullName();
         nickName = source.getNickName();
 
-        sex = source.getSex();
-
         birthday = source.getBirthday();
 
-        interests = source.getInterests();
-
-        censusRegister = source.getCensusRegister();
-        sidType = source.getSidType();
         sid = source.getSid();
-
-        contacts = marshalList(AbstractContactDto.class, source.getContacts());
     }
 
     @Override

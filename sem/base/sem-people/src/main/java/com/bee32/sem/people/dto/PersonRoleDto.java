@@ -4,46 +4,46 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.sem.people.entity.PersonTitle;
+import com.bee32.sem.people.entity.PersonRole;
 
-public class PersonTitleDto
-        extends EntityDto<PersonTitle, Integer> {
+public class PersonRoleDto
+        extends EntityDto<PersonRole, Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    PersonDto person;
-    OrganizationDto org;
+    PartyDto person;
+    OrgDto org;
     String orgUnit;
-    String job;
     String role;
+    String roleDetail;
     String description;
 
-    public PersonTitleDto() {
+    public PersonRoleDto() {
         super();
     }
 
-    public PersonTitleDto(PersonTitle source) {
+    public PersonRoleDto(PersonRole source) {
         super(source);
     }
 
     @Override
-    protected void _marshal(PersonTitle source) {
-        person = new PersonDto(source.getPerson());
-        org = new OrganizationDto(source.getOrg());
+    protected void _marshal(PersonRole source) {
+        person = new PartyDto(source.getPerson());
+        org = new OrgDto(source.getOrg());
         orgUnit = source.getOrgUnit();
-        job = source.getJob();
         role = source.getRole();
+        roleDetail = source.getRoleDetail();
         description = source.getDescription();
     }
 
     @Override
-    protected void _unmarshalTo(PersonTitle target) {
+    protected void _unmarshalTo(PersonRole target) {
         merge(target, "person", person);
         merge(target, "org", org);
 
         target.setOrgUnit(orgUnit);
-        target.setJob(job);
         target.setRole(role);
+        target.setRoleDetail(roleDetail);
         target.setDescription(description);
     }
 
@@ -51,8 +51,8 @@ public class PersonTitleDto
     protected void _parse(TextMap map)
             throws ParseException {
         orgUnit = map.getString("orgUnit");
-        job = map.getString("job");
         role = map.getString("role");
+        roleDetail = map.getString("roleDetail");
         description = map.getString("description");
     }
 

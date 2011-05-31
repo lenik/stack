@@ -10,35 +10,35 @@ import com.bee32.plover.orm.ext.color.BlueEntity;
  * 某人在某个公司中的具体职务
  */
 @Entity
-public class PersonTitle
+public class PersonRole
         extends BlueEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    Person person;
-    Organization org;
+    Party person;
+    Org org;
     String orgUnit;
-    String job;
     String role;
+    String roleDetail;
     String description;
 
     @ManyToOne(optional = false)
-    public Person getPerson() {
+    public Party getPerson() {
         return person;
     }
 
-    public void setPerson(Person person) {
+    public void setPerson(Party person) {
         if (person == null)
             throw new NullPointerException("person");
         this.person = person;
     }
 
     @ManyToOne(optional = false)
-    public Organization getOrg() {
+    public Org getOrg() {
         return org;
     }
 
-    public void setOrg(Organization org) {
+    public void setOrg(Org org) {
         if (org == null)
             throw new NullPointerException("org");
         this.org = org;
@@ -60,22 +60,6 @@ public class PersonTitle
     }
 
     /**
-     * 负责业务
-     */
-    // @Basic(optional = false)
-    @Column(length = 50)
-    public String getJob() {
-        return job;
-    }
-
-    /**
-     * 负责业务
-     */
-    public void setJob(String job) {
-        this.job = job;
-    }
-
-    /**
      * 职务
      */
     @Column(length = 30)
@@ -88,6 +72,22 @@ public class PersonTitle
      */
     public void setRole(String role) {
         this.role = role;
+    }
+
+    /**
+     * 负责业务
+     */
+    // @Basic(optional = false)
+    @Column(length = 50)
+    public String getRoleDetail() {
+        return roleDetail;
+    }
+
+    /**
+     * 负责业务
+     */
+    public void setRoleDetail(String roleDetail) {
+        this.roleDetail = roleDetail;
     }
 
     @Column(length = 200)

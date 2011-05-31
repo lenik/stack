@@ -6,20 +6,20 @@ import java.util.Calendar;
 import com.bee32.plover.orm.ext.userCategory.UserCategory;
 import com.bee32.plover.orm.ext.userCategory.UserCategoryItem;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
-import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PersonContact;
-import com.bee32.sem.people.entity.PersonTitle;
+import com.bee32.sem.people.entity.PersonRole;
 
 //@ImportSamples(SEMOrgSamples.class)
 public class SEMPeopleSamples
         extends EntitySamplesContribution {
 
-    public static Person one77 = new Person();
+    public static Party one77 = new Party();
     public static UserCategory carIndustry = new UserCategory();
     public static UserCategoryItem important = new UserCategoryItem();
     public static PersonContact weiXiaoBao = new PersonContact();
-    public static PersonTitle salesTitle = new PersonTitle();
-    public static PersonTitle productSale = new PersonTitle();
+    public static PersonRole salesTitle = new PersonRole();
+    public static PersonRole productSale = new PersonRole();
 
     static {
 
