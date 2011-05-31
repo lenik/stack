@@ -47,6 +47,7 @@ public abstract class CompositeController
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+
         return null;
     }
 

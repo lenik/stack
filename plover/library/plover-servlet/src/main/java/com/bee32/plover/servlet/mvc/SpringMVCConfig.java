@@ -10,7 +10,6 @@ public class SpringMVCConfig {
     public static final String suffix;
 
     static {
-
         String nonce = System.getProperty(MVC_NONCE);
         if (nonce == null) {
             int rand = new Random().nextInt();
