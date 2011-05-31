@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -169,6 +170,14 @@ public class EntityUtil {
             return paths[0];
 
         return null;
+    }
+
+    public static EntitySelection select(Entity<?>... entities) {
+        return new EntitySelection(entities);
+    }
+
+    public static EntitySelection select(Collection<Entity<?>> entities) {
+        return new EntitySelection(entities);
     }
 
 }
