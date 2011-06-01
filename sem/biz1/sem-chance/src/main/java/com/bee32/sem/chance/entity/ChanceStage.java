@@ -7,6 +7,8 @@ public class ChanceStage
 
     private static final long serialVersionUID = 1L;
 
+    int order;
+
     public ChanceStage() {
         super();
     }

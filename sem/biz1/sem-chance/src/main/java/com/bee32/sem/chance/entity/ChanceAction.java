@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CollectionOfElements;
+
 import com.bee32.plover.orm.ext.color.PinkEntity;
 import com.bee32.sem.people.entity.Party;
 
@@ -18,51 +20,27 @@ public class ChanceAction
 
     private static final long serialVersionUID = 1L;
 
+    boolean plan;
+
+    List<Party> parties;
+
+    ChanceContactStyle style;
+
+    Date beginTime;
+
+    Date endTime;
+
+    String content;
+
+    String spending;
+
+    Chance chance;
+
+    ChanceStage stage;
+
     /**
      * 工作日志类型
      */
-    boolean plan;
-
-    /**
-     * 对应客户
-     */
-    List<Party> parties;
-
-    /**
-     * 洽谈方式
-     */
-    String style;
-
-    /**
-     * 开始时间
-     */
-    Date beginTime;
-
-    /**
-     * 结束时间
-     */
-    Date endTime;
-
-    /**
-     * 拜访目的（计划）或洽谈内容（日志）
-     */
-    String content;
-
-    /**
-     * 产生费用明细
-     */
-    String spending;
-
-    /**
-     * 对应机会
-     */
-    Chance chance;
-
-    /**
-     * 阶段推进
-     */
-    ChanceStage chanceStage;
-
     public boolean isPlan() {
         return plan;
     }
@@ -71,6 +49,10 @@ public class ChanceAction
         this.plan = plan;
     }
 
+    /**
+     * 对应客户
+     */
+    @CollectionOfElements
     public List<Party> getParties() {
         return parties;
     }
@@ -79,14 +61,20 @@ public class ChanceAction
         this.parties = parties;
     }
 
-    public String getStyle() {
+    /**
+     * 洽谈方式
+     */
+    public ChanceContactStyle getStyle() {
         return style;
     }
 
-    public void setStyle(String style) {
+    public void setStyle(ChanceContactStyle style) {
         this.style = style;
     }
 
+    /**
+     * 开始时间
+     */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getBeginTime() {
         return beginTime;
@@ -96,6 +84,9 @@ public class ChanceAction
         this.beginTime = beginTime;
     }
 
+    /**
+     * 结束时间
+     */
     @Temporal(TemporalType.TIMESTAMP)
     public Date getEndTime() {
         return endTime;
@@ -105,6 +96,10 @@ public class ChanceAction
         this.endTime = endTime;
     }
 
+    /**
+     * 拜访目的（计划）或洽谈内容（日志）
+     */
+    @Column(length = 500)
     public String getContent() {
         return content;
     }
@@ -113,6 +108,10 @@ public class ChanceAction
         this.content = content;
     }
 
+    /**
+     * 产生费用明细
+     */
+    @Column(length = 300)
     public String getSpending() {
         return spending;
     }
@@ -121,21 +120,27 @@ public class ChanceAction
         this.spending = spending;
     }
 
+    /**
+     * 对应机会
+     */
     @ManyToOne(optional = true)
     public Chance getSalesChance() {
         return chance;
     }
 
-    @Column(length = 10)
     public void setChance(Chance chance) {
         this.chance = chance;
     }
 
+    /**
+     * 阶段推进
+     */
+    @ManyToOne(optional = true)
     public ChanceStage getChanceStage() {
-        return chanceStage;
+        return stage;
     }
 
-    public void setChanceStage(ChanceStage chanceStage) {
-        this.chanceStage = chanceStage;
+    public void setChanceStage(ChanceStage stage) {
+        this.stage = stage;
     }
 }

@@ -10,8 +10,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.ext.color.GreenEntity;
-import com.bee32.sem.people.entity.Person;
 
 @Entity
 public class Chance
@@ -19,31 +19,31 @@ public class Chance
 
     private static final long serialVersionUID = 1L;
 
-    private String category;
+    private ChanceCategory category;
     private String title;
     private String source;
     private String content;
-    private String status;
-    private Person responsible;
+    private User responsible;
     private Date createDate;
+    private ChanceStage stage;
 
     private List<ChanceParty> parties;
     private List<ChanceAction> actions;
 
     public Chance() {
-//        parties = new ArrayList<ChanceParty>();
-//        histories = new ArrayList<ChanceAction>();
+// parties = new ArrayList<ChanceParty>();
+// histories = new ArrayList<ChanceAction>();
     }
 
     /**
      * 类型
      */
-    @Column(length = 20)
-    public String getCategory() {
+    @ManyToOne(optional = true)
+    public ChanceCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ChanceCategory category) {
         this.category = category;
     }
 
@@ -84,26 +84,14 @@ public class Chance
     }
 
     /**
-     * 状态
-     */
-    @Column(length = 20)
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    /**
      * 负责人
      */
     @ManyToOne
-    public Person getResponsible() {
+    public User getResponsible() {
         return responsible;
     }
 
-    public void setResponsible(Person responsible) {
+    public void setResponsible(User responsible) {
         this.responsible = responsible;
     }
 
@@ -119,12 +107,21 @@ public class Chance
         this.createDate = createDate;
     }
 
+    @ManyToOne(optional = true)
+    public ChanceStage getStage() {
+        return stage;
+    }
+
+    public void setStage(ChanceStage stage) {
+        this.stage = stage;
+    }
+
     @OneToMany(mappedBy = "chance")
     public List<ChanceParty> getParties() {
         return parties;
     }
 
-    public void setDetails(List<ChanceParty> parties) {
+    public void setParties(List<ChanceParty> parties) {
         this.parties = parties;
     }
 
