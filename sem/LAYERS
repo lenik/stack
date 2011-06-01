@@ -15,22 +15,21 @@ process/            过程支持
     sem-techproc
     sem-workflow
 
-resource/           资源集
+resource/           资源
     sem-asset
-    sem-contract
     sem-store
     sem-thing
-    sem-staff
-    sem-customer
-    sem-supplier
-    sem-partner
-    sem-chance
 
-support/            业务支持
+support/            （偏低层）支持
     sem-track
     sem-kb
 
-biz/                一般业务
+biz1/                一般业务
+    sem-chance
+    sem-salary
+    sem-pricing
+    sem-contract
+    sem-order
 
 demo/               示例
     sem-samples

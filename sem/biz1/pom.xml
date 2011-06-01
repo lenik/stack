@@ -8,10 +8,15 @@
         <artifactId>sem</artifactId>
         <version>0.3.2-SNAPSHOT</version>
     </parent>
-    <artifactId>biz</artifactId>
+    <artifactId>biz1</artifactId>
     <version>0.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>sem-chance</module>
+        <module>sem-contract</module>
+        <module>sem-order</module>
+        <module>sem-pricing</module>
+        <module>sem-salary</module>
     </modules>
-    <name>SEM :: Biz</name>
+    <name>SEM :: Biz1</name>
 </project>

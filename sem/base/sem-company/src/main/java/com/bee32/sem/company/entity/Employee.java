@@ -1,5 +1,6 @@
 package com.bee32.sem.company.entity;
 
+import javax.free.Person;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -11,7 +12,6 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.IParentAware;
-import com.bee32.sem.people.entity.Party;
 
 @Entity
 // @Table("Person")
@@ -24,7 +24,7 @@ public class Employee
 
     String empId;
 
-    Party person = new Party();
+    Person person = new Person();
 
     public Employee() {
         super();
