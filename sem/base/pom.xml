@@ -14,6 +14,7 @@
     <modules>
         <module>sem-bank</module>
         <module>sem-calendar</module>
+        <module>sem-company</module>
         <module>sem-desktop</module>
         <module>sem-event</module>
         <module>sem-file</module>
@@ -22,7 +23,6 @@
         <module>sem-mail</module>
         <module>sem-module</module>
         <module>sem-people</module>
-        <module>sem-user</module>
     </modules>
     <name>SEM :: Base</name>
 </project>

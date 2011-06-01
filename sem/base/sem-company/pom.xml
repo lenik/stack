@@ -5,7 +5,7 @@
         <artifactId>base</artifactId>
         <version>0.3.2-SNAPSHOT</version>
     </parent>
-    <artifactId>sem-user</artifactId>
+    <artifactId>sem-company</artifactId>
     <version>0.3.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
@@ -19,5 +19,5 @@
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
-    <name>SEM :: Base :: User</name>
+    <name>SEM :: Base :: Company</name>
 </project>

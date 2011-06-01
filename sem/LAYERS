@@ -2,7 +2,7 @@ base/               基本类型
     sem-module
     sem-frame
     sem-desktop
-    sem-user
+    sem-company
     sem-people
     sem-calendar
     sem-event
