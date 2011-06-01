@@ -12,7 +12,6 @@
     <version>0.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>sem-sales</module>
     </modules>
     <name>SEM :: Biz</name>
 </project>

@@ -24,13 +24,13 @@ resource/           资源集
     sem-customer
     sem-supplier
     sem-partner
-
-biz/                一般业务
-    sem-sales
+    sem-opportunity
 
 support/            业务支持
     sem-track
     sem-kb
+
+biz/                一般业务
 
 demo/               示例
     sem-samples
