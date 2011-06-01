@@ -17,6 +17,7 @@
         <module>sem-order</module>
         <module>sem-pricing</module>
         <module>sem-salary</module>
+        <module>sem-scm</module>
     </modules>
     <name>SEM :: Biz1</name>
 </project>

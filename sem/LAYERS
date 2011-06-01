@@ -26,10 +26,11 @@ support/            （偏低层）支持
 
 biz1/                一般业务
     sem-chance
-    sem-salary
-    sem-pricing
     sem-contract
+    sem-pricing
+    sem-scm
     sem-order
+    sem-salary
 
 demo/               示例
     sem-samples
