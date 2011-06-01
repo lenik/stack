@@ -5,8 +5,8 @@
         <artifactId>biz1</artifactId>
         <version>0.3.2-SNAPSHOT</version>
     </parent>
-    <artifactId>sem-scm</artifactId>
+    <artifactId>sem-chain</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies/>
-    <name>SEM :: Biz1 :: Scm</name>
+    <name>SEM :: Biz1 :: Chain</name>
 </project>

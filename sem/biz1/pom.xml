@@ -12,12 +12,12 @@
     <version>0.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>sem-chain</module>
         <module>sem-chance</module>
         <module>sem-contract</module>
         <module>sem-order</module>
         <module>sem-pricing</module>
         <module>sem-salary</module>
-        <module>sem-scm</module>
     </modules>
     <name>SEM :: Biz1</name>
 </project>
