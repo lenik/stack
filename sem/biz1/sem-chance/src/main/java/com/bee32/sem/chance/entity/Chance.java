@@ -1,6 +1,5 @@
 package com.bee32.sem.chance.entity;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,8 +10,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.ext.color.GreenEntity;
+import com.bee32.sem.people.entity.Person;
 
 @Entity
 public class Chance
@@ -25,15 +24,15 @@ public class Chance
     private String source;
     private String content;
     private String status;
-    private User responsible;
+    private Person responsible;
     private Date createDate;
 
     private List<ChanceParty> parties;
-    private List<ChanceHistory> histories;
+    private List<ChanceAction> actions;
 
     public Chance() {
-        details = new ArrayList<ChanceParty>();
-        histories = new ArrayList<ChanceHistory>();
+//        parties = new ArrayList<ChanceParty>();
+//        histories = new ArrayList<ChanceAction>();
     }
 
     /**
@@ -100,11 +99,11 @@ public class Chance
      * 负责人
      */
     @ManyToOne
-    public Employee getResponsible() {
+    public Person getResponsible() {
         return responsible;
     }
 
-    public void setResponsible(Employee responsible) {
+    public void setResponsible(Person responsible) {
         this.responsible = responsible;
     }
 
@@ -120,22 +119,22 @@ public class Chance
         this.createDate = createDate;
     }
 
-    @OneToMany(mappedBy = "salesChance")
-    public List<ChanceParty> getDetails() {
-        return details;
+    @OneToMany(mappedBy = "chance")
+    public List<ChanceParty> getParties() {
+        return parties;
     }
 
-    public void setDetails(List<ChanceParty> details) {
-        this.details = details;
+    public void setDetails(List<ChanceParty> parties) {
+        this.parties = parties;
     }
 
-    @OneToMany(mappedBy = "salesChance")
-    public List<ChanceHistory> getHistories() {
-        return histories;
+    @OneToMany(mappedBy = "chance")
+    public List<ChanceAction> getActions() {
+        return actions;
     }
 
-    public void setHistories(List<ChanceHistory> histories) {
-        this.histories = histories;
+    public void setActions(List<ChanceAction> actions) {
+        this.actions = actions;
     }
 
 }

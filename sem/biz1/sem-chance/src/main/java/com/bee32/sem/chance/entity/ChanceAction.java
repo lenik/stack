@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -57,19 +56,35 @@ public class ChanceAction
     /**
      * 对应机会
      */
-    Opportunity opportunity;
+    Chance chance;
 
     /**
      * 阶段推进
      */
-    String stage;
+    ChanceStage chanceStage;
 
-    public String getDiaryType() {
-        return diaryType;
+    public boolean isPlan() {
+        return plan;
     }
 
-    public void setDiaryType(String diaryType) {
-        this.diaryType = diaryType;
+    public void setPlan(boolean plan) {
+        this.plan = plan;
+    }
+
+    public List<Party> getParties() {
+        return parties;
+    }
+
+    public void setParties(List<Party> parties) {
+        this.parties = parties;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -90,65 +105,37 @@ public class ChanceAction
         this.endTime = endTime;
     }
 
-    public List<Party> getCustomers() {
-        return customers;
+    public String getContent() {
+        return content;
     }
 
-    public void setCustomers(List<Party> customers) {
-        this.customers = customers;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    @Lob
-    public String getCostDetail() {
-        return costDetail;
+    public String getSpending() {
+        return spending;
     }
 
-    public void setCostDetail(String costDetail) {
-        this.costDetail = costDetail;
-    }
-
-    @Column(length = 10)
-    public String getContactType() {
-        return contactType;
-    }
-
-    public void setContactType(String contactType) {
-        this.contactType = contactType;
-    }
-
-    @Lob
-    public String getDiscussContent() {
-        return discussContent;
-    }
-
-    public void setDiscussContent(String discussContent) {
-        this.discussContent = discussContent;
-    }
-
-    @Column(length = 200)
-    public String getVisitTarget() {
-        return visitTarget;
-    }
-
-    public void setVisitTarget(String visitTarget) {
-        this.visitTarget = visitTarget;
+    public void setSpending(String spending) {
+        this.spending = spending;
     }
 
     @ManyToOne(optional = true)
-    public SalesChance getSalesChance() {
-        return salesChance;
+    public Chance getSalesChance() {
+        return chance;
     }
 
     @Column(length = 10)
-    public void setSalesChance(SalesChance salesChance) {
-        this.salesChance = salesChance;
+    public void setChance(Chance chance) {
+        this.chance = chance;
     }
 
-    public String getChanceStage() {
-        return stage;
+    public ChanceStage getChanceStage() {
+        return chanceStage;
     }
 
-    public void setChanceStage(String chanceStage) {
-        this.stage = chanceStage;
+    public void setChanceStage(ChanceStage chanceStage) {
+        this.chanceStage = chanceStage;
     }
 }

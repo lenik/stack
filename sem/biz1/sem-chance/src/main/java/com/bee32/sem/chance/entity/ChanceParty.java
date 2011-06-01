@@ -15,7 +15,7 @@ public class ChanceParty
 
     private static final long serialVersionUID = 1L;
 
-    private Opportunity salesChance;
+    private Chance chance;
     private Party party;
     private String category;
 
@@ -23,21 +23,21 @@ public class ChanceParty
     }
 
     @ManyToOne
-    public Opportunity getSalesChance() {
-        return salesChance;
+    public Chance getSalesChance() {
+        return chance;
     }
 
-    public void setSalesChance(Opportunity salesChance) {
-        this.salesChance = salesChance;
+    public void setSalesChance(Chance chance) {
+        this.chance = chance;
     }
 
     @ManyToOne
     public Party getCustomer() {
-        return customer;
+        return party;
     }
 
-    public void setCustomer(Party customer) {
-        this.customer = customer;
+    public void setCustomer(Party party) {
+        this.party = party;
     }
 
     @Column(length = 20)
@@ -53,12 +53,12 @@ public class ChanceParty
     protected Boolean naturalEquals(EntityBase<Long> other) {
         ChanceParty otherDetail = (ChanceParty) other;
 
-        Long chanceId = salesChance.getId();
+        Long chanceId = chance.getId();
         Long otherChanceId = otherDetail.getSalesChance().getId();
         if (!Nullables.equals(chanceId, otherChanceId))
             return false;
 
-        if (!Nullables.equals(customer.getId(), otherDetail.getCustomer().getId()))
+        if (!Nullables.equals(party.getId(), otherDetail.getCustomer().getId()))
             return false;
 
         return true;
@@ -68,13 +68,13 @@ public class ChanceParty
     protected Integer naturalHashCode() {
         int hash = 0;
 
-        if (salesChance != null) {
-            Long chanceId = salesChance.getId();
+        if (chance != null) {
+            Long chanceId = chance.getId();
             if (chanceId != null)
                 hash = hash * 37 + chanceId.hashCode();
         }
 
-        Number customerId = customer.getId();
+        Number customerId = party.getId();
         if (customerId != null)
             hash = hash * 37 + customerId.hashCode();
 

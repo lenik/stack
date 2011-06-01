@@ -41,11 +41,11 @@ public class Competitor
      * 对应销售机会
      */
     @ManyToOne
-    public Opportunity getSalesChance() {
+    public Chance getSalesChance() {
         return chance;
     }
 
-    public void setSalesChance(Opportunity chance) {
+    public void setSalesChance(Chance chance) {
         this.chance = chance;
     }
 

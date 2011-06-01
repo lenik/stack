@@ -2,6 +2,8 @@ package com.bee32.sem.chance;
 
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.sem.chance.entity.Chance;
+import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.chance.entity.Competitor;
 
@@ -11,10 +13,10 @@ public class SEMChanceUnit
 
     @Override
     protected void preamble() {
-        add(OpportunityHistory.class);
+        add(ChanceAction.class);
         add(ChanceParty.class);
         add(Competitor.class);
-        add(Opportunity.class);
+        add(Chance.class);
     }
 
 }
