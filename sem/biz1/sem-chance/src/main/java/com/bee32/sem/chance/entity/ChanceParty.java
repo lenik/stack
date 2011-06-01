@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.BlueEntity;
+import com.bee32.sem.people.entity.Party;
 
 @Entity
 public class ChanceParty

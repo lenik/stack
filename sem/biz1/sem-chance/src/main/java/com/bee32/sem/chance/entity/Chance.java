@@ -11,8 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.ext.color.GreenEntity;
-import com.bee32.sem.org.entity.Employee;
 
 @Entity
 public class Chance
@@ -25,7 +25,7 @@ public class Chance
     private String source;
     private String content;
     private String status;
-    private Employee responsible;
+    private User responsible;
     private Date createDate;
 
     private List<ChanceParty> parties;

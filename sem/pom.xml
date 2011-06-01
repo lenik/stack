@@ -13,8 +13,8 @@
         <module>base</module>
         <module>process</module>
         <module>resource</module>
-        <module>biz</module>
         <module>support</module>
+        <module>biz1</module>
     </modules>
     <build>
         <plugins>

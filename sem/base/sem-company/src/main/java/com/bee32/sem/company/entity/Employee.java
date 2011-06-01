@@ -14,7 +14,6 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.IParentAware;
 
 @Entity
-// @Table("Person")
 @DiscriminatorValue("EMP")
 public class Employee
         extends User
@@ -40,11 +39,11 @@ public class Employee
 
     @OneToOne(optional = false)
     @Cascade({ CascadeType.ALL })
-    public Party getPerson() {
+    public Person getPerson() {
         return person;
     }
 
-    public void setPerson(Party person) {
+    public void setPerson(Person person) {
         if (person == null)
             throw new NullPointerException("person");
         this.person = person;

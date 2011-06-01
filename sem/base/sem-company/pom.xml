@@ -14,8 +14,8 @@
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.bee32.icsf</groupId>
-            <artifactId>icsf-acl</artifactId>
+            <groupId>com.bee32.sem</groupId>
+            <artifactId>sem-people</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
     </dependencies>

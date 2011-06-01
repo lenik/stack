@@ -7,10 +7,6 @@ import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.chance.entity.Competitor;
-import com.bee32.sem.chance.entity.Opportunity;
-import com.bee32.sem.chance.entity.OpportunityHistory;
-import com.bee32.sems.crm.customer.SEMCustomerSamples;
-import com.bee32.sems.org.SEMOrgSamples;
 
 @ImportSamples({SEMOrgSamples.class, SEMCustomerSamples.class})
 public class SEMChanceSamples

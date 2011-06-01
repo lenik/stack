@@ -13,7 +13,7 @@ public class Competitor
     private static final long serialVersionUID = 1L;
 
     private String name;
-    private Opportunity chance;
+    private Chance chance;
     private String price;
     private String capability;
     private String solution;
