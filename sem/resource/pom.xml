@@ -13,9 +13,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>sem-asset</module>
+        <module>sem-chance</module>
         <module>sem-contract</module>
         <module>sem-customer</module>
-        <module>sem-opportunity</module>
         <module>sem-partner</module>
         <module>sem-staff</module>
         <module>sem-store</module>

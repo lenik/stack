@@ -1,4 +1,4 @@
-package com.bee32.sem.opportunity.entity;
+package com.bee32.sem.chance.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +15,7 @@ import com.bee32.plover.orm.ext.color.GreenEntity;
 import com.bee32.sem.org.entity.Employee;
 
 @Entity
-public class Opportunity
+public class Chance
         extends GreenEntity<Long> {
 
     private static final long serialVersionUID = 1L;
@@ -28,12 +28,12 @@ public class Opportunity
     private Employee responsible;
     private Date createDate;
 
-    private List<OpportunityDetail> details;
-    private List<OpportunityHistory> histories;
+    private List<ChanceParty> parties;
+    private List<ChanceHistory> histories;
 
-    public Opportunity() {
-        details = new ArrayList<OpportunityDetail>();
-        histories = new ArrayList<OpportunityHistory>();
+    public Chance() {
+        details = new ArrayList<ChanceParty>();
+        histories = new ArrayList<ChanceHistory>();
     }
 
     /**
@@ -121,20 +121,20 @@ public class Opportunity
     }
 
     @OneToMany(mappedBy = "salesChance")
-    public List<OpportunityDetail> getDetails() {
+    public List<ChanceParty> getDetails() {
         return details;
     }
 
-    public void setDetails(List<OpportunityDetail> details) {
+    public void setDetails(List<ChanceParty> details) {
         this.details = details;
     }
 
     @OneToMany(mappedBy = "salesChance")
-    public List<OpportunityHistory> getHistories() {
+    public List<ChanceHistory> getHistories() {
         return histories;
     }
 
-    public void setHistories(List<OpportunityHistory> histories) {
+    public void setHistories(List<ChanceHistory> histories) {
         this.histories = histories;
     }
 

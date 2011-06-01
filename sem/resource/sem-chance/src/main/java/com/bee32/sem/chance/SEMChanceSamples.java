@@ -1,23 +1,23 @@
-package com.bee32.sem.opportunity;
+package com.bee32.sem.chance;
 
 import java.util.Arrays;
 import java.util.Calendar;
 
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
-import com.bee32.sem.opportunity.entity.Competitor;
-import com.bee32.sem.opportunity.entity.Opportunity;
-import com.bee32.sem.opportunity.entity.OpportunityDetail;
-import com.bee32.sem.opportunity.entity.OpportunityHistory;
+import com.bee32.sem.chance.entity.ChanceParty;
+import com.bee32.sem.chance.entity.Competitor;
+import com.bee32.sem.chance.entity.Opportunity;
+import com.bee32.sem.chance.entity.OpportunityHistory;
 import com.bee32.sems.crm.customer.SEMCustomerSamples;
 import com.bee32.sems.org.SEMOrgSamples;
 
 @ImportSamples({SEMOrgSamples.class, SEMCustomerSamples.class})
-public class SEMOpportunitySamples
+public class SEMChanceSamples
         extends EntitySamplesContribution {
 
     public static Opportunity salesChance;
-    public static OpportunityDetail details;
+    public static ChanceParty details;
     public static OpportunityHistory actionHistory = new OpportunityHistory();
     public static Competitor competitor = new Competitor();
 
@@ -35,7 +35,7 @@ public class SEMOpportunitySamples
         salesChance.setCategory("分类一");
         salesChance.setStatus("跟踪");
 
-        details = new OpportunityDetail();
+        details = new ChanceParty();
         details.setSalesChance(salesChance);
         details.setCustomer(SEMCustomerSamples.bukadi);
         details.setCategory("main");

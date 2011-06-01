@@ -1,4 +1,4 @@
-package com.bee32.sem.opportunity.entity;
+package com.bee32.sem.chance.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

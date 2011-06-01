@@ -24,7 +24,7 @@ resource/           资源集
     sem-customer
     sem-supplier
     sem-partner
-    sem-opportunity
+    sem-chance
 
 support/            业务支持
     sem-track

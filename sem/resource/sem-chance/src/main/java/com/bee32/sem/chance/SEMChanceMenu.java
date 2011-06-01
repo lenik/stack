@@ -1,11 +1,11 @@
-package com.bee32.sem.opportunity;
+package com.bee32.sem.chance;
 
 import com.bee32.plover.servlet.context.Location;
 import com.bee32.sem.frame.Contribution;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuEntry;
 
-public class SEMOpportunityMenu
+public class SEMChanceMenu
         extends MenuContribution {
 
     static Location CHANCE = WEB_APP.join("customer/chance/");

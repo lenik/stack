@@ -1,12 +1,12 @@
-package com.bee32.sem.opportunity;
+package com.bee32.sem.chance;
 
 import java.io.IOException;
 
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.sem.opportunity.SEMOpportunityUnit;
+import com.bee32.sem.chance.SEMChanceUnit;
 import com.bee32.sem.test.SEMTestCase;
 
-@Using(SEMOpportunityUnit.class)
+@Using(SEMChanceUnit.class)
 public class SEMOpportunityModuleTest
         extends SEMTestCase {
 

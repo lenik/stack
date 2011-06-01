@@ -1,4 +1,4 @@
-package com.bee32.sem.opportunity.entity;
+package com.bee32.sem.chance.entity;
 
 import javax.free.Nullables;
 import javax.persistence.Column;
@@ -7,19 +7,18 @@ import javax.persistence.ManyToOne;
 
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.BlueEntity;
-import com.bee32.sem.people.entity.Party;
 
 @Entity
-public class OpportunityDetail
+public class ChanceParty
         extends BlueEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
     private Opportunity salesChance;
-    private Party customer;
+    private Party party;
     private String category;
 
-    public OpportunityDetail() {
+    public ChanceParty() {
     }
 
     @ManyToOne
@@ -51,7 +50,7 @@ public class OpportunityDetail
 
     @Override
     protected Boolean naturalEquals(EntityBase<Long> other) {
-        OpportunityDetail otherDetail = (OpportunityDetail) other;
+        ChanceParty otherDetail = (ChanceParty) other;
 
         Long chanceId = salesChance.getId();
         Long otherChanceId = otherDetail.getSalesChance().getId();
