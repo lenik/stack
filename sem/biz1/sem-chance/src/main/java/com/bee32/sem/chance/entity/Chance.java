@@ -7,11 +7,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+<<<<<<< HEAD
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+=======
+>>>>>>> polish Chance again
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.CollectionOfElements;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.ext.color.GreenEntity;
@@ -56,7 +61,7 @@ public class Chance
     /**
      * 机会主题
      */
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     public String getTitle() {
         return subject;
     }
@@ -68,31 +73,34 @@ public class Chance
     /**
      * 来源
      */
-    @Column(length = 30)
-    public String getSource() {
+    @ManyToOne(optional = true)
+    public ChanceSource getSource() {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(ChanceSource source) {
         this.source = source;
     }
 
     /**
      * 机会内容
      */
-    @Column(length = 500)
+    @Column(length = 500, nullable = false)
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
+        if(content == null)
+            content = "";
         this.content = content;
     }
 
     /**
      * 负责人
      */
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     public User getResponsible() {
         return owner;
     }
@@ -105,11 +113,14 @@ public class Chance
      * 发现时间
      */
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
     public Date getCreateDate() {
         return createDate;
     }
 
     public void setCreateDate(Date createDate) {
+        if(createDate == null )
+            throw new NullPointerException("cant set null to Chance.createDate");
         this.createDate = createDate;
     }
 
@@ -119,6 +130,8 @@ public class Chance
     }
 
     public void setParties(List<ChanceParty> parties) {
+        if(parties == null)
+            throw new NullPointerException("can't set Null to Chance.parties");
         this.parties = parties;
     }
 
@@ -129,6 +142,8 @@ public class Chance
     }
 
     public void setActions(List<ChanceAction> actions) {
+        if(actions == null)
+            throw new NullPointerException("can't set Null to Chance.actions");
         this.actions = actions;
     }
 

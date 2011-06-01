@@ -30,20 +30,25 @@ public class ChanceParty
     }
 
     public void setSalesChance(Chance chance) {
+        if( chance == null)
+            throw new NullPointerException("can't set null to ChanceParty.chance");
         this.chance = chance;
     }
 
     @NaturalId
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     public Party getCustomer() {
         return party;
     }
 
     public void setCustomer(Party party) {
+        if(party == null)
+            throw new NullPointerException("can't set null to ChanceParty.party");
         this.party = party;
     }
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     public String getCategory() {
         return category;
     }

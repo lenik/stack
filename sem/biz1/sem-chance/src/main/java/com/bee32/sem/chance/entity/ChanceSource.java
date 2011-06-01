@@ -1,24 +1,28 @@
 package com.bee32.sem.chance.entity;
 
+import javax.persistence.Entity;
+
 import com.bee32.plover.orm.ext.dict.ShortNameDict;
 
-public class ChanceContactStyle
+/**
+ * 机会来源
+ */
+@Entity
+public class ChanceSource
         extends ShortNameDict {
 
     private static final long serialVersionUID = 1L;
 
-    public ChanceContactStyle() {
+    public ChanceSource() {
         super();
     }
 
-    public ChanceContactStyle(String name, String label, String description) {
+    public ChanceSource(String name, String label, String description) {
         super(name, label, description);
     }
 
-    public ChanceContactStyle(String name, String label) {
+    public ChanceSource(String name, String label) {
         super(name, label);
     }
-
-
 
 }

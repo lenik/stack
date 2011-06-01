@@ -3,25 +3,28 @@ package com.bee32.sem.chance.entity;
 import javax.persistence.Entity;
 
 import com.bee32.plover.orm.ext.dict.ShortNameDict;
+
 /**
- * 机会分类
+ * 洽谈类型
  */
 @Entity
-public class ChanceCategory
+public class ChanceActionStyle
         extends ShortNameDict {
 
     private static final long serialVersionUID = 1L;
 
-    public ChanceCategory() {
+    public ChanceActionStyle() {
         super();
     }
 
-    public ChanceCategory(String name, String label, String description) {
+    public ChanceActionStyle(String name, String label, String description) {
         super(name, label, description);
     }
 
-    public ChanceCategory(String name, String label) {
+    public ChanceActionStyle(String name, String label) {
         super(name, label);
     }
+
+
 
 }

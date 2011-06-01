@@ -1,11 +1,13 @@
 package com.bee32.sem.chance.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -22,7 +24,9 @@ public class ChanceAction
 
     boolean plan;
     List<Party> parties;
-    ChanceContactStyle style;
+
+    ChanceActionStyle style;
+
     Date beginTime;
     Date endTime;
     String content;
@@ -33,6 +37,7 @@ public class ChanceAction
     /**
      * 工作日志类型
      */
+    @Column(nullable = false)
     public boolean isPlan() {
         return plan;
     }
@@ -50,17 +55,22 @@ public class ChanceAction
     }
 
     public void setParties(List<Party> parties) {
+        if(parties == null)
+            parties = new ArrayList<Party>();
         this.parties = parties;
     }
 
     /**
      * 洽谈方式
      */
-    public ChanceContactStyle getStyle() {
+    @OneToOne
+    public ChanceActionStyle getStyle() {
         return style;
     }
 
-    public void setStyle(ChanceContactStyle style) {
+    public void setStyle(ChanceActionStyle style) {
+        if(style == null )
+            throw new NullPointerException("can't set null to ChanceAction.style");
         this.style = style;
     }
 
@@ -68,11 +78,14 @@ public class ChanceAction
      * 开始时间
      */
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
     public Date getBeginTime() {
         return beginTime;
     }
 
     public void setBeginTime(Date beginTime) {
+        if(beginTime ==  null)
+            throw new NullPointerException("can't set null to ChanceAction.beginTime");
         this.beginTime = beginTime;
     }
 
@@ -91,24 +104,28 @@ public class ChanceAction
     /**
      * 拜访目的（计划）或洽谈内容（日志）
      */
-    @Column(length = 500)
+    @Column(length = 500, nullable = false)
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
+        if(content == null)
+            content = "";
         this.content = content;
     }
 
     /**
      * 产生费用明细
      */
-    @Column(length = 300)
+    @Column(length = 300, nullable = false)
     public String getSpending() {
         return spending;
     }
 
     public void setSpending(String spending) {
+        if(spending == null)
+            spending = "";
         this.spending = spending;
     }
 
@@ -116,7 +133,7 @@ public class ChanceAction
      * 对应机会
      */
     @ManyToOne(optional = true)
-    public Chance getSalesChance() {
+    public Chance getChance() {
         return chance;
     }
 
@@ -127,7 +144,7 @@ public class ChanceAction
     /**
      * 阶段推进
      */
-    @ManyToOne(optional = true)
+    @OneToOne
     public ChanceStage getChanceStage() {
         return stage;
     }
