@@ -2,11 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.sem</groupId>
-        <artifactId>social</artifactId>
+        <artifactId>resource</artifactId>
         <version>0.3.2-SNAPSHOT</version>
     </parent>
-    <artifactId>sem-staff</artifactId>
+    <artifactId>sem-supplier</artifactId>
     <version>0.3.2-SNAPSHOT</version>
     <dependencies/>
-    <name>SEM :: Social :: Staff</name>
+    <name>SEM :: Resource :: Supplier</name>
 </project>

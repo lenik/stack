@@ -1,4 +1,4 @@
-base/
+base/               基本类型
     sem-module
     sem-frame
     sem-desktop
@@ -10,26 +10,27 @@ base/
     sem-file
     sem-mail
 
-process/
+process/            过程支持
     sem-process
     sem-techproc
     sem-workflow
 
-resource/
+resource/           资源集
     sem-asset
     sem-contract
     sem-store
     sem-thing
-
-social/
     sem-staff
     sem-customer
     sem-supplier
     sem-partner
 
-support/
+biz/                一般业务
+    sem-sales
+
+support/            业务支持
     sem-track
     sem-kb
 
-demo/
+demo/               示例
     sem-samples

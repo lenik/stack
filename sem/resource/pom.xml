@@ -14,7 +14,11 @@
     <modules>
         <module>sem-asset</module>
         <module>sem-contract</module>
+        <module>sem-customer</module>
+        <module>sem-partner</module>
+        <module>sem-staff</module>
         <module>sem-store</module>
+        <module>sem-supplier</module>
         <module>sem-thing</module>
     </modules>
     <name>SEM :: Resource</name>
