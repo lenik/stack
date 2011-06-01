@@ -7,12 +7,8 @@ import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.chance.entity.Competitor;
-import com.bee32.sem.chance.entity.Opportunity;
-import com.bee32.sem.chance.entity.OpportunityHistory;
-import com.bee32.sems.crm.customer.SEMCustomerSamples;
-import com.bee32.sems.org.SEMOrgSamples;
 
-@ImportSamples({SEMOrgSamples.class, SEMCustomerSamples.class})
+@ImportSamples({ SEMOrgSamples.class, SEMCustomerSamples.class })
 public class SEMChanceSamples
         extends EntitySamplesContribution {
 
@@ -20,7 +16,6 @@ public class SEMChanceSamples
     public static ChanceParty parties;
     public static OpportunityHistory action = new OpportunityHistory();
     public static Competitor competitor = new Competitor();
-
 
     static {
 
@@ -41,7 +36,6 @@ public class SEMChanceSamples
         parties.setCategory("main");
 
         chance.setDetails(Arrays.asList(parties));
-
 
         competitor.setName("皇冠公司");
         competitor.setSalesChance(chance);
@@ -65,12 +59,10 @@ public class SEMChanceSamples
 
     @Override
     protected void preamble() {
-
         addNormalSample(chance);
         addNormalSample(parties);
         addNormalSample(competitor);
         addNormalSample(action);
-
     }
 
 }

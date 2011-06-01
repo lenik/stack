@@ -12,15 +12,15 @@ public class Competitor
 
     private static final long serialVersionUID = 1L;
 
-    private String name;
-    private Chance chance;
-    private String price;
-    private String capability;
-    private String solution;
-    private String advantage;
-    private String disvantage;
-    private String tactic;
-    private String remark;
+    String name;
+    Chance chance;
+    String price;
+    String capability;
+    String solution;
+    String advantage;
+    String disvantage;
+    String tactic;
+    String remark;
 
     public Competitor() {
     }

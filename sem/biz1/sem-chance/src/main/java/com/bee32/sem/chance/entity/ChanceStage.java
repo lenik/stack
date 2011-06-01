@@ -1,7 +1,10 @@
 package com.bee32.sem.chance.entity;
 
+import javax.persistence.Entity;
+
 import com.bee32.plover.orm.ext.dict.ShortNameDict;
 
+@Entity
 public class ChanceStage
         extends ShortNameDict {
 

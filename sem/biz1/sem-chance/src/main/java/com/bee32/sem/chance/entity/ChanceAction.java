@@ -21,21 +21,13 @@ public class ChanceAction
     private static final long serialVersionUID = 1L;
 
     boolean plan;
-
     List<Party> parties;
-
     ChanceContactStyle style;
-
     Date beginTime;
-
     Date endTime;
-
     String content;
-
     String spending;
-
     Chance chance;
-
     ChanceStage stage;
 
     /**

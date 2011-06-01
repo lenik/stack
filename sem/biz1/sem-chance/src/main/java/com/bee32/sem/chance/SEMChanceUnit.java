@@ -6,8 +6,9 @@ import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.chance.entity.Competitor;
+import com.bee32.sem.people.SEMPeopleUnit;
 
-@ImportUnit({SEMOrgUnit.class, SEMCustomerUnit.class})
+@ImportUnit({ SEMPeopleUnit.class })
 public class SEMChanceUnit
         extends PersistenceUnit {
 

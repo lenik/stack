@@ -3,7 +3,10 @@ package com.bee32.sem.chance.entity;
 import javax.free.Nullables;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.BlueEntity;
@@ -15,14 +18,13 @@ public class ChanceParty
 
     private static final long serialVersionUID = 1L;
 
-    private Chance chance;
-    private Party party;
-    private String category;
+    Chance chance;
+    Party party;
+    String category;
 
-    public ChanceParty() {
-    }
-
-    @ManyToOne
+    @NaturalId
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     public Chance getSalesChance() {
         return chance;
     }
@@ -31,6 +33,7 @@ public class ChanceParty
         this.chance = chance;
     }
 
+    @NaturalId
     @ManyToOne
     public Party getCustomer() {
         return party;
