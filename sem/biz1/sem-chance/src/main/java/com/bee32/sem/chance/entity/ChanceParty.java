@@ -20,7 +20,7 @@ public class ChanceParty
 
     Chance chance;
     Party party;
-    String category;
+    String role;
 
     @NaturalId
     @ManyToOne(optional = false)
@@ -49,14 +49,14 @@ public class ChanceParty
     }
 
     @Column(length = 20, nullable = false)
-    public String getCategory() {
-        return category;
+    public String getRole() {
+        return role;
     }
 
-    public void setCategory(String category) {
-        if (category == null)
-            throw new NullPointerException("can't set Null to ChanceParty.category");
-        this.category = category;
+    public void setRole(String role) {
+        if (role == null)
+            throw new NullPointerException("can't set Null to ChanceParty.role");
+        this.role = role;
     }
 
     @Override

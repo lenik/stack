@@ -24,7 +24,7 @@ public class ChanceStage
     /**
      * 机会推进顺序
      */
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false)
     public int getOrder() {
         return order;
     }

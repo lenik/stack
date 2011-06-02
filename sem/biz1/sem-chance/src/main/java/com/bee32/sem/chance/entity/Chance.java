@@ -42,14 +42,14 @@ public class Chance
     ChanceStage stage;
 
     public Chance() {
-         parties = new HashSet<ChanceParty>();
-         actions = new ArrayList<ChanceAction>();
+        parties = new HashSet<ChanceParty>();
+        actions = new ArrayList<ChanceAction>();
     }
 
     /**
      * 类型
      */
-    @ManyToOne(optional = true)
+    @ManyToOne
     public ChanceCategory getCategory() {
         return category;
     }
@@ -67,18 +67,22 @@ public class Chance
     }
 
     public void setSubject(String subject) {
+        if (subject == null)
+            throw new NullPointerException("can't set Null to Chance.subject");
         this.subject = subject;
     }
 
     /**
      * 来源
      */
-    @ManyToOne(optional = true)
+    @ManyToOne
     public ChanceSource getSource() {
         return source;
     }
 
     public void setSource(ChanceSource source) {
+        if (source == null)
+            throw new NullPointerException("can't set Null to Chance.source");
         this.source = source;
     }
 
@@ -142,8 +146,8 @@ public class Chance
     }
 
     public void setActions(List<ChanceAction> actions) {
-// if(actions == null)
-// throw new NullPointerException("can't set Null to Chance.actions");
+        if (actions == null)
+            throw new NullPointerException("can't set Null to Chance.actions");
         this.actions = actions;
     }
 

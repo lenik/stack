@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.ext.color.PinkEntity;
 import com.bee32.sem.people.entity.Party;
 
@@ -25,6 +26,7 @@ public class ChanceAction
     boolean plan;
     List<Party> parties;
 
+    User actor;
     ChanceActionStyle style;
 
     Date beginTime;
@@ -63,6 +65,21 @@ public class ChanceAction
         if (parties == null)
             parties = new ArrayList<Party>();
         this.parties = parties;
+    }
+
+    /**
+     * 行动人
+     */
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    public User getActor() {
+        return actor;
+    }
+
+    public void setActor(User actor) {
+        if (actor == null)
+            throw new NullPointerException("can't set Null to ChanceAction.actor");
+        this.actor = actor;
     }
 
     /**
@@ -138,7 +155,7 @@ public class ChanceAction
     /**
      * 对应机会
      */
-    @ManyToOne(optional = true)
+    @ManyToOne
     public Chance getChance() {
         return chance;
     }
@@ -160,10 +177,10 @@ public class ChanceAction
     }
 
     @Transient
-    public void pushToStage(ChanceStage stage){
-        if(stage == null)
+    public void pushToStage(ChanceStage stage) {
+        if (stage == null)
             throw new NullPointerException("stage");
-        if(stage.getOrder() > getStage().getOrder())
+        if (stage.getOrder() > getStage().getOrder())
             this.stage = stage;
     }
 }

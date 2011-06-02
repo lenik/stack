@@ -45,5 +45,5 @@ public class ChanceSource
 
     public static ChanceSource INTERNET = new ChanceSource("INTE", "互联网");
 
-    public static ChanceSource OTHER = new ChanceSource("OTHER", "互联网");
+    public static ChanceSource OTHER = new ChanceSource("OTHE", "其他");
 }

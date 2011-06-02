@@ -56,7 +56,6 @@ public class SEMChanceSamples
         competitor.setPrice(5000.0);
         competitor.setCapability("核心竞争力");
 
-
         action.setChance(chance);
         action.setBeginTime(cal.getTime());
         action.setEndTime(cal.getTime());

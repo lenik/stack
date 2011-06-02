@@ -76,10 +76,10 @@ public class Competitor
         return capability;
     }
 
-    public void setCapability(String competitiveness) {
-        if (competitiveness == null)
-            competitiveness = "";
-        this.capability = competitiveness;
+    public void setCapability(String capability) {
+        if (capability == null)
+            capability = "";
+        this.capability = capability;
     }
 
     /**
