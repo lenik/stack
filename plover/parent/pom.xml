@@ -172,7 +172,7 @@
             <id>friend-repositories</id>
             <activation>
                 <property>
-                    <name>!mirror.bee32</name>
+                    <name>!env.NO_BEE32</name>
                 </property>
             </activation>
             <repositories>
