@@ -25,11 +25,11 @@ public class ChanceParty
     @NaturalId
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
-    public Chance getSalesChance() {
+    public Chance getChance() {
         return chance;
     }
 
-    public void setSalesChance(Chance chance) {
+    public void setChance(Chance chance) {
         if (chance == null)
             throw new NullPointerException("can't set null to ChanceParty.chance");
         this.chance = chance;
@@ -64,7 +64,7 @@ public class ChanceParty
         ChanceParty otherDetail = (ChanceParty) other;
 
         Long chanceId = chance.getId();
-        Long otherChanceId = otherDetail.getSalesChance().getId();
+        Long otherChanceId = otherDetail.getChance().getId();
         if (!Nullables.equals(chanceId, otherChanceId))
             return false;
 
