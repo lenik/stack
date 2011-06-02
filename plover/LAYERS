@@ -12,7 +12,6 @@ core/
     plover-criteria     组合检索模型
     plover-route        事件路由
     plover-indexing     索引框架
-    plover-vcs          一般业务版本模型
 
 library/
     plover-commons      公共库
@@ -52,5 +51,5 @@ ui/
 
 web-ui/
     plover-zk           Zk 支持
-    plover-webtest      Web 测试支持
+    # plover-webtest      Web 测试支持
 
