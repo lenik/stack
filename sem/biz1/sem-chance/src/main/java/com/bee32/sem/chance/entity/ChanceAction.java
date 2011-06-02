@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.bee32.plover.orm.ext.color.PinkEntity;
 import com.bee32.sem.people.entity.Party;
@@ -32,6 +33,11 @@ public class ChanceAction
     String spending;
     Chance chance;
     ChanceStage stage;
+
+    public ChanceAction() {
+        super();
+        parties = new ArrayList<Party>();
+    }
 
     /**
      * 工作日志类型
@@ -145,11 +151,19 @@ public class ChanceAction
      * 阶段推进
      */
     @ManyToOne
-    public ChanceStage getChanceStage() {
+    public ChanceStage getStage() {
         return stage;
     }
 
-    public void setChanceStage(ChanceStage stage) {
+    public void setStage(ChanceStage stage) {
         this.stage = stage;
+    }
+
+    @Transient
+    public void pushToStage(ChanceStage stage){
+        if(stage == null)
+            throw new NullPointerException("stage");
+        if(stage.getOrder() > getStage().getOrder())
+            this.stage = stage;
     }
 }

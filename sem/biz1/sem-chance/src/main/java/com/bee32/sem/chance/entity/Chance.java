@@ -1,7 +1,10 @@
 package com.bee32.sem.chance.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +19,9 @@ import javax.persistence.Transient;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.ext.color.GreenEntity;
 
+/**
+ * 销售机会
+ */
 @Entity
 public class Chance
         extends GreenEntity<Long> {
@@ -23,7 +29,6 @@ public class Chance
     private static final long serialVersionUID = 1L;
 
     User owner;
-
     ChanceCategory category;
     ChanceSource source;
     String subject;
@@ -31,14 +36,14 @@ public class Chance
 
     Date createDate;
 
-    List<ChanceParty> parties;
+    Set<ChanceParty> parties;
     List<ChanceAction> actions;
 
     ChanceStage stage;
 
     public Chance() {
-        // parties = new ArrayList<ChanceParty>();
-        // histories = new ArrayList<ChanceAction>();
+         parties = new HashSet<ChanceParty>();
+         actions = new ArrayList<ChanceAction>();
     }
 
     /**
@@ -115,16 +120,16 @@ public class Chance
 
     public void setCreateDate(Date createDate) {
         if (createDate == null)
-            throw new NullPointerException("cant set null to Chance.createDate");
+            throw new NullPointerException("cant set Null to Chance.createDate");
         this.createDate = createDate;
     }
 
     @OneToMany(mappedBy = "chance")
-    public List<ChanceParty> getParties() {
+    public Set<ChanceParty> getParties() {
         return parties;
     }
 
-    public void setParties(List<ChanceParty> parties) {
+    public void setParties(Set<ChanceParty> parties) {
         if (parties == null)
             throw new NullPointerException("can't set Null to Chance.parties");
         this.parties = parties;
@@ -170,10 +175,35 @@ public class Chance
     public ChanceAction getLatestAction() {
         ChanceAction ca = null;
         if (getActions() != null) {
-            int lastIndex = getActions().size() - 1;
-            ca = getActions().get(lastIndex);
+            ca = getActions().get(0);
+            for (ChanceAction item : getActions()) {
+                if (ca.getBeginTime().before(item.getBeginTime()))
+                    ca = item;
+            }
+// int lastIndex = getActions().size() - 1;
+// ca = getActions().get(lastIndex);
         }
         return ca;
+    }
+
+    @Transient
+    public void addAction(ChanceAction actoin) {
+        List<ChanceAction> caList = getActions();
+        caList.add(actoin);
+
+        // sort the list
+        int size = caList.size();
+        List<ChanceAction> sortedList = new ArrayList<ChanceAction>();
+        for (int index = 0; index < size; index++) {
+            ChanceAction ca = caList.get(index);
+            for (int j = index + 1; j < size; j++) {
+                ChanceAction temp = caList.get(j);
+                if (temp.beginTime.before(ca.beginTime))
+                    ca = temp;
+            }
+            sortedList.add(ca);
+        }
+        setActions(sortedList);
     }
 
 }

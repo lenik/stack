@@ -25,4 +25,25 @@ public class ChanceSource
         super(name, label);
     }
 
+    public static ChanceSource TELEPHONE = new ChanceSource("TELE", "电话来访");
+
+    public static ChanceSource INTRODUCTION = new ChanceSource("INTR", "客户介绍");
+
+    public static ChanceSource DEVELOP = new ChanceSource("DEVE", "独立开发");
+
+    public static ChanceSource MEDIA = new ChanceSource("MEDI", "媒体宣传");
+
+    public static ChanceSource PROMOTION = new ChanceSource("PROM", "促销活动");
+
+    public static ChanceSource CUSTOMER = new ChanceSource("CUST", "老客户");
+
+    public static ChanceSource AGENT = new ChanceSource("AGEN", "代理商");
+
+    public static ChanceSource PARTNER = new ChanceSource("PART", "合作伙伴");
+
+    public static ChanceSource TENDER = new ChanceSource("TEND", "公开招标");
+
+    public static ChanceSource INTERNET = new ChanceSource("INTE", "互联网");
+
+    public static ChanceSource OTHER = new ChanceSource("OTHER", "互联网");
 }

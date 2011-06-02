@@ -25,4 +25,9 @@ public class ChanceActionStyle
         super(name, label);
     }
 
+    public static ChanceActionStyle TELEPHONE = new ChanceActionStyle("TELE", "电话");
+
+    public static ChanceActionStyle TALK = new ChanceActionStyle("TALK", "面谈");
+
+    public static ChanceActionStyle INTERNET = new ChanceActionStyle("INTE", "互联网");
 }
