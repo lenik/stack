@@ -5,7 +5,11 @@ import java.util.Calendar;
 
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
+import com.bee32.sem.chance.entity.ChanceActionStyle;
+import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceParty;
+import com.bee32.sem.chance.entity.ChanceSource;
+import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.entity.Competitor;
 
 @ImportSamples({ SEMOrgSamples.class, SEMCustomerSamples.class })
@@ -59,6 +63,36 @@ public class SEMChanceSamples
 
     @Override
     protected void preamble() {
+        // add ChanceActionStyle
+        addNormalSample(ChanceActionStyle.INTERNET);
+        addNormalSample(ChanceActionStyle.TALK);
+        addNormalSample(ChanceActionStyle.TELEPHONE);
+
+        // add ChanceCategory
+        addNormalSample(ChanceCategory.IMPORTANT);
+        addNormalSample(ChanceCategory.NORMAL);
+        addNormalSample(ChanceCategory.OTHER);
+
+        // add ChanceSource
+        addNormalSample(ChanceSource.AGENT);
+        addNormalSample(ChanceSource.CUSTOMER);
+        addNormalSample(ChanceSource.DEVELOP);
+        addNormalSample(ChanceSource.INTERNET);
+        addNormalSample(ChanceSource.INTRODUCTION);
+        addNormalSample(ChanceSource.MEDIA);
+        addNormalSample(ChanceSource.OTHER);
+        addNormalSample(ChanceSource.PARTNER);
+        addNormalSample(ChanceSource.PROMOTION);
+        addNormalSample(ChanceSource.TELEPHONE);
+        addNormalSample(ChanceSource.TENDER);
+
+        // addChanceStage
+        addNormalSample(ChanceStage.CONTRACT);
+        addNormalSample(ChanceStage.INITIAL);
+        addNormalSample(ChanceStage.MEAT);
+        addNormalSample(ChanceStage.PAYMENT);
+        addNormalSample(ChanceStage.QUOTATION);
+
         addNormalSample(chance);
         addNormalSample(parties);
         addNormalSample(competitor);
