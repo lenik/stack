@@ -5,6 +5,8 @@ import java.util.Calendar;
 
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
+import com.bee32.sem.chance.entity.Chance;
+import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceParty;
@@ -16,16 +18,16 @@ import com.bee32.sem.chance.entity.Competitor;
 public class SEMChanceSamples
         extends EntitySamplesContribution {
 
-    public static Opportunity chance;
+    public static Chance chance;
     public static ChanceParty parties;
-    public static OpportunityHistory action = new OpportunityHistory();
+    public static ChanceAction action = new ChanceAction();
     public static Competitor competitor = new Competitor();
 
     static {
 
         Calendar cal = Calendar.getInstance();
         cal.set(2011, 4, 8);
-        chance = new Opportunity();
+        chance = new Chance();
         chance.setTitle("新办公楼布线及机房设备安装");
         chance.setResponsible(SEMOrgSamples.admin);
         chance.setCreateDate(cal.getTime());
@@ -42,7 +44,7 @@ public class SEMChanceSamples
         chance.setDetails(Arrays.asList(parties));
 
         competitor.setName("皇冠公司");
-        competitor.setSalesChance(chance);
+        competitor.setChance(chance);
         competitor.setTactic("在北京、上海、广州三地召开大规模的产品发布会，并在杭州及广州各聘用一名销售工程师");
         competitor.setRemark("");
         competitor.setAdvantage("产品线95%齐全；产品质量高，市场认可度高；价格战略被市场接受；库存齐全");
