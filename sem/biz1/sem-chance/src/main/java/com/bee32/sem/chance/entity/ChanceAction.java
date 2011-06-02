@@ -6,12 +6,11 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.CollectionOfElements;
 
 import com.bee32.plover.orm.ext.color.PinkEntity;
 import com.bee32.sem.people.entity.Party;
@@ -49,13 +48,13 @@ public class ChanceAction
     /**
      * 对应客户
      */
-    @CollectionOfElements
+    @OneToMany
     public List<Party> getParties() {
         return parties;
     }
 
     public void setParties(List<Party> parties) {
-        if(parties == null)
+        if (parties == null)
             parties = new ArrayList<Party>();
         this.parties = parties;
     }
@@ -63,13 +62,14 @@ public class ChanceAction
     /**
      * 洽谈方式
      */
-    @OneToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     public ChanceActionStyle getStyle() {
         return style;
     }
 
     public void setStyle(ChanceActionStyle style) {
-        if(style == null )
+        if (style == null)
             throw new NullPointerException("can't set null to ChanceAction.style");
         this.style = style;
     }
@@ -84,7 +84,7 @@ public class ChanceAction
     }
 
     public void setBeginTime(Date beginTime) {
-        if(beginTime ==  null)
+        if (beginTime == null)
             throw new NullPointerException("can't set null to ChanceAction.beginTime");
         this.beginTime = beginTime;
     }
@@ -110,7 +110,7 @@ public class ChanceAction
     }
 
     public void setContent(String content) {
-        if(content == null)
+        if (content == null)
             content = "";
         this.content = content;
     }
@@ -124,7 +124,7 @@ public class ChanceAction
     }
 
     public void setSpending(String spending) {
-        if(spending == null)
+        if (spending == null)
             spending = "";
         this.spending = spending;
     }
@@ -144,7 +144,7 @@ public class ChanceAction
     /**
      * 阶段推进
      */
-    @OneToOne
+    @ManyToOne
     public ChanceStage getChanceStage() {
         return stage;
     }

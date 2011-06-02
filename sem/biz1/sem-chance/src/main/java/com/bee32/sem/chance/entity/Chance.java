@@ -7,16 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-<<<<<<< HEAD
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-=======
->>>>>>> polish Chance again
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.CollectionOfElements;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.ext.color.GreenEntity;
@@ -30,7 +25,7 @@ public class Chance
     User owner;
 
     ChanceCategory category;
-    String source;
+    ChanceSource source;
     String subject;
     String content;
 
@@ -62,12 +57,12 @@ public class Chance
      * 机会主题
      */
     @Column(length = 100, nullable = false)
-    public String getTitle() {
+    public String getSubject() {
         return subject;
     }
 
-    public void setTitle(String title) {
-        this.subject = title;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     /**
@@ -91,7 +86,7 @@ public class Chance
     }
 
     public void setContent(String content) {
-        if(content == null)
+        if (content == null)
             content = "";
         this.content = content;
     }
@@ -101,12 +96,12 @@ public class Chance
      */
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
-    public User getResponsible() {
+    public User getOwner() {
         return owner;
     }
 
-    public void setResponsible(User responsible) {
-        this.owner = responsible;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     /**
@@ -119,7 +114,7 @@ public class Chance
     }
 
     public void setCreateDate(Date createDate) {
-        if(createDate == null )
+        if (createDate == null)
             throw new NullPointerException("cant set null to Chance.createDate");
         this.createDate = createDate;
     }
@@ -130,7 +125,7 @@ public class Chance
     }
 
     public void setParties(List<ChanceParty> parties) {
-        if(parties == null)
+        if (parties == null)
             throw new NullPointerException("can't set Null to Chance.parties");
         this.parties = parties;
     }
@@ -142,8 +137,8 @@ public class Chance
     }
 
     public void setActions(List<ChanceAction> actions) {
-        if(actions == null)
-            throw new NullPointerException("can't set Null to Chance.actions");
+// if(actions == null)
+// throw new NullPointerException("can't set Null to Chance.actions");
         this.actions = actions;
     }
 
@@ -168,13 +163,17 @@ public class Chance
     }
 
     /**
-     * TODO 获得最近一次行动。
      *
      * @return 最近一次行动，如果还没有任何行动返回 <code>null</code>.
      */
     @Transient
     public ChanceAction getLatestAction() {
-        return null;
+        ChanceAction ca = null;
+        if (getActions() != null) {
+            int lastIndex = getActions().size() - 1;
+            ca = getActions().get(lastIndex);
+        }
+        return ca;
     }
 
 }

@@ -25,6 +25,4 @@ public class ChanceActionStyle
         super(name, label);
     }
 
-
-
 }

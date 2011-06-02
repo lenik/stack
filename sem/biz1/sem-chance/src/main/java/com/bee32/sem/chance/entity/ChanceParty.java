@@ -30,7 +30,7 @@ public class ChanceParty
     }
 
     public void setSalesChance(Chance chance) {
-        if( chance == null)
+        if (chance == null)
             throw new NullPointerException("can't set null to ChanceParty.chance");
         this.chance = chance;
     }
@@ -43,7 +43,7 @@ public class ChanceParty
     }
 
     public void setCustomer(Party party) {
-        if(party == null)
+        if (party == null)
             throw new NullPointerException("can't set null to ChanceParty.party");
         this.party = party;
     }
@@ -54,6 +54,8 @@ public class ChanceParty
     }
 
     public void setCategory(String category) {
+        if (category == null)
+            throw new NullPointerException("can't set Null to ChanceParty.category");
         this.category = category;
     }
 
