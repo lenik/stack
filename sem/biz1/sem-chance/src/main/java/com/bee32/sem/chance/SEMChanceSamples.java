@@ -1,7 +1,8 @@
 package com.bee32.sem.chance;
 
-import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
@@ -19,7 +20,7 @@ public class SEMChanceSamples
         extends EntitySamplesContribution {
 
     public static Chance chance;
-    public static ChanceParty parties;
+    public static ChanceParty party;
     public static ChanceAction action = new ChanceAction();
     public static Competitor competitor = new Competitor();
 
@@ -28,20 +29,22 @@ public class SEMChanceSamples
         Calendar cal = Calendar.getInstance();
         cal.set(2011, 4, 8);
         chance = new Chance();
-        chance.setTitle("新办公楼布线及机房设备安装");
-        chance.setResponsible(SEMOrgSamples.admin);
+        chance.setSubject("新办公楼布线及机房设备安装");
+        chance.setOwner(SEMOrgSamples.admin);
         chance.setCreateDate(cal.getTime());
-        chance.setSource("网络");
+        chance.setSource(ChanceSource.DEVELOP);
         chance.setContent("");
-        chance.setCategory("分类一");
-        chance.setStatus("跟踪");
+        chance.setCategory(ChanceCategory.NORMAL);
 
-        parties = new ChanceParty();
-        parties.setSalesChance(chance);
-        parties.setCustomer(SEMCustomerSamples.bukadi);
-        parties.setCategory("main");
+        Set<ChanceParty> parties = new HashSet<ChanceParty>();
+        party = new ChanceParty();
+        party.setChance(chance);
+        party.setCustomer(SEMCustomerSamples.bukadi);
+        party.setCategory("main");
 
-        chance.setDetails(Arrays.asList(parties));
+        parties.add(party);
+
+        chance.setParties(parties);
 
         competitor.setName("皇冠公司");
         competitor.setChance(chance);
@@ -50,16 +53,16 @@ public class SEMChanceSamples
         competitor.setAdvantage("产品线95%齐全；产品质量高，市场认可度高；价格战略被市场接受；库存齐全");
         competitor.setDisvantage(//
                 "缺少管理人员落实战略；管理人员缺少经验、能力; 团队精神差，缺少沟通；职责不清楚，各自推卸责任；零配件不全，影响售后服务");
-        competitor.setPrice("5000");
+        competitor.setPrice(5000.0);
         competitor.setCapability("核心竞争力");
 
-        action.setSalesChance(chance);
-        action.setDate(cal.getTime());
-        action.setDescription("在北京、上海、广州三个重点区域发展10家经销商，再发展8至10家大OEM厂商");
-        action.setEnforcer(SEMOrgSamples.admin);
-        action.setChanceStatus("成功");
-        action.setCategory("上门");
-        action.setSubject("业务洽谈");
+
+        action.setChance(chance);
+        action.setBeginTime(cal.getTime());
+        action.setEndTime(cal.getTime());
+        action.setContent("在北京、上海、广州三个重点区域发展10家经销商，再发展8至10家大OEM厂商");
+        action.setStage(ChanceStage.INITIAL);
+        action.setSpending("打的 15, 吃饭30,住宿100,共145");
 
     }
 
@@ -96,7 +99,7 @@ public class SEMChanceSamples
         addNormalSample(ChanceStage.QUOTATION);
 
         addNormalSample(chance);
-        addNormalSample(parties);
+        addNormalSample(party);
         addNormalSample(competitor);
         addNormalSample(action);
     }
