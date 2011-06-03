@@ -12,22 +12,16 @@
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-arch</artifactId>
             <version>0.3.2-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-indexing</artifactId>
             <version>0.2.100</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-model</artifactId>
             <version>0.3.2-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
     <name>Plover :: Lifecycle :: Stateflow</name>

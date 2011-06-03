@@ -51,38 +51,13 @@
         </dependency>
         <dependency>
             <groupId>javax.free</groupId>
-            <artifactId>freejava-closure</artifactId>
-            <version>3.0.0</version>
+            <artifactId>fj5</artifactId>
+            <version>1.1</version>
         </dependency>
         <dependency>
-            <groupId>javax.free</groupId>
-            <artifactId>freejava-variant</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.free</groupId>
-            <artifactId>freejava-traits</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.free</groupId>
-            <artifactId>freejava-string</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.free</groupId>
-            <artifactId>freejava-context</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.free</groupId>
-            <artifactId>freejava-collection</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.free</groupId>
-            <artifactId>freejava-io</artifactId>
-            <version>3.0.0</version>
+            <groupId>net.sourceforge.collections</groupId>
+            <artifactId>collections-generic</artifactId>
+            <version>4.01</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

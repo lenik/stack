@@ -9,20 +9,14 @@
     <version>0.2.100</version>
     <dependencies>
         <dependency>
-            <groupId>javax.free</groupId>
-            <artifactId>freejava-context</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.free</groupId>
-            <artifactId>freejava-variant</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.free</groupId>
+            <artifactId>fj5</artifactId>
+            <version>1.1</version>
         </dependency>
     </dependencies>
     <name>Plover :: Lifecycle :: Session</name>

@@ -18,11 +18,6 @@
             <artifactId>plover-ajax</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>javax.free</groupId>
-            <artifactId>freejava-regex</artifactId>
-            <version>3.0.0</version>
-        </dependency>
     </dependencies>
     <name>Plover :: Modeling :: Or_ext</name>
 </project>
