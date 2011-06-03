@@ -34,6 +34,11 @@ public class ServletDiag {
         return list;
     }
 
+    /**
+     * Dump the request information in the request/response instances.
+     *
+     * @return Always return <code>null</code>.
+     */
     public static <T> T dump(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
