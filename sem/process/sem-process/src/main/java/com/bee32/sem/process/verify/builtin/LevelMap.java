@@ -13,15 +13,15 @@ public class LevelMap
     private static final long serialVersionUID = 1L;
 
     public LevelMap(Map<? extends Long, ? extends Level> map) {
-        super(LongComparator.getInstance(), map);
+        super(LongComparator.INSTANCE, map);
     }
 
     public LevelMap(TreeMap<Long, Level> treeMap) {
-        super(LongComparator.getInstance(), treeMap);
+        super(LongComparator.INSTANCE, treeMap);
     }
 
     public LevelMap() {
-        super(LongComparator.getInstance());
+        super(LongComparator.INSTANCE);
     }
 
 }
