@@ -38,11 +38,11 @@ public class ChanceParty
     @NaturalId
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
-    public Party getCustomer() {
+    public Party getParty() {
         return party;
     }
 
-    public void setCustomer(Party party) {
+    public void setParty(Party party) {
         if (party == null)
             throw new NullPointerException("can't set null to ChanceParty.party");
         this.party = party;

@@ -2,9 +2,7 @@ package com.bee32.sem.chance.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,13 +34,13 @@ public class Chance
 
     Date createDate;
 
-    Set<ChanceParty> parties;
+    List<ChanceParty> parties;
     List<ChanceAction> actions;
 
     ChanceStage stage;
 
     public Chance() {
-        parties = new HashSet<ChanceParty>();
+        parties = new ArrayList<ChanceParty>();
         actions = new ArrayList<ChanceAction>();
     }
 
@@ -129,11 +127,11 @@ public class Chance
     }
 
     @OneToMany(mappedBy = "chance")
-    public Set<ChanceParty> getParties() {
+    public List<ChanceParty> getParties() {
         return parties;
     }
 
-    public void setParties(Set<ChanceParty> parties) {
+    public void setParties(List<ChanceParty> parties) {
         if (parties == null)
             throw new NullPointerException("can't set Null to Chance.parties");
         this.parties = parties;

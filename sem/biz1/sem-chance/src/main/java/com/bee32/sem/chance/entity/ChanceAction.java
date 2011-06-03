@@ -183,4 +183,24 @@ public class ChanceAction
         if (stage.getOrder() > getStage().getOrder())
             this.stage = stage;
     }
+
+    @Transient
+    public ChanceStage getPrevious(){
+        int order = getStage().getOrder();
+        if(order > 1){
+            switch(order){
+            case 2 :
+                return ChanceStage.INITIAL;
+            case 3 :
+                return ChanceStage.MEAT;
+            case 4:
+                return ChanceStage.QUOTATION;
+            case 5:
+                return ChanceStage.PAYMENT;
+            default :
+                return null;
+            }
+        }
+        return null;
+    }
 }
