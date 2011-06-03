@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
-@org.springframework.stereotype.Controller
+// @org.springframework.stereotype.Controller
 @Lazy
 public abstract class CompositeController
         extends AbstractController {
