@@ -5,14 +5,11 @@ import java.util.List;
 
 import javax.free.ParseException;
 
-import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.PinkEntityDto;
-import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
-import com.bee32.sem.chance.entity.ChanceActionStyle;
-import com.bee32.sem.chance.entity.ChanceStage;
-import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.dto.PartyDto;
 
 public class ChanceActionDto
         extends PinkEntityDto<ChanceAction, Long> {
@@ -22,17 +19,17 @@ public class ChanceActionDto
     public static final int PARTIES = 1;
 
     private boolean plan;
-    private List<Party> parties;
+    private List<PartyDto> parties;
 
-    private User actor;
-    private ChanceActionStyle style;
+    private UserDto actor;
+    private ChanceActionStyleDto style;
 
     private Date beginTime;
     private Date endTime;
     private String content;
     private String spending;
-    private Chance chance;
-    private ChanceStage stage;
+    private ChanceDto chance;
+    private ChanceStageDto stage;
 
     public ChanceActionDto() {
         super(PARTIES);
@@ -52,6 +49,17 @@ public class ChanceActionDto
 
     @Override
     protected void _marshal(ChanceAction source) {
+        this.plan = source.isPlan();
+        if (selection.contains(PARTIES))
+            this.parties = marshalList(PartyDto.class, source.getParties());
+        this.actor = new UserDto(source.getActor());
+        this.actor = new UserDto(source.getActor());
+        this.style = new ChanceActionStyleDto(source.getStyle());
+        this.beginTime = source.getBeginTime();
+        this.endTime = source.getEndTime();
+        this.content = source.getContent();
+        this.spending = source.getSpending();
+        this.chance = new ChanceDto(0, source.getChance());
     }
 
     @Override
@@ -71,27 +79,27 @@ public class ChanceActionDto
         this.plan = plan;
     }
 
-    public List<Party> getParties() {
+    public List<PartyDto> getParties() {
         return parties;
     }
 
-    public void setParties(List<Party> parties) {
+    public void setParties(List<PartyDto> parties) {
         this.parties = parties;
     }
 
-    public User getActor() {
+    public UserDto getActor() {
         return actor;
     }
 
-    public void setActor(User actor) {
+    public void setActor(UserDto actor) {
         this.actor = actor;
     }
 
-    public ChanceActionStyle getStyle() {
+    public ChanceActionStyleDto getStyle() {
         return style;
     }
 
-    public void setStyle(ChanceActionStyle style) {
+    public void setStyle(ChanceActionStyleDto style) {
         this.style = style;
     }
 
@@ -127,19 +135,19 @@ public class ChanceActionDto
         this.spending = spending;
     }
 
-    public Chance getChance() {
+    public ChanceDto getChance() {
         return chance;
     }
 
-    public void setChance(Chance chance) {
+    public void setChance(ChanceDto chance) {
         this.chance = chance;
     }
 
-    public ChanceStage getStage() {
+    public ChanceStageDto getStage() {
         return stage;
     }
 
-    public void setStage(ChanceStage stage) {
+    public void setStage(ChanceStageDto stage) {
         this.stage = stage;
     }
 

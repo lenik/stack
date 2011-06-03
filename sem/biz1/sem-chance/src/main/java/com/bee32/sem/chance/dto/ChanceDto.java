@@ -5,12 +5,10 @@ import java.util.List;
 
 import javax.free.ParseException;
 
-import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.GreenEntityDto;
 import com.bee32.sem.chance.entity.Chance;
-import com.bee32.sem.chance.entity.ChanceCategory;
-import com.bee32.sem.chance.entity.ChanceSource;
 import com.bee32.sem.chance.entity.ChanceStage;
 
 public class ChanceDto
@@ -21,9 +19,9 @@ public class ChanceDto
     public static final int PARTIES = 1;
     public static final int ACTIONS = 2;
 
-    private User owner;
-    private ChanceCategory category;
-    private ChanceSource source;
+    private UserDto owner;
+    private ChanceCategoryDto category;
+    private ChanceSourceDto source;
     private String subject;
     private String content;
 
@@ -52,9 +50,9 @@ public class ChanceDto
 
     @Override
     protected void _marshal(Chance source) {
-        this.owner = source.getOwner();
-        this.category = source.getCategory();
-        this.source = source.getSource();
+        this.owner = new UserDto().marshal(source.getOwner());
+        this.category = new ChanceCategoryDto().marshal(source.getCategory());
+        this.source = new ChanceSourceDto(source.getSource());
         this.subject = source.getSubject();
         this.content = source.getContent();
         this.createDate = source.getCreateDate();
@@ -67,6 +65,16 @@ public class ChanceDto
 
     @Override
     protected void _unmarshalTo(Chance target) {
+        merge(target, "owner", owner);
+        merge(target, "category", category);
+        merge(target, "source", source);
+        target.setSubject(subject);
+        target.setContent(content);
+
+        if (selection.contains(PARTIES))
+            mergeList(target, "parties", parties);
+        if (selection.contains(ACTIONS))
+            mergeList(target, "actions", actions);
     }
 
     @Override
@@ -74,27 +82,27 @@ public class ChanceDto
             throws ParseException {
     }
 
-    public User getOwner() {
+    public UserDto getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(UserDto owner) {
         this.owner = owner;
     }
 
-    public ChanceCategory getCategory() {
+    public ChanceCategoryDto getCategory() {
         return category;
     }
 
-    public void setCategory(ChanceCategory category) {
+    public void setCategory(ChanceCategoryDto category) {
         this.category = category;
     }
 
-    public ChanceSource getSource() {
+    public ChanceSourceDto getSource() {
         return source;
     }
 
-    public void setSource(ChanceSource source) {
+    public void setSource(ChanceSourceDto source) {
         this.source = source;
     }
 

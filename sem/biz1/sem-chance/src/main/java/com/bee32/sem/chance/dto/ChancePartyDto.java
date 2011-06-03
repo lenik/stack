@@ -6,6 +6,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.BlueEntityDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceParty;
+import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 
 public class ChancePartyDto
@@ -13,8 +14,8 @@ public class ChancePartyDto
 
     private static final long serialVersionUID = 1L;
 
-    private Chance chance;
-    private Party party;
+    private ChanceDto chance;
+    private PartyDto party;
     private String role;
 
     public ChancePartyDto() {
@@ -35,10 +36,16 @@ public class ChancePartyDto
 
     @Override
     protected void _marshal(ChanceParty source) {
+        this.chance = source.getChance();
+        this.party = source.getParty();
+        this.role = source.getRole();
     }
 
     @Override
     protected void _unmarshalTo(ChanceParty target) {
+        target.setChance(chance);
+        target.setParty(party);
+        target.setRole(role);
     }
 
     @Override

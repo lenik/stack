@@ -100,7 +100,7 @@ public class Competitor
      * 对手的优势
      */
     @Column(length = 200, nullable = false)
-    public String sa() {
+    public String getAdvantage() {
         return advantage;
     }
 
