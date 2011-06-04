@@ -7,15 +7,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.arch.util.IPriority;
 
-public interface IRequestHandler
+public interface IActionHandler
         extends IPriority {
 
-    int getPriority();
-
-    /**
-     * Could modify some request attributes.
-     */
-    boolean accept(HttpServletRequest request);
+    String getName();
 
     ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
             throws Exception;

@@ -1,9 +1,7 @@
 package com.bee32.plover.servlet.mvc;
 
-import javax.servlet.http.HttpServletRequest;
-
-public abstract class RequestHandler
-        implements IRequestHandler {
+public abstract class ActionHandler
+        implements IActionHandler {
 
     // protected static final String ACTION_NAME = "action.name";
     // protected static final String ACTION_PARAM = "action.param";
@@ -14,7 +12,7 @@ public abstract class RequestHandler
 
     protected final String prefix;
 
-    private RequestHandler(String prefix) {
+    private ActionHandler(String prefix) {
         if (prefix == null)
             throw new NullPointerException("prefix");
         this.prefix = prefix;
@@ -26,14 +24,15 @@ public abstract class RequestHandler
     }
 
     @Override
-    public boolean accept(HttpServletRequest request) {
-        String uri = request.getRequestURI();
+    public String getName() {
+        String className = getClass().getSimpleName();
+        String simpleName;
+        if (className.endsWith("Handler"))
+            simpleName = className.substring(0, className.length() - 7);
+        else
+            simpleName = className;
 
-        return false;
-    }
-
-    protected String parseActionPath(String url) {
-        return null;
+        return simpleName;
     }
 
 }
