@@ -22,4 +22,7 @@ public class ContactCategory
         super(name, label, description);
     }
 
+    public static ContactCategory NORMAL = new ContactCategory("NORM", "普通联人");
+
+    public static ContactCategory IMPORTANT = new ContactCategory("IMPO", "重要联人");
 }
