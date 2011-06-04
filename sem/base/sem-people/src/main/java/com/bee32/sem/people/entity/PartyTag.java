@@ -1,7 +1,7 @@
 package com.bee32.sem.people.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -14,7 +14,7 @@ public class PartyTag
 
     private static final long serialVersionUID = 1L;
 
-    List<PartyTag> instances;
+    Set<Party> instances;
 
     public PartyTag() {
         super();
@@ -31,19 +31,21 @@ public class PartyTag
     /**
      * @see Party#getTags()
      */
-    @ManyToMany(mappedBy = "tag")
-    public List<PartyTag> getInstances() {
+    @ManyToMany(mappedBy = "tags")
+    public Set<Party> getInstances() {
         if (instances == null) {
             synchronized (this) {
                 if (instances == null) {
-                    instances = new ArrayList<PartyTag>();
+                    instances = new HashSet<Party>();
                 }
             }
         }
         return instances;
     }
 
-    public void setInstances(List<PartyTag> instances) {
+    public void setInstances(Set<Party> instances) {
+        if (instances == null)
+            throw new NullPointerException("instances");
         this.instances = instances;
     }
 

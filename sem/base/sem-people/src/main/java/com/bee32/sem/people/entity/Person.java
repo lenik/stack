@@ -1,13 +1,17 @@
 package com.bee32.sem.people.entity;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -15,6 +19,7 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.sem.people.Gender;
 
 @Entity
+@DiscriminatorValue("PER")
 public class Person
         extends Party {
 
@@ -25,9 +30,9 @@ public class Person
     String censusRegister;
     PersonSidType sidType;
 
-    List<PersonContact> contacts;
-
     String interests;
+
+    Set<PersonRole> roles = new HashSet<PersonRole>();
 
     /**
      * 性别
@@ -86,14 +91,29 @@ public class Person
         this.sidType = sidType;
     }
 
-    @OneToMany(mappedBy = "person")
-    @Cascade(CascadeType.ALL)
+    @Transient
+    @SuppressWarnings("unchecked")
     public List<PersonContact> getContacts() {
-        return contacts;
+        List<? extends Contact> _contacts = super.getContacts_();
+        return (List<PersonContact>) _contacts;
     }
 
     public void setContacts(List<PersonContact> contacts) {
-        this.contacts = contacts;
+        if (contacts == null)
+            throw new NullPointerException("contacts");
+        super.setContacts_(contacts);
+    }
+
+    @OneToMany
+    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public Set<PersonRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<PersonRole> roles) {
+        if (roles == null)
+            throw new NullPointerException("roles");
+        this.roles = roles;
     }
 
 }

@@ -23,7 +23,7 @@ public class Contact
     private static final long serialVersionUID = 1L;
 
     ContactCategory category;
-
+    Party party;
     String address;
     String postCode;
     String tel;
@@ -38,6 +38,17 @@ public class Contact
 
     public void setCategory(ContactCategory category) {
         this.category = category;
+    }
+
+    @ManyToOne(optional = false)
+    public Party getParty() {
+        return party;
+    }
+
+    public void setParty(Party party) {
+        if (party == null)
+            throw new NullPointerException("party");
+        this.party = party;
     }
 
     @Column(length = 40)

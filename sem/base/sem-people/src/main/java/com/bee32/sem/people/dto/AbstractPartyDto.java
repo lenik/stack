@@ -71,4 +71,92 @@ public class AbstractPartyDto<E extends Party>
             throws ParseException {
     }
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public Gender getSex() {
+        return sex;
+    }
+
+    public void setSex(Gender sex) {
+        this.sex = sex;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getInterests() {
+        return interests;
+    }
+
+    public void setInterests(String interests) {
+        this.interests = interests;
+    }
+
+    public String getCensusRegister() {
+        return censusRegister;
+    }
+
+    public void setCensusRegister(String censusRegister) {
+        this.censusRegister = censusRegister;
+    }
+
+    public String getSidType() {
+        return sidType;
+    }
+
+    public void setSidType(String sidType) {
+        this.sidType = sidType;
+    }
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
+    }
+
+    public List<PartyLogDto> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(List<PartyLogDto> logs) {
+        this.logs = logs;
+    }
+
 }

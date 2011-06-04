@@ -11,6 +11,9 @@ import javax.persistence.TemporalType;
 
 import com.bee32.plover.orm.ext.color.BlueEntity;
 
+/**
+ * 人或组织的社会档案记录.
+ */
 @Entity
 public class PartyLog
         extends BlueEntity<Long> {

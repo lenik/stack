@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 
 import com.bee32.plover.orm.ext.dict.NameDict;
 
+/**
+ * 联系信息分组
+ */
 @Entity
 public class ContactCategory
         extends NameDict {
@@ -22,7 +25,9 @@ public class ContactCategory
         super(name, label, description);
     }
 
-    public static ContactCategory NORMAL = new ContactCategory("NORM", "普通联人");
+    public static ContactCategory NORMAL = new ContactCategory("NORM", "常用");
+    public static ContactCategory HOME= new ContactCategory("HOME", "家庭");
+    public static ContactCategory WORK= new ContactCategory("WORK", "工作");
+    public static ContactCategory OUT= new ContactCategory("OUT", "出差");
 
-    public static ContactCategory IMPORTANT = new ContactCategory("IMPO", "重要联人");
 }

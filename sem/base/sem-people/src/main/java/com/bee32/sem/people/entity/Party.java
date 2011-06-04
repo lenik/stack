@@ -1,5 +1,6 @@
 package com.bee32.sem.people.entity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -35,7 +36,7 @@ import com.bee32.plover.orm.ext.xp.EntityExt;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
-public class Party
+public abstract class Party
         extends EntityExt<Integer, PartyXP> {
 
     private static final long serialVersionUID = 1L;
@@ -52,12 +53,13 @@ public class Party
 
     String sid;
 
-    List<PartyLog> logs;
+    List<? extends Contact> contacts = new ArrayList<Contact>();
+    List<PartyLog> logs = new ArrayList<PartyLog>();
 
-    public Party() {
+    protected Party() {
     }
 
-    public Party(String name) {
+    protected Party(String name) {
         this.name = name;
     }
 
@@ -201,7 +203,19 @@ public class Party
         this.sid = sid;
     }
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "party", targetEntity = Contact.class)
+    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    List<? extends Contact> getContacts_() {
+        return contacts;
+    }
+
+    void setContacts_(List<? extends Contact> contacts) {
+        if (contacts == null)
+            throw new NullPointerException("contacts");
+        this.contacts = contacts;
+    }
+
+    @OneToMany(mappedBy = "party")
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<PartyLog> getLogs() {
         return logs;

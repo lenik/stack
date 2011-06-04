@@ -1,17 +1,15 @@
 package com.bee32.sem.people.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import javax.persistence.Transient;
 
 @Entity
+@DiscriminatorValue("ORG")
 public class Org
         extends Party {
 
@@ -20,11 +18,9 @@ public class Org
     OrgType type;
     int size;
 
-    List<OrgContact> contacts = new ArrayList<OrgContact>();
-
     String interests;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     public OrgType getType() {
         return type;
     }
@@ -58,16 +54,17 @@ public class Org
         this.interests = interests;
     }
 
-    @OneToMany
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Transient
+    @SuppressWarnings("unchecked")
     public List<OrgContact> getContacts() {
-        return contacts;
+        List<? extends Contact> _contacts = super.getContacts_();
+        return (List<OrgContact>) _contacts;
     }
 
     public void setContacts(List<OrgContact> contacts) {
         if (contacts == null)
             throw new NullPointerException("contacts");
-        this.contacts = contacts;
+        super.setContacts_(contacts);
     }
 
 }

@@ -3,16 +3,14 @@ package com.bee32.sem.people.entity;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
-@DiscriminatorValue("PRSN")
+@DiscriminatorValue("PER")
 public class PersonContact
         extends Contact {
 
     private static final long serialVersionUID = 1L;
-
-    Person person;
 
     String qq;
     String homeTel;
@@ -20,13 +18,18 @@ public class PersonContact
 
     String workTel;
 
-    @ManyToOne
+    @Transient
     public Person getPerson() {
-        return person;
+        Party party = (Person) getParty();
+        if (!(party instanceof Person))
+            throw new IllegalStateException("Party of a person contact isn't a person.");
+        return (Person) party;
     }
 
     public void setPerson(Person person) {
-        this.person = person;
+        if (person == null)
+            throw new NullPointerException("person");
+        setParty(person);
     }
 
     @Column(length = 15)

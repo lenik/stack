@@ -22,14 +22,8 @@ public class PersonSidType
         super(name, label);
     }
 
-    public static PersonSidType GENERATIONONE = new PersonSidType("I.D.", "身份证", "天朝基本证件");
-
-    public static PersonSidType GENERATIONTWO = new PersonSidType("I.D.", "身份证", "天朝基本证件");
-
-// public static PersonSidType IDENTITYCARD = new PersonSidType("I.D.", "身份证", "天朝基本证件");
-
-// public static PersonSidType PASSPORT = new PersonSidType("PASS", "护照");
-
-// public static PersonSidType DRIVINGLICENES = new PersonSidType("DRIV", "驾驶证");
+    public static PersonSidType IDENTITYCARD = new PersonSidType("I.D.", "身份证", "天朝基本证件");
+    public static PersonSidType PASSPORT = new PersonSidType("PASS", "护照");
+    public static PersonSidType DRIVINGLICENES = new PersonSidType("DRIV", "驾驶证");
 
 }

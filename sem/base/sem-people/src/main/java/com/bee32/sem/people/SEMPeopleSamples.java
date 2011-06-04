@@ -3,88 +3,123 @@ package com.bee32.sem.people;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import com.bee32.plover.orm.ext.userCategory.UserCategory;
-import com.bee32.plover.orm.ext.userCategory.UserCategoryItem;
+import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
-import com.bee32.sem.people.entity.Party;
+import com.bee32.plover.orm.util.ImportSamples;
+import com.bee32.sem.misc.Sets;
+import com.bee32.sem.people.entity.ContactCategory;
+import com.bee32.sem.people.entity.Org;
+import com.bee32.sem.people.entity.OrgType;
+import com.bee32.sem.people.entity.PartyTag;
+import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonContact;
 import com.bee32.sem.people.entity.PersonRole;
+import com.bee32.sem.people.entity.PersonSidType;
 
-//@ImportSamples(SEMOrgSamples.class)
+@ImportSamples(IcsfPrincipalSamples.class)
 public class SEMPeopleSamples
         extends EntitySamplesContribution {
 
-    public static Party one77 = new Party();
-    public static UserCategory carIndustry = new UserCategory();
-    public static UserCategoryItem important = new UserCategoryItem();
-    public static PersonContact weiXiaoBao = new PersonContact();
-    public static PersonRole salesTitle = new PersonRole();
-    public static PersonRole productSale = new PersonRole();
+    public static Org internetCorp = new Org();
+    public static Person one77 = new Person();
+    public static Person bentley = new Person();
+    public static Person weiXiaoBao = new Person();
 
     static {
+        internetCorp.setType(OrgType.COMPANY);
+        internetCorp.setSize(20);
+        internetCorp.setName("XX有限责任公司");
+        internetCorp.setInterests("互联网搜索");
 
-        Calendar cal = Calendar.getInstance();
+        one77.setFullName("Ettore Bugatti ONE - 77");
+        one77.setName("Bugatti");
+        one77.setNickName("ONE - 77");
+        one77.setOwner(IcsfPrincipalSamples.eva);
+        one77.setSid("294741103659387246x");
+        Calendar one77Birthday = Calendar.getInstance();
+        one77Birthday.set(1909, 1, 1);
+        one77.setBirthday(one77Birthday.getTime());
+        one77.setTags(Sets.newSet(PartyTag.CUSTOMER));
 
-//        one77.setName("布加迪 ONE-77");
-//        one77.setUser(SEMOrgSamples.admin);
-//        one77.setFax("87010376");
-//        one77.setAddress("上海");
-//        one77.setDescription("布加迪上海代理");
-//        one77.setSummary("艺术结合澎湃动力");
-//        one77.setPhone("13758378888");
-//
-//        salesTitle.setDepartment("销售部");
-//        salesTitle.setCharge("导购汽车及提供一系列的服务");
-//        salesTitle.setPost("汽车导购");
-//        salesTitle.setBusinessEntity(one77);
-//        salesTitle.setContact(weiXiaoBao);
-//
-//        productSale.setDepartment(SEMOrgSamples.abcSales.getName());
-//        productSale.setCharge("产品销售");
-//        productSale.setPost("销售经理");
-//        productSale.setBusinessEntity(one77);
-//        productSale.setContact(weiXiaoBao);
-//
-//        weiXiaoBao.setAddress("上海市卢湾区景山前街4号");
-//        weiXiaoBao.setBirthday(cal.getTime());
-//        weiXiaoBao.setCellphone("1310210XXXX");
-//        weiXiaoBao.setCertType("身份证");
-//        weiXiaoBao.setCertNo("11204416541220243X");
-//        weiXiaoBao.setEmail("email@email.com");
-//        weiXiaoBao.setName("韦小宝");
-//        weiXiaoBao.setSex("男");
-//        weiXiaoBao.setQq("3719347");
-//        weiXiaoBao.setWebsite("www.website.com.cn");
-//        weiXiaoBao.setFax("02109356");
-//        weiXiaoBao.setGtalk("gtalk@gmail.com");
-//        weiXiaoBao.setHomephone("123456789");
-//        weiXiaoBao.setInterests("看电影,逛街");
-//        weiXiaoBao.setLivemsg("msn@live.com");
-//        weiXiaoBao.setDescription("曾经是男的");
-//        weiXiaoBao.setOwner(SEMOrgSamples.admin);
-//        weiXiaoBao.setPostcode("210371");
-//        weiXiaoBao.setSkype("skype@skype.com");
-//        weiXiaoBao.setPersonTitles(Arrays.asList(salesTitle, productSale));
+        bentley.setFullName("Walter Owen Bentley");
+        bentley.setName("Bentley");
+        bentley.setNickName("Arnage");
+        bentley.setOwner(IcsfPrincipalSamples.eva);
+        bentley.setSid("580672610347561394");
+        Calendar bentleyBirthday = Calendar.getInstance();
+        bentleyBirthday.set(1919, 7, 1);
+        bentley.setBirthday(bentleyBirthday.getTime());
 
-        carIndustry.setName("重工业");
-        carIndustry.setDescription("重工业-汽车");
+        bentley.setTags(Sets.newSet(PartyTag.SUPPLIER));
 
-        // 分类值?
-        important.setCategory(carIndustry);
-        important.setValue("重要");
-        important.setDescription("十分重要");
+        weiXiaoBao.setBirthday(bentleyBirthday.getTime());
+        weiXiaoBao.setCensusRegister("北京市");
+        weiXiaoBao.setFullName(CONF_LOADED);
+        weiXiaoBao.setInterests("吃饭睡觉玩老婆");
+        weiXiaoBao.setName("小宝");
+        weiXiaoBao.setNickName("韦公公");
+        weiXiaoBao.setOwner(IcsfPrincipalSamples.eva);
+        weiXiaoBao.setSex(Gender.MALE);
+        weiXiaoBao.setSid("11010116541220517");
+        weiXiaoBao.setSidType(PersonSidType.IDENTITYCARD);
+        weiXiaoBao.setTags(Sets.newSet(PartyTag.CUSTOMER));
 
-        carIndustry.setItems(Arrays.asList(important));
+        PersonContact weiXiaoBaoNormal = new PersonContact();
+        weiXiaoBaoNormal.setAddress("东城区景山前街4号紫禁城敬事房 大清帝国内务敬事房");
+        weiXiaoBaoNormal.setCategory(ContactCategory.NORMAL);
+        weiXiaoBaoNormal.setEmail("weixiaobao@ldj.novel");
+        weiXiaoBaoNormal.setFax("43 58938283");
+        weiXiaoBaoNormal.setHomeTel("43 9842 9834");
+        weiXiaoBaoNormal.setMobileTel("135 43823439");
+        weiXiaoBaoNormal.setPerson(weiXiaoBao);
+        weiXiaoBaoNormal.setPostCode("021286");
+        weiXiaoBaoNormal.setQq("123456");
+        weiXiaoBaoNormal.setWebsite("http://www.weixiaobao.com");
+        weiXiaoBaoNormal.setWorkTel("43435495");
+        weiXiaoBao.setContacts(Arrays.asList(weiXiaoBaoNormal));
+
+        PersonRole salesTitle = new PersonRole();
+        salesTitle.setPerson(bentley);
+        salesTitle.setOrg(internetCorp);
+        salesTitle.setOrgUnit("销售部");
+        salesTitle.setRole("销售经理");
+        salesTitle.setDescription("The ripest fruit falls first.");
+        bentley.setRoles(Sets.newSet(salesTitle));
+
+        PersonRole productSale = new PersonRole();
+        productSale.setPerson(one77);
+        productSale.setOrg(internetCorp);
+        productSale.setOrgUnit("销售部");
+        productSale.setRole("产品导购");
+        productSale.setDescription("People are beginning to notice you.  Try dressing before you leave the house.");
+        one77.setRoles(Sets.newSet(productSale));
     }
 
     @Override
     protected void preamble() {
+        addNormalSample(PartyTag.CUSTOMER);
+        addNormalSample(PartyTag.SUPPLIER);
+        addNormalSample(PartyTag.EMPLOYEE);
+
+        addNormalSample(PersonSidType.IDENTITYCARD);
+        addNormalSample(PersonSidType.PASSPORT);
+        addNormalSample(PersonSidType.DRIVINGLICENES);
+
+        addNormalSample(ContactCategory.NORMAL);
+        addNormalSample(ContactCategory.HOME);
+        addNormalSample(ContactCategory.WORK);
+        addNormalSample(ContactCategory.OUT);
+
+        addNormalSample(OrgType.ARMY);
+        addNormalSample(OrgType.COMPANY);
+        addNormalSample(OrgType.EDU);
+        addNormalSample(OrgType.PARTNER);
+
+        addNormalSample(internetCorp);
+
         addNormalSample(one77);
-        addNormalSample(salesTitle);
-        addNormalSample(productSale);
+        addNormalSample(bentley);
         addNormalSample(weiXiaoBao);
-        addNormalSample(carIndustry);
-        addNormalSample(important);
     }
 
 }
