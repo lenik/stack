@@ -63,7 +63,7 @@ public abstract class WiredServletTestCase
 
         if (isSpringMVCEnabled()) {
             // Add spring mvc support here.
-            stl.addServlet("spring-dispatcher", DispatcherServlet.class, "*" + SpringMVCConfig.suffix);
+            stl.addServlet("spring-dispatcher", DispatcherServlet.class, "*" + SpringMVCConfig.SUFFIX);
         }
     }
 

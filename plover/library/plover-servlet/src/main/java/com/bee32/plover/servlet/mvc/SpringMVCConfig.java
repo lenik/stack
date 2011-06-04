@@ -6,10 +6,14 @@ public class SpringMVCConfig {
 
     public static final String MVC_NONCE = "nonce";
 
+    // public static String PREFIX;
+    public static final String SUFFIX;
+
     public static final boolean nonceEnabled;
-    public static final String suffix;
 
     static {
+        // PREFIX = "/spring/";
+
         String nonce = System.getProperty(MVC_NONCE);
         if (nonce == null) {
             int rand = new Random().nextInt();
@@ -30,7 +34,7 @@ public class SpringMVCConfig {
             _suffix += "_" + nonce;
         }
 
-        suffix = _suffix;
+        SUFFIX = _suffix;
     }
 
 }
