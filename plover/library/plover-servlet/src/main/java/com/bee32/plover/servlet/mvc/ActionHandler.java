@@ -10,12 +10,21 @@ public abstract class ActionHandler
     protected static final int PRIORITY_DEFAULT = 10;
     protected static final int PRIORITY_LOW = 20;
 
-    protected final String prefix;
+    protected final String actionName;
 
-    private ActionHandler(String prefix) {
-        if (prefix == null)
-            throw new NullPointerException("prefix");
-        this.prefix = prefix;
+    protected ActionHandler() {
+        this(null);
+    }
+
+    protected ActionHandler(String actionName) {
+        if (actionName == null) {
+            String className = getClass().getSimpleName();
+            if (className.endsWith("Handler"))
+                actionName = className.substring(0, className.length() - 7);
+            else
+                actionName = className;
+        }
+        this.actionName = actionName;
     }
 
     @Override

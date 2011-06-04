@@ -12,7 +12,7 @@ public interface IActionHandler
 
     String getName();
 
-    ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
+    ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse resp)
             throws Exception;
 
 }
