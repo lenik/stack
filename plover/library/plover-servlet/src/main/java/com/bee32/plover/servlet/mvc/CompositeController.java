@@ -12,8 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 public abstract class CompositeController
         extends _CompositeController {
 
-    public static final String PATH_PARAMETER_ATTRIBUTE = "CC::PATH_PARAM";
-    public static final String ACTION_NAME_ATTRIBUTE = "CC::ACTION_NAME";
+    public static final String PREFIX_ATTRIBUTE = "__PLOVER_PREFIX";
+    public static final String PATH_PARAMETER_ATTRIBUTE = "__PLOVER_PATH_PARAM";
+    public static final String ACTION_NAME_ATTRIBUTE = "__PLOVER_ACTION_NAME";
 
     Map<String, IActionHandler> actionMap = new HashMap<String, IActionHandler>();
 
@@ -51,13 +52,21 @@ public abstract class CompositeController
             if (lastSlash == -1)
                 break;
 
-            String aName = internalPath.substring(lastSlash);
-            assert aName.startsWith("/");
-            aName = aName.substring(1);
+            String actionNameTest = internalPath.substring(lastSlash);
+            assert actionNameTest.startsWith("/");
+            actionNameTest = actionNameTest.substring(1);
 
-            IActionHandler handler = actionMap.get(aName);
-            if (handler != null)
+            IActionHandler handler = actionMap.get(actionNameTest);
+            if (handler != null) {
+                req.setAttribute(PREFIX_ATTRIBUTE, _prefix);
+
+                String pathWithoutActionName = internalPath.substring(0, lastSlash);
+                req.setAttribute(PATH_PARAMETER_ATTRIBUTE, pathWithoutActionName);
+
+                req.setAttribute(ACTION_NAME_ATTRIBUTE, actionNameTest);
+
                 return handler.handleRequest(req, resp);
+            }
         }
 
         resp.sendError(HttpServletResponse.SC_NOT_FOUND, "(internal) path: " + internalPath);
@@ -68,7 +77,7 @@ public abstract class CompositeController
         if (handler == null)
             throw new NullPointerException("handler");
         String handlerName = handler.getName();
-        actionMap.put(handlerName, handler);
+        addAction(handlerName, handler);
     }
 
     protected void addAction(String name, IActionHandler handler) {
@@ -76,6 +85,7 @@ public abstract class CompositeController
             throw new NullPointerException("name");
         if (handler == null)
             throw new NullPointerException("handler");
+        handler.setPrefix(_prefix);
         actionMap.put(name, handler);
     }
 

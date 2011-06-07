@@ -13,7 +13,7 @@ public class CompositeControllerTest
 
     public static void main(String[] args)
             throws IOException {
-        new CompositeControllerTest().browseAndWait("/my/sub/test1" + SpringMVCConfig.SUFFIX);
+        new CompositeControllerTest().browseAndWait("/my/sub/test1" + MVCConfig.SUFFIX);
     }
 
 }
