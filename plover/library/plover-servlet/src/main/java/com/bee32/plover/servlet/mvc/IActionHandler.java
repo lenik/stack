@@ -10,6 +10,10 @@ import com.bee32.plover.arch.util.IPriority;
 public interface IActionHandler
         extends IPriority {
 
+    String getPrefix();
+
+    void setPrefix(String prefix);
+
     String getName();
 
     ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse resp)

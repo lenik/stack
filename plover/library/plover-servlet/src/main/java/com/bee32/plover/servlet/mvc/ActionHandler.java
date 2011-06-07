@@ -10,7 +10,8 @@ public abstract class ActionHandler
     protected static final int PRIORITY_DEFAULT = 10;
     protected static final int PRIORITY_LOW = 20;
 
-    protected final String actionName;
+    String prefix;
+    final String actionName;
 
     protected ActionHandler() {
         this(null);
@@ -25,6 +26,27 @@ public abstract class ActionHandler
                 actionName = className;
         }
         this.actionName = actionName;
+    }
+
+    /**
+     * @return Non-<code>null</code> prefix name.
+     */
+    public String getPrefix() {
+        if (prefix == null)
+            throw new IllegalStateException("Prefix wasn't set");
+        return prefix;
+    }
+
+    /**
+     * Initialize the prefix.
+     *
+     * @param prefix
+     *            Non-<code>null</code> prefix name.
+     */
+    public void setPrefix(String prefix) {
+        if (prefix == null)
+            throw new NullPointerException("prefix");
+        this.prefix = prefix;
     }
 
     @Override
