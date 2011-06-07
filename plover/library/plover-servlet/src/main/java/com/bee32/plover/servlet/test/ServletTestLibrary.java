@@ -286,10 +286,18 @@ public class ServletTestLibrary
 
     protected URL getURL(String location)
             throws IOException {
-        String root = "http://localhost:" + this.actualPort;
-        URL rootUrl = new URL(root);
+        String urlString;
+        if (location.contains("://"))
+            urlString = location;
+        else {
+            String contextPath = getServletContext().getContextPath();
+            String root = "http://localhost:" + actualPort + contextPath;
+            if (!location.startsWith("/"))
+                location = "/" + location;
+            urlString = root + location;
+        }
 
-        URL url = new URL(rootUrl, location);
+        URL url = new URL(urlString);
         return url;
     }
 

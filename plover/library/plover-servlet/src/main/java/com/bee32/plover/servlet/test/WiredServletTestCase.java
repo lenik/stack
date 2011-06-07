@@ -11,7 +11,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.spring.ContextConfigurationUtil;
 import com.bee32.plover.servlet.context.ServletContextUtil;
-import com.bee32.plover.servlet.mvc.SpringMVCConfig;
+import com.bee32.plover.servlet.mvc.MVCConfig;
 import com.bee32.plover.test.WiredTestCase;
 
 @Import(WiredTestCase.class)
@@ -63,7 +63,7 @@ public abstract class WiredServletTestCase
 
         if (isSpringMVCEnabled()) {
             // Add spring mvc support here.
-            stl.addServlet("spring-dispatcher", DispatcherServlet.class, "*" + SpringMVCConfig.SUFFIX);
+            stl.addServlet("spring-dispatcher", DispatcherServlet.class, "*" + MVCConfig.SUFFIX);
         }
     }
 

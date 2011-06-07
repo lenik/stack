@@ -2,7 +2,9 @@ package com.bee32.plover.servlet.mvc;
 
 import java.util.Random;
 
-public class SpringMVCConfig {
+public class MVCConfig {
+
+    // public static String defultContextPath = "";
 
     public static final String MVC_NONCE = "nonce";
 

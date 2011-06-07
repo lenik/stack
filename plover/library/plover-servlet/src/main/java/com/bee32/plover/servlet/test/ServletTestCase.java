@@ -2,6 +2,7 @@ package com.bee32.plover.servlet.test;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Random;
 
 import javax.free.IllegalUsageException;
 import javax.free.Strings;
@@ -25,6 +26,7 @@ public abstract class ServletTestCase
     protected final Logger logger;
 
     protected ServletTestLibrary stl;
+    protected String contextPath;
 
     private boolean checkContext;;
     private boolean checkBuiltinServlets;
@@ -36,7 +38,6 @@ public abstract class ServletTestCase
     protected ServletContext servletContext;
 
     public ServletTestCase() {
-
         logger = LoggerFactory.getLogger(getClass());
 
         install(stl = new LocalSTL());
@@ -58,6 +59,9 @@ public abstract class ServletTestCase
         }
 
         lastInstance = this;
+
+        int rand = new Random().nextInt(10000);
+        contextPath = "/app" + rand;
     }
 
     private final class LocalSTL
@@ -129,8 +133,13 @@ public abstract class ServletTestCase
         return 0;
     }
 
+    protected String getContextPath() {
+        return contextPath;
+    }
+
     protected void configureContext() {
         checkContext = true;
+        stl.setContextPath(getContextPath());
         stl.addEventListener(this);
     }
 
