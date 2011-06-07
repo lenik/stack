@@ -65,21 +65,24 @@ public class ServletDiag {
             out.println("contentType = " + req.getContentType());
             out.println("contextPath = " + req.getContextPath());
             out.println("cookies = ");
-            out.enter();
-            for (Cookie cookie : req.getCookies()) {
-                out.println(cookie.getName());
-                {
-                    out.enter();
-                    out.println("class = " + cookie.getClass());
-                    out.println("comment = " + cookie.getComment());
-                    out.println("domain = " + cookie.getDomain());
-                    out.println("maxAge = " + cookie.getMaxAge());
-                    out.println("path = " + cookie.getPath());
-                    out.println("secure = " + cookie.getSecure());
-                    out.println("value = " + cookie.getValue());
-                    out.println("version = " + cookie.getVersion());
-                    out.leave();
+            {
+                out.enter();
+                for (Cookie cookie : req.getCookies()) {
+                    out.println(cookie.getName());
+                    {
+                        out.enter();
+                        out.println("class = " + cookie.getClass());
+                        out.println("comment = " + cookie.getComment());
+                        out.println("domain = " + cookie.getDomain());
+                        out.println("maxAge = " + cookie.getMaxAge());
+                        out.println("path = " + cookie.getPath());
+                        out.println("secure = " + cookie.getSecure());
+                        out.println("value = " + cookie.getValue());
+                        out.println("version = " + cookie.getVersion());
+                        out.leave();
+                    }
                 }
+                out.leave();
             }
 
             out.println("headers: ");
@@ -146,9 +149,9 @@ public class ServletDiag {
             out.println("locale = " + resp.getLocale());
             out.leave();
         }
+        out.println();
 
         HttpSession session = req.getSession();
-
         out.println("Session: ");
         {
             out.enter();
@@ -167,6 +170,7 @@ public class ServletDiag {
             out.println("maxInactiveInterval = " + session.getMaxInactiveInterval());
             out.leave();
         }
+        out.println();
 
         ServletContext context = session.getServletContext();
         out.println("Servlet Context: ");
