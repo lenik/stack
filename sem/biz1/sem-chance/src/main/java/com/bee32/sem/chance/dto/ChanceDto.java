@@ -50,8 +50,8 @@ public class ChanceDto
 
     @Override
     protected void _marshal(Chance source) {
-        this.owner = new UserDto().marshal(source.getOwner());
-        this.category = new ChanceCategoryDto().marshal(source.getCategory());
+        this.owner = new UserDto(source.getOwner());
+        this.category = new ChanceCategoryDto(source.getCategory());
         this.source = new ChanceSourceDto(source.getSource());
         this.subject = source.getSubject();
         this.content = source.getContent();

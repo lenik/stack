@@ -4,7 +4,11 @@ import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
+import com.bee32.sem.chance.entity.ChanceActionStyle;
+import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceParty;
+import com.bee32.sem.chance.entity.ChanceSourceType;
+import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.entity.Competitor;
 import com.bee32.sem.people.SEMPeopleUnit;
 
@@ -14,10 +18,14 @@ public class SEMChanceUnit
 
     @Override
     protected void preamble() {
-        add(ChanceAction.class);
+        add(ChanceActionStyle.class);
+        add(ChanceCategory.class);
+        add(ChanceSourceType.class);
+        add(ChanceStage.class);
         add(ChanceParty.class);
-        add(Competitor.class);
+        add(ChanceAction.class);
         add(Chance.class);
+        add(Competitor.class);
     }
 
 }

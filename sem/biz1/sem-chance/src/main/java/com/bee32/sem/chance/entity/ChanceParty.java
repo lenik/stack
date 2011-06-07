@@ -68,7 +68,7 @@ public class ChanceParty
         if (!Nullables.equals(chanceId, otherChanceId))
             return false;
 
-        if (!Nullables.equals(party.getId(), otherDetail.getCustomer().getId()))
+        if (!Nullables.equals(party.getId(), otherDetail.getParty().getId()))
             return false;
 
         return true;

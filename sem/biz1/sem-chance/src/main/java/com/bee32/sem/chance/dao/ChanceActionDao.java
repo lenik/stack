@@ -6,4 +6,5 @@ import com.bee32.sem.chance.entity.ChanceAction;
 public class ChanceActionDao
         extends EntityDao<ChanceAction, Long> {
 
+
 }

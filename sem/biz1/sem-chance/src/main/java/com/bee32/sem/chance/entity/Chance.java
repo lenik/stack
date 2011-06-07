@@ -28,7 +28,7 @@ public class Chance
 
     User owner;
     ChanceCategory category;
-    ChanceSource source;
+    ChanceSourceType source;
     String subject;
     String content;
 
@@ -74,11 +74,11 @@ public class Chance
      * 来源
      */
     @ManyToOne
-    public ChanceSource getSource() {
+    public ChanceSourceType getSource() {
         return source;
     }
 
-    public void setSource(ChanceSource source) {
+    public void setSource(ChanceSourceType source) {
         if (source == null)
             throw new NullPointerException("can't set Null to Chance.source");
         this.source = source;
@@ -155,7 +155,7 @@ public class Chance
      * @return 机会最后一次更新的进度，如果尚无更新，应返回一个非空的初始进度。
      */
     @ManyToOne
-    @JoinColumn(nullable = false)
+//    @JoinColumn(nullable = false)
     public ChanceStage getStage() {
         return stage;
     }
@@ -163,9 +163,9 @@ public class Chance
     /**
      * 机会进度只能通过日志项来改变，本对象中的进度为冗余。
      */
-    void setStage(ChanceStage stage) {
-        if (stage == null)
-            throw new NullPointerException("stage");
+    public void setStage(ChanceStage stage) {
+//        if (stage == null)
+//            throw new NullPointerException("stage");
         this.stage = stage;
     }
 

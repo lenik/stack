@@ -4,10 +4,8 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.BlueEntityDto;
-import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.people.entity.Party;
 
 public class ChancePartyDto
         extends BlueEntityDto<ChanceParty, Long> {
@@ -36,15 +34,15 @@ public class ChancePartyDto
 
     @Override
     protected void _marshal(ChanceParty source) {
-        this.chance = source.getChance();
-        this.party = source.getParty();
+        this.chance = new ChanceDto(0, source.getChance());
+        this.party = new PartyDto(source.getParty());
         this.role = source.getRole();
     }
 
     @Override
     protected void _unmarshalTo(ChanceParty target) {
-        target.setChance(chance);
-        target.setParty(party);
+        merge(target, "chance", chance);
+        merge(target, "party", party);
         target.setRole(role);
     }
 
@@ -53,19 +51,19 @@ public class ChancePartyDto
             throws ParseException {
     }
 
-    public Chance getChance() {
+    public ChanceDto getChance() {
         return chance;
     }
 
-    public void setChance(Chance chance) {
+    public void setChance(ChanceDto chance) {
         this.chance = chance;
     }
 
-    public Party getParty() {
+    public PartyDto getParty() {
         return party;
     }
 
-    public void setParty(Party party) {
+    public void setParty(PartyDto party) {
         this.party = party;
     }
 

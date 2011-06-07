@@ -6,10 +6,10 @@ import com.bee32.plover.orm.unit.Using;
 import com.bee32.sem.test.SEMTestCase;
 
 @Using(SEMChanceUnit.class)
-public class SEMOpportunityModuleTest
+public class SEMChanceModuleTest
         extends SEMTestCase {
 
-    public SEMOpportunityModuleTest() {
+    public SEMChanceModuleTest() {
         super();
     }
 
@@ -20,17 +20,17 @@ public class SEMOpportunityModuleTest
 
     @Override
     protected int getRefreshPeriod() {
-        return 0;
+        return 10;
     }
 
     @Override
     protected String getLoggedInUser() {
-        return "admin";
+        return "eva";
     }
 
     public static void main(String[] args)
             throws IOException {
-        new SEMOpportunityModuleTest().browseAndWait("/customer/chance/index.htm");
+        new SEMChanceModuleTest().browseAndWait("/customer/chanceAction/index.htm");
     }
 
 }

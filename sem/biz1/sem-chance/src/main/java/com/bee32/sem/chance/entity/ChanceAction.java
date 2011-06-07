@@ -1,9 +1,11 @@
 package com.bee32.sem.chance.entity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.free.Strings;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -15,11 +17,13 @@ import javax.persistence.Transient;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.ext.color.PinkEntity;
+import com.bee32.sem.calendar.ICalendarEvent;
 import com.bee32.sem.people.entity.Party;
 
 @Entity
 public class ChanceAction
-        extends PinkEntity<Long> {
+        extends PinkEntity<Long>
+        implements ICalendarEvent {
 
     private static final long serialVersionUID = 1L;
 
@@ -185,22 +189,50 @@ public class ChanceAction
     }
 
     @Transient
-    public ChanceStage getPrevious(){
+    public ChanceStage getPrevious() {
         int order = getStage().getOrder();
-        if(order > 1){
-            switch(order){
-            case 2 :
+        if (order > 1) {
+            switch (order) {
+            case 2:
                 return ChanceStage.INITIAL;
-            case 3 :
+            case 3:
                 return ChanceStage.MEAT;
             case 4:
                 return ChanceStage.QUOTATION;
             case 5:
                 return ChanceStage.PAYMENT;
-            default :
+            default:
                 return null;
             }
         }
         return null;
     }
+
+    @Transient
+    @Override
+    public Date getBeginDate() {
+        return beginTime;
+    }
+
+    @Transient
+    @Override
+    public Date getEndDate() {
+        return endTime;
+    }
+
+    /**
+     * 【工作日志】AAA...
+     */
+    @Transient
+    @Override
+    public String getSubject() {
+        return Strings.ellipse(content, 25);
+    }
+
+    @Transient
+    @Override
+    public List<String> getStyles() {
+        return Collections.emptyList();
+    }
+
 }
