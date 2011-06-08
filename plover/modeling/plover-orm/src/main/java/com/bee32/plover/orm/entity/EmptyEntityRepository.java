@@ -51,7 +51,7 @@ public class EmptyEntityRepository<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    public long count() {
+    public int count() {
         return 0;
     }
 

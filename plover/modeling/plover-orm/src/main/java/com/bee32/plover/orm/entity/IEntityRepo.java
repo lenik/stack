@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.bee32.plover.arch.IRepository;
 
-public interface IEntityRepository<E extends IEntity<K>, K extends Serializable>
+public interface IEntityRepo<E extends IEntity<K>, K extends Serializable>
         extends IRepository<K, E> {
 
     /**

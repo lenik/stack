@@ -17,7 +17,7 @@ import com.bee32.plover.arch.util.IStruct;
 
 public abstract class EntityRepository<E extends IEntity<K>, K extends Serializable>
         extends RepositoryNode<K, E>
-        implements IEntityRepository<E, K> {
+        implements IEntityRepo<E, K> {
 
     static Logger logger = LoggerFactory.getLogger(EntityRepository.class);
 

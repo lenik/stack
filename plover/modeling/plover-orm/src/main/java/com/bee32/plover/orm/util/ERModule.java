@@ -8,7 +8,7 @@ import com.bee32.plover.arch.Module;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityDao_H;
 import com.bee32.plover.orm.entity.EntityRepository;
-import com.bee32.plover.orm.entity.IEntityRepository;
+import com.bee32.plover.orm.entity.IEntityRepo;
 
 public abstract class ERModule
         extends Module {
@@ -43,14 +43,14 @@ public abstract class ERModule
     }
 
     protected <E extends Entity<K>, K extends Serializable> //
-    void export(IEntityRepository<E, K> entityRepository, String location) {
+    void export(IEntityRepo<E, K> entityRepository, String location) {
 
         // declare the restful token
         declare(location, entityRepository);
     }
 
     protected <E extends Entity<K>, K extends Serializable> //
-    void export(IEntityRepository<E, K> entityRepository) {
+    void export(IEntityRepo<E, K> entityRepository) {
         String location = entityRepository.getName();
         export(entityRepository, location);
     }
@@ -70,7 +70,7 @@ public abstract class ERModule
      */
     protected <E extends Entity<K>, K extends Serializable> //
     void exportEntityByHibernate(Class<E> entityType, Class<K> keyType) {
-        IEntityRepository<E, K> repository = new EntityDao_H<E, K>(entityType, keyType);
+        IEntityRepo<E, K> repository = new EntityDao_H<E, K>(entityType, keyType);
         export(repository);
     }
 

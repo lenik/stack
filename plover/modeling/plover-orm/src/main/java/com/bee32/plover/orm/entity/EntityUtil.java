@@ -139,6 +139,15 @@ public class EntityUtil {
      *
      * @return <code>null</code> if no DTO type found.
      */
+    public static Class<?> getDtoType(Class<?> entityType) {
+        return FriendTypes.getInheritedFriendType(entityType, "dto");
+    }
+
+    /**
+     * Get any DTO type for the nearest ancestor of the given entity type.
+     *
+     * @return <code>null</code> if no DTO type found.
+     */
     public static Class<?> getDaoType(Class<?> entityType) {
         return FriendTypes.getInheritedFriendType(entityType, "dao");
     }
@@ -148,8 +157,8 @@ public class EntityUtil {
      *
      * @return <code>null</code> if no DTO type found.
      */
-    public static Class<?> getDtoType(Class<?> entityType) {
-        return FriendTypes.getInheritedFriendType(entityType, "dto");
+    public static Class<?> getDsoType(Class<?> entityType) {
+        return FriendTypes.getInheritedFriendType(entityType, "dso");
     }
 
     public static Class<?> getControllerType(Class<?> entityType) {

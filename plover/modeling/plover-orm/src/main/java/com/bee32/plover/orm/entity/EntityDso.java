@@ -1,145 +1,187 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.ServletRequest;
+
 import org.hibernate.LockMode;
+import org.hibernate.ReplicationMode;
 import org.hibernate.criterion.Criterion;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.EnterpriseService;
-import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.arch.util.IStruct;
 import com.bee32.plover.inject.ComponentTemplate;
-import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityDto;
 
 @Transactional(readOnly = true)
 @ComponentTemplate
 @Lazy
-public abstract class EntityDso<E extends Entity<K>, K extends Serializable, //
-/*        */Dto extends EntityDto<E, K>>
-        extends EnterpriseService {
+public abstract class EntityDso<E extends Entity<K>, K extends Serializable>
+        extends EnterpriseService
+        implements IEntityRepo_H<E, K> {
 
-    protected final Class<E> entityType;
-    protected final Class<K> keyType;
-    protected final Class<Dto> transferType;
+    protected abstract EntityDao<E, K> getDao();
 
-    protected final String entityTypeName;
+    /**
+     * <pre>
+     * 1. IRepository
+     * </pre>
+     */
 
-    public EntityDso() {
-        Type[] typeArgs = ClassUtil.getTypeArgs(getClass(), EntityDso.class);
-        entityType = ClassUtil.bound1(typeArgs[0]);
-        keyType = ClassUtil.bound1(typeArgs[1]);
-        transferType = ClassUtil.bound1(typeArgs[2]);
-
-        entityTypeName = ClassUtil.getDisplayName(entityType);
+    @Override
+    public boolean containsKey(Object key) {
+        return getDao().containsKey(key);
     }
 
-    protected Class<E> getEntityType() {
-        return entityType;
+    @Override
+    public E get(K key) {
+        return getDao().get(key);
     }
 
-    protected Class<K> getKeyType() {
-        return keyType;
+    @Override
+    public E load(K key) {
+        return getDao().load(key);
     }
 
-    protected Class<Dto> getTransferType() {
-        return transferType;
+    @Override
+    public Collection<K> keys() {
+        return getDao().keys();
     }
 
-    protected abstract EntityDao<E, K> getEntityDao();
-
-    public Dto get(K key) {
-        return DTOs.marshal(getTransferType(), getEntityDao().get(key));
+    @Override
+    public List<E> list() {
+        return getDao().list();
     }
 
-    public Dto get(int selection, K key) {
-        return DTOs.marshal(getTransferType(), selection, getEntityDao().get(key));
+    @Override
+    public E populate(IStruct struct)
+            throws BuildException {
+        return getDao().populate(struct);
     }
 
-    public List<Dto> list() {
-        List<E> entities = getEntityDao().list();
-        return DTOs.marshalList(getTransferType(), entities);
+    @Override
+    public E populate(ServletRequest request)
+            throws BuildException {
+        return getDao().populate(request);
     }
 
-    public List<Dto> list(int selection) {
-        List<E> entities = getEntityDao().list();
-        return DTOs.marshalList(getTransferType(), selection, entities);
+    @Override
+    public boolean populate(E obj, IStruct struct)
+            throws BuildException {
+        return getDao().populate(obj, struct);
     }
 
-    @Transactional
-    public K save(Dto entityDto) {
-        E entity = entityDto.unmarshal(this);
-        return getEntityDao().save(entity);
-    }
-
-    @Transactional
-    public void saveOrUpdateAll(Collection<? extends Dto> entityDtos) {
-        EntityDao<E, K> entityDao = getEntityDao();
-        for (Dto entityDto : entityDtos) {
-            E entity = entityDto.unmarshal(this);
-            entityDao.saveOrUpdate(entity);
-        }
-    }
-
-    @Transactional
-    public void update(Dto entityDto) {
-        E entity = entityDto.unmarshal(this);
-        getEntityDao().update(entity);
-    }
-
-    @Transactional
-    public void update(Dto entityDto, LockMode lockMode)
-            throws DataAccessException {
-        E entity = entityDto.unmarshal(this);
-        getEntityDao().update(entity, lockMode);
-    }
-
-    @Transactional
-    public void saveOrUpdate(Dto entityDto) {
-        E entity = entityDto.unmarshal(this);
-        getEntityDao().saveOrUpdate(entity);
-    }
-
-    @Transactional
-    public void delete(Dto entityDto) {
-        E entity = entityDto.unmarshal(this);
-        getEntityDao().delete(entity);
-    }
-
-    @Transactional
-    public void delete(Dto entityDto, LockMode lockMode)
-            throws DataAccessException {
-        E entity = entityDto.unmarshal(this);
-        getEntityDao().delete(entity, lockMode);
-    }
-
-    @Transactional
+    @Override
     public void deleteByKey(K key) {
-        getEntityDao().deleteByKey(key);
+        getDao().deleteByKey(key);
     }
 
-    @Transactional
+    @Override
     public void deleteAll() {
-        getEntityDao().deleteAll();
+        getDao().deleteAll();
     }
 
-    @Transactional
+    @Override
+    public int count() {
+        return getDao().count();
+    }
+
+    /**
+     * <pre>
+     * 2. IEntityRepo
+     * </pre>
+     */
+
+    @Override
+    public K getKey(E entity) {
+        return getDao().getKey(entity);
+    }
+
+    @Override
+    public boolean contains(Object entity) {
+        return getDao().contains(entity);
+    }
+
+    @Override
+    public K save(E entity) {
+        return getDao().save(entity);
+    }
+
+    @Override
+    public void update(E entity) {
+        getDao().update(entity);
+    }
+
+    @Override
+    public void refresh(E entity) {
+        getDao().refresh(entity);
+    }
+
+    @Override
+    public void saveOrUpdate(E entity) {
+        getDao().saveOrUpdate(entity);
+    }
+
+    @Override
+    public void delete(Object entity) {
+        getDao().delete(entity);
+    }
+
+    /**
+     * <pre>
+     * 3. IEntityRepo_H
+     * </pre>
+     */
+
+    @Override
+    public E retrieve(K key, LockMode lockMode)
+            throws DataAccessException {
+        return getDao().retrieve(key, lockMode);
+    }
+
+    @Override
+    public void update(E entity, LockMode lockMode)
+            throws DataAccessException {
+        getDao().update(entity, lockMode);
+    }
+
+    @Override
+    public void delete(Object entity, LockMode lockMode)
+            throws DataAccessException {
+        getDao().delete(entity, lockMode);
+    }
+
+    @Override
     public void merge(E entity)
             throws DataAccessException {
-        getEntityDao().merge(entity);
+        getDao().merge(entity);
     }
 
-    public long count() {
-        return getEntityDao().count();
+    @Override
+    public void evict(E entity)
+            throws DataAccessException {
+        getDao().evict(entity);
     }
 
-    public long count(Criterion... restrictions) {
-        return getEntityDao().count(restrictions);
+    @Override
+    public void replicate(E entity, ReplicationMode replicationMode)
+            throws DataAccessException {
+        getDao().replicate(entity, replicationMode);
+    }
+
+    @Override
+    public void flush() {
+        getDao().flush();
+    }
+
+    @Override
+    public int count(Criterion... restrictions) {
+        return getDao().count(restrictions);
     }
 
 }
