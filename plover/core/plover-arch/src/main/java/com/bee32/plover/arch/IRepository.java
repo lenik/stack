@@ -66,6 +66,9 @@ public interface IRepository<K, T>
 
     Collection<K> keys();
 
+    /**
+     * List all instances.
+     */
     List<T> list();
 
     /**
@@ -147,6 +150,6 @@ public interface IRepository<K, T>
      */
     void deleteAll();
 
-    long count();
+    int count();
 
 }
