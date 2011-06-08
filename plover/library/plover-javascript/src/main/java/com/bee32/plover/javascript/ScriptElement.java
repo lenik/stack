@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.servlet.context.ITextForRequest;
+import com.bee32.plover.servlet.mvc.ResultView;
+import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public abstract class ScriptElement
@@ -49,26 +51,27 @@ public abstract class ScriptElement
         append("\n");
     }
 
-    protected abstract void formatHeader(HttpServletRequest req, IIndentedOut out)
+    protected abstract void formatHeader(IIndentedOut out)
             throws IOException;
 
-    protected abstract void formatFooter(HttpServletRequest req, IIndentedOut out)
+    protected abstract void formatFooter(IIndentedOut out)
             throws IOException;
 
     @Override
-    public void format(HttpServletRequest req, IIndentedOut out)
+    public void format(IIndentedOut out)
             throws IOException {
 
-        formatHeader(req, out);
+        formatHeader(out);
 
         if (contents != null) {
             out.enter();
 
             for (Object obj : contents) {
                 String str;
-                if (obj instanceof ITextForRequest)
+                if (obj instanceof ITextForRequest) {
+                    HttpServletRequest req = ThreadServletContext.requireRequest();
                     str = ((ITextForRequest) obj).resolve(req);
-                else
+                } else
                     str = obj.toString();
 
                 StringTokenizer lines = new StringTokenizer(str, "\n");
@@ -85,7 +88,7 @@ public abstract class ScriptElement
             out.leave();
         }
 
-        formatFooter(req, out);
+        formatFooter(out);
     }
 
     /**
@@ -97,15 +100,20 @@ public abstract class ScriptElement
      *            The response where this element will be dumped.
      * @return Always return <code>null</code>.
      */
-    public <T> T dump(HttpServletRequest req, HttpServletResponse resp)
+    public <T> T dump(HttpServletResponse resp)
             throws IOException {
         resp.setCharacterEncoding("utf-8");
 
         PrintWriter out = resp.getWriter();
         IndentedOutImpl _out = new IndentedOutImpl(new WriterPrintOut(out));
 
-        format(req, _out);
+        format(_out);
         return null;
+    }
+
+    public <T> T dump(ResultView view)
+            throws IOException {
+        return dump(view.getResponse());
     }
 
     @Override
@@ -113,7 +121,7 @@ public abstract class ScriptElement
         PrettyPrintStream out = new PrettyPrintStream();
 
         try {
-            format(null, out);
+            format(out);
         } catch (IOException e) {
             out.println("Format Error: " + e);
             e.printStackTrace();
