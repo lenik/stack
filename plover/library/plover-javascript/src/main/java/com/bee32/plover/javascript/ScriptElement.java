@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.servlet.context.ITextForRequest;
-import com.bee32.plover.servlet.mvc.ResultView;
+import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.plover.util.PrettyPrintStream;
 
@@ -111,9 +111,8 @@ public abstract class ScriptElement
         return null;
     }
 
-    public <T> T dump(ResultView view)
-            throws IOException {
-        return dump(view.getResponse());
+    public <T> T dump(ActionResult result) {
+        return dump(result.getResponse());
     }
 
     @Override

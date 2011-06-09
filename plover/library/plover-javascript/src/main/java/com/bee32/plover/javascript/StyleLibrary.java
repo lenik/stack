@@ -6,6 +6,7 @@ import javax.free.IIndentedOut;
 import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.servlet.context.ILocationContext;
+import com.bee32.plover.servlet.util.ThreadServletContext;
 
 public class StyleLibrary
         extends ScriptElement {
@@ -26,13 +27,14 @@ public class StyleLibrary
     }
 
     @Override
-    protected void formatHeader(HttpServletRequest req, IIndentedOut out)
+    protected void formatHeader(IIndentedOut out)
             throws IOException {
+        HttpServletRequest req = ThreadServletContext.requireRequest();
         out.print("<style type='text/css' src='" + location.resolve(req) + "'>");
     }
 
     @Override
-    protected void formatFooter(HttpServletRequest req, IIndentedOut out)
+    protected void formatFooter(IIndentedOut out)
             throws IOException {
         out.println("</style>");
     }
