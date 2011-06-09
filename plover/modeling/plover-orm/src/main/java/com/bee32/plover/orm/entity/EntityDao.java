@@ -124,21 +124,19 @@ public class EntityDao<E extends Entity<K>, K extends Serializable>
         if (entity == null)
             return null;
 
-        entity = postInitialize(entity);
         return entity;
     }
 
     @Override
     public E load(K key) {
         E entity = super.load(key);
-        entity = postInitialize(entity);
         return entity;
     }
 
     @Override
     public K save(E entity) {
         Serializable key = getHibernateTemplate().save(entity);
-        // TODO - convert serializable to K.
+        // XXX - convert serializable to K.
         return keyType.cast(key);
     }
 
@@ -258,16 +256,5 @@ public class EntityDao<E extends Entity<K>, K extends Serializable>
      * 3. Extensions.
      * </pre>
      */
-
-    /**
-     * Post initialization for entities.
-     *
-     * @param entity
-     *            Non-<code>null</code> entity.
-     * @return Generally return the same entity.
-     */
-    protected E postInitialize(E entity) {
-        return entity;
-    }
 
 }
