@@ -66,4 +66,8 @@ public abstract class ActionHandler
         return simpleName;
     }
 
+    protected String normalizeView(String relativeViewName) {
+        return getPrefix() + relativeViewName;
+    }
+
 }
