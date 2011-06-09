@@ -55,7 +55,8 @@ public abstract class EntityDso<E extends Entity<K>, K extends Serializable>
 
     @Override
     public List<E> list() {
-        return getDao().list();
+        List<E> list = getDao().list();
+        return list;
     }
 
     @Override
@@ -109,12 +110,25 @@ public abstract class EntityDso<E extends Entity<K>, K extends Serializable>
 
     @Override
     public K save(E entity) {
-        return getDao().save(entity);
+        if (entity == null)
+            throw new NullPointerException("entity");
+        _beforeUpdate(entity);
+
+        K key = getDao().save(entity);
+
+        _afterUpdate(entity);
+        return key;
     }
 
     @Override
     public void update(E entity) {
+        if (entity == null)
+            throw new NullPointerException("entity");
+        _beforeUpdate(entity);
+
         getDao().update(entity);
+
+        _afterUpdate(entity);
     }
 
     @Override
@@ -124,7 +138,13 @@ public abstract class EntityDso<E extends Entity<K>, K extends Serializable>
 
     @Override
     public void saveOrUpdate(E entity) {
+        if (entity == null)
+            throw new NullPointerException("entity");
+        _beforeUpdate(entity);
+
         getDao().saveOrUpdate(entity);
+
+        _afterUpdate(entity);
     }
 
     @Override
@@ -141,13 +161,21 @@ public abstract class EntityDso<E extends Entity<K>, K extends Serializable>
     @Override
     public E retrieve(K key, LockMode lockMode)
             throws DataAccessException {
-        return getDao().retrieve(key, lockMode);
+        E entity = getDao().retrieve(key, lockMode);
+        if (entity != null)
+            _afterLoad(entity);
+        return entity;
     }
 
     @Override
     public void update(E entity, LockMode lockMode)
             throws DataAccessException {
+        if (entity != null)
+            _beforeUpdate(entity);
+
         getDao().update(entity, lockMode);
+
+        _afterUpdate(entity);
     }
 
     @Override
@@ -182,6 +210,23 @@ public abstract class EntityDso<E extends Entity<K>, K extends Serializable>
     @Override
     public int count(Criterion... restrictions) {
         return getDao().count(restrictions);
+    }
+
+    /**
+     * Post initialization for entities.
+     *
+     * @param entity
+     *            Non-<code>null</code> entity.
+     * @return Generally return the same entity.
+     */
+    protected E _afterLoad(E entity) { // checkOut
+        return entity;
+    }
+
+    protected void _beforeUpdate(E entity) { // checkIn
+    }
+
+    protected void _afterUpdate(E entity) {
     }
 
 }
