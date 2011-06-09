@@ -2,36 +2,34 @@ package com.bee32.plover.orm.ext.basic;
 
 import java.io.Serializable;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.bee32.plover.javascript.util.Javascripts;
-import com.bee32.plover.servlet.mvc.ResultView;
+import com.bee32.plover.orm.entity.Entity;
 
-public class DeleteHandler
-        extends EntityHandler {
+public class DeleteHandler<E extends Entity<K>, K extends Serializable>
+        extends EntityHandler<E, K> {
 
     @Override
-    public ResultView handleRequest(HttpServletRequest req, ResultView view)
+    public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
             throws Exception {
         String idString = req.getParameter("id");
-        Serializable id;
+        K id;
         try {
-            id = parseRequiredId(idString);
+            id = eh.parseRequiredId(idString);
         } catch (Exception e) {
-            return Javascripts.alertAndBack("非法对象标识: " + idString + ": " + e.getMessage()).dump(req, resp);
+            return Javascripts.alertAndBack("非法对象标识: " + idString + ": " + e.getMessage()).dump(result);
         }
 
-        Object entity = dataManager.fetch(getEntityType(), id);
+        Object entity = dataManager.fetch(eh.getEntityType(), id);
         if (entity != null)
             try {
                 dataManager.delete(entity);
             } catch (DataIntegrityViolationException e) {
-                return Javascripts.alertAndBack("不能删除正在使用中的对象。" + hint(id)).dump(req, view);
+                return Javascripts.alertAndBack("不能删除正在使用中的对象。" + eh.getHint(id)).dump(result);
             }
 
-        resp.sendRedirect("index.htm");
+        result.sendRedirect("index.htm");
         return null;
     }
 

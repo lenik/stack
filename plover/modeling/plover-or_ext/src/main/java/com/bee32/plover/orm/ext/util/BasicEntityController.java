@@ -13,6 +13,26 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
     static Logger logger = LoggerFactory.getLogger(BasicEntityController.class);
 
-    protected boolean _createOTF;
+    // protected boolean _createOTF;
+
+    public BasicEntityController() {
+
+    }
+
+    protected void doAction(EntityAction action, E entity, Dto dto, Object... args) {
+        switch (action.getType()) {
+        case CREATE:
+            // fillTemplate(dto);
+            break;
+
+        case LOAD:
+            dto.marshal(this, entity);
+            break;
+
+        case SAVE:
+            dto.unmarshalTo(this, entity);
+            break;
+        }
+    }
 
 }

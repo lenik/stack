@@ -1,22 +1,25 @@
 package com.bee32.plover.orm.ext.basic;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
-import com.bee32.plover.servlet.mvc.ResultView;
+import com.bee32.plover.orm.entity.Entity;
 
-public class EditHandler
-        extends CreateOrEditHandler {
+public abstract class EditHandler<E extends Entity<K>, K extends Serializable>
+        extends CreateOrEditHandler<E, K> {
 
     @Override
-    public ResultView handleRequest(HttpServletRequest req, ResultView view)
+    public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
             throws Exception {
 
-        view.setViewName(normalizeView("index"));
-        view.put("method", "edit");
-        view.put("METHOD", view.V.get("edit"));
+        req.setMethod("edit");
+
+        result.setViewName(normalizeView("index"));
+        result.put("METHOD", result.V.get("edit"));
+
+        super.handleRequest(req, result);
 
         // TODO normalizeURL??
-        return view.sendRedirect("index.htm");
+        return result.sendRedirect("index.htm");
     }
 
 }

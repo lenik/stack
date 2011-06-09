@@ -42,10 +42,6 @@ public abstract class _CompositeController
         this._prefix = prefix;
     }
 
-    protected String normalizeView(String relativeViewName) {
-        return _prefix + relativeViewName;
-    }
-
     static String getRequestPath(HttpServletRequest req) {
         String contextPath = req.getContextPath();
         String requestURI = req.getRequestURI();

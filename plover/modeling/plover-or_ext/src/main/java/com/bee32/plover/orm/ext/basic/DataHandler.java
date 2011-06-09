@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.ext.basic;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.free.ParseException;
@@ -11,19 +12,19 @@ import org.hibernate.criterion.DetachedCriteria;
 import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.javascript.util.Javascripts;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
-import com.bee32.plover.orm.ext.util.EntityAction;
 import com.bee32.plover.orm.ext.util.SearchModel;
-import com.bee32.plover.servlet.mvc.ResultView;
+import com.bee32.plover.orm.util.EntityDto;
 
-public class DataHandler
-        extends EntityHandler {
+public abstract class DataHandler<E extends Entity<K>, K extends Serializable>
+        extends EntityHandler<E, K> {
 
     /**
      * Should construct a JSON response.
      */
     @Override
-    public ResultView handleRequest(HttpServletRequest req, ResultView view)
+    public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
             throws Exception {
         DataTableDxo tab = new DataTableDxo(req);
 
@@ -33,19 +34,21 @@ public class DataHandler
             entityList = __list(req);
         } catch (ParseException e) {
             // logger.error("Failed to parse search criteria parameters.", e);
-            return Javascripts.alertAndBack("Parse Error: " + e.getMessage()).dump(view);
+            return Javascripts.alertAndBack("Parse Error: " + e.getMessage()).dump(result);
         }
+
+        Integer dtoSelection = eh.getSelection(SelectionMode.INDEX);
 
         int index = 0;
         for (E entity : entityList) {
-            Dto item = newDto(_dtoSelection);
+            EntityDto<E, K> itemDto = eh.newDto(dtoSelection);
 
-            doAction(EntityAction.LOAD, entity, item);
+            doLoad(entity, itemDto);
 
-            tab.push(item.getId());
-            tab.push(item.getVersion());
+            tab.push(itemDto.getId());
+            tab.push(itemDto.getVersion());
 
-            fillDataRow(tab, item);
+            fillDataRow(tab, itemDto);
 
             tab.next();
             index++;
@@ -55,7 +58,7 @@ public class DataHandler
         tab.totalRecords = index;
         tab.totalDisplayRecords = tab.totalRecords;
 
-        return JsonUtil.dump(resp, tab.exportMap());
+        return JsonUtil.dump(result.getResponse(), tab.exportMap());
     }
 
     protected List<? extends E> __list(HttpServletRequest req)
@@ -63,12 +66,12 @@ public class DataHandler
 
         TextMap textMap = TextMap.convert(req);
 
-        SearchModel searchModel = new SearchModel(getEntityType());
+        SearchModel searchModel = new SearchModel(eh.getEntityType());
 
         fillSearchModel(searchModel, textMap);
 
         if (searchModel.isEmpty())
-            return dataManager.loadAll(getEntityType());
+            return (List<? extends E>) dataManager.loadAll(eh.getEntityType());
 
         DetachedCriteria detachedCriteria = searchModel.getDetachedCriteria();
         int firstResult = searchModel.getFirstResult();
@@ -77,10 +80,12 @@ public class DataHandler
         return dataManager.findByCriteria(detachedCriteria, firstResult, maxResults);
     }
 
-    protected abstract void fillDataRow(DataTableDxo tab, Dto dto);
+    protected abstract void fillDataRow(DataTableDxo tab, EntityDto<E, K> dto);
 
     protected void fillSearchModel(SearchModel model, TextMap request)
             throws ParseException {
     }
+
+    protected abstract void doLoad(E entity, EntityDto<E, K> dto);
 
 }

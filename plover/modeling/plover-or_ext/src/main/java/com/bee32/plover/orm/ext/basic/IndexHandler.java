@@ -1,24 +1,21 @@
 package com.bee32.plover.orm.ext.basic;
 
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.bee32.plover.ajax.JsonUtil;
-import com.bee32.plover.servlet.mvc.ResultView;
+import com.bee32.plover.orm.entity.Entity;
 
 /**
  * 使用 Ajax/DataTable，所以在 index-handler 中实际不涉及任何数据访问。
  */
-public class IndexHandler
-        extends EntityHandler {
-
-    EntityMetaData metaData;
+public class IndexHandler<E extends Entity<K>, K extends Serializable>
+        extends EntityHandler<E, K> {
 
     @Override
-    public ResultView handleRequest(HttpServletRequest req, ResultView view)
+    public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
             throws Exception {
 
         // Index by data-table:
@@ -36,9 +33,9 @@ public class IndexHandler
             parameterMap.put(paramName, paramValue);
         }
         String parameterMapJson = JsonUtil.dump(parameterMap);
-        view.put("parameterMap", parameterMapJson);
+        result.put("parameterMap", parameterMapJson);
 
-        return view;
+        return result;
     }
 
 }

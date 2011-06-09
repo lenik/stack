@@ -1,20 +1,20 @@
 package com.bee32.plover.orm.ext.basic;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
-import com.bee32.plover.servlet.mvc.ResultView;
+import com.bee32.plover.orm.entity.Entity;
 
-public class CreateFormHandler
-        extends CreateOrEditHandler {
+public abstract class CreateFormHandler<E extends Entity<K>, K extends Serializable>
+        extends CreateOrEditHandler<E, K> {
 
     @Override
-    public ResultView handleRequest(HttpServletRequest req, ResultView view)
+    public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
             throws Exception {
-        view.setViewName(normalizeView("form"));
-        view.put("method", "create");
-        view.put("METHOD", view.V.get("create"));
+        result.setViewName(normalizeView("form"));
+        result.put("method", "create");
+        result.put("METHOD", result.V.get("create"));
 
-        return super.handleRequest(req, view);
+        return super.handleRequest(req, result);
     }
 
 }

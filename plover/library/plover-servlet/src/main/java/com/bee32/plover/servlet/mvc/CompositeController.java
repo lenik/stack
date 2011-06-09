@@ -29,11 +29,11 @@ public abstract class CompositeController
      * </ol>
      */
     @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse resp)
+    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse resp)
             throws Exception {
         String internalPath; // internal path always starts with a slash /.
         {
-            String path = getRequestPath(req);
+            String path = getRequestPath(request);
             assert path.startsWith(_prefix);
             internalPath = path.substring(_prefix.length());
 
@@ -58,14 +58,17 @@ public abstract class CompositeController
 
             IActionHandler handler = actionMap.get(actionNameTest);
             if (handler != null) {
-                req.setAttribute(PREFIX_ATTRIBUTE, _prefix);
+                request.setAttribute(PREFIX_ATTRIBUTE, _prefix);
 
                 String pathWithoutActionName = internalPath.substring(0, lastSlash);
-                req.setAttribute(PATH_PARAMETER_ATTRIBUTE, pathWithoutActionName);
+                request.setAttribute(PATH_PARAMETER_ATTRIBUTE, pathWithoutActionName);
 
-                req.setAttribute(ACTION_NAME_ATTRIBUTE, actionNameTest);
+                request.setAttribute(ACTION_NAME_ATTRIBUTE, actionNameTest);
 
-                return handler.handleRequest(req, resp);
+                ActionRequest req = new ActionRequest(request);
+                ActionResult result = null; // TODO new ResultView(null);
+                result.setResponse(resp);
+                return handler.handleRequest(req, result);
             }
         }
 
@@ -73,14 +76,14 @@ public abstract class CompositeController
         return null;
     }
 
-    protected void addAction(IActionHandler handler) {
+    protected void addHandler(IActionHandler handler) {
         if (handler == null)
             throw new NullPointerException("handler");
         String handlerName = handler.getName();
-        addAction(handlerName, handler);
+        addHandler(handlerName, handler);
     }
 
-    protected void addAction(String name, IActionHandler handler) {
+    protected void addHandler(String name, IActionHandler handler) {
         if (name == null)
             throw new NullPointerException("name");
         if (handler == null)

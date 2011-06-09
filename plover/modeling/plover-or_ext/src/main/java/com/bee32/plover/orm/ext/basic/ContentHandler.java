@@ -1,35 +1,38 @@
 package com.bee32.plover.orm.ext.basic;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.javascript.util.Javascripts;
-import com.bee32.plover.orm.ext.util.EntityAction;
-import com.bee32.plover.servlet.mvc.ResultView;
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.util.EntityDto;
 
-public class ContentHandler
-        extends EntityHandler {
+public abstract class ContentHandler<E extends Entity<K>, K extends Serializable>
+        extends EntityHandler<E, K> {
 
     @Override
-    public ResultView handleRequest(HttpServletRequest req, ResultView view)
+    public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
             throws Exception {
         String _id = req.getParameter("id");
-        K id = parseRequiredId(_id);
+        K id = eh.parseRequiredId(_id);
 
-        E entity = dataManager.get(getEntityType(), id);
+        E entity = dataManager.get(eh.getEntityType(), id);
         if (entity == null)
             return Javascripts.alertAndBack("查阅的对象不存在。" //
-                    + ClassUtil.getDisplayName(getEntityType()) + " [" + id + "]" //
-            ).dump(req, resp);
+                    + ClassUtil.getDisplayName(eh.getEntityType()) + " [" + id + "]" //
+            ).dump(result);
 
-        Dto dto = newDto(_dtoSelection);
+        Integer dtoSelection = eh.getSelection(SelectionMode.INDEX);
+        EntityDto<E, K> dto = eh.newDto(dtoSelection);
 
-        doAction(EntityAction.LOAD, entity, dto);
+        doLoad(entity, dto);
 
-        view.entity = entity;
-        view.dto = dto;
-        view.put("it", dto);
-        return view;
+        result.entity = entity;
+        result.dto = dto;
+        result.put("it", dto);
+        return result;
     }
+
+    protected abstract void doLoad(E entity, EntityDto<E, K> dto);
 
 }

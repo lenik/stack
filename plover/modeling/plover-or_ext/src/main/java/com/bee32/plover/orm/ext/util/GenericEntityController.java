@@ -25,7 +25,7 @@ import com.bee32.plover.servlet.context.ILocationConstants;
 @ComponentTemplate
 @Lazy
 public abstract class GenericEntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
-        extends _EntityController<E, K, Dto>
+        extends EntityController<E, K, Dto>
         implements ITypeAbbrAware, ILocationConstants {
 
     static ThreadLocal<RequestGenerics> tlRequestGenerics = new ThreadLocal<RequestGenerics>();
@@ -116,96 +116,5 @@ public abstract class GenericEntityController<E extends Entity<K>, K extends Ser
         return postfix("index", view);
     }
 
-    @RequestMapping("{type}/content.htm")
-    public ModelAndView content(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        preinit(type, req, resp);
-        ModelAndView view = _content(req, resp);
-        return postfix("content", view);
-    }
-
-    @RequestMapping("{type}/data.htm")
-    public ModelAndView data(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        preinit(type, req, resp);
-        ModelAndView view = _data(req, resp);
-        return postfix("data", view);
-    }
-
-    @RequestMapping("{type}/createForm.htm")
-    public ModelAndView createForm(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        preinit(type, req, resp);
-        ModelAndView view = _createForm(req, resp);
-        return postfix("createForm", view);
-    }
-
-    @RequestMapping("{type}/create.htm")
-    public ModelAndView create(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        preinit(type, req, resp);
-        ModelAndView view = _create(req, resp);
-        return postfix("create", view);
-    }
-
-    @RequestMapping("{type}/editForm.htm")
-    public ModelAndView editForm(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        preinit(type, req, resp);
-        ModelAndView view = _editForm(req, resp);
-        return postfix("editForm", view);
-    }
-
-    @RequestMapping("{type}/edit.htm")
-    public ModelAndView edit(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        preinit(type, req, resp);
-        ModelAndView view = _edit(req, resp);
-        return postfix("edit", view);
-    }
-
-    @RequestMapping("{type}/delete.htm")
-    public ModelAndView delete(@PathVariable String type, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        preinit(type, req, resp);
-        ModelAndView view = _delete(req, resp);
-        return postfix("delete", view);
-    }
-
 }
-
-class RequestGenerics {
-
-    Class<? extends Entity<? extends Serializable>> entityType;
-    Class<? extends Serializable> keyType;
-    Class<? extends EntityDto<? extends Entity<? extends Serializable>, ? extends Serializable>> transferType;
-
-    @SuppressWarnings("unchecked")
-    public <E extends Entity<K>, K extends Serializable> Class<E> getEntityType() {
-        return (Class<E>) entityType;
-    }
-
-    public <E extends Entity<K>, K extends Serializable> void setEntityType(Class<E> entityType) {
-        this.entityType = entityType;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <K extends Serializable> K getKeyType() {
-        return (K) keyType;
-    }
-
-    public <K extends Serializable> void setKeyType(Class<K> keyType) {
-        this.keyType = keyType;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <Dto extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> Class<Dto> getTransferType() {
-        return (Class<Dto>) transferType;
-    }
-
-    public <Dto extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> void setTransferType(
-            Class<Dto> transferType) {
-        this.transferType = transferType;
-    }
-
 }

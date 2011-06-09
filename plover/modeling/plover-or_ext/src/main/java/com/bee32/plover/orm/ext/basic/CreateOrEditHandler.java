@@ -1,26 +1,31 @@
 package com.bee32.plover.orm.ext.basic;
 
+import java.io.Serializable;
+
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.javascript.util.Javascripts;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
-import com.bee32.plover.orm.ext.util.EntityAction;
-import com.bee32.plover.servlet.mvc.ResultView;
+import com.bee32.plover.orm.util.EntityDto;
 
-public abstract class CreateOrEditHandler
-        extends EntityHandler {
+public abstract class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
+        extends EntityHandler<E, K> {
+
+    protected boolean _createOTF;
 
     /**
      * Use <code>req.getAttribute("create"): Boolean</code> to distinguish create and update.
      */
     @Override
-    public ResultView handleRequest(HttpServletRequest req, ResultView view)
+    public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
             throws Exception {
-        boolean create = view.isMethod("create");
+        boolean create = req.methodEquals("create");
 
-        Dto dto = newDto(_dtoSelection);
+        Integer dtoSelection = eh.getSelection(SelectionMode.CREATE_EDIT);
+        EntityDto<E, K> dto = eh.newDto(dtoSelection);
+
         dto.parse(this, req);
 
         E entity = null;
@@ -31,14 +36,14 @@ public abstract class CreateOrEditHandler
             if (id == null)
                 throw new ServletException("id isn't specified");
 
-            entity = dataManager.get(getEntityType(), id);
+            entity = dataManager.get(eh.getEntityType(), id);
             if (entity == null) {
                 if (!_createOTF)
-                    return Javascripts.alertAndBack("对象尚未创建，无法保存。" + hint(id) + "\n\n" //
+                    return Javascripts.alertAndBack("对象尚未创建，无法保存。" + eh.getHint(id) + "\n\n" //
                             + "这大概是有人在你编辑该对象的同时进行了删除操作引起的。\n" //
                             + "点击确定返回上一页。" //
-                            + ClassUtil.getDisplayName(getEntityType()) + " [" + id + "]" //
-                    ).dump(req, resp);
+                            + ClassUtil.getDisplayName(eh.getEntityType()) + " [" + id + "]" //
+                    ).dump(result);
 
                 create = true;
             }
@@ -46,29 +51,33 @@ public abstract class CreateOrEditHandler
             else {
                 Integer requestVersion = dto.getVersion();
                 if (requestVersion != null && requestVersion != entity.getVersion())
-                    return Javascripts.alertAndBack("对象版本失效。" + hint(id) + "\n\n" //
+                    return Javascripts.alertAndBack("对象版本失效。" + eh.getHint(id) + "\n\n" //
                             + "发生这个错误的原因是有人在你之前提交了这个对象的另一个版本，也可能是系统内部使这个对象的状态发生了改变。\n" //
                             + "点击确定返回上一页。" //
-                    ).dump(req, resp);
+                    ).dump(result);
             }
         }
 
         if (create) {
-            entity = newEntity();
+            entity = eh.newEntity();
 
             if (id != null)
                 EntityAccessor.setId(entity, id);
         }
 
-        doAction(EntityAction.SAVE, entity, dto);
+        doPreSave(entity, dto);
 
         dataManager.saveOrUpdate(entity);
 
-        doAction(EntityAction.POST_SAVE, entity, dto);
+        doPostSave(entity, dto);
 
-        view.entity = entity;
-        view.dto = dto;
-        return view;
+        result.entity = entity;
+        result.dto = dto;
+        return result;
     }
+
+    protected abstract void doPreSave(E entity, EntityDto<E, K> dto);
+
+    protected abstract void doPostSave(E entity, EntityDto<E, K> dto);
 
 }

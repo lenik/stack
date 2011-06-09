@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.servlet.util.ServletDiag;
 
@@ -31,8 +30,9 @@ class DumpAction
         extends ActionHandler {
 
     @Override
-    public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse resp)
+    public ActionResult handleRequest(HttpServletRequest req, ActionResult view)
             throws Exception {
+        HttpServletResponse resp = view.getResponse();
         return ServletDiag.dump(req, resp);
     }
 

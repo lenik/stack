@@ -8,21 +8,25 @@ import org.springframework.dao.DataAccessException;
 
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.ext.util.EntityController;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.servlet.mvc.ActionHandler;
+import com.bee32.plover.servlet.mvc.ActionRequest;
+import com.bee32.plover.servlet.mvc.ActionResult;
 
 /**
  * EntityHandler 可含有需注入的属性，但不能有事务方法，以及其它需要 AOP/Proxy 的方法。
  */
-public abstract class EntityHandler
+public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
         extends ActionHandler
         implements IEntityMarshalContext {
 
     @Inject
     protected CommonDataManager dataManager;
 
-    public EntityHandler(EntityController controller) {
+    // EntityType
+    protected EntityHelper<E, K> eh;
+
+    public EntityHandler() {
     }
 
     /**
@@ -44,5 +48,15 @@ public abstract class EntityHandler
             throws DataAccessException {
         return dataManager.fetch(entityType, id);
     }
+
+    @Override
+    public ActionResult handleRequest(ActionRequest req, ActionResult result)
+            throws Exception {
+
+        return null;
+    }
+
+    public abstract ActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
+            throws Exception;
 
 }
