@@ -27,7 +27,7 @@ import com.bee32.plover.orm.dao.HibernateTemplate;
  */
 @ComponentTemplate
 @Lazy
-public abstract class EntityDao<E extends Entity<K>, K extends Serializable>
+public class EntityDao<E extends Entity<K>, K extends Serializable>
         extends EntityRepository<E, K>
         implements IEntityRepo_H<E, K> {
 
