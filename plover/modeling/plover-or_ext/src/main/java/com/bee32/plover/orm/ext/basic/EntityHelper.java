@@ -15,56 +15,56 @@ import com.bee32.plover.orm.entity.EntityDso;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.EntityDto;
 
-public class EntityMetaData {
+public class EntityHelper<E extends Entity<K>, K extends Serializable> {
 
-    Class<? extends Entity<?>> entityType;
-    Class<? extends Serializable> keyType;
-    Class<? extends EntityDto<Entity<?>, ?>> dtoType;
-    Class<? extends EntityDao<Entity<?>, ?>> daoType;
-    Class<? extends EntityDso<Entity<?>, ?>> dsoType;
+    Class<E> entityType;
+    Class<K> keyType;
+    Class<? extends EntityDto<E, K>> dtoType;
+    Class<? extends EntityDao<E, K>> daoType;
+    Class<? extends EntityDso<E, K>> dsoType;
 
     Map<SelectionMode, Integer> selectionModes = new HashMap<SelectionMode, Integer>();
 
-    public EntityMetaData(Class<? extends Entity<?>> entityType) {
+    public EntityHelper(Class<E> entityType) {
         if (entityType == null)
             throw new NullPointerException("entityType");
         this.entityType = entityType;
 
         keyType = EntityUtil.getKeyType(entityType);
 
-        daoType = (Class<? extends EntityDao<Entity<?>, ?>>) EntityUtil.getDaoType(entityType);
-        dtoType = (Class<? extends EntityDto<Entity<?>, ?>>) EntityUtil.getDtoType(entityType);
+        daoType = (Class<? extends EntityDao<E, K>>) EntityUtil.getDaoType(entityType);
+        dtoType = (Class<? extends EntityDto<E, K>>) EntityUtil.getDtoType(entityType);
     }
 
-    public Class<? extends Entity<?>> getEntityType() {
+    public Class<? extends E> getEntityType() {
         return entityType;
     }
 
-    public Class<? extends Serializable> getKeyType() {
+    public Class<? extends K> getKeyType() {
         return keyType;
     }
 
-    public Class<? extends EntityDao<Entity<?>, ?>> getDaoType() {
+    public Class<? extends EntityDao<E, K>> getDaoType() {
         return daoType;
     }
 
-    public void setDaoType(Class<? extends EntityDao<Entity<?>, ?>> daoType) {
+    public void setDaoType(Class<? extends EntityDao<E, K>> daoType) {
         if (daoType == null)
             throw new NullPointerException("daoType");
         this.daoType = daoType;
     }
 
-    public Class<? extends EntityDto<Entity<?>, ?>> getDtoType() {
+    public Class<? extends EntityDto<E, K>> getDtoType() {
         return dtoType;
     }
 
-    public void setDtoType(Class<? extends EntityDto<Entity<?>, ?>> dtoType) {
+    public void setDtoType(Class<? extends EntityDto<E, K>> dtoType) {
         if (dtoType == null)
             throw new NullPointerException("dtoType");
         this.dtoType = dtoType;
     }
 
-    public Entity<?> newEntity()
+    public E newEntity()
             throws ServletException {
         try {
             return entityType.newInstance();
@@ -73,21 +73,21 @@ public class EntityMetaData {
         }
     }
 
-    public EntityDto<?, ?> newDto()
+    public EntityDto<E, K> newDto()
             throws ServletException {
         return newDto((Integer) null);
     }
 
-    public EntityDto<?, ?> newDto(Integer selection)
+    public EntityDto<E, K> newDto(Integer selection)
             throws ServletException {
 
-        EntityDto<Entity<?>, ?> dto;
+        EntityDto<E, K> dto;
 
         try {
             if (selection == null) {
                 dto = dtoType.newInstance();
             } else {
-                Constructor<? extends EntityDto<Entity<?>, ?>> selectionCtor = dtoType.getConstructor(int.class);
+                Constructor<? extends EntityDto<E, K>> selectionCtor = dtoType.getConstructor(int.class);
                 dto = selectionCtor.newInstance(selection.intValue());
             }
         } catch (ReflectiveOperationException e) {
@@ -98,7 +98,7 @@ public class EntityMetaData {
         return dto;
     }
 
-    public EntityDto<?, ?> newDto(SelectionMode mode)
+    public EntityDto<E, K> newDto(SelectionMode mode)
             throws ServletException {
         Integer selection = selectionModes.get(mode);
         return newDto(selection);
@@ -119,9 +119,9 @@ public class EntityMetaData {
      *
      * @return <code>null</code> If the given id string is <code>null</code>.
      */
-    public Serializable parseId(String idString)
+    public K parseId(String idString)
             throws ServletException {
-        Serializable id;
+        K id;
         try {
             id = EntityUtil.parseId(keyType, idString);
         } catch (ParseException e) {
@@ -130,19 +130,19 @@ public class EntityMetaData {
         return id;
     }
 
-    public Serializable parseRequiredId(String idString)
+    public K parseRequiredId(String idString)
             throws ServletException {
         if (idString == null)
             throw new ServletException("没有指定标识。");
         return parseId(idString);
     }
 
-    public String getHint(Serializable id) {
+    public String getHint(K id) {
         String entityTypeName = ClassUtil.getDisplayName(entityType);
         return entityTypeName + " [" + id + "]";
     }
 
-    public String getHint(Entity<?> entity) {
+    public String getHint(E entity) {
         return ClassUtil.getDisplayName(entity.getClass()) + " [" + entity.getId() + "]";
     }
 
