@@ -1,11 +1,11 @@
 package com.bee32.plover.servlet.mvc;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.bee32.plover.arch.util.IPriority;
 
 public interface IActionHandler
         extends IPriority {
+
+    HandlerHelper helper = new HandlerHelper();
 
     String getPrefix();
 
@@ -13,7 +13,7 @@ public interface IActionHandler
 
     String getName();
 
-    ResultView handleRequest(HttpServletRequest req, ResultView view)
+    ActionResult handleRequest(ActionRequest req, ActionResult result)
             throws Exception;
 
 }

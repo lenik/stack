@@ -1,6 +1,7 @@
 package com.bee32.plover.servlet.mvc;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,25 +21,32 @@ import org.springframework.web.servlet.View;
  *  ${V.CREATE}
  * </pre>
  */
-public abstract class ResultView
+public abstract class ActionResult
         extends ModelAndView {
 
     HttpServletResponse response;
 
-    public ResultView(String viewName, Map<String, ?> model) {
-        super(viewName, model);
-    }
+    public final Map<String, Object> V;
 
-    public ResultView(String viewName) {
+    public ActionResult(String viewName) {
         super(viewName);
     }
 
-    public ResultView(View view, Map<String, ?> model) {
+    public ActionResult(String viewName, Map<String, ?> model) {
+        super(viewName, model);
+    }
+
+    public ActionResult(View view) {
+        super(view);
+    }
+
+    public ActionResult(View view, Map<String, ?> model) {
         super(view, model);
     }
 
-    public ResultView(View view) {
-        super(view);
+    {
+        V = new HashMap<String, Object>();
+        this.put("V", V);
     }
 
     public HttpServletResponse getResponse() {
@@ -80,6 +88,9 @@ public abstract class ResultView
      */
     public void put(String name, Object value) {
         addObject(name, value);
+    }
+
+    protected void wireUp() {
     }
 
     @Override
