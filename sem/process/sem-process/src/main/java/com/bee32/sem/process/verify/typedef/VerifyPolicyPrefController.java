@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.orm.ext.basic.NotApplicableHandler;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
-import com.bee32.plover.orm.ext.util.EntityAction;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.IVerifyContext;
@@ -43,6 +43,8 @@ public class VerifyPolicyPrefController
 
     public VerifyPolicyPrefController() {
         _createOTF = true;
+        addHandler("createForm", NotApplicableHandler.INSTANCE);
+        addHandler("create", NotApplicableHandler.INSTANCE);
     }
 
     @Override
@@ -93,44 +95,33 @@ public class VerifyPolicyPrefController
         return view;
     }
 
-    // Not-Applicables
-
+    /**
+     * Update all dependencies.
+     *
+     * This actually does:
+     *
+     * <pre>
+     * refresh(pref.getType())
+     * </pre>
+     */
     @Override
-    protected ModelAndView _createForm(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        return notApplicable(req, resp);
+    protected void doSaveForm(VerifyPolicyPref pref, VerifyPolicyPrefDto prefDto) {
+        super.doSaveForm(pref, prefDto);
+
+        Class<? extends VerifiableEntity<? extends Number, IVerifyContext>> userEntityType;
+        userEntityType = (Class<? extends VerifiableEntity<? extends Number, IVerifyContext>>) pref.getType();
+
+        assert IVerifyContext.class.isAssignableFrom(userEntityType);
+
+        VerifyPolicy<? extends IVerifyContext> preferredPolicy = pref.getPreferredPolicy();
+        assert preferredPolicy != null;
+
+        refresh(userEntityType);
     }
 
-    @Override
-    protected ModelAndView _create(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        return notApplicable(req, resp);
-    }
-
-    // Action.
-
-    @Override
-    protected//
-    void doAction(EntityAction action, VerifyPolicyPref entity, VerifyPolicyPrefDto dto, Object... args) {
-        super.doAction(action, entity, dto, args);
-
-        switch (action.getType()) {
-        case SAVE:
-            // Update all dependencies
-            Class<? extends VerifiableEntity<? extends Number, IVerifyContext>> userEntityType;
-            userEntityType = (Class<? extends VerifiableEntity<? extends Number, IVerifyContext>>) entity.getType();
-
-            assert IVerifyContext.class.isAssignableFrom(userEntityType);
-
-            VerifyPolicy<? extends IVerifyContext> preferredPolicy = entity.getPreferredPolicy();
-            assert preferredPolicy != null;
-
-            refresh(userEntityType);
-
-            break;
-        }
-    }
-
+    /**
+     * Update all dependencies.
+     */
     <E extends VerifiableEntity<? extends Number, C>, C extends IVerifyContext> //
     void refresh(Class<? extends E> userEntityType) {
 
