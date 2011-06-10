@@ -3,9 +3,11 @@ package com.bee32.plover.orm.ext.basic;
 import java.io.Serializable;
 
 import javax.inject.Inject;
+import javax.servlet.ServletException;
 
 import org.springframework.dao.DataAccessException;
 
+import com.bee32.plover.ajax.SuccessOrFailMessage;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
@@ -56,7 +58,42 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
         return null;
     }
 
+    /**
+     * @see #handleRequestSOF(EntityActionRequest, EntityActionResult)
+     */
     public abstract ActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
             throws Exception;
+
+    String successMessage = "Success";
+
+    protected String getSuccessMessage() {
+        return successMessage;
+    }
+
+    protected void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
+    }
+
+    protected final ActionResult handleRequestSOF(EntityActionRequest req, EntityActionResult result)
+            throws Exception {
+        SuccessOrFailMessage sof = new SuccessOrFailMessage(getSuccessMessage()) {
+            @Override
+            protected String eval()
+                    throws Exception {
+                return EntityHandler.this.eval();
+            }
+        };
+        return sof.jsonDump(result);
+    }
+
+    /**
+     * Only called if {@link #handleRequestSOF(EntityActionRequest, EntityActionResult)} is used.
+     *
+     * @return <code>null</code> if successful, otherwise error message.
+     */
+    protected String eval()
+            throws ServletException {
+        return "Not implemented.";
+    }
 
 }
