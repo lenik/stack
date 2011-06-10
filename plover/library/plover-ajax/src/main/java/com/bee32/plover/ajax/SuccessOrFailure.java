@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.bee32.plover.servlet.mvc.ActionResult;
+
 public abstract class SuccessOrFailure {
 
     private static final long serialVersionUID = 1L;
@@ -67,6 +69,11 @@ public abstract class SuccessOrFailure {
 
         String json = JsonUtil.dump(SuccessOrFailure.class, this);
         return json;
+    }
+
+    public <T> T jsonDump(ActionResult result)
+            throws IOException {
+        return jsonDump(result.getResponse());
     }
 
     public <T> T jsonDump(HttpServletResponse resp)

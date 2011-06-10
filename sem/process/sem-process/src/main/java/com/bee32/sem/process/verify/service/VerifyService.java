@@ -152,7 +152,7 @@ public class VerifyService
         IUserPrincipal __currentUser = SessionLoginInfo.requireCurrentUser(ThreadServletContext.requireSession());
 
         // XXX
-        userService.get(0, __currentUser.getId());
+        // userService.get(0, __currentUser.getId());
 
         C context = entity.getVerifyContext();
 

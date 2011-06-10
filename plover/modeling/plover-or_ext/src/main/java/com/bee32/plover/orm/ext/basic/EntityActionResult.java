@@ -10,7 +10,7 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.servlet.mvc.ActionResult;
 
-public abstract class EntityActionResult
+public class EntityActionResult
         extends ActionResult {
 
     Entity<?> entity;
@@ -40,8 +40,7 @@ public abstract class EntityActionResult
 
     public <T> T errorAlert(String message)
             throws IOException {
-        Javascripts.alertAndBack(message).dump(getResponse());
-        return null;
+        return Javascripts.alertAndBack(message).dump(getResponse());
     }
 
 }

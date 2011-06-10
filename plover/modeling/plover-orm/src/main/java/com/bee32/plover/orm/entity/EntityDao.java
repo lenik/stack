@@ -256,5 +256,12 @@ public class EntityDao<E extends Entity<K>, K extends Serializable>
      * 3. Extensions.
      * </pre>
      */
+    public void postLoad(E entity) {
+
+    }
+
+    public void preSave(E entity) {
+
+    }
 
 }
