@@ -12,6 +12,14 @@ public abstract class CreateOrEditFormHandler<E extends Entity<K>, K extends Ser
 
     protected boolean _createOTF;
 
+    IEntityForming<E, K> forming;
+
+    public CreateOrEditFormHandler(IEntityForming<E, K> forming) {
+        if (forming == null)
+            throw new NullPointerException("forming");
+        this.forming = forming;
+    }
+
     @Override
     public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
             throws Exception {
@@ -38,7 +46,7 @@ public abstract class CreateOrEditFormHandler<E extends Entity<K>, K extends Ser
             } else {
                 dto = eh.newDto(dtoSelection);
 
-                doLoad(entity, dto);
+                forming.loadForm(entity, dto);
             }
         }
 
@@ -51,7 +59,7 @@ public abstract class CreateOrEditFormHandler<E extends Entity<K>, K extends Ser
             dto = eh.newDto(dtoSelection);
 
             // Entity-initializors, so as to populate the transient properties.
-            doLoad(newEntity, dto);
+            forming.loadForm(newEntity, dto);
 
             entity = newEntity;
         }
@@ -65,7 +73,5 @@ public abstract class CreateOrEditFormHandler<E extends Entity<K>, K extends Ser
         result.put("it", dto);
         return result;
     }
-
-    protected abstract void doLoad(E entity, EntityDto<E, K> dto);
 
 }

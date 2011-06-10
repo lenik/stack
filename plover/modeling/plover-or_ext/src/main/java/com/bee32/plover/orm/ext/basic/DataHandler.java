@@ -17,8 +17,16 @@ import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.plover.orm.ext.util.SearchModel;
 import com.bee32.plover.orm.util.EntityDto;
 
-public abstract class DataHandler<E extends Entity<K>, K extends Serializable>
+public class DataHandler<E extends Entity<K>, K extends Serializable>
         extends EntityHandler<E, K> {
+
+    IEntityListing<E, K> listing;
+
+    public DataHandler(IEntityListing<E, K> listing) {
+        if (listing == null)
+            throw new NullPointerException("listing");
+        this.listing = listing;
+    }
 
     /**
      * Should construct a JSON response.
@@ -43,12 +51,12 @@ public abstract class DataHandler<E extends Entity<K>, K extends Serializable>
         for (E entity : entityList) {
             EntityDto<E, K> itemDto = eh.newDto(dtoSelection);
 
-            doLoad(entity, itemDto);
+            listing.loadEntry(entity, itemDto);
 
             tab.push(itemDto.getId());
             tab.push(itemDto.getVersion());
 
-            fillDataRow(tab, itemDto);
+            listing.fillDataRow(tab, itemDto);
 
             tab.next();
             index++;
@@ -68,7 +76,7 @@ public abstract class DataHandler<E extends Entity<K>, K extends Serializable>
 
         SearchModel searchModel = new SearchModel(eh.getEntityType());
 
-        fillSearchModel(searchModel, textMap);
+        listing.fillSearchModel(searchModel, textMap);
 
         if (searchModel.isEmpty())
             return (List<? extends E>) dataManager.loadAll(eh.getEntityType());
@@ -79,13 +87,5 @@ public abstract class DataHandler<E extends Entity<K>, K extends Serializable>
 
         return dataManager.findByCriteria(detachedCriteria, firstResult, maxResults);
     }
-
-    protected abstract void fillDataRow(DataTableDxo tab, EntityDto<E, K> dto);
-
-    protected void fillSearchModel(SearchModel model, TextMap request)
-            throws ParseException {
-    }
-
-    protected abstract void doLoad(E entity, EntityDto<E, K> dto);
 
 }

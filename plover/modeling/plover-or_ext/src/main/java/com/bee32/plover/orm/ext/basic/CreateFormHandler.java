@@ -4,8 +4,12 @@ import java.io.Serializable;
 
 import com.bee32.plover.orm.entity.Entity;
 
-public abstract class CreateFormHandler<E extends Entity<K>, K extends Serializable>
-        extends CreateOrEditHandler<E, K> {
+public class CreateFormHandler<E extends Entity<K>, K extends Serializable>
+        extends CreateOrEditFormHandler<E, K> {
+
+    public CreateFormHandler(IEntityForming<E, K> forming) {
+        super(forming);
+    }
 
     @Override
     public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)

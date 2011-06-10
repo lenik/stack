@@ -15,6 +15,27 @@ public abstract class CreateOrEditHandler<E extends Entity<K>, K extends Seriali
 
     protected boolean _createOTF;
 
+    IEntityForming<E, K> forming;
+    IPostUpdating<E, K> postUpdating;
+
+    public CreateOrEditHandler(IEntityForming<E, K> forming) {
+        if (forming == null)
+            throw new NullPointerException("forming");
+        this.forming = forming;
+    }
+
+    public IPostUpdating<E, K> getPostUpdating() {
+        return postUpdating;
+    }
+
+    /**
+     * @param postUpdating
+     *            May be null.
+     */
+    public void setPostUpdating(IPostUpdating<E, K> postUpdating) {
+        this.postUpdating = postUpdating;
+    }
+
     /**
      * Use <code>req.getAttribute("create"): Boolean</code> to distinguish create and update.
      */
@@ -65,19 +86,16 @@ public abstract class CreateOrEditHandler<E extends Entity<K>, K extends Seriali
                 EntityAccessor.setId(entity, id);
         }
 
-        doPreSave(entity, dto);
+        forming.saveForm(entity, dto);
 
         dataManager.saveOrUpdate(entity);
 
-        doPostSave(entity, dto);
+        if (postUpdating != null)
+            postUpdating.postUpdate(entity);
 
         result.entity = entity;
         result.dto = dto;
         return result;
     }
-
-    protected abstract void doPreSave(E entity, EntityDto<E, K> dto);
-
-    protected abstract void doPostSave(E entity, EntityDto<E, K> dto);
 
 }

@@ -7,8 +7,16 @@ import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
 
-public abstract class ContentHandler<E extends Entity<K>, K extends Serializable>
+public class ContentHandler<E extends Entity<K>, K extends Serializable>
         extends EntityHandler<E, K> {
+
+    IEntityForming<E, K> forming;
+
+    public ContentHandler(IEntityForming<E, K> forming) {
+        if (forming == null)
+            throw new NullPointerException("forming");
+        this.forming = forming;
+    }
 
     @Override
     public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
@@ -25,14 +33,12 @@ public abstract class ContentHandler<E extends Entity<K>, K extends Serializable
         Integer dtoSelection = eh.getSelection(SelectionMode.INDEX);
         EntityDto<E, K> dto = eh.newDto(dtoSelection);
 
-        doLoad(entity, dto);
+        forming.loadForm(entity, dto);
 
         result.entity = entity;
         result.dto = dto;
         result.put("it", dto);
         return result;
     }
-
-    protected abstract void doLoad(E entity, EntityDto<E, K> dto);
 
 }
