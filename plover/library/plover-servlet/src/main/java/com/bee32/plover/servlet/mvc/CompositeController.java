@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 public abstract class CompositeController
         extends _CompositeController {
@@ -65,10 +66,14 @@ public abstract class CompositeController
 
                 request.setAttribute(ACTION_NAME_ATTRIBUTE, actionNameTest);
 
-                ActionRequest req = new ActionRequest(request);
-                ActionResult result = null; // TODO new ResultView(null);
+                ActionRequest req = newRequest(request);
+                ActionResult result = newResult((String) null);
                 result.setResponse(resp);
-                return handler.handleRequest(req, result);
+
+                result = handler.handleRequest(req, result);
+
+                result.wireUp();
+                return result;
             }
         }
 
@@ -90,6 +95,26 @@ public abstract class CompositeController
             throw new NullPointerException("handler");
         handler.setPrefix(_prefix);
         actionMap.put(name, handler);
+    }
+
+    protected ActionRequest newRequest(HttpServletRequest request) {
+        return new ActionRequest(request);
+    }
+
+    protected ActionResult newResult(String viewName) {
+        return new ActionResult(viewName);
+    }
+
+    protected ActionResult newResult(String viewName, Map<String, ?> model) {
+        return new ActionResult(viewName, model);
+    }
+
+    protected ActionResult newResult(View view) {
+        return new ActionResult(view);
+    }
+
+    protected ActionResult newResult(View view, Map<String, ?> model) {
+        return new ActionResult(view, model);
     }
 
 }
