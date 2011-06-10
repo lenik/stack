@@ -21,7 +21,7 @@ import org.springframework.web.servlet.View;
  *  ${V.CREATE}
  * </pre>
  */
-public abstract class ActionResult
+public class ActionResult
         extends ModelAndView {
 
     HttpServletResponse response;
@@ -90,7 +90,15 @@ public abstract class ActionResult
         addObject(name, value);
     }
 
+    /**
+     * Some properties may be changed at runtime, so, instead of put(...) at the very beginning, we
+     * deferred the wire function as a separate method.
+     *
+     * This method should be called just before returning the result(model/view) to the mvc
+     * dispatcher.
+     */
     protected void wireUp() {
+        put("V", V);
     }
 
     @Override
