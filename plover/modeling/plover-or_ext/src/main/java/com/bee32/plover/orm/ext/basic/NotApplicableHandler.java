@@ -17,4 +17,6 @@ public class NotApplicableHandler
         return null;
     }
 
+    public static final NotApplicableHandler INSTANCE = new NotApplicableHandler();
+
 }
