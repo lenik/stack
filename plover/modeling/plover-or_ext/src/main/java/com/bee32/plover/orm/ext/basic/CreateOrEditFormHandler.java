@@ -7,7 +7,7 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 
-public abstract class CreateOrEditFormHandler<E extends Entity<K>, K extends Serializable>
+public class CreateOrEditFormHandler<E extends Entity<K>, K extends Serializable>
         extends EntityHandler<E, K> {
 
     protected boolean _createOTF;
@@ -23,7 +23,17 @@ public abstract class CreateOrEditFormHandler<E extends Entity<K>, K extends Ser
     @Override
     public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
             throws Exception {
-        boolean create = req.methodEquals("create");
+        String actionName = req.getActionName();
+        boolean create = actionName.startsWith("create");
+
+        if (create) {
+            result.put("method", "create");
+            result.put("METHOD", result.V.get("create"));
+        } else {
+            result.setViewName(req.normalizeView("form"));
+            result.put("method", "edit");
+            result.put("METHOD", result.V.get("edit"));
+        }
 
         EntityDto<E, K> dto = null;
         Integer dtoSelection = eh.getSelection(SelectionMode.CREATE_EDIT);

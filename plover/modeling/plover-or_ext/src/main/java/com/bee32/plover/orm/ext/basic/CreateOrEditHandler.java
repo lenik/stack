@@ -10,7 +10,7 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 
-public abstract class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
+public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
         extends EntityHandler<E, K> {
 
     protected boolean _createOTF;
@@ -42,7 +42,18 @@ public abstract class CreateOrEditHandler<E extends Entity<K>, K extends Seriali
     @Override
     public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
             throws Exception {
-        boolean create = req.methodEquals("create");
+        String actionName = req.getActionName();
+        boolean create = actionName.startsWith("create");
+
+        if (create) {
+            result.put("method", "create");
+            result.put("METHOD", result.V.get("create"));
+
+            // return result.sendRedirect("index.htm");
+        } else {
+            result.setViewName(req.normalizeView("index"));
+            result.put("METHOD", result.V.get("edit"));
+        }
 
         Integer dtoSelection = eh.getSelection(SelectionMode.CREATE_EDIT);
         EntityDto<E, K> dto = eh.newDto(dtoSelection);
@@ -93,9 +104,12 @@ public abstract class CreateOrEditHandler<E extends Entity<K>, K extends Seriali
         if (postUpdating != null)
             postUpdating.postUpdate(entity);
 
-        result.entity = entity;
-        result.dto = dto;
-        return result;
+        // XXX Not used:
+        // result.entity = entity;
+        // result.dto = dto;
+
+        // TODO normalizeURL??
+        return result.sendRedirect("index.htm");
     }
 
 }
