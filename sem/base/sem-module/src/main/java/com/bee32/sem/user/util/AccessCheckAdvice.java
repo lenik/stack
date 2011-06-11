@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -89,7 +88,7 @@ public class AccessCheckAdvice
         if (errMessage != null) {
             // XXX 能否通过抛出异常的方法，而不是控制 response?
 
-            HttpServletRequest request = ThreadServletContext.requireRequest();
+            // HttpServletRequest request = ThreadServletContext.requireRequest();
             HttpServletResponse response = ThreadServletContext.requireResponse();
 
             response.setCharacterEncoding("utf-8");
@@ -101,7 +100,7 @@ public class AccessCheckAdvice
             alertChunk.print(WEB_APP.join("login.htm"));
             alertChunk.println("'; ");
 
-            alertChunk.dump(request, response);
+            alertChunk.dump(response);
         }
 
     }

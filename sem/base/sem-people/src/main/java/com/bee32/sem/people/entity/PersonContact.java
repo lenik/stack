@@ -12,11 +12,11 @@ public class PersonContact
 
     private static final long serialVersionUID = 1L;
 
-    String qq;
     String homeTel;
-    String mobileTel;
-
     String workTel;
+    String mobileTel;
+    String qq;
+    String msn;
 
     @Transient
     public Person getPerson() {
@@ -32,13 +32,13 @@ public class PersonContact
         setParty(person);
     }
 
-    @Column(length = 15)
-    public String getQq() {
-        return qq;
+    @Column(length = 30)
+    public String getHomeTel() {
+        return homeTel;
     }
 
-    public void setQq(String qq) {
-        this.qq = qq;
+    public void setHomeTel(String homeTel) {
+        this.homeTel = homeTel;
     }
 
     @Column(length = 30)
@@ -50,15 +50,6 @@ public class PersonContact
         this.workTel = workTel;
     }
 
-    @Column(length = 30)
-    public String getHomeTel() {
-        return homeTel;
-    }
-
-    public void setHomeTel(String homeTel) {
-        this.homeTel = homeTel;
-    }
-
     @Column(length = 20)
     public String getMobileTel() {
         return mobileTel;
@@ -66,6 +57,24 @@ public class PersonContact
 
     public void setMobileTel(String mobileTel) {
         this.mobileTel = mobileTel;
+    }
+
+    @Column(length = 15)
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    @Column(length = 40)
+    public String getMsn() {
+        return msn;
+    }
+
+    public void setMsn(String msn) {
+        this.msn = msn;
     }
 
 }

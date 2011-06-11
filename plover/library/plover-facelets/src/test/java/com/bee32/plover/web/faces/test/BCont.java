@@ -18,7 +18,7 @@ import com.bee32.plover.servlet.util.ServletDiag;
 public class BCont
         extends ACont {
 
-    @RequestMapping("bye.htm")
+    @RequestMapping("bye.*")
     public ModelAndView goodbye(HttpServletRequest req, HttpServletResponse resp) {
         return new ModelAndView("/version");
     }

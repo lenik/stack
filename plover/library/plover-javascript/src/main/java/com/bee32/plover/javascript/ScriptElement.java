@@ -111,7 +111,8 @@ public abstract class ScriptElement
         return null;
     }
 
-    public <T> T dump(ActionResult result) {
+    public <T> T dump(ActionResult result)
+            throws IOException {
         return dump(result.getResponse());
     }
 
