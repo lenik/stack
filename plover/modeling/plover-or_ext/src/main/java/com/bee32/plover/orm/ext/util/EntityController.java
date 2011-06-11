@@ -19,6 +19,7 @@ import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.plover.servlet.mvc.CompositeController;
+import com.bee32.plover.servlet.mvc.IActionHandler;
 
 @ComponentTemplate
 @Lazy
@@ -30,28 +31,43 @@ public abstract class EntityController<E extends Entity<K>, K extends Serializab
     protected CommonDataManager dataManager;
 
     @Override
-    protected ActionRequest newRequest(HttpServletRequest request) {
+    protected EntityActionRequest newRequest(HttpServletRequest request) {
         return new EntityActionRequest(request);
     }
 
     @Override
-    protected ActionResult newResult(String viewName) {
+    protected EntityActionResult newResult(String viewName) {
         return new EntityActionResult(viewName);
     }
 
     @Override
-    protected ActionResult newResult(String viewName, Map<String, ?> model) {
+    protected EntityActionResult newResult(String viewName, Map<String, ?> model) {
         return new EntityActionResult(viewName, model);
     }
 
     @Override
-    protected ActionResult newResult(View view) {
+    protected EntityActionResult newResult(View view) {
         return new EntityActionResult(view);
     }
 
     @Override
-    protected ActionResult newResult(View view, Map<String, ?> model) {
+    protected EntityActionResult newResult(View view, Map<String, ?> model) {
         return new EntityActionResult(view, model);
+    }
+
+    @Override
+    protected final ActionResult invokeHandler(IActionHandler handler, ActionRequest req, ActionResult result)
+            throws Exception {
+        // EntityHandler<E, K> eHandler = (EntityHandler<E, K>) handler;
+        EntityActionRequest eReq = (EntityActionRequest) req;
+        EntityActionResult eResult = (EntityActionResult) result;
+        return invokeHandler(handler, eReq, eResult);
+    }
+
+    protected ActionResult invokeHandler(IActionHandler handler, EntityActionRequest req, EntityActionResult result)
+            throws Exception {
+        ActionResult ret = handler.handleRequest(req, result);
+        return ret;
     }
 
     @Override
