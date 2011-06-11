@@ -25,10 +25,14 @@ public class EntityHelper<E extends Entity<K>, K extends Serializable> {
 
     Map<SelectionMode, Integer> selectionModes = new HashMap<SelectionMode, Integer>();
 
-    public EntityHelper(Class<E> entityType) {
+    public EntityHelper(Class<? extends E> entityType) {
         if (entityType == null)
             throw new NullPointerException("entityType");
-        this.entityType = entityType;
+
+        @SuppressWarnings("unchecked")
+        Class<E> _entityType = (Class<E>) entityType;
+
+        this.entityType = _entityType;
 
         keyType = EntityUtil.getKeyType(entityType);
 

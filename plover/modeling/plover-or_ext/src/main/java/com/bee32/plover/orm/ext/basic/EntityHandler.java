@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import org.springframework.dao.DataAccessException;
 
 import com.bee32.plover.ajax.SuccessOrFailMessage;
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
@@ -29,6 +30,14 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
     protected EntityHelper<E, K> eh;
 
     public EntityHandler() {
+        Class<E> entityType = ClassUtil.infer1(getClass(), EntityHandler.class, 0);
+        setEntityType(entityType);
+    }
+
+    public void setEntityType(Class<? extends E> entityType) {
+        if (entityType == null)
+            throw new NullPointerException("entityType");
+        eh = new EntityHelper<E, K>(entityType);
     }
 
     /**
@@ -52,10 +61,11 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    public ActionResult handleRequest(ActionRequest req, ActionResult result)
+    public final ActionResult handleRequest(ActionRequest req, ActionResult result)
             throws Exception {
-
-        return null;
+        EntityActionRequest eReq = (EntityActionRequest) req;
+        EntityActionResult eResult = (EntityActionResult) result;
+        return handleRequest(eReq, eResult);
     }
 
     /**
