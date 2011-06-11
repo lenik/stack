@@ -10,16 +10,17 @@ import org.slf4j.LoggerFactory;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.ext.basic.ContentHandler;
-import com.bee32.plover.orm.ext.basic.CreateFormHandler;
-import com.bee32.plover.orm.ext.basic.CreateHandler;
+import com.bee32.plover.orm.ext.basic.CreateOrEditFormHandler;
+import com.bee32.plover.orm.ext.basic.CreateOrEditHandler;
 import com.bee32.plover.orm.ext.basic.DataHandler;
-import com.bee32.plover.orm.ext.basic.EditFormHandler;
-import com.bee32.plover.orm.ext.basic.EditHandler;
+import com.bee32.plover.orm.ext.basic.EntityActionRequest;
+import com.bee32.plover.orm.ext.basic.EntityActionResult;
 import com.bee32.plover.orm.ext.basic.IEntityForming;
 import com.bee32.plover.orm.ext.basic.IEntityListing;
 import com.bee32.plover.orm.ext.basic.IPostUpdating;
 import com.bee32.plover.orm.ext.basic.IndexHandler;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.servlet.mvc.ActionResult;
 
 public abstract class BasicEntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
         extends EntityController<E, K, Dto> {
@@ -82,13 +83,26 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
     Impl impl = new Impl();
 
     public BasicEntityController() {
-        addHandler(new IndexHandler<E, K>());
-        addHandler(new DataHandler<E, K>(impl));
-        addHandler(new ContentHandler<E, K>(impl));
-        addHandler(new CreateFormHandler<E, K>(impl));
-        addHandler(new CreateHandler<E, K>(impl));
-        addHandler(new EditFormHandler<E, K>(impl));
-        addHandler(new EditHandler<E, K>(impl));
+        CreateOrEditFormHandler<E, K> createOrEditFormHandler = new CreateOrEditFormHandler<E, K>(impl) {
+
+            @Override
+            public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
+                    throws Exception {
+                ActionResult _result = super.handleRequest(req, result);
+                fillFormExtra(_result);
+                return result;
+            }
+
+        };
+
+        addHandler("index", /*      */new IndexHandler<E, K>());
+        addHandler("data", /*       */new DataHandler<E, K>(impl));
+        addHandler("content", /*    */new ContentHandler<E, K>(impl));
+        addHandler("createForm", /* */createOrEditFormHandler);
+        addHandler("editForm", /*   */new CreateOrEditFormHandler<E, K>(impl));
+        addHandler("create", /*     */new CreateOrEditHandler<E, K>(impl));
+        addHandler("edit", /*       */new CreateOrEditHandler<E, K>(impl));
+        // addHandler(new ChooseHandler<E, K>(impl));
     }
 
     protected void loadEntry(E entity, Dto dto) {
@@ -117,6 +131,9 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
     protected void saveForm(E entity, Dto dto) {
         dto.unmarshalTo(this, entity);
+    }
+
+    protected void fillFormExtra(ActionResult result) {
     }
 
     /**
