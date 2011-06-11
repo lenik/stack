@@ -31,6 +31,9 @@ public class Contact
     String email;
     String website;
 
+    /**
+     * 联系人分类
+     */
     @ManyToOne
     public ContactCategory getCategory() {
         return category;
@@ -40,6 +43,9 @@ public class Contact
         this.category = category;
     }
 
+    /**
+     * 联系人
+     */
     @ManyToOne(optional = false)
     public Party getParty() {
         return party;
@@ -51,24 +57,44 @@ public class Contact
         this.party = party;
     }
 
-    @Column(length = 40)
-    public String getEmail() {
-        return email;
+    /**
+     * 联系人地址
+     */
+    public String getAddress() {
+        return address;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    @Column(length = 80)
-    public String getWebsite() {
-        return website;
+    /**
+     * 邮编
+     */
+    @Column(length = 10)
+    public String getPostCode() {
+        return postCode;
     }
 
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
     }
 
+    /**
+     * 电话
+     */
+    @Column(length = 30)
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    /**
+     * 传真
+     */
     @Column(length = 30)
     public String getFax() {
         return fax;
@@ -78,21 +104,28 @@ public class Contact
         this.fax = fax;
     }
 
-    public String getAddress() {
-        return address;
+    /**
+     * 电子邮箱
+     */
+    @Column(length = 40)
+    public String getEmail() {
+        return email;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    @Column(length = 10)
-    public String getPostCode() {
-        return postCode;
+    /**
+     * 网址
+     */
+    @Column(length = 80)
+    public String getWebsite() {
+        return website;
     }
 
-    public void setPostCode(String postCode) {
-        this.postCode = postCode;
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
 }
