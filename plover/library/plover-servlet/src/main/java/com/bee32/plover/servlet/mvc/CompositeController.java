@@ -59,18 +59,21 @@ public abstract class CompositeController
 
             IActionHandler handler = actionMap.get(actionNameTest);
             if (handler != null) {
-                request.setAttribute(PREFIX_ATTRIBUTE, _prefix);
-
-                String pathWithoutActionName = internalPath.substring(0, lastSlash);
-                request.setAttribute(PATH_PARAMETER_ATTRIBUTE, pathWithoutActionName);
-
-                request.setAttribute(ACTION_NAME_ATTRIBUTE, actionNameTest);
-
                 ActionRequest req = newRequest(request);
                 ActionResult result = newResult((String) null);
                 result.setResponse(resp);
 
-                result = handler.handleRequest(req, result);
+                // request.setAttribute(PREFIX_ATTRIBUTE, _prefix);
+                req.setPrefix(_prefix);
+
+                String pathWithoutActionName = internalPath.substring(0, lastSlash);
+                // request.setAttribute(PATH_PARAMETER_ATTRIBUTE, pathWithoutActionName);
+                req.setPathParameter(pathWithoutActionName);
+
+                // request.setAttribute(ACTION_NAME_ATTRIBUTE, actionNameTest);
+                req.setActionName(actionNameTest);
+
+                result = invokeHandler(handler, req, result);
 
                 result.wireUp();
                 return result;
@@ -79,6 +82,12 @@ public abstract class CompositeController
 
         resp.sendError(HttpServletResponse.SC_NOT_FOUND, "(internal) path: " + internalPath);
         return null;
+    }
+
+    protected ActionResult invokeHandler(IActionHandler handler, ActionRequest req, ActionResult result)
+            throws Exception {
+        result = handler.handleRequest(req, result);
+        return result;
     }
 
     protected void addHandler(IActionHandler handler) {
@@ -93,7 +102,6 @@ public abstract class CompositeController
             throw new NullPointerException("name");
         if (handler == null)
             throw new NullPointerException("handler");
-        handler.setPrefix(_prefix);
         actionMap.put(name, handler);
     }
 
