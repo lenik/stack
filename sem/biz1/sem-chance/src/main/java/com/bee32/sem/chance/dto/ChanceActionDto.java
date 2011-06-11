@@ -9,7 +9,9 @@ import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.PinkEntityDto;
 import com.bee32.sem.chance.entity.ChanceAction;
+import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.people.entity.Party;
 
 public class ChanceActionDto
         extends PinkEntityDto<ChanceAction, Long> {
@@ -17,6 +19,11 @@ public class ChanceActionDto
     private static final long serialVersionUID = 1L;
 
     public static final int PARTIES = 1;
+
+    private String date;
+    private String timeRange;
+    private String actionType;
+    private String party;
 
     private boolean plan;
     private List<PartyDto> parties;
@@ -49,10 +56,30 @@ public class ChanceActionDto
 
     @Override
     protected void _marshal(ChanceAction source) {
+
+        this.date = source.getBeginTime() == null ? "" : DateToRange.fullFormat.format(source.getBeginDate())
+                .substring(0, 10);
+
+        if (source.getBeginTime() != null && source.getEndTime() != null)
+            this.timeRange = DateToRange.fullFormat.format(source.getBeginTime()).substring(10, 16) + " 到 "
+                    + DateToRange.fullFormat.format(source.getEndTime()).substring(10, 16);
+        else
+            this.timeRange = "";
+
+        this.actionType = source.isPlan() == true ? "plan" : "task";
+
+        String temp = null;
+        for (Party party : source.getParties()) {
+            if (temp == null)
+                temp = party.getName();
+            else
+                temp += "," + party.getName();
+        }
+        this.party = temp;
+
         this.plan = source.isPlan();
         if (selection.contains(PARTIES))
             this.parties = marshalList(PartyDto.class, source.getParties());
-        this.actor = new UserDto(source.getActor());
         this.actor = new UserDto(source.getActor());
         this.style = new ChanceActionStyleDto(source.getStyle());
         this.beginTime = source.getBeginTime();
@@ -60,15 +87,53 @@ public class ChanceActionDto
         this.content = source.getContent();
         this.spending = source.getSpending();
         this.chance = new ChanceDto(0, source.getChance());
+        this.stage = new ChanceStageDto(source.getStage());
     }
 
     @Override
     protected void _unmarshalTo(ChanceAction target) {
+        target.setPlan(plan);
+        mergeList(target, "parties", parties);
     }
 
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+        plan = map.getString("plan") == "plan" ? true : false;
+        actor = new UserDto().ref(map.getLong("actorId"));
+
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTimeRange() {
+        return timeRange;
+    }
+
+    public void setTimeRange(String timeRange) {
+        this.timeRange = timeRange;
+    }
+
+    public String getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
+    }
+
+    public String getParty() {
+        return party;
+    }
+
+    public void setParty(String party) {
+        this.party = party;
     }
 
     public boolean isPlan() {

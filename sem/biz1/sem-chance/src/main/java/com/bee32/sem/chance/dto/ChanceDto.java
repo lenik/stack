@@ -9,7 +9,7 @@ import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.GreenEntityDto;
 import com.bee32.sem.chance.entity.Chance;
-import com.bee32.sem.chance.entity.ChanceStage;
+import com.bee32.sem.chance.entity.ChanceParty;
 
 public class ChanceDto
         extends GreenEntityDto<Chance, Long> {
@@ -19,6 +19,7 @@ public class ChanceDto
     public static final int PARTIES = 1;
     public static final int ACTIONS = 2;
 
+    private String party;
     private UserDto owner;
     private ChanceCategoryDto category;
     private ChanceSourceDto source;
@@ -30,7 +31,7 @@ public class ChanceDto
     private List<ChancePartyDto> parties;
     private List<ChanceActionDto> actions;
 
-    ChanceStage stage;
+    ChanceStageDto stage;
 
     public ChanceDto() {
         super(PARTIES + ACTIONS);
@@ -50,6 +51,14 @@ public class ChanceDto
 
     @Override
     protected void _marshal(Chance source) {
+        String partyString = null;
+        for (ChanceParty party : source.getParties()) {
+            if (partyString == null)
+                partyString = party.getParty().getName();
+            else
+                partyString += "," + party.getParty().getName();
+        }
+        this.party = partyString;
         this.owner = new UserDto(source.getOwner());
         this.category = new ChanceCategoryDto(source.getCategory());
         this.source = new ChanceSourceDto(source.getSource());
@@ -61,6 +70,7 @@ public class ChanceDto
             this.parties = marshalList(ChancePartyDto.class, source.getParties());
         if (selection.contains(ACTIONS))
             this.actions = marshalList(ChanceActionDto.class, source.getActions());
+        this.stage = new ChanceStageDto(source.getStage());
     }
 
     @Override
@@ -80,6 +90,14 @@ public class ChanceDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+    }
+
+    public String getParty() {
+        return party;
+    }
+
+    public void setParty(String party) {
+        this.party = party;
     }
 
     public UserDto getOwner() {
@@ -146,11 +164,11 @@ public class ChanceDto
         this.actions = actions;
     }
 
-    public ChanceStage getStage() {
+    public ChanceStageDto getStage() {
         return stage;
     }
 
-    public void setStage(ChanceStage stage) {
+    public void setStage(ChanceStageDto stage) {
         this.stage = stage;
     }
 
