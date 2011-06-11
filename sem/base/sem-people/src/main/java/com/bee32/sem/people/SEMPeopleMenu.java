@@ -22,21 +22,31 @@ public class SEMPeopleMenu
     MenuEntry people = new MenuEntry("people");
 
 	    @Contribution("sa/people")
-	    MenuEntry contactCategories = new MenuEntry("contactCategories", DICT.join(ContactCategory.class + "index.htm"));
+	    MenuEntry dict = new MenuEntry("dict");
+
+		    @Contribution("sa/people/dict")
+		    MenuEntry contactCategories = new MenuEntry("contactCategories", DICT.join(ContactCategory.class + "index.htm"));
+
+		    @Contribution("sa/people/dict")
+		    MenuEntry orgTypes = new MenuEntry("orgTypes", DICT.join(OrgType.class + "index.htm"));
+
+		    @Contribution("sa/people/dict")
+		    MenuEntry partyLogCategories = new MenuEntry("partyLogCategories", DICT.join(PartyLogCategory.class + "index.htm"));
+
+		    @Contribution("sa/people/dict")
+		    MenuEntry partyTags = new MenuEntry("partyTags", DICT.join(PartyTag.class + "index.htm"));
+
+		    @Contribution("sa/people/dict")
+		    MenuEntry personSidType = new MenuEntry("personSidType", DICT.join(PersonSidType.class + "index.htm"));
 
 	    @Contribution("sa/people")
-	    MenuEntry orgTypes = new MenuEntry("orgTypes", DICT.join(OrgType.class + "index.htm"));
+	    MenuEntry businessPartner = new MenuEntry("businessPartner");
 
-	    @Contribution("sa/people")
-	    MenuEntry partyLogCategories = new MenuEntry("partyLogCategories", DICT.join(PartyLogCategory.class + "index.htm"));
+		    @Contribution("sa/people/businessPartner")
+	        MenuEntry personAdmin = new MenuEntry(1, "personAdmin", WEB_APP.join("people/personAdmin.htm"));
 
-	    @Contribution("sa/people")
-	    MenuEntry partyTags = new MenuEntry("partyTags", DICT.join(PartyTag.class + "index.htm"));
-
-	    @Contribution("sa/people")
-	    MenuEntry personSidType = new MenuEntry("personSidType", DICT.join(PersonSidType.class + "index.htm"));
-
-
+		    @Contribution("sa/people/businessPartner")
+	        MenuEntry orgAdmin = new MenuEntry(1, "orgAdmin", WEB_APP.join("people/orgAdmin.htm"));
 
     @Override
     protected void preamble() {
