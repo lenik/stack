@@ -16,6 +16,10 @@ public class ChanceStage
 
     int order;
 
+    public ChanceStage() {
+        super();
+    }
+
     public ChanceStage(int order, String name, String description) {
         super(name, description);
         this.order = order;
