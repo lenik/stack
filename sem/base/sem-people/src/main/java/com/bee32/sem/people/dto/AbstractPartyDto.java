@@ -49,7 +49,7 @@ public class AbstractPartyDto<E extends Party>
     String sidType;
     String sid;
 
-    List<PartyLogDto> logs;
+    List<PartyRecordDto> logs;
 
     @Override
     protected void _marshal(E source) {
@@ -151,11 +151,11 @@ public class AbstractPartyDto<E extends Party>
         this.sid = sid;
     }
 
-    public List<PartyLogDto> getLogs() {
+    public List<PartyRecordDto> getLogs() {
         return logs;
     }
 
-    public void setLogs(List<PartyLogDto> logs) {
+    public void setLogs(List<PartyRecordDto> logs) {
         this.logs = logs;
     }
 

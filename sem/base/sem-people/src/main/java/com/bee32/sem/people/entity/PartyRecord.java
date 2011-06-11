@@ -15,22 +15,22 @@ import com.bee32.plover.orm.ext.color.BlueEntity;
  * 人或组织的社会档案记录.
  */
 @Entity
-public class PartyLog
+public class PartyRecord
         extends BlueEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    PartyLogCategory category;
+    PartyRecordCategory category;
     Date date;
     Party party;
     String description;
 
     @ManyToOne
-    public PartyLogCategory getCategory() {
+    public PartyRecordCategory getCategory() {
         return category;
     }
 
-    public void setCategory(PartyLogCategory category) {
+    public void setCategory(PartyRecordCategory category) {
         if (category == null)
             throw new NullPointerException("category");
         this.category = category;

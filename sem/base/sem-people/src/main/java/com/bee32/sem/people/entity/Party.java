@@ -54,7 +54,7 @@ public abstract class Party
     String sid;
 
     List<? extends Contact> contacts = new ArrayList<Contact>();
-    List<PartyLog> logs = new ArrayList<PartyLog>();
+    List<PartyRecord> records = new ArrayList<PartyRecord>();
 
     protected Party() {
     }
@@ -217,12 +217,12 @@ public abstract class Party
 
     @OneToMany(mappedBy = "party")
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public List<PartyLog> getLogs() {
-        return logs;
+    public List<PartyRecord> getRecords() {
+        return records;
     }
 
-    public void setLogs(List<PartyLog> logs) {
-        this.logs = logs;
+    public void setRecords(List<PartyRecord> records) {
+        this.records = records;
     }
 
 }
