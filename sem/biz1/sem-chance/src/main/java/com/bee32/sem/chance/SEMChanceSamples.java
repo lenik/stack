@@ -15,6 +15,7 @@ import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.entity.Competitor;
 import com.bee32.sem.people.SEMPeopleSamples;
+import com.bee32.sem.people.entity.Party;
 
 @ImportSamples({ SEMPeopleSamples.class, IcsfPrincipalSamples.class })
 public class SEMChanceSamples
@@ -22,6 +23,7 @@ public class SEMChanceSamples
 
     public static Chance chance = new Chance();
     public static ChanceParty party = new ChanceParty();
+    public static ChanceParty party2 = new ChanceParty();
     public static ChanceAction action = new ChanceAction();
     public static Competitor competitor = new Competitor();
 
@@ -35,12 +37,17 @@ public class SEMChanceSamples
         chance.setSource(ChanceSourceType.DEVELOP);
         chance.setContent("需要专门的安防系统，能够在浦东的销售中心直接监控闵行区厂房实时录像和声音");
         chance.setCategory(ChanceCategory.NORMAL);
+        chance.setStage(ChanceStage.INITIAL);
 
         party.setChance(chance);
         party.setParty(SEMPeopleSamples.one77);
         party.setRole("main");
 
-        chance.setParties(Arrays.asList(party));
+        party2.setChance(chance);
+        party2.setParty(SEMPeopleSamples.bentley);
+        party2.setRole("subordinate");
+
+        chance.setParties(Arrays.asList(party, party2));
 
         competitor.setName("皇冠公司");
         competitor.setChance(chance);
@@ -57,11 +64,11 @@ public class SEMChanceSamples
         action.setBeginTime(cal.getTime());
         action.setEndTime(cal.getTime());
         action.setContent("在北京、上海、广州三个重点区域发展8至10家大OEM厂商");
-        action.setStage(ChanceStage.INITIAL);
-        action.setSpending("打的 15, 吃饭30,住宿100,共145");
+        action.setSpending("打的15, 吃饭30,住宿100,共145");
         action.setActor(IcsfPrincipalSamples.eva);
         action.setStyle(ChanceActionStyle.INTERNET);
-//        action.setParties();
+        action.setParties(Arrays.asList((Party) SEMPeopleSamples.bentley, (Party) SEMPeopleSamples.one77));
+        action.setStage(ChanceStage.INITIAL);
 
         chance.setActions(Arrays.asList(action));
 
@@ -102,6 +109,7 @@ public class SEMChanceSamples
 
         addNormalSample(chance);
         addNormalSample(party);
+        addNormalSample(party2);
         addNormalSample(competitor);
         addNormalSample(action);
     }
