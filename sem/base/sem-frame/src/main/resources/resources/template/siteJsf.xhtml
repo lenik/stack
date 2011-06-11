@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:pc="http://bee32.com/plover/core">
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>
+    <ui:insert name="title">
+        <fmt:message key="MESSAGE_INDEX_KEY" />
+    </ui:insert>
+</title>
+
+<script type="text/javascript">
+    document.contextPath = "${location.WEB_APP}";
+    document.WEB_APP = "${location.WEB_APP}";
+</script>
+
+<h:outputStylesheet>
+    body, label, .ui-widget, .ui-menubar-item-label, .ui-menubar-item-label-hassubmenu,
+    .ui-menubar-item-label-selected, .ui-menubar-item-label-hassubmenu-selected,
+    .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+        font-family: Verdana, Arial, sans-serif;
+        font-size: 13px;
+    }
+</h:outputStylesheet>
+
+
+
+<link rel="stylesheet" type="text/css" media="screen" href="${location.LIB_3RDPARTY}/superfish-1.4.8/css/superfish.css" />
+
+<script type="text/javascript" src="${location.LIB_3RDPARTY}/superfish-1.4.8/js/hoverIntent.js"></script>
+<script type="text/javascript" src="${location.LIB_3RDPARTY}/superfish-1.4.8/js/superfish.js"></script>
+
+<script type="text/javascript" src="${location.WEB_APP}/site/frame.js"></script>
+
+<ui:insert name="head"></ui:insert>
+</h:head>
+<h:body>
+    <div style="margin: 0; width: 100%;">
+        <img src="${location.STYLE}/banner.gif" />
+    </div>
+
+    <div>
+        <f:verbatim>#{mainMenu.superfishHtml}</f:verbatim>
+    </div>
+
+    <table style="width: 100%;">
+        <tr>
+            <td>
+                <ui:insert name="body"></ui:insert>
+            </td>
+        </tr>
+    </table>
+    <div style="display: inline;">当前公司: #{loginInfo.currentCorp.name}</div>
+    <div style="display: inline; margin-left: 100px;">当前用户: #{loginInfo.currentUser.name}</div>
+    <div style="display: inline; margin-left: 100px;">
+        <a id="aQuit" name="aQuit" href="#">退出</a>
+    </div>
+
+    <div style="clear: both;" />
+    <div style="height: 5px; background-image: url(${location.STYLE}/split.gif); background-repeat: repeat-y"></div>
+    <div style="margin-top: 10px;">
+        <div style="display: inline">版权所有©2010-2011 海宁市智恒软件有限公司</div>
+        <div style="display: inline; margin-left: 50px;">
+            <a href="${location.WEB_APP}/site/contact.jsf">联系我们</a>
+        </div>
+    </div>
+</h:body>
+</html>
