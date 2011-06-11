@@ -1,6 +1,5 @@
 package com.bee32.plover.servlet.mvc;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Lazy;
@@ -20,8 +19,8 @@ public class MyCompositeController
     public static final String PREFIX = "/my";
 
     public MyCompositeController() {
-        addAction("dump2", new DumpAction());
-        addAction(new DumpAction());
+        addHandler("dump2", new DumpAction());
+        addHandler(new DumpAction());
     }
 
 }
@@ -30,9 +29,9 @@ class DumpAction
         extends ActionHandler {
 
     @Override
-    public ActionResult handleRequest(HttpServletRequest req, ActionResult view)
+    public ActionResult handleRequest(ActionRequest req, ActionResult result)
             throws Exception {
-        HttpServletResponse resp = view.getResponse();
+        HttpServletResponse resp = result.getResponse();
         return ServletDiag.dump(req, resp);
     }
 
