@@ -12,6 +12,9 @@ import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.BlueEntity;
 import com.bee32.sem.people.entity.Party;
 
+/**
+ * 机会客户关联
+ */
 @Entity
 public class ChanceParty
         extends BlueEntity<Long> {
