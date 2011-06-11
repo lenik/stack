@@ -10,7 +10,6 @@ public abstract class ActionHandler
     protected static final int PRIORITY_DEFAULT = 10;
     protected static final int PRIORITY_LOW = 20;
 
-    String prefix;
     final String actionName;
 
     protected ActionHandler() {
@@ -28,27 +27,6 @@ public abstract class ActionHandler
         this.actionName = actionName;
     }
 
-    /**
-     * @return Non-<code>null</code> prefix name.
-     */
-    public String getPrefix() {
-        if (prefix == null)
-            throw new IllegalStateException("Prefix wasn't set");
-        return prefix;
-    }
-
-    /**
-     * Initialize the prefix.
-     *
-     * @param prefix
-     *            Non-<code>null</code> prefix name.
-     */
-    public void setPrefix(String prefix) {
-        if (prefix == null)
-            throw new NullPointerException("prefix");
-        this.prefix = prefix;
-    }
-
     @Override
     public int getPriority() {
         return PRIORITY_DEFAULT;
@@ -56,18 +34,7 @@ public abstract class ActionHandler
 
     @Override
     public String getName() {
-        String className = getClass().getSimpleName();
-        String simpleName;
-        if (className.endsWith("Handler"))
-            simpleName = className.substring(0, className.length() - 7);
-        else
-            simpleName = className;
-
-        return simpleName;
-    }
-
-    protected String normalizeView(String relativeViewName) {
-        return getPrefix() + relativeViewName;
+        return actionName;
     }
 
 }
