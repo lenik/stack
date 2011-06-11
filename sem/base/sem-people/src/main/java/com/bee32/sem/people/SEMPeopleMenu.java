@@ -21,20 +21,22 @@ public class SEMPeopleMenu
     @Contribution("sa")
     MenuEntry people = new MenuEntry("people");
 
-    @Contribution("sa/people")
-    MenuEntry contactCategories = new MenuEntry("contactCategories", DICT.join(ContactCategory.class + "index.htm"));
+	    @Contribution("sa/people")
+	    MenuEntry contactCategories = new MenuEntry("contactCategories", DICT.join(ContactCategory.class + "index.htm"));
 
-    @Contribution("sa/people")
-    MenuEntry orgTypes = new MenuEntry("orgTypes", DICT.join(OrgType.class + "index.htm"));
+	    @Contribution("sa/people")
+	    MenuEntry orgTypes = new MenuEntry("orgTypes", DICT.join(OrgType.class + "index.htm"));
 
-    @Contribution("sa/people")
-    MenuEntry partyLogCategories = new MenuEntry("partyLogCategories", DICT.join(PartyLogCategory.class + "index.htm"));
+	    @Contribution("sa/people")
+	    MenuEntry partyLogCategories = new MenuEntry("partyLogCategories", DICT.join(PartyLogCategory.class + "index.htm"));
 
-    @Contribution("sa/people")
-    MenuEntry partyTags = new MenuEntry("partyTags", DICT.join(PartyTag.class + "index.htm"));
+	    @Contribution("sa/people")
+	    MenuEntry partyTags = new MenuEntry("partyTags", DICT.join(PartyTag.class + "index.htm"));
 
-    @Contribution("sa/people")
-    MenuEntry personSidType = new MenuEntry("personSidType", DICT.join(PersonSidType.class + "index.htm"));
+	    @Contribution("sa/people")
+	    MenuEntry personSidType = new MenuEntry("personSidType", DICT.join(PersonSidType.class + "index.htm"));
+
+
 
     @Override
     protected void preamble() {
