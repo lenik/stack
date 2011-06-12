@@ -4,12 +4,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.free.IllegalUsageException;
@@ -61,8 +56,6 @@ public class ClassUtil {
         return clazz;
     }
 
-    static Map<Class<?>, String> classDisplayNameMap = new HashMap<Class<?>, String>();
-
     /**
      * Get the type display name.
      *
@@ -71,73 +64,13 @@ public class ClassUtil {
      *
      * @return The display name.
      */
-    public static synchronized String getDisplayName(Class<?> clazz) {
+    public static String getDisplayName(Class<?> clazz) {
         if (clazz == null)
             throw new NullPointerException("clazz");
 
-        String displayName = classDisplayNameMap.get(clazz);
-        if (displayName != null)
-            return displayName;
+        ClassNLS nls = ClassNLS.getNLS(clazz);
 
-        // Scan the package by *Types.properties.
-        String packageName = clazz.getPackage().getName();
-        String baseName;
-        if (packageName.isEmpty())
-            baseName = "Types";
-        else
-            baseName = packageName + ".Types";
-
-        ResourceBundle rb;
-        try {
-            rb = ResourceBundle.getBundle(baseName); // may throw
-
-            Enumeration<String> enm = rb.getKeys();
-            while (enm.hasMoreElements()) {
-                String key = enm.nextElement();
-
-                if (key.endsWith(".displayName")) {
-                    String simpleName = key.substring(0, key.length() - ".displayName".length());
-                    String fqcn;
-                    if (packageName.isEmpty())
-                        fqcn = simpleName;
-                    else
-                        fqcn = packageName + '.' + simpleName;
-
-                    Class<?> sibling;
-                    try {
-                        sibling = Class.forName(fqcn);
-                    } catch (ClassNotFoundException e) {
-                        logger.error("(skipped) bad entry in Types.properties: failed to resolve class: " + fqcn, e);
-                        continue;
-                    }
-
-                    String siblingDisplayName = rb.getString(key); // should not throw
-                    classDisplayNameMap.put(sibling, siblingDisplayName);
-                }
-            }
-
-            // Reload.
-            String displayNameAfterReloaded = classDisplayNameMap.get(clazz);
-            if (displayNameAfterReloaded != null)
-                return displayNameAfterReloaded;
-
-        } catch (MissingResourceException e) {
-        }
-
-        // Try to load (type).properties.
-        try {
-            rb = ResourceBundle.getBundle(clazz.getName()); // may throw
-
-            String typeDisplayName = rb.getString("displayName"); // may throw
-            classDisplayNameMap.put(clazz, typeDisplayName);
-            return typeDisplayName;
-        } catch (MissingResourceException e) {
-        }
-
-        // No .displayName property defined for the class, using original simple-name instead.
-        String rawDisplayName = clazz.getSimpleName();
-        classDisplayNameMap.put(clazz, rawDisplayName);
-        return rawDisplayName;
+        return nls.getLabel();
     }
 
     public static URL getContextURL(Class<?> clazz) {

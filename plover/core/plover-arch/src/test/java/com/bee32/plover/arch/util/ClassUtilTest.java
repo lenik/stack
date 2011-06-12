@@ -129,7 +129,7 @@ public class ClassUtilTest
     }
 
     @Test
-    public void testGetDisplayName_Package() {
+    public void testGetDisplayName_LocalType() {
         // *.ClassUtil$Foo.displayName..
         String typeDisplayName = ClassUtil.getDisplayName(Foo.class);
         assertEquals("Wonderful Foo!", typeDisplayName);
