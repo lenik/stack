@@ -2,7 +2,7 @@ package com.bee32.plover.inject.scope;
 
 import org.springframework.beans.factory.ObjectFactory;
 
-class ViewScope
+public class View1Scope
         extends AbstractScope {
 
     @Override

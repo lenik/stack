@@ -1,4 +1,4 @@
-package com.bee32.plover.inject.scope;
+package com.bee32.plover.web.faces.view;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,15 +7,13 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PloverScopes
+public class ViewScopeConfigurer
         extends CustomScopeConfigurer {
 
-    public PloverScopes() {
+    public ViewScopeConfigurer() {
         Map<String, Object> scopes = new HashMap<String, Object>();
 
-        // scopes.put("session", new SessionScope());
-        scopes.put("view1", new View1Scope());
-        scopes.put("site", new SiteScope());
+        scopes.put("view", new ViewScope());
 
         this.setScopes(scopes);
     }
