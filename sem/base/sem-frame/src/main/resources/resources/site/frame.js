@@ -3,7 +3,7 @@ $(function() {
         $.ajax({
             "dataType" : "json",
             "type" : "POST",
-            "url" : document.WEB_APP + "/logout.htm",
+            "url" : document.WEB_APP + "/logout.do",
             "success" : function(data) {
                 if (data.result.toUpperCase() == "SUCCESS") {
                     alert("成功退出!");

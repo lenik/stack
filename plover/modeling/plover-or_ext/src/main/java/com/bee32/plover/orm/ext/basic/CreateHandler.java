@@ -19,7 +19,7 @@ public class CreateHandler<E extends Entity<K>, K extends Serializable>
 
         super.handleRequest(req, result);
 
-        return result.sendRedirect("index.htm");
+        return result.sendRedirect("index.do");
     }
 
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/test/*")
 public class LongViewController {
 
-    @RequestMapping("longview.htm")
+    @RequestMapping("longview.do")
     public String longView() {
         return "lview";
     }

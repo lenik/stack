@@ -19,27 +19,27 @@ import org.springframework.web.servlet.ModelAndView;
 @Lazy
 public class RequestMappingTestController {
 
-    @RequestMapping("/x/normal.htm")
+    @RequestMapping("/x/normal.do")
     public ModelAndView normal(HttpServletRequest req, HttpServletResponse resp) {
         return new ModelAndView("/version");
     }
 
-    @RequestMapping("/x/onlyReq.htm")
+    @RequestMapping("/x/onlyReq.do")
     public ModelAndView onlyReq(HttpServletRequest req) {
         return new ModelAndView("/version");
     }
 
-    @RequestMapping("/x/onlyResp.htm")
+    @RequestMapping("/x/onlyResp.do")
     public ModelAndView onlyResp(HttpServletResponse resp) {
         return new ModelAndView("/version");
     }
 
-    @RequestMapping("/x/empty.htm")
+    @RequestMapping("/x/empty.do")
     public ModelAndView empty() {
         return new ModelAndView("/version");
     }
 
-    @RequestMapping("/x/twice.htm")
+    @RequestMapping("/x/twice.do")
     public ModelAndView twice(HttpServletResponse res1, HttpServletResponse res2) {
         return new ModelAndView("/version");
     }

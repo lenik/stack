@@ -18,8 +18,8 @@ public class SEMEventModuleTest
             throws IOException {
 
         new SEMEventModuleTest().browseAndWait(//
-                SEMEventMenu.EVENT.join("index.htm").getBase() //
-                // SEMEventMenu.DICT.join(EventState.class.getName() + "/index.htm").getBase() //
+                SEMEventMenu.EVENT.join("index.do").getBase() //
+                // SEMEventMenu.DICT.join(EventState.class.getName() + "/index.do").getBase() //
                 );
     }
 }

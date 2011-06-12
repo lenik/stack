@@ -46,12 +46,12 @@
             $(document).ready(function() {
                 var oTable1 = $("#table1").dataTable_SEM({
                     "bServerSide" : true,
-                    "sAjaxSource" : "data.htm"
+                    "sAjaxSource" : "data.do"
                 });
             });
 
             $('#createForm').button().click(function() {
-                location.href = 'createForm.htm';
+                location.href = 'createForm.do';
             });
         </script>
 

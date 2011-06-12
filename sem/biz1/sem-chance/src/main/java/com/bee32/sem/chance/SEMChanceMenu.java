@@ -15,10 +15,10 @@ public class SEMChanceMenu
     MenuEntry saleChanceManagement = new MenuEntry("saleChanceManagement");
 
     @Contribution("crmcustomer/saleChanceManagement")
-    MenuEntry saleChance = new MenuEntry("saleChance", CHANCE.join("index.htm"));
+    MenuEntry saleChance = new MenuEntry("saleChance", CHANCE.join("index.do"));
 
     @Contribution("crmcustomer/saleChanceManagement")
-    MenuEntry competitor = new MenuEntry("competitor", COMPETITOR.join("index.htm"));
+    MenuEntry competitor = new MenuEntry("competitor", COMPETITOR.join("index.do"));
 
     @Override
     protected void preamble() {

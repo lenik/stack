@@ -21,7 +21,7 @@ public class SuperfishMenuDemoController
     @Inject
     private MainMenu mainMenu;
 
-    @RequestMapping("sfmenuDemo.htm")
+    @RequestMapping("sfmenuDemo.do")
     public ModelAndView sfmenuDemo(HttpServletRequest request, HttpServletResponse response) {
 
         String menuHtml = new SuperfishMenuBuilder(mainMenu).toString();

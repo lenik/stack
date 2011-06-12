@@ -25,10 +25,10 @@ public class SEMProcessModuleTest
 
         new SEMProcessModuleTest().browseAndWait(//
                 // SEMProcessModule.class//
-                // AllowListController.PREFIX + "index.htm"//
-                // MultiLevelController.PREFIX + "index.htm"//
-                // VerifyPolicyPrefController.PREFIX + "index.htm"//
-                AttackMissionController.PREFIX + "index.htm" //
+                // AllowListController.PREFIX + "index.do"//
+                // MultiLevelController.PREFIX + "index.do"//
+                // VerifyPolicyPrefController.PREFIX + "index.do"//
+                AttackMissionController.PREFIX + "index.do" //
                 );
     }
 

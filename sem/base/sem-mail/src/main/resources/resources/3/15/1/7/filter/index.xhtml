@@ -23,7 +23,7 @@
         <h2>${meta.name}</h2>
 
         <div>
-            <a href="createForm.htm">建立新的${meta.name}</a>
+            <a href="createForm.do">建立新的${meta.name}</a>
         </div>
 
         <table id="table1" cellpadding="0" cellspacing="0" border="0" class="display">
@@ -57,7 +57,7 @@
             $(document).ready(function() {
                 var oTable = $("#table1").dataTable_SEM({
                     "bServerSide" : true,
-                    "sAjaxSource" : "data.htm"
+                    "sAjaxSource" : "data.do"
                 });
             });
         </script>

@@ -30,19 +30,19 @@ public class MailFolderController
     @Inject
     MailDao mailDao;
 
-    @RequestMapping("inbox.htm")
+    @RequestMapping("inbox.do")
     public ModelAndView inbox(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         return mailbox(req, resp);
     }
 
-    @RequestMapping("outbox.htm")
+    @RequestMapping("outbox.do")
     public ModelAndView outbox(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         return mailbox(req, resp);
     }
 
-    @RequestMapping("trash.htm")
+    @RequestMapping("trash.do")
     public ModelAndView trash(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         return mailbox(req, resp);

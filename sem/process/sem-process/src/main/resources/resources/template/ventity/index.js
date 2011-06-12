@@ -35,7 +35,7 @@ function doVerify(allowed) {
     var rejectedReason = $("#rejectedReason").val();
 
     $.ajax({
-        url : "verify.htm",
+        url : "verify.do",
         type : "POST",
         dataType : "json",
         data : {
@@ -45,7 +45,7 @@ function doVerify(allowed) {
         },
         success : function(data) {
             var dtab = $("#table1").dataTable();
-            dtab.fnReloadAjax("data.htm");
+            dtab.fnReloadAjax("data.do");
             $("#verifyDialog").dialog('close');
         },
         error : function(xhr, errmsg) {

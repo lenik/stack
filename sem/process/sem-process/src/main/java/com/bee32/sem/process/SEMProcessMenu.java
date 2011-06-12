@@ -17,16 +17,16 @@ public class SEMProcessMenu
     MenuEntry verifyPolicy = new MenuEntry("verifyPolicy");
 
     @Contribution("sa/process")
-    MenuEntry verifyPolicyPref = new MenuEntry("verifyPolicyPref", PROCESS.join("pref/index.htm"));
+    MenuEntry verifyPolicyPref = new MenuEntry("verifyPolicyPref", PROCESS.join("pref/index.do"));
 
     @Contribution("sa/process/verifyPolicy")
-    MenuEntry list = new MenuEntry(1, "list", PROCESS.join("list/index.htm"));
+    MenuEntry list = new MenuEntry(1, "list", PROCESS.join("list/index.do"));
 
     @Contribution("sa/process/verifyPolicy")
-    MenuEntry level = new MenuEntry(2, "level", PROCESS.join("level/index.htm"));
+    MenuEntry level = new MenuEntry(2, "level", PROCESS.join("level/index.do"));
 
     // @Contribution("sa/process/verifyPolicy")
-    // MenuEntry p2next = new MenuEntry(3, "p2next", PROCESS.join("p2next/index.htm"));
+    // MenuEntry p2next = new MenuEntry(3, "p2next", PROCESS.join("p2next/index.do"));
 
     @Override
     protected void preamble() {

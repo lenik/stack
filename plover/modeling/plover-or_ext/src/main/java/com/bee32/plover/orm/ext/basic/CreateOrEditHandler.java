@@ -49,7 +49,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
             result.put("method", "create");
             result.put("METHOD", result.V.get("create"));
 
-            // return result.sendRedirect("index.htm");
+            // return result.sendRedirect("index.do");
         } else {
             result.setViewName(req.normalizeView("index"));
             result.put("METHOD", result.V.get("edit"));
@@ -109,7 +109,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
         // result.dto = dto;
 
         // TODO normalizeURL??
-        return result.sendRedirect("index.htm");
+        return result.sendRedirect("index.do");
     }
 
 }

@@ -24,7 +24,7 @@
         value="alert('show in parent: 你好,世界!')">
     <li><input type="checkbox" id="f_jstree"> Load into jstree.
     <li><input type="button" value="ajax normal" onclick="sendAjax()">
-    <li><input type="button" value="ajax returns 301 redirect" onclick="sendAjax('loc=data2.htm')">
+    <li><input type="button" value="ajax returns 301 redirect" onclick="sendAjax('loc=data2.do')">
     <li><input type="button" value="ajax returns 400 error" onclick="sendAjax('sc=400')">
     <li><input type="button" value="ajax returns 500 error" onclick="sendAjax('sc=500')">
     <li><input type="button" value="ajax throws servlet exception" onclick="sendAjaxError('oh, my god!')">
@@ -49,7 +49,7 @@
         if (params.substr(0, 1) == '&')
             params = params.substr(1);
 
-        var url = 'test/data.htm?' + params;
+        var url = 'test/data.do?' + params;
         $("#data").text("Loading " + url + "...");
 
         if ($("#f_jstree").attr('checked')) {

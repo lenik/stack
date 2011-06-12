@@ -23,30 +23,30 @@ public class SEMEventMenu
 
     @Contribution("sa/event")
     MenuEntry categories = new MenuEntry(10, "categories", //
-            DICT.join(ABBR.abbr(EventCategory.class) + "/index.htm"));
+            DICT.join(ABBR.abbr(EventCategory.class) + "/index.do"));
 
     @Contribution("sa/event")
     MenuEntry priorities = new MenuEntry(11, "priorities", //
-            WEB_APP.join(EventPriorityController.PREFIX).join("index.htm"));
+            WEB_APP.join(EventPriorityController.PREFIX).join("index.do"));
 
     @Contribution("sa/event")
     MenuEntry states = new MenuEntry(12, "states", //
-            DICT.join(ABBR.abbr(EventStatus.class) + "/index.htm"));
+            DICT.join(ABBR.abbr(EventStatus.class) + "/index.do"));
 
     @Contribution(".")
     MenuEntry event = new MenuEntry("event");
 
     @Contribution("event")
-    MenuEntry pendingTasks = new MenuEntry(10, "pendingTasks", EVENT.join("index.htm?stereo=TSK&closed=false"));
+    MenuEntry pendingTasks = new MenuEntry(10, "pendingTasks", EVENT.join("index.do?stereo=TSK&closed=false"));
 
     @Contribution("event")
-    MenuEntry completedTasks = new MenuEntry(11, "completedTasks", EVENT.join("index.htm?stereo=TSK&closed=true"));
+    MenuEntry completedTasks = new MenuEntry(11, "completedTasks", EVENT.join("index.do?stereo=TSK&closed=true"));
 
     @Contribution("event")
-    MenuEntry eventIndex = new MenuEntry(20, "eventIndex", EVENT.join("index.htm?recent=30"));
+    MenuEntry eventIndex = new MenuEntry(20, "eventIndex", EVENT.join("index.do?recent=30"));
 
     @Contribution("event")
-    MenuEntry activityIndex = new MenuEntry(30, "activityIndex", EVENT.join("index.htm?stereo=ACT&recent=30"));
+    MenuEntry activityIndex = new MenuEntry(30, "activityIndex", EVENT.join("index.do?stereo=ACT&recent=30"));
 
     @Override
     protected void preamble() {

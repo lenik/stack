@@ -11,12 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 public abstract class ACont {
 
-    @RequestMapping("hey.htm")
+    @RequestMapping("hey.do")
     public ModelAndView hey(HttpServletRequest req, HttpServletResponse resp) {
         return new ModelAndView("/version");
     }
 
-    @RequestMapping("black.htm")
+    @RequestMapping("black.do")
     public abstract ModelAndView white(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException;
 

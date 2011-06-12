@@ -2,13 +2,13 @@ var table1Tools = {
     view : {
         name : "查看",
         icon : "etool16/insp_sbook.gif",
-        href : "content.htm?id=$id"
+        href : "content.do?id=$id"
     },
 
     edit : {
         name : "编辑",
         icon : "etool16/editor_area.gif",
-        href : "editForm.htm?id=$id",
+        href : "editForm.do?id=$id",
         _callback : function(node, aData) {
             var id = aData[0];
             // dialog

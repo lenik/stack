@@ -23,7 +23,7 @@ public class SuperfishMenuController
     @Inject
     private MainMenu mainMenu;
 
-    @RequestMapping("sfmenuHtml.htm")
+    @RequestMapping("sfmenuHtml.do")
     public void sfmenuHtml(HttpServletRequest request, HttpServletResponse response) {
 
         response.setContentType("text/html;charset=utf-8");

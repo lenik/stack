@@ -14,7 +14,7 @@ public class SEMMailModuleTest
             throws IOException {
 
         new SEMMailModuleTest().browseAndWait(//
-                MailFilterController.PREFIX + "index.htm"//
+                MailFilterController.PREFIX + "index.do"//
                 );
     }
 

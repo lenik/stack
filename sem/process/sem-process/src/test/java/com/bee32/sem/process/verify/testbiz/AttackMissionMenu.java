@@ -11,7 +11,7 @@ public class AttackMissionMenu
     static Location ATTACK = WEB_APP.join(AttackMissionController.PREFIX);
 
     @Contribution("help")
-    MenuEntry attack = new MenuEntry("attack", ATTACK.join("index.htm"));
+    MenuEntry attack = new MenuEntry("attack", ATTACK.join("index.do"));
 
     @Override
     protected void preamble() {

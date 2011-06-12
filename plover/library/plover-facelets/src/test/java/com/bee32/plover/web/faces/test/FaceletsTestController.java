@@ -16,12 +16,12 @@ import com.bee32.plover.servlet.util.ServletDiag;
 @Lazy
 public class FaceletsTestController {
 
-    @RequestMapping("/version.htm")
+    @RequestMapping("/version.do")
     public ModelAndView version(HttpServletRequest req, HttpServletResponse resp) {
         return new ModelAndView();
     }
 
-    @RequestMapping("/info.htm")
+    @RequestMapping("/info.do")
     public void info(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         ServletDiag.dump(req, resp);

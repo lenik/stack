@@ -39,7 +39,7 @@ public class DeleteHandler<E extends Entity<K>, K extends Serializable>
             return Javascripts.alertAndBack("不能删除正在使用中的对象。" + eh.getHint(id)).dump(result);
         }
 
-        return result.sendRedirect("index.htm");
+        return result.sendRedirect("index.do");
     }
 
 }

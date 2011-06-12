@@ -112,13 +112,13 @@ var SEM = {};
             view : {
                 name : "查看",
                 icon : "etool16/insp_sbook.gif",
-                href : "content.htm?id=$id"
+                href : "content.do?id=$id"
             },
 
             edit : {
                 name : "编辑",
                 icon : "etool16/editor_area.gif",
-                href : "editForm.htm?id=$id"
+                href : "editForm.do?id=$id"
             },
 
             del : {
@@ -129,7 +129,7 @@ var SEM = {};
                     var info = $(node).parents("table").attr('title');
                     if (!window.confirm("您确定要删除该 " + info + " 记录吗？"))
                         return;
-                    window.location = "delete.htm?id=" + id;
+                    window.location = "delete.do?id=" + id;
                 }
             }
         }, // entityTools

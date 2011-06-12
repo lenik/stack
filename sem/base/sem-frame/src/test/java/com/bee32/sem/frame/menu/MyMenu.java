@@ -9,13 +9,13 @@ public class MyMenu
     MenuEntry file = new MenuEntry("file");
 
     @Contribution("file")
-    MenuEntry fileOpen = new MenuEntry("open", WEB_APP.join("file/open.htm"));
+    MenuEntry fileOpen = new MenuEntry("open", WEB_APP.join("file/open.do"));
 
     @Contribution("file")
-    MenuEntry fileSave = new MenuEntry("save", WEB_APP.join("file/save.htm"));
+    MenuEntry fileSave = new MenuEntry("save", WEB_APP.join("file/save.do"));
 
     @Contribution("file")
-    MenuEntry fileClose = new MenuEntry("close", WEB_APP.join("file/close.htm"));
+    MenuEntry fileClose = new MenuEntry("close", WEB_APP.join("file/close.do"));
 
     @Override
     protected void preamble() {

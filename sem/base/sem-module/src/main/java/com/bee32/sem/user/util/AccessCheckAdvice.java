@@ -97,7 +97,7 @@ public class AccessCheckAdvice
             alertChunk.println("alert('" + HtmlUtils.htmlEscape(errMessage) + "'); ");
 
             alertChunk.print("location='");
-            alertChunk.print(WEB_APP.join("login.htm"));
+            alertChunk.print(WEB_APP.join("login.do"));
             alertChunk.println("'; ");
 
             alertChunk.dump(response);
