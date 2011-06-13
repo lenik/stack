@@ -567,6 +567,37 @@ public abstract class DataTransferObject<S, C>
         return marshalList(null, dtoClass, null, sources);
     }
 
+    public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(IMarshalSession<C> session,
+            Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
+
+        Set<D> dtoSet = new HashSet<D>();
+
+        if (sources == null)
+            return dtoSet;
+
+        for (S _source : sources) {
+            D dto = marshal(session, dtoClass, selection, _source);
+            dtoSet.add(dto);
+        }
+
+        return dtoSet;
+    }
+
+    public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(//
+            IMarshalSession<C> session, Class<D> dtoClass, Iterable<? extends S> sources) {
+        return marshalSet(session, dtoClass, null, sources);
+    }
+
+    public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(//
+            Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
+        return marshalSet(null, dtoClass, selection, sources);
+    }
+
+    public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(//
+            Class<D> dtoClass, Iterable<? extends S> sources) {
+        return marshalSet(null, dtoClass, null, sources);
+    }
+
     /**
      * <pre>
      * LAYER 3 - STATIC HELPER: UNMARSHAL
