@@ -9,10 +9,10 @@ import java.util.Map;
 import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.service.ServicePrototypeLoader;
-import com.bee32.plover.orm.ext.util.EnumEx;
+import com.bee32.plover.orm.ext.util.EnumAlt;
 
 public class EventState
-        extends EnumEx<EventState> {
+        extends EnumAlt<Integer, EventState> {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,52 +28,66 @@ public class EventState
         super(id, name);
     }
 
-    static Map<Integer, EventState> eventStates = new HashMap<Integer, EventState>();
+    static Map<String, EventState> nameMap = new HashMap<String, EventState>();
+    static Map<Integer, EventState> valueMap = new HashMap<Integer, EventState>();
 
     @Override
-    protected Map<Integer, EventState> getMap() {
-        return eventStates;
+    protected Map<String, EventState> getNameMap() {
+        return nameMap;
+    }
+
+    @Override
+    protected Map<Integer, EventState> getValueMap() {
+        return valueMap;
     }
 
     public boolean isEventRelated() {
-        return (id & SEL_EVENT) != 0;
+        return (value & SEL_EVENT) != 0;
     }
 
     public boolean isActivityRelated() {
-        return (id & SEL_ACTIVITY) != 0;
+        return (value & SEL_ACTIVITY) != 0;
     }
 
     public boolean isTaskRelated() {
-        return (id & SEL_TASK) != 0;
+        return (value & SEL_TASK) != 0;
     }
 
     protected static int __class__(int sel, int classIndex) {
         return (sel & SEL_MASK) | ((classIndex << CLASS_SHIFT) & CLASS_MASK);
     }
 
-    public static EventState valueOf(int id) {
-        EventState definedState = eventStates.get(id);
+    public static EventState valueOf(int altId) {
+        EventState definedState = valueMap.get(altId);
         if (definedState != null)
             return definedState;
 
-        String idHex = Integer.toHexString(id);
+        String idHex = Integer.toHexString(altId);
         throw new IllegalUsageException("Invalid state: 0x" + idHex);
+    }
+
+    public static EventState valueOf(String altName) {
+        EventState definedState = nameMap.get(altName);
+        if (definedState != null)
+            return definedState;
+
+        throw new IllegalUsageException("Invalid state: " + altName);
     }
 
     public static List<Integer> list(int mask) {
         List<Integer> list = new ArrayList<Integer>();
-        for (EventState state : eventStates.values()) {
-            if ((state.id & mask) != 0)
-                list.add(state.id);
+        for (EventState state : valueMap.values()) {
+            if ((state.value & mask) != 0)
+                list.add(state.value);
         }
         return list;
     }
 
     public static List<Integer> listFor(int _class) {
         List<Integer> list = new ArrayList<Integer>();
-        for (EventState state : eventStates.values()) {
-            if ((state.id & CLASS_MASK) >> CLASS_SHIFT == _class)
-                list.add(state.id);
+        for (EventState state : valueMap.values()) {
+            if ((state.value & CLASS_MASK) >> CLASS_SHIFT == _class)
+                list.add(state.value);
         }
         return list;
     }
