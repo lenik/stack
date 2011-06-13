@@ -11,19 +11,25 @@ public class PersonContactDto
 
     PersonDto person;
 
-    private PersonContactDto() {
+    String qq;
+    String homeTel;
+    String mobileTel;
+    String workTel;
+
+
+    public PersonContactDto() {
         super();
     }
 
-    private PersonContactDto(int selection, PersonContact source) {
+    public PersonContactDto(int selection, PersonContact source) {
         super(selection, source);
     }
 
-    private PersonContactDto(int selection) {
+    public PersonContactDto(int selection) {
         super(selection);
     }
 
-    private PersonContactDto(PersonContact source) {
+    public PersonContactDto(PersonContact source) {
         super(source);
     }
 
@@ -33,6 +39,62 @@ public class PersonContactDto
 
         if (selection.contains(PERSON))
             person = new PersonDto(source.getPerson());
+
+        qq = source.getQq();
+        homeTel = source.getHomeTel();
+        mobileTel = source.getMobileTel();
+        workTel = source.getWorkTel();
     }
 
+
+
+    @Override
+    protected void _unmarshalTo(PersonContact target) {
+        super._unmarshalTo(target);
+
+        target.setQq(qq);
+        target.setHomeTel(homeTel);
+        target.setMobileTel(mobileTel);
+        target.setWorkTel(workTel);
+    }
+
+    public PersonDto getPerson() {
+        return person;
+    }
+
+    public void setPerson(PersonDto person) {
+        this.person = person;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    public String getHomeTel() {
+        return homeTel;
+    }
+
+    public void setHomeTel(String homeTel) {
+        this.homeTel = homeTel;
+    }
+
+    public String getMobileTel() {
+        return mobileTel;
+    }
+
+    public void setMobileTel(String mobileTel) {
+        this.mobileTel = mobileTel;
+    }
+
+    public String getWorkTel() {
+        return workTel;
+    }
+
+    public void setWorkTel(String workTel) {
+        this.workTel = workTel;
+    }
 }

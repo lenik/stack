@@ -2,7 +2,6 @@ package com.bee32.sem.people.entity;
 
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -18,7 +17,6 @@ public class Org
     OrgType type;
     int size;
 
-    String interests;
 
     @ManyToOne
     public OrgType getType() {
@@ -42,17 +40,6 @@ public class Org
         this.size = size;
     }
 
-    /**
-     * 主营业务
-     */
-    @Column(length = 200)
-    public String getInterests() {
-        return interests;
-    }
-
-    public void setInterests(String interests) {
-        this.interests = interests;
-    }
 
     @Transient
     @SuppressWarnings("unchecked")

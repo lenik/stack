@@ -8,7 +8,7 @@ import javax.free.ParseException;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
-import com.bee32.sem.people.Gender;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyXP;
 
@@ -35,35 +35,55 @@ public class AbstractPartyDto<E extends Party>
 
     User owner;
 
+    List<PartyTagDto> tags;
+
     String name;
     String fullName;
     String nickName;
-
-    Gender sex;
 
     Date birthday;
 
     String interests;
 
-    String censusRegister;
-    String sidType;
     String sid;
 
     List<PartyRecordDto> logs;
 
     @Override
     protected void _marshal(E source) {
+
+        owner = source.getOwner();
+        tags = DTOs.marshalList(PartyTagDto.class, source.getTags());
+
         name = source.getName();
         fullName = source.getFullName();
         nickName = source.getNickName();
 
         birthday = source.getBirthday();
 
+        interests = source.getInterests();
+
         sid = source.getSid();
+
+        logs = DTOs.marshalList(PartyLogDto.class, source.getLogs());
     }
 
     @Override
     protected void _unmarshalTo(E target) {
+        target.setOwner(owner);
+        DTOs.mergeSet(target, "tags", tags);
+
+        target.setName(name);
+        target.setFullName(fullName);
+        target.setNickName(nickName);
+
+        target.setBirthday(birthday);
+
+        target.setInterests(interests);
+
+        target.setSid(sid);
+
+        DTOs.mergeList(target, "logs", logs);
     }
 
     @Override
@@ -77,6 +97,14 @@ public class AbstractPartyDto<E extends Party>
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public List<PartyTagDto> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<PartyTagDto> tags) {
+        this.tags = tags;
     }
 
     public String getName() {
@@ -103,14 +131,6 @@ public class AbstractPartyDto<E extends Party>
         this.nickName = nickName;
     }
 
-    public Gender getSex() {
-        return sex;
-    }
-
-    public void setSex(Gender sex) {
-        this.sex = sex;
-    }
-
     public Date getBirthday() {
         return birthday;
     }
@@ -125,22 +145,6 @@ public class AbstractPartyDto<E extends Party>
 
     public void setInterests(String interests) {
         this.interests = interests;
-    }
-
-    public String getCensusRegister() {
-        return censusRegister;
-    }
-
-    public void setCensusRegister(String censusRegister) {
-        this.censusRegister = censusRegister;
-    }
-
-    public String getSidType() {
-        return sidType;
-    }
-
-    public void setSidType(String sidType) {
-        this.sidType = sidType;
     }
 
     public String getSid() {
@@ -158,5 +162,8 @@ public class AbstractPartyDto<E extends Party>
     public void setLogs(List<PartyRecordDto> logs) {
         this.logs = logs;
     }
+
+
+
 
 }

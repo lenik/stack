@@ -3,6 +3,7 @@ package com.bee32.sem.people.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -32,12 +33,13 @@ public class PartyDao<E extends Party>
     public List<E> limitedList(Class<E> entityClass, IUserPrincipal user, int displayStart, int displayLength){
         Criteria criteria = getSession().createCriteria(entityClass);
         criteria.add(Restrictions.eq("owner.id", user.getId()));
+        criteria.addOrder(Order.desc("createdDate"));
         criteria.setFetchSize(displayStart);
         criteria.setMaxResults(displayLength);
         return criteria.list();
     }
 
-    public long limitedListCount(Class<E> entityClass, IUserPrincipal user, int displayStart, int displayLength) {
+    public long limitedListCount(Class<E> entityClass, IUserPrincipal user) {
 		int count = (Integer) getSession()
 				.createCriteria(entityClass)
 				.add(Restrictions.eq("owner.id", user.getId()))
@@ -52,12 +54,13 @@ public class PartyDao<E extends Party>
         Criteria criteria = getSession().createCriteria(entityClass);
         criteria.add(Restrictions.like("name", keyword));
         criteria.add(Restrictions.eq("owner.id", user.getId()));
+        criteria.addOrder(Order.desc("createdDate"));
         criteria.setFirstResult(displayStart);
         criteria.setMaxResults(displayLength);
         return criteria.list();
     }
 
-    public long limitedKeywordListCount(Class<E> entityClass, IUserPrincipal user, String keyword, int displayStart, int displayLength) {
+    public long limitedKeywordListCount(Class<E> entityClass, IUserPrincipal user, String keyword) {
 		int count = (Integer) getSession()
 				.createCriteria(entityClass)
 				.add(Restrictions.like("name", keyword))

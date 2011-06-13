@@ -30,8 +30,6 @@ public class Person
     String censusRegister;
     PersonSidType sidType;
 
-    String interests;
-
     Set<PersonRole> roles = new HashSet<PersonRole>();
 
     /**
@@ -49,17 +47,6 @@ public class Person
         this.sex = sex;
     }
 
-    /**
-     * 兴趣爱好
-     */
-    @Column(length = 100)
-    public String getInterests() {
-        return interests;
-    }
-
-    public void setInterests(String interests) {
-        this.interests = interests;
-    }
 
     /**
      * 户籍

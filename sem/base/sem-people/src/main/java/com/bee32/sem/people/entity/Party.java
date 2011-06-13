@@ -51,6 +51,8 @@ public abstract class Party
 
     Date birthday;
 
+    String interests;
+
     String sid;
 
     List<? extends Contact> contacts = new ArrayList<Contact>();
@@ -153,6 +155,19 @@ public abstract class Party
      */
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    /**
+     * Person:兴趣爱好
+     * Org:主营业务
+     */
+    @Column(length = 200)
+    public String getInterests() {
+        return interests;
+    }
+
+    public void setInterests(String interests) {
+        this.interests = interests;
     }
 
     @Transient

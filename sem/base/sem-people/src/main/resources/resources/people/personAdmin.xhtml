@@ -53,17 +53,173 @@
     <ui:define name="body">
 <!-- InstanceBeginEditable name="body" -->
 
-    <h:form id="peopleForm">
-        <p:panel header="联系人管理">
+		<h:form id="personForm">
 
-            <p:dataTable>
-            </p:dataTable>
-        </p:panel>
-    </h:form>
+			<t:saveState value="#{personAdminBean.editable}" />
+
+			<p:growl id="growl" showDetail="true" />
+
+			<p:panel header="联系人管理">
+				<p:toolbar id="personToolbar">
+					<p:toolbarGroup align="left">
+						<p:commandButton value="新增"
+							actionListener="#{personAdminBean.new_}"
+							disabled="#{personAdminBean.editable}"
+							update="personForm" async="true" />
+                        <p:commandButton value="修改"
+                            actionListener="#{personAdminBean.modify_}"
+                            disabled="#{personAdminBean.editable}"
+                            update="personForm" async="true" />
+						<p:commandButton value="删除"
+							actionListener="#{personAdminBean.delete_}"
+							disabled="#{personAdminBean.editable}"
+							update="personForm" async="true" />
+						<p:divider />
+						<p:commandButton value="保存"
+							actionListener="#{personAdminBean.save_}"
+							disabled="#{!personAdminBean.editable}"
+							update="personForm" async="true" />
+						<p:commandButton value="取消"
+							actionListener="#{personAdminBean.cancel_}"
+							disabled="#{!personAdminBean.editable}"
+							update="personForm" async="true" />
+						<p:divider />
+						<p:commandButton value="审核"
+							disabled="#{personAdminBean.editable or (not personAdminBean.personSelected)}"
+							onclick="verifyDlg.show();" />
+						<p:commandButton value="明细"
+							actionListener="#{personAdminBean.detail_}"
+							disabled="#{personAdminBean.editable or (not personAdminBean.personSelected)}"
+							update="personForm" async="true" />
+					</p:toolbarGroup>
+				</p:toolbar>
+				<p:tabView id="personTab" style="width:100%;"
+					activeIndex="#{personAdminBean.currTab}">
+					<p:tab id="personList" title="联系人列表">
+						<p:dataTable id="persons" var="person"
+							value="#{personAdminBean.persons}" paginator="true"
+							rows="10" lazy="true"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15" resizableColumns="true"
+							selection="#{personAdminBean.selectedPerson}"
+							selectionMode="single" rowIndexVar="rowIndex">
+
+							<p:ajax event="selectRow"
+								listener="#{personAdminBean.onRowSelect}"
+								update="personForm:personToolbar" />
+							<p:ajax event="unselectRow"
+								listener="#{personAdminBean.onRowUnselect}"
+								update="personForm:personToolbar" />
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="序号" />
+								</f:facet>
+								<h:outputText value="#{rowIndex + 1}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="姓名" />
+								</f:facet>
+								<h:outputText value="#{person.name}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="性别" />
+								</f:facet>
+								<h:outputText value="#{person.sexText}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="生日" />
+								</f:facet>
+								<h:outputText value="#{person.birthday}">
+									<f:convertDateTime pattern="yyyy-MM-dd"
+										timeZone="Asia/Shanghai" />
+								</h:outputText>
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="证件类型" />
+								</f:facet>
+								<h:outputText value="#{person.sidType.label}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="证件号码" />
+								</f:facet>
+								<h:outputText value="#{person.sid}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="户籍" />
+								</f:facet>
+								<h:outputText value="#{person.censusRegister}" />
+							</p:column>
+
+						</p:dataTable>
+					</p:tab>
+					<p:tab title="联系人详细">
+
+                        <h:inputHidden id="personId" value="#{personAdminBean.person.id}"/>
+
+						<t:panelGrid columns="4"
+							columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+
+							<h:outputLabel for="personName" value="姓名" />
+							<p:inputText id="personName" value="#{personAdminBean.person.name}"/>
+							<h:outputLabel for="personFullName" value="全名" />
+                            <p:inputText id="personFullName" value="#{personAdminBean.person.fullName}"/>
+
+                            <h:outputLabel for="personNickName" value="昵称" />
+                            <p:inputText id="personNickName" value="#{personAdminBean.person.nickName}"/>
+							<h:outputLabel for="personBirthday" value="生日"/>
+                            <p:calendar
+                                    id="personBirthday"
+                                    pattern="yyyy-MM-dd"
+                                    value="#{personAdminBean.person.birthday}"
+                                    showOn="button" />
+
+							<h:outputLabel for="personSidType" value="证件类型" />
+                            <p:selectOneMenu id="personSidType"
+                                value="#{personAdminBean.person.sidType.id}">
+                                <f:selectItems value="#{personAdminBean.sidTypes}" />
+                            </p:selectOneMenu>
+
+							<h:outputLabel for="personSid" value="证件号码" />
+                            <p:inputText id="personSid" value="#{personAdminBean.person.sid}"/>
+
+                            <h:outputLabel for="personSex" value="性别" />
+							<p:selectOneMenu id="personSex"
+								value="#{personAdminBean.person.sex}">
+								<f:selectItems value="#{personAdminBean.genders}" />
+							</p:selectOneMenu>
+							<h:outputLabel for="personCensusRegister" value="户籍" />
+                            <p:inputText id="personCensusRegister" value="#{personAdminBean.person.censusRegister}"/>
+
+                            <h:outputLabel for="personInterests" value="兴趣爱好" />
+                            <t:panelGrid colspan="3">
+                                <p:inputText id="personInterests" value="#{personAdminBean.person.interests}"/>
+                            </t:panelGrid>
+						</t:panelGrid>
+
+						<p:panel header="联系方式">
+                        </p:panel>
+
+					</p:tab>
+				</p:tabView>
+			</p:panel>
+		</h:form>
 
 
 
-<!-- InstanceEndEditable -->
+		<!-- InstanceEndEditable -->
     </ui:define>
 </ui:composition>
 <!-- InstanceEnd --></html>
