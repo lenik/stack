@@ -47,6 +47,11 @@ public class ClassNLS {
         classmap = new HashMap<Class<?>, ClassNLS>();
     }
 
+    /**
+     * Instead of throwing a MissingResourceException, an empty NLS is used to return null entries.
+     *
+     * @return Non-<code>null</code> ClassNLS instance.
+     */
     public static synchronized ClassNLS getNLS(Class<?> clazz) {
         ClassNLS nls = classmap.get(clazz);
         if (nls == null) {

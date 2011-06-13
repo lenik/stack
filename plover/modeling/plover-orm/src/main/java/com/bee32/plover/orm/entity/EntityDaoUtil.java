@@ -64,4 +64,5 @@ public class EntityDaoUtil {
                 "(You can set it with the @Accessors annotation, or name the Dao classes in convention name.)";
         throw new IllegalUsageException(message);
     }
+
 }
