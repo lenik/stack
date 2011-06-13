@@ -14,7 +14,7 @@
         <table cellpadding="5" cellspacing="0" rules="all">
             <tr>
                 <td>名称:</td>
-                <td>${it.displayName}</td>
+                <td>${it.label}</td>
             </tr>
             <tr>
                 <td>描述:</td>
@@ -24,7 +24,7 @@
                 <td>初始态下的责任人:</td>
                 <td>
                     <c:forEach var="responsible" items="${it.responsibles}">
-                        <div>${responsible.displayName}</div>
+                        <div>${responsible.label}</div>
                     </c:forEach>
                 </td>
             </tr>

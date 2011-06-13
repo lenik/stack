@@ -21,7 +21,7 @@ public class VerifyState
         this.closed = closed;
         this.eventFlags = eventFlags;
 
-        displayName = _nls(name + ".displayName", name);
+        displayName = _nls(name + ".label", name);
         description = _nls(name + ".description", null);
     }
 

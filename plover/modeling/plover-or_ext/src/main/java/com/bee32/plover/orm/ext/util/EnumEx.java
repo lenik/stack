@@ -22,7 +22,7 @@ public abstract class EnumEx<$ extends EnumEx<$>>
         this.id = id;
         this.name = name;
 
-        this.displayName = _nls(name + ".displayName", name);
+        this.displayName = _nls(name + ".label", name);
 
         String icon = _nls(name + ".icon", null);
         if (icon != null)

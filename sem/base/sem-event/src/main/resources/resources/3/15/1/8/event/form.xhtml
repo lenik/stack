@@ -57,7 +57,7 @@
                 <td>
                     <h:selectOneMenu id="actorId" value="#{it.actor.id}">
                         <c:forEach var="user" items="${userList}">
-                            <f:selectItem itemValue="${user.id}" itemLabel="${user.displayName}" />
+                            <f:selectItem itemValue="${user.id}" itemLabel="${user.label}" />
                         </c:forEach>
                     </h:selectOneMenu>
                 </td>

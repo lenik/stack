@@ -17,7 +17,7 @@
                     <td>
                         <h:selectOneMenu id="verifierId" value="#{it.verifier.id}">
                             <c:forEach var="user" items="${users}">
-                                <f:selectItem itemValue="${user.id}" itemLabel="${user.displayName}" />
+                                <f:selectItem itemValue="${user.id}" itemLabel="${user.label}" />
                             </c:forEach>
                         </h:selectOneMenu>
                     </td>

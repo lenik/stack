@@ -57,7 +57,7 @@ public enum MailType {
     }
 
     public String getDisplayName(Locale locale) {
-        return rb.getString(name() + ".displayName");
+        return rb.getString(name() + ".label");
     }
 
     public String getDescription() {
