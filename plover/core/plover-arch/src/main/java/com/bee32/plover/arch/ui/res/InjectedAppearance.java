@@ -25,7 +25,7 @@ public class InjectedAppearance
         extends Appearance
         implements IPropertyAcceptor, IPropertyDispatcherAware, IPropertyRefreshListener {
 
-    private String displayName;
+    private String label;
     private String description;
     private InjectedImageMap imageMap;
     private InjectedRefdocs refdocs;
@@ -73,8 +73,8 @@ public class InjectedAppearance
 
     @Override
     public void receive(String name, String content) {
-        if ("displayName".equals(name))
-            displayName = content;
+        if ("label".equals(name))
+            label = content;
 
         else if ("description".equals(name))
             description = content;
@@ -118,9 +118,9 @@ public class InjectedAppearance
     }
 
     @Override
-    protected String loadDisplayName() {
+    protected String loadLabel() {
         _propertyDispatcher().pull();
-        return displayName;
+        return label;
     }
 
     @Override

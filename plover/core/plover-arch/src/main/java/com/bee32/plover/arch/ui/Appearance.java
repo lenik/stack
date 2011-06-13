@@ -20,13 +20,13 @@ public abstract class Appearance
 
     private IAppearance parent;
 
-    private static final int HAVE_DISPLAY_NAME = 1 << 0;
+    private static final int HAVE_LABEL = 1 << 0;
     private static final int HAVE_DESCRIPTION = 1 << 1;
     private static final int HAVE_REFDOCS = 1 << 2;
     private static final int HAVE_IMAGE_MAP = 1 << 3;
     private Flags32 flags = new Flags32();
 
-    private String displayName;
+    private String label;
     private String description;
     private IRefdocs refdocs;
     private IImageMap imageMap;
@@ -43,20 +43,20 @@ public abstract class Appearance
     }
 
     /**
-     * Find and load display name.
+     * Find and load l
      *
      * @return <code>null</code> if not available.
      */
-    protected abstract String loadDisplayName();
+    protected abstract String loadLabel();
 
     @Override
     public String getDisplayName() {
-        if (flags.checkAndLoad(HAVE_DISPLAY_NAME)) {
-            displayName = loadDisplayName();
-            if (displayName == null && parent != null)
+        if (flags.checkAndLoad(HAVE_LABEL)) {
+            label = loadLabel();
+            if (label == null && parent != null)
                 return parent.getDisplayName();
         }
-        return displayName;
+        return label;
     }
 
     /**

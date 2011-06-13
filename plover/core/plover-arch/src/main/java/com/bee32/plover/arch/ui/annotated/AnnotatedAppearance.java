@@ -37,7 +37,7 @@ public class AnnotatedAppearance
     }
 
     @Override
-    public String loadDisplayName() {
+    public String loadLabel() {
         return DisplayNameUtil.getDisplayName(element);
     }
 
