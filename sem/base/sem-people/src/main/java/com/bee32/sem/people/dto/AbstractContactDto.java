@@ -41,7 +41,7 @@ public class AbstractContactDto<E extends Contact>
     @Override
     protected void _marshal(E source) {
         category = new ContactCategoryDto(source.getCategory());
-        party = new PartyDto(source.getParty());
+        party = new PartyDto().ref(source.getParty());
         address = source.getAddress();
         postCode= source.getPostCode();
         tel = source.getTel();

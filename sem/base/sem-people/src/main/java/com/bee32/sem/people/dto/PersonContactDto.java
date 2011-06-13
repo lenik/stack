@@ -38,7 +38,7 @@ public class PersonContactDto
         super._marshal(source);
 
         if (selection.contains(PERSON))
-            person = new PersonDto(source.getPerson());
+            person = new PersonDto().ref(source.getPerson());
 
         qq = source.getQq();
         homeTel = source.getHomeTel();
@@ -51,6 +51,8 @@ public class PersonContactDto
     @Override
     protected void _unmarshalTo(PersonContact target) {
         super._unmarshalTo(target);
+
+        // personContact.person is transient, so don't unmarshal it.
 
         target.setQq(qq);
         target.setHomeTel(homeTel);
