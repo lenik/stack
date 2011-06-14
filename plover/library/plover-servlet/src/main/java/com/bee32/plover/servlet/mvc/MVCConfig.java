@@ -11,7 +11,8 @@ public class MVCConfig {
     // public static String PREFIX;
     public static final String SUFFIX;
 
-    public static final boolean nonceEnabled;
+    public static boolean nonceEnabled = false;;
+    public static final boolean nonceInUse;
 
     static {
         // PREFIX = "/spring/";
@@ -23,16 +24,20 @@ public class MVCConfig {
         } else if (nonce.isEmpty())
             nonce = null;
 
-        String runmode = System.getProperty("runmode");
-        if ("production".equals(runmode))
+        if (!nonceEnabled)
             nonce = null;
+        else {
+            String runmode = System.getProperty("runmode");
+            if ("production".equals(runmode))
+                nonce = null;
+        }
 
         String _suffix = ".do";
 
         if (nonce == null)
-            nonceEnabled = false;
+            nonceInUse = false;
         else {
-            nonceEnabled = true;
+            nonceInUse = true;
             _suffix += "_" + nonce;
         }
 
