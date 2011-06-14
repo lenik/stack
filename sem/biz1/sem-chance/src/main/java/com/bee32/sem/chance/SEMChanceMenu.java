@@ -24,7 +24,7 @@ public class SEMChanceMenu
     MenuEntry chanceAdmin = new MenuEntry("chanceAdmin");
 
     @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry chanceAction = new MenuEntry("chanceAction", CHANCEACTION.join("index.htm"));
+    MenuEntry chanceAction = new MenuEntry("chanceAction", CHANCEACTION.join("chanceActionAdminjsf.htm"));
 
     @Contribution("crmcustomer/chanceAdmin")
     MenuEntry chance = new MenuEntry("chance", CHANCE.join("index.htm"));
