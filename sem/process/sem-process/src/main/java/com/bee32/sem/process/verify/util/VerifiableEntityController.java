@@ -17,15 +17,15 @@ public abstract class VerifiableEntityController<E extends VerifiableEntity<K, C
     protected VerifyService verifyService;
 
     @Override
-    protected void doLoadForm(E entity, Dto dto) {
-        super.doLoadForm(entity, dto);
+    protected void loadForm(E entity, Dto dto) {
+        super.loadForm(entity, dto);
         VerifyPolicyDto verifyPolicy = verifyService.getVerifyPolicy(entity);
         dto.setVerifyPolicy(verifyPolicy);
     }
 
     @Override
-    protected void doSaveForm(E entity, Dto dto) {
-        super.doSaveForm(entity, dto);
+    protected void saveForm(E entity, Dto dto) {
+        super.saveForm(entity, dto);
         // Do the verification and all.
         verifyService.verifyEntity(entity);
         // dto.setVerifyState(result.getState());

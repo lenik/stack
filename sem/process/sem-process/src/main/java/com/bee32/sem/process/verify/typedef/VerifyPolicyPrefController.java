@@ -1,24 +1,23 @@
 package com.bee32.sem.process.verify.typedef;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.orm.ext.basic.EntityHelper;
 import com.bee32.plover.orm.ext.basic.NotApplicableHandler;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.servlet.mvc.ActionRequest;
+import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -74,11 +73,11 @@ public class VerifyPolicyPrefController
     }
 
     @Override
-    protected ModelAndView _createOrEditForm(ViewData view, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        super._createOrEditForm(view, req, resp);
+    protected void fillFormExtra(ActionRequest req, ActionResult result) {
+        // TODO req.getAttribute(EntityHandler.ENTITY_HELPER_ATTRIBUTE);
+        EntityHelper<?, ?> eh = req.getHandler().getEntityHelper();
 
-        Class<?> verifiableType = view.entity.getType();
+        Class<?> verifiableType = result.entity.getType();
 
         List<VerifyPolicyDto> candidates = new ArrayList<VerifyPolicyDto>();
 
@@ -90,9 +89,7 @@ public class VerifyPolicyPrefController
                 candidates.add(candidate);
         }
 
-        view.put("candidates", candidates);
-
-        return view;
+        result.put("candidates", candidates);
     }
 
     /**
@@ -105,8 +102,8 @@ public class VerifyPolicyPrefController
      * </pre>
      */
     @Override
-    protected void doSaveForm(VerifyPolicyPref pref, VerifyPolicyPrefDto prefDto) {
-        super.doSaveForm(pref, prefDto);
+    protected void saveForm(VerifyPolicyPref pref, VerifyPolicyPrefDto prefDto) {
+        super.saveForm(pref, prefDto);
 
         Class<? extends VerifiableEntity<? extends Number, IVerifyContext>> userEntityType;
         userEntityType = (Class<? extends VerifiableEntity<? extends Number, IVerifyContext>>) pref.getType();
