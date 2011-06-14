@@ -9,6 +9,8 @@ import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.servlet.mvc.ActionRequest;
+import com.bee32.plover.servlet.mvc.ActionResult;
 
 public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
         extends EntityHandler<E, K> {
@@ -40,7 +42,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
      * Use <code>req.getAttribute("create"): Boolean</code> to distinguish create and update.
      */
     @Override
-    public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
+    protected ActionResult _handleRequest(ActionRequest req, ActionResult result)
             throws Exception {
         String actionName = req.getActionName();
         boolean create = actionName.startsWith("create");

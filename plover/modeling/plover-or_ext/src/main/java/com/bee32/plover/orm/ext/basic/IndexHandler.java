@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.servlet.mvc.ActionRequest;
+import com.bee32.plover.servlet.mvc.ActionResult;
 
 /**
  * 使用 Ajax/DataTable，所以在 index-handler 中实际不涉及任何数据访问。
@@ -15,7 +17,7 @@ public class IndexHandler<E extends Entity<K>, K extends Serializable>
         extends EntityHandler<E, K> {
 
     @Override
-    public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
+    protected ActionResult _handleRequest(ActionRequest req, ActionResult result)
             throws Exception {
 
         // Index by data-table:

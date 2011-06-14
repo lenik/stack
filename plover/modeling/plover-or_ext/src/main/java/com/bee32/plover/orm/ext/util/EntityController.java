@@ -12,8 +12,6 @@ import org.springframework.web.servlet.View;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.ext.basic.EntityActionRequest;
-import com.bee32.plover.orm.ext.basic.EntityActionResult;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.servlet.mvc.ActionRequest;
@@ -31,43 +29,28 @@ public abstract class EntityController<E extends Entity<K>, K extends Serializab
     protected CommonDataManager dataManager;
 
     @Override
-    protected EntityActionRequest newRequest(HttpServletRequest request) {
-        return new EntityActionRequest(request);
+    protected ActionRequest newRequest(IActionHandler handler, HttpServletRequest request) {
+        return new ActionRequest(handler, request);
     }
 
     @Override
-    protected EntityActionResult newResult(String viewName) {
-        return new EntityActionResult(viewName);
+    protected ActionResult newResult(String viewName) {
+        return new ActionResult(viewName);
     }
 
     @Override
-    protected EntityActionResult newResult(String viewName, Map<String, ?> model) {
-        return new EntityActionResult(viewName, model);
+    protected ActionResult newResult(String viewName, Map<String, ?> model) {
+        return new ActionResult(viewName, model);
     }
 
     @Override
-    protected EntityActionResult newResult(View view) {
-        return new EntityActionResult(view);
+    protected ActionResult newResult(View view) {
+        return new ActionResult(view);
     }
 
     @Override
-    protected EntityActionResult newResult(View view, Map<String, ?> model) {
-        return new EntityActionResult(view, model);
-    }
-
-    @Override
-    protected final ActionResult invokeHandler(IActionHandler handler, ActionRequest req, ActionResult result)
-            throws Exception {
-        // EntityHandler<E, K> eHandler = (EntityHandler<E, K>) handler;
-        EntityActionRequest eReq = (EntityActionRequest) req;
-        EntityActionResult eResult = (EntityActionResult) result;
-        return invokeHandler(handler, eReq, eResult);
-    }
-
-    protected ActionResult invokeHandler(IActionHandler handler, EntityActionRequest req, EntityActionResult result)
-            throws Exception {
-        ActionResult ret = handler.handleRequest(req, result);
-        return ret;
+    protected ActionResult newResult(View view, Map<String, ?> model) {
+        return new ActionResult(view, model);
     }
 
     @Override

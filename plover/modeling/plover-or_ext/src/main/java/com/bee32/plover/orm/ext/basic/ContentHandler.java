@@ -6,6 +6,8 @@ import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.servlet.mvc.ActionRequest;
+import com.bee32.plover.servlet.mvc.ActionResult;
 
 public class ContentHandler<E extends Entity<K>, K extends Serializable>
         extends EntityHandler<E, K> {
@@ -19,7 +21,7 @@ public class ContentHandler<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
+    protected ActionResult _handleRequest(ActionRequest req, ActionResult result)
             throws Exception {
         String _id = req.getParameter("id");
         K id = eh.parseRequiredId(_id);
@@ -35,8 +37,8 @@ public class ContentHandler<E extends Entity<K>, K extends Serializable>
 
         forming.loadForm(entity, dto);
 
-        result.entity = entity;
-        result.dto = dto;
+        result.put("entity", entity);
+        result.put("it", dto);
         result.put("it", dto);
         return result;
     }

@@ -16,6 +16,8 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.plover.orm.ext.util.SearchModel;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.servlet.mvc.ActionRequest;
+import com.bee32.plover.servlet.mvc.ActionResult;
 
 public class DataHandler<E extends Entity<K>, K extends Serializable>
         extends EntityHandler<E, K> {
@@ -32,7 +34,7 @@ public class DataHandler<E extends Entity<K>, K extends Serializable>
      * Should construct a JSON response.
      */
     @Override
-    public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
+    protected ActionResult _handleRequest(ActionRequest req, ActionResult result)
             throws Exception {
         DataTableDxo tab = new DataTableDxo(req);
 

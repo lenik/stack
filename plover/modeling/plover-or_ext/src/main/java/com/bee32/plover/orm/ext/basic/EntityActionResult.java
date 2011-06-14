@@ -10,6 +10,7 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.servlet.mvc.ActionResult;
 
+@Deprecated
 public class EntityActionResult
         extends ActionResult {
 

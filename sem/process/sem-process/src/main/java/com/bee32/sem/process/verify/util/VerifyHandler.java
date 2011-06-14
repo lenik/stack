@@ -10,9 +10,8 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.ajax.SuccessOrFailMessage;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.basic.EntityActionRequest;
-import com.bee32.plover.orm.ext.basic.EntityActionResult;
 import com.bee32.plover.orm.ext.basic.EntityHandler;
+import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.service.VerifyService;
@@ -26,7 +25,7 @@ public class VerifyHandler<E extends VerifiableEntity<K, C>, //
     protected VerifyService verifyService;
 
     @Override
-    public ActionResult handleRequest(final EntityActionRequest req, EntityActionResult result)
+    public ActionResult _handleRequest(final ActionRequest req, ActionResult result)
             throws Exception {
 
         final String _id = req.getParameter("id");

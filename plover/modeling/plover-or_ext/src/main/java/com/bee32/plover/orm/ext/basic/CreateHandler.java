@@ -3,6 +3,8 @@ package com.bee32.plover.orm.ext.basic;
 import java.io.Serializable;
 
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.servlet.mvc.ActionRequest;
+import com.bee32.plover.servlet.mvc.ActionResult;
 
 public class CreateHandler<E extends Entity<K>, K extends Serializable>
         extends CreateOrEditHandler<E, K> {
@@ -12,12 +14,12 @@ public class CreateHandler<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
+    protected ActionResult _handleRequest(ActionRequest req, ActionResult result)
             throws Exception {
         result.put("method", "create");
         result.put("METHOD", result.V.get("create"));
 
-        super.handleRequest(req, result);
+        super._handleRequest(req, result);
 
         return result.sendRedirect("index.do");
     }
