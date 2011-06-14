@@ -1,7 +1,9 @@
 package com.bee32.sem.chance.web;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.free.Strings;
 import javax.inject.Inject;
@@ -66,6 +68,11 @@ public class ChanceActionController
 // dateRangeMap.get("end_month")));
 //
 // }
+
+    @RequestMapping("chanceActionAdminjsf")
+    public Map<String, ?> chanceActionAdminjsf(HttpServletRequest request, HttpServletResponse response){
+        return new HashMap<String, Object>();
+    }
 
     @Override
     protected void fillDataRow(DataTableDxo tab, ChanceActionDto dto) {
