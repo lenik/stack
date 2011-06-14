@@ -70,6 +70,10 @@ public class PersonDto
 
 		target.setCensusRegister(censusRegister);
 
+		// XXX - Should remove this later.
+		sidType.marshalAs(MarshalType.ID_REF);
+		sidType.setName(sidType.getId());
+
 		merge(target, "sidType", sidType);
 
 		mergeSet(target, "roles", roles);

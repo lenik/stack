@@ -182,6 +182,8 @@
 							<h:outputLabel for="personBirthday" value="生日"/>
                             <p:calendar
                                     id="personBirthday"
+                                    navigator="true"
+                                    locale="zh_CN"
                                     pattern="yyyy-MM-dd"
                                     value="#{personAdminBean.person.birthday}"
                                     showOn="button" />

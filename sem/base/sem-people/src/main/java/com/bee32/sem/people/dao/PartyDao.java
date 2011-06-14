@@ -33,7 +33,7 @@ public class PartyDao<E extends Party>
     public List<E> limitedList(Class<E> entityClass, IUserPrincipal user, int displayStart, int displayLength){
         Criteria criteria = getSession().createCriteria(entityClass);
         criteria.add(Restrictions.eq("owner.id", user.getId()));
-        criteria.addOrder(Order.desc("createdDate"));
+        criteria.addOrder(Order.desc("id"));
         criteria.setFetchSize(displayStart);
         criteria.setMaxResults(displayLength);
         return criteria.list();
@@ -54,7 +54,7 @@ public class PartyDao<E extends Party>
         Criteria criteria = getSession().createCriteria(entityClass);
         criteria.add(Restrictions.like("name", keyword));
         criteria.add(Restrictions.eq("owner.id", user.getId()));
-        criteria.addOrder(Order.desc("createdDate"));
+        criteria.addOrder(Order.desc("id"));
         criteria.setFirstResult(displayStart);
         criteria.setMaxResults(displayLength);
         return criteria.list();

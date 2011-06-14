@@ -122,6 +122,7 @@ public class PersonAdminBean implements Serializable {
 
     public List<SelectItem> getGenders() {
         List genders = new ArrayList();
+        //genders.add(new SelectItem(null, "--选择性别--"));
         for(Gender g : Gender.values()) {
             genders.add(new SelectItem(g.ordinal(), g.toString()));
         }
@@ -138,8 +139,9 @@ public class PersonAdminBean implements Serializable {
         List<PersonSidType> sidTypes = commonDataManager.loadAll(PersonSidType.class);
         List<PersonSidTypeDto> sidTypeDtos = DTOs.marshalList(PersonSidTypeDto.class, sidTypes);
         List sidTypeSelectItems = new ArrayList();
+        //sidTypeSelectItems.add(new SelectItem(null, "--选择证件类型--"));
         for(PersonSidTypeDto t : sidTypeDtos) {
-            sidTypeSelectItems.add(new SelectItem(t.getName(), t.getLabel()));
+            sidTypeSelectItems.add(new SelectItem(t.getId(), t.getLabel()));
         }
         return sidTypeSelectItems;
     }
@@ -164,7 +166,10 @@ public class PersonAdminBean implements Serializable {
 		User user = commonDataManager.load(User.class, currUser.getId());
 
 		person.setOwner(user);
-		person.setSidType(new PersonSidTypeDto());
+
+		PersonSidTypeDto sidTypeDto = new PersonSidTypeDto();
+		sidTypeDto.ref((String) null);
+		person.setSidType(sidTypeDto);
 	}
 
 	public void new_() {
@@ -235,6 +240,7 @@ public class PersonAdminBean implements Serializable {
             context.addMessage(null, new FacesMessage("提示", "联系人保存成功"));
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("提示", "联系人保存失败" + e.getMessage()));
+            e.printStackTrace();
         }
 	}
 
