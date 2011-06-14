@@ -13,13 +13,12 @@ import com.bee32.plover.orm.ext.basic.ContentHandler;
 import com.bee32.plover.orm.ext.basic.CreateOrEditFormHandler;
 import com.bee32.plover.orm.ext.basic.CreateOrEditHandler;
 import com.bee32.plover.orm.ext.basic.DataHandler;
-import com.bee32.plover.orm.ext.basic.EntityActionRequest;
-import com.bee32.plover.orm.ext.basic.EntityActionResult;
 import com.bee32.plover.orm.ext.basic.IEntityForming;
 import com.bee32.plover.orm.ext.basic.IEntityListing;
 import com.bee32.plover.orm.ext.basic.IPostUpdating;
 import com.bee32.plover.orm.ext.basic.IndexHandler;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 
 public abstract class BasicEntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
@@ -86,10 +85,10 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
         CreateOrEditFormHandler<E, K> createOrEditFormHandler = new CreateOrEditFormHandler<E, K>(impl) {
 
             @Override
-            public EntityActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
+            public ActionResult _handleRequest(ActionRequest req, ActionResult result)
                     throws Exception {
-                ActionResult _result = super.handleRequest(req, result);
-                fillFormExtra(_result);
+                result = super._handleRequest(req, result);
+                fillFormExtra(req, result);
                 return result;
             }
 
@@ -133,7 +132,10 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
         dto.unmarshalTo(this, entity);
     }
 
-    protected void fillFormExtra(ActionResult result) {
+    /**
+     * Did nothing in default implementation.
+     */
+    protected void fillFormExtra(ActionRequest req, ActionResult result) {
     }
 
     /**

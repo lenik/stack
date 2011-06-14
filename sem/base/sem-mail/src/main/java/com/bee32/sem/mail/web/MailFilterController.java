@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.mail.SEMMailModule;
 import com.bee32.sem.mail.dao.MailFilterDao;
@@ -38,7 +39,7 @@ public class MailFilterController
     }
 
     @Override
-    protected void fillFormExtra(ActionResult result) {
+    protected void fillFormExtra(ActionRequest req, ActionResult result) {
         List<MailFolderDto> mailBoxes = DTOs.marshalList(MailFolderDto.class, 0, mailBoxDao.list());
         result.put("mailBoxes", mailBoxes);
     }
