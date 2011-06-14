@@ -122,7 +122,6 @@ public class PersonAdminBean implements Serializable {
 
     public List<SelectItem> getGenders() {
         List genders = new ArrayList();
-        //genders.add(new SelectItem(null, "--选择性别--"));
         for(Gender g : Gender.values()) {
             genders.add(new SelectItem(g.ordinal(), g.toString()));
         }
@@ -139,7 +138,7 @@ public class PersonAdminBean implements Serializable {
         List<PersonSidType> sidTypes = commonDataManager.loadAll(PersonSidType.class);
         List<PersonSidTypeDto> sidTypeDtos = DTOs.marshalList(PersonSidTypeDto.class, sidTypes);
         List sidTypeSelectItems = new ArrayList();
-        //sidTypeSelectItems.add(new SelectItem(null, "--选择证件类型--"));
+        sidTypeSelectItems.add(new SelectItem("", "--选择证件类型--"));
         for(PersonSidTypeDto t : sidTypeDtos) {
             sidTypeSelectItems.add(new SelectItem(t.getId(), t.getLabel()));
         }
@@ -216,6 +215,7 @@ public class PersonAdminBean implements Serializable {
 
 		} catch (Exception e) {
 			context.addMessage(null, new FacesMessage("提示", "删除联系人失败;" + e.getMessage()));
+			e.printStackTrace();
 		}
 	}
 

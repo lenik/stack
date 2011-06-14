@@ -71,8 +71,12 @@ public class PersonDto
 		target.setCensusRegister(censusRegister);
 
 		// XXX - Should remove this later.
+		if(sidType.getId().equals("")) {
+		    sidType.marshalAs(MarshalType.NULL);
+		} else {
 		sidType.marshalAs(MarshalType.ID_REF);
 		sidType.setName(sidType.getId());
+		}
 
 		merge(target, "sidType", sidType);
 
