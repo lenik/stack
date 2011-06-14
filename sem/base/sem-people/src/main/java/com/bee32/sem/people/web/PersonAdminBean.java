@@ -24,6 +24,7 @@ import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.people.Gender;
+import com.bee32.sem.people.dto.PersonContactDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonSidTypeDto;
 import com.bee32.sem.people.entity.PersonSidType;
@@ -39,10 +40,11 @@ public class PersonAdminBean implements Serializable {
     private int currTab;
 	private boolean editable;
 
-
 	private LazyDataModel<PersonDto> persons;
 	private PersonDto selectedPerson;
 	private PersonDto person;
+
+	private PersonContactDto selectedContact;
 
 	@PostConstruct
 	public void init() {
@@ -57,7 +59,7 @@ public class PersonAdminBean implements Serializable {
 								FacesContext.getCurrentInstance()).getBean(
 								"peopleService");
 
-				return peopleService.listByCurrentUser(first, pageSize);
+				return peopleService.listPersonByCurrentUser(first, pageSize);
 			}
 
 		};
@@ -66,7 +68,7 @@ public class PersonAdminBean implements Serializable {
 				.getWebApplicationContext(FacesContext.getCurrentInstance())
 				.getBean("peopleService");
 
-		persons.setRowCount((int) peopleService.listByCurrentUserCount());
+		persons.setRowCount((int) peopleService.listPersonByCurrentUserCount());
 
 		currTab = 0;
 		editable = false;
@@ -138,11 +140,39 @@ public class PersonAdminBean implements Serializable {
         List<PersonSidType> sidTypes = commonDataManager.loadAll(PersonSidType.class);
         List<PersonSidTypeDto> sidTypeDtos = DTOs.marshalList(PersonSidTypeDto.class, sidTypes);
         List sidTypeSelectItems = new ArrayList();
-        sidTypeSelectItems.add(new SelectItem("", "--选择证件类型--"));
         for(PersonSidTypeDto t : sidTypeDtos) {
             sidTypeSelectItems.add(new SelectItem(t.getId(), t.getLabel()));
         }
         return sidTypeSelectItems;
+    }
+
+
+    public boolean isContactSelected() {
+        if(selectedContact != null)
+            return true;
+        return false;
+    }
+
+    public PersonContactDto getSelectedContact() {
+        return selectedContact;
+    }
+
+    public void setSelectedContact(PersonContactDto selectedContact) {
+        this.selectedContact = selectedContact;
+    }
+
+    public List<PersonContactDto> getContacts() {
+        List<PersonContactDto> contacts = new ArrayList<PersonContactDto>();
+
+        if(person != null && person.getId() != null) {
+            IPeopleService peopleService = (IPeopleService) FacesContextUtils
+                    .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
+                            "peopleService");
+
+            contacts = peopleService.listContactByPerson(person);
+        }
+
+        return contacts;
     }
 
 
@@ -153,7 +183,13 @@ public class PersonAdminBean implements Serializable {
 
 
 
-	private void newPerson() {
+
+
+
+
+
+
+    private void newPerson() {
 		person = new PersonDto();
 
 		HttpSession session = ThreadHttpContext.requireSession();
@@ -211,11 +247,10 @@ public class PersonAdminBean implements Serializable {
 
             commonDataManager.delete(selectedPerson.unmarshal());
 
-            persons.setRowCount((int) peopleService.listByCurrentUserCount());
+            persons.setRowCount((int) peopleService.listPersonByCurrentUserCount());
 
 		} catch (Exception e) {
 			context.addMessage(null, new FacesMessage("提示", "删除联系人失败;" + e.getMessage()));
-			e.printStackTrace();
 		}
 	}
 
@@ -233,7 +268,7 @@ public class PersonAdminBean implements Serializable {
 
 			commonDataManager.saveOrUpdate(person.unmarshal());
 
-            persons.setRowCount((int) peopleService.listByCurrentUserCount());
+            persons.setRowCount((int) peopleService.listPersonByCurrentUserCount());
 
             currTab = 0;
             editable = false;
@@ -268,6 +303,14 @@ public class PersonAdminBean implements Serializable {
     }
 
     public void onRowUnselect(UnselectEvent event) {
+
+    }
+
+    public void onRowSelectContact(SelectEvent event) {
+
+    }
+
+    public void onRowUnselectContact(UnselectEvent event) {
 
     }
 

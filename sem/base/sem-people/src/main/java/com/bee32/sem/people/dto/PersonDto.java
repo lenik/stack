@@ -71,7 +71,7 @@ public class PersonDto
 		target.setCensusRegister(censusRegister);
 
 		// XXX - Should remove this later.
-		if(sidType.getId().equals("")) {
+		if(sidType.getId() == null || sidType.getId().isEmpty()) {
 		    sidType.marshalAs(MarshalType.NULL);
 		} else {
 		sidType.marshalAs(MarshalType.ID_REF);
