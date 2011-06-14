@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.free.ParseException;
+import javax.free.Strings;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
@@ -24,6 +25,7 @@ public class ChanceActionDto
     private String timeRange;
     private String actionType;
     private String party;
+    private String contentShort;
 
     private boolean plan;
     private List<PartyDto> parties;
@@ -76,6 +78,7 @@ public class ChanceActionDto
                 temp += "," + party.getName();
         }
         this.party = temp;
+        this.contentShort = Strings.ellipse(source.getContent(), 16);
 
         this.plan = source.isPlan();
         if (selection.contains(PARTIES))
@@ -134,6 +137,14 @@ public class ChanceActionDto
 
     public void setParty(String party) {
         this.party = party;
+    }
+
+    public String getContentShort() {
+        return contentShort;
+    }
+
+    public void setContentShort(String contentShort) {
+        this.contentShort = contentShort;
     }
 
     public boolean isPlan() {
