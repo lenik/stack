@@ -23,6 +23,7 @@ public class EntityHelper<E extends Entity<K>, K extends Serializable> {
     Class<? extends EntityDao<E, K>> daoType;
     Class<? extends EntityDso<E, K>> dsoType;
 
+    Integer defaultSelection;
     Map<SelectionMode, Integer> selectionModes = new HashMap<SelectionMode, Integer>();
 
     public EntityHelper(Class<? extends E> entityType) {
@@ -105,17 +106,52 @@ public class EntityHelper<E extends Entity<K>, K extends Serializable> {
     public EntityDto<E, K> newDto(SelectionMode mode)
             throws ServletException {
         Integer selection = selectionModes.get(mode);
+        if (selection == null)
+            selection = defaultSelection;
         return newDto(selection);
     }
 
+    /**
+     * Get the DTO selection of specific mode.
+     *
+     * @param mode
+     *            Specify <code>null</code> to get the default selection.
+     * @return <code>null</code> if the selection is unspecified.
+     */
     public Integer getSelection(SelectionMode mode) {
         return selectionModes.get(mode);
     }
 
+    /**
+     * Set the DTO selection for specific mode.
+     *
+     * @param mode
+     *            Specify <code>null</code> to change the default selection.
+     * @param selection
+     *            <code>null</code> if the selection is unspecified.
+     */
     public void setSelection(SelectionMode mode, Integer selection) {
         if (mode == null)
-            throw new NullPointerException("mode");
-        selectionModes.put(mode, selection);
+            defaultSelection = selection;
+        else
+            selectionModes.put(mode, selection);
+    }
+
+    /**
+     * Get the default selection.
+     */
+    public Integer getSelection() {
+        return defaultSelection;
+    }
+
+    /**
+     *
+     *
+     * @param selection
+     *            <code>null</code> if the selection is unspecified.
+     */
+    public void setSelection(Integer defaultSelection) {
+        this.defaultSelection = defaultSelection;
     }
 
     /**
@@ -148,6 +184,27 @@ public class EntityHelper<E extends Entity<K>, K extends Serializable> {
 
     public String getHint(E entity) {
         return ClassUtil.getDisplayName(entity.getClass()) + " [" + entity.getId() + "]";
+    }
+
+    static final Map<Class<?>, EntityHelper<?, ?>> classmap;
+    static {
+        classmap = new HashMap<Class<?>, EntityHelper<?, ?>>();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <E extends Entity<K>, K extends Serializable> //
+    EntityHelper<E, K> getInstance(Class<E> entityType) {
+        EntityHelper<?, ?> entityHelper = classmap.get(entityType);
+        if (entityHelper == null) {
+            synchronized (EntityHelper.class) {
+                entityHelper = classmap.get(entityType);
+                if (entityHelper == null) {
+                    entityHelper = new EntityHelper<E, K>(entityType);
+                    classmap.put(entityType, entityHelper);
+                }
+            }
+        }
+        return (EntityHelper<E, K>) entityHelper;
     }
 
 }
