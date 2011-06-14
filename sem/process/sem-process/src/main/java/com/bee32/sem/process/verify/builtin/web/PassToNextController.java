@@ -25,10 +25,6 @@ public class PassToNextController
     @Inject
     PrincipalDao principalDao;
 
-    public PassToNextController() {
-        _dtoSelection = PassToNextDto.SEQUENCES;
-    }
-
     @Override
     protected void fillDataRow(DataTableDxo tab, PassToNextDto dto) {
         tab.push(dto.getLabel());

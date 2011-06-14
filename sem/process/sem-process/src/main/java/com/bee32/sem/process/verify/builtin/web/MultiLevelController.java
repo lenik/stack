@@ -1,19 +1,16 @@
 package com.bee32.sem.process.verify.builtin.web;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.plover.orm.ext.util.BasicEntityController;
 import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.servlet.mvc.ActionRequest;
+import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 import com.bee32.sem.process.verify.builtin.dao.LevelDao;
@@ -33,10 +30,6 @@ public class MultiLevelController
 
     @Inject
     VerifyPolicyDao verifyPolicyDao;
-
-    public MultiLevelController() {
-        _dtoSelection = MultiLevelDto.LEVELS;
-    }
 
     @Override
     protected void fillDataRow(DataTableDxo tab, MultiLevelDto multiLevel) {
@@ -64,16 +57,9 @@ public class MultiLevelController
     }
 
     @Override
-    protected ModelAndView _createOrEditForm(ViewData view, HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        super._createOrEditForm(view, req, resp);
-
-        List<VerifyPolicyDto> allVerifyPolicies = DTOs.marshalList(VerifyPolicyDto.class,
-                verifyPolicyDao.list());
-        view.put("policies", allVerifyPolicies);
-
-        return view;
+    protected void fillFormExtra(ActionRequest req, ActionResult result) {
+        List<VerifyPolicyDto> allVerifyPolicies = DTOs.marshalList(VerifyPolicyDto.class, verifyPolicyDao.list());
+        result.put("policies", allVerifyPolicies);
     }
 
 }

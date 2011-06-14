@@ -9,6 +9,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.ext.basic.EntityHelper;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 
 public class MultiLevelDto
@@ -95,6 +96,10 @@ public class MultiLevelDto
                 }
             });
         this.levels = levels;
+    }
+
+    static {
+        EntityHelper.getInstance(MultiLevel.class).setSelection(LEVELS);
     }
 
 }
