@@ -2,6 +2,7 @@ package com.bee32.plover.orm.ext.basic;
 
 import java.io.Serializable;
 
+import javax.free.IllegalUsageException;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 
@@ -12,6 +13,7 @@ import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
+import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.servlet.mvc.ActionHandler;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
@@ -21,7 +23,7 @@ import com.bee32.plover.servlet.mvc.ActionResult;
  */
 public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
         extends ActionHandler
-        implements IEntityMarshalContext {
+        implements IEntityMarshalContext, ITypeAbbrAware {
 
     @Inject
     protected CommonDataManager dataManager;
@@ -34,11 +36,15 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
         setEntityType(entityType);
     }
 
-    public void setEntityType(Class<? extends E> entityType) {
-        if (entityType == null)
-            throw new NullPointerException("entityType");
-        eh = new EntityHelper<E, K>(entityType);
+    public void setEntityType(Class<? extends E> baseEntityType) {
+        if (baseEntityType == null)
+            throw new NullPointerException("baseEntityType");
+        eh = new EntityHelper<E, K>(baseEntityType);
     }
+
+    // public EntityHelper<E, K> getEntityHelper() {
+    // return eh;
+    // }
 
     /**
      * Return the persistent instance of the given entity class with the given identifier, throwing
@@ -63,15 +69,34 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
     @Override
     public final ActionResult handleRequest(ActionRequest req, ActionResult result)
             throws Exception {
-        EntityActionRequest eReq = (EntityActionRequest) req;
-        EntityActionResult eResult = (EntityActionResult) result;
-        return handleRequest(eReq, eResult);
+
+        String typeAbbr = req.getPathParameter();
+        if (typeAbbr == null)
+            throw new NullPointerException("typeAbbr");
+
+        Class<? extends E> entityType;
+        try {
+            entityType = (Class<? extends E>) ABBR.expand(typeAbbr);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException("Qualified class name, but not existed " + typeAbbr, e);
+        }
+
+        if (entityType == null)
+            throw new IllegalUsageException("Bad entity abbrev: " + typeAbbr);
+
+        if (!Entity.class.isAssignableFrom(entityType))
+            throw new IllegalUsageException("Not subclass of entity: " + entityType);
+
+        // XXX Thread-safe?
+        this.setEntityType(entityType);
+
+        return _handleRequest(req, result);
     }
 
     /**
-     * @see #handleRequestSOF(EntityActionRequest, EntityActionResult)
+     * @see #handleRequestSOF(ActionRequest, ActionResult)
      */
-    public abstract ActionResult handleRequest(EntityActionRequest req, EntityActionResult result)
+    protected abstract ActionResult _handleRequest(ActionRequest req, ActionResult result)
             throws Exception;
 
     String successMessage = "Success";
@@ -84,7 +109,7 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
         this.successMessage = successMessage;
     }
 
-    protected final ActionResult handleRequestSOF(EntityActionRequest req, EntityActionResult result)
+    protected final ActionResult handleRequestSOF(ActionRequest req, ActionResult result)
             throws Exception {
         SuccessOrFailMessage sof = new SuccessOrFailMessage(getSuccessMessage()) {
             @Override
