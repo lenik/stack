@@ -48,7 +48,7 @@ public class Event
 
     private final EventFlags flags = new EventFlags();
     private boolean closed;
-    private int state;
+    private int _state;
     private EventStatus status; // status -> flags, closed, state.
 
     private User actor;
@@ -150,15 +150,15 @@ public class Event
     @Column(nullable = false)
     @Override
     public int getState() {
-        return state;
+        return _state;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setState(int stateVal) {
+        this._state = stateVal;
     }
 
     public void setState(EventState state) {
-        this.state = state == null ? 0 : state.getId();
+        this._state = state == null ? 0 : state.getValue();
     }
 
     @ManyToOne

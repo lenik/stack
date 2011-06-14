@@ -25,7 +25,7 @@ public class EventStatus
     }
 
     public EventStatus(EventState state, String alias, String description) {
-        super(state.getId(), alias, description);
+        super(state.getValue(), alias, description);
     }
 
     @Column(nullable = false)
@@ -48,7 +48,7 @@ public class EventStatus
 
     @Column(nullable = false)
     public int getState() {
-        return state.getId();
+        return state.getValue();
     }
 
     public void setState(int state) {

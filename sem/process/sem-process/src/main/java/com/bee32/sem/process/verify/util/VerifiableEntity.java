@@ -48,13 +48,13 @@ public abstract class VerifiableEntity<K extends Serializable, C extends IVerify
         return (C) this;
     }
 
-    @Column(nullable = false)
-    int getVerifyStateId() {
-        return verifyState.getId();
+    @Column(name = "verifyState", nullable = false)
+    int getVerifyState_() {
+        return verifyState.getValue();
     }
 
-    void setVerifyStateId(int stateId) {
-        verifyState = VerifyState.valueOf(stateId);
+    void setVerifyState_(int stateValue) {
+        verifyState = VerifyState.valueOf(stateValue);
     }
 
     @Transient
