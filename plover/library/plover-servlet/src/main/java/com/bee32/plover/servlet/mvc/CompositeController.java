@@ -59,7 +59,7 @@ public abstract class CompositeController
 
             IActionHandler handler = actionMap.get(actionNameTest);
             if (handler != null) {
-                ActionRequest req = newRequest(request);
+                ActionRequest req = newRequest(handler, request);
                 ActionResult result = newResult((String) null);
                 result.setResponse(resp);
 
@@ -105,8 +105,8 @@ public abstract class CompositeController
         actionMap.put(name, handler);
     }
 
-    protected ActionRequest newRequest(HttpServletRequest request) {
-        return new ActionRequest(request);
+    protected ActionRequest newRequest(IActionHandler handler, HttpServletRequest request) {
+        return new ActionRequest(handler, request);
     }
 
     protected ActionResult newResult(String viewName) {

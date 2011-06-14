@@ -9,13 +9,19 @@ public class ActionRequest
 
     static final String METHOD_ATTRIBUTE = "__PLOVER_METHOD";
 
+    final IActionHandler handler;
     String prefix;
     String pathParameter;
     String actionName;
     String method;
 
-    public ActionRequest(HttpServletRequest request) {
+    public ActionRequest(IActionHandler handler, HttpServletRequest request) {
         super(request);
+        this.handler = handler;
+    }
+
+    public IActionHandler getHandler() {
+        return handler;
     }
 
     /**
