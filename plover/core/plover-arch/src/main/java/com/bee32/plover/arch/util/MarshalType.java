@@ -2,16 +2,26 @@ package com.bee32.plover.arch.util;
 
 public enum MarshalType {
 
-    NULL,
+    ID_REF(true),
 
-    ID_REF,
+    ID_VER_REF(true),
 
-    ID_VER_REF,
+    NAME_REF(true),
 
-    NAME_REF,
+    OTHER_REF(true),
 
-    OTHER_REF,
+    SELECTION(false),
 
-    SELECTION,
+    ;
+
+    final boolean reference;
+
+    private MarshalType(boolean reference) {
+        this.reference = reference;
+    }
+
+    public boolean isReference() {
+        return reference;
+    }
 
 }

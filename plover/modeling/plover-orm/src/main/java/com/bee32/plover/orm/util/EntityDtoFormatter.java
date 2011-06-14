@@ -23,10 +23,6 @@ public class EntityDtoFormatter
         String stereo;
 
         switch (dto.getMarshalType()) {
-        case NULL:
-            stereo = "null";
-            break;
-
         case ID_REF:
             stereo = "ID:" + dto.getId();
             break;
@@ -47,6 +43,9 @@ public class EntityDtoFormatter
         default:
             stereo = null;
         }
+
+        if (dto.isNullRef())
+            stereo = "null";
 
         if (stereo != null) {
             out.print("《" + stereo + "》");

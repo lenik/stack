@@ -13,6 +13,7 @@ import java.util.Set;
 
 import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
+import javax.free.Nullables;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
@@ -124,6 +125,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      */
     public void setId(K id) {
         this.id = id;
+        this.nullRef = id == null;
     }
 
     /**
@@ -432,14 +434,13 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * @return This DTO.
      */
     public <D extends EntityDto<E, K>> D ref(E entity) {
+        marshalAs(MarshalType.ID_REF); // ID_VER_REF
         if (entity == null) {
-            this.id = null;
-            this.version = null;
-            marshalAs(MarshalType.NULL);
+            this.setId(null);
+            this.setVersion(null);
         } else {
-            this.id = entity.getId();
-            this.version = entity.getVersion();
-            marshalAs(MarshalType.ID_REF); // ID_VER_REF
+            this.setId(entity.getId());
+            this.setVersion(entity.getVersion());
         }
 
         @SuppressWarnings("unchecked")
@@ -451,9 +452,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         if (dto == null)
             throw new NullPointerException("dto");
 
-        this.id = dto.getId();
-        this.version = dto.getVersion();
         marshalAs(MarshalType.ID_REF); // ID_VER_REF
+
+        setId(dto.getId());
+        setVersion(dto.getVersion());
 
         @SuppressWarnings("unchecked")
         D self = (D) this;
@@ -464,26 +466,21 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     protected E mergeDeref(E given) {
         Class<? extends E> entityType = getEntityType();
 
-        switch (getMarshalType()) {
-        case NULL:
+        if (isNullRef())
             return null;
 
+        switch (marshalType) {
         case ID_REF:
-            if (id == null)
-                throw new IllegalUsageException("ID-REF but id isn't set.");
-
             if (given != null) {
                 // Return the given entity immediately if id matches.
                 K givenId = given.getId();
-                if (givenId != null && givenId.equals(id))
+                if (Nullables.equals(id, givenId))
                     return given;
             }
 
             return loadEntity(entityType, id);
 
         case ID_VER_REF:
-            if (id == null)
-                throw new IllegalUsageException("ID-VER-REF but id isn't set.");
             if (version == null)
                 throw new IllegalUsageException("ID-VER-REF but version isn't set.");
 
@@ -502,6 +499,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             if (given != null) // ignore thisDto.id
                 return given;
 
+            // Instead of loadEntity("null"-id), we allocate a new entity here.
+            // The null-key is not supported here.
             if (id == null) {
                 E newEntity;
                 try {
@@ -581,12 +580,13 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
             E entity;
 
-            switch (dto.getMarshalType()) {
-            case NULL:
+            if (dto.isNullRef()) {
                 // entity = null;
                 nullCount++;
-                break;
+                continue;
+            }
 
+            switch (dto.marshalType) {
             case ID_REF:
             case ID_VER_REF: // TODO VER FIX.
                 E ref = keyMap.get(dto.id);

@@ -38,7 +38,9 @@ public abstract class DataTransferObject<S, C>
     protected Class<? extends S> sourceType;
     protected final Flags32 selection = new Flags32();
 
-    MarshalType marshalType = MarshalType.SELECTION;
+    protected MarshalType marshalType = MarshalType.SELECTION;
+    protected boolean nullRef;
+
     Stack<IMarshalSession<C>> sessionStack;
 
     protected DataTransferObject(Class<? extends S> sourceType) {
@@ -83,6 +85,10 @@ public abstract class DataTransferObject<S, C>
 
     public MarshalType getMarshalType() {
         return marshalType;
+    }
+
+    public boolean isNullRef() {
+        return nullRef && marshalType.isReference();
     }
 
     public void marshalAs(MarshalType marshalType) {
@@ -356,7 +362,8 @@ public abstract class DataTransferObject<S, C>
         D _this = (D) this;
 
         if (source == null) {
-            marshalType = MarshalType.NULL;
+            marshalType = MarshalType.ID_REF;
+
             return _this;
         }
 
@@ -401,7 +408,7 @@ public abstract class DataTransferObject<S, C>
     }
 
     final S mergeImpl(S target) {
-        if (marshalType == MarshalType.NULL)
+        if (isNullRef())
             return null;
 
         S deref = mergeDeref(target);
