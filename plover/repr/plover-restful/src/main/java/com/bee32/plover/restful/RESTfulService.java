@@ -36,7 +36,7 @@ import com.bee32.plover.disp.util.ITokenQueue;
 import com.bee32.plover.disp.util.MethodLazyInjector;
 import com.bee32.plover.disp.util.MethodPattern;
 import com.bee32.plover.restful.request.RESTfulRequestBuilder;
-import com.bee32.plover.servlet.context.ILocationConstants;
+import com.bee32.plover.rtx.location.ILocationConstants;
 
 @Lazy
 @Service

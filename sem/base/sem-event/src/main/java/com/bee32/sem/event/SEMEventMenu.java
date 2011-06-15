@@ -2,7 +2,7 @@ package com.bee32.sem.event;
 
 import com.bee32.plover.orm.ext.dict.CommonDictController;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.plover.servlet.context.Location;
+import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventStatus;
 import com.bee32.sem.event.web.EventController;

@@ -12,7 +12,7 @@ import org.springframework.web.util.HtmlUtils;
 import org.springframework.web.util.UriUtils;
 
 import com.bee32.plover.arch.ui.IAppearance;
-import com.bee32.plover.servlet.context.ILocationContext;
+import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.frame.action.IAction;

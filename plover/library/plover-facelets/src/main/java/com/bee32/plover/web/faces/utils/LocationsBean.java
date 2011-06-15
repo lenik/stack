@@ -11,8 +11,8 @@ import javax.inject.Named;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.servlet.context.Location;
-import com.bee32.plover.servlet.context.ILocationConstants;
+import com.bee32.plover.rtx.location.ILocationConstants;
+import com.bee32.plover.rtx.location.Location;
 
 /**
  * e.g., #{location.WEB_APP}

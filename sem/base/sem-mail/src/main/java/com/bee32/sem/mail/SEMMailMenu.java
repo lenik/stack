@@ -1,6 +1,6 @@
 package com.bee32.sem.mail;
 
-import com.bee32.plover.servlet.context.ILocationContext;
+import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.sem.frame.Contribution;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuEntry;

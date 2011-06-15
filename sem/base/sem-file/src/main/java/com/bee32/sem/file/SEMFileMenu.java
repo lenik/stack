@@ -1,6 +1,6 @@
 package com.bee32.sem.file;
 
-import com.bee32.plover.servlet.context.Location;
+import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.file.web.FileBlobController;
 import com.bee32.sem.frame.menu.MenuContribution;
 

@@ -15,7 +15,7 @@ import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
 
 import com.bee32.plover.arch.ui.IAppearance;
-import com.bee32.plover.servlet.context.ILocationContext;
+import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.sem.frame.action.IAction;
 
 public class ZkMenuBuilder {

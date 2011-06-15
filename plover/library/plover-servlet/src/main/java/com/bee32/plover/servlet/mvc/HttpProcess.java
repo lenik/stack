@@ -3,7 +3,7 @@ package com.bee32.plover.servlet.mvc;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bee32.plover.servlet.context.Location;
+import com.bee32.plover.rtx.location.Location;
 
 public class HttpProcess
         implements IHttpProcess {

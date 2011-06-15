@@ -1,6 +1,6 @@
 package com.bee32.plover.web.faces.el;
 
-import com.bee32.plover.servlet.context.ILocationConstants;
+import com.bee32.plover.rtx.location.ILocationConstants;
 
 public class CoreConstants
         implements ILocationConstants {

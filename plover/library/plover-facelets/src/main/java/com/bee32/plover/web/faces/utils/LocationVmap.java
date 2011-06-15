@@ -4,7 +4,7 @@ import java.net.MalformedURLException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.bee32.plover.servlet.context.ILocationContext;
+import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 
 /**

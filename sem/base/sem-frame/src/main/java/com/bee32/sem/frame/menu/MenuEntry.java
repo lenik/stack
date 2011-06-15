@@ -2,7 +2,7 @@ package com.bee32.sem.frame.menu;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.ComponentBuilder;
-import com.bee32.plover.servlet.context.ILocationContext;
+import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.sem.frame.action.Action;
 import com.bee32.sem.frame.action.IAction;
 

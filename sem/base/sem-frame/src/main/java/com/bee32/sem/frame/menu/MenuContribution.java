@@ -14,7 +14,7 @@ import com.bee32.plover.arch.Composite;
 import com.bee32.plover.arch.util.res.ClassResourceProperties;
 import com.bee32.plover.arch.util.res.IProperties;
 import com.bee32.plover.inject.ComponentTemplate;
-import com.bee32.plover.servlet.context.ILocationConstants;
+import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.sem.frame.Contribution;
 
 /**

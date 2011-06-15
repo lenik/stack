@@ -24,7 +24,7 @@ import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.plover.javascript.JavascriptChunk;
-import com.bee32.plover.servlet.context.ILocationConstants;
+import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 
 /**

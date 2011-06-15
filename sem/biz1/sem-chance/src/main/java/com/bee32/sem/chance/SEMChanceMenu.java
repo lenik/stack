@@ -1,6 +1,6 @@
 package com.bee32.sem.chance;
 
-import com.bee32.plover.servlet.context.Location;
+import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.Contribution;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuEntry;

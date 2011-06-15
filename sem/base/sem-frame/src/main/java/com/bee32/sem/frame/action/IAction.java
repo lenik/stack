@@ -4,7 +4,7 @@ import org.apache.commons.collections15.Closure;
 import org.zkoss.zk.ui.event.Event;
 
 import com.bee32.plover.arch.IComponent;
-import com.bee32.plover.servlet.context.ILocationContext;
+import com.bee32.plover.rtx.location.ILocationContext;
 
 public interface IAction
         extends IComponent {
