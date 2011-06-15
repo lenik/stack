@@ -31,12 +31,16 @@ public class OrgDto
 
     @Override
     protected void _marshal(Org source) {
+        super._marshal(source);
+
         type = new OrgTypeDto(source.getType());
         size = source.getSize();
     }
 
     @Override
     protected void _unmarshalTo(Org target) {
+        super._unmarshalTo(target);
+
         merge(target, "type", type);
         target.setSize(size);
     }

@@ -30,6 +30,7 @@ public class SEMPeopleSamples
         internetCorp.setSize(20);
         internetCorp.setName("XX有限责任公司");
         internetCorp.setInterests("互联网搜索");
+        internetCorp.setOwner(IcsfPrincipalSamples.eva);
 
         one77.setFullName("Ettore Bugatti ONE - 77");
         one77.setName("Bugatti");

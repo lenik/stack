@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 
+import org.primefaces.component.selectonelistbox.SelectOneListbox;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -21,13 +22,14 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
-import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgTypeDto;
+import com.bee32.sem.people.dto.PartyTagDto;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.OrgType;
+import com.bee32.sem.people.entity.PartyTag;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.service.IPeopleService;
 import com.bee32.sem.user.util.SessionLoginInfo;
@@ -47,6 +49,10 @@ public class OrgAdminBean extends EntityViewBean {
 
 	private ContactDto selectedContact;
 	private ContactDto contact;
+
+	private List<String> selectedTagsToAdd;
+
+	private SelectOneListbox tagListbox;
 
 	@PostConstruct
 	public void init() {
@@ -119,14 +125,6 @@ public class OrgAdminBean extends EntityViewBean {
 		return false;
 	}
 
-    public List<SelectItem> getGenders() {
-        List<SelectItem> genders = new ArrayList<SelectItem>();
-        for(Gender g : Gender.values()) {
-            genders.add(new SelectItem(g.getValue(), g.getDisplayName()));
-        }
-        return genders;
-    }
-
     public List<SelectItem> getOrgTypes() {
         List<OrgType> orgTypes = getDataManager().loadAll(OrgType.class);
         List<OrgTypeDto> orgTypeDtos = DTOs.marshalList(OrgTypeDto.class, orgTypes);
@@ -138,6 +136,21 @@ public class OrgAdminBean extends EntityViewBean {
         List<ContactCategoryDto> contactCategoryDtos = DTOs.marshalList(ContactCategoryDto.class, contactCategories);
         return UIHelper.selectItemsFromDict(contactCategoryDtos);
     }
+
+    public List<SelectItem> getTags() {
+        CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
+        .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
+                "commonDataManager");
+
+        List<PartyTag> partyTags = commonDataManager.loadAll(PartyTag.class);
+        List<PartyTagDto> partyTagDtos = DTOs.marshalList(PartyTagDto.class, partyTags);
+        List tags = new ArrayList<SelectItem>();
+        for(PartyTagDto t : partyTagDtos) {
+            tags.add(new SelectItem(t.getId(), t.getLabel()));
+        }
+        return tags;
+    }
+
 
     public boolean isContactSelected() {
         if(selectedContact != null)
@@ -175,6 +188,23 @@ public class OrgAdminBean extends EntityViewBean {
         this.contact = contact;
     }
 
+    public List<String> getSelectedTagsToAdd() {
+        return selectedTagsToAdd;
+    }
+
+    public void setSelectedTagsToAdd(List<String> selectedTagsToAdd) {
+        this.selectedTagsToAdd = selectedTagsToAdd;
+    }
+
+    public SelectOneListbox getTagListbox() {
+        return tagListbox;
+    }
+
+    public void setTagListbox(SelectOneListbox tagListbox) {
+        this.tagListbox = tagListbox;
+    }
+
+
 
 
 
@@ -208,7 +238,7 @@ public class OrgAdminBean extends EntityViewBean {
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		if(selectedOrg == null) {
-			context.addMessage(null, new FacesMessage("提示", "请选择需要修改的联系人!"));
+			context.addMessage(null, new FacesMessage("提示", "请选择需要修改的客户/供应商!"));
             return;
 		}
 
@@ -222,7 +252,7 @@ public class OrgAdminBean extends EntityViewBean {
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		if(selectedOrg == null) {
-			context.addMessage(null, new FacesMessage("提示", "请选择需要删除的联系人!"));
+			context.addMessage(null, new FacesMessage("提示", "请选择需要删除的客户/供应商!"));
             return;
 		}
 
@@ -234,7 +264,7 @@ public class OrgAdminBean extends EntityViewBean {
             orgs.setRowCount((int) peopleService.listOrgByCurrentUserCount());
 
 		} catch (Exception e) {
-			context.addMessage(null, new FacesMessage("提示", "删除联系人失败;" + e.getMessage()));
+			context.addMessage(null, new FacesMessage("提示", "删除客户/供应商失败;" + e.getMessage()));
 		}
 	}
 
@@ -250,9 +280,9 @@ public class OrgAdminBean extends EntityViewBean {
 
             currTab = 0;
             editable = false;
-            context.addMessage(null, new FacesMessage("提示", "联系人保存成功"));
+            context.addMessage(null, new FacesMessage("提示", "客户/供应商保存成功"));
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "联系人保存失败" + e.getMessage()));
+            context.addMessage(null, new FacesMessage("提示", "客户/供应商保存失败" + e.getMessage()));
             e.printStackTrace();
         }
 	}
@@ -267,7 +297,7 @@ public class OrgAdminBean extends EntityViewBean {
 	public void detail_() {
 	    if(selectedOrg == null) {
 	        FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("提示", "请选择需要查看详细信息的联系人!"));
+            context.addMessage(null, new FacesMessage("提示", "请选择需要查看详细信息的客户/供应商!"));
             return;
 	    }
 
@@ -295,7 +325,7 @@ public class OrgAdminBean extends EntityViewBean {
 	public void newContact_() {
 	    if(org == null || org.getId() == null) {
 	        FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("提示", "请选择需要新增联系方式的联系人!"));
+            context.addMessage(null, new FacesMessage("提示", "请选择需要新增联系方式的客户/供应商!"));
 	    }
 	    newContact();
 	}
@@ -325,7 +355,7 @@ public class OrgAdminBean extends EntityViewBean {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if(org == null || org.getId() == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的联系人!"));
+            context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的客户/供应商!"));
             return;
         }
 
@@ -347,6 +377,43 @@ public class OrgAdminBean extends EntityViewBean {
 
     public void onRowUnselectContact(UnselectEvent event) {
         newContact();
+    }
+
+    public void addTags() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if(org == null || org.getId() == null) {
+            context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的客户/供应商!"));
+            return;
+        }
+
+        CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
+                .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
+                        "commonDataManager");
+        for(String tagId : selectedTagsToAdd) {
+            PartyTag tag = commonDataManager.load(PartyTag.class, tagId);
+            PartyTagDto t = new PartyTagDto(tag);
+            if(!org.getTags().contains(t))
+                org.getTags().add(t);
+        }
+    }
+
+    public void deleteTag() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if(org == null || org.getId() == null) {
+            context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的客户/供应商!"));
+            return;
+        }
+
+        for(PartyTagDto t : org.getTags()) {
+            String tagId = (String) tagListbox.getValue();
+
+            if(t.getId().equals(tagId)) {
+                org.getTags().remove(t);
+                return;
+            }
+        }
     }
 
 }

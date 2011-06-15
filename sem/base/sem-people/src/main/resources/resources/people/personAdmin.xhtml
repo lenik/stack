@@ -192,9 +192,9 @@
                             <p:inputText id="personCensusRegister" value="#{personAdminBean.person.censusRegister}"/>
 
                             <h:outputLabel for="personInterests" value="兴趣爱好" />
-                            <t:panelGrid colspan="3">
+                            <t:panelGroup colspan="3">
                                 <p:inputText id="personInterests" value="#{personAdminBean.person.interests}"/>
-                            </t:panelGrid>
+                            </t:panelGroup>
 						</t:panelGrid>
 
 						<p:panel header="联系方式">
@@ -296,7 +296,7 @@
 
 
 		<h:form id="contactForm">
-			<p:dialog header="contactForm" widgetVar="contactHolderDlg" modal="true" height="500" width="640">
+			<p:dialog header="联系方式编辑" widgetVar="contactHolderDlg" modal="true" height="500" width="640">
                 <h:panelGroup id="contactHolder">
 
                     <p:growl id="growl1" showDetail="true" />
@@ -341,7 +341,7 @@
 								<p:commandButton value="保存"
 									actionListener="#{personAdminBean.doSaveContact}"
 									oncomplete="contactHolderDlg.hide();" async="true"
-									udpate="personForm:contacts personForm:growl" />
+									update="personForm:contacts personForm:growl" />
 								<p:commandButton value="取消"
 									oncomplete="contactHolderDlg.hide();" />
 							</t:panelGrid>
