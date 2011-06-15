@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.BeansException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.mvc.AbstractController;
 
@@ -24,7 +25,9 @@ public abstract class _CompositeController
 
     /**
      * @param prefix
-     *            <code>null</code> to get from static field PREFIX.
+     *            E.g., "/1/2/3" or "/foo/bar" without the trailing slash.
+     *            <p>
+     *            Specify <code>null</code> to get from static field PREFIX.
      */
     protected _CompositeController(String prefix) {
         if (prefix == null)
@@ -49,5 +52,14 @@ public abstract class _CompositeController
         String contextLocalPath = requestURI.substring(contextPath.length());
         return contextLocalPath;
     }
+
+    @Override
+    protected final void initApplicationContext()
+            throws BeansException {
+        initController();
+    }
+
+    protected abstract void initController()
+            throws BeansException;
 
 }
