@@ -1,4 +1,4 @@
-package com.bee32.plover.servlet.context;
+package com.bee32.plover.rtx.location;
 
 public interface IContextLocationResolver {
 

@@ -1,10 +1,8 @@
-package com.bee32.plover.servlet.context;
+package com.bee32.plover.rtx.location;
 
 import javax.free.IllegalUsageException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-
-import com.bee32.plover.restful.RESTfulConfig;
 
 public interface ILocationConstants {
 
@@ -17,8 +15,6 @@ public interface ILocationConstants {
     Location WEB_APP = new ServletContextLocation(null);
 
     Location LIB_JS = new ServletContextLocation("lib/js/");
-
-    Location MM = new ModuleManagerContextLocation(null);
 
     Location STYLE_ROOT = new PredefinedContextLocation("STYLE-ROOT", //
             "http://static.secca-project.com/style/");
@@ -144,33 +140,6 @@ class ServletContextLocation
         String contextPath = servletContext.getContextPath();
         sb.append(contextPath);
         sb.append("/");
-    }
-
-}
-
-class ModuleManagerContextLocation
-        extends Location {
-
-    private static final long serialVersionUID = 1L;
-
-    public ModuleManagerContextLocation(String base) {
-        super("Module-Manager", base);
-    }
-
-    @Override
-    protected Location create(String base) {
-        return new ModuleManagerContextLocation(base);
-    }
-
-    @Override
-    protected void getContext(StringBuffer sb, HttpServletRequest request) {
-        ServletContext servletContext = request.getSession().getServletContext();
-
-        // context-path == /* or ""
-        String contextPath = servletContext.getContextPath();
-
-        sb.append(contextPath);
-        sb.append(RESTfulConfig.preferredPrefix);
     }
 
 }
