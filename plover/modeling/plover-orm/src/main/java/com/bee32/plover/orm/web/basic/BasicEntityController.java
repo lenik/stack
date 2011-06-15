@@ -6,7 +6,9 @@ import javax.free.ParseException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 
+import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
@@ -79,8 +81,16 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
     Impl impl = new Impl();
 
-    public BasicEntityController() {
-        CreateOrEditFormHandler<E, K> createOrEditFormHandler = new CreateOrEditFormHandler<E, K>(impl) {
+    @Override
+    protected void initController()
+            throws BeansException {
+
+        class Form1
+                extends CreateOrEditFormHandler<E, K> {
+
+            public Form1(Class<E> entityType, IEntityForming<E, K> forming) {
+                super(entityType, forming);
+            }
 
             @Override
             public ActionResult _handleRequest(ActionRequest req, ActionResult result)
@@ -90,15 +100,17 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
                 return result;
             }
 
-        };
+        }
 
-        addHandler("index", /*      */new IndexHandler<E, K>());
-        addHandler("data", /*       */new DataHandler<E, K>(impl));
-        addHandler("content", /*    */new ContentHandler<E, K>(impl));
-        addHandler("createForm", /* */createOrEditFormHandler);
-        addHandler("editForm", /*   */new CreateOrEditFormHandler<E, K>(impl));
-        addHandler("create", /*     */new CreateOrEditHandler<E, K>(impl));
-        addHandler("edit", /*       */new CreateOrEditHandler<E, K>(impl));
+        Class<E> entityType = ClassUtil.infer1(getClass(), BasicEntityController.class, 0);
+
+        addHandler("index", /*      */new IndexHandler<E, K>(entityType));
+        addHandler("data", /*       */new DataHandler<E, K>(entityType, impl));
+        addHandler("content", /*    */new ContentHandler<E, K>(entityType, impl));
+        addHandler("createForm", /* */new Form1(entityType, impl));
+        addHandler("editForm", /*   */new Form1(entityType, impl));
+        addHandler("create", /*     */new CreateOrEditHandler<E, K>(entityType, impl));
+        addHandler("edit", /*       */new CreateOrEditHandler<E, K>(entityType, impl));
         // addHandler(new ChooseHandler<E, K>(impl));
     }
 

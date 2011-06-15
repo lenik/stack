@@ -17,9 +17,12 @@ public class ContentHandler<E extends Entity<K>, K extends Serializable>
 
     IEntityForming<E, K> forming;
 
-    public ContentHandler(IEntityForming<E, K> forming) {
+    public ContentHandler(Class<E> entityType, IEntityForming<E, K> forming) {
+        super(entityType);
+
         if (forming == null)
             throw new NullPointerException("forming");
+
         this.forming = forming;
     }
 

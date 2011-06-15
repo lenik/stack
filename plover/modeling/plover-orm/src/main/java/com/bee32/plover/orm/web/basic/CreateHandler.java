@@ -10,8 +10,8 @@ import com.bee32.plover.servlet.mvc.ActionResult;
 public class CreateHandler<E extends Entity<K>, K extends Serializable>
         extends CreateOrEditHandler<E, K> {
 
-    public CreateHandler(IEntityForming<E, K> forming) {
-        super(forming);
+    public CreateHandler(Class<E> entityType, IEntityForming<E, K> forming) {
+        super(entityType, forming);
     }
 
     @Override

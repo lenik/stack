@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import org.springframework.dao.DataAccessException;
 
 import com.bee32.plover.ajax.SuccessOrFailMessage;
-import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
@@ -31,8 +30,11 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
     // EntityType
     protected EntityHelper<E, K> eh;
 
-    public EntityHandler() {
-        Class<E> entityType = ClassUtil.infer1(getClass(), EntityHandler.class, 0);
+    public EntityHandler(Class<E> entityType) {
+        // Class<E> entityType = ClassUtil.infer1(getClass(), EntityHandler.class, 0);
+        if (entityType == null)
+            throw new NullPointerException("entityType");
+
         setEntityType(entityType);
     }
 
@@ -71,24 +73,23 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
             throws Exception {
 
         String typeAbbr = req.getPathParameter();
-        if (typeAbbr == null)
-            throw new NullPointerException("typeAbbr");
+        if (typeAbbr != null) {
+            Class<? extends E> entityType;
+            try {
+                entityType = (Class<? extends E>) ABBR.expand(typeAbbr);
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException("Qualified class name, but not existed " + typeAbbr, e);
+            }
 
-        Class<? extends E> entityType;
-        try {
-            entityType = (Class<? extends E>) ABBR.expand(typeAbbr);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException("Qualified class name, but not existed " + typeAbbr, e);
+            if (entityType == null)
+                throw new IllegalUsageException("Bad entity abbrev: " + typeAbbr);
+
+            if (!Entity.class.isAssignableFrom(entityType))
+                throw new IllegalUsageException("Not subclass of entity: " + entityType);
+
+            // XXX Thread-safe?
+            this.setEntityType(entityType);
         }
-
-        if (entityType == null)
-            throw new IllegalUsageException("Bad entity abbrev: " + typeAbbr);
-
-        if (!Entity.class.isAssignableFrom(entityType))
-            throw new IllegalUsageException("Not subclass of entity: " + entityType);
-
-        // XXX Thread-safe?
-        this.setEntityType(entityType);
 
         return _handleRequest(req, result);
     }

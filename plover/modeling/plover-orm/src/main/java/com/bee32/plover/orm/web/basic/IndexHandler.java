@@ -17,6 +17,10 @@ import com.bee32.plover.servlet.mvc.ActionResult;
 public class IndexHandler<E extends Entity<K>, K extends Serializable>
         extends EntityHandler<E, K> {
 
+    public IndexHandler(Class<E> entityType) {
+        super(entityType);
+    }
+
     @Override
     protected ActionResult _handleRequest(ActionRequest req, ActionResult result)
             throws Exception {

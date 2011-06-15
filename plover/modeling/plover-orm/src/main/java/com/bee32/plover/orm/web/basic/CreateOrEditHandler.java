@@ -24,9 +24,12 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
     IEntityForming<E, K> forming;
     IPostUpdating<E, K> postUpdating;
 
-    public CreateOrEditHandler(IEntityForming<E, K> forming) {
+    public CreateOrEditHandler(Class<E> entityType, IEntityForming<E, K> forming) {
+        super(entityType);
+
         if (forming == null)
             throw new NullPointerException("forming");
+
         this.forming = forming;
     }
 
@@ -57,7 +60,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
 
             // return result.sendRedirect("index.do");
         } else {
-            result.setViewName(req.normalizeView("index"));
+            result.setViewName(joinView(req, "index"));
             result.put("METHOD", result.V.get("edit"));
         }
 

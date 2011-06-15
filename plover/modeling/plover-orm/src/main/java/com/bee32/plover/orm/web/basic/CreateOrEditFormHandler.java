@@ -19,9 +19,12 @@ public class CreateOrEditFormHandler<E extends Entity<K>, K extends Serializable
 
     IEntityForming<E, K> forming;
 
-    public CreateOrEditFormHandler(IEntityForming<E, K> forming) {
+    public CreateOrEditFormHandler(Class<E> entityType, IEntityForming<E, K> forming) {
+        super(entityType);
+
         if (forming == null)
             throw new NullPointerException("forming");
+
         this.forming = forming;
     }
 
@@ -35,7 +38,7 @@ public class CreateOrEditFormHandler<E extends Entity<K>, K extends Serializable
             result.put("method", "create");
             result.put("METHOD", result.V.get("create"));
         } else {
-            result.setViewName(req.normalizeView("form"));
+            result.setViewName(joinView(req, "form"));
             result.put("method", "edit");
             result.put("METHOD", result.V.get("edit"));
         }

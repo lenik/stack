@@ -27,9 +27,12 @@ public class DataHandler<E extends Entity<K>, K extends Serializable>
 
     IEntityListing<E, K> listing;
 
-    public DataHandler(IEntityListing<E, K> listing) {
+    public DataHandler(Class<E> entityType, IEntityListing<E, K> listing) {
+        super(entityType);
+
         if (listing == null)
             throw new NullPointerException("listing");
+
         this.listing = listing;
     }
 
