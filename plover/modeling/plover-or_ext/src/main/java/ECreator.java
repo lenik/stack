@@ -1,4 +1,4 @@
-import com.bee32.plover.orm.ext.util.PloverEntityCreator;
+import com.bee32.plover.orm.ecreator.PloverEntityCreator;
 
 public class ECreator {
 
