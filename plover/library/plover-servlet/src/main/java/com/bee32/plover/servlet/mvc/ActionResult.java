@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
+import com.bee32.plover.javascript.util.Javascripts;
+
 /**
  * Extension of model&view with meta-data and vocabulary support.
  *
@@ -73,10 +75,25 @@ public class ActionResult
         return null;
     }
 
+    /**
+     * Send HTTP 305 redirect.
+     *
+     * @return <code>null</code>.
+     */
     public <T> T sendRedirect(String location)
             throws IOException {
         response.sendRedirect(location);
         return null;
+    }
+
+    /**
+     * Generate a Javascript error dialog box and go backward.
+     *
+     * @return <code>null</code>.
+     */
+    public <T> T errorAlert(String message)
+            throws IOException {
+        return Javascripts.alertAndBack(message).dump(getResponse());
     }
 
     /**
