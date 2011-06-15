@@ -27,9 +27,9 @@ import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.OrgDto;
-import com.bee32.sem.people.dto.OrgSidTypeDto;
+import com.bee32.sem.people.dto.OrgTypeDto;
 import com.bee32.sem.people.entity.ContactCategory;
-import com.bee32.sem.people.entity.OrgSidType;
+import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.service.IPeopleService;
 import com.bee32.sem.user.util.SessionLoginInfo;
 
@@ -134,18 +134,18 @@ public class OrgAdminBean implements Serializable {
     }
 
 
-    public List<SelectItem> getSidTypes() {
+    public List<SelectItem> getOrgTypes() {
         CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
                 .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
                         "commonDataManager");
 
-        List<OrgSidType> sidTypes = commonDataManager.loadAll(OrgSidType.class);
-        List<OrgSidTypeDto> sidTypeDtos = DTOs.marshalList(OrgSidTypeDto.class, sidTypes);
-        List sidTypeSelectItems = new ArrayList();
-        for(OrgSidTypeDto t : sidTypeDtos) {
-            sidTypeSelectItems.add(new SelectItem(t.getId(), t.getLabel()));
+        List<OrgType> orgTypes = commonDataManager.loadAll(OrgType.class);
+        List<OrgTypeDto> orgTypeDtos = DTOs.marshalList(OrgTypeDto.class, orgTypes);
+        List orgTypeSelectItems = new ArrayList();
+        for(OrgTypeDto t : orgTypeDtos) {
+            orgTypeSelectItems.add(new SelectItem(t.getId(), t.getLabel()));
         }
-        return sidTypeSelectItems;
+        return orgTypeSelectItems;
     }
 
     public List<ContactCategoryDto> getContactCategories() {
@@ -218,9 +218,9 @@ public class OrgAdminBean implements Serializable {
 
 		org.setOwner(user);
 
-		OrgSidTypeDto sidTypeDto = new OrgSidTypeDto();
-		sidTypeDto.ref((String) null);
-		org.setSidType(sidTypeDto);
+		OrgTypeDto orgTypeDto = new OrgTypeDto();
+		orgTypeDto.ref((String) null);
+		org.setType(orgTypeDto);
 	}
 
 	public void new_() {
