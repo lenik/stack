@@ -1,6 +1,5 @@
 package com.bee32.sem.people.dto;
 
-import com.bee32.plover.arch.util.MarshalType;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.people.entity.Party;
 
@@ -9,13 +8,13 @@ public class PartyDto
 
     private static final long serialVersionUID = 1L;
 
-//    public PartyDto() {
-//        super();
-//    }
-//
-//    public PartyDto(Party source) {
-//        super(source);
-//    }
+    public PartyDto() {
+        super();
+    }
+
+    public PartyDto(Party source) {
+        super(source);
+    }
 
     public PartyDto(int selection) {
         super(selection);
