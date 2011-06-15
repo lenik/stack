@@ -1,50 +1,76 @@
 package com.bee32.sem.calendar;
 
-import com.bee32.plover.orm.ext.util.CEnum;
-import com.bee32.plover.servlet.context.ILocationConstants;
-import com.bee32.plover.servlet.context.Location;
+import java.util.HashMap;
+import java.util.Map;
 
-public enum DiaryVisibility
-        implements CEnum, ILocationConstants {
+import javax.free.IllegalUsageException;
 
-    PRIVATE('-', "yellowlock.png"),
+import com.bee32.plover.arch.util.EnumAlt;
+import com.bee32.plover.rtx.location.ILocationConstants;
+import com.bee32.plover.rtx.location.Location;
 
-    COMMIT('<', "triangle"),
+public class DiaryVisibility
+        extends EnumAlt<Character, DiaryVisibility>
+        implements ILocationConstants {
 
-    PROTECTED_SELECTION('#', "greenlock.png"),
+    private static final long serialVersionUID = 1L;
 
-    PROTECTED('*', "greenlock.png"),
-
-    SELECTION('S', "filter.png"),
-
-    PUBLIC('+', "public.png"),
-
-    ;
-
-    final char ch;
     final Location icon;
 
-    static class _ {
-        static final CharMap<DiaryVisibility> charMap = new CharMap<DiaryVisibility>();
-    }
-
-    private DiaryVisibility(char ch, String icon) {
-        this.ch = ch;
+    private DiaryVisibility(char value, String name, String icon) {
+        super(value, name);
         this.icon = ICON.join(icon);
-        _.charMap.put(ch, this);
     }
 
     public Location getIcon() {
         return icon;
     }
 
+    static final Map<String, DiaryVisibility> nameMap = new HashMap<String, DiaryVisibility>();
+    static final Map<Character, DiaryVisibility> valueMap = new HashMap<Character, DiaryVisibility>();
+
     @Override
-    public char toChar() {
-        return ch;
+    protected Map<String, DiaryVisibility> getNameMap() {
+        return nameMap;
     }
 
-    public static DiaryVisibility fromChar(char ch) {
-        return _.charMap.get(ch);
+    @Override
+    protected Map<Character, DiaryVisibility> getValueMap() {
+        return valueMap;
     }
+
+    public static DiaryVisibility valueOf(char value) {
+        DiaryVisibility instance = valueMap.get(value);
+        if (instance != null)
+            return instance;
+        throw new IllegalUsageException(String.format(//
+                "Invalid DiaryVisibility value: 0x%x" + value));
+    }
+
+    public static DiaryVisibility valueOf(String name) {
+        DiaryVisibility instance = nameMap.get(name);
+        if (instance != null)
+            return instance;
+        throw new IllegalUsageException(//
+                "Invalid DiaryVisibility name: " + name);
+    }
+
+    public static final DiaryVisibility PRIVATE //
+    /*          */= new DiaryVisibility('-', "private", "yellowlock.png");
+
+    public static final DiaryVisibility COMMIT//
+    /*          */= new DiaryVisibility('<', "commit", "triangle.png");
+
+    public static final DiaryVisibility PROTECTED_SELECTION //
+    /*          */= new DiaryVisibility('#', "protectedSelection", "greenlock.png");
+
+    public static final DiaryVisibility PROTECTED //
+    /*          */= new DiaryVisibility('*', "protected", "greenlock.png");
+
+    public static final DiaryVisibility SELECTION //
+    /*          */= new DiaryVisibility('S', "selection", "filter.png");
+
+    public static final DiaryVisibility PUBLIC //
+    /*          */= new DiaryVisibility('+', "public", "public.png");
 
 }
