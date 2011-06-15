@@ -24,6 +24,14 @@ public class VerifyHandler<E extends VerifiableEntity<K, C>, //
     @Inject
     protected VerifyService verifyService;
 
+    IVerifyHandlerHook<E> hook;
+
+    public VerifyHandler(Class<E> entityType, IVerifyHandlerHook<E> hook) {
+        super(entityType);
+
+        this.hook = hook;
+    }
+
     @Override
     public ActionResult _handleRequest(final ActionRequest req, ActionResult result)
             throws Exception {
@@ -57,13 +65,16 @@ public class VerifyHandler<E extends VerifiableEntity<K, C>, //
 
                 TextMap textMap = TextMap.convert(req);
 
-                String error = doPreVerify(entity, currentUser, textMap);
-                if (error != null)
-                    return "审核前置条件失败：" + error;
+                if (hook != null) {
+                    String error = hook.doPreVerify(entity, currentUser, textMap);
+                    if (error != null)
+                        return "审核前置条件失败：" + error;
+                }
 
                 verifyService.verifyEntity(entity);
 
-                doPostVerify(entity, currentUser, textMap);
+                if (hook != null)
+                    hook.doPostVerify(entity, currentUser, textMap);
 
                 return null;
             }

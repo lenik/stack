@@ -31,7 +31,7 @@ public class AttackMissionController
     }
 
     @Override
-    protected String doPreVerify(AttackMission entity, User currentUser, TextMap request) {
+    public String doPreVerify(AttackMission entity, User currentUser, TextMap request) {
         boolean allowed = request.getBoolean("allowed");
         String rejectedReason = request.getString("rejectedReason");
 
@@ -44,7 +44,7 @@ public class AttackMissionController
     }
 
     @Override
-    protected void doPostVerify(AttackMission entity, User currentUser, TextMap request) {
+    public void doPostVerify(AttackMission entity, User currentUser, TextMap request) {
         Task task = entity.getVerifyTask();
 
         String editLocation = AttackMissionController.PREFIX + "editForm?id=" + entity.getId();
