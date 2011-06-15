@@ -24,25 +24,25 @@ public class SEMChanceMenu
     MenuEntry chanceAdmin = new MenuEntry("chanceAdmin");
 
     @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry chanceAction = new MenuEntry("chanceAction", CHANCEACTION.join("chanceActionAdminjsf.htm"));
+    MenuEntry chanceAction = new MenuEntry("chanceAction", CHANCEACTION.join("chanceActionAdminjsf.do"));
 
     @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry chance = new MenuEntry("chance", CHANCE.join("index.htm"));
+    MenuEntry chance = new MenuEntry("chance", CHANCE.join("index.do"));
 
     @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry competitor = new MenuEntry("competitor", COMPETITOR.join("index.htm"));
+    MenuEntry competitor = new MenuEntry("competitor", COMPETITOR.join("index.do"));
 
     @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry categories = new MenuEntry("categories", DICT.join(ABBR.abbr(ChanceCategory.class) + "index.htm"));
+    MenuEntry categories = new MenuEntry("categories", DICT.join(ABBR.abbr(ChanceCategory.class) + "index.do"));
 
     @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry sourceTypes = new MenuEntry("sourceTypes", DICT.join(ABBR.abbr(ChanceSourceType.class) + "index.htm"));
+    MenuEntry sourceTypes = new MenuEntry("sourceTypes", DICT.join(ABBR.abbr(ChanceSourceType.class) + "index.do"));
 
     @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry actionStyles = new MenuEntry("actionStyles", DICT.join(ABBR.abbr(ChanceActionStyle.class) + "index.htm"));
+    MenuEntry actionStyles = new MenuEntry("actionStyles", DICT.join(ABBR.abbr(ChanceActionStyle.class) + "index.do"));
 
     @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry stages = new MenuEntry("stages", DICT.join(ABBR.abbr(ChanceStage.class) + "index.htm"));
+    MenuEntry stages = new MenuEntry("stages", DICT.join(ABBR.abbr(ChanceStage.class) + "index.do"));
 
     @Override
     protected void preamble() {

@@ -25,19 +25,19 @@ public class SEMPeopleMenu
 	    MenuEntry dict = new MenuEntry("dict");
 
 		    @Contribution("sa/people/dict")
-		    MenuEntry contactCategories = new MenuEntry("contactCategories", DICT.join(ContactCategory.class + "index.htm"));
+		    MenuEntry contactCategories = new MenuEntry("contactCategories", DICT.join(ContactCategory.class + "index.do"));
 
 		    @Contribution("sa/people/dict")
-		    MenuEntry orgTypes = new MenuEntry("orgTypes", DICT.join(OrgType.class + "index.htm"));
+		    MenuEntry orgTypes = new MenuEntry("orgTypes", DICT.join(OrgType.class + "index.do"));
 
 		    @Contribution("sa/people/dict")
-		    MenuEntry partyLogCategories = new MenuEntry("partyLogCategories", DICT.join(PartyRecordCategory.class + "index.htm"));
+		    MenuEntry partyLogCategories = new MenuEntry("partyLogCategories", DICT.join(PartyRecordCategory.class + "index.do"));
 
 		    @Contribution("sa/people/dict")
-		    MenuEntry partyTags = new MenuEntry("partyTags", DICT.join(PartyTag.class + "index.htm"));
+		    MenuEntry partyTags = new MenuEntry("partyTags", DICT.join(PartyTag.class + "index.do"));
 
 		    @Contribution("sa/people/dict")
-		    MenuEntry personSidType = new MenuEntry("personSidType", DICT.join(PersonSidType.class + "index.htm"));
+		    MenuEntry personSidType = new MenuEntry("personSidType", DICT.join(PersonSidType.class + "index.do"));
 
 	    @Contribution("sa/people")
 	    MenuEntry businessPartner = new MenuEntry("businessPartner");

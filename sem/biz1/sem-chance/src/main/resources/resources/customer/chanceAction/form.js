@@ -46,7 +46,7 @@
                 "bPaginate" : true,
                 "bSort" : false,
                 "bLengthChange" : false,
-                "sAjaxSource" : "search.htm",
+                "sAjaxSource" : "search.do",
                 "fnServerData" : function(sSource, aoData, fnCallback) {
                     $.ajax({
                         "dataType" : 'json',
@@ -58,14 +58,14 @@
                 }
             });
         } else {
-            customerList.fnReloadAjax("search.htm");
+            customerList.fnReloadAjax("search.do");
         }
         return false;
     });
 
     $("#search-btn").click(
             function() {
-                customerList.fnReloadAjax("search.htm?partyName="
+                customerList.fnReloadAjax("search.do?partyName="
                         + $("#search-text").val() + "");
             });
 

@@ -123,7 +123,7 @@ public class ChanceActionController
         return super._createOrEditForm(view, request, response);
     }
 
-    @RequestMapping("search.htm")
+    @RequestMapping("search.do")
     public void search(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
