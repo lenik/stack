@@ -32,20 +32,20 @@
     <ui:define name="body">
         <!-- InstanceBeginEditable name="body" -->
 
-        <h:form id="bomForm">
+        <h:form id="chanceActionForm">
 
             <p:panel header="机会行动日志">
                 <p:panel>
                     <p:toolbar id="productToolbar">
                         <p:toolbarGroup align="left">
                             <p:commandButton value="新增" actionListener="#{chanceActionBean.createForm}"
-                                disabled="#{chanceActionBean.editable}" update="bomForm" async="true" />
+                                disabled="#{chanceActionBean.editable}" update="chanceActionForm" async="true" />
                             <p:divider />
                             <p:commandButton value="删除" actionListener="#{chanceActionBean.delete_}"
-                                disabled="#{chanceActionBean.editable}" update="bomForm" async="true" />
+                                disabled="#{chanceActionBean.editable}" update="chanceActionForm" async="true" />
                             <p:divider />
                             <p:commandButton value="明细" actionListener="#{chanceActionBean.detail_}"
-                                disabled="#{chanceAction.editable}" update="bomForm" async="true" />
+                                disabled="#{chanceAction.editable}" update="chanceActionForm" async="true" />
                         </p:toolbarGroup>
                     </p:toolbar>
                 </p:panel>
@@ -60,9 +60,9 @@
                             selection="#{chanceActionBean.selectedAction}" selectionMode="single" rowIndexVar="rowIndex">
 
                             <!--    <p:ajax event="selectRow" listener="#{chanceActionBean.onRowSelect}"
-                                update="bomForm:productToolbar" />
+                                update="chanceActionForm:productToolbar" />
                             <p:ajax event="unselectRow" listener="#{chanceActionBean.onRowUnselect}"
-                                update="bomForm:productToolbar" /> -->
+                                update="chanceActionForm:productToolbar" /> -->
 
                             <p:column>
                                 <f:facet name="header">
@@ -126,10 +126,17 @@
                             <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm"
                                 value="#{chanceActionBean.chanceAction.endTime}" showOn="button" />
 
-                            <h:outputLable for="" value="拜访客户" />
-                            <t:panelGroup colspan="3">
-
+                            <h:outputLabel for="partyGroup" value="拜访客户" />
+                            <t:panelGroup id="partyGroup" columns="3">
+                                <p:dataList id="parties" var="party" value="#{chanceActionBean.chanceAction.parties}"
+                                    paginator="true" rows="5" effectSpeed="fast"
+                                    paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="5,10,15">
+                                    <h:outputText value="#{party.name}" />
+                                </p:dataList>
                             </t:panelGroup>
+                            <p:commandButton title="挑选拜访客户" value="..." onclick="chooseCustomerDialog.show();" />
+                            <h:inputHidden id="c" value="c" />
 
                             <h:outputLabel for="content" value="拜访目的" />
                             <p:inputTextarea id="content" value="#{chanceActionBean.chanceAction.content}" />
@@ -154,7 +161,8 @@
 
                             <t:panelGroup colspan="3">
                                 <p:commandButton value="保存" actionListener="#{chanceActionBean.chooseChance}"
-                                    oncomplete="chooseChanceDialog.hide();" update="bomForm" async="true" />
+                                    oncomplete="chooseChanceDialog.hide();" update="chanceActionForm:newAction"
+                                    async="true" />
                                 <p:commandButton value="取消" oncomplete="chooseChanceDialog.hide();" />
                             </t:panelGroup>
 
@@ -224,7 +232,7 @@
                     </p:dataTable>
                     <h:panelGrid columns="2">
                         <p:commandButton value="确定" actionListener="#{chanceActionBean.chooseChance}"
-                            oncomplete="chooseChanceDialog.hide();" update="bomForm" async="true" />
+                            oncomplete="chooseChanceDialog.hide();" update="chanceActionForm" async="true" />
                         <p:commandButton value="取消" oncomplete="chooseChanceDialog.hide();" />
                     </h:panelGrid>
                 </h:panelGroup>
@@ -232,16 +240,17 @@
         </h:form>
 
         <h:form id="customerForm">
-            <p:dialog header="客户机会" widgetVar="chooseCustomerDialog" modal="true" height="500" width="640">
+            <p:dialog header="选择客户" widgetVar="chooseCustomerDialog" modal="true" height="500" width="640">
                 <h:panelGroup>
 
                     <h:panelGrid columns="2">
                         <p:inputText value="#{chanceActionBean.customerPartten}" />
                         <p:commandButton value="查找" actionListener="#{chanceActionBean.findCustomer}"
-                            update="chanceForm:customers" async="true" />
+                            update="customerForm:customers" async="true" />
                     </h:panelGrid>
-                    <p:dataTable id="customers" var="customer" value="#{chanceActionBean.customers}" resizableColumns="true"
-                        selection="#{chanceActionBean.selectedCustomer}" selectionMode="single" rowIndexVar="rowIndex">
+                    <p:dataTable id="customers" var="customer" value="#{chanceActionBean.customers}"
+                        resizableColumns="true" selection="#{chanceActionBean.selectedCustomer}" selectionMode="single"
+                        rowIndexVar="rowIndex">
 
                         <p:column>
                             <f:facet name="header">
@@ -261,35 +270,35 @@
                             <f:facet name="header">
                                 <h:outputText value="地址" />
                             </f:facet>
-                            <h:outputText value="#{customer.address}" />
+                            <h:outputText value="#{customer.contacts[0].address}" />
                         </p:column>
 
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="传真" />
                             </f:facet>
-                            <h:outputText value="#{customer.fax}" />
+                            <h:outputText value="#{customer.contacts[0].fax}" />
                         </p:column>
 
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="电话" />
                             </f:facet>
-                            <h:outputText value="#{customer.tel}" />
+                            <h:outputText value="#{customer.contacts[0].tel}" />
                         </p:column>
 
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="网址" />
                             </f:facet>
-                            <h:outputText value="#{customer.website}" />
+                            <h:outputText value="#{customer.contacts[0].website}" />
                         </p:column>
 
                     </p:dataTable>
                     <h:panelGrid columns="2">
-                        <p:commandButton value="确定" actionListener="#{chanceActionBean.chooseChance}"
-                            oncomplete="chooseChanceDialog.hide();" update="bomForm" async="true" />
-                        <p:commandButton value="取消" oncomplete="chooseChanceDialog.hide();" />
+                        <p:commandButton value="确定" actionListener="#{chanceActionBean.addCustomer}"
+                            oncomplete="chooseCustomerDialog.hide();" update="chanceActionForm:parties" async="true" />
+                        <p:commandButton value="取消" oncomplete="chooseCustomerDialog.hide();" />
                     </h:panelGrid>
                 </h:panelGroup>
             </p:dialog>

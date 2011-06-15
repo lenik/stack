@@ -16,12 +16,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.jsf.FacesContextUtils;
 
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceActionStyleDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.facade.ChanceServiceFacade;
+import com.bee32.sem.chance.service.ChanceService;
 import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.people.entity.Party;
 
 @Component
 @Scope("view")
@@ -69,21 +72,29 @@ public class ChanceActionBean
         if (chancePartten != null && !chancePartten.isEmpty()) {
             ChanceServiceFacade chanceService = (ChanceServiceFacade) FacesContextUtils.getWebApplicationContext(
                     FacesContext.getCurrentInstance()).getBean("chanceServiceFacade");
-            String ts = chancePartten;
-            List<ChanceDto> tl = chanceService.chanceSearch(ts);
-            chances = tl;
+            chances = chanceService.chanceSearch(chancePartten);
+        }
+    }
+
+    public void findCustomer() {
+        if (customerPartten != null && customerPartten.length() > 0) {
+            ChanceService chanceService = (ChanceService) FacesContextUtils.getWebApplicationContext(
+                    FacesContext.getCurrentInstance()).getBean("chanceService");
+            List<Party> partyList = chanceService.listAll();
+            customers = DTOs.marshalList(PartyDto.class, partyList);
         }
     }
 
     public void createForm() {
         currentTab = 1;
         editable = true;
+        newAction();
     }
 
     public void newAction() {
         ChanceStageDto chanceStageDto = new ChanceStageDto();
         ChanceActionStyleDto chanceActionStyleDto = new ChanceActionStyleDto();
-        List<PartyDto> partyDtoList = Arrays.asList(new PartyDto());
+        List<PartyDto> partyDtoList = Arrays.asList(new PartyDto(0));
         ChanceDto chanceDto = new ChanceDto();
         chanceAction = new ChanceActionDto();
 
@@ -95,7 +106,23 @@ public class ChanceActionBean
 
     public void chooseChance() {
         chanceAction.setChance(selectedChance);
-        System.out.println(chanceAction.getChance().getSubject());
+    }
+
+    public void addCustomer() {
+        System.out.println("===========================");
+        System.out.println(selectedCustomer.getName());
+        System.out.println("===========================");
+
+        List<PartyDto> parties = chanceAction.getParties();
+        if (selectedCustomer != null && ! parties.contains(selectedCustomer))
+            parties.add(selectedCustomer);
+
+        System.out.println("===========================");
+        for(PartyDto pdto : parties){
+            System.out.println(pdto.getName());
+        }
+        System.out.println("===========================");
+
     }
 
     public void onRowSelect(SelectEvent event) {
@@ -185,7 +212,7 @@ public class ChanceActionBean
     }
 
     public void setCustomers(List<PartyDto> customers) {
-        if(customers == null)
+        if (customers == null)
             customers = new ArrayList<PartyDto>();
         this.customers = customers;
     }
@@ -195,6 +222,8 @@ public class ChanceActionBean
     }
 
     public void setSelectedCustomer(PartyDto selectedCustomer) {
+        if(selectedCustomer == null)
+            selectedCustomer = new PartyDto();
         this.selectedCustomer = selectedCustomer;
     }
 

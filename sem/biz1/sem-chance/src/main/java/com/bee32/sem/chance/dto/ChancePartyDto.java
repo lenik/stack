@@ -35,7 +35,7 @@ public class ChancePartyDto
     @Override
     protected void _marshal(ChanceParty source) {
         this.chance = new ChanceDto(0, source.getChance());
-        this.party = new PartyDto(source.getParty());
+        this.party = new PartyDto(0, source.getParty());
         this.role = source.getRole();
     }
 

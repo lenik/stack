@@ -24,9 +24,8 @@ import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.service.IChanceService;
 import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.Party;
-import com.bee32.sem.people.entity.Person;
-import com.bee32.sem.people.entity.PersonContact;
 
 @RequestMapping(ChanceActionController.PREFIX)
 public class ChanceActionController
@@ -70,7 +69,7 @@ public class ChanceActionController
 // }
 
     @RequestMapping("chanceActionAdminjsf")
-    public Map<String, ?> chanceActionAdminjsf(HttpServletRequest request, HttpServletResponse response){
+    public Map<String, ?> chanceActionAdminjsf(HttpServletRequest request, HttpServletResponse response) {
         return new HashMap<String, Object>();
     }
 
@@ -147,14 +146,11 @@ public class ChanceActionController
 
         for (Party party : partyList) {
             tab.push(party.getName());
-            if (party instanceof Person) {
-                Person person = (Person) party;
-                PersonContact contact = person.getContacts().get(0);
-                tab.push(contact.getAddress());
-                tab.push(contact.getFax());
-                tab.push(contact.getTel());
-                tab.push(contact.getWebsite());
-            }
+            List<Contact> contact = party.getContacts();
+            tab.push(contact.get(0).getAddress());
+            tab.push(contact.get(0).getFax());
+            tab.push(contact.get(0).getTel());
+            tab.push(contact.get(0).getWebsite());
             tab.next();
         }
 
