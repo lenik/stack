@@ -10,6 +10,7 @@ public class ActionRequest
     static final String METHOD_ATTRIBUTE = "__PLOVER_METHOD";
 
     final IActionHandler handler;
+
     String prefix;
     String pathParameter;
     String actionName;
@@ -25,7 +26,10 @@ public class ActionRequest
     }
 
     /**
-     * @return Non-<code>null</code> prefix name.
+     * Get the prefix part of request uri (without context-path).
+     *
+     * @return Non-<code>null</code> prefix name. E.g., "/1/2/3" or "/foo/bar" without the trailing
+     *         slash.
      */
     public String getPrefix() {
         if (prefix == null)
@@ -37,7 +41,8 @@ public class ActionRequest
      * Initialize the prefix.
      *
      * @param prefix
-     *            Non-<code>null</code> prefix name.
+     *            Non-<code>null</code> prefix name. E.g., "/1/2/3" or "/foo/bar" without the
+     *            trailing slash.
      */
     public void setPrefix(String prefix) {
         if (prefix == null)
@@ -79,10 +84,6 @@ public class ActionRequest
     public boolean methodEquals(String method) {
         String actualMethod = getMethod();
         return Nullables.equals(actualMethod, actualMethod);
-    }
-
-    public String normalizeView(String relativeViewName) {
-        return getPrefix() + relativeViewName;
     }
 
 }
