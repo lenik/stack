@@ -43,10 +43,10 @@ public class SEMPeopleMenu
 	    MenuEntry businessPartner = new MenuEntry("businessPartner");
 
 		    @Contribution("sa/people/businessPartner")
-	        MenuEntry personAdmin = new MenuEntry(1, "personAdmin", WEB_APP.join("people/personAdmin.htm"));
+	        MenuEntry personAdmin = new MenuEntry(1, "personAdmin", WEB_APP.join("people/personAdmin.jsf"));
 
 		    @Contribution("sa/people/businessPartner")
-	        MenuEntry orgAdmin = new MenuEntry(1, "orgAdmin", WEB_APP.join("people/orgAdmin.htm"));
+	        MenuEntry orgAdmin = new MenuEntry(1, "orgAdmin", WEB_APP.join("people/orgAdmin.jsf"));
 
     @Override
     protected void preamble() {
