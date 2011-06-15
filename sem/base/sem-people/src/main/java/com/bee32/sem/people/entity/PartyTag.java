@@ -50,24 +50,21 @@ public class PartyTag
     }
 
     /**
-     * @.name employee
      * @.label Employee
      * @.label.zh_CN 雇员
      */
-    public static final PartyTag EMPLOYEE = new PartyTag("employee", "雇员");
+    public static final PartyTag EMPLOYEE = new PartyTag("EMP", "雇员");
 
     /**
-     * @.name customer
      * @.label Customer
      * @.label.zh_CN 客户
      */
-    public static final PartyTag CUSTOMER = new PartyTag("customer", "客户");
+    public static final PartyTag CUSTOMER = new PartyTag("CUS", "客户");
 
     /**
-     * @.name supplier
      * @.label Supplier
      * @.label.zh_CN 供应商
      */
-    public static final PartyTag SUPPLIER = new PartyTag("supplier", "供应商");
+    public static final PartyTag SUPPLIER = new PartyTag("SUP", "供应商");
 
 }
