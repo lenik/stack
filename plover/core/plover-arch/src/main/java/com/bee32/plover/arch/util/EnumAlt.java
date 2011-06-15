@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import javax.free.SystemCLG;
-
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
 
@@ -18,7 +16,7 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
 
     protected final V value;
     protected final String name;
-    protected final String displayName;
+    protected final String label;
     protected final Location icon;
 
     public EnumAlt(V value, String name) {
@@ -30,7 +28,7 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
         this.name = name;
         this.value = value;
 
-        this.displayName = _nls(name + ".label", name);
+        this.label = _nls(name + ".label", name);
 
         String icon = _nls(name + ".icon", null);
         if (icon != null)
@@ -67,8 +65,15 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
         return value;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
     public String getDisplayName() {
-        return displayName;
+        if (label != null)
+            return label;
+        else
+            return name;
     }
 
     public Location getIcon() {
@@ -90,16 +95,16 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
 
     @Override
     public String toString() {
-        return displayName;
+        return label;
     }
 
     protected String _nls(String key, String def) {
-        Locale locale = SystemCLG.locale.get();
+        Locale locale = Locale.getDefault(); // SystemCLG.locale.get();
+        String baseName = getClass().getName();
 
         ResourceBundle rb;
-
         try {
-            rb = ResourceBundle.getBundle(getClass().getName(), locale);
+            rb = ResourceBundle.getBundle(baseName, locale);
         } catch (MissingResourceException e) {
             return def;
         }
