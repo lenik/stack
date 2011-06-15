@@ -12,12 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.plover.ajax.JsonUtil;
-import com.bee32.plover.orm.ext.util.BasicEntityController;
-import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.web.basic.BasicEntityController;
+import com.bee32.plover.orm.web.util.DataTableDxo;
+import com.bee32.plover.servlet.mvc.ActionRequest;
+import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.chance.dao.ChanceActionStyleDao;
 import com.bee32.sem.chance.dao.ChanceDao;
 import com.bee32.sem.chance.dto.ChanceActionDto;
@@ -115,12 +116,10 @@ public class ChanceActionController
     }
 
     @Override
-    protected ModelAndView _createOrEditForm(ViewData view, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        view.put("stages", actionStyleDao.list());
-        view.put("chances", chanceDao.list());
-        view.put("actors", userDao.list());
-        return super._createOrEditForm(view, request, response);
+    protected void fillFormExtra(ActionRequest req, ActionResult result) {
+        result.put("stages", actionStyleDao.list());
+        result.put("chances", chanceDao.list());
+        result.put("actors", userDao.list());
     }
 
     @RequestMapping("search.do")

@@ -1,19 +1,15 @@
 package com.bee32.sem.chance.web;
 
-import java.io.IOException;
-
 import javax.free.Strings;
 import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.bee32.icsf.principal.dao.UserDao;
-import com.bee32.plover.orm.ext.util.BasicEntityController;
-import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.web.basic.BasicEntityController;
+import com.bee32.plover.orm.web.util.DataTableDxo;
+import com.bee32.plover.servlet.mvc.ActionRequest;
+import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.chance.dao.ChanceCategoryDao;
 import com.bee32.sem.chance.dao.ChanceSourceTypeDao;
 import com.bee32.sem.chance.dto.ChanceDto;
@@ -48,12 +44,10 @@ public class ChanceController
     }
 
     @Override
-    protected ModelAndView _createOrEditForm(ViewData view, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        view.put("categories", chanceCategoryDao.list());
-        view.put("sources", chanceSourceTypeDao.list());
-        view.put("owners", userDao.list());
-        return super._createOrEditForm(view, request, response);
+    protected void fillFormExtra(ActionRequest req, ActionResult result) {
+        result.put("categories", chanceCategoryDao.list());
+        result.put("sources", chanceSourceTypeDao.list());
+        result.put("owners", userDao.list());
     }
 
 }
