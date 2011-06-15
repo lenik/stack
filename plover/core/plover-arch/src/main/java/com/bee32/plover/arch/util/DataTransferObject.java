@@ -122,6 +122,9 @@ public abstract class DataTransferObject<S, C>
      * Enter session
      */
     protected final void enter(IMarshalSession<C> session) {
+        if (session == null)
+            throw new NullPointerException("session");
+
         if (sessionStack == null)
             sessionStack = new Stack<IMarshalSession<C>>();
 
@@ -147,6 +150,10 @@ public abstract class DataTransferObject<S, C>
 
     @Override
     public synchronized final <D extends IDataTransferObject<S, C>> D marshal(IMarshalSession<C> session, S source) {
+        D marshalled = session.getMarshalled(source, marshalType, selection.bits);
+        if (marshalled != null)
+            return marshalled;
+
         enter(session);
         try {
             return marshalImpl(source);
