@@ -12,13 +12,13 @@ import com.bee32.plover.orm.entity.EntityDso;
 
 @Transactional(readOnly = true)
 public class UserDso
-        extends EntityDso<User, Integer, UserDto> {
+        extends EntityDso<User, Integer> {
 
     @Inject
     UserDao userDao;
 
     @Override
-    protected EntityDao<User, Integer> getEntityDao() {
+    protected EntityDao<User, Integer> getDao() {
         return userDao;
     }
 
