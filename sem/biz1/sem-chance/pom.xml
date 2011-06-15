@@ -8,25 +8,7 @@
     </parent>
     <artifactId>sem-chance</artifactId>
     <version>0.3.2-SNAPSHOT</version>
-    <repositories>
-        <repository>
-            <id>prime-repo</id>
-            <name>Prime Technology Maven Repository</name>
-            <url>http://repository.prime.com.tr</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
     <dependencies>
-        <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>el-impl</artifactId>
-            <version>2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces</groupId>
-            <artifactId>primefaces</artifactId>
-            <version>3.0.M2-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>com.bee32.sem</groupId>
             <artifactId>sem-module</artifactId>
