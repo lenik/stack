@@ -100,6 +100,11 @@
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-ajax</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
             <artifactId>plover-model</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
