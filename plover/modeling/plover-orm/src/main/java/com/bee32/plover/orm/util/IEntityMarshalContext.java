@@ -4,12 +4,16 @@ import java.io.Serializable;
 
 import javassist.tools.rmi.ObjectNotFoundException;
 
+import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 
 public interface IEntityMarshalContext {
 
     /**
      * Load entity with the given id.
+     *
+     * <p>
+     * Generally, this is implemented using {@link CommonDataManager#fetch(Class, Serializable)}.
      *
      * @param entityType
      *            The type of entity to load.
