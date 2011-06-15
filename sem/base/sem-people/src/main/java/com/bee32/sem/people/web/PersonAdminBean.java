@@ -106,7 +106,7 @@ public class PersonAdminBean extends EntityViewBean {
 
 	public PersonDto getPerson() {
 	    if(person == null)
-	        newPerson();
+	        _newPerson();
 		return person;
 	}
 
@@ -168,7 +168,7 @@ public class PersonAdminBean extends EntityViewBean {
 
     public ContactDto getContact() {
         if(contact == null)
-            newContact();
+            _newContact();
         return contact;
     }
 
@@ -182,7 +182,7 @@ public class PersonAdminBean extends EntityViewBean {
 
 
 
-    private void newPerson() {
+    private void _newPerson() {
 		person = new PersonDto(PersonDto.CONTACTS | PersonDto.RECORDS);
 
 		HttpSession session = ThreadHttpContext.requireSession();
@@ -197,14 +197,14 @@ public class PersonAdminBean extends EntityViewBean {
 		person.setSidType(sidTypeDto);
 	}
 
-	public void new_() {
-		newPerson();
+	public void doNew() {
+		_newPerson();
 
 		currTab = 1;
 		editable = true;
 	}
 
-	public void modify_() {
+	public void doModify() {
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		if(selectedPerson == null) {
@@ -218,7 +218,7 @@ public class PersonAdminBean extends EntityViewBean {
 		editable = true;
 	}
 
-	public void delete_() {
+	public void doDelete() {
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		if(selectedPerson == null) {
@@ -238,7 +238,7 @@ public class PersonAdminBean extends EntityViewBean {
 		}
 	}
 
-	public void save_() {
+	public void doSave() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         try {
@@ -257,14 +257,14 @@ public class PersonAdminBean extends EntityViewBean {
         }
 	}
 
-	public void cancel_() {
+	public void doCancel() {
 	    currTab = 0;
 	    editable = false;
 
-	    newPerson();
+	    _newPerson();
 	}
 
-	public void detail_() {
+	public void doDetail() {
 	    if(selectedPerson == null) {
 	        FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("提示", "请选择需要查看详细信息的联系人!"));
@@ -284,7 +284,7 @@ public class PersonAdminBean extends EntityViewBean {
 
     }
 
-    private void newContact() {
+    private void _newContact() {
         contact = new ContactDto();
 
         ContactCategoryDto category = new ContactCategoryDto();
@@ -292,19 +292,19 @@ public class PersonAdminBean extends EntityViewBean {
         contact.setParty(person);
     }
 
-	public void newContact_() {
+	public void doNewContact() {
 	    if(person == null || person.getId() == null) {
 	        FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("提示", "请选择需要新增联系方式的联系人!"));
 	    }
-	    newContact();
+	    _newContact();
 	}
 
-	public void modifyContact_() {
+	public void doModifyContact() {
 	    contact = selectedContact;
 	}
 
-    public void deleteContact_() {
+    public void doDeleteContact() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if(selectedContact == null) {
@@ -321,7 +321,7 @@ public class PersonAdminBean extends EntityViewBean {
         }
     }
 
-    public void saveContact_() {
+    public void doSaveContact() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if(person == null || person.getId() == null) {
@@ -345,7 +345,7 @@ public class PersonAdminBean extends EntityViewBean {
     }
 
     public void onRowUnselectContact(UnselectEvent event) {
-        newContact();
+        _newContact();
     }
 
 }

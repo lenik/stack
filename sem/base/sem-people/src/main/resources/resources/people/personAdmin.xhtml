@@ -11,27 +11,16 @@
       xmlns:sem="http://bee32.com/sem/functions"
       xmlns:p="http://primefaces.prime.com.tr/ui"
       xmlns:t="http://myfaces.apache.org/tomahawk"
-      ><!-- InstanceBegin template="/Templates/seccaJsf.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
+      >
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 
-<ui:composition template="/template/siteJsf.xhtml">
-
-<!-- InstanceBeginEditable name="title" -->
-
+<ui:composition template="/template/newsite.xhtml">
 
     <ui:define name="title">联系人管理</ui:define>
 
-<!-- InstanceEndEditable -->
-
-
-
-
     <ui:define name="head">
-<!-- InstanceBeginEditable name="head" -->
-
-
 
         <h:outputStylesheet>
             .detail_col_title {
@@ -43,15 +32,9 @@
             }
         </h:outputStylesheet>
 
-
-
-    <!-- InstanceEndEditable -->
     </ui:define>
 
-
-
-    <ui:define name="body">
-<!-- InstanceBeginEditable name="body" -->
+    <ui:define name="content">
 
 		<h:form id="personForm">
 
@@ -63,24 +46,24 @@
 				<p:toolbar id="personToolbar">
 					<p:toolbarGroup align="left">
 						<p:commandButton value="新增"
-							actionListener="#{personAdminBean.new_}"
+							actionListener="#{personAdminBean.doNew}"
 							disabled="#{personAdminBean.editable}"
 							update="personForm" async="true" />
                         <p:commandButton value="修改"
-                            actionListener="#{personAdminBean.modify_}"
+                            actionListener="#{personAdminBean.doModify}"
                             disabled="#{personAdminBean.editable}"
                             update="personForm" async="true" />
 						<p:commandButton value="删除"
-							actionListener="#{personAdminBean.delete_}"
+							actionListener="#{personAdminBean.doDelete}"
 							disabled="#{personAdminBean.editable}"
 							update="personForm" async="true" />
 						<p:divider />
 						<p:commandButton value="保存"
-							actionListener="#{personAdminBean.save_}"
+							actionListener="#{personAdminBean.doSave}"
 							disabled="#{!personAdminBean.editable}"
 							update="personForm" async="true" />
 						<p:commandButton value="取消"
-							actionListener="#{personAdminBean.cancel_}"
+							actionListener="#{personAdminBean.doCancel}"
 							disabled="#{!personAdminBean.editable}"
 							update="personForm" async="true" />
 						<p:divider />
@@ -89,7 +72,7 @@
 							disabled="#{personAdminBean.editable or (not personAdminBean.personSelected)}"
 							onclick="verifyDlg.show();" /> -->
 						<p:commandButton value="详细"
-							actionListener="#{personAdminBean.detail_}"
+							actionListener="#{personAdminBean.doDetail}"
 							disabled="#{personAdminBean.editable or (not personAdminBean.personSelected)}"
 							update="personForm" async="true" />
 					</p:toolbarGroup>
@@ -104,13 +87,14 @@
 							rowsPerPageTemplate="5,10,15" resizableColumns="true"
 							selection="#{personAdminBean.selectedPerson}"
 							selectionMode="single" rowIndexVar="rowIndex">
-
+<!--
 							<p:ajax event="selectRow"
 								listener="#{personAdminBean.onRowSelect}"
 								update="personForm:personToolbar" />
 							<p:ajax event="unselectRow"
 								listener="#{personAdminBean.onRowUnselect}"
 								update="personForm:personToolbar" />
+ -->
 
 							<p:column>
 								<f:facet name="header">
@@ -218,16 +202,16 @@
 								<p:toolbarGroup align="left">
 									<p:commandButton value="新增"
 										disabled="#{personAdminBean.person == null or personAdminBean.person.id == null}"
-										actionListener="#{personAdminBean.newContact_}"
+										actionListener="#{personAdminBean.doNewContact}"
 										update="contactForm:contactHolder" async="true"
 										onclick="contactHolderDlg.show();" />
 									<p:commandButton value="修改"
-										actionListener="#{personAdminBean.modifyContact_}"
+										actionListener="#{personAdminBean.doModifyContact}"
 										disabled="#{not personAdminBean.contactSelected}"
 										update="contactForm:contactHolder" async="true"
 										onclick="contactHolderDlg.show();" />
 									<p:commandButton value="删除"
-										actionListener="#{personAdminBean.deleteContact_}"
+										actionListener="#{personAdminBean.doDeleteContact}"
 										disabled="#{not personAdminBean.contactSelected}" update=""
 										async="true" />
 									<p:divider />
@@ -238,12 +222,14 @@
 								selection="#{personAdminBean.selectedContact}"
 								selectionMode="single" rowIndexVar="rowIndex">
 
+<!--
 								<p:ajax event="selectRow"
 									listener="#{personAdminBean.onRowSelectContact}"
 									update="personForm:contactToolbar" />
 								<p:ajax event="unselectRow"
 									listener="#{personAdminBean.onRowUnselectContact}"
 									update="personForm:contactToolbar" />
+ -->
 
 								<p:column>
 									<f:facet name="header">
@@ -353,7 +339,7 @@
 						<t:panelGroup colspan="2">
 							<t:panelGrid columns="2">
 								<p:commandButton value="保存"
-									actionListener="#{personAdminBean.saveContact_}"
+									actionListener="#{personAdminBean.doSaveContact}"
 									oncomplete="contactHolderDlg.hide();" async="true"
 									udpate="personForm:contacts personForm:growl" />
 								<p:commandButton value="取消"
@@ -368,9 +354,6 @@
 			</p:dialog>
 		</h:form>
 
-
-
-		<!-- InstanceEndEditable -->
     </ui:define>
 </ui:composition>
-<!-- InstanceEnd --></html>
+</html>
