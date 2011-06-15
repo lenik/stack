@@ -78,8 +78,8 @@ public abstract class Party
     }
 
     @ManyToMany
-    @JoinTable(name = "PersonTags", //
-    /*            */joinColumns = @JoinColumn(name = "person"), //
+    @JoinTable(name = "PartyTags", //
+    /*            */joinColumns = @JoinColumn(name = "party"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "tag"))
     public Set<PartyTag> getTags() {
         if (tags == null) {

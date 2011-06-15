@@ -2,13 +2,13 @@ package com.bee32.sem.people;
 
 import com.bee32.plover.orm.ext.dict.CommonDictController;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.plover.servlet.context.Location;
+import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.Contribution;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuEntry;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.OrgType;
-import com.bee32.sem.people.entity.PartyLogCategory;
+import com.bee32.sem.people.entity.PartyRecordCategory;
 import com.bee32.sem.people.entity.PartyTag;
 import com.bee32.sem.people.entity.PersonSidType;
 
@@ -31,7 +31,7 @@ public class SEMPeopleMenu
 		    MenuEntry orgTypes = new MenuEntry("orgTypes", DICT.join(OrgType.class + "index.htm"));
 
 		    @Contribution("sa/people/dict")
-		    MenuEntry partyLogCategories = new MenuEntry("partyLogCategories", DICT.join(PartyLogCategory.class + "index.htm"));
+		    MenuEntry partyLogCategories = new MenuEntry("partyLogCategories", DICT.join(PartyRecordCategory.class + "index.htm"));
 
 		    @Contribution("sa/people/dict")
 		    MenuEntry partyTags = new MenuEntry("partyTags", DICT.join(PartyTag.class + "index.htm"));

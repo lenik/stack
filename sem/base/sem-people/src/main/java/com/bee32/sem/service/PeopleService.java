@@ -18,36 +18,32 @@ import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.user.util.SessionLoginInfo;
 
-public class PeopleService extends EnterpriseService implements IPeopleService {
+public class PeopleService
+        extends EnterpriseService
+        implements IPeopleService {
 
-	@Inject
-	private PartyDao partyDao;
+    @Inject
+    private PartyDao partyDao;
 
-
-	@Override
-	@Transactional(readOnly = true)
-	public List<PersonDto> listPersonByCurrentUser(Integer start, Integer count) {
-		HttpSession session = ThreadHttpContext.requireSession();
+    @Override
+    @Transactional(readOnly = true)
+    public List<PersonDto> listPersonByCurrentUser(Integer start, Integer count) {
+        HttpSession session = ThreadHttpContext.requireSession();
         IUserPrincipal currUser = (IUserPrincipal) SessionLoginInfo.getCurrentUser(session);
 
         List<Person> personList = partyDao.limitedList(Person.class, currUser, start, count);
 
-        return DTOs.marshalList(PersonDto.class,
-                PersonDto.CONTACTS | PersonDto.LOGS, personList);
-	}
+        return DTOs.marshalList(PersonDto.class, PersonDto.CONTACTS | PersonDto.RECORDS, personList);
+    }
 
-
-
-	@Override
-	@Transactional(readOnly = true)
-	public long listPersonByCurrentUserCount() {
-		HttpSession session = ThreadHttpContext.requireSession();
+    @Override
+    @Transactional(readOnly = true)
+    public long listPersonByCurrentUserCount() {
+        HttpSession session = ThreadHttpContext.requireSession();
         IUserPrincipal currUser = (IUserPrincipal) SessionLoginInfo.getCurrentUser(session);
 
         return partyDao.limitedListCount(Person.class, currUser);
-	}
-
-
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -57,8 +53,7 @@ public class PeopleService extends EnterpriseService implements IPeopleService {
 
         List<Org> orgList = partyDao.limitedList(Org.class, currUser, start, count);
 
-        return DTOs.marshalList(OrgDto.class,
-                OrgDto.CONTACTS | OrgDto.LOGS, orgList);
+        return DTOs.marshalList(OrgDto.class, OrgDto.CONTACTS | OrgDto.RECORDS, orgList);
     }
 
     @Override
@@ -69,6 +64,5 @@ public class PeopleService extends EnterpriseService implements IPeopleService {
 
         return partyDao.limitedListCount(Org.class, currUser);
     }
-
 
 }

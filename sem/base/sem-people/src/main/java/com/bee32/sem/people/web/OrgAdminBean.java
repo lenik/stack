@@ -1,6 +1,5 @@
 package com.bee32.sem.people.web;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +15,11 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.web.jsf.FacesContextUtils;
 
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.dto.ContactCategoryDto;
@@ -30,12 +28,13 @@ import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgTypeDto;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.OrgType;
+import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.service.IPeopleService;
 import com.bee32.sem.user.util.SessionLoginInfo;
 
 @Component
 @Scope("view")
-public class OrgAdminBean implements Serializable {
+public class OrgAdminBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -53,23 +52,18 @@ public class OrgAdminBean implements Serializable {
 	public void init() {
 		orgs = new LazyDataModel<OrgDto>() {
 
-			@Override
-			public List<OrgDto> load(int first, int pageSize,
-					String sortField, boolean sortOrder,
-					Map<String, String> filters) {
-				IPeopleService peopleService = (IPeopleService) FacesContextUtils
-						.getWebApplicationContext(
-								FacesContext.getCurrentInstance()).getBean(
-								"peopleService");
+            private static final long serialVersionUID = 1L;
 
-				return peopleService.listOrgByCurrentUser(first, pageSize);
-			}
+            @Override
+            public List<OrgDto> load(int first, int pageSize, String sortField, boolean sortOrder,
+                    Map<String, String> filters) {
+                IPeopleService peopleService = getBean(IPeopleService.class);
+                return peopleService.listOrgByCurrentUser(first, pageSize);
+            }
 
 		};
 
-		IPeopleService peopleService = (IPeopleService) FacesContextUtils
-				.getWebApplicationContext(FacesContext.getCurrentInstance())
-				.getBean("peopleService");
+		IPeopleService peopleService = getBean(IPeopleService.class);
 
 		orgs.setRowCount((int) peopleService.listOrgByCurrentUserCount());
 
@@ -126,40 +120,23 @@ public class OrgAdminBean implements Serializable {
 	}
 
     public List<SelectItem> getGenders() {
-        List genders = new ArrayList();
+        List<SelectItem> genders = new ArrayList<SelectItem>();
         for(Gender g : Gender.values()) {
-            genders.add(new SelectItem(g.ordinal(), g.toString()));
+            genders.add(new SelectItem(g.getValue(), g.getDisplayName()));
         }
         return genders;
     }
 
-
     public List<SelectItem> getOrgTypes() {
-        CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
-                .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
-                        "commonDataManager");
-
-        List<OrgType> orgTypes = commonDataManager.loadAll(OrgType.class);
+        List<OrgType> orgTypes = getDataManager().loadAll(OrgType.class);
         List<OrgTypeDto> orgTypeDtos = DTOs.marshalList(OrgTypeDto.class, orgTypes);
-        List orgTypeSelectItems = new ArrayList();
-        for(OrgTypeDto t : orgTypeDtos) {
-            orgTypeSelectItems.add(new SelectItem(t.getId(), t.getLabel()));
-        }
-        return orgTypeSelectItems;
+        return UIHelper.selectItemsFromDict(orgTypeDtos);
     }
 
-    public List<ContactCategoryDto> getContactCategories() {
-        CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
-        .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
-                "commonDataManager");
-
-        List<ContactCategory> contactCategories = commonDataManager.loadAll(ContactCategory.class);
+    public List<SelectItem> getContactCategories() {
+        List<ContactCategory> contactCategories = getDataManager().loadAll(ContactCategory.class);
         List<ContactCategoryDto> contactCategoryDtos = DTOs.marshalList(ContactCategoryDto.class, contactCategories);
-        List categories = new ArrayList();
-        for(ContactCategoryDto c : contactCategoryDtos) {
-            categories.add(new SelectItem(c.getId(), c.getLabel()));
-        }
-        return categories;
+        return UIHelper.selectItemsFromDict(contactCategoryDtos);
     }
 
     public boolean isContactSelected() {
@@ -206,15 +183,12 @@ public class OrgAdminBean implements Serializable {
 
 
     private void newOrg() {
-		org = new OrgDto(OrgDto.CONTACTS | OrgDto.LOGS);
+		org = new OrgDto(OrgDto.CONTACTS | OrgDto.RECORDS);
 
 		HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal currUser = (IUserPrincipal) SessionLoginInfo.getCurrentUser(session);
+        IUserPrincipal currUser = SessionLoginInfo.getCurrentUser(session);
 
-		CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
-				.getWebApplicationContext(FacesContext.getCurrentInstance())
-				.getBean("commonDataManager");
-		User user = commonDataManager.load(User.class, currUser.getId());
+		User user = loadEntity(User.class, currUser.getId());
 
 		org.setOwner(user);
 
@@ -253,15 +227,9 @@ public class OrgAdminBean implements Serializable {
 		}
 
 		try {
-            IPeopleService peopleService = (IPeopleService) FacesContextUtils
-                    .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
-                            "peopleService");
+            IPeopleService peopleService = getBean(IPeopleService.class);
 
-            CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
-                    .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
-                            "commonDataManager");
-
-            commonDataManager.delete(selectedOrg.unmarshal());
+            getDataManager().delete(selectedOrg.unmarshal());
 
             orgs.setRowCount((int) peopleService.listOrgByCurrentUserCount());
 
@@ -274,15 +242,9 @@ public class OrgAdminBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
 
         try {
-			IPeopleService peopleService = (IPeopleService) FacesContextUtils
-					.getWebApplicationContext(FacesContext.getCurrentInstance())
-					.getBean("peopleService");
+			IPeopleService peopleService = getBean(IPeopleService.class);
 
-			CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
-            .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
-                    "commonDataManager");
-
-			commonDataManager.saveOrUpdate(org.unmarshal());
+			getDataManager().saveOrUpdate(org.unmarshal());
 
             orgs.setRowCount((int) peopleService.listOrgByCurrentUserCount());
 
@@ -351,12 +313,8 @@ public class OrgAdminBean implements Serializable {
         }
 
         try {
-            CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
-                    .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
-                            "commonDataManager");
-
             org.getContacts().remove(selectedContact);
-            commonDataManager.saveOrUpdate(org.unmarshal());
+            getDataManager().saveOrUpdate(org.unmarshal());
 
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("提示", "删除联系方式失败;" + e.getMessage()));
@@ -372,12 +330,8 @@ public class OrgAdminBean implements Serializable {
         }
 
         try {
-            CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
-            .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
-                    "commonDataManager");
-
             org.getContacts().add(contact);
-            commonDataManager.saveOrUpdate(org.unmarshal());
+            getDataManager().saveOrUpdate(org.unmarshal());
 
 
             context.addMessage(null, new FacesMessage("提示", "联系方式保存成功"));

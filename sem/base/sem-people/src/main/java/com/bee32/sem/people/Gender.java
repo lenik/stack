@@ -1,5 +1,7 @@
 package com.bee32.sem.people;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +32,17 @@ public class Gender
     @Override
     protected Map<Character, Gender> getValueMap() {
         return valueMap;
+    }
+
+    public static Collection<Gender> values() {
+        Collection<Gender> values = valueMap.values();
+        return Collections.unmodifiableCollection(values);
+    }
+
+    public static Gender valueOf(Character value) {
+        if (value == null)
+            return null;
+        return valueOf(value.charValue());
     }
 
     public static Gender valueOf(char value) {

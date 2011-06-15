@@ -18,7 +18,7 @@ public class AbstractPartyDto<E extends Party>
     private static final long serialVersionUID = 1L;
 
     public static final int CONTACTS = 1;
-    public static final int LOGS = 2;
+    public static final int RECORDS = 2;
 
     public AbstractPartyDto() {
         super();
@@ -51,7 +51,7 @@ public class AbstractPartyDto<E extends Party>
     String sid;
 
     List<ContactDto> contacts;
-    List<PartyRecordDto> logs;
+    List<PartyRecordDto> records;
 
     @Override
     protected void _marshal(E source) {
@@ -72,8 +72,8 @@ public class AbstractPartyDto<E extends Party>
         if (selection.contains(CONTACTS))
             contacts = marshalList(ContactDto.class, source.getContacts());
 
-        if (selection.contains(LOGS))
-            logs = marshalList(PartyLogDto.class, source.getLogs());
+        if (selection.contains(RECORDS))
+            records = marshalList(PartyRecordDto.class, source.getRecords());
     }
 
     @Override
@@ -94,8 +94,8 @@ public class AbstractPartyDto<E extends Party>
         if (selection.contains(CONTACTS))
             mergeList(target, "contacts", contacts);
 
-        if (selection.contains(LOGS))
-            mergeList(target, "logs", logs);
+        if (selection.contains(RECORDS))
+            mergeList(target, "logs", records);
     }
 
     @Override
@@ -167,12 +167,12 @@ public class AbstractPartyDto<E extends Party>
         this.sid = sid;
     }
 
-    public List<PartyRecordDto> getLogs() {
-        return logs;
+    public List<PartyRecordDto> getRecords() {
+        return records;
     }
 
-    public void setLogs(List<PartyRecordDto> logs) {
-        this.logs = logs;
+    public void setRecords(List<PartyRecordDto> records) {
+        this.records = records;
     }
 
     public List<ContactDto> getContacts() {

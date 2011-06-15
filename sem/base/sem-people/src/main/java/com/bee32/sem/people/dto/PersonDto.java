@@ -14,7 +14,7 @@ public class PersonDto
 
     private static final long serialVersionUID = 1L;
 
-    Integer sex;
+    Character sex;
 
     String censusRegister;
     PersonSidTypeDto sidType;
@@ -41,7 +41,7 @@ public class PersonDto
     protected void _marshal(Person source) {
         super._marshal(source);
 
-        sex = source.getSex() == null? null : source.getSex().ordinal();
+        sex = source.getSex() == null? null : source.getSex().getValue();
 
         censusRegister = source.getCensusRegister();
 
@@ -60,36 +60,34 @@ public class PersonDto
 	protected void _unmarshalTo(Person target) {
 		super._unmarshalTo(target);
 
-		target.setSex(Gender.values()[sex]);
+		target.setSex(Gender.valueOf(sex));
 
-		target.setCensusRegister(censusRegister);
+        target.setCensusRegister(censusRegister);
 
 		// XXX - Should remove this later.
-		if(sidType.getId() == null || sidType.getId().isEmpty()) {
-		    sidType.marshalAs(MarshalType.NULL);
-		} else {
+		String sidTypeId = sidType.getId();
+		if (sidTypeId != null && sidTypeId.isEmpty())
+		    sidTypeId = null;
+		sidType.setId(sidTypeId);
 		sidType.marshalAs(MarshalType.ID_REF);
-		sidType.setName(sidType.getId());
-		}
-
 		merge(target, "sidType", sidType);
 
 		mergeSet(target, "roles", roles);
 	}
 
 
-    public Integer getSex() {
+    public Character getSex() {
         return sex;
+    }
+
+    public void setSex(Character sex) {
+        this.sex = sex;
     }
 
     public String getSexText() {
         if(sex == null)
             return null;
-        return Gender.values()[sex].toString();
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
+        return Gender.valueOf(sex).getDisplayName();
     }
 
     public String getCensusRegister() {
