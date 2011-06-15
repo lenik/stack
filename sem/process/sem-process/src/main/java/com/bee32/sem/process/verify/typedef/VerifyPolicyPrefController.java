@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bee32.plover.arch.util.ClassUtil;
@@ -40,13 +41,17 @@ public class VerifyPolicyPrefController
     @Inject
     VerifyService verifyService;
 
-    public VerifyPolicyPrefController() {
-        _createOTF = true;
+    @Override
+    protected void initController()
+            throws BeansException {
+        super.initController();
+
+        // XXX _createOTF = true;
         addHandler("createForm", EntityHandler.NOT_APPLICABLE);
         addHandler("create", EntityHandler.NOT_APPLICABLE);
     }
 
-    @Override
+// XXX @Override
     protected List<? extends VerifyPolicyPref> __list(HttpServletRequest req) {
         List<VerifyPolicyPref> prefs = new ArrayList<VerifyPolicyPref>();
 
@@ -75,9 +80,9 @@ public class VerifyPolicyPrefController
     @Override
     protected void fillFormExtra(ActionRequest req, ActionResult result) {
         // TODO req.getAttribute(EntityHandler.ENTITY_HELPER_ATTRIBUTE);
-        EntityHelper<?, ?> eh = req.getHandler().getEntityHelper();
+        EntityHelper<?, ?> eh = null; // XXX req.getHandler().getEntityHelper();
 
-        Class<?> verifiableType = result.entity.getType();
+        Class<?> verifiableType = null; // XXX result.entity.getType();
 
         List<VerifyPolicyDto> candidates = new ArrayList<VerifyPolicyDto>();
 
