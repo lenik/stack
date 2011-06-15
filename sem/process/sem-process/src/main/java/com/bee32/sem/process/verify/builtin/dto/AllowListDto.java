@@ -8,7 +8,7 @@ import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.basic.EntityHelper;
+import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.sem.process.verify.builtin.AllowList;
 
 public class AllowListDto

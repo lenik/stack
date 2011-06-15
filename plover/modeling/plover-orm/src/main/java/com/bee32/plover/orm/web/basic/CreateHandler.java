@@ -1,8 +1,9 @@
-package com.bee32.plover.orm.ext.basic;
+package com.bee32.plover.orm.web.basic;
 
 import java.io.Serializable;
 
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.web.IEntityForming;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 

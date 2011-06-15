@@ -4,8 +4,8 @@ import javax.free.Strings;
 import javax.inject.Inject;
 
 import com.bee32.icsf.principal.dao.UserDao;
-import com.bee32.plover.orm.ext.util.BasicEntityController;
-import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.web.basic.BasicEntityController;
+import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.service.IChanceService;

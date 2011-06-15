@@ -5,8 +5,8 @@ import javax.inject.Inject;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bee32.icsf.principal.dao.PrincipalDao;
-import com.bee32.plover.orm.ext.util.BasicEntityController;
-import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.web.basic.BasicEntityController;
+import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.PassToNext;
 import com.bee32.sem.process.verify.builtin.dao.PassStepDao;

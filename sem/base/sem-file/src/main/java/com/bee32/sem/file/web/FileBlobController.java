@@ -6,8 +6,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bee32.plover.orm.ext.util.BasicEntityController;
-import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.web.basic.BasicEntityController;
+import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.sem.file.SEMFileModule;
 import com.bee32.sem.file.blob.FileBlob;
 import com.bee32.sem.file.dto.FileBlobDto;

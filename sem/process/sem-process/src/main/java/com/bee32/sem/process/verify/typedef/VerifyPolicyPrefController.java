@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.orm.ext.basic.EntityHelper;
-import com.bee32.plover.orm.ext.basic.NotApplicableHandler;
-import com.bee32.plover.orm.ext.util.BasicEntityController;
-import com.bee32.plover.orm.ext.util.DataTableDxo;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.orm.web.EntityHandler;
+import com.bee32.plover.orm.web.EntityHelper;
+import com.bee32.plover.orm.web.basic.BasicEntityController;
+import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.SEMProcessModule;
@@ -42,8 +42,8 @@ public class VerifyPolicyPrefController
 
     public VerifyPolicyPrefController() {
         _createOTF = true;
-        addHandler("createForm", NotApplicableHandler.INSTANCE);
-        addHandler("create", NotApplicableHandler.INSTANCE);
+        addHandler("createForm", EntityHandler.NOT_APPLICABLE);
+        addHandler("create", EntityHandler.NOT_APPLICABLE);
     }
 
     @Override

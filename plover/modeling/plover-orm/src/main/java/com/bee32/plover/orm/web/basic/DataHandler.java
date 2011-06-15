@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.ext.basic;
+package com.bee32.plover.orm.web.basic;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,9 +13,12 @@ import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.ext.util.DataTableDxo;
-import com.bee32.plover.orm.ext.util.SearchModel;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.web.EntityHandler;
+import com.bee32.plover.orm.web.IEntityListing;
+import com.bee32.plover.orm.web.SelectionMode;
+import com.bee32.plover.orm.web.util.DataTableDxo;
+import com.bee32.plover.orm.web.util.SearchModel;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 

@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.service.ServicePrototypeLoader;
-import com.bee32.plover.orm.ext.util.EnumAlt;
+import com.bee32.plover.arch.util.EnumAlt;
 
 public class EventState
         extends EnumAlt<Integer, EventState> {

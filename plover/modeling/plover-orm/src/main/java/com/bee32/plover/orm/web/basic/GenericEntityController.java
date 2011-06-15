@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.ext.util;
+package com.bee32.plover.orm.web.basic;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
-import com.bee32.plover.servlet.context.ILocationConstants;
+import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.servlet.mvc.ActionResult;
 
 @ComponentTemplate

@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.util.BasicEntityController;
+import com.bee32.plover.orm.web.basic.BasicEntityController;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.service.VerifyService;

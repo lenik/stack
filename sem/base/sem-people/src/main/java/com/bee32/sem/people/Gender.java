@@ -3,8 +3,8 @@ package com.bee32.sem.people;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.bee32.plover.orm.ext.util.EnumAlt;
-import com.bee32.plover.orm.ext.util.NoSuchEnumException;
+import com.bee32.plover.arch.util.EnumAlt;
+import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class Gender
         extends EnumAlt<Character, Gender> {

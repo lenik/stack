@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bee32.plover.orm.ext.util.BasicEntityController;
-import com.bee32.plover.orm.ext.util.DataTableDxo;
+import com.bee32.plover.orm.web.basic.BasicEntityController;
+import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.sem.mail.SEMMailModule;
 import com.bee32.sem.mail.dao.MailDao;
 import com.bee32.sem.mail.dao.MailFolderDao;

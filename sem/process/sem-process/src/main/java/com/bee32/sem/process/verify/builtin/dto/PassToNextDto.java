@@ -7,7 +7,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.basic.EntityHelper;
+import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.sem.process.verify.builtin.PassToNext;
 
 public class PassToNextDto

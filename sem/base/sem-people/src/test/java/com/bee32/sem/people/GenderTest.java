@@ -3,7 +3,7 @@ package com.bee32.sem.people;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.orm.ext.util.NoSuchEnumException;
+import com.bee32.plover.arch.util.NoSuchEnumException;
 
 public class GenderTest
         extends Assert {

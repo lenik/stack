@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.ext.basic;
+package com.bee32.plover.orm.web;
 
 import java.io.Serializable;
 
@@ -130,5 +130,7 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
             throws ServletException {
         return "Not implemented.";
     }
+
+    public static final NotApplicableHandler NOT_APPLICABLE = new NotApplicableHandler();
 
 }

@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.ext.util;
+package com.bee32.plover.orm.web.basic;
 
 import java.io.Serializable;
 
@@ -9,15 +9,13 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.ext.basic.ContentHandler;
-import com.bee32.plover.orm.ext.basic.CreateOrEditFormHandler;
-import com.bee32.plover.orm.ext.basic.CreateOrEditHandler;
-import com.bee32.plover.orm.ext.basic.DataHandler;
-import com.bee32.plover.orm.ext.basic.IEntityForming;
-import com.bee32.plover.orm.ext.basic.IEntityListing;
-import com.bee32.plover.orm.ext.basic.IPostUpdating;
-import com.bee32.plover.orm.ext.basic.IndexHandler;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.web.EntityController;
+import com.bee32.plover.orm.web.IEntityForming;
+import com.bee32.plover.orm.web.IEntityListing;
+import com.bee32.plover.orm.web.IPostUpdating;
+import com.bee32.plover.orm.web.util.DataTableDxo;
+import com.bee32.plover.orm.web.util.SearchModel;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 

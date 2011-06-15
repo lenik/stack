@@ -5,8 +5,8 @@ import java.io.Serializable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bee32.plover.orm.ext.PloverORMExtModule;
-import com.bee32.plover.orm.ext.util.DataTableDxo;
-import com.bee32.plover.orm.ext.util.GenericEntityController;
+import com.bee32.plover.orm.web.basic.GenericEntityController;
+import com.bee32.plover.orm.web.util.DataTableDxo;
 
 @RequestMapping(CommonDictController.PREFIX + "*")
 public class CommonDictController<E extends DictEntity<K>, K extends Serializable, Dto extends DictEntityDto<E, K>>

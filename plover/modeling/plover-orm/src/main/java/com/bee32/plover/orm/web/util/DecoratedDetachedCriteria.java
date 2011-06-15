@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.ext.util;
+package com.bee32.plover.orm.web.util;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;

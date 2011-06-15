@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.ext.basic;
+package com.bee32.plover.orm.web.basic;
 
 import java.io.Serializable;
 
@@ -6,6 +6,9 @@ import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.web.EntityHandler;
+import com.bee32.plover.orm.web.IEntityForming;
+import com.bee32.plover.orm.web.SelectionMode;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 
