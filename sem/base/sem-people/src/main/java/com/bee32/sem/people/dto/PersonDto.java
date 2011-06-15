@@ -1,11 +1,9 @@
 package com.bee32.sem.people.dto;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.bee32.plover.arch.util.MarshalType;
-import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
@@ -22,8 +20,6 @@ public class PersonDto
     PersonSidTypeDto sidType;
 
     Set<PersonRoleDto> roles;
-
-    List<PersonContactDto> contacts;
 
     public PersonDto() {
         super();
@@ -58,8 +54,6 @@ public class PersonDto
             PersonRoleDto roleDto = new PersonRoleDto(role);
             roles.add(roleDto);
         }
-
-        contacts = marshalList(PersonContactDto.class, source.getContacts());
     }
 
 	@Override
@@ -81,7 +75,6 @@ public class PersonDto
 		merge(target, "sidType", sidType);
 
 		mergeSet(target, "roles", roles);
-		mergeList(target, "contacts", contacts);
 	}
 
 
@@ -122,15 +115,5 @@ public class PersonDto
     public void setRoles(Set<PersonRoleDto> roles) {
         this.roles = roles;
     }
-
-    public List<PersonContactDto> getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(List<PersonContactDto> contacts) {
-        this.contacts = contacts;
-    }
-
-
 
 }

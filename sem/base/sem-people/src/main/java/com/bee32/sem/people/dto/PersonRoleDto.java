@@ -28,7 +28,7 @@ public class PersonRoleDto
 
     @Override
     protected void _marshal(PersonRole source) {
-        person = new PartyDto().ref(source.getPerson());
+        person = new PartyDto(0).ref(source.getPerson());
         org = new OrgDto().ref(source.getOrg());
         orgUnit = source.getOrgUnit();
         role = source.getRole();

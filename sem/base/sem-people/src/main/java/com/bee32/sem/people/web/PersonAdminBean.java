@@ -24,9 +24,11 @@ import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.people.Gender;
-import com.bee32.sem.people.dto.PersonContactDto;
+import com.bee32.sem.people.dto.ContactCategoryDto;
+import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonSidTypeDto;
+import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.PersonSidType;
 import com.bee32.sem.service.IPeopleService;
 import com.bee32.sem.user.util.SessionLoginInfo;
@@ -44,7 +46,8 @@ public class PersonAdminBean implements Serializable {
 	private PersonDto selectedPerson;
 	private PersonDto person;
 
-	private PersonContactDto selectedContact;
+	private ContactDto selectedContact;
+	private ContactDto contact;
 
 	@PostConstruct
 	public void init() {
@@ -132,7 +135,6 @@ public class PersonAdminBean implements Serializable {
 
 
     public List<SelectItem> getSidTypes() {
-
         CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
                 .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
                         "commonDataManager");
@@ -146,6 +148,19 @@ public class PersonAdminBean implements Serializable {
         return sidTypeSelectItems;
     }
 
+    public List<ContactCategoryDto> getContactCategories() {
+        CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
+        .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
+                "commonDataManager");
+
+        List<ContactCategory> contactCategories = commonDataManager.loadAll(ContactCategory.class);
+        List<ContactCategoryDto> contactCategoryDtos = DTOs.marshalList(ContactCategoryDto.class, contactCategories);
+        List categories = new ArrayList();
+        for(ContactCategoryDto c : contactCategoryDtos) {
+            categories.add(new SelectItem(c.getId(), c.getLabel()));
+        }
+        return categories;
+    }
 
     public boolean isContactSelected() {
         if(selectedContact != null)
@@ -153,34 +168,35 @@ public class PersonAdminBean implements Serializable {
         return false;
     }
 
-    public PersonContactDto getSelectedContact() {
+    public ContactDto getSelectedContact() {
         return selectedContact;
     }
 
-    public void setSelectedContact(PersonContactDto selectedContact) {
+    public void setSelectedContact(ContactDto selectedContact) {
         this.selectedContact = selectedContact;
     }
 
-    public List<PersonContactDto> getContacts() {
-        List<PersonContactDto> contacts = new ArrayList<PersonContactDto>();
+    public List<ContactDto> getContacts() {
+        List<ContactDto> contacts = new ArrayList<ContactDto>();
 
         if(person != null && person.getId() != null) {
-            IPeopleService peopleService = (IPeopleService) FacesContextUtils
-                    .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
-                            "peopleService");
-
-            contacts = peopleService.listContactByPerson(person);
+            if(person.getContacts() != null) {
+                contacts = person.getContacts();
+            }
         }
 
         return contacts;
     }
 
+    public ContactDto getContact() {
+        if(contact == null)
+            newContact();
+        return contact;
+    }
 
-
-
-
-
-
+    public void setContact(ContactDto contact) {
+        this.contact = contact;
+    }
 
 
 
@@ -190,7 +206,7 @@ public class PersonAdminBean implements Serializable {
 
 
     private void newPerson() {
-		person = new PersonDto();
+		person = new PersonDto(PersonDto.CONTACTS | PersonDto.LOGS);
 
 		HttpSession session = ThreadHttpContext.requireSession();
         IUserPrincipal currUser = (IUserPrincipal) SessionLoginInfo.getCurrentUser(session);
@@ -306,14 +322,77 @@ public class PersonAdminBean implements Serializable {
 
     }
 
-    public void onRowSelectContact(SelectEvent event) {
+    private void newContact() {
+        contact = new ContactDto();
 
+        ContactCategoryDto category = new ContactCategoryDto();
+        contact.setCategory(category);
+        contact.setParty(person);
+    }
+
+	public void newContact_() {
+	    if(person == null || person.getId() == null) {
+	        FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("提示", "请选择需要新增联系方式的联系人!"));
+	    }
+	    newContact();
+	}
+
+	public void modifyContact_() {
+	    contact = selectedContact;
+	}
+
+    public void deleteContact_() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if(selectedContact == null) {
+            context.addMessage(null, new FacesMessage("提示", "请选择需要删除的联系方式!"));
+            return;
+        }
+
+        try {
+            CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
+                    .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
+                            "commonDataManager");
+
+            person.getContacts().remove(selectedContact);
+            commonDataManager.saveOrUpdate(person.unmarshal());
+
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("提示", "删除联系方式失败;" + e.getMessage()));
+        }
+    }
+
+    public void saveContact_() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if(person == null || person.getId() == null) {
+            context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的联系人!"));
+            return;
+        }
+
+        try {
+            CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
+            .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
+                    "commonDataManager");
+
+            person.getContacts().add(contact);
+            commonDataManager.saveOrUpdate(person.unmarshal());
+
+
+            context.addMessage(null, new FacesMessage("提示", "联系方式保存成功"));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("提示", "联系方式保存失败" + e.getMessage()));
+            e.printStackTrace();
+        }
+    }
+
+    public void onRowSelectContact(SelectEvent event) {
+        contact = selectedContact;
     }
 
     public void onRowUnselectContact(UnselectEvent event) {
-
+        newContact();
     }
-
-
 
 }

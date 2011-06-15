@@ -1,11 +1,8 @@
 package com.bee32.sem.people.entity;
 
-import java.util.List;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("ORG")
@@ -38,20 +35,6 @@ public class Org
 
     public void setSize(int size) {
         this.size = size;
-    }
-
-
-    @Transient
-    @SuppressWarnings("unchecked")
-    public List<OrgContact> getContacts() {
-        List<? extends Contact> _contacts = super.getContacts_();
-        return (List<OrgContact>) _contacts;
-    }
-
-    public void setContacts(List<OrgContact> contacts) {
-        if (contacts == null)
-            throw new NullPointerException("contacts");
-        super.setContacts_(contacts);
     }
 
 }

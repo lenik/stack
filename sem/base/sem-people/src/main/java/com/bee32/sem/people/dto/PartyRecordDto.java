@@ -51,7 +51,7 @@ public class PartyRecordDto
         date = map.getDate("date");
 
         int partyId = map.getInt("party.id");
-        party = new PartyDto().ref(partyId);
+        party = new PartyDto(0).ref(partyId);
 
         description = map.getString("description");
     }

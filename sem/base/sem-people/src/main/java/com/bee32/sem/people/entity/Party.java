@@ -55,7 +55,7 @@ public abstract class Party
 
     String sid;
 
-    List<? extends Contact> contacts = new ArrayList<Contact>();
+    List<Contact> contacts = new ArrayList<Contact>();
     List<PartyRecord> records = new ArrayList<PartyRecord>();
 
     protected Party() {
@@ -218,13 +218,13 @@ public abstract class Party
         this.sid = sid;
     }
 
-    @OneToMany(mappedBy = "party", targetEntity = Contact.class)
+    @OneToMany(mappedBy = "party")
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    List<? extends Contact> getContacts_() {
+    public List<Contact> getContacts() {
         return contacts;
     }
 
-    void setContacts_(List<? extends Contact> contacts) {
+    public void setContacts(List<Contact> contacts) {
         if (contacts == null)
             throw new NullPointerException("contacts");
         this.contacts = contacts;

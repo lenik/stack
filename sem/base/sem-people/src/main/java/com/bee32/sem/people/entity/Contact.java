@@ -18,7 +18,7 @@ import com.bee32.plover.orm.ext.xp.EntityExt;
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
 public class Contact
-        extends EntityExt<Long, ContactXP> {
+        extends EntityExt<Integer, ContactXP> {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,9 +27,11 @@ public class Contact
     String address;
     String postCode;
     String tel;
+    String mobile;
     String fax;
     String email;
     String website;
+    String qq;
 
     /**
      * 联系人分类
@@ -93,6 +95,18 @@ public class Contact
     }
 
     /**
+     * 移动电话
+     */
+    @Column(length = 30)
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    /**
      * 传真
      */
     @Column(length = 30)
@@ -126,6 +140,15 @@ public class Contact
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    @Column(length = 15)
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
     }
 
 }

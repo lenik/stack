@@ -11,10 +11,8 @@ public class OrgDto
 
     private static final long serialVersionUID = 1L;
 
-
     OrgTypeDto type;
     int size;
-
 
     public OrgDto() {
         super();
@@ -22,6 +20,14 @@ public class OrgDto
 
     public OrgDto(Org source) {
         super(source);
+    }
+
+    public OrgDto(int selection) {
+        super(selection);
+    }
+
+    public OrgDto(int selection, Org source) {
+        super(selection, source);
     }
 
     @Override

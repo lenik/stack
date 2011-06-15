@@ -7,12 +7,12 @@ import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.misc.Sets;
+import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.PartyTag;
 import com.bee32.sem.people.entity.Person;
-import com.bee32.sem.people.entity.PersonContact;
 import com.bee32.sem.people.entity.PersonRole;
 import com.bee32.sem.people.entity.PersonSidType;
 
@@ -64,19 +64,28 @@ public class SEMPeopleSamples
         weiXiaoBao.setSidType(PersonSidType.IDENTITYCARD);
         weiXiaoBao.setTags(Sets.newSet(PartyTag.CUSTOMER));
 
-        PersonContact weiXiaoBaoNormal = new PersonContact();
-        weiXiaoBaoNormal.setAddress("东城区景山前街4号紫禁城敬事房 大清帝国内务敬事房");
-        weiXiaoBaoNormal.setCategory(ContactCategory.NORMAL);
-        weiXiaoBaoNormal.setEmail("weixiaobao@ldj.novel");
-        weiXiaoBaoNormal.setFax("43 58938283");
-        weiXiaoBaoNormal.setHomeTel("43 9842 9834");
-        weiXiaoBaoNormal.setMobileTel("135 43823439");
-        weiXiaoBaoNormal.setPerson(weiXiaoBao);
-        weiXiaoBaoNormal.setPostCode("021286");
-        weiXiaoBaoNormal.setQq("123456");
-        weiXiaoBaoNormal.setWebsite("http://www.weixiaobao.com");
-        weiXiaoBaoNormal.setWorkTel("43435495");
-        weiXiaoBao.setContacts(Arrays.asList(weiXiaoBaoNormal));
+        Contact weiXiaoBaoHome = new Contact();
+        weiXiaoBaoHome.setParty(weiXiaoBao);
+        weiXiaoBaoHome.setAddress("东城区景山前街4号紫禁城敬事房 胡同1号");
+        weiXiaoBaoHome.setCategory(ContactCategory.HOME);
+        weiXiaoBaoHome.setTel("010 43728693");
+        weiXiaoBaoHome.setMobile("13543823439");
+        weiXiaoBaoHome.setEmail("weixiaobao@ldj.novel");
+        weiXiaoBaoHome.setPostCode("021286");
+        weiXiaoBaoHome.setQq("123456");
+
+        Contact weiXiaoBaoWork = new Contact();
+        weiXiaoBaoWork.setParty(weiXiaoBao);
+        weiXiaoBaoWork.setAddress("东城区景山前街4号紫禁城敬事房 大清帝国内务敬事房");
+        weiXiaoBaoWork.setCategory(ContactCategory.WORK);
+        weiXiaoBaoWork.setTel("010 2397825");
+        weiXiaoBaoWork.setMobile("13832947841");
+        weiXiaoBaoWork.setEmail("weixiaobao@ibm.com.cn");
+        weiXiaoBaoWork.setFax("43 58938283");
+        weiXiaoBaoWork.setPostCode("021286");
+        weiXiaoBaoWork.setWebsite("http://www.weixiaobao.com");
+
+        weiXiaoBao.setContacts(Arrays.asList(weiXiaoBaoHome, weiXiaoBaoWork));
 
         PersonRole salesTitle = new PersonRole();
         salesTitle.setPerson(bentley);

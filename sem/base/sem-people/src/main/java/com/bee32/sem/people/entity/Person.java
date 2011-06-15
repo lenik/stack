@@ -1,7 +1,6 @@
 package com.bee32.sem.people.entity;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -11,7 +10,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -76,19 +74,6 @@ public class Person
      */
     public void setSidType(PersonSidType sidType) {
         this.sidType = sidType;
-    }
-
-    @Transient
-    @SuppressWarnings("unchecked")
-    public List<PersonContact> getContacts() {
-        List<? extends Contact> _contacts = super.getContacts_();
-        return (List<PersonContact>) _contacts;
-    }
-
-    public void setContacts(List<PersonContact> contacts) {
-        if (contacts == null)
-            throw new NullPointerException("contacts");
-        super.setContacts_(contacts);
     }
 
     @OneToMany
