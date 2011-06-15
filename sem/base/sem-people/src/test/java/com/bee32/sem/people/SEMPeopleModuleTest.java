@@ -32,4 +32,5 @@ public class SEMPeopleModuleTest
             throws IOException {
         new SEMPeopleModuleTest().browseAndWait("/people/personAdmin.do");
     }
+
 }
