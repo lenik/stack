@@ -7,6 +7,7 @@ import javax.free.FilePath;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
@@ -49,13 +50,16 @@ public abstract class CompositeController
 
         int lastSlash = internalPath.length();
         while (true) {
-            lastSlash = internalPath.lastIndexOf('/', lastSlash - 1);
             if (lastSlash == -1)
                 break;
 
-            String actionNameTest = internalPath.substring(lastSlash);
-            assert actionNameTest.startsWith("/");
-            actionNameTest = actionNameTest.substring(1);
+            String actionNameTest;
+
+            lastSlash = internalPath.lastIndexOf('/', lastSlash - 1);
+            if (lastSlash == -1)
+                actionNameTest = internalPath;
+            else
+                actionNameTest = internalPath.substring(lastSlash + 1);
 
             IActionHandler handler = actionMap.get(actionNameTest);
             if (handler != null) {
@@ -66,7 +70,10 @@ public abstract class CompositeController
                 // request.setAttribute(PREFIX_ATTRIBUTE, _prefix);
                 req.setPrefix(_prefix);
 
-                String pathWithoutActionName = internalPath.substring(0, lastSlash);
+                String pathWithoutActionName = null;
+                if (lastSlash != -1)
+                    pathWithoutActionName = internalPath.substring(0, lastSlash);
+
                 // request.setAttribute(PATH_PARAMETER_ATTRIBUTE, pathWithoutActionName);
                 req.setPathParameter(pathWithoutActionName);
 
@@ -75,7 +82,11 @@ public abstract class CompositeController
 
                 result = invokeHandler(handler, req, result);
 
-                result.wireUp();
+                if (result != null) {
+                    // XXX postfix??
+                    result.wireUp();
+                }
+
                 return result;
             }
         }
@@ -102,6 +113,11 @@ public abstract class CompositeController
             throw new NullPointerException("name");
         if (handler == null)
             throw new NullPointerException("handler");
+
+        // Inject handler fields.
+        AutowireCapableBeanFactory acbf = getApplicationContext().getAutowireCapableBeanFactory();
+        acbf.autowireBean(handler);
+
         actionMap.put(name, handler);
     }
 
