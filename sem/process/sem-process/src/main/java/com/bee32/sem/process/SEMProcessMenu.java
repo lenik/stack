@@ -8,7 +8,7 @@ import com.bee32.sem.frame.menu.MenuEntry;
 public class SEMProcessMenu
         extends MenuContribution {
 
-    static Location PROCESS = WEB_APP.join(SEMProcessModule.PREFIX);
+    static Location PROCESS = WEB_APP.join(SEMProcessModule.PREFIX + "/");
 
     @Contribution("sa")
     MenuEntry process = new MenuEntry("process");

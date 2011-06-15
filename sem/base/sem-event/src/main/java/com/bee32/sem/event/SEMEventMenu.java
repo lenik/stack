@@ -15,8 +15,8 @@ public class SEMEventMenu
         extends MenuContribution
         implements ITypeAbbrAware {
 
-    static Location EVENT = WEB_APP.join(EventController.PREFIX);
-    static Location DICT = WEB_APP.join(CommonDictController.PREFIX);
+    static Location EVENT = WEB_APP.join(EventController.PREFIX + "/");
+    static Location DICT = WEB_APP.join(CommonDictController.PREFIX + "/");
 
     @Contribution("sa")
     MenuEntry eventAdmin = new MenuEntry("event");

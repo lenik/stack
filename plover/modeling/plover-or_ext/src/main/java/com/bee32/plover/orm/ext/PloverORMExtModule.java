@@ -8,7 +8,7 @@ import com.bee32.plover.pub.oid.PloverOids;
 public class PloverORMExtModule
         extends Module {
 
-    public static final String PREFIX = "/3/12/3/5/";
+    public static final String PREFIX = "/3/12/3/5";
 
     @Override
     protected void preamble() {

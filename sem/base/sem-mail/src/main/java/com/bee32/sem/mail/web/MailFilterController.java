@@ -18,11 +18,11 @@ import com.bee32.sem.mail.dto.MailFilterDto;
 import com.bee32.sem.mail.dto.MailFolderDto;
 import com.bee32.sem.mail.entity.MailFilter;
 
-@RequestMapping(MailFilterController.PREFIX + "*")
+@RequestMapping(MailFilterController.PREFIX + "/*")
 public class MailFilterController
         extends BasicEntityController<MailFilter, Integer, MailFilterDto> {
 
-    public static final String PREFIX = SEMMailModule.PREFIX + "/filter/";
+    public static final String PREFIX = SEMMailModule.PREFIX + "/filter";
 
     @Inject
     MailFilterDao mailFilterDao;
