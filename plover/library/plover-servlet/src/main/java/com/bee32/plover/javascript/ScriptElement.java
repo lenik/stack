@@ -12,7 +12,7 @@ import javax.free.WriterPrintOut;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bee32.plover.servlet.context.ITextForRequest;
+import com.bee32.plover.rtx.location.ITextForRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.plover.util.PrettyPrintStream;
