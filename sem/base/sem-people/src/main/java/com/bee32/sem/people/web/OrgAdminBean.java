@@ -138,17 +138,9 @@ public class OrgAdminBean extends EntityViewBean {
     }
 
     public List<SelectItem> getTags() {
-        CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
-        .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
-                "commonDataManager");
-
-        List<PartyTag> partyTags = commonDataManager.loadAll(PartyTag.class);
+        List<PartyTag> partyTags = getDataManager().loadAll(PartyTag.class);
         List<PartyTagDto> partyTagDtos = DTOs.marshalList(PartyTagDto.class, partyTags);
-        List tags = new ArrayList<SelectItem>();
-        for(PartyTagDto t : partyTagDtos) {
-            tags.add(new SelectItem(t.getId(), t.getLabel()));
-        }
-        return tags;
+        return UIHelper.selectItemsFromDict(partyTagDtos);
     }
 
 
@@ -387,11 +379,8 @@ public class OrgAdminBean extends EntityViewBean {
             return;
         }
 
-        CommonDataManager commonDataManager = (CommonDataManager) FacesContextUtils
-                .getWebApplicationContext(FacesContext.getCurrentInstance()).getBean(
-                        "commonDataManager");
         for(String tagId : selectedTagsToAdd) {
-            PartyTag tag = commonDataManager.load(PartyTag.class, tagId);
+            PartyTag tag = loadEntity(PartyTag.class, tagId);
             PartyTagDto t = new PartyTagDto(tag);
             if(!org.getTags().contains(t))
                 org.getTags().add(t);

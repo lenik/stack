@@ -95,7 +95,7 @@ public class AbstractPartyDto<E extends Party>
             mergeList(target, "contacts", contacts);
 
         if (selection.contains(RECORDS))
-            mergeList(target, "logs", records);
+            mergeList(target, "records", records);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class SEMPeopleModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMPeopleModuleTest().browseAndWait("/people/personAdmin.do");
+        new SEMPeopleModuleTest().browseAndWait("/people/personAdmin.jsf");
     }
 
 }
