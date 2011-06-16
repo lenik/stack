@@ -51,6 +51,33 @@ public class ActionResult
         this.put("V", V);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * The view name in {@link ActionResult} is absolute view if starts-with '/', otherwise it's
+     * relative.
+     *
+     * @return Relative or absolute view name, <code>null</code> for the default.
+     */
+    @Override
+    public String getViewName() {
+        return super.getViewName();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * The view name in {@link ActionResult} is absolute view if starts-with '/', otherwise it's
+     * relative.
+     *
+     * @param viewName
+     *            Relative or absolute view name, <code>null</code> for the default.
+     */
+    @Override
+    public void setViewName(String viewName) {
+        super.setViewName(viewName);
+    }
+
     public HttpServletResponse getResponse() {
         if (response == null)
             throw new IllegalStateException("HttpServletResponse isn't set in result view.");
