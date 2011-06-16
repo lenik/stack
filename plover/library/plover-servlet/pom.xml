@@ -71,7 +71,7 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-inject</artifactId>
-            <version>0.2.100</version>
+            <version>0.2.102</version>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>

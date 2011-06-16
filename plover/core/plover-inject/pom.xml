@@ -6,7 +6,7 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>plover-inject</artifactId>
-    <version>0.2.100</version>
+    <version>0.2.102</version>
     <dependencies>
         <dependency>
             <groupId>javax.inject</groupId>
