@@ -10,7 +10,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 
-import org.primefaces.component.selectonelistbox.SelectOneListbox;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -52,7 +51,7 @@ public class OrgAdminBean extends EntityViewBean {
 
 	private List<String> selectedTagsToAdd;
 
-	private SelectOneListbox tagListbox;
+	private String selectedTagId;
 
 	@PostConstruct
 	public void init() {
@@ -188,17 +187,13 @@ public class OrgAdminBean extends EntityViewBean {
         this.selectedTagsToAdd = selectedTagsToAdd;
     }
 
-    public SelectOneListbox getTagListbox() {
-        return tagListbox;
+    public String getSelectedTagId() {
+        return selectedTagId;
     }
 
-    public void setTagListbox(SelectOneListbox tagListbox) {
-        this.tagListbox = tagListbox;
+    public void setSelectedTagId(String selectedTagId) {
+        this.selectedTagId = selectedTagId;
     }
-
-
-
-
 
 
 
@@ -299,11 +294,11 @@ public class OrgAdminBean extends EntityViewBean {
 
 
     public void onRowSelect(SelectEvent event) {
-
+        System.out.println("org row select");
     }
 
     public void onRowUnselect(UnselectEvent event) {
-
+        System.out.println("org row unselect");
     }
 
     private void newContact() {
@@ -396,9 +391,7 @@ public class OrgAdminBean extends EntityViewBean {
         }
 
         for(PartyTagDto t : org.getTags()) {
-            String tagId = (String) tagListbox.getValue();
-
-            if(t.getId().equals(tagId)) {
+            if(t.getId().equals(selectedTagId)) {
                 org.getTags().remove(t);
                 return;
             }

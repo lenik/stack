@@ -11,27 +11,17 @@
       xmlns:sem="http://bee32.com/sem/functions"
       xmlns:p="http://primefaces.prime.com.tr/ui"
       xmlns:t="http://myfaces.apache.org/tomahawk"
-      ><!-- InstanceBegin template="/Templates/seccaJsf.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
+      >
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 
 <ui:composition template="/template/primefaces.xhtml">
 
-<!-- InstanceBeginEditable name="title" -->
-
-
     <ui:define name="title">客户/供应商管理</ui:define>
 
-<!-- InstanceEndEditable -->
 
-
-
-
-    <ui:define name="head">
-<!-- InstanceBeginEditable name="head" -->
-
-
+    <ui:define name="content">
 
         <h:outputStylesheet>
             .detail_col_title {
@@ -43,22 +33,7 @@
             }
         </h:outputStylesheet>
 
-
-
-    <!-- InstanceEndEditable -->
-    </ui:define>
-
-
-
-    <ui:define name="body">
-<!-- InstanceBeginEditable name="body" -->
-
-
-
         <h:form id="orgForm">
-
-            <t:saveState value="#{orgAdminBean.editable}" />
-
             <p:growl id="growl" showDetail="true" />
 
             <p:panel header="客户/供应商管理">
@@ -107,10 +82,10 @@
                             selection="#{orgAdminBean.selectedOrg}"
                             selectionMode="single" rowIndexVar="rowIndex">
 
-                            <p:ajax event="selectRow"
+                            <p:ajax event="rowSelect"
                                 listener="#{orgAdminBean.onRowSelect}"
                                 update="orgForm:orgToolbar" />
-                            <p:ajax event="unselectRow"
+                            <p:ajax event="rowUnselect"
                                 listener="#{orgAdminBean.onRowUnselect}"
                                 update="orgForm:orgToolbar" />
 
@@ -170,7 +145,7 @@
                             <h:outputLabel for="orgTags" value="标签" />
 							<t:panelGroup colspan="3">
 							    <h:panelGrid columns="2">
-									<p:selectOneListbox id="orgTags" binding="#{orgAdminBean.tagListbox}" style="height:100px; width:300px;">
+									<p:selectOneListbox id="orgTags" value="#{orgAdminBean.selectedTagId}" style="height:100px; width:300px;">
 										<f:selectItems value="#{orgAdminBean.org.tags}" var="tag"
 											itemLabel="#{tag.label}" itemValue="#{tag.id}" />
 									</p:selectOneListbox>
@@ -245,10 +220,10 @@
                                 selection="#{orgAdminBean.selectedContact}"
                                 selectionMode="single" rowIndexVar="rowIndex">
 
-                                <p:ajax event="selectRow"
+                                <p:ajax event="rowSelect"
                                     listener="#{orgAdminBean.onRowSelectContact}"
                                     update="orgForm:contactToolbar" />
-                                <p:ajax event="unselectRow"
+                                <p:ajax event="rowUnselect"
                                     listener="#{orgAdminBean.onRowUnselectContact}"
                                     update="orgForm:contactToolbar" />
 
@@ -257,6 +232,13 @@
                                         <h:outputText value="序号" />
                                     </f:facet>
                                     <h:outputText value="#{rowIndex + 1}" />
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="地址" />
+                                    </f:facet>
+                                    <h:outputText value="#{contact.category.label}" />
                                 </p:column>
 
                                 <p:column>
@@ -398,9 +380,6 @@
             </p:dialog>
         </h:form>
 
-
-
-<!-- InstanceEndEditable -->
     </ui:define>
 </ui:composition>
-<!-- InstanceEnd --></html>
+</html>

@@ -275,13 +275,12 @@ public class PersonAdminBean extends EntityViewBean {
 	    person = selectedPerson;
 	}
 
-
     public void onRowSelect(SelectEvent event) {
-
+        System.out.println("person row select");
     }
 
     public void onRowUnselect(UnselectEvent event) {
-
+        System.out.println("person row unselect");
     }
 
     private void _newContact() {

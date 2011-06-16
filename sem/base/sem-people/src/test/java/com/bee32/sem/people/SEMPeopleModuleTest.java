@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import com.bee32.plover.orm.unit.Using;
+import com.bee32.plover.servlet.test.RabbitServletContext;
 import com.bee32.sem.test.SEMTestCase;
 
 @Using(SEMPeopleUnit.class)
@@ -38,5 +39,6 @@ public class SEMPeopleModuleTest
         Locale zh = Locale.forLanguageTag("zh-CN");
         Locale.setDefault(zh);
     }
+
 
 }

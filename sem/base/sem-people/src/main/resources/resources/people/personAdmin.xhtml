@@ -85,13 +85,12 @@
 							selection="#{personAdminBean.selectedPerson}"
 							selectionMode="single" rowIndexVar="rowIndex">
 
-							<p:ajax event="selectRow"
+							<p:ajax event="rowSelect"
 								listener="#{personAdminBean.onRowSelect}"
 								update="personForm:personToolbar" />
-							<p:ajax event="unselectRow"
+							<p:ajax event="rowUnselect"
 								listener="#{personAdminBean.onRowUnselect}"
 								update="personForm:personToolbar" />
-
 
 							<p:column>
 								<f:facet name="header">
@@ -219,14 +218,14 @@
 								selection="#{personAdminBean.selectedContact}"
 								selectionMode="single" rowIndexVar="rowIndex">
 
-<!--
-								<p:ajax event="selectRow"
+
+								<p:ajax event="rowSelect"
 									listener="#{personAdminBean.onRowSelectContact}"
 									update="personForm:contactToolbar" />
-								<p:ajax event="unselectRow"
+								<p:ajax event="rowUnselect"
 									listener="#{personAdminBean.onRowUnselectContact}"
 									update="personForm:contactToolbar" />
- -->
+
 
 								<p:column>
 									<f:facet name="header">
@@ -234,6 +233,13 @@
 									</f:facet>
 									<h:outputText value="#{rowIndex + 1}" />
 								</p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="地址" />
+                                    </f:facet>
+                                    <h:outputText value="#{contact.category.label}" />
+                                </p:column>
 
 								<p:column>
 									<f:facet name="header">
