@@ -47,10 +47,14 @@
         <div style="clear: both" />
     </div>
 
-    <h2>
-        <ui:insert name="title" />
-    </h2>
-    <hr />
+    <ui:insert name="pageTitle">
+        <div id="pageTitle">
+            <h2>
+                <ui:insert name="title" />
+            </h2>
+            <hr />
+        </div>
+    </ui:insert>
 
     <ui:insert name="content">正在构建中……</ui:insert>
 
