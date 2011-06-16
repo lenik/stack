@@ -106,11 +106,17 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
         addHandler("index", /*      */new IndexHandler<E, K>(entityType));
         addHandler("data", /*       */new DataHandler<E, K>(entityType, impl));
+
         addHandler("content", /*    */new ContentHandler<E, K>(entityType, impl));
+
         addHandler("createForm", /* */new Form1(entityType, impl));
         addHandler("editForm", /*   */new Form1(entityType, impl));
+
         addHandler("create", /*     */new CreateOrEditHandler<E, K>(entityType, impl));
         addHandler("edit", /*       */new CreateOrEditHandler<E, K>(entityType, impl));
+
+        addHandler("delete", /*     */new DeleteHandler<E, K>(entityType));
+
         // addHandler(new ChooseHandler<E, K>(impl));
     }
 
