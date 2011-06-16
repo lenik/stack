@@ -1,6 +1,5 @@
 package com.bee32.sem.event;
 
-import com.bee32.plover.orm.ext.dict.CommonDictController;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.event.entity.EventCategory;
@@ -16,22 +15,19 @@ public class SEMEventMenu
         implements ITypeAbbrAware {
 
     static Location EVENT = WEB_APP.join(EventController.PREFIX + "/");
-    static Location DICT = WEB_APP.join(CommonDictController.PREFIX + "/");
 
     @Contribution("sa")
     MenuEntry eventAdmin = new MenuEntry("event");
 
     @Contribution("sa/event")
-    MenuEntry categories = new MenuEntry(10, "categories", //
-            DICT.join(ABBR.abbr(EventCategory.class) + "/index.do"));
+    MenuEntry categories = new MenuEntry(10, "categories", getDictIndex(EventCategory.class));
 
     @Contribution("sa/event")
     MenuEntry priorities = new MenuEntry(11, "priorities", //
             WEB_APP.join(EventPriorityController.PREFIX).join("index.do"));
 
     @Contribution("sa/event")
-    MenuEntry states = new MenuEntry(12, "states", //
-            DICT.join(ABBR.abbr(EventStatus.class) + "/index.do"));
+    MenuEntry states = new MenuEntry(12, "states", getDictIndex(EventStatus.class));
 
     @Contribution(".")
     MenuEntry event = new MenuEntry("event");

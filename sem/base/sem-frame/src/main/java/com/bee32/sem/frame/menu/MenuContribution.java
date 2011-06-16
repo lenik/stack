@@ -14,7 +14,11 @@ import com.bee32.plover.arch.Composite;
 import com.bee32.plover.arch.util.res.ClassResourceProperties;
 import com.bee32.plover.arch.util.res.IProperties;
 import com.bee32.plover.inject.ComponentTemplate;
+import com.bee32.plover.orm.ext.dict.CommonDictController;
+import com.bee32.plover.orm.ext.dict.DictEntity;
+import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.rtx.location.ILocationConstants;
+import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.Contribution;
 
 /**
@@ -28,7 +32,7 @@ import com.bee32.sem.frame.Contribution;
 @ComponentTemplate
 public abstract class MenuContribution
         extends Composite
-        implements ILocationConstants {
+        implements ILocationConstants, ITypeAbbrAware {
 
     private List<Entry<String, IMenuEntry>> contributions = new ArrayList<Map.Entry<String, IMenuEntry>>();
 
@@ -87,6 +91,13 @@ public abstract class MenuContribution
         List<Entry<String, IMenuEntry>> retval = this.contributions;
         this.contributions = null;
         return retval;
+    }
+
+    static Location DICT = WEB_APP.join(CommonDictController.PREFIX + "/");
+
+    protected static Location getDictIndex(Class<? extends DictEntity<?>> dictType) {
+        Location dictIndex = DICT.join(ABBR.abbr(dictType) + "/index.do");
+        return dictIndex;
     }
 
 }
