@@ -41,7 +41,7 @@ public abstract class DataTransferObject<S, C>
     protected MarshalType marshalType = MarshalType.SELECTION;
     protected boolean nullRef;
 
-    Stack<IMarshalSession<C>> sessionStack;
+    Stack<IMarshalSession> sessionStack;
 
     protected DataTransferObject(Class<? extends S> sourceType) {
         initSourceType(sourceType);
@@ -101,7 +101,7 @@ public abstract class DataTransferObject<S, C>
         return null;
     }
 
-    protected IMarshalSession<C> getSession() {
+    protected IMarshalSession getSession() {
         if (sessionStack == null || sessionStack.isEmpty())
             throw new IllegalStateException("No marshal session.");
         return sessionStack.lastElement();
@@ -121,12 +121,12 @@ public abstract class DataTransferObject<S, C>
     /**
      * Enter session
      */
-    protected final void enter(IMarshalSession<C> session) {
+    protected final void enter(IMarshalSession session) {
         if (session == null)
             throw new NullPointerException("session");
 
         if (sessionStack == null)
-            sessionStack = new Stack<IMarshalSession<C>>();
+            sessionStack = new Stack<IMarshalSession>();
 
         sessionStack.push(session);
     }
@@ -141,15 +141,15 @@ public abstract class DataTransferObject<S, C>
         sessionStack.pop();
     }
 
-    IMarshalSession<C> createOrReuseSession(C context) {
+    IMarshalSession createOrReuseSession(C context) {
         if (sessionStack == null || sessionStack.isEmpty())
-            return new MarshalSession<C>(context);
+            return new MarshalSession(context);
         else
             return sessionStack.lastElement();
     }
 
     @Override
-    public synchronized final <D extends IDataTransferObject<S, C>> D marshal(IMarshalSession<C> session, S source) {
+    public synchronized final <D extends DataTransferObject<S, C>> D marshal(IMarshalSession session, S source) {
         D marshalled = session.getMarshalled(source, marshalType, selection.bits);
         if (marshalled != null)
             return marshalled;
@@ -163,7 +163,7 @@ public abstract class DataTransferObject<S, C>
     }
 
     @Override
-    public synchronized final S merge(IMarshalSession<C> session, S target) {
+    public synchronized final S merge(IMarshalSession session, S target) {
         enter(session);
         try {
             return mergeImpl(target);
@@ -173,7 +173,7 @@ public abstract class DataTransferObject<S, C>
     }
 
     @Override
-    public synchronized final void parse(IMarshalSession<C> session, Map<String, ?> map)
+    public synchronized final void parse(IMarshalSession session, Map<String, ?> map)
             throws ParseException {
         enter(session);
         try {
@@ -184,7 +184,7 @@ public abstract class DataTransferObject<S, C>
     }
 
     @Override
-    public synchronized final void export(IMarshalSession<C> session, Map<String, Object> map) {
+    public synchronized final void export(IMarshalSession session, Map<String, Object> map) {
         enter(session);
         try {
             exportImpl(map);
@@ -266,7 +266,7 @@ public abstract class DataTransferObject<S, C>
                     + "You should use unmarshal() instead, to unmarshal non-filled DTOs.");
     }
 
-    public final void unmarshalTo(IMarshalSession<C> session, S target) {
+    public final void unmarshalTo(IMarshalSession session, S target) {
         checkForUnmarshalTo();
         merge(session, target);
     }
@@ -281,7 +281,7 @@ public abstract class DataTransferObject<S, C>
         merge(target);
     }
 
-    public final S unmarshal(IMarshalSession<C> session) {
+    public final S unmarshal(IMarshalSession session) {
         return merge(session, null);
     }
 
@@ -293,7 +293,7 @@ public abstract class DataTransferObject<S, C>
         return merge(null);
     }
 
-    public synchronized final void parse(IMarshalSession<C> session, TextMap map)
+    public synchronized final void parse(IMarshalSession session, TextMap map)
             throws ParseException {
         enter(session);
         try {
@@ -513,7 +513,7 @@ public abstract class DataTransferObject<S, C>
     /**
      * Generic marshal with nullable source support.
      */
-    public static <S, D extends DataTransferObject<S, C>, C> D marshal(IMarshalSession<C> session, //
+    public static <S, D extends DataTransferObject<S, C>, C> D marshal(IMarshalSession session, //
             Class<D> dtoClass, Integer selection, S source) {
         D dto;
         try {
@@ -537,7 +537,7 @@ public abstract class DataTransferObject<S, C>
         return dto;
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> D marshal(IMarshalSession<C> session, Class<D> dtoClass,
+    public static <S, D extends DataTransferObject<S, C>, C> D marshal(IMarshalSession session, Class<D> dtoClass,
             S source) {
         return marshal(session, dtoClass, null, source);
     }
@@ -550,7 +550,7 @@ public abstract class DataTransferObject<S, C>
         return marshal(null, dtoClass, null, source);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> List<D> marshalList(IMarshalSession<C> session,
+    public static <S, D extends DataTransferObject<S, C>, C> List<D> marshalList(IMarshalSession session,
             Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
 
         List<D> dtoList = new ArrayList<D>();
@@ -567,7 +567,7 @@ public abstract class DataTransferObject<S, C>
     }
 
     public static <S, D extends DataTransferObject<S, C>, C> List<D> marshalList(//
-            IMarshalSession<C> session, Class<D> dtoClass, Iterable<? extends S> sources) {
+            IMarshalSession session, Class<D> dtoClass, Iterable<? extends S> sources) {
         return marshalList(session, dtoClass, null, sources);
     }
 
@@ -581,7 +581,7 @@ public abstract class DataTransferObject<S, C>
         return marshalList(null, dtoClass, null, sources);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(IMarshalSession<C> session,
+    public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(IMarshalSession session,
             Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
 
         Set<D> dtoSet = new HashSet<D>();
@@ -598,7 +598,7 @@ public abstract class DataTransferObject<S, C>
     }
 
     public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(//
-            IMarshalSession<C> session, Class<D> dtoClass, Iterable<? extends S> sources) {
+            IMarshalSession session, Class<D> dtoClass, Iterable<? extends S> sources) {
         return marshalSet(session, dtoClass, null, sources);
     }
 
@@ -624,7 +624,7 @@ public abstract class DataTransferObject<S, C>
      * In the base DTO implementation, no modification / ref is used.
      */
     public static <Coll extends Collection<S>, D extends DataTransferObject<S, C>, S, C> //
-    /*    */Coll _unmarshalCollection(IMarshalSession<C> session, Coll collection, Iterable<? extends D> dtoList) {
+    /*    */Coll _unmarshalCollection(IMarshalSession session, Coll collection, Iterable<? extends D> dtoList) {
 
         if (collection == null)
             throw new NullPointerException("collection");
@@ -645,12 +645,12 @@ public abstract class DataTransferObject<S, C>
     }
 
     public static <S, D extends DataTransferObject<S, C>, C> //
-    /*    */List<S> _unmarshalList(IMarshalSession<C> session, Iterable<? extends D> dtoList) {
+    /*    */List<S> _unmarshalList(IMarshalSession session, Iterable<? extends D> dtoList) {
         return _unmarshalCollection(session, new ArrayList<S>(), dtoList);
     }
 
     public static <S, D extends DataTransferObject<S, C>, C> //
-    /*    */Set<S> _unmarshalSet(IMarshalSession<C> session, Iterable<? extends D> dtoList) {
+    /*    */Set<S> _unmarshalSet(IMarshalSession session, Iterable<? extends D> dtoList) {
         return _unmarshalCollection(session, new HashSet<S>(), dtoList);
     }
 
@@ -677,7 +677,7 @@ public abstract class DataTransferObject<S, C>
      *      merge("property")
      * </pre>
      */
-    public static <S, _s, C> void merge(IMarshalSession<C> session, S target, //
+    public static <S, _s, C> void merge(IMarshalSession session, S target, //
             IPropertyAccessor<S, _s> property, DataTransferObject<_s, C> propertyDto) {
 
         // DTO == null means ignore.
@@ -701,7 +701,7 @@ public abstract class DataTransferObject<S, C>
         merge(null, target, property, propertyDto);
     }
 
-    public static <S, _s, C> void merge(IMarshalSession<C> session, S target, //
+    public static <S, _s, C> void merge(IMarshalSession session, S target, //
             String propertyName, DataTransferObject<_s, C> propertyDto) {
 
         // DTO == null means ignore.
@@ -798,6 +798,7 @@ public abstract class DataTransferObject<S, C>
      */
     public static <S, _s, C> void merge(S target, //
             String propertyName, DataTransferObject<_s, C> propertyDto) {
+        // IMarshalSession session = getSession();
         merge(null, target, propertyName, propertyDto);
     }
 

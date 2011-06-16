@@ -1,15 +1,15 @@
 package com.bee32.plover.arch.util;
 
-public interface IMarshalSession<C> {
+public interface IMarshalSession {
 
-    C getContext();
+    Object getContext();
 
-    <S, D> D getMarshalled(S source, MarshalType marshalType, int selection);
+    <S, D extends DataTransferObject<?, ?>> D getMarshalled(S source, MarshalType marshalType, int selection);
 
-    <S, D> void addMarshalled(S source, MarshalType marshalType, int selection, D dest);
+    <S, D extends DataTransferObject<?, ?>> void addMarshalled(S source, MarshalType marshalType, int selection, D dest);
 
-    <S, D> S getUnmarshalled(D dto);
+    <S, D extends DataTransferObject<?, ?>> S getUnmarshalled(D dto);
 
-    <S, D> void addUnmarshalled(D dest, S source);
+    <S, D extends DataTransferObject<?, ?>> void addUnmarshalled(D dest, S source);
 
 }

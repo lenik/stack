@@ -1,23 +1,23 @@
 package com.bee32.plover.arch.util;
 
-import java.util.IdentityHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
-public class MarshalSession<C>
-        implements IMarshalSession<C> {
+public class MarshalSession
+        implements IMarshalSession {
 
-    final C context;
+    final Object context;
 
     Map<MarshalKey, Object> marshalledMap;
 
-    Map<Object, Object> unmarshalled;
+    Map<DataTransferObject<?, ?>, Object> unmarshalled;
 
-    public MarshalSession(C context) {
+    public MarshalSession(Object context) {
         this.context = context;
     }
 
     @Override
-    public C getContext() {
+    public Object getContext() {
         if (context == null)
             throw new IllegalStateException("No marshal context.");
         return context;
@@ -27,18 +27,18 @@ public class MarshalSession<C>
         if (marshalledMap == null) {
             synchronized (this) {
                 if (marshalledMap == null) {
-                    marshalledMap = new IdentityHashMap<MarshalKey, Object>();
+                    marshalledMap = new HashMap<MarshalKey, Object>();
                 }
             }
         }
         return marshalledMap;
     }
 
-    final Map<Object, Object> getUnmarshalledMap() {
+    final Map<DataTransferObject<?, ?>, Object> getUnmarshalledMap() {
         if (unmarshalled == null) {
             synchronized (this) {
                 if (unmarshalled == null) {
-                    unmarshalled = new IdentityHashMap<Object, Object>();
+                    unmarshalled = new HashMap<DataTransferObject<?, ?>, Object>();
                 }
             }
         }
@@ -46,24 +46,26 @@ public class MarshalSession<C>
     }
 
     @Override
-    public <S, D> D getMarshalled(S source, MarshalType marshalType, int selection) {
+    public <S, D extends DataTransferObject<?, ?>> //
+    D getMarshalled(S source, MarshalType marshalType, int selection) {
         MarshalKey marshalKey = new MarshalKey(source, marshalType, selection);
         return (D) getMarshalledMap().get(marshalKey);
     }
 
     @Override
-    public <S, D> void addMarshalled(S source, MarshalType marshalType, int selection, D dest) {
+    public <S, D extends DataTransferObject<?, ?>> //
+    void addMarshalled(S source, MarshalType marshalType, int selection, D dest) {
         MarshalKey marshalKey = new MarshalKey(source, marshalType, selection);
         getMarshalledMap().put(marshalKey, dest);
     }
 
     @Override
-    public <S, D> S getUnmarshalled(D dto) {
+    public <S, D extends DataTransferObject<?, ?>> S getUnmarshalled(D dto) {
         return (S) getUnmarshalledMap().get(dto);
     }
 
     @Override
-    public <S, D> void addUnmarshalled(D dest, S source) {
+    public <S, D extends DataTransferObject<?, ?>> void addUnmarshalled(D dest, S source) {
         getUnmarshalledMap().put(dest, source);
     }
 

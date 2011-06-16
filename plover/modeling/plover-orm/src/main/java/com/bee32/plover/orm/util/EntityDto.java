@@ -84,7 +84,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     protected <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id) {
-        return getSession().getContext().loadEntity(entityType, id);
+        Object context = getSession().getContext();
+        IEntityMarshalContext emContext = (IEntityMarshalContext) context;
+        _E entity = emContext.loadEntity(entityType, id);
+        return entity;
     }
 
     @Override
@@ -548,8 +551,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * deref
      */
     static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Coll mergeCollection(IMarshalSession<IEntityMarshalContext> session, Coll collection,
-            Iterable<? extends D> dtoList) {
+    /*    */Coll mergeCollection(IMarshalSession session, Coll collection, Iterable<? extends D> dtoList) {
 
         if (collection == null)
             throw new NullPointerException("collection");
@@ -666,11 +668,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
     /*    */Coll mergeCollection(Coll collection, Iterable<? extends D> dtoList) {
-        return mergeCollection((IMarshalSession<IEntityMarshalContext>) null, collection, dtoList);
+        return mergeCollection((IMarshalSession) null, collection, dtoList);
     }
 
     public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */List<E> mergeList(IMarshalSession<IEntityMarshalContext> session, List<E> list, Iterable<? extends D> dtoList) {
+    /*    */List<E> mergeList(IMarshalSession session, List<E> list, Iterable<? extends D> dtoList) {
         if (list == null)
             list = new ArrayList<E>();
         return mergeCollection(session, list, dtoList);
@@ -680,11 +682,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     /*    */List<E> mergeList(List<E> list, Iterable<? extends D> dtoList) {
         if (list == null)
             list = new ArrayList<E>();
-        return mergeCollection((IMarshalSession<IEntityMarshalContext>) null, list, dtoList);
+        return mergeCollection((IMarshalSession) null, list, dtoList);
     }
 
     public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Set<E> mergeSet(IMarshalSession<IEntityMarshalContext> session, Set<E> set, Iterable<? extends D> dtoList) {
+    /*    */Set<E> mergeSet(IMarshalSession session, Set<E> set, Iterable<? extends D> dtoList) {
         if (set == null)
             set = new HashSet<E>();
         return mergeCollection(session, set, dtoList);
@@ -694,7 +696,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     /*    */Set<E> mergeSet(Set<E> set, Iterable<? extends D> dtoList) {
         if (set == null)
             set = new HashSet<E>();
-        return mergeCollection((IMarshalSession<IEntityMarshalContext>) null, set, dtoList);
+        return mergeCollection((IMarshalSession) null, set, dtoList);
     }
 
     /**
@@ -710,8 +712,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      */
 
     public static <E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeList(IMarshalSession<IEntityMarshalContext> session, E target,
-            IPropertyAccessor<E, List<_e>> property, Iterable<? extends _d> dtoList) {
+    /*    */void mergeList(IMarshalSession session, E target, IPropertyAccessor<E, List<_e>> property,
+            Iterable<? extends _d> dtoList) {
 
         List<_e> list = property.get(target);
 
@@ -732,8 +734,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     public static <E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeList(IMarshalSession<IEntityMarshalContext> session, E target, String propertyName,
-            Iterable<? extends _d> dtoList) {
+    /*    */void mergeList(IMarshalSession session, E target, String propertyName, Iterable<? extends _d> dtoList) {
 
         Class<E> targetType = (Class<E>) target.getClass();
 
@@ -754,8 +755,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     public static <E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeSet(IMarshalSession<IEntityMarshalContext> session, E target,
-            IPropertyAccessor<E, Set<_e>> property, Iterable<? extends _d> dtoList) {
+    /*    */void mergeSet(IMarshalSession session, E target, IPropertyAccessor<E, Set<_e>> property,
+            Iterable<? extends _d> dtoList) {
 
         Set<_e> set = property.get(target);
 
@@ -776,8 +777,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     public static <E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeSet(IMarshalSession<IEntityMarshalContext> session, E target, String propertyName,
-            Iterable<? extends _d> dtoList) {
+    /*    */void mergeSet(IMarshalSession session, E target, String propertyName, Iterable<? extends _d> dtoList) {
 
         Class<E> targetType = (Class<E>) target.getClass();
 

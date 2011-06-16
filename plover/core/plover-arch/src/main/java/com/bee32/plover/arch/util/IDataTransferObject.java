@@ -18,7 +18,7 @@ public interface IDataTransferObject<S, C> {
      * @return The marshalled object. it may be this, or flyweight, or <code>null</code> if the
      *         specified <code>source</code> object is <code>null</code>.
      */
-    <D extends IDataTransferObject<S, C>> D marshal(IMarshalSession<C> session, S source);
+    <D extends DataTransferObject<S, C>> D marshal(IMarshalSession session, S source);
 
     /**
      * Populate the specified target entity bean with properties defined in this object.
@@ -27,11 +27,11 @@ public interface IDataTransferObject<S, C> {
      *            Non-<code>null</code> target entity bean.
      * @return The target itself, or a new one.
      */
-    S merge(IMarshalSession<C> session, S target);
+    S merge(IMarshalSession session, S target);
 
-    void parse(IMarshalSession<C> session, Map<String, ?> map)
+    void parse(IMarshalSession session, Map<String, ?> map)
             throws ParseException;
 
-    void export(IMarshalSession<C> session, Map<String, Object> map);
+    void export(IMarshalSession session, Map<String, Object> map);
 
 }
