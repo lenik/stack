@@ -21,17 +21,17 @@ public class SEMPeopleUnit
 
     @Override
     protected void preamble() {
-        add(ContactCategory.class);
         add(Contact.class);
-        add(OrgType.class);
+        add(ContactCategory.class);
         add(Org.class);
+        add(OrgType.class);
+        add(Party.class);
         add(PartyRecordCategory.class);
         add(PartyRecord.class);
         add(PartyTag.class);
-        add(Party.class);
+        add(Person.class);
         add(PersonRole.class);
         add(PersonSidType.class);
-        add(Person.class);
     }
 
 }

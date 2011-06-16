@@ -45,7 +45,6 @@ public class ContentHandler<E extends Entity<K>, K extends Serializable>
 
         result.put("entity", entity);
         result.put("it", dto);
-        result.put("it", dto);
         return result;
     }
 

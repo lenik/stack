@@ -32,8 +32,8 @@ public class SEMPeopleSamples
         internetCorp.setInterests("互联网搜索");
         internetCorp.setOwner(IcsfPrincipalSamples.eva);
 
-        one77.setFullName("Ettore Bugatti ONE - 77");
         one77.setName("Bugatti");
+        one77.setFullName("Ettore Bugatti ONE - 77");
         one77.setNickName("ONE - 77");
         one77.setOwner(IcsfPrincipalSamples.eva);
         one77.setSid("294741103659387246x");
@@ -42,8 +42,8 @@ public class SEMPeopleSamples
         one77.setBirthday(one77Birthday.getTime());
         one77.setTags(Sets.newSet(PartyTag.CUSTOMER));
 
-        bentley.setFullName("Walter Owen Bentley");
         bentley.setName("Bentley");
+        bentley.setFullName("Walter Owen Bentley");
         bentley.setNickName("Arnage");
         bentley.setOwner(IcsfPrincipalSamples.eva);
         bentley.setSid("580672610347561394");
@@ -55,7 +55,7 @@ public class SEMPeopleSamples
 
         weiXiaoBao.setBirthday(bentleyBirthday.getTime());
         weiXiaoBao.setCensusRegister("北京市");
-        weiXiaoBao.setFullName(CONF_LOADED);
+        weiXiaoBao.setFullName("韦小宝");
         weiXiaoBao.setInterests("吃饭睡觉玩老婆");
         weiXiaoBao.setName("小宝");
         weiXiaoBao.setNickName("韦公公");

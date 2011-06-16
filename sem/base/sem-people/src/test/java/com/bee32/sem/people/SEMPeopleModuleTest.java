@@ -1,6 +1,7 @@
 package com.bee32.sem.people;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.sem.test.SEMTestCase;
@@ -31,6 +32,11 @@ public class SEMPeopleModuleTest
     public static void main(String[] args)
             throws IOException {
         new SEMPeopleModuleTest().browseAndWait("/people/personAdmin.jsf");
+    }
+
+    static {
+        Locale zh = Locale.forLanguageTag("zh-CN");
+        Locale.setDefault(zh);
     }
 
 }

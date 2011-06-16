@@ -581,8 +581,8 @@ public abstract class DataTransferObject<S, C>
         return marshalList(null, dtoClass, null, sources);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(IMarshalSession session,
-            Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
+    public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(//
+            IMarshalSession session, Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
 
         Set<D> dtoSet = new HashSet<D>();
 
