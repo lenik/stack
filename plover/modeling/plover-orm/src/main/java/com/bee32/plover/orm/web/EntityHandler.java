@@ -72,7 +72,15 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
     public final ActionResult handleRequest(ActionRequest req, ActionResult result)
             throws Exception {
 
-        String typeAbbr = req.getPathParameter();
+        String typeAbbr = null;
+
+        String pathParam = req.getPathParameter();
+        if (pathParam != null) {
+            if (pathParam.startsWith("/"))
+                pathParam = pathParam.substring(1);
+            typeAbbr = pathParam;
+        }
+
         if (typeAbbr != null) {
             Class<? extends E> entityType;
             try {
