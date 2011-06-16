@@ -7,7 +7,7 @@
     </parent>
     <artifactId>plover-collections</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.100</version>
+    <version>0.2.101</version>
     <dependencies>
         <dependency>
             <groupId>javax.free</groupId>
