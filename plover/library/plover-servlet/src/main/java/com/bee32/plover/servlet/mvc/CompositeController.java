@@ -11,6 +11,8 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
+import com.bee32.plover.util.Pathnames;
+
 public abstract class CompositeController
         extends _CompositeController {
 
@@ -83,8 +85,14 @@ public abstract class CompositeController
                 result = invokeHandler(handler, req, result);
 
                 if (result != null) {
-                    // XXX postfix??
                     result.wireUp();
+
+                    // remove path-param from the view name.
+
+                    // The view name maybe relative.
+                    String rvn = result.getViewName();
+                    String normViewName = joinView(req, rvn);
+                    result.setViewName(normViewName);
                 }
 
                 return result;
@@ -139,6 +147,30 @@ public abstract class CompositeController
 
     protected ActionResult newResult(View view, Map<String, ?> model) {
         return new ActionResult(view, model);
+    }
+
+    String getDefaultView(ActionRequest req) {
+        if (req == null)
+            throw new NullPointerException("req");
+
+        String prefix = req.getPrefix();
+        // SKIPPED: String pathParam = req.getPathParameter();
+        String actionName = req.getActionName();
+        String defaultView = prefix + "/" + actionName;
+        return defaultView;
+    }
+
+    String joinView(ActionRequest req, String viewName) {
+        if (req == null)
+            throw new NullPointerException("req");
+
+        String context = getDefaultView(req);
+        assert context != null;
+
+        if (viewName != null)
+            context = Pathnames.joinPath(context, viewName);
+
+        return context;
     }
 
 }

@@ -1,6 +1,5 @@
 package com.bee32.plover.servlet.mvc;
 
-import com.bee32.plover.util.Pathnames;
 
 public abstract class ActionHandler
         implements IActionHandler {
@@ -37,29 +36,6 @@ public abstract class ActionHandler
     @Override
     public String getName() {
         return actionName;
-    }
-
-    protected String getDefaultView(ActionRequest req) {
-        if (req == null)
-            throw new NullPointerException("req");
-
-        String prefix = req.getPrefix();
-        // SKIPPED: String pathParam = req.getPathParameter();
-        String actionName = req.getActionName();
-        String defaultView = prefix + "/" + actionName;
-        return defaultView;
-    }
-
-    protected String joinView(ActionRequest req, String viewName) {
-        if (req == null)
-            throw new NullPointerException("req");
-        if (viewName == null)
-            throw new NullPointerException("viewName");
-
-        String context = getDefaultView(req);
-        assert context != null;
-
-        return Pathnames.joinPath(context, viewName);
     }
 
 }

@@ -13,13 +13,13 @@ public class CommonDictController<E extends DictEntity<K>, K extends Serializabl
         extends BasicEntityController<E, K, Dto> {
 
     public static final String PREFIX = PloverORMExtModule.PREFIX + "/1";
+    public static final String PREFIX_ = PREFIX + "/";
 
     @Override
     protected void fillDataRow(DataTableDxo tab, Dto dto) {
         // XXX tab.push(dto.getName());
         tab.push(dto.getLabel());
         tab.push(dto.getDescription());
-        tab.next();
     }
 
 }

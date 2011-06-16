@@ -60,7 +60,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
 
             // return result.sendRedirect("index.do");
         } else {
-            result.setViewName(joinView(req, "index"));
+            result.setViewName("index");
             result.put("METHOD", result.V.get("edit"));
         }
 
@@ -70,10 +70,9 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
         dto.parse(this, req);
 
         E entity = null;
-        K id = null;
+        K id = dto.getId();
 
         if (!create) {
-            id = dto.getId();
             if (id == null)
                 throw new ServletException("id isn't specified");
 

@@ -38,10 +38,10 @@ public class CreateOrEditFormHandler<E extends Entity<K>, K extends Serializable
             result.put("method", "create");
             result.put("METHOD", result.V.get("create"));
         } else {
-            result.setViewName(joinView(req, "form"));
             result.put("method", "edit");
             result.put("METHOD", result.V.get("edit"));
         }
+        result.setViewName("form");
 
         EntityDto<E, K> dto = null;
         Integer dtoSelection = eh.getSelection(SelectionMode.CREATE_EDIT);
@@ -87,7 +87,6 @@ public class CreateOrEditFormHandler<E extends Entity<K>, K extends Serializable
         result.put("_verb", result.V.get(_VERB));
 
         result.put("entity", entity);
-        result.put("dto", dto);
         result.put("it", dto);
         return result;
     }
