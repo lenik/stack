@@ -1,6 +1,5 @@
 package com.bee32.plover.orm.ext.dict;
 
-import javax.free.IllegalUsageError;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
@@ -41,9 +40,8 @@ public abstract class NameDictDto<E extends NameDict>
             throws ParseException {
         super.__parse(map);
 
-        String _name = map.getString("name");
-        if (_name != null)
-            throw new IllegalUsageError("You should not use `name` property in NamedDict, use `id` instead.");
+        // name will always overwrite the id here.
+        setName(map.getString("name"));
     }
 
     public String getName() {
