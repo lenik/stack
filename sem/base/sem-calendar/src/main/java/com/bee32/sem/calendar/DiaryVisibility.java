@@ -56,21 +56,21 @@ public class DiaryVisibility
     }
 
     public static final DiaryVisibility PRIVATE //
-    /*          */= new DiaryVisibility('-', "private", "yellowlock.png");
+    /*          */= new DiaryVisibility('-', "private", "etool16/yellowlock.png");
 
     public static final DiaryVisibility COMMIT//
-    /*          */= new DiaryVisibility('<', "commit", "triangle.png");
+    /*          */= new DiaryVisibility('<', "commit", "etool16/triangle.png");
 
     public static final DiaryVisibility PROTECTED_SELECTION //
-    /*          */= new DiaryVisibility('#', "protectedSelection", "greenlock.png");
+    /*          */= new DiaryVisibility('#', "protectedSelection", "etool16/greenlock.png");
 
     public static final DiaryVisibility PROTECTED //
-    /*          */= new DiaryVisibility('*', "protected", "greenlock.png");
+    /*          */= new DiaryVisibility('*', "protected", "etool16/greenlock.png");
 
     public static final DiaryVisibility SELECTION //
-    /*          */= new DiaryVisibility('S', "selection", "filter.png");
+    /*          */= new DiaryVisibility('S', "selection", "etool16/filter.png");
 
     public static final DiaryVisibility PUBLIC //
-    /*          */= new DiaryVisibility('+', "public", "public.png");
+    /*          */= new DiaryVisibility('+', "public", "etool16/public.png");
 
 }
