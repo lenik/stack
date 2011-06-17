@@ -41,10 +41,12 @@ public class PersonDto
         sidType = marshal(PersonSidTypeDto.class, _sidType);
         sidType.marshalAs(MarshalType.ID_REF);
 
-        roles = new HashSet<PersonRoleDto>();
-        for (PersonRole role : source.getRoles()) {
-            PersonRoleDto roleDto = marshal(PersonRoleDto.class, role);
-            roles.add(roleDto);
+        if (selection.contains(ROLES)) {
+            roles = new HashSet<PersonRoleDto>();
+            for (PersonRole role : source.getRoles()) {
+                PersonRoleDto roleDto = marshal(PersonRoleDto.class, role);
+                roles.add(roleDto);
+            }
         }
     }
 
@@ -64,7 +66,8 @@ public class PersonDto
         sidType.marshalAs(MarshalType.ID_REF);
         merge(target, "sidType", sidType);
 
-        mergeSet(target, "roles", roles);
+        if (selection.contains(ROLES))
+            mergeSet(target, "roles", roles);
     }
 
     public Character getSex() {

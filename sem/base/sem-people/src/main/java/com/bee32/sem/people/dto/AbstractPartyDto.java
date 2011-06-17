@@ -18,6 +18,7 @@ public class AbstractPartyDto<E extends Party>
 
     public static final int CONTACTS = 1;
     public static final int RECORDS = 2;
+    public static final int ROLES = 4;
 
     User owner;
 

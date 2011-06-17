@@ -33,7 +33,7 @@ public class PeopleService
 
         List<Person> personList = partyDao.limitedList(Person.class, currUser, start, count);
 
-        return DTOs.marshalList(PersonDto.class, PersonDto.CONTACTS | PersonDto.RECORDS, personList);
+        return DTOs.marshalList(PersonDto.class, personList);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class PeopleService
 
         List<Org> orgList = partyDao.limitedList(Org.class, currUser, start, count);
 
-        return DTOs.marshalList(OrgDto.class, OrgDto.CONTACTS | OrgDto.RECORDS, orgList);
+        return DTOs.marshalList(OrgDto.class, orgList);
     }
 
     @Override

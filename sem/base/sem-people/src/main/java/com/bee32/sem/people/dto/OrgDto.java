@@ -30,19 +30,23 @@ public class OrgDto
     @Override
     protected void _marshal(Org source) {
         super._marshal(source);
+
         type = marshal(OrgTypeDto.class, source.getType(), true);
         size = source.getSize();
 
-        roles =  new HashSet<PersonRoleDto>();
-        for(PersonRole role : source.getRoles()) {
-            PersonRoleDto roleDto = new PersonRoleDto(role);
-            roles.add(roleDto);
+        if (selection.contains(ROLES)) {
+            roles = new HashSet<PersonRoleDto>();
+            for (PersonRole role : source.getRoles()) {
+                PersonRoleDto roleDto = new PersonRoleDto(role);
+                roles.add(roleDto);
+            }
         }
     }
 
     @Override
     protected void _unmarshalTo(Org target) {
         super._unmarshalTo(target);
+
         merge(target, "type", type);
         target.setSize(size);
 
