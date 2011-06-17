@@ -7,25 +7,25 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 /**
- * <b>blue</b>
+ * <b>green</b>
  * <p>
- * <i>description</i> — Is it simply a catalog-like description which classifies or 'labels' an
- * object? If users of a system are labeled based on the department of a company they work within
- * and this doesn't change the way the system behaves, this would be a description.
+ * party, place, or thing — Something tangible, uniquely identifiable. Normally, if you get through
+ * the above three questions and end up here, your class is a "green." The user of the system and
+ * the sub-sections of the system they visit are all PPTs.
  */
 @MappedSuperclass
-public abstract class BlueEntity<K extends Serializable>
-        extends BlueEntitySpec<K> {
+public abstract class UIEntityAuto<K extends Serializable>
+        extends UIEntitySpec<K> {
 
     private static final long serialVersionUID = 1L;
 
     K id;
 
-    public BlueEntity() {
+    public UIEntityAuto() {
         super();
     }
 
-    public BlueEntity(String name) {
+    public UIEntityAuto(String name) {
         super(name);
     }
 

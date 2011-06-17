@@ -8,7 +8,7 @@ import javax.persistence.MappedSuperclass;
 import com.bee32.plover.orm.entity.Entity;
 
 @MappedSuperclass
-abstract class UserFriendlyEntity<K extends Serializable>
+abstract class UIEntity<K extends Serializable>
         extends Entity<K>
         implements IUserFriendly {
 
@@ -19,11 +19,11 @@ abstract class UserFriendlyEntity<K extends Serializable>
 
     // IconRef
 
-    public UserFriendlyEntity() {
+    public UIEntity() {
         super();
     }
 
-    public UserFriendlyEntity(String name) {
+    public UIEntity(String name) {
         super(name);
     }
 

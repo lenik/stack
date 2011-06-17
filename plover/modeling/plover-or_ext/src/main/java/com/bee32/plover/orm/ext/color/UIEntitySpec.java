@@ -9,27 +9,19 @@ import javax.persistence.MappedSuperclass;
 
 import com.bee32.plover.orm.entity.EntityBase;
 
-/**
- * <b>pink</b>
- * <p>
- * <i>moment-interval</i> — Does it represent a moment or interval of time? An example would be an
- * object that temporarily stores login information during the authentication process.
- *
- * @see http://en.wikipedia.org/wiki/UML_colors
- */
 @MappedSuperclass
 @AttributeOverrides({//
 /*    */@AttributeOverride(name = "label", column = @Column(length = 50)) })
-public abstract class GreenEntitySpec<K extends Serializable>
-        extends UserFriendlyEntity<K> {
+public abstract class UIEntitySpec<K extends Serializable>
+        extends UIEntity<K> {
 
     private static final long serialVersionUID = 1L;
 
-    public GreenEntitySpec() {
+    public UIEntitySpec() {
         super();
     }
 
-    public GreenEntitySpec(String name) {
+    public UIEntitySpec(String name) {
         super(name);
     }
 

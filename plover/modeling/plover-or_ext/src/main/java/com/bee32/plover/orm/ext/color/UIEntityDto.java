@@ -8,7 +8,7 @@ import javax.free.TypeConvertException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 
-public abstract class UserFriendlyEntityDto<E extends UserFriendlyEntity<K>, K extends Serializable>
+public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
         extends EntityDto<E, K> {
 
     private static final long serialVersionUID = 1L;
@@ -16,19 +16,19 @@ public abstract class UserFriendlyEntityDto<E extends UserFriendlyEntity<K>, K e
     String label;
     String description;
 
-    public UserFriendlyEntityDto() {
+    public UIEntityDto() {
         super();
     }
 
-    public UserFriendlyEntityDto(E source) {
+    public UIEntityDto(E source) {
         super(source);
     }
 
-    public UserFriendlyEntityDto(int selection) {
+    public UIEntityDto(int selection) {
         super(selection);
     }
 
-    public UserFriendlyEntityDto(int selection, E source) {
+    public UIEntityDto(int selection, E source) {
         super(selection, source);
     }
 
