@@ -6,7 +6,7 @@ import com.bee32.sem.base.tx.TxEntity;
 
 @MappedSuperclass
 public class Order
-        extends TxEntity<Long> {
+        extends TxEntity {
 
     private static final long serialVersionUID = 1L;
 
