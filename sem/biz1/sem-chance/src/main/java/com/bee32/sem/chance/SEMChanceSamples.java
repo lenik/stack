@@ -33,11 +33,10 @@ public class SEMChanceSamples
         cal.set(2011, 4, 8);
         chance.setSubject("新办公楼布线及机房设备安装");
         chance.setOwner(IcsfPrincipalSamples.eva);
-        chance.setCreateDate(cal.getTime());
+        // chance.setCreatedDate(cal.getTime());
         chance.setSource(ChanceSourceType.DEVELOP);
         chance.setContent("需要专门的安防系统，能够在浦东的销售中心直接监控闵行区厂房实时录像和声音");
         chance.setCategory(ChanceCategory.NORMAL);
-        chance.setStage(ChanceStage.INITIAL);
 
         party.setChance(chance);
         party.setParty(SEMPeopleSamples.one77);
@@ -68,7 +67,7 @@ public class SEMChanceSamples
         action.setActor(IcsfPrincipalSamples.eva);
         action.setStyle(ChanceActionStyle.INTERNET);
         action.setParties(Arrays.asList((Party) SEMPeopleSamples.bentley, (Party) SEMPeopleSamples.one77));
-        action.setStage(ChanceStage.INITIAL);
+        action.setStage(ChanceStage.LAUNCHED);
 
         chance.setActions(Arrays.asList(action));
 
@@ -78,16 +77,19 @@ public class SEMChanceSamples
     protected void preamble() {
 
         // addChanceStage
-        addNormalSample(ChanceStage.CONTRACT);
-        addNormalSample(ChanceStage.INITIAL);
-        addNormalSample(ChanceStage.MEAT);
+        addNormalSample(ChanceStage.INIT);
+        addNormalSample(ChanceStage.LAUNCHED);
+        addNormalSample(ChanceStage.MEETING);
         addNormalSample(ChanceStage.PAYMENT);
-        addNormalSample(ChanceStage.QUOTATION);
+        addNormalSample(ChanceStage.QUOTED);
+        addNormalSample(ChanceStage.DONE);
+        addNormalSample(ChanceStage.TERMINATED);
 
         // add ChanceActionStyle
         addNormalSample(ChanceActionStyle.INTERNET);
         addNormalSample(ChanceActionStyle.TALK);
         addNormalSample(ChanceActionStyle.TELEPHONE);
+        addNormalSample(ChanceActionStyle.OTHER);
 
         // add ChanceCategory
         addNormalSample(ChanceCategory.IMPORTANT);
@@ -101,11 +103,11 @@ public class SEMChanceSamples
         addNormalSample(ChanceSourceType.INTERNET);
         addNormalSample(ChanceSourceType.INTRODUCTION);
         addNormalSample(ChanceSourceType.MEDIA);
-        addNormalSample(ChanceSourceType.OTHER);
         addNormalSample(ChanceSourceType.PARTNER);
         addNormalSample(ChanceSourceType.PROMOTION);
         addNormalSample(ChanceSourceType.TELEPHONE);
         addNormalSample(ChanceSourceType.TENDER);
+        addNormalSample(ChanceSourceType.OTHER);
 
         addNormalSample(chance);
         addNormalSample(party);

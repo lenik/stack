@@ -11,19 +11,19 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.ext.color.PinkEntity;
+import com.bee32.plover.orm.ext.color.MomentInterval;
+import com.bee32.plover.orm.ext.color.Pink;
 import com.bee32.sem.calendar.ICalendarEvent;
 import com.bee32.sem.people.entity.Party;
 
 @Entity
+@Pink
 public class ChanceAction
-        extends PinkEntity<Long>
-        implements ICalendarEvent {
+        extends MomentInterval
+        implements ICalendarEvent, Comparable<ChanceAction> {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,8 +33,6 @@ public class ChanceAction
     User actor;
     ChanceActionStyle style;
 
-    Date beginTime;
-    Date endTime;
     String content;
     String spending;
     Chance chance;
@@ -102,33 +100,6 @@ public class ChanceAction
     }
 
     /**
-     * 开始时间
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    public Date getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(Date beginTime) {
-        if (beginTime == null)
-            throw new NullPointerException("can't set null to ChanceAction.beginTime");
-        this.beginTime = beginTime;
-    }
-
-    /**
-     * 结束时间
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    /**
      * 拜访目的（计划）或洽谈内容（日志）
      */
     @Column(length = 500, nullable = false)
@@ -184,40 +155,8 @@ public class ChanceAction
     public void pushToStage(ChanceStage stage) {
         if (stage == null)
             throw new NullPointerException("stage");
-        if (stage.getOrder() > getStage().getOrder())
+        if (stage.getOrder() >= getStage().getOrder())
             this.stage = stage;
-    }
-
-    @Transient
-    public ChanceStage getPrevious() {
-        int order = getStage().getOrder();
-        if (order > 1) {
-            switch (order) {
-            case 2:
-                return ChanceStage.INITIAL;
-            case 3:
-                return ChanceStage.MEAT;
-            case 4:
-                return ChanceStage.QUOTATION;
-            case 5:
-                return ChanceStage.PAYMENT;
-            default:
-                return null;
-            }
-        }
-        return null;
-    }
-
-    @Transient
-    @Override
-    public Date getBeginDate() {
-        return beginTime;
-    }
-
-    @Transient
-    @Override
-    public Date getEndDate() {
-        return endTime;
     }
 
     /**
@@ -233,6 +172,19 @@ public class ChanceAction
     @Override
     public List<String> getStyles() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public int compareTo(ChanceAction o) {
+        Date time1 = getBeginTime();
+        Date time2 = o.getBeginTime();
+        int cmp = time1.compareTo(time2);
+        if (cmp != 0)
+            return cmp;
+        int hash1 = System.identityHashCode(this);
+        int hash2 = System.identityHashCode(o);
+        cmp = hash1 - hash2;
+        return cmp;
     }
 
 }

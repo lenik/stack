@@ -8,16 +8,18 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.EntityBase;
-import com.bee32.plover.orm.ext.color.BlueEntity;
+import com.bee32.plover.orm.ext.color.Yellow;
 import com.bee32.sem.people.entity.Party;
 
 /**
  * 机会客户关联
  */
 @Entity
+@Yellow
 public class ChanceParty
-        extends BlueEntity<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

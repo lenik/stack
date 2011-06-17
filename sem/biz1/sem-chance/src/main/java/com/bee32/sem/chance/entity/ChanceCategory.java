@@ -17,18 +17,16 @@ public class ChanceCategory
         super();
     }
 
-    public ChanceCategory(String name, String label, String description) {
-        super(name, label, description);
-    }
-
     public ChanceCategory(String name, String label) {
         super(name, label);
     }
 
-    public static ChanceCategory IMPORTANT = new ChanceCategory("IMPO", "分类一");
+    public ChanceCategory(String name, String label, String description) {
+        super(name, label, description);
+    }
 
-    public static ChanceCategory NORMAL = new ChanceCategory("NORM", "分类二");
-
-    public static ChanceCategory OTHER = new ChanceCategory("OTHE", "分类三");
+    public static ChanceCategory IMPORTANT = new ChanceCategory("IMPO", "重要");
+    public static ChanceCategory NORMAL = new ChanceCategory("NORM", "一般");
+    public static ChanceCategory OTHER = new ChanceCategory("OTHE", "其它");
 
 }

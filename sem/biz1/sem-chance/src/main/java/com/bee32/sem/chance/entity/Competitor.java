@@ -5,14 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.bee32.plover.orm.ext.color.GreenEntity;
+import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.color.Green;
 
 /**
  * 竞争对手
  */
 @Entity
+@Green
 public class Competitor
-        extends GreenEntity<Long> {
+        extends EntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 

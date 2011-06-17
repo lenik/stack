@@ -2,12 +2,14 @@ package com.bee32.sem.chance.entity;
 
 import javax.persistence.Entity;
 
+import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.dict.ShortNameDict;
 
 /**
  * 洽谈类型
  */
 @Entity
+@Blue
 public class ChanceActionStyle
         extends ShortNameDict {
 
@@ -26,8 +28,8 @@ public class ChanceActionStyle
     }
 
     public static ChanceActionStyle TELEPHONE = new ChanceActionStyle("TELE", "电话");
-
     public static ChanceActionStyle TALK = new ChanceActionStyle("TALK", "面谈");
-
     public static ChanceActionStyle INTERNET = new ChanceActionStyle("INTE", "互联网");
+    public static ChanceActionStyle OTHER = new ChanceActionStyle("OTHE", "其它");
+
 }

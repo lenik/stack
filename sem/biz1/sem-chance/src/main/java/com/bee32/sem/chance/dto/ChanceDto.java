@@ -7,12 +7,12 @@ import javax.free.ParseException;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.color.GreenEntityDto;
+import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceParty;
 
 public class ChanceDto
-        extends GreenEntityDto<Chance, Long> {
+        extends UIEntityDto<Chance, Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -64,7 +64,6 @@ public class ChanceDto
         this.source = new ChanceSourceDto(source.getSource());
         this.subject = source.getSubject();
         this.content = source.getContent();
-        this.createDate = source.getCreateDate();
 
         if (selection.contains(PARTIES))
             this.parties = marshalList(ChancePartyDto.class, source.getParties());

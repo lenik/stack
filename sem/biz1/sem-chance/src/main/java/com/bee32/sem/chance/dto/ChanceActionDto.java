@@ -8,14 +8,14 @@ import javax.free.Strings;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.color.PinkEntityDto;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 
 public class ChanceActionDto
-        extends PinkEntityDto<ChanceAction, Long> {
+        extends EntityDto<ChanceAction, Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -59,7 +59,7 @@ public class ChanceActionDto
     @Override
     protected void _marshal(ChanceAction source) {
 
-        this.date = source.getBeginTime() == null ? "" : DateToRange.fullFormat.format(source.getBeginDate())
+        this.date = source.getBeginTime() == null ? "" : DateToRange.fullFormat.format(source.getBeginTime())
                 .substring(0, 10);
 
         if (source.getBeginTime() != null && source.getEndTime() != null)

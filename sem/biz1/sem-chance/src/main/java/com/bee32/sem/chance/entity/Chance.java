@@ -1,7 +1,7 @@
 package com.bee32.sem.chance.entity;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,34 +10,33 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.ext.color.GreenEntity;
+import com.bee32.plover.orm.ext.color.Green;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 /**
  * 销售机会
  */
 @Entity
+@Green
 public class Chance
-        extends GreenEntity<Long> {
+        extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
     User owner;
-    ChanceCategory category;
-    ChanceSourceType source;
+    ChanceCategory category = ChanceCategory.NORMAL;
+    ChanceSourceType source = ChanceSourceType.OTHER;
     String subject;
     String content;
-
-    Date createDate;
 
     List<ChanceParty> parties;
     List<ChanceAction> actions;
 
-    ChanceStage stage;
+    // Redundant
+    ChanceStage stage = ChanceStage.INIT;
 
     public Chance() {
         parties = new ArrayList<ChanceParty>();
@@ -111,21 +110,6 @@ public class Chance
         this.owner = owner;
     }
 
-    /**
-     * 发现时间
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        if (createDate == null)
-            throw new NullPointerException("cant set Null to Chance.createDate");
-        this.createDate = createDate;
-    }
-
     @OneToMany(mappedBy = "chance")
     public List<ChanceParty> getParties() {
         return parties;
@@ -155,7 +139,7 @@ public class Chance
      * @return 机会最后一次更新的进度，如果尚无更新，应返回一个非空的初始进度。
      */
     @ManyToOne
-//    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false)
     public ChanceStage getStage() {
         return stage;
     }
@@ -164,8 +148,8 @@ public class Chance
      * 机会进度只能通过日志项来改变，本对象中的进度为冗余。
      */
     public void setStage(ChanceStage stage) {
-//        if (stage == null)
-//            throw new NullPointerException("stage");
+// if (stage == null)
+// throw new NullPointerException("stage");
         this.stage = stage;
     }
 
@@ -189,23 +173,10 @@ public class Chance
     }
 
     @Transient
-    public void addAction(ChanceAction actoin) {
-        List<ChanceAction> caList = getActions();
-        caList.add(actoin);
-
-        // sort the list
-        int size = caList.size();
-        List<ChanceAction> sortedList = new ArrayList<ChanceAction>();
-        for (int index = 0; index < size; index++) {
-            ChanceAction ca = caList.get(index);
-            for (int j = index + 1; j < size; j++) {
-                ChanceAction temp = caList.get(j);
-                if (temp.beginTime.before(ca.beginTime))
-                    ca = temp;
-            }
-            sortedList.add(ca);
-        }
-        setActions(sortedList);
+    public void addAction(ChanceAction action) {
+        List<ChanceAction> actionList = getActions();
+        actionList.add(action);
+        Collections.sort(actionList);
     }
 
 }
