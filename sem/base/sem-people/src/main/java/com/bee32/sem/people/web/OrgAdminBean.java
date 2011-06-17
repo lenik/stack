@@ -212,11 +212,16 @@ public class OrgAdminBean extends EntityViewBean {
         List<PersonRoleDto> roles = new ArrayList<PersonRoleDto>();
 
         if(org != null && org.getId() != null) {
-            if(org.getContacts() != null) {
-                contacts = org.getContacts();
+            if(org.getRoles() != null) {
+                roles = new ArrayList<PersonRoleDto>(org.getRoles());
             }
         }
+
+        return roles;
     }
+
+
+
 
 
 
@@ -436,13 +441,52 @@ public class OrgAdminBean extends EntityViewBean {
 	}
 
     public void modifyRole_() {
-
+        role = selectedRole;
     }
 
     public void deleteRole_() {
+        FacesContext context = FacesContext.getCurrentInstance();
 
+        if(selectedContact == null) {
+            context.addMessage(null, new FacesMessage("提示", "请选择需要去除关联的相关人员!"));
+            return;
+        }
+
+        try {
+            org.getRoles().remove(selectedRole);
+            getDataManager().saveOrUpdate(org.unmarshal());
+
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("提示", "去除相关人员关联失败;" + e.getMessage()));
+        }
     }
 
+    public void saveRole_() {
+        FacesContext context = FacesContext.getCurrentInstance();
 
+        if(org == null || org.getId() == null) {
+            context.addMessage(null, new FacesMessage("提示", "请选择所操作的相关人员对应的客户/供应商!"));
+            return;
+        }
+
+        try {
+            org.getRoles().add(role);
+            getDataManager().saveOrUpdate(org.unmarshal());
+
+
+            context.addMessage(null, new FacesMessage("提示", "相关人员设置关联成功"));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("提示", "相关人员设置关联失败" + e.getMessage()));
+            e.printStackTrace();
+        }
+    }
+
+    public void onRowSelectRole(SelectEvent event) {
+        role = selectedRole;
+    }
+
+    public void onRowUnselectRole(UnselectEvent event) {
+        newRole();
+    }
 
 }
