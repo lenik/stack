@@ -69,7 +69,7 @@ public class ChanceActionController
 //
 // }
 
-    @RequestMapping("chanceActionAdminjsf")
+    @RequestMapping("chanceActionAdminjsf.do")
     public Map<String, ?> chanceActionAdminjsf(HttpServletRequest request, HttpServletResponse response) {
         return new HashMap<String, Object>();
     }

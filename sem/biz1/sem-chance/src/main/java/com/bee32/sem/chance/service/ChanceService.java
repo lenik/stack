@@ -45,8 +45,4 @@ public class ChanceService
         return partyDao.limitedKeywordList(Party.class, keyword, displayStart, displayLength);
     }
 
-    public List<Party> listAll(){
-        return partyDao.list();
-    }
-
 }

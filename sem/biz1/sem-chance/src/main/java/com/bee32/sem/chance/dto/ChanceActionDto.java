@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +49,18 @@ public class ChanceActionDto
         super(selection);
     }
 
+    public void addParties(PartyDto partyDto) {
+        if (parties == null)
+            parties = new ArrayList<PartyDto>();
+        if (partyDto != null && !parties.contains(partyDto))
+            parties.add(partyDto);
+    }
+
+    public void deleteParties(PartyDto partyDto) {
+        if (parties.contains(partyDto))
+            parties.remove(partyDto);
+    }
+
     @Override
     protected void _marshal(ChanceAction source) {
 
@@ -94,13 +107,23 @@ public class ChanceActionDto
     protected void _unmarshalTo(ChanceAction target) {
         target.setPlan(plan);
         mergeList(target, "parties", parties);
+        merge(target, "actor", actor);
+        merge(target, "style", style);
+        target.setBeginTime(beginTime);
+        target.setEndTime(endTime);
+        target.setContent(content);
+        target.setSpending(spending);
+        if (chance != null)
+            merge(target, "chance", chance);
+        if (stage != null)
+            merge(target, "stage", stage);
     }
 
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
         plan = map.getString("plan") == "plan" ? true : false;
-        actor = new UserDto().ref(map.getInt("actorId"));
+        actor = new UserDto().ref(map.getNInt("actorId"));
 
     }
 

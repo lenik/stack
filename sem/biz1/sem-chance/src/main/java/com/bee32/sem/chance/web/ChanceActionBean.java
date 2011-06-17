@@ -1,40 +1,48 @@
 package com.bee32.sem.chance.web;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpSession;
 
-import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.web.jsf.FacesContextUtils;
+import org.zkoss.zk.ui.event.SelectEvent;
 
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceActionStyleDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChanceStageDto;
+import com.bee32.sem.chance.entity.ChanceAction;
+import com.bee32.sem.chance.entity.ChanceActionStyle;
+import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.facade.ChanceServiceFacade;
-import com.bee32.sem.chance.service.ChanceService;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.user.util.SessionLoginInfo;
 
 @Component
 @Scope("view")
 public class ChanceActionBean
-        implements Serializable {
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
     private int currentTab;
     private boolean editable;
+    private boolean detail;
     private LazyDataModel<ChanceActionDto> actions;
     private ChanceActionDto selectedAction;
     private ChanceActionDto chanceAction;
@@ -55,46 +63,48 @@ public class ChanceActionBean
             @Override
             public List<ChanceActionDto> load(int first, int pageSize, String sortField, boolean sortOrder,
                     Map<String, String> filters) {
-                ChanceServiceFacade chanceService = (ChanceServiceFacade) FacesContextUtils.getWebApplicationContext(
-                        FacesContext.getCurrentInstance()).getBean("chanceServiceFacade");
+                ChanceServiceFacade chanceService = getBean(ChanceServiceFacade.class);
 
                 return chanceService.limitedChanceAction(first, pageSize);
             }
         };
 
-        ChanceServiceFacade chanceService = (ChanceServiceFacade) FacesContextUtils.getWebApplicationContext(
-                FacesContext.getCurrentInstance()).getBean("chanceServiceFacade");
-
+        ChanceServiceFacade chanceService = getBean(ChanceServiceFacade.class);
         actions.setRowCount(chanceService.getChanceActionCount());
+        currentTab = 0;
+        editable = false;
+        detail = true;
     }
 
     public void findChances() {
         if (chancePartten != null && !chancePartten.isEmpty()) {
-            ChanceServiceFacade chanceService = (ChanceServiceFacade) FacesContextUtils.getWebApplicationContext(
-                    FacesContext.getCurrentInstance()).getBean("chanceServiceFacade");
+            ChanceServiceFacade chanceService = getBean(ChanceServiceFacade.class);
             chances = chanceService.chanceSearch(chancePartten);
         }
     }
 
     public void findCustomer() {
         if (customerPartten != null && customerPartten.length() > 0) {
-            ChanceService chanceService = (ChanceService) FacesContextUtils.getWebApplicationContext(
-                    FacesContext.getCurrentInstance()).getBean("chanceService");
-            List<Party> partyList = chanceService.listAll();
+            List<Party> partyList = getDataManager().loadAll(Party.class);
             customers = DTOs.marshalList(PartyDto.class, partyList);
         }
     }
 
     public void createForm() {
+        newAction();
         currentTab = 1;
         editable = true;
-        newAction();
+    }
+
+    public void cancel() {
+        currentTab = 0;
+        editable = false;
     }
 
     public void newAction() {
         ChanceStageDto chanceStageDto = new ChanceStageDto();
         ChanceActionStyleDto chanceActionStyleDto = new ChanceActionStyleDto();
-        List<PartyDto> partyDtoList = Arrays.asList(new PartyDto(0));
+        List<PartyDto> partyDtoList = new ArrayList<PartyDto>();
         ChanceDto chanceDto = new ChanceDto();
         chanceAction = new ChanceActionDto();
 
@@ -109,19 +119,76 @@ public class ChanceActionBean
     }
 
     public void addCustomer() {
-        System.out.println("===========================");
-        System.out.println(selectedCustomer.getName());
-        System.out.println("===========================");
+        chanceAction.addParties(selectedCustomer);
+    }
 
-        List<PartyDto> parties = chanceAction.getParties();
-        if (selectedCustomer != null && ! parties.contains(selectedCustomer))
-            parties.add(selectedCustomer);
+    public void deleteCustomer() {
+        chanceAction.deleteParties(selectedCustomer);
+    }
 
-        System.out.println("===========================");
-        for(PartyDto pdto : parties){
-            System.out.println(pdto.getName());
+    public List<SelectItem> getChanceStages() {
+        List<ChanceStage> chanceStageList = getDataManager().loadAll(ChanceStage.class);
+        List<ChanceStageDto> stageDtoList = DTOs.marshalList(ChanceStageDto.class, chanceStageList);
+        return UIHelper.selectItemsFromDict(stageDtoList);
+    }
+
+    public List<SelectItem> getChanceActionStyles() {
+        List<ChanceActionStyle> chanceActionStyleList = getDataManager().loadAll(ChanceActionStyle.class);
+        List<ChanceActionStyleDto> chanceActionStyleDtoList = DTOs.marshalList(ChanceActionStyleDto.class,
+                chanceActionStyleList);
+        return UIHelper.selectItemsFromDict(chanceActionStyleDtoList);
+    }
+
+    public void saveAction() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        String stageId = chanceAction.getStage().getId();
+        Long chanceId = chanceAction.getChance().getId();
+
+// 设置空的引用
+// if (stageId.isEmpty())
+// stageId = null;
+// ChanceStageDto stage = new ChanceStageDto().ref(stageId);
+// chanceAction.setStage(stage);
+
+        ChanceStageDto stage;
+
+        if (stageId.isEmpty())
+            stage = null;
+        else {
+            stage = new ChanceStageDto().ref(stageId);
         }
-        System.out.println("===========================");
+        chanceAction.setStage(stage);
+
+        ChanceDto chance;
+        if (chanceId == null)
+            chance = null;
+        else
+            chance = new ChanceDto().ref(chanceId);
+        chanceAction.setChance(chance);
+
+        String styleId = chanceAction.getStyle().getId();
+        if (styleId.isEmpty()) {
+            context.addMessage(null, new FacesMessage("提示", "请选择洽谈方式"));
+            return;
+        }
+        ChanceActionStyleDto style = new ChanceActionStyleDto().ref(styleId);
+        chanceAction.setStyle(style);
+
+        HttpSession session = ThreadHttpContext.requireSession();
+        UserDto actor = new UserDto().ref(SessionLoginInfo.requireCurrentUser(session).getId());
+        chanceAction.setActor(actor);
+
+        ChanceAction action = chanceAction.unmarshal();
+
+        getDataManager().save(action);
+
+        chanceAction.setStage(new ChanceStageDto());
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("提示", "保存销售机会行动记录成功!"));
+        currentTab = 0;
+        editable = false;
 
     }
 
@@ -147,6 +214,14 @@ public class ChanceActionBean
 
     public void setEditable(boolean editable) {
         this.editable = editable;
+    }
+
+    public boolean isDetail() {
+        return detail;
+    }
+
+    public void setDetail(boolean detail) {
+        this.detail = detail;
     }
 
     public LazyDataModel<ChanceActionDto> getActions() {
@@ -222,8 +297,8 @@ public class ChanceActionBean
     }
 
     public void setSelectedCustomer(PartyDto selectedCustomer) {
-        if(selectedCustomer == null)
-            selectedCustomer = new PartyDto();
+// if (selectedCustomer == null)
+// selectedCustomer = new PartyDto();
         this.selectedCustomer = selectedCustomer;
     }
 

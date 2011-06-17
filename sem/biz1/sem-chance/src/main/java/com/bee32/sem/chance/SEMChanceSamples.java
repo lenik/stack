@@ -24,7 +24,8 @@ public class SEMChanceSamples
     public static Chance chance = new Chance();
     public static ChanceParty party = new ChanceParty();
     public static ChanceParty party2 = new ChanceParty();
-    public static ChanceAction action = new ChanceAction();
+    public static ChanceAction chanceAction1 = new ChanceAction();
+    public static ChanceAction chanceAction2 = new ChanceAction();
     public static Competitor competitor = new Competitor();
 
     static {
@@ -59,17 +60,25 @@ public class SEMChanceSamples
         competitor.setCapability("核心竞争力");
         competitor.setSolution("目前没有好的解决方案");
 
-        action.setChance(chance);
-        action.setBeginTime(cal.getTime());
-        action.setEndTime(cal.getTime());
-        action.setContent("在北京、上海、广州三个重点区域发展8至10家大OEM厂商");
-        action.setSpending("打的15, 吃饭30,住宿100,共145");
-        action.setActor(IcsfPrincipalSamples.eva);
-        action.setStyle(ChanceActionStyle.INTERNET);
-        action.setParties(Arrays.asList((Party) SEMPeopleSamples.bentley, (Party) SEMPeopleSamples.one77));
-        action.setStage(ChanceStage.LAUNCHED);
+        chanceAction1.setChance(chance);
+        chanceAction1.setBeginTime(cal.getTime());
+        chanceAction1.setEndTime(cal.getTime());
+        chanceAction1.setContent("在北京、上海、广州三个重点区域发展8至10家大OEM厂商");
+        chanceAction1.setSpending("打的15, 吃饭30,住宿100,共145");
+        chanceAction1.setActor(IcsfPrincipalSamples.eva);
+        chanceAction1.setStyle(ChanceActionStyle.INTERNET);
+        chanceAction1.setParties(Arrays.asList((Party) SEMPeopleSamples.bentley, (Party) SEMPeopleSamples.one77));
+        chanceAction1.setStage(ChanceStage.INITIAL);
 
-        chance.setActions(Arrays.asList(action));
+        chanceAction2.setBeginTime(cal.getTime());
+        chanceAction2.setEndTime(cal.getTime());
+        chanceAction2.setContent("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        chanceAction2.setSpending("spendingspendingspendingspendingspendingspending");
+        chanceAction2.setActor(IcsfPrincipalSamples.eva);
+        chanceAction2.setStyle(ChanceActionStyle.TALK);
+        chanceAction2.setParties(Arrays.asList((Party) SEMPeopleSamples.weiXiaoBao));
+
+        chance.setActions(Arrays.asList(chanceAction1));
 
     }
 
@@ -113,7 +122,8 @@ public class SEMChanceSamples
         addNormalSample(party);
         addNormalSample(party2);
         addNormalSample(competitor);
-        addNormalSample(action);
+        addNormalSample(chanceAction1);
+        addNormalSample(chanceAction2);
     }
 
 }
