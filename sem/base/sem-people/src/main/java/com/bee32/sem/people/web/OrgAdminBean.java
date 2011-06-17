@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +22,7 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
-import com.bee32.sem.people.dto.ContactCategoryDto;
-import com.bee32.sem.people.dto.ContactDto;
-import com.bee32.sem.people.dto.OrgDto;
-import com.bee32.sem.people.dto.OrgTypeDto;
-import com.bee32.sem.people.dto.PartyTagDto;
+import com.bee32.sem.people.dto.*;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.PartyTag;
@@ -50,8 +47,10 @@ public class OrgAdminBean extends EntityViewBean {
 	private ContactDto contact;
 
 	private List<String> selectedTagsToAdd;
-
 	private String selectedTagId;
+
+    private PersonRoleDto selectedRole;
+    private PersonRoleDto role;
 
 	@PostConstruct
 	public void init() {
@@ -60,13 +59,11 @@ public class OrgAdminBean extends EntityViewBean {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public List<OrgDto> load(int first, int pageSize, String sortField, boolean sortOrder,
-                    Map<String, String> filters) {
+            public List<OrgDto> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
                 IPeopleService peopleService = getBean(IPeopleService.class);
                 return peopleService.listOrgByCurrentUser(first, pageSize);
             }
-
-		};
+        };
 
 		IPeopleService peopleService = getBean(IPeopleService.class);
 
@@ -194,6 +191,24 @@ public class OrgAdminBean extends EntityViewBean {
     public void setSelectedTagId(String selectedTagId) {
         this.selectedTagId = selectedTagId;
     }
+
+    public PersonRoleDto getRole() {
+        return role;
+    }
+
+    public void setRole(PersonRoleDto role) {
+        this.role = role;
+    }
+
+    public PersonRoleDto getSelectedRole() {
+        return selectedRole;
+    }
+
+    public void setSelectedRole(PersonRoleDto selectedRole) {
+        this.selectedRole = selectedRole;
+    }
+
+
 
 
 
@@ -397,5 +412,19 @@ public class OrgAdminBean extends EntityViewBean {
             }
         }
     }
+
+    private void newRole() {
+        role = new PersonRoleDto();
+
+        role.setOrg(org);
+    }
+
+	public void newRole_() {
+	    if(org == null || org.getId() == null) {
+	        FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("提示", "请选择需要新增联系方式的客户/供应商!"));
+	    }
+	    newRole();
+	}
 
 }

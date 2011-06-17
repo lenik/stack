@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -55,14 +56,11 @@ public class PersonAdminBean extends EntityViewBean {
 			private static final long serialVersionUID = 1L;
 
             @Override
-			public List<PersonDto> load(int first, int pageSize,
-					String sortField, boolean sortOrder,
-					Map<String, String> filters) {
-				IPeopleService peopleService = getBean(IPeopleService.class);
+            public List<PersonDto> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+                IPeopleService peopleService = getBean(IPeopleService.class);
 				return peopleService.listPersonByCurrentUser(first, pageSize);
-			}
-
-		};
+            }
+        };
 
 		IPeopleService peopleService =getBean(IPeopleService.class);
 
@@ -277,10 +275,16 @@ public class PersonAdminBean extends EntityViewBean {
 
     public void onRowSelect(SelectEvent event) {
         System.out.println("person row select");
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage("hint", "person row select!"));
     }
 
     public void onRowUnselect(UnselectEvent event) {
         System.out.println("person row unselect");
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage("hint", "person row unselect!"));
     }
 
     private void _newContact() {

@@ -195,7 +195,7 @@
                             </t:panelGroup>
                         </t:panelGrid>
 
-                        <p:panel header="联系方式">
+                        <p:panel header="联系方式" toggleable="true">
                             <p:toolbar id="contactToolbar">
                                 <p:toolbarGroup align="left">
                                     <p:commandButton value="新增"
@@ -292,6 +292,110 @@
                             </p:dataTable>
                         </p:panel>
 
+                        <p:panel header="相关人员" toggleable="true">
+                            <p:toolbar id="roleToolbar">
+                                <p:toolbarGroup align="left">
+                                    <p:commandButton value="新增"
+                                        disabled="#{orgAdminBean.org == null or orgAdminBean.org.id == null}"
+                                        actionListener="#{orgAdminBean.newRole_}"
+                                        update="roleForm:roleHolder" async="true"
+                                        onclick="roleHolderDlg.show();" />
+                                    <p:commandButton value="修改"
+                                        actionListener="#{orgAdminBean.modifyRole_}"
+                                        disabled="#{not orgAdminBean.roleSelected}"
+                                        update="roleForm:roleHolder" async="true"
+                                        onclick="roleHolderDlg.show();" />
+                                    <p:commandButton value="删除"
+                                        actionListener="#{orgAdminBean.deleteRole_}"
+                                        disabled="#{not orgAdminBean.roleSelected}" update=""
+                                        async="true" />
+                                    <p:divider />
+                                </p:toolbarGroup>
+                            </p:toolbar>
+                            <p:dataTable id="roles" var="role"
+                                value="#{orgAdminBean.roles}" resizableColumns="true"
+                                selection="#{orgAdminBean.selectedRole}"
+                                selectionMode="single" rowIndexVar="rowIndex">
+
+                                <p:ajax event="rowSelect"
+                                    listener="#{orgAdminBean.onRowSelectRole}"
+                                    update="orgForm:roleToolbar" />
+                                <p:ajax event="rowUnselect"
+                                    listener="#{orgAdminBean.onRowUnselectRole}"
+                                    update="orgForm:roleToolbar" />
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="序号" />
+                                    </f:facet>
+                                    <h:outputText value="#{rowIndex + 1}" />
+                                </p:column>
+
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="所在部门" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.orgUnit}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="职务" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.role}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="负责业务" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.roleDetail}" />
+                                </p:column>
+                                roleDetail
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="姓名" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.person.name}" />
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="性别" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.person.sexText}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="生日" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.person.birthday}">
+                                        <f:convertDateTime pattern="yyyy-MM-dd"
+                                            timeZone="Asia/Shanghai" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="证件类型" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.person.sidType.label}" />
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="证件号码" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.person.sid}" />
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="户籍" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.person.censusRegister}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
                     </p:tab>
                 </p:tabView>
             </p:panel>

@@ -17,7 +17,7 @@ public class PersonRole
 
     private static final long serialVersionUID = 1L;
 
-    Party person;
+    Person person;
     Org org;
     String orgUnit;
     String role;
@@ -25,11 +25,11 @@ public class PersonRole
     String description;
 
     @ManyToOne(optional = false)
-    public Party getPerson() {
+    public Person getPerson() {
         return person;
     }
 
-    public void setPerson(Party person) {
+    public void setPerson(Person person) {
         if (person == null)
             throw new NullPointerException("person");
         this.person = person;

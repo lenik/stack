@@ -11,7 +11,7 @@ public class PersonRoleDto
 
     private static final long serialVersionUID = 1L;
 
-    PartyDto person;
+    PersonDto person;
     OrgDto org;
     String orgUnit;
     String role;
@@ -28,7 +28,7 @@ public class PersonRoleDto
 
     @Override
     protected void _marshal(PersonRole source) {
-        person = new PartyDto(0).ref(source.getPerson());
+        person = new PersonDto(0).ref(source.getPerson());
         org = new OrgDto().ref(source.getOrg());
         orgUnit = source.getOrgUnit();
         role = source.getRole();
@@ -56,4 +56,51 @@ public class PersonRoleDto
         description = map.getString("description");
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public OrgDto getOrg() {
+        return org;
+    }
+
+    public void setOrg(OrgDto org) {
+        this.org = org;
+    }
+
+    public String getOrgUnit() {
+        return orgUnit;
+    }
+
+    public void setOrgUnit(String orgUnit) {
+        this.orgUnit = orgUnit;
+    }
+
+    public PersonDto getPerson() {
+        return person;
+    }
+
+    public void setPerson(PersonDto person) {
+        this.person = person;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRoleDetail() {
+        return roleDetail;
+    }
+
+    public void setRoleDetail(String roleDetail) {
+        this.roleDetail = roleDetail;
+    }
 }

@@ -87,10 +87,10 @@
 
 							<p:ajax event="rowSelect"
 								listener="#{personAdminBean.onRowSelect}"
-								update="personForm:personToolbar" />
+								update="personForm:personToolbar growl" />
 							<p:ajax event="rowUnselect"
 								listener="#{personAdminBean.onRowUnselect}"
-								update="personForm:personToolbar" />
+								update="personForm:personToolbar growl" />
 
 							<p:column>
 								<f:facet name="header">
