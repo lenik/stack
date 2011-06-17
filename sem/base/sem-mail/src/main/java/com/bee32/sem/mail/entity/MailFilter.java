@@ -4,11 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import com.bee32.plover.orm.ext.color.BlueEntity;
+import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.color.Green;
 
 @Entity
+@Green
 public class MailFilter
-        extends BlueEntity<Integer> {
+        extends EntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 

@@ -5,11 +5,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.ext.color.BlueEntity;
+import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.color.Blue;
 
 @Entity
+@Blue
 public class UserEmail
-        extends BlueEntity<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

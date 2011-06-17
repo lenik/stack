@@ -9,14 +9,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.bee32.plover.orm.ext.color.BlueEntity;
+import com.bee32.plover.orm.ext.color.MomentInterval;
 
 /**
  * 人或组织的社会档案记录.
  */
 @Entity
 public class PartyRecord
-        extends BlueEntity<Long> {
+        extends MomentInterval {
 
     private static final long serialVersionUID = 1L;
 

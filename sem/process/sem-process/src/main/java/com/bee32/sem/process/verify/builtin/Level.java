@@ -6,13 +6,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import com.bee32.plover.collections.map.IRangeMapEntry;
+import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.EntityBase;
-import com.bee32.plover.orm.ext.color.BlueEntity;
+import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.sem.process.verify.VerifyPolicy;
 
 @Entity
+@Blue
 public class Level
-        extends BlueEntity<Integer>
+        extends EntityAuto<Integer>
         implements IRangeMapEntry<Long, VerifyPolicy<?>> {
 
     private static final long serialVersionUID = 1L;

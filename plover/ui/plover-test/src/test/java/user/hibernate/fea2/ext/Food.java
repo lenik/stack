@@ -23,13 +23,13 @@ import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
 import com.bee32.plover.orm.entity.EntityBase;
-import com.bee32.plover.orm.ext.color.GreenEntity;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "stereo")
 public class Food
-        extends GreenEntity<Integer> {
+        extends UIEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 

@@ -8,12 +8,14 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 
+import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.xp.EntityExt;
 
 /**
  * 联系人。为“客户联系人”和“供应商联系人”的基类， 因为有共同的地方，所以提取本类
  */
 @Entity
+@Blue
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")

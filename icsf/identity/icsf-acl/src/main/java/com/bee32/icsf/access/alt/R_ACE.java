@@ -11,15 +11,17 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
 import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.EntityBase;
-import com.bee32.plover.orm.ext.color.BlueEntity;
+import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
 @Entity
+@Blue
 @BatchSize(size = 100)
 public class R_ACE
-        extends BlueEntity<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

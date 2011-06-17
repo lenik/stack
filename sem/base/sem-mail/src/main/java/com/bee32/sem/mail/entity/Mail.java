@@ -17,16 +17,18 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.ext.color.PinkEntity;
+import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.sem.mail.MailType;
 import com.bee32.sem.mail.util.EmailUtil;
 
 @Entity
+@Green
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("MAIL")
 public class Mail
-        extends PinkEntity<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

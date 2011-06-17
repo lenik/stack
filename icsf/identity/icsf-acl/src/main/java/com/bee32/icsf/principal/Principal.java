@@ -21,13 +21,15 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.entity.EntityBase;
-import com.bee32.plover.orm.ext.color.GreenEntity;
+import com.bee32.plover.orm.ext.color.Green;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
+@Green
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "steoro", length = 3)
 public class Principal
-        extends GreenEntity<Integer>
+        extends UIEntityAuto<Integer>
         implements IPrincipal {
 
     private static final long serialVersionUID = 1L;

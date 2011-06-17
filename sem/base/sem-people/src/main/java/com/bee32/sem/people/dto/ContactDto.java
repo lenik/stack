@@ -2,7 +2,6 @@ package com.bee32.sem.people.dto;
 
 import javax.free.ParseException;
 
-import com.bee32.plover.arch.util.MarshalType;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
 import com.bee32.sem.people.entity.Contact;

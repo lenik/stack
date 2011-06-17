@@ -11,13 +11,13 @@ import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.color.PinkEntityDto;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Event;
 
 public abstract class AbstractEventDto<E extends Event>
-        extends PinkEntityDto<E, Long>
+        extends EntityDto<E, Long>
         implements ITypeAbbrAware {
 
     private static final long serialVersionUID = 1L;

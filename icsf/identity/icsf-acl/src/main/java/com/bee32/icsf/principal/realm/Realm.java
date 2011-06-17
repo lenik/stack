@@ -23,11 +23,13 @@ import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.ext.color.GreenEntity;
+import com.bee32.plover.orm.ext.color.Green;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
+@Green
 public class Realm
-        extends GreenEntity<Integer>
+        extends UIEntityAuto<Integer>
         implements IRealm {
 
     private static final long serialVersionUID = 1L;

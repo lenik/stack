@@ -6,11 +6,13 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.ext.color.BlueEntity;
+import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.color.Yellow;
 
 @Entity
+@Yellow
 public class DiaryObserver
-        extends BlueEntity<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

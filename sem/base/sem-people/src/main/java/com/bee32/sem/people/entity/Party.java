@@ -27,12 +27,14 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.xp.EntityExt;
 
 /**
  * 自然人或法人。
  */
 @Entity
+@Green
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")

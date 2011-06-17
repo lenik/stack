@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface ICalendarEvent {
 
-    Date getBeginDate();
+    Date getBeginTime();
 
-    Date getEndDate();
+    Date getEndTime();
 
     String getSubject();
 

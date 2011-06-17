@@ -9,14 +9,14 @@ import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.EntityBase;
-import com.bee32.plover.orm.ext.color.GreenEntity;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
 public abstract class VerifyPolicy<C extends IVerifyContext>
-        extends GreenEntity<Integer>
+        extends UIEntityAuto<Integer>
         implements IVerifyPolicy<C> {
 
     private static final long serialVersionUID = 1L;

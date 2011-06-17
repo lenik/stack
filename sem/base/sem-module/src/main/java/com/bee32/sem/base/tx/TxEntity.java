@@ -1,9 +1,10 @@
 package com.bee32.sem.base.tx;
 
-import java.io.Serializable;
+import javax.persistence.MappedSuperclass;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.ext.color.PinkEntity;
+import com.bee32.plover.orm.ext.color.MomentInterval;
+import com.bee32.plover.orm.ext.color.Pink;
 
 /**
  * 事务性实体所具有的特性：
@@ -13,8 +14,10 @@ import com.bee32.plover.orm.ext.color.PinkEntity;
  * <li>事务与事件的集成
  * <li>事务的一般属性：标题、制单人、审核策略
  */
-public class TxEntity<K extends Serializable>
-        extends PinkEntity<K> {
+@MappedSuperclass
+@Pink
+public class TxEntity
+        extends MomentInterval {
 
     private static final long serialVersionUID = 1L;
 

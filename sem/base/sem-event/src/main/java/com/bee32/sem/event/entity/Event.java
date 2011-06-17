@@ -24,18 +24,20 @@ import org.hibernate.annotations.Index;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.IEntity;
-import com.bee32.plover.orm.ext.color.PinkEntity;
+import com.bee32.plover.orm.ext.color.Pink;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.sem.event.EventFlags;
 import com.bee32.sem.event.EventState;
 
 @Entity
+@Pink
 @Inheritance(strategy = SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("EVT")
 public class Event
-        extends PinkEntity<Long>
+        extends EntityAuto<Long>
         implements IEvent, ITypeAbbrAware {
 
     private static final long serialVersionUID = 1L;

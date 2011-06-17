@@ -5,11 +5,11 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 
 import com.bee32.plover.orm.entity.EntityBase;
-import com.bee32.plover.orm.ext.color.GreenEntity;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
 public class Book
-        extends GreenEntity<Integer> {
+        extends UIEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 

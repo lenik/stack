@@ -5,7 +5,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.orm.ext.color.BlueEntity;
+import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
@@ -13,8 +14,9 @@ import com.bee32.plover.util.PrettyPrintStream;
  * 审核步骤
  */
 @Entity
+@Blue
 public class PassStep
-        extends BlueEntity<Integer> {
+        extends EntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 

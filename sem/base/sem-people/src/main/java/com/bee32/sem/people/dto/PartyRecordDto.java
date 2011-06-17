@@ -5,11 +5,11 @@ import java.util.Date;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.ext.color.MomentIntervalDto;
 import com.bee32.sem.people.entity.PartyRecord;
 
 public class PartyRecordDto
-        extends EntityDto<PartyRecord, Long> {
+        extends MomentIntervalDto<PartyRecord> {
 
     private static final long serialVersionUID = 1L;
 

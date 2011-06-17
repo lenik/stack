@@ -13,12 +13,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.ext.color.PinkEntity;
+import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.color.Pink;
 import com.bee32.sem.mail.MailFlags;
 
 @Entity
+@Pink
 public class MailDelivery
-        extends PinkEntity<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
