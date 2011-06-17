@@ -220,7 +220,11 @@ public class OrgAdminBean extends EntityViewBean {
         return roles;
     }
 
-
+    public boolean isRoleSelected() {
+        if(selectedRole != null)
+            return true;
+        return false;
+    }
 
 
 
