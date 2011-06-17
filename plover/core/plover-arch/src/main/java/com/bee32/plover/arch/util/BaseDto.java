@@ -1,26 +1,18 @@
 package com.bee32.plover.arch.util;
 
-import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 
 import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.html.parser.Entity;
 
@@ -28,12 +20,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 
-public abstract class DataTransferObject<S, C>
-        implements IDataTransferObject<S, C>, Serializable {
+public abstract class BaseDto<S, C>
+        extends BaseDto_ASM<S, C> {
 
     private static final long serialVersionUID = 1L;
 
-    static Logger logger = LoggerFactory.getLogger(DataTransferObject.class);
+    static Logger logger = LoggerFactory.getLogger(BaseDto.class);
 
     protected Class<? extends S> sourceType;
     protected final Flags32 selection = new Flags32();
@@ -41,28 +33,26 @@ public abstract class DataTransferObject<S, C>
     protected MarshalType marshalType = MarshalType.SELECTION;
     protected boolean nullRef;
 
-    Stack<IMarshalSession> sessionStack;
-
-    protected DataTransferObject(Class<? extends S> sourceType) {
+    protected BaseDto(Class<? extends S> sourceType) {
         initSourceType(sourceType);
     }
 
-    public DataTransferObject() {
-        initSourceType(ClassUtil.<S> infer1(getClass(), DataTransferObject.class, 0));
+    public BaseDto() {
+        initSourceType(ClassUtil.<S> infer1(getClass(), BaseDto.class, 0));
     }
 
-    public DataTransferObject(S source) {
+    public BaseDto(S source) {
         this();
         if (source != null)
             marshal(source);
     }
 
-    public DataTransferObject(int selection) {
+    public BaseDto(int selection) {
         this();
         this.selection.set(selection);
     }
 
-    public DataTransferObject(int selection, S source) {
+    public BaseDto(int selection, S source) {
         this(selection);
         if (source != null)
             marshal(source);
@@ -107,95 +97,9 @@ public abstract class DataTransferObject<S, C>
         return sessionStack.lastElement();
     }
 
-    /**
-     * <pre>
-     * LAYER 1
-     * -----------------------------------------------------------------------
-     *      This layer introduce in auto session management.
-     *
-     *      These methods are the only public ones, to enforce the
-     *      synchronization between method calls.
-     * </pre>
-     */
-
-    /**
-     * Enter session
-     */
-    protected final void enter(IMarshalSession session) {
-        if (session == null)
-            throw new NullPointerException("session");
-
-        if (sessionStack == null)
-            sessionStack = new Stack<IMarshalSession>();
-
-        sessionStack.push(session);
-    }
-
-    /**
-     * Leave a session
-     */
-    protected final void leave() {
-        if (sessionStack == null || sessionStack.isEmpty())
-            throw new IllegalStateException("Session stack underflow.");
-
-        sessionStack.pop();
-    }
-
-    IMarshalSession createOrReuseSession(C context) {
-        if (sessionStack == null || sessionStack.isEmpty())
-            return new MarshalSession(context);
-        else
-            return sessionStack.lastElement();
-    }
-
-    @Override
-    public synchronized final <D extends DataTransferObject<S, C>> D marshal(IMarshalSession session, S source) {
-        D marshalled = session.getMarshalled(source, marshalType, selection.bits);
-        if (marshalled != null)
-            return marshalled;
-
-        enter(session);
-        try {
-            return marshalImpl(source);
-        } finally {
-            leave();
-        }
-    }
-
-    @Override
-    public synchronized final S merge(IMarshalSession session, S target) {
-        enter(session);
-        try {
-            return mergeImpl(target);
-        } finally {
-            leave();
-        }
-    }
-
-    @Override
-    public synchronized final void parse(IMarshalSession session, Map<String, ?> map)
-            throws ParseException {
-        enter(session);
-        try {
-            parseImpl(map);
-        } finally {
-            leave();
-        }
-    }
-
-    @Override
-    public synchronized final void export(IMarshalSession session, Map<String, Object> map) {
-        enter(session);
-        try {
-            exportImpl(map);
-        } finally {
-            leave();
-        }
-    }
-
     // [A] Context/Session wrapper
 
-    public final <D extends DataTransferObject<S, C>> D marshal(C context, S source) {
+    public final <D extends BaseDto<S, C>> D marshal(C context, S source) {
         return marshal(createOrReuseSession(context), source);
     }
 
@@ -214,7 +118,7 @@ public abstract class DataTransferObject<S, C>
 
     // [B] TLS-Context/Session wrapper
 
-    public final <D extends DataTransferObject<S, C>> D marshal(S source) {
+    public final <D extends BaseDto<S, C>> D marshal(S source) {
         return marshal(getDefaultMarshalContext(), source);
     }
 
@@ -229,125 +133,6 @@ public abstract class DataTransferObject<S, C>
 
     public final void export(Map<String, Object> map) {
         export(getDefaultMarshalContext(), map);
-    }
-
-    /**
-     * <pre>
-     * LAYER 1-X
-     * -----------------------------------------------------------------------
-     *      User friendly helpers.
-     *
-     *      These methods are provided for convienient programming.
-     *      (And for compatibility purpose, too.)
-     *
-     * -----------------------------------------------------------------------
-     * Note: The parse function:
-     *
-     *  parse(Request)
-     *      parse(TextMap)
-     *          parse(C, TextMap)
-     *              parse(S, TextMap)
-     *                  parseImpl(TextMap) <----.
-     *                                          |
-     *  parse(Map)                              |
-     *      parse(C, Map)                       |
-     *          parse(S, Map)                   |
-     *              parseImpl(Map) -------------'
-     *
-     * </pre>
-     */
-
-    /**
-     * (COMPAT) Unmarshal to a given target.
-     */
-    final void checkForUnmarshalTo() {
-        if (marshalType != MarshalType.SELECTION)
-            logger.warn("Unmarshal is ignored: unmarshalTo() is called but the DTO is not filled. "
-                    + "You should use unmarshal() instead, to unmarshal non-filled DTOs.");
-    }
-
-    public final void unmarshalTo(IMarshalSession session, S target) {
-        checkForUnmarshalTo();
-        merge(session, target);
-    }
-
-    public final void unmarshalTo(C context, S target) {
-        checkForUnmarshalTo();
-        merge(context, target);
-    }
-
-    public final void unmarshalTo(S target) {
-        checkForUnmarshalTo();
-        merge(target);
-    }
-
-    public final S unmarshal(IMarshalSession session) {
-        return merge(session, null);
-    }
-
-    public final S unmarshal(C context) {
-        return merge(context, null);
-    }
-
-    public final S unmarshal() {
-        return merge(null);
-    }
-
-    public synchronized final void parse(IMarshalSession session, TextMap map)
-            throws ParseException {
-        enter(session);
-        try {
-            parseImpl(map);
-        } finally {
-            leave();
-        }
-    }
-
-    public final void parse(C context, TextMap map)
-            throws ParseException {
-        parse(createOrReuseSession(context), map);
-    }
-
-    public final void parse(TextMap map)
-            throws ParseException {
-        parse(getDefaultMarshalContext(), map);
-    }
-
-    public final void parse(C context, HttpServletRequest request)
-            throws ServletException {
-        TextMap textMap = TextMap.convert(request);
-        try {
-            parse(context, textMap);
-        } catch (TypeConvertException e) {
-            throw new ServletException("Parse error: " + e.getMessage(), e);
-        } catch (ParseException e) {
-            throw new ServletException("Parse error: " + e.getMessage(), e);
-        }
-    }
-
-    public final void parse(HttpServletRequest request)
-            throws ServletException {
-        parse(getDefaultMarshalContext(), request);
-    }
-
-    final void parseImpl(Map<String, ?> map)
-            throws ParseException {
-        if (map == null)
-            throw new NullPointerException("map");
-
-        TextMap textMap = TextMap.convert(map);
-
-        try {
-            parseImpl(textMap);
-        } catch (TypeConvertException e) {
-            throw new ParseException(e.getMessage(), e);
-        }
-    }
-
-    public final Map<String, Object> exportMap() {
-        Map<String, Object> map = new HashMap<String, Object>();
-        export(map);
-        return map;
     }
 
     /**
@@ -487,20 +272,6 @@ public abstract class DataTransferObject<S, C>
         exportProperties(map);
     }
 
-    protected void exportProperties(Map<String, Object> map) {
-        try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(getClass());
-            for (PropertyDescriptor property : beanInfo.getPropertyDescriptors()) {
-                String name = property.getName();
-                Method getter = property.getReadMethod();
-                Object value = getter.invoke(this);
-                map.put(name, value);
-            }
-        } catch (Exception e) {
-            map.put("exception", e);
-        }
-    }
-
     /**
      * <pre>
      * LAYER 3 - STATIC HELPER: MARSHAL
@@ -513,7 +284,7 @@ public abstract class DataTransferObject<S, C>
     /**
      * Generic marshal with nullable source support.
      */
-    public static <S, D extends DataTransferObject<S, C>, C> D marshal(IMarshalSession session, //
+    public static <S, D extends BaseDto<S, C>, C> D marshal(IMarshalSession session, //
             Class<D> dtoClass, Integer selection, S source) {
         D dto;
         try {
@@ -537,21 +308,20 @@ public abstract class DataTransferObject<S, C>
         return dto;
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> D marshal(IMarshalSession session, Class<D> dtoClass,
-            S source) {
+    public static <S, D extends BaseDto<S, C>, C> D marshal(IMarshalSession session, Class<D> dtoClass, S source) {
         return marshal(session, dtoClass, null, source);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> D marshal(Class<D> dtoClass, Integer selection, S source) {
+    public static <S, D extends BaseDto<S, C>, C> D marshal(Class<D> dtoClass, Integer selection, S source) {
         return marshal(null, dtoClass, selection, source);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> D marshal(Class<D> dtoClass, S source) {
+    public static <S, D extends BaseDto<S, C>, C> D marshal(Class<D> dtoClass, S source) {
         return marshal(null, dtoClass, null, source);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> List<D> marshalList(IMarshalSession session,
-            Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
+    public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(IMarshalSession session, Class<D> dtoClass,
+            Integer selection, Iterable<? extends S> sources) {
 
         List<D> dtoList = new ArrayList<D>();
 
@@ -566,22 +336,22 @@ public abstract class DataTransferObject<S, C>
         return dtoList;
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> List<D> marshalList(//
+    public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(//
             IMarshalSession session, Class<D> dtoClass, Iterable<? extends S> sources) {
         return marshalList(session, dtoClass, null, sources);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> List<D> marshalList(//
+    public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(//
             Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
         return marshalList(null, dtoClass, selection, sources);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> List<D> marshalList(//
+    public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(//
             Class<D> dtoClass, Iterable<? extends S> sources) {
         return marshalList(null, dtoClass, null, sources);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(//
+    public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(//
             IMarshalSession session, Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
 
         Set<D> dtoSet = new HashSet<D>();
@@ -597,17 +367,17 @@ public abstract class DataTransferObject<S, C>
         return dtoSet;
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(//
+    public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(//
             IMarshalSession session, Class<D> dtoClass, Iterable<? extends S> sources) {
         return marshalSet(session, dtoClass, null, sources);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(//
+    public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(//
             Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
         return marshalSet(null, dtoClass, selection, sources);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> Set<D> marshalSet(//
+    public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(//
             Class<D> dtoClass, Iterable<? extends S> sources) {
         return marshalSet(null, dtoClass, null, sources);
     }
@@ -623,7 +393,7 @@ public abstract class DataTransferObject<S, C>
     /**
      * In the base DTO implementation, no modification / ref is used.
      */
-    public static <Coll extends Collection<S>, D extends DataTransferObject<S, C>, S, C> //
+    public static <Coll extends Collection<S>, D extends BaseDto<S, C>, S, C> //
     /*    */Coll _unmarshalCollection(IMarshalSession session, Coll collection, Iterable<? extends D> dtoList) {
 
         if (collection == null)
@@ -644,27 +414,27 @@ public abstract class DataTransferObject<S, C>
         return collection;
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> //
+    public static <S, D extends BaseDto<S, C>, C> //
     /*    */List<S> _unmarshalList(IMarshalSession session, Iterable<? extends D> dtoList) {
         return _unmarshalCollection(session, new ArrayList<S>(), dtoList);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> //
+    public static <S, D extends BaseDto<S, C>, C> //
     /*    */Set<S> _unmarshalSet(IMarshalSession session, Iterable<? extends D> dtoList) {
         return _unmarshalCollection(session, new HashSet<S>(), dtoList);
     }
 
-    public static <Coll extends Collection<S>, D extends DataTransferObject<S, C>, S, C> //
+    public static <Coll extends Collection<S>, D extends BaseDto<S, C>, S, C> //
     /*    */Coll _unmershalCollection(Coll collection, Iterable<? extends D> dtoList) {
         return _unmarshalCollection(null, collection, dtoList);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> //
+    public static <S, D extends BaseDto<S, C>, C> //
     /*    */List<S> _unmershalList(Iterable<? extends D> dtoList) {
         return _unmarshalCollection(null, new ArrayList<S>(), dtoList);
     }
 
-    public static <S, D extends DataTransferObject<S, C>, C> //
+    public static <S, D extends BaseDto<S, C>, C> //
     /*    */Set<S> _unmarshalSet(Iterable<? extends D> dtoList) {
         return _unmarshalCollection(null, new HashSet<S>(), dtoList);
     }
@@ -678,7 +448,7 @@ public abstract class DataTransferObject<S, C>
      * </pre>
      */
     public static <S, _s, C> void merge(IMarshalSession session, S target, //
-            IPropertyAccessor<S, _s> property, DataTransferObject<_s, C> propertyDto) {
+            IPropertyAccessor<S, _s> property, BaseDto<_s, C> propertyDto) {
 
         // DTO == null means ignore.
         if (propertyDto == null)
@@ -697,12 +467,12 @@ public abstract class DataTransferObject<S, C>
     }
 
     public static <S, _s, C> void merge(S target, //
-            IPropertyAccessor<S, _s> property, DataTransferObject<_s, C> propertyDto) {
+            IPropertyAccessor<S, _s> property, BaseDto<_s, C> propertyDto) {
         merge(null, target, property, propertyDto);
     }
 
     public static <S, _s, C> void merge(IMarshalSession session, S target, //
-            String propertyName, DataTransferObject<_s, C> propertyDto) {
+            String propertyName, BaseDto<_s, C> propertyDto) {
 
         // DTO == null means ignore.
         if (propertyDto == null)
@@ -778,9 +548,9 @@ public abstract class DataTransferObject<S, C>
      *
      * The DTO is only filled if:
      * <ul>
-     * <li>It has been {@link DataTransferObject#marshal(Object) marhsalled} from an entity bean.
-     * <li>It has {@link DataTransferObject#parse(Map) parsed from a Map}, or
-     * {@link DataTransferObject#parse(HttpServletRequest) from an HttpServletRequest}.</li>
+     * <li>It has been {@link BaseDto#marshal(Object) marhsalled} from an entity bean.
+     * <li>It has {@link BaseDto#parse(Map) parsed from a Map}, or
+     * {@link BaseDto#parse(HttpServletRequest) from an HttpServletRequest}.</li>
      *
      * You can always clear the filled state by reference the DTO to a specific id, by calling the
      * {@link EntityDto#ref(Entity) ref} method.
@@ -797,7 +567,7 @@ public abstract class DataTransferObject<S, C>
      *             {@link IEntityMarshalContext}.
      */
     public static <S, _s, C> void merge(S target, //
-            String propertyName, DataTransferObject<_s, C> propertyDto) {
+            String propertyName, BaseDto<_s, C> propertyDto) {
         // IMarshalSession session = getSession();
         merge(null, target, propertyName, propertyDto);
     }

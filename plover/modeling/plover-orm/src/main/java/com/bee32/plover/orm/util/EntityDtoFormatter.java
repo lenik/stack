@@ -2,7 +2,7 @@ package com.bee32.plover.orm.util;
 
 import java.util.Set;
 
-import com.bee32.plover.arch.util.DataTransferObject;
+import com.bee32.plover.arch.util.BaseDto;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.ObjectFormatter;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -81,7 +81,7 @@ public class EntityDtoFormatter
     }
 
     static {
-        addStopClass(DataTransferObject.class);
+        addStopClass(BaseDto.class);
         addStopClass(EntityDto.class);
     }
 

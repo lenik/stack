@@ -18,7 +18,7 @@ public interface IDataTransferObject<S, C> {
      * @return The marshalled object. it may be this, or flyweight, or <code>null</code> if the
      *         specified <code>source</code> object is <code>null</code>.
      */
-    <D extends DataTransferObject<S, C>> D marshal(IMarshalSession session, S source);
+    <D extends BaseDto<S, C>> D marshal(IMarshalSession session, S source);
 
     /**
      * Populate the specified target entity bean with properties defined in this object.

@@ -20,7 +20,7 @@ import javax.free.TypeConvertException;
 import org.springframework.context.ApplicationContext;
 
 import com.bee32.plover.arch.util.BeanPropertyAccessor;
-import com.bee32.plover.arch.util.DataTransferObject;
+import com.bee32.plover.arch.util.BaseDto;
 import com.bee32.plover.arch.util.IMarshalSession;
 import com.bee32.plover.arch.util.IPropertyAccessor;
 import com.bee32.plover.arch.util.MarshalType;
@@ -36,7 +36,7 @@ import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
-        extends DataTransferObject<E, IEntityMarshalContext>
+        extends BaseDto<E, IEntityMarshalContext>
         implements IMultiFormat {
 
     private static final long serialVersionUID = 1L;

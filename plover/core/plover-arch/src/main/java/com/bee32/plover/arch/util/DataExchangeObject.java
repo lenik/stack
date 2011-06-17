@@ -6,7 +6,7 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 public abstract class DataExchangeObject<T>
-        extends DataTransferObject<T, Void> {
+        extends BaseDto<T, Void> {
 
     private static final long serialVersionUID = 1L;
 

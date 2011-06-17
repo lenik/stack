@@ -7,11 +7,11 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.arch.util.DataTransferObject;
+import com.bee32.plover.arch.util.BaseDto;
 import com.bee32.plover.orm.feaCat.Tiger;
 
 /**
- * @see DataTransferObject
+ * @see BaseDto
  */
 public class DataTransferObjectTest
         extends Assert {

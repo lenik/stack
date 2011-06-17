@@ -10,7 +10,7 @@ public class MarshalSession
 
     Map<MarshalKey, Object> marshalledMap;
 
-    Map<DataTransferObject<?, ?>, Object> unmarshalled;
+    Map<BaseDto<?, ?>, Object> unmarshalled;
 
     public MarshalSession(Object context) {
         this.context = context;
@@ -34,11 +34,11 @@ public class MarshalSession
         return marshalledMap;
     }
 
-    final Map<DataTransferObject<?, ?>, Object> getUnmarshalledMap() {
+    final Map<BaseDto<?, ?>, Object> getUnmarshalledMap() {
         if (unmarshalled == null) {
             synchronized (this) {
                 if (unmarshalled == null) {
-                    unmarshalled = new HashMap<DataTransferObject<?, ?>, Object>();
+                    unmarshalled = new HashMap<BaseDto<?, ?>, Object>();
                 }
             }
         }
@@ -46,26 +46,26 @@ public class MarshalSession
     }
 
     @Override
-    public <S, D extends DataTransferObject<?, ?>> //
+    public <S, D extends BaseDto<?, ?>> //
     D getMarshalled(S source, MarshalType marshalType, int selection) {
         MarshalKey marshalKey = new MarshalKey(source, marshalType, selection);
         return (D) getMarshalledMap().get(marshalKey);
     }
 
     @Override
-    public <S, D extends DataTransferObject<?, ?>> //
+    public <S, D extends BaseDto<?, ?>> //
     void addMarshalled(S source, MarshalType marshalType, int selection, D dest) {
         MarshalKey marshalKey = new MarshalKey(source, marshalType, selection);
         getMarshalledMap().put(marshalKey, dest);
     }
 
     @Override
-    public <S, D extends DataTransferObject<?, ?>> S getUnmarshalled(D dto) {
+    public <S, D extends BaseDto<?, ?>> S getUnmarshalled(D dto) {
         return (S) getUnmarshalledMap().get(dto);
     }
 
     @Override
-    public <S, D extends DataTransferObject<?, ?>> void addUnmarshalled(D dest, S source) {
+    public <S, D extends BaseDto<?, ?>> void addUnmarshalled(D dest, S source) {
         getUnmarshalledMap().put(dest, source);
     }
 
