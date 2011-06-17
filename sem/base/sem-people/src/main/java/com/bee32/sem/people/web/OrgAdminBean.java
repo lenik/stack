@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 
+import com.bee32.sem.people.dao.PartyDao;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -51,6 +52,11 @@ public class OrgAdminBean extends EntityViewBean {
 
     private PersonRoleDto selectedRole;
     private PersonRoleDto role;
+
+    private String personPartten;
+    private List<PersonDto> persons;
+    private PersonDto selectedPerson;
+
 
 	@PostConstruct
 	public void init() {
@@ -225,6 +231,33 @@ public class OrgAdminBean extends EntityViewBean {
             return true;
         return false;
     }
+
+    public String getPersonPartten() {
+        return personPartten;
+    }
+
+    public void setPersonPartten(String personPartten) {
+        this.personPartten = personPartten;
+    }
+
+    public List<PersonDto> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<PersonDto> persons) {
+        this.persons = persons;
+    }
+
+    public PersonDto getSelectedPerson() {
+        return selectedPerson;
+    }
+
+    public void setSelectedPerson(PersonDto selectedPerson) {
+        this.selectedPerson = selectedPerson;
+    }
+
+
+
 
 
 
@@ -433,6 +466,9 @@ public class OrgAdminBean extends EntityViewBean {
     private void newRole() {
         role = new PersonRoleDto();
 
+        PersonDto person = new PersonDto();
+        role.setPerson(person);
+
         role.setOrg(org);
     }
 
@@ -491,6 +527,19 @@ public class OrgAdminBean extends EntityViewBean {
 
     public void onRowUnselectRole(UnselectEvent event) {
         newRole();
+    }
+
+    public void findPerson() {
+        if(personPartten != null && !personPartten.isEmpty()) {
+
+            IPeopleService peopleService = getBean(IPeopleService.class);
+            persons = peopleService.listPersonByCurrentUser(personPartten);
+
+        }
+    }
+
+    public void choosePerson() {
+        role.setPerson(selectedPerson);
     }
 
 }

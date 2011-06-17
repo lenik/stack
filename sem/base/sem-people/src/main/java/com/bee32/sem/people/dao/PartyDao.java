@@ -24,7 +24,7 @@ public class PartyDao<E extends Party>
 
     public List<E> limitedKeywordList(Class<E> entityClass, String keyword, int displayStart, int displayLength){
         Criteria criteria = getSession().createCriteria(entityClass);
-        criteria.add(Restrictions.like("name", keyword));
+        criteria.add(Restrictions.like("name", "%" + keyword + "%"));
         criteria.setFirstResult(displayStart);
         criteria.setMaxResults(displayLength);
         return criteria.list();
@@ -52,7 +52,7 @@ public class PartyDao<E extends Party>
 
     public List<E> limitedKeywordList(Class<E> entityClass, IUserPrincipal user, String keyword, int displayStart, int displayLength){
         Criteria criteria = getSession().createCriteria(entityClass);
-        criteria.add(Restrictions.like("name", keyword));
+        criteria.add(Restrictions.like("name", "%" + keyword + "%"));
         criteria.add(Restrictions.eq("owner.id", user.getId()));
         criteria.addOrder(Order.desc("id"));
         criteria.setFirstResult(displayStart);
@@ -63,13 +63,20 @@ public class PartyDao<E extends Party>
     public long limitedKeywordListCount(Class<E> entityClass, IUserPrincipal user, String keyword) {
 		int count = (Integer) getSession()
 				.createCriteria(entityClass)
-				.add(Restrictions.like("name", keyword))
+				.add(Restrictions.like("name", "%" + keyword + "%"))
 				.add(Restrictions.eq("owner.id", user.getId()))
 				.setProjection(Projections.rowCount())
 				.uniqueResult();
 
 		long countL = count;
 		return countL;
+    }
+
+    public List<E> limitedKeywordList(Class<E> entityClass, IUserPrincipal user, String keyword){
+        Criteria criteria = getSession().createCriteria(entityClass);
+        criteria.add(Restrictions.like("name", "%" + keyword + "%"));
+        criteria.add(Restrictions.eq("owner.id", user.getId()));
+        return criteria.list();
     }
 
 }

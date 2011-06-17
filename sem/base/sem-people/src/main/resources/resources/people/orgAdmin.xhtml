@@ -495,8 +495,8 @@
                     <p:growl id="growl2" showDetail="true" />
 
                     <h:inputHidden id="roldId" value="#{orgAdminBean.role.id}"/>
-                    <h:inputHidden id="roldOrgId" value="#{ordAdminBean.role.org.id}" />
-                    <h:inputHidden id="roldPersonId" value="#{ordAdminBean.role.person.id}" />
+                    <h:inputHidden id="roldOrgId" value="#{orgAdminBean.role.org.id}" />
+                    <h:inputHidden id="roldPersonId" value="#{orgAdminBean.role.person.id}" />
                     <t:panelGrid columns="2"
                         columnClasses="detail_col_title,detail_col_value">
 
@@ -506,7 +506,10 @@
 
 
                         <h:outputLabel for="rolePersonName" value="对应人员" />
-                        <h:outputText id="rolePersonName" value="#{orgAdminBean.role.person.name}"/>
+                        <t:panelGrid columns="2">
+                            <h:outputText id="rolePersonName" value="#{orgAdminBean.role.person.name}"/>
+                            <p:commandButton value="..." onclick="personHolderDlg.show();"/>
+                        </t:panelGrid>
 
 
                         <h:outputLabel for="roleOrgUnit" value="所在部门" />
@@ -536,6 +539,89 @@
                     </t:panelGrid>
                 </h:panelGroup>
 
+            </p:dialog>
+
+            <p:dialog header="选择联系人" widgetVar="personHolderDlg" modal="true" height="400" width="640">
+                <h:panelGroup>
+
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="联系人名字全部或部份:"/>
+                        <p:inputText value="#{orgAdminBean.personPartten}"/>
+                        <p:commandButton value="查找" actionListener="#{orgAdminBean.findPerson}" update="persons"
+                                         async="true"/>
+                    </h:panelGrid>
+                    <p:dataTable
+                            id="persons"
+                            var="person"
+                            value="#{orgAdminBean.persons}"
+                            resizableColumns="true"
+                            selection="#{orgAdminBean.selectedPerson}"
+                            selectionMode="single"
+                            rowIndexVar="rowIndex">
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="序号"/>
+                            </f:facet>
+                            <h:outputText value="#{rowIndex + 1}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="姓名"/>
+                            </f:facet>
+                            <h:outputText value="#{person.name}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="性别"/>
+                            </f:facet>
+                            <h:outputText value="#{person.sexText}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="生日"/>
+                            </f:facet>
+                            <h:outputText value="#{person.birthday}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                                   timeZone="Asia/Shanghai"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="证件类型"/>
+                            </f:facet>
+                            <h:outputText value="#{person.sidType.label}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="证件号码"/>
+                            </f:facet>
+                            <h:outputText value="#{person.sid}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="户籍"/>
+                            </f:facet>
+                            <h:outputText value="#{person.censusRegister}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                    <h:panelGrid columns="2">
+                        <p:commandButton
+                                value="确定"
+                                actionListener="#{orgAdminBean.choosePerson}"
+                                oncomplete="personHolderDlg.hide();"
+                                update="roleHolder"
+                                async="true"/>
+                        <p:commandButton value="取消" oncomplete="personHolderDlg.hide();"/>
+                    </h:panelGrid>
+                </h:panelGroup>
             </p:dialog>
         </h:form>
 

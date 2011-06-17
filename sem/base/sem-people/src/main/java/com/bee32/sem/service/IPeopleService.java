@@ -10,4 +10,5 @@ public interface IPeopleService {
 	long listPersonByCurrentUserCount();
     List<OrgDto> listOrgByCurrentUser(Integer start, Integer count);
     long listOrgByCurrentUserCount();
+    public List<PersonDto> listPersonByCurrentUser(String keyword);
 }

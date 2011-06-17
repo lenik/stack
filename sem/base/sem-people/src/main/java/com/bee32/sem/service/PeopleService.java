@@ -65,4 +65,16 @@ public class PeopleService
         return partyDao.limitedListCount(Org.class, currUser);
     }
 
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PersonDto> listPersonByCurrentUser(String keyword) {
+        HttpSession session = ThreadHttpContext.requireSession();
+        IUserPrincipal currUser = (IUserPrincipal) SessionLoginInfo.getCurrentUser(session);
+
+        List<Person> personList = partyDao.limitedKeywordList(Person.class, currUser, keyword);
+
+        return DTOs.marshalList(PersonDto.class, PersonDto.CONTACTS | PersonDto.RECORDS, personList);
+    }
+
 }
