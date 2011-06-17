@@ -26,4 +26,12 @@ public abstract class ShortNameDict
         super(name, label, description);
     }
 
+    public ShortNameDict(int order, String name, String label, String description) {
+        super(order, name, label, description);
+    }
+
+    public ShortNameDict(int order, String name, String label) {
+        super(order, name, label);
+    }
+
 }

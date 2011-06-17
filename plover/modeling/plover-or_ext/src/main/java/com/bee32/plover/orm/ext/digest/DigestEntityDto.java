@@ -1,9 +1,9 @@
 package com.bee32.plover.orm.ext.digest;
 
-import com.bee32.plover.orm.ext.color.GreenEntityDto;
+import com.bee32.plover.orm.ext.color.UIEntityDto;
 
 public abstract class DigestEntityDto<E extends DigestEntity>
-        extends GreenEntityDto<E, String> {
+        extends UIEntityDto<E, String> {
 
     private static final long serialVersionUID = 1L;
 

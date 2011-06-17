@@ -11,11 +11,11 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBase;
-import com.bee32.plover.orm.ext.color.GreenEntitySpec;
+import com.bee32.plover.orm.ext.color.UIEntitySpec;
 
 @MappedSuperclass
 public abstract class DigestEntity
-        extends GreenEntitySpec<String> {
+        extends UIEntitySpec<String> {
 
     private static final long serialVersionUID = 1L;
 
