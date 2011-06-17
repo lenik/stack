@@ -208,7 +208,15 @@ public class OrgAdminBean extends EntityViewBean {
         this.selectedRole = selectedRole;
     }
 
+    public List<PersonRoleDto> getRoles() {
+        List<PersonRoleDto> roles = new ArrayList<PersonRoleDto>();
 
+        if(org != null && org.getId() != null) {
+            if(org.getContacts() != null) {
+                contacts = org.getContacts();
+            }
+        }
+    }
 
 
 
@@ -426,5 +434,15 @@ public class OrgAdminBean extends EntityViewBean {
 	    }
 	    newRole();
 	}
+
+    public void modifyRole_() {
+
+    }
+
+    public void deleteRole_() {
+
+    }
+
+
 
 }

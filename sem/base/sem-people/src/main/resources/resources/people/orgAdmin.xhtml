@@ -484,6 +484,62 @@
             </p:dialog>
         </h:form>
 
+
+
+
+
+        <h:form id="roleForm">
+            <p:dialog header="相关人员设置" widgetVar="roleHolderDlg" modal="true" height="500" width="640">
+                <h:panelGroup id="roleHolder">
+
+                    <p:growl id="growl2" showDetail="true" />
+
+                    <h:inputHidden id="roldId" value="#{orgAdminBean.role.id}"/>
+                    <h:inputHidden id="roldOrgId" value="#{ordAdminBean.role.org.id}" />
+                    <h:inputHidden id="roldPersonId" value="#{ordAdminBean.role.person.id}" />
+                    <t:panelGrid columns="2"
+                        columnClasses="detail_col_title,detail_col_value">
+
+
+                        <h:outputLabel for="roleOrgName" value="对应公司" />
+                        <h:outputText id="roleOrgName" value="#{orgAdminBean.role.org.name}"/>
+
+
+                        <h:outputLabel for="rolePersonName" value="对应人员" />
+                        <h:outputText id="rolePersonName" value="#{orgAdminBean.role.person.name}"/>
+
+
+                        <h:outputLabel for="roleOrgUnit" value="所在部门" />
+                        <p:inputText id="roleOrgUnit" value="#{orgAdminBean.role.orgUnit}"/>
+
+                        <h:outputLabel for="roleRole" value="职务" />
+                        <p:inputText id="roleRole" value="#{orgAdminBean.role.role}"/>
+
+                        <h:outputLabel for="roleRoleDetail" value="负责业务" />
+                        <p:inputText id="roleRoleDetail" value="#{orgAdminBean.role.roleDetail}"/>
+
+                        <h:outputLabel for="roleDescription" value="备注" />
+                        <p:inputTextarea id="roleDescription" value="#{orgAdminBean.role.description}"/>
+
+
+
+                        <t:panelGroup colspan="2">
+                            <t:panelGrid columns="2">
+                                <p:commandButton value="保存"
+                                    actionListener="#{orgAdminBean.saveRole_}"
+                                    oncomplete="roleHolderDlg.hide();" async="true"
+                                    update="orgForm:roles orgForm:growl" />
+                                <p:commandButton value="取消"
+                                    oncomplete="roleHolderDlg.hide();" />
+                            </t:panelGrid>
+                        </t:panelGroup>
+                    </t:panelGrid>
+                </h:panelGroup>
+
+            </p:dialog>
+        </h:form>
+
+
     </ui:define>
 </ui:composition>
 </html>

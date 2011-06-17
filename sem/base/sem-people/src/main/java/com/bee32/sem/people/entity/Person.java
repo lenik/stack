@@ -76,7 +76,7 @@ public class Person
         this.sidType = sidType;
     }
 
-    @OneToMany
+    @OneToMany(mappedBy = "person")
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public Set<PersonRole> getRoles() {
         return roles;

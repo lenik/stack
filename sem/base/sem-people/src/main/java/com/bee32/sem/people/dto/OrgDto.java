@@ -1,9 +1,13 @@
 package com.bee32.sem.people.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.people.entity.Org;
+import com.bee32.sem.people.entity.PersonRole;
 
 public class OrgDto
         extends AbstractPartyDto<Org> {
@@ -12,6 +16,8 @@ public class OrgDto
 
     OrgTypeDto type;
     int size;
+
+    Set<PersonRoleDto> roles;
 
     public OrgDto() {
         super();
@@ -26,6 +32,12 @@ public class OrgDto
         super._marshal(source);
         type = marshal(OrgTypeDto.class, source.getType(), true);
         size = source.getSize();
+
+        roles =  new HashSet<PersonRoleDto>();
+        for(PersonRole role : source.getRoles()) {
+            PersonRoleDto roleDto = new PersonRoleDto(role);
+            roles.add(roleDto);
+        }
     }
 
     @Override
@@ -33,6 +45,8 @@ public class OrgDto
         super._unmarshalTo(target);
         merge(target, "type", type);
         target.setSize(size);
+
+        mergeSet(target, "roles", roles);
     }
 
     @Override
@@ -56,4 +70,11 @@ public class OrgDto
         this.size = size;
     }
 
+    public Set<PersonRoleDto> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<PersonRoleDto> roles) {
+        this.roles = roles;
+    }
 }
