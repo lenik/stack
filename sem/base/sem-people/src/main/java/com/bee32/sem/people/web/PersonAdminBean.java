@@ -26,6 +26,7 @@ import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.PersonDto;
+import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.dto.PersonSidTypeDto;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.PersonSidType;
@@ -48,6 +49,8 @@ public class PersonAdminBean extends EntityViewBean {
 
 	private ContactDto selectedContact;
 	private ContactDto contact;
+
+	private PersonRoleDto selectedRole;
 
 	@PostConstruct
 	public void init() {
@@ -174,6 +177,27 @@ public class PersonAdminBean extends EntityViewBean {
         this.contact = contact;
     }
 
+    public PersonRoleDto getSelectedRole() {
+        return selectedRole;
+    }
+
+    public void setSelectedRole(PersonRoleDto selectedRole) {
+        this.selectedRole = selectedRole;
+    }
+
+    public List<PersonRoleDto> getRoles() {
+        List<PersonRoleDto> roles = new ArrayList<PersonRoleDto>();
+
+        if(person != null && person.getId() != null) {
+            if(person.getRoles() != null) {
+                roles = new ArrayList<PersonRoleDto>(person.getRoles());
+            }
+        }
+
+        return roles;
+    }
+
+
 
 
 
@@ -274,17 +298,9 @@ public class PersonAdminBean extends EntityViewBean {
 	}
 
     public void onRowSelect(SelectEvent event) {
-        System.out.println("person row select");
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage("hint", "person row select!"));
     }
 
     public void onRowUnselect(UnselectEvent event) {
-        System.out.println("person row unselect");
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage("hint", "person row unselect!"));
     }
 
     private void _newContact() {
@@ -351,4 +367,10 @@ public class PersonAdminBean extends EntityViewBean {
         _newContact();
     }
 
+
+    public void onRowSelectRole(SelectEvent event) {
+    }
+
+    public void onRowUnselectRole(UnselectEvent event) {
+    }
 }

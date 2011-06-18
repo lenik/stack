@@ -193,7 +193,7 @@
                             </t:panelGroup>
 						</t:panelGrid>
 
-						<p:panel header="联系方式">
+						<p:panel header="联系方式" toggleable="true">
 							<p:toolbar id="contactToolbar">
 								<p:toolbarGroup align="left">
 									<p:commandButton value="新增"
@@ -291,6 +291,85 @@
 								</p:column>
 							</p:dataTable>
 						</p:panel>
+
+                        <p:panel header="相关客户/供应商" toggleable="true">
+                            <p:dataTable id="roles" var="role"
+                                value="#{personAdminBean.roles}" resizableColumns="true"
+                                selection="#{personAdminBean.selectedRole}"
+                                selectionMode="single" rowIndexVar="rowIndex">
+
+                                <p:ajax event="rowSelect"
+                                    listener="#{personAdminBean.onRowSelectRole}"
+                                    update="orgForm:roleToolbar" />
+                                <p:ajax event="rowUnselect"
+                                    listener="#{personAdminBean.onRowUnselectRole}"
+                                    update="orgForm:roleToolbar" />
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="序号" />
+                                    </f:facet>
+                                    <h:outputText value="#{rowIndex + 1}" />
+                                </p:column>
+
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="所在部门" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.orgUnit}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="职务" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.role}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="负责业务" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.roleDetail}" />
+                                </p:column>
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="客户/供应商名称" />
+									</f:facet>
+									<h:outputText value="#{role.org.name}" />
+								</p:column>
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="成立日期" />
+									</f:facet>
+									<h:outputText value="#{role.org.birthday}">
+										<f:convertDateTime pattern="yyyy-MM-dd"
+											timeZone="Asia/Shanghai" />
+									</h:outputText>
+								</p:column>
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="公司类型" />
+									</f:facet>
+									<h:outputText value="#{role.org.type.label}" />
+								</p:column>
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="税务登记号" />
+									</f:facet>
+									<h:outputText value="#{role.org.sid}" />
+								</p:column>
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="公司规模" />
+									</f:facet>
+									<h:outputText value="#{role.org.size}" />
+								</p:column>
+							</p:dataTable>
+                        </p:panel>
 
 					</p:tab>
 				</p:tabView>

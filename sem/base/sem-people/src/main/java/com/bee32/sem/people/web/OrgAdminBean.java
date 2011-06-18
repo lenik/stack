@@ -10,7 +10,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 
-import com.bee32.sem.people.dao.PartyDao;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -23,7 +22,13 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
-import com.bee32.sem.people.dto.*;
+import com.bee32.sem.people.dto.ContactCategoryDto;
+import com.bee32.sem.people.dto.ContactDto;
+import com.bee32.sem.people.dto.OrgDto;
+import com.bee32.sem.people.dto.OrgTypeDto;
+import com.bee32.sem.people.dto.PartyTagDto;
+import com.bee32.sem.people.dto.PersonDto;
+import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.PartyTag;
@@ -359,11 +364,9 @@ public class OrgAdminBean extends EntityViewBean {
 
 
     public void onRowSelect(SelectEvent event) {
-        System.out.println("org row select");
     }
 
     public void onRowUnselect(UnselectEvent event) {
-        System.out.println("org row unselect");
     }
 
     private void newContact() {
@@ -487,7 +490,7 @@ public class OrgAdminBean extends EntityViewBean {
     public void deleteRole_() {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if(selectedContact == null) {
+        if(selectedRole == null) {
             context.addMessage(null, new FacesMessage("提示", "请选择需要去除关联的相关人员!"));
             return;
         }

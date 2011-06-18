@@ -307,7 +307,7 @@
                                         onclick="roleHolderDlg.show();" />
                                     <p:commandButton value="删除"
                                         actionListener="#{orgAdminBean.deleteRole_}"
-                                        disabled="#{not orgAdminBean.roleSelected}" update=""
+                                        disabled="#{not orgAdminBean.roleSelected}" update="roles growl"
                                         async="true" />
                                     <p:divider />
                                 </p:toolbarGroup>
@@ -350,7 +350,6 @@
                                     </f:facet>
                                     <h:outputText value="#{role.roleDetail}" />
                                 </p:column>
-                                roleDetail
 
                                 <p:column>
                                     <f:facet name="header">
