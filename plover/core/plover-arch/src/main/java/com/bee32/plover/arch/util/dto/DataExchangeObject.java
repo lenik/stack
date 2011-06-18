@@ -1,9 +1,11 @@
-package com.bee32.plover.arch.util;
+package com.bee32.plover.arch.util.dto;
 
 import java.util.Map;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
+
+import com.bee32.plover.arch.util.TextMap;
 
 public abstract class DataExchangeObject<T>
         extends BaseDto<T, Void> {

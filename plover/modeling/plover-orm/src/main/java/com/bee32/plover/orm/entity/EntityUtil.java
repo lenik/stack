@@ -55,7 +55,7 @@ public class EntityUtil {
      * @param keyType
      *            The key type, only Integer/Long/String is supported here.
      * @param idString
-     *            The given id string, maybe <code>null</code>.
+     *            Id string, , a <code>null</code> or empty string means null.
      * @return <code>null</code> If the given id string is <code>null</code>.
      */
     public static <K extends Serializable> K parseId(Class<K> keyType, String idString)
@@ -63,9 +63,6 @@ public class EntityUtil {
 
         if (keyType == null)
             throw new NullPointerException("keyType");
-
-        if (idString == null)
-            return null;
 
         KeyTypeEnum keyTypeEnum = getTypeEnum(keyType);
         if (keyTypeEnum == null)
@@ -79,7 +76,7 @@ public class EntityUtil {
             throws ParseException {
         Serializable key;
 
-        if (idString == null)
+        if (idString == null || idString.isEmpty())
             return null;
 
         switch (keyTypeEnum) {

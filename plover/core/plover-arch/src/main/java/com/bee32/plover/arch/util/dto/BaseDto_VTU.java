@@ -1,9 +1,5 @@
-package com.bee32.plover.arch.util;
+package com.bee32.plover.arch.util.dto;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,13 +8,20 @@ import javax.free.TypeConvertException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bee32.plover.arch.util.TextMap;
+
 /**
  * Variant type utils.
  */
 abstract class BaseDto_VTU<S, C>
-        extends BaseDto_ASM<S, C> {
+        extends BaseDto_Skel<S, C> {
 
     private static final long serialVersionUID = 1L;
+
+    static Logger logger = LoggerFactory.getLogger(BaseDto.class);
 
     /**
      * <pre>
@@ -139,20 +142,6 @@ abstract class BaseDto_VTU<S, C>
         Map<String, Object> map = new HashMap<String, Object>();
         export(map);
         return map;
-    }
-
-    protected void exportProperties(Map<String, Object> map) {
-        try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(getClass());
-            for (PropertyDescriptor property : beanInfo.getPropertyDescriptors()) {
-                String name = property.getName();
-                Method getter = property.getReadMethod();
-                Object value = getter.invoke(this);
-                map.put(name, value);
-            }
-        } catch (Exception e) {
-            map.put("exception", e);
-        }
     }
 
 }

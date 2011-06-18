@@ -3,7 +3,7 @@ package com.bee32.sem.people.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.bee32.plover.arch.util.MarshalType;
+import com.bee32.plover.arch.util.dto.MarshalType;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;

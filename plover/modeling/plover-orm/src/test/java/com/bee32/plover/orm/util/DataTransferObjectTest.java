@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.arch.util.BaseDto;
+import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.orm.feaCat.Tiger;
 
 /**

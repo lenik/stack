@@ -1,40 +1,59 @@
-package com.bee32.plover.arch.util;
+package com.bee32.plover.arch.util.dto;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.util.Map;
 
+import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
+
+import com.bee32.plover.arch.util.TextMap;
 
 /**
  * Layer 2
  *
  * <ul>
  * <li>Skeletion
- * <li>Auto Session Management
  * <li>Context wrappers
  * </ul>
  */
 abstract class BaseDto_Skel<S, C>
-        extends BaseDto_VTU<S, C> {
+        extends BaseDto_ASM<S, C> {
 
     private static final long serialVersionUID = 1L;
 
-    public BaseDto_Skel() {
-        super();
+    protected MarshalType marshalType = MarshalType.SELECTION;
+
+    public MarshalType getMarshalType() {
+        return marshalType;
     }
 
-    public BaseDto_Skel(S source) {
-        super(source);
+    public void marshalAs(MarshalType marshalType) {
+        if (marshalType == null)
+            throw new NullPointerException("marshalType");
+        this.marshalType = marshalType;
     }
 
-    public BaseDto_Skel(int selection) {
-        super(selection);
+    public boolean isNullRef() {
+        return marshalType.isReference() && _isNullRef();
     }
 
-    public BaseDto_Skel(int selection, S source) {
-        super(selection, source);
-    }
+    protected abstract boolean _isNullRef();
+
+    /**
+     * <pre>
+     * LAYER 2
+     * -----------------------------------------------------------------------
+     *      This layer contains the skeleton implementations.
+     *
+     *      These methods are package-local.
+     *      The skeleton is overall fixed in the whole project.
+     * </pre>
+     */
 
     /**
      * Marshal skeleton implementation.
@@ -43,11 +62,9 @@ abstract class BaseDto_Skel<S, C>
         @SuppressWarnings("unchecked")
         D _this = (D) this;
 
-        if (source == null) {
-            marshalType = MarshalType.ID_REF;
-
-            return _this;
-        }
+        if (source == null)
+            if (!marshalType.isReference())
+                throw new IllegalUsageException("You can't marshal a null to referenced-DTO.");
 
         // Do the real marshal work.
         // logger.debug("marshal begin");
@@ -78,6 +95,22 @@ abstract class BaseDto_Skel<S, C>
      *            Non-null source source whose properties are read into this object.
      */
     protected abstract void _marshal(S source);
+
+    final S mergeImpl(S target) {
+        if (isNullRef())
+            return null;
+
+        S deref = mergeDeref(target);
+
+        if (marshalType == MarshalType.SELECTION) {
+            __unmarshalTo(deref);
+            _unmarshalTo(deref);
+        }
+
+        return deref;
+    }
+
+    protected abstract S mergeDeref(S given);
 
     /**
      * Write some internal properties from this object into the specified source bean.
@@ -136,6 +169,20 @@ abstract class BaseDto_Skel<S, C>
 
     protected void _export(Map<String, Object> map) {
         exportProperties(map);
+    }
+
+    protected void exportProperties(Map<String, Object> map) {
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(getClass());
+            for (PropertyDescriptor property : beanInfo.getPropertyDescriptors()) {
+                String name = property.getName();
+                Method getter = property.getReadMethod();
+                Object value = getter.invoke(this);
+                map.put(name, value);
+            }
+        } catch (Exception e) {
+            map.put("exception", e);
+        }
     }
 
 }

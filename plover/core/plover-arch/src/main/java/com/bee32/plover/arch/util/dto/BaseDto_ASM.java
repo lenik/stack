@@ -1,4 +1,4 @@
-package com.bee32.plover.arch.util;
+package com.bee32.plover.arch.util.dto;
 
 import java.util.Map;
 import java.util.Stack;
@@ -41,6 +41,19 @@ abstract class BaseDto_ASM<S, C>
             throw new IllegalStateException("Session stack underflow.");
 
         sessionStack.pop();
+    }
+
+    protected IMarshalSession getSession() {
+        if (sessionStack == null || sessionStack.isEmpty())
+            throw new IllegalStateException("No marshal session.");
+        return sessionStack.lastElement();
+    }
+
+    IMarshalSession createOrReuseSession(C context) {
+        if (sessionStack == null || sessionStack.isEmpty())
+            return new MarshalSession(context);
+        else
+            return sessionStack.lastElement();
     }
 
     @Override
@@ -92,5 +105,47 @@ abstract class BaseDto_ASM<S, C>
             throws ParseException;
 
     abstract void exportImpl(Map<String, Object> map);
+
+    // [A] Context/Session wrapper
+
+    protected C getDefaultMarshalContext() {
+        return null;
+    }
+
+    public final <D extends BaseDto<S, C>> D marshal(C context, S source) {
+        return marshal(createOrReuseSession(context), source);
+    }
+
+    public final S merge(C context, S source) {
+        return merge(createOrReuseSession(context), source);
+    }
+
+    public final void parse(C context, Map<String, ?> map)
+            throws ParseException {
+        parse(createOrReuseSession(context), map);
+    }
+
+    public final void export(C context, Map<String, Object> map) {
+        export(createOrReuseSession(context), map);
+    }
+
+    // [B] TLS-Context/Session wrapper
+
+    public final <D extends BaseDto<S, C>> D marshal(S source) {
+        return marshal(getDefaultMarshalContext(), source);
+    }
+
+    public final S merge(S source) {
+        return merge(getDefaultMarshalContext(), source);
+    }
+
+    public final void parse(Map<String, ?> map)
+            throws ParseException {
+        parse(getDefaultMarshalContext(), map);
+    }
+
+    public final void export(Map<String, Object> map) {
+        export(getDefaultMarshalContext(), map);
+    }
 
 }

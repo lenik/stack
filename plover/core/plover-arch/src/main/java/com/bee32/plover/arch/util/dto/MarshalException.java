@@ -1,4 +1,4 @@
-package com.bee32.plover.arch.util;
+package com.bee32.plover.arch.util.dto;
 
 public class MarshalException
         extends RuntimeException {

@@ -1,4 +1,4 @@
-package com.bee32.plover.arch.util;
+package com.bee32.plover.arch.util.dto;
 
 import java.lang.reflect.Field;
 

@@ -9,8 +9,8 @@ import javax.free.ParseException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import com.bee32.plover.arch.util.DataExchangeObject;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.arch.util.dto.DataExchangeObject;
 
 public class DataTableDxo
         extends DataExchangeObject<Void> {
