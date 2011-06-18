@@ -193,7 +193,14 @@
                             <t:panelGroup colspan="3">
                                 <p:inputText id="orgInterests" value="#{orgAdminBean.org.interests}"/>
                             </t:panelGroup>
-                        </t:panelGrid>
+
+							<h:outputLabel for="orgMemo" value="备注" />
+							<t:panelGroup colspan="3">
+								<p:inputTextarea id="orgMemo"
+									value="#{orgAdminBean.org.memo}"
+									style="width:300px;height:100px;" effectDuration="400" />
+							</t:panelGroup>
+						</t:panelGrid>
 
                         <p:panel header="联系方式" toggleable="true">
                             <p:toolbar id="contactToolbar">

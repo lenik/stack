@@ -154,20 +154,19 @@
 							columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
 							<h:outputLabel for="personName" value="姓名" />
-							<p:inputText id="personName" value="#{personAdminBean.person.name}"/>
+							<p:inputText id="personName"
+								value="#{personAdminBean.person.name}" />
 							<h:outputLabel for="personFullName" value="全名" />
-                            <p:inputText id="personFullName" value="#{personAdminBean.person.fullName}"/>
+							<p:inputText id="personFullName"
+								value="#{personAdminBean.person.fullName}" />
 
-                            <h:outputLabel for="personNickName" value="昵称" />
-                            <p:inputText id="personNickName" value="#{personAdminBean.person.nickName}"/>
-							<h:outputLabel for="personBirthday" value="生日"/>
-                            <p:calendar
-                                    id="personBirthday"
-                                    navigator="true"
-                                    locale="zh_CN"
-                                    pattern="yyyy-MM-dd"
-                                    value="#{personAdminBean.person.birthday}"
-                                    showOn="button" />
+							<h:outputLabel for="personNickName" value="昵称" />
+							<p:inputText id="personNickName"
+								value="#{personAdminBean.person.nickName}" />
+							<h:outputLabel for="personBirthday" value="生日" />
+							<p:calendar id="personBirthday" navigator="true" locale="zh_CN"
+								pattern="yyyy-MM-dd" value="#{personAdminBean.person.birthday}"
+								showOn="button" />
 
 							<h:outputLabel for="personSidType" value="证件类型" />
 							<p:selectOneMenu id="personSidType"
@@ -177,20 +176,29 @@
 								<f:selectItems value="#{personAdminBean.sidTypes}" />
 							</p:selectOneMenu>
 							<h:outputLabel for="personSid" value="证件号码" />
-                            <p:inputText id="personSid" value="#{personAdminBean.person.sid}"/>
+							<p:inputText id="personSid" value="#{personAdminBean.person.sid}" />
 
-                            <h:outputLabel for="personSex" value="性别" />
+							<h:outputLabel for="personSex" value="性别" />
 							<p:selectOneMenu id="personSex"
 								value="#{personAdminBean.person.sex}" style="width:150px;">
 								<f:selectItems value="#{personAdminBean.genders}" />
 							</p:selectOneMenu>
 							<h:outputLabel for="personCensusRegister" value="户籍" />
-                            <p:inputText id="personCensusRegister" value="#{personAdminBean.person.censusRegister}"/>
+							<p:inputText id="personCensusRegister"
+								value="#{personAdminBean.person.censusRegister}" />
 
-                            <h:outputLabel for="personInterests" value="兴趣爱好" />
-                            <t:panelGroup colspan="3">
-                                <p:inputText id="personInterests" value="#{personAdminBean.person.interests}"/>
-                            </t:panelGroup>
+							<h:outputLabel for="personInterests" value="兴趣爱好" />
+							<t:panelGroup colspan="3">
+								<p:inputText id="personInterests"
+									value="#{personAdminBean.person.interests}" />
+							</t:panelGroup>
+
+							<h:outputLabel for="personMemo" value="备注" />
+							<t:panelGroup colspan="3">
+								<p:inputTextarea id="personMemo"
+									value="#{personAdminBean.person.memo}"
+									style="width:300px;height:100px;" effectDuration="400" />
+							</t:panelGroup>
 						</t:panelGrid>
 
 						<p:panel header="联系方式" toggleable="true">

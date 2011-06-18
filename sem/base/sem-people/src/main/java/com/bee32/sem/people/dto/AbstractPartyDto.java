@@ -32,6 +32,8 @@ public class AbstractPartyDto<E extends Party>
 
     String interests;
 
+    String memo;
+
     String sid;
 
     List<ContactDto> contacts;
@@ -59,6 +61,8 @@ public class AbstractPartyDto<E extends Party>
 
         interests = source.getInterests();
 
+        memo = source.getMemo();
+
         sid = source.getSid();
 
         if (selection.contains(CONTACTS))
@@ -80,6 +84,8 @@ public class AbstractPartyDto<E extends Party>
         target.setBirthday(birthday);
 
         target.setInterests(interests);
+
+        target.setMemo(memo);
 
         target.setSid(sid);
 
@@ -151,7 +157,17 @@ public class AbstractPartyDto<E extends Party>
         this.interests = interests;
     }
 
-    public String getSid() {
+
+
+    public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+
+	public String getSid() {
         return sid;
     }
 

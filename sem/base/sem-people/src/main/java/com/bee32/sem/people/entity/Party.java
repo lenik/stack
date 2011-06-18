@@ -16,6 +16,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -54,6 +55,8 @@ public abstract class Party
     Date birthday;
 
     String interests;
+
+    String memo;
 
     String sid;
 
@@ -172,7 +175,16 @@ public abstract class Party
         this.interests = interests;
     }
 
-    @Transient
+    @Lob
+    public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+
+	@Transient
     public Integer getAge() {
         if (birthday == null)
             return null;
