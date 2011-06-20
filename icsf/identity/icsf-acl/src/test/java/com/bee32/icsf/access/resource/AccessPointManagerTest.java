@@ -9,11 +9,11 @@ import com.bee32.icsf.access.annotation.TestService;
 public class AccessPointManagerTest
         extends Assert {
 
-    static AccessPointManager cd = new AccessPointManager();
+    static AccessPointManager apm = new AccessPointManager();
 
     @BeforeClass
     public static void scan() {
-        cd.scanAnnotatedPoints(TestService.class);
+        apm.scanAnnotatedPoints(TestService.class);
     }
 
     @Test

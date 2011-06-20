@@ -1,5 +1,7 @@
 package com.bee32.icsf.access.resource;
 
+import java.util.Collection;
+
 public class AccessPointNS
         implements IResourceNamespace {
 
@@ -16,6 +18,11 @@ public class AccessPointNS
     @Override
     public Resource getResource(String localName) {
         return AccessPoint.getInstance(localName);
+    }
+
+    @Override
+    public Collection<? extends Resource> getResources() {
+        return AccessPoint.getInstances();
     }
 
     private static final AccessPointNS instance = new AccessPointNS();
