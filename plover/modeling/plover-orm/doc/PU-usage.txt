@@ -1,0 +1,5 @@
+
+TPSFB < CustomizedSFB
+    .forceUnit = PU.default
+    prewire():
+        forceUnit = @Using.value
