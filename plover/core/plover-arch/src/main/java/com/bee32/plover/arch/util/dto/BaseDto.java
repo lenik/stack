@@ -15,25 +15,16 @@ public abstract class BaseDto<S, C>
         initSourceType(sourceType);
     }
 
+    /**
+     * Full marshal by default.
+     */
     public BaseDto() {
-        initSourceType(ClassUtil.<S> infer1(getClass(), BaseDto.class, 0));
-    }
-
-    public BaseDto(S source) {
-        this();
-        if (source != null)
-            marshal(source);
+        this(-1);
     }
 
     public BaseDto(int selection) {
-        this();
-        this.selection.set(selection);
-    }
-
-    public BaseDto(int selection, S source) {
-        this(selection);
-        if (source != null)
-            marshal(source);
+        initSourceType(ClassUtil.<S> infer1(getClass(), BaseDto.class, 0));
+        this.selection.bits = selection;
     }
 
     /**
@@ -49,6 +40,14 @@ public abstract class BaseDto<S, C>
     protected void initSourceType(Class<? extends S> sourceType) {
         // XXX cast?
         this.sourceType = (Class<S>) sourceType;
+    }
+
+    public int getSelection() {
+        return selection.bits;
+    }
+
+    public void setSelection(int selection) {
+        this.selection.bits = selection;
     }
 
 }

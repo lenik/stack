@@ -13,12 +13,14 @@ import java.util.Set;
 import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
 
+import com.bee32.plover.arch.util.dto.BaseDtoUtils;
 import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
 import com.bee32.plover.arch.util.dto.IMarshalSession;
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
 
-public class EntityDtoUtils_Coll {
+public class EntityDtoUtils_Merge
+        extends BaseDtoUtils {
 
     /**
      * <pre>
@@ -167,6 +169,8 @@ public class EntityDtoUtils_Coll {
         return collection;
     }
 
+    // 以上。
+
     static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
     /*    */Coll mergeCollection(Coll collection, Iterable<? extends D> dtoList) {
         return mergeCollection((IMarshalSession) null, collection, dtoList);
@@ -222,9 +226,9 @@ public class EntityDtoUtils_Coll {
             list = new ArrayList<_e>();
 
         if (session == null)
-            list = EntityDto.mergeList(list, dtoList);
+            list = mergeList(list, dtoList);
         else
-            list = EntityDto.mergeList(session, list, dtoList);
+            list = mergeList(session, list, dtoList);
 
         property.set(target, list);
     }
@@ -265,9 +269,9 @@ public class EntityDtoUtils_Coll {
             set = new HashSet<_e>();
 
         if (session == null)
-            set = EntityDto.mergeSet(set, dtoList);
+            set = mergeSet(set, dtoList);
         else
-            set = EntityDto.mergeSet(session, set, dtoList);
+            set = mergeSet(session, set, dtoList);
 
         property.set(target, set);
     }

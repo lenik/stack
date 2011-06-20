@@ -39,10 +39,10 @@ abstract class BaseDto_Skel<S, C>
     }
 
     public boolean isNullRef() {
-        return marshalType.isReference() && _isNullRef();
+        return marshalType.isReference() && !hasKey();
     }
 
-    protected abstract boolean _isNullRef();
+    protected abstract boolean hasKey();
 
     /**
      * <pre>
