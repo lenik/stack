@@ -19,7 +19,7 @@ public class DataTransferObjectTest
     @Test
     public void testConvertSingle() {
         Tiger tigro = new Tiger("Tigro", "Yellow");
-        TigerDto dto = new TigerDto(tigro);
+        TigerDto dto = DTOs.marshal(TigerDto.class, tigro);
         Tiger tigro1 = dto.unmarshal();
         assertEquals(tigro, tigro1);
     }

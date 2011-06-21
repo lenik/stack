@@ -23,8 +23,18 @@ public abstract class DataExchangeObject<T>
     }
 
     @Override
-    protected boolean hasKey() {
-        return false;
+    public <D extends BaseDto<? extends T, Void>> D ref(T source) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public boolean isNullRef() {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    protected T mergeDeref(T given) {
+        throw new NotImplementedException();
     }
 
     @Override

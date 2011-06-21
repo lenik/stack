@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
@@ -29,6 +28,7 @@ abstract class BaseDto_Skel<S, C>
     private static final long serialVersionUID = 1L;
 
     protected MarshalType marshalType = MarshalType.SELECTION;
+    protected boolean _null;
 
     public MarshalType getMarshalType() {
         return marshalType;
@@ -40,16 +40,26 @@ abstract class BaseDto_Skel<S, C>
         this.marshalType = marshalType;
     }
 
-    public boolean isNullRef() {
-        return marshalType.isReference() && !hasKey();
+    public boolean isNull() {
+        return _null;
+    }
+
+    public void setNull(boolean _null) {
+        this._null = _null;
     }
 
     /**
      * A reference DTO without a key is a null-ref.
      *
+     * Generally, this should return:
+     *
+     * <pre>
+     * marshalType.isReference() &amp;&amp; id == null
+     * </pre>
+     *
      * @return <code>true</code> If a non-<code>null</code> key is defined.
      */
-    protected abstract boolean hasKey();
+    public abstract boolean isNullRef();
 
     /**
      * <pre>
@@ -65,21 +75,25 @@ abstract class BaseDto_Skel<S, C>
     /**
      * Marshal skeleton implementation.
      */
+    @Override
     final <D extends IDataTransferObject<S, C>> D marshalImpl(S source) {
         @SuppressWarnings("unchecked")
         D _this = (D) this;
 
-        if (source == null)
-            if (!marshalType.isReference())
-                throw new IllegalUsageException("You can't marshal a null to referenced-DTO.");
+        if (source == null) {
+            // if (!marshalType.isReference())
+            // throw new IllegalUsageException("You can't marshal a null to referenced-DTO.");
 
-        // Do the real marshal work.
-        // logger.debug("marshal begin");
+            _null = true;
 
-        __marshal(source);
-        _marshal(source);
+        } else {
+            // Do the real marshal work.
+            // logger.debug("marshal begin");
 
-        // logger.debug("marshal end");
+            __marshal(source);
+            _marshal(source);
+            // logger.debug("marshal end");
+        }
 
         marshalType = MarshalType.SELECTION;
 
@@ -103,6 +117,10 @@ abstract class BaseDto_Skel<S, C>
      */
     protected abstract void _marshal(S source);
 
+//    @Override
+//    public abstract <D extends BaseDto<S, C>> D ref(S source);
+
+    @Override
     final S mergeImpl(S target) {
         if (isNullRef())
             return null;
@@ -166,6 +184,7 @@ abstract class BaseDto_Skel<S, C>
     protected abstract void _parse(TextMap map)
             throws ParseException;
 
+    @Override
     final void exportImpl(Map<String, Object> map) {
         __export(map);
         _export(map);

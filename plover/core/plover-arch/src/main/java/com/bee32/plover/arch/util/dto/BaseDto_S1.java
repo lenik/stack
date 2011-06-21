@@ -1,6 +1,5 @@
 package com.bee32.plover.arch.util.dto;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,35 +19,56 @@ public abstract class BaseDto_S1<S, C>
 
     private static final long serialVersionUID = 1L;
 
+    public static <S, D extends BaseDto<S, C>, C> D marshal(IMarshalSession session, //
+            Class<D> dtoClass, int selection, S source) {
+        return marshal(session, dtoClass, selection, source, null);
+    }
+
     /**
-     * Generic marshal with nullable source support.
+     * Marshal as selection or reference.
+     *
+     * @param refButFilled
+     *            Non-<code>null</code> to marshal as a reference.
      */
     public static <S, D extends BaseDto<S, C>, C> D marshal(IMarshalSession session, //
-            Class<D> dtoClass, Integer selection, S source) {
+            Class<D> dtoClass, int selection, S source, Boolean refButFilled) {
         D dto;
         try {
-            if (selection == null)
-                dto = dtoClass.newInstance();
-            else {
-                Constructor<D> ctor = dtoClass.getConstructor(int.class);
-                dto = ctor.newInstance(selection.intValue());
-            }
+            dto = dtoClass.newInstance();
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Failed to instantiate DTO " + dtoClass.getName(), e);
         }
 
-        // Do the marshal.
-        // the marshal() function will deal with null carefully.
-        if (session == null)
-            dto = dto.marshal(source);
-        else
-            dto = dto.marshal(session, source);
+        dto.setSelection(selection);
 
+        if (refButFilled == null)
+            dto.marshalAs(MarshalType.SELECTION);
+        else
+            dto.marshalAs(MarshalType.ID_REF);
+
+        if (refButFilled == Boolean.FALSE) {
+            // Simple reference only:
+            dto.ref(source);
+
+        } else {
+            // Do the marshal.
+            // the marshal() function will deal with null carefully.
+            if (session == null)
+                dto = dto.marshal(source);
+            else
+                dto = dto.marshal(session, source);
+        }
         return dto;
     }
 
-    public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(IMarshalSession session, Class<D> dtoClass,
-            Integer selection, Iterable<? extends S> sources) {
+    public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(IMarshalSession session, //
+            Class<D> dtoClass, int selection, Iterable<? extends S> sources) {
+        return marshalList(session, dtoClass, selection, sources, null);
+
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(IMarshalSession session, //
+            Class<D> dtoClass, int selection, Iterable<? extends S> sources, Boolean refButFilled) {
 
         List<D> dtoList = new ArrayList<D>();
 
@@ -56,15 +76,20 @@ public abstract class BaseDto_S1<S, C>
             return dtoList;
 
         for (S _source : sources) {
-            D dto = marshal(session, dtoClass, selection, _source);
+            D dto = marshal(session, dtoClass, selection, _source, refButFilled);
             dtoList.add(dto);
         }
 
         return dtoList;
     }
 
-    public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(//
-            IMarshalSession session, Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
+    public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(IMarshalSession session, //
+            Class<D> dtoClass, int selection, Iterable<? extends S> sources) {
+        return marshalSet(session, dtoClass, selection, sources, null);
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(IMarshalSession session, //
+            Class<D> dtoClass, int selection, Iterable<? extends S> sources, Boolean refButFilled) {
 
         Set<D> dtoSet = new HashSet<D>();
 
@@ -72,7 +97,7 @@ public abstract class BaseDto_S1<S, C>
             return dtoSet;
 
         for (S _source : sources) {
-            D dto = marshal(session, dtoClass, selection, _source);
+            D dto = marshal(session, dtoClass, selection, _source, refButFilled);
             dtoSet.add(dto);
         }
 

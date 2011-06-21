@@ -20,50 +20,109 @@ public abstract class BaseDto_S2<S, C>
 
     // marshal*
 
-    public static <S, D extends BaseDto<S, C>, C> D marshal(IMarshalSession session, Class<D> dtoClass, S source) {
-        return marshal(session, dtoClass, null, source);
+    public static <S, D extends BaseDto<S, C>, C> D marshal(IMarshalSession session, //
+            Class<D> dtoClass, S source) {
+        return marshal(session, dtoClass, -1, source);
     }
 
-    public static <S, D extends BaseDto<S, C>, C> D marshal(Class<D> dtoClass, Integer selection, S source) {
+    public static <S, D extends BaseDto<S, C>, C> D marshal(Class<D> dtoClass, int selection, S source) {
         return marshal(null, dtoClass, selection, source);
     }
 
     public static <S, D extends BaseDto<S, C>, C> D marshal(Class<D> dtoClass, S source) {
-        return marshal(null, dtoClass, null, source);
+        return marshal(null, dtoClass, -1, source);
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> D marshal(IMarshalSession session, //
+            Class<D> dtoClass, S source, boolean refButFilled) {
+        return marshal(session, dtoClass, -1, source, refButFilled);
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> D marshal(Class<D> dtoClass, int selection, S source,
+            boolean refButFilled) {
+        return marshal(null, dtoClass, selection, source, refButFilled);
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> D marshal(Class<D> dtoClass, S source, boolean refButFilled) {
+        return marshal(null, dtoClass, -1, source, refButFilled);
+    }
+
+    // mref(...) = marshal(..., true)
+    public static <S, D extends BaseDto<S, C>, C> D mref(IMarshalSession session, //
+            Class<D> dtoClass, S source) {
+        return marshal(session, dtoClass, -1, source, true);
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> D mref(Class<D> dtoClass, int selection, S source) {
+        return marshal(null, dtoClass, selection, source, true);
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> D mref(Class<D> dtoClass, S source) {
+        return marshal(null, dtoClass, -1, source, true);
     }
 
     // marshalList*
 
     public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(//
             IMarshalSession session, Class<D> dtoClass, Iterable<? extends S> sources) {
-        return marshalList(session, dtoClass, null, sources);
+        return marshalList(session, dtoClass, -1, sources);
     }
 
     public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(//
-            Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
+            Class<D> dtoClass, int selection, Iterable<? extends S> sources) {
         return marshalList(null, dtoClass, selection, sources);
     }
 
     public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(//
             Class<D> dtoClass, Iterable<? extends S> sources) {
-        return marshalList(null, dtoClass, null, sources);
+        return marshalList(null, dtoClass, -1, sources);
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(//
+            IMarshalSession session, Class<D> dtoClass, Iterable<? extends S> sources, boolean refButFilled) {
+        return marshalList(session, dtoClass, -1, sources, refButFilled);
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(//
+            Class<D> dtoClass, int selection, Iterable<? extends S> sources, boolean refButFilled) {
+        return marshalList(null, dtoClass, selection, sources, refButFilled);
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(//
+            Class<D> dtoClass, Iterable<? extends S> sources, boolean refButFilled) {
+        return marshalList(null, dtoClass, -1, sources, refButFilled);
     }
 
     // marshalSet
 
     public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(//
             IMarshalSession session, Class<D> dtoClass, Iterable<? extends S> sources) {
-        return marshalSet(session, dtoClass, null, sources);
+        return marshalSet(session, dtoClass, -1, sources);
     }
 
     public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(//
-            Class<D> dtoClass, Integer selection, Iterable<? extends S> sources) {
+            Class<D> dtoClass, int selection, Iterable<? extends S> sources) {
         return marshalSet(null, dtoClass, selection, sources);
     }
 
     public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(//
             Class<D> dtoClass, Iterable<? extends S> sources) {
-        return marshalSet(null, dtoClass, null, sources);
+        return marshalSet(null, dtoClass, -1, sources);
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(//
+            IMarshalSession session, Class<D> dtoClass, Iterable<? extends S> sources, boolean refButFilled) {
+        return marshalSet(session, dtoClass, -1, sources, refButFilled);
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(//
+            Class<D> dtoClass, int selection, Iterable<? extends S> sources, boolean refButFilled) {
+        return marshalSet(null, dtoClass, selection, sources, refButFilled);
+    }
+
+    public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(//
+            Class<D> dtoClass, Iterable<? extends S> sources, boolean refButFilled) {
+        return marshalSet(null, dtoClass, -1, sources, refButFilled);
     }
 
     // _unmarshalCollection*

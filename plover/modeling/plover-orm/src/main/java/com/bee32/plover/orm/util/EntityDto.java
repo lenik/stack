@@ -14,6 +14,7 @@ import javax.free.TypeConvertException;
 import org.springframework.context.ApplicationContext;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.arch.util.dto.MarshalType;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
@@ -73,6 +74,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * And toString() implementation.
      * </pre>
      */
+
+    @Override
+    public boolean isNullRef() {
+        return marshalType.isReference() && id == null;
+    }
 
     /**
      * Get ID.
@@ -143,11 +149,6 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     protected K parseId(String idString)
             throws ParseException {
         return EntityUtil.parseId(getKeyType(), idString);
-    }
-
-    @Override
-    protected boolean hasKey() {
-        return id != null;
     }
 
     public Date getCreatedDate() {
@@ -339,8 +340,12 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      *            The target entity this DTO would reference to.
      * @return This DTO.
      */
-    public <D extends EntityDto<E, K>> D ref(E entity) {
-        marshalAs(MarshalType.ID_REF); // ID_VER_REF
+    @Override
+    public <$ extends BaseDto<? extends E, IEntityMarshalContext>> $ ref(E entity) {
+        // 1, Ref-by-id by default.
+        // 2. Don't set ID_VER_REF here.
+        marshalAs(MarshalType.ID_REF);
+
         if (entity == null) {
             this.setId(null);
             this.setVersion(null);
@@ -350,11 +355,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         }
 
         @SuppressWarnings("unchecked")
-        D self = (D) this;
+        $ self = ($) this;
         return self;
     }
 
-    public <D extends EntityDto<E, K>> D ref(D dto) {
+    public <$ extends EntityDto<E, K>> $ ref($ dto) {
         if (dto == null)
             throw new NullPointerException("dto");
 
@@ -364,7 +369,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         setVersion(dto.getVersion());
 
         @SuppressWarnings("unchecked")
-        D self = (D) this;
+        $ self = ($) this;
         return self;
     }
 

@@ -20,6 +20,8 @@ public interface IDataTransferObject<S, C> {
      */
     <D extends BaseDto<S, C>> D marshal(IMarshalSession session, S source);
 
+    <D extends BaseDto<? extends S, C>> D ref(S source);
+
     /**
      * Populate the specified target entity bean with properties defined in this object.
      *
