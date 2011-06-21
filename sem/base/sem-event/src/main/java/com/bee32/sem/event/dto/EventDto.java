@@ -11,8 +11,8 @@ public class EventDto
         super();
     }
 
-    public EventDto(Event source) {
-        super(source);
+    public EventDto(int selection) {
+        super(selection);
     }
 
 }

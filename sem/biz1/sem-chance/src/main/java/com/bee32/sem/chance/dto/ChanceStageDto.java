@@ -13,14 +13,6 @@ public class ChanceStageDto
 
     private int order;
 
-    public ChanceStageDto() {
-        super();
-    }
-
-    public ChanceStageDto(ChanceStage source) {
-        super(source);
-    }
-
     public int getOrder() {
         return order;
     }

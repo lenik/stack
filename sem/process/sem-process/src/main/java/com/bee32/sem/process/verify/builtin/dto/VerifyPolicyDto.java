@@ -14,16 +14,8 @@ public final class VerifyPolicyDto
         super();
     }
 
-    public VerifyPolicyDto(VerifyPolicy<?> source) {
-        super(source);
-    }
-
     public VerifyPolicyDto(int selection) {
         super(selection);
-    }
-
-    public VerifyPolicyDto(int selection, VerifyPolicy<?> source) {
-        super(selection, source);
     }
 
     @Override

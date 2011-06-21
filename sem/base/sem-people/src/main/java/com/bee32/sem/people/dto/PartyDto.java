@@ -12,16 +12,8 @@ public class PartyDto
         super();
     }
 
-    public PartyDto(Party source) {
-        super(source);
-    }
-
     public PartyDto(int selection) {
         super(selection);
-    }
-
-    public PartyDto(int selection, Party source) {
-        super(selection, source);
     }
 
     /*

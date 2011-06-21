@@ -11,8 +11,8 @@ public class TaskDto
         super();
     }
 
-    public TaskDto(Task source) {
-        super(source);
+    public TaskDto(int selection) {
+        super(selection);
     }
 
 }

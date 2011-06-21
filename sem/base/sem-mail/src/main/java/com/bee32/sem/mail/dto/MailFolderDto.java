@@ -27,16 +27,8 @@ public class MailFolderDto
         super();
     }
 
-    public MailFolderDto(MailFolder source) {
-        super(source);
-    }
-
     public MailFolderDto(int selection) {
         super(selection);
-    }
-
-    public MailFolderDto(int selection, MailFolder source) {
-        super(selection, source);
     }
 
     @Override

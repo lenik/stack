@@ -14,14 +14,6 @@ public class EventPriorityDto
 
     private int priority;
 
-    public EventPriorityDto() {
-        super();
-    }
-
-    public EventPriorityDto(EventPriority source) {
-        super(source);
-    }
-
     @Override
     protected void _marshal(EventPriority source) {
         priority = source.getPriority();

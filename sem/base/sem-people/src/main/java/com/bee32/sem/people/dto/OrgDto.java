@@ -17,16 +17,8 @@ public class OrgDto
         super();
     }
 
-    public OrgDto(Org source) {
-        super(source);
-    }
-
     public OrgDto(int selection) {
         super(selection);
-    }
-
-    public OrgDto(int selection, Org source) {
-        super(selection, source);
     }
 
     @Override
@@ -65,7 +57,5 @@ public class OrgDto
     public void setSize(int size) {
         this.size = size;
     }
-
-
 
 }

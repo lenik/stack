@@ -12,16 +12,8 @@ public abstract class AbstractVerifyPolicyDto<E extends VerifyPolicy<?>>
         super();
     }
 
-    public AbstractVerifyPolicyDto(E source) {
-        super(source);
-    }
-
     public AbstractVerifyPolicyDto(int selection) {
         super(selection);
-    }
-
-    public AbstractVerifyPolicyDto(int selection, E source) {
-        super(selection, source);
     }
 
 }

@@ -20,14 +20,6 @@ public class ChancePartyDto
         super();
     }
 
-    public ChancePartyDto(ChanceParty source) {
-        super(source);
-    }
-
-    public ChancePartyDto(int selection, ChanceParty source) {
-        super(selection, source);
-    }
-
     public ChancePartyDto(int selection) {
         super(selection);
     }

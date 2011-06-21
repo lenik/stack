@@ -19,19 +19,11 @@ public class UnitConvDto
     Map<UnitDto, Double> ratioMap;
 
     public UnitConvDto() {
-        super(MAP);
-    }
-
-    public UnitConvDto(UnitConv source) {
-        super(MAP, source);
+        super();
     }
 
     public UnitConvDto(int selection) {
         super(selection);
-    }
-
-    public UnitConvDto(int selection, UnitConv source) {
-        super(selection, source);
     }
 
     @Override

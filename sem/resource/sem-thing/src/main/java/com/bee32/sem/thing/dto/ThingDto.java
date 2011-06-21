@@ -28,16 +28,8 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         super();
     }
 
-    public ThingDto(E source) {
-        super(source);
-    }
-
     public ThingDto(int selection) {
         super(selection);
-    }
-
-    public ThingDto(int selection, E source) {
-        super(selection, source);
     }
 
     @Override

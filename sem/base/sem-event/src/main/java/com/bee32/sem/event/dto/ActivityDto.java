@@ -11,8 +11,8 @@ public class ActivityDto
         super();
     }
 
-    public ActivityDto(Activity source) {
-        super(source);
+    public ActivityDto(int selection) {
+        super(selection);
     }
 
 }

@@ -8,12 +8,4 @@ public class PartyRecordCategoryDto
 
     private static final long serialVersionUID = 1L;
 
-    public PartyRecordCategoryDto() {
-        super();
-    }
-
-    public PartyRecordCategoryDto(PartyRecordCategory source) {
-        super(source);
-    }
-
 }

@@ -54,8 +54,8 @@ public abstract class AbstractEventDto<E extends Event>
         super();
     }
 
-    public AbstractEventDto(E source) {
-        super(source);
+    public AbstractEventDto(int selection) {
+        super(selection);
     }
 
     @Override

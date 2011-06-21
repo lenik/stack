@@ -34,15 +34,7 @@ public class ChanceDto
     ChanceStageDto stage;
 
     public ChanceDto() {
-        super(PARTIES + ACTIONS);
-    }
-
-    public ChanceDto(Chance source) {
-        super(PARTIES + ACTIONS, source);
-    }
-
-    public ChanceDto(int selection, Chance source) {
-        super(selection, source);
+        super();
     }
 
     public ChanceDto(int selection) {

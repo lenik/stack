@@ -8,12 +8,4 @@ public class EventCategoryDto
 
     private static final long serialVersionUID = 1L;
 
-    public EventCategoryDto() {
-        super();
-    }
-
-    public EventCategoryDto(EventCategory source) {
-        super(source);
-    }
-
 }

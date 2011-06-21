@@ -23,16 +23,8 @@ public class PassToNextDto
         super();
     }
 
-    public PassToNextDto(PassToNext source) {
-        super(source);
-    }
-
     public PassToNextDto(int selection) {
         super(selection);
-    }
-
-    public PassToNextDto(int selection, PassToNext source) {
-        super(selection, source);
     }
 
     public List<PassStepDto> getSequences() {

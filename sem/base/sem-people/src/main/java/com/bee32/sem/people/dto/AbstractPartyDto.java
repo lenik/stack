@@ -20,22 +20,6 @@ public class AbstractPartyDto<E extends Party>
     public static final int CONTACTS = 1;
     public static final int RECORDS = 2;
 
-    public AbstractPartyDto() {
-        super();
-    }
-
-    public AbstractPartyDto(E source) {
-        super(source);
-    }
-
-    public AbstractPartyDto(int selection) {
-        super(selection);
-    }
-
-    public AbstractPartyDto(int selection, E source) {
-        super(selection, source);
-    }
-
     User owner;
 
     List<PartyTagDto> tags;
@@ -52,6 +36,14 @@ public class AbstractPartyDto<E extends Party>
 
     List<ContactDto> contacts;
     List<PartyRecordDto> records;
+
+    public AbstractPartyDto() {
+        super();
+    }
+
+    public AbstractPartyDto(int selection) {
+        super(selection);
+    }
 
     @Override
     protected void _marshal(E source) {

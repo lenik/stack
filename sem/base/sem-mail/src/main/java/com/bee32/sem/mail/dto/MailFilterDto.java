@@ -31,8 +31,8 @@ public class MailFilterDto
         super();
     }
 
-    public MailFilterDto(MailFilter source) {
-        super(source);
+    public MailFilterDto(int selection) {
+        super(selection);
     }
 
     @Override

@@ -25,23 +25,15 @@ public class PersonDto
         super();
     }
 
-    public PersonDto(Person source) {
-        super(source);
-    }
-
     public PersonDto(int selection) {
         super(selection);
-    }
-
-    public PersonDto(int selection, Person source) {
-        super(selection, source);
     }
 
     @Override
     protected void _marshal(Person source) {
         super._marshal(source);
 
-        sex = source.getSex() == null? null : source.getSex().getValue();
+        sex = source.getSex() == null ? null : source.getSex().getValue();
 
         censusRegister = source.getCensusRegister();
 
@@ -49,32 +41,31 @@ public class PersonDto
         sidType = new PersonSidTypeDto(_sidType);
         sidType.marshalAs(MarshalType.ID_REF);
 
-        roles =  new HashSet<PersonRoleDto>();
-        for(PersonRole role : source.getRoles()) {
+        roles = new HashSet<PersonRoleDto>();
+        for (PersonRole role : source.getRoles()) {
             PersonRoleDto roleDto = new PersonRoleDto(role);
             roles.add(roleDto);
         }
     }
 
-	@Override
-	protected void _unmarshalTo(Person target) {
-		super._unmarshalTo(target);
+    @Override
+    protected void _unmarshalTo(Person target) {
+        super._unmarshalTo(target);
 
-		target.setSex(Gender.valueOf(sex));
+        target.setSex(Gender.valueOf(sex));
 
         target.setCensusRegister(censusRegister);
 
-		// XXX - Should remove this later.
-		String sidTypeId = sidType.getId();
-		if (sidTypeId != null && sidTypeId.isEmpty())
-		    sidTypeId = null;
-		sidType.setId(sidTypeId);
-		sidType.marshalAs(MarshalType.ID_REF);
-		merge(target, "sidType", sidType);
+        // XXX - Should remove this later.
+        String sidTypeId = sidType.getId();
+        if (sidTypeId != null && sidTypeId.isEmpty())
+            sidTypeId = null;
+        sidType.setId(sidTypeId);
+        sidType.marshalAs(MarshalType.ID_REF);
+        merge(target, "sidType", sidType);
 
-		mergeSet(target, "roles", roles);
-	}
-
+        mergeSet(target, "roles", roles);
+    }
 
     public Character getSex() {
         return sex;
@@ -85,7 +76,7 @@ public class PersonDto
     }
 
     public String getSexText() {
-        if(sex == null)
+        if (sex == null)
             return null;
         return Gender.valueOf(sex).getDisplayName();
     }

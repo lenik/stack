@@ -8,12 +8,4 @@ public class ChanceActionStyleDto
 
     private static final long serialVersionUID = 1L;
 
-    public ChanceActionStyleDto() {
-        super();
-    }
-
-    public ChanceActionStyleDto(ChanceActionStyle source) {
-        super(source);
-    }
-
 }

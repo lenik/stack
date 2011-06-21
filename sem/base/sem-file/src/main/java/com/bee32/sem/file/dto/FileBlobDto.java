@@ -18,16 +18,8 @@ public class FileBlobDto
         super();
     }
 
-    public FileBlobDto(FileBlob source) {
-        super(source);
-    }
-
     public FileBlobDto(int selection) {
         super(selection);
-    }
-
-    public FileBlobDto(int selection, FileBlob source) {
-        super(selection, source);
     }
 
     FileStoreDto<?> store;

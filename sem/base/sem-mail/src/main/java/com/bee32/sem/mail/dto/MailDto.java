@@ -41,16 +41,8 @@ public class MailDto
         super();
     }
 
-    public MailDto(Mail source) {
-        super(source);
-    }
-
     public MailDto(int selection) {
         super(selection);
-    }
-
-    public MailDto(int selection, Mail source) {
-        super(selection, source);
     }
 
     @Override

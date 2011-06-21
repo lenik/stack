@@ -13,14 +13,6 @@ public class AttackMissionDto
 
     private String target;
 
-    public AttackMissionDto() {
-        super();
-    }
-
-    public AttackMissionDto(AttackMission source) {
-        super(source);
-    }
-
     @Override
     protected void _marshal(AttackMission source) {
         target = source.getTarget();

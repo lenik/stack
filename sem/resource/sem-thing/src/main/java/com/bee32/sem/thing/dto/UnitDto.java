@@ -8,12 +8,4 @@ public class UnitDto
 
     private static final long serialVersionUID = 1L;
 
-    public UnitDto() {
-        super();
-    }
-
-    public UnitDto(Unit source) {
-        super(source);
-    }
-
 }

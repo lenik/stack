@@ -24,16 +24,8 @@ public class AllowListDto
         super();
     }
 
-    public AllowListDto(AllowList source) {
-        super(source);
-    }
-
     public AllowListDto(int selection) {
         super(selection);
-    }
-
-    public AllowListDto(int selection, AllowList source) {
-        super(selection, source);
     }
 
     @Override

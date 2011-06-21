@@ -22,10 +22,6 @@ public class PartyRecordDto
         super();
     }
 
-    public PartyRecordDto(PartyRecord source) {
-        super(source);
-    }
-
     @Override
     protected void _marshal(PartyRecord source) {
         party = new PartyDto(source.getParty());

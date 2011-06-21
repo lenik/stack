@@ -25,16 +25,8 @@ public abstract class VerifiableEntityDto<E extends VerifiableEntity<K, ? extend
         super();
     }
 
-    public VerifiableEntityDto(E source) {
-        super(source);
-    }
-
     public VerifiableEntityDto(int selection) {
         super(selection);
-    }
-
-    public VerifiableEntityDto(int selection, E source) {
-        super(selection, source);
     }
 
     @Override

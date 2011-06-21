@@ -19,10 +19,6 @@ public class LevelDto
         super();
     }
 
-    public LevelDto(Level source) {
-        super(source);
-    }
-
     @Override
     protected void _marshal(Level source) {
         multiLevel = new MultiLevelDto().ref(source.getMultiLevel());

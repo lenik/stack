@@ -8,12 +8,4 @@ public class ContactCategoryDto
 
     private static final long serialVersionUID = 1L;
 
-    public ContactCategoryDto() {
-        super();
-    }
-
-    public ContactCategoryDto(ContactCategory source) {
-        super(source);
-    }
-
 }

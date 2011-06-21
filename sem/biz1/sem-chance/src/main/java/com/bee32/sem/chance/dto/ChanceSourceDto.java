@@ -8,12 +8,4 @@ public class ChanceSourceDto
 
     private static final long serialVersionUID = 1L;
 
-    public ChanceSourceDto() {
-        super();
-    }
-
-    public ChanceSourceDto(ChanceSourceType source) {
-        super(source);
-    }
-
 }

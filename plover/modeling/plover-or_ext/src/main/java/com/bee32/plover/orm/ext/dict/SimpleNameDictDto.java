@@ -9,10 +9,6 @@ public abstract class SimpleNameDictDto<E extends NameDict>
 
     private static final long serialVersionUID = 1L;
 
-    public SimpleNameDictDto() {
-        super();
-    }
-
     @Override
     protected void _marshal(E source) {
     }

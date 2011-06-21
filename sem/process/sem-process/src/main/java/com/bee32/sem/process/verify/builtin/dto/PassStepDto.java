@@ -22,8 +22,8 @@ public class PassStepDto
         super();
     }
 
-    public PassStepDto(PassStep source) {
-        super(source);
+    public PassStepDto(int selection) {
+        super(selection);
     }
 
     public boolean isOptional() {

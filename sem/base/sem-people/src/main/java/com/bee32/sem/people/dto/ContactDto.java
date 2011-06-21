@@ -28,16 +28,8 @@ public class ContactDto
         super();
     }
 
-    public ContactDto(Contact source) {
-        super(source);
-    }
-
     public ContactDto(int selection) {
         super(selection);
-    }
-
-    public ContactDto(int selection, Contact source) {
-        super(selection, source);
     }
 
     @Override
@@ -45,7 +37,7 @@ public class ContactDto
         party = new PartyDto(0).ref2(source.getParty());
         category = new ContactCategoryDto(source.getCategory());
         address = source.getAddress();
-        postCode= source.getPostCode();
+        postCode = source.getPostCode();
         tel = source.getTel();
         mobile = source.getMobile();
         fax = source.getFax();
@@ -88,7 +80,6 @@ public class ContactDto
     public void setCategory(ContactCategoryDto category) {
         this.category = category;
     }
-
 
     public String getAddress() {
         return address;

@@ -25,16 +25,8 @@ public class MultiLevelDto
         super();
     }
 
-    public MultiLevelDto(MultiLevel source) {
-        super(source);
-    }
-
     public MultiLevelDto(int selection) {
         super(selection);
-    }
-
-    public MultiLevelDto(int selection, MultiLevel source) {
-        super(selection, source);
     }
 
     @Override

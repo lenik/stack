@@ -23,16 +23,8 @@ public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extend
         super();
     }
 
-    public AllowedBySupportDto(E source) {
-        super(source);
-    }
-
     public AllowedBySupportDto(int selection) {
         super(selection);
-    }
-
-    public AllowedBySupportDto(int selection, E source) {
-        super(selection, source);
     }
 
     @Override

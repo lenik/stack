@@ -22,8 +22,8 @@ public class PersonRoleDto
         super();
     }
 
-    public PersonRoleDto(PersonRole source) {
-        super(source);
+    public PersonRoleDto(int selection) {
+        super(selection);
     }
 
     @Override

@@ -12,16 +12,8 @@ public abstract class FileStoreDto<E extends FileStore>
         super();
     }
 
-    public FileStoreDto(E source) {
-        super(source);
-    }
-
     public FileStoreDto(int selection) {
         super(selection);
-    }
-
-    public FileStoreDto(int selection, E source) {
-        super(selection, source);
     }
 
 }

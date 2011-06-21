@@ -12,8 +12,8 @@ public class EmployeeDTO
         super();
     }
 
-    public EmployeeDTO(Employee entity) {
-        super(entity);
+    public EmployeeDTO(int selection) {
+        super(selection);
     }
 
 }

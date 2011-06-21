@@ -20,8 +20,8 @@ public class EventStatusDto
         super();
     }
 
-    public EventStatusDto(EventStatus source) {
-        super(source);
+    public EventStatusDto(int selection) {
+        super(selection);
     }
 
     @Override
