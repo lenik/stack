@@ -1,11 +1,15 @@
 package com.bee32.plover.orm.util;
 
-import com.bee32.plover.arch.util.dto.BaseDtoUtils;
+import java.io.Serializable;
+
+import com.bee32.plover.orm.entity.Entity;
 
 /**
- * An alias of EntityDtoUtils.
+ * EntityDto* utilities.
  */
-public class DTOs
-        extends BaseDtoUtils {
+public abstract class DTOs
+        extends EntityDto<Entity<Serializable>, Serializable> {
+
+    private static final long serialVersionUID = 1L;
 
 }

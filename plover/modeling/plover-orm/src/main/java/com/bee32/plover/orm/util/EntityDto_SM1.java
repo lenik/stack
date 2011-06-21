@@ -18,16 +18,16 @@ import com.bee32.plover.arch.util.dto.IMarshalSession;
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
 
-public abstract class EntityDto_Merge<E extends Entity<K>, K extends Serializable>
+public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
         extends EntityDto_VTU<E, K> {
 
     private static final long serialVersionUID = 1L;
 
-    public EntityDto_Merge() {
+    public EntityDto_SM1() {
         super();
     }
 
-    public EntityDto_Merge(int selection) {
+    public EntityDto_SM1(int selection) {
         super(selection);
     }
 
