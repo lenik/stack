@@ -23,6 +23,11 @@ public abstract class DataExchangeObject<T>
     }
 
     @Override
+    protected boolean hasKey() {
+        return false;
+    }
+
+    @Override
     protected abstract void _parse(TextMap map)
             throws ParseException;
 

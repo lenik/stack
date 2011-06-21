@@ -3,6 +3,7 @@ package com.bee32.plover.arch.util.dto;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -17,12 +18,13 @@ import com.bee32.plover.arch.util.TextMap;
  * Layer 2
  *
  * <ul>
- * <li>Skeletion
+ * <li>Skeleton
  * <li>Context wrappers
  * </ul>
  */
 abstract class BaseDto_Skel<S, C>
-        extends BaseDto_ASM<S, C> {
+        extends BaseDto_ASM<S, C>
+        implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,6 +44,11 @@ abstract class BaseDto_Skel<S, C>
         return marshalType.isReference() && !hasKey();
     }
 
+    /**
+     * A reference DTO without a key is a null-ref.
+     *
+     * @return <code>true</code> If a non-<code>null</code> key is defined.
+     */
     protected abstract boolean hasKey();
 
     /**

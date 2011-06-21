@@ -13,14 +13,23 @@ import java.util.Set;
 import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
 
-import com.bee32.plover.arch.util.dto.BaseDtoUtils;
 import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
 import com.bee32.plover.arch.util.dto.IMarshalSession;
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
 
-public class EntityDtoUtils_Merge
-        extends BaseDtoUtils {
+public abstract class EntityDto_Merge<E extends Entity<K>, K extends Serializable>
+        extends EntityDto_VTU<E, K> {
+
+    private static final long serialVersionUID = 1L;
+
+    public EntityDto_Merge() {
+        super();
+    }
+
+    public EntityDto_Merge(int selection) {
+        super(selection);
+    }
 
     /**
      * <pre>

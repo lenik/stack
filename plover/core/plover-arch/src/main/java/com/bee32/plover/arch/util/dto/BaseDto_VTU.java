@@ -49,29 +49,24 @@ abstract class BaseDto_VTU<S, C>
      * </pre>
      */
 
-    /**
-     * (COMPAT) Unmarshal to a given target.
-     */
-    abstract boolean isUnmarshallable1();
-
-    void checkCanBeUnmarshalled() {
-        if (!isUnmarshallable1())
-            logger.warn("Unmarshal is ignored: unmarshalTo() is called but the DTO is not filled. "
+    void checkCanBeUnmarshalledTo() {
+        if (getMarshalType().isReference())
+            logger.warn("Unmarshal is ignored: unmarshalTo() is called but the DTO is a reference. "
                     + "You should use unmarshal() instead, to unmarshal non-filled DTOs.");
     }
 
     public final void unmarshalTo(IMarshalSession session, S target) {
-        checkCanBeUnmarshalled();
+        checkCanBeUnmarshalledTo();
         merge(session, target);
     }
 
     public final void unmarshalTo(C context, S target) {
-        checkCanBeUnmarshalled();
+        checkCanBeUnmarshalledTo();
         merge(context, target);
     }
 
     public final void unmarshalTo(S target) {
-        checkCanBeUnmarshalled();
+        checkCanBeUnmarshalledTo();
         merge(target);
     }
 
