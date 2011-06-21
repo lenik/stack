@@ -15,16 +15,8 @@ public abstract class NumberDictDto<E extends NumberDict>
         super();
     }
 
-    public NumberDictDto(E source) {
-        super(source);
-    }
-
     public NumberDictDto(int selection) {
         super(selection);
-    }
-
-    public NumberDictDto(int selection, E source) {
-        super(selection, source);
     }
 
     @Override

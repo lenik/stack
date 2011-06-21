@@ -13,16 +13,8 @@ public abstract class EntityExtDto<E extends EntityExt<K, X>, K extends Serializ
         super();
     }
 
-    public EntityExtDto(E source) {
-        super(source);
-    }
-
     public EntityExtDto(int selection) {
         super(selection);
-    }
-
-    public EntityExtDto(int selection, E source) {
-        super(selection, source);
     }
 
 }

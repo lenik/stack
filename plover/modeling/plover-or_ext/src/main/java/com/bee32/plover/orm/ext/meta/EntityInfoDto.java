@@ -21,19 +21,11 @@ public class EntityInfoDto
     List<EntityColumnDto> columns;
 
     public EntityInfoDto() {
-        super(COLUMNS);
-    }
-
-    public EntityInfoDto(EntityInfo source) {
-        super(COLUMNS, source);
+        super();
     }
 
     public EntityInfoDto(int selection) {
         super(selection);
-    }
-
-    public EntityInfoDto(int selection, EntityInfo source) {
-        super(selection, source);
     }
 
     @Override

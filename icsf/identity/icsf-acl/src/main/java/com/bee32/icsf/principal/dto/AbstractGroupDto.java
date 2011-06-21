@@ -3,6 +3,7 @@ package com.bee32.icsf.principal.dto;
 import java.util.List;
 
 import com.bee32.icsf.principal.Group;
+import com.bee32.plover.orm.util.DTOs;
 
 public class AbstractGroupDto<G extends Group>
         extends AbstractPrincipalDto<G> {
@@ -21,16 +22,8 @@ public class AbstractGroupDto<G extends Group>
         super();
     }
 
-    public AbstractGroupDto(G source) {
-        super(source);
-    }
-
     public AbstractGroupDto(int selection) {
         super(selection);
-    }
-
-    public AbstractGroupDto(int selection, G source) {
-        super(selection, source);
     }
 
     public GroupDto getInheritedGroup() {
@@ -98,13 +91,13 @@ public class AbstractGroupDto<G extends Group>
         }
 
         if (selection.contains(GROUPS))
-            derivedGroups = marshalList(GroupDto.class, _selection, source.getDerivedGroups());
+            derivedGroups = DTOs.marshalList(GroupDto.class, _selection, source.getDerivedGroups());
 
         if (selection.contains(ROLES))
-            assignedRoles = marshalList(RoleDto.class, _selection, source.getAssignedRoles());
+            assignedRoles = DTOs.marshalList(RoleDto.class, _selection, source.getAssignedRoles());
 
         if (selection.contains(USERS))
-            memberUsers = marshalList(UserDto.class, _selection, source.getMemberUsers());
+            memberUsers = DTOs.marshalList(UserDto.class, _selection, source.getMemberUsers());
     }
 
     @Override
@@ -112,7 +105,7 @@ public class AbstractGroupDto<G extends Group>
         super._unmarshalTo(target);
 
         if (selection.contains(EXT)) {
-            merge(target, "inheritedGroup", inheritedGroup);
+            DTOs.merge(target, "inheritedGroup", inheritedGroup);
             merge(target, "owner", owner);
             merge(target, "primaryRole", primaryRole);
         }

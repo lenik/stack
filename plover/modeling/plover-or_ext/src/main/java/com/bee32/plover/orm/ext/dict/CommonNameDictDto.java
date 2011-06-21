@@ -13,10 +13,6 @@ public class CommonNameDictDto
         super();
     }
 
-    public CommonNameDictDto(NameDict source) {
-        super(source);
-    }
-
     @Override
     protected void _marshal(NameDict source) {
     }

@@ -11,16 +11,8 @@ public class UserDto
         super();
     }
 
-    public UserDto(User source) {
-        super(source);
-    }
-
     public UserDto(int selection) {
         super(selection);
-    }
-
-    public UserDto(int selection, User source) {
-        super(selection, source);
     }
 
 }

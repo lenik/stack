@@ -14,14 +14,6 @@ public class TigerDto
     String color;
     int power;
 
-    public TigerDto() {
-        super();
-    }
-
-    public TigerDto(Tiger entity) {
-        super(entity);
-    }
-
     @Override
     protected void _marshal(Tiger entity) {
         this.name = entity.getName();

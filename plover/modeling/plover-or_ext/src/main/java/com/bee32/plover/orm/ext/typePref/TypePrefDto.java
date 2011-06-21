@@ -18,16 +18,8 @@ public abstract class TypePrefDto<E extends TypePrefEntity>
         super();
     }
 
-    public TypePrefDto(E source) {
-        super(source);
-    }
-
     public TypePrefDto(int selection) {
         super(selection);
-    }
-
-    public TypePrefDto(int selection, E source) {
-        super(selection, source);
     }
 
     protected void __marshal(E source) {

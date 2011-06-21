@@ -19,16 +19,8 @@ public class AbstractUserDto<U extends User>
         super();
     }
 
-    public AbstractUserDto(U source) {
-        super(source);
-    }
-
     public AbstractUserDto(int selection) {
         super(selection);
-    }
-
-    public AbstractUserDto(int selection, U source) {
-        super(selection, source);
     }
 
     @Override

@@ -19,16 +19,8 @@ public class AbstractRoleDto<R extends Role>
         super();
     }
 
-    public AbstractRoleDto(R source) {
-        super(source);
-    }
-
     public AbstractRoleDto(int selection) {
         super(selection);
-    }
-
-    public AbstractRoleDto(int selection, R source) {
-        super(selection, source);
     }
 
     @Override

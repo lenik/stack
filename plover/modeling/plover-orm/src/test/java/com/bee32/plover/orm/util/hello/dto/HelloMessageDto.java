@@ -17,16 +17,8 @@ public class HelloMessageDto
         super();
     }
 
-    public HelloMessageDto(HelloMessage source) {
-        super(source);
-    }
-
     public HelloMessageDto(int selection) {
         super(selection);
-    }
-
-    public HelloMessageDto(int selection, HelloMessage source) {
-        super(selection, source);
     }
 
     @Override

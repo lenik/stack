@@ -20,16 +20,8 @@ public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
         super();
     }
 
-    public UIEntityDto(E source) {
-        super(source);
-    }
-
     public UIEntityDto(int selection) {
         super(selection);
-    }
-
-    public UIEntityDto(int selection, E source) {
-        super(selection, source);
     }
 
     @Override

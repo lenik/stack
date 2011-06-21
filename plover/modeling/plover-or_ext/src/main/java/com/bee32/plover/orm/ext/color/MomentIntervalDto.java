@@ -20,14 +20,6 @@ public abstract class MomentIntervalDto<E extends MomentInterval>
         super();
     }
 
-    public MomentIntervalDto(E source) {
-        super(source);
-    }
-
-    public MomentIntervalDto(int selection, E source) {
-        super(selection, source);
-    }
-
     public MomentIntervalDto(int selection) {
         super(selection);
     }

@@ -35,16 +35,8 @@ public class AbstractPrincipalDto<E extends Principal>
         super();
     }
 
-    public AbstractPrincipalDto(E source) {
-        super(source);
-    }
-
     public AbstractPrincipalDto(int selection) {
         super(selection);
-    }
-
-    public AbstractPrincipalDto(int selection, E source) {
-        super(selection, source);
     }
 
     @Override

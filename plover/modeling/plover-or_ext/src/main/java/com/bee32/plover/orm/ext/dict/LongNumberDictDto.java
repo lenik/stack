@@ -15,16 +15,8 @@ public abstract class LongNumberDictDto<E extends LongNumberDict>
         super();
     }
 
-    public LongNumberDictDto(E source) {
-        super(source);
-    }
-
     public LongNumberDictDto(int selection) {
         super(selection);
-    }
-
-    public LongNumberDictDto(int selection, E source) {
-        super(selection, source);
     }
 
     @Override

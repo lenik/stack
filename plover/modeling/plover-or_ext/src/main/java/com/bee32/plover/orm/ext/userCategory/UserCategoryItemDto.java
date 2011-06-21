@@ -16,14 +16,6 @@ public class UserCategoryItemDto
     Double floatVal;
     String textVal;
 
-    public UserCategoryItemDto() {
-        super();
-    }
-
-    public UserCategoryItemDto(UserCategoryItem source) {
-        super(source);
-    }
-
     @Override
     protected void _marshal(UserCategoryItem source) {
         category = new UserCategoryDto(source.getCategory());

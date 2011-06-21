@@ -13,16 +13,8 @@ public abstract class DigestEntityDto<E extends DigestEntity>
         super();
     }
 
-    public DigestEntityDto(E source) {
-        super(source);
-    }
-
     public DigestEntityDto(int selection) {
         super(selection);
-    }
-
-    public DigestEntityDto(int selection, E source) {
-        super(selection, source);
     }
 
     @Override

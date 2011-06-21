@@ -13,10 +13,6 @@ public abstract class SimpleNameDictDto<E extends NameDict>
         super();
     }
 
-    public SimpleNameDictDto(E source) {
-        super(source);
-    }
-
     @Override
     protected void _marshal(E source) {
     }

@@ -11,16 +11,8 @@ public class GroupDto
         super();
     }
 
-    public GroupDto(Group source) {
-        super(source);
-    }
-
     public GroupDto(int selection) {
         super(selection);
-    }
-
-    public GroupDto(int selection, Group source) {
-        super(selection, source);
     }
 
 }
