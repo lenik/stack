@@ -381,7 +381,7 @@ public class OrgAdminBean extends EntityViewBean {
 
         for(String tagId : selectedTagsToAdd) {
             PartyTag tag = loadEntity(PartyTag.class, tagId);
-            PartyTagDto t = new PartyTagDto(tag);
+            PartyTagDto t = DTOs.mref(PartyTagDto.class,tag);
             if(!org.getTags().contains(t))
                 org.getTags().add(t);
         }

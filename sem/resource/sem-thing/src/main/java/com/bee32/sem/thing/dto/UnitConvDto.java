@@ -28,7 +28,7 @@ public class UnitConvDto
 
     @Override
     protected void _marshal(UnitConv source) {
-        from = new UnitDto(source.getFrom());
+        from = mref(UnitDto.class, source.getFrom());
 
         if (selection.contains(MAP)) {
             // marshal map.

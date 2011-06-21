@@ -73,16 +73,21 @@ public class ChanceActionDto
         this.contentShort = Strings.ellipse(source.getContent(), 16);
 
         this.plan = source.isPlan();
+
         if (selection.contains(PARTIES))
             this.parties = marshalList(PartyDto.class, source.getParties());
-        this.actor = new UserDto(source.getActor());
-        this.style = new ChanceActionStyleDto(source.getStyle());
+
+        this.actor = mref(UserDto.class, source.getActor());
+        this.style = mref(ChanceActionStyleDto.class, source.getStyle());
+
         this.beginTime = source.getBeginTime();
         this.endTime = source.getEndTime();
+
         this.content = source.getContent();
         this.spending = source.getSpending();
-        this.chance = new ChanceDto(0, source.getChance());
-        this.stage = new ChanceStageDto(source.getStage());
+
+        this.chance = mref(ChanceDto.class, 0, source.getChance());
+        this.stage = mref(ChanceStageDto.class, source.getStage());
     }
 
     @Override

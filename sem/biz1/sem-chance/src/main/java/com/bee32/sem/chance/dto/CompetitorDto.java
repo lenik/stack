@@ -24,7 +24,7 @@ public class CompetitorDto
     @Override
     protected void _marshal(Competitor source) {
         this.name = source.getName();
-        this.chance = new ChanceDto(0, source.getChance());
+        this.chance = mref(ChanceDto.class, 0, source.getChance());
         this.price = source.getPrice();
         this.capability = source.getCapability();
         this.solution = source.getSolution();

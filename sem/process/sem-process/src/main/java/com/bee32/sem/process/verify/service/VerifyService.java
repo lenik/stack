@@ -13,6 +13,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.dso.UserDso;
 import com.bee32.plover.arch.EnterpriseService;
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.Task;
@@ -41,13 +42,16 @@ public class VerifyService
     @Transactional(readOnly = true)
     public <C extends IVerifyContext> VerifyPolicyDto getPreferredVerifyPolicy(Class<C> entityClass) {
         VerifyPolicy<C> preferredVerifyPolicy = policyDao.getPreferredVerifyPolicy(entityClass);
-        return new VerifyPolicyDto(preferredVerifyPolicy);
+        VerifyPolicyDto policyDto = DTOs.marshal(VerifyPolicyDto.class, preferredVerifyPolicy);
+        // return new VerifyPolicyDto(preferredVerifyPolicy);
+        return policyDto;
     }
 
     @Transactional(readOnly = true)
     public <C extends IVerifyContext> VerifyPolicyDto getVerifyPolicy(C entity) {
         VerifyPolicy<C> verifyPolicy = policyDao.getVerifyPolicy(entity);
-        return new VerifyPolicyDto(verifyPolicy);
+        VerifyPolicyDto policyDto = DTOs.marshal(VerifyPolicyDto.class, verifyPolicy);
+        return policyDto;
     }
 
     // --o IVerifyPolicy.

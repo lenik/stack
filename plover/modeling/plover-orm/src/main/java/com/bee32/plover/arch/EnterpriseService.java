@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
 
 @Transactional(readOnly = true)
@@ -35,14 +33,6 @@ public abstract class EnterpriseService
     @Override
     public <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {
         return dataManager.fetch(entityType, id);
-    }
-
-    protected static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> D marshal(
-            Class<D> dtoClass, E entity) {
-        if (entity == null)
-            return null;
-        else
-            return DTOs.marshal(dtoClass, entity);
     }
 
 }

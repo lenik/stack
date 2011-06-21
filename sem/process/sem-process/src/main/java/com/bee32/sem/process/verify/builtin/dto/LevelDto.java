@@ -23,7 +23,7 @@ public class LevelDto
     protected void _marshal(Level source) {
         multiLevel = new MultiLevelDto().ref(source.getMultiLevel());
         limit = source.getLimit();
-        targetPolicy = new VerifyPolicyDto(source.getTargetPolicy());
+        targetPolicy = mref(VerifyPolicyDto.class, source.getTargetPolicy());
     }
 
     @Override

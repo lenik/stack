@@ -9,6 +9,7 @@ import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.entity.EntityDao;
 import com.bee32.plover.orm.entity.EntityDso;
+import com.bee32.plover.orm.util.DTOs;
 
 @Transactional(readOnly = true)
 public class UserDso
@@ -23,7 +24,8 @@ public class UserDso
     }
 
     public UserDto getByName(String name) {
-        return new UserDto(0, userDao.getByName(name));
+        User user = userDao.getByName(name);
+        return DTOs.marshal(UserDto.class, 0, user);
     }
 
 }

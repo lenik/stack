@@ -34,8 +34,8 @@ public class ContactDto
 
     @Override
     protected void _marshal(Contact source) {
-        party = new PartyDto(0).ref2(source.getParty());
-        category = new ContactCategoryDto(source.getCategory());
+        party = mref(PartyDto.class, source.getParty());
+        category = mref(ContactCategoryDto.class, source.getCategory());
         address = source.getAddress();
         postCode = source.getPostCode();
         tel = source.getTel();

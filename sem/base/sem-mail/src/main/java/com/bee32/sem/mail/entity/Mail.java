@@ -1,5 +1,6 @@
 package com.bee32.sem.mail.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -56,140 +57,223 @@ public class Mail
 
     Mail referrer;
 
-    // Date createDate;
-    // Date modifiedDate;
+    List<MailDelivery> deliveries = new ArrayList<MailDelivery>();
 
-    List<MailDelivery> copies;
-
+    /**
+     * 邮件类型，如：公文、帖子、系统广播等。
+     */
     @Basic(optional = false)
     @Column(nullable = false)
     public MailType getType() {
         return type;
     }
 
+    /**
+     * 邮件类型，如：公文、帖子、系统广播、E-Mail等。
+     */
     public void setType(MailType type) {
         this.type = type;
     }
 
+    /**
+     * 优先级。一般用于排序。 E-mail中会形成相应的 Priority 域。
+     */
     @Column(nullable = false)
     public byte getPriority() {
         return priority;
     }
 
+    /**
+     * 优先级。一般用于排序。E-mail中会形成相应的 Priority 域。
+     */
     public void setPriority(byte priority) {
         this.priority = priority;
     }
 
+    /**
+     * 发送方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
+     */
     @Column(length = 50, nullable = false)
     public String getFrom() {
         return from;
     }
 
+    /**
+     * 发送方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
+     */
     public void setFrom(String from) {
         this.from = from;
     }
 
+    /**
+     * 接收方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
+     */
     @Column(length = 50, nullable = false)
     public String getTo() {
         return to;
     }
 
+    /**
+     * 接收方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
+     */
     public void setTo(String to) {
         this.to = to;
     }
 
+    /**
+     * 回复到方（可能不同于发送方）。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
+     */
     @Column(length = 50)
     public String getReplyTo() {
         return replyTo;
     }
 
+    /**
+     * 回复到方（可能不同于发送方）。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
+     */
     public void setReplyTo(String replyTo) {
         this.replyTo = replyTo;
     }
 
+    /**
+     * 发送方用户。
+     */
     @ManyToOne
     public User getFromUser() {
         return fromUser;
     }
 
+    /**
+     * 发送方用户。
+     */
     public void setFromUser(User fromUser) {
         this.fromUser = fromUser;
         this.from = EmailUtil.getFriendlyEmail(fromUser);
     }
 
+    /**
+     * 接收方用户。
+     */
     @ManyToOne
     public User getToUser() {
         return toUser;
     }
 
+    /**
+     * 接收方用户。
+     */
     public void setToUser(User toUser) {
         this.toUser = toUser;
         this.to = EmailUtil.getFriendlyEmail(toUser);
     }
 
+    /**
+     * 回复到方用户。
+     */
     @ManyToOne
     public User getReplyToUser() {
         return replyToUser;
     }
 
+    /**
+     * 回复到方用户。
+     */
     public void setReplyToUser(User replyToUser) {
         this.replyToUser = replyToUser;
         this.replyTo = EmailUtil.getFriendlyEmail(replyToUser);
     }
 
+    /**
+     * 抄送列表。
+     */
     @Column(length = 200)
     public String getCc() {
         return cc;
     }
 
+    /**
+     * 抄送列表。
+     */
     public void setCc(String cc) {
         this.cc = cc;
     }
 
+    /**
+     * 秘密抄送列表。
+     */
     @Column(length = 200)
     public String getBcc() {
         return bcc;
     }
 
+    /**
+     * 秘密抄送列表。
+     */
     public void setBcc(String bcc) {
         this.bcc = bcc;
     }
 
+    /**
+     * 主题。
+     */
     @Column(length = 200)
     public String getSubject() {
         return subject;
     }
 
+    /**
+     * 主题。
+     */
     public void setSubject(String subject) {
         this.subject = subject;
     }
 
+    /**
+     * 正文。
+     */
     @Lob
     public String getBody() {
         return body;
     }
 
+    /**
+     * 正文。
+     */
     public void setBody(String body) {
         this.body = body;
     }
 
+    /**
+     * 引用的邮件（如回复、转发的邮件）。
+     */
     @ManyToOne
     public Mail getReferrer() {
         return referrer;
     }
 
+    /**
+     * 引用的邮件（如回复、转发的邮件）。
+     */
     public void setReferrer(Mail referrer) {
         this.referrer = referrer;
     }
 
+    /**
+     * 邮件递送副本列表。
+     */
     @OneToMany(mappedBy = "mail")
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public List<MailDelivery> getCopies() {
-        return copies;
+    public List<MailDelivery> getDeliveries() {
+        return deliveries;
     }
 
-    public void setCopies(List<MailDelivery> copies) {
-        this.copies = copies;
+    /**
+     * 邮件递送副本列表。
+     */
+    public void setDeliveries(List<MailDelivery> deliveries) {
+        if (deliveries == null)
+            throw new NullPointerException("deliveries");
+        this.deliveries = deliveries;
     }
 
 }

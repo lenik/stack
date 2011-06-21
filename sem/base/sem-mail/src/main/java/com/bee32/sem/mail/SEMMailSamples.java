@@ -7,9 +7,9 @@ import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.mail.entity.Mail;
 import com.bee32.sem.mail.entity.MailDelivery;
-import com.bee32.sem.mail.entity.MailParty;
 import com.bee32.sem.mail.entity.MailFilter;
 import com.bee32.sem.mail.entity.MailFolder;
+import com.bee32.sem.mail.entity.MailParty;
 
 @ImportSamples(IcsfPrincipalSamples.class)
 public class SEMMailSamples
@@ -46,7 +46,7 @@ public class SEMMailSamples
         MailDelivery helloSend = new MailDelivery(hello, MailParty.FROM);
         // helloSend.setSentDate();
         MailDelivery helloRecv = new MailDelivery(hello, MailParty.TO);
-        hello.setCopies(Arrays.asList(helloSend, helloRecv));
+        hello.setDeliveries(Arrays.asList(helloSend, helloRecv));
 
         helloEcho.setFromUser(IcsfPrincipalSamples.eva);
         helloEcho.setToUser(IcsfPrincipalSamples.wallE);
@@ -58,7 +58,7 @@ public class SEMMailSamples
 
         MailDelivery helloEchoSend = new MailDelivery(helloEcho, MailParty.FROM);
         MailDelivery helloEchoRecv = new MailDelivery(helloEcho, MailParty.TO);
-        helloEcho.setCopies(Arrays.asList(helloEchoSend, helloEchoRecv));
+        helloEcho.setDeliveries(Arrays.asList(helloEchoSend, helloEchoRecv));
     }
 
     @Override

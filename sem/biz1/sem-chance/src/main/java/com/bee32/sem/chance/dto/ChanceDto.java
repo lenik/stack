@@ -51,17 +51,19 @@ public class ChanceDto
                 partyString += "," + party.getParty().getName();
         }
         this.party = partyString;
-        this.owner = new UserDto(source.getOwner());
-        this.category = new ChanceCategoryDto(source.getCategory());
-        this.source = new ChanceSourceDto(source.getSource());
+        this.owner = mref(UserDto.class, source.getOwner());
+        this.category = mref(ChanceCategoryDto.class, source.getCategory());
+        this.source = mref(ChanceSourceDto.class, source.getSource());
         this.subject = source.getSubject();
         this.content = source.getContent();
 
         if (selection.contains(PARTIES))
             this.parties = marshalList(ChancePartyDto.class, source.getParties());
+
         if (selection.contains(ACTIONS))
             this.actions = marshalList(ChanceActionDto.class, source.getActions());
-        this.stage = new ChanceStageDto(source.getStage());
+
+        this.stage = mref(ChanceStageDto.class, source.getStage());
     }
 
     @Override

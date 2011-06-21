@@ -18,7 +18,7 @@ public class UserCategoryItemDto
 
     @Override
     protected void _marshal(UserCategoryItem source) {
-        category = new UserCategoryDto(source.getCategory());
+        category = mref(UserCategoryDto.class, source.getCategory());
         intVal = source.intVal;
         floatVal = source.floatVal;
         textVal = source.textVal;

@@ -24,9 +24,9 @@ public class PartyRecordDto
 
     @Override
     protected void _marshal(PartyRecord source) {
-        party = new PartyDto(source.getParty());
+        party = marshal(PartyDto.class, source.getParty());
         date = source.getDate();
-        category = new PartyRecordCategoryDto(source.getCategory());
+        category = marshal(PartyRecordCategoryDto.class, source.getCategory());
         description = source.getDescription();
     }
 

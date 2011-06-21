@@ -60,15 +60,15 @@ public abstract class AbstractEventDto<E extends Event>
 
     @Override
     protected void _marshal(E source) {
-        category = new EventCategoryDto(source.getCategory());
+        category = mref(EventCategoryDto.class, source.getCategory());
         sourceAbbr = source.getSource();
         sourceClass = source.getSourceClass();
 
         priority = source.getPriority();
         stateIndex = source.getState();
 
-        status = new EventStatusDto(source.getStatus());
-        actor = new UserDto(0, source.getActor());
+        status = mref(EventStatusDto.class, source.getStatus());
+        actor = mref(UserDto.class, 0, source.getActor());
 
         subject = source.getSubject();
         message = source.getMessage();

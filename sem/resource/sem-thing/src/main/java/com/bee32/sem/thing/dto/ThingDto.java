@@ -42,12 +42,12 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
 
         barCode = source.getBarCode();
 
-        unit = new UnitDto(source.getUnit());
+        unit = mref(UnitDto.class, source.getUnit());
 
         int unitConvSelection = 0;
         if (selection.contains(CONV_MAP))
             unitConvSelection |= UnitConvDto.MAP;
-        unitConv = new UnitConvDto(unitConvSelection, source.getUnitConv());
+        unitConv = mref(UnitConvDto.class, unitConvSelection, source.getUnitConv());
     }
 
     @Override

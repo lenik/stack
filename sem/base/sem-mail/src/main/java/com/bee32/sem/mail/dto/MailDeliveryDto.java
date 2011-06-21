@@ -31,8 +31,8 @@ public class MailDeliveryDto
 
     @Override
     protected void _marshal(MailDelivery source) {
-        mail = new MailDto(source.getMail());
-        folder = new MailFolderDto(0, source.getFolder());
+        mail = mref(MailDto.class, source.getMail());
+        folder = mref(MailFolderDto.class, 0, source.getFolder());
         party = source.getParty();
 
         flags.bits = source.getFlags();

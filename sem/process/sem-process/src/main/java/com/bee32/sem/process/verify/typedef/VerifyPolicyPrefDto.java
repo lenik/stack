@@ -28,7 +28,7 @@ public class VerifyPolicyPrefDto
         description = source.getDescription();
 
         VerifyPolicy<?> _preferredPolicy = source.getPreferredPolicy();
-        preferredPolicy = new VerifyPolicyDto(_preferredPolicy);
+        preferredPolicy = mref(VerifyPolicyDto.class, _preferredPolicy);
 
         if (_preferredPolicy != null) {
             Collection<? extends Principal> _responsibles = _preferredPolicy.getDeclaredResponsibles(null);

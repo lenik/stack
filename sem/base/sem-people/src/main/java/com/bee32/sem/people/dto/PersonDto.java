@@ -38,12 +38,12 @@ public class PersonDto
         censusRegister = source.getCensusRegister();
 
         PersonSidType _sidType = source.getSidType();
-        sidType = new PersonSidTypeDto(_sidType);
+        sidType = marshal(PersonSidTypeDto.class, _sidType);
         sidType.marshalAs(MarshalType.ID_REF);
 
         roles = new HashSet<PersonRoleDto>();
         for (PersonRole role : source.getRoles()) {
-            PersonRoleDto roleDto = new PersonRoleDto(role);
+            PersonRoleDto roleDto = marshal(PersonRoleDto.class, role);
             roles.add(roleDto);
         }
     }
