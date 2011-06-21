@@ -15,7 +15,10 @@ import java.util.Set;
  *      for both scalar and collections.
  * </pre>
  */
-public abstract class BaseDtoUtils_Core {
+public abstract class BaseDto_S1<S, C>
+        extends BaseDto_VTU<S, C> {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Generic marshal with nullable source support.

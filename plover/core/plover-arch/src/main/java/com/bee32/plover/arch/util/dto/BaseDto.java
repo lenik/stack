@@ -4,7 +4,7 @@ import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.Flags32;
 
 public abstract class BaseDto<S, C>
-        extends BaseDto_VTU<S, C> {
+        extends BaseDto_S2<S, C> {
 
     private static final long serialVersionUID = 1L;
 

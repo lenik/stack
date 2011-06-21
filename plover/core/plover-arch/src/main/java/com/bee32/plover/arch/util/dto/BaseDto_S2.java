@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.dao.DataAccessException;
 
-public abstract class BaseDtoUtils
-        extends BaseDtoUtils_Core {
+public abstract class BaseDto_S2<S, C>
+        extends BaseDto_S1<S, C> {
+
+    private static final long serialVersionUID = 1L;
 
     // marshal*
 
