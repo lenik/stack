@@ -34,39 +34,58 @@
 
         <h:form id="chanceActionForm">
 
+            <p:growl id="growl" showDetail="true" />
+
             <p:panel header="机会行动日志">
 
-                    <p:toolbar id="productToolbar">
-                        <p:toolbarGroup align="left">
-                            <p:commandButton value="新增" actionListener="#{chanceActionBean.createForm}"
-                                disabled="#{chanceActionBean.editable}" update="chanceActionForm" async="true" />
-                            <p:commandButton value="修改" actionListener="#{chanceActionBean.editForm}"
-                                disabled="#{chanceActionBean.editable}" update="chanceActionForm" async="true" />
-                            <p:commandButton value="删除" actionListener="#{chanceActionBean.drop}"
-                                disabled="#{chanceActionBean.editable}" update="chanceActionForm" async="true" />
-                            <p:divider />
-                            <p:commandButton value="保存" actionListener="#{chanceActionBean.saveAction}"
-                                disabled="#{!chanceActionBean.editable}" update="chanceActionForm" async="false" />
-                            <p:commandButton value="取消" actionListener="#{chanceActionBean.cancel}"
-                                disabled="#{!chanceActionBean.editable}" update="chanceActionForm" async="true" />
-                            <p:divider />
-                            <p:commandButton value="详细" actionListener="#{chanceActionBean.detail_}"
-                                disabled="#{chanceAction.detail}" update="chanceActionForm" async="true" />
-                        </p:toolbarGroup>
-                    </p:toolbar>
+                <p:toolbar id="productToolbar">
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="新增" actionListener="#{chanceActionBean.createForm}"
+                            disabled="#{chanceActionBean.add}" update="chanceActionForm" async="false" />
 
-                <p:tabView id="actionTab" activeIndex="#{chanceActionBean.currentTab}">
-                    <p:tab id="actionList" title="机会行动列表">
+                        <p:divider />
+                        <p:commandButton value="修改" actionListener="#{chanceActionBean.editForm}"
+                            disabled="#{chanceActionBean.edable}" update="chanceActionForm" async="true" />
+                        <p:commandButton value="删除" actionListener="#{chanceActionBean.drop}"
+                            disabled="#{chanceActionBean.edable}" update="chanceActionForm" async="true" />
+                        <p:divider />
+                        <p:commandButton value="保存" actionListener="#{chanceActionBean.saveAction}"
+                            disabled="#{chanceActionBean.saveable}" update="chanceActionForm" async="false" />
+                        <p:divider />
+                        <p:commandButton value="详细" actionListener="#{chanceActionBean.detailForm}"
+                            disabled="#{chanceActionBean.detail}" update="chanceActionForm" async="true" />
+                        <p:divider />
+                        <p:commandButton value="取消" actionListener="#{chanceActionBean.cancel}"
+                            disabled="#{chanceActionBean.back}"
+                            update="chanceActionForm:productToolbar chanceActionForm:mainTab" async="true" />
+                        <p:divider />
+
+                        <h:outputLabel for="btime" value="时间段:" />
+                        <p:calendar id="btime" pattern="yyyy-MM-dd HH:mm" value="#{chanceActionBean.searchBeginTime}"
+                            showOn="button" />
+                        <h:outputLabel for="etime" value="到:" />
+                        <p:calendar id="etime" pattern="yyyy-MM-dd HH:mm" value="#{chanceActionBean.searchEndTime}"
+                            showOn="button" />
+                        <p:commandButton value="查找" actionListener="#{chanceActionBean.search}"
+                            disabled="#{chanceActionBean.searchable}" update="chanceActionForm" async="true" />
+                        <p:commandButton value="取消查找" actionListener="#{chanceActionBean.reInitSearch}"
+                            disabled="#{!chanceActionBean.searchable}" update="chanceActionForm" async="true" />
+
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:tabView id="mainTab" activeIndex="#{chanceActionBean.currentTab}">
+                    <p:tab id="actionList" title="机会行动列表" disabled="#{true}">
                         <p:dataTable id="actions" var="action" value="#{chanceActionBean.actions}" paginator="true"
                             rows="10" lazy="true"
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                             rowsPerPageTemplate="5,10,15" resizableColumns="true"
                             selection="#{chanceActionBean.selectedAction}" selectionMode="single" rowIndexVar="rowIndex">
 
-                            <!--    <p:ajax event="rowSelect" listener="#{chanceActionBean.onRowSelect}"
+                            <p:ajax event="rowSelect" listener="#{chanceActionBean.onRowSelect}"
                                 update="chanceActionForm:productToolbar" />
                             <p:ajax event="rowUnselect" listener="#{chanceActionBean.onRowUnselect}"
-                                update="chanceActionForm:productToolbar" /> -->
+                                update="chanceActionForm:productToolbar" />
 
                             <p:column>
                                 <f:facet name="header">
@@ -82,10 +101,18 @@
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="行动类型" />
+                                    <h:outputText value="类型" />
                                 </f:facet>
                                 <h:outputText value="#{action.actionType}" />
                             </p:column>
+                            <!--
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="负责人" />
+                                </f:facet>
+                                <h:outputText value="#{action.actor.name}" />
+                            </p:column>
+                             -->
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="洽谈类型" />
@@ -119,74 +146,92 @@
                         </p:dataTable>
 
                     </p:tab>
-                    <p:tab id="newAction" title="新增机会行动">
+                    <p:tab id="newAction" title="行动日志详细" disabled="#{true}">
                         <t:panelGrid columns="4"
                             columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
-                            <h:outputLabel for="beginTime" value="开始时间" />
+                            <h:outputLabel for="beginTime" value="开始时间:" />
                             <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm"
-                                value="#{chanceActionBean.chanceAction.beginTime}" showOn="button" />
-                            <h:outputLabel for="endTime" value="结束时间" />
+                                value="#{chanceActionBean.action.beginTime}" showOn="button" />
+                            <h:outputLabel for="endTime" value="结束时间:" />
                             <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm"
-                                value="#{chanceActionBean.chanceAction.endTime}" showOn="button" />
+                                value="#{chanceActionBean.action.endTime}" showOn="button" />
 
-                            <h:outputLabel for="partyGroup" value="拜访客户" />
-                            <t:panelGroup id="partyGroup" columns="3">
-                                <p:dataList id="parties" var="party" value="#{chanceActionBean.chanceAction.parties}"
-                                    effectSpeed="fast">
-                                    <p:column>
-                                        <h:outputText value="#{party.name}" />
-                                        <p:commandLink update="chanceActionForm:parties"
-                                            actionListener="#{chanceActionBean.deleteCustomer}" title="删除客户">
-                                            <p:graphicImage value="#{location.STYLE_ICON}/etool16/delete_edit.gif" />
-                                            <f:setPropertyActionListener value="#{party}"
-                                                target="#{chanceActionBean.selectedCustomer}" />
-                                        </p:commandLink>
-                                    </p:column>
-                                </p:dataList>
+                            <t:panelGroup colspan="4">
+                                <hr />
                             </t:panelGroup>
-                            <p:commandButton title="挑选拜访客户" value="..." onclick="chooseCustomerDialog.show();" />
-                            <h:inputHidden id="c" value="c" />
 
-                            <h:outputLabel for="content" value="拜访目的" />
-                            <p:inputTextarea id="content" value="#{chanceActionBean.chanceAction.content}" />
-                            <h:outputLabel for="spending" value="花费详细" />
-                            <p:inputTextarea id="spending" value="#{chanceActionBean.chanceAction.spending}" />
+                            <h:outputLabel for="pgroup" value="拜访客户:" />
+                            <t:panelGroup colspan="3" id="pgroup">
+                                <h:panelGrid columns="2">
+                                    <p:dataList id="parties" var="party" value="#{chanceActionBean.action.parties}"
+                                        effectSpeed="fast" style="width:100px;">
+                                        <p:column>
+                                            <h:outputText value="#{party.name}" />
+                                            <p:commandLink update="chanceActionForm:parties"
+                                                actionListener="#{chanceActionBean.deleteCustomer}" title="删除客户">
+                                                <p:graphicImage
+                                                    value="#{location.STYLE_ICON}/etool16/delete_edit.gif}  " />
+                                                <f:setPropertyActionListener value="#{party}"
+                                                    target="#{chanceActionBean.selectedCustomer}" />
+                                            </p:commandLink>
+                                        </p:column>
+                                    </p:dataList>
+                                    <p:commandButton title="挑选拜访客户" value="..." onclick="chooseCustomerDialog.show();" />
+                                </h:panelGrid>
 
-                            <h:outputLabel for="style" value="洽谈方式" />
-                            <p:selectOneMenu id="style" value="#{chanceActionBean.chanceAction.style.id}">
+                            </t:panelGroup>
+
+                            <t:panelGroup colspan="4">
+                                <hr />
+                            </t:panelGroup>
+
+                            <h:outputLabel for="content" value="拜访目的:" />
+                            <p:inputTextarea id="content" value="#{chanceActionBean.action.content}"
+                                style="width:200px;height:50px;" />
+                            <h:outputLabel for="spending" value="花费详细:" />
+                            <p:inputTextarea id="spending" value="#{chanceActionBean.action.spending}"
+                                style="width:200px;height:50px;" />
+
+                            <t:panelGroup colspan="4">
+                                <hr />
+                            </t:panelGroup>
+
+                            <h:outputLabel for="style" value="洽谈方式:" />
+                            <p:selectOneMenu id="style" value="#{chanceActionBean.action.style.id}">
                                 <f:selectItem itemLabel="--请选择洽谈方式--" itemValue="" />
                                 <f:selectItems value="#{chanceActionBean.chanceActionStyles}" />
                             </p:selectOneMenu>
 
-                            <h:outputLabel for="chanceSubject" value="机会标题" />
-                            <t:panelGroup id="correChance" colspan="3">
-                                <h:inputHidden id="chanceId" value="#{chanceActionBean.chanceAction.chance.id}" />
-                                <p:inputText id="chanceSubject" value="#{chanceActionBean.chanceAction.chance.subject}"
-                                    readonly="readonly" />
+                            <h:outputLabel for="actionStyle" value="机会行动类型:" />
+                            <p:selectOneMenu id="actionStyle" value="#{chanceActionBean.action.plan}">
+                                <f:selectItem itemLabel="计划" itemValue="#{true}" />
+                                <f:selectItem itemLabel="日志" itemValue="#{false}" />
+                            </p:selectOneMenu>
+
+                            <t:panelGroup colspan="4">
+                                <hr />
+                            </t:panelGroup>
+
+                            <h:outputLabel for="chanceSubject" value="机会标题:" />
+                            <t:panelGroup id="correChance" colspan="1">
+                                <h:inputHidden id="chanceId" value="#{chanceActionBean.action.chance.id}" />
+                                <p:inputText id="chanceSubject" value="#{chanceActionBean.action.chance.subject}" />
                                 <p:commandButton title="挑选机会" value="..." onclick="chooseChanceDialog.show();" />
                             </t:panelGroup>
 
-                            <h:outputLabel for="stage" value="机会阶段" />
-                            <t:panelGroup colspan="3">
-                                <p:selectOneMenu id="stage" value="#{chanceActionBean.chanceAction.stage.id}">
+                            <h:outputLabel for="stage" value="机会阶段:" />
+                            <t:panelGroup colspan="1">
+                                <p:selectOneMenu id="stage" value="#{chanceActionBean.action.stage.id}">
                                     <f:selectItem itemLabel="--请选择机会阶段--" itemValue="" />
                                     <f:selectItems value="#{chanceActionBean.chanceStages}" />
                                 </p:selectOneMenu>
-                            </t:panelGroup>
-
-                            <t:panelGroup colspan="4">
-                                <p:commandButton value="保存" actionListener="#{chanceActionBean.saveAction}"
-                                    update="chanceActionForm:newAction" async="true" />
-                                <p:commandButton value="取消" oncomplete="chooseChanceDialog.hide();" />
                             </t:panelGroup>
 
                         </t:panelGrid>
                     </p:tab>
                 </p:tabView>
             </p:panel>
-
-            <p:growl id="growl" showDetail="true" />
 
         </h:form>
 
