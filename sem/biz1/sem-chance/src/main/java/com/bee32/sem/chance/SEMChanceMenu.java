@@ -26,22 +26,25 @@ public class SEMChanceMenu
     @Contribution("crmcustomer/chanceAdmin")
     MenuEntry chanceAction = new MenuEntry("chanceAction", CHANCEACTION.join("chanceActionAdminjsf.do"));
 
+    @Contribution("/crmcustomer/chanceAdmin")
+    MenuEntry dictionary = new MenuEntry("dictionary");
+
     @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry chance = new MenuEntry("chance", CHANCE.join("index.do"));
+    MenuEntry chance = new MenuEntry("chance", CHANCE.join("chanceAdminjsf.do"));
 
     @Contribution("crmcustomer/chanceAdmin")
     MenuEntry competitor = new MenuEntry("competitor", COMPETITOR.join("index.do"));
 
-    @Contribution("crmcustomer/chanceAdmin")
+    @Contribution("crmcustomer/chanceAdmin/dictionary")
     MenuEntry categories = new MenuEntry("categories", DICT.join(ABBR.abbr(ChanceCategory.class) + "index.do"));
 
-    @Contribution("crmcustomer/chanceAdmin")
+    @Contribution("crmcustomer/chanceAdmin/dictionary")
     MenuEntry sourceTypes = new MenuEntry("sourceTypes", DICT.join(ABBR.abbr(ChanceSourceType.class) + "index.do"));
 
-    @Contribution("crmcustomer/chanceAdmin")
+    @Contribution("crmcustomer/chanceAdmin/dictionary")
     MenuEntry actionStyles = new MenuEntry("actionStyles", DICT.join(ABBR.abbr(ChanceActionStyle.class) + "index.do"));
 
-    @Contribution("crmcustomer/chanceAdmin")
+    @Contribution("crmcustomer/chanceAdmin/dictionary")
     MenuEntry stages = new MenuEntry("stages", DICT.join(ABBR.abbr(ChanceStage.class) + "index.do"));
 
     @Override
