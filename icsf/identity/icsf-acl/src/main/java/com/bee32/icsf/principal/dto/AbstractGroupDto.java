@@ -3,7 +3,6 @@ package com.bee32.icsf.principal.dto;
 import java.util.List;
 
 import com.bee32.icsf.principal.Group;
-import com.bee32.plover.orm.util.DTOs;
 
 public class AbstractGroupDto<G extends Group>
         extends AbstractPrincipalDto<G> {
@@ -91,13 +90,13 @@ public class AbstractGroupDto<G extends Group>
         }
 
         if (selection.contains(GROUPS))
-            derivedGroups = DTOs.marshalList(GroupDto.class, _selection, source.getDerivedGroups());
+            derivedGroups = marshalList(GroupDto.class, _selection, source.getDerivedGroups());
 
         if (selection.contains(ROLES))
-            assignedRoles = DTOs.marshalList(RoleDto.class, _selection, source.getAssignedRoles());
+            assignedRoles = marshalList(RoleDto.class, _selection, source.getAssignedRoles());
 
         if (selection.contains(USERS))
-            memberUsers = DTOs.marshalList(UserDto.class, _selection, source.getMemberUsers());
+            memberUsers = marshalList(UserDto.class, _selection, source.getMemberUsers());
     }
 
     @Override
@@ -105,7 +104,7 @@ public class AbstractGroupDto<G extends Group>
         super._unmarshalTo(target);
 
         if (selection.contains(EXT)) {
-            DTOs.merge(target, "inheritedGroup", inheritedGroup);
+            merge(target, "inheritedGroup", inheritedGroup);
             merge(target, "owner", owner);
             merge(target, "primaryRole", primaryRole);
         }

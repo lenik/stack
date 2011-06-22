@@ -7,7 +7,6 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.dict.NameDictDto;
-import com.bee32.plover.orm.util.DTOs;
 
 public class UserCategoryDto
         extends NameDictDto<UserCategory> {
@@ -33,7 +32,7 @@ public class UserCategoryDto
         scale = source.getScale();
 
         if (selection.contains(ITEMS))
-            items = DTOs.marshalList(UserCategoryItemDto.class, source.getItems());
+            items = marshalList(UserCategoryItemDto.class, source.getItems());
     }
 
     @Override

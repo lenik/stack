@@ -8,7 +8,6 @@ import javax.free.ParseException;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
-import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyXP;
 
@@ -49,7 +48,7 @@ public class AbstractPartyDto<E extends Party>
     protected void _marshal(E source) {
 
         owner = source.getOwner();
-        tags = DTOs.marshalList(PartyTagDto.class, source.getTags());
+        tags = marshalList(PartyTagDto.class, source.getTags());
 
         name = source.getName();
         fullName = source.getFullName();
@@ -71,7 +70,7 @@ public class AbstractPartyDto<E extends Party>
     @Override
     protected void _unmarshalTo(E target) {
         target.setOwner(owner);
-        DTOs.mergeSet(target, "tags", tags);
+        mergeSet(target, "tags", tags);
 
         target.setName(name);
         target.setFullName(fullName);
