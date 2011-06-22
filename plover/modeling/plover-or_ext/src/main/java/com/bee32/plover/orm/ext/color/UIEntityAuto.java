@@ -15,7 +15,7 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public abstract class UIEntityAuto<K extends Serializable>
-        extends UIEntitySpec<K> {
+        extends UIEntity<K> {
 
     private static final long serialVersionUID = 1L;
 
