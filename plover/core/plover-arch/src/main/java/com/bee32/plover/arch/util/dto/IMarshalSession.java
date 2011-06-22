@@ -4,12 +4,12 @@ public interface IMarshalSession {
 
     Object getContext();
 
-    <S, D extends BaseDto<?, ?>> D getMarshalled(S source, MarshalType marshalType, int selection);
+    <D> D getMarshalled(Object marshalKey);
 
-    <S, D extends BaseDto<?, ?>> void addMarshalled(S source, MarshalType marshalType, int selection, D dest);
+    void addMarshalled(Object marshalKey, Object dto);
 
-    <S, D extends BaseDto<?, ?>> S getUnmarshalled(D dto);
+    <S> S getUnmarshalled(Object dto);
 
-    <S, D extends BaseDto<?, ?>> void addUnmarshalled(D dest, S source);
+    void addUnmarshalled(Object dto, Object source);
 
 }

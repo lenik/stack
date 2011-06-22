@@ -1,6 +1,7 @@
 package com.bee32.plover.arch.util.dto;
 
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 
 public class MarshalSession
@@ -8,9 +9,8 @@ public class MarshalSession
 
     final Object context;
 
-    Map<MarshalKey, Object> marshalledMap;
-
-    Map<BaseDto<?, ?>, Object> unmarshalled;
+    Map<Object, Object> marshalledMap;
+    Map<Object, Object> unmarshalledMap;
 
     public MarshalSession(Object context) {
         this.context = context;
@@ -23,50 +23,46 @@ public class MarshalSession
         return context;
     }
 
-    final Map<MarshalKey, Object> getMarshalledMap() {
+    final Map<Object, Object> getMarshalledMap() {
         if (marshalledMap == null) {
             synchronized (this) {
                 if (marshalledMap == null) {
-                    marshalledMap = new HashMap<MarshalKey, Object>();
+                    marshalledMap = new HashMap<Object, Object>();
                 }
             }
         }
         return marshalledMap;
     }
 
-    final Map<BaseDto<?, ?>, Object> getUnmarshalledMap() {
-        if (unmarshalled == null) {
+    final Map<Object, Object> getUnmarshalledMap() {
+        if (unmarshalledMap == null) {
             synchronized (this) {
-                if (unmarshalled == null) {
-                    unmarshalled = new HashMap<BaseDto<?, ?>, Object>();
+                if (unmarshalledMap == null) {
+                    unmarshalledMap = new IdentityHashMap<Object, Object>();
                 }
             }
         }
-        return unmarshalled;
+        return unmarshalledMap;
     }
 
     @Override
-    public <S, D extends BaseDto<?, ?>> //
-    D getMarshalled(S source, MarshalType marshalType, int selection) {
-        MarshalKey marshalKey = new MarshalKey(source, marshalType, selection);
+    public <D> D getMarshalled(Object marshalKey) {
         return (D) getMarshalledMap().get(marshalKey);
     }
 
     @Override
-    public <S, D extends BaseDto<?, ?>> //
-    void addMarshalled(S source, MarshalType marshalType, int selection, D dest) {
-        MarshalKey marshalKey = new MarshalKey(source, marshalType, selection);
-        getMarshalledMap().put(marshalKey, dest);
+    public void addMarshalled(Object marshalKey, Object dto) {
+        getMarshalledMap().put(marshalKey, dto);
     }
 
     @Override
-    public <S, D extends BaseDto<?, ?>> S getUnmarshalled(D dto) {
+    public <S> S getUnmarshalled(Object dto) {
         return (S) getUnmarshalledMap().get(dto);
     }
 
     @Override
-    public <S, D extends BaseDto<?, ?>> void addUnmarshalled(D dest, S source) {
-        getUnmarshalledMap().put(dest, source);
+    public void addUnmarshalled(Object dto, Object source) {
+        getUnmarshalledMap().put(dto, source);
     }
 
 }

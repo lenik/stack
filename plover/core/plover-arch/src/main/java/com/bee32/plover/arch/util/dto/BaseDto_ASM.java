@@ -18,7 +18,9 @@ import javax.free.ParseException;
 abstract class BaseDto_ASM<S, C>
         implements IDataTransferObject<S, C> {
 
-    Stack<IMarshalSession> sessionStack;
+    private static final long serialVersionUID = 1L;
+
+    transient Stack<IMarshalSession> sessionStack;
 
     /**
      * Enter session

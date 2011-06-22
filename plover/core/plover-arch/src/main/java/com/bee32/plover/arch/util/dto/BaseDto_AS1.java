@@ -43,11 +43,12 @@ public abstract class BaseDto_AS1<S, C>
 
         if (refButFilled == Boolean.FALSE) {
             // Simple reference only:
-            dto.ref(source);
+            // null source should make this dto ref (id=null)
+            dto.ref(source); // this will also set marshal-as ID_REF.
 
         } else {
             // Do the marshal.
-            // the marshal() function will deal with null carefully.
+            // null source should make this dto._null = true
             dto = dto.marshal(getSession(), source);
         }
         return dto;

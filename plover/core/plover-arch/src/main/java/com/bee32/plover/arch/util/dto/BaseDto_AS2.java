@@ -2,7 +2,6 @@ package com.bee32.plover.arch.util.dto;
 
 import java.beans.IntrospectionException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -21,20 +20,20 @@ public abstract class BaseDto_AS2<S, C>
     // marshal*
 
     public <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, int selection, _S source) {
-        return marshal(dtoClass, selection, source);
+        return marshal(dtoClass, selection, source, null);
     }
 
     public <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source) {
-        return marshal(dtoClass, -1, source);
+        return marshal(dtoClass, -1, source, null);
     }
 
     public <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, int selection, _S source,
             boolean refButFilled) {
-        return marshal(dtoClass, selection, source, refButFilled);
+        return marshal(dtoClass, selection, source, (Boolean) refButFilled);
     }
 
     public <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(Class<_D> dtoClass, _S source, boolean refButFilled) {
-        return marshal(dtoClass, -1, source, refButFilled);
+        return marshal(dtoClass, -1, source, (Boolean) refButFilled);
     }
 
     // mref(...) = marshal(..., true)
@@ -51,12 +50,12 @@ public abstract class BaseDto_AS2<S, C>
 
     public <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(//
             Class<_D> dtoClass, int selection, Iterable<? extends _S> sources) {
-        return marshalList(dtoClass, selection, sources);
+        return marshalList(dtoClass, selection, sources, null);
     }
 
     public <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
-        return marshalList(dtoClass, -1, sources);
+        return marshalList(dtoClass, -1, sources, null);
     }
 
     public <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(//
@@ -66,37 +65,32 @@ public abstract class BaseDto_AS2<S, C>
 
     public <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(//
             Class<_D> dtoClass, Iterable<? extends _S> sources, boolean refButFilled) {
-        return marshalList(dtoClass, -1, sources, refButFilled);
+        return marshalList(dtoClass, -1, sources, (Boolean) refButFilled);
     }
 
     // marshalSet
 
     public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(//
             Class<_D> dtoClass, int selection, Iterable<? extends _S> sources) {
-        return marshalSet(dtoClass, selection, sources);
+        return marshalSet(dtoClass, selection, sources, null);
     }
 
     public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(//
             Class<_D> dtoClass, Iterable<? extends _S> sources) {
-        return marshalSet(dtoClass, -1, sources);
+        return marshalSet(dtoClass, -1, sources, null);
     }
 
     public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(//
             Class<_D> dtoClass, int selection, Iterable<? extends _S> sources, boolean refButFilled) {
-        return marshalSet(dtoClass, selection, sources, refButFilled);
+        return marshalSet(dtoClass, selection, sources, (Boolean) refButFilled);
     }
 
     public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(//
             Class<_D> dtoClass, Iterable<? extends _S> sources, boolean refButFilled) {
-        return marshalSet(dtoClass, -1, sources, refButFilled);
+        return marshalSet(dtoClass, -1, sources, (Boolean) refButFilled);
     }
 
     // _unmarshalCollection*
-
-    public <Coll extends Collection<_S>, _D extends BaseDto<_S, _C>, _S, _C> //
-    /*    */Coll _unmarshalCollection(Coll collection, Iterable<? extends _D> dtoList) {
-        return _unmarshalCollection(collection, dtoList);
-    }
 
     public <_S, _D extends BaseDto<_S, _C>, _C> //
     /*    */List<_S> _unmarshalList(Iterable<? extends _D> dtoList) {

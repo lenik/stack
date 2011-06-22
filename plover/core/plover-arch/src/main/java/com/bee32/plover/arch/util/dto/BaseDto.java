@@ -11,10 +11,6 @@ public abstract class BaseDto<S, C>
     protected Class<? extends S> sourceType;
     protected final Flags32 selection = new Flags32();
 
-    protected BaseDto(Class<? extends S> sourceType) {
-        initSourceType(sourceType);
-    }
-
     /**
      * Full marshal by default.
      */

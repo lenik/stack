@@ -1,10 +1,12 @@
 package com.bee32.plover.arch.util.dto;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import javax.free.ParseException;
 
-public interface IDataTransferObject<S, C> {
+public interface IDataTransferObject<S, C>
+        extends Serializable {
 
     /**
      * Marshal the given source object into this object.

@@ -3,7 +3,6 @@ package com.bee32.plover.arch.util.dto;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -22,8 +21,7 @@ import com.bee32.plover.arch.util.TextMap;
  * </ul>
  */
 abstract class BaseDto_Skel<S, C>
-        extends BaseDto_ASM<S, C>
-        implements Serializable {
+        extends BaseDto_ASM<S, C> {
 
     private static final long serialVersionUID = 1L;
 
@@ -90,14 +88,60 @@ abstract class BaseDto_Skel<S, C>
             // Do the real marshal work.
             // logger.debug("marshal begin");
 
+            IMarshalSession session = getSession();
+            Object marshalKey = getMarshalKey(source);
+            D marshalled = session.getMarshalled(marshalKey);
+            if (marshalled != null)
+                return (D) marshalled;
+            session.addMarshalled(marshalKey, this);
+
             __marshal(source);
             _marshal(source);
+
             // logger.debug("marshal end");
         }
 
         marshalType = MarshalType.SELECTION;
 
         return _this;
+    }
+
+    static class BaseKey {
+
+        final Object source;
+        final MarshalType marshalType;
+
+        public BaseKey(Object source, MarshalType marshalType) {
+            if (source == null)
+                throw new NullPointerException("source");
+            if (marshalType == null)
+                throw new NullPointerException("marshalType");
+            this.source = source;
+            this.marshalType = marshalType;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 0;
+            hash += source.hashCode();
+            hash += marshalType.hashCode();
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            BaseKey o = (BaseKey) obj;
+            if (!source.equals(o.source))
+                return false;
+            if (marshalType != o.marshalType)
+                return false;
+            return true;
+        }
+
+    }
+
+    protected Object getMarshalKey(S source) {
+        return new BaseKey(source, marshalType);
     }
 
     /**
@@ -127,14 +171,38 @@ abstract class BaseDto_Skel<S, C>
 
         S deref = mergeDeref(target);
 
-        if (marshalType == MarshalType.SELECTION) {
-            __unmarshalTo(deref);
-            _unmarshalTo(deref);
+        if (target == null) {
+            IMarshalSession session = getSession();
+            S unmarshalled = session.getUnmarshalled(this);
+            if (unmarshalled != null)
+                return unmarshalled;
+            session.addUnmarshalled(this, deref);
+        }
+
+        if (marshalType.isReference()) {
+            // assert deref.id == this.id.
+
+        } else {
+            switch (marshalType) {
+            case SELECTION:
+                __unmarshalTo(deref);
+                _unmarshalTo(deref);
+                break;
+
+            // default:
+            // throw new IllegalUsageException("merge from a non-selection dto is meaningless.");
+            }
         }
 
         return deref;
     }
 
+    /**
+     * Generally, this deals with null-merge (unmarshal) and nonnull-merge (unmarshalTo).
+     *
+     * @param given
+     *            It's most common to see <code>null</code> or an id-matching entity.
+     */
     protected abstract S mergeDeref(S given);
 
     /**

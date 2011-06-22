@@ -374,7 +374,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    protected E mergeDeref(E given) {
+    protected E mergeDeref(E givenTarget) {
         Class<? extends E> entityType = sourceType;
 
         if (isNullRef())
@@ -382,11 +382,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
         switch (marshalType) {
         case ID_REF:
-            if (given != null) {
+            if (givenTarget != null) {
                 // Return the given entity immediately if id matches.
-                K givenId = given.getId();
+                K givenId = givenTarget.getId();
                 if (Nullables.equals(id, givenId))
-                    return given;
+                    return givenTarget;
             }
 
             return loadEntity(entityType, id);
@@ -407,8 +407,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             throw new NotImplementedException("REF by name or other property isn't supportet.");
 
         case SELECTION:
-            if (given != null) // ignore thisDto.id
-                return given;
+            if (givenTarget != null) // ignore thisDto.id
+                return givenTarget;
 
             // Instead of loadEntity("null"-id), we allocate a new entity here.
             // The null-key is not supported here.
