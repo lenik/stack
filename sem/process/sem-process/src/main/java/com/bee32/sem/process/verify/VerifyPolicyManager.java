@@ -21,15 +21,14 @@ public class VerifyPolicyManager {
         load();
     }
 
-    @SuppressWarnings({ "unchecked" })
     static void load() {
-        policyTypes = new HashSet<Class<? extends VerifyPolicy<?>>>();
+        policyTypes = new HashSet<Class<? extends VerifyPolicy>>();
 
         try {
-            for (Class<?> policyClass : ServicePrototypeLoader.load(IVerifyPolicy.class)) {
+            for (Class<? extends VerifyPolicy> policyClass : ServicePrototypeLoader.load(VerifyPolicy.class)) {
                 // Ignore non-entity policy types.F
                 if (VerifyPolicy.class.isAssignableFrom(policyClass))
-                    policyTypes.add((Class<? extends VerifyPolicy<?>>) policyClass);
+                    policyTypes.add(policyClass);
             }
         } catch (Exception e) {
             throw new IllegalUsageException(e.getMessage(), e);
