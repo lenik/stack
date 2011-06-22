@@ -8,6 +8,7 @@ import javax.free.ParseException;
 import javax.free.Strings;
 
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.arch.util.MarshalType;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.chance.entity.ChanceAction;
@@ -38,8 +39,8 @@ public class ChanceActionDto
     private Date endTime;
     private String content;
     private String spending;
-    private ChanceDto chance;
-    private ChanceStageDto stage;
+    private ChanceDto chance = new ChanceDto();
+    private ChanceStageDto stage = new ChanceStageDto();
 
     public ChanceActionDto() {
         super();
@@ -73,7 +74,7 @@ public class ChanceActionDto
         else
             this.timeRange = "";
 
-        this.actionType = source.isPlan() == true ? "plan" : "task";
+        this.actionType = source.isPlan() == true ? "计划" : "日志";
 
         String temp = null;
         for (Party party : source.getParties()) {

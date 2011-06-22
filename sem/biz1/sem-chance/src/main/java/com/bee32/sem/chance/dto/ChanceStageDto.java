@@ -13,6 +13,14 @@ public class ChanceStageDto
 
     private int order;
 
+    // XXX
+//    @Override
+//    public void setId(String id) {
+//        super.setId(id);
+//        if (id == null)
+//            this.nullRef = true;
+//    }
+
     public int getOrder() {
         return order;
     }
