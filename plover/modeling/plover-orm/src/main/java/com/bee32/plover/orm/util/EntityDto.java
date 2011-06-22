@@ -55,7 +55,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    protected IEntityMarshalContext getDefaultMarshalContext() {
+    protected IEntityMarshalContext getDefaultContext() {
         ApplicationContext applicationContext = ThreadHttpContext.getApplicationContext();
         DefaultMarshalContext marshalContext = applicationContext.getBean(DefaultMarshalContext.class);
         return marshalContext;

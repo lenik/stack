@@ -99,7 +99,7 @@ abstract class BaseDto_VTU<S, C>
 
     public final void parse(TextMap map)
             throws ParseException {
-        parse(getDefaultMarshalContext(), map);
+        parse(getDefaultContext(), map);
     }
 
     public final void parse(C context, HttpServletRequest request)
@@ -116,7 +116,7 @@ abstract class BaseDto_VTU<S, C>
 
     public final void parse(HttpServletRequest request)
             throws ServletException {
-        parse(getDefaultMarshalContext(), request);
+        parse(getDefaultContext(), request);
     }
 
     final void parseImpl(Map<String, ?> map)

@@ -14,15 +14,10 @@ import java.util.Set;
  *      for both scalar and collections.
  * </pre>
  */
-public abstract class BaseDto_S1<S, C>
+public abstract class BaseDto_AS1<S, C>
         extends BaseDto_VTU<S, C> {
 
     private static final long serialVersionUID = 1L;
-
-    public static <S, D extends BaseDto<S, C>, C> D marshal(IMarshalSession session, //
-            Class<D> dtoClass, int selection, S source) {
-        return marshal(session, dtoClass, selection, source, null);
-    }
 
     /**
      * Marshal as selection or reference.
@@ -30,9 +25,9 @@ public abstract class BaseDto_S1<S, C>
      * @param refButFilled
      *            Non-<code>null</code> to marshal as a reference.
      */
-    public static <S, D extends BaseDto<S, C>, C> D marshal(IMarshalSession session, //
-            Class<D> dtoClass, int selection, S source, Boolean refButFilled) {
-        D dto;
+    public <_S, _D extends BaseDto<_S, _C>, _C> _D marshal(//
+            Class<_D> dtoClass, int selection, _S source, Boolean refButFilled) {
+        _D dto;
         try {
             dto = dtoClass.newInstance();
         } catch (ReflectiveOperationException e) {
@@ -53,51 +48,37 @@ public abstract class BaseDto_S1<S, C>
         } else {
             // Do the marshal.
             // the marshal() function will deal with null carefully.
-            if (session == null)
-                dto = dto.marshal(source);
-            else
-                dto = dto.marshal(session, source);
+            dto = dto.marshal(getSession(), source);
         }
         return dto;
     }
 
-    public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(IMarshalSession session, //
-            Class<D> dtoClass, int selection, Iterable<? extends S> sources) {
-        return marshalList(session, dtoClass, selection, sources, null);
+    public <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(//
+            Class<_D> dtoClass, int selection, Iterable<? extends _S> sources, Boolean refButFilled) {
 
-    }
-
-    public static <S, D extends BaseDto<S, C>, C> List<D> marshalList(IMarshalSession session, //
-            Class<D> dtoClass, int selection, Iterable<? extends S> sources, Boolean refButFilled) {
-
-        List<D> dtoList = new ArrayList<D>();
+        List<_D> dtoList = new ArrayList<_D>();
 
         if (sources == null)
             return dtoList;
 
-        for (S _source : sources) {
-            D dto = marshal(session, dtoClass, selection, _source, refButFilled);
+        for (_S _source : sources) {
+            _D dto = marshal(dtoClass, selection, _source, refButFilled);
             dtoList.add(dto);
         }
 
         return dtoList;
     }
 
-    public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(IMarshalSession session, //
-            Class<D> dtoClass, int selection, Iterable<? extends S> sources) {
-        return marshalSet(session, dtoClass, selection, sources, null);
-    }
+    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet( //
+            Class<_D> dtoClass, int selection, Iterable<? extends _S> sources, Boolean refButFilled) {
 
-    public static <S, D extends BaseDto<S, C>, C> Set<D> marshalSet(IMarshalSession session, //
-            Class<D> dtoClass, int selection, Iterable<? extends S> sources, Boolean refButFilled) {
-
-        Set<D> dtoSet = new HashSet<D>();
+        Set<_D> dtoSet = new HashSet<_D>();
 
         if (sources == null)
             return dtoSet;
 
-        for (S _source : sources) {
-            D dto = marshal(session, dtoClass, selection, _source, refButFilled);
+        for (_S _source : sources) {
+            _D dto = marshal(dtoClass, selection, _source, refButFilled);
             dtoSet.add(dto);
         }
 
@@ -115,8 +96,8 @@ public abstract class BaseDto_S1<S, C>
     /**
      * In the base DTO implementation, no modification / ref is used.
      */
-    public static <Coll extends Collection<S>, D extends BaseDto<S, C>, S, C> //
-    /*    */Coll _unmarshalCollection(IMarshalSession session, Coll collection, Iterable<? extends D> dtoList) {
+    public <Coll extends Collection<_S>, _D extends BaseDto<_S, _C>, _S, _C> //
+    /*    */Coll _unmarshalCollection(Coll collection, Iterable<? extends _D> dtoList) {
 
         if (collection == null)
             throw new NullPointerException("collection");
@@ -124,11 +105,11 @@ public abstract class BaseDto_S1<S, C>
         collection.clear();
 
         if (dtoList != null)
-            for (D dto : dtoList) {
+            for (_D dto : dtoList) {
                 if (dto == null)
                     throw new NullPointerException("dto");
 
-                S source = dto.merge(session, null);
+                _S source = dto.merge(getSession(), null);
 
                 collection.add(source);
             }
@@ -144,20 +125,17 @@ public abstract class BaseDto_S1<S, C>
      *      merge("property")
      * </pre>
      */
-    public static <S, _s, C> void merge(IMarshalSession session, S target, //
-            IPropertyAccessor<S, _s> property, BaseDto<_s, C> propertyDto) {
+    public <_S, __s, _C> void merge(//
+            _S target, IPropertyAccessor<_S, __s> property, BaseDto<__s, _C> propertyDto) {
 
         // DTO == null means ignore.
         if (propertyDto == null)
             return;
 
-        _s _old = property.get(target);
-        _s _new;
+        __s _old = property.get(target);
+        __s _new;
 
-        if (session == null)
-            _new = propertyDto.merge(_old);
-        else
-            _new = propertyDto.merge(session, _old);
+        _new = propertyDto.merge(getSession(), _old);
 
         if (_new != _old)
             property.set(target, _new);

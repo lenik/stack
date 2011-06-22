@@ -22,10 +22,14 @@ abstract class BaseDto_ASM<S, C>
 
     /**
      * Enter session
+     *
+     * @param session
+     *            <code>null</code> to create a default one.
+     * @see #getDefaultContext() The default context used by default session.
      */
     protected final void enter(IMarshalSession session) {
         if (session == null)
-            throw new NullPointerException("session");
+            session = getDefaultSession();
 
         if (sessionStack == null)
             sessionStack = new Stack<IMarshalSession>();
@@ -46,6 +50,12 @@ abstract class BaseDto_ASM<S, C>
     protected IMarshalSession getSession() {
         if (sessionStack == null || sessionStack.isEmpty())
             throw new IllegalStateException("No marshal session.");
+        return sessionStack.lastElement();
+    }
+
+    protected IMarshalSession peekSession() {
+        if (sessionStack == null || sessionStack.isEmpty())
+            return null;
         return sessionStack.lastElement();
     }
 
@@ -97,7 +107,7 @@ abstract class BaseDto_ASM<S, C>
         }
     }
 
-    abstract <D extends IDataTransferObject<S, C>> D marshalImpl(S source);
+    abstract <D extends BaseDto<S, C>> D marshalImpl(S source);
 
     abstract S mergeImpl(S target);
 
@@ -108,8 +118,14 @@ abstract class BaseDto_ASM<S, C>
 
     // [A] Context/Session wrapper
 
-    protected C getDefaultMarshalContext() {
+    protected C getDefaultContext() {
         return null;
+    }
+
+    protected IMarshalSession getDefaultSession() {
+        C context = getDefaultContext();
+        IMarshalSession session = createOrReuseSession(context);
+        return session;
     }
 
     public final <D extends BaseDto<S, C>> D marshal(C context, S source) {
@@ -132,20 +148,20 @@ abstract class BaseDto_ASM<S, C>
     // [B] TLS-Context/Session wrapper
 
     public final <D extends BaseDto<S, C>> D marshal(S source) {
-        return marshal(getDefaultMarshalContext(), source);
+        return marshal(getDefaultContext(), source);
     }
 
     public final S merge(S source) {
-        return merge(getDefaultMarshalContext(), source);
+        return merge(getDefaultContext(), source);
     }
 
     public final void parse(Map<String, ?> map)
             throws ParseException {
-        parse(getDefaultMarshalContext(), map);
+        parse(getDefaultContext(), map);
     }
 
     public final void export(Map<String, Object> map) {
-        export(getDefaultMarshalContext(), map);
+        export(getDefaultContext(), map);
     }
 
 }

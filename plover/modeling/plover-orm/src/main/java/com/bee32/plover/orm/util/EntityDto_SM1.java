@@ -14,7 +14,6 @@ import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
 
 import com.bee32.plover.arch.util.dto.BeanPropertyAccessor;
-import com.bee32.plover.arch.util.dto.IMarshalSession;
 import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
 
@@ -62,8 +61,8 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
      *
      * deref
      */
-    static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Coll mergeCollection(IMarshalSession session, Coll collection, Iterable<? extends D> dtoList) {
+    <Coll extends Collection<_E>, D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
+    /*    */Coll mergeCollection(Coll collection, Iterable<? extends D> dtoList) {
 
         if (collection == null)
             throw new NullPointerException("collection");
@@ -73,18 +72,18 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
 
         int nullCount = 0;
 
-        List<E> removeList = new ArrayList<E>(collection);
-        List<E> addList = new ArrayList<E>();
+        List<_E> removeList = new ArrayList<_E>(collection);
+        List<_E> addList = new ArrayList<_E>();
 
-        Map<K, E> keyMap = new HashMap<K, E>();
-        for (E each : collection) {
-            K id = each.getId();
+        Map<_K, _E> keyMap = new HashMap<_K, _E>();
+        for (_E each : collection) {
+            _K id = each.getId();
             if (id != null)
                 keyMap.put(id, each);
         }
 
-        Map<E, E> contentMap = new HashMap<E, E>();
-        for (E each : collection)
+        Map<_E, _E> contentMap = new HashMap<_E, _E>();
+        for (_E each : collection)
             if (each != null)
                 contentMap.put(each, each);
 
@@ -92,7 +91,7 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
             if (dto == null) // DTO == null means ignore.
                 continue;
 
-            E entity;
+            _E entity;
 
             if (dto.isNullRef()) {
                 // entity = null;
@@ -103,16 +102,13 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
             switch (dto.getMarshalType()) {
             case ID_REF:
             case ID_VER_REF: // TODO VER FIX.
-                E ref = keyMap.get(dto.id);
+                _E ref = keyMap.get(dto.id);
                 if (ref != null) {
 
                     removeList.remove(ref);
 
                 } else {
-                    if (session == null)
-                        entity = dto.unmarshal();
-                    else
-                        entity = dto.unmarshal(session);
+                    entity = dto.unmarshal(getSession());
 
                     addList.add(entity);
                 }
@@ -125,12 +121,9 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
 
             case SELECTION:
                 if (dto.id == null) {
-                    if (session == null)
-                        entity = dto.unmarshal();
-                    else
-                        entity = dto.unmarshal(session);
+                    entity = dto.unmarshal(getSession());
 
-                    E reuse = contentMap.get(entity);
+                    _E reuse = contentMap.get(entity);
                     if (reuse != null) {
                         // We are not going to partial-modify elements in collection-unmarshalling.
                         // XXX dto.unmarshalTo(context, reuse);
@@ -141,21 +134,13 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
                         addList.add(entity);
                     }
                 } else {
-                    E previous = keyMap.get(dto.id);
+                    _E previous = keyMap.get(dto.id);
                     if (previous != null) {
-                        if (session == null)
-                            dto.unmarshalTo(previous);
-                        else
-                            dto.unmarshalTo(session, previous);
-
+                        dto.unmarshalTo(getSession(), previous);
                         removeList.remove(previous);
 
                     } else {
-                        if (session == null)
-                            entity = dto.unmarshal();
-                        else
-                            entity = dto.unmarshal(session);
-
+                        entity = dto.unmarshal(getSession());
                         addList.add(entity);
                     }
                 }
@@ -180,37 +165,18 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
 
     // 以上。
 
-    static <Coll extends Collection<E>, D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Coll mergeCollection(Coll collection, Iterable<? extends D> dtoList) {
-        return mergeCollection((IMarshalSession) null, collection, dtoList);
-    }
-
-    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */List<E> mergeList(IMarshalSession session, List<E> list, Iterable<? extends D> dtoList) {
+    public <_D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
+    /*    */List<_E> mergeList(List<_E> list, Iterable<? extends _D> dtoList) {
         if (list == null)
-            list = new ArrayList<E>();
-        return mergeCollection(session, list, dtoList);
+            list = new ArrayList<_E>();
+        return mergeCollection(list, dtoList);
     }
 
-    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */List<E> mergeList(List<E> list, Iterable<? extends D> dtoList) {
-        if (list == null)
-            list = new ArrayList<E>();
-        return mergeCollection((IMarshalSession) null, list, dtoList);
-    }
-
-    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Set<E> mergeSet(IMarshalSession session, Set<E> set, Iterable<? extends D> dtoList) {
+    public <_D extends EntityDto<_E, _K>, _E extends Entity<_K>, _K extends Serializable> //
+    /*    */Set<_E> mergeSet(Set<_E> set, Iterable<? extends _D> dtoList) {
         if (set == null)
-            set = new HashSet<E>();
-        return mergeCollection(session, set, dtoList);
-    }
-
-    public static <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
-    /*    */Set<E> mergeSet(Set<E> set, Iterable<? extends D> dtoList) {
-        if (set == null)
-            set = new HashSet<E>();
-        return mergeCollection((IMarshalSession) null, set, dtoList);
+            set = new HashSet<_E>();
+        return mergeCollection(set, dtoList);
     }
 
     /**
@@ -225,34 +191,25 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
      * </pre>
      */
 
-    public static <E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeList(IMarshalSession session, E target, IPropertyAccessor<E, List<_e>> property,
-            Iterable<? extends _d> dtoList) {
+    public <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
+    /*    */void mergeList(_E target, IPropertyAccessor<_E, List<_e>> property, Iterable<? extends _d> dtoList) {
 
         List<_e> list = property.get(target);
 
         if (list == null)
             list = new ArrayList<_e>();
 
-        if (session == null)
-            list = mergeList(list, dtoList);
-        else
-            list = mergeList(session, list, dtoList);
+        list = mergeList(list, dtoList);
 
         property.set(target, list);
     }
 
-    public static <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeList(_E target, IPropertyAccessor<_E, List<_e>> property, Iterable<? extends _d> dtoList) {
-        mergeList(null, target, property, dtoList);
-    }
+    public <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
+    /*    */void mergeList(_E target, String propertyName, Iterable<? extends _d> dtoList) {
 
-    public static <E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeList(IMarshalSession session, E target, String propertyName, Iterable<? extends _d> dtoList) {
+        Class<_E> targetType = (Class<_E>) target.getClass();
 
-        Class<E> targetType = (Class<E>) target.getClass();
-
-        IPropertyAccessor<E, List<_e>> property;
+        IPropertyAccessor<_E, List<_e>> property;
         try {
             property = BeanPropertyAccessor.access(targetType, propertyName);
         } catch (IntrospectionException e) {
@@ -260,42 +217,28 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
             throw new IllegalUsageException(e.getMessage(), e);
         }
 
-        mergeList(session, target, property, dtoList);
+        mergeList(target, property, dtoList);
     }
 
-    public static <E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeList(E target, String propertyName, Iterable<? extends _d> dtoList) {
-        mergeList(null, target, propertyName, dtoList);
-    }
-
-    public static <E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeSet(IMarshalSession session, E target, IPropertyAccessor<E, Set<_e>> property,
-            Iterable<? extends _d> dtoList) {
+    public <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
+    /*    */void mergeSet(_E target, IPropertyAccessor<_E, Set<_e>> property, Iterable<? extends _d> dtoList) {
 
         Set<_e> set = property.get(target);
 
         if (set == null)
             set = new HashSet<_e>();
 
-        if (session == null)
-            set = mergeSet(set, dtoList);
-        else
-            set = mergeSet(session, set, dtoList);
+        set = mergeSet(set, dtoList);
 
         property.set(target, set);
     }
 
-    public static <E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeSet(E target, IPropertyAccessor<E, Set<_e>> property, Iterable<? extends _d> dtoList) {
-        mergeSet(null, target, property, dtoList);
-    }
+    public <_E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
+    /*    */void mergeSet(_E target, String propertyName, Iterable<? extends _d> dtoList) {
 
-    public static <E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeSet(IMarshalSession session, E target, String propertyName, Iterable<? extends _d> dtoList) {
+        Class<_E> targetType = (Class<_E>) target.getClass();
 
-        Class<E> targetType = (Class<E>) target.getClass();
-
-        IPropertyAccessor<E, Set<_e>> property;
+        IPropertyAccessor<_E, Set<_e>> property;
         try {
             property = BeanPropertyAccessor.access(targetType, propertyName);
         } catch (IntrospectionException e) {
@@ -303,12 +246,7 @@ public abstract class EntityDto_SM1<E extends Entity<K>, K extends Serializable>
             throw new IllegalUsageException(e.getMessage(), e);
         }
 
-        mergeSet(session, target, property, dtoList);
-    }
-
-    public static <E extends Entity<?>, _d extends EntityDto<_e, _k>, _e extends Entity<_k>, _k extends Serializable> //
-    /*    */void mergeSet(E target, String propertyName, Iterable<? extends _d> dtoList) {
-        mergeSet(null, target, propertyName, dtoList);
+        mergeSet(target, property, dtoList);
     }
 
 }

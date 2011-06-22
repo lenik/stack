@@ -76,7 +76,7 @@ abstract class BaseDto_Skel<S, C>
      * Marshal skeleton implementation.
      */
     @Override
-    final <D extends IDataTransferObject<S, C>> D marshalImpl(S source) {
+    final <D extends BaseDto<S, C>> D marshalImpl(S source) {
         @SuppressWarnings("unchecked")
         D _this = (D) this;
 
@@ -117,8 +117,8 @@ abstract class BaseDto_Skel<S, C>
      */
     protected abstract void _marshal(S source);
 
-//    @Override
-//    public abstract <D extends BaseDto<S, C>> D ref(S source);
+    // @Override
+    // public abstract <D extends BaseDto<S, C>> D ref(S source);
 
     @Override
     final S mergeImpl(S target) {
