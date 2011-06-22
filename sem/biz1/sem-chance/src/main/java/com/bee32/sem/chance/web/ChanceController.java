@@ -1,7 +1,12 @@
 package com.bee32.sem.chance.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.free.Strings;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -48,6 +53,11 @@ public class ChanceController
         result.put("categories", chanceCategoryDao.list());
         result.put("sources", chanceSourceTypeDao.list());
         result.put("owners", userDao.list());
+    }
+
+    @RequestMapping("chanceAdminjsf.do")
+    public Map<String, ?> chanceActionAdminjsf(HttpServletRequest request, HttpServletResponse response) {
+        return new HashMap<String, Object>();
     }
 
 }
