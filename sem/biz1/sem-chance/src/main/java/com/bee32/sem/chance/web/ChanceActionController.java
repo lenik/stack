@@ -1,20 +1,16 @@
 package com.bee32.sem.chance.web;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.free.Strings;
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bee32.icsf.principal.dao.UserDao;
-import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.orm.web.basic.BasicEntityController;
 import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.plover.servlet.mvc.ActionRequest;
@@ -25,8 +21,6 @@ import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.service.IChanceService;
 import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.people.entity.Contact;
-import com.bee32.sem.people.entity.Party;
 
 @RequestMapping(ChanceActionController.PREFIX)
 public class ChanceActionController
@@ -122,38 +116,38 @@ public class ChanceActionController
         result.put("actors", userDao.list());
     }
 
-    @RequestMapping("search.do")
-    public void search(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
-
-        DataTableDxo tab = new DataTableDxo(request);
-        String keywords = request.getParameter("partyName");
-
-        List<Party> partyList;
-        int count;
-
-        if (keywords == null || keywords.length() == 0) {
-            partyList = chanceService.findLimitedParties(tab.displayStart, tab.displayLength);
-            count = chanceService.getAllPartyCount();
-        } else {
-            partyList = chanceService.findPartyByKeywords(keywords.trim(), tab.displayStart, tab.displayLength);
-            count = chanceService.getPartyCountByKeyword(keywords);
-        }
-
-        tab.totalRecords = count;
-        tab.totalDisplayRecords = count;
-
-        for (Party party : partyList) {
-            tab.push(party.getName());
-            List<Contact> contact = party.getContacts();
-            tab.push(contact.get(0).getAddress());
-            tab.push(contact.get(0).getFax());
-            tab.push(contact.get(0).getTel());
-            tab.push(contact.get(0).getWebsite());
-            tab.next();
-        }
-
-        JsonUtil.dump(response, tab.exportMap());
-    }
-
+// @RequestMapping("search.do")
+// public void search(HttpServletRequest request, HttpServletResponse response)
+// throws IOException, ServletException {
+//
+// DataTableDxo tab = new DataTableDxo(request);
+// String keywords = request.getParameter("partyName");
+//
+// List<Party> partyList;
+// int count;
+//
+// if (keywords == null || keywords.length() == 0) {
+// partyList = chanceService.limitedPartyList(tab.displayStart, tab.displayLength);
+// count = chanceService.getPartyCount();
+// } else {
+// partyList = chanceService.limitedPartyKeywordList(keywords.trim(), tab.displayStart,
+// tab.displayLength);
+// count = chanceService.limitedPartyKeywordListCount(keywords);
+// }
+//
+// tab.totalRecords = count;
+// tab.totalDisplayRecords = count;
+//
+// for (Party party : partyList) {
+// tab.push(party.getName());
+// List<Contact> contact = party.getContacts();
+// tab.push(contact.get(0).getAddress());
+// tab.push(contact.get(0).getFax());
+// tab.push(contact.get(0).getTel());
+// tab.push(contact.get(0).getWebsite());
+// tab.next();
+// }
+//
+// JsonUtil.dump(response, tab.exportMap());
+// }
 }
