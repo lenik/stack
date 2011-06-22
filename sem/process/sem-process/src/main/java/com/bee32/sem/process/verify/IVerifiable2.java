@@ -16,7 +16,7 @@ public interface IVerifiable2<C extends IVerifyContext>
      *
      * @return Non-<code>null</code> verify policy implementation.
      */
-    IVerifyPolicy<C> getVerifyPolicy();
+    IVerifyPolicy getVerifyPolicy();
 
     /**
      * The same as

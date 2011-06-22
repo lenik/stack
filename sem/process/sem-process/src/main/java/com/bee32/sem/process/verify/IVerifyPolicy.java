@@ -9,14 +9,14 @@ import com.bee32.icsf.principal.Principal;
  *
  * 即策略用于“只读”、 “判断”的目的；而不是对业务执行”审核“动作、并形成审核结果的”写入“目的。
  */
-public interface IVerifyPolicy<C extends IVerifyContext> {
+public interface IVerifyPolicy {
 
     /**
      * 获取必要的上下文类型。
      */
-    Class<C> getRequiredContext();
+    Class<? extends IVerifyContext> getRequiredContext();
 
-    VerifyResult verify(C context);
+    VerifyResult verify(IVerifyContext context);
 
     /**
      * 检验业务实体是否已被审核。 如果未审核或审核失败，抛出 {@link VerifyException} 异常。
@@ -26,7 +26,7 @@ public interface IVerifyPolicy<C extends IVerifyContext> {
      * @throws VerifyException
      *             如果未被审核
      */
-    void assertVerified(C context)
+    void assertVerified(IVerifyContext context)
             throws VerifyException;
 
     /**
@@ -48,7 +48,7 @@ public interface IVerifyPolicy<C extends IVerifyContext> {
      * @param context
      *            当前审核状态的上下文对象（通常是审核数据所属的 Entity）。
      */
-    boolean isVerified(C context);
+    boolean isVerified(IVerifyContext context);
 
     /**
      * 获取显示声明的责任人。
@@ -57,6 +57,6 @@ public interface IVerifyPolicy<C extends IVerifyContext> {
      *            上下文，<code>null</code> 适用于无具体的上下文。
      * @return 非 <code>null </code>的显示声明的责任人集合。
      */
-    Set<Principal> getDeclaredResponsibles(C context);
+    Set<Principal> getDeclaredResponsibles(IVerifyContext context);
 
 }

@@ -17,6 +17,7 @@ import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
+import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyEvent;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
@@ -28,7 +29,7 @@ import com.bee32.sem.process.verify.VerifyResult;
 @DiscriminatorValue("NXT")
 @Alias("p2next")
 public class PassToNext
-        extends VerifyPolicy<IPassEvents> {
+        extends VerifyPolicy {
 
     private static final long serialVersionUID = 1L;
 
@@ -60,11 +61,13 @@ public class PassToNext
      * TODO
      */
     @Override
-    public Set<Principal> getDeclaredResponsibles(IPassEvents context) {
+    public Set<Principal> getDeclaredResponsibles(IVerifyContext context) {
         int position = 0;
 
-        if (context != null)
-            position = context.getPosition();
+        if (context != null) {
+            IPassEvents passEvents = requireContext(IPassEvents.class, context);
+            position = passEvents.getPosition();
+        }
 
         if (sequences == null)
             return null;
@@ -73,13 +76,14 @@ public class PassToNext
     }
 
     @Override
-    public VerifyResult evaluate(IPassEvents passLogs) {
+    public VerifyResult evaluate(IVerifyContext context) {
+        IPassEvents passEvents = requireContext(IPassEvents.class, context);
 
         // 分析审核数据
         int stepIndex = 0; // 审核步骤
         int personIndex = 0; // 实际审核者
-        while (personIndex < passLogs.size()) {
-            VerifyEvent event = passLogs.getEvent(personIndex);
+        while (personIndex < passEvents.size()) {
+            VerifyEvent event = passEvents.getEvent(personIndex);
 
             if (stepIndex == sequences.size()) {
                 // 次序中要求的步骤均已经实现审核，忽略多余的审核数据。

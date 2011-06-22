@@ -86,9 +86,9 @@ public class VerifyPolicyPrefController
 
         List<VerifyPolicyDto> candidates = new ArrayList<VerifyPolicyDto>();
 
-        for (Class<? extends VerifyPolicy<?>> candidatePolicyType : VerifyPolicyManager.getCandidates(verifiableType)) {
+        for (Class<? extends VerifyPolicy> candidatePolicyType : VerifyPolicyManager.getCandidates(verifiableType)) {
 
-            List<? extends VerifyPolicy<?>> candidatePolicies = dataManager.loadAll(candidatePolicyType);
+            List<? extends VerifyPolicy> candidatePolicies = dataManager.loadAll(candidatePolicyType);
 
             for (VerifyPolicyDto candidate : DTOs.marshalList(VerifyPolicyDto.class, candidatePolicies))
                 candidates.add(candidate);
@@ -115,7 +115,7 @@ public class VerifyPolicyPrefController
 
         assert IVerifyContext.class.isAssignableFrom(userEntityType);
 
-        VerifyPolicy<? extends IVerifyContext> preferredPolicy = pref.getPreferredPolicy();
+        VerifyPolicy preferredPolicy = pref.getPreferredPolicy();
         assert preferredPolicy != null;
 
         refresh(userEntityType);

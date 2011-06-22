@@ -16,7 +16,7 @@ public class VerifyPolicyManagerTest
 
     @Test
     public void testListAll() {
-        Collection<Class<? extends VerifyPolicy<?>>> all //
+        Collection<Class<? extends VerifyPolicy>> all //
         = VerifyPolicyManager.list();
 
         assertTrue(all.contains(AllowList.class));
@@ -26,7 +26,7 @@ public class VerifyPolicyManagerTest
 
     @Test
     public void testMatch() {
-        Collection<Class<? extends VerifyPolicy<?>>> all //
+        Collection<Class<? extends VerifyPolicy>> all //
         = VerifyPolicyManager.forBean(SimpleBean.class);
 
         assertTrue(all.contains(AllowList.class));

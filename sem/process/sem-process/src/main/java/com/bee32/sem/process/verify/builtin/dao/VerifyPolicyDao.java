@@ -10,7 +10,7 @@ import com.bee32.sem.process.verify.typedef.VerifyPolicyPref;
 import com.bee32.sem.process.verify.typedef.VerifyPolicyPrefDao;
 
 public class VerifyPolicyDao
-        extends EntityDao<VerifyPolicy<?>, Integer> {
+        extends EntityDao<VerifyPolicy, Integer> {
 
     @Inject
     VerifyPolicyPrefDao prefDao;
@@ -22,7 +22,7 @@ public class VerifyPolicyDao
      *            实体类型，非 <code>null</code>。
      * @return 配置的审核策略，如果尚未配置则返回 <code>null</code>。
      */
-    public <C extends IVerifyContext> VerifyPolicy<C> getPreferredVerifyPolicy(Class<C> contextClass) {
+    public VerifyPolicy getPreferredVerifyPolicy(Class<? extends IVerifyContext> contextClass) {
         if (contextClass == null)
             throw new NullPointerException("entityClass");
 
@@ -30,31 +30,31 @@ public class VerifyPolicyDao
         if (pref == null)
             return null;
 
-        VerifyPolicy<C> preferredPolicy = (VerifyPolicy<C>) pref.getPreferredPolicy();
+        VerifyPolicy preferredPolicy = (VerifyPolicy) pref.getPreferredPolicy();
         assert preferredPolicy != null;
 
         return preferredPolicy;
     }
 
-    public <C extends IVerifyContext> VerifyPolicy<C> getVerifyPolicy(C context) {
+    public VerifyPolicy getVerifyPolicy(IVerifyContext context) {
         if (context == null)
             throw new NullPointerException("entity");
 
-        Class<C> clazz = (Class<C>) context.getClass();
+        Class<? extends IVerifyContext> clazz = context.getClass();
         return getPreferredVerifyPolicy(clazz);
     }
 
-    public <C extends IVerifyContext> VerifyPolicy<C> requirePreferredVerifyPolicy(Class<C> contextClass)
+    public VerifyPolicy requirePreferredVerifyPolicy(Class<? extends IVerifyContext> contextClass)
             throws NoVerifyPolicyException {
-        VerifyPolicy<C> policy = getPreferredVerifyPolicy(contextClass);
+        VerifyPolicy policy = getPreferredVerifyPolicy(contextClass);
         if (policy == null)
             throw new NoVerifyPolicyException();
         return policy;
     }
 
-    public <C extends IVerifyContext> VerifyPolicy<C> requireVerifyPolicy(C context)
+    public VerifyPolicy requireVerifyPolicy(IVerifyContext context)
             throws NoVerifyPolicyException {
-        VerifyPolicy<C> policy = getVerifyPolicy(context);
+        VerifyPolicy policy = getVerifyPolicy(context);
         if (policy == null)
             throw new NoVerifyPolicyException();
         return policy;

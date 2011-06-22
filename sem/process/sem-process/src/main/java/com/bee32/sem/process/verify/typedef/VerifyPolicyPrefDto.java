@@ -27,7 +27,7 @@ public class VerifyPolicyPrefDto
     protected void _marshal(VerifyPolicyPref source) {
         description = source.getDescription();
 
-        VerifyPolicy<?> _preferredPolicy = source.getPreferredPolicy();
+        VerifyPolicy _preferredPolicy = source.getPreferredPolicy();
         preferredPolicy = mref(VerifyPolicyDto.class, _preferredPolicy);
 
         if (_preferredPolicy != null) {

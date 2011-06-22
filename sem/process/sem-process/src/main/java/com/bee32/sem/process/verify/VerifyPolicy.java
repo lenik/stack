@@ -1,5 +1,6 @@
 package com.bee32.sem.process.verify;
 
+import javax.free.IllegalUsageException;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -15,16 +16,16 @@ import com.bee32.plover.orm.ext.color.UIEntityAuto;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
-public abstract class VerifyPolicy<C extends IVerifyContext>
+public abstract class VerifyPolicy
         extends UIEntityAuto<Integer>
-        implements IVerifyPolicy<C> {
+        implements IVerifyPolicy {
 
     private static final long serialVersionUID = 1L;
 
     protected static final VerifyResult UNKNOWN = new VerifyResult(VerifyState.UNKNOWN, null);
     protected static final VerifyResult VERIFIED = new VerifyResult(VerifyState.VERIFIED, null);
 
-    private final Class<C> contextClass;
+    private final Class<? extends IVerifyContext> contextClass;
 
     public VerifyPolicy() {
         contextClass = ClassUtil.infer1(getClass(), VerifyPolicy.class, 0);
@@ -32,8 +33,18 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
 
     @Transient
     @Override
-    public Class<C> getRequiredContext() {
+    public Class<? extends IVerifyContext> getRequiredContext() {
         return contextClass;
+    }
+
+    protected <C extends IVerifyContext> C requireContext(Class<C> contextClass, IVerifyContext context) {
+        if (contextClass == null)
+            throw new NullPointerException("contextClass");
+
+        if (contextClass.equals(this.contextClass))
+            throw new IllegalUsageException("Require a different context from the defined one: " + contextClass);
+
+        return contextClass.cast(context);
     }
 
     public boolean isUsefulFor(Class<? extends IVerifyContext> providedContext) {
@@ -43,7 +54,7 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
     }
 
     @Override
-    public final void assertVerified(C context)
+    public final void assertVerified(IVerifyContext context)
             throws VerifyException {
         VerifyResult errorResult = verify(context);
         if (!errorResult.isVerified())
@@ -51,13 +62,13 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
     }
 
     @Override
-    public final boolean isVerified(C context) {
+    public final boolean isVerified(IVerifyContext context) {
         VerifyResult result = verify(context);
         return result.isVerified();
     }
 
     @Override
-    public VerifyResult verify(C context) {
+    public VerifyResult verify(IVerifyContext context) {
 
         // policy-consistency validation.
         VerifyResult result = validate(context);
@@ -76,7 +87,7 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
      *            当前审核状态的上下文对象（通常是审核数据所属的 Entity）。
      * @return {@link #VERIFIED} means verified, otherwise the error message.
      */
-    public VerifyResult validate(C context) {
+    public VerifyResult validate(IVerifyContext context) {
         return VERIFIED;
     }
 
@@ -87,7 +98,7 @@ public abstract class VerifyPolicy<C extends IVerifyContext>
      *            当前审核状态的上下文对象（通常是审核数据所属的 Entity）。
      * @return {@link #VERIFIED} means verified, otherwise the error message.
      */
-    public abstract VerifyResult evaluate(C context);
+    public abstract VerifyResult evaluate(IVerifyContext context);
 
     @Override
     protected Boolean naturalEquals(EntityBase<Integer> other) {

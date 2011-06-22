@@ -15,18 +15,18 @@ import com.bee32.sem.process.verify.VerifyPolicy;
 @Blue
 public class Level
         extends EntityAuto<Integer>
-        implements IRangeMapEntry<Long, VerifyPolicy<?>> {
+        implements IRangeMapEntry<Long, VerifyPolicy> {
 
     private static final long serialVersionUID = 1L;
 
     private MultiLevel multiLevel;
     private long limit;
-    private VerifyPolicy<?> targetPolicy;
+    private VerifyPolicy targetPolicy;
 
     public Level() {
     }
 
-    public Level(MultiLevel multiLevel, long limit, VerifyPolicy<?> verifyPolicy) {
+    public Level(MultiLevel multiLevel, long limit, VerifyPolicy verifyPolicy) {
         if (multiLevel == null)
             throw new NullPointerException("multiLevel");
         if (verifyPolicy == null)
@@ -69,11 +69,11 @@ public class Level
     }
 
     @ManyToOne(optional = false)
-    public VerifyPolicy<?> getTargetPolicy() {
+    public VerifyPolicy getTargetPolicy() {
         return targetPolicy;
     }
 
-    public void setTargetPolicy(VerifyPolicy<?> verifyPolicy) {
+    public void setTargetPolicy(VerifyPolicy verifyPolicy) {
         this.targetPolicy = verifyPolicy;
     }
 
@@ -116,7 +116,7 @@ public class Level
      */
     @Transient
     @Override
-    public VerifyPolicy<?> getTarget() {
+    public VerifyPolicy getTarget() {
         return targetPolicy;
     }
 

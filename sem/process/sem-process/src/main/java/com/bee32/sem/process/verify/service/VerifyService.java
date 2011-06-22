@@ -31,7 +31,7 @@ import com.bee32.sem.user.util.SessionLoginInfo;
 
 public class VerifyService
         extends EnterpriseService
-        implements IVerifyPolicy<IVerifyContext> {
+        implements IVerifyPolicy {
 
     @Inject
     VerifyPolicyDao policyDao;
@@ -40,16 +40,16 @@ public class VerifyService
     UserDso userService;
 
     @Transactional(readOnly = true)
-    public <C extends IVerifyContext> VerifyPolicyDto getPreferredVerifyPolicy(Class<C> entityClass) {
-        VerifyPolicy<C> preferredVerifyPolicy = policyDao.getPreferredVerifyPolicy(entityClass);
+    public VerifyPolicyDto getPreferredVerifyPolicy(Class<? extends IVerifyContext> entityClass) {
+        VerifyPolicy preferredVerifyPolicy = policyDao.getPreferredVerifyPolicy(entityClass);
         VerifyPolicyDto policyDto = DTOs.marshal(VerifyPolicyDto.class, preferredVerifyPolicy);
         // return new VerifyPolicyDto(preferredVerifyPolicy);
         return policyDto;
     }
 
     @Transactional(readOnly = true)
-    public <C extends IVerifyContext> VerifyPolicyDto getVerifyPolicy(C entity) {
-        VerifyPolicy<C> verifyPolicy = policyDao.getVerifyPolicy(entity);
+    public VerifyPolicyDto getVerifyPolicy(IVerifyContext entity) {
+        VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(entity);
         VerifyPolicyDto policyDto = DTOs.marshal(VerifyPolicyDto.class, verifyPolicy);
         return policyDto;
     }
@@ -64,7 +64,7 @@ public class VerifyService
     @Transactional(readOnly = true)
     @Override
     public Set<Principal> getDeclaredResponsibles(IVerifyContext contextEntity) {
-        VerifyPolicy<IVerifyContext> verifyPolicy = policyDao.getVerifyPolicy(contextEntity);
+        VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(contextEntity);
 
         if (verifyPolicy == null)
             return new HashSet<Principal>();
@@ -87,7 +87,7 @@ public class VerifyService
     @Transactional(readOnly = true)
     @Override
     public boolean isVerified(IVerifyContext context) {
-        VerifyPolicy<IVerifyContext> verifyPolicy = policyDao.getVerifyPolicy(context);
+        VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(context);
         if (verifyPolicy == null)
             return false;
         return verifyPolicy.isVerified(context);
@@ -108,7 +108,7 @@ public class VerifyService
     @Override
     public void assertVerified(IVerifyContext context)
             throws VerifyException {
-        VerifyPolicy<IVerifyContext> verifyPolicy = policyDao.requireVerifyPolicy(context);
+        VerifyPolicy verifyPolicy = policyDao.requireVerifyPolicy(context);
         verifyPolicy.assertVerified(context);
     }
 
@@ -128,7 +128,7 @@ public class VerifyService
         if (context == null)
             throw new NullPointerException("context");
 
-        VerifyPolicy<IVerifyContext> verifyPolicy = policyDao.getVerifyPolicy(context);
+        VerifyPolicy verifyPolicy = policyDao.getVerifyPolicy(context);
 
         VerifyResult result;
         if (verifyPolicy == null)

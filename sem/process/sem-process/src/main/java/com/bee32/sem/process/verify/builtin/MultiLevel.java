@@ -20,6 +20,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
 import com.bee32.sem.process.verify.IAllowedByContext;
+import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
 
@@ -27,7 +28,7 @@ import com.bee32.sem.process.verify.VerifyResult;
 @DiscriminatorValue("ML")
 @Alias("level")
 public class MultiLevel
-        extends VerifyPolicy<IMultiLevelContext> {
+        extends VerifyPolicy {
 
     private static final long serialVersionUID = 1L;
 
@@ -106,7 +107,7 @@ public class MultiLevel
         return levels;
     }
 
-    public void addLevel(long limit, VerifyPolicy<?> verifyPolicy) {
+    public void addLevel(long limit, VerifyPolicy verifyPolicy) {
         if (verifyPolicy == null)
             throw new NullPointerException("verifyPolicy for " + getName());
 
@@ -119,11 +120,13 @@ public class MultiLevel
     }
 
     @Override
-    public Set<Principal> getDeclaredResponsibles(IMultiLevelContext context) {
+    public Set<Principal> getDeclaredResponsibles(IVerifyContext _context) {
         long longValue = 0;
 
-        if (context != null)
+        if (_context != null) {
+            IMultiLevelContext context = requireContext(IMultiLevelContext.class, _context);
             longValue = context.getLongValue();
+        }
 
         return getResponsiblesWithinLimit(longValue);
     }
@@ -146,7 +149,7 @@ public class MultiLevel
 
             Level level = levelMap.get(ceil);
 
-            VerifyPolicy<?> subPolicy = (VerifyPolicy<?>) level.getTargetPolicy();
+            VerifyPolicy subPolicy = level.getTargetPolicy();
 
             // Already scanned, skip to avoid cyclic ref.
             if (!markSet.add(subPolicy))
@@ -158,9 +161,7 @@ public class MultiLevel
                 allDeclared.addAll(subset);
 
             } else if (subPolicy.isUsefulFor(IAllowedByContext.class)) {
-                @SuppressWarnings("unchecked")
-                VerifyPolicy<IAllowedByContext> abcPolicy = (VerifyPolicy<IAllowedByContext>) subPolicy;
-                allDeclared.addAll(abcPolicy.getDeclaredResponsibles(hintContext));
+                allDeclared.addAll(subPolicy.getDeclaredResponsibles(hintContext));
             }
 
             ceil = levelMap.higherKey(ceil);
@@ -170,7 +171,9 @@ public class MultiLevel
     }
 
     @Override
-    public VerifyResult validate(IMultiLevelContext context) {
+    public VerifyResult validate(IVerifyContext _context) {
+        IMultiLevelContext context = requireContext(IMultiLevelContext.class, _context);
+
         User user = context.getVerifier();
 
         if (!user.impliesOneOf(getDeclaredResponsibles(context)))
@@ -180,7 +183,9 @@ public class MultiLevel
     }
 
     @Override
-    public VerifyResult evaluate(IMultiLevelContext context) {
+    public VerifyResult evaluate(IVerifyContext _context) {
+        IMultiLevelContext context = requireContext(IMultiLevelContext.class, _context);
+
         if (context.getVerifier() == null)
             return UNKNOWN;
 

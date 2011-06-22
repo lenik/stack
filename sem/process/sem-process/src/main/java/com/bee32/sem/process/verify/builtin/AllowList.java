@@ -15,6 +15,7 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.Alias;
 import com.bee32.sem.process.verify.IAllowedByContext;
+import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.VerifyPolicy;
 import com.bee32.sem.process.verify.VerifyResult;
 
@@ -25,7 +26,7 @@ import com.bee32.sem.process.verify.VerifyResult;
 @DiscriminatorValue("LS")
 @Alias("list")
 public class AllowList
-        extends VerifyPolicy<IAllowedByContext> {
+        extends VerifyPolicy {
 
     private static final long serialVersionUID = 1L;
 
@@ -54,7 +55,7 @@ public class AllowList
      * Allow-List 为静态责任人列别，从不考虑实体类定义的额外名单。 故 context 参数被忽略。
      */
     @Override
-    public Set<Principal> getDeclaredResponsibles(IAllowedByContext context) {
+    public Set<Principal> getDeclaredResponsibles(IVerifyContext context) {
         return getResponsibles();
     }
 
@@ -86,8 +87,9 @@ public class AllowList
     }
 
     @Override
-    public VerifyResult validate(IAllowedByContext context) {
-        User user = context.getVerifier();
+    public VerifyResult validate(IVerifyContext context) {
+        IAllowedByContext allowedBy = requireContext(IAllowedByContext.class, context);
+        User user = allowedBy.getVerifier();
 
         if (user == null)
             return UNKNOWN;
@@ -99,12 +101,14 @@ public class AllowList
     }
 
     @Override
-    public VerifyResult evaluate(IAllowedByContext context) {
-        if (context.getVerifier() == null)
+    public VerifyResult evaluate(IVerifyContext context) {
+        IAllowedByContext allowedBy = requireContext(IAllowedByContext.class, context);
+
+        if (allowedBy.getVerifier() == null)
             return UNKNOWN;
 
-        if (!context.isAllowed())
-            return VerifyResult.rejected(context.getVerifier(), context.getRejectedReason());
+        if (!allowedBy.isAllowed())
+            return VerifyResult.rejected(allowedBy.getVerifier(), allowedBy.getRejectedReason());
 
         return VERIFIED;
     }
