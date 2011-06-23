@@ -18,6 +18,7 @@ import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.arch.util.dto.MarshalType;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -425,6 +426,34 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
                 return existing;
             }
         } // switch
+    }
+
+    /**
+     * @see Entity#idEquals(EntityBase)
+     */
+    @Override
+    protected final boolean idEquals(BaseDto<E, IEntityMarshalContext> other) {
+        @SuppressWarnings("unchecked")
+        EntityDto<E, K> o = (EntityDto<E, K>) other;
+        return idEquals(o);
+    }
+
+    protected boolean idEquals(EntityDto<E, K> other) {
+        K id1 = getId();
+        K id2 = other.getId();
+
+        if (id1 == null || id2 == null)
+            return false;
+
+        return id1.equals(id2);
+    }
+
+    @Override
+    protected int idHashCode() {
+        K id = getId();
+        if (id != null)
+            return id.hashCode();
+        return System.identityHashCode(this);
     }
 
     @Override

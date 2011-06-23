@@ -37,6 +37,18 @@ public abstract class DataExchangeObject<T>
         throw new NotImplementedException();
     }
 
+    // TODO
+    @Override
+    protected boolean idEquals(BaseDto<T, Void> other) {
+        return false;
+    }
+
+    // TODO
+    @Override
+    protected int idHashCode() {
+        return 0;
+    }
+
     @Override
     protected abstract void _parse(TextMap map)
             throws ParseException;

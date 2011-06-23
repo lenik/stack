@@ -41,6 +41,16 @@ public class BastDtoUtils {
                     throws ParseException {
             }
 
+            @Override
+            protected boolean idEquals(BaseDto<Object, Object> other) {
+                return false;
+            }
+
+            @Override
+            protected int idHashCode() {
+                return 0;
+            }
+
         };
     }
 
