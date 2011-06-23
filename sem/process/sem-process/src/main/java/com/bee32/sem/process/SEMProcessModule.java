@@ -12,7 +12,7 @@ import com.bee32.sem.process.verify.typedef.VerifyPolicyPrefDao;
 public class SEMProcessModule
         extends EnterpriseModule {
 
-    public static final String PREFIX = "/3/15/2/1/";
+    public static final String PREFIX = "/3/15/2/1";
 
     @Override
     protected void preamble() {

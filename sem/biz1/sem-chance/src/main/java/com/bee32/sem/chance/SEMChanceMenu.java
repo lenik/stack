@@ -15,37 +15,35 @@ public class SEMChanceMenu
         extends MenuContribution
         implements ITypeAbbrAware {
 
-    static Location CHANCE = WEB_APP.join("customer/chance/");
-    static Location CHANCEACTION = WEB_APP.join("customer/chanceAction/");
-    static Location COMPETITOR = WEB_APP.join("customer/competitor/");
-    static Location DICT = WEB_APP.join(CommonDictController.PREFIX);
+    static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
+    static Location CHANCE = WEB_APP.join(SEMChanceModule.PREFIX_);
 
     @Contribution("crmcustomer")
     MenuEntry chanceAdmin = new MenuEntry("chanceAdmin");
 
     @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry chanceAction = new MenuEntry("chanceAction", CHANCEACTION.join("chanceActionAdminjsf.do"));
+    MenuEntry chanceAction = new MenuEntry("chanceAction", CHANCE.join("action/main.do"));
 
-    @Contribution("/crmcustomer/chanceAdmin")
+    @Contribution("crmcustomer/chanceAdmin")
     MenuEntry dictionary = new MenuEntry("dictionary");
 
     @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry chance = new MenuEntry("chance", CHANCE.join("chanceAdminjsf.do"));
+    MenuEntry chance = new MenuEntry("chance", CHANCE.join("chance/main.do"));
 
     @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry competitor = new MenuEntry("competitor", COMPETITOR.join("index.do"));
+    MenuEntry competitor = new MenuEntry("competitor", CHANCE.join("competitor/index.do"));
 
     @Contribution("crmcustomer/chanceAdmin/dictionary")
-    MenuEntry categories = new MenuEntry("categories", DICT.join(ABBR.abbr(ChanceCategory.class) + "index.do"));
+    MenuEntry categories = new MenuEntry("categories", getDictIndex(ChanceCategory.class));
 
     @Contribution("crmcustomer/chanceAdmin/dictionary")
-    MenuEntry sourceTypes = new MenuEntry("sourceTypes", DICT.join(ABBR.abbr(ChanceSourceType.class) + "index.do"));
+    MenuEntry sourceTypes = new MenuEntry("sourceTypes", getDictIndex(ChanceSourceType.class));
 
     @Contribution("crmcustomer/chanceAdmin/dictionary")
-    MenuEntry actionStyles = new MenuEntry("actionStyles", DICT.join(ABBR.abbr(ChanceActionStyle.class) + "index.do"));
+    MenuEntry actionStyles = new MenuEntry("actionStyles", getDictIndex(ChanceActionStyle.class));
 
     @Contribution("crmcustomer/chanceAdmin/dictionary")
-    MenuEntry stages = new MenuEntry("stages", DICT.join(ABBR.abbr(ChanceStage.class) + "index.do"));
+    MenuEntry stages = new MenuEntry("stages", getDictIndex(ChanceStage.class));
 
     @Override
     protected void preamble() {

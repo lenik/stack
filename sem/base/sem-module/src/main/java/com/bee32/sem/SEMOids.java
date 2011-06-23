@@ -7,14 +7,16 @@ public interface SEMOids {
     int Base = 1;
     int Process = 2;
     int Resource = 3;
-    int Social = 4;
+    // social
     int Support = 5;
+    int Biz1 = 6;
+    int Biz2 = 7;
 
     interface base {
         int Frame = 1;
         int Module = 2;
         int Desktop = 3;
-        int User = 4;
+        int Company = 4;
         int People = 5;
         int File = 6;
         int Mail = 7;
@@ -36,11 +38,8 @@ public interface SEMOids {
         int Contract = 4;
     }
 
-    interface social {
-        int Staff = 1;
-        int Customer = 2;
-        int Supplier = 3;
-        int Partner = 4;
+    interface biz1 {
+        int chance = 1;
     }
 
     interface support {
