@@ -59,7 +59,7 @@ public class ChanceDto
                 partyString += "," + party.getParty().getName();
         }
         this.party = partyString;
-        this.date = DateToRange.fullFormat.format(source.getCreateDate()).substring(0, 16);
+        this.date = DateToRange.fullFormat.format(source.getCreatedDate()).substring(0, 16);
         this.shortContent = Strings.ellipse(source.getContent(), 16);
         this.owner = mref(UserDto.class, source.getOwner());
         this.category = mref(ChanceCategoryDto.class, source.getCategory());

@@ -2,7 +2,6 @@ package com.bee32.sem.people.dto;
 
 import javax.free.ParseException;
 
-import com.bee32.plover.arch.util.MarshalType;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.people.entity.PersonRole;
@@ -29,11 +28,8 @@ public class PersonRoleDto
 
     @Override
     protected void _marshal(PersonRole source) {
-        person = new PersonDto(0, source.getPerson());
-        person.marshalAs(MarshalType.ID_REF);
-        org = new OrgDto(0, source.getOrg());
-        org.marshalAs(MarshalType.ID_REF);
-
+        person = mref(PersonDto.class, 0, source.getPerson());
+        org = mref(OrgDto.class, 0, source.getOrg());
         orgUnit = source.getOrgUnit();
         role = source.getRole();
         roleDetail = source.getRoleDetail();
@@ -44,7 +40,6 @@ public class PersonRoleDto
     protected void _unmarshalTo(PersonRole target) {
         merge(target, "person", person);
         merge(target, "org", org);
-
         target.setOrgUnit(orgUnit);
         target.setRole(role);
         target.setRoleDetail(roleDetail);

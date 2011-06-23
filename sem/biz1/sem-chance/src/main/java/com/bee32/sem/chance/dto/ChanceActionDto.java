@@ -8,7 +8,6 @@ import javax.free.ParseException;
 import javax.free.Strings;
 
 import com.bee32.icsf.principal.dto.UserDto;
-import com.bee32.plover.arch.util.MarshalType;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.chance.entity.ChanceAction;

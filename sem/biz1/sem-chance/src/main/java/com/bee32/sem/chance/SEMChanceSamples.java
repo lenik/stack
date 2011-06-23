@@ -68,7 +68,7 @@ public class SEMChanceSamples
         chanceAction1.setActor(IcsfPrincipalSamples.eva);
         chanceAction1.setStyle(ChanceActionStyle.INTERNET);
         chanceAction1.setParties(Arrays.asList((Party) SEMPeopleSamples.bentley, (Party) SEMPeopleSamples.one77));
-        chanceAction1.setStage(ChanceStage.INITIAL);
+        chanceAction1.setStage(ChanceStage.INIT);
 
         chanceAction2.setBeginTime(cal.getTime());
         chanceAction2.setEndTime(cal.getTime());

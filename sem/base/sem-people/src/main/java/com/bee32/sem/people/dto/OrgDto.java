@@ -37,7 +37,7 @@ public class OrgDto
         if (selection.contains(ROLES)) {
             roles = new HashSet<PersonRoleDto>();
             for (PersonRole role : source.getRoles()) {
-                PersonRoleDto roleDto = new PersonRoleDto(role);
+                PersonRoleDto roleDto = marshal(PersonRoleDto.class, role);
                 roles.add(roleDto);
             }
         }
