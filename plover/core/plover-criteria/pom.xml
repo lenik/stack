@@ -6,7 +6,7 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>plover-criteria</artifactId>
-    <version>0.2.100</version>
+    <version>0.2.101</version>
     <dependencies>
         <dependency>
             <groupId>javax.persistence</groupId>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-expr</artifactId>
-            <version>0.2.100</version>
+            <version>0.2.101</version>
         </dependency>
     </dependencies>
     <name>Plover :: Core :: Criteria</name>

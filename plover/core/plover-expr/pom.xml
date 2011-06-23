@@ -6,7 +6,7 @@
         <version>0.3.2-SNAPSHOT</version>
     </parent>
     <artifactId>plover-expr</artifactId>
-    <version>0.2.100</version>
+    <version>0.2.101</version>
     <dependencies>
         <dependency>
             <groupId>javax.free</groupId>
