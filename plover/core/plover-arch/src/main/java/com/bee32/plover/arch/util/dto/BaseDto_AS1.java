@@ -37,11 +37,13 @@ public abstract class BaseDto_AS1<S, C>
         dto.setSelection(selection);
 
         if (refButFilled != Boolean.FALSE) {
-            dto.marshalAs(MarshalType.SELECTION);
+            dto._marshalAs(MarshalType.SELECTION);
 
             // Do the marshal.
             // null source should make this dto._null = true
             dto = dto.marshal(getSession(), source);
+
+            dto.marshalAs(MarshalType.SELECTION);
         }
 
         if (refButFilled != null) {

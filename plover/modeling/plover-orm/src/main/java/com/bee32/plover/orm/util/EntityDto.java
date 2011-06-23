@@ -308,9 +308,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * @see #ref(Entity)
      */
     public <D extends EntityDto<E, K>> D ref(K id) {
+        marshalAs(MarshalType.ID_REF);
+
         this.id = id;
         this.version = null;
-        marshalAs(MarshalType.ID_REF);
 
         @SuppressWarnings("unchecked")
         D self = (D) this;

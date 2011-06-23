@@ -6,10 +6,10 @@ public interface IMarshalSession {
 
     <D> D getMarshalled(Object marshalKey);
 
-    void addMarshalled(Object marshalKey, Object dto);
+    void addMarshalled(Object marshalKey, BaseDto_Skel<?, ?> dto);
 
-    <S> S getUnmarshalled(Object dto);
+    <S> S getUnmarshalled(BaseDto_Skel<?, ?> dto);
 
-    void addUnmarshalled(Object dto, Object source);
+    void addUnmarshalled(BaseDto_Skel<?, ?> dto, Object source);
 
 }

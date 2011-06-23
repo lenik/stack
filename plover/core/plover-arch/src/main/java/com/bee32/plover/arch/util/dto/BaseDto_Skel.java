@@ -27,16 +27,31 @@ abstract class BaseDto_Skel<S, C>
     private static final long serialVersionUID = 1L;
 
     protected MarshalType marshalType = MarshalType.SELECTION;
-    protected boolean _null;
+    private boolean initialized;
+
+    private boolean _null;
 
     public MarshalType getMarshalType() {
         return marshalType;
     }
 
-    public void marshalAs(MarshalType marshalType) {
+    public void _marshalAs(MarshalType marshalType) {
         if (marshalType == null)
             throw new NullPointerException("marshalType");
         this.marshalType = marshalType;
+    }
+
+    public void marshalAs(MarshalType marshalType) {
+        if (marshalType == null)
+            throw new NullPointerException("marshalType");
+        if (initialized)
+            throw new IllegalStateException("Already initialized");
+        this.marshalType = marshalType;
+        initialized = true;
+    }
+
+    public boolean isInitialized() {
+        return initialized;
     }
 
     public boolean isNull() {

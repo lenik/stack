@@ -4,12 +4,17 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
+import javax.free.IllegalUsageException;
+
 public class MarshalSession
         implements IMarshalSession {
 
     final Object context;
 
+    // Entity+key => DTO
     Map<Object, Object> marshalledMap;
+
+    // DTO => Entity
     Map<Object, Object> unmarshalledMap;
 
     public MarshalSession(Object context) {
@@ -51,17 +56,23 @@ public class MarshalSession
     }
 
     @Override
-    public void addMarshalled(Object marshalKey, Object dto) {
+    public void addMarshalled(Object marshalKey, BaseDto_Skel<?, ?> dto) {
+        if (!dto.isInitialized())
+            throw new IllegalUsageException("Dto hasn't been initialized, yet: " + dto);
         getMarshalledMap().put(marshalKey, dto);
     }
 
     @Override
-    public <S> S getUnmarshalled(Object dto) {
+    public <S> S getUnmarshalled(BaseDto_Skel<?, ?> dto) {
+        if (!dto.isInitialized())
+            throw new IllegalUsageException("Dto hasn't been initialized, yet: " + dto);
         return (S) getUnmarshalledMap().get(dto);
     }
 
     @Override
-    public void addUnmarshalled(Object dto, Object source) {
+    public void addUnmarshalled(BaseDto_Skel<?, ?> dto, Object source) {
+        if (!dto.isInitialized())
+            throw new IllegalUsageException("Dto hasn't been initialized, yet: " + dto);
         getUnmarshalledMap().put(dto, source);
     }
 
