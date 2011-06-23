@@ -34,8 +34,8 @@ public class AbstractUserDto<U extends User>
         int _selection = DEPTH_MASK.compose(selection.bits, _depth);
 
         if (selection.contains(EXT)) {
-            primaryGroup = new GroupDto(_selection).marshal(source.getPrimaryGroup());
-            primaryRole = new RoleDto(_selection).marshal(source.getPrimaryRole());
+            primaryGroup = mref(GroupDto.class, _selection, source.getPrimaryGroup());
+            primaryRole = mref(RoleDto.class, _selection, source.getPrimaryRole());
         }
 
         if (selection.contains(GROUPS))

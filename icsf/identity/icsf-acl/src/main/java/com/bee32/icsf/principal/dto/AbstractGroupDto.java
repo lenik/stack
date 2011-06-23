@@ -84,9 +84,9 @@ public class AbstractGroupDto<G extends Group>
         int _selection = DEPTH_MASK.compose(selection.bits, _depth);
 
         if (selection.contains(EXT)) {
-            inheritedGroup = new GroupDto(_selection).marshal(source.getInheritedGroup());
-            owner = new UserDto(_selection).marshal(source.getOwner());
-            primaryRole = new RoleDto(_selection).marshal(source.getPrimaryRole());
+            inheritedGroup = mref(GroupDto.class, _selection, source.getInheritedGroup());
+            owner = mref(UserDto.class, _selection, source.getOwner());
+            primaryRole = mref(RoleDto.class, _selection, source.getPrimaryRole());
         }
 
         if (selection.contains(GROUPS))

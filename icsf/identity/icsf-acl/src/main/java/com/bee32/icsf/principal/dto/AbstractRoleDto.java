@@ -34,7 +34,7 @@ public class AbstractRoleDto<R extends Role>
         int _selection = DEPTH_MASK.compose(selection.bits, _depth);
 
         if (selection.contains(EXT))
-            inheritedRole = new RoleDto(_selection).marshal(source.getInheritedRole());
+            inheritedRole = mref(RoleDto.class, _selection, source.getInheritedRole());
 
         if (selection.contains(ROLES))
             derivedRoles = marshalList(RoleDto.class, _selection, source.getDerivedRoles());
