@@ -6,6 +6,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
@@ -78,6 +79,9 @@ abstract class BaseDto_Skel<S, C>
         @SuppressWarnings("unchecked")
         D _this = (D) this;
 
+        if (marshalType.isReference())
+            throw new IllegalUsageException("You can't marshal into a referenced DTO.");
+
         if (source == null) {
             // if (!marshalType.isReference())
             // throw new IllegalUsageException("You can't marshal a null to referenced-DTO.");
@@ -100,8 +104,6 @@ abstract class BaseDto_Skel<S, C>
 
             // logger.debug("marshal end");
         }
-
-        marshalType = MarshalType.SELECTION;
 
         return _this;
     }
