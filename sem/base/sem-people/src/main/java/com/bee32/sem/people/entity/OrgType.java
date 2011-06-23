@@ -22,12 +22,12 @@ public class OrgType
         super(name, label);
     }
 
-    public static OrgType PARTNER = new OrgType("PART", "合作伙伴");
-
-    public static OrgType COMPANY = new OrgType("COMP", "公司");
-
-    public static OrgType EDU = new OrgType("EDUC", "教育");
-
-    public static OrgType ARMY = new OrgType("ARMY", "军队");
+    public static OrgType LTD_CORP = new OrgType("LTD", "有限责任公司");
+    public static OrgType INF_CORP = new OrgType("INF", "无限有限公司");
+    public static OrgType FACTORY = new OrgType("FAC", "私营/工厂");
+    public static OrgType INDIVIDUAL = new OrgType("IND", "独立人");
+    public static OrgType PARTNER = new OrgType("PAR", "私人合伙");
+    public static OrgType EDUCATION = new OrgType("EDU", "教育机构");
+    public static OrgType MILITARY = new OrgType("MIL", "军事组织");
 
 }

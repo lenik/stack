@@ -26,7 +26,7 @@ public class SEMPeopleSamples
     public static Person weiXiaoBao = new Person();
 
     static {
-        internetCorp.setType(OrgType.COMPANY);
+        internetCorp.setType(OrgType.LTD_CORP);
         internetCorp.setSize(20);
         internetCorp.setName("XX有限责任公司");
         internetCorp.setInterests("互联网搜索");
@@ -120,9 +120,12 @@ public class SEMPeopleSamples
         addNormalSample(ContactCategory.WORK);
         addNormalSample(ContactCategory.OUT);
 
-        addNormalSample(OrgType.ARMY);
-        addNormalSample(OrgType.COMPANY);
-        addNormalSample(OrgType.EDU);
+        addNormalSample(OrgType.EDUCATION);
+        addNormalSample(OrgType.FACTORY);
+        addNormalSample(OrgType.INDIVIDUAL);
+        addNormalSample(OrgType.INF_CORP);
+        addNormalSample(OrgType.LTD_CORP);
+        addNormalSample(OrgType.MILITARY);
         addNormalSample(OrgType.PARTNER);
 
         addNormalSample(internetCorp);
