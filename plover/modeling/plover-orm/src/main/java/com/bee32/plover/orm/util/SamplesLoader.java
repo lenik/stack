@@ -129,9 +129,16 @@ public class SamplesLoader
             }
 
             for (IEntity<?> sample : samples) {
+                if (sample == null) {
+                    logger.error("Null sample in contribution " + contrib);
+                    continue;
+                }
+
                 Class<?> sampleClass = sample.getClass();
                 if (unitClasses.contains(sampleClass))
                     selection.add(sample);
+                else
+                    logger.debug("  Ignored entity of non-using class: " + sampleClass);
             }
 
             if (logger.isDebugEnabled()) {
