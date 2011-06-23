@@ -1,9 +1,12 @@
 package com.bee32.sem.people.dto;
 
+import javax.free.Nullables;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
+import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactXP;
 import com.bee32.sem.people.entity.Party;
@@ -143,6 +146,31 @@ public class ContactDto
 
     public void setQq(String qq) {
         this.qq = qq;
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        int hash = 0;
+
+        hash += party.hashCode();
+
+        if (category != null)
+            hash += category.hashCode();
+
+        return hash;
+    }
+
+    @Override
+    protected Boolean naturalEquals(BaseDto<Contact, IEntityMarshalContext> other) {
+        ContactDto o = (ContactDto) other;
+
+        if (!party.equals(o.party))
+            return false;
+
+        if (!Nullables.equals(category, o.category))
+            return false;
+
+        return super.idEquals(other);
     }
 
 }

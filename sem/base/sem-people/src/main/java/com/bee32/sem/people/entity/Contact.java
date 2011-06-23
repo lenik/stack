@@ -1,9 +1,11 @@
 package com.bee32.sem.people.entity;
 
+import javax.free.Nullables;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.xp.EntityExt;
 
@@ -12,9 +14,9 @@ import com.bee32.plover.orm.ext.xp.EntityExt;
  */
 @Entity
 @Blue
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name = "stereo", length = 4)
-//@DiscriminatorValue("-")
+// @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+// @DiscriminatorColumn(name = "stereo", length = 4)
+// @DiscriminatorValue("-")
 public class Contact
         extends EntityExt<Integer, ContactXP> {
 
@@ -147,6 +149,31 @@ public class Contact
 
     public void setQq(String qq) {
         this.qq = qq;
+    }
+
+    @Override
+    protected Boolean naturalEquals(EntityBase<Integer> other) {
+        Contact o = (Contact) other;
+
+        if (!party.equals(o.party))
+            return false;
+
+        if (!Nullables.equals(category, o.category))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        int hash = 0;
+
+        hash += party.hashCode();
+
+        if (category != null)
+            hash += category.hashCode();
+
+        return hash;
     }
 
 }
