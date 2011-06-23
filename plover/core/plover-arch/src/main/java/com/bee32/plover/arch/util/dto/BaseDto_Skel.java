@@ -173,7 +173,7 @@ abstract class BaseDto_Skel<S, C>
 
         S deref = mergeDeref(target);
 
-        if (target == null) {
+        if (target == null || /* TODO Check this later */target == deref) {
             IMarshalSession session = getSession();
             S unmarshalled = session.getUnmarshalled(this);
             if (unmarshalled != null)
