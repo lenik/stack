@@ -130,6 +130,19 @@ public class ChanceDto
         }
     }
 
+
+    public void addChanceParty(ChancePartyDto chanceParty){
+        if(parties.isEmpty())
+            parties = new ArrayList<ChancePartyDto>();
+        if(!parties.contains(chanceParty))
+            parties.add(chanceParty);
+    }
+
+    public void deleteChanceParty(ChancePartyDto chanceParty){
+        if(parties.contains(chanceParty))
+            parties.remove(chanceParty);
+    }
+
     public String getParty() {
         return party;
     }

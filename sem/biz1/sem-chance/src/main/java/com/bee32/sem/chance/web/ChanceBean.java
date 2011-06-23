@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.model.LazyDataModel;
@@ -165,6 +167,23 @@ public class ChanceBean
             List<ChanceAction> dateRangeActionList = chanceService.dateRangeActionList(searchBeginTime, searchEndTime);
             actions = DTOs.marshalList(ChanceActionDto.class, dateRangeActionList);
         }
+    }
+
+    public void doSelectActions() {
+        if (selectedActions.length == 0) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("提示", "至少请选择一个客户"));
+            return;
+        }
+        chance.addActions(selectedActions);
+    }
+
+    public void addChanceParty() {
+        ChancePartyDto chancePartyDto = new ChancePartyDto();
+        chancePartyDto.setChance(chance);
+        chancePartyDto.setParty(selectedParty);
+        chancePartyDto.setRole("普通客户");
+        chance.addChanceParty(chancePartyDto);
     }
 
     public int getCurrentTab() {

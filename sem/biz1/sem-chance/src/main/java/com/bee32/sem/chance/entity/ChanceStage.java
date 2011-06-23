@@ -4,6 +4,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.dict.ShortNameDict;
@@ -36,6 +37,7 @@ public class ChanceStage
         stages.put(getOrder(), this);
     }
 
+    @Transient
     public ChanceStage getPrevious() {
         int order = getOrder();
         int previous = order - 1;

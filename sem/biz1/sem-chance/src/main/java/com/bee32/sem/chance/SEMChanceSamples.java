@@ -78,7 +78,7 @@ public class SEMChanceSamples
         chanceAction2.setStyle(ChanceActionStyle.TALK);
         chanceAction2.setParties(Arrays.asList((Party) SEMPeopleSamples.weiXiaoBao));
 
-        chance.setActions(Arrays.asList(chanceAction1));
+        chance.setActions(Arrays.asList(chanceAction1, chanceAction2));
 
     }
 
