@@ -4,9 +4,8 @@ import javax.free.Nullables;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
-import com.bee32.plover.orm.util.IEntityMarshalContext;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactXP;
 import com.bee32.sem.people.entity.Party;
@@ -161,7 +160,7 @@ public class ContactDto
     }
 
     @Override
-    protected Boolean naturalEquals(BaseDto<Contact, IEntityMarshalContext> other) {
+    protected Boolean naturalEquals(EntityDto<Contact, Integer> other) {
         ContactDto o = (ContactDto) other;
 
         if (!party.equals(o.party))

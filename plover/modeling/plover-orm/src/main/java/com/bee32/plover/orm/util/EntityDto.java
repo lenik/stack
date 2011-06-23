@@ -438,6 +438,9 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         return idEquals(o);
     }
 
+    /**
+     * @see Entity#idEquals(EntityBase)
+     */
     protected final boolean idEquals(EntityDto<E, K> other) {
         K id1 = getId();
         K id2 = other.getId();
@@ -448,12 +451,26 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         return id1.equals(id2);
     }
 
+    /**
+     * @see Entity#idHashCode()
+     */
     @Override
     protected final int idHashCode() {
         K id = getId();
         if (id != null)
             return id.hashCode();
         return System.identityHashCode(this);
+    }
+
+    @Override
+    protected final Boolean naturalEquals(BaseDto<E, IEntityMarshalContext> other) {
+        @SuppressWarnings("unchecked")
+        EntityDto<E, K> o = (EntityDto<E, K>) other;
+        return naturalEquals(o);
+    }
+
+    protected Boolean naturalEquals(EntityDto<E, K> other) {
+        return idEquals(other);
     }
 
     @Override
