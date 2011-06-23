@@ -438,7 +438,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         return idEquals(o);
     }
 
-    protected boolean idEquals(EntityDto<E, K> other) {
+    protected final boolean idEquals(EntityDto<E, K> other) {
         K id1 = getId();
         K id2 = other.getId();
 
@@ -449,7 +449,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    protected int idHashCode() {
+    protected final int idHashCode() {
         K id = getId();
         if (id != null)
             return id.hashCode();
