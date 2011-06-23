@@ -23,35 +23,85 @@
 
 	<ui:define name="content">
 
+		<h:outputStylesheet>
+            .align_top {
+                vertical-align:top;
+            }
+        </h:outputStylesheet>
 
 
 		<h:form id="permissionForm">
 
 			<p:growl id="growl" showDetail="true" />
-			<t:panelGrid columns="2">
-                <p:tabView>
+			<t:panelGrid columns="2" rowClasses="align_top">
+                <p:tabView header="权限主体列表">
 
-                    <p:tab title="按组用户列表">
-                        <p:tree>
-                            <p:treeNode>
-                                <h:outputText value=""/>
-                            </p:treeNode>
-                        </p:tree>
+                    <p:tab title="组列表">
+
                     </p:tab>
 
-                    <p:tab title="按角色用户列表">
-						<p:tree>
-							<p:treeNode>
-								<h:outputText value="" />
-							</p:treeNode>
-						</p:tree>
+                    <p:tab title="角色列表">
+
+					</p:tab>
+
+					<p:tab title="用户列表">
+						<p:dataTable id="users" var="user" value="#{permissionAdminBean.users}"
+							resizableColumns="true"
+							selection="#{permissionAdminBean.selectedUser}"
+							selectionMode="single" rowIndexVar="rowIndex">
+
+                            <p:ajax event="rowSelect"
+                                listener="#{permissionAdminBean.onRowSelectUser}"
+                                update="permissions" />
+                            <p:ajax event="rowUnselect"
+                                listener="#{personAdminBean.onRowUnselectUser}"
+                                update="permissions" />
+
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="序号" />
+                                </f:facet>
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="名称" />
+                                </f:facet>
+                                <h:outputText value="#{user.name}" />
+                            </p:column>
+
+						</p:dataTable>
 					</p:tab>
 
                 </p:tabView>
 
 
-                <p:panel>
-                </p:panel>
+                <p:panel header="权限列表">
+
+					<p:dataTable id="permissions">
+						<p:columnGroup type="header">
+							<p:row>
+								<p:column rowspan="2" colspan="2" headerText="权限资源" />
+								<p:column colspan="7" headerText="权限" />
+							</p:row>
+
+							<p:row>
+                                <p:column headerText="管理" />
+                                <p:column headerText="读取" />
+                                <p:column headerText="写入" />
+                                <p:column headerText="执行" />
+                                <p:column headerText="建立" />
+                                <p:column headerText="修改" />
+                                <p:column headerText="删除" />
+							</p:row>
+						</p:columnGroup>
+
+					</p:dataTable>
+
+
+				</p:panel>
 			</t:panelGrid>
 
 
