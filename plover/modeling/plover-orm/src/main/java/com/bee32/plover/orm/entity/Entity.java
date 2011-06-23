@@ -98,7 +98,7 @@ public abstract class Entity<K extends Serializable>
 
     @Index(name = "keyword")
     @Column(length = KEYWORD_MAXLEN)
-    protected final String getKeyword() {
+    protected String getKeyword() {
         if (!keywordUpdated) {
             keyword = buildKeyword();
             keywordUpdated = true;
