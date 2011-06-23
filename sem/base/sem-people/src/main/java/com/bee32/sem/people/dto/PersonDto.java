@@ -3,7 +3,6 @@ package com.bee32.sem.people.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.bee32.plover.arch.util.dto.MarshalType;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
@@ -38,8 +37,7 @@ public class PersonDto
         censusRegister = source.getCensusRegister();
 
         PersonSidType _sidType = source.getSidType();
-        sidType = marshal(PersonSidTypeDto.class, _sidType);
-        sidType.marshalAs(MarshalType.ID_REF);
+        sidType = mref(PersonSidTypeDto.class, _sidType);
 
         if (selection.contains(ROLES)) {
             roles = new HashSet<PersonRoleDto>();
@@ -63,7 +61,6 @@ public class PersonDto
         if (sidTypeId != null && sidTypeId.isEmpty())
             sidTypeId = null;
         sidType.setId(sidTypeId);
-        sidType.marshalAs(MarshalType.ID_REF);
         merge(target, "sidType", sidType);
 
         if (selection.contains(ROLES))
