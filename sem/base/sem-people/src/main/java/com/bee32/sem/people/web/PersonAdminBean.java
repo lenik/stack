@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.free.UnexpectedException;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.arch.util.dto.MarshalType;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -29,6 +31,7 @@ import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.dto.PersonSidTypeDto;
 import com.bee32.sem.people.entity.ContactCategory;
+import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonSidType;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.service.IPeopleService;
@@ -307,6 +310,7 @@ public class PersonAdminBean extends EntityViewBean {
         contact = new ContactDto();
 
         ContactCategoryDto category = new ContactCategoryDto();
+        category.marshalAs(MarshalType.ID_REF);
         contact.setCategory(category);
         contact.setParty(person);
     }
@@ -349,8 +353,26 @@ public class PersonAdminBean extends EntityViewBean {
         }
 
         try {
-            person.getContacts().add(contact);
-            getDataManager().saveOrUpdate(person.unmarshal());
+            List<ContactDto> contacts = person.getContacts();
+            if (contact.getId() == null) {
+                contacts.add(contact);
+            } else {
+                int newContactId = contact.getId();
+                boolean matched = false;
+                for (int i = 0; i < contacts.size(); i++) {
+                    Integer oldId = contacts.get(i).getId();
+                    if (oldId != null && oldId == newContactId) {
+                        contacts.set(i, contact);
+                        matched = true;
+                        break;
+                    }
+                }
+                if (!matched)
+                    throw new UnexpectedException("No matched contact");
+            }
+
+            Person _person = person.unmarshal();
+            getDataManager().saveOrUpdate(_person);
 
             context.addMessage(null, new FacesMessage("提示", "联系方式保存成功"));
         } catch (Exception e) {

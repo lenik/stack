@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.arch.util.dto.MarshalType;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -373,6 +374,7 @@ public class OrgAdminBean extends EntityViewBean {
         contact = new ContactDto();
 
         ContactCategoryDto category = new ContactCategoryDto();
+        category.marshalAs(MarshalType.ID_REF);
         contact.setCategory(category);
         contact.setParty(org);
     }
