@@ -1,11 +1,9 @@
 package com.bee32.sem.people.dto;
 
-import javax.free.Nullables;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
-import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactXP;
 import com.bee32.sem.people.entity.Party;
@@ -25,6 +23,8 @@ public class ContactDto
     String email;
     String website;
     String qq;
+
+    boolean marshalled;
 
     public ContactDto() {
         super();
@@ -46,11 +46,14 @@ public class ContactDto
         email = source.getEmail();
         website = source.getWebsite();
         qq = source.getQq();
+        marshalled =true;
     }
 
     @Override
     protected void _unmarshalTo(Contact target) {
         merge(target, "party", party);
+        if (marshalled && !category.getMarshalType().isReference())
+            throw new IllegalStateException("marshalled but category mt changed!");
         merge(target, "category", category);
         target.setAddress(address);
         target.setPostCode(postCode);
@@ -147,29 +150,29 @@ public class ContactDto
         this.qq = qq;
     }
 
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-
-        hash += party.hashCode();
-
-        if (category != null)
-            hash += category.hashCode();
-
-        return hash;
-    }
-
-    @Override
-    protected Boolean naturalEquals(EntityDto<Contact, Integer> other) {
-        ContactDto o = (ContactDto) other;
-
-        if (!party.equals(o.party))
-            return false;
-
-        if (!Nullables.equals(category, o.category))
-            return false;
-
-        return super.idEquals(other);
-    }
+//    @Override
+//    protected Integer naturalHashCode() {
+//        int hash = 0;
+//
+//        hash += party.hashCode();
+//
+//        if (category != null)
+//            hash += category.hashCode();
+//
+//        return hash;
+//    }
+//
+//    @Override
+//    protected Boolean naturalEquals(EntityDto<Contact, Integer> other) {
+//        ContactDto o = (ContactDto) other;
+//
+//        if (!party.equals(o.party))
+//            return false;
+//
+//        if (!Nullables.equals(category, o.category))
+//            return false;
+//
+//        return super.idEquals(other);
+//    }
 
 }
