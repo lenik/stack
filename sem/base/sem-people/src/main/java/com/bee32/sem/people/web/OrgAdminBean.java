@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.free.UnexpectedException;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
@@ -31,6 +32,7 @@ import com.bee32.sem.people.dto.PartyTagDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.entity.ContactCategory;
+import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.PartyTag;
 import com.bee32.sem.sandbox.UIHelper;
@@ -119,7 +121,7 @@ public class OrgAdminBean extends EntityViewBean {
 
 	public OrgDto getOrg() {
 	    if(org == null)
-	        newOrg();
+	        _newOrg();
 		return org;
 	}
 
@@ -180,7 +182,7 @@ public class OrgAdminBean extends EntityViewBean {
 
     public ContactDto getContact() {
         if(contact == null)
-            newContact();
+            _newContact();
         return contact;
     }
 
@@ -270,7 +272,7 @@ public class OrgAdminBean extends EntityViewBean {
 
 
 
-    private void newOrg() {
+    private void _newOrg() {
 		org = new OrgDto(OrgDto.CONTACTS | OrgDto.RECORDS);
 
 		HttpSession session = ThreadHttpContext.requireSession();
@@ -285,14 +287,14 @@ public class OrgAdminBean extends EntityViewBean {
 		org.setType(orgTypeDto);
 	}
 
-	public void new_() {
-		newOrg();
+	public void doNew() {
+		_newOrg();
 
 		currTab = 1;
 		editable = true;
 	}
 
-	public void modify_() {
+	public void doModify() {
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		if(selectedOrg == null) {
@@ -306,7 +308,7 @@ public class OrgAdminBean extends EntityViewBean {
 		editable = true;
 	}
 
-	public void delete_() {
+	public void doDelete() {
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		if(selectedOrg == null) {
@@ -326,7 +328,7 @@ public class OrgAdminBean extends EntityViewBean {
 		}
 	}
 
-	public void save_() {
+	public void doSave() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         try {
@@ -345,14 +347,14 @@ public class OrgAdminBean extends EntityViewBean {
         }
 	}
 
-	public void cancel_() {
+	public void doCancel() {
 	    currTab = 0;
 	    editable = false;
 
-	    newOrg();
+	    _newOrg();
 	}
 
-	public void detail_() {
+	public void doDetail() {
 	    if(selectedOrg == null) {
 	        FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("提示", "请选择需要查看详细信息的客户/供应商!"));
@@ -370,7 +372,7 @@ public class OrgAdminBean extends EntityViewBean {
     public void onRowUnselect(UnselectEvent event) {
     }
 
-    private void newContact() {
+    private void _newContact() {
         contact = new ContactDto();
 
         ContactCategoryDto category = new ContactCategoryDto();
@@ -379,19 +381,19 @@ public class OrgAdminBean extends EntityViewBean {
         contact.setParty(org);
     }
 
-	public void newContact_() {
+	public void doNewContact() {
 	    if(org == null || org.getId() == null) {
 	        FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("提示", "请选择需要新增联系方式的客户/供应商!"));
 	    }
-	    newContact();
+	    _newContact();
 	}
 
-	public void modifyContact_() {
+	public void doModifyContact() {
 	    contact = selectedContact;
 	}
 
-    public void deleteContact_() {
+    public void doDeleteContact() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if(selectedContact == null) {
@@ -403,12 +405,14 @@ public class OrgAdminBean extends EntityViewBean {
             org.getContacts().remove(selectedContact);
             getDataManager().saveOrUpdate(org.unmarshal());
 
+			org = DTOs.marshal(OrgDto.class, getDataManager().load(Org.class, org.getId()));
+
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("提示", "删除联系方式失败;" + e.getMessage()));
         }
     }
 
-    public void saveContact_() {
+    public void doSaveContact() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if(org == null || org.getId() == null) {
@@ -417,9 +421,28 @@ public class OrgAdminBean extends EntityViewBean {
         }
 
         try {
-            org.getContacts().add(contact);
-            getDataManager().saveOrUpdate(org.unmarshal());
+            List<ContactDto> contacts = org.getContacts();
+            if (contact.getId() == null) {
+                contacts.add(contact);
+            } else {
+                int newContactId = contact.getId();
+                boolean matched = false;
+                for (int i = 0; i < contacts.size(); i++) {
+                    Integer oldId = contacts.get(i).getId();
+                    if (oldId != null && oldId == newContactId) {
+                        contacts.set(i, contact);
+                        matched = true;
+                        break;
+                    }
+                }
+                if (!matched)
+                    throw new UnexpectedException("No matched contact");
+            }
 
+            Org _org = org.unmarshal();
+            getDataManager().saveOrUpdate(_org);
+
+            org = DTOs.marshal(OrgDto.class, getDataManager().load(Org.class, org.getId()));
 
             context.addMessage(null, new FacesMessage("提示", "联系方式保存成功"));
         } catch (Exception e) {
@@ -433,20 +456,25 @@ public class OrgAdminBean extends EntityViewBean {
     }
 
     public void onRowUnselectContact(UnselectEvent event) {
-        newContact();
+        _newContact();
     }
 
     public void addTags() {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if(org == null || org.getId() == null) {
+        if(org == null) {
             context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的客户/供应商!"));
             return;
         }
 
+        if(org.getTags() == null) {
+		List<PartyTagDto> tags = new ArrayList<PartyTagDto>();
+		org.setTags(tags);
+        }
         for(String tagId : selectedTagsToAdd) {
             PartyTag tag = loadEntity(PartyTag.class, tagId);
             PartyTagDto t = DTOs.mref(PartyTagDto.class,tag);
+
             if(!org.getTags().contains(t))
                 org.getTags().add(t);
         }
@@ -455,7 +483,7 @@ public class OrgAdminBean extends EntityViewBean {
     public void deleteTag() {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if(org == null || org.getId() == null) {
+        if(org == null) {
             context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的客户/供应商!"));
             return;
         }
@@ -468,7 +496,7 @@ public class OrgAdminBean extends EntityViewBean {
         }
     }
 
-    private void newRole() {
+    private void _newRole() {
         role = new PersonRoleDto();
 
         PersonDto person = new PersonDto();
@@ -477,19 +505,19 @@ public class OrgAdminBean extends EntityViewBean {
         role.setOrg(org);
     }
 
-	public void newRole_() {
+	public void doNewRole() {
 	    if(org == null || org.getId() == null) {
 	        FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("提示", "请选择需要新增联系方式的客户/供应商!"));
 	    }
-	    newRole();
+	    _newRole();
 	}
 
-    public void modifyRole_() {
+    public void doModifyRole() {
         role = selectedRole;
     }
 
-    public void deleteRole_() {
+    public void doDeleteRole() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if(selectedRole == null) {
@@ -506,7 +534,7 @@ public class OrgAdminBean extends EntityViewBean {
         }
     }
 
-    public void saveRole_() {
+    public void doSaveRole() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if(org == null || org.getId() == null) {
@@ -531,7 +559,7 @@ public class OrgAdminBean extends EntityViewBean {
     }
 
     public void onRowUnselectRole(UnselectEvent event) {
-        newRole();
+        _newRole();
     }
 
     public void findPerson() {

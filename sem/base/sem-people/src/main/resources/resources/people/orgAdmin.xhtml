@@ -40,24 +40,24 @@
                 <p:toolbar id="orgToolbar">
                     <p:toolbarGroup align="left">
                         <p:commandButton value="新增"
-                            actionListener="#{orgAdminBean.new_}"
+                            actionListener="#{orgAdminBean.doNew}"
                             disabled="#{orgAdminBean.editable}"
                             update="orgForm" async="true" />
                         <p:commandButton value="修改"
-                            actionListener="#{orgAdminBean.modify_}"
+                            actionListener="#{orgAdminBean.doModify}"
                             disabled="#{orgAdminBean.editable}"
                             update="orgForm" async="true" />
                         <p:commandButton value="删除"
-                            actionListener="#{orgAdminBean.delete_}"
+                            actionListener="#{orgAdminBean.doDelete}"
                             disabled="#{orgAdminBean.editable}"
                             update="orgForm" async="true" />
                         <p:divider />
                         <p:commandButton value="保存"
-                            actionListener="#{orgAdminBean.save_}"
+                            actionListener="#{orgAdminBean.doSave}"
                             disabled="#{!orgAdminBean.editable}"
                             update="orgForm" async="true" />
                         <p:commandButton value="取消"
-                            actionListener="#{orgAdminBean.cancel_}"
+                            actionListener="#{orgAdminBean.doCancel}"
                             disabled="#{!orgAdminBean.editable}"
                             update="orgForm" async="true" />
                         <p:divider />
@@ -66,7 +66,7 @@
                             disabled="#{orgAdminBean.editable or (not orgAdminBean.orgSelected)}"
                             onclick="verifyDlg.show();" /> -->
                         <p:commandButton value="详细"
-                            actionListener="#{orgAdminBean.detail_}"
+                            actionListener="#{orgAdminBean.doDetail}"
                             disabled="#{orgAdminBean.editable or (not orgAdminBean.orgSelected)}"
                             update="orgForm" async="true" />
                     </p:toolbarGroup>
@@ -151,10 +151,10 @@
 									</p:selectOneListbox>
 									<h:panelGrid colums="1">
 										<p:commandButton value="增加标签"
-											disabled="#{orgAdminBean.org == null or orgAdminBean.org.id == null}"
+											disabled="#{orgAdminBean.org == null}"
 											onclick="tagDlg.show();" />
 										<p:commandButton value="删除标签"
-											disabled="#{orgAdminBean.org == null or orgAdminBean.org.id == null}"
+											disabled="#{orgAdminBean.org == null}"
 											actionListener="#{orgAdminBean.deleteTag}"
 											update="orgForm:orgTags"
 											/>
@@ -207,17 +207,18 @@
                                 <p:toolbarGroup align="left">
                                     <p:commandButton value="新增"
                                         disabled="#{orgAdminBean.org == null or orgAdminBean.org.id == null}"
-                                        actionListener="#{orgAdminBean.newContact_}"
+                                        actionListener="#{orgAdminBean.doNewContact}"
                                         update="contactForm:contactHolder" async="true"
                                         onclick="contactHolderDlg.show();" />
                                     <p:commandButton value="修改"
-                                        actionListener="#{orgAdminBean.modifyContact_}"
+                                        actionListener="#{orgAdminBean.doModifyContact}"
                                         disabled="#{not orgAdminBean.contactSelected}"
                                         update="contactForm:contactHolder" async="true"
                                         onclick="contactHolderDlg.show();" />
                                     <p:commandButton value="删除"
-                                        actionListener="#{orgAdminBean.deleteContact_}"
-                                        disabled="#{not orgAdminBean.contactSelected}" update=""
+                                        actionListener="#{orgAdminBean.doDeleteContact}"
+                                        disabled="#{not orgAdminBean.contactSelected}"
+                                        update="contacts growl"
                                         async="true" />
                                     <p:divider />
                                 </p:toolbarGroup>
@@ -304,16 +305,16 @@
                                 <p:toolbarGroup align="left">
                                     <p:commandButton value="新增"
                                         disabled="#{orgAdminBean.org == null or orgAdminBean.org.id == null}"
-                                        actionListener="#{orgAdminBean.newRole_}"
+                                        actionListener="#{orgAdminBean.doNewRole}"
                                         update="roleForm:roleHolder" async="true"
                                         onclick="roleHolderDlg.show();" />
                                     <p:commandButton value="修改"
-                                        actionListener="#{orgAdminBean.modifyRole_}"
+                                        actionListener="#{orgAdminBean.doModifyRole}"
                                         disabled="#{not orgAdminBean.roleSelected}"
                                         update="roleForm:roleHolder" async="true"
                                         onclick="roleHolderDlg.show();" />
                                     <p:commandButton value="删除"
-                                        actionListener="#{orgAdminBean.deleteRole_}"
+                                        actionListener="#{orgAdminBean.doDeleteRole}"
                                         disabled="#{not orgAdminBean.roleSelected}" update="roles growl"
                                         async="true" />
                                     <p:divider />
@@ -452,7 +453,7 @@
                         <t:panelGroup colspan="2">
                             <t:panelGrid columns="2">
                                 <p:commandButton value="保存"
-                                    actionListener="#{orgAdminBean.saveContact_}"
+                                    actionListener="#{orgAdminBean.doSaveContact}"
                                     oncomplete="contactHolderDlg.hide();" async="true"
                                     update="orgForm:contacts orgForm:growl" />
                                 <p:commandButton value="取消"
@@ -535,7 +536,7 @@
                         <t:panelGroup colspan="2">
                             <t:panelGrid columns="2">
                                 <p:commandButton value="保存"
-                                    actionListener="#{orgAdminBean.saveRole_}"
+                                    actionListener="#{orgAdminBean.doSaveRole}"
                                     oncomplete="roleHolderDlg.hide();" async="true"
                                     update="orgForm:roles orgForm:growl" />
                                 <p:commandButton value="取消"

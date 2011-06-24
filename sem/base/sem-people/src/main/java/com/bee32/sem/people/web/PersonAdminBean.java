@@ -339,6 +339,8 @@ public class PersonAdminBean extends EntityViewBean {
             person.getContacts().remove(selectedContact);
             getDataManager().saveOrUpdate(person.unmarshal());
 
+            person = DTOs.marshal(PersonDto.class, getDataManager().load(Person.class, person.getId()));
+
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("提示", "删除联系方式失败;" + e.getMessage()));
         }
@@ -373,6 +375,8 @@ public class PersonAdminBean extends EntityViewBean {
 
             Person _person = person.unmarshal();
             getDataManager().saveOrUpdate(_person);
+
+            person = DTOs.marshal(PersonDto.class, getDataManager().load(Person.class, person.getId()));
 
             context.addMessage(null, new FacesMessage("提示", "联系方式保存成功"));
         } catch (Exception e) {

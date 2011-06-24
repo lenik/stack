@@ -216,7 +216,8 @@
 										onclick="contactHolderDlg.show();" />
 									<p:commandButton value="删除"
 										actionListener="#{personAdminBean.doDeleteContact}"
-										disabled="#{not personAdminBean.contactSelected}" update=""
+										disabled="#{not personAdminBean.contactSelected}"
+										update="contacts growl"
 										async="true" />
 									<p:divider />
 								</p:toolbarGroup>
