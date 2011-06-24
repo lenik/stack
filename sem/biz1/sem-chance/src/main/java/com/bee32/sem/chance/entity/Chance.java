@@ -29,19 +29,14 @@ public class Chance
     User owner;
     ChanceCategory category = ChanceCategory.NORMAL;
     ChanceSourceType source = ChanceSourceType.OTHER;
-    String subject;
-    String content;
+    String subject = "";
+    String content = "";
 
-    List<ChanceParty> parties;
-    List<ChanceAction> actions;
+    List<ChanceParty> parties = new ArrayList<ChanceParty>();
+    List<ChanceAction> actions = new ArrayList<ChanceAction>();
 
     // Redundant
     ChanceStage stage = ChanceStage.INIT;
-
-    public Chance() {
-        parties = new ArrayList<ChanceParty>();
-        actions = new ArrayList<ChanceAction>();
-    }
 
     /**
      * 类型

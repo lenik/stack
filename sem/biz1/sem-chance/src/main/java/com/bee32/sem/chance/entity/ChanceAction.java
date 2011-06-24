@@ -28,20 +28,15 @@ public class ChanceAction
     private static final long serialVersionUID = 1L;
 
     boolean plan;
-    List<Party> parties;
+    List<Party> parties = new ArrayList<Party>();
 
     User actor;
-    ChanceActionStyle style;
+    ChanceActionStyle style = ChanceActionStyle.OTHER;
 
-    String content;
-    String spending;
+    String content = "";
+    String spending = "";
     Chance chance;
-    ChanceStage stage;
-
-    public ChanceAction() {
-        super();
-        parties = new ArrayList<Party>();
-    }
+    ChanceStage stage = ChanceStage.INIT;
 
     /**
      * 工作日志类型
