@@ -82,6 +82,16 @@ abstract class BaseDto_Skel<S, C>
      */
     public abstract boolean isNullRef();
 
+    @Override
+    public <$ extends BaseDto<? extends S, C>> $ ref() {
+        @SuppressWarnings("unchecked")
+        $ self = ($) this;
+
+        marshalAs(MarshalType.ID_REF);
+
+        return self;
+    }
+
     /**
      * <pre>
      * LAYER 2

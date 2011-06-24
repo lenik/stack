@@ -22,6 +22,11 @@ public interface IDataTransferObject<S, C>
      */
     <D extends BaseDto<S, C>> D marshal(IMarshalSession session, S source);
 
+    /**
+     * Turn this into a referenced-DTO.
+     */
+    <D extends BaseDto<? extends S, C>> D ref();
+
     <D extends BaseDto<? extends S, C>> D ref(S source);
 
     /**
