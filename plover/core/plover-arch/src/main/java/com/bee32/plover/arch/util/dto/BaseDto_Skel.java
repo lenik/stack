@@ -26,7 +26,7 @@ abstract class BaseDto_Skel<S, C>
     private static final long serialVersionUID = 1L;
 
     protected MarshalType marshalType = MarshalType.SELECTION;
-    private boolean initialized;
+    protected boolean stereotyped;
 
     private boolean _null;
 
@@ -49,16 +49,16 @@ abstract class BaseDto_Skel<S, C>
             return;
 
         // prevent from change.
-        if (initialized)
-            throw new IllegalStateException("Can't change marshal-type after initialized");
+        if (stereotyped)
+            throw new IllegalStateException("Can't change marshal-type after stereotyped");
 
         this.marshalType = marshalType;
 
-        initialized = true;
+        stereotyped = true;
     }
 
-    public boolean isInitialized() {
-        return initialized;
+    public boolean isStereotyped() {
+        return stereotyped;
     }
 
     public boolean isNull() {
@@ -121,9 +121,9 @@ abstract class BaseDto_Skel<S, C>
             // Do the real marshal work.
             // logger.debug("marshal begin");
 
-            // Always set initialized.
-            if (!initialized)
-                initialized = true;
+            // Always set stereotyped.
+            if (!stereotyped)
+                stereotyped = true;
 
             IMarshalSession session = getSession();
             Object marshalKey = getMarshalKey(source);
@@ -168,9 +168,9 @@ abstract class BaseDto_Skel<S, C>
     @Override
     final S mergeImpl(S target) {
 
-        // Force initialized before unmarshal.
-        if (!initialized)
-            initialized = true;
+        // Force stereotyped before unmarshal.
+        if (!stereotyped)
+            stereotyped = true;
 
         if (isNullRef())
             return null;

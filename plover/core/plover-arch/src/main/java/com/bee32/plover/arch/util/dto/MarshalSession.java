@@ -50,6 +50,11 @@ public class MarshalSession
         return unmarshalledMap;
     }
 
+    final void checkTyped(BaseDto_Skel<?, ?> dto) {
+        if (!dto.isStereotyped())
+            throw new IllegalUsageException("Dto hasn't been stereotyped, yet: " + dto);
+    }
+
     @Override
     public <D> D getMarshalled(Object marshalKey) {
         return (D) getMarshalledMap().get(marshalKey);
@@ -57,22 +62,18 @@ public class MarshalSession
 
     @Override
     public void addMarshalled(Object marshalKey, BaseDto_Skel<?, ?> dto) {
-        if (!dto.isInitialized())
-            throw new IllegalUsageException("Dto hasn't been initialized, yet: " + dto);
+        checkTyped(dto);
         getMarshalledMap().put(marshalKey, dto);
     }
 
     @Override
     public <S> S getUnmarshalled(BaseDto_Skel<?, ?> dto) {
-        if (!dto.isInitialized())
-            throw new IllegalUsageException("Dto hasn't been initialized, yet: " + dto);
         return (S) getUnmarshalledMap().get(dto);
     }
 
     @Override
     public void addUnmarshalled(BaseDto_Skel<?, ?> dto, Object source) {
-        if (!dto.isInitialized())
-            throw new IllegalUsageException("Dto hasn't been initialized, yet: " + dto);
+        checkTyped(dto);
         getUnmarshalledMap().put(dto, source);
     }
 
