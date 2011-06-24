@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.free.ParseException;
 
-import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
 import com.bee32.sem.people.entity.Party;
@@ -20,22 +20,18 @@ public class AbstractPartyDto<E extends Party>
     public static final int RECORDS = 2;
     public static final int ROLES = 4;
 
-    User owner;
-
-    List<PartyTagDto> tags;
+    UserDto owner;
 
     String name;
     String fullName;
     String nickName;
 
     Date birthday;
-
     String interests;
-
+    String sid;
     String memo;
 
-    String sid;
-
+    List<PartyTagDto> tags;
     List<ContactDto> contacts;
     List<PartyRecordDto> records;
 
@@ -49,9 +45,8 @@ public class AbstractPartyDto<E extends Party>
 
     @Override
     protected void _marshal(E source) {
-
-        owner = source.getOwner();
-        tags = marshalList(PartyTagDto.class, source.getTags());
+        owner = mref(UserDto.class, 0, source.getOwner());
+        tags = marshalList(PartyTagDto.class, source.getTags(), true);
 
         name = source.getName();
         fullName = source.getFullName();
@@ -74,20 +69,18 @@ public class AbstractPartyDto<E extends Party>
 
     @Override
     protected void _unmarshalTo(E target) {
-        target.setOwner(owner);
-        mergeSet(target, "tags", tags);
+        merge(target, "owner", owner);
 
         target.setName(name);
         target.setFullName(fullName);
         target.setNickName(nickName);
 
         target.setBirthday(birthday);
-
         target.setInterests(interests);
-
+        target.setSid(sid);
         target.setMemo(memo);
 
-        target.setSid(sid);
+        mergeSet(target, "tags", tags);
 
         if (selection.contains(CONTACTS))
             mergeList(target, "contacts", contacts);
@@ -101,20 +94,12 @@ public class AbstractPartyDto<E extends Party>
             throws ParseException {
     }
 
-    public User getOwner() {
+    public UserDto getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(UserDto owner) {
         this.owner = owner;
-    }
-
-    public List<PartyTagDto> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<PartyTagDto> tags) {
-        this.tags = tags;
     }
 
     public String getName() {
@@ -157,22 +142,28 @@ public class AbstractPartyDto<E extends Party>
         this.interests = interests;
     }
 
-
-
-    public String getMemo() {
-		return memo;
-	}
-
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
-
-	public String getSid() {
+    public String getSid() {
         return sid;
     }
 
     public void setSid(String sid) {
         this.sid = sid;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public List<PartyTagDto> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<PartyTagDto> tags) {
+        this.tags = tags;
     }
 
     public List<PartyRecordDto> getRecords() {
