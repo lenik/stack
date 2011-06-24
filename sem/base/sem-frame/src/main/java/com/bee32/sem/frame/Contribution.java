@@ -23,8 +23,22 @@ import com.bee32.sem.frame.menu.MenuContribution;
 public @interface Contribution {
 
     /**
-     * Target element id or path.
+     * Parent element id or path.
+     *
+     * Overrided by {@link #parent()}.
      */
     String value();
+
+    /**
+     * Parent element id or path.
+     *
+     * @see #value()
+     */
+    String parent() default "";
+
+    /**
+     * Section.
+     */
+    String section() default "";
 
 }
