@@ -36,17 +36,21 @@ public abstract class BaseDto_AS1<S, C>
 
         dto.setSelection(selection);
 
-        if (refButFilled != Boolean.FALSE) {
-            dto._marshalAs(MarshalType.SELECTION);
+        boolean isRef = refButFilled != null;
+        boolean doMarshal = refButFilled != Boolean.FALSE;
 
+        if (isRef)
+            dto.marshalAs(MarshalType.ID_REF);
+        else
+            dto.marshalAs(MarshalType.SELECTION);
+
+        if (doMarshal) {
             // Do the marshal.
             // null source should make this dto._null = true
             dto = dto.marshal(getSession(), source);
-
-            dto.marshalAs(MarshalType.SELECTION);
         }
 
-        if (refButFilled != null) {
+        if (isRef) {
             // Change to a reference.
             // null source should make this dto ref (id=null)
             dto.ref(source); // this will also set marshal-as ID_REF.

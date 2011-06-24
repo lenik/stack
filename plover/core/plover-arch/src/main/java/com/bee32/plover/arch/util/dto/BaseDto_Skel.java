@@ -6,7 +6,6 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import javax.free.IllegalUsageException;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
@@ -44,9 +43,17 @@ abstract class BaseDto_Skel<S, C>
     public void marshalAs(MarshalType marshalType) {
         if (marshalType == null)
             throw new NullPointerException("marshalType");
+
+        // skip if no change.
+        if (marshalType == this.marshalType)
+            return;
+
+        // prevent from change.
         if (initialized)
-            throw new IllegalStateException("Already initialized");
+            throw new IllegalStateException("Can't change marshal-type after initialized");
+
         this.marshalType = marshalType;
+
         initialized = true;
     }
 
@@ -94,9 +101,6 @@ abstract class BaseDto_Skel<S, C>
         @SuppressWarnings("unchecked")
         D _this = (D) this;
 
-        if (marshalType.isReference())
-            throw new IllegalUsageException("You can't marshal into a referenced DTO.");
-
         if (source == null) {
             // if (!marshalType.isReference())
             // throw new IllegalUsageException("You can't marshal a null to referenced-DTO.");
@@ -106,6 +110,10 @@ abstract class BaseDto_Skel<S, C>
         } else {
             // Do the real marshal work.
             // logger.debug("marshal begin");
+
+            // Always set initialized.
+            if (!initialized)
+                initialized = true;
 
             IMarshalSession session = getSession();
             Object marshalKey = getMarshalKey(source);
@@ -183,6 +191,11 @@ abstract class BaseDto_Skel<S, C>
 
     @Override
     final S mergeImpl(S target) {
+
+        // Force initialized before unmarshal.
+        if (!initialized)
+            initialized = true;
+
         if (isNullRef())
             return null;
 
@@ -249,9 +262,11 @@ abstract class BaseDto_Skel<S, C>
 
     final void parseImpl(TextMap map)
             throws ParseException {
+
+        marshalAs(MarshalType.SELECTION);
+
         __parse(map);
         _parse(map);
-        marshalType = MarshalType.SELECTION;
     }
 
     protected void __parse(TextMap map)
