@@ -20,10 +20,10 @@ public class PartyRecord
 
     private static final long serialVersionUID = 1L;
 
-    PartyRecordCategory category;
+    PartyRecordCategory category = PartyRecordCategory.INFO;
     Date date;
     Party party;
-    String description;
+    String description = "";
 
     @ManyToOne
     public PartyRecordCategory getCategory() {

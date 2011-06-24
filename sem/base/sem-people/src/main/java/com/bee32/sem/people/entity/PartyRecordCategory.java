@@ -22,9 +22,11 @@ public class PartyRecordCategory
         super(name, label, description);
     }
 
-    public static PartyRecordCategory NORMALLOG = new PartyRecordCategory("NORM", "警告");
-    public static PartyRecordCategory INSERT = new PartyRecordCategory("INSE", "严重警告");
-    public static PartyRecordCategory DELETE = new PartyRecordCategory("DELE", "拘留");
-    public static PartyRecordCategory UPDATE = new PartyRecordCategory("UPDA", "劳改");
+    public static PartyRecordCategory INFO = new PartyRecordCategory("INFO", "信息");
+    public static PartyRecordCategory ACTIVITY = new PartyRecordCategory("ACTI", "行动记要");
+    public static PartyRecordCategory WARNING = new PartyRecordCategory("WARN", "警告处分");
+    public static PartyRecordCategory SEVERE = new PartyRecordCategory("SEVE", "严重警告处分");
+    public static PartyRecordCategory CUSTODY = new PartyRecordCategory("CSTO", "行政拘留");
+    public static PartyRecordCategory JAIL = new PartyRecordCategory("JAIL", "监禁");
 
 }
