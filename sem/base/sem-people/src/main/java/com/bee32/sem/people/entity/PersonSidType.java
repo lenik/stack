@@ -25,5 +25,6 @@ public class PersonSidType
     public static PersonSidType IDENTITYCARD = new PersonSidType("I.D.", "身份证", "天朝基本证件");
     public static PersonSidType PASSPORT = new PersonSidType("PASS", "护照");
     public static PersonSidType DRIVINGLICENES = new PersonSidType("DRIV", "驾驶证");
+    public static PersonSidType STUDENT = new PersonSidType("STUD", "学生证");
 
 }
