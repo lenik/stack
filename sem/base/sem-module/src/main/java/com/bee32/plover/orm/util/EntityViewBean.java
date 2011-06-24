@@ -24,4 +24,17 @@ public abstract class EntityViewBean
         return dataManager;
     }
 
+    protected <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    D reload(D dto) {
+        Class<? extends D> dtoType = (Class<? extends D>) dto.getClass();
+        Class<? extends E> entityType = dto.getEntityType();
+        K id = dto.getId();
+
+        CommonDataManager dataManager = getDataManager();
+        E reloaded = dataManager.load(entityType, id);
+
+        D remarshalled = DTOs.marshal(dtoType, reloaded);
+        return remarshalled;
+    }
+
 }
