@@ -9,7 +9,11 @@ import org.primefaces.event.UnselectEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.dto.GroupDto;
+import com.bee32.icsf.principal.dto.RoleDto;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
@@ -21,6 +25,8 @@ public class PermissionAdminBean extends EntityViewBean {
     private static final long serialVersionUID = 1L;
 
     private UserDto selectedUser;
+    private RoleDto selectedRole;
+    private GroupDto selectedGroup;
 
 
     @PostConstruct
@@ -36,12 +42,47 @@ public class PermissionAdminBean extends EntityViewBean {
         this.selectedUser = selectedUser;
     }
 
+    public RoleDto getSelectedRole() {
+        return selectedRole;
+    }
+
+    public void setSelectedRole(RoleDto selectedRole) {
+        this.selectedRole = selectedRole;
+    }
+
+    public GroupDto getSelectedGroup() {
+        return selectedGroup;
+    }
+
+    public void setSelectedGroup(GroupDto selectedGroup) {
+        this.selectedGroup = selectedGroup;
+    }
+
     public List<UserDto> getUsers() {
         List<User> users = getDataManager().loadAll(User.class);
         List<UserDto> userDtos = DTOs.marshalList(UserDto.class, users);
 
         return userDtos;
     }
+
+    public List<RoleDto> getRoles() {
+        List<Role> roles = getDataManager().loadAll(Role.class);
+        List<RoleDto> roleDtos = DTOs.marshalList(RoleDto.class, roles);
+
+        return roleDtos;
+    }
+
+    public List<GroupDto> getGroups() {
+        List<Group> groups = getDataManager().loadAll(Group.class);
+        List<GroupDto> groupDtos = DTOs.marshalList(GroupDto.class, groups);
+
+        return groupDtos;
+    }
+
+
+
+
+
 
 
 
@@ -50,6 +91,18 @@ public class PermissionAdminBean extends EntityViewBean {
     }
 
     public void onRowUnselectUser(UnselectEvent event) {
+    }
+
+    public void onRowSelectRole(SelectEvent event) {
+    }
+
+    public void onRowUnselectRole(UnselectEvent event) {
+    }
+
+    public void onRowSelectGroup(SelectEvent event) {
+    }
+
+    public void onRowUnselectGroup(UnselectEvent event) {
     }
 
 }

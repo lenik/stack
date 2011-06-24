@@ -37,10 +37,65 @@
                 <p:tabView header="权限主体列表">
 
                     <p:tab title="组列表">
+                        <p:dataTable id="groups" var="group" value="#{permissionAdminBean.groups}"
+                            resizableColumns="true"
+                            selection="#{permissionAdminBean.selectedGroup}"
+                            selectionMode="single" rowIndexVar="rowIndex">
 
+                            <p:ajax event="rowSelect"
+                                listener="#{permissionAdminBean.onRowSelectGroup}"
+                                update="permissions" />
+                            <p:ajax event="rowUnselect"
+                                listener="#{personAdminBean.onRowUnselectGroup}"
+                                update="permissions" />
+
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="序号" />
+                                </f:facet>
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="名称" />
+                                </f:facet>
+                                <h:outputText value="#{group.name}" />
+                            </p:column>
+
+                        </p:dataTable>
                     </p:tab>
 
                     <p:tab title="角色列表">
+                        <p:dataTable id="roles" var="role" value="#{permissionAdminBean.roles}"
+                            resizableColumns="true"
+                            selection="#{permissionAdminBean.selectedRole}"
+                            selectionMode="single" rowIndexVar="rowIndex">
+
+                            <p:ajax event="rowSelect"
+                                listener="#{permissionAdminBean.onRowSelectRole}"
+                                update="permissions" />
+                            <p:ajax event="rowUnselect"
+                                listener="#{personAdminBean.onRowUnselectRole}"
+                                update="permissions" />
+
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="序号" />
+                                </f:facet>
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="名称" />
+                                </f:facet>
+                                <h:outputText value="#{role.name}" />
+                            </p:column>
+
+                        </p:dataTable>
 
 					</p:tab>
 
@@ -80,10 +135,10 @@
 
                 <p:panel header="权限列表">
 
-					<p:dataTable id="permissions">
+					<p:dataTable id="permissions" resizableColumns="true" rowIndexVar="rowIndex">
 						<p:columnGroup type="header">
 							<p:row>
-								<p:column rowspan="2" colspan="2" headerText="权限资源" />
+								<p:column rowspan="3" colspan="2" headerText="权限资源" />
 								<p:column colspan="7" headerText="权限" />
 							</p:row>
 
@@ -97,6 +152,78 @@
                                 <p:column headerText="删除" />
 							</p:row>
 						</p:columnGroup>
+
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="序号" />
+							</f:facet>
+							<h:outputText value="#{rowIndex + 1}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="a" />
+							</f:facet>
+							<h:outputText value="1" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="a" />
+							</f:facet>
+							<h:outputText value="1" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="a" />
+							</f:facet>
+							<h:outputText value="1" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="a" />
+							</f:facet>
+							<h:outputText value="1" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="a" />
+							</f:facet>
+							<h:outputText value="1" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="a" />
+							</f:facet>
+							<h:outputText value="1" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="a" />
+							</f:facet>
+							<h:outputText value="1" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="a" />
+							</f:facet>
+							<h:outputText value="1" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="a" />
+							</f:facet>
+							<h:outputText value="1" />
+						</p:column>
+
 
 					</p:dataTable>
 
