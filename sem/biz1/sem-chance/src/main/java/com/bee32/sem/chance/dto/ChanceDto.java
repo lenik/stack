@@ -2,7 +2,6 @@ package com.bee32.sem.chance.dto;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,19 +24,17 @@ public class ChanceDto
     public static final int PARTIES = 1;
     public static final int ACTIONS = 2;
 
-    private String party;
-    private String date;
-    private String shortContent;
-    private UserDto owner;
-    private ChanceCategoryDto category;
-    private ChanceSourceDto source;
-    private String subject;
-    private String content;
+    String party;
+    String date;
+    String shortContent;
+    UserDto owner;
+    ChanceCategoryDto category;
+    ChanceSourceDto source;
+    String subject;
+    String content;
 
-    private Date createDate;
-
-    private List<ChancePartyDto> parties = new ArrayList<ChancePartyDto>();
-    private List<ChanceActionDto> actions = new ArrayList<ChanceActionDto>();
+    List<ChancePartyDto> parties;
+    List<ChanceActionDto> actions;
 
     ChanceStageDto stage;
 
@@ -114,7 +111,7 @@ public class ChanceDto
         setMaxStage();
     }
 
-    void setMaxStage(){
+    void setMaxStage() {
         int order = getStage().getOrder();
         int maxOrder = 0;
         ChanceStageDto maxStage = null;
@@ -130,16 +127,15 @@ public class ChanceDto
         }
     }
 
-
-    public void addChanceParty(ChancePartyDto chanceParty){
-        if(parties.isEmpty())
+    public void addChanceParty(ChancePartyDto chanceParty) {
+        if (parties.isEmpty())
             parties = new ArrayList<ChancePartyDto>();
-        if(!parties.contains(chanceParty))
+        if (!parties.contains(chanceParty))
             parties.add(chanceParty);
     }
 
-    public void deleteChanceParty(ChancePartyDto chanceParty){
-        if(parties.contains(chanceParty))
+    public void deleteChanceParty(ChancePartyDto chanceParty) {
+        if (parties.contains(chanceParty))
             parties.remove(chanceParty);
     }
 
@@ -205,14 +201,6 @@ public class ChanceDto
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
     }
 
     public List<ChancePartyDto> getParties() {

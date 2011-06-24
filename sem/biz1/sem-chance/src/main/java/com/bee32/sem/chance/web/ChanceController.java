@@ -43,7 +43,7 @@ public class ChanceController
         tab.push(dto.getSource().getLabel());
         tab.push(dto.getSubject());
         tab.push(Strings.ellipse(dto.getContent(), 16));
-        tab.push(DateToRange.fullFormat.format(dto.getCreateDate()));
+        tab.push(DateToRange.fullFormat.format(dto.getCreatedDate()));
         tab.push(dto.getParty());
         tab.push(dto.getStage().getLabel());
     }

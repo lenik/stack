@@ -38,8 +38,8 @@ public class ChanceActionDto
     private Date endTime;
     private String content;
     private String spending;
-    private ChanceDto chance = new ChanceDto();
-    private ChanceStageDto stage = new ChanceStageDto();
+    private ChanceDto chance;
+    private ChanceStageDto stage;
 
     public ChanceActionDto() {
         super();
