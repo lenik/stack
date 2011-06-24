@@ -54,9 +54,21 @@ public abstract class Appearance
         if (flags.checkAndLoad(HAVE_LABEL)) {
             label = loadLabel();
             if (label == null && parent != null)
-                return parent.getDisplayName();
+                label = parent.getDisplayName();
+            if (label == null)
+                label = getDefaultLabel();
         }
         return label;
+    }
+
+    String defaultLabel;
+
+    protected String getDefaultLabel() {
+        return defaultLabel;
+    }
+
+    public void setDefaultLabel(String defaultLabel) {
+        this.defaultLabel = defaultLabel;
     }
 
     /**

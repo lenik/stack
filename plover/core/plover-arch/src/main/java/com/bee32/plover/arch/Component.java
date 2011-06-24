@@ -30,7 +30,7 @@ public abstract class Component
      */
     protected String name;
 
-    IAppearance appearance;
+    Appearance appearance;
     ExceptionSupport exceptionSupport;
 
     public Component(String name) {
@@ -58,7 +58,7 @@ public abstract class Component
         return appearance;
     }
 
-    IAppearance createAppearance() {
+    Appearance createAppearance() {
         Class<?> componentClass = getClass();
 
         ClassResourceProperties properties = new ClassResourceProperties(componentClass, Locale.getDefault());
@@ -79,8 +79,11 @@ public abstract class Component
      * @param appearance
      *            The new appearance. Specify <code>null</code> to restore the default appearance.
      */
-    void setAppearance(IAppearance appearance) {
+    void setAppearance(Appearance appearance) {
+        if (appearance == null)
+            throw new NullPointerException("appearance");
         this.appearance = appearance;
+        this.appearance.setDefaultLabel(getName());
     }
 
     @Override
