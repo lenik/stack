@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.free.UnexpectedException;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
@@ -19,29 +18,24 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.icsf.principal.User;
-import com.bee32.plover.arch.util.dto.MarshalType;
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
-import com.bee32.sem.people.dto.ContactCategoryDto;
-import com.bee32.sem.people.dto.ContactDto;
+import com.bee32.sem.people.dto.AbstractPartyDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgTypeDto;
-import com.bee32.sem.people.dto.PartyTagDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
-import com.bee32.sem.people.entity.ContactCategory;
-import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgType;
-import com.bee32.sem.people.entity.PartyTag;
+import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.service.IPeopleService;
 import com.bee32.sem.user.util.SessionLoginInfo;
 
 @Component
 @Scope("view")
-public class OrgAdminBean extends EntityViewBean {
+public class OrgAdminBean
+        extends AbstractPartyAdminBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -52,19 +46,12 @@ public class OrgAdminBean extends EntityViewBean {
 	private OrgDto selectedOrg;
 	private OrgDto org;
 
-	private ContactDto selectedContact;
-	private ContactDto contact;
-
-	private List<String> selectedTagsToAdd;
-	private String selectedTagId;
-
     private PersonRoleDto selectedRole;
     private PersonRoleDto role;
 
     private String personPartten;
     private List<PersonDto> persons;
     private PersonDto selectedPerson;
-
 
 	@PostConstruct
 	public void init() {
@@ -85,6 +72,16 @@ public class OrgAdminBean extends EntityViewBean {
 
 		currTab = 0;
 		editable = false;
+	}
+
+	@Override
+	protected AbstractPartyDto<? extends Party> getParty() {
+	    return org;
+	}
+
+	@Override
+	protected void setParty(AbstractPartyDto<? extends Party> party) {
+	    this.org = (OrgDto) party;
 	}
 
 	public int getCurrTab() {
@@ -139,71 +136,6 @@ public class OrgAdminBean extends EntityViewBean {
         List<OrgType> orgTypes = getDataManager().loadAll(OrgType.class);
         List<OrgTypeDto> orgTypeDtos = DTOs.marshalList(OrgTypeDto.class, orgTypes);
         return UIHelper.selectItemsFromDict(orgTypeDtos);
-    }
-
-    public List<SelectItem> getContactCategories() {
-        List<ContactCategory> contactCategories = getDataManager().loadAll(ContactCategory.class);
-        List<ContactCategoryDto> contactCategoryDtos = DTOs.marshalList(ContactCategoryDto.class, contactCategories);
-        return UIHelper.selectItemsFromDict(contactCategoryDtos);
-    }
-
-    public List<SelectItem> getTags() {
-        List<PartyTag> partyTags = getDataManager().loadAll(PartyTag.class);
-        List<PartyTagDto> partyTagDtos = DTOs.marshalList(PartyTagDto.class, partyTags);
-        return UIHelper.selectItemsFromDict(partyTagDtos);
-    }
-
-
-    public boolean isContactSelected() {
-        if(selectedContact != null)
-            return true;
-        return false;
-    }
-
-    public ContactDto getSelectedContact() {
-        return selectedContact;
-    }
-
-    public void setSelectedContact(ContactDto selectedContact) {
-        this.selectedContact = selectedContact;
-    }
-
-    public List<ContactDto> getContacts() {
-        List<ContactDto> contacts = new ArrayList<ContactDto>();
-
-        if(org != null && org.getId() != null) {
-            if(org.getContacts() != null) {
-                contacts = org.getContacts();
-            }
-        }
-
-        return contacts;
-    }
-
-    public ContactDto getContact() {
-        if(contact == null)
-            _newContact();
-        return contact;
-    }
-
-    public void setContact(ContactDto contact) {
-        this.contact = contact;
-    }
-
-    public List<String> getSelectedTagsToAdd() {
-        return selectedTagsToAdd;
-    }
-
-    public void setSelectedTagsToAdd(List<String> selectedTagsToAdd) {
-        this.selectedTagsToAdd = selectedTagsToAdd;
-    }
-
-    public String getSelectedTagId() {
-        return selectedTagId;
-    }
-
-    public void setSelectedTagId(String selectedTagId) {
-        this.selectedTagId = selectedTagId;
     }
 
     public PersonRoleDto getRole() {
@@ -273,18 +205,12 @@ public class OrgAdminBean extends EntityViewBean {
 
 
     private void _newOrg() {
-		org = new OrgDto(OrgDto.CONTACTS | OrgDto.RECORDS);
+		org = new OrgDto();
 
 		HttpSession session = ThreadHttpContext.requireSession();
         IUserPrincipal currUser = SessionLoginInfo.getCurrentUser(session);
-
-		User user = loadEntity(User.class, currUser.getId());
-
+		UserDto user = new UserDto().ref(currUser.getId());
 		org.setOwner(user);
-
-		OrgTypeDto orgTypeDto = new OrgTypeDto();
-		orgTypeDto.ref((String) null);
-		org.setType(orgTypeDto);
 	}
 
 	public void doNew() {
@@ -370,130 +296,6 @@ public class OrgAdminBean extends EntityViewBean {
     }
 
     public void onRowUnselect(UnselectEvent event) {
-    }
-
-    private void _newContact() {
-        contact = new ContactDto();
-
-        ContactCategoryDto category = new ContactCategoryDto();
-        category.marshalAs(MarshalType.ID_REF);
-        contact.setCategory(category);
-        contact.setParty(org);
-    }
-
-	public void doNewContact() {
-	    if(org == null || org.getId() == null) {
-	        FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("提示", "请选择需要新增联系方式的客户/供应商!"));
-	    }
-	    _newContact();
-	}
-
-	public void doModifyContact() {
-	    contact = selectedContact;
-	}
-
-    public void doDeleteContact() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        if(selectedContact == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择需要删除的联系方式!"));
-            return;
-        }
-
-        try {
-            org.getContacts().remove(selectedContact);
-            getDataManager().saveOrUpdate(org.unmarshal());
-
-			org = DTOs.marshal(OrgDto.class, getDataManager().load(Org.class, org.getId()));
-
-        } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "删除联系方式失败;" + e.getMessage()));
-        }
-    }
-
-    public void doSaveContact() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        if(org == null || org.getId() == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的客户/供应商!"));
-            return;
-        }
-
-        try {
-            List<ContactDto> contacts = org.getContacts();
-            if (contact.getId() == null) {
-                contacts.add(contact);
-            } else {
-                int newContactId = contact.getId();
-                boolean matched = false;
-                for (int i = 0; i < contacts.size(); i++) {
-                    Integer oldId = contacts.get(i).getId();
-                    if (oldId != null && oldId == newContactId) {
-                        contacts.set(i, contact);
-                        matched = true;
-                        break;
-                    }
-                }
-                if (!matched)
-                    throw new UnexpectedException("No matched contact");
-            }
-
-            Org _org = org.unmarshal();
-            getDataManager().saveOrUpdate(_org);
-
-            org = DTOs.marshal(OrgDto.class, getDataManager().load(Org.class, org.getId()));
-
-            context.addMessage(null, new FacesMessage("提示", "联系方式保存成功"));
-        } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "联系方式保存失败" + e.getMessage()));
-            e.printStackTrace();
-        }
-    }
-
-    public void onRowSelectContact(SelectEvent event) {
-        contact = selectedContact;
-    }
-
-    public void onRowUnselectContact(UnselectEvent event) {
-        _newContact();
-    }
-
-    public void addTags() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        if(org == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的客户/供应商!"));
-            return;
-        }
-
-        if(org.getTags() == null) {
-		List<PartyTagDto> tags = new ArrayList<PartyTagDto>();
-		org.setTags(tags);
-        }
-        for(String tagId : selectedTagsToAdd) {
-            PartyTag tag = loadEntity(PartyTag.class, tagId);
-            PartyTagDto t = DTOs.mref(PartyTagDto.class,tag);
-
-            if(!org.getTags().contains(t))
-                org.getTags().add(t);
-        }
-    }
-
-    public void deleteTag() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        if(org == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的客户/供应商!"));
-            return;
-        }
-
-        for(PartyTagDto t : org.getTags()) {
-            if(t.getId().equals(selectedTagId)) {
-                org.getTags().remove(t);
-                return;
-            }
-        }
     }
 
     private void _newRole() {

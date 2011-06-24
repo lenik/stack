@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.free.UnexpectedException;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
@@ -19,19 +18,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.icsf.principal.User;
-import com.bee32.plover.arch.util.dto.MarshalType;
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.people.Gender;
-import com.bee32.sem.people.dto.ContactCategoryDto;
-import com.bee32.sem.people.dto.ContactDto;
+import com.bee32.sem.people.dto.AbstractPartyDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.dto.PersonSidTypeDto;
-import com.bee32.sem.people.entity.ContactCategory;
-import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PersonSidType;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.service.IPeopleService;
@@ -39,7 +34,8 @@ import com.bee32.sem.user.util.SessionLoginInfo;
 
 @Component
 @Scope("view")
-public class PersonAdminBean extends EntityViewBean {
+public class PersonAdminBean
+        extends AbstractPartyAdminBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,9 +45,6 @@ public class PersonAdminBean extends EntityViewBean {
 	private LazyDataModel<PersonDto> persons;
 	private PersonDto selectedPerson;
 	private PersonDto person;
-
-	private ContactDto selectedContact;
-	private ContactDto contact;
 
 	private PersonRoleDto selectedRole;
 
@@ -75,6 +68,16 @@ public class PersonAdminBean extends EntityViewBean {
 		currTab = 0;
 		editable = false;
 	}
+
+    @Override
+    protected AbstractPartyDto<? extends Party> getParty() {
+        return person;
+    }
+
+    @Override
+    protected void setParty(AbstractPartyDto<? extends Party> party) {
+        this.person = (PersonDto) party;
+    }
 
 	public int getCurrTab() {
 		return currTab;
@@ -138,48 +141,6 @@ public class PersonAdminBean extends EntityViewBean {
         return UIHelper.selectItemsFromDict(sidTypeDtos);
     }
 
-    public List<SelectItem> getContactCategories() {
-        List<ContactCategory> contactCategories = getDataManager().loadAll(ContactCategory.class);
-        List<ContactCategoryDto> contactCategoryDtos = DTOs.marshalList(ContactCategoryDto.class, contactCategories);
-        return UIHelper.selectItemsFromDict(contactCategoryDtos);
-    }
-
-    public boolean isContactSelected() {
-        if(selectedContact != null)
-            return true;
-        return false;
-    }
-
-    public ContactDto getSelectedContact() {
-        return selectedContact;
-    }
-
-    public void setSelectedContact(ContactDto selectedContact) {
-        this.selectedContact = selectedContact;
-    }
-
-    public List<ContactDto> getContacts() {
-        List<ContactDto> contacts = new ArrayList<ContactDto>();
-
-        if(person != null && person.getId() != null) {
-            if(person.getContacts() != null) {
-                contacts = person.getContacts();
-            }
-        }
-
-        return contacts;
-    }
-
-    public ContactDto getContact() {
-        if(contact == null)
-            _newContact();
-        return contact;
-    }
-
-    public void setContact(ContactDto contact) {
-        this.contact = contact;
-    }
-
     public PersonRoleDto getSelectedRole() {
         return selectedRole;
     }
@@ -208,18 +169,12 @@ public class PersonAdminBean extends EntityViewBean {
 
 
     private void _newPerson() {
-		person = new PersonDto(PersonDto.CONTACTS | PersonDto.RECORDS);
+		person = new PersonDto();
 
 		HttpSession session = ThreadHttpContext.requireSession();
         IUserPrincipal currUser = (IUserPrincipal) SessionLoginInfo.getCurrentUser(session);
-
-		User user = loadEntity(User.class, currUser.getId());
-
+		UserDto user = new UserDto().ref(currUser.getId());
 		person.setOwner(user);
-
-		PersonSidTypeDto sidTypeDto = new PersonSidTypeDto();
-		sidTypeDto.ref((String) null);
-		person.setSidType(sidTypeDto);
 	}
 
 	public void doNew() {
@@ -305,94 +260,6 @@ public class PersonAdminBean extends EntityViewBean {
 
     public void onRowUnselect(UnselectEvent event) {
     }
-
-    private void _newContact() {
-        contact = new ContactDto();
-
-        ContactCategoryDto category = new ContactCategoryDto();
-        category.marshalAs(MarshalType.ID_REF);
-        contact.setCategory(category);
-        contact.setParty(person);
-    }
-
-	public void doNewContact() {
-	    if(person == null || person.getId() == null) {
-	        FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("提示", "请选择需要新增联系方式的联系人!"));
-	    }
-	    _newContact();
-	}
-
-	public void doModifyContact() {
-	    contact = selectedContact;
-	}
-
-    public void doDeleteContact() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        if(selectedContact == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择需要删除的联系方式!"));
-            return;
-        }
-
-        try {
-            person.getContacts().remove(selectedContact);
-            getDataManager().saveOrUpdate(person.unmarshal());
-
-            person = DTOs.marshal(PersonDto.class, getDataManager().load(Person.class, person.getId()));
-
-        } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "删除联系方式失败;" + e.getMessage()));
-        }
-    }
-
-    public void doSaveContact() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        if(person == null || person.getId() == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的联系人!"));
-            return;
-        }
-
-        try {
-            List<ContactDto> contacts = person.getContacts();
-            if (contact.getId() == null) {
-                contacts.add(contact);
-            } else {
-                int newContactId = contact.getId();
-                boolean matched = false;
-                for (int i = 0; i < contacts.size(); i++) {
-                    Integer oldId = contacts.get(i).getId();
-                    if (oldId != null && oldId == newContactId) {
-                        contacts.set(i, contact);
-                        matched = true;
-                        break;
-                    }
-                }
-                if (!matched)
-                    throw new UnexpectedException("No matched contact");
-            }
-
-            Person _person = person.unmarshal();
-            getDataManager().saveOrUpdate(_person);
-
-            person = DTOs.marshal(PersonDto.class, getDataManager().load(Person.class, person.getId()));
-
-            context.addMessage(null, new FacesMessage("提示", "联系方式保存成功"));
-        } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "联系方式保存失败" + e.getMessage()));
-            e.printStackTrace();
-        }
-    }
-
-    public void onRowSelectContact(SelectEvent event) {
-        contact = selectedContact;
-    }
-
-    public void onRowUnselectContact(UnselectEvent event) {
-        _newContact();
-    }
-
 
     public void onRowSelectRole(SelectEvent event) {
     }
