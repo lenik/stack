@@ -90,6 +90,26 @@ public abstract class BaseDto_AS2<S, C>
         return marshalSet(dtoClass, -1, sources, (Boolean) refButFilled);
     }
 
+    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalTreeSet(//
+            Class<_D> dtoClass, int selection, Iterable<? extends _S> sources) {
+        return marshalTreeSet(dtoClass, selection, sources, null);
+    }
+
+    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalTreeSet(//
+            Class<_D> dtoClass, Iterable<? extends _S> sources) {
+        return marshalTreeSet(dtoClass, -1, sources, null);
+    }
+
+    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalTreeSet(//
+            Class<_D> dtoClass, int selection, Iterable<? extends _S> sources, boolean refButFilled) {
+        return marshalTreeSet(dtoClass, selection, sources, (Boolean) refButFilled);
+    }
+
+    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalTreeSet(//
+            Class<_D> dtoClass, Iterable<? extends _S> sources, boolean refButFilled) {
+        return marshalTreeSet(dtoClass, -1, sources, (Boolean) refButFilled);
+    }
+
     // _unmarshalCollection*
 
     public <_S, _D extends BaseDto<_S, _C>, _C> //

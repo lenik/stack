@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * <pre>
@@ -79,6 +80,22 @@ public abstract class BaseDto_AS1<S, C>
             Class<_D> dtoClass, int selection, Iterable<? extends _S> sources, Boolean refButFilled) {
 
         Set<_D> dtoSet = new HashSet<_D>();
+
+        if (sources == null)
+            return dtoSet;
+
+        for (_S _source : sources) {
+            _D dto = marshal(dtoClass, selection, _source, refButFilled);
+            dtoSet.add(dto);
+        }
+
+        return dtoSet;
+    }
+
+    public <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalTreeSet( //
+            Class<_D> dtoClass, int selection, Iterable<? extends _S> sources, Boolean refButFilled) {
+
+        Set<_D> dtoSet = new TreeSet<_D>();
 
         if (sources == null)
             return dtoSet;
