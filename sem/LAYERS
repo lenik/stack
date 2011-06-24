@@ -24,7 +24,7 @@ support/            （偏低层）支持
     sem-track
     sem-kb
 
-biz1/                一般业务
+biz1/                日常业务
     sem-chance
     sem-contract
     sem-pricing
