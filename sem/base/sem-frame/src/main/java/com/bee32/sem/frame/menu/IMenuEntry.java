@@ -26,27 +26,6 @@ public interface IMenuEntry
     int HIDDEN = 1 << 2;
 
     /**
-     * Get the menu section.
-     * <p>
-     * The section order will take over the menu item order.
-     *
-     * @return Instance of {@link MenuSection}, or <code>null</code> if this item doesn't belong to
-     *         any section.
-     */
-    MenuSection getSection();
-
-    /**
-     * Set the menu section.
-     * <p>
-     * The section order will take over the menu item order.
-     *
-     * @param section
-     *            Instance of {@link MenuSection}, or <code>null</code> if this item doesn't belong
-     *            to any section.
-     */
-    void setSection(MenuSection section);
-
-    /**
      * Display order of this menu item within the same section.
      *
      * @return An integer, smaller value will be displayed first.

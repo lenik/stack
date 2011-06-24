@@ -93,6 +93,8 @@ public abstract class MenuContribution
         return retval;
     }
 
+    // Helpers.
+
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX + "/");
 
     protected static Location getDictIndex(Class<? extends DictEntity<?>> dictType) {

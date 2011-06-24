@@ -1,7 +1,5 @@
 package com.bee32.sem.frame.builtins;
 
-import com.bee32.sem.frame.menu.MenuSection;
-
 public interface ContextMenus {
 
     String CONTEXT = "context";

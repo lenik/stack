@@ -10,16 +10,15 @@ public class MenuEntryComparator
 
     @Override
     public int compareNonNull(IMenuEntry o1, IMenuEntry o2) {
-        MenuSection section1 = o1.getSection();
-        MenuSection section2 = o2.getSection();
-
-        int cmp = MenuSectionComparator.INSTANCE.compare(section1, section2);
+        int order1 = o1.getOrder();
+        int order2 = o2.getOrder();
+        int cmp = order1 - order2;
         if (cmp != 0)
             return cmp;
 
-        int order1 = o1.getOrder();
-        int order2 = o2.getOrder();
-        cmp = order1 - order2;
+        String name1 = o1.getName();
+        String name2 = o2.getName();
+        cmp = name1.compareTo(name2);
         if (cmp != 0)
             return cmp;
 

@@ -10,7 +10,6 @@ public class MenuEntry
         extends Component
         implements IMenuEntry {
 
-    private MenuSection section;
     private int order;
 
     private int flags;
@@ -47,16 +46,6 @@ public class MenuEntry
     public MenuEntry(int order, String name, ILocationContext actionLocation) {
         this(name, actionLocation);
         this.order = order;
-    }
-
-    @Override
-    public MenuSection getSection() {
-        return section;
-    }
-
-    @Override
-    public void setSection(MenuSection section) {
-        this.section = section;
     }
 
     @Override
@@ -111,7 +100,6 @@ public class MenuEntry
             throw new NullPointerException("other");
 
         this.name = other.getName();
-        this.section = other.getSection();
         this.order = other.getOrder();
         this.flags = other.getFlags();
         this.preferredStyleClass = other.getPreferredStyleClass();
