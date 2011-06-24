@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * OID 编号
+ * OID 编号，用于固化地址，资源分配及 LDAP 接口。
  *
  * 其中 {@link #owner()} 默认为 BEE32，如果是外部提供的应用，应该填写正确的属主，或者在 BEE32 下另行分配。
  *

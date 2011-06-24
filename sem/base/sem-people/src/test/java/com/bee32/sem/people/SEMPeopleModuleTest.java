@@ -31,13 +31,12 @@ public class SEMPeopleModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMPeopleModuleTest().browseAndWait("/people/personAdmin.jsf");
+        new SEMPeopleModuleTest().browseAndWait(SEMPeopleModule.PREFIX + "/person/index-rich.jsf");
     }
 
     static {
         Locale zh = Locale.forLanguageTag("zh-CN");
         Locale.setDefault(zh);
     }
-
 
 }
