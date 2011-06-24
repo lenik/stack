@@ -1,23 +1,31 @@
 package com.bee32.icsf.access.resource;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
 
 import javax.free.IllegalUsageException;
 
 public class ResourceRegistry {
 
-    static Map<String, IResourceNamespace> namespaces;
+    static Set<IResourceNamespace> namespaces;
+    static Map<String, IResourceNamespace> namespaceMap;
     static Map<Class<?>, IResourceNamespace> resourceTypes;
 
     static {
-        namespaces = new HashMap<String, IResourceNamespace>();
+        namespaces = new HashSet<IResourceNamespace>();
+        namespaceMap = new HashMap<String, IResourceNamespace>();
         resourceTypes = new HashMap<Class<?>, IResourceNamespace>();
 
         for (IResourceNamespace rn : ServiceLoader.load(IResourceNamespace.class)) {
+            namespaces.add(rn);
+
             String ns = rn.getNamespace();
-            namespaces.put(ns, rn);
+            namespaceMap.put(ns, rn);
 
             Class<?> resourceType = rn.getResourceType();
             resourceTypes.put(resourceType, rn);
@@ -50,7 +58,7 @@ public class ResourceRegistry {
         if (localName.endsWith("."))
             localName = localName.substring(0, localName.length() - 1);
 
-        IResourceNamespace namespace = namespaces.get(ns);
+        IResourceNamespace namespace = namespaceMap.get(ns);
         if (namespace == null)
             throw new IllegalArgumentException("Resource namespace is undefined: " + ns);
 
@@ -74,6 +82,10 @@ public class ResourceRegistry {
         String ns = rn.getNamespace();
         String localName = resource.getName();
         return ns + ":" + localName + ".";
+    }
+
+    public static Collection<IResourceNamespace> getNamespaces() {
+        return Collections.unmodifiableSet(namespaces);
     }
 
 }

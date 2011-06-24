@@ -1,6 +1,10 @@
 package com.bee32.plover.orm.entity;
 
+import java.util.Locale;
+
 import com.bee32.icsf.access.resource.Resource;
+import com.bee32.plover.arch.ComponentBuilder;
+import com.bee32.plover.arch.ui.res.InjectedAppearance;
 
 /**
  * @see EntityResourceNS
@@ -8,12 +12,27 @@ import com.bee32.icsf.access.resource.Resource;
 public class EntityResource
         extends Resource {
 
-    public EntityResource(Class<? extends IEntity<?>> entityClass) {
+    Class<?> entityClass;
+    String member;
+
+    public EntityResource(Class<?> entityClass) {
         super(getEntityName(entityClass));
+        this.entityClass = entityClass;
+        init();
     }
 
-    public EntityResource(Class<? extends IEntity<?>> entityClass, String member) {
+    public EntityResource(Class<?> entityClass, String member) {
         super(getEntityName(entityClass, member));
+        this.entityClass = entityClass;
+        this.member = member;
+        init();
+    }
+
+    void init() {
+        Locale locale = Locale.getDefault();
+        InjectedAppearance appearance = new InjectedAppearance(entityClass, locale);
+        // appearance.getPropertyDispatcher().dispatch();
+        ComponentBuilder.setAppearance(this, appearance);
     }
 
     static String getEntityName(Class<?> clazz) {

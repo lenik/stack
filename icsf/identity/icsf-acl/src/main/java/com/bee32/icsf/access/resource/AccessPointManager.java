@@ -26,7 +26,7 @@ import com.bee32.plover.arch.util.res.PropertyDispatcher;
 @Component
 @Lazy
 public class AccessPointManager
-        implements ApplicationContextAware {
+        implements ApplicationContextAware, IResourceScanner {
 
     static Logger logger = LoggerFactory.getLogger(AccessPointManager.class);
 
@@ -48,6 +48,7 @@ public class AccessPointManager
         return AccessPoint.getInstances();
     }
 
+    @Override
     public synchronized void scan() {
         if (scanned)
             return;

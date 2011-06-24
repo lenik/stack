@@ -1,8 +1,13 @@
 package com.bee32.icsf.access.resource;
 
-import javax.inject.Inject;
+import java.util.Collection;
+import java.util.Map;
 
-import org.springframework.beans.factory.InitializingBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -12,23 +17,36 @@ import org.springframework.stereotype.Component;
 @Lazy
 @Component
 public class ScannedResourceRegistry
-        implements InitializingBean {
+        implements ApplicationContextAware {
 
-    @Inject
-    AccessPointManager accessPointManager;
+    static Logger logger = LoggerFactory.getLogger(ScannedResourceRegistry.class);
 
     @Override
-    public void afterPropertiesSet()
-            throws Exception {
-        accessPointManager.scan();
+    public void setApplicationContext(ApplicationContext applicationContext)
+            throws BeansException {
+        Map<String, IResourceScanner> scanners = applicationContext.getBeansOfType(IResourceScanner.class);
+
+        for (IResourceScanner scanner : scanners.values()) {
+            logger.info("Scan resources: " + scanner);
+
+            try {
+                scanner.scan();
+            } catch (Exception e) {
+                logger.error("Failed to scan resources with " + scanner, e);
+            }
+        }
     }
 
-    public Resource query(String fullName) {
-        return ResourceRegistry.query(fullName);
+    public Resource query(String qualifiedName) {
+        return ResourceRegistry.query(qualifiedName);
     }
 
-    public String toName(Resource resource) {
+    public String qualify(Resource resource) {
         return ResourceRegistry.qualify(resource);
+    }
+
+    public Collection<IResourceNamespace> getNamespaces() {
+        return ResourceRegistry.getNamespaces();
     }
 
 }
