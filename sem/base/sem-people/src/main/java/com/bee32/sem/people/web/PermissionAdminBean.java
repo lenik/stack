@@ -1,5 +1,6 @@
 package com.bee32.sem.people.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,6 +10,9 @@ import org.primefaces.event.UnselectEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.bee32.icsf.access.resource.IResourceNamespace;
+import com.bee32.icsf.access.resource.Resource;
+import com.bee32.icsf.access.resource.ScannedResourceRegistry;
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
@@ -27,6 +31,8 @@ public class PermissionAdminBean extends EntityViewBean {
     private UserDto selectedUser;
     private RoleDto selectedRole;
     private GroupDto selectedGroup;
+
+    private Resource selectedPermission;
 
 
     @PostConstruct
@@ -79,6 +85,27 @@ public class PermissionAdminBean extends EntityViewBean {
         return groupDtos;
     }
 
+    public List<Resource> getPermissions() {
+        ScannedResourceRegistry srr = getBean(ScannedResourceRegistry.class);
+
+	List<Resource> resources = new ArrayList<Resource>();
+
+	    for(IResourceNamespace rn: srr.getNamespaces()) {
+		for(Resource res: rn.getResources()) {
+			resources.add(res);
+		}
+	    }
+
+	    return resources;
+    }
+
+    public Resource getSelectedPermission() {
+		return selectedPermission;
+	}
+
+	public void setSelectedPermission(Resource selectedPermission) {
+		this.selectedPermission = selectedPermission;
+	}
 
 
 
@@ -86,8 +113,7 @@ public class PermissionAdminBean extends EntityViewBean {
 
 
 
-
-    public void onRowSelectUser(SelectEvent event) {
+	public void onRowSelectUser(SelectEvent event) {
     }
 
     public void onRowUnselectUser(UnselectEvent event) {

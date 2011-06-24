@@ -135,7 +135,11 @@
 
                 <p:panel header="权限列表">
 
-					<p:dataTable id="permissions" resizableColumns="true" rowIndexVar="rowIndex">
+					<p:dataTable id="permissions" var="permission" value="#{permissionAdminBean.permissions}"
+                            resizableColumns="true"
+                            selection="#{permissionAdminBean.selectedPermission}"
+                            selectionMode="single" rowIndexVar="rowIndex">
+
 						<p:columnGroup type="header">
 							<p:row>
 								<p:column rowspan="3" colspan="2" headerText="权限资源" />
@@ -165,14 +169,14 @@
 							<f:facet name="header">
 								<h:outputText value="a" />
 							</f:facet>
-							<h:outputText value="1" />
+							<h:outputText value="#{permission.name}" />
 						</p:column>
 
 						<p:column>
 							<f:facet name="header">
 								<h:outputText value="a" />
 							</f:facet>
-							<h:outputText value="1" />
+							<h:outputText value="#{permission.appearance.displayName}" />
 						</p:column>
 
 						<p:column>
