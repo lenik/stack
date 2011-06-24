@@ -18,7 +18,7 @@ public class Org
 
     private static final long serialVersionUID = 1L;
 
-    OrgType type;
+    OrgType type = OrgType.PARTNER;
     int size;
 
     Set<PersonRole> roles = new HashSet<PersonRole>();

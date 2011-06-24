@@ -23,10 +23,10 @@ public class Person
 
     private static final long serialVersionUID = 1L;
 
-    Gender sex;
+    Gender sex = Gender.OTHER;
 
     String censusRegister;
-    PersonSidType sidType;
+    PersonSidType sidType = PersonSidType.IDENTITYCARD;
 
     Set<PersonRole> roles = new HashSet<PersonRole>();
 
@@ -44,7 +44,6 @@ public class Person
     public void setSex(Gender sex) {
         this.sex = sex;
     }
-
 
     /**
      * 户籍
