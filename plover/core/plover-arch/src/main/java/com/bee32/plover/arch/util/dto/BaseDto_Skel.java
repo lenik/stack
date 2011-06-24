@@ -141,42 +141,8 @@ abstract class BaseDto_Skel<S, C>
         return _this;
     }
 
-    static class BaseKey {
-
-        final Object source;
-        final MarshalType marshalType;
-
-        public BaseKey(Object source, MarshalType marshalType) {
-            if (source == null)
-                throw new NullPointerException("source");
-            if (marshalType == null)
-                throw new NullPointerException("marshalType");
-            this.source = source;
-            this.marshalType = marshalType;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 0;
-            hash += source.hashCode();
-            hash += marshalType.hashCode();
-            return hash;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            BaseKey o = (BaseKey) obj;
-            if (!source.equals(o.source))
-                return false;
-            if (marshalType != o.marshalType)
-                return false;
-            return true;
-        }
-
-    }
-
     protected Object getMarshalKey(S source) {
-        return new BaseKey(source, marshalType);
+        return new BaseDto_MKey(source, getClass(), marshalType);
     }
 
     /**
