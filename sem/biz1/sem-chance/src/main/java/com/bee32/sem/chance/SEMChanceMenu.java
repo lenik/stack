@@ -18,32 +18,28 @@ public class SEMChanceMenu
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
     static Location CHANCE = WEB_APP.join(SEMChanceModule.PREFIX_);
 
-    @Contribution("crmcustomer")
-    MenuEntry chanceAdmin = new MenuEntry("chanceAdmin");
+    @Contribution("biz1/chance")
+    MenuEntry chance = new MenuEntry("chance", CHANCE.join("chance/index-rich.do"));
 
-    @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry chanceAction = new MenuEntry("chanceAction", CHANCE.join("action/main.do"));
+    @Contribution("biz1/chance")
+    MenuEntry action = new MenuEntry("action", CHANCE.join("action/index-rich.do"));
 
-    @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry dictionary = new MenuEntry("dictionary");
-
-    @Contribution("crmcustomer/chanceAdmin")
-    MenuEntry chance = new MenuEntry("chance", CHANCE.join("chance/main.do"));
-
-    @Contribution("crmcustomer/chanceAdmin")
+    @Contribution("biz1/chance")
     MenuEntry competitor = new MenuEntry("competitor", CHANCE.join("competitor/index.do"));
 
-    @Contribution("crmcustomer/chanceAdmin/dictionary")
-    MenuEntry categories = new MenuEntry("categories", getDictIndex(ChanceCategory.class));
+    // Dicts...
 
-    @Contribution("crmcustomer/chanceAdmin/dictionary")
-    MenuEntry sourceTypes = new MenuEntry("sourceTypes", getDictIndex(ChanceSourceType.class));
+    @Contribution("biz1/chance")
+    MenuEntry category = new MenuEntry("category", getDictIndex(ChanceCategory.class));
 
-    @Contribution("crmcustomer/chanceAdmin/dictionary")
-    MenuEntry actionStyles = new MenuEntry("actionStyles", getDictIndex(ChanceActionStyle.class));
+    @Contribution("biz1/chance")
+    MenuEntry sourceType = new MenuEntry("sourceType", getDictIndex(ChanceSourceType.class));
 
-    @Contribution("crmcustomer/chanceAdmin/dictionary")
-    MenuEntry stages = new MenuEntry("stages", getDictIndex(ChanceStage.class));
+    @Contribution("biz1/chance")
+    MenuEntry actionStyle = new MenuEntry("actionStyle", getDictIndex(ChanceActionStyle.class));
+
+    @Contribution("biz1/chance")
+    MenuEntry stage = new MenuEntry("stage", getDictIndex(ChanceStage.class));
 
     @Override
     protected void preamble() {
