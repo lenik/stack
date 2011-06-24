@@ -1,6 +1,6 @@
 package com.bee32.plover.arch;
 
-import com.bee32.plover.arch.ui.IAppearance;
+import com.bee32.plover.arch.ui.Appearance;
 import com.bee32.plover.arch.util.ExceptionSupport;
 
 public interface IComponent {
@@ -15,7 +15,7 @@ public interface IComponent {
     /**
      * 获取组件的显示外观和参考信息。
      */
-    IAppearance getAppearance();
+    Appearance getAppearance();
 
     /**
      * 获取异常处理支持。

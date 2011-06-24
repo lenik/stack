@@ -5,7 +5,6 @@ import java.util.Locale;
 import javax.free.Nullables;
 
 import com.bee32.plover.arch.ui.Appearance;
-import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.AutoNaming;
 import com.bee32.plover.arch.util.ExceptionSupport;
@@ -47,7 +46,7 @@ public abstract class Component
     }
 
     @Override
-    public IAppearance getAppearance() {
+    public Appearance getAppearance() {
         if (appearance == null) {
             synchronized (this) {
                 if (appearance == null) {
