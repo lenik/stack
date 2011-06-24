@@ -29,7 +29,7 @@ public class R_ACE
     private Principal principal;
     private String mode;
 
-    R_ACE() {
+    public R_ACE() {
         super("ACE");
     }
 

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.bee32.icsf.access.Permission;
@@ -17,7 +16,6 @@ import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.dao.GenericDao;
 
-@Lazy
 public class R_ACLDao
         extends GenericDao {
 
@@ -52,30 +50,30 @@ public class R_ACLDao
         Resource resource = acl.getResource();
         String qualifiedName = ResourceRegistry.qualify(resource);
 
-        List<R_ACE> existing = template.findByNamedParam(//
+        List<R_ACE> oldList = template.findByNamedParam(//
                 "from R_ACE where" //
                         + "   ( :q like qualifiedName || '%' )", //
                 "q", qualifiedName);
 
         Map<IPrincipal, R_ACE> existingMap = new HashMap<IPrincipal, R_ACE>();
-        for (R_ACE ace : existing)
+        for (R_ACE ace : oldList)
             existingMap.put(ace.getPrincipal(), ace);
 
-        List<R_ACE> reorg = new ArrayList<R_ACE>();
+        List<R_ACE> newList = new ArrayList<R_ACE>();
         for (Entry<? extends IPrincipal, Permission> entry : acl.getEntries()) {
             Principal principal = (Principal) entry.getKey();
             R_ACE existed = existingMap.remove(principal);
             if (existed != null) {
-                reorg.add(existed);
+                newList.add(existed);
             } else {
                 Permission newPermission = entry.getValue();
-                R_ACE newAce = new R_ACE(resource, principal, newPermission);
-                reorg.add(newAce);
+                R_ACE aceNew = new R_ACE(resource, principal, newPermission);
+                newList.add(aceNew);
             }
         }
 
-        template.deleteAll(existing);
-        template.saveOrUpdateAll(reorg);
+        template.deleteAll(oldList);
+        template.saveOrUpdateAll(newList);
     }
 
     public List<ResourcePermission> getResourcePermissions(IPrincipal principal) {
