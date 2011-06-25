@@ -1,42 +1,42 @@
 package com.bee32.sem.frame.builtins;
 
-public interface ContextMenus {
+import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuEntry;
 
-    String CONTEXT = "context";
+public class ContextMenus
+        extends MenuContribution {
 
-    String File = CONTEXT + "/file";
-    String View = CONTEXT + "/view";
-    String Business = CONTEXT + "/business";
-    String Network = CONTEXT + "/network";
-    String Options = CONTEXT + "/options";
-    String Help = CONTEXT + "/help";
+    String CONTEXT = ".context";
 
-    interface file {
-        MenuSection READ = new MenuSection("file.read", 1);
-        MenuSection WRITE = new MenuSection("file.write", 2);
-        MenuSection ATTR = new MenuSection("file.attr", 3);
-        MenuSection LOG = new MenuSection("file.log", 4);
-    }
+    String FILE = CONTEXT + "/file";
+    String VIEW = CONTEXT + "/view";
+    String BUSINESS = CONTEXT + "/business";
+    String NETWORK = CONTEXT + "/network";
+    String OPTIONS = CONTEXT + "/options";
+    String HELP = CONTEXT + "/help";
 
-    interface view {
-        MenuSection STYLE = new MenuSection("view.style", 1);
-        MenuSection LAYOUT = new MenuSection("view.layout", 2);
-        MenuSection LANG = new MenuSection("view.lang", 3);
-    }
+    MenuEntry FILE_READ = new MenuEntry("file.read", 1);
+    MenuEntry FILE_WRITE = new MenuEntry("file.write", 2);
+    MenuEntry FILE_ATTR = new MenuEntry("file.attr", 3);
+    MenuEntry FILE_LOG = new MenuEntry("file.log", 4);
 
-    interface business {
-        MenuSection TICKET = new MenuSection("business.ticket", 1);
-        MenuSection REF = new MenuSection("business.ref", 2);
-        MenuSection PARENT = new MenuSection("business.parent", 3);
-        MenuSection CHILDREN = new MenuSection("business.children", 4);
-        MenuSection COMMENTS = new MenuSection("business.comments", 5);
-        MenuSection ATTR = new MenuSection("business.attr", 6);
-    }
+    MenuEntry VIEW_STYLE = new MenuEntry("view.style", 1);
+    MenuEntry VIEW_LAYOUT = new MenuEntry("view.layout", 2);
+    MenuEntry VIEW_LANG = new MenuEntry("view.lang", 3);
 
-    interface network {
-        MenuSection SEND = new MenuSection("network.send", 1);
-        MenuSection FORWARD = new MenuSection("network.forward", 2);
-        MenuSection SEARCH = new MenuSection("network.search", 3);
+    MenuEntry BIZ_TICKET = new MenuEntry("business.ticket", 1);
+    MenuEntry BIZ_REF = new MenuEntry("business.ref", 2);
+    MenuEntry BIZ_PARENT = new MenuEntry("business.parent", 3);
+    MenuEntry BIZ_CHILDREN = new MenuEntry("business.children", 4);
+    MenuEntry BIZ_COMMENTS = new MenuEntry("business.comments", 5);
+    MenuEntry BIZ_ATTR = new MenuEntry("business.attr", 6);
+
+    MenuEntry NET_SEND = new MenuEntry("network.send", 1);
+    MenuEntry NET_FORWARD = new MenuEntry("network.forward", 2);
+    MenuEntry NET_SEARCH = new MenuEntry("network.search", 3);
+
+    @Override
+    protected void preamble() {
     }
 
 }
