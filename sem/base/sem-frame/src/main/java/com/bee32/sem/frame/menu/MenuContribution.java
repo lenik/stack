@@ -1,25 +1,15 @@
 package com.bee32.sem.frame.menu;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import javax.free.IllegalUsageException;
-import javax.free.Pair;
 
 import com.bee32.plover.arch.Composite;
-import com.bee32.plover.arch.util.res.ClassResourceProperties;
-import com.bee32.plover.arch.util.res.IProperties;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.ext.dict.CommonDictController;
 import com.bee32.plover.orm.ext.dict.DictEntity;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.Location;
-import com.bee32.sem.frame.Contribution;
+import com.bee32.sem.frame.action.Action;
 
 /**
  * Class derives {@link MenuContribution} will be served as singleton instantiated beans.
@@ -34,63 +24,42 @@ public abstract class MenuContribution
         extends Composite
         implements ILocationConstants, ITypeAbbrAware {
 
-    private List<Entry<String, IMenuEntry>> contributions = new ArrayList<Map.Entry<String, IMenuEntry>>();
-
-    public MenuContribution() {
-        super();
+    protected MenuNode subMenu(MenuNode parent, String name) {
+        return subMenu(parent, 0, name);
     }
 
-    public MenuContribution(String name) {
-        super(name);
+    protected MenuNode subMenu(MenuNode parent, int order, String name) {
+        return entry(parent, order, name, null);
     }
 
-    @Override
-    protected final void introduce() {
-        super.introduce();
+    protected MenuNode section(MenuNode parent, String name) {
+        return section(parent, 0, name);
+    }
 
-        for (Field field : getElementFields()) {
+    protected MenuNode section(MenuNode parent, int order, String name) {
+        MenuNode node = subMenu(parent, order, name);
+        node.setFlatten(true);
+        return node;
+    }
 
-            Contribution contribAnn = field.getAnnotation(Contribution.class);
-            if (contribAnn == null)
-                continue;
+    protected MenuNode entry(MenuNode parent, String name, Location location) {
+        return entry(parent, 0, name, location);
+    }
 
-            String parentPath = contribAnn.value();
-            assert parentPath != null;
+    protected MenuNode entry(MenuNode parent, int order, String name, Location location) {
+        MenuNode node = new MenuNode(name);
 
-            Class<?> fieldType = field.getType();
-            if (!IMenuEntry.class.isAssignableFrom(fieldType))
-                throw new UnsupportedOperationException("Bad contribution element type: " + field);
+        node.setOrder(order);
 
-            IMenuEntry menuEntry;
-            try {
-                menuEntry = (IMenuEntry) field.get(this);
-            } catch (Exception e) {
-                throw new IllegalUsageException(e.getMessage(), e);
-            }
-
-            // String name = menuEntry.getName();
-            // String targetPath = parentPath + "/" + name;
-            contribute(parentPath, (IMenuEntry) menuEntry);
+        if (location != null) {
+            Action action = new Action(location);
+            node.setAction(action);
         }
-    }
 
-    protected final void contribute(String parentMenuPath, IMenuEntry element) {
-        Pair<String, IMenuEntry> node = new Pair<String, IMenuEntry>(parentMenuPath, element);
-        contributions.add(node);
-    }
+        if (!parent.add(node))
+            throw new IllegalUsageException("Duplicated menu node: " + node + ", parent: " + parent);
 
-    synchronized final List<Entry<String, IMenuEntry>> dump() {
-        if (this.contributions == null)
-            throw new IllegalStateException("Already dumped");
-
-        assemble();
-
-        IProperties properties = new ClassResourceProperties(getClass(), Locale.getDefault());
-        setProperties(properties);
-
-        List<Entry<String, IMenuEntry>> retval = this.contributions;
-        this.contributions = null;
-        return retval;
+        return node;
     }
 
     // Helpers.

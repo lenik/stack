@@ -2,6 +2,7 @@ package com.bee32.sem.frame.menu;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.ComponentBuilder;
+import com.bee32.plover.arch.util.Flags32;
 import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.sem.frame.action.Action;
 import com.bee32.sem.frame.action.IAction;
@@ -10,9 +11,11 @@ public class MenuEntry
         extends Component
         implements IMenuEntry {
 
+    public static final int FLATTEN = 1;
+
     private int order;
 
-    private int flags;
+    private final Flags32 flags = new Flags32();
     private String preferredStyleClass;
     private String preferredStyle;
 
@@ -59,11 +62,19 @@ public class MenuEntry
 
     @Override
     public int getFlags() {
-        return flags;
+        return flags.bits;
     }
 
     public void setFlags(int flags) {
-        this.flags = flags;
+        this.flags.bits = flags;
+    }
+
+    public boolean isFlatten() {
+        return flags.test(FLATTEN);
+    }
+
+    public void setFlatten(boolean flatten) {
+        flags.set(FLATTEN, flatten);
     }
 
     @Override
@@ -101,7 +112,7 @@ public class MenuEntry
 
         this.name = other.getName();
         this.order = other.getOrder();
-        this.flags = other.getFlags();
+        this.flags.bits = other.getFlags();
         this.preferredStyleClass = other.getPreferredStyleClass();
         this.preferredStyle = other.getPreferredStyle();
         this.action = other.getAction();

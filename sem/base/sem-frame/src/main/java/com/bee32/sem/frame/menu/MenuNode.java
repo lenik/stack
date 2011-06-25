@@ -58,11 +58,11 @@ public class MenuNode
         if (children.containsKey(childName))
             return null;
 
-        MenuNode newChildEntry = new MenuNode(childName);
+        MenuNode newChildNode = new MenuNode(childName);
 
-        add(newChildEntry);
+        add(newChildNode);
 
-        return newChildEntry;
+        return newChildNode;
     }
 
     @Override

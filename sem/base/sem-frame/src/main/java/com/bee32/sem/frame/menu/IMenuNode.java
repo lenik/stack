@@ -26,8 +26,23 @@ public interface IMenuNode
 
     IMenuNode getOrCreate(String childName);
 
+    /**
+     * Attach a child menu node.
+     *
+     * @param childNode
+     *            Non-<code>null</code> child menu node.
+     * @return <code>false</code> if a child with same name is already existed, otherwise
+     *         <code>true</code>.
+     */
     boolean add(IMenuNode childNode);
 
+    /**
+     * Remove a child menu node.
+     *
+     * @param childName
+     *            The name of the child menu node to be removed.
+     * @return <code>true</code> if a child menu node is removed, <code>false</code> if not existed.
+     */
     boolean remove(String childName);
 
     void clear();
