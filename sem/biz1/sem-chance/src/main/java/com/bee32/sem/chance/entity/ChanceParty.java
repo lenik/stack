@@ -1,6 +1,5 @@
 package com.bee32.sem.chance.entity;
 
-import javax.free.Nullables;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -66,14 +65,12 @@ public class ChanceParty
 
     @Override
     protected Boolean naturalEquals(EntityBase<Long> other) {
-        ChanceParty otherDetail = (ChanceParty) other;
+        ChanceParty o = (ChanceParty) other;
 
-        Long chanceId = chance.getId();
-        Long otherChanceId = otherDetail.getChance().getId();
-        if (!Nullables.equals(chanceId, otherChanceId))
+        if (!chance.equals(o.chance))
             return false;
 
-        if (!Nullables.equals(party.getId(), otherDetail.getParty().getId()))
+        if (!party.equals(o.party))
             return false;
 
         return true;
@@ -82,17 +79,8 @@ public class ChanceParty
     @Override
     protected Integer naturalHashCode() {
         int hash = 0;
-
-        if (chance != null) {
-            Long chanceId = chance.getId();
-            if (chanceId != null)
-                hash = hash * 37 + chanceId.hashCode();
-        }
-
-        Number customerId = party.getId();
-        if (customerId != null)
-            hash = hash * 37 + customerId.hashCode();
-
+        hash = hash * 37 + chance.hashCode();
+        hash = hash * 37 + party.hashCode();
         return hash;
     }
 
