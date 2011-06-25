@@ -68,7 +68,7 @@ public class ChanceDto
             this.parties = marshalList(ChancePartyDto.class, source.getParties());
 
         if (selection.contains(ACTIONS))
-            this.actions = marshalList(ChanceActionDto.class, source.getActions());
+            this.actions = marshalList(ChanceActionDto.class, source.getActions(), true);
 
         this.stage = mref(ChanceStageDto.class, source.getStage());
     }

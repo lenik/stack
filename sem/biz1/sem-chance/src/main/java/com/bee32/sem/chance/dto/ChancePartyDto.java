@@ -26,8 +26,8 @@ public class ChancePartyDto
 
     @Override
     protected void _marshal(ChanceParty source) {
-        this.chance = marshal(ChanceDto.class, source.getChance(), false);
-        this.party = marshal(PartyDto.class, source.getParty(), false);
+        this.chance = mref(ChanceDto.class, source.getChance());
+        this.party = mref(PartyDto.class, source.getParty());
         this.role = source.getRole();
     }
 

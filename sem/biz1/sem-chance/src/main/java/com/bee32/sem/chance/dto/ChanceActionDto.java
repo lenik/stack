@@ -87,7 +87,7 @@ public class ChanceActionDto
         this.plan = source.isPlan();
 
         if (selection.contains(PARTIES))
-            this.parties = marshalList(PartyDto.class, source.getParties());
+            this.parties = marshalList(PartyDto.class, source.getParties(), true);
 
         this.actor = mref(UserDto.class, source.getActor());
         this.style = mref(ChanceActionStyleDto.class, source.getStyle());
