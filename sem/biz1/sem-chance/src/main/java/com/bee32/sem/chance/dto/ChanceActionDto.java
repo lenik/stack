@@ -1,6 +1,5 @@
 package com.bee32.sem.chance.dto;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,14 +48,14 @@ public class ChanceActionDto
         super(selection);
     }
 
-    public void addParties(PartyDto partyDto) {
-        if (parties == null)
-            parties = new ArrayList<PartyDto>();
-        if (partyDto != null && !parties.contains(partyDto))
+    public void addParty(PartyDto partyDto) {
+        if (partyDto == null)
+            throw new NullPointerException("partyDto");
+        if (!parties.contains(partyDto))
             parties.add(partyDto);
     }
 
-    public void deleteParties(PartyDto partyDto) {
+    public void deleteParty(PartyDto partyDto) {
         if (parties.contains(partyDto))
             parties.remove(partyDto);
     }
