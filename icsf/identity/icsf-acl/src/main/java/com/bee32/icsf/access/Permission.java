@@ -112,10 +112,6 @@ public final class Permission
         return (bits & DELETE) != 0;
     }
 
-    public boolean isAdmin() {
-        return (bits & ADMIN) != 0;
-    }
-
     public void canRead(boolean f) {
         setBits(f, READ);
     }
@@ -137,6 +133,58 @@ public final class Permission
     }
 
     public void canDelete(boolean f) {
+        setBits(f, DELETE);
+    }
+
+    public boolean isReadable() {
+        return (bits & READ) != 0;
+    }
+
+    public boolean isWritable() {
+        return (bits & WRITE) != 0;
+    }
+
+    public boolean isExecutable() {
+        return (bits & EXECUTE) != 0;
+    }
+
+    public boolean isListable() {
+        return (bits & LIST) != 0;
+    }
+
+    public boolean isCreatable() {
+        return (bits & CREATE) != 0;
+    }
+
+    public boolean isDeletable() {
+        return (bits & DELETE) != 0;
+    }
+
+    public boolean isAdmin() {
+        return (bits & ADMIN) != 0;
+    }
+
+    public void setReadable(boolean f) {
+        setBits(f, READ);
+    }
+
+    public void setWritable(boolean f) {
+        setBits(f, WRITE);
+    }
+
+    public void setExecutable(boolean f) {
+        setBits(f, EXECUTE);
+    }
+
+    public void setListable(boolean f) {
+        setBits(f, LIST);
+    }
+
+    public void setCreatable(boolean f) {
+        setBits(f, CREATE);
+    }
+
+    public void setDeletable(boolean f) {
         setBits(f, DELETE);
     }
 
