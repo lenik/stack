@@ -19,8 +19,8 @@ public abstract class BaseDto<S, C>
     }
 
     public BaseDto(int selection) {
-        initSourceType(ClassUtil.<S> infer1(getClass(), BaseDto.class, 0));
         this.selection.bits = selection;
+        initSourceType(ClassUtil.<S> infer1(getClass(), BaseDto.class, 0));
     }
 
     /**
