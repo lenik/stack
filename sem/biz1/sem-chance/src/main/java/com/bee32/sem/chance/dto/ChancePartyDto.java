@@ -67,4 +67,27 @@ public class ChancePartyDto
         this.role = role;
     }
 
+    @Override
+    protected Boolean naturalEquals(EntityDto<ChanceParty, Long> other) {
+        ChancePartyDto o = (ChancePartyDto) other;
+
+        if (!o.chance.equals(chance))
+            return false;
+
+        if (!o.party.equals(party))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        int hash = 0;
+
+        hash += chance.hashCode();
+        hash += party.hashCode();
+
+        return hash;
+    }
+
 }

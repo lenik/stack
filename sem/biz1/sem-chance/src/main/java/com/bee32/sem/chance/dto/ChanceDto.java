@@ -1,10 +1,6 @@
 package com.bee32.sem.chance.dto;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.free.ParseException;
 import javax.free.Strings;
@@ -95,48 +91,44 @@ public class ChanceDto
     /*
      * use HashSet to guarantee that the elements in the list is unique.is it necessary?
      */
-    public void addActions(ChanceActionDto[] actions) {
-        Set<ChanceActionDto> former = new HashSet<ChanceActionDto>(getActions());
-        Set<ChanceActionDto> latter = new HashSet<ChanceActionDto>(Arrays.asList(actions));
-        former.addAll(latter);
-        this.actions = new ArrayList<ChanceActionDto>(former);
-        setMaxStage();
-    }
-
-    public void deleteActions(ChanceActionDto[] actions) {
-        Set<ChanceActionDto> former = new HashSet<ChanceActionDto>(getActions());
-        Set<ChanceActionDto> delete = new HashSet<ChanceActionDto>(Arrays.asList(actions));
-        former.removeAll(delete);
-        this.actions = new ArrayList<ChanceActionDto>(former);
-        setMaxStage();
-    }
-
-    void setMaxStage() {
-        int order = getStage().getOrder();
-        int maxOrder = 0;
-        ChanceStageDto maxStage = null;
-        for (ChanceActionDto cad : getActions()) {
-            int temp = cad.getStage().getOrder();
-            if (temp > maxOrder) {
-                maxOrder = temp;
-                maxStage = cad.getStage();
-            }
-        }
-        if (maxOrder > order && maxStage != null) {
-            this.stage = maxStage;
-        }
-    }
-
     public void addChanceParty(ChancePartyDto chanceParty) {
-        if (parties.isEmpty())
-            parties = new ArrayList<ChancePartyDto>();
         if (!parties.contains(chanceParty))
-            parties.add(chanceParty);
+            this.parties.add(chanceParty);
     }
 
     public void deleteChanceParty(ChancePartyDto chanceParty) {
         if (parties.contains(chanceParty))
             parties.remove(chanceParty);
+    }
+
+    public void addActions(ChanceActionDto... actions) {
+        for (ChanceActionDto action : actions)
+            this.actions.add(action);
+        refreshStage();
+    }
+
+    public void deleteActions(ChanceActionDto... actions) {
+        for (ChanceActionDto action : actions)
+            this.actions.remove(action);
+        refreshStage();
+    }
+
+    void refreshStage() {
+        int cachedOrder = getStage().getOrder();
+
+        int maxOrder = 0;
+        ChanceStageDto maxStage = null;
+        for (ChanceActionDto action : getActions()) {
+            int order = action.getStage().getOrder();
+            if (order > maxOrder) {
+                maxOrder = order;
+                maxStage = action.getStage();
+            }
+        }
+
+        if (maxStage != null)
+            if (maxOrder > cachedOrder)
+                this.stage = maxStage;
     }
 
     public String getParty() {
