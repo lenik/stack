@@ -39,7 +39,6 @@ public class PersonAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    private int currTab;
 	private boolean editable;
 
 	private LazyDataModel<PersonDto> persons;
@@ -65,7 +64,6 @@ public class PersonAdminBean
 
 		persons.setRowCount((int) peopleService.listPersonByCurrentUserCount());
 
-		currTab = 0;
 		editable = false;
 	}
 
@@ -78,14 +76,6 @@ public class PersonAdminBean
     protected void setParty(AbstractPartyDto<? extends Party> party) {
         this.person = (PersonDto) party;
     }
-
-	public int getCurrTab() {
-		return currTab;
-	}
-
-	public void setCurrTab(int currTab) {
-		this.currTab = currTab;
-	}
 
 	public boolean isEditable() {
 		return editable;
@@ -180,7 +170,7 @@ public class PersonAdminBean
 	public void doNew() {
 		_newPerson();
 
-		currTab = 1;
+		setActiveTab(TAB_FORM);
 		editable = true;
 	}
 
@@ -194,7 +184,7 @@ public class PersonAdminBean
 
 		person = selectedPerson;
 
-		currTab = 1;
+		setActiveTab(TAB_FORM);
 		editable = true;
 	}
 
@@ -228,7 +218,7 @@ public class PersonAdminBean
 
             persons.setRowCount((int) peopleService.listPersonByCurrentUserCount());
 
-            currTab = 0;
+            setActiveTab(TAB_INDEX);
             editable = false;
             context.addMessage(null, new FacesMessage("提示", "联系人保存成功"));
         } catch (Exception e) {
@@ -238,7 +228,7 @@ public class PersonAdminBean
 	}
 
 	public void doCancel() {
-	    currTab = 0;
+	    setActiveTab(TAB_INDEX);
 	    editable = false;
 
 	    _newPerson();
@@ -251,7 +241,7 @@ public class PersonAdminBean
             return;
 	    }
 
-	    currTab = 1;
+        setActiveTab(TAB_FORM);
 	    person = selectedPerson;
 	}
 

@@ -72,7 +72,7 @@
                     </p:toolbarGroup>
                 </p:toolbar>
                 <p:tabView id="orgTab" style="width:100%;"
-                    activeIndex="#{orgAdminBean.currTab}">
+                    activeIndex="#{orgAdminBean.activeTab}">
                     <p:tab id="orgList" title="客户/供应商列表">
                         <p:dataTable id="orgs" var="org"
                             value="#{orgAdminBean.orgs}" paginator="true"

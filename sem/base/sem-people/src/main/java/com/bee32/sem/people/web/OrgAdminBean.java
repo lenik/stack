@@ -39,7 +39,6 @@ public class OrgAdminBean
 
     private static final long serialVersionUID = 1L;
 
-    private int currTab;
 	private boolean editable;
 
 	private LazyDataModel<OrgDto> orgs;
@@ -70,7 +69,7 @@ public class OrgAdminBean
 
 		orgs.setRowCount((int) peopleService.listOrgByCurrentUserCount());
 
-		currTab = 0;
+		setActiveTab(TAB_INDEX);
 		editable = false;
 	}
 
@@ -82,14 +81,6 @@ public class OrgAdminBean
 	@Override
 	protected void setParty(AbstractPartyDto<? extends Party> party) {
 	    this.org = (OrgDto) party;
-	}
-
-	public int getCurrTab() {
-		return currTab;
-	}
-
-	public void setCurrTab(int currTab) {
-		this.currTab = currTab;
 	}
 
 	public boolean isEditable() {
@@ -216,7 +207,7 @@ public class OrgAdminBean
 	public void doNew() {
 		_newOrg();
 
-		currTab = 1;
+		setActiveTab(TAB_FORM);
 		editable = true;
 	}
 
@@ -230,7 +221,7 @@ public class OrgAdminBean
 
 		org = selectedOrg;
 
-		currTab = 1;
+		setActiveTab(TAB_FORM);
 		editable = true;
 	}
 
@@ -264,7 +255,7 @@ public class OrgAdminBean
 
             orgs.setRowCount((int) peopleService.listOrgByCurrentUserCount());
 
-            currTab = 0;
+            setActiveTab(TAB_INDEX);
             editable = false;
             context.addMessage(null, new FacesMessage("提示", "客户/供应商保存成功"));
         } catch (Exception e) {
@@ -274,7 +265,7 @@ public class OrgAdminBean
 	}
 
 	public void doCancel() {
-	    currTab = 0;
+        setActiveTab(TAB_INDEX);
 	    editable = false;
 
 	    _newOrg();
@@ -287,7 +278,7 @@ public class OrgAdminBean
             return;
 	    }
 
-	    currTab = 1;
+        setActiveTab(TAB_FORM);
 	    org = selectedOrg;
 	}
 

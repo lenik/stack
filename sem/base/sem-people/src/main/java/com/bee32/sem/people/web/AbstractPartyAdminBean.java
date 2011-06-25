@@ -12,7 +12,6 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.people.dto.AbstractPartyDto;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
@@ -20,12 +19,16 @@ import com.bee32.sem.people.dto.PartyTagDto;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyTag;
+import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 
 public abstract class AbstractPartyAdminBean
-        extends EntityViewBean {
+        extends MultiTabEntityViewBean {
 
     private static final long serialVersionUID = 1L;
+
+    protected static final int TAB_INDEX = 0;
+    protected static final int TAB_FORM = 1;
 
     ContactDto selectedContact;
     ContactDto contact;

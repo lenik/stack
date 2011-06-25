@@ -242,11 +242,11 @@ public class ChanceActionBean
     }
 
     public void addCustomer() {
-        action.addParties(selectedCustomer);
+        action.addParty(selectedCustomer);
     }
 
     public void deleteCustomer() {
-        action.deleteParties(selectedCustomer);
+        action.deleteParty(selectedCustomer);
     }
 
     public List<SelectItem> getChanceStages() {
