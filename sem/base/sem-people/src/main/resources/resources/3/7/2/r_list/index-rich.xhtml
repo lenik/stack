@@ -33,177 +33,198 @@
 		<h:form id="permissionForm">
 
 			<p:growl id="growl" showDetail="true" />
-			<t:panelGrid columns="2" rowClasses="align_top">
-                <p:tabView header="权限主体列表">
 
-                    <p:tab title="组列表">
-                        <p:dataTable id="groups" var="group" value="#{permissionAdminBean.groups}"
-                            resizableColumns="true"
-                            selectionMode="single" rowIndexVar="rowIndex">
+			<p:panel header="权限管理">
+				<p:toolbar id="permissionToolbar">
+					<p:toolbarGroup align="left">
 
-                            <p:ajax event="rowSelect"
-                                listener="#{permissionAdminBean.onRowSelectGroup}"
-                                update="rpEntries" />
-                            <p:ajax event="rowUnselect"
-                                listener="#{personAdminBean.onRowUnselectGroup}"
-                                update="rpEntries" />
+						<p:commandButton value="保存"
+							actionListener="#{permissionAdminBean.doSave}"
+							update="rpEntries growl"
+							async="true" />
+						<p:divider />
 
-
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="序号" />
-                                </f:facet>
-                                <h:outputText value="#{rowIndex + 1}" />
-                            </p:column>
-
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="名称" />
-                                </f:facet>
-                                <h:outputText value="#{group.name}" />
-                            </p:column>
-
-                        </p:dataTable>
-                    </p:tab>
-
-                    <p:tab title="角色列表">
-                        <p:dataTable id="roles" var="role" value="#{permissionAdminBean.roles}"
-                            resizableColumns="true"
-                            selectionMode="single" rowIndexVar="rowIndex">
-
-                            <p:ajax event="rowSelect"
-                                listener="#{permissionAdminBean.onRowSelectRole}"
-                                update="rpEntries" />
-                            <p:ajax event="rowUnselect"
-                                listener="#{personAdminBean.onRowUnselectRole}"
-                                update="rpEntries" />
+					</p:toolbarGroup>
+				</p:toolbar>
 
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="序号" />
-                                </f:facet>
-                                <h:outputText value="#{rowIndex + 1}" />
-                            </p:column>
+				<t:panelGrid columns="2" rowClasses="align_top">
+					<p:tabView header="权限主体列表">
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="名称" />
-                                </f:facet>
-                                <h:outputText value="#{role.name}" />
-                            </p:column>
+						<p:tab title="组列表">
+							<p:dataTable id="groups" var="group"
+								value="#{permissionAdminBean.groups}" resizableColumns="true"
+								selection="#{permissionAdminBean.selectedGroup}"
+								selectionMode="single" rowIndexVar="rowIndex">
 
-                        </p:dataTable>
+								<p:ajax event="rowSelect"
+									listener="#{permissionAdminBean.onRowSelectGroup}"
+									update="rpEntries growl" />
+								<p:ajax event="rowUnselect"
+									listener="#{personAdminBean.onRowUnselectGroup}"
+									update="rpEntries growl" />
 
-					</p:tab>
 
-					<p:tab title="用户列表">
-						<p:dataTable id="users" var="user" value="#{permissionAdminBean.users}"
-							resizableColumns="true"
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="序号" />
+									</f:facet>
+									<h:outputText value="#{rowIndex + 1}" />
+								</p:column>
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="名称" />
+									</f:facet>
+									<h:outputText value="#{group.name}" />
+								</p:column>
+
+							</p:dataTable>
+						</p:tab>
+
+						<p:tab title="角色列表">
+							<p:dataTable id="roles" var="role"
+								value="#{permissionAdminBean.roles}" resizableColumns="true"
+								selection="#{permissionAdminBean.selectedRole}"
+								selectionMode="single" rowIndexVar="rowIndex">
+
+								<p:ajax event="rowSelect"
+									listener="#{permissionAdminBean.onRowSelectRole}"
+									update="rpEntries growl" />
+								<p:ajax event="rowUnselect"
+									listener="#{personAdminBean.onRowUnselectRole}"
+									update="rpEntries growl" />
+
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="序号" />
+									</f:facet>
+									<h:outputText value="#{rowIndex + 1}" />
+								</p:column>
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="名称" />
+									</f:facet>
+									<h:outputText value="#{role.name}" />
+								</p:column>
+
+							</p:dataTable>
+
+						</p:tab>
+
+						<p:tab title="用户列表">
+							<p:dataTable id="users" var="user"
+								value="#{permissionAdminBean.users}" resizableColumns="true"
+								selection="#{permissionAdminBean.selectedUser}"
+								selectionMode="single" rowIndexVar="rowIndex">
+
+								<p:ajax event="rowSelect"
+									listener="#{permissionAdminBean.onRowSelectUser}"
+									update="rpEntries growl" />
+								<p:ajax event="rowUnselect"
+									listener="#{personAdminBean.onRowUnselectUser}"
+									update="rpEntries growl" />
+
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="序号" />
+									</f:facet>
+									<h:outputText value="#{rowIndex + 1}" />
+								</p:column>
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="名称" />
+									</f:facet>
+									<h:outputText value="#{user.name}" />
+								</p:column>
+
+							</p:dataTable>
+						</p:tab>
+
+					</p:tabView>
+
+
+					<p:panel header="权限列表">
+
+						<p:dataTable id="rpEntries" var="rpEntry"
+							value="#{permissionAdminBean.rpEntries}" resizableColumns="true"
+							selection="#{permissionAdminBean.selectedRpEntry}"
 							selectionMode="single" rowIndexVar="rowIndex">
 
-                            <p:ajax event="rowSelect"
-                                listener="#{permissionAdminBean.onRowSelectUser}"
-                                update="rpEntries" />
-                            <p:ajax event="rowUnselect"
-                                listener="#{personAdminBean.onRowUnselectUser}"
-                                update="rpEntries" />
+							<p:columnGroup type="header">
+								<p:row>
+									<p:column rowspan="2" headerText="序号" />
+									<p:column rowspan="3" colspan="2" headerText="权限资源" />
+									<p:column colspan="7" headerText="权限" />
+								</p:row>
+
+								<p:row>
+									<p:column headerText="管理" />
+									<p:column headerText="读取" />
+									<p:column headerText="写入" />
+									<p:column headerText="执行" />
+									<p:column headerText="列表" />
+									<p:column headerText="建立" />
+									<p:column headerText="删除" />
+								</p:row>
+							</p:columnGroup>
 
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="序号" />
-                                </f:facet>
-                                <h:outputText value="#{rowIndex + 1}" />
-                            </p:column>
+							<p:column>
+								<h:outputText value="#{rowIndex + 1}" />
+							</p:column>
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="名称" />
-                                </f:facet>
-                                <h:outputText value="#{user.name}" />
-                            </p:column>
+							<p:column>
+								<h:outputText value="#{rpEntry.resourceType}" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{rpEntry.displayName}" />
+							</p:column>
+
+							<p:column>
+								<p:selectBooleanCheckbox value="#{rpEntry.permission.admin}" />
+							</p:column>
+
+							<p:column>
+								<p:selectBooleanCheckbox value="#{rpEntry.permission.readable}" />
+							</p:column>
+
+							<p:column>
+								<p:selectBooleanCheckbox value="#{rpEntry.permission.writeable}" />
+							</p:column>
+
+							<p:column>
+								<p:selectBooleanCheckbox
+									value="#{rpEntry.permission.executable}" />
+							</p:column>
+
+							<p:column>
+								<p:selectBooleanCheckbox value="#{rpEntry.permission.listable}" />
+							</p:column>
+
+							<p:column>
+								<p:selectBooleanCheckbox
+									value="#{rpEntry.permission.createable}" />
+							</p:column>
+
+							<p:column>
+								<p:selectBooleanCheckbox
+									value="#{rpEntry.permission.deleteable}" />
+							</p:column>
+
 
 						</p:dataTable>
-					</p:tab>
-
-                </p:tabView>
 
 
-                <p:panel header="权限列表">
+					</p:panel>
+				</t:panelGrid>
 
-					<p:dataTable id="rpEntries" var="rpEntry" value="#{permissionAdminBean.rpEntries}"
-                            resizableColumns="true"
-                            selection="#{permissionAdminBean.selectedRpEntry}"
-                            selectionMode="single" rowIndexVar="rowIndex">
-
-						<p:columnGroup type="header">
-							<p:row>
-							    <p:column rowspan="2" headerText="序号" />
-								<p:column rowspan="3" colspan="2" headerText="权限资源" />
-								<p:column colspan="7" headerText="权限" />
-							</p:row>
-
-							<p:row>
-                                <p:column headerText="管理" />
-                                <p:column headerText="读取" />
-                                <p:column headerText="写入" />
-                                <p:column headerText="执行" />
-                                <p:column headerText="列表" />
-                                <p:column headerText="建立" />
-                                <p:column headerText="删除" />
-							</p:row>
-						</p:columnGroup>
-
-
-						<p:column>
-							<h:outputText value="#{rowIndex + 1}" />
-						</p:column>
-
-						<p:column>
-							<h:outputText value="#{rpEntry.resourceType}" />
-						</p:column>
-
-						<p:column>
-							<h:outputText value="#{rpEntry.displayName}" />
-						</p:column>
-
-						<p:column>
-							<p:selectBooleanCheckbox value="#{rpEntry.permission.admin}"/>
-						</p:column>
-
-						<p:column>
-							<p:selectBooleanCheckbox value="#{rpEntry.permission.readable}" />
-						</p:column>
-
-						<p:column>
-							<p:selectBooleanCheckbox value="#{rpEntry.permission.writeable}" />
-						</p:column>
-
-						<p:column>
-							<p:selectBooleanCheckbox value="#{rpEntry.permission.executable}" />
-						</p:column>
-
-						<p:column>
-							<p:selectBooleanCheckbox value="#{rpEntry.permission.listable}" />
-						</p:column>
-
-						<p:column>
-							<p:selectBooleanCheckbox value="#{rpEntry.permission.createable}" />
-						</p:column>
-
-						<p:column>
-							<p:selectBooleanCheckbox value="#{rpEntry.permission.deleteable}" />
-						</p:column>
-
-
-					</p:dataTable>
-
-
-				</p:panel>
-			</t:panelGrid>
-
-
+			</p:panel>
 		</h:form>
 
 	</ui:define>

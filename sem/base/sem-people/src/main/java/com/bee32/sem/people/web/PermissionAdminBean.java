@@ -36,6 +36,12 @@ public class PermissionAdminBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
+
+    private UserDto selectedUser;
+    private GroupDto selectedGroup;
+    private RoleDto selectedRole;
+
+
     private List<RPEntry> rpEntries;
     private RPEntry selectedRpEntry;
 
@@ -46,7 +52,34 @@ public class PermissionAdminBean extends EntityViewBean {
 
     }
 
-    public List<UserDto> getUsers() {
+
+    public UserDto getSelectedUser() {
+		return selectedUser;
+	}
+
+	public void setSelectedUser(UserDto selectedUser) {
+		this.selectedUser = selectedUser;
+	}
+
+	public GroupDto getSelectedGroup() {
+		return selectedGroup;
+	}
+
+	public void setSelectedGroup(GroupDto selectedGroup) {
+		this.selectedGroup = selectedGroup;
+	}
+
+	public RoleDto getSelectedRole() {
+		return selectedRole;
+	}
+
+	public void setSelectedRole(RoleDto selectedRole) {
+		this.selectedRole = selectedRole;
+	}
+
+
+
+	public List<UserDto> getUsers() {
         List<User> users = getDataManager().loadAll(User.class);
         List<UserDto> userDtos = DTOs.marshalList(UserDto.class, users);
 
@@ -89,9 +122,9 @@ public class PermissionAdminBean extends EntityViewBean {
 	public void onRowSelectUser(SelectEvent event) {
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		UserDto selectedUser = (UserDto) event.getObject();
+		UserDto clickOnUser = (UserDto) event.getObject();
 
-		if(selectedUser == null) {
+		if(clickOnUser == null) {
 			context.addMessage(null, new FacesMessage("提示", "请选择需要设置权限的用户!"));
             return;
 		}
@@ -101,7 +134,7 @@ public class PermissionAdminBean extends EntityViewBean {
 
 
         Map<String, ResourcePermission> havePermissions = new HashMap<String, ResourcePermission>();
-        List<ResourcePermission> haveResourcePermissions = aclService.getResourcePermissions(selectedUser.unmarshal());
+        List<ResourcePermission> haveResourcePermissions = aclService.getResourcePermissions(clickOnUser.unmarshal());
         for(ResourcePermission rp : haveResourcePermissions) {
 		String permissionQulifier = srr.qualify(rp.getResource());
 		havePermissions.put(permissionQulifier, rp);
@@ -140,6 +173,28 @@ public class PermissionAdminBean extends EntityViewBean {
     }
 
     public void onRowUnselectGroup(UnselectEvent event) {
+    }
+
+    /**
+     *
+     *  save:
+     *  	1, delete from R_ACE where principal = currentUser
+     *
+     *		2, for entry: RPEntry[]
+     *			ace = new R_ACE(entry.getResource(), currentUser, entry.permission)
+     *    		dataManager.save(ace)
+     */
+    public void doSave() {
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		if(selectedUser == null) {
+			context.addMessage(null, new FacesMessage("提示", "请选择需要设置权限的用户!"));
+            return;
+		}
+
+
+
+
     }
 
 }
