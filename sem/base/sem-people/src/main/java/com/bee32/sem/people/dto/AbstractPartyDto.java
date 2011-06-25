@@ -61,10 +61,10 @@ public class AbstractPartyDto<E extends Party>
         sid = source.getSid();
 
         if (selection.contains(CONTACTS))
-            contacts = marshalList(ContactDto.class, source.getContacts());
+            contacts = marshalList(ContactDto.class, source.getContacts(), true);
 
         if (selection.contains(RECORDS))
-            records = marshalList(PartyRecordDto.class, source.getRecords());
+            records = marshalList(PartyRecordDto.class, source.getRecords(), true);
     }
 
     @Override
