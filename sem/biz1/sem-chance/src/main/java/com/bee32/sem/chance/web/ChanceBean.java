@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceCategoryDto;
 import com.bee32.sem.chance.dto.ChanceDto;
@@ -32,16 +31,16 @@ import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.service.ChanceService;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 
 @Component
 @Scope("view")
 public class ChanceBean
-        extends EntityViewBean {
+        extends MultiTabEntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
-    private int currentTab;
     private boolean addable;
     private boolean edable;
     private boolean detailable;
@@ -184,14 +183,6 @@ public class ChanceBean
         chancePartyDto.setParty(selectedParty);
         chancePartyDto.setRole("普通客户");
         chance.addChanceParty(chancePartyDto);
-    }
-
-    public int getCurrentTab() {
-        return currentTab;
-    }
-
-    public void setCurrentTab(int currentTab) {
-        this.currentTab = currentTab;
     }
 
     public boolean isAddable() {

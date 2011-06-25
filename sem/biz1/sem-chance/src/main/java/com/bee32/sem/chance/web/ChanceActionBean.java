@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceActionStyleDto;
@@ -34,6 +33,7 @@ import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.service.ChanceService;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.user.util.SessionLoginInfo;
 
@@ -43,14 +43,16 @@ import com.bee32.sem.user.util.SessionLoginInfo;
 @Component
 @Scope("view")
 public class ChanceActionBean
-        extends EntityViewBean {
+        extends MultiTabEntityViewBean {
 
     private static final long serialVersionUID = 1L;
+
+    static final int TAB_INDEX = 0;
+    static final int TAB_FORM = 1;
 
     // 查找日志
     private Date searchBeginTime;
     private Date searchEndTime;
-    private int currentTab;
     private boolean add;
     private boolean edable;
     private boolean detail;
@@ -121,7 +123,7 @@ public class ChanceActionBean
     }
 
     void initToolbar() {
-        currentTab = 0;
+        setActiveTab(TAB_INDEX);
         add = false;
         edable = true;
         detail = true;
@@ -175,7 +177,7 @@ public class ChanceActionBean
 
     public void createForm() {
         action = newChanceActionDto();
-        currentTab = 1;
+        setActiveTab(TAB_FORM);
         add = true;
         edable = true;
         detail = true;
@@ -185,7 +187,7 @@ public class ChanceActionBean
 
     public void editForm() {
         action = selectedAction;
-        currentTab = 1;
+        setActiveTab(TAB_FORM);
         add = true;
         edable = true;
         detail = true;
@@ -195,7 +197,7 @@ public class ChanceActionBean
 
     public void detailForm() {
         action = selectedAction;
-        currentTab = 1;
+        setActiveTab(TAB_FORM);
         add = false;
         edable = true;
         detail = true;
@@ -213,7 +215,7 @@ public class ChanceActionBean
     }
 
     public void cancel() {
-        currentTab = 0;
+        setActiveTab(TAB_INDEX);
         add = false;
         edable = true;
         detail = true;
@@ -262,11 +264,11 @@ public class ChanceActionBean
         return UIHelper.selectItemsFromDict(chanceActionStyleDtoList);
     }
 
-//    public List<SelectItem> getActors() {
-//        List<User> actorList = getDataManager().loadAll(User.class);
-//        List<UserDto> actorDtoList = DTOs.marshalList(UserDto.class, actorList);
-//        return UIHelper.selectItemsFromUser(actorDtoList);
-//    }
+// public List<SelectItem> getActors() {
+// List<User> actorList = getDataManager().loadAll(User.class);
+// List<UserDto> actorDtoList = DTOs.marshalList(UserDto.class, actorList);
+// return UIHelper.selectItemsFromUser(actorDtoList);
+// }
 
     public void saveAction() {
 
@@ -339,7 +341,7 @@ public class ChanceActionBean
         action = newChanceActionDto();
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("提示", "保存销售机会行动记录成功!"));
-        currentTab = 0;
+        setActiveTab(TAB_INDEX);
         add = false;
         edable = true;
         detail = true;
@@ -378,14 +380,6 @@ public class ChanceActionBean
 
     public void setSearchEndTime(Date searchEndTime) {
         this.searchEndTime = searchEndTime;
-    }
-
-    public int getCurrentTab() {
-        return currentTab;
-    }
-
-    public void setCurrentTab(int currentTab) {
-        this.currentTab = currentTab;
     }
 
     public boolean isAdd() {
