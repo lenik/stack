@@ -12,6 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
@@ -88,7 +91,7 @@ public class Chance
 
     public void setContent(String content) {
         if (content == null)
-            content = "";
+            throw new NullPointerException("content");
         this.content = content;
     }
 
@@ -106,6 +109,7 @@ public class Chance
     }
 
     @OneToMany(mappedBy = "chance")
+    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<ChanceParty> getParties() {
         return parties;
     }
