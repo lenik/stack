@@ -27,7 +27,6 @@ public class AbstractPrincipalDto<E extends Principal>
 
     protected final int depth = depthOf(selection.bits);
 
-    String name;
     String fullName;
     String description;
 
@@ -54,17 +53,17 @@ public class AbstractPrincipalDto<E extends Principal>
     @Override
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
-        this.name = map.getString("name");
+        //        this.name = map.getString("name");
         this.fullName = map.getString("fullName");
         this.description = map.getString("description");
     }
 
     public String getName() {
-        return name;
+        return getId();
     }
 
     public void setName(String name) {
-        this.name = name;
+        setId(name);
     }
 
     public String getFullName() {
@@ -76,7 +75,7 @@ public class AbstractPrincipalDto<E extends Principal>
     }
 
     public String getDisplayName() {
-        return fullName != null ? fullName : name;
+        return fullName != null ? fullName : getName();
     }
 
     public String getDescription() {
