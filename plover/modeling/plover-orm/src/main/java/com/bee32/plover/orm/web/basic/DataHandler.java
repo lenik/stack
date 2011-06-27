@@ -87,13 +87,13 @@ public class DataHandler<E extends Entity<K>, K extends Serializable>
         listing.fillSearchModel(searchModel, textMap);
 
         if (searchModel.isEmpty())
-            return (List<? extends E>) dataManager.loadAll(eh.getEntityType());
+            return (List<? extends E>) asFor(eh.getEntityType()).list();
 
         DetachedCriteria detachedCriteria = searchModel.getDetachedCriteria();
         int firstResult = searchModel.getFirstResult();
         int maxResults = searchModel.getMaxResults();
 
-        return dataManager.findByCriteria(detachedCriteria, firstResult, maxResults);
+        return asFor(eh.getEntityType()).list(firstResult, maxResults, detachedCriteria);
     }
 
 }

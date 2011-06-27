@@ -27,6 +27,7 @@ import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.dto.PersonSidTypeDto;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonSidType;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.service.IPeopleService;
@@ -126,7 +127,7 @@ public class PersonAdminBean
 
 
     public List<SelectItem> getSidTypes() {
-        List<PersonSidType> sidTypes = getDataManager().loadAll(PersonSidType.class);
+        List<PersonSidType> sidTypes = serviceFor(PersonSidType.class).list();
         List<PersonSidTypeDto> sidTypeDtos = DTOs.marshalList(PersonSidTypeDto.class, sidTypes);
         return UIHelper.selectItemsFromDict(sidTypeDtos);
     }
@@ -199,7 +200,7 @@ public class PersonAdminBean
 		try {
             IPeopleService peopleService = getBean(IPeopleService.class);
 
-            getDataManager().delete(selectedPerson.unmarshal());
+            serviceFor(Person.class).delete(selectedPerson.getId());
 
             persons.setRowCount((int) peopleService.listPersonByCurrentUserCount());
 
@@ -214,7 +215,7 @@ public class PersonAdminBean
         try {
             IPeopleService peopleService = getBean(IPeopleService.class);
 
-            getDataManager().saveOrUpdate(person.unmarshal());
+            serviceFor(Person.class).saveOrUpdate(person.unmarshal());
 
             persons.setRowCount((int) peopleService.listPersonByCurrentUserCount());
 

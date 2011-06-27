@@ -59,7 +59,7 @@ public class VerifyPolicyPrefController
             String typeId = VerifyPolicyPref.typeId(verifiableType);
             // prefDao.get(typeId);
 
-            VerifyPolicyPref pref = dataManager.get(VerifyPolicyPref.class, typeId);
+            VerifyPolicyPref pref = asFor(VerifyPolicyPref.class).get(typeId);
             if (pref == null) {
                 pref = new VerifyPolicyPref();
                 pref.setType(verifiableType);
@@ -88,7 +88,7 @@ public class VerifyPolicyPrefController
 
         for (Class<? extends VerifyPolicy> candidatePolicyType : VerifyPolicyManager.getCandidates(verifiableType)) {
 
-            List<? extends VerifyPolicy> candidatePolicies = dataManager.loadAll(candidatePolicyType);
+            List<? extends VerifyPolicy> candidatePolicies = dataManager.access(candidatePolicyType).list();
 
             for (VerifyPolicyDto candidate : DTOs.marshalList(VerifyPolicyDto.class, candidatePolicies))
                 candidates.add(candidate);
@@ -129,7 +129,7 @@ public class VerifyPolicyPrefController
 
         String typeName = ClassUtil.getDisplayName(userEntityType);
 
-        for (E userEntity : dataManager.loadAll(userEntityType)) {
+        for (E userEntity : asFor(userEntityType).list()) {
             if (logger.isDebugEnabled())
                 logger.debug("Refresh/verify " + typeName + " [" + userEntity.getId() + "]");
 

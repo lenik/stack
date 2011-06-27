@@ -12,6 +12,7 @@ import org.springframework.web.servlet.View;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.servlet.mvc.ActionRequest;
@@ -27,6 +28,12 @@ public abstract class EntityController<E extends Entity<K>, K extends Serializab
 
     @Inject
     protected CommonDataManager dataManager;
+
+    protected <_E extends Entity<_K>, _K extends Serializable> //
+    IEntityAccessService<_E, _K> asFor(Class<? extends _E> entityType) {
+        IEntityAccessService<_E, _K> service = dataManager.access(entityType);
+        return service;
+    }
 
     @Override
     protected ActionRequest newRequest(IActionHandler handler, HttpServletRequest request) {
@@ -55,7 +62,7 @@ public abstract class EntityController<E extends Entity<K>, K extends Serializab
 
     @Override
     public <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id) {
-        return dataManager.load(entityType, id);
+        return dataManager.access(entityType).load(id);
     }
 
 }

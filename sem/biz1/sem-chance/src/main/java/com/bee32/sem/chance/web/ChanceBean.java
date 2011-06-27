@@ -135,19 +135,19 @@ public class ChanceBean
     }
 
     public List<SelectItem> getCategory() {
-        List<ChanceCategory> chanceCategoryList = getDataManager().loadAll(ChanceCategory.class);
+        List<ChanceCategory> chanceCategoryList = serviceFor(ChanceCategory.class).list();
         List<ChanceCategoryDto> categoryDtoList = DTOs.marshalList(ChanceCategoryDto.class, chanceCategoryList);
         return UIHelper.selectItemsFromDict(categoryDtoList);
     }
 
     public List<SelectItem> getSource() {
-        List<ChanceSourceType> sourceTypeList = getDataManager().loadAll(ChanceSourceType.class);
+        List<ChanceSourceType> sourceTypeList = serviceFor(ChanceSourceType.class).list();
         List<ChanceSourceDto> chanceSourceDtoList = DTOs.marshalList(ChanceSourceDto.class, sourceTypeList);
         return UIHelper.selectItemsFromDict(chanceSourceDtoList);
     }
 
     public List<SelectItem> getStage() {
-        List<ChanceStage> chanceStageList = getDataManager().loadAll(ChanceStage.class);
+        List<ChanceStage> chanceStageList = serviceFor(ChanceStage.class).list();
         List<ChanceStageDto> chanceStageDtoList = DTOs.marshalList(ChanceStageDto.class, chanceStageList);
         return UIHelper.selectItemsFromDict(chanceStageDtoList);
     }

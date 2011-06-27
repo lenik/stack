@@ -81,13 +81,13 @@ public abstract class AbstractPartyAdminBean
     }
 
     public List<SelectItem> getContactCategories() {
-        List<ContactCategory> contactCategories = getDataManager().loadAll(ContactCategory.class);
+        List<ContactCategory> contactCategories = serviceFor(ContactCategory.class).list();
         List<ContactCategoryDto> contactCategoryDtos = DTOs.marshalList(ContactCategoryDto.class, contactCategories);
         return UIHelper.selectItemsFromDict(contactCategoryDtos);
     }
 
     public List<SelectItem> getTags() {
-        List<PartyTag> partyTags = getDataManager().loadAll(PartyTag.class);
+        List<PartyTag> partyTags = serviceFor(PartyTag.class).list();
         List<PartyTagDto> partyTagDtos = DTOs.marshalList(PartyTagDto.class, partyTags);
         return UIHelper.selectItemsFromDict(partyTagDtos);
     }
@@ -136,7 +136,7 @@ public abstract class AbstractPartyAdminBean
         try {
             party.getContacts().remove(selectedContact);
             Party _party = party.unmarshal();
-            getDataManager().saveOrUpdate(_party);
+            serviceFor(Party.class).saveOrUpdate(_party);
 
             party = reload(party);
             setParty(party);
@@ -175,7 +175,7 @@ public abstract class AbstractPartyAdminBean
             }
 
             Party _party = party.unmarshal();
-            getDataManager().saveOrUpdate(_party);
+            serviceFor(Party.class).saveOrUpdate(_party);
 
             party = reload(party);
             setParty(party);

@@ -53,7 +53,7 @@ public class CreateOrEditFormHandler<E extends Entity<K>, K extends Serializable
             String _id = req.getParameter("id");
             id = eh.parseRequiredId(_id);
 
-            entity = dataManager.get(eh.getEntityType(), id);
+            entity = asFor(eh.getEntityType()).get(id);
 
             if (entity == null) {
                 if (!_createOTF)

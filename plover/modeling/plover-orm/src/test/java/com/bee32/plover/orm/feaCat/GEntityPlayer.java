@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.feaCat;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.test.FeaturePlayer;
@@ -30,20 +33,26 @@ public class GEntityPlayer
     @Inject
     CommonDataManager dataManager;
 
+    <E extends Entity<K>, K extends Serializable> //
+    IEntityAccessService<E, K> asFor(Class<? extends E> entityType) {
+        IEntityAccessService<E, K> service = dataManager.access(entityType);
+        return service;
+    }
+
     @Transactional
     public void doFill() {
         Cat tom = new Cat("Tom", "black");
-        dataManager.save(tom);
+        asFor(Cat.class).save(tom);
 
         CatFavTag catFavTag = new CatFavTag();
         catFavTag.setWho(tom);
         catFavTag.setTag("fish");
-        dataManager.save(catFavTag);
+        asFor(CatFavTag.class).save(catFavTag);
     }
 
     @Transactional(readOnly = true)
     public void doList() {
-        List<CatFavTag> tags = dataManager.loadAll(CatFavTag.class);
+        List<CatFavTag> tags = dataManager.access(CatFavTag.class).list();
         for (CatFavTag tag : tags)
             System.out.println("Tag: " + tag);
     }

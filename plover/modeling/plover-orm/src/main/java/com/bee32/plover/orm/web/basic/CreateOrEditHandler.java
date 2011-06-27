@@ -76,7 +76,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
             if (id == null)
                 throw new ServletException("id isn't specified");
 
-            entity = dataManager.get(eh.getEntityType(), id);
+            entity = asFor(eh.getEntityType()).get(id);
             if (entity == null) {
                 if (!_createOTF)
                     return Javascripts.alertAndBack("对象尚未创建，无法保存。" + eh.getHint(id) + "\n\n" //
@@ -107,7 +107,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
 
         forming.saveForm(entity, dto);
 
-        dataManager.saveOrUpdate(entity);
+        asFor(eh.getEntityType()).saveOrUpdate(entity);
 
         if (postUpdating != null)
             postUpdating.postUpdate(entity);

@@ -11,7 +11,6 @@ import javax.servlet.ServletException;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityDao;
-import com.bee32.plover.orm.entity.EntityDso;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.util.EntityDto;
 
@@ -21,7 +20,7 @@ public class EntityHelper<E extends Entity<K>, K extends Serializable> {
     Class<K> keyType;
     Class<? extends EntityDto<E, K>> dtoType;
     Class<? extends EntityDao<E, K>> daoType;
-    Class<? extends EntityDso<E, K>> dsoType;
+    //Class<? extends EntityDso<E, K>> dsoType;
 
     Integer defaultSelection;
     Map<SelectionMode, Integer> selectionModes = new HashMap<SelectionMode, Integer>();

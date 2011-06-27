@@ -80,23 +80,20 @@ public class PermissionAdminBean extends EntityViewBean {
 
 
 	public List<UserDto> getUsers() {
-        List<User> users = getDataManager().loadAll(User.class);
+        List<User> users = serviceFor(User.class).list();
         List<UserDto> userDtos = DTOs.marshalList(UserDto.class, users);
-
         return userDtos;
     }
 
     public List<RoleDto> getRoles() {
-        List<Role> roles = getDataManager().loadAll(Role.class);
+        List<Role> roles = serviceFor(Role.class).list();
         List<RoleDto> roleDtos = DTOs.marshalList(RoleDto.class, roles);
-
         return roleDtos;
     }
 
     public List<GroupDto> getGroups() {
-        List<Group> groups = getDataManager().loadAll(Group.class);
+        List<Group> groups = serviceFor(Group.class).list();
         List<GroupDto> groupDtos = DTOs.marshalList(GroupDto.class, groups);
-
         return groupDtos;
     }
 

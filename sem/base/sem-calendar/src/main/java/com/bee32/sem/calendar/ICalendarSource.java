@@ -8,6 +8,6 @@ public interface ICalendarSource {
     // ICalendarSource
     // getEvents(begin, end) => event*
 
-    List<ICalendarEvent> getEvents(Date begin, Date end);
+    List<? extends ICalendarEvent> getEvents(Date begin, Date end);
 
 }

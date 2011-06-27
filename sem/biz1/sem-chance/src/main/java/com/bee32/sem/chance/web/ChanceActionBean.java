@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.dto.UserDto;
-import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.chance.dto.ChanceActionDto;
@@ -207,10 +206,9 @@ public class ChanceActionBean
 
     public void drop() {
         FacesContext context = FacesContext.getCurrentInstance();
-        CommonDataManager cdm = getBean(CommonDataManager.class);
         ChanceActionDto cad = action;
         ChanceAction chanceActoin = cad.unmarshal();
-        cdm.delete(chanceActoin);
+        serviceFor(ChanceAction.class).delete(chanceActoin);
         context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
     }
 
@@ -252,13 +250,13 @@ public class ChanceActionBean
     }
 
     public List<SelectItem> getChanceStages() {
-        List<ChanceStage> chanceStageList = getDataManager().loadAll(ChanceStage.class);
+        List<ChanceStage> chanceStageList = serviceFor(ChanceStage.class).list();
         List<ChanceStageDto> stageDtoList = DTOs.marshalList(ChanceStageDto.class, chanceStageList);
         return UIHelper.selectItemsFromDict(stageDtoList);
     }
 
     public List<SelectItem> getChanceActionStyles() {
-        List<ChanceActionStyle> chanceActionStyleList = getDataManager().loadAll(ChanceActionStyle.class);
+        List<ChanceActionStyle> chanceActionStyleList = serviceFor(ChanceActionStyle.class).list();
         List<ChanceActionStyleDto> chanceActionStyleDtoList = DTOs.marshalList(ChanceActionStyleDto.class,
                 chanceActionStyleList);
         return UIHelper.selectItemsFromDict(chanceActionStyleDtoList);
@@ -336,7 +334,7 @@ public class ChanceActionBean
 
         ChanceAction tempAction = action.unmarshal();
 
-        getDataManager().save(tempAction);
+        serviceFor(ChanceAction.class).save(tempAction);
 
         action = newChanceActionDto();
 

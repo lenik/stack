@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.junit.Test;
 
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 
@@ -19,10 +20,12 @@ public class DiscriminatorTest
 
     @Test
     public void listAllColors() {
-        for (Color color : ColorSystem.getPredefinedColors())
-            dataManager.save(color);
+        IEntityAccessService<Color, String> colorDao = dataManager.access(Color.class);
 
-        List<Color> list = dataManager.loadAll(Color.class);
+        for (Color color : ColorSystem.getPredefinedColors())
+            colorDao.save(color);
+
+        List<Color> list = colorDao.list();
         // for (Color c : list)
         // System.out.println("Color: " + c);
         assertTrue(list.contains(ColorSystem.black));
@@ -30,19 +33,24 @@ public class DiscriminatorTest
 
     @Test
     public void listCMYKOnly() {
-        for (Color color : ColorSystem.getPredefinedColors())
-            dataManager.save(color);
+        IEntityAccessService<Color, String> colorDao = dataManager.access(Color.class);
+        IEntityAccessService<CMYK, String> cmykDao = dataManager.access(CMYK.class);
 
-        List<CMYK> list = dataManager.loadAll(CMYK.class);
+        for (Color color : ColorSystem.getPredefinedColors())
+            colorDao.save(color);
+
+        List<CMYK> list = cmykDao.list();
         assertTrue(list.contains(ColorSystem.black));
     }
 
     @Test
     public void listRGBBased() {
+        IEntityAccessService<Color, String> colorDso = dataManager.access(Color.class);
+        IEntityAccessService<RGB, String> rgbDao = dataManager.access(RGB.class);
         for (Color color : ColorSystem.getPredefinedColors())
-            dataManager.save(color);
+            colorDso.save(color);
 
-        List<RGB> list = dataManager.loadAll(RGB.class);
+        List<RGB> list = rgbDao.list();
         // for (RGB rgb : list)
         // System.err.println("RGB: " + rgb);
         RGB cyan = new RGB("CYAN", java.awt.Color.CYAN);

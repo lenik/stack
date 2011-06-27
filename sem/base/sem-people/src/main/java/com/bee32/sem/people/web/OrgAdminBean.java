@@ -26,6 +26,7 @@ import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgTypeDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
+import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.sandbox.UIHelper;
@@ -124,7 +125,7 @@ public class OrgAdminBean
 	}
 
     public List<SelectItem> getOrgTypes() {
-        List<OrgType> orgTypes = getDataManager().loadAll(OrgType.class);
+        List<OrgType> orgTypes = serviceFor(OrgType.class).list();
         List<OrgTypeDto> orgTypeDtos = DTOs.marshalList(OrgTypeDto.class, orgTypes);
         return UIHelper.selectItemsFromDict(orgTypeDtos);
     }
@@ -236,7 +237,7 @@ public class OrgAdminBean
 		try {
             IPeopleService peopleService = getBean(IPeopleService.class);
 
-            getDataManager().delete(selectedOrg.unmarshal());
+            serviceFor(Org.class).delete(selectedOrg.getId());
 
             orgs.setRowCount((int) peopleService.listOrgByCurrentUserCount());
 
@@ -251,7 +252,7 @@ public class OrgAdminBean
         try {
 			IPeopleService peopleService = getBean(IPeopleService.class);
 
-			getDataManager().saveOrUpdate(org.unmarshal());
+			serviceFor(Org.class).saveOrUpdate(org.unmarshal());
 
             orgs.setRowCount((int) peopleService.listOrgByCurrentUserCount());
 
@@ -320,7 +321,7 @@ public class OrgAdminBean
 
         try {
             org.getRoles().remove(selectedRole);
-            getDataManager().saveOrUpdate(org.unmarshal());
+            serviceFor(Org.class).saveOrUpdate(org.unmarshal());
 
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("提示", "去除相关人员关联失败;" + e.getMessage()));
@@ -337,7 +338,7 @@ public class OrgAdminBean
 
         try {
             org.getRoles().add(role);
-            getDataManager().saveOrUpdate(org.unmarshal());
+            serviceFor(Org.class).saveOrUpdate(org.unmarshal());
 
 
             context.addMessage(null, new FacesMessage("提示", "相关人员设置关联成功"));

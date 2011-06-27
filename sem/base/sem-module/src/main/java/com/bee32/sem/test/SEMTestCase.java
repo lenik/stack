@@ -5,12 +5,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.context.ApplicationContext;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.icsf.principal.dao.UserDao;
-import com.bee32.icsf.principal.dso.UserDso;
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.context.OSIVFilter;
+import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UsingUtil;
 import com.bee32.plover.orm.util.SamplesLoader;
@@ -78,11 +77,9 @@ public class SEMTestCase
             if (appContext == null)
                 throw new IllegalStateException("Application context isn't initalized, yet.");
 
-            UserDso userDso = appContext.getBean(UserDso.class);
-            UserDto userDto = userDso.getByName(userName);
-
-            UserDao userDao = appContext.getBean(UserDao.class);
-            User user = userDao.getByName(userName);
+            CommonDataManager dataManager = appContext.getBean(CommonDataManager.class);
+            IEntityAccessService<User, String> userService = dataManager.access(User.class);
+            User user = userService.load(userName);
 
             SessionLoginInfo.setCurrentUser(session, user);
         }

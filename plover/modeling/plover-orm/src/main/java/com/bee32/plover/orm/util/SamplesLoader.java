@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 import com.bee32.plover.orm.builtin.PloverConfManager;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
-import com.bee32.plover.orm.entity.IEntity;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
 @Component
@@ -118,17 +118,17 @@ public class SamplesLoader
             logger.debug("  Already loaded: " + loadKey);
 
         } else {
-            List<IEntity<?>> selection = new ArrayList<IEntity<?>>();
+            List<Entity<?>> selection = new ArrayList<Entity<?>>();
 
             contrib.beginLoad();
 
-            Collection<? extends IEntity<?>> samples = contrib.getTransientSamples(worseCase);
+            Collection<? extends Entity<?>> samples = contrib.getTransientSamples(worseCase);
             if (samples == null || samples.isEmpty()) {
                 logger.debug("  No sample defined in " + contrib);
                 return;
             }
 
-            for (IEntity<?> sample : samples) {
+            for (Entity<?> sample : samples) {
                 if (sample == null) {
                     logger.error("Null sample in contribution " + contrib);
                     continue;
@@ -150,11 +150,11 @@ public class SamplesLoader
             progress.execute(contrib);
 
             try {
-                dataManager.saveAll(selection);
+                dataManager.access(Entity.class).saveAll(selection);
 
                 confManager.setConf(loadKey, "1");
 
-                dataManager.flush();
+                // dataManager.flush();
             } catch (DataAccessException e) {
                 throw new RuntimeException("Failed to load samples from " + contrib, e);
             }

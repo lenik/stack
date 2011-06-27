@@ -1,6 +1,7 @@
 package com.bee32.icsf.principal.fea1;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,8 @@ import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.context.TestDataConfig;
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.test.FeaturePlayer;
@@ -59,6 +62,12 @@ public class PlaySamples
     @Inject
     CommonDataManager dataManager;
 
+    <E extends Entity<K>, K extends Serializable> //
+    IEntityAccessService<E, K> asFor(Class<E> entityType) {
+        IEntityAccessService<E, K> service = dataManager.access(entityType);
+        return service;
+    }
+
     @Transactional
     public void listSamples() {
         samplesLoader.loadNormalSamples();
@@ -84,17 +93,17 @@ public class PlaySamples
             principalDao.delete(p);
     }
 
-     @Transactional
+    @Transactional
     public void run1() {
         // g1.setOwner(u1);
         u1.addAssignedGroup(g1);
         u2.addAssignedGroup(g1);
 
-        dataManager.saveAll(g1, u1, u2);
+        asFor(Principal.class).saveAll(g1, u1, u2);
 
-        u1 = dataManager.merge(u1);
-        u2 = dataManager.merge(u2);
-        g1 = dataManager.merge(g1);
+        u1 = asFor(User.class).merge(u1);
+        u2 = asFor(User.class).merge(u2);
+        g1 = asFor(Group.class).merge(g1);
 
         // dataManager.flush();
     }
@@ -105,9 +114,9 @@ public class PlaySamples
         User ur1 = null;
         User ur2 = null;
         try {
-            gr1 = dataManager.fetch(Group.class, g1.getId());
-            ur1 = dataManager.fetch(User.class, u1.getId());
-            ur2 = dataManager.fetch(User.class, u2.getId());
+            gr1 = asFor(Group.class).load(g1.getId());
+            ur1 = asFor(User.class).load(u1.getId());
+            ur2 = asFor(User.class).load(u2.getId());
 
             assertTrue(ur1.implies(gr1));
             assertFalse(gr1.implies(ur1));
@@ -117,7 +126,7 @@ public class PlaySamples
             System.out.println(ur2);
 
         } finally {
-            dataManager.delete(ur1.detach());
+            asFor(User.class).delete(ur1.detach());
         }
     }
 

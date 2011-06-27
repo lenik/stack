@@ -49,11 +49,11 @@ public class VerifyHandler<E extends VerifiableEntity<K, C>, //
                 if (__currentUser == null)
                     return "您尚未登陆。";
 
-                User currentUser = dataManager.get(User.class, __currentUser.getId());
+                User currentUser = asFor(User.class).get(__currentUser.getId());
 
                 K id = eh.parseRequiredId(_id);
 
-                E entity = dataManager.get(eh.getEntityType(), id);
+                E entity = asFor(eh.getEntityType()).get(id);
 
                 if (entity == null)
                     return "审核的目标对象不存在，这可能是因为有人在您审核的同时删除了该对象。";
