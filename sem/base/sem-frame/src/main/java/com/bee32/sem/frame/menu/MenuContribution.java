@@ -38,6 +38,25 @@ public abstract class MenuContribution
     List<Field> fields;
     Map<String, MenuNode> localMap = new HashMap<String, MenuNode>();
 
+    @Override
+    protected final void introduce() {
+        super.introduce();
+
+        for (Field field : getElementFields()) {
+
+            MenuNode menuNode;
+            try {
+                menuNode = (MenuNode) field.get(this);
+            } catch (Exception e) {
+                throw new IllegalUsageException(e.getMessage(), e);
+            }
+
+            // String name = menuEntry.getName();
+            // String targetPath = parentPath + "/" + name;
+            localMap.put(field.getName(), menuNode);
+        }
+    }
+
     /**
      * Scan all MenuNode(s) instead of those &#64;Contribution-annotated.
      */
@@ -69,25 +88,6 @@ public abstract class MenuContribution
             clazz = clazz.getSuperclass();
         }
         return fields;
-    }
-
-    @Override
-    protected final void introduce() {
-        super.introduce();
-
-        for (Field field : getElementFields()) {
-
-            MenuNode menuNode;
-            try {
-                menuNode = (MenuNode) field.get(this);
-            } catch (Exception e) {
-                throw new IllegalUsageException(e.getMessage(), e);
-            }
-
-            // String name = menuEntry.getName();
-            // String targetPath = parentPath + "/" + name;
-            localMap.put(field.getName(), menuNode);
-        }
     }
 
     // protected final void declare(MenuNode node) {
