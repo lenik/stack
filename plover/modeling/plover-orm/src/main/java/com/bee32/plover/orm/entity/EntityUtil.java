@@ -111,7 +111,7 @@ public class EntityUtil {
         return _key;
     }
 
-    public static <E extends Entity<K>, K extends Serializable> Class<K> getKeyType(Class<E> entityClass) {
+    public static <E extends Entity<? extends K>, K extends Serializable> Class<K> getKeyType(Class<E> entityClass) {
         return ClassUtil.infer1(entityClass, Entity.class, 0);
     }
 
