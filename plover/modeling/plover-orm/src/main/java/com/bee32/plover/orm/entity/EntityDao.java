@@ -30,7 +30,7 @@ import com.bee32.plover.orm.dao.HibernateTemplate;
  */
 @ComponentTemplate
 @Lazy
-public class EntityDao<E extends Entity<K>, K extends Serializable>
+public class EntityDao<E extends Entity<? extends K>, K extends Serializable>
         extends EntityRepository<E, K>
         implements IEntityAccessService<E, K> {
 
