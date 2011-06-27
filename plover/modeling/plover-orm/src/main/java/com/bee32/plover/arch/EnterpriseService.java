@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
 
 @Transactional(readOnly = true)
@@ -32,7 +33,13 @@ public abstract class EnterpriseService
 
     @Override
     public <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {
-        return dataManager.fetch(entityType, id);
+        return asFor(entityType).load(id);
+    }
+
+    protected <_E extends Entity<_K>, _K extends Serializable> //
+    IEntityAccessService<_E, _K> asFor(Class<? extends _E> entityType) {
+        IEntityAccessService<_E, _K> service = dataManager.access(entityType);
+        return service;
     }
 
 }

@@ -14,6 +14,7 @@ import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityRepository;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.restful.IRESTfulRequest;
 import com.bee32.plover.restful.IRESTfulResponse;
 
@@ -33,6 +34,12 @@ public class EntityRESTfulController<E extends Entity<K>, K extends Serializable
     @Inject
     CommonDataManager dataManager;
 
+    protected <_E extends Entity<_K>, _K extends Serializable> //
+    IEntityAccessService<_E, _K> asFor(Class<? extends _E> entityType) {
+        IEntityAccessService<_E, _K> service = dataManager.access(entityType);
+        return service;
+    }
+
     public void index(IRESTfulRequest req, IRESTfulResponse resp)
             throws IOException {
         PrintWriter out = resp.getWriter();
@@ -46,7 +53,7 @@ public class EntityRESTfulController<E extends Entity<K>, K extends Serializable
 
         E entity = repo.populate(req);
 
-        dataManager.saveOrUpdate(entity);
+        asFor(repo.getEntityType()).saveOrUpdate(entity);
 
         return entity;
     }
@@ -68,7 +75,7 @@ public class EntityRESTfulController<E extends Entity<K>, K extends Serializable
             EntityAccessor.setVersion(entity, version);
         }
 
-        dataManager.update(entity);
+        asFor(repo.getEntityType()).update(entity);
         return entity;
     }
 
@@ -81,7 +88,7 @@ public class EntityRESTfulController<E extends Entity<K>, K extends Serializable
         K key = repo.convertRefNameToKey(refName);
 
         E entity = repo.get(key);
-        dataManager.delete(entity);
+        asFor(repo.getEntityType()).delete(entity);
 
         // MethodNames.INDEX isn't imported.
         resp.setMethod("index");

@@ -11,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 import com.bee32.plover.ajax.SuccessOrFailMessage;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.servlet.mvc.ActionHandler;
@@ -65,7 +66,13 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
     @Override
     public <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id)
             throws DataAccessException {
-        return dataManager.fetch(entityType, id);
+        return asFor(entityType).load(id);
+    }
+
+    protected <_E extends Entity<_K>, _K extends Serializable> //
+    IEntityAccessService<_E, _K> asFor(Class<? extends _E> entityType) {
+        IEntityAccessService<_E, _K> service = dataManager.access(entityType);
+        return service;
     }
 
     @Override
