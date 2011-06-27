@@ -49,22 +49,8 @@ public class PartyTag
         this.instances = instances;
     }
 
-    /**
-     * @.label Employee
-     * @.label.zh_CN 雇员
-     */
     public static final PartyTag EMPLOYEE = new PartyTag("EMP", "雇员");
-
-    /**
-     * @.label Customer
-     * @.label.zh_CN 客户
-     */
     public static final PartyTag CUSTOMER = new PartyTag("CUS", "客户");
-
-    /**
-     * @.label Supplier
-     * @.label.zh_CN 供应商
-     */
     public static final PartyTag SUPPLIER = new PartyTag("SUP", "供应商");
 
 }
