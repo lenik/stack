@@ -38,7 +38,22 @@ public class DaoManager
 
     public <E extends Entity<? extends K>, K extends Serializable> EntityDao<? super E, ? super K> //
     getNearestDao(Class<? extends E> entityType) {
-        EntityDao<E, K> dao = daoMap.get(entityType);
+
+        EntityDao<? super E, ? super K> dao = null;
+
+        Class<?> baseType = (Class<?>) entityType;
+        while (baseType != null) {
+
+            dao = (EntityDao<? super E, ? super K>) daoMap.get(baseType);
+            if (dao != null)
+                break;
+
+            if (baseType == Entity.class)
+                break;
+            baseType = baseType.getSuperclass();
+        }
+
+        return dao;
     }
 
 }
