@@ -2,6 +2,7 @@ package com.bee32.sem.people.web;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -189,7 +190,12 @@ public class PermissionAdminBean extends EntityViewBean {
             return;
 		}
 
-
+       Iterator<RPEntry> iterator = rpEntries.iterator();
+        while (iterator.hasNext())
+        {
+            RPEntry rpEntry = (RPEntry)iterator.next();
+            System.out.println(rpEntry.getPermission().isAdmin());
+        }
 
 
     }
