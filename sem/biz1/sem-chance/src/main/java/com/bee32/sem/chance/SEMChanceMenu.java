@@ -7,9 +7,9 @@ import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
-import com.bee32.sem.frame.Contribution;
 import com.bee32.sem.frame.menu.MenuContribution;
-import com.bee32.sem.frame.menu.MenuEntry;
+import com.bee32.sem.frame.menu.MenuNode;
+import com.bee32.sem.frame.menu.SEMMainMenu;
 
 public class SEMChanceMenu
         extends MenuContribution
@@ -18,28 +18,17 @@ public class SEMChanceMenu
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
     static Location CHANCE = WEB_APP.join(SEMChanceModule.PREFIX_);
 
-    @Contribution("biz1/chance")
-    MenuEntry chance = new MenuEntry("chance", CHANCE.join("chance/index-rich.do"));
+    public static MenuNode cha = menu(SEMMainMenu.MAIN, "chance");
+    public static MenuNode chaDict = menu(SEMMainMenu.ADMIN, "chance");
 
-    @Contribution("biz1/chance")
-    MenuEntry action = new MenuEntry("action", CHANCE.join("action/index-rich.do"));
+    static MenuNode category = entry(chaDict, "category", getDictIndex(ChanceCategory.class));
+    static MenuNode sourceType = entry(chaDict, "sourceType", getDictIndex(ChanceSourceType.class));
+    static MenuNode actionStyle = entry(chaDict, "actionStyle", getDictIndex(ChanceActionStyle.class));
+    static MenuNode stage = entry(chaDict, "stage", getDictIndex(ChanceStage.class));
 
-    @Contribution("biz1/chance")
-    MenuEntry competitor = new MenuEntry("competitor", CHANCE.join("competitor/index.do"));
-
-    // Dicts...
-
-    @Contribution("biz1/chance")
-    MenuEntry category = new MenuEntry("category", getDictIndex(ChanceCategory.class));
-
-    @Contribution("biz1/chance")
-    MenuEntry sourceType = new MenuEntry("sourceType", getDictIndex(ChanceSourceType.class));
-
-    @Contribution("biz1/chance")
-    MenuEntry actionStyle = new MenuEntry("actionStyle", getDictIndex(ChanceActionStyle.class));
-
-    @Contribution("biz1/chance")
-    MenuEntry stage = new MenuEntry("stage", getDictIndex(ChanceStage.class));
+    static MenuNode chance = entry(cha, "chance", CHANCE.join("chance/index-rich.do"));
+    static MenuNode action = entry(cha, "action", CHANCE.join("action/index-rich.do"));
+    static MenuNode competitor = entry(cha, "competitor", CHANCE.join("competitor/index.do"));
 
     @Override
     protected void preamble() {

@@ -21,32 +21,32 @@ public class MenuEntry
 
     private IAction action;
 
-    public MenuEntry(String name) {
+    MenuEntry(String name) {
         super(name);
         this.action = null;
     }
 
-    public MenuEntry(String name, IAction action) {
+    MenuEntry(String name, IAction action) {
         super(name);
         this.action = action;
     }
 
-    public MenuEntry(String name, ILocationContext actionLocation) {
+    MenuEntry(String name, ILocationContext actionLocation) {
         super(name);
         this.action = new Action(actionLocation);
     }
 
-    public MenuEntry(int order, String name) {
+    MenuEntry(int order, String name) {
         this(name);
         this.order = order;
     }
 
-    public MenuEntry(int order, String name, IAction action) {
+    MenuEntry(int order, String name, IAction action) {
         this(name, action);
         this.order = order;
     }
 
-    public MenuEntry(int order, String name, ILocationContext actionLocation) {
+    MenuEntry(int order, String name, ILocationContext actionLocation) {
         this(name, actionLocation);
         this.order = order;
     }

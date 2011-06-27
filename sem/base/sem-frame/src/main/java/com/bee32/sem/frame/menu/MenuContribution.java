@@ -8,6 +8,7 @@ import com.bee32.plover.orm.ext.dict.CommonDictController;
 import com.bee32.plover.orm.ext.dict.DictEntity;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.rtx.location.ILocationConstants;
+import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.action.Action;
 
@@ -24,29 +25,37 @@ public abstract class MenuContribution
         extends Composite
         implements ILocationConstants, ITypeAbbrAware {
 
-    protected MenuNode subMenu(MenuNode parent, String name) {
-        return subMenu(parent, 0, name);
+    protected static MenuNode menu(String name) {
+        return menu(null, 0, name);
     }
 
-    protected MenuNode subMenu(MenuNode parent, int order, String name) {
+    protected static MenuNode menu(int order, String name) {
+        return entry(null, order, name, null);
+    }
+
+    protected static MenuNode menu(MenuNode parent, String name) {
+        return menu(parent, 0, name);
+    }
+
+    protected static MenuNode menu(MenuNode parent, int order, String name) {
         return entry(parent, order, name, null);
     }
 
-    protected MenuNode section(MenuNode parent, String name) {
+    protected static MenuNode section(MenuNode parent, String name) {
         return section(parent, 0, name);
     }
 
-    protected MenuNode section(MenuNode parent, int order, String name) {
-        MenuNode node = subMenu(parent, order, name);
+    protected static MenuNode section(MenuNode parent, int order, String name) {
+        MenuNode node = menu(parent, order, name);
         node.setFlatten(true);
         return node;
     }
 
-    protected MenuNode entry(MenuNode parent, String name, Location location) {
+    protected static MenuNode entry(MenuNode parent, String name, ILocationContext location) {
         return entry(parent, 0, name, location);
     }
 
-    protected MenuNode entry(MenuNode parent, int order, String name, Location location) {
+    protected static MenuNode entry(MenuNode parent, int order, String name, ILocationContext location) {
         MenuNode node = new MenuNode(name);
 
         node.setOrder(order);
@@ -56,8 +65,9 @@ public abstract class MenuContribution
             node.setAction(action);
         }
 
-        if (!parent.add(node))
-            throw new IllegalUsageException("Duplicated menu node: " + node + ", parent: " + parent);
+        if (parent != null)
+            if (!parent.add(node))
+                throw new IllegalUsageException("Duplicated menu node: " + node + ", parent: " + parent);
 
         return node;
     }

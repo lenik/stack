@@ -6,9 +6,9 @@ import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventStatus;
 import com.bee32.sem.event.web.EventController;
 import com.bee32.sem.event.web.EventPriorityController;
-import com.bee32.sem.frame.Contribution;
 import com.bee32.sem.frame.menu.MenuContribution;
-import com.bee32.sem.frame.menu.MenuEntry;
+import com.bee32.sem.frame.menu.MenuNode;
+import com.bee32.sem.frame.menu.SEMMainMenu;
 
 public class SEMEventMenu
         extends MenuContribution
@@ -16,33 +16,18 @@ public class SEMEventMenu
 
     static Location EVENT = WEB_APP.join(EventController.PREFIX + "/");
 
-    @Contribution("sa")
-    MenuEntry eventAdmin = new MenuEntry("event");
+    public static MenuNode eventAdmin = menu(SEMMainMenu.MAIN, "event"); // MAIN/Admin
+    public static MenuNode event = menu(SEMMainMenu.MAIN, "event");
 
-    @Contribution("sa/event")
-    MenuEntry categories = new MenuEntry(10, "categories", getDictIndex(EventCategory.class));
-
-    @Contribution("sa/event")
-    MenuEntry priorities = new MenuEntry(11, "priorities", //
+    static MenuNode categories = entry(eventAdmin, 10, "categories", getDictIndex(EventCategory.class));
+    static MenuNode priorities = entry(eventAdmin, 11, "priorities", //
             WEB_APP.join(EventPriorityController.PREFIX).join("index.do"));
 
-    @Contribution("sa/event")
-    MenuEntry states = new MenuEntry(12, "states", getDictIndex(EventStatus.class));
-
-    @Contribution(".")
-    MenuEntry event = new MenuEntry("event");
-
-    @Contribution("event")
-    MenuEntry pendingTasks = new MenuEntry(10, "pendingTasks", EVENT.join("index.do?stereo=TSK&closed=false"));
-
-    @Contribution("event")
-    MenuEntry completedTasks = new MenuEntry(11, "completedTasks", EVENT.join("index.do?stereo=TSK&closed=true"));
-
-    @Contribution("event")
-    MenuEntry eventIndex = new MenuEntry(20, "eventIndex", EVENT.join("index.do?recent=30"));
-
-    @Contribution("event")
-    MenuEntry activityIndex = new MenuEntry(30, "activityIndex", EVENT.join("index.do?stereo=ACT&recent=30"));
+    static MenuNode states = entry(eventAdmin, 12, "states", getDictIndex(EventStatus.class));
+    static MenuNode pendingTasks = entry(event, 10, "pendingTasks", EVENT.join("index.do?stereo=TSK&closed=false"));
+    static MenuNode completedTasks = entry(event, 11, "completedTasks", EVENT.join("index.do?stereo=TSK&closed=true"));
+    static MenuNode eventIndex = entry(event, 20, "eventIndex", EVENT.join("index.do?recent=30"));
+    static MenuNode activityIndex = entry(event, 30, "activityIndex", EVENT.join("index.do?stereo=ACT&recent=30"));
 
     @Override
     protected void preamble() {
