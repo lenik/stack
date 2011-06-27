@@ -1,6 +1,5 @@
 package com.bee32.sem.chance.web;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceCategoryDto;
 import com.bee32.sem.chance.dto.ChanceDto;
@@ -33,6 +35,7 @@ import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.user.util.SessionLoginInfo;
 
 @Component
 @Scope("view")
@@ -47,7 +50,10 @@ public class ChanceBean
     private boolean backable;
     private boolean saveable;
     private boolean searchable;
+    private boolean relating;
+    private boolean unRelating;
 
+    private String subjectPartten;
     private String partyPartten;
     private Date searchBeginTime;
     private Date searchEndTime;
@@ -72,7 +78,9 @@ public class ChanceBean
                     Map<String, String> filters) {
                 ChanceService chanceService = getBean(ChanceService.class);
                 List<Chance> chanceList = chanceService.limitedChanceList(first, pageSize);
-                return DTOs.marshalList(ChanceDto.class, 3, chanceList);
+                List<ChanceDto> chanceDtoList = DTOs.marshalList(ChanceDto.class, chanceList);
+// return DTOs.marshalList(ChanceDto.class, 3, chanceList);
+                return chanceDtoList;
             }
 
         };
@@ -88,32 +96,17 @@ public class ChanceBean
         backable = true;
         saveable = true;
         searchable = false;
-    }
-
-    public ChanceDto newChanceDto() {
-        ChanceDto chanceDto = new ChanceDto();
-        UserDto owner = new UserDto();
-        ChanceCategoryDto chanceCategoryDto = new ChanceCategoryDto();
-        ChanceSourceDto chanceSourceDto = new ChanceSourceDto();
-        List<ChancePartyDto> parties = new ArrayList<ChancePartyDto>();
-        List<ChanceActionDto> actions = new ArrayList<ChanceActionDto>();
-        ChanceStageDto chanceStageDto = new ChanceStageDto();
-
-        chanceDto.setOwner(owner);
-        chanceDto.setCategory(chanceCategoryDto);
-        chanceDto.setSource(chanceSourceDto);
-        chanceDto.setParties(parties);
-        chanceDto.setActions(actions);
-        chanceDto.setStage(chanceStageDto);
-
-        return chanceDto;
+        relating = true;
+        unRelating = true;
     }
 
     @PostConstruct
     public void initialization() {
         initList();
         initToolbar();
-        chance = newChanceDto();
+        chance = new ChanceDto();
+        relating = false;
+        unRelating = false;
     }
 
     public void onRowSelect() {
@@ -132,6 +125,14 @@ public class ChanceBean
         backable = true;
         saveable = true;
         searchable = false;
+    }
+
+    public void onActionRowSelect() {
+        unRelating = false;
+    }
+
+    public void onActionRowUnselect() {
+        unRelating = true;
     }
 
     public List<SelectItem> getCategory() {
@@ -169,20 +170,197 @@ public class ChanceBean
     }
 
     public void doSelectActions() {
+        FacesContext context = FacesContext.getCurrentInstance();
         if (selectedActions.length == 0) {
-            FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("提示", "至少请选择一个客户"));
             return;
         }
         chance.addActions(selectedActions);
+        try {
+            Chance _chance = chance.unmarshal();
+//            for (ChanceAction _action : _chance.getActions()) {
+//                ChanceAction __action = _action;
+//                if (__action.getChance().getId() == null)
+//                    __action.setChance(_chance);
+//                if (__action.getStage() == null)
+//                    __action.setStage(ChanceStage.INIT);
+//
+//                getDataManager().save(_action);
+//            }
+            getDataManager().save(_chance);
+            context.addMessage(null, new FacesMessage("提示", "关联行动记录成功"));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("错误提示", "关联行动记录错误" + e.getMessage()));
+            e.printStackTrace();
+        }
     }
 
     public void addChanceParty() {
+        if (selectedParty == null)
+            return;
         ChancePartyDto chancePartyDto = new ChancePartyDto();
         chancePartyDto.setChance(chance);
         chancePartyDto.setParty(selectedParty);
         chancePartyDto.setRole("普通客户");
         chance.addChanceParty(chancePartyDto);
+    }
+
+    public void createForm() {
+        chance = new ChanceDto();
+        currentTab = 1;
+        addable = true;
+        edable = true;
+        detailable = true;
+        saveable = false;
+        backable = false;
+        searchable = false;
+        relating = true;
+        unRelating = true;
+    }
+
+    public void editForm() {
+        chance = selectedChance;
+        currentTab = 1;
+        addable = true;
+        edable = true;
+        detailable = true;
+        saveable = false;
+        backable = false;
+        searchable = false;
+        relating = false;
+        unRelating = true;
+    }
+
+    public void detailForm() {
+        chance = selectedChance;
+        currentTab = 1;
+        addable = true;
+        edable = true;
+        detailable = true;
+        saveable = true;
+        backable = false;
+        searchable = false;
+    }
+
+    public void cancel() {
+        initToolbar();
+        currentTab = 0;
+    }
+
+    public void saveChance() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String subject = chance.getSubject();
+        if (subject.isEmpty()) {
+            context.addMessage(null, new FacesMessage("错误提示", "机会标题不能为空!"));
+            return;
+        }
+
+        if (chance.getParties().isEmpty()) {
+            context.addMessage(null, new FacesMessage("错误提示", "请选择机会对应的客户!"));
+            return;
+        }
+        String content = chance.getContent();
+        if (content.isEmpty())
+            chance.setContent("");
+
+        String categoryId = chance.getCategory().getId();
+        ChanceCategoryDto ccd = null;
+        if (!categoryId.isEmpty())
+            ccd = new ChanceCategoryDto().ref(categoryId);
+        chance.setCategory(ccd);
+
+        String sourceId = chance.getSource().getId();
+        ChanceSourceDto csd = null;
+        if (!sourceId.isEmpty())
+            csd = new ChanceSourceDto().ref(sourceId);
+        chance.setSource(csd);
+
+        HttpSession session = ThreadHttpContext.requireSession();
+        UserDto owner = new UserDto().ref(SessionLoginInfo.requireCurrentUser(session).getId());
+        chance.setOwner(owner);
+
+        // TODO 如果行动记录是空的,但是机会的阶段不是空
+        // if(chance.getActions().isEmpty() && !chance.getStage().getId().isEmpty());
+        int maxOrder = 0;
+        ChanceStageDto temp = null;
+        String chanceStageId = chance.getStage().getId();
+        if (!chanceStageId.isEmpty()) {
+            ChanceStage _stage = getDataManager().fetch(ChanceStage.class, chanceStageId);
+            temp = DTOs.mref(ChanceStageDto.class, _stage);
+            maxOrder = temp.getOrder();
+        }
+        for (ChanceActionDto cad : chance.getActions()) {
+            if (cad.getStage().getOrder() > maxOrder) {
+                maxOrder = cad.getStage().getOrder();
+                chanceStageId = cad.getStage().getId();
+            }
+        }
+        ChanceStage _chanceStage = getDataManager().fetch(ChanceStage.class, chanceStageId);
+        temp = DTOs.mref(ChanceStageDto.class, _chanceStage);
+        chance.setStage(temp);
+
+        Chance _chance = chance.unmarshal();
+
+        try {
+            getDataManager().save(_chance);
+
+            for (ChanceAction _action : _chance.getActions()) {
+                _action.setChance(_chance);
+                getDataManager().save(_action);
+            }
+
+            context.addMessage(null, new FacesMessage("提示", "成功添加销售机会"));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("错误", "添加销售机会失败: " + e.getMessage()));
+            e.printStackTrace();
+        }
+
+        currentTab = 0;
+        initToolbar();
+    }
+
+    public void drop() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            Chance tempChance = selectedChance.unmarshal();
+            for (ChanceAction _action : tempChance.getActions()) {
+                _action.setChance(null);
+                _action.setStage(null);
+                getDataManager().save(_action);
+            }
+            getDataManager().delete(tempChance);
+            ChanceService chanceService = getBean(ChanceService.class);
+            chances.setRowCount(chanceService.getChanceCount());
+            context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("错误提示", "删除销售机会失败:" + e.getMessage()));
+            e.printStackTrace();
+        }
+    }
+
+    public void unRelating() {
+        // XXX 取消机会与行动关联
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            ChanceActionDto actionDto = selectedAction;
+            ChanceAction chanceAction = actionDto.unmarshal();
+            chance.deleteAction(actionDto);
+            chanceAction.setChance(null);
+            chanceAction.setStage(null);
+            getDataManager().save(chanceAction);
+            context.addMessage(null, new FacesMessage("提示", "取消关联成功"));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("提示", "取消关联失败:" + e.getMessage()));
+            e.printStackTrace();
+        }
+    }
+
+    public int getCurrentTab() {
+        return currentTab;
+    }
+
+    public void setCurrentTab(int currentTab) {
+        this.currentTab = currentTab;
     }
 
     public boolean isAddable() {
@@ -231,6 +409,30 @@ public class ChanceBean
 
     public void setSearchable(boolean searchable) {
         this.searchable = searchable;
+    }
+
+    public boolean isRelating() {
+        return relating;
+    }
+
+    public void setRelating(boolean relating) {
+        this.relating = relating;
+    }
+
+    public boolean isUnRelating() {
+        return unRelating;
+    }
+
+    public void setUnRelating(boolean unRelating) {
+        this.unRelating = unRelating;
+    }
+
+    public String getSubjectPartten() {
+        return subjectPartten;
+    }
+
+    public void setSubjectPartten(String subjectPartten) {
+        this.subjectPartten = subjectPartten;
     }
 
     public String getPartyPartten() {

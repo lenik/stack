@@ -82,8 +82,25 @@ public class ChanceActionBean
     @PostConstruct
     public void init() {
         initList();
+        action = new ChanceActionDto();
         searchable = false;
     }
+
+    class ChanceActionSearchDataModel
+            extends LazyDataModel<ChanceActionDto> {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public List<ChanceActionDto> load(int first, int pageSize, String sortField, SortOrder sortOrder,
+                Map<String, String> filters) {
+            ChanceService chanceService = getBean(ChanceService.class);
+            List<ChanceAction> chanceActionList = chanceService.limitedChanceActionRangeList(searchBeginTime,
+                    searchEndTime, first, pageSize);
+            return DTOs.marshalList(ChanceActionDto.class, chanceActionList);
+        }
+
+    };
 
     public void search() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -97,20 +114,7 @@ public class ChanceActionBean
             return;
         }
 
-        actions = new LazyDataModel<ChanceActionDto>() {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public List<ChanceActionDto> load(int first, int pageSize, String sortField, SortOrder sortOrder,
-                    Map<String, String> filters) {
-                ChanceService chanceService = getBean(ChanceService.class);
-                List<ChanceAction> chanceActionList = chanceService.limitedChanceActionRangeList(searchBeginTime,
-                        searchEndTime, first, pageSize);
-                return DTOs.marshalList(ChanceActionDto.class, chanceActionList);
-            }
-        };
-
+        actions = new ChanceActionSearchDataModel();
         ChanceService chanceService = getBean(ChanceService.class);
         actions.setRowCount(chanceService.limitedChanceActionRangeListCount(searchBeginTime, searchEndTime));
 
@@ -128,20 +132,24 @@ public class ChanceActionBean
         saveable = true;
     }
 
+    class ChanceActionDataModel
+            extends LazyDataModel<ChanceActionDto> {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public List<ChanceActionDto> load(int first, int pageSize, String sortField, SortOrder sortOrder,
+                Map<String, String> filters) {
+
+            ChanceService chanceService = getBean(ChanceService.class);
+            List<ChanceAction> actionList = chanceService.limitedChanceActionList(first, pageSize);
+            return DTOs.marshalList(ChanceActionDto.class, actionList);
+        }
+
+    };
+
     public void initList() {
-        actions = new LazyDataModel<ChanceActionDto>() {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public List<ChanceActionDto> load(int first, int pageSize, String sortField, SortOrder sortOrder,
-                    Map<String, String> filters) {
-
-                ChanceService chanceService = getBean(ChanceService.class);
-                List<ChanceAction> actionList = chanceService.limitedChanceActionList(first, pageSize);
-                return DTOs.marshalList(ChanceActionDto.class, actionList);
-            }
-        };
+        actions = new ChanceActionDataModel();
 
         ChanceService chanceService = getBean(ChanceService.class);
         actions.setRowCount(chanceService.getChanceActionCount());
@@ -173,7 +181,7 @@ public class ChanceActionBean
     }
 
     public void createForm() {
-        action = newChanceActionDto();
+        action = new ChanceActionDto();
         setActiveTab(TAB_FORM);
         add = true;
         edable = true;
@@ -204,9 +212,9 @@ public class ChanceActionBean
 
     public void drop() {
         FacesContext context = FacesContext.getCurrentInstance();
-        ChanceActionDto cad = action;
-        ChanceAction chanceActoin = cad.unmarshal();
-        serviceFor(ChanceAction.class).delete(chanceActoin);
+        getDataManager().delete(selectedAction.unmarshal());
+        ChanceService chanceService = getBean(ChanceService.class);
+        actions.setRowCount(chanceService.getChanceActionCount());
         context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
     }
 
@@ -217,22 +225,6 @@ public class ChanceActionBean
         detail = true;
         saveable = true;
         back = true;
-    }
-
-    public ChanceActionDto newChanceActionDto() {
-        ChanceActionDto cad = new ChanceActionDto();
-        UserDto actor = new UserDto();
-        ChanceStageDto chanceStageDto = new ChanceStageDto();
-        ChanceActionStyleDto chanceActionStyleDto = new ChanceActionStyleDto();
-        List<PartyDto> partyDtoList = new ArrayList<PartyDto>();
-        ChanceDto chanceDto = new ChanceDto();
-        cad.setChance(chanceDto);
-        cad.setStage(chanceStageDto);
-        cad.setStyle(chanceActionStyleDto);
-        cad.setParties(partyDtoList);
-        cad.setActor(actor);
-
-        return cad;
     }
 
     public void chooseChance() {
@@ -250,7 +242,15 @@ public class ChanceActionBean
     public List<SelectItem> getChanceStages() {
         List<ChanceStage> chanceStageList = serviceFor(ChanceStage.class).list();
         List<ChanceStageDto> stageDtoList = DTOs.marshalList(ChanceStageDto.class, chanceStageList);
-        return UIHelper.selectItemsFromDict(stageDtoList);
+
+        List<SelectItem> items = new ArrayList<SelectItem>();
+
+        for (ChanceStageDto entry : stageDtoList) {
+            SelectItem item = new SelectItem(entry.getIdX(), entry.getLabel());
+            items.add(item);
+        }
+
+        return items;
     }
 
     public List<SelectItem> getChanceActionStyles() {
@@ -300,20 +300,22 @@ public class ChanceActionBean
             return;
         }
 
-        ChanceStageDto stage;
-
-        if (stageId.isEmpty())
-            stage = null;
-        else {
-            stage = new ChanceStageDto().ref(stageId);
+        if (stageId.isEmpty()) {
+            action.setStage(null);
+        } else {
+            // XXX ref 应该改为mref(order有用) 没有只有id的mref
+            ChanceStage _stage = loadEntity(ChanceStage.class, stageId);
+            ChanceStageDto stage = DTOs.mref(ChanceStageDto.class, _stage);
+            action.pushStage(stage);
         }
-        action.setStage(stage);
 
         ChanceDto chance;
         if (chanceId == null)
             chance = null;
-        else
-            chance = new ChanceDto().ref(chanceId);
+        else{
+            Chance __chance = getDataManager().fetch(Chance.class, chanceId);
+            chance = DTOs.mref(ChanceDto.class, __chance);
+        }
         action.setChance(chance);
 
         String styleId = action.getStyle().getId();
@@ -324,18 +326,21 @@ public class ChanceActionBean
         ChanceActionStyleDto style = new ChanceActionStyleDto().ref(styleId);
         action.setStyle(style);
 
-// int uid = action.getActor().getId();
-// UserDto actor = new UserDto().ref(uid);
-
-        UserDto actor = new UserDto().ref(SessionLoginInfo.requireCurrentUser().getId());
+        HttpSession session = ThreadHttpContext.requireSession();
+        UserDto actor = new UserDto().ref(SessionLoginInfo.requireCurrentUser(session).getId());
         action.setActor(actor);
 
-        ChanceAction tempAction = action.unmarshal();
+        ChanceAction _action = action.unmarshal();
 
-        serviceFor(ChanceAction.class).save(tempAction);
+        Chance _chance = _action.getChance();
+        if (_chance != null) {
+            _chance.pushStage(_action.getStage());
+            getDataManager().save(_chance);
+        }
 
-        action = newChanceActionDto();
+        getDataManager().save(_action);
 
+        action = new ChanceActionDto();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("提示", "保存销售机会行动记录成功!"));
         setActiveTab(TAB_INDEX);
         add = false;
@@ -440,19 +445,19 @@ public class ChanceActionBean
 
     public void setSelectedAction(ChanceActionDto selectedAction) {
         if (selectedAction == null)
-            selectedAction = newChanceActionDto();
+            selectedAction = new ChanceActionDto();
         this.selectedAction = selectedAction;
     }
 
     public ChanceActionDto getAction() {
         if (action == null)
-            action = newChanceActionDto();
+            action = new ChanceActionDto();
         return action;
     }
 
     public void setAction(ChanceActionDto action) {
         if (action == null)
-            action = newChanceActionDto();
+            action = new ChanceActionDto();
         this.action = action;
     }
 

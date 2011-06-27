@@ -66,4 +66,6 @@ public interface IChanceService {
 
     List<Chance> limitedSearchChanceList(String keyword, int first, int pageSize);
 
+//    ChanceStage getStageByOrder(int order);
+
 }

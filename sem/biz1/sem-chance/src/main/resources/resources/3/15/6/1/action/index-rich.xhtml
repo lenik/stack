@@ -148,7 +148,7 @@
 
                             <h:outputLabel for="pgroup" value="拜访客户:" />
                             <t:panelGroup colspan="3" id="pgroup">
-                                <h:panelGrid columns="2">
+                                <h:panelGrid columns="2" style="width:100%">
                                     <p:dataList id="parties" var="party" value="#{chanceActionBean.action.parties}"
                                         effectSpeed="fast" style="width:100px;">
                                         <p:column>
@@ -183,13 +183,12 @@
                             </t:panelGroup>
 
                             <h:outputLabel for="style" value="洽谈方式:" />
-                            <p:selectOneMenu id="style" value="#{chanceActionBean.action.style.id}">
-                                <f:selectItem itemLabel="--请选择洽谈方式--" itemValue="" />
+                            <p:selectOneMenu id="style" value="#{chanceActionBean.action.style.id}" style="width: 100px;">
                                 <f:selectItems value="#{chanceActionBean.chanceActionStyles}" />
                             </p:selectOneMenu>
 
                             <h:outputLabel for="actionStyle" value="机会行动类型:" />
-                            <p:selectOneMenu id="actionStyle" value="#{chanceActionBean.action.plan}">
+                            <p:selectOneMenu id="actionStyle" value="#{chanceActionBean.action.plan}" style="width:100px;">
                                 <f:selectItem itemLabel="计划" itemValue="#{true}" />
                                 <f:selectItem itemLabel="日志" itemValue="#{false}" />
                             </p:selectOneMenu>
@@ -199,15 +198,19 @@
                             </t:panelGroup>
 
                             <h:outputLabel for="chanceSubject" value="机会标题:" />
-                            <t:panelGroup id="correChance" colspan="1">
+                            <t:panelGroup id="correChance" colspan="3" style="width:100%">
                                 <h:inputHidden id="chanceId" value="#{chanceActionBean.action.chance.id}" />
-                                <p:inputText id="chanceSubject" value="#{chanceActionBean.action.chance.subject}" />
+                                <p:inputText id="chanceSubject" readonly="true" value="#{chanceActionBean.action.chance.subject}" style="width:200" />
                                 <p:commandButton title="挑选机会" value="..." onclick="chooseChanceDialog.show();" />
                             </t:panelGroup>
 
+                            <t:panelGroup colspan="4">
+                                <hr />
+                            </t:panelGroup>
+
                             <h:outputLabel for="stage" value="机会阶段:" />
-                            <t:panelGroup colspan="1">
-                                <p:selectOneMenu id="stage" value="#{chanceActionBean.action.stage.id}">
+                            <t:panelGroup colspan="3">
+                                <p:selectOneMenu id="stage" value="#{chanceActionBean.action.stage.idX}">
                                     <f:selectItem itemLabel="--请选择机会阶段--" itemValue="" />
                                     <f:selectItems value="#{chanceActionBean.chanceStages}" />
                                 </p:selectOneMenu>
@@ -245,13 +248,6 @@
                                 <h:outputText value="机会主题" />
                             </f:facet>
                             <h:outputText value="#{chance.subject}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="创建日期" />
-                            </f:facet>
-                            <h:outputText value="#{chance.createDate}" />
                         </p:column>
 
                         <p:column>

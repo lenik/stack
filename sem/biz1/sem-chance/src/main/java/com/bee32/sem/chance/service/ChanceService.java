@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -117,6 +118,18 @@ public class ChanceService
     public List<Chance> limitedSearchChanceList(String keyword, int first, int pageSize) {
         IUserPrincipal user = SessionLoginInfo.requireCurrentUser();
         return chanceDao.limitedSearchList(user, keyword, first, pageSize);
+    }
+
+    public boolean unRelatingChance(Chance chance){
+        HttpSession session = ThreadHttpContext.requireSession();
+        IUserPrincipal user = (IUserPrincipal) SessionLoginInfo.requireCurrentUser(session);
+        List<ChanceAction> chanceActionList = chanceActionDao.listByChane(user, chance);
+        List<ChanceAction> tempList = new ArrayList<ChanceAction>();
+        for(ChanceAction chanceAction : chanceActionList){
+            chanceAction.setChance(null);
+            tempList.add(chanceAction);
+        }
+        return false;
     }
 
 }
