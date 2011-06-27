@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.entity.EasTxWrapper;
 import com.bee32.plover.orm.entity.Entity;
@@ -19,7 +18,7 @@ import com.bee32.plover.orm.entity.IEntityAccessService;
 
 @Service
 @Lazy
-@Transactional(readOnly = true)
+// @Transactional(readOnly = true)
 public class CommonDataManager {
 
     static Logger logger = LoggerFactory.getLogger(CommonDataManager.class);
