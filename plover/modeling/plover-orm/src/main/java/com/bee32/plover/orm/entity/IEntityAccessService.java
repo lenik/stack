@@ -9,7 +9,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 
-public interface IEntityAccessService<E extends Entity<K>, K extends Serializable>
+public interface IEntityAccessService<E extends Entity<? extends K>, K extends Serializable>
         extends IEntityRepo_H<E, K> {
 
     /**

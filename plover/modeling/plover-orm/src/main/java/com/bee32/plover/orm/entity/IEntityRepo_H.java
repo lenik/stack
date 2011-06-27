@@ -6,13 +6,10 @@ import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
 import org.springframework.dao.DataAccessException;
 
-public interface IEntityRepo_H<E extends IEntity<K>, K extends Serializable>
-        extends IEntityRepo<E, K> {
+import com.bee32.plover.orm.dao.HibernateTemplate;
 
-    /**
-     * @see HibernateTemplate#load(Class, Serializable).
-     */
-    E _load(K id);
+public interface IEntityRepo_H<E extends IEntity<? extends K>, K extends Serializable>
+        extends IEntityRepo<E, K> {
 
     /**
      * Return the persistent instance of the given entity class with the given identifier, throwing

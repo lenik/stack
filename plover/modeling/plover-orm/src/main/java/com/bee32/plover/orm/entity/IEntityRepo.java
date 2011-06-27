@@ -1,10 +1,11 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import com.bee32.plover.arch.IRepository;
 
-public interface IEntityRepo<E extends IEntity<K>, K extends Serializable>
+public interface IEntityRepo<E extends IEntity<? extends K>, K extends Serializable>
         extends IRepository<K, E> {
 
     Class<? extends E> getEntityType();

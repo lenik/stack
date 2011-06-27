@@ -39,7 +39,8 @@ public class CommonDataManager
         }
     }
 
-    public <E extends Entity<K>, K extends Serializable> IEntityAccessService<E, K> access(Class<? extends E> entityType) {
+    public <E extends Entity<? extends K>, K extends Serializable> //
+    IEntityAccessService<E, K> access(Class<? extends E> entityType) {
         IEntityAccessService<?, ?> dao = emMap.get(entityType);
         if (dao == null)
             throw new IllegalUsageException("No IEntityDao exists for entity " + entityType);
