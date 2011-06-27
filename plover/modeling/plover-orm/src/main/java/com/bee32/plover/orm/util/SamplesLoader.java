@@ -24,6 +24,7 @@ import com.bee32.plover.orm.builtin.PloverConfManager;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
 @Component
@@ -150,7 +151,9 @@ public class SamplesLoader
             progress.execute(contrib);
 
             try {
-                dataManager.access(Entity.class).saveAll(selection);
+                @SuppressWarnings("unchecked")
+                IEntityAccessService<Entity<?>, ?> eas = dataManager.access(Entity.class);
+                eas.saveAll(selection);
 
                 confManager.setConf(loadKey, "1");
 
