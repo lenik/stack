@@ -1,19 +1,21 @@
 package com.bee32.sem.people.entity;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.UserEmail;
 import com.bee32.sem.people.Gender;
 
 @Entity
@@ -50,7 +52,7 @@ public class Person
     /**
      * 性别
      */
-    @Enumerated(EnumType.ORDINAL)
+    @Transient
     public Gender getSex() {
         return sex;
     }
@@ -102,6 +104,24 @@ public class Person
         if (roles == null)
             throw new NullPointerException("roles");
         this.roles = roles;
+    }
+
+    public User toUser(String loginName) {
+        String fullName = this.fullName;
+        if (fullName == null)
+            fullName = this.name;
+
+        if (loginName == null)
+            loginName = this.name;
+
+        User user = new User(loginName);
+        user.setFullName(fullName);
+        List<Contact> contacts = getContacts();
+        if (!contacts.isEmpty()) {
+            Contact firstContact = contacts.get(0);
+            user.setEmail(new UserEmail(user, firstContact.email));
+        }
+        return user;
     }
 
 }
