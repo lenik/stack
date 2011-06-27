@@ -124,7 +124,7 @@ public class ChanceActionBean
     public void initList() {
 
         EntityDataModelOptions<ChanceAction, ChanceActionDto> emdo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
-                ChanceAction.class, ChanceActionDto.class, 0, null, ChanceCriteria.actedByCurrentUser());
+                ChanceAction.class, ChanceActionDto.class, -1, null, ChanceCriteria.actedByCurrentUser());
         actions = UIHelper.buildLazyDataModel(emdo);
 
         refreshActionCount(false);

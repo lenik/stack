@@ -56,7 +56,7 @@ public class OrgAdminBean
     public void init() {
 
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(Org.class, OrgDto.class,
-                0, Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
+                -1, Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
         orgs = UIHelper.buildLazyDataModel(options);
 
         refreshOrgCount();

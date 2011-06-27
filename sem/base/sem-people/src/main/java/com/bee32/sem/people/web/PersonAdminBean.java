@@ -49,7 +49,7 @@ public class PersonAdminBean
     @PostConstruct
     public void init() {
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(Person.class,
-                PersonDto.class, 0, Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
+                PersonDto.class, -1, Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
         persons = UIHelper.<Person, PersonDto> buildLazyDataModel(options);
 
         refreshPersonCount();

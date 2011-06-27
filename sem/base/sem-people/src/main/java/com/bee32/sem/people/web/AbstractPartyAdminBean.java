@@ -98,9 +98,7 @@ public abstract class AbstractPartyAdminBean
         AbstractPartyDto<? extends Party> party = getParty();
 
         if (party != null && party.getId() != null) {
-            if (party.getContacts() != null) {
-                contacts = party.getContacts();
-            }
+            contacts = party.getContacts();
         }
 
         return contacts;
