@@ -1,5 +1,6 @@
 package com.bee32.icsf.principal;
 
+import com.bee32.icsf.access.alt.R_ACE;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 
 /**
@@ -13,34 +14,28 @@ import com.bee32.plover.orm.util.EntitySamplesContribution;
 public class IcsfPrincipalSamples
         extends EntitySamplesContribution {
 
-    public static Group solaRobots;
-    public static Group sunCorp;
+    public static Group solaRobots = new Group("Sola Robots Club");
+    public static Group sunCorp = new Group("Sun Corp");
 
-    public static Role adminRole;
-    public static Role registeredRole;
+    public static Role adminRole = new Role("Administrator");
 
-    public static User eva;
-    public static User wallE;
-    public static User alice;
-    public static User tom;
-    public static User kate;
+    public static Role registeredRole = new Role("Registered User");
+
+    public static User admin = new User("admin", null, adminRole);
+    public static User eva = new User("Eva", null, adminRole);
+    public static User wallE = new User("Wall-E", solaRobots, registeredRole);
+    public static User alice = new User("Alice", null, null);
+    public static User tom = new User("Tom", null, adminRole);
+    public static User kate = new User("Kate", sunCorp, registeredRole);
+
+    public static R_ACE adminApAll = new R_ACE("ap:", admin, "Srwx");
 
     static {
-        adminRole = new Role("Administrator");
-        registeredRole = new Role("Registered User");
-
-        eva = new User("Eva", null, adminRole);
-        solaRobots = new Group("Sola Robots Club", eva);
+        solaRobots.setOwner(eva);
+        sunCorp.setOwner(tom);
         eva.setPrimaryGroup(solaRobots);
-        wallE = new User("Wall-E", solaRobots, registeredRole);
-
-        tom = new User("Tom", null, adminRole);
-        sunCorp = new Group("Sun Corp", tom);
         tom.setPrimaryGroup(sunCorp);
 
-        kate = new User("Kate", sunCorp, registeredRole);
-
-        alice = new User("Alice", null, null);
         alice.addAssignedGroup(sunCorp);
         alice.addAssignedGroup(solaRobots);
         alice.addAssignedRole(registeredRole);
@@ -56,7 +51,8 @@ public class IcsfPrincipalSamples
     protected void preamble() {
         addNormalSample(sunCorp, solaRobots);
         addNormalSample(adminRole, registeredRole);
-        addNormalSample(eva, wallE, alice, tom, kate);
+        addNormalSample(admin, eva, wallE, alice, tom, kate);
+        addNormalSample(adminApAll);
     }
 
 }
