@@ -121,6 +121,7 @@ public class Chance
     }
 
     @OneToMany(mappedBy = "chance")
+    @Cascade({CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy("beginTime")
     public List<ChanceAction> getActions() {
         return actions;
@@ -176,6 +177,14 @@ public class Chance
         List<ChanceAction> actionList = getActions();
         actionList.add(action);
         Collections.sort(actionList);
+        this.actions = actionList;
+    }
+
+    @Transient
+    public void pushStage(ChanceStage chanceStage) {
+        if (chanceStage != null)
+            if (stage.getOrder() < chanceStage.getOrder())
+                this.stage = chanceStage;
     }
 
 }
