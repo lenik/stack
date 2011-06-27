@@ -13,9 +13,12 @@ import org.hibernate.ReplicationMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
+import org.springframework.orm.ObjectRetrievalFailureException;
 
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.dao.HibernateDaoSupportUtil;
@@ -29,7 +32,7 @@ import com.bee32.plover.orm.dao.HibernateTemplate;
 @Lazy
 public class EntityDao<E extends Entity<K>, K extends Serializable>
         extends EntityRepository<E, K>
-        implements IEntityRepo_H<E, K> {
+        implements IEntityAccessService<E, K> {
 
     public EntityDao() {
         super();
@@ -124,12 +127,22 @@ public class EntityDao<E extends Entity<K>, K extends Serializable>
         if (entity == null)
             return null;
 
+        // post-load?
+
         return entity;
     }
 
     @Override
-    public E load(K key) {
-        E entity = super.load(key);
+    public E _load(K id) {
+        E entity = getHibernateTemplate().load(entityType, id);
+        return entity;
+    }
+
+    @Override
+    public E load(K id) {
+        E entity = get(id);
+        if (entity == null)
+            throw new ObjectRetrievalFailureException(entityType.getClass(), id);
         return entity;
     }
 
@@ -173,9 +186,8 @@ public class EntityDao<E extends Entity<K>, K extends Serializable>
     public void deleteAll() {
         HibernateTemplate template = getHibernateTemplate();
         template.bulkUpdate("delete from " + entityType.getSimpleName());
-
-// List<? extends E> list = template.loadAll(entityType);
-// template.deleteAll(list);
+        // List<? extends E> list = template.loadAll(entityType);
+        // template.deleteAll(list);
     }
 
     @Override
@@ -210,10 +222,11 @@ public class EntityDao<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    public void merge(E entity)
+    public E merge(E entity)
             throws DataAccessException {
         HibernateTemplate template = getHibernateTemplate();
-        template.merge(entity);
+        E merged = template.merge(entity);
+        return merged;
     }
 
     @Override
@@ -234,6 +247,69 @@ public class EntityDao<E extends Entity<K>, K extends Serializable>
         getHibernateTemplate().flush();
     }
 
+    // IEntityManager
+
+    @Override
+    public E getUnique(Criterion... restrictions) {
+        Criteria criteria = getSession().createCriteria(entityType);
+        this.get(null);
+        if (restrictions != null)
+            for (Criterion restriction : restrictions)
+                criteria.add(restriction);
+
+        E result = (E) criteria.uniqueResult();
+        return result;
+    }
+
+    @Override
+    public final List<E> list(Criterion... restrictions) {
+        return list(null, restrictions);
+    }
+
+    @Override
+    public final List<E> list(Order order, Criterion... restrictions) {
+        return list(order, -1, -1, restrictions);
+    }
+
+    @Override
+    public final List<E> list(int offset, int limit, Criterion... restrictions) {
+        return list(null, offset, limit, restrictions);
+    }
+
+    @Override
+    public List<E> list(Order order, int offset, int limit, Criterion... restrictions) {
+        Criteria criteria = getSession().createCriteria(entityType);
+
+        if (restrictions != null)
+            for (Criterion restriction : restrictions)
+                criteria.add(restriction);
+
+        if (order != null)
+            criteria.addOrder(order);
+
+        if (offset != -1) {
+            criteria.setFirstResult(offset);
+            criteria.setMaxResults(limit);
+        }
+
+        List<E> list = criteria.list();
+        return list;
+    }
+
+    @Override
+    public List<E> list(int offset, int limit, DetachedCriteria detachedCriteria) {
+        Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
+
+        if (offset != -1) {
+            criteria.setFirstResult(offset);
+            criteria.setMaxResults(limit);
+        }
+
+        List<E> list = criteria.list();
+        return list;
+    }
+
+    @Override
     public int count(Criterion... restrictions) {
         Criteria criteria = getSession().createCriteria(entityType);
 
@@ -249,6 +325,25 @@ public class EntityDao<E extends Entity<K>, K extends Serializable>
             throw new UnexpectedException("Count() returns null");
 
         return ((Number) result).intValue();
+    }
+
+    @Override
+    public void delete(K id) {
+        String entityName = getEntityType().getSimpleName();
+        String hql = "delete from " + entityName + " where id=?";
+        getHibernateTemplate().bulkUpdate(hql, id);
+    }
+
+    @Override
+    public void delete(Criterion... restrictions) {
+        Criteria criteria = getSession().createCriteria(entityType);
+
+        if (restrictions != null)
+            for (Criterion restriction : restrictions)
+                criteria.add(restriction);
+
+        List<E> list = criteria.list();
+        getHibernateTemplate().deleteAll(list);
     }
 
     /**

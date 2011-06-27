@@ -7,10 +7,7 @@ import com.bee32.plover.arch.IRepository;
 public interface IEntityRepo<E extends IEntity<K>, K extends Serializable>
         extends IRepository<K, E> {
 
-    /**
-     * Or the storage class.
-     */
-    // Class<? extends E> getObjectType();
+    Class<? extends E> getEntityType();
 
     // Override following methods to get eclipse "generate override methods"
     // to work.

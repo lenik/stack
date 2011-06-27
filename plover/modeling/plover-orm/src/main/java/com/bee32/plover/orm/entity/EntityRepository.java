@@ -1,12 +1,9 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import javax.free.IllegalUsageException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +18,7 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
 
     static Logger logger = LoggerFactory.getLogger(EntityRepository.class);
 
-    protected Class<? extends E> entityType;
+    protected Class<E> entityType;
 
     public EntityRepository() {
         super();
@@ -39,69 +36,14 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
         super(name, keyType, entityType);
     }
 
-    public Class<? extends E> getEntityType() {
-        return entityType;
+    @Override
+    protected void introspect() {
+        entityType = objectType;
     }
 
     @Override
-    protected void introspect() {
-        super.introspect();
-
-        Class<?> deferredEntityType;
-        try {
-            deferredEntityType = deferEntityType(objectType);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalUsageException("No implementation type for " + objectType);
-        }
-
-        if (!objectType.isAssignableFrom(deferredEntityType))
-            throw new IllegalUsageException("Incompatible implementation " + deferredEntityType + " for " + objectType);
-
-        @SuppressWarnings("unchecked")
-        Class<? extends E> entityClass = (Class<? extends E>) deferredEntityType;
-
-        this.entityType = entityClass;
-    }
-
-    /**
-     * This will guess the -impl type from interface type.
-     */
-    protected Class<?> deferEntityType(Class<?> clazz)
-            throws ClassNotFoundException {
-
-        if (Entity.class.isAssignableFrom(clazz))
-            return clazz;
-
-        int modifiers = clazz.getModifiers();
-        if (!Modifier.isAbstract(modifiers))
-            return clazz;
-
-        String typeName = clazz.getName();
-        int lastDot = typeName.lastIndexOf('.');
-        String prefix;
-        String simpleName;
-        if (lastDot == -1) {
-            prefix = "";
-            simpleName = typeName;
-        } else {
-            prefix = typeName.substring(0, lastDot + 1);
-            simpleName = typeName.substring(lastDot + 1);
-        }
-
-        String entityClassName = null;
-        if (simpleName.length() >= 2) {
-            char a = simpleName.charAt(0);
-            char b = simpleName.charAt(1);
-            if (a == 'I' && Character.isUpperCase(b))
-                entityClassName = simpleName.substring(1);
-            else
-                entityClassName = simpleName + "Impl";
-        } else
-            entityClassName = simpleName + "Impl";
-
-        entityClassName = prefix + entityClassName;
-
-        return Class.forName(entityClassName, true, clazz.getClassLoader());
+    public Class<? extends E> getEntityType() {
+        return entityType;
     }
 
     @Override
@@ -125,7 +67,7 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
             throws BuildException {
         E entity;
         try {
-            entity = entityType.newInstance();
+            entity = getEntityType().newInstance();
         } catch (Exception e) {
             throw new BuildException(e);
         }

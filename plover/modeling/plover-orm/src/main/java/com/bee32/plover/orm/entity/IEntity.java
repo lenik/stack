@@ -19,6 +19,6 @@ public interface IEntity<K extends Serializable>
      *
      * @return This object itself.
      */
-    IEntity<K> detach();
+    Object detach();
 
 }

@@ -4,11 +4,32 @@ import java.io.Serializable;
 
 import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
-import org.hibernate.criterion.Criterion;
 import org.springframework.dao.DataAccessException;
 
 public interface IEntityRepo_H<E extends IEntity<K>, K extends Serializable>
         extends IEntityRepo<E, K> {
+
+    /**
+     * @see HibernateTemplate#load(Class, Serializable).
+     */
+    E _load(K id);
+
+    /**
+     * Return the persistent instance of the given entity class with the given identifier, throwing
+     * an exception if not found.
+     *
+     * @param entityClass
+     *            a persistent class
+     * @param id
+     *            the identifier of the persistent instance
+     * @return the persistent instance
+     * @throws org.springframework.orm.ObjectRetrievalFailureException
+     *             if not found
+     * @throws org.springframework.dao.DataAccessException
+     *             in case of Hibernate errors
+     */
+    @Override
+    E load(K id);
 
     E retrieve(K key, LockMode lockMode)
             throws DataAccessException;
@@ -19,7 +40,7 @@ public interface IEntityRepo_H<E extends IEntity<K>, K extends Serializable>
     void delete(Object entity, LockMode lockMode)
             throws DataAccessException;
 
-    void merge(E entity)
+    E merge(E entity)
             throws DataAccessException;
 
     void evict(E entity)
@@ -29,7 +50,5 @@ public interface IEntityRepo_H<E extends IEntity<K>, K extends Serializable>
             throws DataAccessException;
 
     void flush();
-
-    int count(Criterion... restrictions);
 
 }
