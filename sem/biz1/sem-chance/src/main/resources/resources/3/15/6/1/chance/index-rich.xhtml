@@ -43,8 +43,8 @@
                             disabled="#{chanceBean.detailable}" update="chanceForm" async="true" />
                         <p:divider />
 
-                        <h:outputLabel for="subjectPartten" value="机会标题:" />
-                        <p:inputText id="subjectPartten" />
+                        <h:outputLabel for="subjectPattern" value="机会标题:" />
+                        <p:inputText id="subjectPattern" />
                         <p:commandButton value="查找" actionListener="#{chanceBean.search}"
                             disabled="#{chanceBean.searchable}" update="chanceForm" async="true" />
                         <p:commandButton value="取消查找" actionListener="#{chanceBean.reInitSearch}"
@@ -260,7 +260,7 @@
                 <h:panelGroup>
 
                     <h:panelGrid columns="2">
-                        <p:inputText value="#{chanceBean.partyPartten}" />
+                        <p:inputText value="#{chanceBean.partyPattern}" />
                         <p:commandButton value="查找" actionListener="#{chanceBean.findParty}"
                             update="chancePartyForm:parties" async="true" />
                     </h:panelGrid>
