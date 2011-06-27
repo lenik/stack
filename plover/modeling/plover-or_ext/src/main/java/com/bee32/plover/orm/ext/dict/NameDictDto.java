@@ -3,7 +3,6 @@ package com.bee32.plover.orm.ext.dict;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
 
 public abstract class NameDictDto<E extends NameDict>
         extends DictEntityDto<E, String> {
@@ -45,29 +44,23 @@ public abstract class NameDictDto<E extends NameDict>
         setId(name);
     }
 
-    @Override
-    protected Boolean naturalEquals(EntityDto<E, String> other) {
-        NameDictDto<E> o = (NameDictDto<E>) other;
-
-        String name = getName();
-        String otherName = o.getName();
-        if (name == null || otherName == null)
-            return false;
-
-        if (!name.equals(otherName))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        String name = getName();
-
-        if (name == null)
-            return 0;
+    public String getDisplayId() {
+        if (id == null)
+            return "";
         else
-            return name.hashCode();
+            return id;
     }
+
+    public void setDisplayId(String displayId) {
+        if (displayId != null && displayId.isEmpty())
+            id = null;
+        else
+            id = displayId;
+    }
+
+    // Using the default id-equality.
+    //
+    // protected Boolean naturalEquals(EntityDto<E, String> other);
+    // protected Integer naturalHashCode();
 
 }
