@@ -7,7 +7,8 @@ import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Menubar;
 
 import com.bee32.plover.servlet.util.ThreadServletContext;
-import com.bee32.sem.frame.builtins.MainMenu;
+import com.bee32.sem.frame.builtins.SEMFrameMenu;
+import com.bee32.sem.frame.menu.MenuLoader;
 import com.bee32.sem.frame.menu.ZkMenuBuilder;
 
 /**
@@ -18,7 +19,7 @@ public class MenuComposer
 
     private static final long serialVersionUID = 1L;
 
-    private MainMenu mainMenu;
+    private MenuLoader menuLoader;
 
     private Menubar menubar;
 
@@ -30,7 +31,7 @@ public class MenuComposer
         // XXX - Zk Composer 怎么获取有用的 ServletRequest?
         HttpServletRequest request = ThreadServletContext.requireRequest();
 
-        new ZkMenuBuilder(mainMenu, menubar, request).buildMenubar();
+        new ZkMenuBuilder(SEMFrameMenu.MAIN, menubar, request).buildMenubar();
     }
 
 }

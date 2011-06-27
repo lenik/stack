@@ -19,35 +19,40 @@ import com.bee32.sem.frame.action.IAction;
 
 public class SuperfishMenuBuilder {
 
-    private final MenuModel menuModel;
+    private final MenuNode toplevel;
     private final HttpServletRequest request;
 
     private String html;
     private PrettyPrintStream out;
 
-    public SuperfishMenuBuilder(MenuModel menuModel) {
-        this(menuModel, null);
+    public SuperfishMenuBuilder(MenuNode toplevel) {
+        this(toplevel, null);
     }
 
-    public SuperfishMenuBuilder(MenuModel menuModel, HttpServletRequest request) {
-        if (menuModel == null)
+    public SuperfishMenuBuilder(MenuNode toplevel, HttpServletRequest request) {
+        if (toplevel == null)
             throw new NullPointerException("menuModel");
-        this.menuModel = menuModel;
+        this.toplevel = toplevel;
         this.request = request;
     }
 
-    public HttpServletRequest getRequest() {
+    String resolve(ILocationContext location) {
+        HttpServletRequest request = this.request;
         if (request == null)
-            return ThreadServletContext.requireRequest();
+            request = ThreadServletContext.getRequest();
+
+        if (request == null)
+            return location.toString();
         else
-            return request;
+            return location.resolve(request);
+
     }
 
     @Override
     public synchronized String toString() {
         if (html == null) {
             out = new PrettyPrintStream();
-            buildMenubar(menuModel);
+            buildMenubar(toplevel);
             html = out.toString();
             out = null;
         }
@@ -82,7 +87,7 @@ public class SuperfishMenuBuilder {
         if (action != null && action.isEnabled()) {
 
             ILocationContext target = action.getTargetLocation();
-            String href = target.resolve(getRequest());
+            String href = resolve(target);
             String hrefEncoded;
             try {
                 hrefEncoded = UriUtils.encodeUri(href, "utf-8");

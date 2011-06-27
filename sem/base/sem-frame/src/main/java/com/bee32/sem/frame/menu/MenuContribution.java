@@ -96,7 +96,8 @@ public abstract class MenuContribution
     // localMap.put(propId, node);
     // }
 
-    synchronized final Map<String, MenuNode> dump() {
+    // XXX Remove public in future?
+    public synchronized final Map<String, MenuNode> dump() {
         // Invoke the introduce/preambles.
         assemble();
 

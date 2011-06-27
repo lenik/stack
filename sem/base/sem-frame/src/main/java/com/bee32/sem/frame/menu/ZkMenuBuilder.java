@@ -20,13 +20,13 @@ import com.bee32.sem.frame.action.IAction;
 
 public class ZkMenuBuilder {
 
-    private final MenuModel menuModel;
+    private final MenuNode menuModel;
     private final Menubar menubar;
     private final HttpServletRequest request;
 
     private boolean built;
 
-    public ZkMenuBuilder(MenuModel menuModel, Menubar menubar, HttpServletRequest request) {
+    public ZkMenuBuilder(MenuNode menuModel, Menubar menubar, HttpServletRequest request) {
         if (menuModel == null)
             throw new NullPointerException("menuModel");
         if (menubar == null)

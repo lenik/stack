@@ -12,7 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
-import com.bee32.sem.frame.builtins.MainMenu;
+import com.bee32.sem.frame.builtins.SEMFrameMenu;
+import com.bee32.sem.frame.menu.MenuLoader;
 import com.bee32.sem.frame.menu.SuperfishMenuBuilder;
 
 @Controller
@@ -21,7 +22,7 @@ public class SuperfishMenuController
         extends MultiActionController {
 
     @Inject
-    private MainMenu mainMenu;
+    MenuLoader menuLoader;
 
     @RequestMapping("sfmenuHtml.do")
     public void sfmenuHtml(HttpServletRequest request, HttpServletResponse response) {
@@ -31,7 +32,7 @@ public class SuperfishMenuController
         try {
             out = response.getWriter();
 
-            out.println(new SuperfishMenuBuilder(mainMenu, request));
+            out.println(new SuperfishMenuBuilder(SEMFrameMenu.MAIN, request));
 
         } catch (IOException ex1) {
             ex1.printStackTrace();
