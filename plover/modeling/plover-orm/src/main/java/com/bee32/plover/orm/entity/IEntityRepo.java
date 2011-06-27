@@ -32,6 +32,18 @@ public interface IEntityRepo<E extends IEntity<? extends K>, K extends Serializa
     void saveOrUpdate(E entity);
 
     @Override
+    void saveAll(E... entities);
+
+    @Override
+    void saveAll(Collection<? extends E> entities);
+
+    @Override
+    void saveOrUpdateAll(E... entities);
+
+    @Override
+    void saveOrUpdateAll(Collection<? extends E> entities);
+
+    @Override
     void delete(Object entity);
 
 }

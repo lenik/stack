@@ -1,6 +1,9 @@
 package com.bee32.plover.arch;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import javax.free.IllegalUsageException;
 import javax.servlet.ServletRequest;
@@ -84,11 +87,9 @@ public abstract class Repository<K, T>
         return value;
     }
 
-    @Override
-    public void delete(Object obj) {
-        T instance = objectType.cast(obj);
-        K key = getKey(instance);
-        deleteByKey(key);
+    public final void saveAll(T... objects) {
+        List<T> list = Arrays.asList(objects);
+        saveAll(list);
     }
 
     @Override
@@ -98,6 +99,31 @@ public abstract class Repository<K, T>
             update(obj);
         else
             save(obj);
+    }
+
+    @Override
+    public final void saveOrUpdateAll(T... objects) {
+        List<T> list = Arrays.asList(objects);
+        saveOrUpdateAll(list);
+    }
+
+    @Override
+    public void saveAll(Collection<? extends T> objects) {
+        for (T obj : objects)
+            save(obj);
+    }
+
+    @Override
+    public void saveOrUpdateAll(Collection<? extends T> objects) {
+        for (T obj : objects)
+            saveOrUpdate(obj);
+    }
+
+    @Override
+    public void delete(Object obj) {
+        T instance = objectType.cast(obj);
+        K key = getKey(instance);
+        deleteByKey(key);
     }
 
     @Override

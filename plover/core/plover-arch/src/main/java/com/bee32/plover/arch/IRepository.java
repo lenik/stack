@@ -103,6 +103,10 @@ public interface IRepository<K, T>
      */
     K save(T obj);
 
+    void saveAll(T... objects);
+
+    void saveAll(Collection<? extends T> objects);
+
     /**
      * Update the entity in the persistence layer.
      *
@@ -125,6 +129,10 @@ public interface IRepository<K, T>
      * @see Map#put(Object, Object)
      */
     void saveOrUpdate(T obj);
+
+    void saveOrUpdateAll(T... objects);
+
+    void saveOrUpdateAll(Collection<? extends T> objects);
 
     /**
      * Delete an object from underlying persistent layer by object key.

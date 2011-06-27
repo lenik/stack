@@ -153,7 +153,15 @@ public class EntityDao<E extends Entity<K>, K extends Serializable>
         return keyType.cast(key);
     }
 
+    @Override
+    public void saveAll(Collection<? extends E> objects) {
+        // Need transactional wrapper.
+        getHibernateTemplate().saveOrUpdateAll(objects);
+    }
+
+    @Override
     public void saveOrUpdateAll(Collection<? extends E> entities) {
+        // Need transactional wrapper.
         getHibernateTemplate().saveOrUpdateAll(entities);
     }
 
