@@ -9,8 +9,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -28,6 +26,7 @@ import com.bee32.sem.people.dto.PersonSidTypeDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonSidType;
+import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.user.util.SessionLoginInfo;
@@ -49,9 +48,8 @@ public class PersonAdminBean
 
     @PostConstruct
     public void init() {
-        SimpleExpression ownerEq = Restrictions.eq("owner.id", SessionLoginInfo.requireCurrentUser().getId());
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(Person.class,
-                PersonDto.class, 0, Order.desc("id"), ownerEq);
+                PersonDto.class, 0, Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
         persons = UIHelper.<Person, PersonDto> buildLazyDataModel(options);
 
         refreshPersonCount();
@@ -60,8 +58,7 @@ public class PersonAdminBean
     }
 
     void refreshPersonCount() {
-        SimpleExpression ownerEq = Restrictions.eq("owner.id", SessionLoginInfo.requireCurrentUser().getId());
-        int count = serviceFor(Person.class).count(ownerEq);
+        int count = serviceFor(Person.class).count(PeopleCriteria.ownedByCurrentUser());
         persons.setRowCount(count);
     }
 

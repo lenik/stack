@@ -9,8 +9,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -28,9 +26,10 @@ import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
-import com.bee32.sem.service.IPeopleService;
 import com.bee32.sem.user.util.SessionLoginInfo;
 
 @Component
@@ -49,16 +48,15 @@ public class OrgAdminBean
     private PersonRoleDto selectedRole;
     private PersonRoleDto role;
 
-    private String personPartten;
+    private String personPattern;
     private List<PersonDto> persons;
     private PersonDto selectedPerson;
 
     @PostConstruct
     public void init() {
 
-        SimpleExpression ownerEq = Restrictions.eq("owner.id", SessionLoginInfo.requireCurrentUser().getId());
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(Org.class, OrgDto.class,
-                0, Order.desc("id"), ownerEq);
+                0, Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
         orgs = UIHelper.buildLazyDataModel(options);
 
         refreshOrgCount();
@@ -68,8 +66,7 @@ public class OrgAdminBean
     }
 
     void refreshOrgCount() {
-        SimpleExpression ownerEq = Restrictions.eq("owner.id", SessionLoginInfo.requireCurrentUser().getId());
-        int count = serviceFor(Org.class).count(ownerEq);
+        int count = serviceFor(Org.class).count(PeopleCriteria.ownedByCurrentUser());
         orgs.setRowCount(count);
     }
 
@@ -163,12 +160,12 @@ public class OrgAdminBean
         return false;
     }
 
-    public String getPersonPartten() {
-        return personPartten;
+    public String getPersonPattern() {
+        return personPattern;
     }
 
-    public void setPersonPartten(String personPartten) {
-        this.personPartten = personPartten;
+    public void setPersonPattern(String personPattern) {
+        this.personPattern = personPattern;
     }
 
     public List<PersonDto> getPersons() {
@@ -339,11 +336,12 @@ public class OrgAdminBean
     }
 
     public void findPerson() {
-        if (personPartten != null && !personPartten.isEmpty()) {
+        if (personPattern != null && !personPattern.isEmpty()) {
 
-            IPeopleService peopleService = getBean(IPeopleService.class);
-            persons = peopleService.listPersonByCurrentUser(personPartten);
-
+            List<Person> _persons = serviceFor(Person.class).list(//
+                    PeopleCriteria.ownedByCurrentUser(), //
+                    PeopleCriteria.nameLike(personPattern));
+            persons = DTOs.marshalList(PersonDto.class, _persons);
         }
     }
 
