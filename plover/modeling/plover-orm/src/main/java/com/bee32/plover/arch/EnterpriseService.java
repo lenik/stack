@@ -36,8 +36,8 @@ public abstract class EnterpriseService
         return asFor(entityType).load(id);
     }
 
-    protected <_E extends Entity<_K>, _K extends Serializable> //
-    IEntityAccessService<_E, _K> asFor(Class<? extends _E> entityType) {
+    protected <_E extends Entity<? extends _K>, _K extends Serializable> //
+    IEntityAccessService<_E, _K> asFor(Class<_E> entityType) {
         IEntityAccessService<_E, _K> service = dataManager.access(entityType);
         return service;
     }

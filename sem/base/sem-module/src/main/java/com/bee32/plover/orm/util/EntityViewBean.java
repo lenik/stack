@@ -18,8 +18,8 @@ public abstract class EntityViewBean
         return dataManager;
     }
 
-    protected <E extends Entity<K>, K extends Serializable> //
-    IEntityAccessService<E, K> serviceFor(Class<? extends E> entityType) {
+    protected <E extends Entity<? extends K>, K extends Serializable> //
+    IEntityAccessService<E, K> serviceFor(Class<E> entityType) {
         IEntityAccessService<E, K> service = getDataManager().access(entityType);
         return service;
     }

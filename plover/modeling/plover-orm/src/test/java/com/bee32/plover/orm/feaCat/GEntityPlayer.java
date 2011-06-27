@@ -33,8 +33,8 @@ public class GEntityPlayer
     @Inject
     CommonDataManager dataManager;
 
-    <E extends Entity<K>, K extends Serializable> //
-    IEntityAccessService<E, K> asFor(Class<? extends E> entityType) {
+    <E extends Entity<? extends K>, K extends Serializable> //
+    IEntityAccessService<E, K> asFor(Class<E> entityType) {
         IEntityAccessService<E, K> service = dataManager.access(entityType);
         return service;
     }
