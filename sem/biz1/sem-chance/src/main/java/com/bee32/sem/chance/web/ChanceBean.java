@@ -2,7 +2,6 @@ package com.bee32.sem.chance.web;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -11,7 +10,6 @@ import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -29,9 +27,11 @@ import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
-import com.bee32.sem.chance.service.ChanceService;
+import com.bee32.sem.chance.util.ChanceCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.util.PeopleCriteria;
+import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.user.util.SessionLoginInfo;
@@ -71,24 +71,12 @@ public class ChanceBean
     private List<PartyDto> parties;
 
     public void initList() {
-        chances = new LazyDataModel<ChanceDto>() {
 
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public List<ChanceDto> load(int first, int pageSize, String sortField, SortOrder sortOrder,
-                    Map<String, String> filters) {
-                ChanceService chanceService = getBean(ChanceService.class);
-                List<Chance> chanceList = chanceService.limitedChanceList(first, pageSize);
-                List<ChanceDto> chanceDtoList = DTOs.marshalList(ChanceDto.class, chanceList);
-// return DTOs.marshalList(ChanceDto.class, 3, chanceList);
-                return chanceDtoList;
-            }
-
-        };
-
-        ChanceService chanceService = getBean(ChanceService.class);
-        chances.setRowCount(chanceService.getChanceCount());
+        EntityDataModelOptions<Chance, ChanceDto> edmo = new EntityDataModelOptions<Chance, ChanceDto>(Chance.class,
+                ChanceDto.class);
+        edmo.setRestrictions(ChanceCriteria.ownedByCurrentUser());
+        chances = UIHelper.buildLazyDataModel(edmo);
+        refreshChanceCount();
     }
 
     public void initToolbar() {
@@ -109,6 +97,11 @@ public class ChanceBean
         chance = new ChanceDto();
         relating = false;
         unRelating = false;
+    }
+
+    void refreshChanceCount() {
+        int count = serviceFor(Chance.class).count(ChanceCriteria.ownedByCurrentUser());
+        chances.setRowCount(count);
     }
 
     public void onRowSelect() {
@@ -157,17 +150,19 @@ public class ChanceBean
 
     public void findParty() {
         if (!partyPartten.isEmpty()) {
-            ChanceService chanceService = getBean(ChanceService.class);
-            List<Party> keywordPartyList = chanceService.keywordPartyList(partyPartten);
-            parties = DTOs.marshalList(PartyDto.class, keywordPartyList);
+            List<Party> _parties = serviceFor(Party.class).list(//
+                    PeopleCriteria.ownedByCurrentUser(), //
+                    PeopleCriteria.nameLike(partyPartten));
+            parties = DTOs.marshalList(PartyDto.class, _parties);
         }
     }
 
     public void searchAction() {
         if (searchBeginTime != null && searchEndTime != null) {
-            ChanceService chanceService = getBean(ChanceService.class);
-            List<ChanceAction> dateRangeActionList = chanceService.dateRangeActionList(searchBeginTime, searchEndTime);
-            actions = DTOs.marshalList(ChanceActionDto.class, dateRangeActionList);
+            List<ChanceAction> _actions = serviceFor(ChanceAction.class).list(//
+                    ChanceCriteria.actedByCurrentUser(), //
+                    ChanceCriteria.beginWithin(searchBeginTime, searchEndTime));
+            actions = DTOs.marshalList(ChanceActionDto.class, _actions);
         }
     }
 
@@ -331,8 +326,7 @@ public class ChanceBean
                 serviceFor(ChanceAction.class).save(_action);
             }
             serviceFor(Chance.class).delete(tempChance);
-            ChanceService chanceService = getBean(ChanceService.class);
-            chances.setRowCount(chanceService.getChanceCount());
+            refreshChanceCount();
             context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("错误提示", "删除销售机会失败:" + e.getMessage()));

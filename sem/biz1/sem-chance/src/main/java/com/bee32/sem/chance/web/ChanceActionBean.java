@@ -3,7 +3,6 @@ package com.bee32.sem.chance.web;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -13,7 +12,6 @@ import javax.faces.model.SelectItem;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -27,9 +25,11 @@ import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceStage;
-import com.bee32.sem.chance.service.ChanceService;
+import com.bee32.sem.chance.util.ChanceCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.util.PeopleCriteria;
+import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.user.util.SessionLoginInfo;
@@ -66,14 +66,14 @@ public class ChanceActionBean
     private ChanceActionDto action;
 
     // 查找机会
-    private String chancePartten;
+    private String chancePattern;
     // 机会列表
     private List<ChanceDto> chances;
     // 选中的机会
     private ChanceDto selectedChance;
 
     // 查找客户
-    private String customerPartten;
+    private String customerPattern;
     // 客户列表
     private List<PartyDto> customers;
     // 选中的客户
@@ -85,22 +85,6 @@ public class ChanceActionBean
         action = new ChanceActionDto();
         searchable = false;
     }
-
-    class ChanceActionSearchDataModel
-            extends LazyDataModel<ChanceActionDto> {
-
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public List<ChanceActionDto> load(int first, int pageSize, String sortField, SortOrder sortOrder,
-                Map<String, String> filters) {
-            ChanceService chanceService = getBean(ChanceService.class);
-            List<ChanceAction> chanceActionList = chanceService.limitedChanceActionRangeList(searchBeginTime,
-                    searchEndTime, first, pageSize);
-            return DTOs.marshalList(ChanceActionDto.class, chanceActionList);
-        }
-
-    };
 
     public void search() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -114,9 +98,14 @@ public class ChanceActionBean
             return;
         }
 
-        actions = new ChanceActionSearchDataModel();
-        ChanceService chanceService = getBean(ChanceService.class);
-        actions.setRowCount(chanceService.limitedChanceActionRangeListCount(searchBeginTime, searchEndTime));
+        EntityDataModelOptions<ChanceAction, ChanceActionDto> edmo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
+                ChanceAction.class, ChanceActionDto.class);
+        edmo.setRestrictions(//
+                ChanceCriteria.actedByCurrentUser(), //
+                ChanceCriteria.beginWithin(searchBeginTime, searchEndTime));
+        actions = UIHelper.buildLazyDataModel(edmo);
+
+        refreshActionCount(true);
 
         initToolbar();
         searchable = true;
@@ -132,30 +121,25 @@ public class ChanceActionBean
         saveable = true;
     }
 
-    class ChanceActionDataModel
-            extends LazyDataModel<ChanceActionDto> {
-
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public List<ChanceActionDto> load(int first, int pageSize, String sortField, SortOrder sortOrder,
-                Map<String, String> filters) {
-
-            ChanceService chanceService = getBean(ChanceService.class);
-            List<ChanceAction> actionList = chanceService.limitedChanceActionList(first, pageSize);
-            return DTOs.marshalList(ChanceActionDto.class, actionList);
-        }
-
-    };
-
     public void initList() {
-        actions = new ChanceActionDataModel();
 
-        ChanceService chanceService = getBean(ChanceService.class);
-        actions.setRowCount(chanceService.getChanceActionCount());
+        EntityDataModelOptions<ChanceAction, ChanceActionDto> emdo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
+                ChanceAction.class, ChanceActionDto.class, 0, null, ChanceCriteria.actedByCurrentUser());
+        actions = UIHelper.buildLazyDataModel(emdo);
+
+        refreshActionCount(false);
 
         initToolbar();
         searchable = false;
+    }
+
+    void refreshActionCount(boolean forSearch) {
+
+        int count = serviceFor(ChanceAction.class).count(//
+                ChanceCriteria.actedByCurrentUser(), //
+                forSearch ? ChanceCriteria.beginWithin(searchBeginTime, searchEndTime) : null);
+
+        actions.setRowCount(count);
     }
 
     public void reInitSearch() {
@@ -165,18 +149,20 @@ public class ChanceActionBean
     }
 
     public void findChances() {
-        if (chancePartten != null && !chancePartten.isEmpty()) {
-            ChanceService chanceService = getBean(ChanceService.class);
-            List<Chance> keywordList = chanceService.keywordChanceList(chancePartten);
-            chances = DTOs.marshalList(ChanceDto.class, keywordList);
+        if (chancePattern != null && !chancePattern.isEmpty()) {
+            List<Chance> _chances = serviceFor(Chance.class).list(//
+                    ChanceCriteria.ownedByCurrentUser(), //
+                    ChanceCriteria.subjectLike(chancePattern));
+            chances = DTOs.marshalList(ChanceDto.class, _chances);
         }
     }
 
     public void findCustomer() {
-        if (customerPartten != null && !customerPartten.isEmpty()) {
-            ChanceService chanceService = getBean(ChanceService.class);
-            List<Party> partyList = chanceService.keywordPartyList(customerPartten);
-            customers = DTOs.marshalList(PartyDto.class, partyList);
+        if (customerPattern != null && !customerPattern.isEmpty()) {
+            List<Party> _customers = serviceFor(Party.class).list(//
+                    PeopleCriteria.ownedByCurrentUser(), //
+                    PeopleCriteria.nameLike(customerPattern));
+            customers = DTOs.marshalList(PartyDto.class, _customers);
         }
     }
 
@@ -213,8 +199,9 @@ public class ChanceActionBean
     public void drop() {
         FacesContext context = FacesContext.getCurrentInstance();
         serviceFor(ChanceAction.class).delete(selectedAction.unmarshal());
-        ChanceService chanceService = getBean(ChanceService.class);
-        actions.setRowCount(chanceService.getChanceActionCount());
+
+        refreshActionCount(false);
+
         context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
     }
 
@@ -461,11 +448,11 @@ public class ChanceActionBean
     }
 
     public String getChancePartten() {
-        return chancePartten;
+        return chancePattern;
     }
 
     public void setChancePartten(String chancePartten) {
-        this.chancePartten = chancePartten;
+        this.chancePattern = chancePartten;
     }
 
     public List<ChanceDto> getChances() {
@@ -484,12 +471,12 @@ public class ChanceActionBean
         this.selectedChance = selectedChance;
     }
 
-    public String getCustomerPartten() {
-        return customerPartten;
+    public String getCustomerPattern() {
+        return customerPattern;
     }
 
-    public void setCustomerPartten(String customerPartten) {
-        this.customerPartten = customerPartten;
+    public void setCustomerPattern(String customerPattern) {
+        this.customerPattern = customerPattern;
     }
 
     public List<PartyDto> getCustomers() {
