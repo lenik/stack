@@ -44,9 +44,9 @@ public class ChanceActionDto
         super();
     }
 
-    public ChanceActionDto(int selection) {
-        super(selection);
-    }
+// public ChanceActionDto(int selection) {
+// super(selection);
+// }
 
     public void addParty(PartyDto partyDto) {
         if (partyDto == null)
@@ -60,8 +60,28 @@ public class ChanceActionDto
             parties.remove(partyDto);
     }
 
+    public void pushStage(ChanceStageDto stageDto) {
+        if (stageDto != null) {
+            if (stageDto.getOrder() > stage.getOrder())
+                this.stage = stageDto;
+        }
+    }
+
+    static int index = 1;
+
     @Override
     protected void _marshal(ChanceAction source) {
+
+//        StringWriter buf = new StringWriter();
+//        new Exception().printStackTrace(new PrintWriter(buf, true));
+//        File stf = new File("/tmp/xxx-" + index++);
+//        try {
+//            FileWriter out = new FileWriter(stf);
+//            out.write(buf.toString());
+//            out.flush();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e.getMessage(), e);
+//        }
 
         this.date = source.getBeginTime() == null ? "" : DateToRange.fullFormat.format(source.getBeginTime())
                 .substring(0, 10);
@@ -98,8 +118,15 @@ public class ChanceActionDto
         this.content = source.getContent();
         this.spending = source.getSpending();
 
-        this.chance = mref(ChanceDto.class, 0, source.getChance());
-        this.stage = mref(ChanceStageDto.class, source.getStage());
+        if (source.getChance() != null)
+            this.chance = mref(ChanceDto.class, 0, source.getChance());
+        else
+            this.chance = new ChanceDto();
+
+        if (source.getStage() != null)
+            this.stage = mref(ChanceStageDto.class, source.getStage());
+        else
+            this.stage = new ChanceStageDto();
     }
 
     @Override
@@ -112,10 +139,10 @@ public class ChanceActionDto
         target.setEndTime(endTime);
         target.setContent(content);
         target.setSpending(spending);
-        if (chance != null)
-            merge(target, "chance", chance);
-        if (stage != null)
-            merge(target, "stage", stage);
+// if (chance != null)
+        merge(target, "chance", chance);
+// if (stage != null)
+        merge(target, "stage", stage);
     }
 
     @Override

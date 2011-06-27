@@ -107,9 +107,8 @@ public class ChanceDto
         refreshStage();
     }
 
-    public void deleteActions(ChanceActionDto... actions) {
-        for (ChanceActionDto action : actions)
-            this.actions.remove(action);
+    public void deleteAction(ChanceActionDto action) {
+        this.actions.remove(action);
         refreshStage();
     }
 

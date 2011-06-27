@@ -39,4 +39,18 @@ public class ChanceStageDto
         super._parse(map);
     }
 
+    public String getIdX() {
+        if (getId() == null)
+            return "";
+        else
+            return getId();
+    }
+
+    public void setIdX(String idx) {
+        if (idx.isEmpty())
+            setId(null);
+        else {
+            setId(idx);
+        }
+    }
 }

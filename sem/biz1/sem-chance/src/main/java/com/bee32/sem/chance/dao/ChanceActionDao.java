@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.plover.orm.entity.EntityDao;
+import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 
 public class ChanceActionDao
@@ -44,6 +45,13 @@ public class ChanceActionDao
         Criteria criteria = getSession().createCriteria(ChanceAction.class);
         criteria.add(Restrictions.eq("actor.id", user.getId()));
         criteria.add(Restrictions.between("beginTime", begin, end));
+        return criteria.list();
+    }
+
+    public List<ChanceAction> listByChane(IUserPrincipal user, Chance chance){
+        Criteria criteria = getSession().createCriteria(ChanceAction.class);
+        criteria.add(Restrictions.eq("actor.id", user.getId()));
+        criteria.add(Restrictions.eq("chance.id", chance.getId()));
         return criteria.list();
     }
 }
