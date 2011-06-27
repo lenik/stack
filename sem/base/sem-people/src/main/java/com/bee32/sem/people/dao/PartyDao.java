@@ -15,13 +15,6 @@ import com.bee32.sem.people.entity.PartyXP;
 public class PartyDao<E extends Party>
         extends EntityExtDao<E, Integer, PartyXP> {
 
-    public List<E> limitedList(Class<E> entityClass, int displayStart, int displayLength){
-        Criteria criteria = getSession().createCriteria(entityClass);
-        criteria.setFetchSize(displayStart);
-        criteria.setMaxResults(displayLength);
-        return criteria.list();
-    }
-
     public List<E> limitedKeywordList(Class<E> entityClass, String keyword, int displayStart, int displayLength){
         Criteria criteria = getSession().createCriteria(entityClass);
         criteria.add(Restrictions.like("name", "%" + keyword + "%"));
@@ -30,25 +23,7 @@ public class PartyDao<E extends Party>
         return criteria.list();
     }
 
-    public List<E> limitedList(Class<E> entityClass, IUserPrincipal user, int displayStart, int displayLength){
-        Criteria criteria = getSession().createCriteria(entityClass);
-        criteria.add(Restrictions.eq("owner.id", user.getId()));
-        criteria.addOrder(Order.desc("id"));
-        criteria.setFetchSize(displayStart);
-        criteria.setMaxResults(displayLength);
-        return criteria.list();
-    }
 
-    public long limitedListCount(Class<E> entityClass, IUserPrincipal user) {
-		int count = (Integer) getSession()
-				.createCriteria(entityClass)
-				.add(Restrictions.eq("owner.id", user.getId()))
-				.setProjection(Projections.rowCount())
-				.uniqueResult();
-
-		long countL = count;
-		return countL;
-    }
 
     public List<E> limitedKeywordList(Class<E> entityClass, IUserPrincipal user, String keyword, int displayStart, int displayLength){
         Criteria criteria = getSession().createCriteria(entityClass);
