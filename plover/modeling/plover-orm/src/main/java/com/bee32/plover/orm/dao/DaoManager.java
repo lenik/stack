@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityDao;
+import com.bee32.plover.orm.entity.EntityUtil;
+import com.bee32.plover.orm.entity.GenericEntityDao;
 
 @Component
 @Lazy
@@ -21,9 +23,13 @@ public class DaoManager
     static Map<Class<?>, EntityDao<?, ?>> daoMap;
     static Map<Class<?>, EntityDao<?, ?>> daoCache;
 
+    ApplicationContext applicationContext;
+
     @Override
     public synchronized void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
+
+        this.applicationContext = applicationContext;
 
         if (daoMap != null)
             return;
@@ -36,21 +42,41 @@ public class DaoManager
         }
     }
 
+    static boolean strictMode = true;
+
     public <E extends Entity<? extends K>, K extends Serializable> EntityDao<? super E, ? super K> //
     getNearestDao(Class<? extends E> entityType) {
 
         EntityDao<? super E, ? super K> dao = null;
 
-        Class<?> baseType = (Class<?>) entityType;
-        while (baseType != null) {
+        if (strictMode) {
+            dao = (EntityDao<? super E, ? super K>) daoMap.get(entityType);
+            if (dao == null) {
+                GenericEntityDao<E, K> genericDao = applicationContext.getBean(GenericEntityDao.class);
 
-            dao = (EntityDao<? super E, ? super K>) daoMap.get(baseType);
-            if (dao != null)
-                break;
+                @SuppressWarnings("unchecked")
+                Class<E> _entityType = (Class<E>) entityType;
+                Class<K> _keyType = EntityUtil.getKeyType(_entityType);
 
-            if (baseType == Entity.class)
-                break;
-            baseType = baseType.getSuperclass();
+                genericDao.setEntityType(_entityType);
+                genericDao.setKeyType(_keyType);
+
+                dao = genericDao;
+                daoMap.put(entityType, dao);
+            }
+
+        } else {
+            Class<?> baseType = (Class<?>) entityType;
+            while (baseType != null) {
+
+                dao = (EntityDao<? super E, ? super K>) daoMap.get(baseType);
+                if (dao != null)
+                    break;
+
+                if (baseType == Entity.class)
+                    break;
+                baseType = baseType.getSuperclass();
+            }
         }
 
         return dao;
