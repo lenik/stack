@@ -83,6 +83,8 @@ public class R_ACE
     }
 
     public void setResource(Resource resource) {
+        if (resource == null)
+            throw new NullPointerException("resource");
         this.qualifiedName = ResourceRegistry.qualify(resource);
     }
 
@@ -92,6 +94,8 @@ public class R_ACE
     }
 
     public void setPrincipal(Principal principal) {
+        if (principal == null)
+            throw new NullPointerException("principal");
         this.principal = principal;
     }
 
@@ -101,6 +105,8 @@ public class R_ACE
     }
 
     public void setMode(String mode) {
+        if (mode == null)
+            throw new NullPointerException("mode");
         this.mode = mode;
     }
 
