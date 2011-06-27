@@ -12,7 +12,7 @@ import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.naming.RepositoryNode;
 import com.bee32.plover.arch.util.IStruct;
 
-public abstract class EntityRepository<E extends IEntity<K>, K extends Serializable>
+public abstract class EntityRepository<E extends IEntity<? extends K>, K extends Serializable>
         extends RepositoryNode<K, E>
         implements IEntityRepo<E, K> {
 
@@ -38,6 +38,7 @@ public abstract class EntityRepository<E extends IEntity<K>, K extends Serializa
 
     @Override
     protected void introspect() {
+        super.introspect();
         entityType = objectType;
     }
 

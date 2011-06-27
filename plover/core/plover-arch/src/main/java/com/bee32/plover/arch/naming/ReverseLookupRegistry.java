@@ -15,6 +15,8 @@ public class ReverseLookupRegistry {
 
     public synchronized <T> void register(INamedNode node) {
         Class<?> baseType = node.getChildType();
+        if (baseType == null)
+            throw new NullPointerException("null baseType in node of " + node.getClass());
 
         NamedNodeSet nodesForSameType = (NamedNodeSet) typemap.get(baseType);
 

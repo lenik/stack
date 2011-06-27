@@ -60,6 +60,8 @@ public abstract class Repository<K, T>
         Type[] repositoryArgs = ClassUtil.getTypeArgs(getClass(), Repository.class);
         keyType = ClassUtil.bound1(repositoryArgs[0]);
         objectType = ClassUtil.bound1(repositoryArgs[1]);
+        if (objectType == null)
+            throw new NullPointerException("objectType");
     }
 
     @Override
