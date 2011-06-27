@@ -1,9 +1,9 @@
 package com.bee32.sem.process.verify.testbiz;
 
 import com.bee32.plover.rtx.location.Location;
+import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
-import com.bee32.sem.frame.menu.SEMFrameMenu;
 
 public class AttackMissionMenu
         extends MenuContribution {

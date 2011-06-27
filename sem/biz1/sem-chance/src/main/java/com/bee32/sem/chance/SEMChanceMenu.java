@@ -7,28 +7,28 @@ import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
+import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
-import com.bee32.sem.frame.menu.SEMFrameMenu;
 
 public class SEMChanceMenu
         extends MenuContribution
         implements ITypeAbbrAware {
 
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
-    static Location CHANCE = WEB_APP.join(SEMChanceModule.PREFIX_);
+    static Location CHANCE_ = WEB_APP.join(SEMChanceModule.PREFIX_);
 
-    public static MenuNode cha = menu(SEMFrameMenu.MAIN, "chance");
-    public static MenuNode chaDict = menu(SEMFrameMenu.ADMIN, "chance");
+    public static MenuNode CHANCE = menu(SEMFrameMenu.BIZ1, "chance");
+    public static MenuNode CHANCE_DICT = menu(CHANCE, "dict");
 
-    static MenuNode category = entry(chaDict, "category", getDictIndex(ChanceCategory.class));
-    static MenuNode sourceType = entry(chaDict, "sourceType", getDictIndex(ChanceSourceType.class));
-    static MenuNode actionStyle = entry(chaDict, "actionStyle", getDictIndex(ChanceActionStyle.class));
-    static MenuNode stage = entry(chaDict, "stage", getDictIndex(ChanceStage.class));
+    static MenuNode category = entry(CHANCE_DICT, "category", getDictIndex(ChanceCategory.class));
+    static MenuNode sourceType = entry(CHANCE_DICT, "sourceType", getDictIndex(ChanceSourceType.class));
+    static MenuNode actionStyle = entry(CHANCE_DICT, "actionStyle", getDictIndex(ChanceActionStyle.class));
+    static MenuNode stage = entry(CHANCE_DICT, "stage", getDictIndex(ChanceStage.class));
 
-    static MenuNode chance = entry(cha, "chance", CHANCE.join("chance/index-rich.do"));
-    static MenuNode action = entry(cha, "action", CHANCE.join("action/index-rich.do"));
-    static MenuNode competitor = entry(cha, "competitor", CHANCE.join("competitor/index.do"));
+    static MenuNode chance = entry(CHANCE, "chance", CHANCE_.join("chance/index-rich.do"));
+    static MenuNode action = entry(CHANCE, "action", CHANCE_.join("action/index-rich.do"));
+    static MenuNode competitor = entry(CHANCE, "competitor", CHANCE_.join("competitor/index.do"));
 
     @Override
     protected void preamble() {

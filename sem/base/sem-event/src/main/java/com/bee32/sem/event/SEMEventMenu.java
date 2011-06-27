@@ -6,9 +6,9 @@ import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventStatus;
 import com.bee32.sem.event.web.EventController;
 import com.bee32.sem.event.web.EventPriorityController;
+import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
-import com.bee32.sem.frame.menu.SEMFrameMenu;
 
 public class SEMEventMenu
         extends MenuContribution
