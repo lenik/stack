@@ -69,10 +69,12 @@ public class MenuEntry
         this.flags.bits = flags;
     }
 
+    @Override
     public boolean isFlatten() {
         return flags.test(FLATTEN);
     }
 
+    @Override
     public void setFlatten(boolean flatten) {
         flags.set(FLATTEN, flatten);
     }

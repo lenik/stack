@@ -75,6 +75,14 @@ public class SuperfishMenuBuilder {
     boolean showAll = false;
 
     void buildMenu(IMenuNode menuNode) {
+        boolean skipped;
+        if (showAll)
+            skipped = menuNode.isEmpty();
+        else
+            skipped = menuNode.isBarren();
+        if (skipped)
+            return;
+
         IAppearance appearance = menuNode.getAppearance();
 
         String label = appearance.getDisplayName();
@@ -112,23 +120,25 @@ public class SuperfishMenuBuilder {
         out.print(label);
         out.println("</a>");
 
-        boolean show;
-        if (showAll)
-            show = !menuNode.isEmpty();
-        else
-            show = !menuNode.isBarren();
-
-        if (show) {
+        if (!menuNode.isEmpty()) {
             List<IMenuNode> children = new ArrayList<IMenuNode>(menuNode.getChildren());
             Collections.sort(children, MenuEntryComparator.INSTANCE);
 
-            out.println("<ul>");
-            out.enter();
+            boolean flatten = menuNode.isFlatten();
+
+            if (!flatten) {
+                out.println("<ul>");
+                out.enter();
+            }
+
             for (IMenuNode childNode : children) {
                 buildMenu(childNode);
             }
-            out.leave();
-            out.println("</ul>");
+
+            if (!flatten) {
+                out.leave();
+                out.println("</ul>");
+            }
         }
 
         out.leave();

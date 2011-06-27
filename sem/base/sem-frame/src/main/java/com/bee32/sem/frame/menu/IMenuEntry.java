@@ -49,6 +49,10 @@ public interface IMenuEntry
      */
     int getFlags();
 
+    boolean isFlatten();
+
+    void setFlatten(boolean flatten);
+
     /**
      * Get preferred CSS class attribute value.
      *
