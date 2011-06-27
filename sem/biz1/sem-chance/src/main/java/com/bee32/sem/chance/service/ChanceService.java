@@ -120,12 +120,11 @@ public class ChanceService
         return chanceDao.limitedSearchList(user, keyword, first, pageSize);
     }
 
-    public boolean unRelatingChance(Chance chance){
-        HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal user = (IUserPrincipal) SessionLoginInfo.requireCurrentUser(session);
+    public boolean unRelatingChance(Chance chance) {
+        IUserPrincipal user = SessionLoginInfo.requireCurrentUser();
         List<ChanceAction> chanceActionList = chanceActionDao.listByChane(user, chance);
         List<ChanceAction> tempList = new ArrayList<ChanceAction>();
-        for(ChanceAction chanceAction : chanceActionList){
+        for (ChanceAction chanceAction : chanceActionList) {
             chanceAction.setChance(null);
             tempList.add(chanceAction);
         }

@@ -212,7 +212,7 @@ public class ChanceActionBean
 
     public void drop() {
         FacesContext context = FacesContext.getCurrentInstance();
-        getDataManager().delete(selectedAction.unmarshal());
+        serviceFor(ChanceAction.class).delete(selectedAction.unmarshal());
         ChanceService chanceService = getBean(ChanceService.class);
         actions.setRowCount(chanceService.getChanceActionCount());
         context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
@@ -312,8 +312,8 @@ public class ChanceActionBean
         ChanceDto chance;
         if (chanceId == null)
             chance = null;
-        else{
-            Chance __chance = getDataManager().fetch(Chance.class, chanceId);
+        else {
+            Chance __chance = serviceFor(Chance.class).load(chanceId);
             chance = DTOs.mref(ChanceDto.class, __chance);
         }
         action.setChance(chance);
@@ -326,8 +326,7 @@ public class ChanceActionBean
         ChanceActionStyleDto style = new ChanceActionStyleDto().ref(styleId);
         action.setStyle(style);
 
-        HttpSession session = ThreadHttpContext.requireSession();
-        UserDto actor = new UserDto().ref(SessionLoginInfo.requireCurrentUser(session).getId());
+        UserDto actor = new UserDto().ref(SessionLoginInfo.requireCurrentUser().getId());
         action.setActor(actor);
 
         ChanceAction _action = action.unmarshal();
@@ -335,10 +334,10 @@ public class ChanceActionBean
         Chance _chance = _action.getChance();
         if (_chance != null) {
             _chance.pushStage(_action.getStage());
-            getDataManager().save(_chance);
+            serviceFor(Chance.class).save(_chance);
         }
 
-        getDataManager().save(_action);
+        serviceFor(ChanceAction.class).save(_action);
 
         action = new ChanceActionDto();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("提示", "保存销售机会行动记录成功!"));

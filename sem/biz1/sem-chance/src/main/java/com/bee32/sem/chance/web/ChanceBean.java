@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceCategoryDto;
@@ -43,6 +42,9 @@ public class ChanceBean
         extends MultiTabEntityViewBean {
 
     private static final long serialVersionUID = 1L;
+
+    public static final int TAB_INDEX = 0;
+    public static final int TAB_FORM = 1;
 
     private boolean addable;
     private boolean edable;
@@ -178,16 +180,16 @@ public class ChanceBean
         chance.addActions(selectedActions);
         try {
             Chance _chance = chance.unmarshal();
-//            for (ChanceAction _action : _chance.getActions()) {
-//                ChanceAction __action = _action;
-//                if (__action.getChance().getId() == null)
-//                    __action.setChance(_chance);
-//                if (__action.getStage() == null)
-//                    __action.setStage(ChanceStage.INIT);
+// for (ChanceAction _action : _chance.getActions()) {
+// ChanceAction __action = _action;
+// if (__action.getChance().getId() == null)
+// __action.setChance(_chance);
+// if (__action.getStage() == null)
+// __action.setStage(ChanceStage.INIT);
 //
-//                getDataManager().save(_action);
-//            }
-            getDataManager().save(_chance);
+// getDataManager().save(_action);
+// }
+            serviceFor(Chance.class).save(_chance);
             context.addMessage(null, new FacesMessage("提示", "关联行动记录成功"));
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("错误提示", "关联行动记录错误" + e.getMessage()));
@@ -207,7 +209,7 @@ public class ChanceBean
 
     public void createForm() {
         chance = new ChanceDto();
-        currentTab = 1;
+        setActiveTab(TAB_FORM);
         addable = true;
         edable = true;
         detailable = true;
@@ -220,7 +222,7 @@ public class ChanceBean
 
     public void editForm() {
         chance = selectedChance;
-        currentTab = 1;
+        setActiveTab(TAB_FORM);
         addable = true;
         edable = true;
         detailable = true;
@@ -233,7 +235,7 @@ public class ChanceBean
 
     public void detailForm() {
         chance = selectedChance;
-        currentTab = 1;
+        setActiveTab(TAB_FORM);
         addable = true;
         edable = true;
         detailable = true;
@@ -244,7 +246,7 @@ public class ChanceBean
 
     public void cancel() {
         initToolbar();
-        currentTab = 0;
+        setActiveTab(TAB_INDEX);
     }
 
     public void saveChance() {
@@ -285,7 +287,7 @@ public class ChanceBean
         ChanceStageDto temp = null;
         String chanceStageId = chance.getStage().getId();
         if (!chanceStageId.isEmpty()) {
-            ChanceStage _stage = getDataManager().fetch(ChanceStage.class, chanceStageId);
+            ChanceStage _stage = serviceFor(ChanceStage.class).load(chanceStageId);
             temp = DTOs.mref(ChanceStageDto.class, _stage);
             maxOrder = temp.getOrder();
         }
@@ -295,18 +297,18 @@ public class ChanceBean
                 chanceStageId = cad.getStage().getId();
             }
         }
-        ChanceStage _chanceStage = getDataManager().fetch(ChanceStage.class, chanceStageId);
+        ChanceStage _chanceStage = serviceFor(ChanceStage.class).load(chanceStageId);
         temp = DTOs.mref(ChanceStageDto.class, _chanceStage);
         chance.setStage(temp);
 
         Chance _chance = chance.unmarshal();
 
         try {
-            getDataManager().save(_chance);
+            serviceFor(Chance.class).save(_chance);
 
             for (ChanceAction _action : _chance.getActions()) {
                 _action.setChance(_chance);
-                getDataManager().save(_action);
+                serviceFor(ChanceAction.class).save(_action);
             }
 
             context.addMessage(null, new FacesMessage("提示", "成功添加销售机会"));
@@ -315,7 +317,7 @@ public class ChanceBean
             e.printStackTrace();
         }
 
-        currentTab = 0;
+        setActiveTab(TAB_INDEX);
         initToolbar();
     }
 
@@ -326,9 +328,9 @@ public class ChanceBean
             for (ChanceAction _action : tempChance.getActions()) {
                 _action.setChance(null);
                 _action.setStage(null);
-                getDataManager().save(_action);
+                serviceFor(ChanceAction.class).save(_action);
             }
-            getDataManager().delete(tempChance);
+            serviceFor(Chance.class).delete(tempChance);
             ChanceService chanceService = getBean(ChanceService.class);
             chances.setRowCount(chanceService.getChanceCount());
             context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
@@ -347,20 +349,12 @@ public class ChanceBean
             chance.deleteAction(actionDto);
             chanceAction.setChance(null);
             chanceAction.setStage(null);
-            getDataManager().save(chanceAction);
+            serviceFor(ChanceAction.class).save(chanceAction);
             context.addMessage(null, new FacesMessage("提示", "取消关联成功"));
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("提示", "取消关联失败:" + e.getMessage()));
             e.printStackTrace();
         }
-    }
-
-    public int getCurrentTab() {
-        return currentTab;
-    }
-
-    public void setCurrentTab(int currentTab) {
-        this.currentTab = currentTab;
     }
 
     public boolean isAddable() {
