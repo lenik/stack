@@ -1,9 +1,14 @@
 package com.bee32.sem.people;
 
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import javax.free.Dates;
+
+import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.misc.Sets;
@@ -20,29 +25,114 @@ import com.bee32.sem.people.entity.PersonSidType;
 public class SEMPeopleSamples
         extends EntitySamplesContribution {
 
-    public static Org internetCorp = new Org();
-    public static Person one77 = new Person();
-    public static Person bentley = new Person();
-    public static Person weiXiaoBao = new Person();
+    // 原来 SEMOrgSamples 中的样本。
+    public static Group abcCorp = new Group("ABC Company");
+    public static Group humanCorp = new Group("Human Company");
+    public static Group abcRAD = new Group("ABC 研究发展办公室");
+    public static Group abcSales = new Group("ABC 国际贸易部");
+
+    public static Person jackPerson = new Person("贾雨村");
+    public static Person tangPerson = new Person("唐玄奘");
+    public static User jack;
+    public static User tang;
+
+    public static Org abcOrg = new Org("ABC 有限责任公司");
+    public static Person bugatti = new Person("Bugatti");
+    public static Person bentley = new Person("Bentley");
+    public static Person weiXiaoBao = new Person("wxb");
 
     static {
-        internetCorp.setType(OrgType.LTD_CORP);
-        internetCorp.setSize(20);
-        internetCorp.setName("XX有限责任公司");
-        internetCorp.setInterests("互联网搜索");
-        internetCorp.setOwner(IcsfPrincipalSamples.eva);
+        try {
+            series1();
+            series2();
+        } catch (ParseException e) {
+            throw new RuntimeException("Error when setup SEMPeopleSamples.", e);
+        }
+    }
 
-        one77.setName("Bugatti");
-        one77.setFullName("Ettore Bugatti ONE - 77");
-        one77.setNickName("ONE - 77");
-        one77.setOwner(IcsfPrincipalSamples.eva);
-        one77.setSid("294741103659387246x");
+    /**
+     * 相当于原来的 ebi-org
+     *
+     * @throws ParseException
+     */
+    static void series1()
+            throws ParseException {
+        humanCorp.setDescription(//
+                "本公司致力于人类补完计划。人类（无论是肉体还是心灵）都是由脆弱的物质构成的，" + //
+                        "所以也就非常容易受到伤害，而在人与人之间，心灵的世界是彼此隔绝的，要使人类向" + //
+                        "更高的领域进化，就必须使人的心灵摆脱躯体的束缚，重新回到人类的诞生之地“莉莉" + //
+                        "斯之卵”中。唯有如此，才能最终拆除人与人之间的心灵屏障，使不同的心灵世界能够" + //
+                        "相互补充，走向进化的终点——成为永生的“神”。人类补完计划就是为了实现这个神" + //
+                        "圣目的而创立的。");
+
+        abcRAD.setInheritedGroup(abcCorp);
+        abcCorp.getDerivedGroups().add(abcRAD);
+
+        abcRAD.setOwner(IcsfPrincipalSamples.admin);
+        abcRAD.addMemberUser(jack);
+        abcRAD.addMemberUser(tang);
+
+        abcSales.setOwner(tang);
+        abcSales.addMemberUser(tang);
+
+        // admin.setPasswordByString("");
+
+        {
+            Contact jackHome = new Contact(jackPerson, ContactCategory.HOME);
+            jackHome.setAddress("海狞鞋桥");
+            jackHome.setMobile("15392969212");
+            jackHome.setTel("85963291");
+
+            Contact jackWork = new Contact(jackPerson, ContactCategory.WORK);
+            jackHome.setAddress("海狞黑丝园区");
+            jackWork.setTel("87219592");
+            jackWork.setEmail("jack@abc.com");
+
+            jackPerson.setBirthday(Dates.YYYY_MM_DD.parse("1980-4-5"));
+            jackPerson.setMemo("康桥鞋业二十年");
+            jackPerson.setSex(Gender.MALE);
+            jackPerson.setCensusRegister("海狞市公安局");
+            jackPerson.setSid("330401198210250230");
+        }
+        jack = jackPerson.toUser("jack");
+        jack.setPrimaryGroup(abcRAD);
+
+        {
+            Contact tangHome = new Contact(tangPerson, ContactCategory.HOME);
+            Contact tangWork = new Contact(tangPerson, ContactCategory.WORK);
+            tangHome.setEmail("cruise@war.org");
+            tangHome.setAddress("美国德州海滨公园");
+            tangHome.setMobile("13947385860");
+            tangHome.setTel("82957395");
+            tangWork.setTel("86593184");
+            tangPerson.setBirthday(Dates.YYYY_MM_DD.parse("1970-3-12"));
+            tangPerson.setMemo("每天喝水8升拥有好身体。");
+            tangPerson.setSex(Gender.MALE);
+            tangPerson.setCensusRegister("德州府");
+            tangPerson.setSid("330481197003124931");
+        }
+        tang = tangPerson.toUser("tang");
+        tang.setPrimaryGroup(abcRAD);
+        tang.addAssignedGroup(abcSales);
+
+    }
+
+    /** 相当于原来的 ebo-templatetypes */
+    static void series2() {
+        abcOrg.setType(OrgType.LTD_CORP);
+        abcOrg.setSize(20);
+        abcOrg.setInterests("互联网搜索");
+        abcOrg.setOwner(IcsfPrincipalSamples.eva);
+
+        bugatti.setFullName("Ettore Bugatti ONE - 77");
+        bugatti.setNickName("ONE - 77");
+        bugatti.setOwner(IcsfPrincipalSamples.eva);
+        bugatti.setSid("294741103659387246x");
         Calendar one77Birthday = Calendar.getInstance();
         one77Birthday.set(1909, 1, 1);
-        one77.setBirthday(one77Birthday.getTime());
-        one77.setTags(Sets.newSet(PartyTag.CUSTOMER));
+        bugatti.setBirthday(one77Birthday.getTime());
+        bugatti.setTags(Sets.newSet(PartyTag.CUSTOMER));
 
-        bentley.setName("Bentley");
         bentley.setFullName("Walter Owen Bentley");
         bentley.setNickName("Arnage");
         bentley.setOwner(IcsfPrincipalSamples.eva);
@@ -50,15 +140,13 @@ public class SEMPeopleSamples
         Calendar bentleyBirthday = Calendar.getInstance();
         bentleyBirthday.set(1919, 7, 1);
         bentley.setBirthday(bentleyBirthday.getTime());
-
         bentley.setTags(Sets.newSet(PartyTag.SUPPLIER));
 
         weiXiaoBao.setBirthday(bentleyBirthday.getTime());
         weiXiaoBao.setCensusRegister("北京市");
         weiXiaoBao.setFullName("韦小宝");
         weiXiaoBao.setInterests("吃饭睡觉玩老婆");
-        weiXiaoBao.setName("小宝");
-        weiXiaoBao.setNickName("韦公公");
+        weiXiaoBao.setNickName("小宝");
         weiXiaoBao.setOwner(IcsfPrincipalSamples.eva);
         weiXiaoBao.setSex(Gender.MALE);
         weiXiaoBao.setSid("11010116541220517");
@@ -90,19 +178,19 @@ public class SEMPeopleSamples
 
         PersonRole salesTitle = new PersonRole();
         salesTitle.setPerson(bentley);
-        salesTitle.setOrg(internetCorp);
+        salesTitle.setOrg(abcOrg);
         salesTitle.setOrgUnit("销售部");
         salesTitle.setRole("销售经理");
         salesTitle.setDescription("The ripest fruit falls first.");
         bentley.setRoles(Sets.newSet(salesTitle));
 
         PersonRole productSale = new PersonRole();
-        productSale.setPerson(one77);
-        productSale.setOrg(internetCorp);
+        productSale.setPerson(bugatti);
+        productSale.setOrg(abcOrg);
         productSale.setOrgUnit("销售部");
         productSale.setRole("产品导购");
         productSale.setDescription("People are beginning to notice you.  Try dressing before you leave the house.");
-        one77.setRoles(Sets.newSet(productSale));
+        bugatti.setRoles(Sets.newSet(productSale));
     }
 
     @Override
@@ -128,9 +216,9 @@ public class SEMPeopleSamples
         addNormalSample(OrgType.MILITARY);
         addNormalSample(OrgType.PARTNER);
 
-        addNormalSample(internetCorp);
+        addNormalSample(abcOrg);
 
-        addNormalSample(one77);
+        addNormalSample(bugatti);
         addNormalSample(bentley);
         addNormalSample(weiXiaoBao);
     }
