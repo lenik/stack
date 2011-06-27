@@ -18,6 +18,13 @@ public interface IEntityRepo_H<E extends IEntity<K>, K extends Serializable>
      * Return the persistent instance of the given entity class with the given identifier, throwing
      * an exception if not found.
      *
+     * <p>
+     * (Override {@link #load(Serializable)} to distinguish with {@link #_load(Serializable)}.
+     *
+     * <p>
+     * <b>WARNING</b>: This is different to {@link HibernateTemplate#load(Class, Serializable)}
+     * which is lazy-initialized.
+     *
      * @param entityClass
      *            a persistent class
      * @param id
@@ -30,6 +37,11 @@ public interface IEntityRepo_H<E extends IEntity<K>, K extends Serializable>
      */
     @Override
     E load(K id);
+
+    /**
+     * @see HibernateTemplate#load(Class, Serializable).
+     */
+    E _load(K id);
 
     E retrieve(K key, LockMode lockMode)
             throws DataAccessException;
