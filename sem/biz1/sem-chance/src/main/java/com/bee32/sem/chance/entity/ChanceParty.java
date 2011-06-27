@@ -79,8 +79,10 @@ public class ChanceParty
     @Override
     protected Integer naturalHashCode() {
         int hash = 0;
-        hash = hash * 37 + chance.hashCode();
-        hash = hash * 37 + party.hashCode();
+        if (chance != null)
+            hash = hash * 37 + chance.hashCode();
+        if (party != null)
+            hash = hash * 37 + party.hashCode();
         return hash;
     }
 
