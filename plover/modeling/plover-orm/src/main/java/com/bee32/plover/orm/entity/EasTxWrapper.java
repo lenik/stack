@@ -26,50 +26,50 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
         extends Component
         implements IEntityAccessService<E, K> {
 
-    IEntityAccessService<E, K> dao;
+    EntityDao<? super E, ? super K> dao;
 
-    public IEntityAccessService<E, K> getDao() {
+    public EntityDao<? super E, ? super K> getDao() {
         if (dao == null)
             throw new IllegalStateException("No DAO bound.");
         return dao;
     }
 
-    public void setDao(IEntityAccessService<E, K> dao) {
+    public void setDao(EntityDao<? super E, ? super K> dao) {
         if (dao == null)
             throw new NullPointerException("dao");
         this.dao = dao;
     }
 
     @Override
-    public Class<? extends E> getEntityType() {
-        return getDao().getEntityType();
-    }
-
-    @Override
     public K getKey(E entity) {
-        return getDao().getKey(entity);
+        return (K) getDao().getKey(entity);
     }
 
     @Override
     public Class<K> getKeyType() {
-        return getDao().getKeyType();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Class<? extends E> getObjectType() {
-        return getDao().getObjectType();
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Class<? extends E> getEntityType() {
+        throw new UnsupportedOperationException();
     }
 
     @Transactional(readOnly = true)
     @Override
     public E load(K id) {
-        return getDao().load(id);
+        return (E) getDao().load(id);
     }
 
     @Transactional(readOnly = true)
     @Override
     public E getUnique(Criterion... restrictions) {
-        return getDao().getUnique(restrictions);
+        return (E) getDao().getUnique(restrictions);
     }
 
     @Transactional(readOnly = true)
@@ -81,7 +81,7 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = false)
     @Override
     public K save(E entity) {
-        return getDao().save(entity);
+        return (K) getDao().save(entity);
     }
 
     @Transactional(readOnly = false)
@@ -129,7 +129,7 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = true)
     @Override
     public List<E> list(Criterion... restrictions) {
-        return getDao().list(restrictions);
+        return (List<E>) getDao().list(restrictions);
     }
 
     @Transactional(readOnly = false)
@@ -147,27 +147,27 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = true)
     @Override
     public E get(K key) {
-        return getDao().get(key);
+        return (E) getDao().get(key);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<E> list(Order order, Criterion... restrictions) {
-        return getDao().list(order, restrictions);
+        return (List<E>) getDao().list(order, restrictions);
     }
 
     @Transactional(readOnly = true)
     @Override
     public E _load(K id) {
         // XXX the lazy-init entity returned seems not usable outside of Tx.
-        return getDao()._load(id);
+        return (E) getDao()._load(id);
     }
 
     @Transactional(readOnly = true)
     @Override
     public E retrieve(K key, LockMode lockMode)
             throws DataAccessException {
-        return getDao().retrieve(key, lockMode);
+        return (E) getDao().retrieve(key, lockMode);
     }
 
     @Transactional(readOnly = false)
@@ -180,19 +180,19 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = true)
     @Override
     public Collection<K> keys() {
-        return getDao().keys();
+        return (Collection<K>) getDao().keys();
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<E> list(int offset, int limit, Criterion... restrictions) {
-        return getDao().list(offset, limit, restrictions);
+        return (List<E>) getDao().list(offset, limit, restrictions);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<E> list() {
-        return getDao().list();
+        return (List<E>) getDao().list();
     }
 
     @Transactional(readOnly = false)
@@ -202,17 +202,11 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
         getDao().delete(entity, lockMode);
     }
 
-    @Override
-    public E populate(IStruct struct)
-            throws BuildException {
-        return getDao().populate(struct);
-    }
-
     @Transactional(readOnly = false)
     @Override
     public E merge(E entity)
             throws DataAccessException {
-        return getDao().merge(entity);
+        return (E) getDao().merge(entity);
     }
 
     @Override
@@ -229,12 +223,6 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
         getDao().replicate(entity, replicationMode);
     }
 
-    @Override
-    public E populate(ServletRequest request)
-            throws BuildException {
-        return getDao().populate(request);
-    }
-
     // XXX Does flush useful here?
     @Override
     public void flush() {
@@ -244,19 +232,13 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = true)
     @Override
     public List<E> list(Order order, int offset, int limit, Criterion... restrictions) {
-        return getDao().list(order, offset, limit, restrictions);
-    }
-
-    @Override
-    public boolean populate(E obj, IStruct struct)
-            throws BuildException {
-        return getDao().populate(obj, struct);
+        return (List<E>) getDao().list(order, offset, limit, restrictions);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<E> list(int offset, int limit, DetachedCriteria criteria) {
-        return getDao().list(offset, limit, criteria);
+        return (List<E>) getDao().list(offset, limit, criteria);
     }
 
     @Transactional(readOnly = true)
@@ -293,6 +275,24 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Override
     public int count() {
         return getDao().count();
+    }
+
+    @Override
+    public boolean populate(E obj, IStruct struct)
+            throws BuildException {
+        throw new UnsupportedOperationException("You should populate using the explicit DAO class.");
+    }
+
+    @Override
+    public E populate(IStruct struct)
+            throws BuildException {
+        throw new UnsupportedOperationException("You should populate using the explicit DAO class.");
+    }
+
+    @Override
+    public E populate(ServletRequest request)
+            throws BuildException {
+        throw new UnsupportedOperationException("You should populate using the explicit DAO class.");
     }
 
 }
