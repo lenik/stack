@@ -153,6 +153,8 @@ public class PermissionAdminBean extends EntityViewBean {
 			} else {
 				rpEntry.setPermission(new Permission(0));
 			}
+
+			rpEntries.add(rpEntry);
 		}
 	    }
 

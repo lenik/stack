@@ -122,10 +122,10 @@
 
 								<p:ajax event="rowSelect"
 									listener="#{permissionAdminBean.onRowSelectUser}"
-									update="rpEntries growl" />
+									update="permissionForm:rpEntries permissionForm:growl" />
 								<p:ajax event="rowUnselect"
 									listener="#{personAdminBean.onRowUnselectUser}"
-									update="rpEntries growl" />
+									update="permissionForm:rpEntries permissionForm:growl" />
 
 
 								<p:column>
@@ -195,7 +195,7 @@
 							</p:column>
 
 							<p:column>
-								<p:selectBooleanCheckbox value="#{rpEntry.permission.writeable}" />
+								<p:selectBooleanCheckbox value="#{rpEntry.permission.writable}" />
 							</p:column>
 
 							<p:column>
@@ -209,12 +209,12 @@
 
 							<p:column>
 								<p:selectBooleanCheckbox
-									value="#{rpEntry.permission.createable}" />
+									value="#{rpEntry.permission.creatable}" />
 							</p:column>
 
 							<p:column>
 								<p:selectBooleanCheckbox
-									value="#{rpEntry.permission.deleteable}" />
+									value="#{rpEntry.permission.deletable}" />
 							</p:column>
 
 

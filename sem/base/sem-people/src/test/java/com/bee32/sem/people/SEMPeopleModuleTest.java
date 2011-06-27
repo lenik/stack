@@ -26,7 +26,7 @@ public class SEMPeopleModuleTest
 
     @Override
     protected String getLoggedInUser() {
-        return "eva";
+        return "admin";
     }
 
     public static void main(String[] args)
