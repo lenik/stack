@@ -40,7 +40,7 @@ public class SEMChanceSamples
         chance.setCategory(ChanceCategory.NORMAL);
 
         party.setChance(chance);
-        party.setParty(SEMPeopleSamples.one77);
+        party.setParty(SEMPeopleSamples.bugatti);
         party.setRole("main");
 
         party2.setChance(chance);
@@ -67,7 +67,7 @@ public class SEMChanceSamples
         chanceAction1.setSpending("打的15, 吃饭30,住宿100,共145");
         chanceAction1.setActor(IcsfPrincipalSamples.eva);
         chanceAction1.setStyle(ChanceActionStyle.INTERNET);
-        chanceAction1.setParties(Arrays.asList((Party) SEMPeopleSamples.bentley, (Party) SEMPeopleSamples.one77));
+        chanceAction1.setParties(Arrays.<Party> asList(SEMPeopleSamples.bentley, SEMPeopleSamples.bugatti));
         chanceAction1.setStage(ChanceStage.INIT);
 
         chanceAction2.setBeginTime(cal.getTime());

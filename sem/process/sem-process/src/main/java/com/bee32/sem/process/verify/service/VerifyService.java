@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.dso.UserDso;
 import com.bee32.plover.arch.EnterpriseService;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.util.DTOs;
@@ -35,9 +34,6 @@ public class VerifyService
 
     @Inject
     VerifyPolicyDao policyDao;
-
-    @Inject
-    UserDso userService;
 
     @Transactional(readOnly = true)
     public VerifyPolicyDto getPreferredVerifyPolicy(Class<? extends IVerifyContext> entityClass) {

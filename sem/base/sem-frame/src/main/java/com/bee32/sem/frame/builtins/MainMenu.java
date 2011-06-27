@@ -30,7 +30,7 @@ public class MainMenu
 
         for (MenuContribution contribution : applicationContext.getBeansOfType(MenuContribution.class).values()) {
             logger.debug("Merge menu contribution: " + contribution);
-            merge(contribution);
+            //merge(contribution);
         }
 
     }

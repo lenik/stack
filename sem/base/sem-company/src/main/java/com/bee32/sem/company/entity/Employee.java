@@ -1,6 +1,7 @@
 package com.bee32.sem.company.entity;
 
 import javax.free.Person;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -73,6 +74,15 @@ public class Employee
 
     public void setDepartment(Department department) {
         setPrimaryGroup(department);
+    }
+
+    @Column(length = 20)
+    public String getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(String empId) {
+        this.empId = empId;
     }
 
 }

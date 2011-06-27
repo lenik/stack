@@ -7,7 +7,7 @@ import com.bee32.icsf.principal.Group;
 
 @Entity
 // @Table(name = "Department")
-@DiscriminatorValue("G_D")
+@DiscriminatorValue("DPT")
 public class Department
         extends Group {
 
