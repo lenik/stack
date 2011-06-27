@@ -141,4 +141,10 @@ public class Group
         this.assignedRoles = (Set<Role>) assignedRoles;
     }
 
+    @Override
+    public Group detach() {
+        super.detach();
+        return this;
+    }
+
 }

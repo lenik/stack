@@ -94,4 +94,10 @@ public class Role
         this.responsibleGroups = responsibleGroups;
     }
 
+    @Override
+    public Role detach() {
+        super.detach();
+        return this;
+    }
+
 }

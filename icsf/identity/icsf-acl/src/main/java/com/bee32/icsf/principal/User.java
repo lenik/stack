@@ -114,4 +114,10 @@ public class User
         this.emails = emails;
     }
 
+    @Override
+    public User detach() {
+        super.detach();
+        return this;
+    }
+
 }
