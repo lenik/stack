@@ -60,6 +60,16 @@ public abstract class Repository<K, T>
     }
 
     @Override
+    public Class<K> getKeyType() {
+        return keyType;
+    }
+
+    @Override
+    public Class<T> getObjectType() {
+        return objectType;
+    }
+
+    @Override
     public boolean contains(Object obj) {
         T _obj = objectType.cast(obj);
         K key = getKey(_obj);
