@@ -4,14 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
 import org.hibernate.criterion.Restrictions;
 
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.plover.arch.EnterpriseService;
-import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.chance.dao.ChanceActionDao;
 import com.bee32.sem.chance.dao.ChanceDao;
 import com.bee32.sem.chance.entity.Chance;
@@ -58,50 +56,43 @@ public class ChanceService
 
     @Override
     public int getChanceActionCount() {
-        HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal user = (IUserPrincipal) SessionLoginInfo.requireCurrentUser(session);
+        IUserPrincipal user = SessionLoginInfo.requireCurrentUser();
         return (int) chanceActionDao.count(Restrictions.eq("actor.id", user.getId()));
     }
 
     @Override
     public List<ChanceAction> limitedChanceActionList(int start, int pageSize) {
-        HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal user = (IUserPrincipal) SessionLoginInfo.requireCurrentUser(session);
+        IUserPrincipal user = SessionLoginInfo.requireCurrentUser();
         return chanceActionDao.limitedList(user, start, pageSize);
     }
 
     @Override
     public int limitedChanceActionRangeListCount(Date sbt, Date set) {
-        HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal user = (IUserPrincipal) SessionLoginInfo.requireCurrentUser(session);
+        IUserPrincipal user = SessionLoginInfo.requireCurrentUser();
         return chanceActionDao.limitedSearchListCount(user, sbt, set);
     }
 
     @Override
     public List<ChanceAction> limitedChanceActionRangeList(Date sbt, Date set, int start, int pageSize) {
-        HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal user = (IUserPrincipal) SessionLoginInfo.requireCurrentUser(session);
+        IUserPrincipal user = SessionLoginInfo.requireCurrentUser();
         return chanceActionDao.limitedSearchList(user, sbt, set, start, pageSize);
     }
 
     @Override
     public List<ChanceAction> dateRangeActionList(Date begin, Date end) {
-        HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal user = (IUserPrincipal) SessionLoginInfo.requireCurrentUser(session);
+        IUserPrincipal user = SessionLoginInfo.requireCurrentUser();
         return chanceActionDao.dateRangeList(user, begin, end);
     }
 
     @Override
     public List<Chance> keywordChanceList(String keyword) {
-        HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal user = (IUserPrincipal) SessionLoginInfo.requireCurrentUser(session);
+        IUserPrincipal user = SessionLoginInfo.requireCurrentUser();
         return chanceDao.keywordList(user, keyword);
     }
 
     @Override
     public List<Party> keywordPartyList(String keyword) {
-        HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal user = (IUserPrincipal) SessionLoginInfo.requireCurrentUser(session);
+        IUserPrincipal user = SessionLoginInfo.requireCurrentUser();
         return partyDao.limitedKeywordList(Party.class, user, keyword);
     }
 
@@ -112,22 +103,19 @@ public class ChanceService
 
     @Override
     public List<Chance> limitedChanceList(int first, int pageSize) {
-        HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal user = (IUserPrincipal) SessionLoginInfo.requireCurrentUser(session);
+        IUserPrincipal user = SessionLoginInfo.requireCurrentUser();
         return chanceDao.limitedList(user, first, pageSize);
     }
 
     @Override
     public int searchedChanceCount() {
-        HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal user = (IUserPrincipal) SessionLoginInfo.requireCurrentUser(session);
+        IUserPrincipal user = SessionLoginInfo.requireCurrentUser();
         return chanceDao.count(Restrictions.eq("owner.id", user.getId()));
     }
 
     @Override
     public List<Chance> limitedSearchChanceList(String keyword, int first, int pageSize) {
-        HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal user = (IUserPrincipal) SessionLoginInfo.requireCurrentUser(session);
+        IUserPrincipal user = SessionLoginInfo.requireCurrentUser();
         return chanceDao.limitedSearchList(user, keyword, first, pageSize);
     }
 

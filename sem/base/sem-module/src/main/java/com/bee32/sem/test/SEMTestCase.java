@@ -81,7 +81,7 @@ public class SEMTestCase
             IEntityAccessService<User, String> userService = dataManager.access(User.class);
             User user = userService.load(userName);
 
-            SessionLoginInfo.setCurrentUser(session, user);
+            SessionLoginInfo.setCurrentUser(user);
         }
     }
 

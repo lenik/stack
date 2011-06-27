@@ -9,7 +9,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceActionStyleDto;
 import com.bee32.sem.chance.dto.ChanceDto;
@@ -328,8 +326,8 @@ public class ChanceActionBean
 
 // int uid = action.getActor().getId();
 // UserDto actor = new UserDto().ref(uid);
-        HttpSession session = ThreadHttpContext.requireSession();
-        UserDto actor = new UserDto().ref(SessionLoginInfo.requireCurrentUser(session).getId());
+
+        UserDto actor = new UserDto().ref(SessionLoginInfo.requireCurrentUser().getId());
         action.setActor(actor);
 
         ChanceAction tempAction = action.unmarshal();

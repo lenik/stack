@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -65,8 +64,7 @@ public class AccessCheckAdvice
         if (apResource == null)
             return;
 
-        HttpSession session = ThreadServletContext.requireSession();
-        IUserPrincipal currentUser = SessionLoginInfo.getCurrentUser(session);
+        IUserPrincipal currentUser = SessionLoginInfo.getCurrentUser();
 
         String errMessage = null;
         if (currentUser == null) {

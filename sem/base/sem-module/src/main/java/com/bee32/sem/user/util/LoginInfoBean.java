@@ -11,8 +11,8 @@ import com.bee32.plover.servlet.util.ThreadServletContext;
 @Component
 @Scope("session")
 @Named("loginInfo")
-public class SessionLoginInfoBean
-        extends SessionLoginInfo {
+public class LoginInfoBean
+        extends LoginInfo {
 
     HttpSession session;
 
@@ -22,15 +22,15 @@ public class SessionLoginInfoBean
         return ThreadServletContext.getSession();
     }
 
-    @Override
-    protected HttpSession requireSession() {
-        return ThreadServletContext.requireSession();
-    }
-
     // @Inject
     @Override
     protected void setSession(HttpSession session) {
         this.session = session;
+    }
+
+    @Override
+    protected HttpSession requireSession() {
+        return ThreadServletContext.requireSession();
     }
 
 }
