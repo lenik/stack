@@ -9,6 +9,8 @@ public interface IMenuNode
 
     boolean isEmpty();
 
+    boolean isBarren();
+
     boolean contains(String childName);
 
     IMenuNode get(String childName);

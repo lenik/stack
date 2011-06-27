@@ -38,6 +38,29 @@ public class MenuNode
         return children.isEmpty();
     }
 
+    protected boolean isLocalBarren() {
+        return getAction() == null;
+    }
+
+    @Override
+    public boolean isBarren() {
+        boolean barren = isLocalBarren();
+        if (!barren) // local-not-barren
+            return false;
+
+        if (isEmpty()) // local-barren && empty.
+            return true;
+
+        for (Entry<String, IMenuNode> entry : children.entrySet()) {
+            IMenuNode childNode = entry.getValue();
+            if (!childNode.isBarren()) {
+                barren = false;
+                break;
+            }
+        }
+        return barren;
+    }
+
     @Override
     public boolean contains(String childName) {
         return children.containsKey(childName);

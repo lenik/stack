@@ -72,6 +72,8 @@ public class SuperfishMenuBuilder {
         out.println("</ul>");
     }
 
+    boolean showAll = false;
+
     void buildMenu(IMenuNode menuNode) {
         IAppearance appearance = menuNode.getAppearance();
 
@@ -110,7 +112,13 @@ public class SuperfishMenuBuilder {
         out.print(label);
         out.println("</a>");
 
-        if (!menuNode.isEmpty()) {
+        boolean show;
+        if (showAll)
+            show = !menuNode.isEmpty();
+        else
+            show = !menuNode.isBarren();
+
+        if (show) {
             List<IMenuNode> children = new ArrayList<IMenuNode>(menuNode.getChildren());
             Collections.sort(children, MenuEntryComparator.INSTANCE);
 
