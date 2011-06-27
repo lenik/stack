@@ -2,7 +2,7 @@ package com.bee32.plover.orm.util;
 
 import java.util.Collection;
 
-import com.bee32.plover.orm.entity.IEntity;
+import com.bee32.plover.orm.entity.Entity;
 
 /**
  * Use {@link ImportSamples} annotation to declare the dependencies.
@@ -35,7 +35,7 @@ public interface IEntitySamplesContribution {
      *            当 <code>worseCase</code> 为 <code>false</code> 时，应该返回一些比较正常的、面向实际的样本集合。
      * @return 选定的非空的样本集合。
      */
-    Collection<? extends IEntity<?>> getTransientSamples(boolean worseCase);
+    Collection<? extends Entity<?>> getTransientSamples(boolean worseCase);
 
     boolean isLoaded();
 
