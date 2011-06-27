@@ -15,11 +15,11 @@ public class SEMFrameMenu
     public static final MenuNode BIZ1 = menu(MAIN, "biz1");
     public static final MenuNode HELP = menu(MAIN, "help");
 
+    static String ABOUT_NAME = "SEM-Frame 0.3.2";
+    static MenuNode ABOUT = entry(HELP, "aboutFrame", JAVASCRIPT.join("alert('" + ABOUT_NAME + "')"));
+
     @Override
     protected void preamble() {
-        String ABOUT_NAME = "SEM-Frame 0.3.2";
-        MenuNode aboutFrame = entry(HELP, "aboutFrame", JAVASCRIPT.join("alert('" + ABOUT_NAME + "')"));
-        declare("ABOUT", aboutFrame);
     }
 
 }
