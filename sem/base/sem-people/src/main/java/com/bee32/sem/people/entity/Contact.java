@@ -20,8 +20,9 @@ public class Contact
 
     private static final long serialVersionUID = 1L;
 
-    ContactCategory category = ContactCategory.NORMAL;
     Party party;
+    ContactCategory category = ContactCategory.NORMAL;
+
     String address;
     String postCode;
     String tel;
@@ -30,6 +31,18 @@ public class Contact
     String email;
     String website;
     String qq;
+
+    public Contact() {
+    }
+
+    public Contact(Party party, ContactCategory category) {
+        if (party == null)
+            throw new NullPointerException("party");
+        if (category == null)
+            throw new NullPointerException("category");
+        this.party = party;
+        this.category = category;
+    }
 
     /**
      * 联系人分类

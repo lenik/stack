@@ -30,6 +30,23 @@ public class Person
 
     Set<PersonRole> roles = new HashSet<PersonRole>();
 
+    public Person() {
+        super();
+    }
+
+    public Person(String name) {
+        super(name);
+    }
+
+    @Column(name = "sex")
+    char getSex_() {
+        return sex.getValue();
+    }
+
+    void setSex_(char sex_) {
+        sex = Gender.valueOf(sex_);
+    }
+
     /**
      * 性别
      */

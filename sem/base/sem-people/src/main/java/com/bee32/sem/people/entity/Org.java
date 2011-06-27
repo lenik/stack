@@ -23,6 +23,14 @@ public class Org
 
     Set<PersonRole> roles = new HashSet<PersonRole>();
 
+    public Org() {
+        super();
+    }
+
+    public Org(String name) {
+        super(name);
+    }
+
     @ManyToOne
     public OrgType getType() {
         return type;
