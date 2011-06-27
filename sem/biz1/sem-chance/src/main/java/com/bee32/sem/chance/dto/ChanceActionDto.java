@@ -122,8 +122,7 @@ public class ChanceActionDto
     protected void _parse(TextMap map)
             throws ParseException {
         plan = map.getString("plan") == "plan" ? true : false;
-        actor = new UserDto().ref(map.getNInt("actorId"));
-
+        actor = new UserDto().ref(map.getString("actorId"));
     }
 
     public String getDate() {

@@ -12,7 +12,7 @@ import com.bee32.plover.orm.entity.IEntity;
  * 在涉及安全的操作中，代表行为主体的身份抽象。
  */
 public interface IPrincipal
-        extends Principal, IEntity<Integer> {
+        extends Principal, IEntity<String> {
 
     /**
      * 主体在该主体所属域中的唯一名称。

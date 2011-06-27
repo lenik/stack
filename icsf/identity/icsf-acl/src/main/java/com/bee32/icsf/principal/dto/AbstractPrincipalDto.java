@@ -9,7 +9,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 
 public class AbstractPrincipalDto<E extends Principal>
-        extends EntityDto<E, Integer> {
+        extends EntityDto<E, String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,14 +41,12 @@ public class AbstractPrincipalDto<E extends Principal>
 
     @Override
     protected void _marshal(E source) {
-        name = source.getName();
         fullName = source.getFullName();
         description = source.getDescription();
     }
 
     @Override
     protected void _unmarshalTo(E target) {
-        target.setName(name);
         target.setFullName(fullName);
         target.setDescription(description);
     }

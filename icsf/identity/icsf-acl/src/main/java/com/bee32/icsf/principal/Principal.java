@@ -8,6 +8,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -18,18 +19,17 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Green;
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.plover.orm.ext.color.UIEntitySpec;
 
 @Entity
 @Green
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "steoro", length = 3)
 public class Principal
-        extends UIEntityAuto<Integer>
+        extends UIEntitySpec<String>
         implements IPrincipal {
 
     private static final long serialVersionUID = 1L;
@@ -50,7 +50,18 @@ public class Principal
         setName(name);
     }
 
-    @NaturalId
+    @Transient
+    @Override
+    public final String getId() {
+        return getName();
+    }
+
+    @Override
+    protected final void setId(String id) {
+        setName(id);
+    }
+
+    @Id
     @Basic(optional = false)
     @Column(length = NAME_MAXLEN, unique = true)
     @Override
@@ -67,7 +78,7 @@ public class Principal
      *            Non-<code>null</code> name to set.
      * @see #NAME_MAXLEN
      */
-    public void setName(String name) {
+    protected void setName(String name) {
         if (name == null)
             throw new NullPointerException("name");
 
@@ -207,7 +218,7 @@ public class Principal
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Integer> other) {
+    protected Boolean naturalEquals(EntityBase<String> other) {
         Principal o = (Principal) other;
 
         if (this.name == null || o.name == null)
