@@ -257,14 +257,20 @@ public class EntityDao<E extends Entity<? extends K>, K extends Serializable>
 
     // IEntityManager
 
+    final Criteria createCriteria(Criterion... restrictions) {
+        Criteria criteria = getSession().createCriteria(entityType);
+        if (restrictions != null)
+            for (Criterion restriction : restrictions) {
+                if (restriction == null)
+                    continue;
+                criteria.add(restriction);
+            }
+        return criteria;
+    }
+
     @Override
     public E getUnique(Criterion... restrictions) {
-        Criteria criteria = getSession().createCriteria(entityType);
-        this.get(null);
-        if (restrictions != null)
-            for (Criterion restriction : restrictions)
-                criteria.add(restriction);
-
+        Criteria criteria = createCriteria(restrictions);
         E result = (E) criteria.uniqueResult();
         return result;
     }
@@ -286,11 +292,7 @@ public class EntityDao<E extends Entity<? extends K>, K extends Serializable>
 
     @Override
     public List<E> list(Order order, int offset, int limit, Criterion... restrictions) {
-        Criteria criteria = getSession().createCriteria(entityType);
-
-        if (restrictions != null)
-            for (Criterion restriction : restrictions)
-                criteria.add(restriction);
+        Criteria criteria = createCriteria(restrictions);
 
         if (order != null)
             criteria.addOrder(order);
@@ -319,16 +321,10 @@ public class EntityDao<E extends Entity<? extends K>, K extends Serializable>
 
     @Override
     public int count(Criterion... restrictions) {
-        Criteria criteria = getSession().createCriteria(entityType);
-
-        if (restrictions != null)
-            for (Criterion restriction : restrictions)
-                criteria.add(restriction);
-
+        Criteria criteria = createCriteria(restrictions);
         criteria.setProjection(Projections.rowCount());
 
         Object result = criteria.uniqueResult();
-
         if (result == null)
             throw new UnexpectedException("Count() returns null");
 
@@ -344,12 +340,7 @@ public class EntityDao<E extends Entity<? extends K>, K extends Serializable>
 
     @Override
     public void delete(Criterion... restrictions) {
-        Criteria criteria = getSession().createCriteria(entityType);
-
-        if (restrictions != null)
-            for (Criterion restriction : restrictions)
-                criteria.add(restriction);
-
+        Criteria criteria = createCriteria(restrictions);
         List<E> list = criteria.list();
         getHibernateTemplate().deleteAll(list);
     }
