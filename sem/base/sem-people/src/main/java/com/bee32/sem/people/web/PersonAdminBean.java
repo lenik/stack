@@ -2,25 +2,24 @@ package com.bee32.sem.people.web;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpSession;
 
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.dto.AbstractPartyDto;
 import com.bee32.sem.people.dto.PersonDto;
@@ -29,8 +28,8 @@ import com.bee32.sem.people.dto.PersonSidTypeDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonSidType;
+import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
-import com.bee32.sem.service.IPeopleService;
 import com.bee32.sem.user.util.SessionLoginInfo;
 
 @Component
@@ -40,33 +39,31 @@ public class PersonAdminBean
 
     private static final long serialVersionUID = 1L;
 
-	private boolean editable;
+    private boolean editable;
 
-	private LazyDataModel<PersonDto> persons;
-	private PersonDto selectedPerson;
-	private PersonDto person;
+    private LazyDataModel<PersonDto> persons;
+    private PersonDto selectedPerson;
+    private PersonDto person;
 
-	private PersonRoleDto selectedRole;
+    private PersonRoleDto selectedRole;
 
-	@PostConstruct
-	public void init() {
-		persons = new LazyDataModel<PersonDto>() {
+    @PostConstruct
+    public void init() {
+        SimpleExpression ownerEq = Restrictions.eq("owner.id", SessionLoginInfo.requireCurrentUser().getId());
+        EntityDataModelOptions options = new EntityDataModelOptions(Person.class, PersonDto.class, 0, Order.desc("id"),
+                ownerEq);
+        persons = UIHelper.<Person, PersonDto> buildLazyDataModel(options);
 
-			private static final long serialVersionUID = 1L;
+        refreshPersonCount();
 
-            @Override
-            public List<PersonDto> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
-                IPeopleService peopleService = getBean(IPeopleService.class);
-				return peopleService.listPersonByCurrentUser(first, pageSize);
-            }
-        };
+        editable = false;
+    }
 
-		IPeopleService peopleService =getBean(IPeopleService.class);
-
-		persons.setRowCount((int) peopleService.listPersonByCurrentUserCount());
-
-		editable = false;
-	}
+    void refreshPersonCount() {
+        SimpleExpression ownerEq = Restrictions.eq("owner.id", SessionLoginInfo.requireCurrentUser().getId());
+        int count = serviceFor(Person.class).count(ownerEq);
+        persons.setRowCount(count);
+    }
 
     @Override
     protected AbstractPartyDto<? extends Party> getParty() {
@@ -78,53 +75,52 @@ public class PersonAdminBean
         this.person = (PersonDto) party;
     }
 
-	public boolean isEditable() {
-		return editable;
-	}
+    public boolean isEditable() {
+        return editable;
+    }
 
-	public void setEditable(boolean editable) {
-		this.editable = editable;
-	}
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
 
-	public LazyDataModel<PersonDto> getPersons() {
-		return persons;
-	}
+    public LazyDataModel<PersonDto> getPersons() {
+        return persons;
+    }
 
-	public void setPersons(LazyDataModel<PersonDto> persons) {
-		this.persons = persons;
-	}
+    public void setPersons(LazyDataModel<PersonDto> persons) {
+        this.persons = persons;
+    }
 
-	public PersonDto getSelectedPerson() {
-		return selectedPerson;
-	}
+    public PersonDto getSelectedPerson() {
+        return selectedPerson;
+    }
 
-	public void setSelectedPerson(PersonDto selectedPerson) {
-		this.selectedPerson = selectedPerson;
-	}
+    public void setSelectedPerson(PersonDto selectedPerson) {
+        this.selectedPerson = selectedPerson;
+    }
 
-	public PersonDto getPerson() {
-	    if(person == null)
-	        _newPerson();
-		return person;
-	}
+    public PersonDto getPerson() {
+        if (person == null)
+            _newPerson();
+        return person;
+    }
 
-	public void setPerson(PersonDto person) {
-		this.person = person;
-	}
+    public void setPerson(PersonDto person) {
+        this.person = person;
+    }
 
-	public boolean isPersonSelected() {
-		if(selectedPerson != null)
-			return true;
-		return false;
-	}
+    public boolean isPersonSelected() {
+        if (selectedPerson != null)
+            return true;
+        return false;
+    }
 
     public List<SelectItem> getGenders() {
-        List <SelectItem> genders = new ArrayList<SelectItem>();
-        for(Gender g : Gender.values())
+        List<SelectItem> genders = new ArrayList<SelectItem>();
+        for (Gender g : Gender.values())
             genders.add(new SelectItem(g.getValue(), g.getDisplayName()));
         return genders;
     }
-
 
     public List<SelectItem> getSidTypes() {
         List<PersonSidType> sidTypes = serviceFor(PersonSidType.class).list();
@@ -143,8 +139,8 @@ public class PersonAdminBean
     public List<PersonRoleDto> getRoles() {
         List<PersonRoleDto> roles = new ArrayList<PersonRoleDto>();
 
-        if(person != null && person.getId() != null) {
-            if(person.getRoles() != null) {
+        if (person != null && person.getId() != null) {
+            if (person.getRoles() != null) {
                 roles = new ArrayList<PersonRoleDto>(person.getRoles());
             }
         }
@@ -152,72 +148,58 @@ public class PersonAdminBean
         return roles;
     }
 
-
-
-
-
-
-
-
     private void _newPerson() {
-		person = new PersonDto();
+        person = new PersonDto();
 
-		HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal currUser = (IUserPrincipal) SessionLoginInfo.getCurrentUser(session);
-		UserDto user = new UserDto().ref(currUser.getId());
-		person.setOwner(user);
-	}
+        IUserPrincipal currentUser = SessionLoginInfo.getCurrentUser();
+        UserDto user = new UserDto().ref(currentUser.getId());
+        person.setOwner(user);
+    }
 
-	public void doNew() {
-		_newPerson();
+    public void doNew() {
+        _newPerson();
 
-		setActiveTab(TAB_FORM);
-		editable = true;
-	}
+        setActiveTab(TAB_FORM);
+        editable = true;
+    }
 
-	public void doModify() {
-		FacesContext context = FacesContext.getCurrentInstance();
+    public void doModify() {
+        FacesContext context = FacesContext.getCurrentInstance();
 
-		if(selectedPerson == null) {
-			context.addMessage(null, new FacesMessage("提示", "请选择需要修改的联系人!"));
+        if (selectedPerson == null) {
+            context.addMessage(null, new FacesMessage("提示", "请选择需要修改的联系人!"));
             return;
-		}
+        }
 
-		person = selectedPerson;
+        person = selectedPerson;
 
-		setActiveTab(TAB_FORM);
-		editable = true;
-	}
+        setActiveTab(TAB_FORM);
+        editable = true;
+    }
 
-	public void doDelete() {
-		FacesContext context = FacesContext.getCurrentInstance();
+    public void doDelete() {
+        FacesContext context = FacesContext.getCurrentInstance();
 
-		if(selectedPerson == null) {
-			context.addMessage(null, new FacesMessage("提示", "请选择需要删除的联系人!"));
+        if (selectedPerson == null) {
+            context.addMessage(null, new FacesMessage("提示", "请选择需要删除的联系人!"));
             return;
-		}
+        }
 
-		try {
-            IPeopleService peopleService = getBean(IPeopleService.class);
-
+        try {
             serviceFor(Person.class).delete(selectedPerson.getId());
+            refreshPersonCount();
 
-            persons.setRowCount((int) peopleService.listPersonByCurrentUserCount());
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("提示", "删除联系人失败;" + e.getMessage()));
+        }
+    }
 
-		} catch (Exception e) {
-			context.addMessage(null, new FacesMessage("提示", "删除联系人失败;" + e.getMessage()));
-		}
-	}
-
-	public void doSave() {
+    public void doSave() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         try {
-            IPeopleService peopleService = getBean(IPeopleService.class);
-
             serviceFor(Person.class).saveOrUpdate(person.unmarshal());
-
-            persons.setRowCount((int) peopleService.listPersonByCurrentUserCount());
+            refreshPersonCount();
 
             setActiveTab(TAB_INDEX);
             editable = false;
@@ -226,25 +208,25 @@ public class PersonAdminBean
             context.addMessage(null, new FacesMessage("提示", "联系人保存失败" + e.getMessage()));
             e.printStackTrace();
         }
-	}
+    }
 
-	public void doCancel() {
-	    setActiveTab(TAB_INDEX);
-	    editable = false;
+    public void doCancel() {
+        setActiveTab(TAB_INDEX);
+        editable = false;
 
-	    _newPerson();
-	}
+        _newPerson();
+    }
 
-	public void doDetail() {
-	    if(selectedPerson == null) {
-	        FacesContext context = FacesContext.getCurrentInstance();
+    public void doDetail() {
+        if (selectedPerson == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("提示", "请选择需要查看详细信息的联系人!"));
             return;
-	    }
+        }
 
         setActiveTab(TAB_FORM);
-	    person = selectedPerson;
-	}
+        person = selectedPerson;
+    }
 
     public void onRowSelect(SelectEvent event) {
     }

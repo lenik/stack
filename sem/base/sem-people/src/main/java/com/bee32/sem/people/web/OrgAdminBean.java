@@ -2,25 +2,24 @@ package com.bee32.sem.people.web;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpSession;
 
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.people.dto.AbstractPartyDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgTypeDto;
@@ -29,6 +28,7 @@ import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.service.IPeopleService;
 import com.bee32.sem.user.util.SessionLoginInfo;
@@ -40,11 +40,11 @@ public class OrgAdminBean
 
     private static final long serialVersionUID = 1L;
 
-	private boolean editable;
+    private boolean editable;
 
-	private LazyDataModel<OrgDto> orgs;
-	private OrgDto selectedOrg;
-	private OrgDto org;
+    private LazyDataModel<OrgDto> orgs;
+    private OrgDto selectedOrg;
+    private OrgDto org;
 
     private PersonRoleDto selectedRole;
     private PersonRoleDto role;
@@ -53,76 +53,75 @@ public class OrgAdminBean
     private List<PersonDto> persons;
     private PersonDto selectedPerson;
 
-	@PostConstruct
-	public void init() {
-		orgs = new LazyDataModel<OrgDto>() {
+    @PostConstruct
+    public void init() {
 
-            private static final long serialVersionUID = 1L;
+        SimpleExpression ownerEq = Restrictions.eq("owner.id", SessionLoginInfo.requireCurrentUser().getId());
+        EntityDataModelOptions options = new EntityDataModelOptions(Org.class, OrgDto.class, 0, Order.desc("id"),
+                ownerEq);
+        orgs = UIHelper.<Org, OrgDto> buildLazyDataModel(options);
 
-            @Override
-            public List<OrgDto> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
-                IPeopleService peopleService = getBean(IPeopleService.class);
-                return peopleService.listOrgByCurrentUser(first, pageSize);
-            }
-        };
+        refreshOrgCount();
 
-		IPeopleService peopleService = getBean(IPeopleService.class);
+        setActiveTab(TAB_INDEX);
+        editable = false;
+    }
 
-		orgs.setRowCount((int) peopleService.listOrgByCurrentUserCount());
+    void refreshOrgCount() {
+        SimpleExpression ownerEq = Restrictions.eq("owner.id", SessionLoginInfo.requireCurrentUser().getId());
+        int count = serviceFor(Org.class).count(ownerEq);
+        orgs.setRowCount(count);
+    }
 
-		setActiveTab(TAB_INDEX);
-		editable = false;
-	}
+    @Override
+    protected AbstractPartyDto<? extends Party> getParty() {
+        return org;
+    }
 
-	@Override
-	protected AbstractPartyDto<? extends Party> getParty() {
-	    return org;
-	}
+    @Override
+    protected void setParty(AbstractPartyDto<? extends Party> party) {
+        this.org = (OrgDto) party;
+    }
 
-	@Override
-	protected void setParty(AbstractPartyDto<? extends Party> party) {
-	    this.org = (OrgDto) party;
-	}
+    public boolean isEditable() {
+        return editable;
+    }
 
-	public boolean isEditable() {
-		return editable;
-	}
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
 
-	public void setEditable(boolean editable) {
-		this.editable = editable;
-	}
+    public LazyDataModel<OrgDto> getOrgs() {
+        return orgs;
+    }
 
-	public LazyDataModel<OrgDto> getOrgs() {
-		return orgs;
-	}
+    public void setOrgs(LazyDataModel<OrgDto> orgs) {
+        this.orgs = orgs;
+    }
 
-	public void setOrgs(LazyDataModel<OrgDto> orgs) {
-		this.orgs = orgs;
-	}
+    public OrgDto getSelectedOrg() {
+        return selectedOrg;
+    }
 
-	public OrgDto getSelectedOrg() {
-		return selectedOrg;
-	}
+    public void setSelectedOrg(OrgDto selectedOrg) {
+        this.selectedOrg = selectedOrg;
+    }
 
-	public void setSelectedOrg(OrgDto selectedOrg) {
-		this.selectedOrg = selectedOrg;
-	}
+    public OrgDto getOrg() {
+        if (org == null)
+            _newOrg();
+        return org;
+    }
 
-	public OrgDto getOrg() {
-	    if(org == null)
-	        _newOrg();
-		return org;
-	}
+    public void setOrg(OrgDto org) {
+        this.org = org;
+    }
 
-	public void setOrg(OrgDto org) {
-		this.org = org;
-	}
-
-	public boolean isOrgSelected() {
-		if(selectedOrg != null)
-			return true;
-		return false;
-	}
+    public boolean isOrgSelected() {
+        if (selectedOrg != null)
+            return true;
+        return false;
+    }
 
     public List<SelectItem> getOrgTypes() {
         List<OrgType> orgTypes = serviceFor(OrgType.class).list();
@@ -149,8 +148,8 @@ public class OrgAdminBean
     public List<PersonRoleDto> getRoles() {
         List<PersonRoleDto> roles = new ArrayList<PersonRoleDto>();
 
-        if(org != null && org.getId() != null) {
-            if(org.getRoles() != null) {
+        if (org != null && org.getId() != null) {
+            if (org.getRoles() != null) {
                 roles = new ArrayList<PersonRoleDto>(org.getRoles());
             }
         }
@@ -159,7 +158,7 @@ public class OrgAdminBean
     }
 
     public boolean isRoleSelected() {
-        if(selectedRole != null)
+        if (selectedRole != null)
             return true;
         return false;
     }
@@ -188,73 +187,58 @@ public class OrgAdminBean
         this.selectedPerson = selectedPerson;
     }
 
-
-
-
-
-
-
-
-
     private void _newOrg() {
-		org = new OrgDto();
+        org = new OrgDto();
 
-		HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal currUser = SessionLoginInfo.getCurrentUser(session);
-		UserDto user = new UserDto().ref(currUser.getId());
-		org.setOwner(user);
-	}
+        IUserPrincipal currentUser = SessionLoginInfo.getCurrentUser();
+        UserDto user = new UserDto().ref(currentUser.getId());
+        org.setOwner(user);
+    }
 
-	public void doNew() {
-		_newOrg();
+    public void doNew() {
+        _newOrg();
 
-		setActiveTab(TAB_FORM);
-		editable = true;
-	}
+        setActiveTab(TAB_FORM);
+        editable = true;
+    }
 
-	public void doModify() {
-		FacesContext context = FacesContext.getCurrentInstance();
+    public void doModify() {
+        FacesContext context = FacesContext.getCurrentInstance();
 
-		if(selectedOrg == null) {
-			context.addMessage(null, new FacesMessage("提示", "请选择需要修改的客户/供应商!"));
+        if (selectedOrg == null) {
+            context.addMessage(null, new FacesMessage("提示", "请选择需要修改的客户/供应商!"));
             return;
-		}
+        }
 
-		org = selectedOrg;
+        org = selectedOrg;
 
-		setActiveTab(TAB_FORM);
-		editable = true;
-	}
+        setActiveTab(TAB_FORM);
+        editable = true;
+    }
 
-	public void doDelete() {
-		FacesContext context = FacesContext.getCurrentInstance();
+    public void doDelete() {
+        FacesContext context = FacesContext.getCurrentInstance();
 
-		if(selectedOrg == null) {
-			context.addMessage(null, new FacesMessage("提示", "请选择需要删除的客户/供应商!"));
+        if (selectedOrg == null) {
+            context.addMessage(null, new FacesMessage("提示", "请选择需要删除的客户/供应商!"));
             return;
-		}
+        }
 
-		try {
-            IPeopleService peopleService = getBean(IPeopleService.class);
-
+        try {
             serviceFor(Org.class).delete(selectedOrg.getId());
+            refreshOrgCount();
 
-            orgs.setRowCount((int) peopleService.listOrgByCurrentUserCount());
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("提示", "删除客户/供应商失败;" + e.getMessage()));
+        }
+    }
 
-		} catch (Exception e) {
-			context.addMessage(null, new FacesMessage("提示", "删除客户/供应商失败;" + e.getMessage()));
-		}
-	}
-
-	public void doSave() {
+    public void doSave() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         try {
-			IPeopleService peopleService = getBean(IPeopleService.class);
-
-			serviceFor(Org.class).saveOrUpdate(org.unmarshal());
-
-            orgs.setRowCount((int) peopleService.listOrgByCurrentUserCount());
+            serviceFor(Org.class).saveOrUpdate(org.unmarshal());
+            refreshOrgCount();
 
             setActiveTab(TAB_INDEX);
             editable = false;
@@ -263,26 +247,25 @@ public class OrgAdminBean
             context.addMessage(null, new FacesMessage("提示", "客户/供应商保存失败" + e.getMessage()));
             e.printStackTrace();
         }
-	}
+    }
 
-	public void doCancel() {
+    public void doCancel() {
         setActiveTab(TAB_INDEX);
-	    editable = false;
+        editable = false;
 
-	    _newOrg();
-	}
+        _newOrg();
+    }
 
-	public void doDetail() {
-	    if(selectedOrg == null) {
-	        FacesContext context = FacesContext.getCurrentInstance();
+    public void doDetail() {
+        if (selectedOrg == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("提示", "请选择需要查看详细信息的客户/供应商!"));
             return;
-	    }
+        }
 
         setActiveTab(TAB_FORM);
-	    org = selectedOrg;
-	}
-
+        org = selectedOrg;
+    }
 
     public void onRowSelect(SelectEvent event) {
     }
@@ -299,13 +282,13 @@ public class OrgAdminBean
         role.setOrg(org);
     }
 
-	public void doNewRole() {
-	    if(org == null || org.getId() == null) {
-	        FacesContext context = FacesContext.getCurrentInstance();
+    public void doNewRole() {
+        if (org == null || org.getId() == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("提示", "请选择需要新增联系方式的客户/供应商!"));
-	    }
-	    _newRole();
-	}
+        }
+        _newRole();
+    }
 
     public void doModifyRole() {
         role = selectedRole;
@@ -314,7 +297,7 @@ public class OrgAdminBean
     public void doDeleteRole() {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if(selectedRole == null) {
+        if (selectedRole == null) {
             context.addMessage(null, new FacesMessage("提示", "请选择需要去除关联的相关人员!"));
             return;
         }
@@ -331,7 +314,7 @@ public class OrgAdminBean
     public void doSaveRole() {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if(org == null || org.getId() == null) {
+        if (org == null || org.getId() == null) {
             context.addMessage(null, new FacesMessage("提示", "请选择所操作的相关人员对应的客户/供应商!"));
             return;
         }
@@ -339,7 +322,6 @@ public class OrgAdminBean
         try {
             org.getRoles().add(role);
             serviceFor(Org.class).saveOrUpdate(org.unmarshal());
-
 
             context.addMessage(null, new FacesMessage("提示", "相关人员设置关联成功"));
         } catch (Exception e) {
@@ -357,7 +339,7 @@ public class OrgAdminBean
     }
 
     public void findPerson() {
-        if(personPartten != null && !personPartten.isEmpty()) {
+        if (personPartten != null && !personPartten.isEmpty()) {
 
             IPeopleService peopleService = getBean(IPeopleService.class);
             persons = peopleService.listPersonByCurrentUser(personPartten);
