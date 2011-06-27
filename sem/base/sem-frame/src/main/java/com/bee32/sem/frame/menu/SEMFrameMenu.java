@@ -1,6 +1,6 @@
 package com.bee32.sem.frame.menu;
 
-public class SEMMainMenu
+public class SEMFrameMenu
         extends MenuContribution {
 
     public static final MenuNode MAIN = menu("main");

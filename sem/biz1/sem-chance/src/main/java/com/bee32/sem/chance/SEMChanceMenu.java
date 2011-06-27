@@ -9,7 +9,7 @@ import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
-import com.bee32.sem.frame.menu.SEMMainMenu;
+import com.bee32.sem.frame.menu.SEMFrameMenu;
 
 public class SEMChanceMenu
         extends MenuContribution
@@ -18,8 +18,8 @@ public class SEMChanceMenu
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
     static Location CHANCE = WEB_APP.join(SEMChanceModule.PREFIX_);
 
-    public static MenuNode cha = menu(SEMMainMenu.MAIN, "chance");
-    public static MenuNode chaDict = menu(SEMMainMenu.ADMIN, "chance");
+    public static MenuNode cha = menu(SEMFrameMenu.MAIN, "chance");
+    public static MenuNode chaDict = menu(SEMFrameMenu.ADMIN, "chance");
 
     static MenuNode category = entry(chaDict, "category", getDictIndex(ChanceCategory.class));
     static MenuNode sourceType = entry(chaDict, "sourceType", getDictIndex(ChanceSourceType.class));

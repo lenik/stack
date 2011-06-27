@@ -8,7 +8,7 @@ import com.bee32.sem.event.web.EventController;
 import com.bee32.sem.event.web.EventPriorityController;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
-import com.bee32.sem.frame.menu.SEMMainMenu;
+import com.bee32.sem.frame.menu.SEMFrameMenu;
 
 public class SEMEventMenu
         extends MenuContribution
@@ -16,8 +16,8 @@ public class SEMEventMenu
 
     static Location EVENT = WEB_APP.join(EventController.PREFIX + "/");
 
-    public static MenuNode eventAdmin = menu(SEMMainMenu.MAIN, "event"); // MAIN/Admin
-    public static MenuNode event = menu(SEMMainMenu.MAIN, "event");
+    public static MenuNode eventAdmin = menu(SEMFrameMenu.MAIN, "event"); // MAIN/Admin
+    public static MenuNode event = menu(SEMFrameMenu.MAIN, "event");
 
     static MenuNode categories = entry(eventAdmin, 10, "categories", getDictIndex(EventCategory.class));
     static MenuNode priorities = entry(eventAdmin, 11, "priorities", //

@@ -3,14 +3,14 @@ package com.bee32.sem.process;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
-import com.bee32.sem.frame.menu.SEMMainMenu;
+import com.bee32.sem.frame.menu.SEMFrameMenu;
 
 public class SEMProcessMenu
         extends MenuContribution {
 
     static Location PROCESS = WEB_APP.join(SEMProcessModule.PREFIX + "/");
 
-    public static MenuNode process = menu(SEMMainMenu.ADMIN, "process");
+    public static MenuNode process = menu(SEMFrameMenu.ADMIN, "process");
     public static MenuNode verifyPolicy = menu(process, "verifyPolicy");
 
     static MenuNode verifyPolicyPref = entry(process, "verifyPolicyPref", PROCESS.join("pref/index.do"));

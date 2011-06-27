@@ -4,7 +4,7 @@ import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
-import com.bee32.sem.frame.menu.SEMMainMenu;
+import com.bee32.sem.frame.menu.SEMFrameMenu;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.PartyRecordCategory;
@@ -17,7 +17,7 @@ public class SEMPeopleMenu
 
     static Location PEOPLE = WEB_APP.join(SEMPeopleModule.PREFIX_);
 
-    public static MenuNode people = menu(SEMMainMenu.ADMIN, "people");
+    public static MenuNode people = menu(SEMFrameMenu.ADMIN, "people");
     public static MenuNode peopleDict = menu(people, "dict");
     public static MenuNode businessPartner = menu(people, "businessPartner");
 
