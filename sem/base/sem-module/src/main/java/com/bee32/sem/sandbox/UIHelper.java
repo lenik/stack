@@ -30,12 +30,12 @@ public class UIHelper
     }
 
     public static <E extends Entity<?>, D extends EntityDto<E, ?>> //
-    LazyDataModel<D> buildLazyDataModel(final EntityDataModelOptions options) {
+    LazyDataModel<D> buildLazyDataModel(final EntityDataModelOptions<E, D> options) {
         if (options == null)
             throw new NullPointerException("options");
 
-        final Class<E> entityClass = (Class<E>) options.getEntityClass();
-        final Class<D> dtoClass = (Class<D>) options.getDtoClass();
+        final Class<E> entityClass = options.getEntityClass();
+        final Class<D> dtoClass = options.getDtoClass();
 
         final Criterion[] restrictions = options.getRestrictions().toArray(new Criterion[0]);
 

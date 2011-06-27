@@ -57,9 +57,9 @@ public class OrgAdminBean
     public void init() {
 
         SimpleExpression ownerEq = Restrictions.eq("owner.id", SessionLoginInfo.requireCurrentUser().getId());
-        EntityDataModelOptions options = new EntityDataModelOptions(Org.class, OrgDto.class, 0, Order.desc("id"),
+        EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(0, Order.desc("id"),
                 ownerEq);
-        orgs = UIHelper.<Org, OrgDto> buildLazyDataModel(options);
+        orgs = UIHelper.buildLazyDataModel(options);
 
         refreshOrgCount();
 

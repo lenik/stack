@@ -50,8 +50,8 @@ public class PersonAdminBean
     @PostConstruct
     public void init() {
         SimpleExpression ownerEq = Restrictions.eq("owner.id", SessionLoginInfo.requireCurrentUser().getId());
-        EntityDataModelOptions options = new EntityDataModelOptions(Person.class, PersonDto.class, 0, Order.desc("id"),
-                ownerEq);
+        EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(0,
+                Order.desc("id"), ownerEq);
         persons = UIHelper.<Person, PersonDto> buildLazyDataModel(options);
 
         refreshPersonCount();
