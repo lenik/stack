@@ -16,26 +16,24 @@ public class SEMPeopleMenu
         extends MenuContribution
         implements ITypeAbbrAware {
 
-    static Location PEOPLE = WEB_APP.join(SEMPeopleModule.PREFIX_);
-    static Location ACCESS = WEB_APP.join(IcsfAccessModule.PREFIX_);
+    static Location PEOPLE_ = WEB_APP.join(SEMPeopleModule.PREFIX_);
+    static Location ACCESS_ = WEB_APP.join(IcsfAccessModule.PREFIX_);
 
-    public static MenuNode people = menu(SEMFrameMenu.BASE, "people");
-    public static MenuNode peopleDict = menu(people, "dict");
-    public static MenuNode businessPartner = menu(people, "businessPartner");
+    public static MenuNode PEOPLE = menu(SEMFrameMenu.BASE, "people");
+    public static MenuNode SETTINGS = menu(PEOPLE, "dict");
 
-    // people/dict
-    static MenuNode partyTag = entry(peopleDict, "partyTag", getDictIndex(PartyTag.class));
-    static MenuNode personSidType = entry(peopleDict, "personSidType", getDictIndex(PersonSidType.class));
-    static MenuNode orgType = entry(peopleDict, "orgType", getDictIndex(OrgType.class));
-    static MenuNode contactCategory = entry(peopleDict, "contactCategory", getDictIndex(ContactCategory.class));
-    static MenuNode partyRecordCategory = entry(peopleDict, "partyRecordCategory",
+    static MenuNode personAdmin = entry(PEOPLE, 10, "personAdmin", PEOPLE_.join("person/index-rich.jsf"));
+    static MenuNode orgAdmin = entry(PEOPLE, 20, "orgAdmin", PEOPLE_.join("org/index-rich.jsf"));
+
+    static MenuNode partyTag = entry(SETTINGS, "partyTag", getDictIndex(PartyTag.class));
+    static MenuNode personSidType = entry(SETTINGS, "personSidType", getDictIndex(PersonSidType.class));
+    static MenuNode orgType = entry(SETTINGS, "orgType", getDictIndex(OrgType.class));
+    static MenuNode contactCategory = entry(SETTINGS, "contactCategory", getDictIndex(ContactCategory.class));
+    static MenuNode partyRecordCategory = entry(SETTINGS, "partyRecordCategory",
             getDictIndex(PartyRecordCategory.class));
 
-    // people/businessPartner
-    static MenuNode personAdmin = entry(businessPartner, 1, "personAdmin", PEOPLE.join("person/index-rich.jsf"));
-    static MenuNode orgAdmin = entry(businessPartner, 2, "orgAdmin", PEOPLE.join("org/index-rich.jsf"));
-
-    static MenuNode permissionAdmin = entry(businessPartner, 3, "permissionAdmin", ACCESS.join("r_list/index-rich.jsf"));
+    static MenuNode permissionAdmin = entry(SEMFrameMenu.BASE, 10, "permissionAdmin",
+            ACCESS_.join("r_list/index-rich.jsf"));
 
     @Override
     protected void preamble() {
