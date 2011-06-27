@@ -1,6 +1,7 @@
 package com.bee32.sem.chance.entity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,7 @@ public class ChanceAction
 
     private static final long serialVersionUID = 1L;
 
-    boolean plan;
+    boolean plan=false;
     List<Party> parties = new ArrayList<Party>();
 
     User actor;
@@ -36,8 +37,16 @@ public class ChanceAction
     String content = "";
     String spending = "";
     Chance chance;
-    ChanceStage stage = ChanceStage.INIT;
+    ChanceStage stage;
 
+    public ChanceAction() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 8);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        setBeginTime(cal.getTime());
+        setEndTime(new Date());
+    }
     /**
      * 工作日志类型
      */
