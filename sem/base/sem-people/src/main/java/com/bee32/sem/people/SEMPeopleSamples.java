@@ -69,11 +69,6 @@ public class SEMPeopleSamples
         abcCorp.getDerivedGroups().add(abcRAD);
 
         abcRAD.setOwner(IcsfPrincipalSamples.admin);
-        abcRAD.addMemberUser(jack);
-        abcRAD.addMemberUser(tang);
-
-        abcSales.setOwner(tang);
-        abcSales.addMemberUser(tang);
 
         // admin.setPasswordByString("");
 
@@ -96,6 +91,7 @@ public class SEMPeopleSamples
         }
         jack = jackPerson.toUser("jack");
         jack.setPrimaryGroup(abcRAD);
+        abcRAD.addMemberUser(jack);
 
         {
             Contact tangHome = new Contact(tangPerson, ContactCategory.HOME);
@@ -114,7 +110,9 @@ public class SEMPeopleSamples
         tang = tangPerson.toUser("tang");
         tang.setPrimaryGroup(abcRAD);
         tang.addAssignedGroup(abcSales);
-
+        abcRAD.addMemberUser(tang);
+        abcSales.setOwner(tang);
+        abcSales.addMemberUser(tang);
     }
 
     /** 相当于原来的 ebo-templatetypes */
