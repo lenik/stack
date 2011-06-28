@@ -91,6 +91,6 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
      * @param restrictions
      *            Restrictions to the selection. (AND).
      */
-    void delete(Criterion... restrictions);
+    void deleteAll(Criterion... restrictions);
 
 }

@@ -339,7 +339,7 @@ public class EntityDao<E extends Entity<? extends K>, K extends Serializable>
     }
 
     @Override
-    public void delete(Criterion... restrictions) {
+    public void deleteAll(Criterion... restrictions) {
         Criteria criteria = createCriteria(restrictions);
         List<E> list = criteria.list();
         getHibernateTemplate().deleteAll(list);

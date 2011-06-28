@@ -255,8 +255,8 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = false)
     @Override
-    public void delete(Criterion... restrictions) {
-        getDao().delete(restrictions);
+    public void deleteAll(Criterion... restrictions) {
+        getDao().deleteAll(restrictions);
     }
 
     @Transactional(readOnly = false)
