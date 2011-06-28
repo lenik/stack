@@ -16,7 +16,10 @@ public class PeopleCriteria {
 
     public static Criterion ownedByCurrentUser() {
         IUserPrincipal currentUser = SessionLoginInfo.requireCurrentUser();
-        return ownedBy(currentUser);
+        if (currentUser.getName().equals("admin"))
+		return null;
+        else
+		return ownedBy(currentUser);
     }
 
     public static Criterion nameLike(String keyword) {
