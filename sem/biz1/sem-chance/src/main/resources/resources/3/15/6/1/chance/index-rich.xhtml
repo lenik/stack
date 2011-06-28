@@ -53,7 +53,7 @@
                     </p:toolbarGroup>
                 </p:toolbar>
 
-                <p:tabView id="mainTab" activeIndex="#{chanceBean.currentTab}">
+                <p:tabView id="mainTab" activeIndex="#{chanceBean.activeTab}">
                     <p:tab id="chanceList" title="机会列表">
                         <p:dataTable id="chanceTable" var="chance" value="#{chanceBean.chances}" paginator="true"
                             rows="10" lazy="true"

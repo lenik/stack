@@ -447,12 +447,12 @@ public class ChanceActionBean
         this.action = action;
     }
 
-    public String getChancePartten() {
+    public String getChancePattern() {
         return chancePattern;
     }
 
-    public void setChancePartten(String chancePartten) {
-        this.chancePattern = chancePartten;
+    public void setChancePattern(String chancePattern) {
+        this.chancePattern = chancePattern;
     }
 
     public List<ChanceDto> getChances() {

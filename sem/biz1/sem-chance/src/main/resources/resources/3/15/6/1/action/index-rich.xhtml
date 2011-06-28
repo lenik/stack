@@ -59,7 +59,7 @@
                     </p:toolbarGroup>
                 </p:toolbar>
 
-                <p:tabView id="mainTab" activeIndex="#{chanceActionBean.currentTab}">
+                <p:tabView id="mainTab" activeIndex="#{chanceActionBean.activeTab}">
                     <p:tab id="actionList" title="机会行动列表" disabled="#{true}">
                         <p:dataTable id="actions" var="action" value="#{chanceActionBean.actions}" paginator="true"
                             rows="10" lazy="true"

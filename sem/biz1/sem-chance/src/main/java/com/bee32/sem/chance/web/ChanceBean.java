@@ -56,7 +56,7 @@ public class ChanceBean
     private boolean unRelating;
 
     private String subjectPartten;
-    private String partyPartten;
+    private String partyPattern;
     private Date searchBeginTime;
     private Date searchEndTime;
     private LazyDataModel<ChanceDto> chances;
@@ -149,10 +149,10 @@ public class ChanceBean
     }
 
     public void findParty() {
-        if (!partyPartten.isEmpty()) {
+        if (!partyPattern.isEmpty()) {
             List<Party> _parties = serviceFor(Party.class).list(//
                     PeopleCriteria.ownedByCurrentUser(), //
-                    PeopleCriteria.nameLike(partyPartten));
+                    PeopleCriteria.nameLike(partyPattern));
             parties = DTOs.marshalList(PartyDto.class, _parties);
         }
     }
@@ -415,20 +415,20 @@ public class ChanceBean
         this.unRelating = unRelating;
     }
 
-    public String getSubjectPartten() {
+    public String getSubjectPattern() {
         return subjectPartten;
     }
 
-    public void setSubjectPartten(String subjectPartten) {
-        this.subjectPartten = subjectPartten;
+    public void setSubjectPattern(String subjectPattern) {
+        this.subjectPartten = subjectPattern;
     }
 
-    public String getPartyPartten() {
-        return partyPartten;
+    public String getPartyPattern() {
+        return partyPattern;
     }
 
-    public void setPartyPartten(String partyPartten) {
-        this.partyPartten = partyPartten;
+    public void setPartyPattern(String partyPattern) {
+        this.partyPattern = partyPattern;
     }
 
     public Date getSearchBeginTime() {
