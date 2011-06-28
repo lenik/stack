@@ -36,7 +36,7 @@ public class SEMPeopleSamples
     public static User jack;
     public static User tang;
 
-    public static Org abcOrg = new Org("ABC 有限责任公司");
+    public static Org abcOrg = new Org("abc");
     public static Person bugatti = new Person("Bugatti");
     public static Person bentley = new Person("Bentley");
     public static Person weiXiaoBao = new Person("wxb");
@@ -117,6 +117,7 @@ public class SEMPeopleSamples
 
     /** 相当于原来的 ebo-templatetypes */
     static void series2() {
+        abcOrg.setFullName("ABC 有限责任公司");
         abcOrg.setType(OrgType.LTD_CORP);
         abcOrg.setSize(20);
         abcOrg.setInterests("互联网搜索");
