@@ -172,19 +172,24 @@ public class ChanceBean
             context.addMessage(null, new FacesMessage("提示", "至少请选择一个客户"));
             return;
         }
+        ChanceDto tchance = chance;
         chance.addActions(selectedActions);
+        Chance _chance = chance.unmarshal();
         try {
-            Chance _chance = chance.unmarshal();
-// for (ChanceAction _action : _chance.getActions()) {
-// ChanceAction __action = _action;
-// if (__action.getChance().getId() == null)
-// __action.setChance(_chance);
-// if (__action.getStage() == null)
-// __action.setStage(ChanceStage.INIT);
+            getDataManager().save(_chance);
+            for (ChanceAction _action : _chance.getActions()) {
+                _action.setChance(_chance);
+                getDataManager().save(_action);
+            }
+//            for (ChanceAction _action : _chance.getActions()) {
+//                ChanceAction __action = _action;
+//                if (__action.getChance().getId() == null)
+//                    __action.setChance(_chance);
+//                if (__action.getStage() == null)
+//                    __action.setStage(ChanceStage.INIT);
 //
-// getDataManager().save(_action);
-// }
-            serviceFor(Chance.class).save(_chance);
+//                getDataManager().save(_action);
+//            }
             context.addMessage(null, new FacesMessage("提示", "关联行动记录成功"));
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("错误提示", "关联行动记录错误" + e.getMessage()));
