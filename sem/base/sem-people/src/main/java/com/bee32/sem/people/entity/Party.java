@@ -147,6 +147,15 @@ public abstract class Party
         this.nickName = nickName;
     }
 
+    @Transient
+    public String getDisplayName() {
+        if (fullName != null)
+            return fullName;
+        if (nickName != null)
+            return nickName;
+        return name;
+    }
+
     /**
      * 出生日期
      */
@@ -163,8 +172,7 @@ public abstract class Party
     }
 
     /**
-     * Person:兴趣爱好
-     * Org:主营业务
+     * Person:兴趣爱好 Org:主营业务
      */
     @Column(length = 200)
     public String getInterests() {
@@ -177,14 +185,14 @@ public abstract class Party
 
     @Lob
     public String getMemo() {
-		return memo;
-	}
+        return memo;
+    }
 
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
 
-	@Transient
+    @Transient
     public Integer getAge() {
         if (birthday == null)
             return null;
