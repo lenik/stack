@@ -15,9 +15,10 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.ext.dict.NameDictDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.FacesContextSupport2;
 
 public class UIHelper
-        extends FaceletsHelper {
+        extends FacesContextSupport2 {
 
     public static List<SelectItem> selectItemsFromDict(Iterable<? extends NameDictDto<?>> dictEntries) {
         List<SelectItem> items = new ArrayList<SelectItem>();

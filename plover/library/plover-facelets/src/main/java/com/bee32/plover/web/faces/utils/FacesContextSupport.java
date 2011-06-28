@@ -1,6 +1,4 @@
-package com.bee32.sem.sandbox;
-
-import java.io.Serializable;
+package com.bee32.plover.web.faces.utils;
 
 import javax.faces.context.FacesContext;
 
@@ -8,13 +6,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.jsf.FacesContextUtils;
 
-import com.bee32.plover.orm.dao.CommonDataManager;
-import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.IEntityAccessService;
+public abstract class FacesContextSupport {
 
-public class FaceletsHelper {
-
-    static ApplicationContext getApplicationContext() {
+    protected static ApplicationContext getApplicationContext() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (facesContext == null)
             throw new NullPointerException("facesContext");
@@ -33,7 +27,7 @@ public class FaceletsHelper {
      *            Type of the bean to get, should not be <code>null</code>.
      * @return The bean of the given type.
      */
-    static <T> T getBean(Class<T> beanType) {
+    protected static <T> T getBean(Class<T> beanType) {
         if (beanType == null)
             throw new NullPointerException("beanType");
 
@@ -43,15 +37,18 @@ public class FaceletsHelper {
         return beanType.cast(bean);
     }
 
-    static CommonDataManager getDataManager() {
-        CommonDataManager dataManager = getBean(CommonDataManager.class);
-        return dataManager;
-    }
-
-    protected static <E extends Entity<? extends K>, K extends Serializable> //
-    IEntityAccessService<E, K> serviceFor(Class<E> entityType) {
-        IEntityAccessService<E, K> service = getDataManager().access(entityType);
-        return service;
+    /**
+     * Get a named bean from application context.
+     *
+     * @param beanName
+     *            Name of the bean to get, should not be <code>null</code>.
+     * @return The bean with given name.
+     */
+    protected static Object getBeanByName(String beanName) {
+        if (beanName == null)
+            throw new NullPointerException("beanName");
+        ApplicationContext context = getApplicationContext();
+        return context.getBean(beanName);
     }
 
 }

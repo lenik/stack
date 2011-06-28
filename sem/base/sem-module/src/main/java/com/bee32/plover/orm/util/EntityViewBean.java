@@ -13,12 +13,12 @@ public abstract class EntityViewBean
 
     private static final long serialVersionUID = 1L;
 
-    CommonDataManager getDataManager() {
+    static CommonDataManager getDataManager() {
         CommonDataManager dataManager = getBean(CommonDataManager.class);
         return dataManager;
     }
 
-    protected <E extends Entity<? extends K>, K extends Serializable> //
+    protected static <E extends Entity<? extends K>, K extends Serializable> //
     IEntityAccessService<E, K> serviceFor(Class<E> entityType) {
         IEntityAccessService<E, K> service = getDataManager().access(entityType);
         return service;
