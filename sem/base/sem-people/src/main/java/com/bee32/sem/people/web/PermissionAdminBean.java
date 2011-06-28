@@ -6,10 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.springframework.context.annotation.Scope;
@@ -17,13 +18,16 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.ResourcePermission;
+import com.bee32.icsf.access.alt.R_ACE;
 import com.bee32.icsf.access.alt.R_ACLService;
 import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
 import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.dto.AbstractPrincipalDto;
 import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.icsf.principal.dto.RoleDto;
 import com.bee32.icsf.principal.dto.UserDto;
@@ -46,12 +50,7 @@ public class PermissionAdminBean extends EntityViewBean {
     private List<RPEntry> rpEntries;
     private RPEntry selectedRpEntry;
 
-
-
-    @PostConstruct
-    public void init() {
-
-    }
+    private int activeTab;
 
 
     public UserDto getSelectedUser() {
@@ -77,8 +76,6 @@ public class PermissionAdminBean extends EntityViewBean {
 	public void setSelectedRole(RoleDto selectedRole) {
 		this.selectedRole = selectedRole;
 	}
-
-
 
 	public List<UserDto> getUsers() {
         List<User> users = serviceFor(User.class).list();
@@ -114,65 +111,106 @@ public class PermissionAdminBean extends EntityViewBean {
 		this.selectedRpEntry = selectedRpEntry;
 	}
 
+	public int getActiveTab() {
+		return activeTab;
+	}
+
+	public void setActiveTab(int activeTab) {
+		this.activeTab = activeTab;
+	}
 
 
+
+
+
+
+
+
+
+	private void loadEntries(AbstractPrincipalDto principalDto) {
+		ScannedResourceRegistry srr = getBean(ScannedResourceRegistry.class);
+		R_ACLService aclService = getBean(R_ACLService.class);
+
+
+		Map<String, ResourcePermission> havePermissions = new HashMap<String, ResourcePermission>();
+		Principal principal = (Principal) principalDto.unmarshal();
+		List<ResourcePermission> haveResourcePermissions = aclService.getResourcePermissions(principal);
+		for(ResourcePermission rp : haveResourcePermissions) {
+			String permissionQulifier = srr.qualify(rp.getResource());
+			havePermissions.put(permissionQulifier, rp);
+		}
+
+		rpEntries = new ArrayList<RPEntry>();
+		for(IResourceNamespace rn: srr.getNamespaces()) {
+			for(Resource res: rn.getResources()) {
+				String resourceType = ClassUtil.getDisplayName(res.getClass());
+				String permissionQulifier = srr.qualify(res);
+				RPEntry rpEntry = new RPEntry();
+				rpEntry.setResourceType(resourceType);
+				rpEntry.setDisplayName(res.getAppearance().getDisplayName());
+				rpEntry.setQualifiedName(permissionQulifier);
+
+				if(havePermissions.containsKey(permissionQulifier)) {
+					rpEntry.setPermission(havePermissions.get(permissionQulifier).getPermission());
+				} else {
+					rpEntry.setPermission(new Permission(0));
+				}
+
+				rpEntries.add(rpEntry);
+			}
+		}
+	}
 
 	public void onRowSelectUser(SelectEvent event) {
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		UserDto clickOnUser = (UserDto) event.getObject();
+		UserDto clickOn = (UserDto) event.getObject();
 
-		if(clickOnUser == null) {
+		if(clickOn == null) {
 			context.addMessage(null, new FacesMessage("提示", "请选择需要设置权限的用户!"));
             return;
 		}
 
-        ScannedResourceRegistry srr = getBean(ScannedResourceRegistry.class);
-        R_ACLService aclService = getBean(R_ACLService.class);
-
-
-        Map<String, ResourcePermission> havePermissions = new HashMap<String, ResourcePermission>();
-        List<ResourcePermission> haveResourcePermissions = aclService.getResourcePermissions(clickOnUser.unmarshal());
-        for(ResourcePermission rp : haveResourcePermissions) {
-		String permissionQulifier = srr.qualify(rp.getResource());
-		havePermissions.put(permissionQulifier, rp);
-        }
-
-	rpEntries = new ArrayList<RPEntry>();
-	    for(IResourceNamespace rn: srr.getNamespaces()) {
-		for(Resource res: rn.getResources()) {
-			String resourceType = ClassUtil.getDisplayName(res.getClass());
-			String permissionQulifier = srr.qualify(res);
-			RPEntry rpEntry = new RPEntry();
-			rpEntry.setResourceType(resourceType);
-			rpEntry.setDisplayName(res.getAppearance().getDisplayName());
-			rpEntry.setQualifiedName(permissionQulifier);
-
-			if(havePermissions.containsKey(permissionQulifier)) {
-				rpEntry.setPermission(havePermissions.get(permissionQulifier).getPermission());
-			} else {
-				rpEntry.setPermission(new Permission(0));
-			}
-
-			rpEntries.add(rpEntry);
-		}
-	    }
-
+		loadEntries(clickOn);
     }
 
+
     public void onRowUnselectUser(UnselectEvent event) {
+	rpEntries = new ArrayList<RPEntry>();
     }
 
     public void onRowSelectRole(SelectEvent event) {
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		RoleDto clickOn = (RoleDto) event.getObject();
+
+		if(clickOn == null) {
+			context.addMessage(null, new FacesMessage("提示", "请选择需要设置权限的角色!"));
+            return;
+		}
+
+		loadEntries(clickOn);
     }
 
     public void onRowUnselectRole(UnselectEvent event) {
+	rpEntries = new ArrayList<RPEntry>();
     }
 
     public void onRowSelectGroup(SelectEvent event) {
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		GroupDto clickOn = (GroupDto) event.getObject();
+
+		if(clickOn == null) {
+			context.addMessage(null, new FacesMessage("提示", "请选择需要设置权限的组!"));
+            return;
+		}
+
+		loadEntries(clickOn);
     }
 
     public void onRowUnselectGroup(UnselectEvent event) {
+	rpEntries = new ArrayList<RPEntry>();
     }
 
     /**
@@ -184,22 +222,47 @@ public class PermissionAdminBean extends EntityViewBean {
      *			ace = new R_ACE(entry.getResource(), currentUser, entry.permission)
      *    		dataManager.save(ace)
      */
-    public void doSave() {
+	public void doSave() {
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		if(selectedUser == null) {
-			context.addMessage(null, new FacesMessage("提示", "请选择需要设置权限的用户!"));
-            return;
+		AbstractPrincipalDto principalDto = null;
+
+		switch (activeTab) {
+		case 0:
+			principalDto = selectedGroup;
+			break;
+		case 1:
+			principalDto = selectedRole;
+			break;
+		case 2:
+			principalDto = selectedUser;
+			break;
 		}
 
-       Iterator<RPEntry> iterator = rpEntries.iterator();
-        while (iterator.hasNext())
-        {
-            RPEntry rpEntry = (RPEntry)iterator.next();
-            System.out.println(rpEntry.getPermission().isAdmin());
-        }
 
+		if (principalDto == null) {
+			context.addMessage(null, new FacesMessage("提示", "请选择需要设置权限的主体!"));
+			return;
+		}
 
-    }
+		Principal principal = (Principal) principalDto.unmarshal();
+
+		serviceFor(R_ACE.class).deleteAll(Restrictions.eq("principal", principal));
+
+		ScannedResourceRegistry srr = getBean(ScannedResourceRegistry.class);
+
+		Iterator<RPEntry> iterator = rpEntries.iterator();
+		while (iterator.hasNext()) {
+			RPEntry rpEntry = (RPEntry) iterator.next();
+
+			Resource resource = srr.query(rpEntry.getQualifiedName());
+			R_ACE ace = new  R_ACE(resource, principal, rpEntry.permission);
+
+			serviceFor(R_ACE.class).save(ace);
+		}
+
+		context.addMessage(null, new FacesMessage("提示", "权限保存成功!"));
+
+	}
 
 }

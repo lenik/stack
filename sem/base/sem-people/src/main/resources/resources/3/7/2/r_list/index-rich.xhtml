@@ -40,7 +40,7 @@
 
 						<p:commandButton value="保存"
 							actionListener="#{permissionAdminBean.doSave}"
-							update="rpEntries growl"
+							update="permissionForm:rpEntries permissionForm:growl"
 							async="true" />
 						<p:divider />
 
@@ -49,7 +49,8 @@
 
 
 				<t:panelGrid columns="2" rowClasses="align_top">
-					<p:tabView header="权限主体列表">
+					<p:tabView header="权限主体列表" activeIndex="#{permissionAdminBean.activeTab}">
+
 
 						<p:tab title="组列表">
 							<p:dataTable id="groups" var="group"
@@ -59,10 +60,10 @@
 
 								<p:ajax event="rowSelect"
 									listener="#{permissionAdminBean.onRowSelectGroup}"
-									update="rpEntries growl" />
+									update="permissionForm:rpEntries permissionForm:growl" />
 								<p:ajax event="rowUnselect"
 									listener="#{personAdminBean.onRowUnselectGroup}"
-									update="rpEntries growl" />
+									update="permissionForm:rpEntries permissionForm:growl" />
 
 
 								<p:column>
@@ -90,10 +91,10 @@
 
 								<p:ajax event="rowSelect"
 									listener="#{permissionAdminBean.onRowSelectRole}"
-									update="rpEntries growl" />
+									update="permissionForm:rpEntries permissionForm:growl" />
 								<p:ajax event="rowUnselect"
 									listener="#{personAdminBean.onRowUnselectRole}"
-									update="rpEntries growl" />
+									update="permissionForm:rpEntries permissionForm:growl" />
 
 
 								<p:column>
