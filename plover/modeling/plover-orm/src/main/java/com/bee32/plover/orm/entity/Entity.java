@@ -39,6 +39,8 @@ public abstract class Entity<K extends Serializable>
     String keyword;
     boolean keywordUpdated;
 
+    String acl;
+
     public Entity() {
         super(null);
     }
@@ -125,6 +127,15 @@ public abstract class Entity<K extends Serializable>
     @Transient
     protected String buildKeyword() {
         return null;
+    }
+
+    @Column(length = 10)
+    public String getAcl() {
+        return acl;
+    }
+
+    public void setAcl(String acl) {
+        this.acl = acl;
     }
 
     @Override
