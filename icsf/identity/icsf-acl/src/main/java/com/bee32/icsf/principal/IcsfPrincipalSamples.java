@@ -1,5 +1,7 @@
 package com.bee32.icsf.principal;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import com.bee32.icsf.access.alt.R_ACE;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
@@ -55,12 +57,16 @@ public class IcsfPrincipalSamples
         addNormalSample(admin, eva, wallE, alice, tom, kate);
         addNormalSample(adminApAll);
 
-        addNormalSample(new UserPassword(admin, "Bee32"));
-        addNormalSample(new UserPassword(eva, "EVA"));
-        addNormalSample(new UserPassword(wallE, "WALL-E"));
-        addNormalSample(new UserPassword(tom, "TOM"));
-        addNormalSample(new UserPassword(alice, "ALICE"));
-        addNormalSample(new UserPassword(kate, "KATE"));
+        addNormalSample(new UserPassword(admin, sha1("Bee32")));
+        addNormalSample(new UserPassword(eva, sha1("EVA")));
+        addNormalSample(new UserPassword(wallE, sha1("WALL-E")));
+        addNormalSample(new UserPassword(tom, sha1("TOM")));
+        addNormalSample(new UserPassword(alice, sha1("ALICE")));
+        addNormalSample(new UserPassword(kate, sha1("KATE")));
+    }
+
+    static String sha1(String text) {
+        return DigestUtils.shaHex(text);
     }
 
 }
