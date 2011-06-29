@@ -27,7 +27,7 @@ devsite_dir=@pkgdatadir@/html
 
     if [ -d $devsite_dir ]; then
         echo "Already checked out: $devsite_dir"
-        svn up $devsite_dir
+        # svn up $devsite_dir
     else
         echo "Initialize $devsite_dir"
         if ! install -d -m 2775 -o root -g dev $devsite_dir; then
@@ -39,7 +39,7 @@ devsite_dir=@pkgdatadir@/html
 
         # IGNORE_EXTERNALS=--ignore-externals
         IGNORE_EXTERNALS=
-        if ! svn-002 co --trust-server-cert $IGNORE_EXTERNALS $url $devsite_dir; then
+        if ! svn-002 co --trust-server-cert --non-interactive $IGNORE_EXTERNALS $url $devsite_dir; then
             echo "checkout failed. "
             exit 1
         fi
