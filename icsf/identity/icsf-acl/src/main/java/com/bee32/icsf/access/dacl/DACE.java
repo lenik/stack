@@ -7,6 +7,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Index;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.icsf.access.Permission;
@@ -81,36 +82,43 @@ public class DACE
     }
 
     @Column(nullable = false)
+    @Index(name = "dace_readable")
     public boolean isReadable() {
         return permission.isReadable();
     }
 
     @Column(nullable = false)
+    @Index(name = "dace_writable")
     public boolean isWritable() {
         return permission.isWritable();
     }
 
     @Column(nullable = false)
+    @Index(name = "dace_executable")
     public boolean isExecutable() {
         return permission.isExecutable();
     }
 
     @Column(nullable = false)
+    @Index(name = "dace_listable")
     public boolean isListable() {
         return permission.isListable();
     }
 
     @Column(nullable = false)
+    @Index(name = "dace_creatable")
     public boolean isCreatable() {
         return permission.isCreatable();
     }
 
     @Column(nullable = false)
+    @Index(name = "dace_deletable")
     public boolean isDeletable() {
         return permission.isDeletable();
     }
 
     @Column(nullable = false)
+    @Index(name = "dace_admin")
     public boolean isAdmin() {
         return permission.isAdmin();
     }
