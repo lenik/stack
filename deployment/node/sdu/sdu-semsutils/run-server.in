@@ -1,10 +1,12 @@
 #!/bin/bash
 
     declare -A servers
+    declare -A modpath
 
     # servers['people']=com.bee32.sem.people.SEMPeopleServer
     while read p; do
         [ -z "$p" ] && continue
+
         qn="${p##*/java/}"
         qn="${qn%.java}"
         qn="${qn//\//.}"
@@ -13,6 +15,10 @@
         stem="${stem%Server}"
         stem=`lc -e "$stem"`
         servers[$stem]="$qn"
+
+        # ../module/src/main/java/...
+        dir="${p%%/src/*}"
+        modpath[$stem]="$dir"
     done < <(find -name 'SEM*Server.java')
 
     if [ -z "$1" ]; then
@@ -21,7 +27,8 @@
         echo "Discoverred server names:"
         for k in "${!servers[@]}"; do
             v="${servers[$k]}"
-            echo -e "    $k: \t$v"
+            dir="${modpath[$k]}"
+            echo -e "        $k: \t$dir ($v)"
         done
         exit 0
     fi
