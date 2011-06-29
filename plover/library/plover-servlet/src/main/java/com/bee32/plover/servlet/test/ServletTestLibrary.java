@@ -358,22 +358,29 @@ public class ServletTestLibrary
                 break;
 
             case QUIT:
-                Thread[] threads = new Thread[Thread.activeCount()];
-                int nthreads = Thread.enumerate(threads);
-                for (int i = 0; i < nthreads; i++) {
-                    Thread th = threads[i];
-                    if (th.isDaemon())
-                        continue;
-
-                    String threadName = th.getName();
-                    if (threadName.equals("main"))
-                        continue;
-
-                    // otherwise the application won't quit.
-                    th.stop();
-                }
+                quit();
                 return;
             }
+        }
+    }
+
+    protected void quit() {
+        Thread[] threads = new Thread[Thread.activeCount()];
+        int nthreads = Thread.enumerate(threads);
+        for (int i = 0; i < nthreads; i++) {
+            Thread th = threads[i];
+            if (th.isDaemon())
+                continue;
+
+            String threadName = th.getName();
+            if (threadName.equals("main"))
+                continue;
+
+            if (Thread.currentThread().equals(th))
+                continue;
+
+            // otherwise the application won't quit.
+            th.stop();
         }
     }
 
