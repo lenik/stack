@@ -1,5 +1,6 @@
 package com.bee32.sem.test;
 
+import javax.free.IllegalUsageException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.ApplicationContext;
@@ -11,6 +12,7 @@ import com.bee32.plover.orm.context.OSIVFilter;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.unit.UsingUtil;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
@@ -43,6 +45,10 @@ public class SEMTestCase
     protected ApplicationContext appContext;
 
     public SEMTestCase() {
+        Using useUnit = getClass().getAnnotation(Using.class);
+        if (useUnit == null)
+            throw new IllegalUsageException("@Using isn't defined on " + getClass());
+
         PersistenceUnit unit = UsingUtil.getUsingUnit(getClass());
         CustomizedSessionFactoryBean.setForceUnit(unit);
     }
