@@ -11,6 +11,7 @@ public class SEMModuleServer
     public SEMModuleServer() {
         String name = getDataSource();
         TestDataSource.NAME = name;
+        contextPath = "";
     }
 
     protected String getDataSource() {
