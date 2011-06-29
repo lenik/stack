@@ -3,6 +3,8 @@ package com.bee32.plover.orm.config;
 import java.util.Properties;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.thirdparty.hibernate.util.HibernateProperties;
 import com.p6spy.engine.common.P6SpyOptions;
@@ -13,6 +15,8 @@ public abstract class CustomizedDataSource
         extends BasicDataSource
         implements HibernateProperties {
 
+    static Logger logger = LoggerFactory.getLogger(CustomizedDataSource.class);
+
     public static String defaultDriver = "org.h2.Driver";
     public static String defaultUrlFormat = "jdbc:h2:" + DataConfig.DATA_DIR + "/%s;DB_CLOSE_ON_EXIT=FALSE";
     public static String defaultUsername = "sa";
@@ -22,6 +26,7 @@ public abstract class CustomizedDataSource
     private String realDriver;
 
     public CustomizedDataSource(String name) {
+
         properties = DataConfig.getProperties(name);
 
         realDriver = properties.getProperty(connectionDriverClass, getDriverClassName());

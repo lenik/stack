@@ -1,10 +1,15 @@
 package com.bee32.plover.orm.config;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.hibernate.transaction.JDBCTransactionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.orm.PloverNamingStrategy;
 import com.bee32.plover.orm.unit.PUnitDumper;
@@ -15,6 +20,8 @@ import com.bee32.plover.thirdparty.hibernate.util.MappingResourceUtil;
 public abstract class CustomizedSessionFactoryBean
         extends LazySessionFactoryBean
         implements HibernateProperties {
+
+    static Logger logger = LoggerFactory.getLogger(CustomizedSessionFactoryBean.class);
 
     private Properties overrides;
 
@@ -27,7 +34,7 @@ public abstract class CustomizedSessionFactoryBean
 
         for (Entry<Object, Object> entry : properties.entrySet()) {
             String key = (String) entry.getKey();
-            String value = (String) entry.getValue();
+            Object value = entry.getValue();
             // if (key.startsWith("hibernate.connection."))
             // continue;
             overrides.put(key, value);
@@ -58,6 +65,20 @@ public abstract class CustomizedSessionFactoryBean
 
         // Add overrides
         properties.putAll(overrides);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("CSFB Properties: ");
+
+            List<String> names = new ArrayList<String>();
+            for (Object key : properties.keySet())
+                names.add((String) key);
+            Collections.sort(names);
+
+            for (String name : names) {
+                Object value = properties.get(name);
+                logger.debug("    " + name + " = " + value);
+            }
+        }
 
         this.setHibernateProperties(properties);
 
