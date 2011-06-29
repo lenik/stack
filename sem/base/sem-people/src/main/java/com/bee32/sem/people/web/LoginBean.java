@@ -11,6 +11,7 @@ import com.bee32.icsf.login.LoginCriteria;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.sem.user.util.SessionLoginInfo;
 
 @Component
 @Scope("view")
@@ -64,6 +65,8 @@ public class LoginBean extends EntityViewBean {
 			String p2 = DigestUtils.shaHex(_p2);
 
 			if(p2.equals(password)) {
+				SessionLoginInfo.setCurrentUser(user);
+
 				return "one.jsf";
 			} else {
 				return "login.jsf";
