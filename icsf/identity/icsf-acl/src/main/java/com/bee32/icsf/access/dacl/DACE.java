@@ -3,7 +3,6 @@ package com.bee32.icsf.access.dacl;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
@@ -58,7 +57,7 @@ public class DACE
         this.dacl = dacl;
     }
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(nullable = false)
     public Principal getPrincipal() {
         return principal;
