@@ -39,7 +39,7 @@ public abstract class Entity<K extends Serializable>
     String keyword;
     boolean keywordUpdated;
 
-    String acl;
+    int aclId;
 
     public Entity() {
         super(null);
@@ -129,13 +129,13 @@ public abstract class Entity<K extends Serializable>
         return null;
     }
 
-    @Column(length = 10)
-    public String getAcl() {
-        return acl;
+    @Column(name = "acl", nullable = false)
+    public int getAclId() {
+        return aclId;
     }
 
-    public void setAcl(String acl) {
-        this.acl = acl;
+    public void setAclId(int aclId) {
+        this.aclId = aclId;
     }
 
     @Override

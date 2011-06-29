@@ -40,6 +40,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     EntityFlags entityFlags;
 
+    int aclId;
+
     public EntityDto() {
         super();
     }
@@ -197,6 +199,14 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      *      __export
      * </pre>
      */
+
+    public int getAclId() {
+        return aclId;
+    }
+
+    public void setAclId(int aclId) {
+        this.aclId = aclId;
+    }
 
     /**
      * Marshal the common entity fields from the source entity.
