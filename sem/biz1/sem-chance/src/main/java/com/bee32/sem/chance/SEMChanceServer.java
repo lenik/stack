@@ -2,10 +2,10 @@ package com.bee32.sem.chance;
 
 import java.io.IOException;
 
-import com.bee32.sem.test.SEMUnitServer;
+import com.bee32.sem.module.SEMModuleServer;
 
 public class SEMChanceServer
-        extends SEMUnitServer {
+        extends SEMModuleServer {
 
     public static void main(String[] args)
             throws IOException {
