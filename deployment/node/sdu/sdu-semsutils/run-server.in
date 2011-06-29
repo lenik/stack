@@ -1,0 +1,57 @@
+#!/bin/bash
+
+    declare -A servers
+
+    # servers['people']=com.bee32.sem.people.SEMPeopleServer
+    while read p; do
+        [ -z "$p" ] && continue
+        qn="${p##*/java/}"
+        qn="${qn%.java}"
+        qn="${qn//\//.}"
+        stem="${qn##*.}"
+        stem="${stem#SEM}"
+        stem="${stem%Server}"
+        stem=`lc -e "$stem"`
+        servers[$stem]="$qn"
+    done < <(find -name 'SEM*Server.java')
+
+    if [ -z "$1" ]; then
+        echo "run-server <server-name>"
+        echo
+        echo "Discoverred server names:"
+        for k in "${!servers[@]}"; do
+            v="${servers[$k]}"
+            echo -e "    $k: \t$v"
+        done
+        exit 0
+    fi
+
+    server="${servers[$1]:-$1}"
+    shift
+    echo "Run server $server"
+
+    simple_name="${server##*.}"
+    if ! classfile=`find -name "$simple_name.class" | grep -v WEB-INF/classes`; then
+        echo "Can't find class $server"
+        exit 1
+    fi
+
+
+    trim1="${classfile%/target/classes/*}"
+    trim2="${classfile%/WEB-INF/classes/*}"
+    if [ "$trim1" != "$classfile" ]; then
+        module="$trim1"
+        echo "Found jar-module $module"
+    elif [ "$trim2" != "$classfile" ]; then
+        # target/*-SNAPSHOT /WEB-INF/...
+        module="${trim2%/target/*}"
+        echo "Found war-module $module"
+    else
+        echo "Can't determine module directory from path $classfile"
+        exit 1
+    fi
+
+    echo "Enter into $module"
+    cd "$module" || exit 1
+
+    mvn exec:java -Dexec.mainClass="$server" "$@"

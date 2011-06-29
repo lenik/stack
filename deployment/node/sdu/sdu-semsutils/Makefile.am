@@ -3,7 +3,8 @@ include libauto/coolauto.am
 shsrcdir = ${bindir}
 
 dist_bin_SCRIPTS = \
-    svnrootofcwd
+    svnrootofcwd \
+    run-server
 
 dist_shsrc_SCRIPTS = \
     cd-sems
