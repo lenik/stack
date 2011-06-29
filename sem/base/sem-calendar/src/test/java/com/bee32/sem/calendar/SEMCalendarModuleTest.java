@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.bee32.sem.test.SEMTestCase;
 
-public class SEMCalendarTestServer
+public class SEMCalendarModuleTest
         extends SEMTestCase {
 
     @Override
@@ -20,7 +20,7 @@ public class SEMCalendarTestServer
     @Override
     public void mainLoop()
             throws IOException {
-        new SEMCalendarTestServer().browseAndWait(//
+        new SEMCalendarModuleTest().browseAndWait(//
                 // SEMCalendar
                 );
     }
