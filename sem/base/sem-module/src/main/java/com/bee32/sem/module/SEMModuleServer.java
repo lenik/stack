@@ -20,7 +20,7 @@ public class SEMModuleServer
 
     @Override
     protected int getPort() {
-        return 10000;
+        return 10001;
     }
 
     @Override
