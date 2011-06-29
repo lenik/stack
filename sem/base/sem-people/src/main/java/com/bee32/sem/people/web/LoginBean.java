@@ -21,7 +21,7 @@ public class LoginBean extends EntityViewBean {
 
 	private String username;
 	private String password;
-	private String challenge = "" + new Random().nextInt();
+	private String challenge = "C" + new Random().nextInt();
 
 	public String getUsername() {
 		return username;
