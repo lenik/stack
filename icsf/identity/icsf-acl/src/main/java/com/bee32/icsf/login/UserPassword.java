@@ -29,11 +29,8 @@ public class UserPassword
 
     int salt = random.nextInt();
 
-    String master = "";
-    String masterMd5;
-
-    String passwd = ""; // Not used.
-    String passwdMd5;
+    String master;
+    String passwd; // Not used.
 
     PrivateQuestion resetQ = PrivateQuestion.DADS_NAME;
     String resetA = "";
@@ -41,6 +38,20 @@ public class UserPassword
     Date resetExpires = new Date();
 
     public UserPassword() {
+    }
+
+    public UserPassword(User user, String passwd) {
+        this(user, passwd, null);
+    }
+
+    public UserPassword(User user, String passwd, String master) {
+        if (user == null)
+            throw new NullPointerException("user");
+        if (passwd == null)
+            throw new NullPointerException("passwd");
+        this.user = user;
+        this.passwd = passwd;
+        this.master = master;
     }
 
     @ManyToOne
@@ -62,46 +73,22 @@ public class UserPassword
         this.salt = salt;
     }
 
-    @Column(length = 30)
+    @Column(length = 40)
     public String getMaster() {
         return master;
     }
 
     public void setMaster(String master) {
-        if (master == null)
-            throw new NullPointerException("master");
         this.master = master;
-        this.masterMd5 = MD5Util.md5(master);
     }
 
-    @Column(length = 32)
-    public String getMasterMd5() {
-        return masterMd5;
-    }
-
-    public void setMasterMd5(String masterMd5) {
-        this.masterMd5 = masterMd5;
-    }
-
-    @Column(length = 30)
+    @Column(length = 40)
     public String getPasswd() {
         return passwd;
     }
 
     public void setPasswd(String passwd) {
-        if (passwd == null)
-            throw new NullPointerException("passwd");
         this.passwd = passwd;
-        this.passwdMd5 = MD5Util.md5(passwd);
-    }
-
-    @Column(length = 32)
-    public String getPasswdMd5() {
-        return passwdMd5;
-    }
-
-    public void setPasswdMd5(String passwdMd5) {
-        this.passwdMd5 = passwdMd5;
     }
 
     public void createResetTicket() {
