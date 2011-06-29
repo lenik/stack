@@ -1,6 +1,7 @@
 package com.bee32.icsf.principal;
 
 import com.bee32.icsf.access.alt.R_ACE;
+import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 
 /**
@@ -53,6 +54,13 @@ public class IcsfPrincipalSamples
         addNormalSample(adminRole, registeredRole);
         addNormalSample(admin, eva, wallE, alice, tom, kate);
         addNormalSample(adminApAll);
+
+        addNormalSample(new UserPassword(admin, "Bee32"));
+        addNormalSample(new UserPassword(eva, "EVA"));
+        addNormalSample(new UserPassword(wallE, "WALL-E"));
+        addNormalSample(new UserPassword(tom, "TOM"));
+        addNormalSample(new UserPassword(alice, "ALICE"));
+        addNormalSample(new UserPassword(kate, "KATE"));
     }
 
 }
