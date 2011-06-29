@@ -72,17 +72,6 @@ public class ChanceActionDto
     @Override
     protected void _marshal(ChanceAction source) {
 
-//        StringWriter buf = new StringWriter();
-//        new Exception().printStackTrace(new PrintWriter(buf, true));
-//        File stf = new File("/tmp/xxx-" + index++);
-//        try {
-//            FileWriter out = new FileWriter(stf);
-//            out.write(buf.toString());
-//            out.flush();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e.getMessage(), e);
-//        }
-
         this.date = source.getBeginTime() == null ? "" : DateToRange.fullFormat.format(source.getBeginTime())
                 .substring(0, 10);
 
@@ -118,15 +107,8 @@ public class ChanceActionDto
         this.content = source.getContent();
         this.spending = source.getSpending();
 
-        if (source.getChance() != null)
-            this.chance = mref(ChanceDto.class, 0, source.getChance());
-        else
-            this.chance = new ChanceDto();
-
-        if (source.getStage() != null)
-            this.stage = mref(ChanceStageDto.class, source.getStage());
-        else
-            this.stage = new ChanceStageDto();
+        this.chance = mref(ChanceDto.class, 0, source.getChance());
+        this.stage = mref(ChanceStageDto.class, source.getStage());
     }
 
     @Override

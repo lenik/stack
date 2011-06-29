@@ -56,6 +56,7 @@ public class ChanceActionBean
     private boolean back;
     private boolean saveable;
     private boolean searchable;
+    private boolean editable;
 
     // 日志列表
     private LazyDataModel<ChanceActionDto> actions;
@@ -84,32 +85,34 @@ public class ChanceActionBean
         initList();
         action = new ChanceActionDto();
         searchable = false;
+        editable = false;
     }
 
     public void search() {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (searchBeginTime == null) {
-            context.addMessage(null, new FacesMessage("错误提示", "请选择搜索的开始时间"));
-            return;
+
+        if (searchBeginTime != null && searchEndTime != null) {
+            EntityDataModelOptions<ChanceAction, ChanceActionDto> edmo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
+                    ChanceAction.class, ChanceActionDto.class);
+            edmo.setRestrictions(//
+                    ChanceCriteria.actedByCurrentUser(), //
+                    ChanceCriteria.beginWithin(searchBeginTime, searchEndTime));
+            actions = UIHelper.buildLazyDataModel(edmo);
+            refreshActionCount(true);
+        } else {
+            initList();
+            if (searchBeginTime == null) {
+                context.addMessage(null, new FacesMessage("提示", "开始时间为空"));
+            }
+            if (searchEndTime == null) {
+                context.addMessage(null, new FacesMessage("提示", "结束时间为空"));
+            }
         }
-
-        if (searchEndTime == null) {
-            context.addMessage(null, new FacesMessage("错误提示", "请选择搜索的结束时间"));
-            return;
-        }
-
-        EntityDataModelOptions<ChanceAction, ChanceActionDto> edmo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
-                ChanceAction.class, ChanceActionDto.class);
-        edmo.setRestrictions(//
-                ChanceCriteria.actedByCurrentUser(), //
-                ChanceCriteria.beginWithin(searchBeginTime, searchEndTime));
-        actions = UIHelper.buildLazyDataModel(edmo);
-
-        refreshActionCount(true);
 
         initToolbar();
         searchable = true;
-
+        selectedAction = null;
+        setActiveTab(TAB_INDEX);
     }
 
     void initToolbar() {
@@ -126,9 +129,7 @@ public class ChanceActionBean
         EntityDataModelOptions<ChanceAction, ChanceActionDto> emdo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
                 ChanceAction.class, ChanceActionDto.class, -1, null, ChanceCriteria.actedByCurrentUser());
         actions = UIHelper.buildLazyDataModel(emdo);
-
         refreshActionCount(false);
-
         initToolbar();
         searchable = false;
     }
@@ -154,6 +155,9 @@ public class ChanceActionBean
                     ChanceCriteria.ownedByCurrentUser(), //
                     ChanceCriteria.subjectLike(chancePattern));
             chances = DTOs.marshalList(ChanceDto.class, _chances);
+        } else {
+            List<Chance> lc = serviceFor(Chance.class).list(ChanceCriteria.ownedByCurrentUser());
+            chances = DTOs.marshalList(ChanceDto.class, lc);
         }
     }
 
@@ -163,17 +167,22 @@ public class ChanceActionBean
                     PeopleCriteria.ownedByCurrentUser(), //
                     PeopleCriteria.nameLike(customerPattern));
             customers = DTOs.marshalList(PartyDto.class, _customers);
+        } else {
+            List<Party> lp = serviceFor(Party.class).list(PeopleCriteria.ownedByCurrentUser());
+            customers = DTOs.marshalList(PartyDto.class, lp);
         }
     }
 
     public void createForm() {
         action = new ChanceActionDto();
+        selectedAction = null;
         setActiveTab(TAB_FORM);
         add = true;
         edable = true;
         detail = true;
         saveable = false;
         back = false;
+        editable = false;
     }
 
     public void editForm() {
@@ -184,6 +193,7 @@ public class ChanceActionBean
         detail = true;
         saveable = false;
         back = false;
+        editable = false;
     }
 
     public void detailForm() {
@@ -194,6 +204,7 @@ public class ChanceActionBean
         detail = true;
         back = false;
         saveable = true;
+        editable = true;
     }
 
     public void drop() {
@@ -201,8 +212,12 @@ public class ChanceActionBean
         serviceFor(ChanceAction.class).delete(selectedAction.unmarshal());
 
         refreshActionCount(false);
-
-        context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
+        try {
+            context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("错误", "删除行动记录错误:" + e.getMessage()));
+            e.printStackTrace();
+        }
     }
 
     public void cancel() {
@@ -212,6 +227,8 @@ public class ChanceActionBean
         detail = true;
         saveable = true;
         back = true;
+        editable = false;
+        selectedAction = null;
     }
 
     public void chooseChance() {
@@ -229,15 +246,7 @@ public class ChanceActionBean
     public List<SelectItem> getChanceStages() {
         List<ChanceStage> chanceStageList = serviceFor(ChanceStage.class).list();
         List<ChanceStageDto> stageDtoList = DTOs.marshalList(ChanceStageDto.class, chanceStageList);
-
-        List<SelectItem> items = new ArrayList<SelectItem>();
-
-        for (ChanceStageDto entry : stageDtoList) {
-            SelectItem item = new SelectItem(entry.getIdX(), entry.getLabel());
-            items.add(item);
-        }
-
-        return items;
+        return UIHelper.selectItemsFromDict(stageDtoList);
     }
 
     public List<SelectItem> getChanceActionStyles() {
@@ -246,12 +255,6 @@ public class ChanceActionBean
                 chanceActionStyleList);
         return UIHelper.selectItemsFromDict(chanceActionStyleDtoList);
     }
-
-// public List<SelectItem> getActors() {
-// List<User> actorList = getDataManager().loadAll(User.class);
-// List<UserDto> actorDtoList = DTOs.marshalList(UserDto.class, actorList);
-// return UIHelper.selectItemsFromUser(actorDtoList);
-// }
 
     public void saveAction() {
 
@@ -279,22 +282,17 @@ public class ChanceActionBean
         if (action.getSpending().isEmpty())
             action.setSpending("");
 
-        String stageId = action.getStage().getId();
+        ChanceStageDto stage = action.getStage();
         Long chanceId = action.getChance().getId();
 
-        if (chanceId == null && !stageId.isEmpty()) {
+        if (chanceId == null && !stage.isNull()) {
             context.addMessage(null, new FacesMessage("错误提示", "必须先选择机会,才能设置机会阶段"));
             return;
         }
 
-        if (stageId.isEmpty()) {
-            action.setStage(null);
-        } else {
-            // XXX ref 应该改为mref(order有用) 没有只有id的mref
-            ChanceStage _stage = loadEntity(ChanceStage.class, stageId);
-            ChanceStageDto stage = DTOs.mref(ChanceStageDto.class, _stage);
-            action.pushStage(stage);
-        }
+        if (!stage.isNull())
+            stage = reload(stage);
+        action.pushStage(stage);
 
         ChanceDto chance;
         if (chanceId == null)
@@ -316,24 +314,29 @@ public class ChanceActionBean
         UserDto actor = new UserDto().ref(SessionLoginInfo.requireCurrentUser().getId());
         action.setActor(actor);
 
-        ChanceAction _action = action.unmarshal();
+        try {
+            ChanceAction _action = action.unmarshal();
+            Chance _chance = _action.getChance();
+            if (_chance != null) {
+                _chance.pushStage(_action.getStage());
+                serviceFor(Chance.class).save(_chance);
+            }
+            serviceFor(ChanceAction.class).save(_action);
 
-        Chance _chance = _action.getChance();
-        if (_chance != null) {
-            _chance.pushStage(_action.getStage());
-            serviceFor(Chance.class).save(_chance);
+            action = new ChanceActionDto();
+            setActiveTab(TAB_INDEX);
+            add = false;
+            edable = true;
+            detail = true;
+            back = true;
+            saveable = true;
+            selectedAction = null;
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("提示", "保存销售机会行动记录成功!"));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("错误", "保存行动记录失败:" + e.getMessage()));
+            e.printStackTrace();
         }
-
-        serviceFor(ChanceAction.class).save(_action);
-
-        action = new ChanceActionDto();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("提示", "保存销售机会行动记录成功!"));
-        setActiveTab(TAB_INDEX);
-        add = false;
-        edable = true;
-        detail = true;
-        back = true;
-        saveable = true;
 
     }
 
@@ -415,6 +418,14 @@ public class ChanceActionBean
 
     public void setSearchable(boolean searchable) {
         this.searchable = searchable;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
     }
 
     public LazyDataModel<ChanceActionDto> getActions() {

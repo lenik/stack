@@ -49,7 +49,8 @@ public abstract class EntityViewBean
 
         E reloaded = serviceFor(entityType).load(id);
 
-        D remarshalled = DTOs.marshal(dtoType, reloaded);
+        int selection = dto.getSelection();
+        D remarshalled = DTOs.marshal(dtoType, selection, reloaded);
         return remarshalled;
     }
 

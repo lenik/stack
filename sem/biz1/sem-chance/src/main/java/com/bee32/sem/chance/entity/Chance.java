@@ -121,7 +121,6 @@ public class Chance
     }
 
     @OneToMany(mappedBy = "chance")
-    @Cascade({CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy("beginTime")
     public List<ChanceAction> getActions() {
         return actions;
