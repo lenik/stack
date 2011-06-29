@@ -26,4 +26,12 @@ public abstract class LongNameDict
         super(name, label, description);
     }
 
+    public LongNameDict(int order, String name, String label) {
+        super(order, name, label);
+    }
+
+    public LongNameDict(int order, String name, String label, String description) {
+        super(order, name, label, description);
+    }
+
 }
