@@ -3,7 +3,12 @@ package com.bee32.sem.people.web;
 import java.util.List;
 import java.util.Random;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
 import org.apache.commons.codec.digest.DigestUtils;
+import org.primefaces.context.RequestContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -49,28 +54,36 @@ public class LoginBean extends EntityViewBean {
 
 
 
-	public String login() {
+	public void login(ActionEvent even) {
+		FacesMessage msg = null;
+		RequestContext context = RequestContext.getCurrentInstance();
+		boolean loggedIn = false;
+
 		User user = serviceFor(User.class).get(username);
 		if(user == null) {
-			return "login.jsf";
-		}
-		List<UserPassword> plist = serviceFor(UserPassword.class).list(
-				LoginCriteria.userOf(user)
-				);
-		if(plist.isEmpty()) {
-			return "login.jsf";
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "登录错误", "用户不存在");
 		} else {
-			String p1 = plist.get(0).getPasswd();
-			String _p2 = challenge + p1 + challenge;
-			String p2 = DigestUtils.shaHex(_p2);
-
-			if(p2.equals(password)) {
-				SessionLoginInfo.setCurrentUser(user);
-
-				return "one.jsf";
+			List<UserPassword> plist = serviceFor(UserPassword.class).list(
+					LoginCriteria.userOf(user));
+			if(plist.isEmpty()) {
+				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "登录错误", "密码不存在");
 			} else {
-				return "login.jsf";
+				String p1 = plist.get(0).getPasswd();
+				String _p2 = challenge + p1 + challenge;
+				String p2 = DigestUtils.shaHex(_p2);
+
+				if(p2.equals(password)) {
+					SessionLoginInfo.setCurrentUser(user);
+
+					loggedIn = true;
+					msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "登录成功", "登录成功");
+				} else {
+					msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "登录错误", "密码输入错误");
+				}
 			}
 		}
+
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		context.addCallbackParam("loggedIn", loggedIn);
 	}
 }
