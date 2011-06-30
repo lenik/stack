@@ -51,7 +51,7 @@ public class ResourceBundleEx {
 
         ResourceBundle bundle;
         try {
-            bundle = ResourceBundle.getBundle(baseName);
+            bundle = ResourceBundleUTF8.getBundle(baseName);
         } catch (MissingResourceException e) {
             // skip intermediates which don't have a resource bundle.
             return;

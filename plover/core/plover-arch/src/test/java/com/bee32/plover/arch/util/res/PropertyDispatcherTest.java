@@ -28,7 +28,7 @@ public class PropertyDispatcherTest {
         PropertyBuffer catSink = new PropertyBuffer();
         PropertyBuffer dogSink = new PropertyBuffer();
 
-        ResourceBundle bundle = ResourceBundle.getBundle(getClass().getName());
+        ResourceBundle bundle = ResourceBundleUTF8.getBundle(getClass().getName());
 
         PropertyDispatcher dispatcher = new PropertyDispatcher(bundle);
         dispatcher.addPrefixAcceptor("cat.", catSink);

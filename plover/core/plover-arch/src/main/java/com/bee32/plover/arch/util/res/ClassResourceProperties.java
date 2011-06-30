@@ -21,7 +21,7 @@ public class ClassResourceProperties
         String baseName = clazz.getName();
 
         try {
-            this.resourceBundle = ResourceBundle.getBundle(baseName, locale);
+            this.resourceBundle = ResourceBundleUTF8.getBundle(baseName, locale);
         } catch (MissingResourceException e) {
             this.resourceBundle = null;
         }

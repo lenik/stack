@@ -13,6 +13,8 @@ import java.util.TreeMap;
 
 import javax.free.IllegalUsageException;
 
+import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
+
 /**
  * 平面化了的参考信息集。
  * <p>
@@ -93,7 +95,7 @@ public class PlainRefdocs
      */
     public static PlainRefdocs parseResource(Class<?> clazz, Locale locale) {
         String baseName = clazz.getName();
-        ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale);
+        ResourceBundle bundle = ResourceBundleUTF8.getBundle(baseName, locale);
         return parseResource(bundle, clazz, locale);
     }
 

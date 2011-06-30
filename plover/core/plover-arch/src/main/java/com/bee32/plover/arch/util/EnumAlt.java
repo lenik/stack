@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
 
@@ -104,7 +105,7 @@ public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
 
         ResourceBundle rb;
         try {
-            rb = ResourceBundle.getBundle(baseName, locale);
+            rb = ResourceBundleUTF8.getBundle(baseName, locale);
         } catch (MissingResourceException e) {
             return def;
         }
