@@ -1,4 +1,4 @@
-package com.bee32.sem.thing.entity;
+package com.bee32.sem.store.entity;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -15,10 +15,8 @@ public abstract class Thing<X extends XPool<?>>
     private static final long serialVersionUID = 1L;
 
     String serial;
-    String name;
-    String description;
-
     String barCode;
+    String description;
 
     Unit unit;
     UnitConv unitConv;
@@ -27,14 +25,15 @@ public abstract class Thing<X extends XPool<?>>
         super();
     }
 
-    public Thing(String serial, String name) {
+    public Thing(String name) {
         super(name);
+    }
 
+    public Thing(String name, String serial) {
+        super(name);
         if (serial == null)
             throw new NullPointerException("serial");
-
         this.serial = serial;
-        this.name = name;
     }
 
     /**
@@ -50,6 +49,21 @@ public abstract class Thing<X extends XPool<?>>
      */
     public void setSerial(String serial) {
         this.serial = serial;
+    }
+
+    /**
+     * 物品条码
+     */
+    @Column(length = 30)
+    public String getBarCode() {
+        return barCode;
+    }
+
+    /**
+     * 物品条码
+     */
+    public void setBarCode(String barCode) {
+        this.barCode = barCode;
     }
 
     /**
@@ -80,21 +94,6 @@ public abstract class Thing<X extends XPool<?>>
      */
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    /**
-     * 物品条码
-     */
-    @Column(length = 20)
-    public String getBarCode() {
-        return barCode;
-    }
-
-    /**
-     * 物品条码
-     */
-    public void setBarCode(String barCode) {
-        this.barCode = barCode;
     }
 
     /**

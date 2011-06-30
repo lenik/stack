@@ -1,4 +1,4 @@
-package com.bee32.sem.thing.entity;
+package com.bee32.sem.store.entity;
 
 import javax.persistence.Entity;
 
