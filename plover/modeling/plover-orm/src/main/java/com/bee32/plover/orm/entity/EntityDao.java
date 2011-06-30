@@ -17,7 +17,6 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
@@ -135,7 +134,7 @@ public class EntityDao<E extends Entity<? extends K>, K extends Serializable>
     }
 
     @Override
-    public E _load(K id) {
+    public E lazyLoad(K id) {
         E entity = getHibernateTemplate().load(entityType, id);
         return entity;
     }

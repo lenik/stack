@@ -169,10 +169,10 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = true)
     @Override
-    public E _load(K id) {
+    public E lazyLoad(K id) {
         checkLoad();
         // XXX the lazy-init entity returned seems not usable outside of Tx.
-        return (E) getDao()._load(id);
+        return (E) getDao().lazyLoad(id);
     }
 
     @Transactional(readOnly = true)

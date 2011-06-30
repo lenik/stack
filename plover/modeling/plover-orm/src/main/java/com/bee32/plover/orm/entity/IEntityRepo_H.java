@@ -16,7 +16,7 @@ public interface IEntityRepo_H<E extends IEntity<? extends K>, K extends Seriali
      * an exception if not found.
      *
      * <p>
-     * (Override {@link #load(Serializable)} to distinguish with {@link #_load(Serializable)}.
+     * (Override {@link #load(Serializable)} to distinguish with {@link #lazyLoad(Serializable)}.
      *
      * <p>
      * <b>WARNING</b>: This is different to {@link HibernateTemplate#load(Class, Serializable)}
@@ -38,7 +38,7 @@ public interface IEntityRepo_H<E extends IEntity<? extends K>, K extends Seriali
     /**
      * @see HibernateTemplate#load(Class, Serializable).
      */
-    E _load(K id);
+    E lazyLoad(K id);
 
     E retrieve(K key, LockMode lockMode)
             throws DataAccessException;
