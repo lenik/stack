@@ -6,6 +6,7 @@ import javax.free.ParseException;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.chance.entity.QuotationInvoice;
 import com.bee32.sem.people.dto.PartyDto;
@@ -27,10 +28,28 @@ public class QuotationInvoiceDto
 
     @Override
     protected void _marshal(QuotationInvoice source) {
+        this.owner = new UserDto().ref(source.getOwner());
+        this.subject = source.getSubject();
+        this.chance = new ChanceDto().ref(source.getChance());
+        this.parties = DTOs.marshalList(PartyDto.class, source.getParties());
+        this.items = DTOs.marshalList(QuotationItemDto.class, source.getItems());
+        this.amount = source.getAmount();
+        this.recommend = source.getRecommend();
+        this.payment = source.getPayment();
+        this.remark = source.getRemark();
     }
 
     @Override
     protected void _unmarshalTo(QuotationInvoice target) {
+        merge(target, "owner", owner);
+        target.setSubject(subject);
+        merge(target, "chance", chance);
+        mergeList(target, "parties", parties);
+        mergeList(target, "items", items);
+        target.setAmount(amount);
+        target.setRecommend(recommend);
+        target.setPayment(payment);
+        target.setRemark(remark);
     }
 
     @Override

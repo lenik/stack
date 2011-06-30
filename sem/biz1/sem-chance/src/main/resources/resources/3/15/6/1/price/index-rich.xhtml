@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
+    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.prime.com.tr/ui"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+<!-- InstanceBegin template="/Templates/seccaJsf.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<ui:composition template="/template/primefaces.xhtml">
+
+    <ui:define name="title">报价管理</ui:define>
+
+    <ui:define name="content">
+        <h:form id="main">
+
+            <p:panel style="border:2px solid black;width:600px;">
+
+
+
+            </p:panel>
+
+
+
+            <t:panelGrid columns="2">
+                <p:inputText id="materialPattern" value="#{priceViewBean.materialPattern}" />
+                <p:commandButton value="按物料查找" actionListener="#{tableBean.findMaterial}" ajax="true"
+                    update="main:materialList" />
+
+                <p:dataTable id="materialList" var="item" value="#{tableBean.material}" style="width:300px;">
+                    <p:column>
+                        <f:facet name="header">
+                            物料名称
+                            </f:facet>
+                        <h:outputText value="#{item}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            操作
+                            </f:facet>
+                        <p:commandButton update="" oncomplete="carDialog.show()" image="ui-icon ui-icon-search"
+                            title="View">
+                            <f:setPropertyActionListener value="#{material}" target="#{tableBean.selectedMaterial}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+                <h:inputHidden value="" />
+
+            </t:panelGrid>
+
+
+        </h:form>
+
+
+
+        <h:form id="PriceDetail">
+            <t:panelGroup>
+                <p:commandButton value="更新价格" onclick="updatePrice.show()" />
+                <p:dataTable id="qdList" var="quotationDetail" value="" style="width:500px;">
+                    <p:column>
+                        <f:facet name="header">
+                                报价时间
+                            </f:facet>
+                        <h:outputText value="quotationDetail.date" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                                折扣
+                            </f:facet>
+                        <h:outputText value="quotationDetail.discount" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                                单价
+                            </f:facet>
+                        <h:outputText value="quotationDetail.price" />
+                    </p:column>
+                </p:dataTable>
+            </t:panelGroup>
+
+
+            <p:dialog header="更新价格" widgetVar="updatePrice" modal="true" height="300" width="400">
+                <h:outputText value="This is a Modal Dialog." />
+                <t:panelGrid columns="2">
+                    <h:outputLabel for="material" value="物料名称" />
+                    <p:inputText id="material" value="#{priceViewBean.materialName}" />
+
+                    <h:outputLabel for="discount" value="折扣" />
+                    <p:inputText id="discount" value="#{priceViewBean.discount}" />
+
+                    <h:outputLabel for="price" value="单价" />
+                    <p:inputText id="price" value="#{priceViewBean.price}" />
+
+                    <h:outputLabel for="remark" value="备注" />
+                    <p:inputText id="remark" value="#{priceViewBean.remark}" />
+
+                    <p:commandButton value="增加" />
+                    <p:commandButton value="取消" />
+                </t:panelGrid>
+            </p:dialog>
+
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+</html>
