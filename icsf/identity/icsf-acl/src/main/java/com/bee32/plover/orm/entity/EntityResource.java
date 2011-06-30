@@ -5,12 +5,14 @@ import java.util.Locale;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.plover.arch.ComponentBuilder;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
+import com.bee32.plover.orm.util.ITypeAbbrAware;
 
 /**
  * @see EntityResourceNS
  */
 public class EntityResource
-        extends Resource {
+        extends Resource
+        implements ITypeAbbrAware {
 
     Class<?> entityClass;
     String member;
@@ -35,14 +37,14 @@ public class EntityResource
         ComponentBuilder.setAppearance(this, appearance);
     }
 
-    static String getEntityName(Class<?> clazz) {
+    public static String getEntityName(Class<?> clazz) {
         if (clazz == null)
             throw new NullPointerException("clazz");
-        String name = clazz.getSimpleName();
+        String name = ABBR.abbr(clazz);
         return name;
     }
 
-    static String getEntityName(Class<?> clazz, String member) {
+    public static String getEntityName(Class<?> clazz, String member) {
         if (clazz == null)
             throw new NullPointerException("clazz");
         if (member == null)

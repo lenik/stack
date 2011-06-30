@@ -19,7 +19,6 @@ public class R_ACLService
     @Inject
     R_ACLDao r_ACLDao;
 
-    @AccessCheck
     public R_ACL loadACL(Resource resource) {
         return r_ACLDao.loadACL(resource);
     }
@@ -30,14 +29,19 @@ public class R_ACLService
         r_ACLDao.saveACL(acl);
     }
 
-    @AccessCheck
     public List<ResourcePermission> getResourcePermissions(IPrincipal principal) {
         return r_ACLDao.getResourcePermissions(principal);
     }
 
-    @AccessCheck
+    /**
+     * @return Non-<code>null</code> permission. If no permission was declared, a new empty
+     *         permission is created.
+     */
     public Permission getPermission(Resource resource, IPrincipal principal) {
-        return r_ACLDao.getPermission(resource, principal);
+        Permission permission = r_ACLDao.getPermission(resource, principal);
+        if (permission == null)
+            permission = new Permission(0);
+        return permission;
     }
 
 }
