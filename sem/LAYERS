@@ -18,7 +18,7 @@ process/            过程支持
 resource/           资源
     sem-asset
     sem-store
-    sem-thing
+    sem-inventory
 
 support/            （偏低层）支持
     sem-track
