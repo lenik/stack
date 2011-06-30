@@ -126,11 +126,13 @@ public class ChanceBean
     }
 
     public void onActionRowSelect() {
-        unRelating = false;
+        if (editable != true)
+            unRelating = false;
     }
 
     public void onActionRowUnselect() {
-        unRelating = true;
+        if (editable != true)
+            unRelating = true;
     }
 
     public List<SelectItem> getCategory() {
