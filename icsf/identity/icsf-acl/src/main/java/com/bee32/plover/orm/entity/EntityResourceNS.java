@@ -13,6 +13,8 @@ import com.bee32.plover.orm.unit.PersistenceUnit;
 public class EntityResourceNS
         implements IResourceNamespace, IResourceScanner {
 
+    public static final String NS = "entity";
+
     boolean scanned;
     Map<String, EntityResource> resources;
 
@@ -22,7 +24,7 @@ public class EntityResourceNS
 
     @Override
     public String getNamespace() {
-        return "entity";
+        return NS;
     }
 
     @Override
@@ -32,6 +34,7 @@ public class EntityResourceNS
 
     @Override
     public EntityResource getResource(String localName) {
+        scan();
         return resources.get(localName);
     }
 

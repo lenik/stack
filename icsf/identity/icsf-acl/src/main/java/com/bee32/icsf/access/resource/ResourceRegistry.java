@@ -84,6 +84,10 @@ public class ResourceRegistry {
         return ns + ":" + localName + ".";
     }
 
+    public static IResourceNamespace getNamespace(String ns) {
+        return namespaceMap.get(ns);
+    }
+
     public static Collection<IResourceNamespace> getNamespaces() {
         return Collections.unmodifiableSet(namespaces);
     }

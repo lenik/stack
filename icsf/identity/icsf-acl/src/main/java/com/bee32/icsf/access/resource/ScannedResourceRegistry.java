@@ -45,6 +45,10 @@ public class ScannedResourceRegistry
         return ResourceRegistry.qualify(resource);
     }
 
+    public IResourceNamespace getNamespace(String ns) {
+        return ResourceRegistry.getNamespace(ns);
+    }
+
     public Collection<IResourceNamespace> getNamespaces() {
         return ResourceRegistry.getNamespaces();
     }
