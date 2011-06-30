@@ -11,17 +11,15 @@ import org.hibernate.ReplicationMode;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
-import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.IStruct;
 
-@Service
-@Scope("prototype")
+// @Service
+// /* @Lazy */@Scope("prototype")
 public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
         extends Component
         implements IEntityAccessService<E, K> {
@@ -47,28 +45,30 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Override
     public Class<K> getKeyType() {
-        throw new UnsupportedOperationException();
+        return (Class<K>) dao.getKeyType();
     }
 
     @Override
-    public Class<? extends E> getObjectType() {
-        throw new UnsupportedOperationException();
+    public Class<E> getObjectType() {
+        return (Class<E>) dao.getObjectType();
     }
 
     @Override
-    public Class<? extends E> getEntityType() {
-        throw new UnsupportedOperationException();
+    public Class<E> getEntityType() {
+        return (Class<E>) dao.getEntityType();
     }
 
     @Transactional(readOnly = true)
     @Override
     public E load(K id) {
+        checkLoad();
         return (E) getDao().load(id);
     }
 
     @Transactional(readOnly = true)
     @Override
     public E getUnique(Criterion... restrictions) {
+        checkLoad();
         return (E) getDao().getUnique(restrictions);
     }
 
@@ -81,12 +81,14 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = false)
     @Override
     public K save(E entity) {
+        checkSave();
         return (K) getDao().save(entity);
     }
 
     @Transactional(readOnly = false)
     @Override
     public void update(E entity) {
+        checkUpdate();
         getDao().update(entity);
     }
 
@@ -99,12 +101,14 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = false)
     @Override
     public void saveOrUpdate(E entity) {
+        checkSaveOrUpdate();
         getDao().saveOrUpdate(entity);
     }
 
     @Transactional(readOnly = false)
     @Override
     public void saveAll(E... entities) {
+        checkSave();
         getDao().saveAll(entities);
     }
 
@@ -117,48 +121,56 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = false)
     @Override
     public void saveAll(Collection<? extends E> entities) {
+        checkSave();
         getDao().saveAll(entities);
     }
 
     @Transactional(readOnly = false)
     @Override
     public void saveOrUpdateAll(E... entities) {
+        checkSaveOrUpdate();
         getDao().saveOrUpdateAll(entities);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<E> list(Criterion... restrictions) {
+        checkList();
         return (List<E>) getDao().list(restrictions);
     }
 
     @Transactional(readOnly = false)
     @Override
     public void saveOrUpdateAll(Collection<? extends E> entities) {
+        checkSaveOrUpdate();
         getDao().saveOrUpdateAll(entities);
     }
 
     @Transactional(readOnly = false)
     @Override
     public void delete(Object entity) {
+        checkDelete();
         getDao().delete(entity);
     }
 
     @Transactional(readOnly = true)
     @Override
     public E get(K key) {
+        checkLoad();
         return (E) getDao().get(key);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<E> list(Order order, Criterion... restrictions) {
+        checkList();
         return (List<E>) getDao().list(order, restrictions);
     }
 
     @Transactional(readOnly = true)
     @Override
     public E _load(K id) {
+        checkLoad();
         // XXX the lazy-init entity returned seems not usable outside of Tx.
         return (E) getDao()._load(id);
     }
@@ -167,6 +179,7 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Override
     public E retrieve(K key, LockMode lockMode)
             throws DataAccessException {
+        checkLoad();
         return (E) getDao().retrieve(key, lockMode);
     }
 
@@ -174,6 +187,7 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Override
     public void update(E entity, LockMode lockMode)
             throws DataAccessException {
+        checkUpdate();
         getDao().update(entity, lockMode);
     }
 
@@ -186,12 +200,14 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = true)
     @Override
     public List<E> list(int offset, int limit, Criterion... restrictions) {
+        checkList();
         return (List<E>) getDao().list(offset, limit, restrictions);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<E> list() {
+        checkList();
         return (List<E>) getDao().list();
     }
 
@@ -199,6 +215,7 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Override
     public void delete(Object entity, LockMode lockMode)
             throws DataAccessException {
+        checkDelete();
         getDao().delete(entity, lockMode);
     }
 
@@ -206,6 +223,7 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Override
     public E merge(E entity)
             throws DataAccessException {
+        checkMerge();
         return (E) getDao().merge(entity);
     }
 
@@ -232,48 +250,56 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = true)
     @Override
     public List<E> list(Order order, int offset, int limit, Criterion... restrictions) {
+        checkList();
         return (List<E>) getDao().list(order, offset, limit, restrictions);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<E> list(int offset, int limit, DetachedCriteria criteria) {
+        checkList();
         return (List<E>) getDao().list(offset, limit, criteria);
     }
 
     @Transactional(readOnly = true)
     @Override
     public int count(Criterion... restrictions) {
+        checkCount();
         return getDao().count(restrictions);
     }
 
     @Transactional(readOnly = false)
     @Override
     public void delete(K id) {
+        checkDelete();
         getDao().delete(id);
     }
 
     @Transactional(readOnly = false)
     @Override
     public void deleteAll(Criterion... restrictions) {
+        checkDelete();
         getDao().deleteAll(restrictions);
     }
 
     @Transactional(readOnly = false)
     @Override
     public void deleteByKey(K key) {
+        checkDelete();
         getDao().deleteByKey(key);
     }
 
     @Transactional(readOnly = false)
     @Override
     public void deleteAll() {
+        checkDelete();
         getDao().deleteAll();
     }
 
     @Transactional(readOnly = true)
     @Override
     public int count() {
+        checkCount();
         return getDao().count();
     }
 
@@ -293,6 +319,30 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     public E populate(ServletRequest request)
             throws BuildException {
         throw new UnsupportedOperationException("You should populate using the explicit DAO class.");
+    }
+
+    protected void checkLoad() {
+    }
+
+    protected void checkCount() {
+    }
+
+    protected void checkList() {
+    }
+
+    protected void checkMerge() {
+    }
+
+    protected void checkSave() {
+    }
+
+    protected void checkUpdate() {
+    }
+
+    protected void checkSaveOrUpdate() {
+    }
+
+    protected void checkDelete() {
     }
 
 }
