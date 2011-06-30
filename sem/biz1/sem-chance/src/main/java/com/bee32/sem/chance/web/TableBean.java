@@ -31,7 +31,7 @@ public class TableBean
     }
 
     public void findMaterial() {
-        if (PriceViewBean.materialPattern != null) {
+        if (!PriceViewBean.materialPattern.isEmpty()) {
             String pattern = PriceViewBean.materialPattern;
             List<String> temp = new ArrayList<String>();
             for (String s : material) {

@@ -15,21 +15,24 @@
 
     <ui:define name="title">报价管理</ui:define>
 
+        <h:outputStylesheet>
+            .align_top {
+                vertical-align:top;
+            }
+        </h:outputStylesheet>
+
     <ui:define name="content">
         <h:form id="main">
 
-            <p:panel style="border:2px solid black;width:600px;">
+            <p:panel style="border:2px solid black;vertical-align:top;">
 
-
-
-            </p:panel>
-
-
-
-            <t:panelGrid columns="2">
+            <t:panelGrid columns="2" rowClasses="align_top">
+                <t:panelGroup colspan="2">
                 <p:inputText id="materialPattern" value="#{priceViewBean.materialPattern}" />
                 <p:commandButton value="按物料查找" actionListener="#{tableBean.findMaterial}" ajax="true"
                     update="main:materialList" />
+                </t:panelGroup>
+
 
                 <p:dataTable id="materialList" var="item" value="#{tableBean.material}" style="width:300px;">
                     <p:column>
@@ -43,23 +46,12 @@
                             操作
                             </f:facet>
                         <p:commandButton update="" oncomplete="carDialog.show()" image="ui-icon ui-icon-search"
-                            title="View">
+                            title="察看价格">
                             <f:setPropertyActionListener value="#{material}" target="#{tableBean.selectedMaterial}" />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
-                <h:inputHidden value="" />
 
-            </t:panelGrid>
-
-
-        </h:form>
-
-
-
-        <h:form id="PriceDetail">
-            <t:panelGroup>
-                <p:commandButton value="更新价格" onclick="updatePrice.show()" />
                 <p:dataTable id="qdList" var="quotationDetail" value="" style="width:500px;">
                     <p:column>
                         <f:facet name="header">
@@ -80,6 +72,23 @@
                         <h:outputText value="quotationDetail.price" />
                     </p:column>
                 </p:dataTable>
+                <h:inputHidden value="" />
+
+
+            </t:panelGrid>
+
+            </p:panel>
+
+            <t:newspaperTable></t:newspaperTable>
+
+        </h:form>
+
+
+
+        <h:form id="PriceDetail">
+            <t:panelGroup>
+                <p:commandButton value="更新价格" onclick="updatePrice.show()" />
+
             </t:panelGroup>
 
 
@@ -99,7 +108,7 @@
                     <p:inputText id="remark" value="#{priceViewBean.remark}" />
 
                     <p:commandButton value="增加" />
-                    <p:commandButton value="取消" />
+                    <p:commandButton value="取消" onclick="updatePrice.hide();" />
                 </t:panelGrid>
             </p:dialog>
 
