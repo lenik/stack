@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
+import com.bee32.icsf.principal.Role;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.event.entity.Event;
@@ -77,7 +78,7 @@ public class SEMEventSamples
         killAngel.setBeginTime(new Date(System.currentTimeMillis() + 10));
         killAngel.setObservers(Arrays.asList(//
                 IcsfPrincipalSamples.solaRobots, //
-                IcsfPrincipalSamples.adminRole));
+                Role.adminRole));
     }
 
     @Override

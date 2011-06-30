@@ -1,6 +1,7 @@
 package com.bee32.icsf.access.alt;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
+import com.bee32.icsf.principal.Role;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 
@@ -15,7 +16,7 @@ public class R_ACLSamples
 
     public R_ACLSamples() {
         admin_all = new R_ACE("ap:",//
-                IcsfPrincipalSamples.adminRole, "Slcdrwx");
+                Role.adminRole, "Slcdrwx");
 
         service_tom_x = new R_ACE("ap:TestService.", //
                 IcsfPrincipalSamples.tom, "x");

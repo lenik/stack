@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.icsf.access.alt.R_ACE;
+
 @Entity
 @DiscriminatorValue("U")
 public class User
@@ -119,5 +121,10 @@ public class User
         super.detach();
         return this;
     }
+
+    public static User admin = new User("admin", null, Role.adminRole);
+    public static User guest = new User("guest", null, Role.guestRole);
+    public static R_ACE adminApAll = new R_ACE("ap:", admin, "Srwxlcd");
+    public static R_ACE adminEntityAll = new R_ACE("entity:", admin, "Srwxlcd");
 
 }

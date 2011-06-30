@@ -68,7 +68,7 @@ public class SEMPeopleSamples
         abcRAD.setInheritedGroup(abcCorp);
         abcCorp.getDerivedGroups().add(abcRAD);
 
-        abcRAD.setOwner(IcsfPrincipalSamples.admin);
+        abcRAD.setOwner(User.admin);
 
         // admin.setPasswordByString("");
 

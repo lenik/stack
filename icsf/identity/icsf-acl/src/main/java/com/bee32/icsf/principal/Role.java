@@ -100,4 +100,7 @@ public class Role
         return this;
     }
 
+    public static Role adminRole = new Role("adminRole");
+    public static Role guestRole = new Role("guestRole");
+
 }

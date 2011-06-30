@@ -2,7 +2,6 @@ package com.bee32.icsf.principal;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import com.bee32.icsf.access.alt.R_ACE;
 import com.bee32.icsf.login.PrivateQuestion;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
@@ -21,18 +20,13 @@ public class IcsfPrincipalSamples
     public static Group solaRobots = new Group("Sola Robots Club");
     public static Group sunCorp = new Group("Sun Corp");
 
-    public static Role adminRole = new Role("Administrator");
-
     public static Role registeredRole = new Role("Registered User");
 
-    public static User admin = new User("admin", null, adminRole);
-    public static User eva = new User("Eva", null, adminRole);
+    public static User eva = new User("Eva", null, Role.adminRole);
     public static User wallE = new User("Wall-E", solaRobots, registeredRole);
     public static User alice = new User("Alice", null, null);
-    public static User tom = new User("Tom", null, adminRole);
+    public static User tom = new User("Tom", null, Role.adminRole);
     public static User kate = new User("Kate", sunCorp, registeredRole);
-
-    public static R_ACE adminApAll = new R_ACE("ap:", admin, "Srwx");
 
     static {
         solaRobots.setOwner(eva);
@@ -54,14 +48,15 @@ public class IcsfPrincipalSamples
     @Override
     protected void preamble() {
         addNormalSample(sunCorp, solaRobots);
-        addNormalSample(adminRole, registeredRole);
-        addNormalSample(admin, eva, wallE, alice, tom, kate);
-        addNormalSample(adminApAll);
+        addNormalSample(Role.adminRole, registeredRole);
+        addNormalSample(User.admin, eva, wallE, alice, tom, kate);
+        addNormalSample(User.adminApAll);
+        addNormalSample(User.adminEntityAll);
 
         addNormalSample(PrivateQuestion.DADS_NAME);
         addNormalSample(PrivateQuestion.MOMS_NAME);
 
-        addNormalSample(new UserPassword(admin, sha1("Bee32")));
+        addNormalSample(new UserPassword(User.admin, sha1("Bee32")));
         addNormalSample(new UserPassword(eva, sha1("EVA")));
         addNormalSample(new UserPassword(wallE, sha1("WALL-E")));
         addNormalSample(new UserPassword(alice, sha1("ALICE")));
