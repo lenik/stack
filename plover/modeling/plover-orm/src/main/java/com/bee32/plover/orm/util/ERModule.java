@@ -6,8 +6,8 @@ import javax.free.IllegalUsageException;
 
 import com.bee32.plover.arch.Module;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.EntityDao;
 import com.bee32.plover.orm.entity.EntityRepository;
+import com.bee32.plover.orm.entity.GenericEntityDao;
 import com.bee32.plover.orm.entity.IEntityRepo;
 
 public abstract class ERModule
@@ -70,7 +70,7 @@ public abstract class ERModule
      */
     protected <E extends Entity<K>, K extends Serializable> //
     void exportEntityByHibernate(Class<E> entityType, Class<K> keyType) {
-        IEntityRepo<E, K> repository = new EntityDao<E, K>(entityType, keyType);
+        IEntityRepo<E, K> repository = new GenericEntityDao<E, K>(entityType, keyType);
         export(repository);
     }
 

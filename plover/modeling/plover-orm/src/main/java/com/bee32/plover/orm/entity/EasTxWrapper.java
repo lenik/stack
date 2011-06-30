@@ -24,15 +24,15 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
         extends Component
         implements IEntityAccessService<E, K> {
 
-    EntityDao<? super E, ? super K> dao;
+    EntityDao<E, K> dao;
 
-    public EntityDao<? super E, ? super K> getDao() {
+    public EntityDao<E, K> getDao() {
         if (dao == null)
             throw new IllegalStateException("No DAO bound.");
         return dao;
     }
 
-    public void setDao(EntityDao<? super E, ? super K> dao) {
+    public void setDao(EntityDao<E, K> dao) {
         if (dao == null)
             throw new NullPointerException("dao");
         this.dao = dao;
@@ -70,6 +70,12 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     public E getUnique(Criterion... restrictions) {
         checkLoad();
         return (E) getDao().getUnique(restrictions);
+    }
+
+    @Override
+    public E getFirst(Criterion... restrictions) {
+        checkLoad();
+        return getDao().getFirst(restrictions);
     }
 
     @Transactional(readOnly = true)

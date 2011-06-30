@@ -32,7 +32,7 @@ public class CommonDataManager {
     public <E extends Entity<? extends K>, K extends Serializable> //
     IEntityAccessService<E, K> access(Class<? extends E> entityType) {
 
-        EntityDao<? super E, ? super K> dao = daoManager.getNearestDao(entityType);
+        EntityDao<E, K> dao = daoManager.getDaoFor(entityType);
         if (dao == null)
             throw new IllegalUsageException("No suitable EntityDao for entity " + entityType);
 

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -19,6 +21,8 @@ import com.bee32.plover.orm.entity.GenericEntityDao;
 @Lazy
 public class DaoManager
         implements ApplicationContextAware {
+
+    static Logger logger = LoggerFactory.getLogger(DaoManager.class);
 
     static Map<Class<?>, EntityDao<?, ?>> daoMap;
     static Map<Class<?>, EntityDao<?, ?>> daoCache;
@@ -42,41 +46,45 @@ public class DaoManager
         }
     }
 
-    static boolean strictMode = true;
+    public <E extends Entity<? extends K>, K extends Serializable> EntityDao<E, K> //
+    getDaoFor(Class<? extends E> entityType) {
+
+        EntityDao<E, K> dao = null;
+
+        dao = (EntityDao<E, K>) daoMap.get(entityType);
+        if (dao == null) {
+            logger.warn("DAO for " + entityType + " isn't defined, create in default manner.");
+
+            GenericEntityDao<E, K> genericDao = applicationContext.getBean(GenericEntityDao.class);
+
+            @SuppressWarnings("unchecked")
+            Class<E> _entityType = (Class<E>) entityType;
+            Class<K> _keyType = EntityUtil.getKeyType(_entityType);
+
+            genericDao.setEntityType(_entityType);
+            genericDao.setKeyType(_keyType);
+
+            dao = genericDao;
+            daoMap.put(entityType, dao);
+        }
+
+        return dao;
+    }
 
     public <E extends Entity<? extends K>, K extends Serializable> EntityDao<? super E, ? super K> //
     getNearestDao(Class<? extends E> entityType) {
-
         EntityDao<? super E, ? super K> dao = null;
 
-        if (strictMode) {
-            dao = (EntityDao<? super E, ? super K>) daoMap.get(entityType);
-            if (dao == null) {
-                GenericEntityDao<E, K> genericDao = applicationContext.getBean(GenericEntityDao.class);
+        Class<?> baseType = (Class<?>) entityType;
+        while (baseType != null) {
 
-                @SuppressWarnings("unchecked")
-                Class<E> _entityType = (Class<E>) entityType;
-                Class<K> _keyType = EntityUtil.getKeyType(_entityType);
+            dao = (EntityDao<? super E, ? super K>) daoMap.get(baseType);
+            if (dao != null)
+                break;
 
-                genericDao.setEntityType(_entityType);
-                genericDao.setKeyType(_keyType);
-
-                dao = genericDao;
-                daoMap.put(entityType, dao);
-            }
-
-        } else {
-            Class<?> baseType = (Class<?>) entityType;
-            while (baseType != null) {
-
-                dao = (EntityDao<? super E, ? super K>) daoMap.get(baseType);
-                if (dao != null)
-                    break;
-
-                if (baseType == Entity.class)
-                    break;
-                baseType = baseType.getSuperclass();
-            }
+            if (baseType == Entity.class)
+                break;
+            baseType = baseType.getSuperclass();
         }
 
         return dao;

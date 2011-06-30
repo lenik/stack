@@ -8,6 +8,22 @@ import org.springframework.context.annotation.Scope;
 public class GenericEntityDao<E extends Entity<? extends K>, K extends Serializable>
         extends EntityDao<E, K> {
 
+    public GenericEntityDao() {
+        super();
+    }
+
+    public GenericEntityDao(Class<E> entityType, Class<K> keyType) {
+        super(entityType, keyType);
+    }
+
+    public GenericEntityDao(String name, Class<E> entityType, Class<K> keyType) {
+        super(name, entityType, keyType);
+    }
+
+    public GenericEntityDao(String name) {
+        super(name);
+    }
+
     public void setEntityType(Class<E> entityType) {
         if (entityType == null)
             throw new NullPointerException("entityType");
