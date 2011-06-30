@@ -43,7 +43,7 @@ public abstract class EntityRepository<E extends IEntity<? extends K>, K extends
     }
 
     @Override
-    public Class<? extends E> getEntityType() {
+    public Class<E> getEntityType() {
         return entityType;
     }
 

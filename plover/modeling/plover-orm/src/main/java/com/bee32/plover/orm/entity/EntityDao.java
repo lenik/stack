@@ -17,6 +17,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
@@ -30,6 +31,7 @@ import com.bee32.plover.orm.dao.HibernateTemplate;
  */
 @ComponentTemplate
 @Lazy
+@Scope("prototype")
 public class EntityDao<E extends Entity<? extends K>, K extends Serializable>
         extends EntityRepository<E, K>
         implements IEntityAccessService<E, K> {
