@@ -25,6 +25,16 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
     E getUnique(Criterion... restrictions);
 
     /**
+     * Get the first result with restrictions.
+     *
+     * @param restrictions
+     *            Restrictions to the selection. (AND).
+     * @return The first matched entity, or <code>null</code> if none matched.
+     * @see #getUnique(Criterion...)
+     */
+    E getFirst(Criterion... restrictions);
+
+    /**
      * List entities with restrictions.
      *
      * @param restrictions

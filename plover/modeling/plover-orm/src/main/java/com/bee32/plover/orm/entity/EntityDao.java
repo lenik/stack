@@ -277,6 +277,17 @@ public class EntityDao<E extends Entity<? extends K>, K extends Serializable>
     }
 
     @Override
+    public E getFirst(Criterion... restrictions) {
+        Criteria criteria = createCriteria(restrictions);
+        criteria.setMaxResults(1);
+        List<E> list = criteria.list();
+        if (list.isEmpty())
+            return null;
+        else
+            return list.get(0);
+    }
+
+    @Override
     public final List<E> list(Criterion... restrictions) {
         return list(null, restrictions);
     }
