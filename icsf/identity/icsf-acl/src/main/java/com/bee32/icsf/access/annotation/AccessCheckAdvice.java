@@ -1,4 +1,4 @@
-package com.bee32.sem.user.util;
+package com.bee32.icsf.access.annotation;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -19,6 +19,7 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.alt.R_Authority;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
+import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dao.UserDao;

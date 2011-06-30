@@ -1,4 +1,4 @@
-package com.bee32.sem.user.util;
+package com.bee32.icsf.login;
 
 import javax.servlet.http.HttpSession;
 
