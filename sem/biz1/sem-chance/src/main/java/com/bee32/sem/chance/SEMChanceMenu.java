@@ -26,9 +26,10 @@ public class SEMChanceMenu
     static MenuNode actionStyle = entry(CHANCE_DICT, "actionStyle", getDictIndex(ChanceActionStyle.class));
     static MenuNode stage = entry(CHANCE_DICT, "stage", getDictIndex(ChanceStage.class));
 
-    static MenuNode chance = entry(CHANCE, "chance", CHANCE_.join("chance/index-rich.do"));
-    static MenuNode action = entry(CHANCE, "action", CHANCE_.join("action/index-rich.do"));
-    static MenuNode competitor = entry(CHANCE, "competitor", CHANCE_.join("competitor/index.do"));
+    static MenuNode chance = entry(CHANCE, "chance", CHANCE_.join("chance/index-rich.jsf"));
+    static MenuNode action = entry(CHANCE, "action", CHANCE_.join("action/index-rich.jsf"));
+
+// static MenuNode competitor = entry(CHANCE, "competitor", CHANCE_.join("competitor/index.jsf "));
 
     @Override
     protected void preamble() {
