@@ -3,8 +3,8 @@ package com.bee32.sem.people.util;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
+import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.sem.user.util.SessionLoginInfo;
 
 public class PeopleCriteria {
 

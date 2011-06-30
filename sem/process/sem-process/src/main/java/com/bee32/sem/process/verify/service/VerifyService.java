@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.EnterpriseService;
@@ -25,7 +26,6 @@ import com.bee32.sem.process.verify.builtin.dao.VerifyPolicyDao;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.util.VerifiableEntity;
 import com.bee32.sem.process.verify.util.VerifiableEntityAccessor;
-import com.bee32.sem.user.util.SessionLoginInfo;
 
 public class VerifyService
         extends EnterpriseService

@@ -11,6 +11,8 @@ import com.bee32.icsf.access.resource.AccessPoint;
 
 /**
  * Checked access point.
+ *
+ * @see AccessCheckAdvice
  */
 @Documented
 @Inherited

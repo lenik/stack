@@ -15,6 +15,7 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.chance.dto.ChanceActionDto;
@@ -32,7 +33,6 @@ import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
-import com.bee32.sem.user.util.SessionLoginInfo;
 
 /**
  *

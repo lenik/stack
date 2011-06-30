@@ -5,9 +5,9 @@ import java.util.Date;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
+import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.sem.chance.entity.Chance;
-import com.bee32.sem.user.util.SessionLoginInfo;
 
 public class ChanceCriteria {
 

@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 
+import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
@@ -15,7 +16,6 @@ import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.verify.IVerifyContext;
 import com.bee32.sem.process.verify.service.VerifyService;
-import com.bee32.sem.user.util.SessionLoginInfo;
 
 public class VerifyHandler<E extends VerifiableEntity<K, C>, //
 /*        */K extends Number, C extends IVerifyContext, Dto extends VerifiableEntityDto<E, K>>

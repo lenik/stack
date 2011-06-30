@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.context.ApplicationContext;
 
+import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
@@ -19,7 +20,6 @@ import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.restful.DispatchServlet;
 import com.bee32.plover.restful.RESTfulConfig;
 import com.bee32.plover.zk.test.ZkTestCase;
-import com.bee32.sem.user.util.SessionLoginInfo;
 
 /**
  * 关于调试配置：
