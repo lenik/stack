@@ -59,6 +59,8 @@ public final class Permission
     }
 
     public boolean implies(int bits) {
+        if (isAdmin())
+            return true;
         int and = this.bits & bits;
         return and == bits;
     }
