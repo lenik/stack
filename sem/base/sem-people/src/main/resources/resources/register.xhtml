@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:pc="http://bee32.com/plover/core"
+      xmlns:sem="http://bee32.com/sem/functions"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+</head>
+
+<ui:composition template="/template/primefaces.xhtml">
+
+    <ui:define name="title">用户注册</ui:define>
+
+
+    <ui:define name="content">
+
+        <h:outputStylesheet>
+            .detail_col_title {
+                width:150px;
+                text-align: right;
+            }
+
+            .detail_col_value {
+            }
+        </h:outputStylesheet>
+
+		<h:outputScript>
+			function calcDigest() {
+				var p = $.sha1($("#passPlain").val());
+
+				jQuery("#registerForm\\:password").val(p);
+			}
+
+			function calcDigestConfirm() {
+				var p = $.sha1($("#passPlainConfirm").val());
+
+				$("#registerForm\\:passwordConfirm").val(p);
+			}
+		</h:outputScript>
+
+		<h:form id="registerForm">
+            <p:growl id="growl" showDetail="true" />
+
+            <p:panel header="用户注册">
+                <h:panelGrid columns="2" columnClasses="detail_col_title, detail_col_value">
+
+                    <h:outputLabel for="username" value="用户名"/>
+                    <p:inputText id="username" value="#{registerBean.username}"/>
+
+                    <h:outputLabel for="fullname" value="全名"/>
+                    <p:inputText id="fullname" value="#{registerBean.fullname}"/>
+
+                    <h:outputLabel for="password" value="密码"/>
+                    <t:panelGroup>
+                        <input id="passPlain" type="password" onchange="calcDigest();" />
+                        <h:inputHidden id="password" value="#{registerBean.password}" />
+                    </t:panelGroup>
+
+					<h:outputLabel for="passwordConfirm" value="密码确认" />
+					<t:panelGroup>
+						<input id="passPlainConfirm" type="password"
+							onchange="calcDigestConfirm();" />
+						<h:inputHidden id="passwordConfirm"
+							value="#{registerBean.passwordConfirm}" />
+					</t:panelGroup>
+
+
+					<t:panelGroup colspan="2">
+						<p:commandButton value="注册" update="registerForm"
+							actionListener="#{registerBean.register}" />
+					</t:panelGroup>
+				</h:panelGrid>
+
+            </p:panel>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>
+</html>
