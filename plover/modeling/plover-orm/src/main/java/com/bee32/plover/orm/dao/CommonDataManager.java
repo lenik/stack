@@ -37,9 +37,10 @@ public class CommonDataManager {
             throw new IllegalUsageException("No suitable EntityDao for entity " + entityType);
 
         EasTxWrapper<E, K> wrapper = applicationContext.getBean(EasTxWrapper.class);
+        // Class<?> etwc = wrapper.getClass();
+        // logger.debug("ETW: " + etwc + " (" + System.identityHashCode(etwc) + ")");
         wrapper.setDao(dao);
 
         return wrapper;
     }
-
 }
