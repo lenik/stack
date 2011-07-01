@@ -16,6 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
@@ -38,7 +39,6 @@ public class Chance
     List<ChanceParty> parties = new ArrayList<ChanceParty>();
     List<ChanceAction> actions = new ArrayList<ChanceAction>();
 
-    // Redundant
     ChanceStage stage = ChanceStage.INIT;
 
     /**
@@ -139,6 +139,7 @@ public class Chance
      */
     @ManyToOne
     @JoinColumn(nullable = false)
+    @Redundant
     public ChanceStage getStage() {
         return stage;
     }
@@ -147,8 +148,6 @@ public class Chance
      * 机会进度只能通过日志项来改变，本对象中的进度为冗余。
      */
     public void setStage(ChanceStage stage) {
-// if (stage == null)
-// throw new NullPointerException("stage");
         this.stage = stage;
     }
 
