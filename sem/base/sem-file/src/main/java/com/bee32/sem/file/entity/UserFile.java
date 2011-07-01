@@ -12,6 +12,9 @@ import org.hibernate.annotations.CollectionOfElements;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityAuto;
 
+/**
+ * 用户文件。
+ */
 @Entity
 public class UserFile
         extends EntityAuto<Long> {

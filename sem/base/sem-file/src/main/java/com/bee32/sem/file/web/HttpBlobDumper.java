@@ -116,7 +116,7 @@ public class HttpBlobDumper {
          * Stream the content.
          */
         try {
-            InputStream in = blob.readContent();
+            InputStream in = blob.newInputStream();
             ServletOutputStream out = response.getOutputStream();
 
             InputStreamSource source = new InputStreamSource(in);
