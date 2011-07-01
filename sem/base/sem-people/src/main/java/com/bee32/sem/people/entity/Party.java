@@ -241,7 +241,7 @@ public abstract class Party
     }
 
     @OneToMany(mappedBy = "party")
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade({ CascadeType.ALL })
     public List<Contact> getContacts() {
         return contacts;
     }
