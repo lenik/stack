@@ -1,13 +1,12 @@
 package com.bee32.sem.file;
 
 import com.bee32.plover.rtx.location.Location;
-import com.bee32.sem.file.web.FileBlobController;
 import com.bee32.sem.frame.menu.MenuContribution;
 
 public class SEMFileMenu
         extends MenuContribution {
 
-    Location FILE = WEB_APP.join(FileBlobController.PREFIX);
+    static Location FILE_ = WEB_APP.join(SEMFileModule.PREFIX_);
 
     @Override
     protected void preamble() {
