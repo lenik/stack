@@ -1,11 +1,15 @@
 package com.bee32.sem.store.dto;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.dict.NameDictDto;
+import com.bee32.sem.store.entity.Unit;
 import com.bee32.sem.store.entity.UnitConv;
 
 public class UnitConvDto
@@ -31,7 +35,12 @@ public class UnitConvDto
         from = mref(UnitDto.class, source.getFrom());
 
         if (selection.contains(MAP)) {
-            // marshal map.
+            ratioMap = new HashMap<UnitDto, Double>();
+            for (Entry<Unit, Double> entry : source.getRatioMap().entrySet()) {
+                UnitDto unit = mref(UnitDto.class, entry.getKey());
+                double ratio = entry.getValue();
+                ratioMap.put(unit, ratio);
+            }
         }
     }
 
@@ -40,7 +49,13 @@ public class UnitConvDto
         merge(target, "from", from);
 
         if (selection.contains(MAP)) {
-            // ....
+            Map<Unit, Double> _ratioMap = new HashMap<Unit, Double>();
+            for (Entry<UnitDto, Double> entry : ratioMap.entrySet()) {
+                Unit _unit = entry.getKey().unmarshal(getSession());
+                double ratio = entry.getValue();
+                _ratioMap.put(_unit, ratio);
+            }
+            target.setRatioMap(_ratioMap);
         }
     }
 
@@ -50,7 +65,7 @@ public class UnitConvDto
         from = new UnitDto().ref(map.getString("from"));
 
         if (selection.contains(MAP)) {
-            // TODO
+            throw new NotImplementedException();
         }
     }
 

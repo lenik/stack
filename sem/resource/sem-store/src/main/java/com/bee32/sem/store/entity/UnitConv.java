@@ -22,7 +22,7 @@ public class UnitConv
     private static final long serialVersionUID = 1L;
 
     Unit from;
-    Map<Unit, Double> ratioMap;
+    Map<Unit, Double> ratioMap = new HashMap<Unit, Double>();
 
     public UnitConv() {
         super();
@@ -47,21 +47,16 @@ public class UnitConv
     }
 
     @CollectionOfElements
-    @JoinTable(name = "RatioMap")
+    @JoinTable(name = "UnitRatioMap")
     @MapKey(name = "unit")
     @Column(name = "ratio", nullable = false, precision = 12, scale = 5)
     public Map<Unit, Double> getRatioMap() {
-        if (ratioMap == null) {
-            synchronized (this) {
-                if (ratioMap == null) {
-                    ratioMap = new HashMap<Unit, Double>();
-                }
-            }
-        }
         return ratioMap;
     }
 
     public void setRatioMap(Map<Unit, Double> ratioMap) {
+        if (ratioMap == null)
+            throw new NullPointerException("ratioMap");
         this.ratioMap = ratioMap;
     }
 
@@ -75,7 +70,7 @@ public class UnitConv
     public Double getRatio(Unit toUnit) {
         if (toUnit == null)
             throw new NullPointerException("toUnit");
-        return getRatioMap().get(toUnit);
+        return ratioMap.get(toUnit);
     }
 
     /**
@@ -89,7 +84,7 @@ public class UnitConv
     public void setRatio(Unit toUnit, double ratio) {
         if (toUnit == null)
             throw new NullPointerException("toUnit");
-        getRatioMap().put(toUnit, ratio);
+        ratioMap.put(toUnit, ratio);
     }
 
 }

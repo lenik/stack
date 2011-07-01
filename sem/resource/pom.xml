@@ -14,6 +14,7 @@
     <modules>
         <module>sem-asset</module>
         <module>sem-inventory</module>
+        <module>sem-material</module>
         <module>sem-store</module>
     </modules>
     <name>SEM :: Resource</name>
