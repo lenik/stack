@@ -32,21 +32,25 @@ public class MaterialCategory
         this.parent = parent;
     }
 
-    @OneToMany
+    @OneToMany(mappedBy = "parent")
     public List<MaterialCategory> getChildren() {
         return children;
     }
 
     public void setChildren(List<MaterialCategory> children) {
+        if (children == null)
+            throw new NullPointerException("children");
         this.children = children;
     }
 
-    @OneToMany
+    @OneToMany(mappedBy = "material")
     public List<Material> getMaterials() {
         return materials;
     }
 
     public void setMaterials(List<Material> materials) {
+        if (materials == null)
+            throw new NullPointerException("materials");
         this.materials = materials;
     }
 
