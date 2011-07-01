@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.bee32.plover.orm.web.basic.BasicEntityController;
 import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.sem.file.SEMFileModule;
-import com.bee32.sem.file.dto.FileBlobDto;
-import com.bee32.sem.file.entity.FileBlob;
+import com.bee32.sem.file.dto.UserFileDto;
+import com.bee32.sem.file.entity.UserFile;
 
-@RequestMapping(FileBlobController.PREFIX + "/*")
-public class FileBlobController
-        extends BasicEntityController<FileBlob, String, FileBlobDto> {
+@RequestMapping(UserFileController.PREFIX + "/*")
+public class UserFileController
+        extends BasicEntityController<UserFile, Long, UserFileDto> {
 
     public static final String PREFIX = SEMFileModule.PREFIX + "/blob";
 
@@ -24,14 +24,14 @@ public class FileBlobController
             throws BeansException {
         super.initController();
 
-        addHandler("view", /*       */new FileBlobViewHandler(entityType));
-        addHandler("download", /*   */new FileBlobViewHandler(entityType));
+        addHandler("view", /*       */new UserFileViewHandler(entityType));
+        addHandler("download", /*   */new UserFileViewHandler(entityType));
     }
 
     @Override
-    protected void fillDataRow(DataTableDxo tab, FileBlobDto dto) {
-        tab.push(dto.getDigest());
-        tab.push(dto.getLabel());
+    protected void fillDataRow(DataTableDxo tab, UserFileDto dto) {
+        tab.push(dto.getFilename());
+        tab.push(dto.getSubject());
         tab.push(dto.getCreatedDate());
         tab.push(dto.getLastModified());
     }

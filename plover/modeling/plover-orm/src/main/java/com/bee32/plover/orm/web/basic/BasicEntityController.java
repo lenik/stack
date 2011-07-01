@@ -26,7 +26,12 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
 
     static Logger logger = LoggerFactory.getLogger(BasicEntityController.class);
 
+    protected final Class<E> entityType;
+
     // protected boolean _createOTF;
+    public BasicEntityController() {
+        entityType = ClassUtil.infer1(getClass(), BasicEntityController.class, 0);
+    }
 
     class Impl
             implements //
@@ -101,8 +106,6 @@ public abstract class BasicEntityController<E extends Entity<K>, K extends Seria
             }
 
         }
-
-        Class<E> entityType = ClassUtil.infer1(getClass(), BasicEntityController.class, 0);
 
         addHandler("index", /*      */new IndexHandler<E, K>(entityType));
         addHandler("data", /*       */new DataHandler<E, K>(entityType, impl));
