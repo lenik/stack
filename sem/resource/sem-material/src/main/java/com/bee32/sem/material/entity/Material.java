@@ -5,10 +5,11 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CollectionOfElements;
 
-import com.bee32.sem.file.blob.FileBlob;
+import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.store.entity.Thing;
 
 @Entity
@@ -20,7 +21,7 @@ public class Material
     MaterialCategory category;
 
     List<MaterialAttribute> attributes = new ArrayList<MaterialAttribute>();
-    List<FileBlob> accessories = new ArrayList<FileBlob>();
+    List<UserFile> accessories = new ArrayList<UserFile>();
 
     // 常用属性。
     // 这些属性和单位还算无关。
@@ -41,6 +42,7 @@ public class Material
     /**
      * 物料附加属性。
      */
+    @OneToMany(mappedBy = "material")
     public List<MaterialAttribute> getAttributes() {
         return attributes;
     }
@@ -55,11 +57,11 @@ public class Material
      * 附件文件。
      */
     @CollectionOfElements
-    public List<FileBlob> getAccessories() {
+    public List<UserFile> getAccessories() {
         return accessories;
     }
 
-    public void setAccessories(List<FileBlob> accessories) {
+    public void setAccessories(List<UserFile> accessories) {
         if (accessories == null)
             throw new NullPointerException("accessories");
         this.accessories = accessories;
