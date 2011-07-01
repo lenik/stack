@@ -7,12 +7,12 @@ import javax.free.IFile;
 import javax.free.JavaioFile;
 import javax.free.SystemProperties;
 
-public class LocalFileContainer {
+public class LocalStorage {
 
     File contextFile;
     IFile context;
 
-    public LocalFileContainer(String homedir)
+    public LocalStorage(String homedir)
             throws IOException {
         if (homedir == null)
             throw new NullPointerException("homedir");
@@ -69,7 +69,7 @@ public class LocalFileContainer {
      * </ul>
      */
 
-    public static final LocalFileContainer INSTANCE;
+    public static final LocalStorage INSTANCE;
     static {
         String homedir = DEFAULT_FILE_HOME;
 
@@ -85,7 +85,7 @@ public class LocalFileContainer {
             throw new IllegalStateException("Bee32 file home dir isn't specified in any way.");
 
         try {
-            INSTANCE = new LocalFileContainer(homedir);
+            INSTANCE = new LocalStorage(homedir);
         } catch (IOException e) {
             throw new Error(e.getMessage(), e);
         }
