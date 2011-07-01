@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.entity.EntityBase;
 
 /**
  * 用户定义的物料属性。
@@ -53,6 +54,27 @@ public class MaterialAttribute
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    protected Boolean naturalEquals(EntityBase<Long> other) {
+        MaterialAttribute o = (MaterialAttribute) other;
+
+        if (material.equals(o.material))
+            return false;
+
+        if (name.equals(o.name))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        int hash = 0;
+        hash += material.hashCode();
+        hash += name.hashCode();
+        return hash;
     }
 
 }
