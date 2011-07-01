@@ -4,7 +4,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.digest.DigestEntityDto;
-import com.bee32.sem.file.blob.FileBlob;
+import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.util.ImageBlob;
 
 public class FileBlobDto
@@ -22,29 +22,22 @@ public class FileBlobDto
         super(selection);
     }
 
-    FileStoreDto<?> store;
-
-    String origPath;
-
     long length;
     byte[] header;
 
-    ImageBlob smallImage;
-    ImageBlob mediumImage;
+    ImageBlob thumbnail;
+    ImageBlob preview;
 
     @Override
     protected void _marshal(FileBlob source) {
-        origPath = source.getOrigPath();
         length = source.getLength();
         header = source.getHeader();
-        smallImage = source.getSmallImage();
-        mediumImage = source.getMediumImage();
+        thumbnail = source.getThumbnail();
+        preview = source.getPreview();
     }
 
     @Override
     protected void _unmarshalTo(FileBlob target) {
-        target.setOrigPath(origPath);
-
         if (selection.contains(CONTENT)) {
             // target.setFile(???)
         }
@@ -53,27 +46,9 @@ public class FileBlobDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-        origPath = map.getString("origPath");
-
         if (selection.contains(CONTENT)) {
             // length = map.getLong("length");
         }
-    }
-
-    public FileStoreDto<?> getStore() {
-        return store;
-    }
-
-    public void setStore(FileStoreDto<?> store) {
-        this.store = store;
-    }
-
-    public String getOrigPath() {
-        return origPath;
-    }
-
-    public void setOrigPath(String origPath) {
-        this.origPath = origPath;
     }
 
     public long getLength() {
@@ -89,23 +64,25 @@ public class FileBlobDto
     }
 
     public void setHeader(byte[] header) {
+        if (header == null)
+            throw new NullPointerException("header");
         this.header = header;
     }
 
-    public ImageBlob getSmallImage() {
-        return smallImage;
+    public ImageBlob getThumbnail() {
+        return thumbnail;
     }
 
-    public void setSmallImage(ImageBlob smallImage) {
-        this.smallImage = smallImage;
+    public void setThumbnail(ImageBlob thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
-    public ImageBlob getMediumImage() {
-        return mediumImage;
+    public ImageBlob getPreview() {
+        return preview;
     }
 
-    public void setMediumImage(ImageBlob mediumImage) {
-        this.mediumImage = mediumImage;
+    public void setPreview(ImageBlob preview) {
+        this.preview = preview;
     }
 
 }
