@@ -4,21 +4,22 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 
 @MappedSuperclass
 @Blue
-public class OrderItem
+public class OrderItem<T extends Thing<?>>
         extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    Order order;
+    Order<T> order;
 
     float quantity;
     float discount = 1.00f;
-    float price; // XXX Redundant.
+    float price;
 
     /**
      * 数量
@@ -67,6 +68,7 @@ public class OrderItem
      * 精度限制：小数点后4位数字。如果需要超出该精度，您应考虑为对应物品采用不同的装箱数量。
      */
     @Column(scale = 4)
+    @Redundant
     public float getPrice() {
         return price;
     }
