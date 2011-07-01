@@ -28,12 +28,15 @@ public class FileBlobDto
     ImageBlob thumbnail;
     ImageBlob preview;
 
+    int refCount;
+
     @Override
     protected void _marshal(FileBlob source) {
         length = source.getLength();
         header = source.getHeader();
         thumbnail = source.getThumbnail();
         preview = source.getPreview();
+        refCount = source.getRefCount();
     }
 
     @Override
@@ -83,6 +86,14 @@ public class FileBlobDto
 
     public void setPreview(ImageBlob preview) {
         this.preview = preview;
+    }
+
+    public int getRefCount() {
+        return refCount;
+    }
+
+    public void setRefCount(int refCount) {
+        this.refCount = refCount;
     }
 
 }
