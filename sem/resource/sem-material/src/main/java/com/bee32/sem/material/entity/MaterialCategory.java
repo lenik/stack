@@ -21,7 +21,7 @@ public class MaterialCategory
     List<MaterialCategory> children = new ArrayList<MaterialCategory>();
     List<Material> materials;
 
-    AutoCodingStyle autoCoding = AutoCodingStyle.NONE;
+    CodeGenerator codeGenerator = CodeGenerator.NONE;
 
     @ManyToOne
     public MaterialCategory getParent() {
@@ -50,22 +50,22 @@ public class MaterialCategory
         this.materials = materials;
     }
 
-    @Column(name = "autoCoding", nullable = false)
-    char getAutoCoding_() {
-        return autoCoding.getValue();
+    @Column(name = "codeGenerator", nullable = false)
+    char get_CodeGenerator() {
+        return codeGenerator.getValue();
     }
 
-    void setAutoCoding_(char autoCoding) {
-        // TODO autoCoding = ..
+    void set_CodeGeneratorVal(char _codeGenerator) {
+        codeGenerator = CodeGenerator.valueOf(_codeGenerator);
     }
 
     @Transient
-    public AutoCodingStyle getAutoCoding() {
-        return autoCoding;
+    public CodeGenerator getCodeGenerator() {
+        return codeGenerator;
     }
 
-    public void setAutoCoding(AutoCodingStyle autoCoding) {
-        this.autoCoding = autoCoding;
+    public void setCodeGenerator(CodeGenerator codeGenerator) {
+        this.codeGenerator = codeGenerator;
     }
 
 }
