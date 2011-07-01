@@ -3,8 +3,6 @@ package com.bee32.sem.file.util;
 import java.awt.Image;
 import java.awt.Toolkit;
 
-
-
 public class ImageBlob
         extends MimeBlob {
 
