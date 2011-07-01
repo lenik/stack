@@ -25,7 +25,11 @@ public abstract class DigestEntity
     @Id
     @Override
     public String getId() {
-        return digestEncoded;
+        try {
+            return getOrComputeDigest();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to compute the digest: " + e.getMessage(), e);
+        }
     }
 
     @Override
@@ -60,6 +64,7 @@ public abstract class DigestEntity
         digestValidated = null;
     }
 
+    @Transient
     protected String getOrComputeDigest()
             throws IOException {
         if (digestValidated == null) {
