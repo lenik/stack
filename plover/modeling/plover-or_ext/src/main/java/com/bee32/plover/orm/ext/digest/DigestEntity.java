@@ -133,7 +133,7 @@ public abstract class DigestEntity
         for (int i = 0; i < digest.length; i++) {
             byte byt = digest[i];
             char low = tab[byt & 0x0f];
-            char high = tab[byt >>> 4];
+            char high = tab[(byt >>> 4) & 0x0f];
             sb.append(high);
             sb.append(low);
         }
