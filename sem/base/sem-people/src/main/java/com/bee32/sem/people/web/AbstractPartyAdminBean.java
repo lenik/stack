@@ -15,10 +15,10 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.dto.AbstractPartyDto;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
-import com.bee32.sem.people.dto.PartyTagDto;
+import com.bee32.sem.people.dto.PartyTagnameDto;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.Party;
-import com.bee32.sem.people.entity.PartyTag;
+import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 
@@ -87,8 +87,8 @@ public abstract class AbstractPartyAdminBean
     }
 
     public List<SelectItem> getTags() {
-        List<PartyTag> partyTags = serviceFor(PartyTag.class).list();
-        List<PartyTagDto> partyTagDtos = DTOs.marshalList(PartyTagDto.class, partyTags);
+        List<PartyTagname> partyTags = serviceFor(PartyTagname.class).list();
+        List<PartyTagnameDto> partyTagDtos = DTOs.marshalList(PartyTagnameDto.class, partyTags);
         return UIHelper.selectItemsFromDict(partyTagDtos);
     }
 
@@ -204,12 +204,12 @@ public abstract class AbstractPartyAdminBean
         }
 
         if (party.getTags() == null) {
-            List<PartyTagDto> tags = new ArrayList<PartyTagDto>();
+            List<PartyTagnameDto> tags = new ArrayList<PartyTagnameDto>();
             party.setTags(tags);
         }
         for (String tagId : selectedTagsToAdd) {
-            PartyTag tag = loadEntity(PartyTag.class, tagId);
-            PartyTagDto t = DTOs.mref(PartyTagDto.class, tag);
+            PartyTagname tag = loadEntity(PartyTagname.class, tagId);
+            PartyTagnameDto t = DTOs.mref(PartyTagnameDto.class, tag);
 
             if (!party.getTags().contains(t))
                 party.getTags().add(t);
@@ -226,7 +226,7 @@ public abstract class AbstractPartyAdminBean
             return;
         }
 
-        for (PartyTagDto t : party.getTags()) {
+        for (PartyTagnameDto t : party.getTags()) {
             if (t.getId().equals(selectedTagId)) {
                 party.getTags().remove(t);
                 return;

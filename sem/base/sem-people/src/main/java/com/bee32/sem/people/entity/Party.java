@@ -46,7 +46,7 @@ public abstract class Party
 
     User owner;
 
-    Set<PartyTag> tags;
+    Set<PartyTagname> tags;
 
     String name;
     String fullName;
@@ -86,18 +86,18 @@ public abstract class Party
     @JoinTable(name = "PartyTags", //
     /*            */joinColumns = @JoinColumn(name = "party"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "tag"))
-    public Set<PartyTag> getTags() {
+    public Set<PartyTagname> getTags() {
         if (tags == null) {
             synchronized (this) {
                 if (tags == null) {
-                    tags = new HashSet<PartyTag>();
+                    tags = new HashSet<PartyTagname>();
                 }
             }
         }
         return tags;
     }
 
-    public void setTags(Set<PartyTag> tags) {
+    public void setTags(Set<PartyTagname> tags) {
         this.tags = tags;
     }
 

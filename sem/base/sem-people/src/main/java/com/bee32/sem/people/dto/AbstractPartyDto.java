@@ -32,7 +32,7 @@ public class AbstractPartyDto<E extends Party>
     String sid;
     String memo;
 
-    List<PartyTagDto> tags;
+    List<PartyTagnameDto> tags;
     List<ContactDto> contacts;
     List<PartyRecordDto> records;
 
@@ -47,7 +47,7 @@ public class AbstractPartyDto<E extends Party>
     @Override
     protected void _marshal(E source) {
         owner = mref(UserDto.class, 0, source.getOwner());
-        tags = marshalList(PartyTagDto.class, source.getTags(), true);
+        tags = marshalList(PartyTagnameDto.class, source.getTags(), true);
 
         name = source.getName();
         fullName = source.getFullName();
@@ -164,11 +164,11 @@ public class AbstractPartyDto<E extends Party>
         this.memo = memo;
     }
 
-    public List<PartyTagDto> getTags() {
+    public List<PartyTagnameDto> getTags() {
         return tags;
     }
 
-    public void setTags(List<PartyTagDto> tags) {
+    public void setTags(List<PartyTagnameDto> tags) {
         this.tags = tags;
     }
 

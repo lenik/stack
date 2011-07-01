@@ -16,7 +16,7 @@ import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgType;
-import com.bee32.sem.people.entity.PartyTag;
+import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
 import com.bee32.sem.people.entity.PersonSidType;
@@ -130,7 +130,7 @@ public class SEMPeopleSamples
         Calendar one77Birthday = Calendar.getInstance();
         one77Birthday.set(1909, 1, 1);
         bugatti.setBirthday(one77Birthday.getTime());
-        bugatti.setTags(Sets.newSet(PartyTag.CUSTOMER));
+        bugatti.setTags(Sets.newSet(PartyTagname.CUSTOMER));
 
         bentley.setFullName("Walter Owen Bentley");
         bentley.setNickName("Arnage");
@@ -139,7 +139,7 @@ public class SEMPeopleSamples
         Calendar bentleyBirthday = Calendar.getInstance();
         bentleyBirthday.set(1919, 7, 1);
         bentley.setBirthday(bentleyBirthday.getTime());
-        bentley.setTags(Sets.newSet(PartyTag.SUPPLIER));
+        bentley.setTags(Sets.newSet(PartyTagname.SUPPLIER));
 
         weiXiaoBao.setBirthday(bentleyBirthday.getTime());
         weiXiaoBao.setCensusRegister("北京市");
@@ -150,7 +150,7 @@ public class SEMPeopleSamples
         weiXiaoBao.setSex(Gender.MALE);
         weiXiaoBao.setSid("11010116541220517");
         weiXiaoBao.setSidType(PersonSidType.IDENTITYCARD);
-        weiXiaoBao.setTags(Sets.newSet(PartyTag.CUSTOMER));
+        weiXiaoBao.setTags(Sets.newSet(PartyTagname.CUSTOMER));
 
         Contact weiXiaoBaoHome = new Contact();
         weiXiaoBaoHome.setParty(weiXiaoBao);
@@ -194,9 +194,9 @@ public class SEMPeopleSamples
 
     @Override
     protected void preamble() {
-        addNormalSample(PartyTag.CUSTOMER);
-        addNormalSample(PartyTag.SUPPLIER);
-        addNormalSample(PartyTag.EMPLOYEE);
+        addNormalSample(PartyTagname.CUSTOMER);
+        addNormalSample(PartyTagname.SUPPLIER);
+        addNormalSample(PartyTagname.EMPLOYEE);
 
         addNormalSample(PersonSidType.IDENTITYCARD);
         addNormalSample(PersonSidType.PASSPORT);

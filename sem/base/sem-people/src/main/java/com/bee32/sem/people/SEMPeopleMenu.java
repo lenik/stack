@@ -9,7 +9,7 @@ import com.bee32.sem.frame.menu.MenuNode;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.PartyRecordCategory;
-import com.bee32.sem.people.entity.PartyTag;
+import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.entity.PersonSidType;
 
 public class SEMPeopleMenu
@@ -25,7 +25,7 @@ public class SEMPeopleMenu
     static MenuNode personAdmin = entry(PEOPLE, 10, "personAdmin", PEOPLE_.join("person/index-rich.jsf"));
     static MenuNode orgAdmin = entry(PEOPLE, 20, "orgAdmin", PEOPLE_.join("org/index-rich.jsf"));
 
-    static MenuNode partyTag = entry(SETTINGS, "partyTag", getDictIndex(PartyTag.class));
+    static MenuNode partyTag = entry(SETTINGS, "partyTag", getDictIndex(PartyTagname.class));
     static MenuNode personSidType = entry(SETTINGS, "personSidType", getDictIndex(PersonSidType.class));
     static MenuNode orgType = entry(SETTINGS, "orgType", getDictIndex(OrgType.class));
     static MenuNode contactCategory = entry(SETTINGS, "contactCategory", getDictIndex(ContactCategory.class));

@@ -47,7 +47,7 @@ public class DACL
         this.owner = owner;
     }
 
-    @OneToMany
+    @OneToMany(mappedBy = "dacl")
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<DACE> getEntries() {
         return entries;
