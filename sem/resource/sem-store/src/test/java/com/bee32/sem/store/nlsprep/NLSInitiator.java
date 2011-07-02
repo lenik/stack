@@ -4,8 +4,13 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.Reader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -14,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.free.Strings;
@@ -91,9 +97,21 @@ public class NLSInitiator {
 
     public static void dumpNLS(Map<String, ?> map, File file)
             throws IOException {
+
+        if (file.exists()) {
+            FileInputStream in = new FileInputStream(file);
+            Reader reader = new InputStreamReader(in, "utf-8");
+            Properties existing = new Properties();
+            existing.load(reader);
+            for (Object key : existing.keySet())
+                map.remove(key);
+        }
+
         System.out.println("Create " + file);
         file.getParentFile().mkdirs();
-        PrintStream out = new PrintStream(file, "utf-8");
+
+        OutputStream _out = new FileOutputStream(file, true);
+        PrintStream out = new PrintStream(_out, true, "utf-8");
         dumpNLS(map, out);
         out.close();
     }
