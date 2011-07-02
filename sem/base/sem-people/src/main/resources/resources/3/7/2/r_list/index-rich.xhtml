@@ -27,6 +27,11 @@
             .align_top {
                 vertical-align:top;
             }
+
+            .col_left {
+                width: 350px;
+            }
+
         </h:outputStylesheet>
 
 
@@ -48,8 +53,8 @@
 				</p:toolbar>
 
 
-				<t:panelGrid columns="2" rowClasses="align_top">
-					<p:tabView header="权限主体列表" activeIndex="#{permissionAdminBean.activeTab}">
+				<t:panelGrid columns="2" rowClasses="align_top" columnClasses="col_left">
+					<p:tabView header="权限主体列表" activeIndex="#{permissionAdminBean.activeTab}" style="width:100%;">
 
 
 						<p:tab title="组列表">
@@ -79,6 +84,13 @@
 									</f:facet>
 									<h:outputText value="#{group.name}" />
 								</p:column>
+
+								<p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="全名" />
+                                    </f:facet>
+                                    <h:outputText value="#{group.fullName}" />
+                                </p:column>
 
 							</p:dataTable>
 						</p:tab>
@@ -110,6 +122,13 @@
 									</f:facet>
 									<h:outputText value="#{role.name}" />
 								</p:column>
+
+								<p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="全名" />
+                                    </f:facet>
+                                    <h:outputText value="#{role.fullName}" />
+                                </p:column>
 
 							</p:dataTable>
 
@@ -143,13 +162,20 @@
 									<h:outputText value="#{user.name}" />
 								</p:column>
 
+								<p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="全名" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.fullName}" />
+                                </p:column>
+
 							</p:dataTable>
 						</p:tab>
 
 					</p:tabView>
 
 
-					<p:panel header="权限列表">
+					<p:panel header="权限列表" style="width:100%; margin-left:10px;">
 
 						<p:dataTable id="rpEntries" var="rpEntry"
 							value="#{permissionAdminBean.rpEntries}" resizableColumns="true"
@@ -158,7 +184,7 @@
 
 							<p:columnGroup type="header">
 								<p:row>
-									<p:column rowspan="2" headerText="序号" />
+									<p:column rowspan="3" headerText="序号" />
 									<p:column rowspan="3" colspan="2" headerText="权限资源" />
 									<p:column colspan="7" headerText="权限" />
 								</p:row>
@@ -172,6 +198,32 @@
 									<p:column headerText="建立" />
 									<p:column headerText="删除" />
 								</p:row>
+
+								<p:row>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:panelGrid columns="1">
+                                                <p:commandButton value="全选"/>
+                                                <p:commandButton value="反选"/>
+                                                <p:commandButton value="不选"/>
+                                            </h:panelGrid>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column>
+										<f:facet name="header">
+											<h:panelGrid columns="1">
+												<p:commandButton value="全选" />
+												<p:commandButton value="反选" />
+												<p:commandButton value="不选" />
+											</h:panelGrid>
+										</f:facet>
+									</p:column>
+                                    <p:column headerText="写入" />
+                                    <p:column headerText="执行" />
+                                    <p:column headerText="列表" />
+                                    <p:column headerText="建立" />
+                                    <p:column headerText="删除" />
+                                </p:row>
 							</p:columnGroup>
 
 
