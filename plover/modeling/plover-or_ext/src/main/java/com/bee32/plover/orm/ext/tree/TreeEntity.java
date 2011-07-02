@@ -63,8 +63,20 @@ public abstract class TreeEntity<K extends Serializable, $ extends TreeEntity<K,
 
     /**
      * TODO conformadate to PrincipalDiag#checkDeadLoop.
+     *
+     * @param order
+     *            Max number of nodes in the graph, this enables fast check.
      */
-    public void checkCircularLoop() {
+    public boolean checkLoopFast(int order) {
+        if (order < 1)
+            throw new IllegalArgumentException("Order should be positive integer: " + order);
+        TreeEntity<K, $> node = this;
+        for (int i = 0; i < order; i++) {
+            node = node.getParent();
+            if (node == null)
+                return true;
+        }
+        return false;
     }
 
 }
