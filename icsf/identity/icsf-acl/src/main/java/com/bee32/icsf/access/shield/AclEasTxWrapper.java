@@ -84,7 +84,7 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
                     "User %s has insufficient permission to resource %s. " + //
                             "Required permission is %s, but user has granted %s", //
                     currentUser.getDisplayName(), //
-                    entityResource.getAppearance().getDisplayName(), // /
+                    entityResource.getAppearance().getDisplayName() + "(" + entityType + ")", // /
                     requiredPermission, //
                     grantedPermission);
             throw new AccessControlException(message);
