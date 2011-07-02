@@ -42,49 +42,75 @@ public class NLSInitiator {
         return new File(resdir);
     }
 
+    static Set<String> skippedProps = new HashSet<String>();
+    static {
+        skippedProps.add("class");
+        skippedProps.add("appearance");
+        skippedProps.add("properties");
+        skippedProps.add("exceptionSupport");
+
+        // These should go with general english.
+        skippedProps.add("id");
+        skippedProps.add("name");
+        skippedProps.add("label");
+        skippedProps.add("description");
+    }
+
+    static boolean beanProperties = false;
+
     public static Map<String, ?> getNLSMap(Class<?> type) {
         Set<String> keys = new HashSet<String>();
         keys.add("");
 
-        Set<Class<?>> stopClasses = EntityFormatter.getStopClasses();
+        if (beanProperties)
+            try {
+                for (PropertyDescriptor property : Introspector.getBeanInfo(type).getPropertyDescriptors()) {
 
-        try {
-            for (PropertyDescriptor property : Introspector.getBeanInfo(type).getPropertyDescriptors()) {
-                keys.add(property.getName());
+                    String name = property.getName();
+                    if (name.startsWith("_"))
+                        continue;
+                    if (skippedProps.contains(name))
+                        continue;
+
+                    keys.add(name);
+                }
+            } catch (IntrospectionException e) {
+                throw new RuntimeException(e.getMessage(), e);
             }
-        } catch (IntrospectionException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+
+        Set<Class<?>> stopClasses = EntityFormatter.getStopClasses();
 
         while (type != null && !stopClasses.contains(type)) {
             for (Method method : type.getDeclaredMethods()) {
-
-                String name = method.getName();
-                if (name.startsWith("_"))
-                    continue;
-
-                if (name.startsWith("get"))
-                    continue;
-                if (name.startsWith("set"))
-                    continue;
-                if (name.startsWith("is"))
-                    continue;
 
                 int modifiers = method.getModifiers();
                 if (!Modifier.isPublic(modifiers))
                     continue;
 
+                String name = method.getName();
+                if (name.startsWith("_"))
+                    continue;
+
+                if (name.startsWith("set"))
+                    continue;
+
+                if (name.startsWith("get"))
+                    name = Strings.lcfirst(name.substring(3));
+                else if (name.startsWith("is"))
+                    name = Strings.lcfirst(name.substring(2));
+
                 keys.add(name);
             }
 
             for (Field field : type.getDeclaredFields()) {
-                String name = field.getName();
-
-                if (name.startsWith("_"))
-                    continue;
 
                 int modifiers = field.getModifiers();
                 if (!Modifier.isPublic(modifiers))
+                    continue;
+
+                String name = field.getName();
+
+                if (name.startsWith("_"))
                     continue;
 
                 keys.add(name);
