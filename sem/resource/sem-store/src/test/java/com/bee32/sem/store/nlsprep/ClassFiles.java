@@ -33,11 +33,17 @@ public class ClassFiles {
         }
     }
 
-    public static List<Class<?>> forNames(List<String> fqcns)
+    public static List<Class<?>> forNames(List<String> fqcns, boolean skipLocals)
             throws ClassNotFoundException {
+
         List<Class<?>> types = new ArrayList<Class<?>>(fqcns.size());
+
         for (String fqcn : fqcns) {
+            if (skipLocals && fqcn.contains("$"))
+                continue;
+
             Class<?> type = Class.forName(fqcn, false, ClassLoader.getSystemClassLoader());
+
             types.add(type);
         }
         return types;
