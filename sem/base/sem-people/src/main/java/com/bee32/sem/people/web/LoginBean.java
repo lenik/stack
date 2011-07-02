@@ -59,6 +59,8 @@ public class LoginBean extends EntityViewBean {
 		RequestContext context = RequestContext.getCurrentInstance();
 		boolean loggedIn = false;
 
+		SessionLoginInfo.setCurrentUser(null);
+
 		User user = serviceFor(User.class).get(username);
 		if(user == null) {
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "登录错误", "用户不存在");
