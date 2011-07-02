@@ -50,20 +50,20 @@ public class Principal
         setName(name);
     }
 
-    @Transient
+    @Id
+    @Basic(optional = false)
+    @Column(length = NAME_MAXLEN, unique = true)
     @Override
-    public final String getId() {
+    public String getId() {
         return getName();
     }
 
     @Override
-    protected final void setId(String id) {
+    protected void setId(String id) {
         setName(id);
     }
 
-    @Id
-    @Basic(optional = false)
-    @Column(length = NAME_MAXLEN, unique = true)
+    @Transient
     @Override
     public String getName() {
         return name;
