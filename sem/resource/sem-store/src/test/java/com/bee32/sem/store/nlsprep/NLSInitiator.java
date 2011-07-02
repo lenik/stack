@@ -128,7 +128,7 @@ public class NLSInitiator {
 
     public static void dumpNLS(Map<String, ?> map, PrintStream out) {
         ArrayList<String> keys = new ArrayList<String>(map.keySet());
-        Collections.sort(keys);
+        Collections.sort(keys, PropertyKeyComparator.INSTANCE);
 
         int maxlen = 0;
         for (String key : keys)
@@ -151,7 +151,7 @@ public class NLSInitiator {
                 System.out.println("Scan " + classdir);
 
                 List<String> fqcns = ClassFiles.findClasses(classdir);
-                List<Class<?>> types = ClassFiles.forNames(fqcns);
+                List<Class<?>> types = ClassFiles.forNames(fqcns, true);
 
                 for (Class<?> type : types) {
                     if (type.isInterface())
