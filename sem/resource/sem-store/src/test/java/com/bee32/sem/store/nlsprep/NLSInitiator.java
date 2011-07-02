@@ -90,7 +90,9 @@ public class NLSInitiator {
                 keys.add(name);
             }
 
-            type = type.getSuperclass();
+            // Only local declarations.
+            // type = type.getSuperclass();
+            break;
         }
 
         Map<String, String> map = new HashMap<String, String>();
@@ -152,6 +154,13 @@ public class NLSInitiator {
                 List<Class<?>> types = ClassFiles.forNames(fqcns);
 
                 for (Class<?> type : types) {
+                    if (type.isInterface())
+                        continue;
+
+                    int modifiers = type.getModifiers();
+                    if (Modifier.isAbstract(modifiers))
+                        continue;
+
                     Map<String, ?> map = getNLSMap(type);
 
                     String fileName = type.getName().replace(".", SystemProperties.getFileSeparator());
