@@ -1,7 +1,7 @@
 package com.bee32.icsf.principal;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -10,22 +10,21 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("G")
 public class Group
-        extends AbstractGroup {
+        extends Principal<Group>
+        implements IGroupPrincipal {
 
     private static final long serialVersionUID = 1L;
 
-    Group inheritedGroup;
     User owner;
     Role primaryRole;
 
-    Set<Group> derivedGroups;
-
-    Set<Role> assignedRoles;
-    Set<User> memberUsers;
+    List<Role> assignedRoles = new ArrayList<Role>();;
+    List<User> memberUsers = new ArrayList<User>();;
 
     public Group() {
     }
@@ -40,37 +39,28 @@ public class Group
 
         addMemberUser(owner);
 
-        for (IUserPrincipal user : memberUsers)
+        for (User user : memberUsers)
             addMemberUser(user);
     }
 
-    @ManyToOne(targetEntity = Group.class)
-    @JoinColumn(name = "parent")
+    @Transient
     @Override
     public Group getInheritedGroup() {
-        return inheritedGroup;
+        return getParent();
     }
 
-    public void setInheritedGroup(IGroupPrincipal inheritedGroup) {
-        this.inheritedGroup = cast(inheritedGroup);
+    public void setInheritedGroup(Group inheritedGroup) {
+        setParent(inheritedGroup);
     }
 
     @OneToMany(targetEntity = Group.class, mappedBy = "inheritedGroup")
     @Override
-    public Set<Group> getDerivedGroups() {
-        if (derivedGroups == null) {
-            synchronized (this) {
-                if (derivedGroups == null) {
-                    derivedGroups = new HashSet<Group>();
-                }
-            }
-        }
-        return derivedGroups;
+    public List<Group> getDerivedGroups() {
+        return getChildren();
     }
 
-    @SuppressWarnings("unchecked")
-    public void setDerivedGroups(Set<? extends Group> derivedGroups) {
-        this.derivedGroups = (Set<Group>) derivedGroups;
+    public void setDerivedGroups(List<Group> derivedGroups) {
+        setChildren(derivedGroups);
     }
 
     @ManyToOne
@@ -80,7 +70,7 @@ public class Group
     }
 
     @Override
-    public void setOwner(IUserPrincipal owner) {
+    public void setOwner(User owner) {
         this.owner = (User) owner;
     }
 
@@ -92,7 +82,7 @@ public class Group
     }
 
     @Override
-    public void setPrimaryRole(IRolePrincipal primaryRole) {
+    public void setPrimaryRole(Role primaryRole) {
         this.primaryRole = (Role) primaryRole;
     }
 
@@ -103,20 +93,40 @@ public class Group
     /*            */joinColumns = @JoinColumn(name = "group"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "member"))
     @Override
-    public Set<User> getMemberUsers() {
-        if (memberUsers == null) {
-            synchronized (this) {
-                if (memberUsers == null) {
-                    memberUsers = new HashSet<User>();
-                }
-            }
-        }
+    public List<User> getMemberUsers() {
         return memberUsers;
     }
 
-    @SuppressWarnings("unchecked")
-    public void setMemberUsers(Set<? extends User> memberUsers) {
-        this.memberUsers = (Set<User>) memberUsers;
+    public void setMemberUsers(List<User> memberUsers) {
+        if (memberUsers == null)
+            throw new NullPointerException("memberUsers");
+        this.memberUsers = memberUsers;
+    }
+
+    @Override
+    public boolean addMemberUser(User user) {
+        if (user == null)
+            throw new NullPointerException("user");
+
+        List<User> memberUsers = getMemberUsers();
+        if (memberUsers.contains(user))
+            return false;
+
+        memberUsers.add(user);
+        user.addAssignedGroup(this);
+        return true;
+    }
+
+    @Override
+    public boolean removeMemberUser(User user) {
+        if (user == null)
+            throw new NullPointerException("user");
+
+        if (!getMemberUsers().remove(user))
+            return false;
+
+        user.removeAssignedGroup(this);
+        return true;
     }
 
     @ManyToMany
@@ -125,25 +135,79 @@ public class Group
     /*            */joinColumns = @JoinColumn(name = "group"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "role"))
     @Override
-    public Set<Role> getAssignedRoles() {
-        if (assignedRoles == null) {
-            synchronized (this) {
-                if (assignedRoles == null) {
-                    assignedRoles = new HashSet<Role>();
-                }
-            }
-        }
+    public List<Role> getAssignedRoles() {
         return assignedRoles;
     }
 
-    @SuppressWarnings("unchecked")
-    public void setAssignedRoles(Set<? extends Role> assignedRoles) {
-        this.assignedRoles = (Set<Role>) assignedRoles;
+    public void setAssignedRoles(List<Role> assignedRoles) {
+        this.assignedRoles = (List<Role>) assignedRoles;
+    }
+
+    @Override
+    public boolean addAssignedRole(Role role) {
+        if (role == null)
+            throw new NullPointerException("role");
+
+        List<Role> assignedRoles = getAssignedRoles();
+        if (assignedRoles.contains(role))
+            return false;
+
+        assignedRoles.add(role);
+        role.removeResponsibleGroup(this);
+        return true;
+    }
+
+    @Override
+    public boolean removeAssignedRole(Role role) {
+        if (role == null)
+            throw new NullPointerException("role");
+
+        if (!getAssignedRoles().remove(role))
+            return false;
+
+        role.removeResponsibleGroup(this);
+        return true;
+    }
+
+    @Override
+    public boolean implies(IPrincipal principal) {
+        if (super.implies(principal))
+            return true;
+
+        IGroupPrincipal base = getInheritedGroup();
+        if (base != null)
+            if (base.implies(principal))
+                return true;
+
+        for (Role role : getAssignedRoles())
+            if (role.implies(principal))
+                return true;
+
+        return false;
+    }
+
+    @Override
+    public void accept(IPrincipalVisitor visitor) {
+        if (visitor.startPrincipal(this)) {
+            IGroupPrincipal base = getInheritedGroup();
+            if (base != null)
+                visitor.visitImplication(base);
+            for (Role role : getAssignedRoles())
+                visitor.visitImplication(role);
+            visitor.endPrincipal(this);
+        }
     }
 
     @Override
     public Group detach() {
         super.detach();
+
+        for (Role role : flyOver(getAssignedRoles()))
+            role.removeResponsibleGroup(this);
+
+        for (User user : flyOver(getMemberUsers()))
+            user.removeAssignedGroup(this);
+
         return this;
     }
 

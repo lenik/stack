@@ -1,6 +1,6 @@
 package com.bee32.icsf.principal;
 
-import java.util.Set;
+import java.util.List;
 
 public interface IGroupPrincipal
         extends IPrincipal {
@@ -14,9 +14,9 @@ public interface IGroupPrincipal
      *
      * @return 如果没有继承任何组，返回 <code>null</code>。
      */
-    IGroupPrincipal getInheritedGroup();
+    Group getInheritedGroup();
 
-    Set<? extends IGroupPrincipal> getDerivedGroups();
+    List<Group> getDerivedGroups();
 
     /**
      * 获取组的拥有者。
@@ -29,18 +29,18 @@ public interface IGroupPrincipal
      *
      * @return 如果没有设置拥有者，返回空。
      */
-    IUserPrincipal getOwner();
+    User getOwner();
 
-    void setOwner(IUserPrincipal owner);
+    void setOwner(User owner);
 
     /**
      * 获取组的主要角色。
      *
      * @return 如果没有设置主要角色，返回空。
      */
-    IRolePrincipal getPrimaryRole();
+    Role getPrimaryRole();
 
-    void setPrimaryRole(IRolePrincipal role);
+    void setPrimaryRole(Role role);
 
     /**
      * 授予该组的角色集。
@@ -51,21 +51,21 @@ public interface IGroupPrincipal
      *
      * @return 如果没有被授予任何角色，返回空集。
      */
-    Set<? extends IRolePrincipal> getAssignedRoles();
+    List<? extends Role> getAssignedRoles();
 
-    boolean addAssignedRole(IRolePrincipal role);
+    boolean addAssignedRole(Role role);
 
-    boolean removeAssignedRole(IRolePrincipal role);
+    boolean removeAssignedRole(Role role);
 
     /**
      * 获取成员用户。
      *
      * @return 如果没有成员，返回空集。
      */
-    Set<? extends IUserPrincipal> getMemberUsers();
+    List<? extends User> getMemberUsers();
 
-    boolean addMemberUser(IUserPrincipal user);
+    boolean addMemberUser(User user);
 
-    boolean removeMemberUser(IUserPrincipal user);
+    boolean removeMemberUser(User user);
 
 }

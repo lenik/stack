@@ -3,7 +3,10 @@ package com.bee32.icsf.principal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
@@ -19,24 +22,49 @@ public class UserEmail
     public static final char EMAIL_VERIFYING = '1';
     public static final char EMAIL_VERIFIED = 'V';
 
-    Principal principal;
+    User user;
+    int order;
     String address;
     char status = EMAIL_INIT;
 
     public UserEmail() {
     }
 
-    public UserEmail(Principal principal, String address) {
-        this.principal = principal;
+    public UserEmail(User user, String address) {
+        this.user = user;
         this.address = address;
     }
 
-    @Column(length = 40)
+    @NaturalId
+    @ManyToOne(optional = false)
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        if (user == null)
+            throw new NullPointerException("user");
+        this.user = user;
+    }
+
+    @Column(nullable = false)
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    @NaturalId
+    @Column(length = 40, nullable = false)
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
+        if (address == null)
+            throw new NullPointerException("address");
         this.address = address;
     }
 

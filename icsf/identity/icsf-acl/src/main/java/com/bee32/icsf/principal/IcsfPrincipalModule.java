@@ -2,7 +2,6 @@ package com.bee32.icsf.principal;
 
 import com.bee32.icsf.IcsfOids;
 import com.bee32.icsf.principal.dao.GroupDao;
-import com.bee32.icsf.principal.dao.PrincipalDao;
 import com.bee32.icsf.principal.dao.RealmDao;
 import com.bee32.icsf.principal.dao.RoleDao;
 import com.bee32.icsf.principal.dao.UserDao;
@@ -15,7 +14,6 @@ public class IcsfPrincipalModule
 
     @Override
     protected void preamble() {
-        export(PrincipalDao.class, "principal");
         export(UserDao.class, "user");
         export(GroupDao.class, "group");
         export(RoleDao.class, "role");

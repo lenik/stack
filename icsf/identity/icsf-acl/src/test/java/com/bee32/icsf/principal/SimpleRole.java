@@ -1,7 +1,7 @@
 package com.bee32.icsf.principal;
 
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -34,18 +34,18 @@ public class SimpleRole
     }
 
     @Override
-    public Set<Role> getDerivedRoles() {
-        return Collections.emptySet();
+    public List<Role> getDerivedRoles() {
+        return Collections.emptyList();
     }
 
     @Override
-    public Set<User> getResponsibleUsers() {
-        return Collections.emptySet();
+    public List<User> getResponsibleUsers() {
+        return Collections.emptyList();
     }
 
     @Override
-    public Set<Group> getResponsibleGroups() {
-        return Collections.emptySet();
+    public List<Group> getResponsibleGroups() {
+        return Collections.emptyList();
     }
 
 }

@@ -34,7 +34,7 @@ public class Realm
 
     private static final long serialVersionUID = 1L;
 
-    protected Set<Principal> principals;
+    protected Set<Principal<?>> principals;
     protected transient Set<User> users;
     protected transient Set<Group> groups;
     protected transient Set<Role> roles;
@@ -80,18 +80,18 @@ public class Realm
     /*            */joinColumns = @JoinColumn(name = "principal"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "realm"))
     @Override
-    public Set<Principal> getPrincipals() {
+    public Set<Principal<?>> getPrincipals() {
         if (principals == null) {
             synchronized (this) {
                 if (principals == null) {
-                    principals = new HashSet<Principal>();
+                    principals = new HashSet<Principal<?>>();
                 }
             }
         }
         return principals;
     }
 
-    public void setPrincipals(Set<Principal> principals) {
+    public void setPrincipals(Set<Principal<?>> principals) {
         this.principals = principals;
     }
 
@@ -103,7 +103,7 @@ public class Realm
                 if (users == null) {
                     users = new HashSet<User>();
 
-                    for (Principal principal : getPrincipals())
+                    for (Principal<?> principal : getPrincipals())
                         if (principal instanceof User)
                             users.add((User) principal);
                 }
@@ -120,7 +120,7 @@ public class Realm
                 if (groups == null) {
                     groups = new HashSet<Group>();
 
-                    for (Principal principal : getPrincipals())
+                    for (Principal<?> principal : getPrincipals())
                         if (principal instanceof Group)
                             groups.add((Group) principal);
                 }
@@ -137,7 +137,7 @@ public class Realm
                 if (roles == null) {
                     roles = new HashSet<Role>();
 
-                    for (Principal principal : getPrincipals())
+                    for (Principal<?> principal : getPrincipals())
                         if (principal instanceof Role)
                             roles.add((Role) principal);
                 }
@@ -148,7 +148,7 @@ public class Realm
 
     @Override
     public void addPrincipal(IPrincipal principal) {
-        getPrincipals().add((Principal) principal);
+        getPrincipals().add((Principal<?>) principal);
     }
 
     @Override

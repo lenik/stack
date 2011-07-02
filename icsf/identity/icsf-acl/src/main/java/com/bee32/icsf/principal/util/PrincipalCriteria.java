@@ -7,7 +7,7 @@ import com.bee32.icsf.principal.Principal;
 
 public class PrincipalCriteria {
 
-    public static Criterion implies(Principal principal) {
+    public static Criterion implies(Principal<?> principal) {
         if (principal == null)
             throw new NullPointerException("principal");
 

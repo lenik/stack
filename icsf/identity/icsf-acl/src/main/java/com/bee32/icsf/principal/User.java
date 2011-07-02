@@ -1,8 +1,7 @@
 package com.bee32.icsf.principal;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -20,17 +19,18 @@ import com.bee32.icsf.access.alt.R_ACE;
 @Entity
 @DiscriminatorValue("U")
 public class User
-        extends AbstractUser {
+        extends Principal<User>
+        implements IUserPrincipal {
 
     private static final long serialVersionUID = 1L;
 
     Group primaryGroup;
     Role primaryRole;
 
-    Set<Group> assignedGroups;
-    Set<Role> assignedRoles;
+    List<Group> assignedGroups = new ArrayList<Group>();
+    List<Role> assignedRoles = new ArrayList<Role>();
 
-    List<UserEmail> emails;
+    List<UserEmail> emails = new ArrayList<UserEmail>();
 
     public User() {
     }
@@ -70,19 +70,42 @@ public class User
     @ManyToMany(targetEntity = Group.class, mappedBy = "memberUsers")
     // @Cascade(CascadeType.SAVE_UPDATE)
     @Override
-    public Set<Group> getAssignedGroups() {
-        if (assignedGroups == null) {
-            synchronized (this) {
-                if (assignedGroups == null) {
-                    assignedGroups = new HashSet<Group>();
-                }
-            }
-        }
+    public List<Group> getAssignedGroups() {
         return assignedGroups;
     }
 
-    public void setAssignedGroups(Set<Group> assignedGroups) {
+    public void setAssignedGroups(List<Group> assignedGroups) {
+        if (assignedGroups == null)
+            throw new NullPointerException("assignedGroups");
         this.assignedGroups = assignedGroups;
+    }
+
+    @Override
+    public boolean addAssignedGroup(Group group) {
+        if (group == null)
+            throw new NullPointerException("group");
+
+        List<Group> assignedGroups = getAssignedGroups();
+        if (assignedGroups.contains(group))
+            return false;
+
+        assignedGroups.add(group);
+        group.addMemberUser(this);
+        return true;
+    }
+
+    @Override
+    public boolean removeAssignedGroup(Group group) {
+        if (group == null)
+            throw new NullPointerException("group");
+
+        if (!group.removeMemberUser(this))
+            return false;
+
+        if (getAssignedGroups().remove(group))
+            group.removeMemberUser(this);
+
+        return true;
     }
 
     @ManyToMany(targetEntity = Role.class)
@@ -91,34 +114,115 @@ public class User
     /*            */joinColumns = @JoinColumn(name = "user"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "role"))
     @Override
-    public Set<Role> getAssignedRoles() {
-        if (assignedRoles == null) {
-            synchronized (this) {
-                if (assignedRoles == null) {
-                    assignedRoles = new HashSet<Role>();
-                }
-            }
-        }
+    public List<Role> getAssignedRoles() {
         return assignedRoles;
     }
 
-    public void setAssignedRoles(Set<Role> assignedRoles) {
-        this.assignedRoles = (Set<Role>) assignedRoles;
+    public void setAssignedRoles(List<Role> assignedRoles) {
+        if (assignedRoles == null)
+            throw new NullPointerException("assignedRoles");
+        this.assignedRoles = assignedRoles;
     }
 
-    @OneToMany
-    @Cascade(CascadeType.ALL)
+    @Override
+    public boolean addAssignedRole(Role role) {
+        if (role == null)
+            throw new NullPointerException("role");
+
+        List<Role> assignedRoles = getAssignedRoles();
+        if (assignedRoles.contains(role))
+            return false;
+
+        assignedRoles.add(role);
+        role.removeResponsibleUser(this);
+        return true;
+    }
+
+    @Override
+    public boolean removeAssignedRole(Role role) {
+        if (role == null)
+            throw new NullPointerException("role");
+
+        if (!getAssignedRoles().remove(role))
+            return false;
+
+        role.removeResponsibleUser(this);
+        return true;
+    }
+
+    @OneToMany(mappedBy = "user")
+    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<UserEmail> getEmails() {
         return emails;
     }
 
     public void setEmails(List<UserEmail> emails) {
+        if (emails == null)
+            throw new NullPointerException("emails");
         this.emails = emails;
+    }
+
+    public String getPreferredEmail() {
+        if (emails.isEmpty())
+            return null;
+        return emails.get(0).getAddress();
+    }
+
+    public void setPreferredEmail(String emailAddress) {
+        if (emailAddress == null)
+            throw new NullPointerException("emailAddress");
+
+        UserEmail preferredEmail = new UserEmail(this, emailAddress);
+
+        if (emails.contains(preferredEmail))
+            emails.remove(preferredEmail);
+
+        // Re-order.
+        for (UserEmail prev : emails)
+            if (prev.getOrder() <= 0)
+                prev.setOrder(1);
+        preferredEmail.setOrder(0);
+
+        emails.add(preferredEmail);
+    }
+
+    @Override
+    public boolean implies(IPrincipal principal) {
+        if (super.implies(principal))
+            return true;
+
+        for (Group group : getAssignedGroups())
+            if (group.implies(principal))
+                return true;
+
+        for (Role role : getAssignedRoles())
+            if (role.implies(principal))
+                return true;
+
+        return false;
+    }
+
+    @Override
+    public void accept(IPrincipalVisitor visitor) {
+        if (visitor.startPrincipal(this)) {
+            for (Group group : getAssignedGroups())
+                visitor.visitImplication(group);
+            for (Role role : getAssignedRoles())
+                visitor.visitImplication(role);
+            visitor.endPrincipal(this);
+        }
     }
 
     @Override
     public User detach() {
         super.detach();
+
+        for (Group group : flyOver(getAssignedGroups()))
+            group.removeMemberUser(this);
+
+        for (Role role : flyOver(getAssignedRoles()))
+            role.removeResponsibleUser(this);
+
         return this;
     }
 

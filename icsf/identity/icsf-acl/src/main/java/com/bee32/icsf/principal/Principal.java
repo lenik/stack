@@ -1,7 +1,6 @@
 package com.bee32.icsf.principal;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Locale;
 
 import javax.persistence.Basic;
@@ -11,36 +10,28 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Green;
-import com.bee32.plover.orm.ext.color.UIEntitySpec;
+import com.bee32.plover.orm.ext.tree.TreeEntity;
 
 @Entity
 @Green
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "steoro", length = 3)
-public class Principal
-        extends UIEntitySpec<String>
+public abstract class Principal<$ extends Principal<$>>
+        extends TreeEntity<String, $>
         implements IPrincipal {
 
     private static final long serialVersionUID = 1L;
 
     public static final int NAME_MAXLEN = 16;
 
+    protected final Class<$> echo = (Class<$>) getClass();
+
     String name;
     String fullName;
-    UserEmail email;
-
-    Collection<Principal> impliedPrincipals;
 
     public Principal() {
         this.name = null;
@@ -106,55 +97,10 @@ public class Principal
         return name;
     }
 
-    @ManyToOne
-    @Cascade(CascadeType.ALL)
-    public UserEmail getEmail() {
-        return email;
-    }
-
-    public void setEmail(UserEmail email) {
-        this.email = email;
-    }
-
-    @Transient
-    public String getEmailAddress() {
-        if (email == null)
-            return null;
-        else
-            return email.getAddress();
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        if (email == null)
-            email = new UserEmail(this, emailAddress);
-        else
-            email.setAddress(emailAddress);
-    }
-
-    @ManyToMany(targetEntity = Principal.class)
-    // @Cascade(CascadeType.SAVE_UPDATE)
-    @JoinTable(name = "PrincipalImp", //
-    /*            */joinColumns = @JoinColumn(name = "imp"), //
-    /*            */inverseJoinColumns = @JoinColumn(name = "principal"))
-    public Collection<Principal> getImpliedPrincipals() {
-        if (impliedPrincipals == null) {
-            synchronized (this) {
-                if (impliedPrincipals == null) {
-                    impliedPrincipals = new HashSet<Principal>();
-                }
-            }
-        }
-        return impliedPrincipals;
-    }
-
-    public void setImpliedPrincipals(Collection<? extends Principal> impliedPrincipals) {
-        this.impliedPrincipals = new HashSet<Principal>(impliedPrincipals);
-    }
-
     @Override
-    public Principal detach() {
+    public $ detach() {
         super.detach();
-        return this;
+        return echo.cast(this);
     }
 
     @Override
@@ -164,11 +110,6 @@ public class Principal
 
         if (this.equals(principal))
             return true;
-
-        if (impliedPrincipals != null)
-            for (IPrincipal impliedPrincipal : impliedPrincipals)
-                if (impliedPrincipal.implies(principal))
-                    return true;
 
         return false;
     }
@@ -219,7 +160,7 @@ public class Principal
 
     @Override
     protected Boolean naturalEquals(EntityBase<String> other) {
-        Principal o = (Principal) other;
+        $ o = echo.cast(other);
 
         if (this.name == null || o.name == null)
             return false;
