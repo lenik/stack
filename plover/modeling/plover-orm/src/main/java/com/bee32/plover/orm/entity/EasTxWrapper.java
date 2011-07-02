@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.entity;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -107,7 +108,12 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = false)
     @Override
     public void saveOrUpdate(E entity) {
-        checkSaveOrUpdate();
+        K id = entity.getId();
+        if (id == null)
+            checkSave();
+        else
+            // EntitySpec?
+            checkUpdate();
         getDao().saveOrUpdate(entity);
     }
 
@@ -134,8 +140,7 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = false)
     @Override
     public void saveOrUpdateAll(E... entities) {
-        checkSaveOrUpdate();
-        getDao().saveOrUpdateAll(entities);
+        saveOrUpdateAll(Arrays.asList(entities));
     }
 
     @Transactional(readOnly = true)
@@ -148,7 +153,23 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Transactional(readOnly = false)
     @Override
     public void saveOrUpdateAll(Collection<? extends E> entities) {
-        checkSaveOrUpdate();
+        boolean haveNew = false;
+        boolean haveOld = false;
+        for (E entity : entities) {
+            K id = entity.getId();
+            if (id == null)
+                haveNew = true;
+            else
+                haveOld = true;
+            if (haveNew && haveOld)
+                break;
+        }
+
+        if (haveNew)
+            checkSave();
+        if (haveOld)
+            checkUpdate();
+
         getDao().saveOrUpdateAll(entities);
     }
 
@@ -343,9 +364,6 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     }
 
     protected void checkUpdate() {
-    }
-
-    protected void checkSaveOrUpdate() {
     }
 
     protected void checkDelete() {

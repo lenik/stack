@@ -30,16 +30,11 @@ public abstract class EasTxWrapperCat<E extends Entity<? extends K>, K extends S
 
     @Override
     protected void checkSave() {
-        require(Permission.WRITE);
+        require(Permission.CREATE);
     }
 
     @Override
     protected void checkUpdate() {
-        require(Permission.WRITE);
-    }
-
-    @Override
-    protected void checkSaveOrUpdate() {
         require(Permission.WRITE);
     }
 
