@@ -4,11 +4,11 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.sem.chance.entity.QuotationDetail;
+import com.bee32.sem.chance.entity.BasePrice;
 import com.bee32.sem.chance.util.DateToRange;
 
-public class QuotationDetailDto
-        extends EntityDto<QuotationDetail, Long> {
+public class BasePriceDto
+        extends EntityDto<BasePrice, Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,18 +19,16 @@ public class QuotationDetailDto
     private String remark;
 
     @Override
-    protected void _marshal(QuotationDetail source) {
+    protected void _marshal(BasePrice source) {
         this.date = DateToRange.fullFormat.format(source.getCreatedDate());
         this.material = source.getMaterial();
-        this.discount = source.getDiscount();
         this.price = source.getPrice();
         this.remark = source.getRemark();
     }
 
     @Override
-    protected void _unmarshalTo(QuotationDetail target) {
+    protected void _unmarshalTo(BasePrice target) {
         target.setMaterial(material);
-        target.setDiscount(discount);
         target.setPrice(price);
         target.setRemark(remark);
     }

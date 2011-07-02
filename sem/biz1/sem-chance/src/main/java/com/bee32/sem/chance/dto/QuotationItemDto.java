@@ -11,8 +11,8 @@ public class QuotationItemDto
 
     private static final long serialVersionUID = 1L;
 
-    private QuotationInvoiceDto quotationInvoice;
-    private String materialName;
+    private QuotationDto quotation;
+    private String material;
     private double discount;
     private double price;
     private int number;
@@ -21,23 +21,21 @@ public class QuotationItemDto
 
     @Override
     protected void _marshal(QuotationItem source) {
-        this.quotationInvoice = new QuotationInvoiceDto().ref(source.getQuotationInvoice());
-        this.materialName = source.getMaterialName();
+        this.quotation = new QuotationDto().ref(source.getQuotation());
+        this.material = source.getMaterial();
         this.discount = source.getDiscount();
         this.price = source.getPrice();
         this.number = source.getNumber();
-        this.amount = source.getAmount();
         this.remark = source.getRemark();
     }
 
     @Override
     protected void _unmarshalTo(QuotationItem target) {
-        merge(target, "quotationInvoice", quotationInvoice);
-        target.setMaterialName(materialName);
+        merge(target, "quotation", quotation);
+        target.setMaterial(material);
         target.setDiscount(discount);
         target.setPrice(price);
         target.setNumber(number);
-        target.setAmount(amount);
         target.setRemark(remark);
     }
 
@@ -46,20 +44,20 @@ public class QuotationItemDto
             throws ParseException {
     }
 
-    public QuotationInvoiceDto getQuotationInvoice() {
-        return quotationInvoice;
+    public QuotationDto getQuotation() {
+        return quotation;
     }
 
-    public void setQuotationInvoice(QuotationInvoiceDto quotationInvoice) {
-        this.quotationInvoice = quotationInvoice;
+    public void setQuotationInvoice(QuotationDto quotation) {
+        this.quotation = quotation;
     }
 
-    public String getMaterialName() {
-        return materialName;
+    public String getMaterial() {
+        return material;
     }
 
-    public void setMaterialName(String materialName) {
-        this.materialName = materialName;
+    public void setMaterial(String material) {
+        this.material = material;
     }
 
     public double getDiscount() {

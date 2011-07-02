@@ -5,7 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
-
+/**
+ * 报价单里面的条目
+ */
 @Entity
 public class QuotationItem
         extends UIEntityAuto<Long> {
@@ -15,12 +17,14 @@ public class QuotationItem
     /**
      * 对应报价单
      */
-    QuotationInvoice quotationInvoice;
+    Quotation quotation;
+
+    BasePrice basePrice;
 
     /**
      * 品名
      */
-    String materialName;
+    String material;
 
     /**
      * 折扣
@@ -38,31 +42,37 @@ public class QuotationItem
     int number;
 
     /**
-     * 总额
-     */
-    double amount;
-
-    /**
      * 备注
      */
     String remark;
 
-    @ManyToOne
-    public QuotationInvoice getQuotationInvoice() {
-        return quotationInvoice;
+    public QuotationItem() {
     }
 
-    public void setQuotationInvoice(QuotationInvoice quotationInvoice) {
-        this.quotationInvoice = quotationInvoice;
+    @ManyToOne
+    public Quotation getQuotation() {
+        return quotation;
+    }
+
+    public void setQuotation(Quotation quotation) {
+        this.quotation = quotation;
+    }
+
+    public BasePrice getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(BasePrice basePrice) {
+        this.basePrice = basePrice;
     }
 
     @Column(nullable = false, length = 50)
-    public String getMaterialName() {
-        return materialName;
+    public String getMaterial() {
+        return material;
     }
 
-    public void setMaterialName(String materialName) {
-        this.materialName = materialName;
+    public void setMaterial(String material) {
+        this.material = material;
     }
 
     public double getDiscount() {
@@ -87,14 +97,6 @@ public class QuotationItem
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
 
     @Column(nullable = false, length = 200)
