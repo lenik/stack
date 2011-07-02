@@ -58,7 +58,7 @@ public class NLSInitiator {
 
     static boolean beanProperties = false;
 
-    public static Map<String, ?> getNLSMap(Class<?> type) {
+    public static Map<String, String> getNLSMap(Class<?> type) {
         Set<String> keys = new HashSet<String>();
         keys.add("");
 
@@ -131,7 +131,7 @@ public class NLSInitiator {
         return map;
     }
 
-    public static void dumpNLS(Map<String, ?> map, File file)
+    public static void dumpNLS(Map<String, String> map, File file)
             throws IOException {
 
         if (file.exists()) {
@@ -139,8 +139,12 @@ public class NLSInitiator {
             Reader reader = new InputStreamReader(in, "utf-8");
             Properties existing = new Properties();
             existing.load(reader);
-            for (Object key : existing.keySet())
-                map.remove(key);
+            for (Object _key : existing.keySet()) {
+                String key = (String) _key;
+                String val = existing.getProperty(key);
+                // overwrite using existings.
+                map.put(key, val);
+            }
         }
 
         System.out.println("Create " + file);
@@ -186,7 +190,7 @@ public class NLSInitiator {
                     if (Modifier.isAbstract(modifiers))
                         continue;
 
-                    Map<String, ?> map = getNLSMap(type);
+                    Map<String, String> map = getNLSMap(type);
 
                     String fileName = type.getName().replace(".", SystemProperties.getFileSeparator());
 
