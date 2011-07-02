@@ -222,7 +222,9 @@ public class OrgAdminBean
         }
 
         try {
-            serviceFor(Org.class).delete(selectedOrg.getId());
+		Org org = serviceFor(Org.class).load(selectedOrg.getId());
+		org.getContacts().clear();
+            serviceFor(Org.class).delete(org);
             refreshOrgCount();
 
         } catch (Exception e) {

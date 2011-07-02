@@ -183,7 +183,9 @@ public class PersonAdminBean
         }
 
         try {
-            serviceFor(Person.class).delete(selectedPerson.getId());
+		Person person = serviceFor(Person.class).load(selectedPerson.getId());
+		person.getContacts().clear();
+            serviceFor(Person.class).delete(person);
             refreshPersonCount();
 
         } catch (Exception e) {
