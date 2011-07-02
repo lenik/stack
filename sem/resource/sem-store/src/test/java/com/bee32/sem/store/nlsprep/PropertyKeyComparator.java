@@ -29,10 +29,18 @@ public class PropertyKeyComparator
     public int compareNonNull(String o1, String o2) {
         int ldot1 = o1.lastIndexOf('.');
         int ldot2 = o2.lastIndexOf('.');
-        if (ldot1 == -1)
-            return -1;
-        if (ldot2 == -1)
-            return 1;
+
+        if (ldot1 == -1 && ldot2 == -1) {
+            o1 = "." + o1;
+            o2 = "." + o2;
+            ldot1 = 0;
+            ldot2 = 0;
+        } else {
+            if (ldot1 == -1)
+                return -1;
+            if (ldot2 == -1)
+                return 1;
+        }
 
         String prefix1 = o1.substring(0, ldot1);
         String prefix2 = o2.substring(0, ldot2);
@@ -40,8 +48,8 @@ public class PropertyKeyComparator
         if (cmp != 0)
             return cmp;
 
-        String suffix1 = o1.substring(ldot1);
-        String suffix2 = o2.substring(ldot2);
+        String suffix1 = o1.substring(ldot1 + 1);
+        String suffix2 = o2.substring(ldot2 + 1);
         Integer sl1 = leafOrder.get(suffix1);
         Integer sl2 = leafOrder.get(suffix2);
         if (sl1 == null)
