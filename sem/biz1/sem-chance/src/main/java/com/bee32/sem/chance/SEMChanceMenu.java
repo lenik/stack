@@ -17,9 +17,11 @@ public class SEMChanceMenu
 
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
     static Location CHANCE_ = WEB_APP.join(SEMChanceModule.PREFIX_);
+    static Location PRICELOCATION = WEB_APP.join(SEMChanceModule.PREFIX_);
 
     public static MenuNode CHANCE = menu(SEMFrameMenu.BIZ1, "chance");
     public static MenuNode CHANCE_DICT = menu(CHANCE, "dict");
+    public static MenuNode PRICE = menu(SEMFrameMenu.BIZ1, "price");
 
     static MenuNode category = entry(CHANCE_DICT, "category", getDictIndex(ChanceCategory.class));
     static MenuNode sourceType = entry(CHANCE_DICT, "sourceType", getDictIndex(ChanceSourceType.class));
@@ -30,6 +32,8 @@ public class SEMChanceMenu
     static MenuNode action = entry(CHANCE, "action", CHANCE_.join("action/index-rich.jsf"));
 
 // static MenuNode competitor = entry(CHANCE, "competitor", CHANCE_.join("competitor/index.jsf "));
+    static MenuNode basePrice = entry(PRICE, "basePrice", PRICELOCATION.join("price/base-rich.jsf"));
+    static MenuNode quotation = entry(PRICE, "quotation", PRICELOCATION.join("price/quotation-rich.jsf"));
 
     @Override
     protected void preamble() {
