@@ -26,7 +26,7 @@ import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
-import com.bee32.icsf.principal.dto.AbstractPrincipalDto;
+import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.icsf.principal.dto.RoleDto;
 import com.bee32.icsf.principal.dto.UserDto;

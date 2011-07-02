@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bee32.icsf.principal.dao.PrincipalDao;
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.icsf.principal.dto.UserDto;
@@ -38,7 +37,7 @@ public class AllowListController
 
         int max = 3;
         StringBuilder names = null;
-        for (PrincipalDto responsible : item.getResponsibles()) {
+        for (PrincipalDto<?> responsible : item.getResponsibles()) {
             if (max <= 0) {
                 names.append(", etc.");
                 break;
