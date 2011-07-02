@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.springframework.ui.Model;
+
+import com.bee32.plover.arch.Component;
+
 public abstract class ObjectFormatter<T> {
 
     protected PrettyPrintStream out;
@@ -58,6 +62,12 @@ public abstract class ObjectFormatter<T> {
     static final Set<Class<?>> stopClasses = new HashSet<Class<?>>();
     static {
         stopClasses.add(Object.class);
+        stopClasses.add(Component.class);
+        stopClasses.add(Model.class);
+    }
+
+    public static Set<Class<?>> getStopClasses() {
+        return stopClasses;
     }
 
     public static void addStopClass(Class<?> stopClass) {
