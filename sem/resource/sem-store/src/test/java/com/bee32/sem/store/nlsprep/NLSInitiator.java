@@ -17,6 +17,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -42,14 +43,14 @@ public class NLSInitiator {
     }
 
     public static Map<String, ?> getNLSMap(Class<?> type) {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("", "");
+        Set<String> keys = new HashSet<String>();
+        keys.add("");
 
         Set<Class<?>> stopClasses = EntityFormatter.getStopClasses();
 
         try {
             for (PropertyDescriptor property : Introspector.getBeanInfo(type).getPropertyDescriptors()) {
-                map.put(property.getName(), "");
+                keys.add(property.getName());
             }
         } catch (IntrospectionException e) {
             throw new RuntimeException(e.getMessage(), e);
@@ -73,7 +74,7 @@ public class NLSInitiator {
                 if (!Modifier.isPublic(modifiers))
                     continue;
 
-                map.put(name, "");
+                keys.add(name);
             }
 
             for (Field field : type.getDeclaredFields()) {
@@ -86,12 +87,19 @@ public class NLSInitiator {
                 if (!Modifier.isPublic(modifiers))
                     continue;
 
-                map.put(name, "");
+                keys.add(name);
             }
 
             type = type.getSuperclass();
         }
 
+        Map<String, String> map = new HashMap<String, String>();
+        for (String key : keys) {
+            if (!key.isEmpty())
+                key += ".";
+            map.put(key + "label", "");
+            map.put(key + "description", "");
+        }
         return map;
     }
 
@@ -126,14 +134,8 @@ public class NLSInitiator {
                 maxlen = key.length();
 
         for (String key : keys) {
-            String prefix = key;
-            if (!prefix.isEmpty())
-                prefix += ".";
-
-            String PADDING = Strings.repeat(maxlen - (prefix.length() - 1), ' ');
-
-            out.println(prefix + "label      " + PADDING + " = ");
-            out.println(prefix + "description" + PADDING + " = ");
+            String PADDING = Strings.repeat(maxlen - key.length(), ' ');
+            out.println(key + PADDING + " = ");
             out.println();
         }
     }
