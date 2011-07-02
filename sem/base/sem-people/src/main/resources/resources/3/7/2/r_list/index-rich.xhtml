@@ -177,6 +177,49 @@
 
 					<p:panel header="权限列表" style="width:100%; margin-left:10px;">
 
+						<p:toolbar id="selectAdminToolbar">
+							<p:toolbarGroup align="left">
+
+								<p:commandButton value="全选管理"
+									actionListener="#{permissionAdminBean.onSelectAllAdmin}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+
+                                <p:commandButton value="反选管理"
+                                    actionListener="#{permissionAdminBean.onSelectInvertAdmin}"
+                                    update="permissionForm:rpEntries permissionForm:growl"
+                                    async="true" />
+
+                                <p:commandButton value="不选管理"
+                                    actionListener="#{permissionAdminBean.onSelectNoneAdmin}"
+                                    update="permissionForm:rpEntries permissionForm:growl"
+                                    async="true" />
+
+							</p:toolbarGroup>
+						</p:toolbar>
+
+                        <p:toolbar id="selectReadableToolbar">
+                            <p:toolbarGroup align="left">
+
+                                <p:commandButton value="全选读取"
+                                    actionListener="#{permissionAdminBean.onSelectAllReadable}"
+                                    update="permissionForm:rpEntries permissionForm:growl"
+                                    async="true" />
+
+                                <p:commandButton value="反选读取"
+                                    actionListener="#{permissionAdminBean.onSelectInvertReadable}"
+                                    update="permissionForm:rpEntries permissionForm:growl"
+                                    async="true" />
+
+                                <p:commandButton value="不选读取"
+                                    actionListener="#{permissionAdminBean.onSelectNoneReadable}"
+                                    update="permissionForm:rpEntries permissionForm:growl"
+                                    async="true" />
+
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+
 						<p:dataTable id="rpEntries" var="rpEntry"
 							value="#{permissionAdminBean.rpEntries}" resizableColumns="true"
 							selection="#{permissionAdminBean.selectedRpEntry}"
@@ -184,8 +227,8 @@
 
 							<p:columnGroup type="header">
 								<p:row>
-									<p:column rowspan="3" headerText="序号" />
-									<p:column rowspan="3" colspan="2" headerText="权限资源" />
+									<p:column rowspan="2" headerText="序号" />
+									<p:column rowspan="2" colspan="2" headerText="权限资源" />
 									<p:column colspan="7" headerText="权限" />
 								</p:row>
 
@@ -199,31 +242,6 @@
 									<p:column headerText="删除" />
 								</p:row>
 
-								<p:row>
-                                    <p:column>
-                                        <f:facet name="header">
-                                            <h:panelGrid columns="1">
-                                                <p:commandButton value="全选"/>
-                                                <p:commandButton value="反选"/>
-                                                <p:commandButton value="不选"/>
-                                            </h:panelGrid>
-                                        </f:facet>
-                                    </p:column>
-                                    <p:column>
-										<f:facet name="header">
-											<h:panelGrid columns="1">
-												<p:commandButton value="全选" />
-												<p:commandButton value="反选" />
-												<p:commandButton value="不选" />
-											</h:panelGrid>
-										</f:facet>
-									</p:column>
-                                    <p:column headerText="写入" />
-                                    <p:column headerText="执行" />
-                                    <p:column headerText="列表" />
-                                    <p:column headerText="建立" />
-                                    <p:column headerText="删除" />
-                                </p:row>
 							</p:columnGroup>
 
 

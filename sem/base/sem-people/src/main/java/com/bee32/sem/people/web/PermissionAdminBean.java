@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -263,6 +262,43 @@ public class PermissionAdminBean extends EntityViewBean {
 
 		context.addMessage(null, new FacesMessage("提示", "权限保存成功!"));
 
+	}
+
+
+	public void onSelectAllAdmin() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setAdmin(true);
+		}
+	}
+
+	public void onSelectInvertAdmin() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setAdmin(!e.permission.isAdmin());
+		}
+	}
+
+	public void onSelectNoneAdmin() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setAdmin(false);
+		}
+	}
+
+	public void onSelectAllReadable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setReadable(true);
+		}
+	}
+
+	public void onSelectInvertReadable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setReadable(!e.permission.isReadable());
+		}
+	}
+
+	public void onSelectNoneReadable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setReadable(false);
+		}
 	}
 
 }
