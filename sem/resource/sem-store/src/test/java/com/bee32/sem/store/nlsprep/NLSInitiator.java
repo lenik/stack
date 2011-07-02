@@ -156,7 +156,7 @@ public class NLSInitiator {
         ArrayList<String> keys = new ArrayList<String>(map.keySet());
         Collections.sort(keys, PropertyKeyComparator.INSTANCE);
 
-        int maxlen = 0;
+        int maxlen = 40; // Default width.
         for (String key : keys)
             if (key.length() > maxlen)
                 maxlen = key.length();
