@@ -138,7 +138,6 @@ public class NLSInitiator {
         for (String key : keys) {
             String PADDING = Strings.repeat(maxlen - key.length(), ' ');
             out.println(key + PADDING + " = ");
-            out.println();
         }
     }
 
