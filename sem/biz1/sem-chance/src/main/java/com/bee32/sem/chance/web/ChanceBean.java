@@ -190,6 +190,8 @@ public class ChanceBean
         } else {
             initList();
         }
+        initToolbar();
+        selectedChance = null;
         setActiveTab(TAB_INDEX);
     }
 

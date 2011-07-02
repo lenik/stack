@@ -25,12 +25,12 @@ public class SEMChanceModuleTest
 
     @Override
     protected String getLoggedInUser() {
-        return "eva";
+        return "admin";
     }
 
     public static void main(String[] args)
             throws IOException {
-        new SEMChanceModuleTest().browseAndWait(SEMChanceModule.PREFIX + "/price/index-rich.jsf");
+        new SEMChanceModuleTest().browseAndWait(SEMChanceModule.PREFIX + "/price/quotation-rich.jsf");
     }
 
 }

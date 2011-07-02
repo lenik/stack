@@ -8,4 +8,8 @@ public class PriceCriteria {
     public static Criterion listByMaterial(String material) {
         return Restrictions.eq("material", material);
     }
+
+    public static Criterion listQuotationDetailByMaterial(String material) {
+        return Restrictions.like("material", "%" + material + "%");
+    }
 }
