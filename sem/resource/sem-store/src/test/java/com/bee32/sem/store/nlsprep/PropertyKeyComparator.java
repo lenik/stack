@@ -9,7 +9,12 @@ public class PropertyKeyComparator
         extends AbstractNonNullComparator<String> {
 
     static final String[] _leaves = {
-            //
+            // For project.*
+            "groupId", //
+            "artifactId", //
+            "version", //
+
+            // For appearance.*
             "label", //
             "description", //
     };
@@ -29,14 +34,14 @@ public class PropertyKeyComparator
         if (ldot2 == -1)
             return 1;
 
-        String p1 = o1.substring(0, ldot1);
-        String p2 = o2.substring(0, ldot2);
-        int cmp = p1.compareTo(p2);
+        String prefix1 = o1.substring(0, ldot1);
+        String prefix2 = o2.substring(0, ldot2);
+        int cmp = prefix1.compareTo(prefix2);
         if (cmp != 0)
             return cmp;
 
         String suffix1 = o1.substring(ldot1);
-        String suffix2 = o1.substring(ldot2);
+        String suffix2 = o2.substring(ldot2);
         Integer sl1 = leafOrder.get(suffix1);
         Integer sl2 = leafOrder.get(suffix2);
         if (sl1 == null)
