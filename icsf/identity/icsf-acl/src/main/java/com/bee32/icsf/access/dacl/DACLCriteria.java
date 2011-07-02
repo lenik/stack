@@ -11,7 +11,7 @@ import com.bee32.icsf.principal.util.PrincipalCriteria;
 
 public class DACLCriteria {
 
-    public static Criterion impliesDACE(Principal principal, Permission permission) {
+    public static Criterion impliesDACE(Principal<?> principal, Permission permission) {
         Conjunction conj = Restrictions.conjunction();
         conj.add(PrincipalCriteria.implies(principal));
         conj.add(impliesPermission(permission));

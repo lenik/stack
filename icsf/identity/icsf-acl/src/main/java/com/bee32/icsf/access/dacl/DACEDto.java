@@ -14,7 +14,7 @@ public class DACEDto
     private static final long serialVersionUID = 1L;
 
     DACLDto dacl;
-    PrincipalDto principal;
+    PrincipalDto<?> principal;
     Permission permission;
 
     public DACEDto() {
@@ -25,6 +25,7 @@ public class DACEDto
         super(selection);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void _marshal(DACE source) {
         dacl = new DACLDto().ref(source.getDacl());

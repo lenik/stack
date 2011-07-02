@@ -21,7 +21,7 @@ public class DACE
     private static final long serialVersionUID = 1L;
 
     DACL dacl;
-    Principal principal;
+    Principal<?> principal;
     Permission permission;
 
     public DACE() {
@@ -59,11 +59,11 @@ public class DACE
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    public Principal getPrincipal() {
+    public Principal<?> getPrincipal() {
         return principal;
     }
 
-    public void setPrincipal(Principal principal) {
+    public void setPrincipal(Principal<?> principal) {
         if (principal == null)
             throw new NullPointerException("principal");
         this.principal = principal;

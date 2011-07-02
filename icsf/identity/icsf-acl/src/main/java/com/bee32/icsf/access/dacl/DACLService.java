@@ -22,7 +22,7 @@ public class DACLService
      *            所要求的权限位。返回的 ACL 中相关的 ACE 必须蕴涵该 permission。
      * @return 返回有效 ACL 的 id 列表。
      */
-    public Integer[] aclIndex(Principal principal, Permission permission) {
+    public Integer[] aclIndex(Principal<?> principal, Permission permission) {
 
         Criterion criterion = DACLCriteria.impliesDACE(principal, permission);
 

@@ -26,7 +26,7 @@ public class R_ACE
     private static final long serialVersionUID = 1L;
 
     private String qualifiedName;
-    private Principal principal;
+    private Principal<?> principal;
     private String mode;
 
     public R_ACE() {
@@ -89,11 +89,11 @@ public class R_ACE
     }
 
     @ManyToOne(optional = false)
-    public Principal getPrincipal() {
+    public Principal<?> getPrincipal() {
         return principal;
     }
 
-    public void setPrincipal(Principal principal) {
+    public void setPrincipal(Principal<?> principal) {
         if (principal == null)
             throw new NullPointerException("principal");
         this.principal = principal;

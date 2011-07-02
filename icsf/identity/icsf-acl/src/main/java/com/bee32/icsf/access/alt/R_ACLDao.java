@@ -61,7 +61,7 @@ public class R_ACLDao
 
         List<R_ACE> newList = new ArrayList<R_ACE>();
         for (Entry<? extends IPrincipal, Permission> entry : acl.getEntries()) {
-            Principal principal = (Principal) entry.getKey();
+            Principal<?> principal = (Principal<?>) entry.getKey();
             R_ACE existed = existingMap.remove(principal);
             if (existed != null) {
                 newList.add(existed);

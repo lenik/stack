@@ -17,7 +17,7 @@ public class DACLDto
     public static final int ENTRIES = 1;
 
     DACLDto parent;
-    PrincipalDto owner;
+    PrincipalDto<?> owner;
     List<DACEDto> entries;
 
     public DACLDto() {
@@ -28,6 +28,7 @@ public class DACLDto
         super(selection);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void _marshal(DACL source) {
         parent = mref(DACLDto.class, source.getParent());
@@ -60,11 +61,11 @@ public class DACLDto
         this.parent = parent;
     }
 
-    public PrincipalDto getOwner() {
+    public PrincipalDto<?> getOwner() {
         return owner;
     }
 
-    public void setOwner(PrincipalDto owner) {
+    public void setOwner(PrincipalDto<?> owner) {
         if (owner == null)
             throw new NullPointerException("owner");
         this.owner = owner;
