@@ -186,8 +186,7 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     @Override
     public void deleteByKey(K key) {
-        E entity = get(key);
-        delete(entity);
+        deleteById(key);
     }
 
     @Override
@@ -343,7 +342,7 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public void delete(K id) {
+    public void deleteById(K id) {
         String entityName = getEntityType().getSimpleName();
         String hql = "delete from " + entityName + " where id=?";
         getHibernateTemplate().bulkUpdate(hql, id);

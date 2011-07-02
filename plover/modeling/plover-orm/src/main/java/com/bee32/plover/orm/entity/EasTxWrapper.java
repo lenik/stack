@@ -276,9 +276,9 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = false)
     @Override
-    public void delete(K id) {
+    public void deleteById(K id) {
         checkDelete();
-        getDao().delete(id);
+        getDao().deleteById(id);
     }
 
     @Transactional(readOnly = false)

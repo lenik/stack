@@ -93,7 +93,7 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
      */
     int count(Criterion... restrictions);
 
-    void delete(K id);
+    void deleteById(K id);
 
     /**
      * Delete entities with restrictions.
