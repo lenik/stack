@@ -24,8 +24,10 @@ public class PropertyKeyComparator
     public int compareNonNull(String o1, String o2) {
         int ldot1 = o1.lastIndexOf('.');
         int ldot2 = o2.lastIndexOf('.');
-        if (ldot1 == -1 && ldot2 == -1)
-            return o1.compareTo(o2);
+        if (ldot1 == -1)
+            return -1;
+        if (ldot2 == -1)
+            return 1;
 
         String p1 = o1.substring(0, ldot1);
         String p2 = o2.substring(0, ldot2);
