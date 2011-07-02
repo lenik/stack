@@ -224,11 +224,13 @@ public class OrgAdminBean
         try {
 		Org org = serviceFor(Org.class).load(selectedOrg.getId());
 		org.getContacts().clear();
+		serviceFor(Org.class).save(org);
             serviceFor(Org.class).delete(org);
             refreshOrgCount();
 
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("提示", "删除客户/供应商失败;" + e.getMessage()));
+            e.printStackTrace();
         }
     }
 

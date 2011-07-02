@@ -185,11 +185,13 @@ public class PersonAdminBean
         try {
 		Person person = serviceFor(Person.class).load(selectedPerson.getId());
 		person.getContacts().clear();
+		serviceFor(Person.class).save(person);
             serviceFor(Person.class).delete(person);
             refreshPersonCount();
 
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("提示", "删除联系人失败;" + e.getMessage()));
+            e.printStackTrace();
         }
     }
 
