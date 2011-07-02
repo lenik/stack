@@ -46,10 +46,10 @@
                         <p:divider />
 
                         <h:outputLabel for="btime" value="时间段:" />
-                        <p:calendar id="btime" pattern="yyyy-MM-dd HH:mm" value="#{chanceActionBean.searchBeginTime}"
+                        <p:calendar id="btime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}" value="#{chanceActionBean.searchBeginTime}"
                             showOn="button" />
                         <h:outputLabel for="etime" value="到:" />
-                        <p:calendar id="etime" pattern="yyyy-MM-dd HH:mm" value="#{chanceActionBean.searchEndTime}"
+                        <p:calendar id="etime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}" value="#{chanceActionBean.searchEndTime}"
                             showOn="button" />
                         <p:commandButton value="查找" actionListener="#{chanceActionBean.search}"
                             disabled="#{chanceActionBean.searchable}" update="chanceActionForm" async="true" />
@@ -134,11 +134,11 @@
                             columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
                             <h:outputLabel for="beginTime" value="开始时间:" />
-                            <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm"
+                            <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
                                 value="#{chanceActionBean.action.beginTime}" showOn="button"
                                 disabled="#{chanceActionBean.editable}" />
                             <h:outputLabel for="endTime" value="结束时间:" />
-                            <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm"
+                            <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
                                 value="#{chanceActionBean.action.endTime}" showOn="button"
                                 disabled="#{chanceActionBean.editable}" />
 

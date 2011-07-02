@@ -16,6 +16,7 @@
     <ui:define name="title">销售机会管里</ui:define>
 
     <ui:define name="content">
+
         <h:form id="chanceForm">
 
             <p:growl id="growl" showDetail="true" />
@@ -184,7 +185,8 @@
 
                         </t:panelGrid>
                         <p:separator />
-                        <p:panel header="机会行动历史记录">
+                        <p:fieldset legend="机会行动历史记录" toggleable="true" toggleSpeed="500">
+
                             <p:toolbar id="actionToolbar">
                                 <p:toolbarGroup align="left" disabled="#{chanceBean.editable}">
                                     <p:commandButton value="增加关联" disabled="#{chanceBean.relating}"
@@ -253,7 +255,48 @@
                                 </p:column>
 
                             </p:dataTable>
-                        </p:panel>
+                        </p:fieldset>
+                        <p:fieldset legend="报价" toggleable="true" toggleSpeed="500">
+                            <h:outputText value="报价正在完善中,敬请期待...."  style="color:red;font-size:20px;"/>
+                            <p:toolbar id="quotationToolbar">
+                                <p:toolbarGroup align="left">
+                                    <p:commandButton value="编辑" />
+                                    <p:commandButton value="详细" actionListener="#{quotationBean.viewDetail}"
+                                        update="main:mx" oncomplete="dlg.show();" />
+                                    <p:commandButton value="转成订单" />
+                                </p:toolbarGroup>
+                            </p:toolbar>
+                            <p:dataTable id="quotationList" var="item" value="#{quotationBean.quotations}"
+                                selection="#{quotationBean.selectedQuotation}" selectionMode="single"
+                                rowIndexVar="rowIndex">
+
+                                <p:ajax event="rowSelect" listener="#{quotationBean.onRowSelect}" update="main:toolbar" />
+                                <p:ajax event="rowUnselect" listener="#{quotationBean.onRowUnselect}"
+                                    update="main:toolbar" />
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="序号" />
+                                    </f:facet>
+                                    <h:outputText value="#{rowIndex + 1}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="标题" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.subject}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="报价日期" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.createdDate}" />
+                                </p:column>
+                            </p:dataTable>
+
+
+
+                        </p:fieldset>
                     </p:tab>
                 </p:tabView>
             </p:panel>
@@ -332,10 +375,11 @@
                 <h:panelGroup>
 
                     <h:panelGrid columns="4">
-                        <p:calendar pattern="yyyy-MM-dd HH:mm" value="#{chanceBean.searchBeginTime}" showOn="button" />
-                        <h:outputLabel for="set" value="到:" />
-                        <p:calendar id="set" pattern="yyyy-MM-dd HH:mm" value="#{chanceBean.searchEndTime}"
+                        <p:calendar pattern="yyyy-MM-dd HH:mm" navigator="#{true}" value="#{chanceBean.searchBeginTime}"
                             showOn="button" />
+                        <h:outputLabel for="set" value="到:" />
+                        <p:calendar id="set" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
+                            value="#{chanceBean.searchEndTime}" showOn="button" />
                         <p:commandButton value="查找" actionListener="#{chanceBean.searchAction}"
                             update="chanceActionForm:actions" async="true" />
 
@@ -384,8 +428,37 @@
                     </h:panelGrid>
                 </h:panelGroup>
             </p:dialog>
-            <p:separator />
+
+        </h:form>
+
+        <h:form id="actionDetailFrom">
             <p:dialog header="selectedChanceActions" widgetVar="xxx" modal="true" with="640" height="500">
+            </p:dialog>
+        </h:form>
+
+        <h:form id="quotationForm">
+
+            <p:dialog header="报价单" widgetVar="dlg" height="400" width="600">
+                <p:panel id="mx">
+                    <h:outputLabel for="quotationSubject" value="标题:" />
+                    <p:inputText id="quotationSubject" value="#{quotationBean.quotation.subject}" />
+
+                    <h:outputLabel for="quotationChance" value="机会:" />
+                    <p:inputText id="quotationChance" value="#{quotationBean.quotation.chance.subject}" />
+
+                    <h:outputLabel for="quotationAmount" value="总金额:" />
+                    <p:inputText id="quotationAmount" value="#{quotationBean.quotation.amount}" />
+
+                    <h:outputLabel for="quotationRecommend" value="交付说明" />
+                    <p:inputTextarea id="quotationRecommend" value="#{quotationBean.quotation.recommend}" />
+
+                    <h:outputLabel for="quotationPayment" value="付款说明" />
+                    <p:inputTextarea id="quotationPayment" value="#{quotationBean.quotation.payment}" />
+
+                    <h:outputLabel for="quotationRemark" value="备注" />
+                    <p:inputTextarea id="quotationRemark" value="#{quotationBean.quotation.remark}" />
+
+                </p:panel>
             </p:dialog>
         </h:form>
 
