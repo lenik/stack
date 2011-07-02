@@ -6,6 +6,7 @@ import java.util.Calendar;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
+import com.bee32.sem.chance.entity.BasePrice;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceActionStyle;
@@ -14,6 +15,8 @@ import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.entity.Competitor;
+import com.bee32.sem.chance.entity.Quotation;
+import com.bee32.sem.chance.entity.QuotationItem;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.people.entity.Party;
 
@@ -27,6 +30,8 @@ public class SEMChanceSamples
     public static ChanceAction chanceAction1 = new ChanceAction();
     public static ChanceAction chanceAction2 = new ChanceAction();
     public static Competitor competitor = new Competitor();
+    public static QuotationItem quotationItem1 = new QuotationItem();
+    public static Quotation quotation = new Quotation();
 
     static {
 
@@ -80,10 +85,38 @@ public class SEMChanceSamples
 
         chance.setActions(Arrays.asList(chanceAction1, chanceAction2));
 
+        quotationItem1.setQuotation(quotation);
+        quotationItem1.setBasePrice(BasePrice.tempQD1);
+        quotationItem1.setMaterial("宾得XR");
+        quotationItem1.setDiscount(0.88);
+        quotationItem1.setPrice(3800);
+        quotationItem1.setNumber(2);
+        quotationItem1.setRemark("好人啊,能不能再便宜点");
+
+        quotation.setCreator(IcsfPrincipalSamples.eva);
+        quotation.setSubject("7月2号报价");
+        quotation.setChance(chance);
+        quotation.setItems(Arrays.<QuotationItem> asList(quotationItem1));
+        quotation.setAmount(7600);
+        quotation.setRecommend("发顺丰加保价");
+        quotation.setPayment("网上转帐");
+        quotation.setRemark("良好的开始");
+
     }
 
     @Override
     protected void preamble() {
+
+        // add <price>->quotionDetail
+        addNormalSample(BasePrice.tempQD1);
+        addNormalSample(BasePrice.tempQD2);
+        addNormalSample(BasePrice.tempQD3);
+        addNormalSample(BasePrice.tempQD4);
+        addNormalSample(BasePrice.tempQD5);
+        addNormalSample(BasePrice.tempQD6);
+        addNormalSample(BasePrice.tempQD7);
+        addNormalSample(BasePrice.tempQD8);
+        addNormalSample(BasePrice.tempQD9);
 
         // addChanceStage
         addNormalSample(ChanceStage.INIT);
@@ -124,6 +157,10 @@ public class SEMChanceSamples
         addNormalSample(competitor);
         addNormalSample(chanceAction1);
         addNormalSample(chanceAction2);
+
+        // add <price>->quotation and quotationItem
+        addNormalSample(quotation);
+        addNormalSample(quotationItem1);
     }
 
 }
