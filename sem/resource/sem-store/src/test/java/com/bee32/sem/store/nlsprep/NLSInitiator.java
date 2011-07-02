@@ -150,7 +150,7 @@ public class NLSInitiator {
         System.out.println("Create " + file);
         file.getParentFile().mkdirs();
 
-        OutputStream _out = new FileOutputStream(file, true);
+        OutputStream _out = new FileOutputStream(file, false); // append
         PrintStream out = new PrintStream(_out, true, "utf-8");
         dumpNLS(map, out);
         out.close();
@@ -166,8 +166,10 @@ public class NLSInitiator {
                 maxlen = key.length();
 
         for (String key : keys) {
+            Object val = map.get(key);
+
             String PADDING = Strings.repeat(maxlen - key.length(), ' ');
-            out.println(key + PADDING + " = ");
+            out.println(key + PADDING + " = " + val);
         }
     }
 
