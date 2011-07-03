@@ -1,18 +1,21 @@
-package com.bee32.plover.servlet.test;
+package com.bee32.plover.servlet.rabbits;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.free.FilePath;
 import javax.free.OutputStreamTarget;
 import javax.free.URLResource;
+import javax.free.UnexpectedException;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.mortbay.log.Log;
+import org.mortbay.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +25,7 @@ import com.bee32.plover.util.Mime;
  * This servlet should be served as the default servlet, which means to replace the default one.
  */
 public class OverlappedResourceServlet
-        extends HttpServlet {
+        extends DefaultServlet_WF {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,8 +40,54 @@ public class OverlappedResourceServlet
         listIndex = false;
     }
 
+    /**
+     * @see OverlappedContext#getResource(String)
+     * @see OverlappedBases#searchResource(String)
+     */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    public Resource getResource(String pathInContext) {
+        logger.debug("Get overlapped resource: " + pathInContext);
+
+        URL resourceUrl = OverlappedBases.searchResource(pathInContext);
+
+        // Not in search-bases, fallback to the default one (which is resource-base based).
+        if (resourceUrl == null) {
+            // .jsf => .xhtml
+            if (pathInContext.endsWith(".jsf")) {
+                String xhtmlPath = pathInContext.substring(0, pathInContext.length() - 4) + ".xhtml";
+                URL xhtmlUrl = OverlappedBases.searchResource(xhtmlPath);
+                if (xhtmlUrl != null) {
+                    String _url = xhtmlUrl.toString();
+                    _url = _url.substring(0, _url.length() - 6) + ".jsf";
+                    try {
+                        resourceUrl = new URL(_url);
+                    } catch (MalformedURLException e) {
+                        throw new UnexpectedException("URL subst should work for: " + _url, e);
+                    }
+                }
+            }
+
+            if (resourceUrl == null)
+                return null;
+            else {
+                logger.debug("Resolved as servlet path: " + resourceUrl);
+            }
+        }
+
+        Resource resource;
+        try {
+            resource = Resource.newResource(resourceUrl);
+            // logger.debug("    => " + resource);
+        } catch (IOException e) {
+            Log.ignore(e);
+            return null;
+        }
+
+        return resource;
+    }
+
+    // @Override
+    protected void _doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         String path = req.getServletPath();

@@ -1,4 +1,4 @@
-package com.bee32.plover.servlet.test;
+package com.bee32.plover.servlet.rabbits;
 
 import java.net.URL;
 

@@ -11,8 +11,8 @@ import org.mortbay.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.servlet.test.OverlappedBases;
-import com.bee32.plover.servlet.test.RabbitServletContext;
+import com.bee32.plover.servlet.rabbits.OverlappedBases;
+import com.bee32.plover.servlet.rabbits.RabbitServletContext;
 import com.bee32.plover.servlet.test.WiredServletTestCase;
 import com.bee32.plover.web.faces.ClassResourceResolver;
 import com.bee32.plover.web.faces.FacesConstants;

@@ -15,6 +15,7 @@ import org.mortbay.jetty.testing.HttpTester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.servlet.rabbits.OverlappedBases;
 import com.bee32.plover.test.AssembledTestCase;
 
 public abstract class ServletTestCase
