@@ -55,7 +55,7 @@ public class ClassFiles {
             if (start.isDirectory()) {
                 System.out.println("Scan " + start);
                 List<String> fqcns = findClasses(start);
-                List<Class<?>> types = forNames(fqcns);
+                List<Class<?>> types = forNames(fqcns, true);
                 for (Class<?> type : types)
                     System.out.println("    " + type);
             }
