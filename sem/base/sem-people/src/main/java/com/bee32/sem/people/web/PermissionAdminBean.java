@@ -270,35 +270,121 @@ public class PermissionAdminBean extends EntityViewBean {
 			e.permission.setAdmin(true);
 		}
 	}
-
 	public void onSelectInvertAdmin() {
 		for(RPEntry e : rpEntries) {
 			e.permission.setAdmin(!e.permission.isAdmin());
 		}
 	}
-
 	public void onSelectNoneAdmin() {
 		for(RPEntry e : rpEntries) {
 			e.permission.setAdmin(false);
 		}
 	}
 
+
+
+
+
 	public void onSelectAllReadable() {
 		for(RPEntry e : rpEntries) {
 			e.permission.setReadable(true);
 		}
 	}
-
 	public void onSelectInvertReadable() {
 		for(RPEntry e : rpEntries) {
 			e.permission.setReadable(!e.permission.isReadable());
 		}
 	}
-
 	public void onSelectNoneReadable() {
 		for(RPEntry e : rpEntries) {
 			e.permission.setReadable(false);
 		}
 	}
 
+
+
+
+	public void onSelectAllWritable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setWritable(true);
+		}
+	}
+	public void onSelectInvertWritable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setWritable(!e.permission.isWritable());
+		}
+	}
+	public void onSelectNoneWritable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setWritable(false);
+		}
+	}
+
+
+	public void onSelectAllExecutable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setExecutable(true);
+		}
+	}
+	public void onSelectInvertExecutable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setExecutable(!e.permission.isExecutable());
+		}
+	}
+	public void onSelectNoneExecutable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setExecutable(false);
+		}
+	}
+
+
+	public void onSelectAllListable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setListable(true);
+		}
+	}
+	public void onSelectInvertListable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setListable(!e.permission.isListable());
+		}
+	}
+	public void onSelectNoneListable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setListable(false);
+		}
+	}
+
+
+	public void onSelectAllCreatable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setCreatable(true);
+		}
+	}
+	public void onSelectInvertCreatable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setCreatable(!e.permission.isCreatable());
+		}
+	}
+	public void onSelectNoneCreatable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setCreatable(false);
+		}
+	}
+
+
+	public void onSelectAllDeletable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setDeletable(true);
+		}
+	}
+	public void onSelectInvertDeletable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setDeletable(!e.permission.isDeletable());
+		}
+	}
+	public void onSelectNoneDeletable() {
+		for(RPEntry e : rpEntries) {
+			e.permission.setDeletable(false);
+		}
+	}
 }

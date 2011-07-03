@@ -32,6 +32,10 @@
                 width: 350px;
             }
 
+            .table_inner_line {
+                border: solid 1px #ccc;
+                text-align: center;
+            }
         </h:outputStylesheet>
 
 
@@ -177,47 +181,125 @@
 
 					<p:panel header="权限列表" style="width:100%; margin-left:10px;">
 
-						<p:toolbar id="selectAdminToolbar">
-							<p:toolbarGroup align="left">
 
-								<p:commandButton value="全选管理"
+						<t:panelGrid columns="7" style="border:solid 1px #ccc;"
+							cellspacing="0" cellpading="0"
+							columnClasses="table_inner_line,table_inner_line,table_inner_line,table_inner_line,table_inner_line,table_inner_line,table_inner_line">
+							<h:outputText value="管理" />
+							<h:outputText value="读取" />
+							<h:outputText value="写入" />
+							<h:outputText value="执行" />
+							<h:outputText value="列表" />
+							<h:outputText value="建立" />
+							<h:outputText value="删除" />
+
+
+							<t:panelGrid columns="3">
+								<p:commandButton value="全"
 									actionListener="#{permissionAdminBean.onSelectAllAdmin}"
 									update="permissionForm:rpEntries permissionForm:growl"
 									async="true" />
+								<p:commandButton value="反"
+									actionListener="#{permissionAdminBean.onSelectInvertAdmin}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+								<p:commandButton value="不"
+									actionListener="#{permissionAdminBean.onSelectNoneAdmin}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+							</t:panelGrid>
 
-                                <p:commandButton value="反选管理"
-                                    actionListener="#{permissionAdminBean.onSelectInvertAdmin}"
+							<t:panelGrid columns="3">
+								<p:commandButton value="全"
+									actionListener="#{permissionAdminBean.onSelectAllReadable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+								<p:commandButton value="反"
+									actionListener="#{permissionAdminBean.onSelectInvertReadable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+								<p:commandButton value="不"
+									actionListener="#{permissionAdminBean.onSelectNoneReadable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+							</t:panelGrid>
+
+							<t:panelGrid columns="3">
+								<p:commandButton value="全"
+									actionListener="#{permissionAdminBean.onSelectAllWritable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+								<p:commandButton value="反"
+									actionListener="#{permissionAdminBean.onSelectInvertWritable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+								<p:commandButton value="不"
+									actionListener="#{permissionAdminBean.onSelectNoneWritable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+							</t:panelGrid>
+
+							<t:panelGrid columns="3">
+								<p:commandButton value="全"
+									actionListener="#{permissionAdminBean.onSelectAllExecutable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+								<p:commandButton value="反"
+									actionListener="#{permissionAdminBean.onSelectInvertExecutable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+								<p:commandButton value="不"
+									actionListener="#{permissionAdminBean.onSelectNoneExecutable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+							</t:panelGrid>
+
+							<t:panelGrid columns="3">
+								<p:commandButton value="全"
+									actionListener="#{permissionAdminBean.onSelectAllListable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+								<p:commandButton value="反"
+									actionListener="#{permissionAdminBean.onSelectInvertListable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+								<p:commandButton value="不"
+									actionListener="#{permissionAdminBean.onSelectNoneListable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+							</t:panelGrid>
+
+							<t:panelGrid columns="3">
+								<p:commandButton value="全"
+									actionListener="#{permissionAdminBean.onSelectAllCreatable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+								<p:commandButton value="反"
+									actionListener="#{permissionAdminBean.onSelectInvertCreatable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+								<p:commandButton value="不"
+									actionListener="#{permissionAdminBean.onSelectNoneCreatable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+							</t:panelGrid>
+
+							<t:panelGrid columns="3">
+								<p:commandButton value="全"
+									actionListener="#{permissionAdminBean.onSelectAllDeletable}"
+									update="permissionForm:rpEntries permissionForm:growl"
+									async="true" />
+                                <p:commandButton value="反"
+                                    actionListener="#{permissionAdminBean.onSelectInvertDeletable}"
                                     update="permissionForm:rpEntries permissionForm:growl"
                                     async="true" />
-
-                                <p:commandButton value="不选管理"
-                                    actionListener="#{permissionAdminBean.onSelectNoneAdmin}"
+                                <p:commandButton value="不"
+                                    actionListener="#{permissionAdminBean.onSelectNoneDeletable}"
                                     update="permissionForm:rpEntries permissionForm:growl"
                                     async="true" />
+							</t:panelGrid>
+						</t:panelGrid>
 
-							</p:toolbarGroup>
-						</p:toolbar>
-
-                        <p:toolbar id="selectReadableToolbar">
-                            <p:toolbarGroup align="left">
-
-                                <p:commandButton value="全选读取"
-                                    actionListener="#{permissionAdminBean.onSelectAllReadable}"
-                                    update="permissionForm:rpEntries permissionForm:growl"
-                                    async="true" />
-
-                                <p:commandButton value="反选读取"
-                                    actionListener="#{permissionAdminBean.onSelectInvertReadable}"
-                                    update="permissionForm:rpEntries permissionForm:growl"
-                                    async="true" />
-
-                                <p:commandButton value="不选读取"
-                                    actionListener="#{permissionAdminBean.onSelectNoneReadable}"
-                                    update="permissionForm:rpEntries permissionForm:growl"
-                                    async="true" />
-
-                            </p:toolbarGroup>
-                        </p:toolbar>
 
 
 						<p:dataTable id="rpEntries" var="rpEntry"
