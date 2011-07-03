@@ -19,9 +19,9 @@ import com.bee32.plover.web.faces.FacesConstants;
 
 enum FaceletsProvider {
 
-    JSF_RI, //
+    JSF_RI, // Sun JSF Reference Implementation
 
-    APACHE_MYFACES, //
+    APACHE_MYFACES, // Apache MyFaces
 
 }
 
@@ -37,6 +37,8 @@ public class FaceletsTestCase
 
     public FaceletsTestCase() {
         OverlappedBases.add("resources/");
+        stl.welcomeList.add("index-ftc.jsf");
+        stl.welcomeList.add("index.jsf");
     }
 
     /**
