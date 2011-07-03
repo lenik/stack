@@ -161,18 +161,13 @@ public class ServletTestLibrary
         return null;
     }
 
+    public final List<String> welcomeList = new ArrayList<String>();
+    {
+        welcomeList.add("index.html");
+    }
+
     protected void configureContext() {
-        List<String> list = new ArrayList<String>();
-
-        String[] welcomeFiles = getServletContext().getWelcomeFiles();
-        if (welcomeFiles != null)
-            for (String welcomeFile : welcomeFiles)
-                list.add(welcomeFile);
-
-        if (!list.contains("index.html"))
-            list.add(0, "index.html");
-
-        welcomeFiles = list.toArray(new String[0]);
+        String[] welcomeFiles = welcomeList.toArray(new String[0]);
         getServletContext().setWelcomeFiles(welcomeFiles);
     }
 
@@ -182,8 +177,9 @@ public class ServletTestLibrary
 
         addServlet(Favicon.class, "/favicon.ico");
 
-        addFilter(Welcome.class, "/", 0);
+        // The wildcard * is needed, cuz they are class resources, not overlapped resources.
         addServlet(Logo.class, "/logo/*");
+        addFilter(Welcome.class, "/", 0);
 
         // Use filter to get the reponse object.
         // addEventListener(new ThreadServletContextListener());
@@ -201,7 +197,10 @@ public class ServletTestLibrary
     protected void configureFallbackServlets() {
         // Add the fallback-servlet.
         // Otherwise, the filter won't work.
-        addServlet(OverlappedResourceServlet.class, "/");
+
+        ServletHolder ors = addServlet(OverlappedResourceServlet.class, "/");
+        // See DefaultServlet._welcomeServlets
+        ors.setInitParameter("welcomeServlets", "true");
     }
 
     public ServletHolder addServlet(String servletName, Class<? extends HttpServlet> servlet, String pathSpec) {
