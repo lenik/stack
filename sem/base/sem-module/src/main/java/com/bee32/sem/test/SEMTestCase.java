@@ -51,6 +51,8 @@ public class SEMTestCase
 
         PersistenceUnit unit = UsingUtil.getUsingUnit(getClass());
         CustomizedSessionFactoryBean.setForceUnit(unit);
+
+        stl.welcomeList.add("index-rich.jsf");
     }
 
     @Override
