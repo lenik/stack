@@ -1,4 +1,4 @@
-package com.bee32.sem.store.nlsprep;
+package com.bee32.sem.uber.nlsprep;
 
 import java.io.File;
 import java.util.ArrayList;
