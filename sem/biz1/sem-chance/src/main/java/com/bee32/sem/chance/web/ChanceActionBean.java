@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.SessionLoginInfo;
+import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.chance.dto.ChanceActionDto;
@@ -75,10 +76,17 @@ public class ChanceActionBean
 
     // 查找客户
     private String customerPattern;
+
     // 客户列表
     private List<PartyDto> customers;
+
+    // 查找合作伙伴
+    private String partnerPattern;
+    // 伙伴列表
+    private List<UserDto> partners;
     // 选中的客户
     private PartyDto selectedCustomer;
+    private UserDto selectedPartner;
 
     @PostConstruct
     public void init() {
@@ -110,7 +118,7 @@ public class ChanceActionBean
         }
 
         initToolbar();
-        searchable = true;
+        searchable = false;
         selectedAction = null;
         setActiveTab(TAB_INDEX);
     }
@@ -150,15 +158,15 @@ public class ChanceActionBean
     }
 
     public void findChances() {
+        List<Chance> _chances;
         if (chancePattern != null && !chancePattern.isEmpty()) {
-            List<Chance> _chances = serviceFor(Chance.class).list(//
+            _chances = serviceFor(Chance.class).list(//
                     ChanceCriteria.ownedByCurrentUser(), //
                     ChanceCriteria.subjectLike(chancePattern));
-            chances = DTOs.marshalList(ChanceDto.class, _chances);
         } else {
-            List<Chance> lc = serviceFor(Chance.class).list(ChanceCriteria.ownedByCurrentUser());
-            chances = DTOs.marshalList(ChanceDto.class, lc);
+            _chances = serviceFor(Chance.class).list(ChanceCriteria.ownedByCurrentUser());
         }
+        chances = DTOs.marshalList(ChanceDto.class, _chances);
     }
 
     public void findCustomer() {
@@ -171,6 +179,17 @@ public class ChanceActionBean
             List<Party> lp = serviceFor(Party.class).list(PeopleCriteria.ownedByCurrentUser());
             customers = DTOs.marshalList(PartyDto.class, lp);
         }
+    }
+
+    public void findPartner() {
+        List<User> _partners;
+        if (partnerPattern != null && !partnerPattern.isEmpty()) {
+            _partners = serviceFor(User.class).list(//
+                    ChanceCriteria.nameLike(partnerPattern));
+        } else {
+            _partners = serviceFor(User.class).list();
+        }
+        partners = DTOs.marshalList(UserDto.class, _partners);
     }
 
     public void createForm() {
@@ -243,6 +262,14 @@ public class ChanceActionBean
         action.deleteParty(selectedCustomer);
     }
 
+    public void addPartner() {
+        action.addPartner(selectedPartner);
+    }
+
+    public void deletePartner() {
+        action.deletePartner(selectedPartner);
+    }
+
     public List<SelectItem> getChanceStages() {
         List<ChanceStage> chanceStageList = serviceFor(ChanceStage.class).list();
         List<ChanceStageDto> stageDtoList = DTOs.marshalList(ChanceStageDto.class, chanceStageList);
@@ -272,10 +299,10 @@ public class ChanceActionBean
             return;
         }
 
-        if (action.getParties().size() == 0) {
-            context.addMessage(null, new FacesMessage("错误提示", "请选择拜访客户"));
-            return;
-        }
+//        if (action.getParties().size() == 0) {
+//            context.addMessage(null, new FacesMessage("错误提示", "请选择拜访客户"));
+//            return;
+//        }
 
         if (action.getContent().isEmpty())
             action.setContent("");
@@ -285,12 +312,12 @@ public class ChanceActionBean
         ChanceStageDto stage = action.getStage();
         Long chanceId = action.getChance().getId();
 
-        if (chanceId == null && !stage.isNull()) {
+        if (chanceId == null && !stage.isNullRef()) {
             context.addMessage(null, new FacesMessage("错误提示", "必须先选择机会,才能设置机会阶段"));
             return;
         }
 
-        if (!stage.isNull())
+        if (!stage.isNullRef())
             stage = reload(stage);
         action.pushStage(stage);
 
@@ -318,10 +345,10 @@ public class ChanceActionBean
             ChanceAction _action = action.unmarshal();
             Chance _chance = _action.getChance();
             if (_chance != null) {
-                _chance.pushStage(_action.getStage());
-                serviceFor(Chance.class).save(_chance);
+                _chance.addAction(_action);
+                serviceFor(Chance.class).saveOrUpdate(_chance);
             }
-            serviceFor(ChanceAction.class).save(_action);
+            serviceFor(ChanceAction.class).saveOrUpdate(_action);
 
             action = new ChanceActionDto();
             setActiveTab(TAB_INDEX);
@@ -500,6 +527,22 @@ public class ChanceActionBean
         this.customers = customers;
     }
 
+    public String getPartnerPattern() {
+        return partnerPattern;
+    }
+
+    public void setPartnerPattern(String partnerPattern) {
+        this.partnerPattern = partnerPattern;
+    }
+
+    public List<UserDto> getPartners() {
+        return partners;
+    }
+
+    public void setPartners(List<UserDto> partners) {
+        this.partners = partners;
+    }
+
     public PartyDto getSelectedCustomer() {
         return selectedCustomer;
     }
@@ -508,6 +551,14 @@ public class ChanceActionBean
 // if (selectedCustomer == null)
 // selectedCustomer = new PartyDto();
         this.selectedCustomer = selectedCustomer;
+    }
+
+    public UserDto getSelectedPartner() {
+        return selectedPartner;
+    }
+
+    public void setSelectedPartner(UserDto selectedPartner) {
+        this.selectedPartner = selectedPartner;
     }
 
 }

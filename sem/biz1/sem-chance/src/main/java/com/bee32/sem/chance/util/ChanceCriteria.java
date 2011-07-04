@@ -17,7 +17,10 @@ public class ChanceCriteria {
     }
 
     public static Criterion ownedBy(IUserPrincipal user) {
-        return Restrictions.eq("owner.id", user.getId());
+        if (user.getDisplayName().equals("admin"))
+            return null;
+        else
+            return Restrictions.eq("owner.id", user.getId());
     }
 
     public static Criterion subjectLike(String keyword) {
@@ -30,7 +33,10 @@ public class ChanceCriteria {
     }
 
     public static Criterion actedBy(IUserPrincipal user) {
-        return Restrictions.eq("actor.id", user.getId());
+        if (user.getDisplayName().equals("admin"))
+            return null;
+        else
+            return Restrictions.eq("actor.id", user.getId());
     }
 
     public static Criterion beginWithin(Date min, Date max) {
@@ -43,6 +49,13 @@ public class ChanceCriteria {
 
     public static Criterion chanceOf(Chance chance) {
         return Restrictions.eq("chance.id", chance.getId());
+    }
+
+    public static Criterion nameLike(String namePattern) {
+        if(namePattern.isEmpty())
+            return null;
+        return Restrictions.or(Restrictions.like("id", "%" + namePattern + "%"),
+                Restrictions.like("fullName", "%" + namePattern + "%"));
     }
 
 }

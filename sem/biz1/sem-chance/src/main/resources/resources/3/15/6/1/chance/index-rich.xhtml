@@ -66,47 +66,53 @@
 
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="序号" />
-                                </f:facet>
-                                <h:outputText value="#{rowIndex + 1}" />
-                            </p:column>
-
-                            <p:column>
-                                <f:facet name="header">
                                     <h:outputText value="创建日期" />
                                 </f:facet>
                                 <h:outputText value="#{chance.date}" />
                             </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="负责人" />
+                                </f:facet>
+                                <h:outputText value="#{chance.owner.displayName}" />
+                            </p:column>
+
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="类型" />
                                 </f:facet>
                                 <h:outputText value="#{chance.category.label}" />
                             </p:column>
+
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="机会标题" />
                                 </f:facet>
                                 <h:outputText value="#{chance.subject}" />
                             </p:column>
+
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="来源" />
                                 </f:facet>
                                 <h:outputText value="#{chance.source.label}" />
                             </p:column>
+
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="客户" />
                                 </f:facet>
                                 <h:outputText value="#{chance.party}" />
                             </p:column>
+
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="机会内容" />
                                 </f:facet>
                                 <h:outputText value="#{chance.shortContent}" />
                             </p:column>
+
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="机会阶段" />
@@ -257,7 +263,7 @@
                             </p:dataTable>
                         </p:fieldset>
                         <p:fieldset legend="报价" toggleable="true" toggleSpeed="500">
-                            <h:outputText value="报价正在完善中,敬请期待...."  style="color:red;font-size:20px;"/>
+                            <h:outputText value="报价正在完善中,敬请期待...." style="color:red;font-size:20px;" />
                             <p:toolbar id="quotationToolbar">
                                 <p:toolbarGroup align="left">
                                     <p:commandButton value="编辑" />

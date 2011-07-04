@@ -30,6 +30,7 @@ public class ChanceAction
 
     boolean plan=false;
     List<Party> parties = new ArrayList<Party>();
+    List<User> partners = new ArrayList<User>();
 
     User actor;
     ChanceActionStyle style = ChanceActionStyle.OTHER;
@@ -71,6 +72,17 @@ public class ChanceAction
         if (parties == null)
             parties = new ArrayList<Party>();
         this.parties = parties;
+    }
+
+    /**
+     * 工作伙伴
+     */
+    @ManyToMany
+    public List<User> getPartners() {
+        return partners;
+    }
+    public void setPartners(List<User> partners) {
+        this.partners = partners;
     }
 
     /**
@@ -190,5 +202,4 @@ public class ChanceAction
         cmp = hash1 - hash2;
         return cmp;
     }
-
 }

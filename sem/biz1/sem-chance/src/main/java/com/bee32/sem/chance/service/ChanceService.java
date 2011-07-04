@@ -40,7 +40,7 @@ public class ChanceService
         // XXX - ???
         List<ChanceAction> tempList = new ArrayList<ChanceAction>();
         for (ChanceAction action : actions) {
-            action.setChance(null);
+//            action.setChance(null);
             tempList.add(action);
         }
         return false;

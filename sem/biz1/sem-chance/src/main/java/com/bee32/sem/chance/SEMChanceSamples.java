@@ -65,7 +65,8 @@ public class SEMChanceSamples
         competitor.setCapability("核心竞争力");
         competitor.setSolution("目前没有好的解决方案");
 
-        chanceAction1.setChance(chance);
+
+//        chanceAction1.setChance(chance);
         chanceAction1.setBeginTime(cal.getTime());
         chanceAction1.setEndTime(cal.getTime());
         chanceAction1.setContent("在北京、上海、广州三个重点区域发展8至10家大OEM厂商");
@@ -83,7 +84,9 @@ public class SEMChanceSamples
         chanceAction2.setStyle(ChanceActionStyle.TALK);
         chanceAction2.setParties(Arrays.asList((Party) SEMPeopleSamples.weiXiaoBao));
 
-        chance.setActions(Arrays.asList(chanceAction1, chanceAction2));
+        chance.addAction(chanceAction1);
+        chance.addAction(chanceAction2);
+//        chance.setActions(Arrays.asList(chanceAction1, chanceAction2));
 
         quotationItem1.setQuotation(quotation);
         quotationItem1.setBasePrice(BasePrice.tempQD1);

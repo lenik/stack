@@ -132,6 +132,25 @@ public class Chance
         this.actions = actions;
     }
 
+    public void addAction(ChanceAction action) {
+        if (action == null)
+            throw new NullPointerException("action");
+        Collections.sort(actions);
+        actions.add(action);
+
+        ChanceStage stage = action.getStage();
+        if (this.stage == null)
+            this.stage = stage;
+        else if (stage != null) {
+            if (stage.getOrder() >= this.stage.getOrder())
+                this.stage = stage;
+        }
+    }
+
+    public void removeAction(ChanceAction action) {
+
+    }
+
     /**
      * 获取机会阶段/进度（冗余）。
      *
@@ -168,21 +187,6 @@ public class Chance
 // ca = getActions().get(lastIndex);
         }
         return ca;
-    }
-
-    @Transient
-    public void addAction(ChanceAction action) {
-        List<ChanceAction> actionList = getActions();
-        actionList.add(action);
-        Collections.sort(actionList);
-        this.actions = actionList;
-    }
-
-    @Transient
-    public void pushStage(ChanceStage chanceStage) {
-        if (chanceStage != null)
-            if (stage.getOrder() < chanceStage.getOrder())
-                this.stage = chanceStage;
     }
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.free.ParseException;
 import javax.free.Strings;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
@@ -20,15 +21,18 @@ public class ChanceActionDto
     private static final long serialVersionUID = 1L;
 
     public static final int PARTIES = 1;
+    public static final int PARTNERS = 2;
 
     private String date;
     private String timeRange;
     private String actionType;
     private String party;
+    private String partner;
     private String contentShort;
 
     private boolean plan;
     private List<PartyDto> parties;
+    private List<UserDto> partners;
 
     private UserDto actor;
     private ChanceActionStyleDto style;
@@ -60,6 +64,18 @@ public class ChanceActionDto
             parties.remove(partyDto);
     }
 
+    public void addPartner(UserDto partner) {
+        if (partner == null)
+            throw new NullPointerException("partner");
+        if (!partners.contains(partner))
+            partners.add(partner);
+    }
+
+    public void deletePartner(UserDto partner) {
+        if (partners.contains(partner))
+            partners.remove(partner);
+    }
+
     public void pushStage(ChanceStageDto stageDto) {
         if (stageDto != null) {
             if (stageDto.getOrder() > stage.getOrder())
@@ -83,20 +99,32 @@ public class ChanceActionDto
 
         this.actionType = source.isPlan() == true ? "计划" : "日志";
 
-        String temp = null;
+        String tempParty = null;
         for (Party party : source.getParties()) {
-            if (temp == null)
-                temp = party.getName();
+            if (tempParty == null)
+                tempParty = party.getDisplayName();
             else
-                temp += "," + party.getName();
+                tempParty += "," + party.getDisplayName();
         }
-        this.party = temp;
+        this.party = tempParty;
+
+        String tempPartner = null;
+        for (User user : source.getPartners()) {
+            if (tempPartner == null)
+                tempPartner = user.getDisplayName();
+            else
+                tempPartner += "," + user.getDisplayName();
+        }
+        this.partner = tempPartner;
         this.contentShort = Strings.ellipse(source.getContent(), 16);
 
         this.plan = source.isPlan();
 
         if (selection.contains(PARTIES))
             this.parties = marshalList(PartyDto.class, source.getParties(), true);
+
+        if (selection.contains(PARTNERS))
+            this.partners = marshalList(UserDto.class, source.getPartners());
 
         this.actor = mref(UserDto.class, source.getActor());
         this.style = mref(ChanceActionStyleDto.class, source.getStyle());
@@ -107,23 +135,30 @@ public class ChanceActionDto
         this.content = source.getContent();
         this.spending = source.getSpending();
 
-        this.chance = mref(ChanceDto.class, 0, source.getChance());
-        this.stage = mref(ChanceStageDto.class, source.getStage());
+        if (source.getChance() == null)
+            this.chance = new ChanceDto().ref();
+        else
+            this.chance = mref(ChanceDto.class, 0, source.getChance());
+
+        if (source.getStage() == null)
+            this.stage = new ChanceStageDto().ref();
+        else
+            this.stage = mref(ChanceStageDto.class, source.getStage());
     }
 
     @Override
     protected void _unmarshalTo(ChanceAction target) {
         target.setPlan(plan);
         mergeList(target, "parties", parties);
+        mergeList(target, "partners", partners);
         merge(target, "actor", actor);
         merge(target, "style", style);
         target.setBeginTime(beginTime);
         target.setEndTime(endTime);
         target.setContent(content);
         target.setSpending(spending);
-// if (chance != null)
+
         merge(target, "chance", chance);
-// if (stage != null)
         merge(target, "stage", stage);
     }
 
@@ -166,6 +201,14 @@ public class ChanceActionDto
         this.party = party;
     }
 
+    public String getPartner() {
+        return partner;
+    }
+
+    public void setPartner(String partner) {
+        this.partner = partner;
+    }
+
     public String getContentShort() {
         return contentShort;
     }
@@ -187,7 +230,17 @@ public class ChanceActionDto
     }
 
     public void setParties(List<PartyDto> parties) {
+        if (parties == null)
+            throw new NullPointerException("parties");
         this.parties = parties;
+    }
+
+    public List<UserDto> getPartners() {
+        return partners;
+    }
+
+    public void setPartners(List<UserDto> partners) {
+        this.partners = partners;
     }
 
     public UserDto getActor() {
@@ -195,6 +248,8 @@ public class ChanceActionDto
     }
 
     public void setActor(UserDto actor) {
+        if (actor == null)
+            throw new NullPointerException("actor");
         this.actor = actor;
     }
 
@@ -243,6 +298,8 @@ public class ChanceActionDto
     }
 
     public void setChance(ChanceDto chance) {
+// if (chance == null)
+// throw new NullPointerException("chance");
         this.chance = chance;
     }
 
@@ -251,6 +308,8 @@ public class ChanceActionDto
     }
 
     public void setStage(ChanceStageDto stage) {
+// if (stage == null)
+// throw new NullPointerException("stage");
         this.stage = stage;
     }
 

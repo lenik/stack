@@ -22,6 +22,10 @@ public class QuotationBean
     private QuotationDto selectedQuotation;
     private QuotationDto quotation;
 
+    private String materialPattern;
+    private String[] selectedMaterial;
+    private List<String> material;
+
     @PostConstruct
     public void init() {
         List<Quotation> lq = serviceFor(Quotation.class).list();
@@ -86,5 +90,21 @@ public class QuotationBean
 
     public void setQuotation(QuotationDto quotation) {
         this.quotation = quotation;
+    }
+
+    public String getMaterialPattern() {
+        return materialPattern;
+    }
+
+    public void setMaterialPattern(String materialPattern) {
+        this.materialPattern = materialPattern;
+    }
+
+    public String[] getSelectedMaterial() {
+        return selectedMaterial;
+    }
+
+    public void setSelectedMaterial(String[] selectedMaterial) {
+        this.selectedMaterial = selectedMaterial;
     }
 }

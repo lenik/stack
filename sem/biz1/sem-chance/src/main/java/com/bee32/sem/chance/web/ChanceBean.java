@@ -204,12 +204,15 @@ public class ChanceBean
         Chance _chance = chance.unmarshal();
         try {
             for (ChanceAction _action : _chance.getActions()) {
-                _action.setChance(_chance);
-                _action.setStage(ChanceStage.INIT);
+                if (_action.getChance() == null)
+                    _action.setChance(_chance);
+                if (_action.getStage() == null)
+                    _action.setStage(ChanceStage.INIT);
             }
 
             List<Entity<?>> all = new ArrayList<Entity<?>>();
-            all.add(_chance);
+            //TODO is any problems
+//            all.add(_chance);
             all.addAll(_chance.getActions());
             serviceFor(Entity.class).saveOrUpdateAll(all);
 
@@ -322,12 +325,13 @@ public class ChanceBean
 
         try {
 
-            for (ChanceAction _action : _chance.getActions()) {
-                _action.setChance(_chance);
-                _action.setStage(ChanceStage.INIT);
-            }
-
-            serviceFor(ChanceAction.class).saveOrUpdateAll(_chance.getActions());
+//            //TODO 在新建机会的时候直接关联机会,则启用以下代码
+//            for (ChanceAction _action : _chance.getActions()) {
+//                _action.setChance(_chance);
+//                _action.setStage(ChanceStage.INIT);
+//            }
+//
+//            serviceFor(ChanceAction.class).saveOrUpdateAll(_chance.getActions());
             serviceFor(Chance.class).saveOrUpdate(_chance);
 
             context.addMessage(null, new FacesMessage("提示", "保存销售机会成功"));
@@ -351,7 +355,7 @@ public class ChanceBean
             serviceFor(Chance.class).delete(tempChance);
             refreshChanceCount();
             for (ChanceAction _action : tempChance.getActions()) {
-                _action.setChance(null);
+// _action.setChance(null);
                 _action.setStage(null);
                 serviceFor(ChanceAction.class).save(_action);
             }
@@ -363,8 +367,6 @@ public class ChanceBean
     }
 
     public void unRelating() {
-        // XXX 取消机会与行动关联
-        FacesContext context = FacesContext.getCurrentInstance();
         try {
             ChanceActionDto actionDto = selectedAction;
             ChanceAction chanceAction = actionDto.unmarshal();
@@ -372,12 +374,8 @@ public class ChanceBean
             chanceAction.setChance(null);
             chanceAction.setStage(null);
             serviceFor(ChanceAction.class).save(chanceAction);
-            if (chance.getActions().size() == 0) {
-                unRelating = true;
-            }
-            context.addMessage(null, new FacesMessage("提示", "取消关联成功"));
+            unRelating = true;
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "取消关联失败:" + e.getMessage()));
             e.printStackTrace();
         }
     }
