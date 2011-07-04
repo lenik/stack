@@ -61,7 +61,8 @@ public class ModifyPasswordBean extends EntityViewBean {
 
 	public UserDto getCurrentUser() {
 		User u = (User) SessionLoginInfo.requireCurrentUser();
-		UserDto cu = DTOs.marshal(UserDto.class, u);
+		User user = serviceFor(User.class).load(u.getId());
+		UserDto cu = DTOs.marshal(UserDto.class, user);
 
 		return cu;
 	}
@@ -82,7 +83,6 @@ public class ModifyPasswordBean extends EntityViewBean {
 		if(plist.isEmpty()) {
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "修改密码错误", "密码不存在");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
-			return;
 		} else {
 			String p1 = plist.get(0).getPasswd();
 
@@ -92,9 +92,11 @@ public class ModifyPasswordBean extends EntityViewBean {
 				serviceFor(UserPassword.class).saveOrUpdate(plist.get(0));
 
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "修改密码成功", "修改密码成功");
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 			} else {
 				//旧密码不正确
 				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "修改密码错误", "旧密码输入错误");
+				FacesContext.getCurrentInstance().addMessage(null, msg);
 			}
 		}
 	}
