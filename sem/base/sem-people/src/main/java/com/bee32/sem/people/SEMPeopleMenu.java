@@ -34,6 +34,7 @@ public class SEMPeopleMenu
 
     static MenuNode permissionAdmin = entry(SEMFrameMenu.BASE, 10, "permissionAdmin",
             ACCESS_.join("r_list/index-rich.jsf"));
+    static MenuNode modifyPassword = entry(SEMFrameMenu.BASE, 9, "modifyPassword", WEB_APP.join("modifyPassword.jsf"));
 
     @Override
     protected void preamble() {
