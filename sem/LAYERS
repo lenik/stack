@@ -35,3 +35,6 @@ biz1/                日常业务
 
 demo/               示例
     sem-samples
+
+build/
+    sem-uber
