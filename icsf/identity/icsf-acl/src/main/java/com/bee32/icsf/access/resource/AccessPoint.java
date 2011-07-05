@@ -2,7 +2,10 @@ package com.bee32.icsf.access.resource;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
+import com.bee32.plover.arch.util.ClassUtil;
 
 public final class AccessPoint
         extends Resource {
@@ -99,6 +102,13 @@ public final class AccessPoint
 
     public static Collection<AccessPoint> getInstances() {
         return pointMap.values();
+    }
+
+    public static void main(String[] args) {
+        Locale locale = Locale.forLanguageTag("en");
+        Locale.setDefault(locale);
+        String name = ClassUtil.getDisplayName(AccessPoint.class);
+        System.out.println(name);
     }
 
 }
