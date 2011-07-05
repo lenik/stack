@@ -1,6 +1,5 @@
 package com.bee32.sem.chance.web;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.dto.UserDto;
-import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceCategoryDto;
@@ -46,6 +44,9 @@ public class ChanceBean
 
     public static final int TAB_INDEX = 0;
     public static final int TAB_FORM = 1;
+
+    // 判断是不是在查找状态
+    private boolean isSearching;
 
     private boolean addable;
     private boolean edable;
@@ -78,7 +79,8 @@ public class ChanceBean
         edmo.setSelection(-1);
         edmo.setRestrictions(ChanceCriteria.ownedByCurrentUser());
         chances = UIHelper.buildLazyDataModel(edmo);
-        refreshChanceCount();
+        isSearching = false;
+        refreshChanceCount(isSearching);
     }
 
     public void initToolbar() {
@@ -102,8 +104,9 @@ public class ChanceBean
         unRelating = false;
     }
 
-    void refreshChanceCount() {
-        int count = serviceFor(Chance.class).count(ChanceCriteria.ownedByCurrentUser());
+    void refreshChanceCount(boolean forSearch) {
+        int count = serviceFor(Chance.class).count(ChanceCriteria.ownedByCurrentUser(),//
+                forSearch ? ChanceCriteria.subjectLike(subjectPattern) : null);
         chances.setRowCount(count);
     }
 
@@ -186,7 +189,8 @@ public class ChanceBean
             edmo.setRestrictions(ChanceCriteria.ownedByCurrentUser());
             edmo.setRestrictions(ChanceCriteria.subjectLike(subjectPattern));
             chances = UIHelper.buildLazyDataModel(edmo);
-            refreshChanceCount();
+            isSearching = true;
+            refreshChanceCount(isSearching);
         } else {
             initList();
         }
@@ -195,7 +199,6 @@ public class ChanceBean
         setActiveTab(TAB_INDEX);
     }
 
-    @SuppressWarnings("unchecked")
     public void doAttachActions() {
         if (selectedActions.length == 0) {
             return;
@@ -210,11 +213,7 @@ public class ChanceBean
                     _action.setStage(ChanceStage.INIT);
             }
 
-            List<Entity<?>> all = new ArrayList<Entity<?>>();
-            //TODO is any problems
-//            all.add(_chance);
-            all.addAll(_chance.getActions());
-            serviceFor(Entity.class).saveOrUpdateAll(all);
+            serviceFor(ChanceAction.class).saveOrUpdateAll(_chance.getActions());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -325,13 +324,13 @@ public class ChanceBean
 
         try {
 
-//            //TODO 在新建机会的时候直接关联机会,则启用以下代码
-//            for (ChanceAction _action : _chance.getActions()) {
-//                _action.setChance(_chance);
-//                _action.setStage(ChanceStage.INIT);
-//            }
+// //TODO 在新建机会的时候直接关联机会,则启用以下代码
+// for (ChanceAction _action : _chance.getActions()) {
+// _action.setChance(_chance);
+// _action.setStage(ChanceStage.INIT);
+// }
 //
-//            serviceFor(ChanceAction.class).saveOrUpdateAll(_chance.getActions());
+// serviceFor(ChanceAction.class).saveOrUpdateAll(_chance.getActions());
             serviceFor(Chance.class).saveOrUpdate(_chance);
 
             context.addMessage(null, new FacesMessage("提示", "保存销售机会成功"));
@@ -351,14 +350,17 @@ public class ChanceBean
     public void drop() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            Chance tempChance = selectedChance.unmarshal();
-            serviceFor(Chance.class).delete(tempChance);
-            refreshChanceCount();
-            for (ChanceAction _action : tempChance.getActions()) {
-// _action.setChance(null);
+            Chance chanceToDelete = serviceFor(Chance.class).load(selectedChance.getId());
+// Chance tempChance = selectedChance.unmarshal();
+            for (ChanceAction _action : chanceToDelete.getActions()) {
+                _action.setChance(null);
                 _action.setStage(null);
                 serviceFor(ChanceAction.class).save(_action);
             }
+            serviceFor(Chance.class).delete(chanceToDelete);
+            refreshChanceCount(isSearching);
+            initToolbar();
+            selectedChance = null;
             context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("错误", "删除销售机会失败:" + e.getMessage()));
@@ -378,6 +380,14 @@ public class ChanceBean
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isSearching() {
+        return isSearching;
+    }
+
+    public void setSearching(boolean isSearching) {
+        this.isSearching = isSearching;
     }
 
     public boolean isAddable() {
@@ -555,5 +565,4 @@ public class ChanceBean
     public void setParties(List<PartyDto> parties) {
         this.parties = parties;
     }
-
 }

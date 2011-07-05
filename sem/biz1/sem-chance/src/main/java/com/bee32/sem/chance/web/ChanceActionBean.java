@@ -48,6 +48,9 @@ public class ChanceActionBean
     static final int TAB_INDEX = 0;
     static final int TAB_FORM = 1;
 
+    // 判断是不是在查找状态 TODO
+    private boolean isSearching;
+
     // 查找日志
     private Date searchBeginTime;
     private Date searchEndTime;
@@ -100,13 +103,15 @@ public class ChanceActionBean
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (searchBeginTime != null && searchEndTime != null) {
+
+            isSearching = true;
             EntityDataModelOptions<ChanceAction, ChanceActionDto> edmo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
                     ChanceAction.class, ChanceActionDto.class);
             edmo.setRestrictions(//
                     ChanceCriteria.actedByCurrentUser(), //
                     ChanceCriteria.beginWithin(searchBeginTime, searchEndTime));
             actions = UIHelper.buildLazyDataModel(edmo);
-            refreshActionCount(true);
+            refreshActionCount(isSearching);
         } else {
             initList();
             if (searchBeginTime == null) {
@@ -134,10 +139,11 @@ public class ChanceActionBean
 
     public void initList() {
 
+        isSearching = false;
         EntityDataModelOptions<ChanceAction, ChanceActionDto> emdo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
                 ChanceAction.class, ChanceActionDto.class, -1, null, ChanceCriteria.actedByCurrentUser());
         actions = UIHelper.buildLazyDataModel(emdo);
-        refreshActionCount(false);
+        refreshActionCount(isSearching);
         initToolbar();
         searchable = false;
     }
@@ -228,15 +234,23 @@ public class ChanceActionBean
 
     public void drop() {
         FacesContext context = FacesContext.getCurrentInstance();
-        serviceFor(ChanceAction.class).delete(selectedAction.unmarshal());
 
-        refreshActionCount(false);
         try {
+            serviceFor(ChanceAction.class).delete(selectedAction.unmarshal());
+            refreshActionCount(isSearching);
+            add = false;
+            edable = true;
+            detail = true;
+            saveable = true;
+            back = true;
+            editable = false;
+            selectedAction = null;
             context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("错误", "删除行动记录错误:" + e.getMessage()));
             e.printStackTrace();
         }
+
     }
 
     public void cancel() {
@@ -299,10 +313,10 @@ public class ChanceActionBean
             return;
         }
 
-//        if (action.getParties().size() == 0) {
-//            context.addMessage(null, new FacesMessage("错误提示", "请选择拜访客户"));
-//            return;
-//        }
+// if (action.getParties().size() == 0) {
+// context.addMessage(null, new FacesMessage("错误提示", "请选择拜访客户"));
+// return;
+// }
 
         if (action.getContent().isEmpty())
             action.setContent("");
@@ -350,7 +364,7 @@ public class ChanceActionBean
             }
             serviceFor(ChanceAction.class).saveOrUpdate(_action);
 
-            action = new ChanceActionDto();
+            init();
             setActiveTab(TAB_INDEX);
             add = false;
             edable = true;
@@ -381,6 +395,14 @@ public class ChanceActionBean
         detail = true;
         saveable = true;
         back = true;
+    }
+
+    public boolean isSearching() {
+        return isSearching;
+    }
+
+    public void setSearching(boolean isSearching) {
+        this.isSearching = isSearching;
     }
 
     public Date getSearchBeginTime() {
