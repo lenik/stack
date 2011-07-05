@@ -1,4 +1,4 @@
-package com.bee32.sem.file.entity;
+package com.bee32.sem.file;
 
 import java.io.IOException;
 import java.util.Locale;

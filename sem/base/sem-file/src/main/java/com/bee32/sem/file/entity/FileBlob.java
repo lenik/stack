@@ -116,6 +116,7 @@ public class FileBlob
 
     IFile temporaryFile;
 
+    @Transient
     IFile getTemporaryFile() {
         return temporaryFile;
     }
