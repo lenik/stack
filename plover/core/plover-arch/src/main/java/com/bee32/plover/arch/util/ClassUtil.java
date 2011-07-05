@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.free.IllegalUsageException;
@@ -13,6 +14,8 @@ import javax.free.UnexpectedException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
 
 public class ClassUtil {
 
@@ -68,9 +71,16 @@ public class ClassUtil {
         if (clazz == null)
             throw new NullPointerException("clazz");
 
-        ClassNLS nls = ClassNLS.getNLS(clazz);
+        // XXX ResourceBundleNLS not work.
+        // ClassNLS nls = ClassNLS.getNLS(clazz);
+        // return nls.getLabel();
 
-        return nls.getLabel();
+        String base = clazz.getName().replace('.', '/');
+        ResourceBundle rb = ResourceBundleUTF8.getBundle(base);
+        String displayName = rb.getString("label");
+        if (displayName == null || displayName.isEmpty())
+            displayName = clazz.getSimpleName();
+        return displayName;
     }
 
     public static URL getContextURL(Class<?> clazz) {
