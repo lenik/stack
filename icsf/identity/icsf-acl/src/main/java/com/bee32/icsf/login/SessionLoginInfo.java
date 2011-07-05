@@ -15,7 +15,7 @@ public abstract class SessionLoginInfo {
     public static IUserPrincipal requireCurrentUser(HttpSession session) {
         IUserPrincipal currentUser = getCurrentUser(session);
         if (currentUser == null)
-            throw new IllegalStateException("Not login yet.");
+            throw new LoginException("Not login yet.");
         return currentUser;
     }
 
