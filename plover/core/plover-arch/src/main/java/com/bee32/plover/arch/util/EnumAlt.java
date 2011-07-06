@@ -10,6 +10,47 @@ import com.bee32.plover.arch.util.res.ResourceBundleUTF8;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.rtx.location.Locations;
 
+/**
+ * Alternative enumeration support.
+ *
+ * <p>
+ * Code template for eclipse:
+ *
+ * <pre>
+ * class ${EnumType}
+ *         extends EnumAlt<${ValType}, ${EnumType}> {
+ *
+ *     private static final long serialVersionUID = 1L;
+ *
+ *     static final Map<String, ${EnumType}> nameMap = new HashMap<String, ${EnumType}>();
+ *     static final Map<${ValType}, ${EnumType}> valueMap = new HashMap<${ValType}, ${EnumType}>();
+ *
+ *     public static Collection<${EnumType}> values() {
+ *         Collection<${EnumType}> values = valueMap.values();
+ *         return Collections.unmodifiableCollection(values);
+ *     }
+ *
+ *     public static ${EnumType} valueOf(${ValType} value) {
+ *         if (value == null)
+ *             return null;
+ *
+ *         ${EnumType} ${typeName:localVar} = valueMap.get(value);
+ *         if (${typeName:localVar} == null)
+ *             throw new NoSuchEnumException(${EnumType}.class, value);
+ *
+ *         return ${typeName:localVar};
+ *     }
+ *
+ *     public static ${EnumType} valueOf(String altName) {
+ *         ${EnumType} ${typeName:localVar} = nameMap.get(altName);
+ *         if (${typeName:localVar} == null)
+ *             throw new NoSuchEnumException(${EnumType}.class, altName);
+ *         return ${typeName:localVar};
+ *     }
+ *
+ * }
+ * </pre>
+ */
 public abstract class EnumAlt<V extends Serializable, $ extends EnumAlt<V, $>>
         implements Serializable {
 
