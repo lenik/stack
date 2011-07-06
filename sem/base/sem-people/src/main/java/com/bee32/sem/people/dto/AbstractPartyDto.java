@@ -25,7 +25,6 @@ public class AbstractPartyDto<E extends Party>
     String name;
     String fullName;
     String nickName;
-    String displayName;
 
     Date birthday;
     String interests;
@@ -52,7 +51,6 @@ public class AbstractPartyDto<E extends Party>
         name = source.getName();
         fullName = source.getFullName();
         nickName = source.getNickName();
-        displayName = source.getDisplayName();
 
         birthday = source.getBirthday();
 
@@ -129,7 +127,11 @@ public class AbstractPartyDto<E extends Party>
     }
 
     public String getDisplayName() {
-        return displayName;
+        if (fullName != null)
+            return fullName;
+        if (nickName != null)
+            return nickName;
+        return name;
     }
 
     public Date getBirthday() {
