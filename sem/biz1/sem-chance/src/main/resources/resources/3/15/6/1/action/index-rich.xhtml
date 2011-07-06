@@ -29,7 +29,7 @@
                             disabled="#{chanceActionBean.add}" update="chanceActionForm" async="false" />
 
                         <p:divider />
-                        <p:commandButton value="修改" actionListener="#{chanceActionBean.editForm}"
+                        <p:commandButton value="编辑" actionListener="#{chanceActionBean.editForm}"
                             disabled="#{chanceActionBean.edable}" update="chanceActionForm" async="true" />
                         <p:commandButton value="删除" actionListener="#{chanceActionBean.drop}"
                             disabled="#{chanceActionBean.edable}" update="chanceActionForm" async="true" />
@@ -70,72 +70,34 @@
                             <p:ajax event="rowUnselect" listener="#{chanceActionBean.onRowUnselect}"
                                 update="chanceActionForm:productToolbar" />
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="日期" />
-                                </f:facet>
+                            <p:column headerText="日期" style="width:85px;">
                                 <h:outputText value="#{action.date}" />
                             </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="时间段" />
-                                </f:facet>
+                            <p:column headerText="时间段" style="width:100px;">
                                 <h:outputText value="#{action.timeRange}" />
                             </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="负责人" />
-                                </f:facet>
+                            <p:column headerText="负责人">
                                 <h:outputText value="#{action.actor.displayName}" />
                             </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="类型" />
-                                </f:facet>
+                            <p:column headerText="类型">
                                 <h:outputText value="#{action.actionType}" />
                             </p:column>
-                            <!--
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="负责人" />
-                                </f:facet>
-                                <h:outputText value="#{action.actor.name}" />
-                            </p:column>
-                             -->
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="洽谈类型" />
-                                </f:facet>
+                            <p:column headerText="洽谈类型">
                                 <h:outputText value="#{action.style.label}" />
                             </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="客户" />
-                                </f:facet>
+                            <p:column headerText="客户">
                                 <h:outputText value="#{action.party}" />
                             </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="工作伙伴" />
-                                </f:facet>
+                            <p:column headerText="工作伙伴">
                                 <h:outputText value="#{action.partner}" />
                             </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="行动简略" />
-                                </f:facet>
+                            <p:column headerText="行动简略">
                                 <h:outputText value="#{action.contentShort}" />
                             </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="对应机会" />
-                                </f:facet>
+                            <p:column headerText="对应机会">
                                 <h:outputText value="#{action.chance.subject}" />
                             </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="机会阶段" />
-                                </f:facet>
+                            <p:column headerText="机会阶段">
                                 <h:outputText value="#{action.stage.label}" />
                             </p:column>
                         </p:dataTable>
@@ -197,7 +159,7 @@
                                         <p:column>
                                             <h:outputText value="#{partner.displayName}" />
                                             <p:commandLink update="chanceActionForm:partners"
-                                                actionListener="#{chanceActionBean.deletePartner}" title="删除客户"
+                                                actionListener="#{chanceActionBean.deletePartner}" title="删除伙伴"
                                                 disabled="#{chanceActionBean.editable}">
                                                 <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                                                 <f:setPropertyActionListener value="#{partner}"
@@ -235,7 +197,7 @@
                             <h:outputLabel for="stage" value="机会阶段:" />
                             <t:panelGroup colspan="3">
                                 <p:selectOneMenu id="stage" value="#{chanceActionBean.action.stage.displayId}"
-                                    disabled="#{chanceActionBean.editable}">
+                                    disabled="#{chanceActionBean.editable}" style="width:200px;">
                                     <f:selectItem itemLabel="--请选择机会阶段--" itemValue="" />
                                     <f:selectItems value="#{chanceActionBean.chanceStages}" />
                                 </p:selectOneMenu>
@@ -261,39 +223,24 @@
                     <p:dataTable id="chances" var="chance" value="#{chanceActionBean.chances}" resizableColumns="true"
                         selection="#{chanceActionBean.selectedChance}" selectionMode="single" rowIndexVar="rowIndex">
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="序号" />
-                            </f:facet>
+                        <p:column headerText="序号" style="width:20px;">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="机会主题" />
-                            </f:facet>
+                        <p:column headerText="机会主题">
                             <h:outputText value="#{chance.subject}" />
                         </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="客户" />
-                            </f:facet>
+                        <p:column headerText="客户">
                             <h:outputText value="#{chance.party}" />
                         </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="来源" />
-                            </f:facet>
+                        <p:column headerText="来源">
                             <h:outputText value="#{chance.source.label}" />
                         </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="负责人" />
-                            </f:facet>
-                            <h:outputText value="#{chance.owner.name}" />
+                        <p:column headerText="负责人">
+                            <h:outputText value="#{chance.owner.displayName}" />
                         </p:column>
 
                     </p:dataTable>
@@ -307,7 +254,7 @@
         </h:form>
 
         <h:form id="customerForm">
-            <p:dialog header="选择客户" widgetVar="chooseCustomerDialog" modal="true" height="500" width="640">
+            <p:dialog header="选择客户" widgetVar="chooseCustomerDialog" modal="true" height="600" width="800">
 
                 <h:panelGrid columns="2">
                     <p:inputText value="#{chanceActionBean.customerPattern}" />
@@ -317,45 +264,27 @@
                 <p:dataTable id="customers" var="customer" value="#{chanceActionBean.customers}" resizableColumns="true"
                     selection="#{chanceActionBean.selectedCustomer}" selectionMode="single" rowIndexVar="rowIndex">
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="序号" />
-                        </f:facet>
+                    <p:column headerText="序号" style="width:20px;">
                         <h:outputText value="#{rowIndex + 1}" />
                     </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="客户名称" />
-                        </f:facet>
-                        <h:outputText value="#{customer.name}" />
+                    <p:column headerText="客户名称">
+                        <h:outputText value="#{customer.displayName}" />
                     </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="地址" />
-                        </f:facet>
+                    <p:column headerText="地址">
                         <h:outputText value="#{customer.contacts[0].address}" />
                     </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="传真" />
-                        </f:facet>
+                    <p:column headerText="传真">
                         <h:outputText value="#{customer.contacts[0].fax}" />
                     </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="电话" />
-                        </f:facet>
+                    <p:column headerText="电话">
                         <h:outputText value="#{customer.contacts[0].tel}" />
                     </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="网址" />
-                        </f:facet>
+                    <p:column headerText="网址">
                         <h:outputText value="#{customer.contacts[0].website}" />
                     </p:column>
 
@@ -369,7 +298,7 @@
         </h:form>
 
         <h:form id="partnerForm">
-            <p:dialog header="选择工作伙伴" widgetVar="choosePartnerDialog" modal="true" height="500" width="640">
+            <p:dialog header="选择工作伙伴" widgetVar="choosePartnerDialog" modal="true" height="500" width="400">
                 <h:panelGrid columns="2">
                     <p:inputText value="#{chanceActionBean.partnerPattern}" />
                     <p:commandButton value="查找" actionListener="#{chanceActionBean.findPartner}"
@@ -378,18 +307,16 @@
                 <p:dataTable id="partners" var="partner" value="#{chanceActionBean.partners}" resizableColumns="true"
                     selection="#{chanceActionBean.selectedPartner}" selectionMode="single" rowIndexVar="rowIndex">
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="序号" />
-                        </f:facet>
+                    <p:column headerText="序号" style="width:20px;">
                         <h:outputText value="#{rowIndex + 1}" />
                     </p:column>
 
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="名称" />
-                        </f:facet>
+                    <p:column headerText="用户名" style="width:200px;">
                         <h:outputText value="#{partner.id}" />
+                    </p:column>
+
+                    <p:column headerText="姓名">
+                        <h:outputText value="#{partner.displayName}" />
                     </p:column>
 
                 </p:dataTable>

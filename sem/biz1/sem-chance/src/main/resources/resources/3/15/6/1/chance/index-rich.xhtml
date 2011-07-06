@@ -64,59 +64,35 @@
                             <p:ajax event="rowUnselect" listener="#{chanceBean.onRowUnselect}"
                                 update="chanceForm:toolbar" />
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="创建日期" />
-                                </f:facet>
+                            <p:column headerText="创建日期" style="width:115px;">
                                 <h:outputText value="#{chance.date}" />
                             </p:column>
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="负责人" />
-                                </f:facet>
+                            <p:column headerText="负责人">
                                 <h:outputText value="#{chance.owner.displayName}" />
                             </p:column>
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="类型" />
-                                </f:facet>
+                            <p:column headerText="类型">
                                 <h:outputText value="#{chance.category.label}" />
                             </p:column>
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="机会标题" />
-                                </f:facet>
+                            <p:column headerText="机会标题">
                                 <h:outputText value="#{chance.subject}" />
                             </p:column>
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="来源" />
-                                </f:facet>
+                            <p:column headerText="来源">
                                 <h:outputText value="#{chance.source.label}" />
                             </p:column>
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="客户" />
-                                </f:facet>
+                            <p:column headerText="客户">
                                 <h:outputText value="#{chance.party}" />
                             </p:column>
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="机会内容" />
-                                </f:facet>
+                            <p:column headerText="机会内容">
                                 <h:outputText value="#{chance.shortContent}" />
                             </p:column>
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="机会阶段" />
-                                </f:facet>
+                            <p:column headerText="机会阶段">
                                 <h:outputText value="#{chance.stage.label}" />
                             </p:column>
                         </p:dataTable>
@@ -210,52 +186,31 @@
                                     update="chanceForm:actionToolbar" />
                                 <p:ajax event="rowUnselect" listener="#{chanceBean.onActionRowUnselect}"
                                     update="chanceForm:actionToolbar" />
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="序号" />
-                                    </f:facet>
+                                <p:column headerText="序号" style="width:20px;">
                                     <h:outputText value="#{rowIndex + 1}" />
                                 </p:column>
 
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="日期" />
-                                    </f:facet>
+                                <p:column headerText="日期">
                                     <h:outputText value="#{action.date}" />
                                 </p:column>
 
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="时间段" />
-                                    </f:facet>
+                                <p:column headerText="时间段">
                                     <h:outputText value="#{action.timeRange}" />
                                 </p:column>
 
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="类型" />
-                                    </f:facet>
+                                <p:column headerText="类型">
                                     <h:outputText value="#{action.actionType}" />
                                 </p:column>
 
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="洽谈类型" />
-                                    </f:facet>
+                                <p:column headerText="洽谈类型">
                                     <h:outputText value="#{action.style.label}" />
                                 </p:column>
 
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="行动简略" />
-                                    </f:facet>
+                                <p:column headerText="行动简略">
                                     <h:outputText value="#{action.contentShort}" />
                                 </p:column>
 
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="机会阶段" />
-                                    </f:facet>
+                                <p:column headerText="机会阶段">
                                     <h:outputText value="#{action.stage.label}" />
                                 </p:column>
 
@@ -279,27 +234,16 @@
                                 <p:ajax event="rowUnselect" listener="#{quotationBean.onRowUnselect}"
                                     update="main:toolbar" />
 
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="序号" />
-                                    </f:facet>
+                                <p:column headerText="序号" style="width:20px;">
                                     <h:outputText value="#{rowIndex + 1}" />
                                 </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="标题" />
-                                    </f:facet>
+                                <p:column headerText="标题">
                                     <h:outputText value="#{item.subject}" />
                                 </p:column>
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="报价日期" />
-                                    </f:facet>
+                                <p:column headerText="报价日期">
                                     <h:outputText value="#{item.createdDate}" />
                                 </p:column>
                             </p:dataTable>
-
-
 
                         </p:fieldset>
                     </p:tab>
@@ -320,45 +264,27 @@
                     <p:dataTable id="parties" var="party" value="#{chanceBean.parties}" resizableColumns="true"
                         selection="#{chanceBean.selectedParty}" selectionMode="single" rowIndexVar="rowIndex">
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="序号" />
-                            </f:facet>
+                        <p:column headerText="序号" style="width:20px;">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="客户名称" />
-                            </f:facet>
-                            <h:outputText value="#{party.name}" />
+                        <p:column headerText="客户名称">
+                            <h:outputText value="#{party.displayName}" />
                         </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="地址" />
-                            </f:facet>
+                        <p:column headerText="地址">
                             <h:outputText value="#{party.contacts[0].address}" />
                         </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="传真" />
-                            </f:facet>
+                        <p:column headerText="传真">
                             <h:outputText value="#{party.contacts[0].fax}" />
                         </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="电话" />
-                            </f:facet>
+                        <p:column headerText="电话">
                             <h:outputText value="#{party.contacts[0].tel}" />
                         </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="网址" />
-                            </f:facet>
+                        <p:column headerText="网址">
                             <h:outputText value="#{party.contacts[0].website}" />
                         </p:column>
 
@@ -392,32 +318,20 @@
                     <p:dataTable id="actions" var="action" value="#{chanceBean.actions}" resizableColumns="true"
                         selection="#{chanceBean.selectedActions}" rowIndexVar="rowIndex">
 
-                        <p:column selectionMode="multiple" />
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="序号" />
-                            </f:facet>
+                        <p:column selectionMode="multiple" style="width:20px;" />
+                        <p:column headerText="序号" style="width:20px;">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="日期" />
-                            </f:facet>
+                        <p:column headerText="日期" style="width:100px;">
                             <h:outputText value="#{action.date}" />
                         </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="时间段" />
-                            </f:facet>
+                        <p:column headerText="时间段" style="width:120px;">
                             <h:outputText value="#{action.timeRange}" />
                         </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="行动简略" />
-                            </f:facet>
+                        <p:column headerText="行动简略">
                             <h:outputText value="#{action.contentShort}" />
                         </p:column>
 
@@ -504,7 +418,7 @@
                                 </p:cellEditor>
                             </p:column>
                             <p:column headerText="操作">
-                            <p:rowEditor />
+                                <p:rowEditor />
                             </p:column>
                         </p:dataTable>
                         <p:commandButton value="..." title="添加明细" onclick="materialDlg.show();" />
