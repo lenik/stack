@@ -15,7 +15,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.icsf.principal.UserEmail;
 import com.bee32.sem.people.Gender;
 
 @Entity
@@ -132,7 +131,7 @@ public class Person
         List<Contact> contacts = getContacts();
         if (!contacts.isEmpty()) {
             Contact firstContact = contacts.get(0);
-            user.setEmail(new UserEmail(user, firstContact.email));
+            user.setPreferredEmail(firstContact.email);
         }
         return user;
     }
