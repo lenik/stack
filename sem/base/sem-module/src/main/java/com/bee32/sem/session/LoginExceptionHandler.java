@@ -11,7 +11,7 @@ public class LoginExceptionHandler
 
     @Override
     public String handle(FaceletExceptionContext context, Throwable exception) {
-        return "/login";
+        return "/login.jsf";
     }
 
 }
