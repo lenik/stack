@@ -7,7 +7,7 @@ $(function() {
             "success" : function(data) {
                 if (data.result.toUpperCase() == "SUCCESS") {
                     alert("成功退出!");
-                    window.location = data.gotoAddress;
+                    window.location = document.WEB_APP;
                 } else {
                     alert(data.message);
                 }
