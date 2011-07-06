@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
@@ -77,6 +78,7 @@ public class ChanceBean
         EntityDataModelOptions<Chance, ChanceDto> edmo = new EntityDataModelOptions<Chance, ChanceDto>(Chance.class,
                 ChanceDto.class);
         edmo.setSelection(-1);
+        edmo.setOrder(Order.desc("createdDate"));
         edmo.setRestrictions(ChanceCriteria.ownedByCurrentUser());
         chances = UIHelper.buildLazyDataModel(edmo);
         isSearching = false;
@@ -171,11 +173,14 @@ public class ChanceBean
     public void searchAction() {
         if (searchBeginTime != null && searchEndTime != null) {
             List<ChanceAction> _actions = serviceFor(ChanceAction.class).list(//
+                    Order.desc("createdDate"),
                     ChanceCriteria.actedByCurrentUser(), //
                     ChanceCriteria.beginWithin(searchBeginTime, searchEndTime), Restrictions.isNull("chance"));
             actions = DTOs.marshalList(ChanceActionDto.class, _actions);
         } else {
-            List<ChanceAction> lca = serviceFor(ChanceAction.class).list(ChanceCriteria.actedByCurrentUser(),
+            List<ChanceAction> lca = serviceFor(ChanceAction.class).list(//
+                    Order.desc("createdDate"),
+                    ChanceCriteria.actedByCurrentUser(),
                     Restrictions.isNull("chance"));
             actions = DTOs.marshalList(ChanceActionDto.class, lca);
         }
@@ -186,6 +191,7 @@ public class ChanceBean
             EntityDataModelOptions<Chance, ChanceDto> edmo = new EntityDataModelOptions<Chance, ChanceDto>(
                     Chance.class, ChanceDto.class);
             edmo.setSelection(-1);
+            edmo.setOrder(Order.desc("createdDate"));
             edmo.setRestrictions(ChanceCriteria.ownedByCurrentUser());
             edmo.setRestrictions(ChanceCriteria.subjectLike(subjectPattern));
             chances = UIHelper.buildLazyDataModel(edmo);
@@ -337,7 +343,6 @@ public class ChanceBean
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("错误", "保存销售机会失败: " + e.getMessage()));
             e.printStackTrace();
-
         }
 
         setActiveTab(TAB_INDEX);
