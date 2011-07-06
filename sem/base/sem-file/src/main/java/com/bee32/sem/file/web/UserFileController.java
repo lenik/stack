@@ -17,7 +17,7 @@ import com.bee32.sem.file.entity.UserFile;
 public class UserFileController
         extends BasicEntityController<UserFile, Long, UserFileDto> {
 
-    public static final String PREFIX = SEMFileModule.PREFIX + "/blob";
+    public static final String PREFIX = SEMFileModule.PREFIX + "/file";
 
     @Override
     protected void initController()

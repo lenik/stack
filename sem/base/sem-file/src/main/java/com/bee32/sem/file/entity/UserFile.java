@@ -73,7 +73,7 @@ public class UserFile
     /**
      * 用户对上传的文件重命名。
      */
-    @Column(length = 80, nullable = false)
+    @Column(length = 80)
     public String getFilename() {
         return filename;
     }

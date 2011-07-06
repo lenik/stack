@@ -45,8 +45,10 @@ public class FileUploadBean extends EntityViewBean {
 			User currUser = (User) SessionLoginInfo.requireCurrentUser();
 			userFile.setOwner(currUser);
 
-			serviceFor(FileBlob.class).save(fileBlob);
+			serviceFor(FileBlob.class).saveOrUpdate(fileBlob);
 			serviceFor(UserFile.class).save(userFile);
+
+			msg = new FacesMessage("上传成功", event.getFile().getFileName() + "上传成功");
 
 		} catch (IOException e) {
 			msg = new FacesMessage("上传失败", event.getFile().getFileName() + "上传失败");
@@ -54,5 +56,4 @@ public class FileUploadBean extends EntityViewBean {
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-
 }
