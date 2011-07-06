@@ -245,7 +245,7 @@ public class ChanceBean
         detailable = true;
         saveable = false;
         backable = false;
-        searchable = true;
+        searchable = false;
         relating = true;
         unRelating = true;
         editable = false;
@@ -259,7 +259,7 @@ public class ChanceBean
         detailable = true;
         saveable = false;
         backable = false;
-        searchable = true;
+        searchable = false;
         relating = false;
         unRelating = true;
         editable = false;
