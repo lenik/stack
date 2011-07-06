@@ -9,6 +9,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.hibernate.criterion.Order;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -103,10 +104,10 @@ public class ChanceActionBean
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (searchBeginTime != null && searchEndTime != null) {
-
             isSearching = true;
             EntityDataModelOptions<ChanceAction, ChanceActionDto> edmo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
                     ChanceAction.class, ChanceActionDto.class);
+            edmo.setOrder(Order.desc("createdDate"));
             edmo.setRestrictions(//
                     ChanceCriteria.actedByCurrentUser(), //
                     ChanceCriteria.beginWithin(searchBeginTime, searchEndTime));
@@ -142,6 +143,7 @@ public class ChanceActionBean
         isSearching = false;
         EntityDataModelOptions<ChanceAction, ChanceActionDto> emdo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
                 ChanceAction.class, ChanceActionDto.class, -1, null, ChanceCriteria.actedByCurrentUser());
+        emdo.setOrder(Order.desc("createdDate"));
         actions = UIHelper.buildLazyDataModel(emdo);
         refreshActionCount(isSearching);
         initToolbar();
@@ -167,6 +169,7 @@ public class ChanceActionBean
         List<Chance> _chances;
         if (chancePattern != null && !chancePattern.isEmpty()) {
             _chances = serviceFor(Chance.class).list(//
+                    Order.desc("createdDate"),
                     ChanceCriteria.ownedByCurrentUser(), //
                     ChanceCriteria.subjectLike(chancePattern));
         } else {
