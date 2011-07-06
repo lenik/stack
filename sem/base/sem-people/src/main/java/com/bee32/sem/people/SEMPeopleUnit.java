@@ -12,7 +12,6 @@ import com.bee32.sem.people.entity.PartyRecord;
 import com.bee32.sem.people.entity.PartyRecordCategory;
 import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.entity.Person;
-import com.bee32.sem.people.entity.PersonLogin;
 import com.bee32.sem.people.entity.PersonRole;
 import com.bee32.sem.people.entity.PersonSidType;
 
@@ -33,7 +32,8 @@ public class SEMPeopleUnit
         add(Person.class);
         add(PersonRole.class);
         add(PersonSidType.class);
-        //add(PersonLogin.class);
+        // add(PersonLogin.class);
+        // add(Department.class);
     }
 
 }

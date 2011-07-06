@@ -1,13 +1,14 @@
 package com.bee32.sem.people.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.color.Yellow;
 
 @Entity
+@Yellow
 public class PersonLogin
         extends EntityAuto<Long> {
 
@@ -25,7 +26,7 @@ public class PersonLogin
         this.user = user;
     }
 
-    @ManyToMany
+    @ManyToOne
     public Person getPerson() {
         return person;
     }
