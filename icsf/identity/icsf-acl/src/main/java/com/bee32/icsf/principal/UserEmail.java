@@ -23,7 +23,7 @@ public class UserEmail
     public static final char EMAIL_VERIFIED = 'V';
 
     User user;
-    int order;
+    int rank;
     String address;
     char status = EMAIL_INIT;
 
@@ -48,12 +48,12 @@ public class UserEmail
     }
 
     @Column(nullable = false)
-    public int getOrder() {
-        return order;
+    public int getRank() {
+        return rank;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     @NaturalId

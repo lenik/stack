@@ -5,7 +5,7 @@ import java.util.List;
 import com.bee32.icsf.principal.Role;
 
 public class RoleDto
-        extends PrincipalDto<Role> {
+        extends AbstractPrincipalDto<Role> {
 
     private static final long serialVersionUID = 1L;
 

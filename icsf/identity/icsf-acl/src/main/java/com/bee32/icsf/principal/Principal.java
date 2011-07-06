@@ -20,15 +20,13 @@ import com.bee32.plover.orm.ext.tree.TreeEntity;
 @Green
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "steoro", length = 3)
-public abstract class Principal<$ extends Principal<$>>
-        extends TreeEntity<String, $>
+public abstract class Principal
+        extends TreeEntity<String, Principal>
         implements IPrincipal {
 
     private static final long serialVersionUID = 1L;
 
     public static final int NAME_MAXLEN = 16;
-
-    protected final Class<$> echo = (Class<$>) getClass();
 
     String name;
     String fullName;
@@ -98,9 +96,9 @@ public abstract class Principal<$ extends Principal<$>>
     }
 
     @Override
-    public $ detach() {
+    public Principal detach() {
         super.detach();
-        return echo.cast(this);
+        return this;
     }
 
     @Override
@@ -160,7 +158,7 @@ public abstract class Principal<$ extends Principal<$>>
 
     @Override
     protected Boolean naturalEquals(EntityBase<String> other) {
-        $ o = echo.cast(other);
+        Principal o = (Principal) other;
 
         if (this.name == null || o.name == null)
             return false;

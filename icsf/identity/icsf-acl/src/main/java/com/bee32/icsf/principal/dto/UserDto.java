@@ -5,7 +5,7 @@ import java.util.List;
 import com.bee32.icsf.principal.User;
 
 public class UserDto
-        extends PrincipalDto<User> {
+        extends AbstractPrincipalDto<User> {
 
     private static final long serialVersionUID = 1L;
 

@@ -55,13 +55,13 @@ public class R_ACLDao
                         + "   ( :q like qualifiedName || '%' )", //
                 "q", qualifiedName);
 
-        Map<IPrincipal, R_ACE> existingMap = new HashMap<IPrincipal, R_ACE>();
+        Map<Principal, R_ACE> existingMap = new HashMap<Principal, R_ACE>();
         for (R_ACE ace : oldList)
             existingMap.put(ace.getPrincipal(), ace);
 
         List<R_ACE> newList = new ArrayList<R_ACE>();
         for (Entry<? extends IPrincipal, Permission> entry : acl.getEntries()) {
-            Principal<?> principal = (Principal<?>) entry.getKey();
+            Principal principal = (Principal) entry.getKey();
             R_ACE existed = existingMap.remove(principal);
             if (existed != null) {
                 newList.add(existed);

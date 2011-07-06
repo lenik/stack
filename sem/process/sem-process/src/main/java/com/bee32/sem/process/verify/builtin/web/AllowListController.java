@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bee32.icsf.principal.dao.UserDao;
-import com.bee32.icsf.principal.dto.PrincipalDto;
+import com.bee32.icsf.principal.dto.AbstractPrincipalDto;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.web.basic.BasicEntityController;
@@ -25,9 +25,6 @@ public class AllowListController
     public static final String PREFIX = SEMProcessModule.PREFIX + "list/";
 
     @Inject
-    PrincipalDao principalDao;
-
-    @Inject
     UserDao userDao;
 
     @Override
@@ -37,7 +34,7 @@ public class AllowListController
 
         int max = 3;
         StringBuilder names = null;
-        for (PrincipalDto<?> responsible : item.getResponsibles()) {
+        for (AbstractPrincipalDto<?> responsible : item.getResponsibles()) {
             if (max <= 0) {
                 names.append(", etc.");
                 break;

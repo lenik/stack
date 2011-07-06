@@ -7,7 +7,7 @@ import com.bee32.icsf.principal.IPrincipalVisitor;
 import com.bee32.icsf.principal.Principal;
 
 public class IsolatedPrincipal
-        extends Principal<IsolatedPrincipal>
+        extends Principal
         implements Serializable {
 
     private static final long serialVersionUID = 1L;

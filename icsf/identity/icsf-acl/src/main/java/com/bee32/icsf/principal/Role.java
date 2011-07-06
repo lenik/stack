@@ -1,19 +1,17 @@
 package com.bee32.icsf.principal;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("R")
 public class Role
-        extends Principal<Role>
+        extends Principal
         implements IRolePrincipal {
 
     private static final long serialVersionUID = 1L;
@@ -32,7 +30,7 @@ public class Role
     @Transient
     @Override
     public Role getInheritedRole() {
-        return getParent();
+        return (Role) getParent();
     }
 
     public void setInheritedRole(Role inheritedRole) {
@@ -40,14 +38,14 @@ public class Role
     }
 
     @Transient
-    @OneToMany(targetEntity = Role.class, mappedBy = "inheritedRole")
     @Override
     public List<Role> getDerivedRoles() {
-        return Collections.unmodifiableList(getChildren());
+        return cast(getChildren());
     }
 
     public void setDerivedRoles(List<Role> derivedRoles) {
-        setChildren(derivedRoles);
+        List<Principal> children = cast(derivedRoles);
+        setChildren(children);
     }
 
     @ManyToMany(mappedBy = "assignedRoles")

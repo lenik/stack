@@ -18,8 +18,8 @@ import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.dao.AbstractPrincipalDao;
 import com.bee32.icsf.principal.dao.GroupDao;
-import com.bee32.icsf.principal.dao.PrincipalDao;
 import com.bee32.icsf.principal.dao.RoleDao;
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.plover.inject.cref.Import;
@@ -57,7 +57,7 @@ public class PlaySamples
     RoleDao roleDao;
 
     @Inject
-    PrincipalDao principalDao;
+    AbstractPrincipalDao<? extends Principal> principalDao;
 
     @Inject
     CommonDataManager dataManager;

@@ -4,7 +4,7 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.principal.dto.PrincipalDto;
+import com.bee32.icsf.principal.dto.AbstractPrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 
@@ -14,7 +14,7 @@ public class DACEDto
     private static final long serialVersionUID = 1L;
 
     DACLDto dacl;
-    PrincipalDto<?> principal;
+    AbstractPrincipalDto<?> principal;
     Permission permission;
 
     public DACEDto() {
@@ -29,7 +29,7 @@ public class DACEDto
     @Override
     protected void _marshal(DACE source) {
         dacl = new DACLDto().ref(source.getDacl());
-        principal = mref(PrincipalDto.class, 0, source.getPrincipal());
+        principal = mref(AbstractPrincipalDto.class, 0, source.getPrincipal());
         permission = source.getPermission();
     }
 

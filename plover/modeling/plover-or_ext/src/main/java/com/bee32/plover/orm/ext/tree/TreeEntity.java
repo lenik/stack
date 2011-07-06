@@ -24,7 +24,7 @@ import com.bee32.plover.orm.ext.color.UIEntitySpec;
  *
  */
 @MappedSuperclass
-public abstract class TreeEntity<K extends Serializable, $ extends TreeEntity<K, $>>
+public abstract class TreeEntity<K extends Serializable, $>
         extends UIEntitySpec<K> {
 
     private static final long serialVersionUID = 1L;
@@ -43,6 +43,8 @@ public abstract class TreeEntity<K extends Serializable, $ extends TreeEntity<K,
     }
 
     public void setParent($ parent) {
+        if (parent != null)
+            checkNode(false, parent);
         this.parent = parent;
     }
 
@@ -61,6 +63,37 @@ public abstract class TreeEntity<K extends Serializable, $ extends TreeEntity<K,
         this.children = children;
     }
 
+    public void addChild($ child) {
+        if (child == null)
+            throw new NullPointerException("child");
+        checkNode(true, child);
+        children.add(child);
+    }
+
+    public boolean removeChild($ child) {
+        if (child == null)
+            throw new NullPointerException("child");
+        checkNode(true, child);
+        return children.remove(child);
+    }
+
+    /**
+     * Check if the given node may be added to the tree.
+     *
+     * @param isChild
+     *            <code>true</code> for parent node, <code>false</code> for children.
+     * @param node
+     *            Non-<code>null</code> node to be checked.
+     * @throws IllegalArgumentException
+     *             If the node type is illegal.
+     */
+    protected void checkNode(boolean isChild, $ node) {
+        Class<?> selfType = getClass();
+        Class<?> nodeType = node.getClass();
+        if (!selfType.equals(nodeType))
+            throw new IllegalArgumentException("Inconsistent node type: tree=" + selfType + ", node=" + nodeType);
+    }
+
     /**
      * TODO conformadate to PrincipalDiag#checkDeadLoop.
      *
@@ -72,11 +105,25 @@ public abstract class TreeEntity<K extends Serializable, $ extends TreeEntity<K,
             throw new IllegalArgumentException("Order should be positive integer: " + order);
         TreeEntity<K, $> node = this;
         for (int i = 0; i < order; i++) {
-            node = node.getParent();
+
+            @SuppressWarnings("unchecked")
+            TreeEntity<K, $> _node = (TreeEntity<K, $>) node.getParent();
+            node = _node;
+
             if (node == null)
                 return true;
         }
         return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected static <S, T> List<T> cast(List<S> sv) {
+        List<T> tv = new ArrayList<T>();
+        for (S s : sv) {
+            T t = (T) s;
+            tv.add(t);
+        }
+        return tv;
     }
 
 }

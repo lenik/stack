@@ -9,13 +9,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("G")
 public class Group
-        extends Principal<Group>
+        extends Principal
         implements IGroupPrincipal {
 
     private static final long serialVersionUID = 1L;
@@ -46,21 +45,22 @@ public class Group
     @Transient
     @Override
     public Group getInheritedGroup() {
-        return getParent();
+        return (Group) getParent();
     }
 
     public void setInheritedGroup(Group inheritedGroup) {
         setParent(inheritedGroup);
     }
 
-    @OneToMany(targetEntity = Group.class, mappedBy = "inheritedGroup")
+    @Transient
     @Override
     public List<Group> getDerivedGroups() {
-        return getChildren();
+        return cast(getChildren());
     }
 
     public void setDerivedGroups(List<Group> derivedGroups) {
-        setChildren(derivedGroups);
+        List<Principal> children = cast(derivedGroups);
+        setChildren(children);
     }
 
     @ManyToOne

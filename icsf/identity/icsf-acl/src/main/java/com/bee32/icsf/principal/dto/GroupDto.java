@@ -5,7 +5,7 @@ import java.util.List;
 import com.bee32.icsf.principal.Group;
 
 public class GroupDto
-        extends PrincipalDto<Group> {
+        extends AbstractPrincipalDto<Group> {
 
     private static final long serialVersionUID = 1L;
 

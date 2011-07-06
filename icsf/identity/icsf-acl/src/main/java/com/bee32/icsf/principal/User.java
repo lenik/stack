@@ -10,6 +10,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -19,7 +20,7 @@ import com.bee32.icsf.access.alt.R_ACE;
 @Entity
 @DiscriminatorValue("U")
 public class User
-        extends Principal<User>
+        extends Principal
         implements IUserPrincipal {
 
     private static final long serialVersionUID = 1L;
@@ -162,6 +163,7 @@ public class User
         this.emails = emails;
     }
 
+    @Transient
     public String getPreferredEmail() {
         if (emails.isEmpty())
             return null;

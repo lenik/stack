@@ -22,7 +22,7 @@ public class DACL
     // Not yet used.
     DACL parent;
 
-    Principal<?> owner;
+    Principal owner;
     List<DACE> entries;
 
     /**
@@ -39,11 +39,11 @@ public class DACL
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    public Principal<?> getOwner() {
+    public Principal getOwner() {
         return owner;
     }
 
-    public void setOwner(Principal<?> owner) {
+    public void setOwner(Principal owner) {
         this.owner = owner;
     }
 

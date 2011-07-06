@@ -5,7 +5,7 @@ import java.util.List;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
-import com.bee32.icsf.principal.dto.PrincipalDto;
+import com.bee32.icsf.principal.dto.AbstractPrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
 
@@ -17,7 +17,7 @@ public class DACLDto
     public static final int ENTRIES = 1;
 
     DACLDto parent;
-    PrincipalDto<?> owner;
+    AbstractPrincipalDto<?> owner;
     List<DACEDto> entries;
 
     public DACLDto() {
@@ -32,7 +32,7 @@ public class DACLDto
     @Override
     protected void _marshal(DACL source) {
         parent = mref(DACLDto.class, source.getParent());
-        owner = mref(PrincipalDto.class, source.getOwner());
+        owner = mref(AbstractPrincipalDto.class, source.getOwner());
 
         if (selection.contains(ENTRIES))
             entries = marshalList(DACEDto.class, source.getEntries());
@@ -61,11 +61,11 @@ public class DACLDto
         this.parent = parent;
     }
 
-    public PrincipalDto<?> getOwner() {
+    public AbstractPrincipalDto<?> getOwner() {
         return owner;
     }
 
-    public void setOwner(PrincipalDto<?> owner) {
+    public void setOwner(AbstractPrincipalDto<?> owner) {
         if (owner == null)
             throw new NullPointerException("owner");
         this.owner = owner;
