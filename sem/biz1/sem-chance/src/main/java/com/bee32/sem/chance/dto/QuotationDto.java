@@ -53,6 +53,10 @@ public class QuotationDto
             throws ParseException {
     }
 
+    public void addItem(QuotationItemDto qid){
+        this.items.add(qid);
+    }
+
     public UserDto getOwner() {
         return creator;
     }

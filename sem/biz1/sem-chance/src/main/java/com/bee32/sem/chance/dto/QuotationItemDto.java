@@ -26,6 +26,7 @@ public class QuotationItemDto
         this.discount = source.getDiscount();
         this.price = source.getPrice();
         this.number = source.getNumber();
+        this.amount = source.getNumber() * source.getPrice();
         this.remark = source.getRemark();
     }
 

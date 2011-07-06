@@ -188,10 +188,9 @@
                                     <f:selectItems value="#{chanceBean.stage}" />
                                 </p:selectOneMenu>
                             </t:panelGroup>
-
                         </t:panelGrid>
-                        <p:separator />
-                        <p:fieldset legend="机会行动历史记录" toggleable="true" toggleSpeed="500">
+
+                        <p:fieldset legend="机会行动历史记录" toggleable="true" toggleSpeed="300">
 
                             <p:toolbar id="actionToolbar">
                                 <p:toolbarGroup align="left" disabled="#{chanceBean.editable}">
@@ -262,13 +261,13 @@
 
                             </p:dataTable>
                         </p:fieldset>
-                        <p:fieldset legend="报价" toggleable="true" toggleSpeed="500">
+                        <p:fieldset legend="报价" toggleable="true" toggleSpeed="300">
                             <h:outputText value="报价正在完善中,敬请期待...." style="color:red;font-size:20px;" />
                             <p:toolbar id="quotationToolbar">
                                 <p:toolbarGroup align="left">
                                     <p:commandButton value="编辑" />
                                     <p:commandButton value="详细" actionListener="#{quotationBean.viewDetail}"
-                                        update="main:mx" oncomplete="dlg.show();" />
+                                        oncomplete="dlg.show();" />
                                     <p:commandButton value="转成订单" />
                                 </p:toolbarGroup>
                             </p:toolbar>
@@ -437,6 +436,7 @@
 
         </h:form>
 
+        <!-- TODO action Detail -->
         <h:form id="actionDetailFrom">
             <p:dialog header="selectedChanceActions" widgetVar="xxx" modal="true" with="640" height="500">
             </p:dialog>
@@ -445,7 +445,7 @@
         <h:form id="quotationForm">
 
             <p:dialog header="报价单" widgetVar="dlg" height="400" width="600">
-                <p:panel id="mx">
+                <t:panelGrid columns="2">
                     <h:outputLabel for="quotationSubject" value="标题:" />
                     <p:inputText id="quotationSubject" value="#{quotationBean.quotation.subject}" />
 
@@ -455,16 +455,105 @@
                     <h:outputLabel for="quotationAmount" value="总金额:" />
                     <p:inputText id="quotationAmount" value="#{quotationBean.quotation.amount}" />
 
+                    <h:outputLabel for="itemList" value="明细:" />
+                    <t:panelGrid columns="2">
+
+                        <p:dataTable id="quotationItem" var="item" value="#{quotationBean.quotation.items}">
+                            <p:column headerText="产品">
+                                <h:outputText value="#{item.material}" />
+                            </p:column>
+
+                            <p:column headerText="折扣">
+                                <h:outputText value="暂无" />
+                            </p:column>
+
+                            <p:column headerText="基础价格">
+
+                            </p:column>
+
+                            <p:column headerText="单价">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.price}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <h:outputText value="#{item.price}" />
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="数目">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.number}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <h:inputText value="#{item.number}" />
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="备注">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.remark}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <h:inputText value="#{item.remark}" />
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="操作">
+                            <p:rowEditor />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton value="..." title="添加明细" onclick="materialDlg.show();" />
+                    </t:panelGrid>
+
                     <h:outputLabel for="quotationRecommend" value="交付说明" />
-                    <p:inputTextarea id="quotationRecommend" value="#{quotationBean.quotation.recommend}" />
+                    <p:inputTextarea id="quotationRecommend" value="#{quotationBean.quotation.recommend}"
+                        style="width:300px;height:60px;" />
 
                     <h:outputLabel for="quotationPayment" value="付款说明" />
-                    <p:inputTextarea id="quotationPayment" value="#{quotationBean.quotation.payment}" />
+                    <p:inputTextarea id="quotationPayment" value="#{quotationBean.quotation.payment}"
+                        style="width:300px;height:60px;" />
 
                     <h:outputLabel for="quotationRemark" value="备注" />
-                    <p:inputTextarea id="quotationRemark" value="#{quotationBean.quotation.remark}" />
+                    <p:inputTextarea id="quotationRemark" value="#{quotationBean.quotation.remark}"
+                        style="width:300px;height:60px;" />
 
-                </p:panel>
+                </t:panelGrid>
+            </p:dialog>
+        </h:form>
+
+        <h:form id="materialForm">
+            <p:dialog header="选择物料" widgetVar="materialDlg" height="400" width="600">
+                <t:panelGrid columns="2">
+                    <p:inputText value="#{quotationBean.materialPattern}" />
+                    <p:commandButton value="查找" actionListener="#{quotationBean.findMaterial}"
+                        update="materialForm:materialList" />
+
+                    <t:panelGroup colspan="2">
+                        <p:dataTable id="materialList" var="item" value="#{quotationBean.materials}"
+                            resizableColumns="true" selection="#{quotationBean.selectedMaterial}" selectionMode="single"
+                            rowIndexVar="rowIndex">
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="物料名称" />
+                                </f:facet>
+                                <h:outputText value="#{item}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </t:panelGroup>
+
+                    <t:panelGroup colspan="2">
+                        <p:commandButton value="选择" actionListener="${quotationBean.chooseMaterial}"
+                            update="quotationForm:quotationItem" oncomplete="materialDlg.hide()" async="false" />
+                        <p:commandButton value="取消" onclick="materialDlg.hide()" />
+                    </t:panelGroup>
+                </t:panelGrid>
             </p:dialog>
         </h:form>
 

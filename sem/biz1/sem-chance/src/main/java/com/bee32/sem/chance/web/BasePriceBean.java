@@ -24,14 +24,14 @@ public class BasePriceBean
         init();
     }
 
-    static List<String> material;
+    private List<String> material;
     private String selectedMaterial;
     private double price;
     private String remark;
 
     private List<BasePriceDto> basePriceList;
 
-    static void init() {
+    void init() {
         material = new ArrayList<String>();
         material.add("尼康D200");
         material.add("松下GF3");
@@ -40,7 +40,7 @@ public class BasePriceBean
         material.add("猪肉");
     }
 
-    public static void findMaterial() {
+    public void findMaterial() {
         if (!PriceViewBean.materialPattern.isEmpty()) {
             String pattern = PriceViewBean.materialPattern;
             List<String> temp = new ArrayList<String>();
@@ -77,8 +77,8 @@ public class BasePriceBean
         return material;
     }
 
-    public static void setMaterial(List<String> material) {
-        BasePriceBean.material = material;
+    public void setMaterial(List<String> material) {
+        this.material = material;
     }
 
     public String getSelectedMaterial() {

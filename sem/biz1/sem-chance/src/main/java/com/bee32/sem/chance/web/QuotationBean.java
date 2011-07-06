@@ -1,13 +1,20 @@
 package com.bee32.sem.chance.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.hibernate.criterion.Order;
+
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.chance.dto.QuotationDto;
+import com.bee32.sem.chance.dto.QuotationItemDto;
+import com.bee32.sem.chance.entity.BasePrice;
 import com.bee32.sem.chance.entity.Quotation;
+import com.bee32.sem.chance.entity.QuotationItem;
+import com.bee32.sem.chance.util.PriceCriteria;
 
 public class QuotationBean
         extends EntityViewBean {
@@ -21,10 +28,22 @@ public class QuotationBean
     private List<QuotationDto> quotations;
     private QuotationDto selectedQuotation;
     private QuotationDto quotation;
-
+    private List<String> materials;
+    private String selectedMaterial;
     private String materialPattern;
-    private String[] selectedMaterial;
-    private List<String> material;
+
+    QuotationBean() {
+        initMaterial();
+    }
+
+    void initMaterial() {
+        materials = new ArrayList<String>();
+        materials.add("尼康D200");
+        materials.add("松下GF3");
+        materials.add("佳能D300");
+        materials.add("宾得XR");
+        materials.add("猪肉");
+    }
 
     @PostConstruct
     public void init() {
@@ -42,6 +61,35 @@ public class QuotationBean
     public void viewDetail() {
         if (selectedQuotation != null)
             quotation = selectedQuotation;
+    }
+
+    public void findMaterial() {
+        if (!materialPattern.isEmpty()) {
+            List<String> temp = new ArrayList<String>();
+            initMaterial();
+            for (String s : materials) {
+                if (s.contains(materialPattern))
+                    temp.add(s);
+            }
+            setMaterials(temp);
+        } else {
+            initMaterial();
+        }
+    }
+
+    public void chooseMaterial() {
+        String sm = selectedMaterial;
+        BasePrice currentPrice = serviceFor(BasePrice.class).list(//
+                Order.desc("createdDate"), PriceCriteria.listBasePriceByMaterial(sm)).get(0);
+        QuotationItem qi = new QuotationItem();
+        qi.setQuotation(quotation.unmarshal());
+        qi.setBasePrice(currentPrice);
+        qi.setMaterial(sm);
+// qi.setDiscount()
+// qi.setPrice();
+// qi.setNumber()
+        QuotationItemDto qid = DTOs.mref(QuotationItemDto.class, qi);
+        quotation.addItem(qid);
     }
 
     public boolean isEditable() {
@@ -92,6 +140,22 @@ public class QuotationBean
         this.quotation = quotation;
     }
 
+    public List<String> getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(List<String> materials) {
+        this.materials = materials;
+    }
+
+    public String getSelectedMaterial() {
+        return selectedMaterial;
+    }
+
+    public void setSelectedMaterial(String selectedMaterial) {
+        this.selectedMaterial = selectedMaterial;
+    }
+
     public String getMaterialPattern() {
         return materialPattern;
     }
@@ -100,11 +164,4 @@ public class QuotationBean
         this.materialPattern = materialPattern;
     }
 
-    public String[] getSelectedMaterial() {
-        return selectedMaterial;
-    }
-
-    public void setSelectedMaterial(String[] selectedMaterial) {
-        this.selectedMaterial = selectedMaterial;
-    }
 }

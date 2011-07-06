@@ -15,6 +15,7 @@ import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.entity.Competitor;
+import com.bee32.sem.chance.entity.CurrentPrice;
 import com.bee32.sem.chance.entity.Quotation;
 import com.bee32.sem.chance.entity.QuotationItem;
 import com.bee32.sem.people.SEMPeopleSamples;
@@ -65,8 +66,7 @@ public class SEMChanceSamples
         competitor.setCapability("核心竞争力");
         competitor.setSolution("目前没有好的解决方案");
 
-
-//        chanceAction1.setChance(chance);
+        chanceAction1.setChance(chance);
         chanceAction1.setBeginTime(cal.getTime());
         chanceAction1.setEndTime(cal.getTime());
         chanceAction1.setContent("在北京、上海、广州三个重点区域发展8至10家大OEM厂商");
@@ -86,7 +86,7 @@ public class SEMChanceSamples
 
         chance.addAction(chanceAction1);
         chance.addAction(chanceAction2);
-//        chance.setActions(Arrays.asList(chanceAction1, chanceAction2));
+// chance.setActions(Arrays.asList(chanceAction1, chanceAction2));
 
         quotationItem1.setQuotation(quotation);
         quotationItem1.setBasePrice(BasePrice.tempQD1);
@@ -94,7 +94,7 @@ public class SEMChanceSamples
         quotationItem1.setDiscount(0.88);
         quotationItem1.setPrice(3800);
         quotationItem1.setNumber(2);
-        quotationItem1.setRemark("好人啊,能不能再便宜点");
+        quotationItem1.setRemark("羽与晃宿相爱,遥共语,但说平生,不及军事.");
 
         quotation.setCreator(IcsfPrincipalSamples.eva);
         quotation.setSubject("7月2号报价");
@@ -120,6 +120,10 @@ public class SEMChanceSamples
         addNormalSample(BasePrice.tempQD7);
         addNormalSample(BasePrice.tempQD8);
         addNormalSample(BasePrice.tempQD9);
+
+        //CurrentPrice
+        addNormalSample(CurrentPrice.pentax);
+        addNormalSample(CurrentPrice.pentax);
 
         // addChanceStage
         addNormalSample(ChanceStage.INIT);
