@@ -33,7 +33,7 @@ public class SEMPeopleUnit
         add(Person.class);
         add(PersonRole.class);
         add(PersonSidType.class);
-        add(PersonLogin.class);
+        //add(PersonLogin.class);
     }
 
 }
