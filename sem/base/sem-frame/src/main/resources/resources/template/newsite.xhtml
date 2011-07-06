@@ -42,8 +42,6 @@
 
 <h:body>
 
-    <sem:login />
-
     <div style="margin: 0; width: 100%;">
         <img src="${location.STYLE}/banner.gif" />
     </div>
@@ -60,6 +58,10 @@
             </h2>
             <hr />
         </div>
+    </ui:insert>
+
+    <ui:insert name="login">
+        <sem:login />
     </ui:insert>
 
     <ui:insert name="content">正在构建中……</ui:insert>
