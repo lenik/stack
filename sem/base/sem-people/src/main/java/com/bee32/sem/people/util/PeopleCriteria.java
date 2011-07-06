@@ -17,13 +17,14 @@ public class PeopleCriteria {
     public static Criterion ownedByCurrentUser() {
         IUserPrincipal currentUser = SessionLoginInfo.requireCurrentUser();
         if (currentUser.getName().equals("admin"))
-		return null;
+            return null;
         else
-		return ownedBy(currentUser);
+            return ownedBy(currentUser);
     }
 
     public static Criterion nameLike(String keyword) {
-        return Restrictions.like("name", "%" + keyword + "%");
+        return Restrictions.or(Restrictions.like("name", "%" + keyword + "%"),
+                Restrictions.like("fullName", "%" + keyword + "%"));
     }
 
 }
