@@ -1,14 +1,15 @@
 package com.bee32.plover.web.faces;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.faces.FacesException;
-import javax.faces.application.NavigationHandler;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
@@ -58,10 +59,15 @@ public class PloverExceptionHandler
                 FaceletExceptionContext fec = new FaceletExceptionContext(facesContext);
 
                 String resultView = handler.handle(fec, exception);
+                System.err.println("resultView -> " + resultView);
 
-                NavigationHandler nav = facesContext.getApplication().getNavigationHandler();
-                nav.handleNavigation(facesContext, null, resultView);
-                facesContext.renderResponse();
+                ExternalContext extContext = facesContext.getExternalContext();
+                String url = extContext.encodeActionURL(extContext.getRequestContextPath() + "/login.jsf");
+
+                extContext.redirect(url);
+
+            } catch (IOException e) {
+                throw new FacesException(e.getMessage(), e);
             } finally {
                 iter.remove();
             }
