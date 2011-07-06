@@ -16,4 +16,8 @@ public class PriceCriteria {
     public static Criterion currentBasePrice(String material) {
         return Restrictions.eq("material", material);
     }
+
+    public static Criterion listQuotationByChance(Long chanceId) {
+        return Restrictions.eq("chance.id", chanceId);
+    }
 }

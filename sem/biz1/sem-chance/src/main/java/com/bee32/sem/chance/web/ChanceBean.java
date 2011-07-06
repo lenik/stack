@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.web;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,12 +24,18 @@ import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
 import com.bee32.sem.chance.dto.ChanceSourceDto;
 import com.bee32.sem.chance.dto.ChanceStageDto;
+import com.bee32.sem.chance.dto.QuotationDto;
+import com.bee32.sem.chance.dto.QuotationItemDto;
+import com.bee32.sem.chance.entity.BasePrice;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
+import com.bee32.sem.chance.entity.Quotation;
+import com.bee32.sem.chance.entity.QuotationItem;
 import com.bee32.sem.chance.util.ChanceCriteria;
+import com.bee32.sem.chance.util.PriceCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -74,6 +81,71 @@ public class ChanceBean
     private PartyDto selectedParty;
     private List<PartyDto> parties;
 
+    // TODO quotation fields
+    private List<QuotationDto> quotations;
+    private QuotationDto selectedQuotation;
+    private QuotationDto quotation;
+    private List<String> materials;
+    private String selectedMaterial;
+    private String materialPattern;
+
+    // XXX quotation methods
+
+    ChanceBean() {
+        initMaterial();
+    }
+
+    void initMaterial() {
+        materials = new ArrayList<String>();
+        materials.add("尼康D200");
+        materials.add("松下GF3");
+        materials.add("佳能D300");
+        materials.add("宾得XR");
+        materials.add("猪肉");
+    }
+
+    public void findMaterial() {
+        if (!materialPattern.isEmpty()) {
+            List<String> temp = new ArrayList<String>();
+            initMaterial();
+            for (String s : materials) {
+                if (s.contains(materialPattern))
+                    temp.add(s);
+            }
+            setMaterials(temp);
+        } else {
+            initMaterial();
+        }
+    }
+
+    public void viewDetail() {
+        if (selectedQuotation != null)
+            quotation = selectedQuotation;
+    }
+
+    public void chooseMaterial() {
+        String sm = selectedMaterial;
+        BasePrice currentPrice = serviceFor(BasePrice.class).list(//
+                Order.desc("createdDate"), PriceCriteria.listBasePriceByMaterial(sm)).get(0);
+        QuotationItem qi = new QuotationItem();
+        qi.setQuotation(quotation.unmarshal());
+        qi.setBasePrice(currentPrice);
+        qi.setMaterial(sm);
+// qi.setDiscount()
+// qi.setPrice();
+// qi.setNumber()
+        QuotationItemDto qid = DTOs.mref(QuotationItemDto.class, qi);
+        quotation.addItem(qid);
+    }
+
+    void listQuotationByChance() {
+        List<Quotation> quotationList = serviceFor(Quotation.class).list(//
+                Order.desc("createdDate"), PriceCriteria.listQuotationByChance(chance.getId()));
+        quotations = DTOs.marshalList(QuotationDto.class, quotationList);
+    }
+
+    // XXX origin chanceBean methods
+
     public void initList() {
         EntityDataModelOptions<Chance, ChanceDto> edmo = new EntityDataModelOptions<Chance, ChanceDto>(Chance.class,
                 ChanceDto.class);
@@ -94,6 +166,42 @@ public class ChanceBean
         searchable = false;
         relating = true;
         unRelating = true;
+    }
+
+    public void createToobar() {
+        addable = true;
+        edable = true;
+        detailable = true;
+        saveable = false;
+        backable = false;
+        searchable = false;
+        relating = true;
+        unRelating = true;
+        editable = false;
+    }
+
+    public void editToolbar() {
+        addable = true;
+        edable = true;
+        detailable = true;
+        saveable = false;
+        backable = false;
+        searchable = false;
+        relating = false;
+        unRelating = true;
+        editable = false;
+    }
+
+    public void detailToolbar() {
+        addable = true;
+        edable = true;
+        detailable = true;
+        saveable = true;
+        backable = false;
+        searchable = false;
+        relating = true;
+        unRelating = true;
+        editable = true;
     }
 
     @PostConstruct
@@ -173,15 +281,12 @@ public class ChanceBean
     public void searchAction() {
         if (searchBeginTime != null && searchEndTime != null) {
             List<ChanceAction> _actions = serviceFor(ChanceAction.class).list(//
-                    Order.desc("createdDate"),
-                    ChanceCriteria.actedByCurrentUser(), //
+                    Order.desc("createdDate"), ChanceCriteria.actedByCurrentUser(), //
                     ChanceCriteria.beginWithin(searchBeginTime, searchEndTime), Restrictions.isNull("chance"));
             actions = DTOs.marshalList(ChanceActionDto.class, _actions);
         } else {
             List<ChanceAction> lca = serviceFor(ChanceAction.class).list(//
-                    Order.desc("createdDate"),
-                    ChanceCriteria.actedByCurrentUser(),
-                    Restrictions.isNull("chance"));
+                    Order.desc("createdDate"), ChanceCriteria.actedByCurrentUser(), Restrictions.isNull("chance"));
             actions = DTOs.marshalList(ChanceActionDto.class, lca);
         }
     }
@@ -240,43 +345,21 @@ public class ChanceBean
         chance = new ChanceDto();
         selectedChance = null;
         setActiveTab(TAB_FORM);
-        addable = true;
-        edable = true;
-        detailable = true;
-        saveable = false;
-        backable = false;
-        searchable = false;
-        relating = true;
-        unRelating = true;
-        editable = false;
+        createToobar();
+        quotations = new ArrayList<QuotationDto>();
     }
 
     public void editForm() {
         chance = selectedChance;
         setActiveTab(TAB_FORM);
-        addable = true;
-        edable = true;
-        detailable = true;
-        saveable = false;
-        backable = false;
-        searchable = false;
-        relating = false;
-        unRelating = true;
-        editable = false;
+        editToolbar();
+        listQuotationByChance();
     }
 
     public void detailForm() {
         chance = selectedChance;
         setActiveTab(TAB_FORM);
-        addable = true;
-        edable = true;
-        detailable = true;
-        saveable = true;
-        backable = false;
-        searchable = false;
-        relating = true;
-        unRelating = true;
-        editable = true;
+        detailToolbar();
     }
 
     public void cancel() {
@@ -569,5 +652,54 @@ public class ChanceBean
 
     public void setParties(List<PartyDto> parties) {
         this.parties = parties;
+    }
+
+    // TODO quotation gets and sets below
+    public List<QuotationDto> getQuotations() {
+        return quotations;
+    }
+
+    public void setQuotations(List<QuotationDto> quotations) {
+        this.quotations = quotations;
+    }
+
+    public QuotationDto getSelectedQuotation() {
+        return selectedQuotation;
+    }
+
+    public void setSelectedQuotation(QuotationDto selectedQuotation) {
+        this.selectedQuotation = selectedQuotation;
+    }
+
+    public QuotationDto getQuotation() {
+        return quotation;
+    }
+
+    public void setQuotation(QuotationDto quotation) {
+        this.quotation = quotation;
+    }
+
+    public List<String> getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(List<String> materials) {
+        this.materials = materials;
+    }
+
+    public String getSelectedMaterial() {
+        return selectedMaterial;
+    }
+
+    public void setSelectedMaterial(String selectedMaterial) {
+        this.selectedMaterial = selectedMaterial;
+    }
+
+    public String getMaterialPattern() {
+        return materialPattern;
+    }
+
+    public void setMaterialPattern(String materialPattern) {
+        this.materialPattern = materialPattern;
     }
 }
