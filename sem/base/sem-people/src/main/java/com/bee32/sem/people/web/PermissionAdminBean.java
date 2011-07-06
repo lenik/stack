@@ -126,13 +126,13 @@ public class PermissionAdminBean extends EntityViewBean {
 
 
 
-	private void loadEntries(AbstractPrincipalDto principalDto) {
+	private void loadEntries(AbstractPrincipalDto<? extends Principal> principalDto) {
 		ScannedResourceRegistry srr = getBean(ScannedResourceRegistry.class);
 		R_ACLService aclService = getBean(R_ACLService.class);
 
 
 		Map<String, ResourcePermission> havePermissions = new HashMap<String, ResourcePermission>();
-		Principal principal = (Principal) principalDto.unmarshal();
+		Principal principal = principalDto.unmarshal();
 		List<ResourcePermission> haveResourcePermissions = aclService.getResourcePermissions(principal);
 		for(ResourcePermission rp : haveResourcePermissions) {
 			String permissionQulifier = srr.qualify(rp.getResource());
@@ -224,7 +224,7 @@ public class PermissionAdminBean extends EntityViewBean {
 	public void doSave() {
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		AbstractPrincipalDto principalDto = null;
+		AbstractPrincipalDto<?> principalDto = null;
 
 		switch (activeTab) {
 		case 0:
@@ -244,7 +244,7 @@ public class PermissionAdminBean extends EntityViewBean {
 			return;
 		}
 
-		Principal principal = (Principal) principalDto.unmarshal();
+		Principal principal = principalDto.unmarshal();
 
 		serviceFor(R_ACE.class).deleteAll(Restrictions.eq("principal", principal));
 

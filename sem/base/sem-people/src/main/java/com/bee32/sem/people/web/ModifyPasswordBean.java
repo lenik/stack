@@ -6,14 +6,12 @@ import java.util.Random;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.LoginCriteria;
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.login.UserPassword;
-import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
