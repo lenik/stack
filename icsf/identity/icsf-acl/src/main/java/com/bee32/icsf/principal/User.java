@@ -181,9 +181,9 @@ public class User
 
         // Re-order.
         for (UserEmail prev : emails)
-            if (prev.getOrder() <= 0)
-                prev.setOrder(1);
-        preferredEmail.setOrder(0);
+            if (prev.getRank() <= 0)
+                prev.setRank(1);
+        preferredEmail.setRank(0);
 
         emails.add(preferredEmail);
     }
