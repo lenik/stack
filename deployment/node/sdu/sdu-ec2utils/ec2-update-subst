@@ -55,7 +55,7 @@ for region in us-east-1 ap-southeast-1; do
         $SUBST $key[lan]  $lan
         $SUBST $key[ipw]  $ipw
         $SUBST $key[ipl]  $ipl
-    done
+    done &
 
   echo "[Region $region] Update volumes"
 
@@ -70,7 +70,7 @@ for region in us-east-1 ap-southeast-1; do
         $SUBST $key[.rg]  $region
         $SUBST $key[.loc] $loc
         # $SUBST $key[.snap] $snap
-    done
+    done &
 
   echo "[Region $region] Update snapshots"
 
@@ -87,6 +87,6 @@ for region in us-east-1 ap-southeast-1; do
         $SUBST $key[ser]  $ser
         $SUBST $key[t0]   $t0
         $SUBST $key[desc] $desc
-    done
+    done &
 
 done
