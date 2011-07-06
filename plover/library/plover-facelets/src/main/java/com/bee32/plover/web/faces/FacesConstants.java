@@ -82,8 +82,10 @@ public interface FacesConstants {
 
     String DEFAULT_SUFFIX = "javax.faces.DEFAULT_SUFFIX";
 
-    String VALIDATE_XML = "com.sun.faces.validateXml";
+    String RI_VALIDATE_XML = "com.sun.faces.validateXml";
+    String RI_VERIFY_OBJECTS = "com.sun.faces.verifyObjects";
 
-    String VERIFY_OBJECTS = "com.sun.faces.verifyObjects";
+    String MF_VALIDATE_XML = "org.apache.myfaces.VALIDATE_XML";
+    String MF_STRICT_XHTML_LINKS = "org.apache.myfaces.STRICT_XHTML_LINKS";
 
 }

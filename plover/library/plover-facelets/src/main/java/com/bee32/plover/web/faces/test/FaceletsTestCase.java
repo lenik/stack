@@ -89,8 +89,11 @@ public class FaceletsTestCase
 
             if (isStrictMode()) {
                 // Optional JSF-RI Parameters to Help Debug
-                context.addInitParam(VALIDATE_XML, "true");
-                context.addInitParam(VERIFY_OBJECTS, "true");
+                context.addInitParam(RI_VALIDATE_XML, "true");
+                context.addInitParam(RI_VERIFY_OBJECTS, "true");
+                // Optional Myfaces-Impl Parameters.
+                context.addInitParam(MF_VALIDATE_XML, "true");
+                context.addInitParam(MF_STRICT_XHTML_LINKS, "true");
             }
         }
 
