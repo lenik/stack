@@ -89,7 +89,7 @@ public class SEMPeopleSamples
             jackPerson.setCensusRegister("海狞市公安局");
             jackPerson.setSid("330401198210250230");
         }
-        jack = jackPerson.toUser("jack");
+        jack = jackPerson.createUserLikeThis("jack");
         jack.setPrimaryGroup(abcRAD);
         abcRAD.addMemberUser(jack);
 
@@ -107,7 +107,7 @@ public class SEMPeopleSamples
             tangPerson.setCensusRegister("德州府");
             tangPerson.setSid("330481197003124931");
         }
-        tang = tangPerson.toUser("tang");
+        tang = tangPerson.createUserLikeThis("tang");
         tang.setPrimaryGroup(abcRAD);
         tang.addAssignedGroup(abcSales);
         abcRAD.addMemberUser(tang);

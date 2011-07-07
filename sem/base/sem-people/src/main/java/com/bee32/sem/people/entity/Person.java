@@ -106,7 +106,20 @@ public class Person
         this.roles = roles;
     }
 
-    public User toUser(String loginName) {
+    /**
+     * 建立一个尽可能相似的 User 。
+     *
+     * 这可能包括: 名称，Email 等。
+     * <p>
+     * 注意：
+     * <ul>
+     * <li>实际的 User/Person 关联通过 {@link PersonLogin} 表示。
+     * <li>Person.contact.email 是不需要验证的，而 User.email 是需要验证的。
+     * </ul>
+     *
+     * @return Non-<code>null</code> User.
+     */
+    public User createUserLikeThis(String loginName) {
         String fullName = this.fullName;
         if (fullName == null)
             fullName = this.name;
