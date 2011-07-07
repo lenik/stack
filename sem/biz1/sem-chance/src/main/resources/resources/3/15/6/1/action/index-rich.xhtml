@@ -70,10 +70,10 @@
                             <p:ajax event="rowUnselect" listener="#{chanceActionBean.onRowUnselect}"
                                 update="chanceActionForm:productToolbar" />
 
-                            <p:column headerText="日期" style="width:85px;">
+                            <p:column headerText="日期" style="width:100px;">
                                 <h:outputText value="#{action.date}" />
                             </p:column>
-                            <p:column headerText="时间段" style="width:100px;">
+                            <p:column headerText="时间段" style="width:120px;">
                                 <h:outputText value="#{action.timeRange}" />
                             </p:column>
                             <p:column headerText="负责人">
@@ -82,7 +82,7 @@
                             <p:column headerText="类型">
                                 <h:outputText value="#{action.actionType}" />
                             </p:column>
-                            <p:column headerText="洽谈类型">
+                            <p:column headerText="洽谈类型" style="width:70px;">
                                 <h:outputText value="#{action.style.label}" />
                             </p:column>
                             <p:column headerText="客户">
@@ -211,7 +211,7 @@
         </h:form>
 
         <h:form id="chanceForm">
-            <p:dialog header="挑选机会" widgetVar="chooseChanceDialog" modal="true" height="500" width="640">
+            <p:dialog header="挑选机会" widgetVar="chooseChanceDialog" modal="true" height="500" width="840">
                 <h:panelGroup>
 
                     <h:panelGrid columns="2">
@@ -223,7 +223,7 @@
                     <p:dataTable id="chances" var="chance" value="#{chanceActionBean.chances}" resizableColumns="true"
                         selection="#{chanceActionBean.selectedChance}" selectionMode="single" rowIndexVar="rowIndex">
 
-                        <p:column headerText="序号" style="width:20px;">
+                        <p:column headerText="序号" style="width:45px;">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
@@ -235,11 +235,11 @@
                             <h:outputText value="#{chance.party}" />
                         </p:column>
 
-                        <p:column headerText="来源">
+                        <p:column headerText="来源" style="width:100px;">
                             <h:outputText value="#{chance.source.label}" />
                         </p:column>
 
-                        <p:column headerText="负责人">
+                        <p:column headerText="负责人" style="width:100px;">
                             <h:outputText value="#{chance.owner.displayName}" />
                         </p:column>
 
@@ -264,7 +264,7 @@
                 <p:dataTable id="customers" var="customer" value="#{chanceActionBean.customers}" resizableColumns="true"
                     selection="#{chanceActionBean.selectedCustomer}" selectionMode="single" rowIndexVar="rowIndex">
 
-                    <p:column headerText="序号" style="width:20px;">
+                    <p:column headerText="序号" style="width:45px;">
                         <h:outputText value="#{rowIndex + 1}" />
                     </p:column>
 
@@ -307,7 +307,7 @@
                 <p:dataTable id="partners" var="partner" value="#{chanceActionBean.partners}" resizableColumns="true"
                     selection="#{chanceActionBean.selectedPartner}" selectionMode="single" rowIndexVar="rowIndex">
 
-                    <p:column headerText="序号" style="width:20px;">
+                    <p:column headerText="序号" style="width:45px;">
                         <h:outputText value="#{rowIndex + 1}" />
                     </p:column>
 

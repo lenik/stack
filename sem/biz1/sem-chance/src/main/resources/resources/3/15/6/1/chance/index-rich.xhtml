@@ -64,15 +64,15 @@
                             <p:ajax event="rowUnselect" listener="#{chanceBean.onRowUnselect}"
                                 update="chanceForm:toolbar" />
 
-                            <p:column headerText="创建日期" style="width:115px;">
+                            <p:column headerText="创建日期" style="width:140px;">
                                 <h:outputText value="#{chance.date}" />
                             </p:column>
 
-                            <p:column headerText="负责人">
+                            <p:column headerText="负责人" style="width:100px;">
                                 <h:outputText value="#{chance.owner.displayName}" />
                             </p:column>
 
-                            <p:column headerText="类型">
+                            <p:column headerText="类型" style="width:50px;">
                                 <h:outputText value="#{chance.category.label}" />
                             </p:column>
 
@@ -80,7 +80,7 @@
                                 <h:outputText value="#{chance.subject}" />
                             </p:column>
 
-                            <p:column headerText="来源">
+                            <p:column headerText="来源" style="width:80px;">
                                 <h:outputText value="#{chance.source.label}" />
                             </p:column>
 
@@ -92,7 +92,7 @@
                                 <h:outputText value="#{chance.shortContent}" />
                             </p:column>
 
-                            <p:column headerText="机会阶段">
+                            <p:column headerText="机会阶段" style="width:100px;">
                                 <h:outputText value="#{chance.stage.label}" />
                             </p:column>
                         </p:dataTable>
@@ -186,7 +186,7 @@
                                     update="chanceForm:actionToolbar" />
                                 <p:ajax event="rowUnselect" listener="#{chanceBean.onActionRowUnselect}"
                                     update="chanceForm:actionToolbar" />
-                                <p:column headerText="序号" style="width:20px;">
+                                <p:column headerText="序号" style="width:45px;">
                                     <h:outputText value="#{rowIndex + 1}" />
                                 </p:column>
 
@@ -234,7 +234,7 @@
                                 <p:ajax event="rowUnselect" listener="#{quotationBean.onRowUnselect}"
                                     update="main:toolbar" />
 
-                                <p:column headerText="序号" style="width:20px;">
+                                <p:column headerText="序号" style="width:45px;">
                                     <h:outputText value="#{rowIndex + 1}" />
                                 </p:column>
                                 <p:column headerText="标题">
@@ -264,7 +264,7 @@
                     <p:dataTable id="parties" var="party" value="#{chanceBean.parties}" resizableColumns="true"
                         selection="#{chanceBean.selectedParty}" selectionMode="single" rowIndexVar="rowIndex">
 
-                        <p:column headerText="序号" style="width:20px;">
+                        <p:column headerText="序号" style="width:45px;">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
@@ -318,8 +318,8 @@
                     <p:dataTable id="actions" var="action" value="#{chanceBean.actions}" resizableColumns="true"
                         selection="#{chanceBean.selectedActions}" rowIndexVar="rowIndex">
 
-                        <p:column selectionMode="multiple" style="width:20px;" />
-                        <p:column headerText="序号" style="width:20px;">
+                        <p:column selectionMode="multiple" style="width:40px;" />
+                        <p:column headerText="序号" style="width:45px;">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
