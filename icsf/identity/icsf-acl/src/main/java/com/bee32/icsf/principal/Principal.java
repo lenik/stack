@@ -101,7 +101,7 @@ public class Principal
 
     @Transient
     public String getDisplayName() {
-        if (fullName != null)
+        if (fullName != null && !fullName.isEmpty())
             return fullName;
         return name;
     }

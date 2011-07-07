@@ -53,9 +53,13 @@ public abstract class Appearance
     public String getDisplayName() {
         if (flags.checkAndLoad(HAVE_LABEL)) {
             label = loadLabel();
+
+            // Inherit appearance if local label isn't defined.
             if (label == null && parent != null)
                 label = parent.getDisplayName();
-            if (label == null)
+
+            // Otherwise, use default.
+            if (label == null || label.isEmpty())
                 label = getDefaultLabel();
         }
         return label;

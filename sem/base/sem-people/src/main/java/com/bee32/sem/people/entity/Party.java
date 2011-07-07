@@ -149,9 +149,9 @@ public abstract class Party
 
     @Transient
     public String getDisplayName() {
-        if (fullName != null)
+        if (fullName != null && !fullName.isEmpty())
             return fullName;
-        if (nickName != null)
+        if (nickName != null && !nickName.isEmpty())
             return nickName;
         return name;
     }
