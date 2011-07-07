@@ -19,6 +19,7 @@ import com.bee32.sem.people.dto.PartyTagnameDto;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyTagname;
+import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 
@@ -90,6 +91,12 @@ public abstract class AbstractPartyAdminBean
         List<PartyTagname> partyTags = serviceFor(PartyTagname.class).list();
         List<PartyTagnameDto> partyTagDtos = DTOs.marshalList(PartyTagnameDto.class, partyTags);
         return UIHelper.selectItemsFromDict(partyTagDtos);
+    }
+
+    public List<SelectItem> getOuterTags() {
+	List<PartyTagname> partyTags = serviceFor(PartyTagname.class).list(PeopleCriteria.outerPartyTagList("id"));
+	List<PartyTagnameDto> partyTagDtos = DTOs.marshalList(PartyTagnameDto.class, partyTags);
+	return UIHelper.selectItemsFromDict(partyTagDtos);
     }
 
     public List<ContactDto> getContacts() {

@@ -153,6 +153,28 @@
 						<t:panelGrid columns="4"
 							columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
+							<h:outputLabel for="personTags" value="标签" />
+							<t:panelGroup colspan="3">
+								<h:panelGrid columns="2">
+									<p:selectOneListbox id="personTags"
+										value="#{personAdminBean.selectedTagId}"
+										style="height:80px; width:200px;">
+										<f:selectItems value="#{personAdminBean.person.tags}" var="tag"
+											itemLabel="#{tag.label}" itemValue="#{tag.id}" />
+									</p:selectOneListbox>
+									<h:panelGrid colums="2">
+										<p:commandButton value="增加标签"
+											disabled="#{personAdminBean.person == null}"
+											onclick="tagDlg.show();" />
+										<p:commandButton value="删除标签"
+											disabled="#{personAdminBean.person == null}"
+											actionListener="#{personAdminBean.deleteTag}"
+											update="personForm:personTags" />
+									</h:panelGrid>
+								</h:panelGrid>
+							</t:panelGroup>
+
+
 							<h:outputLabel for="personName" value="姓名" />
 							<p:inputText id="personName"
 								value="#{personAdminBean.person.name}" />
@@ -307,14 +329,16 @@
                                 selection="#{personAdminBean.selectedRole}"
                                 selectionMode="single" rowIndexVar="rowIndex">
 
+								<!-- *****************************************
                                 <p:ajax event="rowSelect"
                                     listener="#{personAdminBean.onRowSelectRole}"
-                                    update="orgForm:roleToolbar" />
+                                    update="personForm:roleToolbar" />
                                 <p:ajax event="rowUnselect"
                                     listener="#{personAdminBean.onRowUnselectRole}"
-                                    update="orgForm:roleToolbar" />
+                                    update="personForm:roleToolbar" />
+                                ****************************************** -->
 
-                                <p:column>
+								<p:column>
                                     <f:facet name="header">
                                         <h:outputText value="序号" />
                                     </f:facet>
@@ -384,6 +408,29 @@
 				</p:tabView>
 			</p:panel>
 		</h:form>
+
+        <h:form id="tagForm">
+            <p:dialog header="标签添加" widgetVar="tagDlg" modal="true" height="500" width="640">
+                <h:panelGroup id="tagHolder">
+
+                    <p:growl id="growl1" showDetail="true" />
+
+                    <p:selectManyMenu value="#{personAdminBean.selectedTagsToAdd}" style="height:300px">
+                        <f:selectItems value="#{personAdminBean.outerTags}" />
+                    </p:selectManyMenu>
+
+                </h:panelGroup>
+                <t:panelGrid columns="2">
+                    <p:commandButton value="添加"
+                        actionListener="#{personAdminBean.addTags}"
+                        oncomplete="tagDlg.hide();" async="true"
+                        update="personForm:personTags personForm:growl" />
+                    <p:commandButton value="取消"
+                        oncomplete="tagDlg.hide();" />
+                </t:panelGrid>
+
+            </p:dialog>
+        </h:form>
 
 
 		<h:form id="contactForm">

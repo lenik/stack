@@ -5,6 +5,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
+import com.bee32.sem.people.entity.PartyTagname;
 
 public class PeopleCriteria {
 
@@ -26,5 +27,10 @@ public class PeopleCriteria {
         return Restrictions.or(Restrictions.like("name", "%" + keyword + "%"),
                 Restrictions.like("fullName", "%" + keyword + "%"));
     }
+
+	public static Criterion outerPartyTagList(String name) {
+		return Restrictions.not(Restrictions.in(name,
+				new Object[] { PartyTagname.EMPLOYEE.getName() }));
+	}
 
 }
