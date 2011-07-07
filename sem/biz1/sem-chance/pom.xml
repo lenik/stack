@@ -24,5 +24,14 @@
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.primefaces</groupId>
+                <artifactId>primefaces</artifactId>
+                <version>3.0.M2-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <name>SEM :: Biz1 :: Chance</name>
 </project>
