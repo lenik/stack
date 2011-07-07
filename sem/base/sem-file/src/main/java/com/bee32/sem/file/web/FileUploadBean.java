@@ -3,6 +3,8 @@ package com.bee32.sem.file.web;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -24,6 +26,8 @@ import com.bee32.sem.file.entity.UserFile;
 public class FileUploadBean extends EntityViewBean {
 
 	private static final long serialVersionUID = 1L;
+
+	public List<UserFile> uploadedFiles = new ArrayList<UserFile>();
 
 	public void handleFileUpload(FileUploadEvent event) {
 	FacesMessage msg = null;
@@ -48,6 +52,8 @@ public class FileUploadBean extends EntityViewBean {
 			serviceFor(FileBlob.class).saveOrUpdate(fileBlob);
 			serviceFor(UserFile.class).save(userFile);
 
+			uploadedFiles.add(userFile);
+
 			msg = new FacesMessage("上传成功", event.getFile().getFileName() + "上传成功");
 
 		} catch (IOException e) {
@@ -56,4 +62,14 @@ public class FileUploadBean extends EntityViewBean {
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+
+	public List<UserFile> getUploadedFiles() {
+		return uploadedFiles;
+	}
+
+	public void setUploadedFiles(List<UserFile> uploadedFiles) {
+		this.uploadedFiles = uploadedFiles;
+	}
+
+
 }
