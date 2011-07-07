@@ -311,6 +311,7 @@ public class ChanceBean
     }
 
     public void doAttachActions() {
+        FacesContext context = FacesContext.getCurrentInstance();
         if (selectedActions.length == 0) {
             return;
         }
@@ -325,8 +326,9 @@ public class ChanceBean
             }
 
             serviceFor(ChanceAction.class).saveOrUpdateAll(_chance.getActions());
-
+            context.addMessage(null, new FacesMessage("提示", "关联成功"));
         } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("错误提示", "关联失败:" + e.getMessage()));
             e.printStackTrace();
         }
     }
@@ -439,7 +441,6 @@ public class ChanceBean
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             Chance chanceToDelete = serviceFor(Chance.class).load(selectedChance.getId());
-// Chance tempChance = selectedChance.unmarshal();
             for (ChanceAction _action : chanceToDelete.getActions()) {
                 _action.setChance(null);
                 _action.setStage(null);
@@ -457,6 +458,7 @@ public class ChanceBean
     }
 
     public void unRelating() {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
             ChanceActionDto actionDto = selectedAction;
             ChanceAction chanceAction = actionDto.unmarshal();
@@ -465,7 +467,9 @@ public class ChanceBean
             chanceAction.setStage(null);
             serviceFor(ChanceAction.class).save(chanceAction);
             unRelating = true;
+            context.addMessage(null, new FacesMessage("提示", "反关联成功"));
         } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("错误提示", "反关联失败:" + e.getMessage()));
             e.printStackTrace();
         }
     }
