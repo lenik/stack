@@ -17,9 +17,26 @@
 
     <ui:define name="content">
 
-        <h:form id="chanceActionForm">
-
+        <h:form id="prompting">
             <p:growl id="growl" showDetail="true" />
+        </h:form>
+
+        <h:form id="confirm">
+        <p:confirmDialog message="确定删除记录?" width="200" showEffect="explode" hideEffect="explode" header="提示"
+                widgetVar="confirmation">
+
+            </p:confirmDialog>
+            <p:confirmDialog message="确定要删除记录吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
+                widgetVar="confirmation">
+
+                <p:commandButton value="确定" update="chanceActionForm:actionList,prompting" oncomplete="confirmation.hide()"
+                    actionListener="#{chanceActionBean.drop}" />
+                <p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
+
+            </p:confirmDialog>
+        </h:form>
+
+        <h:form id="chanceActionForm">
 
             <p:panel header="机会行动日志">
 
@@ -31,11 +48,11 @@
                         <p:divider />
                         <p:commandButton value="编辑" actionListener="#{chanceActionBean.editForm}"
                             disabled="#{chanceActionBean.edable}" update="chanceActionForm" async="true" />
-                        <p:commandButton value="删除" actionListener="#{chanceActionBean.drop}"
-                            disabled="#{chanceActionBean.edable}" update="chanceActionForm" async="true" />
+                        <p:commandButton value="删除" disabled="#{chanceActionBean.edable}"
+                            oncomplete="confirmation.show();" />
                         <p:divider />
                         <p:commandButton value="保存" actionListener="#{chanceActionBean.saveAction}"
-                            disabled="#{chanceActionBean.saveable}" update="chanceActionForm" async="false" />
+                            disabled="#{chanceActionBean.saveable}" update="chanceActionForm,prompting" async="false" />
                         <p:divider />
                         <p:commandButton value="取消" actionListener="#{chanceActionBean.cancel}"
                             disabled="#{chanceActionBean.back}"

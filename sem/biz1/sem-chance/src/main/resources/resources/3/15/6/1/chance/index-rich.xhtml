@@ -17,12 +17,13 @@
 
     <ui:define name="content">
 
+        <h:form id="prompting">
+            <p:growl id="growl" showDetail="true" />
+        </h:form>
+
         <h:form id="chanceForm">
 
-            <p:growl id="growl" showDetail="true" />
-
             <p:panel header="销售机会">
-
                 <p:toolbar id="toolbar">
                     <p:toolbarGroup align="left">
                         <p:commandButton value="新增" actionListener="#{chanceBean.createForm}"
@@ -31,11 +32,12 @@
                         <p:divider />
                         <p:commandButton value="编辑" actionListener="#{chanceBean.editForm}"
                             disabled="#{chanceBean.edable}" update="chanceForm:toolbar,chanceForm:mainTab" async="true" />
-                        <p:commandButton value="删除" actionListener="#{chanceBean.drop}" disabled="#{chanceBean.edable}"
-                            update="chanceForm" async="true" />
+                        <p:commandButton value="删除" disabled="#{chanceBean.edable}" oncomplete="confirmation.show();"
+                            async="true" />
                         <p:divider />
                         <p:commandButton value="保存" actionListener="#{chanceBean.saveChance}"
-                            disabled="#{chanceBean.saveable}" update="chanceForm" async="false" />
+                            disabled="#{chanceBean.saveable}" update="chanceForm:toobar,chanceForm:mainTab,prompting"
+                            async="false" />
                         <p:divider />
                         <p:commandButton value="取消" actionListener="#{chanceBean.cancel}"
                             disabled="#{chanceBean.backable}" update="chanceForm" async="true" />
@@ -174,7 +176,7 @@
                                         onclick="chooseChanceActionDialog.show();" />
                                     <p:commandButton value="取消关联" actionListener="#{chanceBean.unRelating}"
                                         disabled="#{chanceBean.unRelating}"
-                                        update="chanceForm:actions,chanceForm:actionToolbar" async="true" />
+                                        update="chanceForm:actions,chanceForm:actionToolbar,prompting" async="true" />
                                     <p:commandButton value="详细" disabled="#{chanceBean.unRelating}"
                                         update="chanceForm:actions" async="true" />
                                 </p:toolbarGroup>
@@ -216,6 +218,8 @@
 
                             </p:dataTable>
                         </p:fieldset>
+
+
                         <p:fieldset legend="报价" toggleable="true" toggleSpeed="300">
                             <h:outputText value="报价正在完善中,敬请期待...." style="color:red;font-size:20px;" />
                             <p:toolbar id="quotationToolbar">
@@ -250,6 +254,17 @@
                 </p:tabView>
             </p:panel>
 
+        </h:form>
+
+        <h:form id="confirm">
+            <p:confirmDialog message="确定要删除记录吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
+                widgetVar="confirmation">
+
+                <p:commandButton value="确定" update="chanceForm:chanceList,prompting" oncomplete="confirmation.hide()"
+                    actionListener="#{chanceBean.drop}" />
+                <p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
+
+            </p:confirmDialog>
         </h:form>
 
         <h:form id="chancePartyForm">
@@ -342,7 +357,8 @@
 
                     <h:panelGrid columns="2">
                         <p:commandButton value="选择" actionListener="#{chanceBean.doAttachActions}"
-                            oncomplete="chooseChanceActionDialog.hide();" update="chanceForm:actions" async="true" />
+                            oncomplete="chooseChanceActionDialog.hide();" update="chanceForm:actions,prompting"
+                            async="true" />
                         <p:commandButton value="取消" oncomplete="chooseChanceActionDialog.hide();" />
                     </h:panelGrid>
                 </h:panelGroup>
