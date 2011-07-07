@@ -1,7 +1,7 @@
-package com.bee32.sem.store.dto;
+package com.bee32.sem.thing.dto;
 
 import com.bee32.plover.orm.ext.dict.SimpleNameDictDto;
-import com.bee32.sem.store.entity.Unit;
+import com.bee32.sem.thing.entity.Unit;
 
 public class UnitDto
         extends SimpleNameDictDto<Unit> {

@@ -1,4 +1,4 @@
-package com.bee32.sem.store.entity;
+package com.bee32.sem.thing.entity;
 
 import java.util.HashMap;
 import java.util.Map;

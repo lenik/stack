@@ -1,4 +1,4 @@
-package com.bee32.sem.store.entity;
+package com.bee32.sem.thing.entity;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
