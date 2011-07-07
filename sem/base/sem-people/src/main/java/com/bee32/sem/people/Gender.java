@@ -16,10 +16,6 @@ public class Gender
     static final Map<String, Gender> nameMap = new HashMap<String, Gender>();
     static final Map<Character, Gender> valueMap = new HashMap<Character, Gender>();
 
-    public static final Gender MALE = new Gender('m', "male");
-    public static final Gender FEMALE = new Gender('f', "female");
-    public static final Gender OTHER = new Gender('x', "other");
-
     private Gender(char val, String name) {
         super(val, name);
     }
@@ -41,15 +37,17 @@ public class Gender
 
     public static Gender valueOf(Character value) {
         if (value == null)
-            return null;
-        return valueOf(value.charValue());
-    }
+            throw new NullPointerException("value");
 
-    public static Gender valueOf(char value) {
         Gender gender = valueMap.get(value);
         if (gender == null)
             throw new NoSuchEnumException(Gender.class, value);
+
         return gender;
+    }
+
+    public static Gender valueOf(char value) {
+        return valueOf(new Character(value));
     }
 
     public static Gender valueOf(String altName) {
@@ -58,5 +56,9 @@ public class Gender
             throw new NoSuchEnumException(Gender.class, altName);
         return gender;
     }
+
+    public static final Gender MALE = new Gender('m', "male");
+    public static final Gender FEMALE = new Gender('f', "female");
+    public static final Gender OTHER = new Gender('x', "other");
 
 }
