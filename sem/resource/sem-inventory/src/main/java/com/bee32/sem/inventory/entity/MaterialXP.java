@@ -2,11 +2,11 @@ package com.bee32.sem.inventory.entity;
 
 import javax.persistence.Entity;
 
-import com.bee32.plover.orm.ext.xp.XPool40;
+import com.bee32.plover.orm.ext.xp.XPool30;
 
 @Entity
-public class InventoryXP
-        extends XPool40<Inventory> {
+public class MaterialXP
+        extends XPool30<Material> {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,9 +1,10 @@
-package com.bee32.sem.inventory.entity;
+package com.bee32.sem.inventory.dto;
 
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.tree.TreeEntityDto;
+import com.bee32.sem.inventory.entity.Place;
 
 public class PlaceDto
         extends TreeEntityDto<Place, Integer, PlaceDto> {

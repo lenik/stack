@@ -1,4 +1,4 @@
-package com.bee32.sem.store.entity;
+package com.bee32.sem.inventory.entity;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -7,15 +7,16 @@ import javax.persistence.Transient;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
+import com.bee32.sem.thing.entity.Thing;
 
 @MappedSuperclass
 @Blue
-public class OrderItem<T extends Thing<?>>
+public class InventoryLineItem<T extends Thing<?>>
         extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    Order<T> order;
+    InventoryAccount<T> order;
 
     float quantity;
     float discount = 1.00f;

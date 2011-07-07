@@ -1,4 +1,4 @@
-package com.bee32.sem.material.entity;
+package com.bee32.sem.inventory.entity;
 
 import javax.persistence.Entity;
 

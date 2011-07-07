@@ -1,4 +1,4 @@
-package com.bee32.sem.material.entity;
+package com.bee32.sem.inventory.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.CollectionOfElements;
 
 import com.bee32.sem.file.entity.UserFile;
-import com.bee32.sem.store.entity.Thing;
+import com.bee32.sem.thing.entity.Thing;
 
 @Entity
 public class Material
