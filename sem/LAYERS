@@ -16,10 +16,10 @@ process/            过程支持
     sem-workflow
 
 resource/           资源
+    sem-world
     sem-asset
-    sem-store
     sem-inventory
-    sem-material
+    sem-bom
 
 support/            （偏低层）支持
     sem-track
