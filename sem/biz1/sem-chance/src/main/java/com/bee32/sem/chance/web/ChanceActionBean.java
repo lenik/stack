@@ -169,8 +169,7 @@ public class ChanceActionBean
         List<Chance> _chances;
         if (chancePattern != null && !chancePattern.isEmpty()) {
             _chances = serviceFor(Chance.class).list(//
-                    Order.desc("createdDate"),
-                    ChanceCriteria.ownedByCurrentUser(), //
+                    Order.desc("createdDate"), ChanceCriteria.ownedByCurrentUser(), //
                     ChanceCriteria.subjectLike(chancePattern));
         } else {
             _chances = serviceFor(Chance.class).list(ChanceCriteria.ownedByCurrentUser());
@@ -316,11 +315,6 @@ public class ChanceActionBean
             return;
         }
 
-// if (action.getParties().size() == 0) {
-// context.addMessage(null, new FacesMessage("错误提示", "请选择拜访客户"));
-// return;
-// }
-
         if (action.getContent().isEmpty())
             action.setContent("");
         if (action.getSpending().isEmpty())
@@ -334,8 +328,11 @@ public class ChanceActionBean
             return;
         }
 
-        if (!stage.isNullRef())
-            stage = reload(stage);
+        if (!stage.isNullRef()) {
+            ChanceStage tempStage = serviceFor(ChanceStage.class).load(stage.getId());
+            stage = DTOs.mref(ChanceStageDto.class, tempStage);
+        }
+// stage = reload(stage);
         action.pushStage(stage);
 
         ChanceDto chance;
