@@ -7,11 +7,11 @@ import com.bee32.plover.orm.ext.color.Green;
 
 @MappedSuperclass
 @Green
-public class InventorySnapshot
+public class StockSnapshot
         extends EntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    InventorySnapshotType type;
+    StockSnapshotType type;
 
 }

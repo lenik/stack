@@ -4,10 +4,10 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.tree.TreeEntityDto;
-import com.bee32.sem.inventory.entity.Place;
+import com.bee32.sem.inventory.entity.StockLocation;
 
 public class PlaceDto
-        extends TreeEntityDto<Place, Integer, PlaceDto> {
+        extends TreeEntityDto<StockLocation, Integer, PlaceDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,11 +20,11 @@ public class PlaceDto
     }
 
     @Override
-    protected void _marshal(Place source) {
+    protected void _marshal(StockLocation source) {
     }
 
     @Override
-    protected void _unmarshalTo(Place target) {
+    protected void _unmarshalTo(StockLocation target) {
     }
 
     @Override

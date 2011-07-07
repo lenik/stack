@@ -7,11 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CollectionOfElements;
 
 import com.bee32.sem.file.entity.UserFile;
-import com.bee32.sem.thing.entity.Thing;
+import com.bee32.sem.world.thing.Thing;
 
+/**
+ * 物料
+ */
 @Entity
 public class Material
         extends Thing<MaterialXP> {
@@ -21,12 +26,14 @@ public class Material
     MaterialCategory category;
 
     List<MaterialAttribute> attributes = new ArrayList<MaterialAttribute>();
-    List<UserFile> accessories = new ArrayList<UserFile>();
+    List<UserFile> attachments = new ArrayList<UserFile>();
 
-    // 常用属性。
-    // 这些属性和单位还算无关。
+    // ------------------------------------------------------------------------
+    // 需要索引的常用的物料属性（这些属性和单位还算无关）。
+    //
     // String packageSize;
     // String packageWeight;
+    // ------------------------------------------------------------------------
 
     @ManyToOne(optional = false)
     public MaterialCategory getCategory() {
@@ -40,7 +47,9 @@ public class Material
     }
 
     /**
-     * 物料附加属性。
+     * 物料附加的属性。
+     *
+     * （此属性不可索引）
      */
     @OneToMany(mappedBy = "material")
     public List<MaterialAttribute> getAttributes() {
@@ -57,14 +66,15 @@ public class Material
      * 附件文件。
      */
     @CollectionOfElements
-    public List<UserFile> getAccessories() {
-        return accessories;
+    @Cascade(CascadeType.ALL)
+    public List<UserFile> getAttachments() {
+        return attachments;
     }
 
-    public void setAccessories(List<UserFile> accessories) {
-        if (accessories == null)
-            throw new NullPointerException("accessories");
-        this.accessories = accessories;
+    public void setAttachments(List<UserFile> attachments) {
+        if (attachments == null)
+            throw new NullPointerException("attachments");
+        this.attachments = attachments;
     }
 
 }

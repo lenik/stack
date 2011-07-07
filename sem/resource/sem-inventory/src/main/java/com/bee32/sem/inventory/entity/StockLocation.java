@@ -11,8 +11,8 @@ import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
  * </ul>
  */
 @Entity
-public class Place
-        extends TreeEntityAuto<Integer, Place> {
+public class StockLocation
+        extends TreeEntityAuto<Integer, StockLocation> {
 
     private static final long serialVersionUID = 1L;
 

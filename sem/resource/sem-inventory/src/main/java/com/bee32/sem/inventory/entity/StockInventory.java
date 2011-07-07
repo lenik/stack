@@ -3,7 +3,7 @@ package com.bee32.sem.inventory.entity;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -13,8 +13,8 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.orm.ext.xp.EntityExt;
 import com.bee32.plover.orm.ext.xp.XPool;
 
-@MappedSuperclass
-public abstract class Inventory<X extends XPool<?>>
+@Entity
+public class StockInventory<X extends XPool<?>>
         extends EntityExt<Integer, X> {
 
     private static final long serialVersionUID = 1L;
@@ -22,8 +22,8 @@ public abstract class Inventory<X extends XPool<?>>
     String name;
     String description;
 
-    List<InventorySnapshot> snapshots;
-    InventorySnapshot workingCopy;
+    List<StockSnapshot> snapshots;
+    StockSnapshot workingCopy;
 
     @Column(length = 30)
     public String getName() {
@@ -45,21 +45,21 @@ public abstract class Inventory<X extends XPool<?>>
 
     @OneToMany
     @Cascade(CascadeType.ALL)
-    public List<InventorySnapshot> getSnapshots() {
+    public List<StockSnapshot> getSnapshots() {
         return snapshots;
     }
 
-    public void setSnapshots(List<InventorySnapshot> snapshots) {
+    public void setSnapshots(List<StockSnapshot> snapshots) {
         this.snapshots = snapshots;
     }
 
     @OneToOne
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public InventorySnapshot getWorkingCopy() {
+    public StockSnapshot getWorkingCopy() {
         return workingCopy;
     }
 
-    public void setWorkingCopy(InventorySnapshot workingCopy) {
+    public void setWorkingCopy(StockSnapshot workingCopy) {
         this.workingCopy = workingCopy;
     }
 
