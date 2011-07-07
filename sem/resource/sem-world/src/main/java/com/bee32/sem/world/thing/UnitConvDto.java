@@ -1,4 +1,4 @@
-package com.bee32.sem.thing.dto;
+package com.bee32.sem.world.thing;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,8 +9,6 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.dict.NameDictDto;
-import com.bee32.sem.thing.entity.Unit;
-import com.bee32.sem.thing.entity.UnitConv;
 
 public class UnitConvDto
         extends NameDictDto<UnitConv> {
@@ -19,6 +17,7 @@ public class UnitConvDto
 
     public static final int MAP = 1;
 
+    UnitConvDto parent;
     UnitDto from;
     Map<UnitDto, Double> ratioMap;
 
@@ -32,6 +31,7 @@ public class UnitConvDto
 
     @Override
     protected void _marshal(UnitConv source) {
+        parent = mref(UnitConvDto.class, source.getParent());
         from = mref(UnitDto.class, source.getFrom());
 
         if (selection.contains(MAP)) {
@@ -46,6 +46,7 @@ public class UnitConvDto
 
     @Override
     protected void _unmarshalTo(UnitConv target) {
+        merge(target, "parent", parent);
         merge(target, "from", from);
 
         if (selection.contains(MAP)) {

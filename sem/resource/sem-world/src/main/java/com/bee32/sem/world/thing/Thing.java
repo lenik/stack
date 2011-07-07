@@ -1,14 +1,16 @@
-package com.bee32.sem.thing.entity;
+package com.bee32.sem.world.thing;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.xp.EntityExt;
 import com.bee32.plover.orm.ext.xp.XPool;
 
 @MappedSuperclass
+@Green
 public abstract class Thing<X extends XPool<?>>
         extends EntityExt<Long, X> {
 

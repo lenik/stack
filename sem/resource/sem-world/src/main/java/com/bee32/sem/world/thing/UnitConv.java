@@ -1,9 +1,10 @@
-package com.bee32.sem.thing.entity;
+package com.bee32.sem.world.thing;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
@@ -16,11 +17,13 @@ import com.bee32.plover.orm.ext.dict.NameDict;
 /**
  * 单位换算表
  */
+@Entity
 public class UnitConv
         extends NameDict {
 
     private static final long serialVersionUID = 1L;
 
+    UnitConv parent;
     Unit from;
     Map<Unit, Double> ratioMap = new HashMap<Unit, Double>();
 
@@ -34,6 +37,15 @@ public class UnitConv
         if (from == null)
             throw new NullPointerException("from");
         this.from = from;
+    }
+
+    @ManyToOne
+    public UnitConv getParent() {
+        return parent;
+    }
+
+    public void setParent(UnitConv parent) {
+        this.parent = parent;
     }
 
     @ManyToOne
@@ -70,7 +82,14 @@ public class UnitConv
     public Double getRatio(Unit toUnit) {
         if (toUnit == null)
             throw new NullPointerException("toUnit");
-        return ratioMap.get(toUnit);
+
+        Double ratio = ratioMap.get(toUnit);
+
+        // Find in parent unit conv also.
+        if (ratio == null && parent != null)
+            ratio = parent.getRatio(toUnit);
+
+        return ratio;
     }
 
     /**
