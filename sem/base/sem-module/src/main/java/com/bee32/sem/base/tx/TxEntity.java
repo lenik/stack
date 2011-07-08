@@ -10,9 +10,8 @@ import com.bee32.plover.orm.ext.color.Pink;
  * 事务性实体所具有的特性：
  *
  * <ul>
- * <li>事务的生命周期管理
  * <li>事务与事件的集成
- * <li>事务的一般属性：标题、制单人、审核策略
+ * <li>事务的一般属性：标题、制单人、起始/终止时间、简短标题、备注信息等。
  */
 @MappedSuperclass
 @Pink
@@ -24,7 +23,6 @@ public class TxEntity
     String name;
 
     User creator;
-
     // logs...?
 
 }
