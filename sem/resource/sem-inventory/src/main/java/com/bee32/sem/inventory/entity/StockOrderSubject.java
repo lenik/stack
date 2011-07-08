@@ -53,10 +53,15 @@ public class StockOrderSubject
         return subject;
     }
 
-    public static final StockOrderSubject INIT = new StockOrderSubject("-", "init");
-    public static final StockOrderSubject TAKE_IN = new StockOrderSubject("I", "checkin");
-    public static final StockOrderSubject TAKE_OUT = new StockOrderSubject("O", "checkout");
-    public static final StockOrderSubject STOCKTAKING = new StockOrderSubject("T", "stocktaking");
-    public static final StockOrderSubject MOVE = new StockOrderSubject("M", "move");
+    public static final StockOrderSubject INIT = new StockOrderSubject("INI", "init");
+    public static final StockOrderSubject RESUME = new StockOrderSubject("RSM", "resume");
+
+    public static final StockOrderSubject CHECKIN = new StockOrderSubject("NCI", "checkin");
+    public static final StockOrderSubject CHECKOUT = new StockOrderSubject("NCO", "checkout");
+    public static final StockOrderSubject F_CHECKIN = new StockOrderSubject("FCI", "f_checkin");
+    public static final StockOrderSubject F_CHECKOUT = new StockOrderSubject("FCO", "f_checkout");
+
+    public static final StockOrderSubject STOCKTAKING = new StockOrderSubject("STK", "stocktaking");
+    public static final StockOrderSubject MOVE = new StockOrderSubject("MOV", "move");
 
 }
