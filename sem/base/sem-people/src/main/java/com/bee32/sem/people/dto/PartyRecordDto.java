@@ -16,7 +16,7 @@ public class PartyRecordDto
     PartyRecordCategoryDto category;
     Date date;
     PartyDto party;
-    String description;
+    String text;
 
     public PartyRecordDto() {
         super();
@@ -27,13 +27,13 @@ public class PartyRecordDto
         party = marshal(PartyDto.class, source.getParty());
         date = source.getDate();
         category = marshal(PartyRecordCategoryDto.class, source.getCategory());
-        description = source.getDescription();
+        text = source.getText();
     }
 
     @Override
     protected void _unmarshalTo(PartyRecord target) {
         target.setDate(date);
-        target.setDescription(description);
+        target.setText(text);
         merge(target, "category", category);
         merge(target, "party", party);
     }
@@ -49,7 +49,7 @@ public class PartyRecordDto
         int partyId = map.getInt("party.id");
         party = new PartyDto(0).ref(partyId);
 
-        description = map.getString("description");
+        text = map.getString("text");
     }
 
 }

@@ -23,7 +23,7 @@ public class PartyRecord
     PartyRecordCategory category = PartyRecordCategory.INFO;
     Date date;
     Party party;
-    String description = "";
+    String text = "";
 
     @ManyToOne
     public PartyRecordCategory getCategory() {
@@ -61,15 +61,15 @@ public class PartyRecord
     }
 
     @Basic(optional = false)
-    @Column(length = 200, nullable = false)
-    public String getDescription() {
-        return description;
+    @Column(length = 10000, nullable = false)
+    public String getText() {
+        return text;
     }
 
-    public void setDescription(String description) {
-        if (description == null)
-            throw new NullPointerException("description");
-        this.description = description;
+    public void setText(String text) {
+        if (text == null)
+            throw new NullPointerException("text");
+        this.text = text;
     }
 
 }
