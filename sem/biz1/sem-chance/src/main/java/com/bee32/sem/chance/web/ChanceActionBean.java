@@ -315,9 +315,9 @@ public class ChanceActionBean
             return;
         }
 
-        if (action.getContent().isEmpty())
-            action.setContent("");
-        if (action.getSpending().isEmpty())
+        if (action.getDescription() == null)
+            action.setDescription("");
+        if (action.getSpending() == null)
             action.setSpending("");
 
         ChanceStageDto stage = action.getStage();

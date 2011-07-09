@@ -109,7 +109,7 @@
                                 <h:outputText value="#{action.partner}" />
                             </p:column>
                             <p:column headerText="行动简略">
-                                <h:outputText value="#{action.contentShort}" />
+                                <h:outputText value="#{action.subject}" />
                             </p:column>
                             <p:column headerText="对应机会">
                                 <h:outputText value="#{action.chance.subject}" />
@@ -190,9 +190,9 @@
 
                             </t:panelGroup>
 
-                            <h:outputLabel for="content" value="内容描述:" />
+                            <h:outputLabel for="description" value="内容描述:" />
                             <t:panelGroup colspan="3">
-                                <p:inputTextarea id="content" value="#{chanceActionBean.action.content}"
+                                <p:inputTextarea id="description" value="#{chanceActionBean.action.description}"
                                     style="width:400px;height:50px;" readonly="#{chanceActionBean.editable}" />
                             </t:panelGroup>
 

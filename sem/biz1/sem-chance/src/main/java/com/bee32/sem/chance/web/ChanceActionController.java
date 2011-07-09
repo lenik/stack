@@ -95,7 +95,7 @@ public class ChanceActionController
         tab.push(customer);
 
         // 行动简略
-        tab.push(Strings.ellipse(dto.getContent(), 15));
+        tab.push(dto.getSubject());
 
         // 费用简略
         tab.push(Strings.ellipse(dto.getSpending(), 15));

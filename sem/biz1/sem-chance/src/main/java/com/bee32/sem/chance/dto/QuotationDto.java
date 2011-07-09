@@ -6,7 +6,6 @@ import javax.free.ParseException;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.chance.entity.Quotation;
 
@@ -28,8 +27,8 @@ public class QuotationDto
     protected void _marshal(Quotation source) {
         this.creator = new UserDto().ref(source.getCreator());
         this.subject = source.getSubject();
-        this.chance = new ChanceDto().ref(source.getChance());
-        this.items = DTOs.marshalList(QuotationItemDto.class, source.getItems());
+        this.chance = mref(ChanceDto.class, source.getChance());
+        this.items = marshalList(QuotationItemDto.class, source.getItems());
         this.amount = source.getAmount();
         this.recommend = source.getRecommend();
         this.payment = source.getPayment();
@@ -38,7 +37,7 @@ public class QuotationDto
 
     @Override
     protected void _unmarshalTo(Quotation target) {
-        merge(target, "owner", creator);
+        merge(target, "creator", creator);
         target.setSubject(subject);
         merge(target, "chance", chance);
         mergeList(target, "items", items);

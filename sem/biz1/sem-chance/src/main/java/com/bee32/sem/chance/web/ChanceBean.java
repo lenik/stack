@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.chance.dto.BasePriceDto;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceCategoryDto;
 import com.bee32.sem.chance.dto.ChanceDto;
@@ -88,6 +89,11 @@ public class ChanceBean
     private List<String> materials;
     private String selectedMaterial;
     private String materialPattern;
+    private QuotationItemDto selectedQuotationItem;
+    private double temPrice;
+    private int temQuantity;
+    private boolean quotationItemPriceRendered;
+    private boolean quotationItemNumberRendered;
 
     // XXX quotation methods
 
@@ -126,22 +132,86 @@ public class ChanceBean
     public void chooseMaterial() {
         String sm = selectedMaterial;
         BasePrice currentPrice = serviceFor(BasePrice.class).list(//
-                Order.desc("createdDate"), PriceCriteria.listBasePriceByMaterial(sm)).get(0);
-        QuotationItem qi = new QuotationItem();
-        qi.setQuotation(quotation.unmarshal());
-        qi.setBasePrice(currentPrice);
+                Order.desc("createdDate"), //
+                PriceCriteria.listBasePriceByMaterial(sm)).get(0);
+        QuotationItemDto qi = new QuotationItemDto();
+        qi.setQuotationInvoice(quotation);
+
+        qi.setBasePrice(DTOs.mref(BasePriceDto.class, currentPrice));
+
         qi.setMaterial(sm);
-// qi.setDiscount()
-// qi.setPrice();
-// qi.setNumber()
-        QuotationItemDto qid = DTOs.mref(QuotationItemDto.class, qi);
-        quotation.addItem(qid);
+        qi.setDiscount(0);
+        qi.setPrice(0.0);
+        qi.setNumber(0);
+        quotation.addItem(qi);
     }
 
-    void listQuotationByChance() {
+    void listQuotationByChance(ChanceDto chance) {
         List<Quotation> quotationList = serviceFor(Quotation.class).list(//
-                Order.desc("createdDate"), PriceCriteria.listQuotationByChance(chance.getId()));
+                Order.desc("createdDate"), //
+                PriceCriteria.listQuotationByChance(chance.getId()));
         quotations = DTOs.marshalList(QuotationDto.class, quotationList);
+    }
+
+    public void calculatePriceChange() {
+        if (selectedQuotationItem.getPrice() == null) {
+            selectedQuotationItem.setPrice(0.0);
+        }
+        double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
+        selectedQuotationItem.setAmount(amount);
+        quotationItemPriceRendered = !quotationItemPriceRendered;
+    }
+
+    public void calculateNumberChange() {
+        if (selectedQuotationItem.getNumber() == null) {
+            selectedQuotationItem.setNumber(0);
+        }
+        Double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
+        if (amount != null)
+            selectedQuotationItem.setAmount(amount);
+        quotationItemNumberRendered = !quotationItemNumberRendered;
+    }
+
+    public void editPrice() {
+        quotationItemPriceRendered = !quotationItemPriceRendered;
+        temPrice = selectedQuotationItem.getPrice();
+    }
+
+    public void uneditPrice() {
+        quotationItemPriceRendered = !quotationItemPriceRendered;
+        selectedQuotationItem.setPrice(temPrice);
+    }
+
+    public void uneditQuantity() {
+        quotationItemNumberRendered = !quotationItemNumberRendered;
+        selectedQuotationItem.setNumber(temQuantity);
+    }
+
+    public void editQuantity() {
+        quotationItemNumberRendered = !quotationItemNumberRendered;
+        temQuantity = selectedQuotationItem.getNumber();
+    }
+
+    public void calculateQuotaionAmount() {
+        double total = 0.0;
+        for (QuotationItemDto qid : quotation.getItems()) {
+            total += qid.getAmount();
+        }
+        quotation.setAmount(total);
+    }
+
+    public void saveQuotation() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            Quotation quotationEntity = quotation.unmarshal();
+            for(QuotationItem tempItem : quotationEntity.getItems()){
+                serviceFor(QuotationItem.class).saveOrUpdate(tempItem);
+            }
+            serviceFor(Quotation.class).saveOrUpdate(quotationEntity);
+            context.addMessage(null, new FacesMessage("错误", "保存报价单成功"));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("错误提示", "保存报价单错误:" + e.getMessage()));
+        }
     }
 
     // XXX origin chanceBean methods
@@ -210,6 +280,7 @@ public class ChanceBean
         initToolbar();
         editable = false;
         chance = new ChanceDto();
+        quotations = new ArrayList<QuotationDto>();
         relating = false;
         unRelating = false;
     }
@@ -353,13 +424,14 @@ public class ChanceBean
 
     public void editForm() {
         chance = selectedChance;
+        listQuotationByChance(chance);
         setActiveTab(TAB_FORM);
         editToolbar();
-        listQuotationByChance();
     }
 
     public void detailForm() {
         chance = selectedChance;
+        listQuotationByChance(chance);
         setActiveTab(TAB_FORM);
         detailToolbar();
     }
@@ -706,4 +778,45 @@ public class ChanceBean
     public void setMaterialPattern(String materialPattern) {
         this.materialPattern = materialPattern;
     }
+
+    public QuotationItemDto getSelectedQuotationItem() {
+        return selectedQuotationItem;
+    }
+
+    public void setSelectedQuotationItem(QuotationItemDto selectedQuotationItem) {
+        this.selectedQuotationItem = selectedQuotationItem;
+    }
+
+    public boolean isQuotationItemPriceRendered() {
+        return quotationItemPriceRendered;
+    }
+
+    public void setQuotationItemPriceRendered(boolean quotationItemPriceRendered) {
+        this.quotationItemPriceRendered = quotationItemPriceRendered;
+    }
+
+    public boolean isQuotationItemNumberRendered() {
+        return quotationItemNumberRendered;
+    }
+
+    public void setQuotationItemNumberRendered(boolean quotationItemNumberRendered) {
+        this.quotationItemNumberRendered = quotationItemNumberRendered;
+    }
+
+    public double getTemPrice() {
+        return temPrice;
+    }
+
+    public void setTemPrice(double temPrice) {
+        this.temPrice = temPrice;
+    }
+
+    public int getTemQuantity() {
+        return temQuantity;
+    }
+
+    public void setTemQuantity(int temQuantity) {
+        this.temQuantity = temQuantity;
+    }
+
 }

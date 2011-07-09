@@ -14,8 +14,9 @@ public class QuotationItemDto
     private QuotationDto quotation;
     private String material;
     private double discount;
-    private double price;
-    private int number;
+    private BasePriceDto basePrice;
+    private Double price;
+    private Integer number;
     private double amount;
     private String remark;
 
@@ -24,6 +25,7 @@ public class QuotationItemDto
         this.quotation = new QuotationDto().ref(source.getQuotation());
         this.material = source.getMaterial();
         this.discount = source.getDiscount();
+        this.basePrice = mref(BasePriceDto.class, source.getBasePrice());
         this.price = source.getPrice();
         this.number = source.getNumber();
         this.amount = source.getNumber() * source.getPrice();
@@ -33,6 +35,7 @@ public class QuotationItemDto
     @Override
     protected void _unmarshalTo(QuotationItem target) {
         merge(target, "quotation", quotation);
+        merge(target, "basePrice", basePrice);
         target.setMaterial(material);
         target.setDiscount(discount);
         target.setPrice(price);
@@ -69,19 +72,27 @@ public class QuotationItemDto
         this.discount = discount;
     }
 
-    public double getPrice() {
+    public BasePriceDto getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(BasePriceDto basePrice) {
+        this.basePrice = basePrice;
+    }
+
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
