@@ -21,7 +21,9 @@ public class MCValue
 
     private static final long serialVersionUID = 1L;
 
-    Currency currency;
+    public static Currency DEFAULT_CURRENCY = Currency.getInstance("CNY");
+
+    Currency currency = DEFAULT_CURRENCY;
     BigDecimal value;
 
     public MCValue() {
