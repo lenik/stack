@@ -4,13 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.plover.orm.entity.EntityAuto;
 /**
  * 报价单里面的条目
  */
 @Entity
 public class QuotationItem
-        extends UIEntityAuto<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

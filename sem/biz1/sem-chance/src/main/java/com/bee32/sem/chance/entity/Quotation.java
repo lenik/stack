@@ -13,14 +13,14 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.plover.orm.entity.EntityAuto;
 
 /**
  * 报价单
  */
 @Entity
 public class Quotation
-        extends UIEntityAuto<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
