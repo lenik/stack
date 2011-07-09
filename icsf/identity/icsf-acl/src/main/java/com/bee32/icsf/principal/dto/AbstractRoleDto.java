@@ -63,4 +63,42 @@ public class AbstractRoleDto<R extends Role>
             mergeSet(target, "responsibleGroups", responsibleGroups);
     }
 
+    public RoleDto getInheritedRole() {
+        return inheritedRole;
+    }
+
+    public void setInheritedRole(RoleDto inheritedRole) {
+        this.inheritedRole = inheritedRole;
+    }
+
+    public List<RoleDto> getDerivedRoles() {
+        return derivedRoles;
+    }
+
+    public void setDerivedRoles(List<RoleDto> derivedRoles) {
+        if (derivedRoles == null)
+            throw new NullPointerException("derivedRoles");
+        this.derivedRoles = derivedRoles;
+    }
+
+    public List<UserDto> getResponsibleUsers() {
+        return responsibleUsers;
+    }
+
+    public void setResponsibleUsers(List<UserDto> responsibleUsers) {
+        if (responsibleUsers == null)
+            throw new NullPointerException("responsibleUsers");
+        this.responsibleUsers = responsibleUsers;
+    }
+
+    public List<GroupDto> getResponsibleGroups() {
+        return responsibleGroups;
+    }
+
+    public void setResponsibleGroups(List<GroupDto> responsibleGroups) {
+        if (responsibleGroups == null)
+            throw new NullPointerException("responsibleGroups");
+        this.responsibleGroups = responsibleGroups;
+    }
+
 }
