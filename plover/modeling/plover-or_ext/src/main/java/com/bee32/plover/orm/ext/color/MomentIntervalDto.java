@@ -43,4 +43,20 @@ public abstract class MomentIntervalDto<E extends MomentInterval>
         endTime = map.getDate("endTime");
     }
 
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
 }

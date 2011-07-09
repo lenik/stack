@@ -28,14 +28,14 @@ public class ChanceAction
 
     private static final long serialVersionUID = 1L;
 
-    boolean plan=false;
+    boolean plan = false;
     List<Party> parties = new ArrayList<Party>();
     List<User> partners = new ArrayList<User>();
 
     User actor;
     ChanceActionStyle style = ChanceActionStyle.OTHER;
 
-    String content = "";
+    String moreInfo;
     String spending = "";
     Chance chance;
     ChanceStage stage;
@@ -48,6 +48,7 @@ public class ChanceAction
         setBeginTime(cal.getTime());
         setEndTime(new Date());
     }
+
     /**
      * 工作日志类型
      */
@@ -81,6 +82,7 @@ public class ChanceAction
     public List<User> getPartners() {
         return partners;
     }
+
     public void setPartners(List<User> partners) {
         this.partners = partners;
     }
@@ -115,18 +117,13 @@ public class ChanceAction
         this.style = style;
     }
 
-    /**
-     * 拜访目的（计划）或洽谈内容（日志）
-     */
-    @Column(length = 500, nullable = false)
-    public String getContent() {
-        return content;
+    @Column(length = 4000)
+    public String getMoreInfo() {
+        return moreInfo;
     }
 
-    public void setContent(String content) {
-        if (content == null)
-            content = "";
-        this.content = content;
+    public void setMoreInfo(String moreInfo) {
+        this.moreInfo = moreInfo;
     }
 
     /**
@@ -181,7 +178,13 @@ public class ChanceAction
     @Transient
     @Override
     public String getSubject() {
-        return Strings.ellipse(content, 25);
+        return Strings.ellipse(getDescription(), 25);
+    }
+
+    @Transient
+    @Override
+    public String getContent() {
+        return getDescription();
     }
 
     @Transient

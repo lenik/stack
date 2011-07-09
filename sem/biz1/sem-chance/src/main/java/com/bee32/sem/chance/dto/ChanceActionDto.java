@@ -1,6 +1,5 @@
 package com.bee32.sem.chance.dto;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.free.ParseException;
@@ -9,14 +8,14 @@ import javax.free.Strings;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.ext.color.MomentIntervalDto;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 
 public class ChanceActionDto
-        extends EntityDto<ChanceAction, Long> {
+        extends MomentIntervalDto<ChanceAction> {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,7 +27,6 @@ public class ChanceActionDto
     private String actionType;
     private String party;
     private String partner;
-    private String contentShort;
 
     private boolean plan;
     private List<PartyDto> parties;
@@ -37,9 +35,7 @@ public class ChanceActionDto
     private UserDto actor;
     private ChanceActionStyleDto style;
 
-    private Date beginTime;
-    private Date endTime;
-    private String content;
+    private String moreInfo;
     private String spending;
     private ChanceDto chance;
     private ChanceStageDto stage;
@@ -116,7 +112,6 @@ public class ChanceActionDto
                 tempPartner += "," + user.getDisplayName();
         }
         this.partner = tempPartner;
-        this.contentShort = Strings.ellipse(source.getContent(), 16);
 
         this.plan = source.isPlan();
 
@@ -129,10 +124,7 @@ public class ChanceActionDto
         this.actor = mref(UserDto.class, source.getActor());
         this.style = mref(ChanceActionStyleDto.class, source.getStyle());
 
-        this.beginTime = source.getBeginTime();
-        this.endTime = source.getEndTime();
-
-        this.content = source.getContent();
+        this.moreInfo = source.getMoreInfo();
         this.spending = source.getSpending();
 
         if (source.getChance() == null)
@@ -153,9 +145,7 @@ public class ChanceActionDto
         mergeList(target, "partners", partners);
         merge(target, "actor", actor);
         merge(target, "style", style);
-        target.setBeginTime(beginTime);
-        target.setEndTime(endTime);
-        target.setContent(content);
+        target.setMoreInfo(moreInfo);
         target.setSpending(spending);
 
         merge(target, "chance", chance);
@@ -209,14 +199,6 @@ public class ChanceActionDto
         this.partner = partner;
     }
 
-    public String getContentShort() {
-        return contentShort;
-    }
-
-    public void setContentShort(String contentShort) {
-        this.contentShort = contentShort;
-    }
-
     public boolean isPlan() {
         return plan;
     }
@@ -261,28 +243,16 @@ public class ChanceActionDto
         this.style = style;
     }
 
-    public Date getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
     public String getContent() {
-        return content;
+        return moreInfo;
     }
 
     public void setContent(String content) {
-        this.content = content;
+        this.moreInfo = content;
+    }
+
+    public String getContentShort() {
+        return Strings.ellipse(getDescription(), 16);
     }
 
     public String getSpending() {
