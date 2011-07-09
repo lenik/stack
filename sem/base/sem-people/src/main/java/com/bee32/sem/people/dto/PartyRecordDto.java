@@ -25,14 +25,12 @@ public class PartyRecordDto
     @Override
     protected void _marshal(PartyRecord source) {
         party = marshal(PartyDto.class, source.getParty());
-        date = source.getDate();
         category = marshal(PartyRecordCategoryDto.class, source.getCategory());
         text = source.getText();
     }
 
     @Override
     protected void _unmarshalTo(PartyRecord target) {
-        target.setDate(date);
         target.setText(text);
         merge(target, "category", category);
         merge(target, "party", party);
@@ -43,8 +41,6 @@ public class PartyRecordDto
             throws ParseException {
         String categoryId = map.getString("category.id");
         category = new PartyRecordCategoryDto().ref(categoryId);
-
-        date = map.getDate("date");
 
         int partyId = map.getInt("party.id");
         party = new PartyDto(0).ref(partyId);

@@ -1,13 +1,9 @@
 package com.bee32.sem.people.entity;
 
-import java.util.Date;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.bee32.plover.orm.ext.color.MomentInterval;
 
@@ -21,7 +17,6 @@ public class PartyRecord
     private static final long serialVersionUID = 1L;
 
     PartyRecordCategory category = PartyRecordCategory.INFO;
-    Date date;
     Party party;
     String text = "";
 
@@ -34,19 +29,6 @@ public class PartyRecord
         if (category == null)
             throw new NullPointerException("category");
         this.category = category;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Basic(optional = false)
-    @Column(nullable = false)
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        if (date == null)
-            throw new NullPointerException("date");
-        this.date = date;
     }
 
     @ManyToOne(optional = false)
