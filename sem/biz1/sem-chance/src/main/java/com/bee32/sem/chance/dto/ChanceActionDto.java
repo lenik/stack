@@ -243,15 +243,15 @@ public class ChanceActionDto
         this.style = style;
     }
 
-    public String getContent() {
+    public String getMoreInfo() {
         return moreInfo;
     }
 
-    public void setContent(String content) {
-        this.moreInfo = content;
+    public void setMoreInfo(String moreInfo) {
+        this.moreInfo = moreInfo;
     }
 
-    public String getContentShort() {
+    public String getSubject() {
         return Strings.ellipse(getDescription(), 16);
     }
 
