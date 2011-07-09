@@ -127,9 +127,9 @@ public class AbstractPartyDto<E extends Party>
     }
 
     public String getDisplayName() {
-        if (fullName != null)
+        if (fullName != null && !fullName.isEmpty())
             return fullName;
-        if (nickName != null)
+        if (nickName != null && !nickName.isEmpty())
             return nickName;
         return name;
     }
