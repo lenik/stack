@@ -2,15 +2,15 @@ package com.bee32.sem.chance.entity;
 
 import javax.persistence.Entity;
 
+import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Green;
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
 /**
  * 物料基础价格
  */
 @Entity
 @Green
 public class BasePrice
-        extends UIEntityAuto<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,11 +19,9 @@ public class BasePrice
     String remark;
 
     public BasePrice() {
-        super();
     }
 
     public BasePrice(String material,  double price, String remark) {
-        super();
         this.material = material;
         this.price = price;
         this.remark = remark;
