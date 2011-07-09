@@ -23,41 +23,10 @@
 
     <ui:define name="content">
 
-        <h:outputStylesheet>
-            .detail_col_title {
-                width:150px;
-                text-align: right;
-            }
 
-            .detail_col_value {
-            }
-        </h:outputStylesheet>
-
-		<h:form id="orgForm">
+		<h:form id="rolesForm">
 			<p:growl id="growl" showDetail="true" />
 
-			<h:panelGrid columns="2">
-
-				<p:tree id="org">
-				</p:tree>
-
-				<p:dataTable>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="名称" />
-						</f:facet>
-
-					</p:column>
-
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="全名" />
-						</f:facet>
-
-					</p:column>
-				</p:dataTable>
-
-			</h:panelGrid>
 
 		</h:form>
 
