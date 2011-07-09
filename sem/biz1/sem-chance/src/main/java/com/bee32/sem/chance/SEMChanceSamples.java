@@ -58,7 +58,7 @@ public class SEMChanceSamples
         competitor.setName("皇冠公司");
         competitor.setChance(chance);
         competitor.setTactic("在北京、上海、广州三地召开大规模的产品发布会");
-        competitor.setRemark("柳良的朋友，关系很好");
+        competitor.setComment("柳良的朋友，关系很好");
         competitor.setAdvantage("产品线95%齐全；产品质量高，市场认可度高");
         competitor.setDisvantage(//
                 "管理人员缺少经验、能力; 团队精神差，缺少沟通；职责不清楚");

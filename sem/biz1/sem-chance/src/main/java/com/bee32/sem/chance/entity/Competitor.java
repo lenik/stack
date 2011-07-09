@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Green;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 /**
  * 竞争对手
@@ -14,7 +14,7 @@ import com.bee32.plover.orm.ext.color.Green;
 @Entity
 @Green
 public class Competitor
-        extends EntityAuto<Integer> {
+        extends UIEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,7 @@ public class Competitor
     String advantage;
     String disvantage;
     String tactic;
-    String remark;
+    String comment;
 
     public Competitor() {
     }
@@ -144,14 +144,14 @@ public class Competitor
      * 备注
      */
     @Column(length = 200, nullable = false)
-    public String getRemark() {
-        return remark;
+    public String getComment() {
+        return comment;
     }
 
-    public void setRemark(String remark) {
-        if (remark == null)
-            remark = "";
-        this.remark = remark;
+    public void setComment(String comment) {
+        if (comment == null)
+            comment = "";
+        this.comment = comment;
     }
 
 }

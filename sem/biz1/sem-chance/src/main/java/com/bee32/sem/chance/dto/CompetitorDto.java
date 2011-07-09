@@ -3,11 +3,11 @@ package com.bee32.sem.chance.dto;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.sem.chance.entity.Competitor;
 
 public class CompetitorDto
-        extends EntityDto<Competitor, Integer> {
+        extends UIEntityDto<Competitor, Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,7 +19,7 @@ public class CompetitorDto
     private String advantage;
     private String disvantage;
     private String tactic;
-    private String remark;
+    private String comment;
 
     @Override
     protected void _marshal(Competitor source) {
@@ -31,7 +31,7 @@ public class CompetitorDto
         this.advantage = source.getAdvantage();
         this.disvantage = source.getDisvantage();
         this.tactic = source.getTactic();
-        this.remark = source.getRemark();
+        this.comment = source.getComment();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CompetitorDto
         target.setAdvantage(advantage);
         target.setDisvantage(disvantage);
         target.setTactic(tactic);
-        target.setRemark(remark);
+        target.setComment(comment);
     }
 
     @Override
@@ -116,12 +116,12 @@ public class CompetitorDto
         this.tactic = tactic;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getComment() {
+        return comment;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
 }
