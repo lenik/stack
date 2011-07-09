@@ -65,7 +65,4 @@ public class StockSnapshotType
     /** 备份点 */
     public static final StockSnapshotType BACKUP = new StockSnapshotType('b', "backup");
 
-    /** 工作副本 */
-    public static final StockSnapshotType WORKCOPY = new StockSnapshotType('w', "workcopy");
-
 }
