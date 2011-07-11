@@ -3,6 +3,7 @@ package com.bee32.plover.orm.ext.types;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.Locale;
 
 import javax.free.Nullables;
 import javax.persistence.Column;
@@ -21,7 +22,11 @@ public class MCValue
 
     private static final long serialVersionUID = 1L;
 
-    public static Currency DEFAULT_CURRENCY = Currency.getInstance("CNY");
+    public static Currency DEFAULT_CURRENCY;
+    static {
+        Locale defaultLocale = Locale.getDefault();
+        DEFAULT_CURRENCY = Currency.getInstance(defaultLocale);
+    }
 
     Currency currency = DEFAULT_CURRENCY;
     BigDecimal value;
