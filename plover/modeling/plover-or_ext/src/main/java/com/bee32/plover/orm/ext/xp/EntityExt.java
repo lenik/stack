@@ -9,10 +9,10 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 public abstract class EntityExt<K extends Serializable, X extends XPool<?>>
-        extends EntityAuto<K>
+        extends UIEntityAuto<K>
         implements IXPoolable<X> {
 
     private static final long serialVersionUID = 1L;
