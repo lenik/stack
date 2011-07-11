@@ -19,7 +19,8 @@ public class PersonRole
 
     Person person;
     Org org;
-    String orgUnit;
+    OrgUnit orgUnit;
+    String altOrgUnit;
     String role;
     String roleDetail;
     String description;
@@ -49,16 +50,30 @@ public class PersonRole
     /**
      * 所在部门
      */
-    @Column(length = 30)
-    public String getOrgUnit() {
+    @ManyToOne
+    public OrgUnit getOrgUnit() {
         return orgUnit;
     }
 
     /**
      * 所在部门
      */
-    public void setOrgUnit(String orgUnit) {
+    public void setOrgUnit(OrgUnit orgUnit) {
         this.orgUnit = orgUnit;
+    }
+
+    /**
+     * （过渡）（临时使用的）所在部门名称
+     */
+    @Deprecated
+    @Column(length = 30)
+    public String getAltOrgUnit() {
+        return altOrgUnit;
+    }
+
+    @Deprecated
+    public void setAltOrgUnit(String altOrgUnit) {
+        this.altOrgUnit = altOrgUnit;
     }
 
     /**

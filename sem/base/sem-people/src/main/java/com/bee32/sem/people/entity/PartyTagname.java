@@ -14,6 +14,7 @@ public class PartyTagname
 
     private static final long serialVersionUID = 1L;
 
+    boolean internal;
     Set<Party> instances;
 
     public PartyTagname() {
@@ -24,8 +25,17 @@ public class PartyTagname
         super(name, label);
     }
 
-    public PartyTagname(String name, String label, String description) {
-        super(name, label, description);
+    public PartyTagname(String name, String label, boolean internal) {
+        super(name, label);
+        this.internal = internal;
+    }
+
+    public boolean isInternal() {
+        return internal;
+    }
+
+    public void setInternal(boolean internal) {
+        this.internal = internal;
     }
 
     /**
@@ -49,8 +59,9 @@ public class PartyTagname
         this.instances = instances;
     }
 
-    public static final PartyTagname EMPLOYEE = new PartyTagname("EMP", "雇员");
+    public static final PartyTagname INTERNAL = new PartyTagname("-", "公司内部", true);
     public static final PartyTagname CUSTOMER = new PartyTagname("CUS", "客户");
     public static final PartyTagname SUPPLIER = new PartyTagname("SUP", "供应商");
+    public static final PartyTagname OTHER = new PartyTagname("SUP", "其他");
 
 }

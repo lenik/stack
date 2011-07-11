@@ -7,9 +7,12 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+
+import com.bee32.icsf.principal.Group;
 
 @Entity
 @DiscriminatorValue("ORG")
@@ -22,6 +25,7 @@ public class Org
     int size;
 
     Set<PersonRole> roles = new HashSet<PersonRole>();
+    Group group;
 
     public Org() {
         super();
@@ -60,6 +64,18 @@ public class Org
     }
 
     public void setRoles(Set<PersonRole> roles) {
+        if (roles == null)
+            throw new NullPointerException("roles");
         this.roles = roles;
     }
+
+    @OneToOne
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
 }

@@ -13,7 +13,8 @@ public class PersonRoleDto
 
     PersonDto person;
     OrgDto org;
-    String orgUnit;
+    // OrgUnitDto orgUnit;
+    String altOrgUnit;
     String role;
     String roleDetail;
     String description;
@@ -30,7 +31,7 @@ public class PersonRoleDto
     protected void _marshal(PersonRole source) {
         person = mref(PersonDto.class, 0, source.getPerson());
         org = mref(OrgDto.class, 0, source.getOrg());
-        orgUnit = source.getOrgUnit();
+        altOrgUnit = source.getAltOrgUnit();
         role = source.getRole();
         roleDetail = source.getRoleDetail();
         description = source.getDescription();
@@ -40,7 +41,7 @@ public class PersonRoleDto
     protected void _unmarshalTo(PersonRole target) {
         merge(target, "person", person);
         merge(target, "org", org);
-        target.setOrgUnit(orgUnit);
+        target.setAltOrgUnit(altOrgUnit);
         target.setRole(role);
         target.setRoleDetail(roleDetail);
         target.setDescription(description);
@@ -49,7 +50,7 @@ public class PersonRoleDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-        orgUnit = map.getString("orgUnit");
+        altOrgUnit = map.getString("altOrgUnit");
         role = map.getString("role");
         roleDetail = map.getString("roleDetail");
         description = map.getString("description");
@@ -71,12 +72,12 @@ public class PersonRoleDto
         this.org = org;
     }
 
-    public String getOrgUnit() {
-        return orgUnit;
+    public String getAltOrgUnit() {
+        return altOrgUnit;
     }
 
-    public void setOrgUnit(String orgUnit) {
-        this.orgUnit = orgUnit;
+    public void setAltOrgUnit(String altOrgUnit) {
+        this.altOrgUnit = altOrgUnit;
     }
 
     public PersonDto getPerson() {

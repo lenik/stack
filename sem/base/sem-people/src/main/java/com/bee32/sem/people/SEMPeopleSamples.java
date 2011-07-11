@@ -178,7 +178,7 @@ public class SEMPeopleSamples
         PersonRole salesTitle = new PersonRole();
         salesTitle.setPerson(bentley);
         salesTitle.setOrg(abcOrg);
-        salesTitle.setOrgUnit("销售部");
+        salesTitle.setAltOrgUnit("销售部");
         salesTitle.setRole("销售经理");
         salesTitle.setDescription("The ripest fruit falls first.");
         bentley.setRoles(Sets.newSet(salesTitle));
@@ -186,7 +186,7 @@ public class SEMPeopleSamples
         PersonRole productSale = new PersonRole();
         productSale.setPerson(bugatti);
         productSale.setOrg(abcOrg);
-        productSale.setOrgUnit("销售部");
+        productSale.setAltOrgUnit("销售部");
         productSale.setRole("产品导购");
         productSale.setDescription("People are beginning to notice you.  Try dressing before you leave the house.");
         bugatti.setRoles(Sets.newSet(productSale));
