@@ -8,9 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKey;
 
 import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.MapKeyManyToMany;
 
 import com.bee32.plover.orm.ext.dict.NameDict;
 
@@ -59,9 +59,9 @@ public class UnitConv
     }
 
     @CollectionOfElements
-    @JoinTable(name = "UnitRatioMap")
-    @MapKey(name = "unit")
-    @Column(name = "ratio", nullable = false, precision = 12, scale = 5)
+    @JoinTable(name = "UnitConvEntry")
+    @MapKeyManyToMany
+    @Column(name = "ratio", nullable = false)
     public Map<Unit, Double> getRatioMap() {
         return ratioMap;
     }
