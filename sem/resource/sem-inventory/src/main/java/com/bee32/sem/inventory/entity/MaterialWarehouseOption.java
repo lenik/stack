@@ -1,5 +1,10 @@
 package com.bee32.sem.inventory.entity;
 
+import static com.bee32.plover.orm.ext.config.DecimalConfig.QTY_ITEM_PRECISION;
+import static com.bee32.plover.orm.ext.config.DecimalConfig.QTY_ITEM_SCALE;
+
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -8,17 +13,26 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.Blue;
 
+/**
+ * 物料的仓库选项
+ */
 @Entity
-public class MaterialStockSettings
+@Blue
+public class MaterialWarehouseOption
         extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
     Material material;
     StockWarehouse warehouse;
-    double safetyStock;
+    BigDecimal safetyStock = new BigDecimal(1);
+    int stkPeriod = 365;
 
+    /**
+     * 物料
+     */
     @NaturalId
     @ManyToOne(optional = false)
     public Material getMaterial() {
@@ -31,6 +45,9 @@ public class MaterialStockSettings
         this.material = material;
     }
 
+    /**
+     * 仓库
+     */
     @NaturalId
     @ManyToOne(optional = false)
     public StockWarehouse getWarehouse() {
@@ -43,18 +60,35 @@ public class MaterialStockSettings
         this.warehouse = warehouse;
     }
 
-    @Column(nullable = false)
-    public double getSafetyStock() {
+    /**
+     * 该仓库中的安全库存数量。默认为1。
+     */
+    @Column(scale = QTY_ITEM_SCALE, precision = QTY_ITEM_PRECISION, nullable = false)
+    public BigDecimal getSafetyStock() {
         return safetyStock;
     }
 
-    public void setSafetyStock(double safetyStock) {
+    public void setSafetyStock(BigDecimal safetyStock) {
         this.safetyStock = safetyStock;
+    }
+
+    /**
+     * 循环盘点周期 （天数）
+     *
+     * 默认为1年。
+     */
+    @Column(nullable = false)
+    public int getStkPeriod() {
+        return stkPeriod;
+    }
+
+    public void setStkPeriod(int stkPeriod) {
+        this.stkPeriod = stkPeriod;
     }
 
     @Override
     protected Boolean naturalEquals(EntityBase<Long> other) {
-        MaterialStockSettings o = (MaterialStockSettings) other;
+        MaterialWarehouseOption o = (MaterialWarehouseOption) other;
 
         if (!material.equals(o.material))
             return false;

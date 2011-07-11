@@ -19,8 +19,19 @@ public class StockItemState
     static final Map<String, StockItemState> nameMap = new HashMap<String, StockItemState>();
     static final Map<Character, StockItemState> valueMap = new HashMap<Character, StockItemState>();
 
+    final boolean abnormal;
+
     StockItemState(char value, String name) {
+        this(value, name, false);
+    }
+
+    StockItemState(char value, String name, boolean abnormal) {
         super(value, name);
+        this.abnormal = abnormal;
+    }
+
+    public boolean isAbnormal() {
+        return abnormal;
     }
 
     @Override
@@ -60,10 +71,19 @@ public class StockItemState
         return state;
     }
 
-    public static final StockItemState NORMAL = new StockItemState('-', "normal");
+    /** 正常 */
+    public static final StockItemState NORMAL = new StockItemState('-', "normal", true);
+
+    /** 挂起/等待中，比如入库单中的项目正处于入库中，尚未完成入库的状态。 */
     public static final StockItemState PENDING = new StockItemState('P', "pending");
+
+    /** 盘点中 */
     public static final StockItemState CHECKING = new StockItemState('C', "checking");
+
+    /** 校验中 */
     public static final StockItemState VALIDATING = new StockItemState('V', "validating");
-    public static final StockItemState MOVING = new StockItemState('M', "moving");
+
+    /** 调拨中 */
+    public static final StockItemState TRANSFERRING = new StockItemState('M', "transferring");
 
 }

@@ -11,21 +11,25 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.xp.EntityExt;
-import com.bee32.plover.orm.ext.xp.XPool;
 
+/**
+ * 库存。通常一个企业只有一个库存（但有多个仓库）。
+ */
 @Entity
-public class StockInventory<X extends XPool<?>>
-        extends EntityExt<Integer, X> {
+@Green
+public class StockInventory
+        extends EntityExt<Integer, StockInventoryXP> {
 
     private static final long serialVersionUID = 1L;
-
-    String name;
-    String description;
 
     List<StockSnapshot> snapshots = new ArrayList<StockSnapshot>();
     StockSnapshot workingCopy;
 
+    /**
+     * 逻辑库存名称
+     */
     @Column(length = 30)
     public String getName() {
         return name;
@@ -35,16 +39,10 @@ public class StockInventory<X extends XPool<?>>
         this.name = name;
     }
 
-    @Column(length = 200)
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @OneToMany
+    /**
+     * 库存快照列表
+     */
+    @OneToMany(mappedBy = "inventory")
     @Cascade(CascadeType.ALL)
     public List<StockSnapshot> getSnapshots() {
         return snapshots;
@@ -54,6 +52,9 @@ public class StockInventory<X extends XPool<?>>
         this.snapshots = snapshots;
     }
 
+    /**
+     * 当前工作拷贝
+     */
     @OneToOne
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public StockSnapshot getWorkingCopy() {

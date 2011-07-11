@@ -2,33 +2,54 @@ package com.bee32.sem.inventory;
 
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.sem.file.SEMFileUnit;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialAttribute;
 import com.bee32.sem.inventory.entity.MaterialCategory;
-import com.bee32.sem.inventory.entity.MaterialStockSettings;
+import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
+import com.bee32.sem.inventory.entity.MaterialPrice;
+import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.entity.MaterialXP;
+import com.bee32.sem.inventory.entity.StockInventory;
+import com.bee32.sem.inventory.entity.StockInventoryXP;
+import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockSnapshot;
-import com.bee32.sem.module.SEMBaseUnit;
+import com.bee32.sem.inventory.entity.StockSnapshotType;
+import com.bee32.sem.inventory.entity.StockSnapshotXP;
+import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.world.SEMWorldUnit;
 
-@ImportUnit({ SEMBaseUnit.class, SEMWorldUnit.class })
+@ImportUnit({ SEMPeopleUnit.class, SEMWorldUnit.class, SEMFileUnit.class })
 public class SEMInventoryUnit
         extends PersistenceUnit {
 
     @Override
     protected void preamble() {
+        add(StockInventory.class);
+        add(StockInventoryXP.class);
+
+        add(StockSnapshot.class);
+        add(StockSnapshotXP.class);
+        add(StockSnapshotType.class);
+
         add(Material.class);
         add(MaterialXP.class);
         add(MaterialAttribute.class);
         add(MaterialCategory.class);
-        add(MaterialStockSettings.class);
+        add(MaterialPrice.class);
+
+        add(StockWarehouse.class);
         add(StockLocation.class);
-        add(StockSnapshot.class);
+        add(MaterialWarehouseOption.class);
+        add(MaterialPreferredLocation.class);
+
         add(StockOrder.class);
         add(StockOrderItem.class);
+        add(StockItemState.class);
     }
 
 }

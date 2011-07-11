@@ -1,11 +1,12 @@
 package com.bee32.sem.inventory.entity;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -27,9 +28,13 @@ public class Material
 
     MaterialCategory category;
 
+    String serial;
+    String barCode;
+
     List<MaterialAttribute> attributes = new ArrayList<MaterialAttribute>();
     List<UserFile> attachments = new ArrayList<UserFile>();
-    Set<StockLocation> preferredLocations = new HashSet<StockLocation>();
+
+    List<MaterialPreferredLocation> preferredLocations = new ArrayList<MaterialPreferredLocation>();
 
     // ------------------------------------------------------------------------
     // 需要索引的常用的物料属性（这些属性和单位还算无关）。
@@ -38,6 +43,24 @@ public class Material
     // String packageWeight;
     // ------------------------------------------------------------------------
 
+    public Material() {
+        super();
+    }
+
+    public Material(String name) {
+        super(name);
+    }
+
+    public Material(String name, String serial) {
+        super(name);
+        if (serial == null)
+            throw new NullPointerException("serial");
+        this.serial = serial;
+    }
+
+    /**
+     * 物料类别
+     */
     @ManyToOne(optional = false)
     public MaterialCategory getCategory() {
         return category;
@@ -47,6 +70,35 @@ public class Material
         if (category == null)
             throw new NullPointerException("category");
         this.category = category;
+    }
+
+    /**
+     * 物品编码、物品序列号
+     *
+     * XXX - 必填/自然键？
+     */
+    @Column(length = 32)
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
+
+    /**
+     * 物品条码
+     */
+    @Column(length = 30)
+    public String getBarCode() {
+        return barCode;
+    }
+
+    /**
+     * 物品条码
+     */
+    public void setBarCode(String barCode) {
+        this.barCode = barCode;
     }
 
     /**
@@ -70,6 +122,8 @@ public class Material
      */
     @CollectionOfElements
     @Cascade(CascadeType.ALL)
+    @JoinTable(name = "MaterialAttachment", //
+    /*        */inverseJoinColumns = @JoinColumn(name = "userFile"))
     public List<UserFile> getAttachments() {
         return attachments;
     }
@@ -80,13 +134,13 @@ public class Material
         this.attachments = attachments;
     }
 
-    @CollectionOfElements
+    @OneToMany(mappedBy = "material")
     @Cascade(CascadeType.ALL)
-    public Set<StockLocation> getPreferredLocations() {
+    public List<MaterialPreferredLocation> getPreferredLocations() {
         return preferredLocations;
     }
 
-    public void setPreferredLocations(Set<StockLocation> preferredLocations) {
+    public void setPreferredLocations(List<MaterialPreferredLocation> preferredLocations) {
         this.preferredLocations = preferredLocations;
     }
 

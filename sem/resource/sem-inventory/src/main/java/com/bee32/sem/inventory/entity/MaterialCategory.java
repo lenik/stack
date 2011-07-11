@@ -1,49 +1,25 @@
 package com.bee32.sem.inventory.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.ext.dict.NameDict;
+import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 
 @Entity
 public class MaterialCategory
-        extends NameDict {
+        extends TreeEntityAuto<Long, MaterialCategory> {
 
     private static final long serialVersionUID = 1L;
 
-    MaterialCategory parent;
-    List<MaterialCategory> children = new ArrayList<MaterialCategory>();
     List<Material> materials;
 
     CodeGenerator codeGenerator = CodeGenerator.NONE;
 
-    @ManyToOne
-    public MaterialCategory getParent() {
-        return parent;
-    }
-
-    public void setParent(MaterialCategory parent) {
-        this.parent = parent;
-    }
-
-    @OneToMany(mappedBy = "parent")
-    public List<MaterialCategory> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<MaterialCategory> children) {
-        if (children == null)
-            throw new NullPointerException("children");
-        this.children = children;
-    }
-
-    @OneToMany(mappedBy = "material")
+    @OneToMany(mappedBy = "category")
     public List<Material> getMaterials() {
         return materials;
     }
@@ -59,7 +35,7 @@ public class MaterialCategory
         return codeGenerator.getValue();
     }
 
-    void set_CodeGeneratorVal(char _codeGenerator) {
+    void set_CodeGenerator(char _codeGenerator) {
         codeGenerator = CodeGenerator.valueOf(_codeGenerator);
     }
 

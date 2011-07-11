@@ -1,0 +1,94 @@
+package com.bee32.sem.inventory.tx.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NaturalId;
+
+import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.sem.inventory.entity.StockOrder;
+import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.people.entity.Org;
+
+/**
+ * 外协加工作业。
+ *
+ * @see StockOrderSubject#F_CHECKOUT
+ * @see StockOrderSubject#F_CHECKIN
+ */
+@Entity
+public class StockOutsourcing
+        extends UIEntityAuto<Long> {
+
+    private static final long serialVersionUID = 1L;
+
+    StockOrder sentOrder;
+    StockOrder receivedOrder;
+    Org processedBy;
+
+    /**
+     * 委外出库单
+     */
+    @NaturalId
+    @OneToOne(optional = false)
+    @Cascade(CascadeType.ALL)
+    public StockOrder getSentOrder() {
+        return sentOrder;
+    }
+
+    public void setSentOrder(StockOrder sentOrder) {
+        this.sentOrder = sentOrder;
+    }
+
+    /**
+     * 委外入库单
+     */
+    @NaturalId
+    @OneToOne(optional = false)
+    @Cascade(CascadeType.ALL)
+    public StockOrder getReceivedOrder() {
+        return receivedOrder;
+    }
+
+    public void setReceivedOrder(StockOrder receivedOrder) {
+        this.receivedOrder = receivedOrder;
+    }
+
+    /**
+     * 加工单位
+     */
+    @ManyToOne
+    public Org getProcessedBy() {
+        return processedBy;
+    }
+
+    public void setProcessedBy(Org processedBy) {
+        this.processedBy = processedBy;
+    }
+
+    @Override
+    protected Boolean naturalEquals(EntityBase<Long> other) {
+        StockOutsourcing o = (StockOutsourcing) other;
+
+        if (!sentOrder.equals(o.sentOrder))
+            return false;
+
+        if (!receivedOrder.equals(o.receivedOrder))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        int hash = 0;
+        hash += sentOrder.hashCode();
+        hash += receivedOrder.hashCode();
+        return hash;
+    }
+
+}
