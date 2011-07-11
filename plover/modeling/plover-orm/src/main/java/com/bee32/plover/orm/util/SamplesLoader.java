@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -42,13 +41,11 @@ public class SamplesLoader
 
     Map<Class<?>, IEntitySamplesContribution> dependencies;
 
-    Set<Class<?>> unitClasses;
+    PersistenceUnit unit;
 
     public SamplesLoader() {
         dependencies = new HashMap<Class<?>, IEntitySamplesContribution>();
-
-        PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
-        unitClasses = unit.getClasses();
+        unit = CustomizedSessionFactoryBean.getForceUnit();
     }
 
     @Override
@@ -136,7 +133,7 @@ public class SamplesLoader
                 }
 
                 Class<?> sampleClass = sample.getClass();
-                if (unitClasses.contains(sampleClass))
+                if (unit.getClasses() .contains(sampleClass))
                     selection.add(sample);
                 else
                     logger.debug("  Ignored entity of non-using class: " + sampleClass);
@@ -167,4 +164,5 @@ public class SamplesLoader
 
         contrib.setLoaded(true);
     }
+
 }
