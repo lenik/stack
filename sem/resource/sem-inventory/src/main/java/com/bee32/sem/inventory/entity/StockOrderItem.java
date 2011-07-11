@@ -23,13 +23,13 @@ public class StockOrderItem
     StockLocation location;
     BigDecimal quantity;
     MCValue price = new MCValue();
-    StockItemState state;
+    StockItemState state = StockItemState.NORMAL;
 
     /**
      * 数量
      *
      * <p>
-     * 精度限制：小数点后4位数字。如果需要超出该精度，您应考虑为对应物品采用不同的单位。
+     * 精度限制：小数点后4位数字。如果需要超出该精度，应考虑为对应物品采用不同的单位。
      * <p>
      * <fieldset> <legend> 关于数量的单词 Amount/Quantity/Number: </legend>
      * <ul>

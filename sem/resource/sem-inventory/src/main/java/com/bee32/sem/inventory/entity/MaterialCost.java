@@ -10,6 +10,8 @@ public class MaterialCost
 
     private static final long serialVersionUID = 1L;
 
+    Material material;
+
     // 材料成本
     double materialCost;
 

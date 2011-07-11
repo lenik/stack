@@ -9,7 +9,7 @@ import com.bee32.sem.inventory.entity.StockLocation;
 
 @Entity
 @Pink
-public class MaterialPlacement
+public class StockTransfer
         extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;

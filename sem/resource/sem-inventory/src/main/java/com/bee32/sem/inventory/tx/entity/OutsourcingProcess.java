@@ -13,7 +13,7 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
  * @see StockOrderSubject#F_CHECKIN
  */
 @Entity
-public class OutsourceProcess
+public class OutsourcingProcess
         extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;

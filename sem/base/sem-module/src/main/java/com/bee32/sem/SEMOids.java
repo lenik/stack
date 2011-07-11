@@ -32,10 +32,10 @@ public interface SEMOids {
     }
 
     interface resource {
-        int Store = 1;
-        int Thing = 2;
+        int World = 1;
+        int Inventory = 2;
         int Asset = 3;
-        int Contract = 4;
+        int Bom = 4;
     }
 
     interface biz1 {

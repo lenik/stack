@@ -12,6 +12,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 
@@ -24,7 +27,7 @@ public class StockOrder
 
     private static final long serialVersionUID = 1L;
 
-    StockOrderSubject subject = StockOrderSubject.INIT;
+    StockOrderSubject subject = StockOrderSubject.START;
     StockJob job;
 
     String serial;
@@ -53,6 +56,9 @@ public class StockOrder
         this.subject = subject;
     }
 
+    /**
+     * Serial ID, or Second ID.
+     */
     @Column(length = 40)
     public String getSerial() {
         return serial;
@@ -63,6 +69,7 @@ public class StockOrder
     }
 
     @OneToMany(mappedBy = "parent")
+    @Cascade(CascadeType.ALL)
     public List<StockOrderItem> getItems() {
         return items;
     }

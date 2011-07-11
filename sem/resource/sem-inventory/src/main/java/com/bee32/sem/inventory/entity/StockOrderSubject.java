@@ -8,16 +8,23 @@ import java.util.Map;
 import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.arch.util.NoSuchEnumException;
 
-public class StockOrderSubject
+public final class StockOrderSubject
         extends EnumAlt<String, StockOrderSubject> {
 
     private static final long serialVersionUID = 1L;
 
+    private final boolean negative;
+
     static final Map<String, StockOrderSubject> nameMap = new HashMap<String, StockOrderSubject>();
     static final Map<String, StockOrderSubject> valueMap = new HashMap<String, StockOrderSubject>();
 
-    StockOrderSubject(String value, String name) {
+    StockOrderSubject(String value, String name, boolean negative) {
         super(value, name);
+        this.negative = negative;
+    }
+
+    public boolean isNegative() {
+        return negative;
     }
 
     @Override
@@ -53,15 +60,27 @@ public class StockOrderSubject
         return subject;
     }
 
-    public static final StockOrderSubject INIT = new StockOrderSubject("INI", "init");
-    public static final StockOrderSubject RESUME = new StockOrderSubject("RSM", "resume");
+    /** 初值/期初结余 */
+    public static final StockOrderSubject START = new StockOrderSubject("STA", "start", false);
 
-    public static final StockOrderSubject CHECKIN = new StockOrderSubject("NCI", "checkin");
-    public static final StockOrderSubject CHECKOUT = new StockOrderSubject("NCO", "checkout");
-    public static final StockOrderSubject F_CHECKIN = new StockOrderSubject("FCI", "f_checkin");
-    public static final StockOrderSubject F_CHECKOUT = new StockOrderSubject("FCO", "f_checkout");
+    /** 入库 */
+    public static final StockOrderSubject TAKE_IN = new StockOrderSubject("TKI", "takeIn", false);
+    /** 出库 */
+    public static final StockOrderSubject TAKE_OUT = new StockOrderSubject("TKO", "takeOut", true);
 
-    public static final StockOrderSubject STOCKTAKING = new StockOrderSubject("STK", "stocktaking");
-    public static final StockOrderSubject MOVE = new StockOrderSubject("MOV", "move");
+    /** 调拨出库 */
+    public static final StockOrderSubject XFER_OUT = new StockOrderSubject("TXO", "xferOut", true);
+    /** 调拨入库 */
+    public static final StockOrderSubject XFER_IN = new StockOrderSubject("TXI", "xferIn", false);
+
+    /** 委外出库 */
+    public static final StockOrderSubject OSP_OUT = new StockOrderSubject("OPO", "ospOut", true);
+    /** 委外入库 */
+    public static final StockOrderSubject OSP_IN = new StockOrderSubject("OPI", "ospIn", false);
+
+    /** 盘盈 */
+    public static final StockOrderSubject STK_PROFIT = new StockOrderSubject("STP", "stkProfit", false);
+    /** 盘亏 */
+    public static final StockOrderSubject STK_SHORTAGE = new StockOrderSubject("STS", "stkShortage", true);
 
 }

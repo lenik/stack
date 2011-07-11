@@ -1,7 +1,9 @@
 package com.bee32.sem.inventory.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -27,6 +29,7 @@ public class Material
 
     List<MaterialAttribute> attributes = new ArrayList<MaterialAttribute>();
     List<UserFile> attachments = new ArrayList<UserFile>();
+    Set<StockLocation> preferredLocations = new HashSet<StockLocation>();
 
     // ------------------------------------------------------------------------
     // 需要索引的常用的物料属性（这些属性和单位还算无关）。
@@ -75,6 +78,16 @@ public class Material
         if (attachments == null)
             throw new NullPointerException("attachments");
         this.attachments = attachments;
+    }
+
+    @CollectionOfElements
+    @Cascade(CascadeType.ALL)
+    public Set<StockLocation> getPreferredLocations() {
+        return preferredLocations;
+    }
+
+    public void setPreferredLocations(Set<StockLocation> preferredLocations) {
+        this.preferredLocations = preferredLocations;
     }
 
 }

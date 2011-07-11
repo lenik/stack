@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -22,7 +23,7 @@ public class StockInventory<X extends XPool<?>>
     String name;
     String description;
 
-    List<StockSnapshot> snapshots;
+    List<StockSnapshot> snapshots = new ArrayList<StockSnapshot>();
     StockSnapshot workingCopy;
 
     @Column(length = 30)

@@ -9,7 +9,7 @@ import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.arch.util.NoSuchEnumException;
 
 /**
- * 项目状态。
+ * 库存项状态。
  */
 public class StockItemState
         extends EnumAlt<Character, StockItemState> {
@@ -60,7 +60,7 @@ public class StockItemState
         return state;
     }
 
-    public static final StockItemState DONE = new StockItemState('-', "done");
+    public static final StockItemState NORMAL = new StockItemState('-', "normal");
     public static final StockItemState PENDING = new StockItemState('P', "pending");
     public static final StockItemState CHECKING = new StockItemState('C', "checking");
     public static final StockItemState VALIDATING = new StockItemState('V', "validating");

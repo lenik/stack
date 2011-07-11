@@ -16,4 +16,6 @@ public class StockLocation
 
     private static final long serialVersionUID = 1L;
 
+    StockWarehouse warehouse;
+
 }
