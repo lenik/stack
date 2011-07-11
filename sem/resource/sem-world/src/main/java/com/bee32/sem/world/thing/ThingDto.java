@@ -14,10 +14,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
 
     public static final int CONV_MAP = 1;
 
-    String serial;
-    String barCode;
     String name;
-    String description;
 
     UnitDto unit;
     UnitConvDto unitConv;
@@ -34,10 +31,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
     protected void __marshal(E source) {
         super.__marshal(source);
 
-        serial = source.getSerial();
-        barCode = source.getBarCode();
         name = source.getName();
-        description = source.getDescription();
 
         unit = mref(UnitDto.class, source.getUnit());
 
@@ -51,10 +45,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
 
-        target.setSerial(serial);
-        target.setBarCode(barCode);
         target.setName(name);
-        target.setDescription(description);
 
         merge(target, "unit", unit);
         merge(target, "unitConv", unitConv);
@@ -65,10 +56,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
             throws ParseException, TypeConvertException {
         super.__parse(map);
 
-        serial = map.getString("serial");
-        barCode = map.getString("barCode");
         name = map.getString("name");
-        description = map.getString("description");
 
         unit = new UnitDto().ref(map.getString("unit"));
         unitConv = new UnitConvDto().ref(map.getString("unitConv"));

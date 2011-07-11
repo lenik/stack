@@ -16,10 +16,6 @@ public abstract class Thing<X extends XPool<?>>
 
     private static final long serialVersionUID = 1L;
 
-    String serial;
-    String barCode;
-    String description;
-
     Unit unit;
     UnitConv unitConv;
 
@@ -29,43 +25,6 @@ public abstract class Thing<X extends XPool<?>>
 
     public Thing(String name) {
         super(name);
-    }
-
-    public Thing(String name, String serial) {
-        super(name);
-        if (serial == null)
-            throw new NullPointerException("serial");
-        this.serial = serial;
-    }
-
-    /**
-     * 物品编码、物品序列号（唯一）（必填）
-     */
-    @Column(length = 32, nullable = false)
-    public String getSerial() {
-        return serial;
-    }
-
-    /**
-     * 物品编码、物品序列号（唯一）（必填）
-     */
-    public void setSerial(String serial) {
-        this.serial = serial;
-    }
-
-    /**
-     * 物品条码
-     */
-    @Column(length = 30)
-    public String getBarCode() {
-        return barCode;
-    }
-
-    /**
-     * 物品条码
-     */
-    public void setBarCode(String barCode) {
-        this.barCode = barCode;
     }
 
     /**
@@ -81,21 +40,6 @@ public abstract class Thing<X extends XPool<?>>
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * 物品描述
-     */
-    @Column(length = 200)
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 物品描述
-     */
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     /**
