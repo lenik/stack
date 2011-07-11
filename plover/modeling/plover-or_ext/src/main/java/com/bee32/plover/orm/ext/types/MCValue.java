@@ -1,5 +1,8 @@
 package com.bee32.plover.orm.ext.types;
 
+import static com.bee32.plover.orm.ext.config.DecimalConfig.MONEY_ITEM_PRECISION;
+import static com.bee32.plover.orm.ext.config.DecimalConfig.MONEY_ITEM_SCALE;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -84,7 +87,7 @@ public class MCValue
      *
      * 3, Keep in mind that expand the scale is always easier then shrinks.
      */
-    @Column(scale = 16, precision = 4, nullable = false)
+    @Column(scale = MONEY_ITEM_SCALE, precision = MONEY_ITEM_PRECISION, nullable = false)
     public BigDecimal getValue() {
         return value;
     }
