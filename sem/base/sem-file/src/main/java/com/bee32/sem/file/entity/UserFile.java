@@ -5,9 +5,10 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.CollectionOfElements;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityAuto;
@@ -99,7 +100,10 @@ public class UserFile
     /**
      * 用户为文件添加的标签。
      */
-    @CollectionOfElements
+    @ManyToMany
+    @JoinTable(name = "UserFileTags", //
+    /*            */joinColumns = @JoinColumn(name = "userFile"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "tag"))
     public Set<UserFileTagname> getTags() {
         return tags;
     }
