@@ -12,6 +12,9 @@ import com.bee32.plover.pub.oid.Oid;
 public class IcsfPrincipalModule
         extends ERModule {
 
+    public static final String PREFIX = "/3/7/1";
+    public static final String PREFIX_ = PREFIX + "/";
+
     @Override
     protected void preamble() {
         export(UserDao.class, "user");
