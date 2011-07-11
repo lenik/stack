@@ -196,7 +196,7 @@ public class SEMPeopleSamples
     protected void preamble() {
         addNormalSample(PartyTagname.CUSTOMER);
         addNormalSample(PartyTagname.SUPPLIER);
-        addNormalSample(PartyTagname.EMPLOYEE);
+        addNormalSample(PartyTagname.INTERNAL);
 
         addNormalSample(PersonSidType.IDENTITYCARD);
         addNormalSample(PersonSidType.PASSPORT);

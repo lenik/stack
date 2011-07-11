@@ -30,7 +30,7 @@ public class PeopleCriteria {
 
 	public static Criterion outerPartyTagList(String name) {
 		return Restrictions.not(Restrictions.in(name,
-				new Object[] { PartyTagname.EMPLOYEE.getName() }));
+				new Object[] { PartyTagname.INTERNAL.getName() }));
 	}
 
 }
