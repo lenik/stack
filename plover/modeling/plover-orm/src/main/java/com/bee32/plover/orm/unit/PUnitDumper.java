@@ -1,8 +1,11 @@
 package com.bee32.plover.orm.unit;
 
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public class PUnitDumper {
@@ -20,21 +23,31 @@ public class PUnitDumper {
         }
     }
 
+    public static void dump(PrettyPrintStream out, ClassCatalog catalog) {
+        out.println(catalog.getName());
+
+        Set<? extends ClassCatalog> dependencies = catalog.getDependencies();
+        if (!dependencies.isEmpty()) {
+            out.enter();
+            for (ClassCatalog dependency : dependencies)
+                dump(out, dependency);
+            out.leave();
+        }
+    }
+
     public static String format(PersistenceUnit unit) {
         PrettyPrintStream out = new PrettyPrintStream();
 
         out.println("Unit Structure: " + unit.getName());
         out.enter();
-        {
-            Class<?> clazz = unit.getClass();
-            dump(out, clazz);
-        }
+        dump(out, unit);
         out.leave();
 
         out.println();
         out.println("Entity Classes: ");
         out.enter();
         {
+            // Sort by name.
             Set<String> names = new TreeSet<String>();
             for (Class<?> entityClass : unit)
                 names.add(entityClass.getName());
@@ -43,6 +56,24 @@ public class PUnitDumper {
                 out.println(name);
         }
         out.leave();
+
+        out.println("Inverse Map: ");
+        out.enter();
+        {
+            Map<Class<?>, ClassCatalog> invMap = unit.getInvMap();
+
+            // sort by catalog name
+            Set<String> lines = new TreeSet<String>();
+            for (Entry<Class<?>, ClassCatalog> entry : unit.getInvMap().entrySet()) {
+                String line = entry.getValue() + " : " + entry.getKey();
+                lines.add(line);
+            }
+
+            for (String line : lines)
+                out.println(line);
+        }
+        out.leave();
+
         return out.toString();
     }
 

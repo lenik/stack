@@ -80,9 +80,7 @@ public abstract class PersistenceUnit
                 } catch (Exception e) {
                     throw new IllegalUsageException("Failed to instantiate imported unit " + unitClass, e);
                 }
-
-                Set<Class<?>> importClasses = importUnit.getClasses();
-                addAll(importClasses);
+                _import(importUnit);
             }
         }
     }

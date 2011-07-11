@@ -1,8 +1,10 @@
 package com.bee32.plover.arch.util;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import com.bee32.plover.arch.Component;
@@ -12,19 +14,28 @@ public abstract class ClassCatalog
         implements Iterable<Class<?>> {
 
     private final Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
+    private final Set<Class<?>> localClasses = new LinkedHashSet<Class<?>>();
+    private final Set<ClassCatalog> dependencies = new LinkedHashSet<ClassCatalog>();
+    private final Map<Class<?>, ClassCatalog> invMap = new HashMap<Class<?>, ClassCatalog>();
 
     private boolean assembled;
 
-    public ClassCatalog(ClassCatalog... imports) {
+    public ClassCatalog(ClassCatalog... catalogs) {
         super();
-        for (ClassCatalog imp : imports)
-            classes.addAll(imp.getClasses());
+        _import(catalogs);
     }
 
-    public ClassCatalog(String name, ClassCatalog... imports) {
+    public ClassCatalog(String name, ClassCatalog... catalogs) {
         super(name);
-        for (ClassCatalog imp : imports)
-            classes.addAll(imp.getClasses());
+        _import(catalogs);
+    }
+
+    protected void _import(ClassCatalog... catalogs) {
+        for (ClassCatalog catalog : catalogs) {
+            classes.addAll(catalog.getClasses());
+            dependencies.add(catalog);
+            invMap.putAll(catalog.getInvMap());
+        }
     }
 
     @Override
@@ -37,21 +48,48 @@ public abstract class ClassCatalog
         return classes;
     }
 
+    public Set<Class<?>> getLocalClasses() {
+        assemble();
+        return localClasses;
+    }
+
+    public Set<? extends ClassCatalog> getDependencies() {
+        assemble();
+        return dependencies;
+    }
+
+    public Map<Class<?>, ClassCatalog> getInvMap() {
+        assemble();
+        return invMap;
+    }
+
+    public ClassCatalog which(Class<?> clazz) {
+        return getInvMap().get(clazz);
+    }
+
     public void add(Class<?> clazz) {
         classes.add(clazz);
+        localClasses.add(clazz);
+        invMap.put(clazz, this);
     }
 
-    public void add(Class<?>... classes) {
+    public final void add(Class<?>... classes) {
         for (Class<?> c : classes)
-            this.classes.add(c);
+            add(c);
     }
 
-    public void addAll(Collection<? extends Class<?>> classes) {
-        this.classes.addAll(classes);
+    public final void addAll(Collection<? extends Class<?>> classes) {
+        for (Class<?> c : classes)
+            add(c);
     }
 
+    /**
+     * Do assemble before remove.
+     */
+    @Deprecated
     public void remove(Class<?> clazz) {
         getClasses().remove(clazz);
+        localClasses.remove(clazz);
     }
 
     public synchronized void assemble() {
