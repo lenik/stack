@@ -3,6 +3,8 @@
 *.swp
 *.log
 *.log.[0-9]*
+*.bak
+*.orig
 *~
 
 # Maven
