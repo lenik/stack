@@ -27,7 +27,7 @@
 		<h:form id="roleAdminForm">
 			<p:growl id="growl" showDetail="true" />
 
-            <p:commandButton value="新增角色" actionListener="#{roleAdminBean.doNewRole}" oncomplete="editRoleDialog.show();"/>
+            <p:commandButton value="新增角色" actionListener="#{roleAdminBean.doNewRole}" onclick="editRoleDialog.show();" update="editRolePanel"/>
 			<p:treeTable value="#{roleAdminBean.root}" var="role">
 				<p:column>
 					<f:facet name="header">名称</f:facet>
@@ -40,12 +40,12 @@
 
 				<p:column>
 					<f:facet name="header">操作</f:facet>
-					<p:commandLink value="修改" update="">
+					<p:commandLink value="修改" actionListener="#{roleAdminBean.doModify}" onclick="editRoleDialog.show();" update="editRolePanel">
                         <f:setPropertyActionListener value="#{role}"
                             target="#{roleAdminBean.selectedRole}" />
                     </p:commandLink>
                     <p:spacer width="10" />
-					<p:commandLink value="删除" update="">
+					<p:commandLink value="删除" update="roleAdminForm">
 						<f:setPropertyActionListener value="#{role}"
 							target="#{roleAdminBean.selectedRole}" />
 					</p:commandLink>
@@ -55,7 +55,7 @@
 
 
 			<p:dialog header="新增角色" widgetVar="editRoleDialog" modal="true" height="500" width="640">
-				<p:outputPanel id="newRolePanel">
+				<p:outputPanel id="editRolePanel">
 					<h:panelGrid columns="2">
 
 					    <h:outputLabel for="inheritedRole" value="所属父角色" />

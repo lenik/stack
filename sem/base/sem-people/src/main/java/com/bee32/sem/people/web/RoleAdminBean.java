@@ -20,12 +20,12 @@ import com.bee32.plover.orm.util.EntityViewBean;
 public class RoleAdminBean
         extends EntityViewBean {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private TreeNode rootNode;
-    private RoleDto role;
-    private RoleDto selectedRole;
-    private TreeNode selectedParentRoleNode;
+	private TreeNode rootNode;
+	private RoleDto role;
+	private RoleDto selectedRole;
+	private TreeNode selectedParentRoleNode;
 
     public TreeNode getRoot() {
         if (rootNode == null) {
@@ -84,15 +84,19 @@ public class RoleAdminBean
     @PostConstruct
     public void init() {
 
-    }
+	}
 
-    private void _newRole() {
-        role = new RoleDto();
-    }
+	private void _newRole() {
+		role = new RoleDto();
+	}
 
-    public void doNewRole() {
-        _newRole();
-    }
+	public void doNewRole() {
+		_newRole();
+	}
+
+	public void doModify() {
+		role = selectedRole;
+	}
 
     public void doSave() {
         Role existing = serviceFor(Role.class).get(role.getId());
@@ -112,5 +116,7 @@ public class RoleAdminBean
 
         uiLogger.info("保存成功。");
     }
+
+
 
 }
