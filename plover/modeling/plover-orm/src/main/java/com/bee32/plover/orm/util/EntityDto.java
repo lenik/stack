@@ -50,11 +50,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         super(selection);
     }
 
-    protected <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id) {
+    protected IEntityMarshalContext getMarshalContext() {
         Object context = getSession().getContext();
         IEntityMarshalContext emContext = (IEntityMarshalContext) context;
-        _E entity = emContext.loadEntity(entityType, id);
-        return entity;
+        return emContext;
     }
 
     @Override
@@ -62,6 +61,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         ApplicationContext applicationContext = ThreadHttpContext.getApplicationContext();
         DefaultMarshalContext marshalContext = applicationContext.getBean(DefaultMarshalContext.class);
         return marshalContext;
+    }
+
+    protected <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id) {
+        _E entity = getMarshalContext().loadEntity(entityType, id);
+        return entity;
     }
 
     /**
@@ -422,20 +426,19 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
             if (givenTarget != null) // ignore thisDto.id
                 return givenTarget;
 
-            // Instead of loadEntity("null"-id), we allocate a new entity here.
-            // The null-key is not supported here.
-            if (id == null) {
-                E newEntity;
-                try {
-                    newEntity = entityType.newInstance();
-                } catch (ReflectiveOperationException e) {
-                    throw new IllegalUsageException("Failed to instantiate source bean " + sourceType.getName(), e);
-                }
-                return newEntity;
-            } else {
-                E existing = loadEntity(entityType, id);
-                return existing;
+            if (id != null) {
+                E existing = getMarshalContext().asFor(entityType).get(id);
+                if (existing != null)
+                    return existing;
             }
+
+            E newEntity;
+            try {
+                newEntity = entityType.newInstance();
+            } catch (ReflectiveOperationException e) {
+                throw new IllegalUsageException("Failed to instantiate source bean " + sourceType.getName(), e);
+            }
+            return newEntity;
         } // switch
     }
 
