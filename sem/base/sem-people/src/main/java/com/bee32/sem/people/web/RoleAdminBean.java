@@ -3,8 +3,6 @@ package com.bee32.sem.people.web;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 
 import org.hibernate.criterion.Restrictions;
 import org.primefaces.model.DefaultTreeNode;
@@ -22,91 +20,97 @@ import com.bee32.plover.orm.util.EntityViewBean;
 public class RoleAdminBean
         extends EntityViewBean {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private TreeNode root;
-	private RoleDto role;
-	private RoleDto selectedRole;
-	private TreeNode selectedParentRoleNode;
+    private TreeNode rootNode;
+    private RoleDto role;
+    private RoleDto selectedRole;
+    private TreeNode selectedParentRoleNode;
 
-	public TreeNode getRoot() {
-		if(root == null) {
-			loadRoleTree();
-		}
-		return root;
-	}
-
-	public RoleDto getRole() {
-		if(role == null) {
-			_newRole();
-		}
-		return role;
-	}
-
-	public void setRole(RoleDto role) {
-		this.role = role;
-	}
-
-	public RoleDto getSelectedRole() {
-		return selectedRole;
-	}
-
-	public void setSelectedRole(RoleDto selectedRole) {
-		this.selectedRole = selectedRole;
-	}
-
-	public TreeNode getSelectedParentRoleNode() {
-		return selectedParentRoleNode;
-	}
-
-	public void setSelectedParentRoleNode(TreeNode selectedParentRoleNode) {
-		this.selectedParentRoleNode = selectedParentRoleNode;
-	}
-
-
-	private void loadRoleTree() {
-		root = new DefaultTreeNode("根", null);
-
-		List<Role> roles = serviceFor(Role.class).list(Restrictions.isNull("inheritedRole"));	//get top roles
-        List<RoleDto> roleDtos = DTOs.marshalList(RoleDto.class, roles, true);
-
-        for(RoleDto roleDto : roleDtos) {
-		loadRoleRecursive(roleDto, root);
+    public TreeNode getRoot() {
+        if (rootNode == null) {
+            loadRoleTree();
         }
-	}
+        return rootNode;
+    }
 
-	private void loadRoleRecursive(RoleDto roleDto, TreeNode parentTreeNode) {
-		TreeNode roleNode = new DefaultTreeNode(roleDto, parentTreeNode);
+    public RoleDto getRole() {
+        if (role == null) {
+            _newRole();
+        }
+        return role;
+    }
 
-	List<RoleDto> subRoles = roleDto.getDerivedRoles();
-		for(RoleDto subRole : subRoles) {
-			loadRoleRecursive(subRole, roleNode);
-		}
-	}
+    public void setRole(RoleDto role) {
+        this.role = role;
+    }
 
-	@PostConstruct
-	public void init() {
+    public RoleDto getSelectedRole() {
+        return selectedRole;
+    }
 
-	}
+    public void setSelectedRole(RoleDto selectedRole) {
+        this.selectedRole = selectedRole;
+    }
 
-	private void _newRole() {
-		role = new RoleDto();
-	}
+    public TreeNode getSelectedParentRoleNode() {
+        return selectedParentRoleNode;
+    }
 
-	public void doNewRole() {
-		_newRole();
-	}
+    public void setSelectedParentRoleNode(TreeNode selectedParentRoleNode) {
+        this.selectedParentRoleNode = selectedParentRoleNode;
+    }
 
-	public void doSave() {
-		RoleDto parent = (RoleDto) selectedParentRoleNode.getData();
-		role.setInheritedRole(parent);
-		Role r = role.unmarshal(this);
+    private void loadRoleTree() {
+        rootNode = new DefaultTreeNode("根", null);
 
-		serviceFor(Role.class).saveOrUpdate(r);
-		loadRoleTree();
+        List<Role> rootRoles = serviceFor(Role.class).list(Restrictions.isNull("parent"));
+        List<RoleDto> rootRoleDtos = DTOs.marshalList(RoleDto.class, rootRoles, true);
 
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "保存成功", "保存成功");
-        FacesContext.getCurrentInstance().addMessage(null, message);
-	}
+        for (RoleDto roleDto : rootRoleDtos) {
+            loadRoleRecursive(roleDto, rootNode);
+        }
+    }
+
+    private void loadRoleRecursive(RoleDto roleDto, TreeNode parentTreeNode) {
+        TreeNode roleNode = new DefaultTreeNode(roleDto, parentTreeNode);
+
+        List<RoleDto> subRoles = roleDto.getDerivedRoles();
+        for (RoleDto subRole : subRoles) {
+            loadRoleRecursive(subRole, roleNode);
+        }
+    }
+
+    @PostConstruct
+    public void init() {
+
+    }
+
+    private void _newRole() {
+        role = new RoleDto();
+    }
+
+    public void doNewRole() {
+        _newRole();
+    }
+
+    public void doSave() {
+        Role existing = serviceFor(Role.class).get(role.getId());
+        if (existing != null) {
+            uiLogger.error("保存失败:角色已存在。");
+            return;
+        }
+
+        if (selectedParentRoleNode != null) {
+            RoleDto parent = (RoleDto) selectedParentRoleNode.getData();
+            role.setInheritedRole(parent);
+        }
+        Role r = role.unmarshal(this);
+
+        serviceFor(Role.class).saveOrUpdate(r);
+        loadRoleTree();
+
+        uiLogger.info("保存成功。");
+    }
 
 }
