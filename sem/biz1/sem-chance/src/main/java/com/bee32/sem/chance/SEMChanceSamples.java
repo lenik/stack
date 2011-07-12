@@ -166,8 +166,8 @@ public class SEMChanceSamples
         addNormalSample(chanceAction2);
 
         // add <price>->quotation and quotationItem
-        addNormalSample(quotation);
         addNormalSample(quotationItem1);
+        addNormalSample(quotation);
     }
 
 }

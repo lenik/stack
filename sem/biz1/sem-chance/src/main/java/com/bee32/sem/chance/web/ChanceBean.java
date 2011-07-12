@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.chance.dto.BasePriceDto;
 import com.bee32.sem.chance.dto.ChanceActionDto;
@@ -57,15 +58,17 @@ public class ChanceBean
     // 判断是不是在查找状态
     private boolean isSearching;
 
-    private boolean addable;
     private boolean edable;
     private boolean detailable;
-    private boolean backable;
-    private boolean saveable;
-    private boolean searchable;
-    private boolean relating;
-    private boolean unRelating;
+    private boolean relating = true;
+    private boolean unRelating = true;
+    private boolean actionDetail = true;
     private boolean editable;
+    private boolean fieldRendered;
+    private boolean chancePartyEdit;
+    private boolean roleRendered;
+    private String tempRole;
+    private boolean isChancePartyEditing;
 
     private String subjectPattern;
     private String partyPattern;
@@ -77,12 +80,21 @@ public class ChanceBean
     private List<ChanceActionDto> actions;
     private ChanceActionDto[] selectedActions;
     private ChanceActionDto selectedAction;
+    private ChanceActionDto tempAction = new ChanceActionDto();
     // XXX 有用没有?
     private ChancePartyDto selectedChanceParty;
     private PartyDto selectedParty;
     private List<PartyDto> parties;
 
     // TODO quotation fields
+
+    private boolean quotationOptionable;
+    private boolean quotationEdit;
+    private boolean quotationAdd;
+    private boolean quotationDetailable = true;
+    private boolean isPriceEditing;
+    private boolean isQuantityEditing;
+
     private List<QuotationDto> quotations;
     private QuotationDto selectedQuotation;
     private QuotationDto quotation;
@@ -90,8 +102,8 @@ public class ChanceBean
     private String selectedMaterial;
     private String materialPattern;
     private QuotationItemDto selectedQuotationItem;
-    private double temPrice;
-    private int temQuantity;
+    private double temPrice = 0.0;
+    private int temQuantity = 0;
     private boolean quotationItemPriceRendered;
     private boolean quotationItemNumberRendered;
 
@@ -124,9 +136,21 @@ public class ChanceBean
         }
     }
 
-    public void viewDetail() {
+    public void viewQuotationDetail() {
         if (selectedQuotation != null)
             quotation = selectedQuotation;
+        quotationEdit = true;
+    }
+
+    public void viewActionDetail() {
+        if (selectedAction != null)
+            tempAction = selectedAction;
+    }
+
+    public void editQuotation() {
+        if (selectedQuotation != null)
+            quotation = selectedQuotation;
+        quotationEdit = false;
     }
 
     public void chooseMaterial() {
@@ -154,64 +178,116 @@ public class ChanceBean
     }
 
     public void calculatePriceChange() {
-        if (selectedQuotationItem.getPrice() == null) {
-            selectedQuotationItem.setPrice(0.0);
-        }
         double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
         selectedQuotationItem.setAmount(amount);
         quotationItemPriceRendered = !quotationItemPriceRendered;
+        isPriceEditing = false;
     }
 
     public void calculateNumberChange() {
-        if (selectedQuotationItem.getNumber() == null) {
-            selectedQuotationItem.setNumber(0);
-        }
-        Double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
-        if (amount != null)
-            selectedQuotationItem.setAmount(amount);
+        double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
+        selectedQuotationItem.setAmount(amount);
         quotationItemNumberRendered = !quotationItemNumberRendered;
+        isQuantityEditing = false;
     }
 
     public void editPrice() {
         quotationItemPriceRendered = !quotationItemPriceRendered;
         temPrice = selectedQuotationItem.getPrice();
+        isPriceEditing = true;
     }
 
-    public void uneditPrice() {
-        quotationItemPriceRendered = !quotationItemPriceRendered;
-        selectedQuotationItem.setPrice(temPrice);
-    }
+// public void uneditPrice() {
+// quotationItemPriceRendered = !quotationItemPriceRendered;
+// selectedQuotationItem.setPrice(temPrice);
+// }
 
-    public void uneditQuantity() {
-        quotationItemNumberRendered = !quotationItemNumberRendered;
-        selectedQuotationItem.setNumber(temQuantity);
-    }
+// public void uneditQuantity() {
+// quotationItemNumberRendered = !quotationItemNumberRendered;
+// selectedQuotationItem.setNumber(temQuantity);
+// }
 
     public void editQuantity() {
         quotationItemNumberRendered = !quotationItemNumberRendered;
         temQuantity = selectedQuotationItem.getNumber();
+        isQuantityEditing = true;
     }
 
     public void calculateQuotaionAmount() {
         double total = 0.0;
+        int itemQuantity = isQuantityEditing == true ? temQuantity : selectedQuotationItem.getNumber();
+        double itemPrice = isPriceEditing == true ? temPrice : selectedQuotationItem.getPrice();
+        if (isPriceEditing)
+            selectedQuotationItem.setPrice(itemPrice);
+        if (isQuantityEditing)
+            selectedQuotationItem.setNumber(itemQuantity);
+        selectedQuotationItem.setAmount(itemPrice * itemQuantity);
         for (QuotationItemDto qid : quotation.getItems()) {
             total += qid.getAmount();
         }
         quotation.setAmount(total);
     }
 
+    @SuppressWarnings("unchecked")
     public void saveQuotation() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             Quotation quotationEntity = quotation.unmarshal();
-            for(QuotationItem tempItem : quotationEntity.getItems()){
-                serviceFor(QuotationItem.class).saveOrUpdate(tempItem);
+// if(quotationEntity.getChance().getId() == null)
+// serviceFor(Chance)
+            @SuppressWarnings("rawtypes")
+            List<Entity> entityList = new ArrayList<Entity>();
+            if (!quotations.contains(quotation))
+                quotations.add(quotation);
+            for (QuotationItem tempItem : quotationEntity.getItems()) {
+                entityList.add(tempItem);
             }
-            serviceFor(Quotation.class).saveOrUpdate(quotationEntity);
-            context.addMessage(null, new FacesMessage("错误", "保存报价单成功"));
+            entityList.add(quotationEntity);
+            serviceFor(Entity.class).saveOrUpdateAll(entityList);
+            if (selectedQuotation == null)
+                quotationOptionable = quotationDetailable = true;
+            context.addMessage(null, new FacesMessage("提示", "保存报价单成功"));
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("错误提示", "保存报价单错误:" + e.getMessage()));
+            e.printStackTrace();
         }
+    }
+
+    public void dropQuotation() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Quotation quo = selectedQuotation.unmarshal();
+        try {
+            serviceFor(Quotation.class).delete(quo);
+            quotations.remove(selectedQuotation);
+            quotationOptionable = quotationDetailable = true;
+            context.addMessage(null, new FacesMessage("提示:", "成功删除报价单"));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("错误提示:", "删除报价单失败" + e.getMessage()));
+            e.printStackTrace();
+        }
+    }
+
+    public void dropQuotationItem() {
+        quotation.removeItem(selectedQuotationItem);
+    }
+
+    public void createQuotationForm() {
+        quotation = new QuotationDto();
+        quotation.setChance(chance);
+        UserDto creator = new UserDto().ref(SessionLoginInfo.requireCurrentUser().getId());
+        quotation.setCreator(creator);
+    }
+
+    public void onQuotationRowSelect() {
+        if (editable != true)
+            quotationOptionable = false;
+        quotationDetailable = false;
+    }
+
+    public void onQuotationRowUnselect() {
+        if (editable != true)
+            quotationOptionable = true;
+        quotationDetailable = true;
     }
 
     // XXX origin chanceBean methods
@@ -225,53 +301,17 @@ public class ChanceBean
         chances = UIHelper.buildLazyDataModel(edmo);
         isSearching = false;
         refreshChanceCount(isSearching);
+        quotationOptionable = true;
     }
 
     public void initToolbar() {
-        addable = false;
-        edable = true;
-        detailable = true;
-        backable = true;
-        saveable = true;
-        searchable = false;
-        relating = true;
-        unRelating = true;
+        edable = false;
+        detailable = selectedChance == null ? true : false;
     }
 
-    public void createToobar() {
-        addable = true;
+    public void generatedToobar() {
         edable = true;
         detailable = true;
-        saveable = false;
-        backable = false;
-        searchable = false;
-        relating = true;
-        unRelating = true;
-        editable = false;
-    }
-
-    public void editToolbar() {
-        addable = true;
-        edable = true;
-        detailable = true;
-        saveable = false;
-        backable = false;
-        searchable = false;
-        relating = false;
-        unRelating = true;
-        editable = false;
-    }
-
-    public void detailToolbar() {
-        addable = true;
-        edable = true;
-        detailable = true;
-        saveable = true;
-        backable = false;
-        searchable = false;
-        relating = true;
-        unRelating = true;
-        editable = true;
     }
 
     @PostConstruct
@@ -292,31 +332,23 @@ public class ChanceBean
     }
 
     public void onRowSelect() {
-        addable = false;
-        edable = false;
         detailable = false;
-        backable = true;
-        saveable = true;
-        searchable = false;
     }
 
     public void onRowUnselect() {
-        addable = false;
-        edable = true;
         detailable = true;
-        backable = true;
-        saveable = true;
-        searchable = false;
     }
 
     public void onActionRowSelect() {
         if (editable != true)
             unRelating = false;
+        actionDetail = false;
     }
 
     public void onActionRowUnselect() {
         if (editable != true)
             unRelating = true;
+        actionDetail = true;
     }
 
     public List<SelectItem> getCategory() {
@@ -416,31 +448,56 @@ public class ChanceBean
 
     public void createForm() {
         chance = new ChanceDto();
-        selectedChance = null;
         setActiveTab(TAB_FORM);
-        createToobar();
+        generatedToobar();
         quotations = new ArrayList<QuotationDto>();
+        fieldRendered = false;
+        quotationAdd = false;
+        editable = false;
+        relating = true;
+        unRelating = true;
     }
 
     public void editForm() {
+        if (selectedChance == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("提示:", "请选择需要修改的销售机会!"));
+            return;
+        }
         chance = selectedChance;
         listQuotationByChance(chance);
         setActiveTab(TAB_FORM);
-        editToolbar();
+        generatedToobar();
+        relating = false;
+        unRelating = true;
+        editable = false;
+        fieldRendered = true;
+        quotationAdd = false;
     }
 
     public void detailForm() {
         chance = selectedChance;
         listQuotationByChance(chance);
         setActiveTab(TAB_FORM);
-        detailToolbar();
+        generatedToobar();
+        fieldRendered = true;
+        quotationAdd = true;
+        editable = true;
     }
 
     public void cancel() {
         initToolbar();
         setActiveTab(TAB_INDEX);
         editable = false;
-        selectedChance = null;
+        fieldRendered = false;
+        quotationAdd = false;
+    }
+
+    public void editCustomerRole() {
+        roleRendered = !roleRendered;
+    }
+
+    public void dropCustomer() {
+        chance.deleteChanceParty(selectedChanceParty);
     }
 
     public void saveChance() {
@@ -496,21 +553,23 @@ public class ChanceBean
 // serviceFor(ChanceAction.class).saveOrUpdateAll(_chance.getActions());
             serviceFor(Chance.class).saveOrUpdate(_chance);
 
+            setActiveTab(TAB_INDEX);
+            initToolbar();
+            editable = true;
+            fieldRendered = false;
             context.addMessage(null, new FacesMessage("提示", "保存销售机会成功"));
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("错误", "保存销售机会失败: " + e.getMessage()));
             e.printStackTrace();
         }
-
-        setActiveTab(TAB_INDEX);
-        initToolbar();
-        editable = true;
-        selectedChance = null;
-
     }
 
     public void drop() {
         FacesContext context = FacesContext.getCurrentInstance();
+        if (selectedChance == null) {
+            context.addMessage(null, new FacesMessage("提示:", "请选择需要删除的销售机会!"));
+            return;
+        }
         try {
             Chance chanceToDelete = serviceFor(Chance.class).load(selectedChance.getId());
             for (ChanceAction _action : chanceToDelete.getActions()) {
@@ -521,7 +580,6 @@ public class ChanceBean
             serviceFor(Chance.class).delete(chanceToDelete);
             refreshChanceCount(isSearching);
             initToolbar();
-            selectedChance = null;
             context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("错误", "删除销售机会失败:" + e.getMessage()));
@@ -554,13 +612,13 @@ public class ChanceBean
         this.isSearching = isSearching;
     }
 
-    public boolean isAddable() {
-        return addable;
-    }
-
-    public void setAddable(boolean addable) {
-        this.addable = addable;
-    }
+// public boolean isAddable() {
+// return addable;
+// }
+//
+// public void setAddable(boolean addable) {
+// this.addable = addable;
+// }
 
     public boolean isEdable() {
         return edable;
@@ -578,29 +636,29 @@ public class ChanceBean
         this.detailable = detailable;
     }
 
-    public boolean isBackable() {
-        return backable;
-    }
+// public boolean isBackable() {
+// return backable;
+// }
+//
+// public void setBackable(boolean backable) {
+// this.backable = backable;
+// }
+//
+// public boolean isSaveable() {
+// return saveable;
+// }
+//
+// public void setSaveable(boolean saveable) {
+// this.saveable = saveable;
+// }
 
-    public void setBackable(boolean backable) {
-        this.backable = backable;
-    }
-
-    public boolean isSaveable() {
-        return saveable;
-    }
-
-    public void setSaveable(boolean saveable) {
-        this.saveable = saveable;
-    }
-
-    public boolean isSearchable() {
-        return searchable;
-    }
-
-    public void setSearchable(boolean searchable) {
-        this.searchable = searchable;
-    }
+// public boolean isSearchable() {
+// return searchable;
+// }
+//
+// public void setSearchable(boolean searchable) {
+// this.searchable = searchable;
+// }
 
     public boolean isRelating() {
         return relating;
@@ -817,6 +875,110 @@ public class ChanceBean
 
     public void setTemQuantity(int temQuantity) {
         this.temQuantity = temQuantity;
+    }
+
+    public boolean isQuotationOptionable() {
+        return quotationOptionable;
+    }
+
+    public void setQuotationOptionable(boolean quotationOptionable) {
+        this.quotationOptionable = quotationOptionable;
+    }
+
+    public boolean isQuotationEdit() {
+        return quotationEdit;
+    }
+
+    public void setQuotationEdit(boolean quotationEdit) {
+        this.quotationEdit = quotationEdit;
+    }
+
+    public boolean isFieldRendered() {
+        return fieldRendered;
+    }
+
+    public void setFieldRendered(boolean fieldRendered) {
+        this.fieldRendered = fieldRendered;
+    }
+
+    public boolean isQuotationAdd() {
+        return quotationAdd;
+    }
+
+    public void setQuotationAdd(boolean quotationAdd) {
+        this.quotationAdd = quotationAdd;
+    }
+
+    public boolean isActionDetail() {
+        return actionDetail;
+    }
+
+    public void setActionDetail(boolean actionDetail) {
+        this.actionDetail = actionDetail;
+    }
+
+    public boolean isQuotationDetailable() {
+        return quotationDetailable;
+    }
+
+    public void setQuotationDetailable(boolean quotationDetailable) {
+        this.quotationDetailable = quotationDetailable;
+    }
+
+    public ChanceActionDto getTempAction() {
+        return tempAction;
+    }
+
+    public void setTempAction(ChanceActionDto tempAction) {
+        this.tempAction = tempAction;
+    }
+
+    public boolean isChancePartyEdit() {
+        return chancePartyEdit;
+    }
+
+    public void setChancePartyEdit(boolean chancePartyEdit) {
+        this.chancePartyEdit = chancePartyEdit;
+    }
+
+    public boolean isRoleRendered() {
+        return roleRendered;
+    }
+
+    public void setRoleRendered(boolean roleRendered) {
+        this.roleRendered = roleRendered;
+    }
+
+    public boolean isPriceEditing() {
+        return isPriceEditing;
+    }
+
+    public void setPriceEditing(boolean isPriceEditing) {
+        this.isPriceEditing = isPriceEditing;
+    }
+
+    public boolean isQuantityEditing() {
+        return isQuantityEditing;
+    }
+
+    public void setQuantityEditing(boolean isQuantityEditing) {
+        this.isQuantityEditing = isQuantityEditing;
+    }
+
+    public String getTempRole() {
+        return tempRole;
+    }
+
+    public void setTempRole(String tempRole) {
+        this.tempRole = tempRole;
+    }
+
+    public boolean isChancePartyEditing() {
+        return isChancePartyEditing;
+    }
+
+    public void setChancePartyEditing(boolean isChancePartyEditing) {
+        this.isChancePartyEditing = isChancePartyEditing;
     }
 
 }

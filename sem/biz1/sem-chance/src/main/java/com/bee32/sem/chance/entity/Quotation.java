@@ -78,7 +78,7 @@ public class Quotation
      * 明细
      */
     @OneToMany(mappedBy = "quotation")
-    @Cascade(CascadeType.DELETE)
+    @Cascade(CascadeType.DELETE_ORPHAN)
     public List<QuotationItem> getItems() {
         return items;
     }

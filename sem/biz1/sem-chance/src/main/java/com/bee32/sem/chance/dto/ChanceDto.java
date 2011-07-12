@@ -88,9 +88,6 @@ public class ChanceDto
             throws ParseException {
     }
 
-    /*
-     * use HashSet to guarantee that the elements in the list is unique.is it necessary?
-     */
     public void addChanceParty(ChancePartyDto chanceParty) {
         if (!parties.contains(chanceParty))
             this.parties.add(chanceParty);

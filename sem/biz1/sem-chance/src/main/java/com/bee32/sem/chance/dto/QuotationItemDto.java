@@ -15,8 +15,8 @@ public class QuotationItemDto
     private String material;
     private double discount;
     private BasePriceDto basePrice;
-    private Double price;
-    private Integer number;
+    private double price;
+    private int number;
     private double amount;
     private String remark;
 
@@ -80,19 +80,19 @@ public class QuotationItemDto
         this.basePrice = basePrice;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public Integer getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 

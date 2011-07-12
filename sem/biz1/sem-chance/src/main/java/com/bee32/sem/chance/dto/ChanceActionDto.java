@@ -48,11 +48,12 @@ public class ChanceActionDto
 // super(selection);
 // }
 
-    public void addParty(PartyDto partyDto) {
-        if (partyDto == null)
-            throw new NullPointerException("partyDto");
-        if (!parties.contains(partyDto))
-            parties.add(partyDto);
+    public void addParty(PartyDto... partyDtos) {
+        if (partyDtos == null)
+            throw new NullPointerException("partyDtos");
+        for (PartyDto partyDto : partyDtos)
+            if (!parties.contains(partyDto))
+                parties.add(partyDto);
     }
 
     public void deleteParty(PartyDto partyDto) {
@@ -60,11 +61,12 @@ public class ChanceActionDto
             parties.remove(partyDto);
     }
 
-    public void addPartner(UserDto partner) {
-        if (partner == null)
-            throw new NullPointerException("partner");
-        if (!partners.contains(partner))
-            partners.add(partner);
+    public void addPartners(UserDto... userDtos) {
+        if (userDtos == null)
+            throw new NullPointerException("partners");
+        for (UserDto userDto : userDtos)
+            if (!partners.contains(userDto))
+                partners.add(userDto);
     }
 
     public void deletePartner(UserDto partner) {

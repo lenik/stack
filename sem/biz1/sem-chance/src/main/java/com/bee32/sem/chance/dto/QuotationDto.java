@@ -52,16 +52,20 @@ public class QuotationDto
             throws ParseException {
     }
 
-    public void addItem(QuotationItemDto qid){
+    public void addItem(QuotationItemDto qid) {
         this.items.add(qid);
     }
 
-    public UserDto getOwner() {
+    public void removeItem(QuotationItemDto qid){
+        this.items.remove(qid);
+    }
+
+    public UserDto getCreator() {
         return creator;
     }
 
-    public void setOwner(UserDto owner) {
-        this.creator = owner;
+    public void setCreator(UserDto creator) {
+        this.creator = creator;
     }
 
     public String getSubject() {

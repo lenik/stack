@@ -22,15 +22,15 @@
         </h:form>
 
         <h:form id="confirm">
-        <p:confirmDialog message="确定删除记录?" width="200" showEffect="explode" hideEffect="explode" header="提示"
+            <p:confirmDialog message="确定删除记录?" width="200" showEffect="explode" hideEffect="explode" header="提示"
                 widgetVar="confirmation">
 
             </p:confirmDialog>
             <p:confirmDialog message="确定要删除记录吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="confirmation">
 
-                <p:commandButton value="确定" update="chanceActionForm:actionList,prompting" oncomplete="confirmation.hide()"
-                    actionListener="#{chanceActionBean.drop}" />
+                <p:commandButton value="确定" update="chanceActionForm:actionList,prompting"
+                    oncomplete="confirmation.hide()" actionListener="#{chanceActionBean.drop}" />
                 <p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
 
             </p:confirmDialog>
@@ -156,9 +156,9 @@
                                             <p:commandLink update="chanceActionForm:parties"
                                                 actionListener="#{chanceActionBean.deleteCustomer}" title="删除客户"
                                                 disabled="#{chanceActionBean.editable}">
+                                                <p:collector value="#{party}"
+                                                    removeFrom="#{chanceActionBean.action.parties}" />
                                                 <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
-                                                <f:setPropertyActionListener value="#{party}"
-                                                    target="#{chanceActionBean.selectedCustomer}" />
                                             </p:commandLink>
                                         </p:column>
                                     </p:dataList>
@@ -179,8 +179,8 @@
                                                 actionListener="#{chanceActionBean.deletePartner}" title="删除伙伴"
                                                 disabled="#{chanceActionBean.editable}">
                                                 <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
-                                                <f:setPropertyActionListener value="#{partner}"
-                                                    target="#{chanceActionBean.selectedPartner}" />
+                                                <p:collector value="#{partner}"
+                                                    removeFrom="#{chanceActionBean.action.partners}" />
                                             </p:commandLink>
                                         </p:column>
                                     </p:dataList>
@@ -279,7 +279,9 @@
                         update="customerForm:customers" async="true" />
                 </h:panelGrid>
                 <p:dataTable id="customers" var="customer" value="#{chanceActionBean.customers}" resizableColumns="true"
-                    selection="#{chanceActionBean.selectedCustomer}" selectionMode="single" rowIndexVar="rowIndex">
+                    selection="#{chanceActionBean.selectedCustomers}" rowIndexVar="rowIndex">
+
+                    <p:column selectionMode="multiple" style="width:40px;" />
 
                     <p:column headerText="序号" style="width:45px;">
                         <h:outputText value="#{rowIndex + 1}" />
@@ -322,7 +324,9 @@
                         update="partnerForm:partners" async="true" />
                 </h:panelGrid>
                 <p:dataTable id="partners" var="partner" value="#{chanceActionBean.partners}" resizableColumns="true"
-                    selection="#{chanceActionBean.selectedPartner}" selectionMode="single" rowIndexVar="rowIndex">
+                    selection="#{chanceActionBean.selectedPartners}" rowIndexVar="rowIndex">
+
+                    <p:column selectionMode="multiple" style="width:40px;" />
 
                     <p:column headerText="序号" style="width:45px;">
                         <h:outputText value="#{rowIndex + 1}" />

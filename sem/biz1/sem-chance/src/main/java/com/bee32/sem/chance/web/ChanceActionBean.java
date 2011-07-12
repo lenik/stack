@@ -89,8 +89,10 @@ public class ChanceActionBean
     // 伙伴列表
     private List<UserDto> partners;
     // 选中的客户
+    private PartyDto[] selectedCustomers;
     private PartyDto selectedCustomer;
     private UserDto selectedPartner;
+    private UserDto[] selectedPartners;
 
     @PostConstruct
     public void init() {
@@ -271,7 +273,7 @@ public class ChanceActionBean
     }
 
     public void addCustomer() {
-        action.addParty(selectedCustomer);
+        action.addParty(selectedCustomers);
     }
 
     public void deleteCustomer() {
@@ -279,7 +281,7 @@ public class ChanceActionBean
     }
 
     public void addPartner() {
-        action.addPartner(selectedPartner);
+        action.addPartners(selectedPartners);
     }
 
     public void deletePartner() {
@@ -565,13 +567,19 @@ public class ChanceActionBean
         this.partners = partners;
     }
 
+    public PartyDto[] getSelectedCustomers() {
+        return selectedCustomers;
+    }
+
+    public void setSelectedCustomers(PartyDto... selectedCustomers) {
+        this.selectedCustomers = selectedCustomers;
+    }
+
     public PartyDto getSelectedCustomer() {
         return selectedCustomer;
     }
 
     public void setSelectedCustomer(PartyDto selectedCustomer) {
-// if (selectedCustomer == null)
-// selectedCustomer = new PartyDto();
         this.selectedCustomer = selectedCustomer;
     }
 
@@ -581,6 +589,14 @@ public class ChanceActionBean
 
     public void setSelectedPartner(UserDto selectedPartner) {
         this.selectedPartner = selectedPartner;
+    }
+
+    public UserDto[] getSelectedPartners() {
+        return selectedPartners;
+    }
+
+    public void setSelectedPartners(UserDto[] selectedPartners) {
+        this.selectedPartners = selectedPartners;
     }
 
 }
