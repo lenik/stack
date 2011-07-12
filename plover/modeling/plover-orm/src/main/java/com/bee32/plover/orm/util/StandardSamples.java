@@ -29,12 +29,14 @@ public class StandardSamples
         }
     }
 
-    static class ReflectPackage
+    static class StdUnitPackage
             extends SamplesPackage {
 
-        public ReflectPackage(Class<?> clazz) {
-            super(clazz.getName());
-            scan(clazz);
+        public StdUnitPackage(PersistenceUnit unit) {
+            super(unit.getName());
+            for (Class<?> localClass : unit.getLocalClasses()) {
+                scan(localClass);
+            }
         }
 
         void scan(Class<?> declaringClass) {
@@ -56,10 +58,13 @@ public class StandardSamples
                     entity = (Entity<?>) field.get(null);
                 } catch (ReflectiveOperationException e) {
                     logger.warn("Can't get static field " + field);
+                    continue;
                 }
 
+                instances.add(entity);
             }
         }
+
     }
 
 }
