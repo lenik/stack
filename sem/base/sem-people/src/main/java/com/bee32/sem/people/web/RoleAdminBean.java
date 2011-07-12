@@ -24,11 +24,9 @@ public class RoleAdminBean
 
 	private TreeNode rootNode;
 	private RoleDto role;
-	private RoleDto selectedRole;
 	private TreeNode selectedParentRoleNode;
 
     public TreeNode getRoot() {
-        loadRoleTree();
         return rootNode;
     }
 
@@ -41,14 +39,8 @@ public class RoleAdminBean
 
     public void setRole(RoleDto role) {
         this.role = role;
-    }
 
-    public RoleDto getSelectedRole() {
-        return selectedRole;
-    }
 
-    public void setSelectedRole(RoleDto selectedRole) {
-        this.selectedRole = selectedRole;
     }
 
     public TreeNode getSelectedParentRoleNode() {
@@ -81,7 +73,7 @@ public class RoleAdminBean
 
     @PostConstruct
     public void init() {
-
+	loadRoleTree();
 	}
 
 	private void _newRole() {
@@ -92,9 +84,6 @@ public class RoleAdminBean
 		_newRole();
 	}
 
-	public void doModify() {
-		role = selectedRole;
-	}
 
     public void doSave() {
         Role existing = serviceFor(Role.class).get(role.getId());
@@ -110,10 +99,15 @@ public class RoleAdminBean
         Role r = role.unmarshal(this);
 
         serviceFor(Role.class).saveOrUpdate(r);
+        loadRoleTree();
 
         uiLogger.info("保存成功。");
     }
 
+    public void doDelete() {
+	serviceFor(Role.class).delete(role.unmarshal());
+	uiLogger.info("删除成功!");
+    }
 
 
 }

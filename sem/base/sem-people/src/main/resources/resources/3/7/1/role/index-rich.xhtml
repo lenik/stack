@@ -28,7 +28,7 @@
 			<p:growl id="growl" showDetail="true" />
 
             <p:commandButton value="新增角色" actionListener="#{roleAdminBean.doNewRole}" onclick="editRoleDialog.show();" async="true" update="editRolePanelForm:editRolePanel"/>
-			<p:treeTable value="#{roleAdminBean.root}" var="role">
+			<p:treeTable id="roleTable" value="#{roleAdminBean.root}" var="role">
 				<p:column>
 					<f:facet name="header">名称</f:facet>
 					<h:outputText value="#{role.name}" />
@@ -40,15 +40,20 @@
 
 				<p:column>
 					<f:facet name="header">操作</f:facet>
-					<p:commandLink value="修改" actionListener="#{roleAdminBean.doModify}" onclick="editRoleDialog.show();" async="true" update="editRolePanelForm:editRolePanel">
-                        <f:setPropertyActionListener value="#{role}"
-                            target="#{roleAdminBean.selectedRole}" />
-                    </p:commandLink>
-                    <p:spacer width="10" />
-					<p:commandLink value="删除" update="roleAdminForm">
-						<f:setPropertyActionListener value="#{role}"
-							target="#{roleAdminBean.selectedRole}" />
-					</p:commandLink>
+					<t:panelGroup>
+						<p:commandLink value="修改" update="editRolePanelForm:editRolePanel"
+							oncomplete="editRoleDialog.show();">
+							<f:setPropertyActionListener value="#{role}"
+								target="#{roleAdminBean.role}" />
+						</p:commandLink>
+						<p:spacer width="10" />
+						<p:commandLink value="删除"
+							update="deleteConfirmForm:deleteConfirmPanel"
+							oncomplete="deleteConfirmDialog.show();">
+							<f:setPropertyActionListener value="#{role}"
+								target="#{roleAdminBean.role}" />
+						</p:commandLink>
+					</t:panelGroup>
 				</p:column>
 			</p:treeTable>
 
@@ -86,6 +91,21 @@
             </p:dialog>
 		</h:form>
 
+		<h:form id="deleteConfirmForm">
+			<p:dialog header="删除角色确认" widgetVar="deleteConfirmDialog"
+				modal="true" height="200" width="400">
+				<h:panelGroup id="deleteConfirmPanel">
+					<h:outputText value="确定要删除角色[#{roleAdminBean.role.name}]" />
+					<h:panelGrid columns="2">
+						<p:commandButton value="确定"
+							actionListener="#{roleAdminBean.doDelete}" update="roleAdminForm"
+							oncomplete="deleteConfirmDialog.hide();" />
+						<p:commandButton value="取消"
+							oncomplete="deleteConfirmDialog.hide();" />
+					</h:panelGrid>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
 
 
 	</ui:define>
