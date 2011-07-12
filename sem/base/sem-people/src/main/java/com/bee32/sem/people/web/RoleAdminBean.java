@@ -28,9 +28,7 @@ public class RoleAdminBean
 	private TreeNode selectedParentRoleNode;
 
     public TreeNode getRoot() {
-        if (rootNode == null) {
-            loadRoleTree();
-        }
+        loadRoleTree();
         return rootNode;
     }
 
@@ -112,7 +110,6 @@ public class RoleAdminBean
         Role r = role.unmarshal(this);
 
         serviceFor(Role.class).saveOrUpdate(r);
-        loadRoleTree();
 
         uiLogger.info("保存成功。");
     }

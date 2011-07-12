@@ -27,7 +27,7 @@
 		<h:form id="roleAdminForm">
 			<p:growl id="growl" showDetail="true" />
 
-            <p:commandButton value="新增角色" actionListener="#{roleAdminBean.doNewRole}" onclick="editRoleDialog.show();" update="editRolePanel"/>
+            <p:commandButton value="新增角色" actionListener="#{roleAdminBean.doNewRole}" onclick="editRoleDialog.show();" async="true" update="editRolePanelForm:editRolePanel"/>
 			<p:treeTable value="#{roleAdminBean.root}" var="role">
 				<p:column>
 					<f:facet name="header">名称</f:facet>
@@ -40,7 +40,7 @@
 
 				<p:column>
 					<f:facet name="header">操作</f:facet>
-					<p:commandLink value="修改" actionListener="#{roleAdminBean.doModify}" onclick="editRoleDialog.show();" update="editRolePanel">
+					<p:commandLink value="修改" actionListener="#{roleAdminBean.doModify}" onclick="editRoleDialog.show();" async="true" update="editRolePanelForm:editRolePanel">
                         <f:setPropertyActionListener value="#{role}"
                             target="#{roleAdminBean.selectedRole}" />
                     </p:commandLink>
@@ -52,37 +52,38 @@
 				</p:column>
 			</p:treeTable>
 
+		</h:form>
 
 
-			<p:dialog header="新增角色" widgetVar="editRoleDialog" modal="true" height="500" width="640">
-				<p:outputPanel id="editRolePanel">
-					<h:panelGrid columns="2">
+		<h:form id="editRolePanelForm">
+            <p:dialog header="新增角色" widgetVar="editRoleDialog" modal="true" height="500" width="640">
+                <p:outputPanel id="editRolePanel">
+                    <h:panelGrid columns="2">
 
-					    <h:outputLabel for="inheritedRole" value="所属父角色" />
-						<p:tree value="#{roleAdminBean.root}" var="role"
-							selectionMode="single"
-							selection="#{roleAdminBean.selectedParentRoleNode}">
-							<p:treeNode>
-								<h:outputText value="#{role.name}" />
-							</p:treeNode>
-						</p:tree>
+                        <h:outputLabel for="inheritedRole" value="所属父角色" />
+                        <p:tree value="#{roleAdminBean.root}" var="role"
+                            selectionMode="single"
+                            selection="#{roleAdminBean.selectedParentRoleNode}">
+                            <p:treeNode>
+                                <h:outputText value="#{role.name}" />
+                            </p:treeNode>
+                        </p:tree>
 
-						<h:outputLabel for="name" value="名称" />
-						<p:inputText id="name" value="#{roleAdminBean.role.name}" />
+                        <h:outputLabel for="name" value="名称" />
+                        <p:inputText id="name" value="#{roleAdminBean.role.name}" />
 
-						<h:outputLabel for="fullName" value="全名" />
-						<p:inputText id="fullName" value="#{roleAdminBean.role.fullName}" />
+                        <h:outputLabel for="fullName" value="全名" />
+                        <p:inputText id="fullName" value="#{roleAdminBean.role.fullName}" />
 
-						<t:panelGrid colspan="2" columns="2">
-							<p:commandButton value="保存"
-								actionListener="#{roleAdminBean.doSave}" update="roleAdminForm"
-								oncomplete="editRoleDialog.hide();" />
-							<p:commandButton value="取消" oncomplete="editRoleDialog.hide();" />
-						</t:panelGrid>
-					</h:panelGrid>
-				</p:outputPanel>
-			</p:dialog>
-
+                        <t:panelGrid colspan="2" columns="2">
+                            <p:commandButton value="保存"
+                                actionListener="#{roleAdminBean.doSave}" update="roleAdminForm"
+                                oncomplete="editRoleDialog.hide();" />
+                            <p:commandButton value="取消" oncomplete="editRoleDialog.hide();" />
+                        </t:panelGrid>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
 		</h:form>
 
 
