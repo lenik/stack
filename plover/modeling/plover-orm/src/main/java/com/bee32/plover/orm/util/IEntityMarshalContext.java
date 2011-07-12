@@ -6,6 +6,7 @@ import javassist.tools.rmi.ObjectNotFoundException;
 
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.IEntityAccessService;
 
 public interface IEntityMarshalContext {
 
@@ -24,6 +25,9 @@ public interface IEntityMarshalContext {
      *             If entity with specific id isn't existed.
      */
     <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id);
+
+    <E extends Entity<? extends K>, K extends Serializable> //
+    IEntityAccessService<E, K> asFor(Class<? extends E> entityType);
 
     // <E extends EntityBean<K>, K extends Serializable> E mergeEntity(Class<E> entityType, K id);
 }

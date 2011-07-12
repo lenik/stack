@@ -25,6 +25,13 @@ public abstract class EntityViewBean
     }
 
     @Override
+    public <E extends Entity<? extends K>, K extends Serializable> //
+    IEntityAccessService<E, K> asFor(Class<? extends E> entityType) {
+        IEntityAccessService<E, K> service = getDataManager().access(entityType);
+        return service;
+    }
+
+    @Override
     public <E extends Entity<K>, K extends Serializable> //
     E loadEntity(Class<E> entityType, K id) {
         E entity = serviceFor(entityType).load(id);
