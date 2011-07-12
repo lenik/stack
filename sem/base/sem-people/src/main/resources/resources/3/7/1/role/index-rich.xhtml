@@ -59,13 +59,13 @@
 					<h:panelGrid columns="2">
 
 					    <h:outputLabel for="inheritedRole" value="所属父角色" />
-					    <p:tree value="#{roleAdminBean.root}" var="role"
-					    selectionMode="single"
-                        selection="#{roleAdminBean.selectedParentRole}">
-					       <p:treeNode>
-					           <h:outputText value="#{role.name}"/>
-					       </p:treeNode>
-					    </p:tree>
+						<p:tree value="#{roleAdminBean.root}" var="role"
+							selectionMode="single"
+							selection="#{roleAdminBean.selectedParentRoleNode}">
+							<p:treeNode>
+								<h:outputText value="#{role.name}" />
+							</p:treeNode>
+						</p:tree>
 
 						<h:outputLabel for="name" value="名称" />
 						<p:inputText id="name" value="#{roleAdminBean.role.name}" />
@@ -74,8 +74,10 @@
 						<p:inputText id="fullName" value="#{roleAdminBean.role.fullName}" />
 
 						<t:panelGrid colspan="2" columns="2">
-							<p:commandButton value="保存" />
-							<p:commandButton value="取消" oncomplete="editRoleDialog.hide();"/>
+							<p:commandButton value="保存"
+								actionListener="#{roleAdminBean.doSave}" update="roleAdminForm"
+								oncomplete="editRoleDialog.hide();" />
+							<p:commandButton value="取消" oncomplete="editRoleDialog.hide();" />
 						</t:panelGrid>
 					</h:panelGrid>
 				</p:outputPanel>

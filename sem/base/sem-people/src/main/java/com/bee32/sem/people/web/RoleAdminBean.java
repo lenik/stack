@@ -3,6 +3,8 @@ package com.bee32.sem.people.web;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 import org.hibernate.criterion.Restrictions;
 import org.primefaces.model.DefaultTreeNode;
@@ -25,8 +27,7 @@ public class RoleAdminBean
 	private TreeNode root;
 	private RoleDto role;
 	private RoleDto selectedRole;
-	private RoleDto selectedParentRole;
-
+	private TreeNode selectedParentRoleNode;
 
 	public TreeNode getRoot() {
 		if(root == null) {
@@ -54,21 +55,20 @@ public class RoleAdminBean
 		this.selectedRole = selectedRole;
 	}
 
-	public RoleDto getSelectedParentRole() {
-		return selectedParentRole;
+	public TreeNode getSelectedParentRoleNode() {
+		return selectedParentRoleNode;
 	}
 
-	public void setSelectedParentRole(RoleDto selectedParentRole) {
-		this.selectedParentRole = selectedParentRole;
+	public void setSelectedParentRoleNode(TreeNode selectedParentRoleNode) {
+		this.selectedParentRoleNode = selectedParentRoleNode;
 	}
-
 
 
 	private void loadRoleTree() {
 		root = new DefaultTreeNode("根", null);
 
 		List<Role> roles = serviceFor(Role.class).list(Restrictions.isNull("inheritedRole"));	//get top roles
-        List<RoleDto> roleDtos = DTOs.marshalList(RoleDto.class, roles);
+        List<RoleDto> roleDtos = DTOs.marshalList(RoleDto.class, roles, true);
 
         for(RoleDto roleDto : roleDtos) {
 		loadRoleRecursive(roleDto, root);
@@ -79,16 +79,14 @@ public class RoleAdminBean
 		TreeNode roleNode = new DefaultTreeNode(roleDto, parentTreeNode);
 
 	List<RoleDto> subRoles = roleDto.getDerivedRoles();
-	if(subRoles.size() > 0) {
 		for(RoleDto subRole : subRoles) {
 			loadRoleRecursive(subRole, roleNode);
 		}
 	}
-	}
 
 	@PostConstruct
 	public void init() {
-		loadRoleTree();
+
 	}
 
 	private void _newRole() {
@@ -99,5 +97,16 @@ public class RoleAdminBean
 		_newRole();
 	}
 
+	public void doSave() {
+		RoleDto parent = (RoleDto) selectedParentRoleNode.getData();
+		role.setInheritedRole(parent);
+		Role r = role.unmarshal(this);
+
+		serviceFor(Role.class).saveOrUpdate(r);
+		loadRoleTree();
+
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "保存成功", "保存成功");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+	}
 
 }
