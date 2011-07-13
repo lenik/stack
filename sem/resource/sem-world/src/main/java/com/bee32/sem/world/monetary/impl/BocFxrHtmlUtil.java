@@ -1,12 +1,12 @@
-package com.bee32.sem.world.monetary;
+package com.bee32.sem.world.monetary.impl;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BOCStringHandler {
+public class BocFxrHtmlUtil {
 
-    public String preTreatment(String s) {
+    public static String preTreatment(String s) {
         int us = s.indexOf("英镑");
         int ul = s.indexOf("卢布");
         int ue = s.indexOf("</tr>", ul);
@@ -15,7 +15,7 @@ public class BOCStringHandler {
                 .replaceAll(",</tr><tralign=\"center\">", ";");
     }
 
-    public String getRate(String cn, String s) {
+    public static String getRate(String cn, String s) {
         int iStart = s.indexOf(cn);
         int iEnd = s.indexOf(";", iStart);
         String cEx = s.substring(iStart, iEnd);
@@ -25,7 +25,7 @@ public class BOCStringHandler {
         return cEx.substring(fn + 1, sn);
     }
 
-    public Map<String, Float> getRateMap(List<String> sl, String t) {
+    public static Map<String, Float> getRateMap(List<String> sl, String t) {
         Map<String, Float> result = new HashMap<String, Float>();
         for (String cn : sl) {
             String rate = getRate(cn, t);
@@ -34,4 +34,5 @@ public class BOCStringHandler {
         }
         return result;
     }
+
 }
