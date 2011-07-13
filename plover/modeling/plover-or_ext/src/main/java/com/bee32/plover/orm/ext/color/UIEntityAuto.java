@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import com.bee32.plover.orm.entity._AutoId;
+
 /**
  * <b>green</b>
  * <p>
@@ -14,6 +16,7 @@ import javax.persistence.MappedSuperclass;
  * the sub-sections of the system they visit are all PPTs.
  */
 @MappedSuperclass
+@_AutoId
 public abstract class UIEntityAuto<K extends Serializable>
         extends UIEntity<K> {
 
@@ -27,6 +30,10 @@ public abstract class UIEntityAuto<K extends Serializable>
 
     public UIEntityAuto(String name) {
         super(name);
+    }
+
+    {
+        autoId = true;
     }
 
     @Id

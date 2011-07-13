@@ -32,6 +32,14 @@ public abstract class TreeEntity<K extends Serializable, $>
     $ parent;
     List<$> children = new ArrayList<$>();
 
+    public TreeEntity() {
+        super();
+    }
+
+    public TreeEntity(String name) {
+        super(name);
+    }
+
     @Transient
     public boolean isRoot() {
         return parent != null;

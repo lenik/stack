@@ -33,4 +33,28 @@ public class EntityAccessor {
         return entity.getEntityFlags();
     }
 
+    static final boolean useAutoIdAnnotation = false;
+
+    /**
+     * Auto-id attribute maybe used for:
+     * <ul>
+     * <li>Determine whether an entity is new-created by test id==null.
+     * <li>For sample instances, whether update(spec) or insert(auto) should be done. To reload
+     * samples, insert(auto) should always be skipped.
+     * </ul>
+     */
+    public static boolean isAutoId(Entity<?> entity) {
+        if (entity == null)
+            throw new NullPointerException("entity");
+
+        if (useAutoIdAnnotation) {
+            _AutoId _autoId = entity.getClass().getAnnotation(_AutoId.class);
+            if (_autoId == null)
+                return false;
+            return true;
+        }
+
+        return entity.autoId;
+    }
+
 }

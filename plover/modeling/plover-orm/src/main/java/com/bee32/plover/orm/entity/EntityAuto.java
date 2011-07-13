@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
+@_AutoId
 public abstract class EntityAuto<K extends Serializable>
         extends Entity<K> {
 
@@ -20,6 +21,10 @@ public abstract class EntityAuto<K extends Serializable>
 
     public EntityAuto(String name) {
         super(name);
+    }
+
+    {
+        autoId = true;
     }
 
     @Id

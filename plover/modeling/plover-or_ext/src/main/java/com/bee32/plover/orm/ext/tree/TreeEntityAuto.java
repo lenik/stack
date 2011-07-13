@@ -6,7 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import com.bee32.plover.orm.entity._AutoId;
+
 @MappedSuperclass
+@_AutoId
 public abstract class TreeEntityAuto<K extends Serializable, $ extends TreeEntityAuto<K, $>>
         extends TreeEntity<K, $> {
 
@@ -16,6 +19,14 @@ public abstract class TreeEntityAuto<K extends Serializable, $ extends TreeEntit
 
     public TreeEntityAuto() {
         super();
+    }
+
+    public TreeEntityAuto(String name) {
+        super(name);
+    }
+
+    {
+        autoId = true;
     }
 
     @Id
