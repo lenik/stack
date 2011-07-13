@@ -1,16 +1,19 @@
 package com.bee32.sem.world.monetary;
 
-import static org.junit.Assert.fail;
-
 import java.util.Locale;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-public class MCValueTest {
+public class MCValueTest
+        extends Assert
+        implements ICurrencyAware {
 
     @Test
-    public void test() {
-        fail("Not yet implemented");
+    public void testEquality() {
+        MCValue v1 = new MCValue(JPY, 12);
+        MCValue v2 = new MCValue(JPY, 12.0);
+        assertEquals(v1, v2);
     }
 
     public static void main(String[] args) {
