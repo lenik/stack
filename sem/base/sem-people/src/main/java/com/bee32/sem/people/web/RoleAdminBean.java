@@ -46,6 +46,9 @@ public class RoleAdminBean
     }
 
     public RoleDto getRole() {
+        if (role == null) {
+            _newRole();
+        }
         return role;
     }
 
@@ -86,16 +89,20 @@ public class RoleAdminBean
 	loadRoleTree();
 	}
 
+	private void _newRole() {
+		role = new RoleDto();
+	}
+
 	public void doNewRole() {
 		editNewStatus = true;
-		role = new RoleDto();
+		_newRole();
 	}
 
 	public void doModifyRole() {
 		editNewStatus = false;
 
 		if (role == null) {
-		    uiLogger.error("没有选定要修改的脚色。");
+		    uiLogger.error("没有选定要修改的角色。");
 		    return;
 		}
 
@@ -125,27 +132,7 @@ public class RoleAdminBean
 
 		try {
 			serviceFor(Role.class).saveOrUpdate(r);
-
-			TreeNode newTreeNode = null;
-
-			if (role.getInheritedRole() != null) {
-				newTreeNode = new DefaultTreeNode(role,
-						selectedInheritedRoleNode);
-			} else {
-				newTreeNode = new DefaultTreeNode(role, rootNode);
-			}
-
-			if (!editNewStatus) {
-				// 修改
-				TreeNode node = findNodeByRole(rootNode, role);
-				TreeNode parentNode = node.getParent();
-
-				for (TreeNode subNode : node.getChildren()) {
-					newTreeNode.getChildren().add(subNode);
-				}
-				parentNode.getChildren().remove(node);
-			}
-
+			loadRoleTree();
 			uiLogger.info("保存成功。");
 		} catch (Exception e) {
 			uiLogger.error("保存失败.错误消息:" + e.getMessage());
@@ -155,8 +142,7 @@ public class RoleAdminBean
     public void doDelete() {
 		try {
 			serviceFor(Role.class).delete(role.unmarshal());
-			TreeNode node = findNodeByRole(rootNode, role);
-			node.getParent().getChildren().remove(node);
+			loadRoleTree();
 			uiLogger.info("删除成功!");
 		} catch (DataIntegrityViolationException e) {
 			uiLogger.error("删除失败,违反约束归则,可能你需要删除的角色在其它地方被使用到!");
@@ -166,25 +152,4 @@ public class RoleAdminBean
     public void doSelectInheritedRole() {
 	role.setInheritedRole((RoleDto) selectedInheritedRoleNode.getData());
     }
-
-
-    private TreeNode findNodeByRole(TreeNode node, RoleDto roleDto) {
-	if (node.getData() instanceof RoleDto) {
-		if(((RoleDto)node.getData()).getName().equals(roleDto.getName())) {
-			return node;
-		}
-		}
-
-	TreeNode resultNode = null;
-
-		if(node.getChildCount() > 0) {
-			for(TreeNode subNode : node.getChildren()) {
-				resultNode = findNodeByRole(subNode, roleDto);
-				if(resultNode != null) break;
-			}
-		}
-
-	return resultNode;
-    }
-
 }

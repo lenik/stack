@@ -65,7 +65,7 @@ public class GroupAdminBean
         rootNode = new DefaultTreeNode("root", null);
 
         List<Group> rootGroups = serviceFor(Group.class).list(Restrictions.isNull("parent"));
-        List<GroupDto> rootGroupDtos = DTOs.marshalList(GroupDto.class, -1, rootGroups, false);
+        List<GroupDto> rootGroupDtos = DTOs.marshalList(GroupDto.class, -1, rootGroups);
 
         for (GroupDto groupDto : rootGroupDtos) {
             loadGroupRecursive(groupDto, rootNode);

@@ -24,8 +24,53 @@
     <ui:define name="content">
 
 
-		<h:form id="rolesForm">
+		<h:form id="userAdminForm">
+
 			<p:growl id="growl" showDetail="true" />
+
+                <p:dataTable id="userTable" var="user"
+                            value="#{userAdminBean.users}" paginator="true"
+                            rows="10" lazy="true"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="5,10,15" resizableColumns="true"
+                            selection="#{userAdminBean.selectedUser}"
+                            selectionMode="single" rowIndexVar="rowIndex">
+
+                            <p:ajax event="rowSelect"
+                                listener="#{userAdminBean.onRowSelect}"
+                                update="growl" />
+                            <p:ajax event="rowUnselect"
+                                listener="#{userAdminBean.onRowUnselect}"
+                                update="growl" />
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="序号" />
+                                </f:facet>
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="姓名" />
+                                </f:facet>
+                                <h:outputText value="#{person.name}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="全名" />
+                                </f:facet>
+                                <h:outputText value="#{person.fullName}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="所属组" />
+                                </f:facet>
+                                <h:outputText value="#{person.fullName}" />
+                            </p:column>
+                        </p:dataTable>
 
 
 		</h:form>
