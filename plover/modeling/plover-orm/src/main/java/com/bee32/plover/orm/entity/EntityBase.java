@@ -16,6 +16,8 @@ public abstract class EntityBase<K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
+    protected boolean autoId;
+
     public EntityBase() {
         super();
     }

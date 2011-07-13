@@ -20,6 +20,10 @@ public class SamplesPackage
         super(name);
     }
 
+    public boolean isVirtual() {
+        return false;
+    }
+
     public Set<Entity<?>> getInstances() {
         return instances;
     }

@@ -37,10 +37,6 @@ public interface IEntitySamplesContribution {
      */
     Collection<? extends Entity<?>> getTransientSamples(boolean worseCase);
 
-    boolean isLoaded();
-
-    void setLoaded(boolean loaded);
-
     void beginLoad();
 
     void endLoad();
