@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>plover-cache</module>
+        <module>plover-scheduler</module>
         <module>plover-session</module>
         <module>plover-stateflow</module>
     </modules>
