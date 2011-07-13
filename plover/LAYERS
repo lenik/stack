@@ -22,6 +22,7 @@ library/
     plover-facelets     Facelets 框架与工具
 
 lifecycle/
+    plover-scheduler    任务调度器
     plover-cache        缓存模型与级联构建
     plover-session      结构化会话
     plover-stateflow    基本状态流模型
