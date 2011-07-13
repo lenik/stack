@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
+import com.bee32.icsf.principal.PrincipalCheckException;
+import com.bee32.icsf.principal.PrincipalDiag;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.dto.RoleDto;
 import com.bee32.plover.orm.util.DTOs;
@@ -44,9 +46,6 @@ public class RoleAdminBean
     }
 
     public RoleDto getRole() {
-        if (role == null) {
-            _newRole();
-        }
         return role;
     }
 
@@ -66,7 +65,7 @@ public class RoleAdminBean
         rootNode = new DefaultTreeNode("root", null);
 
         List<Role> rootRoles = serviceFor(Role.class).list(Restrictions.isNull("parent"));
-        List<RoleDto> rootRoleDtos = DTOs.marshalList(RoleDto.class, -1, rootRoles, false);
+        List<RoleDto> rootRoleDtos = DTOs.marshalList(RoleDto.class, -1, rootRoles, true);
 
         for (RoleDto roleDto : rootRoleDtos) {
             loadRoleRecursive(roleDto, rootNode);
@@ -87,17 +86,21 @@ public class RoleAdminBean
 	loadRoleTree();
 	}
 
-	private void _newRole() {
-		role = new RoleDto();
-	}
-
 	public void doNewRole() {
 		editNewStatus = true;
-		_newRole();
+		role = new RoleDto();
 	}
 
 	public void doModifyRole() {
 		editNewStatus = false;
+
+		if (role == null) {
+		    uiLogger.error("没有选定要修改的脚色。");
+		    return;
+		}
+
+		// role-list 为引用型，重新装载为选定型进行编辑。
+		role = reload(role);
 	}
 
 
@@ -112,6 +115,13 @@ public class RoleAdminBean
 	}
 
         Role r = role.unmarshal(this);
+
+        try {
+            PrincipalDiag.checkDeadLoop(r);
+        } catch (PrincipalCheckException e) {
+            uiLogger.error("角色结构非法:角色存在循环引用", e);
+            return;
+        }
 
 		try {
 			serviceFor(Role.class).saveOrUpdate(r);
