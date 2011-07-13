@@ -1,4 +1,4 @@
-package com.bee32.sem.world.monetary;
+package com.bee32.sem.world.math;
 
 import java.util.Map;
 import java.util.TreeMap;
