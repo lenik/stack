@@ -25,7 +25,7 @@ public class StockInventory
     private static final long serialVersionUID = 1L;
 
     List<StockSnapshot> snapshots = new ArrayList<StockSnapshot>();
-    StockSnapshot workingCopy;
+    StockSnapshot workingBase;
 
     /**
      * 逻辑库存名称
@@ -57,12 +57,12 @@ public class StockInventory
      */
     @OneToOne
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public StockSnapshot getWorkingCopy() {
-        return workingCopy;
+    public StockSnapshot getWorkingBase() {
+        return workingBase;
     }
 
-    public void setWorkingCopy(StockSnapshot workingCopy) {
-        this.workingCopy = workingCopy;
+    public void setWorkingBase(StockSnapshot workingBase) {
+        this.workingBase = workingBase;
     }
 
 }
