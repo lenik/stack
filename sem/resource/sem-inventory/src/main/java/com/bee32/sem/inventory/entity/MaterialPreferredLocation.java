@@ -82,7 +82,7 @@ public class MaterialPreferredLocation
         if (!material.equals(o.material))
             return false;
 
-        if (!location.equals(o.getLocation()))
+        if (!location.equals(o.location))
             return false;
 
         if (!getCBatch().equals(o.getCBatch()))
