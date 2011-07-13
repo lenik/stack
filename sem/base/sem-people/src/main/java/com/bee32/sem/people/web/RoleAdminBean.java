@@ -53,7 +53,7 @@ public class RoleAdminBean
     }
 
     public void setRole(RoleDto role) {
-        this.role = role;
+        this.role = reload(role);
     }
 
     public TreeNode getSelectedInheritedRoleNode() {
@@ -100,14 +100,6 @@ public class RoleAdminBean
 
 	public void doModifyRole() {
 		editNewStatus = false;
-
-		if (role == null) {
-		    uiLogger.error("没有选定要修改的角色。");
-		    return;
-		}
-
-		// role-list 为引用型，重新装载为选定型进行编辑。
-		role = reload(role);
 	}
 
 
@@ -130,13 +122,13 @@ public class RoleAdminBean
             return;
         }
 
-		try {
-			serviceFor(Role.class).saveOrUpdate(r);
-			loadRoleTree();
-			uiLogger.info("保存成功。");
-		} catch (Exception e) {
-			uiLogger.error("保存失败.错误消息:" + e.getMessage());
-		}
+        try {
+            serviceFor(Role.class).saveOrUpdate(r);
+            loadRoleTree();
+            uiLogger.info("保存成功。");
+        } catch (Exception e) {
+            uiLogger.error("保存失败.错误消息:" + e.getMessage());
+        }
     }
 
     public void doDelete() {
