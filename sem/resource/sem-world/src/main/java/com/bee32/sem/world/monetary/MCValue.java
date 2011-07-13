@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.ext.types;
+package com.bee32.sem.world.monetary;
 
 import static com.bee32.plover.orm.ext.config.DecimalConfig.MONEY_ITEM_PRECISION;
 import static com.bee32.plover.orm.ext.config.DecimalConfig.MONEY_ITEM_SCALE;

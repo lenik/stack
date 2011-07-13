@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.ext.types;
+package com.bee32.sem.world.monetary;
 
 import static org.junit.Assert.fail;
 

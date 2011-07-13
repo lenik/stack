@@ -1,18 +1,9 @@
-package com.bee32.plover.orm.ext.types;
-
-import static org.junit.Assert.fail;
+package com.bee32.sem.world.monetary;
 
 import java.util.Currency;
 import java.util.Locale;
 
-import org.junit.Test;
-
-public class MultiCurrencyTest {
-
-    @Test
-    public void test() {
-        fail("Not yet implemented");
-    }
+public class InstalledCurrencies {
 
     public static void main(String[] args) {
         Locale zh = Locale.forLanguageTag("zh-CN");
