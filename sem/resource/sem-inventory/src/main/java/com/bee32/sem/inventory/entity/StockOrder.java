@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -17,7 +18,9 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.sem.base.tx.TxEntity;
+import com.bee32.sem.world.monetary.MCValue;
 
 /**
  * 库存通用订单
@@ -37,6 +40,9 @@ public class StockOrder
     String serial;
     List<StockOrderItem> items = new ArrayList<StockOrderItem>();
     Long jobRef;
+
+    @Redundant
+    MCValue total;
 
     /**
      * 基准库存版本。
@@ -127,6 +133,33 @@ public class StockOrder
 
     public void setJobRef(Long jobRef) {
         this.jobRef = jobRef;
+    }
+
+    @Embedded
+    @Redundant
+    public MCValue getTotal() {
+        if (total == null) {
+            for (StockOrderItem item : items) {
+                MCValue sum = new MCValue();
+            }
+        }
+        return total;
+    }
+
+    public void setTotal(MCValue total) {
+        if (total == null)
+            throw new NullPointerException("total");
+        this.total = total;
+    }
+
+    public void invalidateTotal() {
+        total = null;
+    }
+
+    @Override
+    protected void invalidate() {
+        super.invalidate();
+        invalidateTotal();
     }
 
     /**
