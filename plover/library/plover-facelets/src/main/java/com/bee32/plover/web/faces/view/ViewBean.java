@@ -28,7 +28,7 @@ public abstract class ViewBean
      * TODO Is this safe for view-bean?
      */
     protected void wire() {
-        ApplicationContext context = ThreadHttpContext.getApplicationContext();
+        ApplicationContext context = ThreadHttpContext.requireApplicationContext();
         AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
         factory.autowireBean(this);
     }
