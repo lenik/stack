@@ -13,7 +13,7 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.EntityBase;
-import com.bee32.plover.orm.ext.types.MCValue;
+import com.bee32.sem.world.monetary.MCValue;
 
 /**
  * 物料的基准价格（随时间变化）。

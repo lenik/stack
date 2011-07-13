@@ -17,8 +17,8 @@ import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Blue;
-import com.bee32.plover.orm.ext.types.MCValue;
 import com.bee32.sem.inventory.config.BatchingConfig;
+import com.bee32.sem.world.monetary.MCValue;
 
 @Entity
 @Blue
