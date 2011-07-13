@@ -13,6 +13,8 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
+import com.bee32.plover.orm.ext.config.DecimalConfig;
+
 /**
  * Multi-currency value, or multi-currency amount.
  *
@@ -31,11 +33,23 @@ public class MCValue
         DEFAULT_CURRENCY = Currency.getInstance(defaultLocale);
     }
 
-    Currency currency = DEFAULT_CURRENCY;
-    BigDecimal value;
+    private Currency currency = DEFAULT_CURRENCY;
+    private BigDecimal value;
 
     public MCValue() {
         value = new BigDecimal(0);
+    }
+
+    public MCValue(Currency currency, int amount) {
+        this(currency, new BigDecimal(amount, DecimalConfig.MONEY_ITEM_CONTEXT));
+    }
+
+    public MCValue(Currency currency, long amount) {
+        this(currency, new BigDecimal(amount, DecimalConfig.MONEY_ITEM_CONTEXT));
+    }
+
+    public MCValue(Currency currency, double amount) {
+        this(currency, new BigDecimal(amount, DecimalConfig.MONEY_ITEM_CONTEXT));
     }
 
     public MCValue(Currency currency, BigDecimal amount) {
@@ -52,16 +66,18 @@ public class MCValue
 
     public void setCurrencyCode(String currencyCode) {
         if (currencyCode == null)
-            currency = null;
+            setCurrency(null);
         else {
             Currency currency = Currency.getInstance(currencyCode); // Already throws IAE, though.
             if (currency == null)
                 throw new IllegalArgumentException("Bad currency code: " + currencyCode);
-            this.currency = currency;
+            setCurrency(currency);
         }
     }
 
     /**
+     * Get the currency.
+     *
      * @return <code>null</code> for native currency.
      */
     @Transient
@@ -69,6 +85,12 @@ public class MCValue
         return currency;
     }
 
+    /**
+     * Set the currency.
+     *
+     * @param currency
+     *            Set to <code>null</code> for native currency.
+     */
     public void setCurrency(Currency currency) {
         this.currency = currency;
     }
@@ -105,10 +127,10 @@ public class MCValue
 
         MCValue o = (MCValue) obj;
 
-        if (!Nullables.equals(currency, o.currency))
+        if (!Nullables.equals(getCurrency(), o.getCurrency()))
             return false;
 
-        if (!value.equals(o.value))
+        if (!getValue().equals(o.getValue()))
             return false;
 
         return true;
@@ -118,10 +140,10 @@ public class MCValue
     public int hashCode() {
         int hash = 0;
 
-        if (currency != null)
-            hash = currency.hashCode();
+        if (getCurrency() != null)
+            hash = getCurrency().hashCode();
 
-        hash += value.hashCode();
+        hash += getValue().hashCode();
 
         return hash;
     }
