@@ -11,8 +11,6 @@ import javax.free.Nullables;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import org.springframework.context.ApplicationContext;
-
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.arch.util.dto.MarshalType;
@@ -21,7 +19,6 @@ import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.entity.EntityUtil;
-import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
@@ -58,8 +55,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     @Override
     protected IEntityMarshalContext getDefaultContext() {
-        ApplicationContext applicationContext = ThreadHttpContext.getApplicationContext();
-        DefaultMarshalContext marshalContext = applicationContext.getBean(DefaultMarshalContext.class);
+        IEntityMarshalContext marshalContext = DefaultMarshalContext.INSTANCE;
         return marshalContext;
     }
 
