@@ -25,7 +25,7 @@ public abstract class AbstractPrincipalDto<E extends Principal>
         return DEPTH_MASK.compose(depth);
     }
 
-    protected final int depth = depthOf(selection.bits);
+    protected final int depth = DEPTH_MASK.extract(selection.bits);
 
     String fullName;
     String description;
