@@ -42,7 +42,7 @@
 					<f:facet name="header">操作</f:facet>
 					<t:panelGroup>
 						<p:commandLink value="修改" update="editRolePanelForm:editRolePanel"
-							oncomplete="editRoleDialog.show();">
+							oncomplete="editRoleDialog.show();" actionListener="#{roleAdminBean.doModifyRole}">
 							<f:setPropertyActionListener value="#{role}"
 								target="#{roleAdminBean.role}" />
 						</p:commandLink>
@@ -66,23 +66,20 @@
                     <h:panelGrid columns="2">
 
                         <h:outputLabel for="inheritedRole" value="所属父角色" />
-                        <p:tree value="#{roleAdminBean.root}" var="role"
-                            selectionMode="single"
-                            selection="#{roleAdminBean.selectedParentRoleNode}">
-                            <p:treeNode>
-                                <h:outputText value="#{role.name}" />
-                            </p:treeNode>
-                        </p:tree>
+                        <h:panelGrid columns="2">
+                            <p:inputText value="#{roleAdminBean.role.inheritedRole.name}" disabled="true"/>
+                            <p:commandButton value="..." oncomplete="chooseInheritedRoleDialog.show();"/>
+                        </h:panelGrid>
 
                         <h:outputLabel for="name" value="名称" />
-                        <p:inputText id="name" value="#{roleAdminBean.role.name}" />
+                        <p:inputText id="name" value="#{roleAdminBean.role.name}" disabled="#{not roleAdminBean.editNewStatus}"/>
 
                         <h:outputLabel for="fullName" value="全名" />
                         <p:inputText id="fullName" value="#{roleAdminBean.role.fullName}" />
 
                         <t:panelGrid colspan="2" columns="2">
                             <p:commandButton value="保存"
-                                actionListener="#{roleAdminBean.doSave}" update="roleAdminForm"
+                                actionListener="#{roleAdminBean.doSave}" update="roleAdminForm chooseInheritedRoleForm:deleteConfirmPanel"
                                 oncomplete="editRoleDialog.hide();" />
                             <p:commandButton value="取消" oncomplete="editRoleDialog.hide();" />
                         </t:panelGrid>
@@ -92,20 +89,38 @@
 		</h:form>
 
 		<h:form id="deleteConfirmForm">
-			<p:dialog header="删除角色确认" widgetVar="deleteConfirmDialog"
-				modal="true" height="200" width="400">
-				<h:panelGroup id="deleteConfirmPanel">
-					<h:outputText value="确定要删除角色[#{roleAdminBean.role.name}]" />
-					<h:panelGrid columns="2">
-						<p:commandButton value="确定"
-							actionListener="#{roleAdminBean.doDelete}" update="roleAdminForm"
-							oncomplete="deleteConfirmDialog.hide();" />
-						<p:commandButton value="取消"
-							oncomplete="deleteConfirmDialog.hide();" />
-					</h:panelGrid>
-				</h:panelGroup>
-			</p:dialog>
+            <p:confirmDialog message="确定要删除角色[#{roleAdminBean.role.name}?]" width="200"
+                    header="删除角色确认" severity="alert" widgetVar="deleteConfirmDialog" modal="true">
+
+				<p:commandButton value="确定" update="roleAdminForm chooseInheritedRoleForm:deleteConfirmPanel" actionListener="#{roleAdminBean.doDelete}" oncomplete="deleteConfirmDialog.hide()"/>
+                <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
+
+			</p:confirmDialog>
 		</h:form>
+
+        <h:form id="chooseInheritedRoleForm">
+            <p:dialog header="选择父角色" widgetVar="chooseInheritedRoleDialog"
+                modal="true" height="500" width="640">
+                <h:panelGroup id="deleteConfirmPanel">
+
+					<p:tree value="#{roleAdminBean.root}" var="role"
+						selectionMode="single" selection="#{roleAdminBean.selectedInheritedRoleNode}">
+						<p:treeNode>
+							<h:outputText value="#{role.name}" />
+						</p:treeNode>
+					</p:tree>
+
+					<h:panelGrid columns="2">
+                        <p:commandButton value="确定"
+                            actionListener="#{roleAdminBean.doSelectInheritedRole}" update="editRolePanelForm:editRolePanel"
+                            oncomplete="chooseInheritedRoleDialog.hide();" />
+                        <p:commandButton value="取消"
+                            oncomplete="chooseInheritedRoleDialog.hide();" />
+                    </h:panelGrid>
+
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
 
 
 	</ui:define>

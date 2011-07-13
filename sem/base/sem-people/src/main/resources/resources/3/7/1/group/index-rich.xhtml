@@ -24,11 +24,106 @@
     <ui:define name="content">
 
 
-		<h:form id="rolesForm">
-			<p:growl id="growl" showDetail="true" />
+
+        <h:form id="groupAdminForm">
+            <p:growl id="growl" showDetail="true" />
+
+            <p:commandButton value="新增组" actionListener="#{groupAdminBean.doNewGroup}" onclick="editGroupDialog.show();" async="true" update="editGroupPanelForm:editGroupPanel"/>
+            <p:treeTable id="groupTable" value="#{groupAdminBean.root}" var="group">
+                <p:column>
+                    <f:facet name="header">名称</f:facet>
+                    <h:outputText value="#{group.name}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">全名</f:facet>
+                    <h:outputText value="#{group.fullName}" />
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">操作</f:facet>
+                    <t:panelGroup>
+                        <p:commandLink value="修改" update="editGroupPanelForm:editGroupPanel"
+                            oncomplete="editGroupDialog.show();" actionListener="#{groupAdminBean.doModifyGroup}">
+                            <f:setPropertyActionListener value="#{group}"
+                                target="#{groupAdminBean.group}" />
+                        </p:commandLink>
+                        <p:spacer width="10" />
+                        <p:commandLink value="删除"
+                            update="deleteConfirmForm:deleteConfirmPanel"
+                            oncomplete="deleteConfirmDialog.show();">
+                            <f:setPropertyActionListener value="#{group}"
+                                target="#{groupAdminBean.group}" />
+                        </p:commandLink>
+                    </t:panelGroup>
+                </p:column>
+            </p:treeTable>
+
+        </h:form>
 
 
-		</h:form>
+        <h:form id="editGroupPanelForm">
+            <p:dialog header="新增组" widgetVar="editGroupDialog" modal="true" height="500" width="640">
+                <p:outputPanel id="editGroupPanel">
+                    <h:panelGrid columns="2">
+
+                        <h:outputLabel for="inheritedGroup" value="所属父组" />
+                        <h:panelGrid columns="2">
+                            <p:inputText value="#{groupAdminBean.group.inheritedGroup.name}" disabled="true"/>
+                            <p:commandButton value="..." oncomplete="chooseInheritedGroupDialog.show();"/>
+                        </h:panelGrid>
+
+                        <h:outputLabel for="name" value="名称" />
+                        <p:inputText id="name" value="#{groupAdminBean.group.name}" disabled="#{not groupAdminBean.editNewStatus}"/>
+
+                        <h:outputLabel for="fullName" value="全名" />
+                        <p:inputText id="fullName" value="#{groupAdminBean.group.fullName}" />
+
+                        <t:panelGrid colspan="2" columns="2">
+                            <p:commandButton value="保存"
+                                actionListener="#{groupAdminBean.doSave}" update="groupAdminForm chooseInheritedGroupForm:deleteConfirmPanel"
+                                oncomplete="editGroupDialog.hide();" />
+                            <p:commandButton value="取消" oncomplete="editGroupDialog.hide();" />
+                        </t:panelGrid>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+
+        <h:form id="deleteConfirmForm">
+            <p:confirmDialog message="确定要删除组[#{groupAdminBean.group.name}?]" width="200"
+                    header="删除组确认" severity="alert" widgetVar="deleteConfirmDialog" modal="true">
+
+                <p:commandButton value="确定" update="groupAdminForm chooseInheritedGroupForm:deleteConfirmPanel" actionListener="#{groupAdminBean.doDelete}" oncomplete="deleteConfirmDialog.hide()"/>
+                <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
+
+            </p:confirmDialog>
+        </h:form>
+
+        <h:form id="chooseInheritedGroupForm">
+            <p:dialog header="选择父组" widgetVar="chooseInheritedGroupDialog"
+                modal="true" height="500" width="640">
+                <h:panelGroup id="deleteConfirmPanel">
+
+                    <p:tree value="#{groupAdminBean.root}" var="group"
+                        selectionMode="single" selection="#{groupAdminBean.selectedInheritedGroupNode}">
+                        <p:treeNode>
+                            <h:outputText value="#{group.name}" />
+                        </p:treeNode>
+                    </p:tree>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="确定"
+                            actionListener="#{groupAdminBean.doSelectInheritedGroup}" update="editGroupPanelForm:editGroupPanel"
+                            oncomplete="chooseInheritedGroupDialog.hide();" />
+                        <p:commandButton value="取消"
+                            oncomplete="chooseInheritedGroupDialog.hide();" />
+                    </h:panelGrid>
+
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
+
 
 
 	</ui:define>
