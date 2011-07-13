@@ -81,12 +81,11 @@ public class ChanceBean
     private ChanceActionDto[] selectedActions;
     private ChanceActionDto selectedAction;
     private ChanceActionDto tempAction = new ChanceActionDto();
-    // XXX 有用没有?
     private ChancePartyDto selectedChanceParty;
     private PartyDto selectedParty;
     private List<PartyDto> parties;
 
-    // TODO quotation fields
+    // quotation fields
 
     private boolean quotationOptionable;
     private boolean quotationEdit;
@@ -107,7 +106,7 @@ public class ChanceBean
     private boolean quotationItemPriceRendered;
     private boolean quotationItemNumberRendered;
 
-    // XXX quotation methods
+    // quotation methods
 
     ChanceBean() {
         initMaterial();
@@ -290,7 +289,7 @@ public class ChanceBean
         quotationDetailable = true;
     }
 
-    // XXX origin chanceBean methods
+    // chanceBean methods
 
     public void initList() {
         EntityDataModelOptions<Chance, ChanceDto> edmo = new EntityDataModelOptions<Chance, ChanceDto>(Chance.class,
@@ -612,14 +611,6 @@ public class ChanceBean
         this.isSearching = isSearching;
     }
 
-// public boolean isAddable() {
-// return addable;
-// }
-//
-// public void setAddable(boolean addable) {
-// this.addable = addable;
-// }
-
     public boolean isEdable() {
         return edable;
     }
@@ -635,30 +626,6 @@ public class ChanceBean
     public void setDetailable(boolean detailable) {
         this.detailable = detailable;
     }
-
-// public boolean isBackable() {
-// return backable;
-// }
-//
-// public void setBackable(boolean backable) {
-// this.backable = backable;
-// }
-//
-// public boolean isSaveable() {
-// return saveable;
-// }
-//
-// public void setSaveable(boolean saveable) {
-// this.saveable = saveable;
-// }
-
-// public boolean isSearchable() {
-// return searchable;
-// }
-//
-// public void setSearchable(boolean searchable) {
-// this.searchable = searchable;
-// }
 
     public boolean isRelating() {
         return relating;
@@ -676,12 +643,60 @@ public class ChanceBean
         this.unRelating = unRelating;
     }
 
+    public boolean isActionDetail() {
+        return actionDetail;
+    }
+
+    public void setActionDetail(boolean actionDetail) {
+        this.actionDetail = actionDetail;
+    }
+
     public boolean isEditable() {
         return editable;
     }
 
     public void setEditable(boolean editable) {
         this.editable = editable;
+    }
+
+    public boolean isFieldRendered() {
+        return fieldRendered;
+    }
+
+    public void setFieldRendered(boolean fieldRendered) {
+        this.fieldRendered = fieldRendered;
+    }
+
+    public boolean isChancePartyEdit() {
+        return chancePartyEdit;
+    }
+
+    public void setChancePartyEdit(boolean chancePartyEdit) {
+        this.chancePartyEdit = chancePartyEdit;
+    }
+
+    public boolean isRoleRendered() {
+        return roleRendered;
+    }
+
+    public void setRoleRendered(boolean roleRendered) {
+        this.roleRendered = roleRendered;
+    }
+
+    public String getTempRole() {
+        return tempRole;
+    }
+
+    public void setTempRole(String tempRole) {
+        this.tempRole = tempRole;
+    }
+
+    public boolean isChancePartyEditing() {
+        return isChancePartyEditing;
+    }
+
+    public void setChancePartyEditing(boolean isChancePartyEditing) {
+        this.isChancePartyEditing = isChancePartyEditing;
     }
 
     public String getSubjectPattern() {
@@ -764,6 +779,14 @@ public class ChanceBean
         this.selectedAction = selectedAction;
     }
 
+    public ChanceActionDto getTempAction() {
+        return tempAction;
+    }
+
+    public void setTempAction(ChanceActionDto tempAction) {
+        this.tempAction = tempAction;
+    }
+
     public ChancePartyDto getSelectedChanceParty() {
         return selectedChanceParty;
     }
@@ -788,7 +811,54 @@ public class ChanceBean
         this.parties = parties;
     }
 
-    // TODO quotation gets and sets below
+    public boolean isQuotationOptionable() {
+        return quotationOptionable;
+    }
+
+    public void setQuotationOptionable(boolean quotationOptionable) {
+        this.quotationOptionable = quotationOptionable;
+    }
+
+    public boolean isQuotationEdit() {
+        return quotationEdit;
+    }
+
+    public void setQuotationEdit(boolean quotationEdit) {
+        this.quotationEdit = quotationEdit;
+    }
+
+    public boolean isQuotationAdd() {
+        return quotationAdd;
+    }
+
+    public void setQuotationAdd(boolean quotationAdd) {
+        this.quotationAdd = quotationAdd;
+    }
+
+    public boolean isQuotationDetailable() {
+        return quotationDetailable;
+    }
+
+    public void setQuotationDetailable(boolean quotationDetailable) {
+        this.quotationDetailable = quotationDetailable;
+    }
+
+    public boolean isPriceEditing() {
+        return isPriceEditing;
+    }
+
+    public void setPriceEditing(boolean isPriceEditing) {
+        this.isPriceEditing = isPriceEditing;
+    }
+
+    public boolean isQuantityEditing() {
+        return isQuantityEditing;
+    }
+
+    public void setQuantityEditing(boolean isQuantityEditing) {
+        this.isQuantityEditing = isQuantityEditing;
+    }
+
     public List<QuotationDto> getQuotations() {
         return quotations;
     }
@@ -845,22 +915,6 @@ public class ChanceBean
         this.selectedQuotationItem = selectedQuotationItem;
     }
 
-    public boolean isQuotationItemPriceRendered() {
-        return quotationItemPriceRendered;
-    }
-
-    public void setQuotationItemPriceRendered(boolean quotationItemPriceRendered) {
-        this.quotationItemPriceRendered = quotationItemPriceRendered;
-    }
-
-    public boolean isQuotationItemNumberRendered() {
-        return quotationItemNumberRendered;
-    }
-
-    public void setQuotationItemNumberRendered(boolean quotationItemNumberRendered) {
-        this.quotationItemNumberRendered = quotationItemNumberRendered;
-    }
-
     public double getTemPrice() {
         return temPrice;
     }
@@ -877,108 +931,20 @@ public class ChanceBean
         this.temQuantity = temQuantity;
     }
 
-    public boolean isQuotationOptionable() {
-        return quotationOptionable;
+    public boolean isQuotationItemPriceRendered() {
+        return quotationItemPriceRendered;
     }
 
-    public void setQuotationOptionable(boolean quotationOptionable) {
-        this.quotationOptionable = quotationOptionable;
+    public void setQuotationItemPriceRendered(boolean quotationItemPriceRendered) {
+        this.quotationItemPriceRendered = quotationItemPriceRendered;
     }
 
-    public boolean isQuotationEdit() {
-        return quotationEdit;
+    public boolean isQuotationItemNumberRendered() {
+        return quotationItemNumberRendered;
     }
 
-    public void setQuotationEdit(boolean quotationEdit) {
-        this.quotationEdit = quotationEdit;
-    }
-
-    public boolean isFieldRendered() {
-        return fieldRendered;
-    }
-
-    public void setFieldRendered(boolean fieldRendered) {
-        this.fieldRendered = fieldRendered;
-    }
-
-    public boolean isQuotationAdd() {
-        return quotationAdd;
-    }
-
-    public void setQuotationAdd(boolean quotationAdd) {
-        this.quotationAdd = quotationAdd;
-    }
-
-    public boolean isActionDetail() {
-        return actionDetail;
-    }
-
-    public void setActionDetail(boolean actionDetail) {
-        this.actionDetail = actionDetail;
-    }
-
-    public boolean isQuotationDetailable() {
-        return quotationDetailable;
-    }
-
-    public void setQuotationDetailable(boolean quotationDetailable) {
-        this.quotationDetailable = quotationDetailable;
-    }
-
-    public ChanceActionDto getTempAction() {
-        return tempAction;
-    }
-
-    public void setTempAction(ChanceActionDto tempAction) {
-        this.tempAction = tempAction;
-    }
-
-    public boolean isChancePartyEdit() {
-        return chancePartyEdit;
-    }
-
-    public void setChancePartyEdit(boolean chancePartyEdit) {
-        this.chancePartyEdit = chancePartyEdit;
-    }
-
-    public boolean isRoleRendered() {
-        return roleRendered;
-    }
-
-    public void setRoleRendered(boolean roleRendered) {
-        this.roleRendered = roleRendered;
-    }
-
-    public boolean isPriceEditing() {
-        return isPriceEditing;
-    }
-
-    public void setPriceEditing(boolean isPriceEditing) {
-        this.isPriceEditing = isPriceEditing;
-    }
-
-    public boolean isQuantityEditing() {
-        return isQuantityEditing;
-    }
-
-    public void setQuantityEditing(boolean isQuantityEditing) {
-        this.isQuantityEditing = isQuantityEditing;
-    }
-
-    public String getTempRole() {
-        return tempRole;
-    }
-
-    public void setTempRole(String tempRole) {
-        this.tempRole = tempRole;
-    }
-
-    public boolean isChancePartyEditing() {
-        return isChancePartyEditing;
-    }
-
-    public void setChancePartyEditing(boolean isChancePartyEditing) {
-        this.isChancePartyEditing = isChancePartyEditing;
+    public void setQuotationItemNumberRendered(boolean quotationItemNumberRendered) {
+        this.quotationItemNumberRendered = quotationItemNumberRendered;
     }
 
 }
