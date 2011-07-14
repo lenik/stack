@@ -4,43 +4,37 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.hibernate.criterion.Restrictions;
-import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.PrincipalCheckException;
+import com.bee32.icsf.principal.PrincipalDiag;
+import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.GroupDto;
+import com.bee32.icsf.principal.dto.RoleDto;
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityViewBean;
 
 @Component
 @Scope("view")
-public class GroupAdminBean
-        extends EntityViewBean {
+public class GroupAdminBean extends PrincipalAdminBean {
 
-	private static final long serialVersionUID = 1L;
-
-	private boolean editNewStatus;	//true:新增状态;false:修改状态;
-
-	private TreeNode rootNode;
-	private GroupDto group;
-	private TreeNode selectedInheritedGroupNode;
+    private static final long serialVersionUID = 1L;
 
 
-	public boolean isEditNewStatus() {
-		return editNewStatus;
-	}
+    private GroupDto group;
+    private TreeNode selectedInheritedGroupNode;
 
-	public void setEditNewStatus(boolean editNewStatus) {
-		this.editNewStatus = editNewStatus;
-	}
+    private RoleDto selectedRole;
+    private TreeNode selectedRoleNode;
 
-	public TreeNode getRoot() {
-        return rootNode;
-    }
+    private UserDto selectedUser;
+    private UserDto selectedUserToAdd;
+
 
     public GroupDto getGroup() {
         if (group == null) {
@@ -50,39 +44,68 @@ public class GroupAdminBean
     }
 
     public void setGroup(GroupDto group) {
-        this.group = group;
+        this.group = reload(group);
     }
 
     public TreeNode getSelectedInheritedGroupNode() {
-		return selectedInheritedGroupNode;
-	}
-
-	public void setSelectedInheritedGroupNode(TreeNode selectedInheritedGroupNode) {
-		this.selectedInheritedGroupNode = selectedInheritedGroupNode;
-	}
-
-	private void loadGroupTree() {
-        rootNode = new DefaultTreeNode("root", null);
-
-        List<Group> rootGroups = serviceFor(Group.class).list(Restrictions.isNull("parent"));
-        List<GroupDto> rootGroupDtos = DTOs.marshalList(GroupDto.class, -1, rootGroups);
-
-        for (GroupDto groupDto : rootGroupDtos) {
-            loadGroupRecursive(groupDto, rootNode);
-        }
+        return selectedInheritedGroupNode;
     }
 
-    private void loadGroupRecursive(GroupDto groupDto, TreeNode parentTreeNode) {
-        TreeNode groupNode = new DefaultTreeNode(groupDto, parentTreeNode);
-
-        List<GroupDto> subGroups = groupDto.getDerivedGroups();
-        for (GroupDto subGroup : subGroups) {
-            loadGroupRecursive(subGroup, groupNode);
-        }
+    public void setSelectedInheritedGroupNode(TreeNode selectedInheritedGroupNode) {
+        this.selectedInheritedGroupNode = selectedInheritedGroupNode;
     }
+
+    public RoleDto getSelectedRole() {
+        return selectedRole;
+    }
+
+    public void setSelectedRole(RoleDto selectedRole) {
+        this.selectedRole = selectedRole;
+    }
+
+    public TreeNode getSelectedRoleNode() {
+        return selectedRoleNode;
+    }
+
+    public void setSelectedRoleNode(TreeNode selectedRoleNode) {
+        this.selectedRoleNode = selectedRoleNode;
+    }
+
+    public List<RoleDto> getRoles() {
+        return group.getAssignedRoles();
+    }
+
+    public List<UserDto> getUsers() {
+        return group.getMemberUsers();
+    }
+
+    public List<UserDto> getAllUser() {
+        List<User> allUser = serviceFor(User.class).list();
+        return DTOs.marshalList(UserDto.class, allUser);
+    }
+
+    public UserDto getSelectedUser() {
+        return selectedUser;
+    }
+
+    public void setSelectedUser(UserDto selectedUser) {
+        this.selectedUser = selectedUser;
+    }
+
+    public UserDto getSelectedUserToAdd() {
+        return selectedUserToAdd;
+    }
+
+    public void setSelectedUserToAdd(UserDto selectedUserToAdd) {
+        this.selectedUserToAdd = selectedUserToAdd;
+    }
+
+
+
 
     @PostConstruct
     public void init() {
+	loadRoleTree();
 	loadGroupTree();
 	}
 
@@ -103,49 +126,35 @@ public class GroupAdminBean
     public void doSave() {
 	if(editNewStatus) {
 		//新增
-		Group existing = serviceFor(Group.class).get(group.getId());
+	        Principal existing = serviceFor(Principal.class).get(group.getId());
 	        if (existing != null) {
 	            uiLogger.error("保存失败:组已存在。");
 	            return;
 	        }
 	}
 
-	Group g = group.unmarshal(this);
+        Group g = group.unmarshal(this);
 
-		try {
-			serviceFor(Group.class).saveOrUpdate(g);
+        try {
+            PrincipalDiag.checkDeadLoop(g);
+        } catch (PrincipalCheckException e) {
+            uiLogger.error("组结构非法:组存在循环引用", e);
+            return;
+        }
 
-			TreeNode newTreeNode = null;
-
-			if (group.getInheritedGroup() != null) {
-				newTreeNode = new DefaultTreeNode(group,
-						selectedInheritedGroupNode);
-			} else {
-				newTreeNode = new DefaultTreeNode(group, rootNode);
-			}
-
-			if (!editNewStatus) {
-				// 修改
-				TreeNode node = findNodeByGroup(rootNode, group);
-				TreeNode parentNode = node.getParent();
-
-				for (TreeNode subNode : node.getChildren()) {
-					newTreeNode.getChildren().add(subNode);
-				}
-				parentNode.getChildren().remove(node);
-			}
-
-			uiLogger.info("保存成功。");
-		} catch (Exception e) {
-			uiLogger.error("保存失败.错误消息:" + e.getMessage());
-		}
+        try {
+            serviceFor(Group.class).saveOrUpdate(g);
+            loadGroupTree();
+            uiLogger.info("保存成功。");
+        } catch (Exception e) {
+            uiLogger.error("保存失败.错误消息:" + e.getMessage());
+        }
     }
 
     public void doDelete() {
 		try {
 			serviceFor(Group.class).delete(group.unmarshal());
-			TreeNode node = findNodeByGroup(rootNode, group);
-			node.getParent().getChildren().remove(node);
+			loadGroupTree();
 			uiLogger.info("删除成功!");
 		} catch (DataIntegrityViolationException e) {
 			uiLogger.error("删除失败,违反约束归则,可能你需要删除的组在其它地方被使用到!");
@@ -153,27 +162,32 @@ public class GroupAdminBean
     }
 
     public void doSelectInheritedGroup() {
-	group.setInheritedGroup((GroupDto) selectedInheritedGroupNode.getData());
+	group.setInheritedGroup((GroupDto)selectedInheritedGroupNode.getData());
+    }
+
+    public void doAddRole() {
+        group = reload(group);
+        group.addAssignedRole((RoleDto) selectedRoleNode.getData());
+        serviceFor(Group.class).saveOrUpdate(group.unmarshal());
+    }
+
+    public void doRemoveRole() {
+        group = reload(group);
+        group.removeAssignedRole(selectedRole);
+        serviceFor(Group.class).saveOrUpdate(group.unmarshal());
     }
 
 
-    private TreeNode findNodeByGroup(TreeNode node, GroupDto groupDto) {
-	if (node.getData() instanceof GroupDto) {
-		if(((GroupDto)node.getData()).getName().equals(groupDto.getName())) {
-			return node;
-		}
-		}
-
-	TreeNode resultNode = null;
-
-		if(node.getChildCount() > 0) {
-			for(TreeNode subNode : node.getChildren()) {
-				resultNode = findNodeByGroup(subNode, groupDto);
-				if(resultNode != null) break;
-			}
-		}
-
-	return resultNode;
+    public void doAddUser() {
+        selectedUserToAdd = reload(selectedUserToAdd);
+        group.addMemberUser(selectedUserToAdd);
+        serviceFor(Group.class).saveOrUpdate(group.unmarshal());
     }
 
+    public void doRemoveUser() {
+        selectedUser = reload(selectedUser);
+        selectedUser.removeAssignedGroup(group);
+        group.removeMemberUser(selectedUser);
+        serviceFor(Group.class).saveOrUpdate(group.unmarshal());
+    }
 }

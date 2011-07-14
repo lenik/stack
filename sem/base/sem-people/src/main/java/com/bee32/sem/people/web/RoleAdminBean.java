@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalCheckException;
 import com.bee32.icsf.principal.PrincipalDiag;
 import com.bee32.icsf.principal.Role;
@@ -127,7 +128,7 @@ public class RoleAdminBean extends PrincipalAdminBean {
     public void doSave() {
 	if(editNewStatus) {
 		//新增
-	        Role existing = serviceFor(Role.class).get(role.getId());
+	        Principal existing = serviceFor(Principal.class).get(role.getId());
 	        if (existing != null) {
 	            uiLogger.error("保存失败:角色已存在。");
 	            return;
