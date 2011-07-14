@@ -48,8 +48,7 @@ public class SamplesLoader
             throws BeansException {
 
         // Eagerly scan all the contributions.
-        for (SampleContribution contrib : applicationContext.//
-                getBeansOfType(SampleContribution.class).values())
+        for (SampleContribution contrib : ImportSamplesUtil.applyImports(applicationContext))
             ;
     }
 

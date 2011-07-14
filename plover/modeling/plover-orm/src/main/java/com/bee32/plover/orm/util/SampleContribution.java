@@ -6,52 +6,42 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 
-import com.bee32.plover.arch.Component;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.entity.Entity;
 
+/**
+ * Lifecycle:
+ *
+ * <ol>
+ * <li>Spring scan all exported contribs
+ * <li>Add dependency to virtual packages within ctor.
+ * <li>ImportSamplesUtil add dependencies later
+ * <li>Should virtualpackage.XXX implied all specific samples.
+ * </ol>
+ */
 @ComponentTemplate
 @Lazy
 public abstract class SampleContribution
-        extends Component {
+        extends SamplePackage {
 
     static Logger logger = LoggerFactory.getLogger(SampleContribution.class);
 
     public static final String LOADED_SAMPLE_PACKAGE_KEY = "sample";
 
     private boolean assembled;
-    private SamplePackage _package;
 
     /**
      * The default ctor is reserved for Spring CDI.
      */
     protected SampleContribution() {
         super();
-        createPackage();
     }
 
-    protected SampleContribution(SamplePackage... aDependantOf) {
+    protected SampleContribution(SamplePackage... outers) {
         this();
-        for (SamplePackage parent : aDependantOf) {
-            parent.addDependency(_package);
+        for (SamplePackage outer : outers) {
+            outer.addDependency(this);
         }
-    }
-
-    void createPackage() {
-        _package = new SamplePackage(getName());
-
-        ImportSamples imports = getClass().getAnnotation(ImportSamples.class);
-        if (imports != null) {
-            for (Class<?> importClass : imports.value()) {
-                SampleContribution importInstance = instances.get(importClass);
-                if (importInstance == null) {
-                    logger.warn("Samples contribution " + this + " imports non-existing contribution " + importClass);
-                    continue;
-                }
-            }
-        }
-
-        _package.addDependency(dependency);
     }
 
     /**
