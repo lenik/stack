@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.util;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,4 +33,15 @@ public class SamplesPackage
         return dependencies;
     }
 
+    public void addInstance(Entity<? extends Serializable> instance) {
+        if (instance == null)
+            throw new NullPointerException("instance");
+        instances.add(instance);
+    }
+
+    public void addDependency(SamplesPackage dependency) {
+        if (dependency == null)
+            throw new NullPointerException("dependency");
+        dependencies.add(dependency);
+    }
 }
