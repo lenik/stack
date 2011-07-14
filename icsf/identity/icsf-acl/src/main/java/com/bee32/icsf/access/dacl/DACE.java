@@ -57,6 +57,7 @@ public class DACE
         this.dacl = dacl;
     }
 
+    @NaturalId
     @ManyToOne
     @JoinColumn(nullable = false)
     public Principal getPrincipal() {
