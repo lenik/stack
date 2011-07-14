@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.MapKeyManyToMany;
@@ -24,6 +25,7 @@ public class UnitConv
     private static final long serialVersionUID = 1L;
 
     UnitConv parent;
+    boolean natural;
     Unit from;
     Map<Unit, Double> ratioMap = new HashMap<Unit, Double>();
 
@@ -31,9 +33,14 @@ public class UnitConv
         super();
     }
 
+    public UnitConv(Unit from) {
+        super("nat:" + from.getName(), "自然换算表（" + from.getLabel() + "）");
+        this.natural = true;
+        this.from = from;
+    }
+
     public UnitConv(String name, String label, Unit from) {
         super(name, label);
-
         if (from == null)
             throw new NullPointerException("from");
         this.from = from;
@@ -46,6 +53,15 @@ public class UnitConv
 
     public void setParent(UnitConv parent) {
         this.parent = parent;
+    }
+
+    @Column(nullable = false)
+    public boolean isNatural() {
+        return natural;
+    }
+
+    public void setNatural(boolean natural) {
+        this.natural = natural;
     }
 
     @ManyToOne
@@ -79,6 +95,7 @@ public class UnitConv
      *            Non-<code>null</code> unit to whose conversion ratio is asked.
      * @return <code>null</code> if the conversion ratio to the <code>toUnit</code> is not defined.
      */
+    @Transient
     public Double getRatio(Unit toUnit) {
         if (toUnit == null)
             throw new NullPointerException("toUnit");
@@ -104,6 +121,33 @@ public class UnitConv
         if (toUnit == null)
             throw new NullPointerException("toUnit");
         ratioMap.put(toUnit, ratio);
+    }
+
+    public static UnitConv NATURAL_METER = new UnitConv(Unit.METER);
+    public static UnitConv NATURAL_SQUARE_METER = new UnitConv(Unit.SQUARE_METER);
+    public static UnitConv NATURAL_CUBIC_METER = new UnitConv(Unit.CUBIC_METER);
+    public static UnitConv NATURAL_GRAM = new UnitConv(Unit.GRAM);
+    public static UnitConv NATURAL_NEWTON = new UnitConv(Unit.NEWTON);
+    public static UnitConv NATURAL_LITER = new UnitConv(Unit.LITER);
+
+    static {
+        NATURAL_METER.setRatio(Unit.KILOMETER, 0.001);
+        NATURAL_METER.setRatio(Unit.DECIMETER, 10);
+        NATURAL_METER.setRatio(Unit.CENTIMETER, 100);
+        NATURAL_METER.setRatio(Unit.MILLIMETER, 1000);
+
+        NATURAL_CUBIC_METER.setRatio(Unit.LITER, 1000);
+
+        NATURAL_SQUARE_METER.setRatio(Unit.SQUARE_CENTIMETER, 10000);
+        NATURAL_SQUARE_METER.setRatio(Unit.SQUARE_KILOMETER, 0.000001);
+
+        NATURAL_GRAM.setRatio(Unit.KILOGRAM, 0.001);
+        NATURAL_GRAM.setRatio(Unit.MILLIGRAM, 1000);
+
+        NATURAL_NEWTON.setRatio(Unit.KILOGRAM, 1.0 / 9.80);
+
+        NATURAL_LITER.setRatio(Unit.CUBIC_METER, 0.001);
+        NATURAL_LITER.setRatio(Unit.MILLILITER, 1000);
     }
 
 }
