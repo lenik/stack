@@ -1,9 +1,9 @@
 package com.bee32.plover.bookstore;
 
-import com.bee32.plover.orm.util.EntitySamplesContribution;
+import com.bee32.plover.orm.util.SamplesContribution;
 
 public class SimpleBooks
-        extends EntitySamplesContribution {
+        extends SamplesContribution {
 
     public static final Book tom = new Book("Tom", "A great story");
     public static final Book jerry = new Book("Jerry", "A wonderful cartoon book");

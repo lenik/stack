@@ -3,7 +3,7 @@ package com.bee32.sem.mail;
 import java.util.Arrays;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.EntitySamplesContribution;
+import com.bee32.plover.orm.util.SamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.mail.entity.Mail;
 import com.bee32.sem.mail.entity.MailDelivery;
@@ -13,7 +13,7 @@ import com.bee32.sem.mail.entity.MailParty;
 
 @ImportSamples(IcsfPrincipalSamples.class)
 public class SEMMailSamples
-        extends EntitySamplesContribution {
+        extends SamplesContribution {
 
     public static MailFolder favBox = new MailFolder();
     public static MailFolder spamBox = new MailFolder();

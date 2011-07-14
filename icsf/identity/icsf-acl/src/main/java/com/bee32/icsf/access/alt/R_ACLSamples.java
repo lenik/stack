@@ -2,12 +2,12 @@ package com.bee32.icsf.access.alt;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.Role;
-import com.bee32.plover.orm.util.EntitySamplesContribution;
+import com.bee32.plover.orm.util.SamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 
 @ImportSamples(IcsfPrincipalSamples.class)
 public class R_ACLSamples
-        extends EntitySamplesContribution {
+        extends SamplesContribution {
 
     static R_ACE admin_all;
     static R_ACE service_tom_x;

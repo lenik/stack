@@ -4,7 +4,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import com.bee32.icsf.login.PrivateQuestion;
 import com.bee32.icsf.login.UserPassword;
-import com.bee32.plover.orm.util.EntitySamplesContribution;
+import com.bee32.plover.orm.util.SamplesContribution;
 
 /**
  * Sample principals:
@@ -15,7 +15,7 @@ import com.bee32.plover.orm.util.EntitySamplesContribution;
  * </pre>
  */
 public class IcsfPrincipalSamples
-        extends EntitySamplesContribution {
+        extends SamplesContribution {
 
     public static Group solaRobots = new Group("Sola Robots Club");
     public static Group sunCorp = new Group("Sun Corp");

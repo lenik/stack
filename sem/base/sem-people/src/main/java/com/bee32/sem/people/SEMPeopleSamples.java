@@ -9,7 +9,7 @@ import javax.free.Dates;
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.util.EntitySamplesContribution;
+import com.bee32.plover.orm.util.SamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.misc.Sets;
 import com.bee32.sem.people.entity.Contact;
@@ -23,7 +23,7 @@ import com.bee32.sem.people.entity.PersonSidType;
 
 @ImportSamples(IcsfPrincipalSamples.class)
 public class SEMPeopleSamples
-        extends EntitySamplesContribution {
+        extends SamplesContribution {
 
     // 原来 SEMOrgSamples 中的样本。
     public static Group abcCorp = new Group("ABC Company");

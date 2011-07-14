@@ -39,12 +39,12 @@ public class SamplesLoader
     @Inject
     CommonDataManager dataManager;
 
-    Map<Class<?>, IEntitySamplesContribution> dependencies;
+    Map<Class<?>, SamplesContribution> dependencies;
 
     PersistenceUnit unit;
 
     public SamplesLoader() {
-        dependencies = new HashMap<Class<?>, IEntitySamplesContribution>();
+        dependencies = new HashMap<Class<?>, SamplesContribution>();
         unit = CustomizedSessionFactoryBean.getForceUnit();
     }
 
@@ -53,15 +53,15 @@ public class SamplesLoader
             throws BeansException {
 
         // Scan all contributions and import them.
-        for (EntitySamplesContribution contrib : applicationContext.//
-                getBeansOfType(EntitySamplesContribution.class).values()) {
+        for (SamplesContribution contrib : applicationContext.//
+                getBeansOfType(SamplesContribution.class).values()) {
 
             Class<?> contribClass = contrib.getClass();
             dependencies.put(contribClass, contrib);
         }
     }
 
-    private static Closure<IEntitySamplesContribution> NO_PROGRESS;
+    private static Closure<SamplesContribution> NO_PROGRESS;
     static {
         NO_PROGRESS = NOPClosure.getInstance();
     }
@@ -70,8 +70,8 @@ public class SamplesLoader
         loadNormalSamples(NO_PROGRESS);
     }
 
-    public void loadNormalSamples(Closure<IEntitySamplesContribution> progress) {
-        for (IEntitySamplesContribution contrib : dependencies.values()) {
+    public void loadNormalSamples(Closure<SamplesContribution> progress) {
+        for (SamplesContribution contrib : dependencies.values()) {
             loadSamples(contrib, false, progress);
         }
     }
@@ -80,16 +80,16 @@ public class SamplesLoader
         loadWorseSamples(NO_PROGRESS);
     }
 
-    public void loadWorseSamples(Closure<IEntitySamplesContribution> progress) {
-        for (IEntitySamplesContribution contrib : dependencies.values()) {
+    public void loadWorseSamples(Closure<SamplesContribution> progress) {
+        for (SamplesContribution contrib : dependencies.values()) {
             loadSamples(contrib, true, progress);
         }
     }
 
     static int loadIndex = 0;
 
-    public synchronized void loadSamples(IEntitySamplesContribution contrib, boolean worseCase,
-            Closure<IEntitySamplesContribution> progress) {
+    public synchronized void loadSamples(SamplesContribution contrib, boolean worseCase,
+            Closure<SamplesContribution> progress) {
 
         if (contrib == null)
             throw new NullPointerException("contrib");
@@ -100,7 +100,7 @@ public class SamplesLoader
         ImportSamples imports = contrib.getClass().getAnnotation(ImportSamples.class);
         if (imports != null) {
             for (Class<?> importClass : imports.value()) {
-                IEntitySamplesContribution dependency = dependencies.get(importClass);
+                SamplesContribution dependency = dependencies.get(importClass);
                 if (dependency == null) {
                     logger.warn("Samples contribution " + contrib + " imports non-existing contribution " + importClass);
                     continue;
@@ -133,7 +133,7 @@ public class SamplesLoader
                 }
 
                 Class<?> sampleClass = sample.getClass();
-                if (unit.getClasses() .contains(sampleClass))
+                if (unit.getClasses().contains(sampleClass))
                     selection.add(sample);
                 else
                     logger.debug("  Ignored entity of non-using class: " + sampleClass);
