@@ -6,10 +6,10 @@ import java.util.Map;
 public class VirtualPackage
         extends SamplesPackage {
 
-    public static final String STANDARD = "std";
-    public static final String NORMAL = "normal";
-    public static final String WORSE = "worse";
-    public static final String EVERYTHING = "everything";
+    static final String STANDARD_NAME = "std";
+    static final String NORMAL_NAME = "normal";
+    static final String WORSE_NAME = "worse";
+    static final String EVERYTHING_NAME = "everything";
 
     public VirtualPackage() {
         super();
@@ -25,13 +25,18 @@ public class VirtualPackage
     }
 
     static final Map<String, VirtualPackage> virtualPackages;
+
+    public static final VirtualPackage STANDARD;
+    public static final VirtualPackage NORMAL;
+    public static final VirtualPackage WORSE;
+    public static final VirtualPackage EVERYTHING;
+
     static {
         virtualPackages = new HashMap<String, VirtualPackage>();
-
-        VirtualPackage standardPackage = createDiamond(STANDARD, null);
-        VirtualPackage normalPackage = createDiamond(NORMAL, standardPackage);
-        VirtualPackage worsePackage = createDiamond(WORSE, normalPackage);
-        createDiamond(EVERYTHING, worsePackage);
+        STANDARD = createDiamond(STANDARD_NAME, null);
+        NORMAL = createDiamond(NORMAL_NAME, STANDARD);
+        WORSE = createDiamond(WORSE_NAME, NORMAL);
+        EVERYTHING = createDiamond(EVERYTHING_NAME, WORSE);
     }
 
     static VirtualPackage createDiamond(String name, VirtualPackage dependOn) {
