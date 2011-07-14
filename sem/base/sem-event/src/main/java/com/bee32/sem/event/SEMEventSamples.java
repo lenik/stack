@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.Role;
-import com.bee32.plover.orm.util.SamplesContribution;
+import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventCategory;
@@ -17,7 +17,7 @@ import com.bee32.sem.event.entity.Task;
 
 @ImportSamples(IcsfPrincipalSamples.class)
 public class SEMEventSamples
-        extends SamplesContribution {
+        extends SampleContribution {
 
     public static final EventPriority URGENT = new EventPriority(EventPriority.URGENT, "urgent", "紧急");
     public static final EventPriority HIGH = new EventPriority(EventPriority.HIGH, "high", "高");

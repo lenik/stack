@@ -10,19 +10,25 @@ import com.bee32.plover.orm.entity.Entity;
 
 @ComponentTemplate
 @Lazy
-public abstract class SamplesContribution
+public abstract class SampleContribution
         extends Component {
 
     public static final String LOADED_SAMPLE_PACKAGE_KEY = "sample";
 
     private boolean assembled;
+    private SamplePackage _package;
 
-    public SamplesContribution() {
+    public SampleContribution() {
         super();
+        initDependencies();
     }
 
-    public SamplesContribution(String name) {
+    public SampleContribution(String name) {
         super(name);
+        initDependencies();
+    }
+
+    void initDependencies() {
     }
 
     /**
@@ -44,9 +50,9 @@ public abstract class SamplesContribution
      * <p>
      * 考虑到单元测试和演示目的的不同用途，构造不同的样本集合。
      * <p>
-     * 一些奇怪的、诡异的、甚至内容错误的实例，因为单元测试需要一些苛刻的条件来检验系统的充分性，这些应该加入到 {@link VirtualPackage#WORSE} 包中。
+     * 一些奇怪的、诡异的、甚至内容错误的实例，因为单元测试需要一些苛刻的条件来检验系统的充分性，这些应该加入到 {@link VirtualSamplePackage#WORSE} 包中。
      * <p>
-     * 一些比较正常的、面向实际的样本集合应该加入到 {@link VirtualPackage#NORMAL} 包中。
+     * 一些比较正常的、面向实际的样本集合应该加入到 {@link VirtualSamplePackage#NORMAL} 包中。
      */
     protected abstract void preamble();
 
@@ -70,11 +76,11 @@ public abstract class SamplesContribution
     }
 
     protected void addNormalSample(Entity<? extends Serializable> sample) {
-        VirtualPackage.NORMAL.addInstance(sample);
+        VirtualSamplePackage.NORMAL.addInstance(sample);
     }
 
     protected void addWorseSample(Entity<?> sample) {
-        VirtualPackage.WORSE.addInstance(sample);
+        VirtualSamplePackage.WORSE.addInstance(sample);
     }
 
     public void beginLoad() {

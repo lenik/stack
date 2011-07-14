@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.SamplesContribution;
+import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.chance.entity.BasePrice;
 import com.bee32.sem.chance.entity.Chance;
@@ -23,7 +23,7 @@ import com.bee32.sem.people.entity.Party;
 
 @ImportSamples({ SEMPeopleSamples.class, IcsfPrincipalSamples.class })
 public class SEMChanceSamples
-        extends SamplesContribution {
+        extends SampleContribution {
 
     public static Chance chance = new Chance();
     public static ChanceParty party = new ChanceParty();

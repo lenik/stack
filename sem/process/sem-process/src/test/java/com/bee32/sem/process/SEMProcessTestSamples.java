@@ -3,14 +3,14 @@ package com.bee32.sem.process;
 import java.util.Date;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.SamplesContribution;
+import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.sem.process.verify.testbiz.AttackMission;
 import com.bee32.sem.process.verify.typedef.VerifyPolicyPref;
 
 @ImportSamples(SEMVerifyPolicySamples.class)
 public class SEMProcessTestSamples
-        extends SamplesContribution {
+        extends SampleContribution {
 
     public static VerifyPolicyPref attackPref;
 

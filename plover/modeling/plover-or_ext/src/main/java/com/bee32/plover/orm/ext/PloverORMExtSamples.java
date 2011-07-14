@@ -1,9 +1,9 @@
 package com.bee32.plover.orm.ext;
 
-import com.bee32.plover.orm.util.SamplesContribution;
+import com.bee32.plover.orm.util.SampleContribution;
 
 public class PloverORMExtSamples
-        extends SamplesContribution {
+        extends SampleContribution {
 
     @Override
     protected void preamble() {

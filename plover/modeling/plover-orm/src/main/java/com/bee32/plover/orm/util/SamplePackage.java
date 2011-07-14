@@ -7,17 +7,17 @@ import java.util.Set;
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.orm.entity.Entity;
 
-public class SamplesPackage
+public class SamplePackage
         extends Component {
 
     final Set<Entity<?>> instances = new HashSet<Entity<?>>();
-    final Set<SamplesPackage> dependencies = new HashSet<SamplesPackage>();
+    final Set<SamplePackage> dependencies = new HashSet<SamplePackage>();
 
-    public SamplesPackage() {
+    public SamplePackage() {
         super();
     }
 
-    public SamplesPackage(String name) {
+    public SamplePackage(String name) {
         super(name);
     }
 
@@ -29,7 +29,7 @@ public class SamplesPackage
         return instances;
     }
 
-    public Set<SamplesPackage> getDependencies() {
+    public Set<SamplePackage> getDependencies() {
         return dependencies;
     }
 
@@ -39,7 +39,7 @@ public class SamplesPackage
         instances.add(instance);
     }
 
-    public void addDependency(SamplesPackage dependency) {
+    public void addDependency(SamplePackage dependency) {
         if (dependency == null)
             throw new NullPointerException("dependency");
         dependencies.add(dependency);

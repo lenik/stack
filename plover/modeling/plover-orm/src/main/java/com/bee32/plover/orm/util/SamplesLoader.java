@@ -39,12 +39,12 @@ public class SamplesLoader
     @Inject
     CommonDataManager dataManager;
 
-    Map<Class<?>, SamplesContribution> dependencies;
+    Map<Class<?>, SampleContribution> contributions;
 
     PersistenceUnit unit;
 
     public SamplesLoader() {
-        dependencies = new HashMap<Class<?>, SamplesContribution>();
+        contributions = new HashMap<Class<?>, SampleContribution>();
         unit = CustomizedSessionFactoryBean.getForceUnit();
     }
 
@@ -53,43 +53,23 @@ public class SamplesLoader
             throws BeansException {
 
         // Scan all contributions and import them.
-        for (SamplesContribution contrib : applicationContext.//
-                getBeansOfType(SamplesContribution.class).values()) {
+        for (SampleContribution contrib : applicationContext.//
+                getBeansOfType(SampleContribution.class).values()) {
 
             Class<?> contribClass = contrib.getClass();
-            dependencies.put(contribClass, contrib);
+            contributions.put(contribClass, contrib);
         }
     }
 
-    private static Closure<SamplesContribution> NO_PROGRESS;
+    private static Closure<SampleContribution> NO_PROGRESS;
     static {
         NO_PROGRESS = NOPClosure.getInstance();
     }
 
-    public void loadNormalSamples() {
-        loadNormalSamples(NO_PROGRESS);
-    }
-
-    public void loadNormalSamples(Closure<SamplesContribution> progress) {
-        for (SamplesContribution contrib : dependencies.values()) {
-            loadSamples(contrib, false, progress);
-        }
-    }
-
-    public void loadWorseSamples() {
-        loadWorseSamples(NO_PROGRESS);
-    }
-
-    public void loadWorseSamples(Closure<SamplesContribution> progress) {
-        for (SamplesContribution contrib : dependencies.values()) {
-            loadSamples(contrib, true, progress);
-        }
-    }
-
     static int loadIndex = 0;
 
-    public synchronized void loadSamples(SamplesContribution contrib, boolean worseCase,
-            Closure<SamplesContribution> progress) {
+    public synchronized void loadSamples(SampleContribution contrib, boolean worseCase,
+            Closure<SampleContribution> progress) {
 
         if (contrib == null)
             throw new NullPointerException("contrib");
@@ -100,7 +80,7 @@ public class SamplesLoader
         ImportSamples imports = contrib.getClass().getAnnotation(ImportSamples.class);
         if (imports != null) {
             for (Class<?> importClass : imports.value()) {
-                SamplesContribution dependency = dependencies.get(importClass);
+                SampleContribution dependency = contributions.get(importClass);
                 if (dependency == null) {
                     logger.warn("Samples contribution " + contrib + " imports non-existing contribution " + importClass);
                     continue;
