@@ -65,7 +65,7 @@ public class BocFxrProvider
         String currencyAndRate = BocFxrHtmlUtil.preTreatment(result);
         System.out.print(currencyAndRate);
 
-        Map<String, Float> map = BocFxrHtmlUtil.getRateMap(currencyAndRate);
+        Map<String, Double> map = BocFxrHtmlUtil.getRateMap(currencyAndRate);
 
         method.releaseConnection();
 

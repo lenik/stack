@@ -62,7 +62,7 @@ public class LocalePreference
 
     @Override
     public void setLocale(Locale locale) {
-        this.locale.set(context, locale);
+        LocalePreference.locale.set(context, locale);
     }
 
     @Override
