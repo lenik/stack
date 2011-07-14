@@ -17,6 +17,7 @@ public abstract class Thing<X extends XPool<?>>
     private static final long serialVersionUID = 1L;
 
     Unit unit;
+    String unitName;
     UnitConv unitConv;
 
     public Thing() {
