@@ -4,46 +4,37 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.hibernate.criterion.Restrictions;
-import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
+import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.PrincipalCheckException;
 import com.bee32.icsf.principal.PrincipalDiag;
 import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.User;
+import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.icsf.principal.dto.RoleDto;
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityViewBean;
 
 @Component
 @Scope("view")
-public class RoleAdminBean
-        extends EntityViewBean {
+public class RoleAdminBean extends PrincipalAdminBean {
 
-	private static final long serialVersionUID = 1L;
-
-	private boolean editNewStatus;	//true:新增状态;false:修改状态;
-
-	private TreeNode rootNode;
-	private RoleDto role;
-	private TreeNode selectedInheritedRoleNode;
+    private static final long serialVersionUID = 1L;
 
 
+    private RoleDto role;
+    private TreeNode selectedInheritedRoleNode;
 
-	public boolean isEditNewStatus() {
-		return editNewStatus;
-	}
+    private GroupDto selectedGroup;
+    private TreeNode selectedGroupNode;
 
-	public void setEditNewStatus(boolean editNewStatus) {
-		this.editNewStatus = editNewStatus;
-	}
+    private UserDto selectedUser;
+    private UserDto selectedUserToAdd;
 
-	public TreeNode getRoot() {
-        return rootNode;
-    }
 
     public RoleDto getRole() {
         if (role == null) {
@@ -64,29 +55,59 @@ public class RoleAdminBean
 		this.selectedInheritedRoleNode = selectedInheritedRoleNode;
 	}
 
-	private void loadRoleTree() {
-        rootNode = new DefaultTreeNode("root", null);
 
-        List<Role> rootRoles = serviceFor(Role.class).list(Restrictions.isNull("parent"));
-        List<RoleDto> rootRoleDtos = DTOs.marshalList(RoleDto.class, -1, rootRoles, true);
-
-        for (RoleDto roleDto : rootRoleDtos) {
-            loadRoleRecursive(roleDto, rootNode);
-        }
+    public GroupDto getSelectedGroup() {
+        return selectedGroup;
     }
 
-    private void loadRoleRecursive(RoleDto roleDto, TreeNode parentTreeNode) {
-        TreeNode roleNode = new DefaultTreeNode(roleDto, parentTreeNode);
-
-        List<RoleDto> subRoles = roleDto.getDerivedRoles();
-        for (RoleDto subRole : subRoles) {
-            loadRoleRecursive(subRole, roleNode);
-        }
+    public void setSelectedGroup(GroupDto selectedGroup) {
+        this.selectedGroup = selectedGroup;
     }
+
+    public TreeNode getSelectedGroupNode() {
+        return selectedGroupNode;
+    }
+
+    public void setSelectedGroupNode(TreeNode selectedGroupNode) {
+        this.selectedGroupNode = selectedGroupNode;
+    }
+
+    public List<GroupDto> getGroups() {
+        return role.getResponsibleGroups();
+    }
+
+    public List<UserDto> getUsers() {
+        return role.getResponsibleUsers();
+    }
+
+    public List<UserDto> getAllUser() {
+        List<User> allUser = serviceFor(User.class).list();
+        return DTOs.marshalList(UserDto.class, allUser);
+    }
+
+    public UserDto getSelectedUser() {
+        return selectedUser;
+    }
+
+    public void setSelectedUser(UserDto selectedUser) {
+        this.selectedUser = selectedUser;
+    }
+
+    public UserDto getSelectedUserToAdd() {
+        return selectedUserToAdd;
+    }
+
+    public void setSelectedUserToAdd(UserDto selectedUserToAdd) {
+        this.selectedUserToAdd = selectedUserToAdd;
+    }
+
+
+
 
     @PostConstruct
     public void init() {
 	loadRoleTree();
+	loadGroupTree();
 	}
 
 	private void _newRole() {
@@ -143,5 +164,35 @@ public class RoleAdminBean
 
     public void doSelectInheritedRole() {
 	role.setInheritedRole((RoleDto) selectedInheritedRoleNode.getData());
+    }
+
+    public void doAddGroup() {
+        GroupDto group = (GroupDto)selectedGroupNode.getData();
+        group = reload(group);
+        group.addAssignedRole(role);
+        serviceFor(Group.class).saveOrUpdate(group.unmarshal());
+        role.addResponsibleGroup(group);
+    }
+
+    public void doRemoveGroup() {
+        selectedGroup = reload(selectedGroup);
+        selectedGroup.removeAssignedRole(role);
+        serviceFor(Group.class).saveOrUpdate(selectedGroup.unmarshal());
+        role.removeResponsibleGroup(selectedGroup);
+    }
+
+
+    public void doAddUser() {
+        selectedUserToAdd = reload(selectedUserToAdd);
+        selectedUserToAdd.addAssignedRole(role);
+        serviceFor(User.class).saveOrUpdate(selectedUserToAdd.unmarshal());
+        role.addResponsibleUser(selectedUserToAdd);
+    }
+
+    public void doRemoveUser() {
+        selectedUser = reload(selectedUser);
+        selectedUser.removeAssignedRole(role);
+        serviceFor(User.class).saveOrUpdate(selectedUser.unmarshal());
+        role.removeResponsibleUser(selectedUser);
     }
 }
