@@ -11,7 +11,7 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
 public class StandardSamples
-        extends EntitySamplesContribution {
+        extends SamplesContribution {
 
     static Logger logger = LoggerFactory.getLogger(StandardSamples.class);
 
