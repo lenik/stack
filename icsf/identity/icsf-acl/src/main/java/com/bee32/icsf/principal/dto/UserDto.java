@@ -88,12 +88,42 @@ public class UserDto
         this.assignedGroups = assignedGroups;
     }
 
+    public boolean addAssignedGroup(GroupDto assignedGroup) {
+        if (assignedGroup == null)
+            throw new NullPointerException("assignedGroup");
+
+        if (assignedGroups.contains(assignedGroup))
+            return false;
+
+        assignedGroups.add(assignedGroup);
+        return true;
+    }
+
+    public boolean removeAssignedGroup(GroupDto assignedGroup) {
+        return assignedGroups.remove(assignedGroup);
+    }
+
     public List<RoleDto> getAssignedRoles() {
         return assignedRoles;
     }
 
     public void setAssignedRoles(List<RoleDto> assignedRoles) {
         this.assignedRoles = assignedRoles;
+    }
+
+    public boolean addAssignedRole(RoleDto assignedRole) {
+        if (assignedRole == null)
+            throw new NullPointerException("assignedRole");
+
+        if (assignedRoles.contains(assignedRole))
+            return false;
+
+        assignedRoles.add(assignedRole);
+        return true;
+    }
+
+    public boolean removeAssignedRole(RoleDto assignedRole) {
+        return assignedRoles.remove(assignedRole);
     }
 
 }

@@ -29,50 +29,6 @@ public class GroupDto
         return inheritedGroup;
     }
 
-    public void setInheritedGroup(GroupDto inheritedGroup) {
-        this.inheritedGroup = inheritedGroup;
-    }
-
-    public UserDto getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserDto owner) {
-        this.owner = owner;
-    }
-
-    public RoleDto getPrimaryRole() {
-        return primaryRole;
-    }
-
-    public void setPrimaryRole(RoleDto primaryRole) {
-        this.primaryRole = primaryRole;
-    }
-
-    public List<GroupDto> getDerivedGroups() {
-        return derivedGroups;
-    }
-
-    public void setDerivedGroups(List<GroupDto> derivedGroups) {
-        this.derivedGroups = derivedGroups;
-    }
-
-    public List<RoleDto> getAssignedRoles() {
-        return assignedRoles;
-    }
-
-    public void setAssignedRoles(List<RoleDto> assignedRoles) {
-        this.assignedRoles = assignedRoles;
-    }
-
-    public List<UserDto> getMemberUsers() {
-        return memberUsers;
-    }
-
-    public void setMemberUsers(List<UserDto> memberUsers) {
-        this.memberUsers = memberUsers;
-    }
-
     @Override
     protected void _marshal(Group source) {
         super._marshal(source);
@@ -117,6 +73,95 @@ public class GroupDto
 
         if (selection.contains(USERS))
             mergeList(target, "memberUsers", memberUsers);
+    }
+
+    public void setInheritedGroup(GroupDto inheritedGroup) {
+        this.inheritedGroup = inheritedGroup;
+    }
+
+    public UserDto getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserDto owner) {
+        this.owner = owner;
+    }
+
+    public RoleDto getPrimaryRole() {
+        return primaryRole;
+    }
+
+    public void setPrimaryRole(RoleDto primaryRole) {
+        this.primaryRole = primaryRole;
+    }
+
+    public List<GroupDto> getDerivedGroups() {
+        return derivedGroups;
+    }
+
+    public void setDerivedGroups(List<GroupDto> derivedGroups) {
+        this.derivedGroups = derivedGroups;
+    }
+
+    public boolean addDerivedGroup(GroupDto derivedGroup) {
+        if (derivedGroup == null)
+            throw new NullPointerException("derivedGroup");
+
+        if (derivedGroups.contains(derivedGroup))
+            return false;
+
+        derivedGroups.add(derivedGroup);
+        return true;
+    }
+
+    public boolean removeDerivedGroup(GroupDto derivedGroup) {
+        return derivedGroups.remove(derivedGroup);
+    }
+
+    public List<RoleDto> getAssignedRoles() {
+        return assignedRoles;
+    }
+
+    public void setAssignedRoles(List<RoleDto> assignedRoles) {
+        this.assignedRoles = assignedRoles;
+    }
+
+    public boolean addAssignedRole(RoleDto assignedRole) {
+        if (assignedRole == null)
+            throw new NullPointerException("assignedRole");
+
+        if (assignedRoles.contains(assignedRole))
+            return false;
+
+        assignedRoles.add(assignedRole);
+        return true;
+    }
+
+    public boolean removeAssignedRole(RoleDto assignedRole) {
+        return assignedRoles.remove(assignedRole);
+    }
+
+    public List<UserDto> getMemberUsers() {
+        return memberUsers;
+    }
+
+    public void setMemberUsers(List<UserDto> memberUsers) {
+        this.memberUsers = memberUsers;
+    }
+
+    public boolean addMemberUser(UserDto memberUser) {
+        if (memberUser == null)
+            throw new NullPointerException("memberUser");
+
+        if (memberUsers.contains(memberUser))
+            return false;
+
+        memberUsers.add(memberUser);
+        return true;
+    }
+
+    public boolean removeMemberUser(UserDto memberUser) {
+        return memberUsers.remove(memberUser);
     }
 
 }

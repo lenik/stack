@@ -81,6 +81,21 @@ public class RoleDto
         this.derivedRoles = derivedRoles;
     }
 
+    public boolean addDerivedRole(RoleDto derivedRole) {
+        if (derivedRole == null)
+            throw new NullPointerException("derivedRole");
+
+        if (derivedRoles.contains(derivedRole))
+            return false;
+
+        derivedRoles.add(derivedRole);
+        return true;
+    }
+
+    public boolean removeDerivedRole(RoleDto derivedRole) {
+        return derivedRoles.remove(derivedRole);
+    }
+
     public List<UserDto> getResponsibleUsers() {
         return responsibleUsers;
     }
@@ -91,6 +106,21 @@ public class RoleDto
         this.responsibleUsers = responsibleUsers;
     }
 
+    public boolean addResponsibleUser(UserDto responsibleUser) {
+        if (responsibleUser == null)
+            throw new NullPointerException("responsibleUser");
+
+        if (responsibleUsers.contains(responsibleUser))
+            return false;
+
+        responsibleUsers.add(responsibleUser);
+        return true;
+    }
+
+    public boolean removeResponsibleUser(UserDto responsibleUser) {
+        return responsibleUsers.remove(responsibleUser);
+    }
+
     public List<GroupDto> getResponsibleGroups() {
         return responsibleGroups;
     }
@@ -99,6 +129,21 @@ public class RoleDto
         if (responsibleGroups == null)
             throw new NullPointerException("responsibleGroups");
         this.responsibleGroups = responsibleGroups;
+    }
+
+    public boolean addResponsibleGroup(GroupDto responsibleGroup) {
+        if (responsibleGroup == null)
+            throw new NullPointerException("responsibleGroup");
+
+        if (responsibleGroups.contains(responsibleGroup))
+            return false;
+
+        responsibleGroups.add(responsibleGroup);
+        return true;
+    }
+
+    public boolean removeResponsibleGroup(GroupDto responsibleGroup) {
+        return responsibleGroups.remove(responsibleGroup);
     }
 
 }
