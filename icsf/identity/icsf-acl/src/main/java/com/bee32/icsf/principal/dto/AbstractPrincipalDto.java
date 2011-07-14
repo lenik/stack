@@ -75,7 +75,9 @@ public abstract class AbstractPrincipalDto<E extends Principal>
     }
 
     public String getDisplayName() {
-        return fullName != null ? fullName : getName();
+        if (fullName != null && !fullName.isEmpty())
+            return fullName;
+        return getName();
     }
 
     public String getDescription() {
