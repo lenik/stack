@@ -2,9 +2,7 @@ package com.bee32.plover.orm.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -39,12 +37,9 @@ public class SamplesLoader
     @Inject
     CommonDataManager dataManager;
 
-    Map<Class<?>, SampleContribution> contributions;
-
     PersistenceUnit unit;
 
     public SamplesLoader() {
-        contributions = new HashMap<Class<?>, SampleContribution>();
         unit = CustomizedSessionFactoryBean.getForceUnit();
     }
 
@@ -52,13 +47,10 @@ public class SamplesLoader
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
 
-        // Scan all contributions and import them.
+        // Eagerly scan all the contributions.
         for (SampleContribution contrib : applicationContext.//
-                getBeansOfType(SampleContribution.class).values()) {
-
-            Class<?> contribClass = contrib.getClass();
-            contributions.put(contribClass, contrib);
-        }
+                getBeansOfType(SampleContribution.class).values())
+            ;
     }
 
     private static Closure<SampleContribution> NO_PROGRESS;

@@ -14,6 +14,6 @@ import java.lang.annotation.Target;
 @Target({ TYPE })
 public @interface ImportSamples {
 
-    Class<?>[] value();
+    Class<? extends SampleContribution>[] value();
 
 }

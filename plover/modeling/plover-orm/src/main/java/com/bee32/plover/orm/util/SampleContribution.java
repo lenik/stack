@@ -2,6 +2,8 @@ package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.arch.Component;
@@ -13,22 +15,43 @@ import com.bee32.plover.orm.entity.Entity;
 public abstract class SampleContribution
         extends Component {
 
+    static Logger logger = LoggerFactory.getLogger(SampleContribution.class);
+
     public static final String LOADED_SAMPLE_PACKAGE_KEY = "sample";
 
     private boolean assembled;
     private SamplePackage _package;
 
-    public SampleContribution() {
+    /**
+     * The default ctor is reserved for Spring CDI.
+     */
+    protected SampleContribution() {
         super();
-        initDependencies();
+        createPackage();
     }
 
-    public SampleContribution(String name) {
-        super(name);
-        initDependencies();
+    protected SampleContribution(SamplePackage... aDependantOf) {
+        this();
+        for (SamplePackage parent : aDependantOf) {
+            parent.addDependency(_package);
+        }
     }
 
-    void initDependencies() {
+    void createPackage() {
+        _package = new SamplePackage(getName());
+
+        ImportSamples imports = getClass().getAnnotation(ImportSamples.class);
+        if (imports != null) {
+            for (Class<?> importClass : imports.value()) {
+                SampleContribution importInstance = instances.get(importClass);
+                if (importInstance == null) {
+                    logger.warn("Samples contribution " + this + " imports non-existing contribution " + importClass);
+                    continue;
+                }
+            }
+        }
+
+        _package.addDependency(dependency);
     }
 
     /**
