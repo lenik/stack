@@ -27,6 +27,10 @@ public class Role
         super(name);
     }
 
+    public Role(String name, String fullName) {
+        super(name, fullName);
+    }
+
     @Transient
     @Override
     public Role getInheritedRole() {

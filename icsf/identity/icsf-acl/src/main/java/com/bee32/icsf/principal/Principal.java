@@ -39,6 +39,11 @@ public abstract class Principal
         setName(name);
     }
 
+    public Principal(String name, String fullName) {
+        setName(name);
+        setFullName(fullName);
+    }
+
     @Id
     @Basic(optional = false)
     @Column(length = NAME_MAXLEN, unique = true)

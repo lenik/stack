@@ -32,8 +32,12 @@ public class Group
         super(name);
     }
 
-    public Group(String name, User owner, User... memberUsers) {
-        super(name);
+    public Group(String name, String fullName) {
+        super(name, fullName);
+    }
+
+    public Group(String name, String fullName, User owner, User... memberUsers) {
+        super(name, fullName);
         this.owner = owner;
 
         addMemberUser(owner);
