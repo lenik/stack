@@ -9,9 +9,24 @@ import com.bee32.sem.test.SEMTestCase;
 public class SEMInventoryModuleTest
         extends SEMTestCase {
 
+    @Override
+    protected boolean isDebugMode() {
+        return true;
+    }
+
+    @Override
+    protected String getLoggedInUser() {
+        return "admin";
+    }
+
+    @Override
+    protected int getRefreshPeriod() {
+        return 2;
+    }
+
     public static void main(String[] args)
             throws IOException {
-        new SEMInventoryModuleTest().browseAndWait(SEMInventoryModule.PREFIX + "/material/");
+        new SEMInventoryModuleTest().browseAndWait(SEMInventoryModule.PREFIX + "/material/index-rich.jsf");
     }
 
 }
