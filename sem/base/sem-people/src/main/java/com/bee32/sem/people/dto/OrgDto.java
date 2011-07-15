@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.free.ParseException;
 
+import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.PersonRole;
@@ -18,6 +19,7 @@ public class OrgDto
     int size;
 
     Set<PersonRoleDto> roles;
+    GroupDto forWhichGroup;
 
     public OrgDto() {
         super();
@@ -41,6 +43,8 @@ public class OrgDto
                 roles.add(roleDto);
             }
         }
+
+        forWhichGroup = mref(GroupDto.class, 0, source.getForWhichGroup());
     }
 
     @Override
@@ -51,6 +55,8 @@ public class OrgDto
         target.setSize(size);
 
         mergeSet(target, "roles", roles);
+
+        merge(target, "forWhichGroup", forWhichGroup);
     }
 
     @Override
@@ -79,6 +85,17 @@ public class OrgDto
     }
 
     public void setRoles(Set<PersonRoleDto> roles) {
+        if (roles == null)
+            throw new NullPointerException("roles");
         this.roles = roles;
     }
+
+    public GroupDto getForWhichGroup() {
+        return forWhichGroup;
+    }
+
+    public void setForWhichGroup(GroupDto forWhichGroup) {
+        this.forWhichGroup = forWhichGroup;
+    }
+
 }

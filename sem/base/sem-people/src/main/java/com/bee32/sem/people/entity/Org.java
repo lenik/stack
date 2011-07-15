@@ -25,7 +25,7 @@ public class Org
     int size;
 
     Set<PersonRole> roles = new HashSet<PersonRole>();
-    Group group;
+    Group forWhichGroup;
 
     public Org() {
         super();
@@ -70,12 +70,12 @@ public class Org
     }
 
     @OneToOne
-    public Group getGroup() {
-        return group;
+    public Group getForWhichGroup() {
+        return forWhichGroup;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setForWhichGroup(Group forWhichGroup) {
+        this.forWhichGroup = forWhichGroup;
     }
 
 }
