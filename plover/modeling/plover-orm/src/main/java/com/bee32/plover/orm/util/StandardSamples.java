@@ -18,7 +18,7 @@ public class StandardSamples
 
     static Logger logger = LoggerFactory.getLogger(StandardSamples.class);
 
-    PersistenceUnit start;
+    PersistenceUnit rootUnit;
 
     Map<PersistenceUnit, StdUnitPackage> convertedMap;
     {
@@ -27,22 +27,24 @@ public class StandardSamples
 
     public StandardSamples() {
         super("std");
-        start = CustomizedSessionFactoryBean.getForceUnit();
+        rootUnit = CustomizedSessionFactoryBean.getForceUnit();
     }
 
     @Override
     protected void preamble() {
-        convert(start);
+        StdUnitPackage rootPackage = convert(rootUnit);
+        VirtualSamplePackage.STANDARD.addDependency(rootPackage);
     }
 
-    SamplePackage convert(PersistenceUnit node) {
+    StdUnitPackage convert(PersistenceUnit node) {
         StdUnitPackage pkg = convertedMap.get(node);
         if (pkg == null) {
-            StdUnitPackage std = new StdUnitPackage(start);
-            StdUnitPackage unit1 = convertedMap.put(node, std);
-            for (ClassCatalog dependency : start.getDependencies()) {
-                PersistenceUnit pu = (PersistenceUnit) dependency;
-                pu = convert(node);
+            pkg = new StdUnitPackage(node);
+            convertedMap.put(node, pkg);
+            for (ClassCatalog dependency : node.getDependencies()) {
+                PersistenceUnit depUnit = (PersistenceUnit) dependency;
+                StdUnitPackage depPkg = convert(depUnit);
+                pkg.addDependency(depPkg);
             }
         }
         return pkg;
@@ -80,7 +82,7 @@ public class StandardSamples
                     continue;
                 }
 
-                instances.add(entity);
+                addInstance(entity);
             }
         }
 
