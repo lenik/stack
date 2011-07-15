@@ -1,7 +1,6 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,23 +32,6 @@ public abstract class EntityDto_VTU<E extends Entity<K>, K extends Serializable>
     public void initSourceType(Class<? extends E> entityType) {
         super.initSourceType(entityType);
         keyType = EntityUtil.getKeyType(entityType);
-
-        int modifiers = entityType.getModifiers();
-        if (!Modifier.isAbstract(modifiers)) {
-
-            E newInstance;
-            try {
-                newInstance = entityType.newInstance();
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to instantiate " + sourceType, e);
-            }
-
-            // Instead of:
-            // __marshal(newInstance);
-            // _marshal(newInstance);
-            marshal(newInstance);
-            stereotyped = false;
-        }
     }
 
     protected final Class<? extends E> getEntityType() {

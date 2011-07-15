@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
+import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +46,31 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     public EntityDto(int selection) {
         super(selection);
+    }
+
+    public <$ extends EntityDto<E, K>> $ create() {
+        Class<? extends E> entityType = getEntityType();
+
+        int modifiers = entityType.getModifiers();
+        if (Modifier.isAbstract(modifiers))
+            throw new IllegalUsageException("You can't create a DTO for abstract entity.");
+
+        E newInstance;
+        try {
+            newInstance = entityType.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to instantiate " + sourceType, e);
+        }
+
+        // Instead of:
+        // __marshal(newInstance);
+        // _marshal(newInstance);
+        marshal(newInstance);
+        stereotyped = false;
+
+        @SuppressWarnings("unchecked")
+        $ self = ($) this;
+        return self;
     }
 
     protected IEntityMarshalContext getMarshalContext() {
