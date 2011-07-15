@@ -18,7 +18,6 @@ import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.icsf.principal.dto.RoleDto;
 import com.bee32.icsf.principal.dto.UserDto;
-import com.bee32.plover.orm.util.DTOs;
 
 @Component
 @Scope("view")
@@ -81,10 +80,6 @@ public class RoleAdminBean extends PrincipalAdminBean {
         return role.getResponsibleUsers();
     }
 
-    public List<UserDto> getAllUser() {
-        List<User> allUser = serviceFor(User.class).list();
-        return DTOs.marshalList(UserDto.class, allUser);
-    }
 
     public UserDto getSelectedUser() {
         return selectedUser;

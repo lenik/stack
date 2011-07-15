@@ -8,8 +8,10 @@ import org.primefaces.model.TreeNode;
 
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.Role;
+import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.icsf.principal.dto.RoleDto;
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 
@@ -77,5 +79,10 @@ public class PrincipalAdminBean extends EntityViewBean {
         for (GroupDto subGroup : subGroups) {
             loadGroupRecursive(subGroup, groupNode);
         }
+    }
+
+    public List<UserDto> getAllUser() {
+        List<User> allUser = serviceFor(User.class).list();
+        return DTOs.marshalList(UserDto.class, allUser);
     }
 }

@@ -13,11 +13,9 @@ import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.PrincipalCheckException;
 import com.bee32.icsf.principal.PrincipalDiag;
-import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.icsf.principal.dto.RoleDto;
 import com.bee32.icsf.principal.dto.UserDto;
-import com.bee32.plover.orm.util.DTOs;
 
 @Component
 @Scope("view")
@@ -77,11 +75,6 @@ public class GroupAdminBean extends PrincipalAdminBean {
 
     public List<UserDto> getUsers() {
         return group.getMemberUsers();
-    }
-
-    public List<UserDto> getAllUser() {
-        List<User> allUser = serviceFor(User.class).list();
-        return DTOs.marshalList(UserDto.class, allUser);
     }
 
     public UserDto getSelectedUser() {

@@ -23,25 +23,198 @@
 
     <ui:define name="content">
 
+		<h:outputScript>
+            function calcDigest() {
+                var p = $.sha1($("#passPlain").val());
+
+                jQuery("#editUserForm\\:password").val(p);
+            }
+
+            function calcDigestConfirm() {
+                var p = $.sha1($("#passPlainConfirm").val());
+
+                $("#editUserForm\\:passwordConfirm").val(p);
+            }
+        </h:outputScript>
+
+
 
 		<h:form id="userAdminForm">
-
 			<p:growl id="growl" showDetail="true" />
 
-                <p:dataTable id="userTable" var="user"
-                            value="#{userAdminBean.users}" paginator="true"
-                            rows="10" lazy="true"
-                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                            rowsPerPageTemplate="5,10,15" resizableColumns="true"
-                            selection="#{userAdminBean.selectedUser}"
-                            selectionMode="single" rowIndexVar="rowIndex">
+            <p:commandButton value="新增用户" actionListener="#{userAdminBean.doNewUser}" onclick="editUserDialog.show();" async="true" update="editUserForm:editUserPanel"/>
+			<p:dataTable id="userTable" value="#{userAdminBean.allUser}" var="user">
+				<p:column>
+					<f:facet name="header">名称</f:facet>
+					<h:outputText value="#{user.name}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">全名</f:facet>
+					<h:outputText value="#{user.fullName}" />
+				</p:column>
 
-                            <p:ajax event="rowSelect"
-                                listener="#{userAdminBean.onRowSelect}"
-                                update="growl" />
-                            <p:ajax event="rowUnselect"
-                                listener="#{userAdminBean.onRowUnselect}"
-                                update="growl" />
+				<p:column>
+					<f:facet name="header">操作</f:facet>
+					<t:panelGroup>
+						<p:commandLink value="修改" update="editUserForm:editUserPanel"
+							oncomplete="editUserDialog.show();" actionListener="#{userAdminBean.doModifyUser}">
+							<f:setPropertyActionListener value="#{user}"
+								target="#{userAdminBean.user}" />
+						</p:commandLink>
+						<p:spacer width="10" />
+						<p:commandLink value="删除"
+							oncomplete="deleteConfirmDialog.show();">
+							<f:setPropertyActionListener value="#{user}"
+								target="#{userAdminBean.user}" />
+						</p:commandLink>
+						<p:spacer width="10" />
+						<p:commandLink value="对应角色" oncomplete="roleDialog.show()" update="roleForm:rolePanel">
+                            <f:setPropertyActionListener value="#{user}"
+                                target="#{userAdminBean.user}" />
+                        </p:commandLink>
+                        <p:spacer width="10" />
+                        <p:commandLink value="对应组" oncomplete="groupDialog.show()" update="groupForm:groupPanel">
+                            <f:setPropertyActionListener value="#{user}"
+                                target="#{userAdminBean.user}" />
+                        </p:commandLink>
+					</t:panelGroup>
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+
+		<h:form id="editUserForm">
+            <p:dialog header="新增用户" widgetVar="editUserDialog" modal="true" height="500" width="640">
+                <p:outputPanel id="editUserPanel">
+                    <h:panelGrid columns="2">
+
+
+                        <h:outputLabel for="name" value="名称" />
+                        <p:inputText id="name" value="#{userAdminBean.user.name}" disabled="#{not userAdminBean.editNewStatus}"/>
+
+                        <h:outputLabel for="fullName" value="全名" />
+                        <p:inputText id="fullName" value="#{userAdminBean.user.fullName}" />
+
+						<h:outputLabel for="password" value="密码" />
+						<t:panelGroup>
+							<input id="passPlain" type="password" onchange="calcDigest();" />
+							<h:inputHidden id="password" value="#{userAdminBean.password}" />
+						</t:panelGroup>
+
+						<h:outputLabel for="passwordConfirm" value="密码确认" />
+						<t:panelGroup>
+							<input id="passPlainConfirm" type="password"
+								onchange="calcDigestConfirm();" />
+							<h:inputHidden id="passwordConfirm"
+								value="#{userAdminBean.passwordConfirm}" />
+						</t:panelGroup>
+
+
+						<t:panelGrid colspan="2" columns="2">
+                            <p:commandButton value="保存"
+                                actionListener="#{userAdminBean.doSave}" update="userAdminForm"
+                                oncomplete="editUserDialog.hide();" />
+                            <p:commandButton value="取消" oncomplete="editGroupDialog.hide();" />
+                        </t:panelGrid>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+		</h:form>
+
+		<h:form id="deleteConfirmForm">
+            <p:confirmDialog message="确定要删除吗?" width="200"
+                    header="删除组确认" severity="alert" widgetVar="deleteConfirmDialog" modal="true">
+
+				<p:commandButton value="确定" update="userAdminForm" actionListener="#{userAdminBean.doDelete}" oncomplete="deleteConfirmDialog.hide()"/>
+                <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()" type="button" />
+
+			</p:confirmDialog>
+		</h:form>
+
+
+        <h:form id="roleForm">
+            <p:dialog header="对应角色" widgetVar="roleDialog"
+                modal="true" height="500" width="640">
+				<h:panelGroup id="rolePanel">
+
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="对应组:"/>
+                        <h:outputText value="#{userAdminBean.user.name}"/>
+                    </h:panelGrid>
+
+					<h:panelGrid columns="3">
+
+						<p:dataTable var="role" value="#{userAdminBean.roles}"
+							rowIndexVar="rowIndex" selection="#{userAdminBean.selectedRole}"
+							selectionMode="single">
+
+							<f:facet name="header">对应角色</f:facet>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="序号" />
+								</f:facet>
+								<h:outputText value="#{rowIndex + 1}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="名称" />
+								</f:facet>
+								<h:outputText value="#{role.name}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="全名" />
+								</f:facet>
+								<h:outputText value="#{role.fullName}" />
+							</p:column>
+
+						</p:dataTable>
+
+						<h:panelGroup>
+						  <p:commandButton value="+" actionListener="#{userAdminBean.doAddRole}" update="rolePanel"/>
+						  <p:commandButton value="X" actionListener="#{userAdminBean.doRemoveRole}" update="rolePanel"/>
+						</h:panelGroup>
+
+						<p:panel header="所有角色">
+							<p:tree value="#{userAdminBean.roleRoot}" var="role"
+								selectionMode="single"
+								selection="#{userAdminBean.selectedRoleNode}">
+
+								<p:treeNode>
+									<h:outputText value="#{role.name}" />
+								</p:treeNode>
+							</p:tree>
+						</p:panel>
+
+					</h:panelGrid>
+					<p:commandButton value="关闭" oncomplete="roleDialog.hide();" />
+
+				</h:panelGroup>
+			</p:dialog>
+        </h:form>
+
+
+        <h:form id="groupForm">
+            <p:dialog header="对应组" widgetVar="groupDialog"
+                modal="true" height="500" width="640">
+                <h:panelGroup id="groupPanel">
+
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="对应用户:"/>
+                        <h:outputText value="#{userAdminBean.user.name}"/>
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="3">
+
+                        <p:dataTable var="group" value="#{userAdminBean.groups}"
+                            rowIndexVar="rowIndex" selection="#{userAdminBean.selectedGroup}"
+                            selectionMode="single">
+
+                            <f:facet name="header">对应组</f:facet>
 
                             <p:column>
                                 <f:facet name="header">
@@ -52,28 +225,43 @@
 
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="姓名" />
+                                    <h:outputText value="名称" />
                                 </f:facet>
-                                <h:outputText value="#{person.name}" />
+                                <h:outputText value="#{group.name}" />
                             </p:column>
 
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="全名" />
                                 </f:facet>
-                                <h:outputText value="#{person.fullName}" />
+                                <h:outputText value="#{group.fullName}" />
                             </p:column>
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="所属组" />
-                                </f:facet>
-                                <h:outputText value="#{person.fullName}" />
-                            </p:column>
                         </p:dataTable>
 
+                        <h:panelGroup>
+                          <p:commandButton value="+" actionListener="#{userAdminBean.doAddGroup}" update="groupPanel"/>
+                          <p:commandButton value="X" actionListener="#{userAdminBean.doRemoveGroup}" update="groupPanel"/>
+                        </h:panelGroup>
 
-		</h:form>
+                        <p:panel header="所有组">
+                            <p:tree value="#{userAdminBean.groupRoot}" var="group"
+                                selectionMode="single"
+                                selection="#{userAdminBean.selectedGroupNode}">
+
+                                <p:treeNode>
+                                    <h:outputText value="#{group.name}" />
+                                </p:treeNode>
+                            </p:tree>
+                        </p:panel>
+
+                    </h:panelGrid>
+                    <p:commandButton value="关闭" oncomplete="groupDialog.hide();" />
+
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
 
 
 	</ui:define>
