@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.plover.orm.util.DTOs;
 
 @Transactional(readOnly = true)
 public class PloverConfManager
@@ -15,7 +16,7 @@ public class PloverConfManager
 
     public PloverConfDto getConf(String key) {
         PloverConf conf = dao.get(key);
-        return new PloverConfDto().marshal(conf);
+        return DTOs.marshal(PloverConfDto.class, conf);
     }
 
     public String getConfValue(String key) {
