@@ -1,8 +1,7 @@
 package com.bee32.icsf.principal;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import static com.bee32.icsf.login.UserPassword.digest;
 
-import com.bee32.icsf.login.PrivateQuestion;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.orm.util.SampleContribution;
 
@@ -17,16 +16,14 @@ import com.bee32.plover.orm.util.SampleContribution;
 public class IcsfPrincipalSamples
         extends SampleContribution {
 
-    public static Group solaRobots = new Group("Sola Robots Club");
-    public static Group sunCorp = new Group("Sun Corp");
-
-    public static Role registeredRole = new Role("Registered User");
+    public static Group solaRobots = new Group("sola", "Sola Robots Club");
+    public static Group sunCorp = new Group("sun", "Sun Corp");
 
     public static User eva = new User("Eva", null, Role.adminRole);
-    public static User wallE = new User("Wall-E", solaRobots, registeredRole);
+    public static User wallE = new User("Wall-E", solaRobots, Role.powerUserRole);
     public static User alice = new User("Alice", null, null);
     public static User tom = new User("Tom", null, Role.adminRole);
-    public static User kate = new User("Kate", sunCorp, registeredRole);
+    public static User kate = new User("Kate", sunCorp, Role.userRole);
 
     static {
         solaRobots.setOwner(eva);
@@ -36,7 +33,7 @@ public class IcsfPrincipalSamples
 
         alice.addAssignedGroup(sunCorp);
         alice.addAssignedGroup(solaRobots);
-        alice.addAssignedRole(registeredRole);
+        alice.addAssignedRole(Role.userRole);
 
         eva.setPreferredEmail("eva@bee32.com");
         wallE.setPreferredEmail("wall-e@bee32.com");
@@ -47,25 +44,14 @@ public class IcsfPrincipalSamples
 
     @Override
     protected void preamble() {
-        addSamples(sunCorp, solaRobots);
-        addSamples(Role.adminRole, registeredRole);
-        addSamples(User.admin, eva, wallE, alice, tom, kate);
-        addSample(User.adminApAll);
-        addSample(User.adminEntityAll);
+        addBulk(sunCorp, solaRobots);
+        addBulk(eva, wallE, alice, tom, kate);
 
-        addSample(PrivateQuestion.DADS_NAME);
-        addSample(PrivateQuestion.MOMS_NAME);
-
-        addSample(new UserPassword(User.admin, sha1("Bee32")));
-        addSample(new UserPassword(eva, sha1("EVA")));
-        addSample(new UserPassword(wallE, sha1("WALL-E")));
-        addSample(new UserPassword(alice, sha1("ALICE")));
-        addSample(new UserPassword(tom, sha1("TOM")));
-        addSample(new UserPassword(kate, sha1("KATE")));
-    }
-
-    static String sha1(String text) {
-        return DigestUtils.shaHex(text);
+        add(new UserPassword(eva, digest("EVA")));
+        add(new UserPassword(wallE, digest("WALL-E")));
+        add(new UserPassword(alice, digest("ALICE")));
+        add(new UserPassword(tom, digest("TOM")));
+        add(new UserPassword(kate, digest("KATE")));
     }
 
 }

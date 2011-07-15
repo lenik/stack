@@ -165,7 +165,13 @@ public class Role
         return this;
     }
 
-    public static Role adminRole = new Role("adminRole");
-    public static Role guestRole = new Role("guestRole");
+    public static Role adminRole = new Role("adminRole", "Administrator Users");
+    public static Role powerUserRole = new Role("powerUserRole", "Powerful Users");
+    public static Role userRole = new Role("userRole", "Registered Users");
+    public static Role guestRole = new Role("guestRole", "Guest Users");
+
+    static {
+        powerUserRole.setInheritedRole(userRole);
+    }
 
 }
