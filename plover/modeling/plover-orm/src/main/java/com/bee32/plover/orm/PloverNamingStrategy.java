@@ -15,7 +15,7 @@ public class PloverNamingStrategy
     public String escapeName(String name) {
         StackTraceElement[] st = Thread.currentThread().getStackTrace();
         String method = st[2].getMethodName();
-        logger.debug(method + ": " + name);
+//        logger.debug(method + ": " + name);
         name = name.replace("`", "");
         return "`" + name + "`";
     }
