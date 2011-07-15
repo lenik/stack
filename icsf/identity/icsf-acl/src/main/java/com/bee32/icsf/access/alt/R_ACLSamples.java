@@ -2,8 +2,8 @@ package com.bee32.icsf.access.alt;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.Role;
-import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.plover.orm.util.ImportSamples;
+import com.bee32.plover.orm.util.SampleContribution;
 
 @ImportSamples(IcsfPrincipalSamples.class)
 public class R_ACLSamples
@@ -16,7 +16,7 @@ public class R_ACLSamples
 
     public R_ACLSamples() {
         admin_all = new R_ACE("ap:",//
-                Role.adminRole, "Slcdrwx");
+                Role.adminRole, "S");
 
         service_tom_x = new R_ACE("ap:TestService.", //
                 IcsfPrincipalSamples.tom, "x");
@@ -25,7 +25,7 @@ public class R_ACLSamples
                 IcsfPrincipalSamples.kate, "rx");
 
         foo_reguser_w = new R_ACE("ap:TestService.foo.", //
-                IcsfPrincipalSamples.registeredRole, "w");
+                Role.userRole, "w");
     }
 
     @Override
