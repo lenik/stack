@@ -62,11 +62,8 @@ public abstract class AbstractPrincipalDto<E extends Principal>
 
     @Override
     public void setId(String id) {
-        if (id == null)
-            throw new NullPointerException("id");
-
-        id = id.toLowerCase(Locale.ROOT);
-
+        if (id != null)
+            id = id.toLowerCase(Locale.ROOT);
         super.setId(id);
     }
 

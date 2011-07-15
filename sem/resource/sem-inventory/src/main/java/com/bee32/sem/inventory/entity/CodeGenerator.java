@@ -16,7 +16,7 @@ public class CodeGenerator
 
     private static final long serialVersionUID = 1L;
 
-    public CodeGenerator(Character value, String name) {
+    public CodeGenerator(char value, String name) {
         super(value, name);
     }
 
