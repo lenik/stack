@@ -46,6 +46,9 @@ public class UnitConv
         this.from = from;
     }
 
+    /**
+     * 父换算表。如果本换算表中有重复的换算率定义，以本表为准。
+     */
     @ManyToOne
     public UnitConv getParent() {
         return parent;
@@ -55,6 +58,9 @@ public class UnitConv
         this.parent = parent;
     }
 
+    /**
+     * 是否为自然换算表。
+     */
     @Column(nullable = false)
     public boolean isNatural() {
         return natural;
@@ -89,7 +95,7 @@ public class UnitConv
     }
 
     /**
-     * Get the conversion ration to the specified unit.
+     * Get the conversion ratio to the specified unit.
      *
      * @param toUnit
      *            Non-<code>null</code> unit to whose conversion ratio is asked.
