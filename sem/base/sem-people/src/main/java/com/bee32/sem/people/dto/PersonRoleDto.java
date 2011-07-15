@@ -13,7 +13,7 @@ public class PersonRoleDto
 
     PersonDto person;
     OrgDto org;
-    // OrgUnitDto orgUnit;
+    OrgUnitDto orgUnit;
     String altOrgUnit;
     String role;
     String roleDetail;
@@ -32,6 +32,7 @@ public class PersonRoleDto
         person = mref(PersonDto.class, 0, source.getPerson());
         org = mref(OrgDto.class, 0, source.getOrg());
         altOrgUnit = source.getAltOrgUnit();
+        orgUnit = mref(OrgUnitDto.class, 0, source.getOrgUnit());
         role = source.getRole();
         roleDetail = source.getRoleDetail();
         description = source.getDescription();
@@ -41,6 +42,7 @@ public class PersonRoleDto
     protected void _unmarshalTo(PersonRole target) {
         merge(target, "person", person);
         merge(target, "org", org);
+        merge(target, "orgUnit", orgUnit);
         target.setAltOrgUnit(altOrgUnit);
         target.setRole(role);
         target.setRoleDetail(roleDetail);
