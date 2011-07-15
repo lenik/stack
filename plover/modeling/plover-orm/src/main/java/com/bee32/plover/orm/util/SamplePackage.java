@@ -44,4 +44,17 @@ public class SamplePackage
             throw new NullPointerException("dependency");
         dependencies.add(dependency);
     }
+
+    /**
+     * This is a debug helper. You may set breakpoint here.
+     */
+    public void beginLoad() {
+    }
+
+    /**
+     * This is a debug helper. You may set breakpoint here.
+     */
+    public void endLoad() {
+    }
+
 }
