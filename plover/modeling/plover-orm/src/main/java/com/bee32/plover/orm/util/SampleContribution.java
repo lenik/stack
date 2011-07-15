@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,28 +82,25 @@ public abstract class SampleContribution
         assembled = true;
     }
 
-    protected <E extends Entity<?>> void addNormalSample(E... samples) {
+    @Override
+    public Set<SamplePackage> getDependencies() {
+        assemble();
+        return super.getDependencies();
+    }
+
+    @Override
+    public Set<Entity<?>> getInstances() {
+        assemble();
+        return super.getInstances();
+    }
+
+    protected final void addSample(Entity<? extends Serializable> sample) {
+        addInstance(sample);
+    }
+
+    protected final <E extends Entity<?>> void addSamples(E... samples) {
         for (Entity<?> sample : samples)
-            addNormalSample(sample);
-    }
-
-    protected <E extends Entity<?>> void addWorseSample(E... samples) {
-        for (Entity<?> sample : samples)
-            addWorseSample(sample);
-    }
-
-    protected void addNormalSample(Entity<? extends Serializable> sample) {
-        VirtualSamplePackage.NORMAL.addInstance(sample);
-    }
-
-    protected void addWorseSample(Entity<?> sample) {
-        VirtualSamplePackage.WORSE.addInstance(sample);
-    }
-
-    public void beginLoad() {
-    }
-
-    public void endLoad() {
+            addSample(sample);
     }
 
 }
