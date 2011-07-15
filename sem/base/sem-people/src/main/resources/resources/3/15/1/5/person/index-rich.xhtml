@@ -144,84 +144,93 @@
 								<h:outputText value="#{person.censusRegister}" />
 							</p:column>
 
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="所有者" />
+								</f:facet>
+								<h:outputText value="#{person.owner.displayName}" />
+							</p:column>
 						</p:dataTable>
 					</p:tab>
 					<p:tab title="联系人详细">
 
-                        <h:inputHidden id="personId" value="#{personAdminBean.person.id}"/>
+						<p:panel header="详细信息" toggleable="true">
+							<h:inputHidden id="personId" value="#{personAdminBean.person.id}" />
 
-						<t:panelGrid columns="4"
-							columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+							<t:panelGrid columns="4"
+								columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
-							<h:outputLabel for="personTags" value="标签" />
-							<t:panelGroup colspan="3">
-								<h:panelGrid columns="2">
-									<p:selectOneListbox id="personTags"
-										value="#{personAdminBean.selectedTagId}"
-										style="height:80px; width:200px;">
-										<f:selectItems value="#{personAdminBean.person.tags}" var="tag"
-											itemLabel="#{tag.label}" itemValue="#{tag.id}" />
-									</p:selectOneListbox>
-									<h:panelGrid colums="2">
-										<p:commandButton value="增加标签"
-											disabled="#{personAdminBean.person == null}"
-											onclick="tagDlg.show();" />
-										<p:commandButton value="删除标签"
-											disabled="#{personAdminBean.person == null}"
-											actionListener="#{personAdminBean.deleteTag}"
-											update="personForm:personTags" />
+								<h:outputLabel for="personTags" value="标签" />
+								<t:panelGroup colspan="3">
+									<h:panelGrid columns="2">
+										<p:selectOneListbox id="personTags"
+											value="#{personAdminBean.selectedTagId}"
+											style="height:80px; width:200px;">
+											<f:selectItems value="#{personAdminBean.person.tags}"
+												var="tag" itemLabel="#{tag.label}" itemValue="#{tag.id}" />
+										</p:selectOneListbox>
+										<h:panelGrid colums="2">
+											<p:commandButton value="增加标签"
+												disabled="#{personAdminBean.person == null}"
+												onclick="tagDlg.show();" />
+											<p:commandButton value="删除标签"
+												disabled="#{personAdminBean.person == null}"
+												actionListener="#{personAdminBean.deleteTag}"
+												update="personForm:personTags" />
+										</h:panelGrid>
 									</h:panelGrid>
-								</h:panelGrid>
-							</t:panelGroup>
+								</t:panelGroup>
 
 
-							<h:outputLabel for="personName" value="姓名" />
-							<p:inputText id="personName"
-								value="#{personAdminBean.person.name}" />
-							<h:outputLabel for="personFullName" value="全名" />
-							<p:inputText id="personFullName"
-								value="#{personAdminBean.person.fullName}" />
+								<h:outputLabel for="personName" value="姓名" />
+								<p:inputText id="personName"
+									value="#{personAdminBean.person.name}" />
+								<h:outputLabel for="personFullName" value="全名" />
+								<p:inputText id="personFullName"
+									value="#{personAdminBean.person.fullName}" />
 
-							<h:outputLabel for="personNickName" value="昵称" />
-							<p:inputText id="personNickName"
-								value="#{personAdminBean.person.nickName}" />
-							<h:outputLabel for="personBirthday" value="生日" />
-							<p:calendar id="personBirthday" navigator="true" locale="zh_CN"
-								pattern="yyyy-MM-dd" value="#{personAdminBean.person.birthday}"
-								showOn="button" />
+								<h:outputLabel for="personNickName" value="昵称" />
+								<p:inputText id="personNickName"
+									value="#{personAdminBean.person.nickName}" />
+								<h:outputLabel for="personBirthday" value="生日" />
+								<p:calendar id="personBirthday" navigator="true" locale="zh_CN"
+									pattern="yyyy-MM-dd" value="#{personAdminBean.person.birthday}"
+									showOn="button" />
 
-							<h:outputLabel for="personSidType" value="证件类型" />
-							<p:selectOneMenu id="personSidType"
-								value="#{personAdminBean.person.sidType.id}"
-								style="width:150px;">
-								<f:selectItem itemValue="" itemLabel="--选择证件类型--" />
-								<f:selectItems value="#{personAdminBean.sidTypes}" />
-							</p:selectOneMenu>
-							<h:outputLabel for="personSid" value="证件号码" />
-							<p:inputText id="personSid" value="#{personAdminBean.person.sid}" />
+								<h:outputLabel for="personSidType" value="证件类型" />
+								<p:selectOneMenu id="personSidType"
+									value="#{personAdminBean.person.sidType.id}"
+									style="width:150px;">
+									<f:selectItem itemValue="" itemLabel="--选择证件类型--" />
+									<f:selectItems value="#{personAdminBean.sidTypes}" />
+								</p:selectOneMenu>
+								<h:outputLabel for="personSid" value="证件号码" />
+								<p:inputText id="personSid"
+									value="#{personAdminBean.person.sid}" />
 
-							<h:outputLabel for="personSex" value="性别" />
-							<p:selectOneMenu id="personSex"
-								value="#{personAdminBean.person.sex}" style="width:150px;">
-								<f:selectItems value="#{personAdminBean.genders}" />
-							</p:selectOneMenu>
-							<h:outputLabel for="personCensusRegister" value="户籍" />
-							<p:inputText id="personCensusRegister"
-								value="#{personAdminBean.person.censusRegister}" />
+								<h:outputLabel for="personSex" value="性别" />
+								<p:selectOneMenu id="personSex"
+									value="#{personAdminBean.person.sex}" style="width:150px;">
+									<f:selectItems value="#{personAdminBean.genders}" />
+								</p:selectOneMenu>
+								<h:outputLabel for="personCensusRegister" value="户籍" />
+								<p:inputText id="personCensusRegister"
+									value="#{personAdminBean.person.censusRegister}" />
 
-							<h:outputLabel for="personInterests" value="兴趣爱好" />
-							<t:panelGroup colspan="3">
-								<p:inputText id="personInterests"
-									value="#{personAdminBean.person.interests}" />
-							</t:panelGroup>
+								<h:outputLabel for="personInterests" value="兴趣爱好" />
+								<t:panelGroup colspan="3">
+									<p:inputText id="personInterests"
+										value="#{personAdminBean.person.interests}" />
+								</t:panelGroup>
 
-							<h:outputLabel for="personMemo" value="备注" />
-							<t:panelGroup colspan="3">
-								<p:inputTextarea id="personMemo"
-									value="#{personAdminBean.person.memo}"
-									style="width:300px;height:100px;" effectDuration="400" />
-							</t:panelGroup>
-						</t:panelGrid>
+								<h:outputLabel for="personMemo" value="备注" />
+								<t:panelGroup colspan="3">
+									<p:inputTextarea id="personMemo"
+										value="#{personAdminBean.person.memo}"
+										style="width:300px;height:100px;" effectDuration="400" />
+								</t:panelGroup>
+							</t:panelGrid>
+						</p:panel>
 
 						<p:panel header="联系方式" toggleable="true">
 							<p:toolbar id="contactToolbar">

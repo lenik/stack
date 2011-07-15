@@ -133,78 +133,81 @@
                                 <h:outputText value="#{org.size}" />
                             </p:column>
 
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="所有者" />
+                                </f:facet>
+                                <h:outputText value="#{org.owner.displayName}" />
+                            </p:column>
+
                         </p:dataTable>
                     </p:tab>
                     <p:tab title="客户/供应商详细">
 
-                        <h:inputHidden id="orgId" value="#{orgAdminBean.org.id}"/>
+						<p:panel header="详细信息" toggleable="true">
+							<h:inputHidden id="orgId" value="#{orgAdminBean.org.id}" />
 
-                        <t:panelGrid columns="4"
-                            columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+							<t:panelGrid columns="4"
+								columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
-                            <h:outputLabel for="orgTags" value="标签" />
-							<t:panelGroup colspan="3">
-							    <h:panelGrid columns="2">
-									<p:selectOneListbox id="orgTags"
-										value="#{orgAdminBean.selectedTagId}"
-										style="height:80px; width:200px;">
-										<f:selectItems value="#{orgAdminBean.org.tags}" var="tag"
-											itemLabel="#{tag.label}" itemValue="#{tag.id}" />
-									</p:selectOneListbox>
-									<h:panelGrid colums="1">
-										<p:commandButton value="增加标签"
-											disabled="#{orgAdminBean.org == null}"
-											onclick="tagDlg.show();" />
-										<p:commandButton value="删除标签"
-											disabled="#{orgAdminBean.org == null}"
-											actionListener="#{orgAdminBean.deleteTag}"
-											update="orgForm:orgTags"
-											/>
+								<h:outputLabel for="orgTags" value="标签" />
+								<t:panelGroup colspan="3">
+									<h:panelGrid columns="2">
+										<p:selectOneListbox id="orgTags"
+											value="#{orgAdminBean.selectedTagId}"
+											style="height:80px; width:200px;">
+											<f:selectItems value="#{orgAdminBean.org.tags}" var="tag"
+												itemLabel="#{tag.label}" itemValue="#{tag.id}" />
+										</p:selectOneListbox>
+										<h:panelGrid colums="1">
+											<p:commandButton value="增加标签"
+												disabled="#{orgAdminBean.org == null}"
+												onclick="tagDlg.show();" />
+											<p:commandButton value="删除标签"
+												disabled="#{orgAdminBean.org == null}"
+												actionListener="#{orgAdminBean.deleteTag}"
+												update="orgForm:orgTags" />
+										</h:panelGrid>
 									</h:panelGrid>
-								</h:panelGrid>
-							</t:panelGroup>
+								</t:panelGroup>
 
 
-							<h:outputLabel for="orgName" value="客户/供应商名称" />
-                            <p:inputText id="orgName" value="#{orgAdminBean.org.name}"/>
-                            <h:outputLabel for="orgFullName" value="全名" />
-                            <p:inputText id="orgFullName" value="#{orgAdminBean.org.fullName}"/>
+								<h:outputLabel for="orgName" value="客户/供应商名称" />
+								<p:inputText id="orgName" value="#{orgAdminBean.org.name}" />
+								<h:outputLabel for="orgFullName" value="全名" />
+								<p:inputText id="orgFullName"
+									value="#{orgAdminBean.org.fullName}" />
 
-                            <h:outputLabel for="orgBirthday" value="成立日期"/>
-                            <p:calendar
-                                    id="orgBirthday"
-                                    navigator="true"
-                                    locale="zh_CN"
-                                    pattern="yyyy-MM-dd"
-                                    value="#{orgAdminBean.org.birthday}"
-                                    showOn="button" />
-                            <h:outputLabel for="orgType" value="公司类型" />
-                            <p:selectOneMenu id="orgType"
-                                value="#{orgAdminBean.org.type.id}"
-                                style="width:150px;">
-                                <f:selectItem itemValue="" itemLabel="--选择公司类型--" />
-                                <f:selectItems value="#{orgAdminBean.orgTypes}" />
-                            </p:selectOneMenu>
+								<h:outputLabel for="orgBirthday" value="成立日期" />
+								<p:calendar id="orgBirthday" navigator="true" locale="zh_CN"
+									pattern="yyyy-MM-dd" value="#{orgAdminBean.org.birthday}"
+									showOn="button" />
+								<h:outputLabel for="orgType" value="公司类型" />
+								<p:selectOneMenu id="orgType"
+									value="#{orgAdminBean.org.type.id}" style="width:150px;">
+									<f:selectItem itemValue="" itemLabel="--选择公司类型--" />
+									<f:selectItems value="#{orgAdminBean.orgTypes}" />
+								</p:selectOneMenu>
 
-                            <h:outputLabel for="orgSid" value="税务登记号" />
-                            <p:inputText id="orgSid" value="#{orgAdminBean.org.sid}"/>
-                            <h:outputLabel for="orgSize" value="公司规模" />
-                            <p:inputText id="orgSize" value="#{orgAdminBean.org.size}"/>
+								<h:outputLabel for="orgSid" value="税务登记号" />
+								<p:inputText id="orgSid" value="#{orgAdminBean.org.sid}" />
+								<h:outputLabel for="orgSize" value="公司规模" />
+								<p:inputText id="orgSize" value="#{orgAdminBean.org.size}" />
 
-                            <h:outputLabel for="orgInterests" value="主营业务" />
-                            <t:panelGroup colspan="3">
-                                <p:inputText id="orgInterests" value="#{orgAdminBean.org.interests}"/>
-                            </t:panelGroup>
+								<h:outputLabel for="orgInterests" value="主营业务" />
+								<t:panelGroup colspan="3">
+									<p:inputText id="orgInterests"
+										value="#{orgAdminBean.org.interests}" />
+								</t:panelGroup>
 
-							<h:outputLabel for="orgMemo" value="备注" />
-							<t:panelGroup colspan="3">
-								<p:inputTextarea id="orgMemo"
-									value="#{orgAdminBean.org.memo}"
-									style="width:300px;height:100px;" effectDuration="400" />
-							</t:panelGroup>
-						</t:panelGrid>
-
-                        <p:panel header="联系方式" toggleable="true">
+								<h:outputLabel for="orgMemo" value="备注" />
+								<t:panelGroup colspan="3">
+									<p:inputTextarea id="orgMemo" value="#{orgAdminBean.org.memo}"
+										style="width:300px;height:100px;" effectDuration="400" />
+								</t:panelGroup>
+							</t:panelGrid>
+						</p:panel>
+						<p:panel header="联系方式" toggleable="true">
                             <p:toolbar id="contactToolbar">
                                 <p:toolbarGroup align="left">
                                     <p:commandButton value="新增"
@@ -346,7 +349,7 @@
                                     <f:facet name="header">
                                         <h:outputText value="所在部门" />
                                     </f:facet>
-                                    <h:outputText value="#{role.orgUnit}" />
+                                    <h:outputText value="#{role.altOrgUnit}" />
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">
@@ -522,7 +525,7 @@
 
 
                         <h:outputLabel for="roleOrgUnit" value="所在部门" />
-                        <p:inputText id="roleOrgUnit" value="#{orgAdminBean.role.orgUnit}"/>
+                        <p:inputText id="roleOrgUnit" value="#{orgAdminBean.role.altOrgUnit}"/>
 
                         <h:outputLabel for="roleRole" value="职务" />
                         <p:inputText id="roleRole" value="#{orgAdminBean.role.role}"/>
