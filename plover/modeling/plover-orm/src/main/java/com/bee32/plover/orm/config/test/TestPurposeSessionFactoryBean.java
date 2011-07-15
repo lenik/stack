@@ -39,7 +39,7 @@ public abstract class TestPurposeSessionFactoryBean
         properties.setProperty(hbm2ddlAuto, "create-drop");
 
         // Debug
-        properties.setProperty(showSql, "true");
+        properties.setProperty(showSql, "false"); // true
         properties.setProperty(formatSql, "true");
         properties.setProperty(useSqlComments, "true");
 

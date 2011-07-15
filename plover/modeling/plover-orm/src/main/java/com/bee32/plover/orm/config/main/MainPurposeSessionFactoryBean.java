@@ -39,7 +39,7 @@ public abstract class MainPurposeSessionFactoryBean
         properties.setProperty(hbm2ddlAuto, "validate"); // opt. away in userconf
 
         // Debug
-        properties.setProperty(showSql, "true"); // opt. away in userconf
+        properties.setProperty(showSql, "false"); // opt. away in userconf
         properties.setProperty(formatSql, "false");
         properties.setProperty(useSqlComments, "false");
 

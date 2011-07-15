@@ -134,9 +134,6 @@ public abstract class CustomizedSessionFactoryBean
         properties.setProperty("org.hibernate.flushMode", "COMMIT");
         properties.setProperty(generateStatistics, "true");
 
-        // Debug
-        properties.setProperty(showSql, "true");
-
         // Misc
         properties.setProperty(currentSessionContextClass, "thread");
 
