@@ -217,6 +217,8 @@ public class SEMPeopleSamples
 
         addNormalSample(abcOrg);
 
+        addNormalSample(jackPerson);
+        addNormalSample(tangPerson);
         addNormalSample(bugatti);
         addNormalSample(bentley);
         addNormalSample(weiXiaoBao);
