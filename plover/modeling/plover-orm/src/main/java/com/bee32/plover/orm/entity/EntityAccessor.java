@@ -57,4 +57,16 @@ public class EntityAccessor {
         return entity.autoId;
     }
 
+    public static Entity<?> getNextOfMicroLoop(Entity<?> entity) {
+        if (entity == null)
+            throw new NullPointerException("entity");
+        return entity.nextOfMicroLoop;
+    }
+
+    public static void setNextOfMicroLoop(Entity<?> entity, Entity<?> nextOfMicroLoop) {
+        if (entity == null)
+            throw new NullPointerException("entity");
+        entity.nextOfMicroLoop = nextOfMicroLoop;
+    }
+
 }

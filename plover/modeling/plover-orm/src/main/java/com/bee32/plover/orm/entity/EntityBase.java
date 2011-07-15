@@ -18,6 +18,8 @@ public abstract class EntityBase<K extends Serializable>
 
     protected boolean autoId;
 
+    transient Entity<?> nextOfMicroLoop;
+
     public EntityBase() {
         super();
     }
