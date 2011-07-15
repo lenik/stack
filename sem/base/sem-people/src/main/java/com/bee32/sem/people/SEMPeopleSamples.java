@@ -31,10 +31,10 @@ public class SEMPeopleSamples
     public static Group abcRAD = new Group("ABC 研究发展办公室");
     public static Group abcSales = new Group("ABC 国际贸易部");
 
-    public static Person jackPerson = new Person("贾雨村");
-    public static Person tangPerson = new Person("唐玄奘");
     public static User jack;
     public static User tang;
+    public static Person jackPerson = new Person("贾雨村");
+    public static Person tangPerson = new Person("唐玄奘");
 
     public static Org abcOrg = new Org("abc");
     public static Person bugatti = new Person("Bugatti");
@@ -194,31 +194,9 @@ public class SEMPeopleSamples
 
     @Override
     protected void preamble() {
-        add(PartyTagname.CUSTOMER);
-        add(PartyTagname.SUPPLIER);
-        add(PartyTagname.INTERNAL);
-
-        add(PersonSidType.IDENTITYCARD);
-        add(PersonSidType.PASSPORT);
-        add(PersonSidType.DRIVINGLICENES);
-
-        add(ContactCategory.NORMAL);
-        add(ContactCategory.HOME);
-        add(ContactCategory.WORK);
-        add(ContactCategory.OUT);
-
-        add(OrgType.EDUCATION);
-        add(OrgType.FACTORY);
-        add(OrgType.INDIVIDUAL);
-        add(OrgType.INF_CORP);
-        add(OrgType.LTD_CORP);
-        add(OrgType.MILITARY);
-        add(OrgType.PARTNER);
-
         add(abcOrg);
-
-        addNormalSample(jackPerson);
-        addNormalSample(tangPerson);
+        add(jackPerson);
+        add(tangPerson);
         add(bugatti);
         add(bentley);
         add(weiXiaoBao);

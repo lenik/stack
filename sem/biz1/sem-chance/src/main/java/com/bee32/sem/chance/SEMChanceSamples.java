@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.plover.orm.util.ImportSamples;
+import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.chance.entity.BasePrice;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
@@ -121,42 +121,9 @@ public class SEMChanceSamples
         add(BasePrice.tempQD8);
         add(BasePrice.tempQD9);
 
-        //CurrentPrice
+        // CurrentPrice
         add(CurrentPrice.pentax);
         add(CurrentPrice.pentax);
-
-        // addChanceStage
-        add(ChanceStage.INIT);
-        add(ChanceStage.LAUNCHED);
-        add(ChanceStage.MEETING);
-        add(ChanceStage.PAYMENT);
-        add(ChanceStage.QUOTED);
-        add(ChanceStage.DONE);
-        add(ChanceStage.TERMINATED);
-
-        // add ChanceActionStyle
-        add(ChanceActionStyle.INTERNET);
-        add(ChanceActionStyle.TALK);
-        add(ChanceActionStyle.TELEPHONE);
-        add(ChanceActionStyle.OTHER);
-
-        // add ChanceCategory
-        add(ChanceCategory.IMPORTANT);
-        add(ChanceCategory.NORMAL);
-        add(ChanceCategory.OTHER);
-
-        // add ChanceSource
-        add(ChanceSourceType.AGENT);
-        add(ChanceSourceType.CUSTOMER);
-        add(ChanceSourceType.DEVELOP);
-        add(ChanceSourceType.INTERNET);
-        add(ChanceSourceType.INTRODUCTION);
-        add(ChanceSourceType.MEDIA);
-        add(ChanceSourceType.PARTNER);
-        add(ChanceSourceType.PROMOTION);
-        add(ChanceSourceType.TELEPHONE);
-        add(ChanceSourceType.TENDER);
-        add(ChanceSourceType.OTHER);
 
         add(chance);
         add(party);

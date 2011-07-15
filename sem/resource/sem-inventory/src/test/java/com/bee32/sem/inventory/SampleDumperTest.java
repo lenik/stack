@@ -5,7 +5,7 @@ import org.junit.Test;
 import com.bee32.plover.orm.util.ImportSamplesUtil;
 import com.bee32.plover.orm.util.SampleDumper;
 import com.bee32.plover.orm.util.SamplesLoader;
-import com.bee32.plover.orm.util.VirtualSamplePackage;
+import com.bee32.plover.orm.util.DiamondPackage;
 import com.bee32.plover.test.WiredTestCase;
 import com.bee32.plover.web.faces.view.Inject;
 
@@ -17,7 +17,7 @@ public class SampleDumperTest
 
     @Test
     public void testDumpEverything() {
-        SampleDumper.dump(VirtualSamplePackage.EVERYTHING);
+        SampleDumper.dump(DiamondPackage.EVERYTHING);
     }
 
     public static void main(String[] args) {

@@ -53,4 +53,6 @@ public class PloverConf
         this.description = description;
     }
 
+    public static PloverConf VERSION = new PloverConf("version", "1.0");
+
 }

@@ -7,30 +7,16 @@ import java.util.List;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.Role;
-import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.plover.orm.util.ImportSamples;
+import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.EventCategory;
 import com.bee32.sem.event.entity.EventPriority;
-import com.bee32.sem.event.entity.EventStatus;
 import com.bee32.sem.event.entity.Task;
 
 @ImportSamples(IcsfPrincipalSamples.class)
 public class SEMEventSamples
         extends SampleContribution {
-
-    public static final EventPriority URGENT = new EventPriority(EventPriority.URGENT, "urgent", "紧急");
-    public static final EventPriority HIGH = new EventPriority(EventPriority.HIGH, "high", "高");
-    public static final EventPriority NORMAL = new EventPriority(EventPriority.NORMAL, "normal", "普通");
-    public static final EventPriority LOW = new EventPriority(EventPriority.LOW, "low", "低");
-
-    public static final EventStatus UNKNOWN = new EventStatus(GenericState.UNKNOWN, "unknown", "无状态");
-    public static final EventStatus RUNNING = new EventStatus(GenericState.RUNNING, "running", "进行中");
-    public static final EventStatus SUSPENDED = new EventStatus(GenericState.SUSPENDED, "suspended", "挂起");
-    public static final EventStatus CANCELED = new EventStatus(GenericState.CANCELED, "canceled", "取消");
-    public static final EventStatus DONE = new EventStatus(GenericState.DONE, "done", "成功");
-    public static final EventStatus FAILED = new EventStatus(GenericState.FAILED, "failed", "失败");
-    public static final EventStatus ERRORED = new EventStatus(GenericState.ERRORED, "errored", "异常");
 
     public static final EventCategory weather = new EventCategory("weather", "天气预报");
     public static final EventCategory special = new EventCategory("special", "特种");
@@ -42,7 +28,7 @@ public class SEMEventSamples
         Event rain = new Event();
         rain.setCategory(weather);
         rain.setSourceClass(SEMEventSamples.class);
-        rain.setPriority(LOW.getPriority());
+        rain.setPriority(EventPriority.LOW);
         rain.setState(GenericState.UNKNOWN);
         rain.setClosed(duration != null);
 
@@ -70,7 +56,7 @@ public class SEMEventSamples
         killAngel = new Task();
         killAngel.setCategory(special);
         killAngel.setSourceClass(SEMEventSamples.class);
-        killAngel.setPriority(HIGH.getPriority());
+        killAngel.setPriority(EventPriority.HIGH);
         killAngel.setState(GenericState.RUNNING);
         killAngel.setClosed(false);
         killAngel.setSubject("EVA 奉命去消灭第18使徒");
@@ -83,9 +69,6 @@ public class SEMEventSamples
 
     @Override
     protected void preamble() {
-        addBulk(URGENT, HIGH, NORMAL, LOW);
-        addBulk(UNKNOWN, RUNNING, SUSPENDED, CANCELED, DONE, FAILED, ERRORED);
-
         addBulk(weather, special);
 
         for (Event rain : rains)

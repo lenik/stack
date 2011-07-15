@@ -11,10 +11,10 @@ public class EventPriority
 
     private static final long serialVersionUID = 1L;
 
-    public static final int URGENT = 10;
-    public static final int HIGH = 30;
-    public static final int NORMAL = 50;
-    public static final int LOW = 100;
+    public static final int P_URGENT = 10;
+    public static final int P_HIGH = 30;
+    public static final int P_NORMAL = 50;
+    public static final int P_LOW = 100;
 
     public EventPriority() {
     }
@@ -31,5 +31,10 @@ public class EventPriority
     public void setPriority(int priority) {
         setNumber(priority);
     }
+
+    public static final EventPriority URGENT = new EventPriority(P_URGENT, "urgent", "紧急");
+    public static final EventPriority HIGH = new EventPriority(P_HIGH, "high", "高");
+    public static final EventPriority NORMAL = new EventPriority(P_NORMAL, "normal", "普通");
+    public static final EventPriority LOW = new EventPriority(P_LOW, "low", "低");
 
 }
