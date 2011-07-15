@@ -28,7 +28,7 @@ public class Unit
     public static final Unit GRAM = new Unit("g", "克");
     public static final Unit KILOGRAM = new Unit("kg", "千克");
     public static final Unit MILLIGRAM = new Unit("mg", "毫克");
-    public static final Unit NEWTON = new Unit("L", "牛顿");
+    public static final Unit NEWTON = new Unit("N", "牛顿");
 
     public static final Unit METER = new Unit("m", "米");
     public static final Unit MILLIMETER = new Unit("mm", "毫米");
