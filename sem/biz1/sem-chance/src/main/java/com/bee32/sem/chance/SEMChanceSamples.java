@@ -111,63 +111,63 @@ public class SEMChanceSamples
     protected void preamble() {
 
         // add <price>->quotionDetail
-        addSample(BasePrice.tempQD1);
-        addSample(BasePrice.tempQD2);
-        addSample(BasePrice.tempQD3);
-        addSample(BasePrice.tempQD4);
-        addSample(BasePrice.tempQD5);
-        addSample(BasePrice.tempQD6);
-        addSample(BasePrice.tempQD7);
-        addSample(BasePrice.tempQD8);
-        addSample(BasePrice.tempQD9);
+        add(BasePrice.tempQD1);
+        add(BasePrice.tempQD2);
+        add(BasePrice.tempQD3);
+        add(BasePrice.tempQD4);
+        add(BasePrice.tempQD5);
+        add(BasePrice.tempQD6);
+        add(BasePrice.tempQD7);
+        add(BasePrice.tempQD8);
+        add(BasePrice.tempQD9);
 
         //CurrentPrice
-        addSample(CurrentPrice.pentax);
-        addSample(CurrentPrice.pentax);
+        add(CurrentPrice.pentax);
+        add(CurrentPrice.pentax);
 
         // addChanceStage
-        addSample(ChanceStage.INIT);
-        addSample(ChanceStage.LAUNCHED);
-        addSample(ChanceStage.MEETING);
-        addSample(ChanceStage.PAYMENT);
-        addSample(ChanceStage.QUOTED);
-        addSample(ChanceStage.DONE);
-        addSample(ChanceStage.TERMINATED);
+        add(ChanceStage.INIT);
+        add(ChanceStage.LAUNCHED);
+        add(ChanceStage.MEETING);
+        add(ChanceStage.PAYMENT);
+        add(ChanceStage.QUOTED);
+        add(ChanceStage.DONE);
+        add(ChanceStage.TERMINATED);
 
         // add ChanceActionStyle
-        addSample(ChanceActionStyle.INTERNET);
-        addSample(ChanceActionStyle.TALK);
-        addSample(ChanceActionStyle.TELEPHONE);
-        addSample(ChanceActionStyle.OTHER);
+        add(ChanceActionStyle.INTERNET);
+        add(ChanceActionStyle.TALK);
+        add(ChanceActionStyle.TELEPHONE);
+        add(ChanceActionStyle.OTHER);
 
         // add ChanceCategory
-        addSample(ChanceCategory.IMPORTANT);
-        addSample(ChanceCategory.NORMAL);
-        addSample(ChanceCategory.OTHER);
+        add(ChanceCategory.IMPORTANT);
+        add(ChanceCategory.NORMAL);
+        add(ChanceCategory.OTHER);
 
         // add ChanceSource
-        addSample(ChanceSourceType.AGENT);
-        addSample(ChanceSourceType.CUSTOMER);
-        addSample(ChanceSourceType.DEVELOP);
-        addSample(ChanceSourceType.INTERNET);
-        addSample(ChanceSourceType.INTRODUCTION);
-        addSample(ChanceSourceType.MEDIA);
-        addSample(ChanceSourceType.PARTNER);
-        addSample(ChanceSourceType.PROMOTION);
-        addSample(ChanceSourceType.TELEPHONE);
-        addSample(ChanceSourceType.TENDER);
-        addSample(ChanceSourceType.OTHER);
+        add(ChanceSourceType.AGENT);
+        add(ChanceSourceType.CUSTOMER);
+        add(ChanceSourceType.DEVELOP);
+        add(ChanceSourceType.INTERNET);
+        add(ChanceSourceType.INTRODUCTION);
+        add(ChanceSourceType.MEDIA);
+        add(ChanceSourceType.PARTNER);
+        add(ChanceSourceType.PROMOTION);
+        add(ChanceSourceType.TELEPHONE);
+        add(ChanceSourceType.TENDER);
+        add(ChanceSourceType.OTHER);
 
-        addSample(chance);
-        addSample(party);
-        addSample(party2);
-        addSample(competitor);
-        addSample(chanceAction1);
-        addSample(chanceAction2);
+        add(chance);
+        add(party);
+        add(party2);
+        add(competitor);
+        add(chanceAction1);
+        add(chanceAction2);
 
         // add <price>->quotation and quotationItem
-        addSample(quotationItem1);
-        addSample(quotation);
+        add(quotationItem1);
+        add(quotation);
     }
 
 }

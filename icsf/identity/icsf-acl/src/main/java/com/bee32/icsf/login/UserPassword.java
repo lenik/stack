@@ -12,6 +12,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
@@ -155,5 +157,12 @@ public class UserPassword
         long hours = diffSeconds / 3600;
         return (int) hours;
     }
+
+    public static String digest(String text) {
+        return DigestUtils.shaHex(text);
+    }
+
+    public static UserPassword adminPasswd = new UserPassword(User.admin, digest("Bee32"));
+    public static UserPassword guestPasswd = new UserPassword(User.guest, digest("guest"));
 
 }

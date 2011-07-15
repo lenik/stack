@@ -11,9 +11,9 @@ public class SimpleBooks
 
     @Override
     protected void preamble() {
-        addSample(SimpleBooks.tom);
-        addSample(SimpleBooks.jerry);
-        addSample(SimpleBooks.helloWorld);
+        add(SimpleBooks.tom);
+        add(SimpleBooks.jerry);
+        add(SimpleBooks.helloWorld);
     }
 
 }

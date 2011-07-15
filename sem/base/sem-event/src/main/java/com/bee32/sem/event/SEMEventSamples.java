@@ -83,15 +83,15 @@ public class SEMEventSamples
 
     @Override
     protected void preamble() {
-        addSamples(URGENT, HIGH, NORMAL, LOW);
-        addSamples(UNKNOWN, RUNNING, SUSPENDED, CANCELED, DONE, FAILED, ERRORED);
+        addBulk(URGENT, HIGH, NORMAL, LOW);
+        addBulk(UNKNOWN, RUNNING, SUSPENDED, CANCELED, DONE, FAILED, ERRORED);
 
-        addSamples(weather, special);
+        addBulk(weather, special);
 
         for (Event rain : rains)
-            addSample(rain);
+            add(rain);
 
-        addSample(killAngel);
+        add(killAngel);
     }
 
 }

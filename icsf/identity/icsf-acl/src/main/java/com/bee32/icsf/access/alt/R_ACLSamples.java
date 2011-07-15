@@ -30,10 +30,10 @@ public class R_ACLSamples
 
     @Override
     protected void preamble() {
-        addSample(admin_all);
-        addSample(service_tom_x);
-        addSample(method1_kate_rx);
-        addSample(foo_reguser_w);
+        add(admin_all);
+        add(service_tom_x);
+        add(method1_kate_rx);
+        add(foo_reguser_w);
     }
 
 }

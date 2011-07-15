@@ -194,34 +194,34 @@ public class SEMPeopleSamples
 
     @Override
     protected void preamble() {
-        addSample(PartyTagname.CUSTOMER);
-        addSample(PartyTagname.SUPPLIER);
-        addSample(PartyTagname.INTERNAL);
+        add(PartyTagname.CUSTOMER);
+        add(PartyTagname.SUPPLIER);
+        add(PartyTagname.INTERNAL);
 
-        addSample(PersonSidType.IDENTITYCARD);
-        addSample(PersonSidType.PASSPORT);
-        addSample(PersonSidType.DRIVINGLICENES);
+        add(PersonSidType.IDENTITYCARD);
+        add(PersonSidType.PASSPORT);
+        add(PersonSidType.DRIVINGLICENES);
 
-        addSample(ContactCategory.NORMAL);
-        addSample(ContactCategory.HOME);
-        addSample(ContactCategory.WORK);
-        addSample(ContactCategory.OUT);
+        add(ContactCategory.NORMAL);
+        add(ContactCategory.HOME);
+        add(ContactCategory.WORK);
+        add(ContactCategory.OUT);
 
-        addSample(OrgType.EDUCATION);
-        addSample(OrgType.FACTORY);
-        addSample(OrgType.INDIVIDUAL);
-        addSample(OrgType.INF_CORP);
-        addSample(OrgType.LTD_CORP);
-        addSample(OrgType.MILITARY);
-        addSample(OrgType.PARTNER);
+        add(OrgType.EDUCATION);
+        add(OrgType.FACTORY);
+        add(OrgType.INDIVIDUAL);
+        add(OrgType.INF_CORP);
+        add(OrgType.LTD_CORP);
+        add(OrgType.MILITARY);
+        add(OrgType.PARTNER);
 
-        addSample(abcOrg);
+        add(abcOrg);
 
         addNormalSample(jackPerson);
         addNormalSample(tangPerson);
-        addSample(bugatti);
-        addSample(bentley);
-        addSample(weiXiaoBao);
+        add(bugatti);
+        add(bentley);
+        add(weiXiaoBao);
     }
 
 }
