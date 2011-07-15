@@ -3,8 +3,6 @@ package com.bee32.sem.people.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.free.UnexpectedException;
 
@@ -94,9 +92,9 @@ public abstract class AbstractPartyAdminBean
     }
 
     public List<SelectItem> getOuterTags() {
-	List<PartyTagname> partyTags = serviceFor(PartyTagname.class).list(PeopleCriteria.outerPartyTagList("id"));
-	List<PartyTagnameDto> partyTagDtos = DTOs.marshalList(PartyTagnameDto.class, partyTags);
-	return UIHelper.selectItemsFromDict(partyTagDtos);
+        List<PartyTagname> partyTags = serviceFor(PartyTagname.class).list(PeopleCriteria.outerPartyTagList("id"));
+        List<PartyTagnameDto> partyTagDtos = DTOs.marshalList(PartyTagnameDto.class, partyTags);
+        return UIHelper.selectItemsFromDict(partyTagDtos);
     }
 
     public List<ContactDto> getContacts() {
@@ -118,8 +116,7 @@ public abstract class AbstractPartyAdminBean
 
     public void doNewContact() {
         if (getParty() == null || getParty().getId() == null) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("提示", "请先选择主人!"));
+            uiLogger.error("提示:请先选择主人!");
         }
         _newContact();
     }
@@ -129,12 +126,10 @@ public abstract class AbstractPartyAdminBean
     }
 
     public void doDeleteContact() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         AbstractPartyDto<? extends Party> party = getParty();
 
         if (selectedContact == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择需要删除的联系方式!"));
+            uiLogger.error("提示:请选择需要删除的联系方式!");
             return;
         }
 
@@ -146,17 +141,15 @@ public abstract class AbstractPartyAdminBean
             party = reload(party);
             setParty(party);
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "删除联系方式失败;" + e.getMessage()));
+            uiLogger.error("提示:删除联系方式失败;" + e.getMessage(), e);
         }
     }
 
     public void doSaveContact() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         AbstractPartyDto<? extends Party> party = getParty();
 
         if (party == null || party.getId() == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的客户/供应商!"));
+            uiLogger.error("提示:请选择所操作的联系方式对应的客户/供应商!");
             return;
         }
 
@@ -185,10 +178,9 @@ public abstract class AbstractPartyAdminBean
             party = reload(party);
             setParty(party);
 
-            context.addMessage(null, new FacesMessage("提示", "联系方式保存成功"));
+            uiLogger.info("提示:联系方式保存成功");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "联系方式保存失败" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("提示:联系方式保存失败" + e.getMessage(), e);
         }
     }
 
@@ -201,12 +193,10 @@ public abstract class AbstractPartyAdminBean
     }
 
     public void addTags() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         AbstractPartyDto<? extends Party> party = getParty();
 
         if (party == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的客户/供应商!"));
+            uiLogger.error("提示:请选择所操作的联系方式对应的客户/供应商!");
             return;
         }
 
@@ -224,12 +214,10 @@ public abstract class AbstractPartyAdminBean
     }
 
     public void deleteTag() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         AbstractPartyDto<? extends Party> party = getParty();
 
         if (party == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择所操作的联系方式对应的客户/供应商!"));
+            uiLogger.error("提示:请选择所操作的联系方式对应的客户/供应商!");
             return;
         }
 

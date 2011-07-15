@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.hibernate.criterion.Order;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
@@ -32,8 +28,6 @@ import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
-@Component
-@Scope("view")
 public class OrgAdminBean
         extends AbstractPartyAdminBean {
 
@@ -200,10 +194,8 @@ public class OrgAdminBean
     }
 
     public void doModify() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         if (selectedOrg == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择需要修改的客户/供应商!"));
+            uiLogger.error("提示:请选择需要修改的客户/供应商!");
             return;
         }
 
@@ -214,10 +206,8 @@ public class OrgAdminBean
     }
 
     public void doDelete() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         if (selectedOrg == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择需要删除的客户/供应商!"));
+            uiLogger.error("提示:请选择需要删除的客户/供应商!");
             return;
         }
 
@@ -229,24 +219,20 @@ public class OrgAdminBean
             refreshOrgCount();
 
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "删除客户/供应商失败;" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("提示:删除客户/供应商失败;" + e.getMessage());
         }
     }
 
     public void doSave() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         try {
             serviceFor(Org.class).saveOrUpdate(org.unmarshal());
             refreshOrgCount();
 
             setActiveTab(TAB_INDEX);
             editable = false;
-            context.addMessage(null, new FacesMessage("提示", "客户/供应商保存成功"));
+            uiLogger.info("提示:客户/供应商保存成功");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "客户/供应商保存失败" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("提示:客户/供应商保存失败" + e.getMessage());
         }
     }
 
@@ -259,8 +245,7 @@ public class OrgAdminBean
 
     public void doDetail() {
         if (selectedOrg == null) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("提示", "请选择需要查看详细信息的客户/供应商!"));
+            uiLogger.error("提示:请选择需要查看详细信息的客户/供应商!");
             return;
         }
 
@@ -292,10 +277,8 @@ public class OrgAdminBean
     }
 
     public void doDeleteRole() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         if (selectedRole == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择需要去除关联的相关人员!"));
+            uiLogger.error("提示:请选择需要去除关联的相关人员!");
             return;
         }
 
@@ -304,15 +287,13 @@ public class OrgAdminBean
             serviceFor(Org.class).saveOrUpdate(org.unmarshal());
 
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "去除相关人员关联失败;" + e.getMessage()));
+            uiLogger.error("提示:去除相关人员关联失败;" + e.getMessage());
         }
     }
 
     public void doSaveRole() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         if (org == null || org.getId() == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择所操作的相关人员对应的客户/供应商!"));
+            uiLogger.error("提示:请选择所操作的相关人员对应的客户/供应商!");
             return;
         }
 
@@ -320,10 +301,9 @@ public class OrgAdminBean
             org.getRoles().add(role);
             serviceFor(Org.class).saveOrUpdate(org.unmarshal());
 
-            context.addMessage(null, new FacesMessage("提示", "相关人员设置关联成功"));
+            uiLogger.info("提示:相关人员设置关联成功");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "相关人员设置关联失败" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.info("提示:相关人员设置关联失败" + e.getMessage());
         }
     }
 
