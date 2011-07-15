@@ -7,9 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.BatchSize;
+
+import com.bee32.plover.orm.ext.config.BatchConfig;
 import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 
 @Entity
+@BatchSize(size = BatchConfig.TREE)
 public class MaterialCategory
         extends TreeEntityAuto<Long, MaterialCategory> {
 
