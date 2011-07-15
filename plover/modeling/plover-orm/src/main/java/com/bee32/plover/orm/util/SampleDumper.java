@@ -27,30 +27,31 @@ public class SampleDumper {
             throw new NullPointerException("node");
 
         out.println("+ " + node.getName() + " @" + System.identityHashCode(node));
+        if (!pset.add(node)) {
+            out.println("    ...");
+            return;
+        }
+
         out.enter();
 
-        if (pset.add(node)) {
-            TreeMap<String, Entity<?>> sorted = new TreeMap<String, Entity<?>>();
-            for (Entity<?> entity : node.getInstances()) {
-                String typeName = entity.getClass().getSimpleName();
-                Object id = entity.getId();
-                String title = typeName + " : " + (id == null ? System.identityHashCode(entity) : id);
-                sorted.put(title, entity);
+        TreeMap<String, Entity<?>> sorted = new TreeMap<String, Entity<?>>();
+        for (Entity<?> entity : node.getInstances()) {
+            String typeName = entity.getClass().getSimpleName();
+            Object id = entity.getId();
+            String title = typeName + " : " + (id == null ? System.identityHashCode(entity) : id);
+            sorted.put(title, entity);
+        }
+
+        for (Entry<String, Entity<?>> entry : sorted.entrySet()) {
+            String title = entry.getKey();
+            Entity<?> entity = entry.getValue();
+            out.println(title);
+
+            // Dump auto entity in more detail.
+            if (verboseForAutoEntities && EntityAccessor.isAutoId(entity)) {
+                entity.toString(out, FormatStyle.NORMAL);
             }
 
-            for (Entry<String, Entity<?>> entry : sorted.entrySet()) {
-                String title = entry.getKey();
-                Entity<?> entity = entry.getValue();
-                out.println(title);
-
-                // Dump auto entity in more detail.
-                if (verboseForAutoEntities && EntityAccessor.isAutoId(entity)) {
-                    entity.toString(out, FormatStyle.NORMAL);
-                }
-
-            }
-        } else {
-            out.println("...");
         }
 
         for (SamplePackage dep : node.getDependencies())

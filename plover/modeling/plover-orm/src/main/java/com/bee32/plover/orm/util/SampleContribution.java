@@ -36,20 +36,24 @@ public abstract class SampleContribution
     }
 
     public SampleContribution() {
-        this(VirtualSamplePackage.NORMAL);
+        this(DiamondPackage.NORMAL);
     }
 
-    protected SampleContribution(SamplePackage... outers) {
-        for (SamplePackage outer : outers)
-            addTargetPackage(outer);
+    protected SampleContribution(DiamondPackage diamond) {
+        addToDiamond(diamond);
     }
 
     {
         ImportSamplesUtil.register(this);
     }
 
-    protected void addTargetPackage(SamplePackage target) {
-        target.addDependency(this);
+    protected void addToDiamond(DiamondPackage diamondEnd) {
+        DiamondPackage diamondStart = diamondEnd.getStart();
+
+        diamondEnd.addDependency(this);
+        if (diamondStart != null) {
+            this.addDependency(diamondStart);
+        }
     }
 
     /**

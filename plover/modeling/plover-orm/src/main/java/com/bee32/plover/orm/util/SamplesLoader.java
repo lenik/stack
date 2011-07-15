@@ -194,13 +194,13 @@ public class SamplesLoader
     public void loadNormalSamples() {
         if (logger.isDebugEnabled()) {
             logger.debug("Normal samples structure: ");
-            SampleDumper.dump(VirtualSamplePackage.NORMAL);
+            SampleDumper.dump(DiamondPackage.NORMAL);
         }
-        loadSamples(VirtualSamplePackage.NORMAL, NO_PROGRESS);
+        loadSamples(DiamondPackage.NORMAL, NO_PROGRESS);
     }
 
     public void loadWorseSamples() {
-        loadSamples(VirtualSamplePackage.WORSE, NO_PROGRESS);
+        loadSamples(DiamondPackage.WORSE, NO_PROGRESS);
     }
 
 }

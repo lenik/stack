@@ -3,6 +3,7 @@ package com.bee32.plover.orm.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -33,7 +34,12 @@ public class StandardSamples
     @Override
     protected void preamble() {
         StdUnitPackage rootPackage = convert(rootUnit);
-        VirtualSamplePackage.STANDARD.addDependency(rootPackage);
+        DiamondPackage.STANDARD.addDependency(rootPackage);
+    }
+
+    @Override
+    public List<Entity<?>> getInstances() {
+        return super.getInstances();
     }
 
     StdUnitPackage convert(PersistenceUnit node) {
