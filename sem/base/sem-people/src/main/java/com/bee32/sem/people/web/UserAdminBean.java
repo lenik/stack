@@ -149,6 +149,7 @@ public class UserAdminBean extends PrincipalAdminBean {
         try {
             serviceFor(User.class).saveOrUpdate(u);
 
+            serviceFor(UserPassword.class).deleteAll(Restrictions.eq("user.id", u.getId()));
             UserPassword pass = new UserPassword(u, password);
             serviceFor(UserPassword.class).save(pass);
             password = "";
