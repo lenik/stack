@@ -45,6 +45,8 @@ public class MaterialCategory
     }
 
     public void setCodeGenerator(CodeGenerator codeGenerator) {
+        if (codeGenerator == null)
+            throw new NullPointerException("codeGenerator");
         this.codeGenerator = codeGenerator;
     }
 
