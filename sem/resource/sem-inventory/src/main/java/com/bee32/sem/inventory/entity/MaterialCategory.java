@@ -56,7 +56,12 @@ public class MaterialCategory
     void set_CodeGenerator(String _codeGenerator) {
         if (_codeGenerator == null)
             throw new NullPointerException("_codeGenerator");
-        String cgVal = _codeGenerator.substring(0, 1);
+
+        if (_codeGenerator.isEmpty())
+            throw new IllegalArgumentException("Code generator is empty.");
+
+        char cgVal = _codeGenerator.charAt(0);
+        String cgParam = _codeGenerator.substring(1);
         codeGenerator = CodeGenerator.valueOf(cgVal);
     }
 
