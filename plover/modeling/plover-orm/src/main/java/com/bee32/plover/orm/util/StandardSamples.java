@@ -2,10 +2,13 @@ package com.bee32.plover.orm.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.IdentityHashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.arch.util.ClassCatalog;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.unit.PersistenceUnit;
@@ -15,18 +18,34 @@ public class StandardSamples
 
     static Logger logger = LoggerFactory.getLogger(StandardSamples.class);
 
-    PersistenceUnit unit;
+    PersistenceUnit start;
+
+    Map<PersistenceUnit, StdUnitPackage> convertedMap;
+    {
+        convertedMap = new IdentityHashMap<PersistenceUnit, StdUnitPackage>();
+    }
 
     public StandardSamples() {
         super("std");
-        unit = CustomizedSessionFactoryBean.getForceUnit();
+        start = CustomizedSessionFactoryBean.getForceUnit();
     }
 
     @Override
     protected void preamble() {
-        for (Class<?> type : unit.getClasses()) {
+        convert(start);
+    }
 
+    SamplePackage convert(PersistenceUnit node) {
+        StdUnitPackage pkg = convertedMap.get(node);
+        if (pkg == null) {
+            StdUnitPackage std = new StdUnitPackage(start);
+            StdUnitPackage unit1 = convertedMap.put(node, std);
+            for (ClassCatalog dependency : start.getDependencies()) {
+                PersistenceUnit pu = (PersistenceUnit) dependency;
+                pu = convert(node);
+            }
         }
+        return pkg;
     }
 
     static class StdUnitPackage

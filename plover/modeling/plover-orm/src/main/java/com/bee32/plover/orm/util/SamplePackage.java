@@ -1,7 +1,9 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.bee32.plover.arch.Component;
@@ -10,7 +12,7 @@ import com.bee32.plover.orm.entity.Entity;
 public class SamplePackage
         extends Component {
 
-    final Set<Entity<?>> instances = new HashSet<Entity<?>>();
+    final List<Entity<?>> instances = new ArrayList<Entity<?>>();
     final Set<SamplePackage> dependencies = new HashSet<SamplePackage>();
 
     public SamplePackage() {
@@ -25,7 +27,7 @@ public class SamplePackage
         return false;
     }
 
-    public Set<Entity<?>> getInstances() {
+    public List<Entity<?>> getInstances() {
         return instances;
     }
 

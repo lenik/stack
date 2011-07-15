@@ -12,16 +12,16 @@ public class ImportSamplesUtil {
 
     static Logger logger = LoggerFactory.getLogger(ImportSamplesUtil.class);
 
-    static final Map<Class<?>, SampleContribution> instances = new HashMap<Class<?>, SampleContribution>();
+    static final Map<Class<?>, SampleContribution> beanMap = new HashMap<Class<?>, SampleContribution>();
 
     public static boolean register(SampleContribution contrib) {
         Class<?> clazz = contrib.getClass();
 
-        SampleContribution existing = instances.get(clazz);
+        SampleContribution existing = beanMap.get(clazz);
         if (existing != null)
             return false;
 
-        instances.put(clazz, contrib);
+        beanMap.put(clazz, contrib);
         return true;
     }
 
@@ -29,7 +29,7 @@ public class ImportSamplesUtil {
         if (clazz == null)
             throw new NullPointerException("clazz");
 
-        SampleContribution instance = instances.get(clazz);
+        SampleContribution instance = beanMap.get(clazz);
         if (instance == null) {
             // lazy-create
             try {

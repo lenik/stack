@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityAccessor;
 
 /**
  * Lifecycle:
@@ -27,21 +29,23 @@ public abstract class SampleContribution
 
     static Logger logger = LoggerFactory.getLogger(SampleContribution.class);
 
-    public static final String LOADED_SAMPLE_PACKAGE_KEY = "sample";
-
     private boolean assembled;
-
-    public SampleContribution() {
-        this(VirtualSamplePackage.NORMAL);
-    }
 
     public SampleContribution(String name) {
         super(name);
     }
 
+    public SampleContribution() {
+        this(VirtualSamplePackage.NORMAL);
+    }
+
     protected SampleContribution(SamplePackage... outers) {
         for (SamplePackage outer : outers)
             addTargetPackage(outer);
+    }
+
+    {
+        ImportSamplesUtil.register(this);
     }
 
     protected void addTargetPackage(SamplePackage target) {
@@ -89,18 +93,32 @@ public abstract class SampleContribution
     }
 
     @Override
-    public Set<Entity<?>> getInstances() {
+    public List<Entity<?>> getInstances() {
         assemble();
         return super.getInstances();
     }
 
-    protected final void addSample(Entity<? extends Serializable> sample) {
+    protected final void add(Entity<? extends Serializable> sample) {
         addInstance(sample);
     }
 
-    protected final <E extends Entity<?>> void addSamples(E... samples) {
+    protected final <E extends Entity<?>> void addBulk(E... samples) {
         for (Entity<?> sample : samples)
-            addSample(sample);
+            add(sample);
+    }
+
+    protected final <E extends Entity<?>> void addMicroGroup(E... samples) {
+        if (samples.length == 0)
+            return;
+
+        E head = samples[0];
+        E prev = head;
+        for (int i = 1; i < samples.length; i++) {
+            E node = samples[i];
+            EntityAccessor.setNextOfMicroLoop(prev, node);
+        }
+
+        add(head);
     }
 
 }

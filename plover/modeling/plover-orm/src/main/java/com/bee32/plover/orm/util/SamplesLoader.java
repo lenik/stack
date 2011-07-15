@@ -76,10 +76,10 @@ public class SamplesLoader
             loadSamples(dependency, progress);
 
         List<Entity<?>> sideA = new ArrayList<Entity<?>>();
-        List<Entity<?>> sideB = new ArrayList<Entity<?>>();
+        List<Entity<?>> sideZ = new ArrayList<Entity<?>>();
         pack.beginLoad();
 
-        // Classify to A/B
+        // Classify to A/Z
         for (Entity<?> sample : pack.getInstances()) {
             if (sample == null) {
                 logger.error("Null sample in package " + pack);
@@ -93,45 +93,55 @@ public class SamplesLoader
             }
 
             boolean isAutoId = EntityAccessor.isAutoId(sample);
-//            if (isAutoId)
+            if (isAutoId)
+                sideZ.add(sample);
+            else
                 sideA.add(sample);
-//            else
-//                sideB.add(sample);
         }
 
         // Load Side-B (before)
-        if (!sideB.isEmpty()) {
-            String packBVersionKey = "sampack.a." + pack.getName();
-            String packBVersion = confManager.getConfValue(packBVersionKey);
-            String packBPrefix = "sample.";
+        if (!sideA.isEmpty()) {
+            String packAVersionKey = "sampack.a." + pack.getName();
+            String packAVersion = confManager.getConfValue(packAVersionKey);
+            String packAPrefix = "sample.";
 
-            if (logger.isDebugEnabled()) {
-                String message = String.format("Loading[%d]: %d B-samples from %s", //
-                        ++loadIndex, sideB.size(), pack);
-                logger.debug(message);
-            }
+            boolean packAOnce = true;
 
-            boolean packBOnce = true;
+            if (packAOnce) {
+                if ("1".equals(packAVersion)) {
+                    logger.debug("  (A) Already loaded: " + pack.getName());
+                } else {
+                    if (logger.isDebugEnabled()) {
+                        String message = String.format("Loading[%d]: %d B-samples from %s", //
+                                ++loadIndex, sideA.size(), pack);
+                        logger.debug(message);
+                    }
 
-            if (packBOnce) {
-                try {
-                    @SuppressWarnings("unchecked")
-                    IEntityAccessService<Entity<?>, ?> eas = dataManager.access(Entity.class);
-                    eas.saveAll(sideB);
+                    try {
+                        @SuppressWarnings("unchecked")
+                        IEntityAccessService<Entity<?>, ?> eas = dataManager.access(Entity.class);
+                        eas.saveAll(sideA);
 
-                    confManager.setConf(packBVersionKey, "1");
+                        confManager.setConf(packAVersionKey, "1");
 
-                    // dataManager.flush();
-                } catch (Exception e) {
-                    logger.error("Failed to load (B) samples from " + pack, e);
+                        // dataManager.flush();
+                    } catch (Exception e) {
+                        logger.error("Failed to load (A) samples from " + pack, e);
+                    }
                 }
 
             } else {
-                for (Entity<?> sample : sideB) {
+                for (Entity<?> sample : sideA) {
+                    if (logger.isDebugEnabled()) {
+                        String message = String.format("Loading[%d]: Single A-sample from %s", //
+                                ++loadIndex, pack);
+                        logger.debug(message);
+                    }
+
                     // sample.getVersion();
                     Class<? extends Entity<?>> sampleType = (Class<? extends Entity<?>>) sample.getClass();
                     String typeAbbr = ABBR.abbr(sampleType);
-                    String sampleVersionKey = packBPrefix + typeAbbr + "." + sample.getId();
+                    String sampleVersionKey = packAPrefix + typeAbbr + "." + sample.getId();
                     String sampleVersion = confManager.getConfValue(sampleVersionKey);
 
                     if ("NEVER-UPDATE".equals(sampleVersion))
@@ -142,33 +152,33 @@ public class SamplesLoader
                         confManager.setConf(sampleVersionKey, "1");
                         // dataManager.flush();
                     } catch (Exception e) {
-                        logger.error("Failed to load (A) samples from " + pack, e);
+                        logger.error("Failed to load (Z) samples from " + pack, e);
                     }
                 } // for
             } // packBOnce
         } // B.empty
 
         // Load Side A. (after)
-        if (!sideA.isEmpty()) {
-            String packAVersionKey = "sampack.a." + pack.getName();
-            String packAVersion = confManager.getConfValue(packAVersionKey);
+        if (!sideZ.isEmpty()) {
+            String packZVersionKey = "sampack.z." + pack.getName();
+            String packZVersion = confManager.getConfValue(packZVersionKey);
 
-            if ("1".equals(packAVersion)) {
-                logger.debug("  (A) Already loaded: " + pack.getName());
+            if ("1".equals(packZVersion)) {
+                logger.debug("  (Z) Already loaded: " + pack.getName());
 
             } else {
                 if (logger.isDebugEnabled()) {
-                    String message = String.format("Loading[%d]: %d A-samples from %s", //
-                            ++loadIndex, sideA.size(), pack);
+                    String message = String.format("Loading[%d]: %d Z-samples from %s", //
+                            ++loadIndex, sideZ.size(), pack);
                     logger.debug(message);
                 }
 
                 try {
                     @SuppressWarnings("unchecked")
                     IEntityAccessService<Entity<?>, ?> eas = dataManager.access(Entity.class);
-                    eas.saveAll(sideA);
+                    eas.saveAll(sideZ);
 
-                    confManager.setConf(packAVersionKey, "1");
+                    confManager.setConf(packZVersionKey, "1");
 
                     // dataManager.flush();
                 } catch (Exception e) {
@@ -182,6 +192,10 @@ public class SamplesLoader
     }
 
     public void loadNormalSamples() {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Normal samples structure: ");
+            SampleDumper.dump(VirtualSamplePackage.NORMAL);
+        }
         loadSamples(VirtualSamplePackage.NORMAL, NO_PROGRESS);
     }
 
