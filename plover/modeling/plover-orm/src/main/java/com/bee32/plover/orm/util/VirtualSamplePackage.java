@@ -44,7 +44,8 @@ public class VirtualSamplePackage
         VirtualSamplePackage endPackage = new VirtualSamplePackage(name + ":end");
 
         endPackage.dependencies.add(startPackage);
-        startPackage.dependencies.add(dependOn);
+        if (dependOn != null)
+            startPackage.dependencies.add(dependOn);
 
         virtualPackages.put(name, endPackage);
         return endPackage;
