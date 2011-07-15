@@ -1,5 +1,7 @@
 package com.bee32.icsf.principal.dto;
 
+import java.util.Locale;
+
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
@@ -56,6 +58,16 @@ public abstract class AbstractPrincipalDto<E extends Principal>
         // this.name = map.getString("name");
         this.fullName = map.getString("fullName");
         this.description = map.getString("description");
+    }
+
+    @Override
+    public void setId(String id) {
+        if (id == null)
+            throw new NullPointerException("id");
+
+        id = id.toLowerCase(Locale.ROOT);
+
+        super.setId(id);
     }
 
     public String getName() {
