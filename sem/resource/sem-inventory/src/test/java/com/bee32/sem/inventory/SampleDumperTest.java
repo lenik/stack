@@ -3,6 +3,7 @@ package com.bee32.sem.inventory;
 import org.junit.Test;
 
 import com.bee32.plover.orm.util.ImportSamplesUtil;
+import com.bee32.plover.orm.util.SampleDumper;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.VirtualSamplePackage;
 import com.bee32.plover.test.WiredTestCase;
