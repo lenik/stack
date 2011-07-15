@@ -56,7 +56,7 @@ public class PassToNextDto
             String[] sequenceIds = map.getStringArray("sequences");
             if (sequenceIds != null)
                 for (String rangeId : sequenceIds) {
-                    PassStepDto range = new PassStepDto();
+                    PassStepDto range = new PassStepDto().create();
                     range.setId(Integer.parseInt(rangeId));
                     sequences.add(range);
                 }

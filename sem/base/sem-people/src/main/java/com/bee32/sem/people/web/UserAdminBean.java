@@ -115,7 +115,7 @@ public class UserAdminBean extends PrincipalAdminBean {
 	}
 
 	private void _newUser() {
-		user = new UserDto();
+		user = new UserDto().create();
 	}
 
 	public void doNewUser() {

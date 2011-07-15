@@ -146,7 +146,7 @@ public class PersonAdminBean
     }
 
     private void _newPerson() {
-        person = new PersonDto();
+        person = new PersonDto().create();
 
         IUserPrincipal currentUser = SessionLoginInfo.getCurrentUser();
         UserDto user = new UserDto().ref(currentUser.getId());

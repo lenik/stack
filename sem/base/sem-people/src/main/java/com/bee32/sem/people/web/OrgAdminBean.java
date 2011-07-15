@@ -185,7 +185,7 @@ public class OrgAdminBean
     }
 
     private void _newOrg() {
-        org = new OrgDto();
+        org = new OrgDto().create();
 
         IUserPrincipal currentUser = SessionLoginInfo.getCurrentUser();
         UserDto user = new UserDto().ref(currentUser.getId());
@@ -275,18 +275,14 @@ public class OrgAdminBean
     }
 
     private void _newRole() {
-        role = new PersonRoleDto();
-
-        PersonDto person = new PersonDto();
-        role.setPerson(person);
-
+        role = new PersonRoleDto().create();
         role.setOrg(org);
     }
 
     public void doNewRole() {
         if (org == null || org.getId() == null) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("提示", "请选择需要新增联系方式的客户/供应商!"));
+            uiLogger.error("提示:请选择需要新增联系方式的客户/供应商!");
+            return;
         }
         _newRole();
     }

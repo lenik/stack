@@ -8,7 +8,7 @@ public class RoleDtoTest
 
     @Test
     public void testDepth() {
-        RoleDto role = new RoleDto(-1);
+        RoleDto role = new RoleDto(-1).create();
         assertEquals(255, role.depth);
     }
 

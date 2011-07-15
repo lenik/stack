@@ -15,7 +15,7 @@ public class ContactDtoTest
     @Test
     public void testSerialization()
             throws IOException, ClassNotFoundException {
-        ContactDto c = new ContactDto();
+        ContactDto c = new ContactDto().create();
         c.setEmail("a@b.com");
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();

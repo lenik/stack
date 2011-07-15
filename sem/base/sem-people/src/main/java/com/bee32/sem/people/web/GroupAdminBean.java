@@ -103,7 +103,7 @@ public class GroupAdminBean extends PrincipalAdminBean {
 	}
 
 	private void _newGroup() {
-		group = new GroupDto();
+		group = new GroupDto().create();
 	}
 
 	public void doNewGroup() {

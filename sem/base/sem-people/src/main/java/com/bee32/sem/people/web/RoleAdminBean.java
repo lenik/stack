@@ -107,7 +107,7 @@ public class RoleAdminBean extends PrincipalAdminBean {
 	}
 
 	private void _newRole() {
-		role = new RoleDto();
+		role = new RoleDto().create();
 	}
 
 	public void doNewRole() {

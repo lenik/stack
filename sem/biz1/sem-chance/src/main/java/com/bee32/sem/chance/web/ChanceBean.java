@@ -157,7 +157,7 @@ public class ChanceBean
         BasePrice currentPrice = serviceFor(BasePrice.class).list(//
                 Order.desc("createdDate"), //
                 PriceCriteria.listBasePriceByMaterial(sm)).get(0);
-        QuotationItemDto qi = new QuotationItemDto();
+        QuotationItemDto qi = new QuotationItemDto().create();
         qi.setQuotationInvoice(quotation);
 
         qi.setBasePrice(DTOs.mref(BasePriceDto.class, currentPrice));
@@ -271,7 +271,7 @@ public class ChanceBean
     }
 
     public void createQuotationForm() {
-        quotation = new QuotationDto();
+        quotation = new QuotationDto().create();
         quotation.setChance(chance);
         UserDto creator = new UserDto().ref(SessionLoginInfo.requireCurrentUser().getId());
         quotation.setCreator(creator);
@@ -438,7 +438,7 @@ public class ChanceBean
     public void addChanceParty() {
         if (selectedParty == null)
             return;
-        ChancePartyDto chancePartyDto = new ChancePartyDto();
+        ChancePartyDto chancePartyDto = new ChancePartyDto().create();
         chancePartyDto.setChance(chance);
         chancePartyDto.setParty(selectedParty);
         chancePartyDto.setRole("普通客户");

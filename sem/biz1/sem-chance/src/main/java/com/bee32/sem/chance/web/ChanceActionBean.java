@@ -97,7 +97,7 @@ public class ChanceActionBean
     @PostConstruct
     public void init() {
         initList();
-        action = new ChanceActionDto();
+        action = new ChanceActionDto().create();
         searchable = false;
         editable = false;
     }
@@ -203,7 +203,7 @@ public class ChanceActionBean
     }
 
     public void createForm() {
-        action = new ChanceActionDto();
+        action = new ChanceActionDto().create();
         selectedAction = null;
         setActiveTab(TAB_FORM);
         add = true;

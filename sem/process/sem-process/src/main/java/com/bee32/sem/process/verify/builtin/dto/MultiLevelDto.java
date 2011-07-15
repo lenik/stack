@@ -58,7 +58,7 @@ public class MultiLevelDto
                     int policyId = Integer.parseInt(_policyId);
                     VerifyPolicyDto policyRef = new VerifyPolicyDto().ref(policyId);
 
-                    LevelDto level = new LevelDto();
+                    LevelDto level = new LevelDto().create();
                     level.setMultiLevel(new MultiLevelDto().ref(this));
                     level.setLimit(limit);
                     level.setTargetPolicy(policyRef);
