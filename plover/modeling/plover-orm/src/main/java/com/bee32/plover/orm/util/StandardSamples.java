@@ -3,7 +3,6 @@ package com.bee32.plover.orm.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.IdentityHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -19,8 +18,6 @@ public class StandardSamples
 
     static Logger logger = LoggerFactory.getLogger(StandardSamples.class);
 
-    PersistenceUnit rootUnit;
-
     Map<PersistenceUnit, StdUnitPackage> convertedMap;
     {
         convertedMap = new IdentityHashMap<PersistenceUnit, StdUnitPackage>();
@@ -28,18 +25,12 @@ public class StandardSamples
 
     public StandardSamples() {
         super("std");
-        rootUnit = CustomizedSessionFactoryBean.getForceUnit();
+        commit(CustomizedSessionFactoryBean.getForceUnit());
     }
 
-    @Override
-    protected void preamble() {
+    void commit(PersistenceUnit rootUnit) {
         StdUnitPackage rootPackage = convert(rootUnit);
         DiamondPackage.STANDARD.addDependency(rootPackage);
-    }
-
-    @Override
-    public List<Entity<?>> getInstances() {
-        return super.getInstances();
     }
 
     StdUnitPackage convert(PersistenceUnit node) {
@@ -54,6 +45,10 @@ public class StandardSamples
             }
         }
         return pkg;
+    }
+
+    @Override
+    protected void preamble() {
     }
 
     static class StdUnitPackage
