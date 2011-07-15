@@ -24,6 +24,19 @@ public class MaterialAttribute
     String name;
     String value;
 
+    public MaterialAttribute() {
+    }
+
+    public MaterialAttribute(Material material, String name, String value) {
+        if (material == null)
+            throw new NullPointerException("material");
+        if (name == null)
+            throw new NullPointerException("name");
+        setMaterial(material);
+        setName(name);
+        setValue(value);
+    }
+
     @NaturalId
     @ManyToOne
     public Material getMaterial() {
@@ -60,10 +73,10 @@ public class MaterialAttribute
     protected Boolean naturalEquals(EntityBase<Long> other) {
         MaterialAttribute o = (MaterialAttribute) other;
 
-        if (material.equals(o.material))
+        if (!material.equals(o.material))
             return false;
 
-        if (name.equals(o.name))
+        if (!name.equals(o.name))
             return false;
 
         return true;
