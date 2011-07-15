@@ -1,9 +1,7 @@
 package com.bee32.plover.web.faces;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.faces.FacesException;
@@ -13,6 +11,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
+import javax.free.TypeHierMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +48,7 @@ public class PloverExceptionHandler
             Throwable exception = context.getException();
             Class<? extends Throwable> exceptionType = exception.getClass();
 
-            IFaceletExceptionHandler handler = handlerMap.get(exceptionType);
+            IFaceletExceptionHandler handler = handlerMap.floor(exceptionType);
 
             if (handler == null)
                 continue;
@@ -75,9 +74,9 @@ public class PloverExceptionHandler
         super.handle();
     }
 
-    static final Map<Class<?>, IFaceletExceptionHandler> handlerMap;
+    static final TypeHierMap<IFaceletExceptionHandler> handlerMap;
     static {
-        handlerMap = new HashMap<Class<?>, IFaceletExceptionHandler>();
+        handlerMap = new TypeHierMap<IFaceletExceptionHandler>();
     }
 
     public static void register(Class<? extends Throwable> exceptionType, IFaceletExceptionHandler handler) {
