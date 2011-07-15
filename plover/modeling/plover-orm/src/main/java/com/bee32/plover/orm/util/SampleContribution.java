@@ -30,18 +30,21 @@ public abstract class SampleContribution
 
     private boolean assembled;
 
-    /**
-     * The default ctor is reserved for Spring CDI.
-     */
-    protected SampleContribution() {
-        super();
+    public SampleContribution() {
+        this(VirtualSamplePackage.NORMAL);
+    }
+
+    public SampleContribution(String name) {
+        super(name);
     }
 
     protected SampleContribution(SamplePackage... outers) {
-        this();
-        for (SamplePackage outer : outers) {
-            outer.addDependency(this);
-        }
+        for (SamplePackage outer : outers)
+            addTargetPackage(outer);
+    }
+
+    protected void addTargetPackage(SamplePackage target) {
+        target.addDependency(this);
     }
 
     /**
