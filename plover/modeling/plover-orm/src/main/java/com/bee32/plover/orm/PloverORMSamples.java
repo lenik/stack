@@ -10,7 +10,7 @@ public class PloverORMSamples
 
     @Override
     protected void preamble() {
-        addNormalSample(version);
+        addSample(version);
     }
 
 }

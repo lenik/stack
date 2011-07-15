@@ -111,63 +111,63 @@ public class SEMChanceSamples
     protected void preamble() {
 
         // add <price>->quotionDetail
-        addNormalSample(BasePrice.tempQD1);
-        addNormalSample(BasePrice.tempQD2);
-        addNormalSample(BasePrice.tempQD3);
-        addNormalSample(BasePrice.tempQD4);
-        addNormalSample(BasePrice.tempQD5);
-        addNormalSample(BasePrice.tempQD6);
-        addNormalSample(BasePrice.tempQD7);
-        addNormalSample(BasePrice.tempQD8);
-        addNormalSample(BasePrice.tempQD9);
+        addSample(BasePrice.tempQD1);
+        addSample(BasePrice.tempQD2);
+        addSample(BasePrice.tempQD3);
+        addSample(BasePrice.tempQD4);
+        addSample(BasePrice.tempQD5);
+        addSample(BasePrice.tempQD6);
+        addSample(BasePrice.tempQD7);
+        addSample(BasePrice.tempQD8);
+        addSample(BasePrice.tempQD9);
 
         //CurrentPrice
-        addNormalSample(CurrentPrice.pentax);
-        addNormalSample(CurrentPrice.pentax);
+        addSample(CurrentPrice.pentax);
+        addSample(CurrentPrice.pentax);
 
         // addChanceStage
-        addNormalSample(ChanceStage.INIT);
-        addNormalSample(ChanceStage.LAUNCHED);
-        addNormalSample(ChanceStage.MEETING);
-        addNormalSample(ChanceStage.PAYMENT);
-        addNormalSample(ChanceStage.QUOTED);
-        addNormalSample(ChanceStage.DONE);
-        addNormalSample(ChanceStage.TERMINATED);
+        addSample(ChanceStage.INIT);
+        addSample(ChanceStage.LAUNCHED);
+        addSample(ChanceStage.MEETING);
+        addSample(ChanceStage.PAYMENT);
+        addSample(ChanceStage.QUOTED);
+        addSample(ChanceStage.DONE);
+        addSample(ChanceStage.TERMINATED);
 
         // add ChanceActionStyle
-        addNormalSample(ChanceActionStyle.INTERNET);
-        addNormalSample(ChanceActionStyle.TALK);
-        addNormalSample(ChanceActionStyle.TELEPHONE);
-        addNormalSample(ChanceActionStyle.OTHER);
+        addSample(ChanceActionStyle.INTERNET);
+        addSample(ChanceActionStyle.TALK);
+        addSample(ChanceActionStyle.TELEPHONE);
+        addSample(ChanceActionStyle.OTHER);
 
         // add ChanceCategory
-        addNormalSample(ChanceCategory.IMPORTANT);
-        addNormalSample(ChanceCategory.NORMAL);
-        addNormalSample(ChanceCategory.OTHER);
+        addSample(ChanceCategory.IMPORTANT);
+        addSample(ChanceCategory.NORMAL);
+        addSample(ChanceCategory.OTHER);
 
         // add ChanceSource
-        addNormalSample(ChanceSourceType.AGENT);
-        addNormalSample(ChanceSourceType.CUSTOMER);
-        addNormalSample(ChanceSourceType.DEVELOP);
-        addNormalSample(ChanceSourceType.INTERNET);
-        addNormalSample(ChanceSourceType.INTRODUCTION);
-        addNormalSample(ChanceSourceType.MEDIA);
-        addNormalSample(ChanceSourceType.PARTNER);
-        addNormalSample(ChanceSourceType.PROMOTION);
-        addNormalSample(ChanceSourceType.TELEPHONE);
-        addNormalSample(ChanceSourceType.TENDER);
-        addNormalSample(ChanceSourceType.OTHER);
+        addSample(ChanceSourceType.AGENT);
+        addSample(ChanceSourceType.CUSTOMER);
+        addSample(ChanceSourceType.DEVELOP);
+        addSample(ChanceSourceType.INTERNET);
+        addSample(ChanceSourceType.INTRODUCTION);
+        addSample(ChanceSourceType.MEDIA);
+        addSample(ChanceSourceType.PARTNER);
+        addSample(ChanceSourceType.PROMOTION);
+        addSample(ChanceSourceType.TELEPHONE);
+        addSample(ChanceSourceType.TENDER);
+        addSample(ChanceSourceType.OTHER);
 
-        addNormalSample(chance);
-        addNormalSample(party);
-        addNormalSample(party2);
-        addNormalSample(competitor);
-        addNormalSample(chanceAction1);
-        addNormalSample(chanceAction2);
+        addSample(chance);
+        addSample(party);
+        addSample(party2);
+        addSample(competitor);
+        addSample(chanceAction1);
+        addSample(chanceAction2);
 
         // add <price>->quotation and quotationItem
-        addNormalSample(quotationItem1);
-        addNormalSample(quotation);
+        addSample(quotationItem1);
+        addSample(quotation);
     }
 
 }

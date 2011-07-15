@@ -47,21 +47,21 @@ public class IcsfPrincipalSamples
 
     @Override
     protected void preamble() {
-        addNormalSample(sunCorp, solaRobots);
-        addNormalSample(Role.adminRole, registeredRole);
-        addNormalSample(User.admin, eva, wallE, alice, tom, kate);
-        addNormalSample(User.adminApAll);
-        addNormalSample(User.adminEntityAll);
+        addSamples(sunCorp, solaRobots);
+        addSamples(Role.adminRole, registeredRole);
+        addSamples(User.admin, eva, wallE, alice, tom, kate);
+        addSample(User.adminApAll);
+        addSample(User.adminEntityAll);
 
-        addNormalSample(PrivateQuestion.DADS_NAME);
-        addNormalSample(PrivateQuestion.MOMS_NAME);
+        addSample(PrivateQuestion.DADS_NAME);
+        addSample(PrivateQuestion.MOMS_NAME);
 
-        addNormalSample(new UserPassword(User.admin, sha1("Bee32")));
-        addNormalSample(new UserPassword(eva, sha1("EVA")));
-        addNormalSample(new UserPassword(wallE, sha1("WALL-E")));
-        addNormalSample(new UserPassword(alice, sha1("ALICE")));
-        addNormalSample(new UserPassword(tom, sha1("TOM")));
-        addNormalSample(new UserPassword(kate, sha1("KATE")));
+        addSample(new UserPassword(User.admin, sha1("Bee32")));
+        addSample(new UserPassword(eva, sha1("EVA")));
+        addSample(new UserPassword(wallE, sha1("WALL-E")));
+        addSample(new UserPassword(alice, sha1("ALICE")));
+        addSample(new UserPassword(tom, sha1("TOM")));
+        addSample(new UserPassword(kate, sha1("KATE")));
     }
 
     static String sha1(String text) {

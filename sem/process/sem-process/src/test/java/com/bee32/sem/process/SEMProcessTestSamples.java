@@ -43,10 +43,10 @@ public class SEMProcessTestSamples
 
     @Override
     protected void preamble() {
-        addNormalSample(attackPref);
-        addNormalSample(bombAmerica);
-        addNormalSample(killSimpsons);
-        addNormalSample(rescueMao);
+        addSample(attackPref);
+        addSample(bombAmerica);
+        addSample(killSimpsons);
+        addSample(rescueMao);
     }
 
 }

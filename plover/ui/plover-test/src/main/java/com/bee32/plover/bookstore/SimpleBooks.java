@@ -11,9 +11,9 @@ public class SimpleBooks
 
     @Override
     protected void preamble() {
-        addNormalSample(SimpleBooks.tom);
-        addNormalSample(SimpleBooks.jerry);
-        addNormalSample(SimpleBooks.helloWorld);
+        addSample(SimpleBooks.tom);
+        addSample(SimpleBooks.jerry);
+        addSample(SimpleBooks.helloWorld);
     }
 
 }

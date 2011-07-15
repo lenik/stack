@@ -63,11 +63,11 @@ public class SEMMailSamples
 
     @Override
     protected void preamble() {
-        addNormalSample(favBox);
-        addNormalSample(spamBox);
-        addNormalSample(spamFilter);
-        addNormalSample(hello);
-        addNormalSample(helloEcho);
+        addSample(favBox);
+        addSample(spamBox);
+        addSample(spamFilter);
+        addSample(hello);
+        addSample(helloEcho);
     }
 
 }

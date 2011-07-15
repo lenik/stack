@@ -9,8 +9,8 @@ import javax.free.Dates;
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.plover.orm.util.ImportSamples;
+import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.misc.Sets;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactCategory;
@@ -194,34 +194,34 @@ public class SEMPeopleSamples
 
     @Override
     protected void preamble() {
-        addNormalSample(PartyTagname.CUSTOMER);
-        addNormalSample(PartyTagname.SUPPLIER);
-        addNormalSample(PartyTagname.INTERNAL);
+        addSample(PartyTagname.CUSTOMER);
+        addSample(PartyTagname.SUPPLIER);
+        addSample(PartyTagname.INTERNAL);
 
-        addNormalSample(PersonSidType.IDENTITYCARD);
-        addNormalSample(PersonSidType.PASSPORT);
-        addNormalSample(PersonSidType.DRIVINGLICENES);
+        addSample(PersonSidType.IDENTITYCARD);
+        addSample(PersonSidType.PASSPORT);
+        addSample(PersonSidType.DRIVINGLICENES);
 
-        addNormalSample(ContactCategory.NORMAL);
-        addNormalSample(ContactCategory.HOME);
-        addNormalSample(ContactCategory.WORK);
-        addNormalSample(ContactCategory.OUT);
+        addSample(ContactCategory.NORMAL);
+        addSample(ContactCategory.HOME);
+        addSample(ContactCategory.WORK);
+        addSample(ContactCategory.OUT);
 
-        addNormalSample(OrgType.EDUCATION);
-        addNormalSample(OrgType.FACTORY);
-        addNormalSample(OrgType.INDIVIDUAL);
-        addNormalSample(OrgType.INF_CORP);
-        addNormalSample(OrgType.LTD_CORP);
-        addNormalSample(OrgType.MILITARY);
-        addNormalSample(OrgType.PARTNER);
+        addSample(OrgType.EDUCATION);
+        addSample(OrgType.FACTORY);
+        addSample(OrgType.INDIVIDUAL);
+        addSample(OrgType.INF_CORP);
+        addSample(OrgType.LTD_CORP);
+        addSample(OrgType.MILITARY);
+        addSample(OrgType.PARTNER);
 
-        addNormalSample(abcOrg);
+        addSample(abcOrg);
 
         addNormalSample(jackPerson);
         addNormalSample(tangPerson);
-        addNormalSample(bugatti);
-        addNormalSample(bentley);
-        addNormalSample(weiXiaoBao);
+        addSample(bugatti);
+        addSample(bentley);
+        addSample(weiXiaoBao);
     }
 
 }

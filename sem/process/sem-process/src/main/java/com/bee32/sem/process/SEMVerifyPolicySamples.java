@@ -43,10 +43,10 @@ public class SEMVerifyPolicySamples
 
     @Override
     protected void preamble() {
-        addNormalSample(robotList);
-        addNormalSample(plainList);
-        addNormalSample(kateWallE);
-        addNormalSample(macLevel);
+        addSample(robotList);
+        addSample(plainList);
+        addSample(kateWallE);
+        addSample(macLevel);
     }
 
 }
