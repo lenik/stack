@@ -62,6 +62,6 @@ public class PartyTagname
     public static final PartyTagname INTERNAL = new PartyTagname("-", "公司内部", true);
     public static final PartyTagname CUSTOMER = new PartyTagname("CUS", "客户");
     public static final PartyTagname SUPPLIER = new PartyTagname("SUP", "供应商");
-    public static final PartyTagname OTHER = new PartyTagname("SUP", "其他");
+    public static final PartyTagname OTHER = new PartyTagname("OTH", "其他");
 
 }
