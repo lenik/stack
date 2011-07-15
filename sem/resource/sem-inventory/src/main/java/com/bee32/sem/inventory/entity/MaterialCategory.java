@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -19,30 +20,20 @@ public class MaterialCategory
 
     private static final long serialVersionUID = 1L;
 
-    List<Material> materials;
-
     CodeGenerator codeGenerator = CodeGenerator.NONE;
+    List<Material> materials = new ArrayList<Material>();
 
-    @OneToMany(mappedBy = "category")
-    public List<Material> getMaterials() {
-        return materials;
+    public MaterialCategory() {
+        super();
     }
 
-    public void setMaterials(List<Material> materials) {
-        if (materials == null)
-            throw new NullPointerException("materials");
-        this.materials = materials;
+    public MaterialCategory(String name) {
+        super(name);
     }
 
-    @Column(name = "codeGenerator", nullable = false)
-    char get_CodeGenerator() {
-        return codeGenerator.getValue();
-    }
-
-    void set_CodeGenerator(char _codeGenerator) {
-        codeGenerator = CodeGenerator.valueOf(_codeGenerator);
-    }
-
+    /**
+     * 该类别采用的代码生成器
+     */
     @Transient
     public CodeGenerator getCodeGenerator() {
         return codeGenerator;
@@ -52,6 +43,35 @@ public class MaterialCategory
         if (codeGenerator == null)
             throw new NullPointerException("codeGenerator");
         this.codeGenerator = codeGenerator;
+    }
+
+    /**
+     * 代码生成器的枚举值，以后可能会加入（表达式）构造参数，故不用 char 而用 string。
+     */
+    @Column(name = "codeGenerator", nullable = false)
+    String get_CodeGenerator() {
+        return "" + codeGenerator.getValue();
+    }
+
+    void set_CodeGenerator(String _codeGenerator) {
+        if (_codeGenerator == null)
+            throw new NullPointerException("_codeGenerator");
+        String cgVal = _codeGenerator.substring(0, 1);
+        codeGenerator = CodeGenerator.valueOf(cgVal);
+    }
+
+    /**
+     * 该类别的物料列表。
+     */
+    @OneToMany(mappedBy = "category")
+    public List<Material> getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(List<Material> materials) {
+        if (materials == null)
+            throw new NullPointerException("materials");
+        this.materials = materials;
     }
 
 }

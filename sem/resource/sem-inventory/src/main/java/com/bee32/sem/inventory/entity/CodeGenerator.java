@@ -8,6 +8,9 @@ import java.util.Map;
 import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.arch.util.NoSuchEnumException;
 
+/**
+ * 代码生成器（策略）
+ */
 public class CodeGenerator
         extends EnumAlt<Character, CodeGenerator> {
 
@@ -55,7 +58,10 @@ public class CodeGenerator
     static final Map<String, CodeGenerator> nameMap = new HashMap<String, CodeGenerator>();
     static final Map<Character, CodeGenerator> valueMap = new HashMap<Character, CodeGenerator>();
 
+    /** 手动输入 */
     public static final CodeGenerator NONE = new CodeGenerator('N', "none");
+
+    /** 生成 GUID 宇宙唯一代码 */
     public static final CodeGenerator GUID = new CodeGenerator('G', "guid");
 
 }
