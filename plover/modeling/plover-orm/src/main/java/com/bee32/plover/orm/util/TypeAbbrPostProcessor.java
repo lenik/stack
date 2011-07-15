@@ -19,7 +19,7 @@ public class TypeAbbrPostProcessor
 
             String simpleName = clazz.getSimpleName();
             if (!simpleName.equals(abbr))
-                logger.debug("      Entity " + simpleName + " was compressed to " + abbr);
+                logger.debug("      Entity name " + simpleName + " was compressed to " + abbr);
         }
     }
 

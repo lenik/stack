@@ -21,12 +21,13 @@ public class SEMInventoryModuleTest
 
     @Override
     protected int getRefreshPeriod() {
-        return 2;
+        return 10;
     }
 
     public static void main(String[] args)
             throws IOException {
-        new SEMInventoryModuleTest().browseAndWait(SEMInventoryModule.PREFIX + "/material/index-rich.jsf");
+        new SEMInventoryModuleTest().browseAndWait(//
+                SEMInventoryModule.PREFIX + "/material/index-rich.jsf");
     }
 
 }
