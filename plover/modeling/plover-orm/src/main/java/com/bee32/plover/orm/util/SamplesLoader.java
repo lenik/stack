@@ -1,9 +1,9 @@
 package com.bee32.plover.orm.util;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import javax.free.IdentityHashSet;
 import javax.inject.Inject;
 
 import org.apache.commons.collections15.Closure;
@@ -14,20 +14,20 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.orm.builtin.PloverConfManager;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
 @Component
 @Lazy
 public class SamplesLoader
-        implements ApplicationContextAware {
+        implements ApplicationContextAware, ITypeAbbrAware {
 
     static Logger logger = LoggerFactory.getLogger(SamplesLoader.class);
 
@@ -59,81 +59,134 @@ public class SamplesLoader
 
     static int loadIndex = 0;
 
-    public synchronized void loadSamples(SampleContribution contrib, boolean worseCase,
-            Closure<SampleContribution> progress) {
+    /**
+     * Static: the samples-loader maybe instantiated twice cuz WebAppCtx & AppCtx. So here just make
+     * the map static to avoid of duplicates.
+     */
+    static IdentityHashSet loadedPackages = new IdentityHashSet();
 
-        if (contrib == null)
-            throw new NullPointerException("contrib");
+    public synchronized void loadSamples(SamplePackage pack, Closure<SampleContribution> progress) {
+        if (pack == null)
+            throw new NullPointerException("pack");
 
-        if (contrib.isLoaded())
+        if (!loadedPackages.add(pack))
             return;
 
-        ImportSamples imports = contrib.getClass().getAnnotation(ImportSamples.class);
-        if (imports != null) {
-            for (Class<?> importClass : imports.value()) {
-                SampleContribution dependency = contributions.get(importClass);
-                if (dependency == null) {
-                    logger.warn("Samples contribution " + contrib + " imports non-existing contribution " + importClass);
-                    continue;
-                }
-                loadSamples(dependency, worseCase, progress);
+        for (SamplePackage dependency : pack.getDependencies())
+            loadSamples(dependency, progress);
+
+        List<Entity<?>> sideA = new ArrayList<Entity<?>>();
+        List<Entity<?>> sideB = new ArrayList<Entity<?>>();
+        pack.beginLoad();
+
+        // Classify to A/B
+        for (Entity<?> sample : pack.getInstances()) {
+            if (sample == null) {
+                logger.error("Null sample in package " + pack);
+                continue;
             }
+
+            Class<?> sampleClass = sample.getClass();
+            if (!unit.getClasses().contains(sampleClass)) {
+                logger.debug("  Ignored entity of non-using class: " + sampleClass);
+                continue;
+            }
+
+            boolean isAutoId = EntityAccessor.isAutoId(sample);
+//            if (isAutoId)
+                sideA.add(sample);
+//            else
+//                sideB.add(sample);
         }
 
-        String loadKey = "loaded." + contrib.getClass().getName();
-        String loadedState = confManager.getConfValue(loadKey);
-
-        if ("1".equals(loadedState)) {
-            logger.debug("  Already loaded: " + loadKey);
-
-        } else {
-            List<Entity<?>> selection = new ArrayList<Entity<?>>();
-
-            contrib.beginLoad();
-
-            Collection<? extends Entity<?>> samples = contrib.getTransientSamples(worseCase);
-            if (samples == null || samples.isEmpty()) {
-                logger.debug("  No sample defined in " + contrib);
-                return;
-            }
-
-            for (Entity<?> sample : samples) {
-                if (sample == null) {
-                    logger.error("Null sample in contribution " + contrib);
-                    continue;
-                }
-
-                Class<?> sampleClass = sample.getClass();
-                if (unit.getClasses().contains(sampleClass))
-                    selection.add(sample);
-                else
-                    logger.debug("  Ignored entity of non-using class: " + sampleClass);
-            }
+        // Load Side-B (before)
+        if (!sideB.isEmpty()) {
+            String packBVersionKey = "sampack.a." + pack.getName();
+            String packBVersion = confManager.getConfValue(packBVersionKey);
+            String packBPrefix = "sample.";
 
             if (logger.isDebugEnabled()) {
-                String message = String.format("Loading[%d]: %d %s samples from %s", ++loadIndex, selection.size(), //
-                        worseCase ? "worse" : "normal", contrib);
+                String message = String.format("Loading[%d]: %d B-samples from %s", //
+                        ++loadIndex, sideB.size(), pack);
                 logger.debug(message);
             }
 
-            progress.execute(contrib);
+            boolean packBOnce = true;
 
-            try {
-                @SuppressWarnings("unchecked")
-                IEntityAccessService<Entity<?>, ?> eas = dataManager.access(Entity.class);
-                eas.saveAll(selection);
+            if (packBOnce) {
+                try {
+                    @SuppressWarnings("unchecked")
+                    IEntityAccessService<Entity<?>, ?> eas = dataManager.access(Entity.class);
+                    eas.saveAll(sideB);
 
-                confManager.setConf(loadKey, "1");
+                    confManager.setConf(packBVersionKey, "1");
 
-                // dataManager.flush();
-            } catch (DataAccessException e) {
-                throw new RuntimeException("Failed to load samples from " + contrib, e);
+                    // dataManager.flush();
+                } catch (Exception e) {
+                    logger.error("Failed to load (B) samples from " + pack, e);
+                }
+
+            } else {
+                for (Entity<?> sample : sideB) {
+                    // sample.getVersion();
+                    Class<? extends Entity<?>> sampleType = (Class<? extends Entity<?>>) sample.getClass();
+                    String typeAbbr = ABBR.abbr(sampleType);
+                    String sampleVersionKey = packBPrefix + typeAbbr + "." + sample.getId();
+                    String sampleVersion = confManager.getConfValue(sampleVersionKey);
+
+                    if ("NEVER-UPDATE".equals(sampleVersion))
+                        continue;
+
+                    try {
+                        dataManager.access(sampleType).saveOrUpdate(sample);
+                        confManager.setConf(sampleVersionKey, "1");
+                        // dataManager.flush();
+                    } catch (Exception e) {
+                        logger.error("Failed to load (A) samples from " + pack, e);
+                    }
+                } // for
+            } // packBOnce
+        } // B.empty
+
+        // Load Side A. (after)
+        if (!sideA.isEmpty()) {
+            String packAVersionKey = "sampack.a." + pack.getName();
+            String packAVersion = confManager.getConfValue(packAVersionKey);
+
+            if ("1".equals(packAVersion)) {
+                logger.debug("  (A) Already loaded: " + pack.getName());
+
+            } else {
+                if (logger.isDebugEnabled()) {
+                    String message = String.format("Loading[%d]: %d A-samples from %s", //
+                            ++loadIndex, sideA.size(), pack);
+                    logger.debug(message);
+                }
+
+                try {
+                    @SuppressWarnings("unchecked")
+                    IEntityAccessService<Entity<?>, ?> eas = dataManager.access(Entity.class);
+                    eas.saveAll(sideA);
+
+                    confManager.setConf(packAVersionKey, "1");
+
+                    // dataManager.flush();
+                } catch (Exception e) {
+                    logger.error("Failed to load samples from " + pack, e);
+                }
+
             }
+        } // !sideA.empty
 
-            contrib.endLoad();
-        }
+        pack.endLoad();
+    }
 
-        contrib.setLoaded(true);
+    public void loadNormalSamples() {
+        loadSamples(VirtualSamplePackage.NORMAL, NO_PROGRESS);
+    }
+
+    public void loadWorseSamples() {
+        loadSamples(VirtualSamplePackage.WORSE, NO_PROGRESS);
     }
 
 }
