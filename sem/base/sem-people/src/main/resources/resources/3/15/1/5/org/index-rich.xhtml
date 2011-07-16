@@ -317,36 +317,94 @@
 							<h:panelGrid id="orgUnitTreeGrid" columns="2"  rowClasses="align_top">
 
 								<t:panelGroup>
+									<p:panel header="部门">
+										<p:toolbar id="orgUnitToolbar">
+											<p:toolbarGroup align="left">
+												<p:commandButton value="新增"
+													disabled="#{orgAdminBean.org == null or orgAdminBean.org.id == null}"
+													actionListener="#{orgAdminBean.doNewOrgUnit}"
+													update="orgUnitForm:orgUnitPanel" async="true"
+													onclick="orgUnitDialog.show();" />
+												<p:commandButton value="删除"
+													actionListener="#{orgAdminBean.doDeleteOrgUnit}"
+													disabled="#{not orgAdminBean.orgUnitSelected}"
+													update="orgUnitTreeGrid growl" async="true" />
+												<p:divider />
+											</p:toolbarGroup>
+										</p:toolbar>
 
-									<p:toolbar id="orgUnitToolbar">
-										<p:toolbarGroup align="left">
-											<p:commandButton value="新增"
-												disabled="#{orgAdminBean.org == null or orgAdminBean.org.id == null}"
-												actionListener="#{orgAdminBean.doNewOrgUnit}"
-												update="orgUnitForm:orgUnitPanel" async="true"
-												onclick="orgUnitDialog.show();" />
-											<p:commandButton value="删除"
-												actionListener="#{orgAdminBean.doDeleteOrgUnit}"
-												disabled="#{not orgAdminBean.orgUnitSelected}"
-												update="orgUnitTreeGrid growl" async="true" />
-											<p:divider />
-										</p:toolbarGroup>
-									</p:toolbar>
+										<p:tree value="#{orgAdminBean.orgUnitRoot}" var="orgUnit"
+											selectionMode="single"
+											selection="#{orgAdminBean.selectedOrgUnitNode}">
 
-									<p:tree value="#{orgAdminBean.orgUnitRoot}" var="orgUnit"
-										selectionMode="single"
-										selection="#{orgAdminBean.selectedOrgUnitNode}">
+											<p:ajax event="select" update="orgUnitContactAndPersonRoles"
+												listener="#{orgAdminBean.onOrgUnitNodeSelect}" />
+											<p:ajax event="unselect"
+												update="orgUnitContactAndPersonRoles"
+												listener="#{orgAdminBean.onOrgUnitNodeUnselect}" />
 
-										<p:treeNode>
-											<h:outputText value="#{orgUnit.name}" />
-										</p:treeNode>
-									</p:tree>
+											<p:treeNode>
+												<h:outputText value="#{orgUnit.name}" />
+											</p:treeNode>
+										</p:tree>
+									</p:panel>
 								</t:panelGroup>
 
-								<t:panelGroup>
+								<t:panelGroup id="orgUnitContactAndPersonRoles">
 
                                     <p:panel header="部门对应联系方式" toggleable="true">
-                                    </p:panel>
+										<h:panelGroup>
+											<h:panelGrid columns="2">
+												<h:outputLabel value="部门名称" />
+												<h:outputText
+													value="#{orgAdminBean.selectedOrgUnitNode.data.name}" />
+											</h:panelGrid>
+
+											<t:panelGrid columns="4"
+												columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+
+												<h:outputLabel for="orgUnitContactCategory" value="分类" />
+												<t:panelGroup colspan="3">
+													<p:selectOneMenu id="orgUnitContactCategory"
+														value="#{orgAdminBean.orgUnitContact.category.id}"
+														style="width:200px;">
+														<f:selectItem itemValue="" itemLabel="--选择联系方式分类--" />
+														<f:selectItems value="#{orgAdminBean.contactCategories}" />
+													</p:selectOneMenu>
+												</t:panelGroup>
+
+												<h:outputLabel for="orgUnitContactAddress" value="地址" />
+												<p:inputText id="orgUnitContactAddress"
+													value="#{orgAdminBean.orgUnitContact.address}" />
+												<h:outputLabel for="orgUnitContactPostCode" value="邮编" />
+												<p:inputText id="orgUnitContactPostCode"
+													value="#{orgAdminBean.orgUnitContact.postCode}" />
+
+												<h:outputLabel for="orgUnitContactTel" value="电话" />
+												<p:inputText id="orgUnitContactTel"
+													value="#{orgAdminBean.orgUnitContact.tel}" />
+												<h:outputLabel for="orgUnitContactMobile" value="移动电话" />
+												<p:inputText id="orgUnitContactMobile"
+													value="#{orgAdminBean.orgUnitContact.mobile}" />
+
+												<h:outputLabel for="orgUnitContactFax" value="传真" />
+												<p:inputText id="orgUnitContactFax"
+													value="#{orgAdminBean.orgUnitContact.fax}" />
+												<h:outputLabel for="orgUnitContactEmail" value="email" />
+												<p:inputText id="orgUnitContactEmail"
+													value="#{orgAdminBean.orgUnitContact.email}" />
+
+												<h:outputLabel for="orgUnitContactWebsite" value="网址" />
+												<p:inputText id="orgUnitContactWebsite"
+													value="#{orgAdminBean.orgUnitContact.website}" />
+												<h:outputLabel for="orgUnitContactQq" value="qq" />
+												<p:inputText id="orgUnitContactQq"
+													value="#{orgAdminBean.orgUnitContact.qq}" />
+
+											</t:panelGrid>
+
+										</h:panelGroup>
+									</p:panel>
 
 									<p:panel header="部门对应人员" toggleable="true">
 										<p:toolbar id="roleToolbar">
@@ -717,11 +775,6 @@
 
                     <p:tree value="#{orgAdminBean.orgUnitRoot}" var="orgUnit"
                         selectionMode="single" selection="#{orgAdminBean.selectedParentOrgUnitNode}">
-
-				        <p:ajax event="select" update="messages" listener="#{treeBean.onNodeSelect}" />
-				        <p:ajax event="unselect" update="messages" listener="#{treeBean.onNodeUnselect}" />
-
-
                         <p:treeNode>
                             <h:outputText value="#{orgUnit.name}" />
                         </p:treeNode>

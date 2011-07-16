@@ -8,17 +8,22 @@ import javax.faces.model.SelectItem;
 
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.NodeUnselectEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.dto.AbstractPartyDto;
+import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgTypeDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
@@ -34,6 +39,8 @@ import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
+@Component
+@Scope("view")
 public class OrgAdminBean
         extends AbstractPartyAdminBean {
 
@@ -54,9 +61,11 @@ public class OrgAdminBean
 
     private TreeNode orgUnitRootNode;
     private TreeNode selectedOrgUnitNode;
+    private ContactDto orgUnitContact;
 
     private OrgUnitDto orgUnit;
     private TreeNode selectedParentOrgUnitNode;
+
 
     @PostConstruct
     public void init() {
@@ -152,7 +161,7 @@ public class OrgAdminBean
         List<PersonRoleDto> roles = new ArrayList<PersonRoleDto>();
 
         if (org != null && org.getId() != null) {
-            OrgUnitDto selectedOrgUnit = (OrgUnitDto) selectedOrgUnitNode.getData();
+            OrgUnitDto selectedOrgUnit = selectedOrgUnitNode == null? null : (OrgUnitDto) selectedOrgUnitNode.getData();
             if(selectedOrgUnit != null) {
                 //点选部门，出现公司的所选部门中的人员
                 List<PersonRole> personRoles = serviceFor(PersonRole.class).list(Restrictions.eq("orgUnit.id", selectedOrgUnit.getId()));
@@ -206,7 +215,7 @@ public class OrgAdminBean
                     Restrictions.and(Restrictions.eq("org.id", org.getId()),
                             Restrictions.isNull("parent")));
             List<OrgUnitDto> topOrgUnitDtos = DTOs.marshalList(OrgUnitDto.class, topOrgUnits);
-            for (OrgUnitDto orgUnitDto : topOrgUnitDtos) {
+            for(OrgUnitDto orgUnitDto : topOrgUnitDtos) {
                 loadOrgUnitTree(orgUnitDto, orgUnitRootNode);
             }
 
@@ -219,7 +228,7 @@ public class OrgAdminBean
         TreeNode orgUnitNode = new DefaultTreeNode(orgUnitDto, parentNode);
 
         List<OrgUnitDto> subOrgUnits = orgUnitDto.getChildren();
-        for (OrgUnitDto subOrgUnit : subOrgUnits) {
+        for(OrgUnitDto subOrgUnit : subOrgUnits) {
             loadOrgUnitTree(subOrgUnit, orgUnitNode);
         }
     }
@@ -253,6 +262,31 @@ public class OrgAdminBean
     public void setSelectedParentOrgUnitNode(TreeNode selectedParentOrgUnitNode) {
         this.selectedParentOrgUnitNode = selectedParentOrgUnitNode;
     }
+
+    public ContactDto getOrgUnitContact() {
+        orgUnitContact = new ContactDto().create();
+        if (org != null && org.getId() != null) {
+            OrgUnitDto selectedOrgUnit = selectedOrgUnitNode == null? null : (OrgUnitDto) selectedOrgUnitNode.getData();
+            if(selectedOrgUnit != null) {
+                //点选部门，出现公司的所选部门中的人员
+                orgUnitContact = selectedOrgUnit.getContact();
+            }
+        }
+
+        return orgUnitContact;
+    }
+
+    public void setOrgUnitContact(ContactDto orgUnitContact) {
+        this.orgUnitContact = orgUnitContact;
+    }
+
+
+
+
+
+
+
+
 
     private void _newOrg() {
         org = new OrgDto().create();
@@ -288,18 +322,15 @@ public class OrgAdminBean
         }
 
         try {
-            Org org = serviceFor(Org.class).load(selectedOrg.getId());
-            org.getContacts().clear();
-            serviceFor(Org.class).save(org);
+		Org org = serviceFor(Org.class).load(selectedOrg.getId());
+		org.getContacts().clear();
+		serviceFor(Org.class).save(org);
             serviceFor(Org.class).delete(org);
             refreshOrgCount();
 
         } catch (Exception e) {
             uiLogger.error("提示:删除客户/供应商失败;" + e.getMessage());
-            return;
         }
-
-        uiLogger.info("删除客户/供应商成功。");
     }
 
     public void doSave() {
@@ -408,6 +439,7 @@ public class OrgAdminBean
         role.setPerson(selectedPerson);
     }
 
+
     public void doNewOrgUnit() {
         orgUnit = new OrgUnitDto().create();
     }
@@ -429,10 +461,20 @@ public class OrgAdminBean
         orgUnit.setOrg(org);
         serviceFor(OrgUnit.class).save(orgUnit.unmarshal());
 
-        uiLogger.info("保存部门成功");
+        FacesMessage msg = new FacesMessage("保存成功!");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        //uiLogger.info("保存部门成功");
     }
 
     public void doSelectParentOrgUnit() {
         orgUnit.setParent((OrgUnitDto) selectedParentOrgUnitNode.getData());
+    }
+
+    public void onOrgUnitNodeSelect(NodeSelectEvent event) {
+
+    }
+
+    public void onOrgUnitNodeUnselect(NodeUnselectEvent event) {
+
     }
 }
