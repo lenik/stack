@@ -1,5 +1,6 @@
 package com.bee32.sem.people.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -15,9 +16,21 @@ public class OrgUnit
 
     private static final long serialVersionUID = 1L;
 
+    String name;
     Org org;
     Contact contact;
     Group forWhichGroup;
+
+    @Column(length = 30, nullable = false)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        this.name = name;
+    }
 
     /**
      * 属主组织。
