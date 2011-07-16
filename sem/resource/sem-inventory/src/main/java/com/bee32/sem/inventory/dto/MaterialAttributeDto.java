@@ -11,9 +11,9 @@ public class MaterialAttributeDto
 
     private static final long serialVersionUID = 1L;
 
-    private MaterialDto material;
-    private String name;
-    private String value;
+    MaterialDto material;
+    String name;
+    String value;
 
     @Override
     protected void _marshal(MaterialAttribute source) {

@@ -3,11 +3,11 @@ package com.bee32.sem.inventory.web;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.model.SelectItem;
 
 import org.hibernate.criterion.Restrictions;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
-import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.world.thing.Unit;
+import com.bee32.sem.world.thing.UnitDto;
 
 @Component
 @Scope("view")
@@ -30,9 +30,10 @@ public class MaterialViewBean
 
     private boolean searching;
     private String materialNamePattern;
-    private LazyDataModel<MaterialDto> materialList;
+    private List<MaterialDto> materialList;
     private TreeNode root;
     private TreeNode selectedMaterialNode;
+    private MaterialDto tempMaterial = new MaterialDto().create();
 
     MaterialViewBean() {
         root = new DefaultTreeNode("root", null);
@@ -40,10 +41,6 @@ public class MaterialViewBean
 
     @PostConstruct
     public void initialize() {
-        EntityDataModelOptions<Material, MaterialDto> edmo = new EntityDataModelOptions<Material, MaterialDto>(
-                Material.class, MaterialDto.class);
-        materialList = UIHelper.buildLazyDataModel(edmo);
-        refreshMaterialCount(false);
         buildTree();
     }
 
@@ -63,26 +60,15 @@ public class MaterialViewBean
                 treeAssembling(mc, subParentNode);
     }
 
-    public void refreshMaterialCount(boolean isSearching) {
-        int count = serviceFor(Material.class).count(//
-                isSearching ? Restrictions.like("name", "%" + materialNamePattern + "%") : null);
-        if (isSearching)
-            materialList.setRowCount(count);
-    }
-
     public void onNodeSelect(NodeSelectEvent event) {
-        MaterialCategory mc = (MaterialCategory) selectedMaterialNode.getData();
-        long id = mc.getId();
-        System.out.println("=======================");
-        System.out.println(id);
+        MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) selectedMaterialNode.getData();
+        materialList = materialCategoryDto.getMaterials();
     }
 
-    public LazyDataModel<MaterialDto> getMaterialList() {
-        return materialList;
-    }
-
-    public void setMaterialList(LazyDataModel<MaterialDto> materialList) {
-        this.materialList = materialList;
+    public List<SelectItem> getUnits() {
+        List<Unit> unitList = serviceFor(Unit.class).list();
+        List<UnitDto> unitDtoList = DTOs.marshalList(UnitDto.class, unitList);
+        return UIHelper.selectItemsFromDict(unitDtoList);
     }
 
     public boolean isSearching() {
@@ -115,6 +101,22 @@ public class MaterialViewBean
 
     public void setSelectedMaterialNode(TreeNode selectedMaterialNode) {
         this.selectedMaterialNode = selectedMaterialNode;
+    }
+
+    public List<MaterialDto> getMaterialList() {
+        return materialList;
+    }
+
+    public void setMaterialList(List<MaterialDto> materialList) {
+        this.materialList = materialList;
+    }
+
+    public MaterialDto getTempMaterial() {
+        return tempMaterial;
+    }
+
+    public void setTempMaterial(MaterialDto tempMaterial) {
+        this.tempMaterial = tempMaterial;
     }
 
 }

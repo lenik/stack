@@ -16,18 +16,21 @@ public class MaterialCategoryDto
 
     public static final int MATERIALS = 1;
 
-    private List<MaterialDto> materials;
-    private CodeGenerator codeGenerator;
+    String name;
+    List<MaterialDto> materials;
+    CodeGenerator codeGenerator;
 
     @Override
     protected void _marshal(MaterialCategory source) {
+        this.name = source.getName();
         this.codeGenerator = source.getCodeGenerator();
         if (selection.contains(MATERIALS))
-            this.materials = marshalList(MaterialDto.class, source.getMaterials());
+            this.materials = marshalList(MaterialDto.class, 0, source.getMaterials());
     }
 
     @Override
     protected void _unmarshalTo(MaterialCategory target) {
+        target.setName(name);
         target.setCodeGenerator(codeGenerator);
 
         if (selection.contains(MATERIALS))
@@ -37,6 +40,14 @@ public class MaterialCategoryDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<MaterialDto> getMaterials() {

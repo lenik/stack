@@ -20,6 +20,7 @@ public class MaterialCategory
 
     private static final long serialVersionUID = 1L;
 
+    String name;
     CodeGenerator codeGenerator = CodeGenerator.NONE;
     List<Material> materials = new ArrayList<Material>();
 
@@ -77,6 +78,17 @@ public class MaterialCategory
         if (materials == null)
             throw new NullPointerException("materials");
         this.materials = materials;
+    }
+
+    /**
+     * 分类名称
+     */
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

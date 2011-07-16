@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import com.bee32.plover.orm.util.ImportSamples;
@@ -9,6 +10,7 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialAttribute;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
+import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.SEMPeopleSamples;
@@ -25,11 +27,17 @@ public class SEMInventorySamples
     public static MaterialCategory categoryX = new MaterialCategory();
     public static MaterialCategory categoryY = new MaterialCategory();
     public static MaterialPreferredLocation preferredLocation = new MaterialPreferredLocation();
+    public static MaterialPreferredLocation preferredLocation2 = new MaterialPreferredLocation();
     public static StockWarehouse stockWarehouse = new StockWarehouse();
     public static StockLocation parentStockLocation = new StockLocation();
     public static StockLocation hokaidou = new StockLocation();
 
     static {
+        MaterialWarehouseOption baseOption = new MaterialWarehouseOption();
+        baseOption.setMaterial(cskdp);
+        baseOption.setSafetyStock(new BigDecimal(6));
+        baseOption.setWarehouse(stockWarehouse);
+
         stockWarehouse.setAddress("日本");
         stockWarehouse.setPhone("911");
         stockWarehouse.setManager(SEMPeopleSamples.jackPerson);
@@ -47,25 +55,33 @@ public class SEMInventorySamples
         cskdp.setSerial("CSKDP-01");
         cskdp.setCategory(parentCategory);
         cskdp.setPreferredLocations(Arrays.asList(preferredLocation));
+        cskdp.setOptions(Arrays.asList(baseOption));
+        cskdp.setUnitHint("体积");
 
-        gundam.setName("激动战士高达");
+        gundam.setName("机动战士高达");
         gundam.setUnit(Unit.CUBIC_METER);
         gundam.setBarCode("LSLT-02");
         gundam.setSerial("SHAKANA-11");
         gundam.setCategory(categoryX);
         gundam.setPreferredLocations(Arrays.asList(preferredLocation));
+        gundam.setOptions(Arrays.asList(baseOption));
+        gundam.setUnitHint("体积");
+
 
         MaterialAttribute cskdpDistAttr = new MaterialAttribute(cskdp, "炮程", "120km");
         MaterialAttribute cskdpRefmaAttr = new MaterialAttribute(cskdp, "推荐手办", "ABD-432");
         cskdp.setAttributes(Arrays.asList(cskdpDistAttr, cskdpRefmaAttr));
 
+        parentCategory.setName("1");
         parentCategory.setMaterials(Arrays.asList(cskdp));
         parentCategory.setCodeGenerator(CodeGenerator.GUID);
 
+        categoryX.setName("1-1");
         categoryX.setMaterials(Arrays.asList(cskdp));
         categoryX.setParent(parentCategory);
         categoryX.setCodeGenerator(CodeGenerator.NONE);
 
+        categoryY.setName("1-2");
         categoryY.setMaterials(Arrays.asList(cskdp));
         categoryY.setParent(parentCategory);
         categoryY.setCodeGenerator(CodeGenerator.GUID);
@@ -83,6 +99,11 @@ public class SEMInventorySamples
         preferredLocation.setLocation(hokaidou);
         preferredLocation.setComment("...那啥?");
 
+        preferredLocation2.setMaterial(cskdp);
+        preferredLocation2.setBatch("coos-july-16");
+        preferredLocation2.setLocation(parentStockLocation);
+        preferredLocation2.setComment("R2");
+
     }
 
     @Override
@@ -95,7 +116,9 @@ public class SEMInventorySamples
         add(categoryX);
         add(categoryY);
         add(cskdp);
+        add(gundam);
         add(preferredLocation);
+        add(preferredLocation2);
     }
 
 }

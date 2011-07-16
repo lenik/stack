@@ -34,6 +34,7 @@ public class Material
     List<MaterialAttribute> attributes = new ArrayList<MaterialAttribute>();
     List<UserFile> attachments = new ArrayList<UserFile>();
 
+    List<MaterialWarehouseOption> options = new ArrayList<MaterialWarehouseOption>();
     List<MaterialPreferredLocation> preferredLocations = new ArrayList<MaterialPreferredLocation>();
 
     // ------------------------------------------------------------------------
@@ -132,6 +133,16 @@ public class Material
         if (attachments == null)
             throw new NullPointerException("attachments");
         this.attachments = attachments;
+    }
+
+    @OneToMany(mappedBy = "material")
+    @Cascade(CascadeType.ALL)
+    public List<MaterialWarehouseOption> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<MaterialWarehouseOption> options) {
+        this.options = options;
     }
 
     @OneToMany(mappedBy = "material")

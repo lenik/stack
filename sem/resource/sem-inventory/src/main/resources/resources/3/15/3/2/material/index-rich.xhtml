@@ -24,25 +24,50 @@
         <h:form id="main">
 
             <p:layout style="min-width:400px;min-height:200px;" id="layout">
+
+                <p:layoutUnit position="north">
+                    <p:commandButton value="新增物料" onclick="materialModual.show();" />
+                </p:layoutUnit>
+
                 <p:layoutUnit position="west" header="物料树" resizable="true" size="200" minSize="40" collapsible="true">
                     <p:tree value="#{materialViewBean.root}" var="node" dynamic="true" selectionMode="single"
                         selection="#{materialViewBean.selectedMaterialNode}" style="width:150px;">
-                        <p:ajax event="select" listener="#{materialViewBean.onNodeSelect}" />
+                        <p:ajax event="select" listener="#{materialViewBean.onNodeSelect}" update="main:materialList" />
                         <p:treeNode>
-                            <h:outputText value="#{node.codeGenerator}" />
+                            <h:outputText value="#{node.name}" />
                         </p:treeNode>
                     </p:tree>
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center">
-                    <p:dataTable var="material" value="#{materialViewBean.materialList}">
+                    <p:dataTable var="material" value="#{materialViewBean.materialList}" id="materialList">
                         <p:column headerText="物料名称">
                             <h:outputText value="#{material.name}" />
+                        </p:column>
+                        <p:column headerText="序列号">
+                            <h:outputText value="#{material.serial}" />
+                        </p:column>
+                        <p:column headerText="条形码">
+                            <h:outputText value="#{material.barCode}" />
+                        </p:column>
+                        <p:column headerText="基本单位">
+                            <h:outputText value="#{material.unit.name}" />
+                        </p:column>
+                        <p:column headerText="操作">
+                            <p:commandLink value="详细"></p:commandLink>
                         </p:column>
                     </p:dataTable>
                 </p:layoutUnit>
             </p:layout>
 
+        </h:form>
+
+        <h:form id="material">
+            <p:dialog header="Basic Dialog" widgetVar="materialModual">
+                <p:selectOneMenu value="#{materialViewBean.tempMaterial.unit.displayId}">
+                    <f:selectItems value="#{materialViewBean.units}" />
+                </p:selectOneMenu>
+            </p:dialog>
         </h:form>
 
     </ui:define>

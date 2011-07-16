@@ -17,13 +17,15 @@ public class MaterialDto
 
     public static final int ATTRBUTES = 1;
     public static final int ATTACHMENTS = 2;
+    public static final int OPTIONS = 4;
 
-    private MaterialCategoryDto category;
-    private String serial;
-    private String barCode;
-    private List<MaterialAttributeDto> attributes;
-    private List<UserFileDto> attachments;
-    private List<MaterialPreferredLocationDto> preferredLocations;
+    MaterialCategoryDto category;
+    String serial;
+    String barCode;
+    List<MaterialAttributeDto> attributes;
+    List<UserFileDto> attachments;
+    List<MaterialWarehouseOptionDto> options;
+    List<MaterialPreferredLocationDto> preferredLocations;
 
     @Override
     protected void _marshal(Material source) {
@@ -32,9 +34,10 @@ public class MaterialDto
         barCode = source.getBarCode();
 
         if (selection.contains(ATTRBUTES))
-            attributes = marshalList(MaterialAttributeDto.class, source.getAttributes());
+            attributes = marshalList(MaterialAttributeDto.class, 0, source.getAttributes());
 
         preferredLocations = marshalList(MaterialPreferredLocationDto.class, source.getPreferredLocations());
+        options = marshalList(MaterialWarehouseOptionDto.class, source.getOptions());
 
         if (selection.contains(ATTACHMENTS))
             attachments = marshalList(UserFileDto.class, source.getAttachments());
@@ -101,6 +104,16 @@ public class MaterialDto
         this.attachments = attachments;
     }
 
+    public List<MaterialWarehouseOptionDto> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<MaterialWarehouseOptionDto> options) {
+        if (options == null)
+            throw new NullPointerException("options");
+        this.options = options;
+    }
+
     public List<MaterialPreferredLocationDto> getPreferredLocations() {
         return preferredLocations;
     }
@@ -110,5 +123,4 @@ public class MaterialDto
             throw new NullPointerException("preferredLocations");
         this.preferredLocations = preferredLocations;
     }
-
 }

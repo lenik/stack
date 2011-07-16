@@ -34,7 +34,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         super.__marshal(source);
 
         name = source.getName();
-
+        unitHint = source.getUnitHint();
         unit = mref(UnitDto.class, source.getUnit());
 
         int unitConvSelection = 0;
@@ -48,7 +48,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         super.__unmarshalTo(target);
 
         target.setName(name);
-
+        target.setUnitHint(unitHint);
         merge(target, "unit", unit);
         merge(target, "unitConv", unitConv);
     }
@@ -62,6 +62,42 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
 
         unit = new UnitDto().ref(map.getString("unit"));
         unitConv = new UnitConvDto().ref(map.getString("unitConv"));
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        this.name = name;
+    }
+
+    public UnitDto getUnit() {
+        return unit;
+    }
+
+    public void setUnit(UnitDto unit) {
+        if (unit == null)
+            throw new NullPointerException("unit");
+        this.unit = unit;
+    }
+
+    public String getUnitHint() {
+        return unitHint;
+    }
+
+    public void setUnitName(String unitHint) {
+        this.unitHint = unitHint;
+    }
+
+    public UnitConvDto getUnitConv() {
+        return unitConv;
+    }
+
+    public void setUnitConv(UnitConvDto unitConv) {
+        this.unitConv = unitConv;
     }
 
 }

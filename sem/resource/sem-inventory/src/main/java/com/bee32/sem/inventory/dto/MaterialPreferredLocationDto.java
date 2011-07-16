@@ -11,10 +11,10 @@ public class MaterialPreferredLocationDto
 
     private static final long serialVersionUID = 1L;
 
-    private MaterialDto material;
-    private String batch;
-    private StockLocationDto location;
-    private String comment;
+    MaterialDto material;
+    String batch;
+    StockLocationDto location;
+    String comment;
 
     @Override
     protected void _marshal(MaterialPreferredLocation source) {
@@ -28,7 +28,7 @@ public class MaterialPreferredLocationDto
     protected void _unmarshalTo(MaterialPreferredLocation target) {
         merge(target, "material", material);
         target.setBatch(batch);
-        // XXX location
+        merge(target, "location", location);
         target.setComment(comment);
     }
 
