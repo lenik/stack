@@ -8,6 +8,7 @@ import javax.free.StringArray;
 
 import org.apache.myfaces.webapp.StartupServletContextListener;
 import org.mortbay.jetty.servlet.ServletHolder;
+import org.primefaces.webapp.filter.FileUploadFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,6 +113,8 @@ public class FaceletsTestCase
         // Faces Servlet, must be load-on-startup, but STL seems not support.
         ServletHolder facesServlet = stl.addServlet(FacesServlet.class, "*.jsf");
         facesServlet.setInitOrder(0);
+
+        stl.addFilter(FileUploadFilter.class, "*.jsf", 0);
     }
 
     @Override
