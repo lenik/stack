@@ -12,16 +12,15 @@ import javax.free.NullLogSink;
 public class FacesUILogger
         extends AbstractLogger {
 
-    FacesContext context;
+    private static final long serialVersionUID = 1L;
 
-    public FacesUILogger(FacesContext context) {
-        if (context == null)
-            throw new NullPointerException("context");
-        this.context = context;
+    public FacesUILogger() {
     }
 
     @Override
     public ILogSink get(LogLevel level, int delta) {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         int priority = level.getPriority() + delta;
         switch (priority) {
         case -4:

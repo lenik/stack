@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
-import javax.faces.context.FacesContext;
-
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
@@ -18,12 +16,12 @@ public abstract class EntityViewBean
 
     private static final long serialVersionUID = 1L;
 
-    protected transient FacesUILogger uiLogger = new FacesUILogger(FacesContext.getCurrentInstance());
+    protected transient FacesUILogger uiLogger = new FacesUILogger();
 
     private void readObject(ObjectInputStream in)
             throws ClassNotFoundException, IOException {
         in.defaultReadObject();
-        uiLogger = new FacesUILogger(FacesContext.getCurrentInstance());
+        uiLogger = new FacesUILogger();
     }
 
     static CommonDataManager getDataManager() {
