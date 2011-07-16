@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.hibernate.criterion.Order;
@@ -199,7 +197,7 @@ public class OrgAdminBean
                     Restrictions.and(Restrictions.eq("org.id", org.getId()),
                             Restrictions.not(Restrictions.isNull("parent"))));
             List<OrgUnitDto> topOrgUnitDtos = DTOs.marshalList(OrgUnitDto.class, topOrgUnits);
-            for(OrgUnitDto orgUnitDto : topOrgUnitDtos) {
+            for (OrgUnitDto orgUnitDto : topOrgUnitDtos) {
                 loadOrgUnitTree(orgUnitDto, orgUnitRootNode);
             }
 
@@ -212,7 +210,7 @@ public class OrgAdminBean
         TreeNode orgUnitNode = new DefaultTreeNode(orgUnitDto, parentNode);
 
         List<OrgUnitDto> subOrgUnits = orgUnitDto.getChildren();
-        for(OrgUnitDto subOrgUnit : subOrgUnits) {
+        for (OrgUnitDto subOrgUnit : subOrgUnits) {
             loadOrgUnitTree(subOrgUnit, orgUnitNode);
         }
     }
@@ -246,13 +244,6 @@ public class OrgAdminBean
     public void setSelectedParentOrgUnitNode(TreeNode selectedParentOrgUnitNode) {
         this.selectedParentOrgUnitNode = selectedParentOrgUnitNode;
     }
-
-
-
-
-
-
-
 
     private void _newOrg() {
         org = new OrgDto().create();
@@ -288,15 +279,18 @@ public class OrgAdminBean
         }
 
         try {
-		Org org = serviceFor(Org.class).load(selectedOrg.getId());
-		org.getContacts().clear();
-		serviceFor(Org.class).save(org);
+            Org org = serviceFor(Org.class).load(selectedOrg.getId());
+            org.getContacts().clear();
+            serviceFor(Org.class).save(org);
             serviceFor(Org.class).delete(org);
             refreshOrgCount();
 
         } catch (Exception e) {
             uiLogger.error("提示:删除客户/供应商失败;" + e.getMessage());
+            return;
         }
+
+        uiLogger.info("删除客户/供应商成功。");
     }
 
     public void doSave() {
@@ -405,7 +399,6 @@ public class OrgAdminBean
         role.setPerson(selectedPerson);
     }
 
-
     public void doNewOrgUnit() {
         orgUnit = new OrgUnitDto().create();
     }
@@ -421,9 +414,7 @@ public class OrgAdminBean
         orgUnit.setOrg(org);
         serviceFor(OrgUnit.class).save(orgUnit.unmarshal());
 
-        FacesMessage msg = new FacesMessage("保存成功!");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        //uiLogger.info("保存部门成功");
+        uiLogger.info("保存部门成功");
     }
 
     public void doSelectParentOrgUnit() {
