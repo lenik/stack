@@ -12,6 +12,8 @@ import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
@@ -47,18 +49,17 @@ public class MaterialViewBean
 
     public void buildTree() {
         List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(Restrictions.isNull("parent"));
-// List<MaterialCategoryDto> materialCategoryDtoList = DTOs.marshalList(MaterialCategoryDto.class,
-// rootCategories);
-        for (MaterialCategory mc : rootCategories) {
+        List<MaterialCategoryDto> materialCategoryDtoList = DTOs.marshalList(MaterialCategoryDto.class, rootCategories);
+        for (MaterialCategoryDto mc : materialCategoryDtoList) {
             treeAssembling(mc, root);
         }
     }
 
-    void treeAssembling(MaterialCategory materialCategory, TreeNode parent) {
+    void treeAssembling(MaterialCategoryDto materialCategory, TreeNode parent) {
         TreeNode subParentNode = new DefaultTreeNode(materialCategory, parent);
-        List<MaterialCategory> childrenList = materialCategory.getChildren();
+        List<MaterialCategoryDto> childrenList = materialCategory.getChildren();
         if (childrenList != null)
-            for (MaterialCategory mc : childrenList)
+            for (MaterialCategoryDto mc : childrenList)
                 treeAssembling(mc, subParentNode);
     }
 
