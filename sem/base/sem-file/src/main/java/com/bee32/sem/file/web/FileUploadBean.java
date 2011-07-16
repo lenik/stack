@@ -2,12 +2,9 @@ package com.bee32.sem.file.web;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.free.TempFile;
 
 import org.primefaces.event.FileUploadEvent;
@@ -23,53 +20,58 @@ import com.bee32.sem.file.entity.UserFile;
 
 @Component
 @Scope("view")
-public class FileUploadBean extends EntityViewBean {
+public class FileUploadBean
+        extends EntityViewBean {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public List<UserFile> uploadedFiles = new ArrayList<UserFile>();
+    public List<UserFile> uploadedFiles = new ArrayList<UserFile>();
 
-	public void handleFileUpload(FileUploadEvent event) {
-	FacesMessage msg = null;
+    public void handleFileUpload(FileUploadEvent event) {
+        String fileName = event.getFile().getFileName();
+        UploadedFile upFile = event.getFile();
 
-		UploadedFile upFile = event.getFile();
-		File tempFile;
-		try {
-			tempFile = TempFile.createTempFile();
-			FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
-			fileOutputStream.write(upFile.getContents());
-			fileOutputStream.close();
+        File tempFile;
+        try {
+            tempFile = TempFile.createTempFile();
+            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
+            fileOutputStream.write(upFile.getContents());
+            fileOutputStream.close();
+        } catch (Exception e) {
+            uiLogger.error("传送失败:" + fileName, e);
+            return;
+        }
 
-			FileBlob fileBlob = FileBlob.commit(tempFile, true);
+        UserFile userFile = new UserFile();
+        userFile.setOrigPath(upFile.getFileName());
 
-			UserFile userFile = new UserFile();
-			userFile.setFileBlob(fileBlob);
-			userFile.setOrigPath(upFile.getFileName());
+        User currUser = (User) SessionLoginInfo.requireCurrentUser();
+        userFile.setOwner(currUser);
 
-			User currUser = (User) SessionLoginInfo.requireCurrentUser();
-			userFile.setOwner(currUser);
+        try {
+            FileBlob fileBlob = FileBlob.commit(tempFile, true);
 
-			serviceFor(FileBlob.class).saveOrUpdate(fileBlob);
-			serviceFor(UserFile.class).save(userFile);
+            userFile.setFileBlob(fileBlob);
 
-			uploadedFiles.add(userFile);
+            serviceFor(FileBlob.class).saveOrUpdate(fileBlob);
+            serviceFor(UserFile.class).save(userFile);
 
-			msg = new FacesMessage("上传成功", event.getFile().getFileName() + "上传成功");
+        } catch (Exception e) {
+            uiLogger.error("远程文件保存失败:" + fileName, e);
+            return;
+        }
 
-		} catch (IOException e) {
-			msg = new FacesMessage("上传失败", event.getFile().getFileName() + "上传失败");
-			e.printStackTrace();
-		}
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+        uploadedFiles.add(userFile);
+
+        uiLogger.info("上传成功:" + fileName);
     }
 
-	public List<UserFile> getUploadedFiles() {
-		return uploadedFiles;
-	}
+    public List<UserFile> getUploadedFiles() {
+        return uploadedFiles;
+    }
 
-	public void setUploadedFiles(List<UserFile> uploadedFiles) {
-		this.uploadedFiles = uploadedFiles;
-	}
-
+    public void setUploadedFiles(List<UserFile> uploadedFiles) {
+        this.uploadedFiles = uploadedFiles;
+    }
 
 }
