@@ -1,23 +1,42 @@
 package com.bee32.sem.world.thing;
 
+import javax.free.ParseException;
+
+import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.dict.SimpleNameDictDto;
 
 public class UnitDto
         extends SimpleNameDictDto<Unit> {
 
     private static final long serialVersionUID = 1L;
-    Unit stdUnit;
+    UnitDto stdUnit;
     double scale;
 
-    public UnitDto() {
-        super();
+    @Override
+    protected void _marshal(Unit source) {
+        super._marshal(source);
+        stdUnit = new UnitDto().ref(source.getStdUnit());
+        scale = source.getScale();
     }
 
-    public Unit getStdUnit() {
+    @Override
+    protected void _unmarshalTo(Unit target) {
+        super._unmarshalTo(target);
+        merge(target, "stdUnit", stdUnit);
+        target.setScale(scale);
+    }
+
+    @Override
+    protected void _parse(TextMap map)
+            throws ParseException {
+        super._parse(map);
+    }
+
+    public UnitDto getStdUnit() {
         return stdUnit;
     }
 
-    public void setStdUnit(Unit stdUnit) {
+    public void setStdUnit(UnitDto stdUnit) {
         this.stdUnit = stdUnit;
     }
 
@@ -27,10 +46,6 @@ public class UnitDto
 
     public void setScale(double scale) {
         this.scale = scale;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
     }
 
 }

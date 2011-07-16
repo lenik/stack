@@ -34,6 +34,22 @@ public class Unit
         super(name, label, description);
     }
 
+    public Unit getStdUnit() {
+        return stdUnit;
+    }
+
+    public void setStdUnit(Unit stdUnit) {
+        this.stdUnit = stdUnit;
+    }
+
+    public double getScale() {
+        return scale;
+    }
+
+    public void setScale(double scale) {
+        this.scale = scale;
+    }
+
     public static final Unit GRAM = new Unit("g", "克");
     public static final Unit KILOGRAM = new Unit("kg", "千克", 1000, GRAM);
     public static final Unit MILLIGRAM = new Unit("mg", "毫克", 0.001, GRAM);
