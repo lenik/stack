@@ -2,12 +2,16 @@ package com.bee32.sem.file.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.free.IFile;
 import javax.free.JavaioFile;
 import javax.free.SystemProperties;
 
-public class LocalStorage {
+public class LocalStorage
+        implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     File contextFile;
     IFile context;
