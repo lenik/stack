@@ -5,7 +5,6 @@ import java.util.List;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialXP;
@@ -18,6 +17,7 @@ public class MaterialDto
 
     public static final int ATTRBUTES = 1;
     public static final int ATTACHMENTS = 2;
+
     private MaterialCategoryDto category;
     private String serial;
     private String barCode;
@@ -27,23 +27,22 @@ public class MaterialDto
 
     @Override
     protected void _marshal(Material source) {
-//        this.category = mref(MaterialCategoryDto.class, source.getCategory());
-        this.serial = source.getSerial();
-        this.barCode = source.getBarCode();
+        category = mref(MaterialCategoryDto.class, 0, source.getCategory());
+        serial = source.getSerial();
+        barCode = source.getBarCode();
 
         if (selection.contains(ATTRBUTES))
-            this.attributes = DTOs.marshalList(MaterialAttributeDto.class, source.getAttributes());
+            attributes = marshalList(MaterialAttributeDto.class, source.getAttributes());
 
-        this.preferredLocations = DTOs.marshalList(MaterialPreferredLocationDto.class, source.getPreferredLocations());
+        preferredLocations = marshalList(MaterialPreferredLocationDto.class, source.getPreferredLocations());
 
         if (selection.contains(ATTACHMENTS))
-            this.attachments = DTOs.marshalList(UserFileDto.class, source.getAttachments());
+            attachments = marshalList(UserFileDto.class, source.getAttachments());
     }
 
     @Override
     protected void _unmarshalTo(Material target) {
-        // XXX category
-
+        merge(target, "category", category);
         target.setSerial(serial);
         target.setBarCode(barCode);
         mergeList(target, "attributes", attributes);

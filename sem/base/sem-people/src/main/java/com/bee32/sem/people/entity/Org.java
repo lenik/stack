@@ -24,7 +24,10 @@ public class Org
     OrgType type = OrgType.PARTNER;
     int size;
 
+    // List<OrgUnit> orgUnits = new ArrayList<OrgUnit>();
+
     Set<PersonRole> roles = new HashSet<PersonRole>();
+
     Group forWhichGroup;
 
     public Org() {

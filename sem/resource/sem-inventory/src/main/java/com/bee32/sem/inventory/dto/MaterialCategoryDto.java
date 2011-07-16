@@ -6,7 +6,6 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.tree.TreeEntityDto;
-import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.entity.CodeGenerator;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 
@@ -24,7 +23,7 @@ public class MaterialCategoryDto
     protected void _marshal(MaterialCategory source) {
         this.codeGenerator = source.getCodeGenerator();
         if (selection.contains(MATERIALS))
-            this.materials = DTOs.marshalList(MaterialDto.class, source.getMaterials());
+            this.materials = marshalList(MaterialDto.class, source.getMaterials());
     }
 
     @Override

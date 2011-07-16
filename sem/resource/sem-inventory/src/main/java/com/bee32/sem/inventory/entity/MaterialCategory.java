@@ -9,7 +9,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
-import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.orm.ext.config.BatchConfig;
 import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
@@ -70,7 +69,6 @@ public class MaterialCategory
      * 该类别的物料列表。
      */
     @OneToMany(mappedBy = "category")
-    @Lazy(false)
     public List<Material> getMaterials() {
         return materials;
     }

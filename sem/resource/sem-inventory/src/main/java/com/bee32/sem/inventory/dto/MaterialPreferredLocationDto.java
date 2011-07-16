@@ -3,7 +3,6 @@ package com.bee32.sem.inventory.dto;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 
@@ -19,10 +18,9 @@ public class MaterialPreferredLocationDto
 
     @Override
     protected void _marshal(MaterialPreferredLocation source) {
-        this.material = DTOs.mref(MaterialDto.class, source.getMaterial());
+        this.material = mref(MaterialDto.class, source.getMaterial());
         this.batch = source.getBatch();
-        // XXX
-        // this.loaction = source.getLocation();
+        this.location = mref(StockLocationDto.class, 0, source.getLocation());
         this.comment = source.getComment();
     }
 
