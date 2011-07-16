@@ -6,12 +6,13 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.MaterialXP;
+import com.bee32.sem.world.thing.ThingDto;
 
 public class MaterialDto
-        extends EntityDto<Material, Long> {
+        extends ThingDto<Material, MaterialXP> {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,7 +27,7 @@ public class MaterialDto
 
     @Override
     protected void _marshal(Material source) {
-        // XXX category
+//        this.category = mref(MaterialCategoryDto.class, source.getCategory());
         this.serial = source.getSerial();
         this.barCode = source.getBarCode();
 
@@ -42,6 +43,7 @@ public class MaterialDto
     @Override
     protected void _unmarshalTo(Material target) {
         // XXX category
+
         target.setSerial(serial);
         target.setBarCode(barCode);
         mergeList(target, "attributes", attributes);

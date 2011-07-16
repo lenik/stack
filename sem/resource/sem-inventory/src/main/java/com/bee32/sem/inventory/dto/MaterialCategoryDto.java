@@ -23,7 +23,6 @@ public class MaterialCategoryDto
     @Override
     protected void _marshal(MaterialCategory source) {
         this.codeGenerator = source.getCodeGenerator();
-
         if (selection.contains(MATERIALS))
             this.materials = DTOs.marshalList(MaterialDto.class, source.getMaterials());
     }

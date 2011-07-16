@@ -20,6 +20,7 @@ public class SEMInventorySamples
         extends SampleContribution {
 
     public static Material cskdp = new Material();
+    public static Material gundam = new Material();
     public static MaterialCategory parentCategory = new MaterialCategory();
     public static MaterialCategory categoryX = new MaterialCategory();
     public static MaterialCategory categoryY = new MaterialCategory();
@@ -47,6 +48,13 @@ public class SEMInventorySamples
         cskdp.setCategory(parentCategory);
         cskdp.setPreferredLocations(Arrays.asList(preferredLocation));
 
+        gundam.setName("激动战士高达");
+        gundam.setUnit(Unit.CUBIC_METER);
+        gundam.setBarCode("LSLT-02");
+        gundam.setSerial("SHAKANA-11");
+        gundam.setCategory(categoryX);
+        gundam.setPreferredLocations(Arrays.asList(preferredLocation));
+
         MaterialAttribute cskdpDistAttr = new MaterialAttribute(cskdp, "炮程", "120km");
         MaterialAttribute cskdpRefmaAttr = new MaterialAttribute(cskdp, "推荐手办", "ABD-432");
         cskdp.setAttributes(Arrays.asList(cskdpDistAttr, cskdpRefmaAttr));
@@ -72,7 +80,7 @@ public class SEMInventorySamples
 
         preferredLocation.setMaterial(cskdp);
         preferredLocation.setBatch("cshdp120st");
-        preferredLocation.setLocation(null);
+        preferredLocation.setLocation(hokaidou);
         preferredLocation.setComment("...那啥?");
 
     }

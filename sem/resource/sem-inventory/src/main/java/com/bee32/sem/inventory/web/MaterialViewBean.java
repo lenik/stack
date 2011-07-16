@@ -5,14 +5,13 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.hibernate.criterion.Restrictions;
+import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.orm.util.DTOs;
-import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
@@ -31,6 +30,7 @@ public class MaterialViewBean
     private String materialNamePattern;
     private LazyDataModel<MaterialDto> materialList;
     private TreeNode root;
+    private TreeNode selectedMaterialNode;
 
     MaterialViewBean() {
         root = new DefaultTreeNode("root", null);
@@ -41,16 +41,25 @@ public class MaterialViewBean
         EntityDataModelOptions<Material, MaterialDto> edmo = new EntityDataModelOptions<Material, MaterialDto>(
                 Material.class, MaterialDto.class);
         materialList = UIHelper.buildLazyDataModel(edmo);
-        materialList.setRowCount(1);
-        treePolishing();
+        refreshMaterialCount(false);
+        buildTree();
     }
 
-    public void treePolishing() {
-        List<MaterialCategory> allCategory = serviceFor(MaterialCategory.class).list(Restrictions.isNull("parent"));
-        List<MaterialCategoryDto> allCategoryDto = DTOs.marshalList(MaterialCategoryDto.class, 0, allCategory);
-        for (MaterialCategoryDto mcd : allCategoryDto) {
-            TreeNode secondLayer = new DefaultTreeNode(mcd.getCodeGenerator().getName(), root);
+    public void buildTree() {
+        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(Restrictions.isNull("parent"));
+// List<MaterialCategoryDto> materialCategoryDtoList = DTOs.marshalList(MaterialCategoryDto.class,
+// rootCategories);
+        for (MaterialCategory mc : rootCategories) {
+            treeAssembling(mc, root);
         }
+    }
+
+    void treeAssembling(MaterialCategory materialCategory, TreeNode parent) {
+        TreeNode subParentNode = new DefaultTreeNode(materialCategory, parent);
+        List<MaterialCategory> childrenList = materialCategory.getChildren();
+        if (childrenList != null)
+            for (MaterialCategory mc : childrenList)
+                treeAssembling(mc, subParentNode);
     }
 
     public void refreshMaterialCount(boolean isSearching) {
@@ -58,6 +67,13 @@ public class MaterialViewBean
                 isSearching ? Restrictions.like("name", "%" + materialNamePattern + "%") : null);
         if (isSearching)
             materialList.setRowCount(count);
+    }
+
+    public void onNodeSelect(NodeSelectEvent event) {
+        MaterialCategory mc = (MaterialCategory) selectedMaterialNode.getData();
+        long id = mc.getId();
+        System.out.println("=======================");
+        System.out.println(id);
     }
 
     public LazyDataModel<MaterialDto> getMaterialList() {
@@ -90,6 +106,14 @@ public class MaterialViewBean
 
     public void setRoot(TreeNode root) {
         this.root = root;
+    }
+
+    public TreeNode getSelectedMaterialNode() {
+        return selectedMaterialNode;
+    }
+
+    public void setSelectedMaterialNode(TreeNode selectedMaterialNode) {
+        this.selectedMaterialNode = selectedMaterialNode;
     }
 
 }
