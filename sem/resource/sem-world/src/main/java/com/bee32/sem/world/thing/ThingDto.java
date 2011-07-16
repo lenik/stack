@@ -17,6 +17,8 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
     String name;
 
     UnitDto unit;
+    String unitHint;
+
     UnitConvDto unitConv;
 
     public ThingDto() {

@@ -17,7 +17,7 @@ public abstract class Thing<X extends XPool<?>>
     private static final long serialVersionUID = 1L;
 
     Unit unit;
-    String unitName;
+    String unitHint;
     UnitConv unitConv;
 
     public Thing() {
@@ -57,6 +57,17 @@ public abstract class Thing<X extends XPool<?>>
      */
     public void setUnit(Unit unit) {
         this.unit = unit;
+    }
+
+    @Column(length = 20, nullable = false)
+    public String getUnitHint() {
+        return unitHint;
+    }
+
+    public void setUnitHint(String unitHint) {
+        if (unitHint == null)
+            throw new NullPointerException("unitHint");
+        this.unitHint = unitHint;
     }
 
     /**
