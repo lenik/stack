@@ -29,6 +29,7 @@ import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.entity.PersonRole;
 import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
@@ -151,8 +152,16 @@ public class OrgAdminBean
         List<PersonRoleDto> roles = new ArrayList<PersonRoleDto>();
 
         if (org != null && org.getId() != null) {
-            if (org.getRoles() != null) {
-                roles = new ArrayList<PersonRoleDto>(org.getRoles());
+            OrgUnitDto selectedOrgUnit = (OrgUnitDto) selectedOrgUnitNode.getData();
+            if(selectedOrgUnit != null) {
+                //点选部门，出现公司的所选部门中的人员
+                List<PersonRole> personRoles = serviceFor(PersonRole.class).list(Restrictions.eq("orgUnit.id", selectedOrgUnit.getId()));
+                roles = DTOs.marshalList(PersonRoleDto.class, personRoles);
+            } else {
+                //没有点选部门，出现公司所有的人员
+                if (org.getRoles() != null) {
+                    roles = new ArrayList<PersonRoleDto>(org.getRoles());
+                }
             }
         }
 
@@ -195,7 +204,7 @@ public class OrgAdminBean
 
             List<OrgUnit> topOrgUnits = serviceFor(OrgUnit.class).list(
                     Restrictions.and(Restrictions.eq("org.id", org.getId()),
-                            Restrictions.not(Restrictions.isNull("parent"))));
+                            Restrictions.isNull("parent")));
             List<OrgUnitDto> topOrgUnitDtos = DTOs.marshalList(OrgUnitDto.class, topOrgUnits);
             for (OrgUnitDto orgUnitDto : topOrgUnitDtos) {
                 loadOrgUnitTree(orgUnitDto, orgUnitRootNode);
@@ -411,6 +420,12 @@ public class OrgAdminBean
     }
 
     public void doSaveOrgUnit() {
+        if (org == null || org.getId() == null) {
+            uiLogger.error("提示:请选择所操作的部门对应的客户/供应商!");
+            return;
+        }
+
+
         orgUnit.setOrg(org);
         serviceFor(OrgUnit.class).save(orgUnit.unmarshal());
 

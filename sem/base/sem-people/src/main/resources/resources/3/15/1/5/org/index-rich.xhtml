@@ -700,7 +700,7 @@
                             <t:panelGrid columns="2">
                                 <p:commandButton value="保存"
                                                  actionListener="#{orgAdminBean.doSaveOrgUnit}"
-                                                 update="groupAdminForm chooseParentOrgUnitForm:chooseParentOrgUnitPanel"
+                                                 update="orgForm:growl orgForm:orgUnitTreeGrid chooseParentOrgUnitForm:chooseParentOrgUnitPanel"
                                                  oncomplete="orgUnitDialog.hide();"/>
                                 <p:commandButton value="取消" oncomplete="orgUnitDialog.hide();"/>
                             </t:panelGrid>
@@ -717,6 +717,11 @@
 
                     <p:tree value="#{orgAdminBean.orgUnitRoot}" var="orgUnit"
                         selectionMode="single" selection="#{orgAdminBean.selectedParentOrgUnitNode}">
+
+				        <p:ajax event="select" update="messages" listener="#{treeBean.onNodeSelect}" />
+				        <p:ajax event="unselect" update="messages" listener="#{treeBean.onNodeUnselect}" />
+
+
                         <p:treeNode>
                             <h:outputText value="#{orgUnit.name}" />
                         </p:treeNode>
