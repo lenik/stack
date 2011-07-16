@@ -110,7 +110,7 @@ public abstract class AbstractPartyAdminBean
     }
 
     void _newContact() {
-        contact = new ContactDto();
+        contact = new ContactDto().create();
         contact.setParty(getParty());
     }
 

@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.TreeNode;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
@@ -18,10 +23,12 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.dto.AbstractPartyDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgTypeDto;
+import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgType;
+import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -45,6 +52,12 @@ public class OrgAdminBean
     private String personPattern;
     private List<PersonDto> persons;
     private PersonDto selectedPerson;
+
+    private TreeNode orgUnitRootNode;
+    private TreeNode selectedOrgUnitNode;
+
+    private OrgUnitDto orgUnit;
+    private TreeNode selectedParentOrgUnitNode;
 
     @PostConstruct
     public void init() {
@@ -177,6 +190,69 @@ public class OrgAdminBean
     public void setSelectedPerson(PersonDto selectedPerson) {
         this.selectedPerson = selectedPerson;
     }
+
+    public TreeNode getOrgUnitRoot() {
+        if (org != null && org.getId() != null) {
+            orgUnitRootNode = new DefaultTreeNode(org, null);
+
+            List<OrgUnit> topOrgUnits = serviceFor(OrgUnit.class).list(
+                    Restrictions.and(Restrictions.eq("org.id", org.getId()),
+                            Restrictions.not(Restrictions.isNull("parent"))));
+            List<OrgUnitDto> topOrgUnitDtos = DTOs.marshalList(OrgUnitDto.class, topOrgUnits);
+            for(OrgUnitDto orgUnitDto : topOrgUnitDtos) {
+                loadOrgUnitTree(orgUnitDto, orgUnitRootNode);
+            }
+
+        }
+
+        return orgUnitRootNode;
+    }
+
+    private void loadOrgUnitTree(OrgUnitDto orgUnitDto, TreeNode parentNode) {
+        TreeNode orgUnitNode = new DefaultTreeNode(orgUnitDto, parentNode);
+
+        List<OrgUnitDto> subOrgUnits = orgUnitDto.getChildren();
+        for(OrgUnitDto subOrgUnit : subOrgUnits) {
+            loadOrgUnitTree(subOrgUnit, orgUnitNode);
+        }
+    }
+
+    public TreeNode getSelectedOrgUnitNode() {
+        return selectedOrgUnitNode;
+    }
+
+    public void setSelectedOrgUnitNode(TreeNode selectedOrgUnitNode) {
+        this.selectedOrgUnitNode = selectedOrgUnitNode;
+    }
+
+    public OrgUnitDto getOrgUnit() {
+        return orgUnit;
+    }
+
+    public void setOrgUnit(OrgUnitDto orgUnit) {
+        this.orgUnit = orgUnit;
+    }
+
+    public boolean isOrgUnitSelected() {
+        if (selectedOrgUnitNode != null && selectedOrgUnitNode.getData() != null)
+            return true;
+        return false;
+    }
+
+    public TreeNode getSelectedParentOrgUnitNode() {
+        return selectedParentOrgUnitNode;
+    }
+
+    public void setSelectedParentOrgUnitNode(TreeNode selectedParentOrgUnitNode) {
+        this.selectedParentOrgUnitNode = selectedParentOrgUnitNode;
+    }
+
+
+
+
+
+
+
 
     private void _newOrg() {
         org = new OrgDto().create();
@@ -329,4 +405,28 @@ public class OrgAdminBean
         role.setPerson(selectedPerson);
     }
 
+
+    public void doNewOrgUnit() {
+        orgUnit = new OrgUnitDto().create();
+    }
+
+    public void doDeleteOrgUnit() {
+        OrgUnitDto selectedOrgUnit = (OrgUnitDto) selectedOrgUnitNode.getData();
+        serviceFor(OrgUnit.class).delete(selectedOrgUnit.unmarshal());
+
+        uiLogger.info("删除部门成功");
+    }
+
+    public void doSaveOrgUnit() {
+        orgUnit.setOrg(org);
+        serviceFor(OrgUnit.class).save(orgUnit.unmarshal());
+
+        FacesMessage msg = new FacesMessage("保存成功!");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        //uiLogger.info("保存部门成功");
+    }
+
+    public void doSelectParentOrgUnit() {
+        orgUnit.setParent((OrgUnitDto) selectedParentOrgUnitNode.getData());
+    }
 }

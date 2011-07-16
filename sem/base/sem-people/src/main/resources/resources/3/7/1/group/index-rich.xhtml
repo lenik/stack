@@ -75,9 +75,9 @@
                 <p:outputPanel id="editGroupPanel">
                     <h:panelGrid columns="2">
 
-                        <h:outputLabel for="inheritedGroup" value="所属父组" />
+                        <h:outputLabel for="inheritedGroup" value="所属组" />
                         <h:panelGrid columns="2">
-                            <p:inputText value="#{groupAdminBean.group.inheritedGroup.name}" disabled="true"/>
+                            <p:inputText id="inheritedGroup" value="#{groupAdminBean.group.inheritedGroup.name}" disabled="true"/>
                             <p:commandButton value="..." oncomplete="chooseInheritedGroupDialog.show();"/>
                         </h:panelGrid>
 
@@ -87,12 +87,15 @@
                         <h:outputLabel for="fullName" value="全名" />
                         <p:inputText id="fullName" value="#{groupAdminBean.group.fullName}" />
 
-                        <t:panelGrid colspan="2" columns="2">
-                            <p:commandButton value="保存"
-                                actionListener="#{groupAdminBean.doSave}" update="groupAdminForm chooseInheritedGroupForm:chooseInheritedGroupPanel"
-                                oncomplete="editGroupDialog.hide();" />
-                            <p:commandButton value="取消" oncomplete="editGroupDialog.hide();" />
-                        </t:panelGrid>
+                        <t:panelGroup colspan="2">
+                            <t:panelGrid columns="2">
+                                <p:commandButton value="保存"
+                                                 actionListener="#{groupAdminBean.doSave}"
+                                                 update="groupAdminForm chooseInheritedGroupForm:chooseInheritedGroupPanel"
+                                                 oncomplete="editGroupDialog.hide();"/>
+                                <p:commandButton value="取消" oncomplete="editGroupDialog.hide();"/>
+                            </t:panelGrid>
+                        </t:panelGroup>
                     </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>

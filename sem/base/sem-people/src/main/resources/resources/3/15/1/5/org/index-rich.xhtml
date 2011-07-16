@@ -31,6 +31,14 @@
 
             .detail_col_value {
             }
+
+            .align_top {
+                vertical-align:top;
+            }
+
+            .col_left {
+                width: 350px;
+            }
         </h:outputStylesheet>
 
         <h:form id="orgForm">
@@ -306,13 +314,36 @@
                         </p:panel>
 
 						<p:panel header="相关人员" toggleable="true">
-							<h:panelGrid columns="2">
-								<p:tree>
-								</p:tree>
+							<h:panelGrid id="orgUnitTreeGrid" columns="2"  rowClasses="align_top">
+
 								<t:panelGroup>
 
-                                    <p:panel header="部门详细信息" toggleable="true">
-                                    </p:panel>
+									<p:toolbar id="orgUnitToolbar">
+										<p:toolbarGroup align="left">
+											<p:commandButton value="新增"
+												disabled="#{orgAdminBean.org == null or orgAdminBean.org.id == null}"
+												actionListener="#{orgAdminBean.doNewOrgUnit}"
+												update="orgUnitForm:orgUnitPanel" async="true"
+												onclick="orgUnitDialog.show();" />
+											<p:commandButton value="删除"
+												actionListener="#{orgAdminBean.doDeleteOrgUnit}"
+												disabled="#{not orgAdminBean.orgUnitSelected}"
+												update="orgUnitTreeGrid growl" async="true" />
+											<p:divider />
+										</p:toolbarGroup>
+									</p:toolbar>
+
+									<p:tree value="#{orgAdminBean.orgUnitRoot}" var="orgUnit"
+										selectionMode="single"
+										selection="#{orgAdminBean.selectedOrgUnitNode}">
+
+										<p:treeNode>
+											<h:outputText value="#{orgUnit.name}" />
+										</p:treeNode>
+									</p:tree>
+								</t:panelGroup>
+
+								<t:panelGroup>
 
                                     <p:panel header="部门对应联系方式" toggleable="true">
                                     </p:panel>
@@ -513,10 +544,6 @@
             </p:dialog>
         </h:form>
 
-
-
-
-
         <h:form id="roleForm">
             <p:dialog header="相关人员设置" widgetVar="roleHolderDlg" modal="true" height="500" width="640">
                 <h:panelGroup id="roleHolder">
@@ -654,6 +681,58 @@
             </p:dialog>
         </h:form>
 
+        <h:form id="orgUnitForm">
+            <p:dialog header="新增部门" widgetVar="orgUnitDialog" modal="true" height="500" width="640">
+                <p:outputPanel id="orgUnitPanel">
+                    <h:panelGrid columns="2">
+
+                        <h:outputLabel for="parentOrgUnit" value="所属部门" />
+                        <h:panelGrid columns="2">
+                            <p:inputText id="parentOrgUnit" value="#{orgAdminBean.orgUnit.parent.name}" disabled="true"/>
+                            <p:commandButton value="..." oncomplete="chooseParentOrgUnitDialog.show();"/>
+                        </h:panelGrid>
+
+                        <h:outputLabel for="name" value="名称" />
+                        <p:inputText id="name" value="#{orgAdminBean.orgUnit.name}"/>
+
+
+                        <t:panelGroup colspan="2">
+                            <t:panelGrid columns="2">
+                                <p:commandButton value="保存"
+                                                 actionListener="#{orgAdminBean.doSaveOrgUnit}"
+                                                 update="groupAdminForm chooseParentOrgUnitForm:chooseParentOrgUnitPanel"
+                                                 oncomplete="orgUnitDialog.hide();"/>
+                                <p:commandButton value="取消" oncomplete="orgUnitDialog.hide();"/>
+                            </t:panelGrid>
+                        </t:panelGroup>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+
+        <h:form id="chooseParentOrgUnitForm">
+            <p:dialog header="选择所属部门" widgetVar="chooseParentOrgUnitDialog"
+                modal="true" height="500" width="640">
+                <h:panelGroup id="chooseParentOrgUnitPanel">
+
+                    <p:tree value="#{orgAdminBean.orgUnitRoot}" var="orgUnit"
+                        selectionMode="single" selection="#{orgAdminBean.selectedParentOrgUnitNode}">
+                        <p:treeNode>
+                            <h:outputText value="#{orgUnit.name}" />
+                        </p:treeNode>
+                    </p:tree>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="确定"
+                            actionListener="#{orgAdminBean.doSelectParentOrgUnit}" update="orgUnitForm:orgUnitPanel"
+                            oncomplete="chooseParentOrgUnitDialog.hide();" />
+                        <p:commandButton value="取消"
+                            oncomplete="chooseParentOrgUnitDialog.hide();" />
+                    </h:panelGrid>
+
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
 
     </ui:define>
 </ui:composition>
