@@ -58,8 +58,10 @@
                             disabled="#{chanceActionBean.back}"
                             update="chanceActionForm:productToolbar chanceActionForm:mainTab" async="true" />
                         <p:divider />
-                        <p:commandButton value="详细" actionListener="#{chanceActionBean.detailForm}"
-                            disabled="#{chanceActionBean.detail}" update="chanceActionForm" async="true" />
+                        <p:commandButton
+                            id="detailButton"
+                            value="详细" actionListener="#{chanceActionBean.doDetailForm}"
+                            update="chanceActionForm" async="true" />
                         <p:divider />
 
                         <h:outputLabel for="btime" value="时间段:" />
@@ -120,7 +122,7 @@
                         </p:dataTable>
 
                     </p:tab>
-                    <p:tab id="newAction" title="行动日志详细" disabled="#{true}">
+                    <p:tab id="newAction" title="行动日志详细" disabled="#{true}" rendered="#{false}">
                         <t:panelGrid columns="4"
                             columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 

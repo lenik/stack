@@ -49,6 +49,9 @@ public class ChanceActionBean
     static final int TAB_INDEX = 0;
     static final int TAB_FORM = 1;
 
+    static final String DETAIL_BUTTON = "chanceActionForm:detailButton";
+    static final String DETAIL_TAB = "chanceActionForm:newAction";
+
     // 判断是不是在查找状态 TODO
     private boolean isSearching;
 
@@ -97,7 +100,7 @@ public class ChanceActionBean
     @PostConstruct
     public void init() {
         initList();
-        action = new ChanceActionDto().create();
+        action = null;
         searchable = false;
         editable = false;
     }
@@ -208,7 +211,11 @@ public class ChanceActionBean
         setActiveTab(TAB_FORM);
         add = true;
         edable = true;
+
+        findComponentEx(DETAIL_BUTTON).setEnabled(false);
+
         detail = true;
+
         saveable = false;
         back = false;
         editable = false;
@@ -219,18 +226,23 @@ public class ChanceActionBean
         setActiveTab(TAB_FORM);
         add = true;
         edable = true;
-        detail = true;
+
+        findComponentEx(DETAIL_BUTTON).setEnabled(false);
+
         saveable = false;
         back = false;
         editable = false;
     }
 
-    public void detailForm() {
+    public void doDetailForm() {
         action = selectedAction;
         setActiveTab(TAB_FORM);
         add = false;
         edable = true;
-        detail = true;
+
+        findComponentEx(DETAIL_BUTTON).setEnabled(false);
+        findComponentEx(DETAIL_TAB).setRendered(true);
+
         back = false;
         saveable = true;
         editable = true;
@@ -244,7 +256,9 @@ public class ChanceActionBean
             refreshActionCount(isSearching);
             add = false;
             edable = true;
-            detail = true;
+
+            findComponentEx(DETAIL_BUTTON).setEnabled(false);
+
             saveable = true;
             back = true;
             editable = false;
@@ -261,7 +275,9 @@ public class ChanceActionBean
         setActiveTab(TAB_INDEX);
         add = false;
         edable = true;
-        detail = true;
+
+        findComponentEx(DETAIL_BUTTON).setEnabled(false);
+
         saveable = true;
         back = true;
         editable = false;
@@ -370,7 +386,9 @@ public class ChanceActionBean
             setActiveTab(TAB_INDEX);
             add = false;
             edable = true;
-            detail = true;
+
+            findComponentEx(DETAIL_BUTTON).setEnabled(false);
+
             back = true;
             saveable = true;
             selectedAction = null;
@@ -386,7 +404,9 @@ public class ChanceActionBean
     public void onRowSelect(SelectEvent event) {
         add = false;
         edable = false;
-        detail = false;
+
+        findComponentEx(DETAIL_BUTTON).setEnabled(true);
+
         saveable = true;
         back = true;
     }
@@ -394,7 +414,9 @@ public class ChanceActionBean
     public void onRowUnselect(UnselectEvent event) {
         add = false;
         edable = true;
-        detail = true;
+
+        findComponentEx(DETAIL_BUTTON).setEnabled(false);
+
         saveable = true;
         back = true;
     }
@@ -492,20 +514,14 @@ public class ChanceActionBean
     }
 
     public void setSelectedAction(ChanceActionDto selectedAction) {
-        if (selectedAction == null)
-            selectedAction = new ChanceActionDto();
         this.selectedAction = selectedAction;
     }
 
     public ChanceActionDto getAction() {
-        if (action == null)
-            action = new ChanceActionDto();
         return action;
     }
 
     public void setAction(ChanceActionDto action) {
-        if (action == null)
-            action = new ChanceActionDto();
         this.action = action;
     }
 
