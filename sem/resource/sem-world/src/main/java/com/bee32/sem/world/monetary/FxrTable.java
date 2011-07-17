@@ -1,46 +1,44 @@
 package com.bee32.sem.world.monetary;
 
-import java.io.Serializable;
 import java.util.Currency;
-import java.util.Date;
+import java.util.Map;
 
-public class FxrTable
-        implements Serializable {
+public class FxrTable {
 
     private static final long serialVersionUID = 1L;
 
-    Date version;
-    Currency target;
-    MCArray array;
+    Currency unitCurrency;
+    Map<Currency, FxrRecord> map;
 
-    public Date getVersion() {
-        return version;
+    public FxrTable() {
     }
 
-    public void setVersion(Date version) {
-        if (version == null)
-            throw new NullPointerException("version");
-        this.version = version;
+    public FxrTable(Currency unitCurrency) {
+        if (unitCurrency == null)
+            throw new NullPointerException("unitCurrency");
+        this.unitCurrency = unitCurrency;
     }
 
-    public Currency getTarget() {
-        return target;
+    public Currency getUnitCurrency() {
+        return unitCurrency;
     }
 
-    public void setTarget(Currency target) {
-        if (target == null)
-            throw new NullPointerException("target");
-        this.target = target;
+    public void setUnitCurrency(Currency unitCurrency) {
+        if (unitCurrency == null)
+            throw new NullPointerException("unitCurrency");
+        this.unitCurrency = unitCurrency;
     }
 
-    public MCArray getArray() {
-        return array;
+    public FxrRecord getQuote(Currency quoteCurrency) {
+        if (quoteCurrency == null)
+            throw new NullPointerException("quoteCurrency");
+        return map.get(quoteCurrency);
     }
 
-    public void setArray(MCArray array) {
-        if (array == null)
-            throw new NullPointerException("array");
-        this.array = array;
+    public FxrRecord putQuote(FxrRecord fxrRecord) {
+        if (fxrRecord == null)
+            throw new NullPointerException("fxrRecord");
+        return map.put(fxrRecord.getQuoteCurrency(), fxrRecord);
     }
 
 }
