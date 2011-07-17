@@ -1,74 +1,200 @@
 package com.bee32.sem.world.monetary.impl;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.StringReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Currency;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
-
-import javax.inject.Inject;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.sem.world.monetary.CurrencyNames;
 import com.bee32.sem.world.monetary.FxrRecord;
+import com.bee32.sem.world.monetary.FxrTable;
+import com.bee32.sem.world.monetary.ICurrencyAware;
+import com.bee32.sem.world.monetary.ILocaleAware;
 
 @Service
 @Lazy
 public class BocFxrUpdater
-        extends OnlineFxrUpdater {
+        extends OnlineFxrUpdater
+        implements ICurrencyAware, ILocaleAware {
 
-    @Inject
-    private CommonDataManager dataManager;
+    static final Logger logger = LoggerFactory.getLogger(BocFxrUpdater.class);
 
-    private int timeout;
+    /**
+     * HTML:
+     *
+     * <table width="880" border="0" cellpadding="5" cellspacing="1" bgcolor="#EAEAEA">
+     * <tr>
+     * <th width="86" bgcolor="#EFEFEF">货币名称</th>
+     * <th width="86" bgcolor="#EFEFEF">现汇买入价</th>
+     * <th width="86" bgcolor="#EFEFEF">现钞买入价</th>
+     * <th width="86" bgcolor="#EFEFEF">卖出价</th>
+     * <th width="86" bgcolor="#EFEFEF">基准价</th>
+     * <th width="86" bgcolor="#EFEFEF">中行折算价</th>
+     * <th width="86" bgcolor="#EFEFEF">发布日期</th>
+     * <th width="86" bgcolor="#EFEFEF">发布时间</th>
+     * </tr>
+     *
+     * <tr align="center">
+     * <td bgcolor="#FFFFFF">英镑</td>
+     * <td bgcolor="#FFFFFF">1037.83</td>
+     * <td bgcolor="#FFFFFF">1005.79</td>
+     * <td bgcolor="#FFFFFF">1046.17</td>
+     * <td bgcolor="#FFFFFF">1044.6</td>
+     * <td bgcolor="#FFFFFF">1044.6</td>
+     * <td bgcolor="#FFFFFF">2011-07-17</td>
+     * <td bgcolor="#FFFFFF">00:00:01</td>
+     * </tr>
+     * </table>
+     */
+    static String START_URL = "http://www.boc.cn/sourcedb/whpj/index.html";
+    static Pattern SYNC_START = Pattern.compile("<th\b.*?>货币名称</th>");
+    static Currency UNIT_CURRENCY = CNY;
+    static Map<String, Currency> REV_MAP = CurrencyNames.getRevMap(zh_CN);
+    static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    public void setTimeout(int timeout) {
-        this.timeout = timeout;
+    static final int F_CNAME = 0;
+    static final int F_BUYING_RATE = 1;
+    static final int F_XBUYING_RATE = 2;
+    static final int F_SELLING_RATE = 3;
+    static final int F_BASE_RATE = 4;
+    static final int F_EVAL_RATE = 5;
+    static final int F_QUOTE_DATE = 6;
+    static final int F_QUOTE_TIME = 7;
+
+    @Override
+    protected FxrTable download()
+            throws IOException {
+        HttpClient client = new HttpClient();
+        GetMethod method = SpamHelper.prepareGet(START_URL);
+
+        String html;
+        try {
+            client.executeMethod(method);
+            html = method.getResponseBodyAsString();
+        } finally {
+            method.releaseConnection();
+        }
+
+        FxrTable table = new FxrTable(UNIT_CURRENCY);
+
+        Matcher matcher = SYNC_START.matcher(html);
+        if (!matcher.find()) {
+            logger.warn("Failed to sync to the start part of BOC FXR html");
+            return null;
+        }
+
+        html = html.substring(matcher.start());
+        StringReader reader = new StringReader(html);
+        BufferedReader in = new BufferedReader(reader);
+
+        FxrRecord record = null;
+        String line;
+        int columnIndex = 0;
+        while ((line = in.readLine()) != null) {
+            line = line.trim().toLowerCase();
+
+            if (line.startsWith("</table>"))
+                break;
+
+            if (line.startsWith("<tr>") || line.startsWith("<tr ")) {
+                record = new FxrRecord();
+                columnIndex = 0;
+                continue;
+            }
+
+            if (line.startsWith("</tr>")) {
+                table.putQuote(record);
+                record = null;
+                continue;
+            }
+
+            if (line.startsWith("<td>") || line.startsWith("<td ")) {
+                String text;
+                int startClose = line.indexOf('>');
+                int endOpen = line.indexOf('<', startClose + 1);
+                text = line.substring(startClose + 1, endOpen);
+
+                if (record != null) {
+                    switch (columnIndex) {
+                    case F_CNAME:
+                        Currency quoteCurrency = REV_MAP.get(text);
+                        record.setQuoteCurrency(quoteCurrency);
+                        break;
+
+                    case F_BUYING_RATE:
+                        Float buyingRate = parseFloat(text);
+                        record.setBuyingRate(buyingRate);
+                        break;
+
+                    case F_XBUYING_RATE:
+                        Float xbuyingRate = parseFloat(text);
+                        record.setXbuyingRate(xbuyingRate);
+                        break;
+
+                    case F_SELLING_RATE:
+                        Float sellingRate = parseFloat(text);
+                        record.setSellingRate(sellingRate);
+                        break;
+
+                    case F_BASE_RATE:
+                        Float baseRate = parseFloat(text);
+                        record.setBaseRate(baseRate);
+                        break;
+
+                    case F_EVAL_RATE:
+                        // Not used.
+                        // Float evalRate = parseFloat(text);
+                        // record.setBaseRate(evalRate);
+                        break;
+
+                    case F_QUOTE_DATE:
+                        Date date = parseDate(text);
+                        record.setQuoteDate(date);
+                        break;
+
+                    case F_QUOTE_TIME:
+                        // Not used.
+                        break;
+                    }
+                }
+                columnIndex++;
+            }
+        }
+
+        return table;
     }
 
-    protected void downloadAndCommit() {
+    Float parseFloat(String text) {
+        if (text == null)
+            throw new NullPointerException("text");
+        if (text.isEmpty())
+            return null;
+        float value = Float.parseFloat(text);
+        return value;
+    }
 
-        HttpClient httpClient = new HttpClient();
-
-        GetMethod method = new GetMethod("http://www.boc.cn/sourcedb/whpj/index.html");
-        method.addRequestHeader("Referer", "http://www.360doc.com/content/09/0911/10/61497_5827500.shtml");
-        method.addRequestHeader("User-Agent",
-                "Mozilla/5.0 (X11; U; Linux i686; en-US) AppleWebKit/534.10 (KHTML, like Gecko) Chrome/8.0.552.215 Safari/534.10");
-        method.getParams().setContentCharset("utf-8");
-        BocFxrHtmlUtil bocStringHandler = new BocFxrHtmlUtil();
-        String result = "";
+    Date parseDate(String text) {
+        Date date;
         try {
-            httpClient.executeMethod(method);
-            result = method.getResponseBodyAsString();
-            method.releaseConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
+            date = DATE_FORMAT.parse(text);
+        } catch (ParseException e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
-
-        Date date = new Date();
-
-        int count = 0;
-
-        String bocExchangeString = bocStringHandler.preTreatment(result);
-        List<String> currency_name_list = new ArrayList<String>(AvailableCurrencies.currencyCodeMap.keySet());
-        Map<String, Float> exchange_map = bocStringHandler.getRateMap(currency_name_list, bocExchangeString);
-        List<FxrRecord> currencyExchangeList = new ArrayList<FxrRecord>();
-        for (String s : currency_name_list) {
-            count++;
-            CurrencyCode currency_foreign = currencyCodeDao.getCurrencyByCode(s);
-            FxrRecord exchange = new FxrRecord(currency_local, currency_foreign, exchange_map.get(s), date);
-            currencyExchangeList.add(exchange);
-// currencyExchangeRepository.save(exchange);
-            System.out.println("------------------------------------");
-            System.out.println(count);
-            System.out.println("------------------------------------");
-        }
-
-        exchangeRateDao.saveOrUpdateAll(currencyExchangeList);
+        return date;
     }
 
 }
