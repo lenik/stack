@@ -23,6 +23,7 @@ import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.dto.AbstractPartyDto;
+import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgTypeDto;
@@ -270,6 +271,9 @@ public class OrgAdminBean
             if(selectedOrgUnit != null) {
                 //点选部门，出现公司的所选部门中的人员
                 orgUnitContact = selectedOrgUnit.getContact();
+                if(orgUnitContact.getCategory() == null) {
+                    orgUnitContact.setCategory(new ContactCategoryDto());
+                }
             }
         }
 
@@ -446,7 +450,16 @@ public class OrgAdminBean
 
     public void doDeleteOrgUnit() {
         OrgUnitDto selectedOrgUnit = (OrgUnitDto) selectedOrgUnitNode.getData();
-        serviceFor(OrgUnit.class).delete(selectedOrgUnit.unmarshal());
+
+        List<OrgUnit> subOrgUnits = serviceFor(OrgUnit.class).list(Restrictions.eq("parent.id", selectedOrgUnit.getId()));
+        if(subOrgUnits == null || subOrgUnits.size() > 0) {
+            uiLogger.warn("必须先删除此部门的子部门!");
+            return;
+        }
+
+        OrgUnit tempOrgUnit = selectedOrgUnit.unmarshal();
+        tempOrgUnit.getParent().removeChild(tempOrgUnit);
+        serviceFor(OrgUnit.class).delete(tempOrgUnit);
 
         uiLogger.info("删除部门成功");
     }

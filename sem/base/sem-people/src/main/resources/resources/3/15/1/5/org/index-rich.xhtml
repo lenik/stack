@@ -337,10 +337,10 @@
 											selectionMode="single"
 											selection="#{orgAdminBean.selectedOrgUnitNode}">
 
-											<p:ajax event="select" update="orgUnitContactAndPersonRoles"
+											<p:ajax event="select" update="orgUnitToolbar orgUnitContactAndPersonRoles"
 												listener="#{orgAdminBean.onOrgUnitNodeSelect}" />
 											<p:ajax event="unselect"
-												update="orgUnitContactAndPersonRoles"
+												update="orgUnitToolbar orgUnitContactAndPersonRoles"
 												listener="#{orgAdminBean.onOrgUnitNodeUnselect}" />
 
 											<p:treeNode>
