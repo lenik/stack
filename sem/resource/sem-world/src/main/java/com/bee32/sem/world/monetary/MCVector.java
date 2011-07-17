@@ -10,7 +10,7 @@ import java.util.TreeMap;
 
 import javax.free.AbstractNonNullComparator;
 
-public class MCArray
+public class MCVector
         implements Serializable, ICurrencyAware, Iterable<MCValue> {
 
     private static final long serialVersionUID = 1L;
@@ -19,8 +19,8 @@ public class MCArray
     Currency conversion = DEFAULT_CURRENCY;
 
     @Override
-    public MCArray clone() {
-        MCArray copy = new MCArray();
+    public MCVector clone() {
+        MCVector copy = new MCVector();
         copy.map.putAll(map);
         return copy;
     }
@@ -78,37 +78,60 @@ public class MCArray
         this.conversion = conversion;
     }
 
-    public void add(MCValue mcv) {
-        if (mcv == null)
-            throw new NullPointerException("mcv");
-        BigDecimal cval = map.get(mcv.getCurrency());
-        if (cval == null) {
-            map.put(mcv.getCurrency(), mcv.getValue());
+    public void put(MCValue cval) {
+        if (cval == null)
+            throw new NullPointerException("cval");
+        map.put(cval.getCurrency(), cval.getValue());
+    }
+
+    public final void put(MCVector vector) {
+        for (MCValue cval : vector)
+            put(cval);
+    }
+
+    public void remove(MCValue cval) {
+        if (cval == null)
+            throw new NullPointerException("cval");
+        map.remove(cval.getCurrency());
+    }
+
+    public void remove(Currency currency) {
+        if (currency == null)
+            throw new NullPointerException("currency");
+        map.remove(currency);
+    }
+
+    public void add(MCValue cval) {
+        if (cval == null)
+            throw new NullPointerException("cval");
+        BigDecimal _val = map.get(cval.getCurrency());
+        if (_val == null) {
+            map.put(cval.getCurrency(), cval.getValue());
         } else {
-            cval = cval.add(mcv.getValue());
-            map.put(mcv.getCurrency(), cval);
+            _val = _val.add(cval.getValue());
+            map.put(cval.getCurrency(), _val);
         }
     }
 
-    public void subtract(MCValue mcv) {
-        if (mcv == null)
-            throw new NullPointerException("mcv");
-        BigDecimal cval = map.get(mcv.getCurrency());
-        if (cval == null) {
-            map.put(mcv.getCurrency(), mcv.getValue().negate());
+    public void subtract(MCValue cval) {
+        if (cval == null)
+            throw new NullPointerException("cval");
+        BigDecimal _val = map.get(cval.getCurrency());
+        if (_val == null) {
+            map.put(cval.getCurrency(), cval.getValue().negate());
         } else {
-            cval = cval.subtract(mcv.getValue());
-            map.put(mcv.getCurrency(), cval);
+            _val = _val.subtract(cval.getValue());
+            map.put(cval.getCurrency(), _val);
         }
     }
 
-    public final void add(MCArray mca) {
-        for (MCValue mcv : mca)
+    public final void add(MCVector vector) {
+        for (MCValue mcv : vector)
             add(mcv);
     }
 
-    public final void subtract(MCArray mca) {
-        for (MCValue mcv : mca)
+    public final void subtract(MCVector vector) {
+        for (MCValue mcv : vector)
             subtract(mcv);
     }
 
