@@ -26,24 +26,24 @@ public class UnitConv
 
     UnitConv parent;
     boolean natural;
-    Unit from;
+    Unit unit;
     Map<Unit, Double> ratioMap = new HashMap<Unit, Double>();
 
     public UnitConv() {
         super();
     }
 
-    public UnitConv(Unit from) {
-        super("nat:" + from.getName(), "自然换算表（" + from.getLabel() + "）");
+    public UnitConv(Unit unit) {
+        super("nat:" + unit.getName(), "自然换算表（" + unit.getLabel() + "）");
         this.natural = true;
-        this.from = from;
+        this.unit = unit;
     }
 
     public UnitConv(String name, String label, Unit from) {
         super(name, label);
         if (from == null)
             throw new NullPointerException("from");
-        this.from = from;
+        this.unit = from;
     }
 
     /**
@@ -70,14 +70,17 @@ public class UnitConv
         this.natural = natural;
     }
 
+    /**
+     * 单元单位，即数量为1的一方。 如：1m = 100.0cm，换算率=100.0，单元单位为m，换算单位为cm。
+     */
     @ManyToOne
     @JoinColumn(nullable = false)
-    public Unit getFrom() {
-        return from;
+    public Unit getUnit() {
+        return unit;
     }
 
-    public void setFrom(Unit from) {
-        this.from = from;
+    public void setFrom(Unit unit) {
+        this.unit = unit;
     }
 
     @CollectionOfElements
@@ -97,20 +100,20 @@ public class UnitConv
     /**
      * Get the conversion ratio to the specified unit.
      *
-     * @param toUnit
+     * @param convUnit
      *            Non-<code>null</code> unit to whose conversion ratio is asked.
      * @return <code>null</code> if the conversion ratio to the <code>toUnit</code> is not defined.
      */
     @Transient
-    public Double getRatio(Unit toUnit) {
-        if (toUnit == null)
-            throw new NullPointerException("toUnit");
+    public Double getRatio(Unit convUnit) {
+        if (convUnit == null)
+            throw new NullPointerException("convUnit");
 
-        Double ratio = ratioMap.get(toUnit);
+        Double ratio = ratioMap.get(convUnit);
 
         // Find in parent unit conv also.
         if (ratio == null && parent != null)
-            ratio = parent.getRatio(toUnit);
+            ratio = parent.getRatio(convUnit);
 
         return ratio;
     }
@@ -118,15 +121,15 @@ public class UnitConv
     /**
      * Set the conversion ration to the specified unit.
      *
-     * @param toUnit
+     * @param convUnit
      *            Non-<code>null</code> unit to whose conversion ratio is to be set.
      * @param ratio
      *            The conversion ratio to the <code>toUnit</code>.
      */
-    public void setRatio(Unit toUnit, double ratio) {
-        if (toUnit == null)
-            throw new NullPointerException("toUnit");
-        ratioMap.put(toUnit, ratio);
+    public void setRatio(Unit convUnit, double ratio) {
+        if (convUnit == null)
+            throw new NullPointerException("convUnit");
+        ratioMap.put(convUnit, ratio);
     }
 
     public static UnitConv NATURAL_METER = new UnitConv(Unit.METER);

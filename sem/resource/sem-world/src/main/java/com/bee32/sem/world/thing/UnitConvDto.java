@@ -18,7 +18,7 @@ public class UnitConvDto
     public static final int MAP = 1;
 
     UnitConvDto parent;
-    UnitDto from;
+    UnitDto unit;
     Map<UnitDto, Double> ratioMap;
 
     public UnitConvDto() {
@@ -32,7 +32,7 @@ public class UnitConvDto
     @Override
     protected void _marshal(UnitConv source) {
         parent = mref(UnitConvDto.class, source.getParent());
-        from = mref(UnitDto.class, source.getFrom());
+        unit = mref(UnitDto.class, source.getUnit());
 
         if (selection.contains(MAP)) {
             ratioMap = new HashMap<UnitDto, Double>();
@@ -47,7 +47,7 @@ public class UnitConvDto
     @Override
     protected void _unmarshalTo(UnitConv target) {
         merge(target, "parent", parent);
-        merge(target, "from", from);
+        merge(target, "unit", unit);
 
         if (selection.contains(MAP)) {
             Map<Unit, Double> _ratioMap = new HashMap<Unit, Double>();
@@ -63,7 +63,7 @@ public class UnitConvDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-        from = new UnitDto().ref(map.getString("from"));
+        unit = new UnitDto().ref(map.getString("unit"));
 
         if (selection.contains(MAP)) {
             throw new NotImplementedException();
