@@ -14,12 +14,13 @@ public class FacesUILogger
 
     private static final long serialVersionUID = 1L;
 
-    public FacesUILogger() {
+    protected FacesContext getFacesContext() {
+        return FacesContext.getCurrentInstance();
     }
 
     @Override
     public ILogSink get(LogLevel level, int delta) {
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext context = getFacesContext();
 
         int priority = level.getPriority() + delta;
         switch (priority) {
