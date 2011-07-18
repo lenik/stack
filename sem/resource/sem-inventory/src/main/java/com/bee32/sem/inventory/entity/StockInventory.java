@@ -27,6 +27,13 @@ public class StockInventory
     List<StockSnapshot> snapshots = new ArrayList<StockSnapshot>();
     StockSnapshot workingBase;
 
+    public StockInventory() {
+    }
+
+    public StockInventory(String name) {
+        super(name);
+    }
+
     /**
      * 逻辑库存名称
      */
@@ -63,6 +70,12 @@ public class StockInventory
 
     public void setWorkingBase(StockSnapshot workingBase) {
         this.workingBase = workingBase;
+    }
+
+    public static StockInventory MAIN = new StockInventory("MAIN");
+    static {
+        MAIN.setLabel("总库存");
+        MAIN.setDescription("一般全局库存。对于使用多个库存的企业，或应取消本总库存而设置各自独立的分立库存。");
     }
 
 }
