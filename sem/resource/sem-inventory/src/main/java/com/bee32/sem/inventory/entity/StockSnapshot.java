@@ -25,8 +25,8 @@ public class StockSnapshot
 
     private static final long serialVersionUID = 1L;
 
-    StockSnapshot previous;
-    List<StockSnapshot> descendants;
+    StockSnapshot parent;
+    List<StockSnapshot> branches;
 
     StockInventory inventory;
     StockSnapshotType type = StockSnapshotType.INITIAL;
@@ -38,26 +38,26 @@ public class StockSnapshot
      * 上一个快照。可用于完整性分析，以及形成快照历史的树形结构。
      */
     @ManyToOne
-    public StockSnapshot getPrevious() {
-        return previous;
+    public StockSnapshot getParent() {
+        return parent;
     }
 
-    public void setPrevious(StockSnapshot previous) {
-        this.previous = previous;
+    public void setParent(StockSnapshot parent) {
+        this.parent = parent;
     }
 
     /**
      * 后续快照
      */
-    @OneToMany(mappedBy = "previous")
-    public List<StockSnapshot> getDescendants() {
-        return descendants;
+    @OneToMany(mappedBy = "parent")
+    public List<StockSnapshot> getBranches() {
+        return branches;
     }
 
-    public void setDescendants(List<StockSnapshot> descendants) {
-        if (descendants == null)
-            throw new NullPointerException("descendants");
-        this.descendants = descendants;
+    public void setBranches(List<StockSnapshot> branches) {
+        if (branches == null)
+            throw new NullPointerException("branches");
+        this.branches = branches;
     }
 
     @ManyToOne(optional = false)
