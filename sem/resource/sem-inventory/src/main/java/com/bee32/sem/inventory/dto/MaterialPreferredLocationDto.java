@@ -12,24 +12,18 @@ public class MaterialPreferredLocationDto
     private static final long serialVersionUID = 1L;
 
     MaterialDto material;
-    String batch;
     StockLocationDto location;
-    String comment;
 
     @Override
     protected void _marshal(MaterialPreferredLocation source) {
         this.material = mref(MaterialDto.class, source.getMaterial());
-        this.batch = source.getBatch();
         this.location = mref(StockLocationDto.class, 0, source.getLocation());
-        this.comment = source.getComment();
     }
 
     @Override
     protected void _unmarshalTo(MaterialPreferredLocation target) {
         merge(target, "material", material);
-        target.setBatch(batch);
         merge(target, "location", location);
-        target.setComment(comment);
     }
 
     @Override
@@ -45,28 +39,12 @@ public class MaterialPreferredLocationDto
         this.material = material;
     }
 
-    public String getBatch() {
-        return batch;
-    }
-
-    public void setBatch(String batch) {
-        this.batch = batch;
-    }
-
     public StockLocationDto getLocation() {
         return location;
     }
 
     public void setLocation(StockLocationDto location) {
         this.location = location;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
 }
