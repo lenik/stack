@@ -4,23 +4,38 @@ import java.util.Date;
 
 import com.bee32.sem.inventory.entity.StockInventory;
 import com.bee32.sem.inventory.entity.StockSnapshot;
+import com.bee32.sem.inventory.entity.StockSnapshotType;
 
 public interface IStockManager {
 
     /**
      * 提交库存的当前状态，形成下一个库存快照作为基准库存。
+     *
+     * @param inventory
+     *            逻辑库存
+     * @param snapshotType
+     *            快照类型
+     * @param description
+     *            快照描述
+     * @return 新形成的快照，此快照同时作为逻辑库存的新的基准库存。
      */
-    StockSnapshot commit(StockInventory inventory);
+    StockSnapshot commit(StockInventory inventory, StockSnapshotType snapshotType, String description);
 
     /**
-     * 和提交 {@link StockInventory#MAIN 总库存} 等价。
+     * 和提交 {@link StockInventory#MAIN 主逻辑库存} 等价。
      *
+     * @param snapshotType
+     *            快照类型
+     * @param description
+     *            快照描述
+     * @return 新形成的快照，此快照同时作为主逻辑库存的新的基准库存。
      * @throws IllegalStateException
-     *             如果总库存不存在。
+     *             如果主逻辑库存不存在。
      * @deprecated 建议调用 {@link #commit(StockInventory)} 方法。
+     * @see StockInventory#MAIN
      */
     @Deprecated
-    StockSnapshot commit();
+    StockSnapshot commit(StockSnapshotType snapshotType, String description);
 
     /**
      * 获取当前的基准库存。
