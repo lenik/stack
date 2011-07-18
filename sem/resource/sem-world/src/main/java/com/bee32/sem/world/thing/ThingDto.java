@@ -88,7 +88,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         return unitHint;
     }
 
-    public void setUnitName(String unitHint) {
+    public void setUnitHint(String unitHint) {
         this.unitHint = unitHint;
     }
 
