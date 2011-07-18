@@ -1,8 +1,5 @@
 package com.bee32.sem.inventory.entity;
 
-import static com.bee32.plover.orm.ext.config.DecimalConfig.QTY_ITEM_PRECISION;
-import static com.bee32.plover.orm.ext.config.DecimalConfig.QTY_ITEM_SCALE;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -17,13 +14,17 @@ import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Blue;
+import com.bee32.plover.orm.ext.config.DecimalConfig;
 import com.bee32.sem.inventory.config.BatchingConfig;
+import com.bee32.sem.world.monetary.FxrQueryException;
+import com.bee32.sem.world.monetary.IFxrProvider;
 import com.bee32.sem.world.monetary.MCValue;
 
 @Entity
 @Blue
 public class StockOrderItem
-        extends EntityAuto<Long> {
+        extends EntityAuto<Long>
+        implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,6 +37,11 @@ public class StockOrderItem
     BigDecimal quantity;
 
     MCValue price = new MCValue();
+
+    transient IFxrProvider fxrProvider;
+    BigDecimal localPrice;
+    BigDecimal localTotal;
+
     StockItemState state = StockItemState.NORMAL;
 
     /**
@@ -123,6 +129,7 @@ public class StockOrderItem
         if (quantity == null)
             throw new NullPointerException("quantity");
         this.quantity = quantity;
+        invalidateTotal();
     }
 
     /**
@@ -137,6 +144,81 @@ public class StockOrderItem
         if (price == null)
             throw new NullPointerException("price");
         this.price = price;
+        invalidateTotal();
+    }
+
+    @Transient
+    public MCValue getTotal() {
+        MCValue total = price.multiply(quantity);
+        return total;
+    }
+
+    /**
+     * 获取外汇查询服务，该服务用于计算本地货币表示的价格和本地货币表示的金额。
+     */
+    @Transient
+    public IFxrProvider getFxrProvider() {
+        return fxrProvider;
+    }
+
+    /**
+     * 设置外汇查询服务，该服务用于计算本地货币表示的价格和本地货币表示的金额。
+     */
+    public void setFxrProvider(IFxrProvider fxrProvider) {
+        if (fxrProvider == null)
+            throw new NullPointerException("fxrProvider");
+        this.fxrProvider = fxrProvider;
+    }
+
+    /**
+     * 【冗余】本地货币表示的价格。
+     *
+     * @return 本地货币表示的价格，非 <code>null</code>。
+     * @throws FxrQueryException
+     *             外汇查询异常。
+     */
+    @Redundant
+    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
+    public synchronized BigDecimal getLocalPrice()
+            throws FxrQueryException {
+        if (localPrice == null) {
+            if (fxrProvider == null)
+                throw new IllegalStateException("No FXR provider is set.");
+            localPrice = price.toLocal(fxrProvider);
+        }
+        return localPrice;
+    }
+
+    void setLocalPrice(BigDecimal localPrice) {
+        this.localPrice = localPrice;
+        invalidateTotal();
+    }
+
+    /**
+     * 【冗余】本地货币表示的金额。
+     */
+    @Redundant
+    @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
+    public BigDecimal getLocalTotal() {
+        if (localTotal == null) {
+            if (localPrice != null)
+                localTotal = localPrice.multiply(quantity);
+        }
+        return localTotal;
+    }
+
+    public void setLocalTotal(BigDecimal localTotal) {
+        this.localTotal = localTotal;
+    }
+
+    void invalidateTotal() {
+        localTotal = null;
+    }
+
+    @Override
+    protected void invalidate() {
+        super.invalidate();
+        invalidateTotal();
     }
 
     /**
