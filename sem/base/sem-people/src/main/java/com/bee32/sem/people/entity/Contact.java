@@ -47,12 +47,14 @@ public class Contact
     /**
      * 联系人分类
      */
-    @ManyToOne
+    @ManyToOne(optional = false)
     public ContactCategory getCategory() {
         return category;
     }
 
     public void setCategory(ContactCategory category) {
+        if (category == null)
+            throw new NullPointerException("category");
         this.category = category;
     }
 
@@ -71,6 +73,7 @@ public class Contact
     /**
      * 联系人地址
      */
+    @Column(length = 100)
     public String getAddress() {
         return address;
     }
