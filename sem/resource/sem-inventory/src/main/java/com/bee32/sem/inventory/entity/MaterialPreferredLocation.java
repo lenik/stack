@@ -16,7 +16,11 @@ public class MaterialPreferredLocation
 
     Material material;
     StockLocation location;
+    boolean permanent;
 
+    /**
+     * 物料
+     */
     @NaturalId
     @ManyToOne
     public Material getMaterial() {
@@ -27,6 +31,9 @@ public class MaterialPreferredLocation
         this.material = material;
     }
 
+    /**
+     * 建议库位。
+     */
     @NaturalId
     @ManyToOne
     public StockLocation getLocation() {
@@ -34,7 +41,21 @@ public class MaterialPreferredLocation
     }
 
     public void setLocation(StockLocation location) {
+        if (location == null)
+            throw new NullPointerException("location");
         this.location = location;
+    }
+
+    /**
+     * 是否永久库存。
+     */
+    @Column(nullable = false)
+    public boolean isPermanent() {
+        return permanent;
+    }
+
+    public void setPermanent(boolean permanent) {
+        this.permanent = permanent;
     }
 
     @Override

@@ -29,6 +29,8 @@ public class MaterialPreferredLocationDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+        material = new MaterialDto().ref(map.getNLong("material"));
+        location = new StockLocationDto().ref(map.getNInt("location"));
     }
 
     public MaterialDto getMaterial() {
@@ -36,6 +38,8 @@ public class MaterialPreferredLocationDto
     }
 
     public void setMaterial(MaterialDto material) {
+        if (material == null)
+            throw new NullPointerException("material");
         this.material = material;
     }
 
@@ -44,7 +48,30 @@ public class MaterialPreferredLocationDto
     }
 
     public void setLocation(StockLocationDto location) {
+        if (location == null)
+            throw new NullPointerException("location");
         this.location = location;
+    }
+
+    @Override
+    protected Boolean naturalEquals(EntityDto<MaterialPreferredLocation, Long> other) {
+        MaterialPreferredLocationDto o = (MaterialPreferredLocationDto) other;
+
+        if (!material.equals(o.material))
+            return false;
+
+        if (!location.equals(o.location))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        int hash = 0;
+        hash += material.hashCode();
+        hash += location.hashCode();
+        return hash;
     }
 
 }
