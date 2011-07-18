@@ -3,7 +3,10 @@ package com.bee32.sem.inventory.entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -30,7 +33,7 @@ import com.bee32.sem.world.monetary.MCVector;
 @MappedSuperclass
 public class StockItemList
         extends TxEntity
-        implements DecimalConfig {
+        implements Iterable<StockOrderItem>, DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
@@ -71,6 +74,11 @@ public class StockItemList
             throw new NullPointerException("item");
         items.remove(item);
         invalidateTotal();
+    }
+
+    @Override
+    public Iterator<StockOrderItem> iterator() {
+        return items.iterator();
     }
 
     /**
@@ -142,6 +150,30 @@ public class StockItemList
     protected void invalidate() {
         super.invalidate();
         invalidateTotal();
+    }
+
+    Map<StockItemKey, StockOrderItem> toMap() {
+        Map<StockItemKey, StockOrderItem> map = new LinkedHashMap<StockItemKey, StockOrderItem>();
+
+        for (StockOrderItem item : this) {
+            StockOrderItem mergedItem = map.get(item.getCBatch());
+            if (mergedItem == null) {
+                // always create a new one. never share the object.
+                mergedItem = new StockOrderItem(item);
+            } else {
+                // TODO MCV Problem.
+                // mergedItem.merge(item);
+            }
+        }
+        return map;
+    }
+
+    public void merge(StockItemList list) {
+        if (list == null)
+            throw new NullPointerException("list");
+        for (StockOrderItem item : list) {
+            item.getCBatch();
+        }
     }
 
 }
