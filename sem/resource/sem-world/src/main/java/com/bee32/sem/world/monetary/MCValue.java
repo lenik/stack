@@ -33,11 +33,18 @@ public class MCValue
         DEFAULT_CURRENCY = Currency.getInstance(defaultLocale);
     }
 
-    private Currency currency = DEFAULT_CURRENCY;
-    private BigDecimal value;
+    private/* final */Currency currency = DEFAULT_CURRENCY;
+    private/* final */BigDecimal value;
 
     public MCValue() {
         value = new BigDecimal(0);
+    }
+
+    public MCValue(MCValue mcv) {
+        if (mcv == null)
+            throw new NullPointerException("mcv");
+        currency = mcv.currency;
+        value = mcv.value;
     }
 
     public MCValue(Currency currency, int amount) {
@@ -91,7 +98,7 @@ public class MCValue
      * @param currency
      *            Set to <code>null</code> for native currency.
      */
-    public void setCurrency(Currency currency) {
+    void setCurrency(Currency currency) {
         this.currency = currency;
     }
 
@@ -114,7 +121,7 @@ public class MCValue
         return value;
     }
 
-    public void setValue(BigDecimal value) {
+    void setValue(BigDecimal value) {
         if (value == null)
             throw new NullPointerException("value");
         this.value = value;
