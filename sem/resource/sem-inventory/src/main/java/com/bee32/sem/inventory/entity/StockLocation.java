@@ -34,6 +34,8 @@ public class StockLocation
 
     BigDecimal capacity;
     Unit capacityUnit = Unit.CUBIC_METER;
+    String capacityUnitHint;
+    int rank;
 
     /**
      * 所属仓库
@@ -137,6 +139,30 @@ public class StockLocation
 
     public void setCapacityUnit(Unit capacityUnit) {
         this.capacityUnit = capacityUnit;
+    }
+
+    /**
+     * 容量单位提示（如“长度”、“容积”等）
+     */
+    @Column(length = 30)
+    public String getCapacityUnitHint() {
+        return capacityUnitHint;
+    }
+
+    public void setCapacityUnitHint(String capacityUnitHint) {
+        this.capacityUnitHint = capacityUnitHint;
+    }
+
+    /**
+     * 库位等级
+     */
+    @Column(nullable = false)
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
 }
