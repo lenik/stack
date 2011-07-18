@@ -127,6 +127,79 @@ public class MCValue
         this.value = value;
     }
 
+    public final MCValue negate() {
+        BigDecimal result = value.negate();
+        return new MCValue(currency, result);
+    }
+
+    public final MCValue add(long num) {
+        return add(BigDecimal.valueOf(num));
+    }
+
+    public final MCValue add(double num) {
+        return add(BigDecimal.valueOf(num));
+    }
+
+    public final MCValue add(BigDecimal num) {
+        BigDecimal result = value.add(num);
+        return new MCValue(currency, result);
+    }
+
+    public final MCValue subtract(long num) {
+        return subtract(BigDecimal.valueOf(num));
+    }
+
+    public final MCValue subtract(double num) {
+        return subtract(BigDecimal.valueOf(num));
+    }
+
+    public final MCValue subtract(BigDecimal num) {
+        BigDecimal result = value.subtract(num);
+        return new MCValue(currency, result);
+    }
+
+    public final MCValue multiply(long num) {
+        return multiply(BigDecimal.valueOf(num));
+    }
+
+    public final MCValue multiply(double num) {
+        return multiply(BigDecimal.valueOf(num));
+    }
+
+    public final MCValue multiply(BigDecimal num) {
+        BigDecimal result = value.multiply(num);
+        return new MCValue(currency, result);
+    }
+
+    public final MCValue divide(long num) {
+        return divide(BigDecimal.valueOf(num));
+    }
+
+    public final MCValue divide(double num) {
+        return divide(BigDecimal.valueOf(num));
+    }
+
+    public final MCValue divide(BigDecimal num) {
+        BigDecimal result = value.divide(num);
+        return new MCValue(currency, result);
+    }
+
+    public BigDecimal toLocal(IFxrProvider fxrProvider)
+            throws FxrQueryException {
+        if (fxrProvider == null)
+            throw new NullPointerException("fxrProvider");
+
+        Currency quoteCurrency = getCurrency();
+
+        Float _fxr = fxrProvider.getLatestFxr(quoteCurrency);
+        if (_fxr == null)
+            throw new FxrQueryException("The FXR for the specified quote currency is not defined: " + quoteCurrency);
+
+        BigDecimal fxr = BigDecimal.valueOf(_fxr);
+        BigDecimal local = getValue().multiply(fxr);
+        return local;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof MCValue))
