@@ -61,13 +61,17 @@ public abstract class EntityViewBean
 
     protected <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
     D reload(D dto) {
+        return reload(dto, dto.getSelection());
+    }
+
+    protected <D extends EntityDto<E, K>, E extends Entity<K>, K extends Serializable> //
+    D reload(D dto, int selection) {
         Class<? extends D> dtoType = (Class<? extends D>) dto.getClass();
         Class<? extends E> entityType = dto.getEntityType();
         K id = dto.getId();
 
         E reloaded = serviceFor(entityType).load(id);
 
-        int selection = dto.getSelection();
         D remarshalled = DTOs.marshal(dtoType, selection, reloaded);
         return remarshalled;
     }
