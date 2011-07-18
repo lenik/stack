@@ -58,6 +58,10 @@ public class MaterialDto
             throws ParseException {
     }
 
+    public void addAttribute(MaterialAttributeDto attr) {
+        this.attributes.add(attr);
+    }
+
     public MaterialCategoryDto getCategory() {
         return category;
     }
