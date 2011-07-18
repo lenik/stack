@@ -70,4 +70,28 @@ public class UnitConvDto
         }
     }
 
+    public UnitConvDto getParent() {
+        return parent;
+    }
+
+    public void setParent(UnitConvDto parent) {
+        this.parent = parent;
+    }
+
+    public UnitDto getUnit() {
+        return unit;
+    }
+
+    public void setUnit(UnitDto unit) {
+        this.unit = unit;
+    }
+
+    public Map<UnitDto, Double> getRatioMap() {
+        return ratioMap;
+    }
+
+    public void setRatioMap(Map<UnitDto, Double> ratioMap) {
+        this.ratioMap = ratioMap;
+    }
+
 }

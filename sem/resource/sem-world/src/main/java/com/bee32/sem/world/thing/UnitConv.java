@@ -79,7 +79,7 @@ public class UnitConv
         return unit;
     }
 
-    public void setFrom(Unit unit) {
+    public void setUnit(Unit unit) {
         this.unit = unit;
     }
 
