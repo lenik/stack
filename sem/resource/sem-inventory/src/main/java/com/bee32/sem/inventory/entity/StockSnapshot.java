@@ -11,6 +11,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.xp.EntityExt;
@@ -33,6 +36,9 @@ public class StockSnapshot
 
     StockOrder starting;
     List<StockOrder> orders = new ArrayList<StockOrder>();
+
+    public StockSnapshot() {
+    }
 
     /**
      * 上一个快照。可用于完整性分析，以及形成快照历史的树形结构。
@@ -99,6 +105,7 @@ public class StockSnapshot
      */
     @Redundant
     @OneToOne(mappedBy = "initTarget")
+    @Cascade(CascadeType.ALL)
     public StockOrder getStarting() {
         return starting;
     }
