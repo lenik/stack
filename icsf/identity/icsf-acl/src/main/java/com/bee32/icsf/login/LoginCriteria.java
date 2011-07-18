@@ -4,8 +4,10 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.criteria.hibernate.CriteriaTemplate;
 
-public class LoginCriteria {
+public class LoginCriteria
+        extends CriteriaTemplate {
 
     /**
      * Example:

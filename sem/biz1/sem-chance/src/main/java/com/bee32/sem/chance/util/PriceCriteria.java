@@ -3,7 +3,10 @@ package com.bee32.sem.chance.util;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
-public class PriceCriteria {
+import com.bee32.plover.criteria.hibernate.CriteriaTemplate;
+
+public class PriceCriteria
+        extends CriteriaTemplate {
 
     public static Criterion listByMaterial(String material) {
         return Restrictions.eq("material", material);

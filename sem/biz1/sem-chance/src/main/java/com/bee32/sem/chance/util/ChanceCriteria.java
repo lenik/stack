@@ -7,9 +7,11 @@ import org.hibernate.criterion.Restrictions;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
+import com.bee32.plover.criteria.hibernate.CriteriaTemplate;
 import com.bee32.sem.chance.entity.Chance;
 
-public class ChanceCriteria {
+public class ChanceCriteria
+        extends CriteriaTemplate {
 
     public static Criterion ownedByCurrentUser() {
         IUserPrincipal currentUser = SessionLoginInfo.requireCurrentUser();
@@ -52,7 +54,7 @@ public class ChanceCriteria {
     }
 
     public static Criterion nameLike(String namePattern) {
-        if(namePattern.isEmpty())
+        if (namePattern.isEmpty())
             return null;
         return Restrictions.or(Restrictions.like("id", "%" + namePattern + "%"),
                 Restrictions.like("fullName", "%" + namePattern + "%"));

@@ -5,9 +5,11 @@ import org.hibernate.criterion.Restrictions;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
+import com.bee32.plover.criteria.hibernate.CriteriaTemplate;
 import com.bee32.sem.people.entity.PartyTagname;
 
-public class PeopleCriteria {
+public class PeopleCriteria
+        extends CriteriaTemplate {
 
     public static Criterion ownedBy(IUserPrincipal user) {
         if (user == null)
@@ -28,9 +30,8 @@ public class PeopleCriteria {
                 Restrictions.like("fullName", "%" + keyword + "%"));
     }
 
-	public static Criterion outerPartyTagList(String name) {
-		return Restrictions.not(Restrictions.in(name,
-				new Object[] { PartyTagname.INTERNAL.getName() }));
-	}
+    public static Criterion outerPartyTagList(String name) {
+        return Restrictions.not(Restrictions.in(name, new Object[] { PartyTagname.INTERNAL.getName() }));
+    }
 
 }
