@@ -27,9 +27,23 @@ public class StockOrder
 
     StockSnapshot base;
     StockSnapshot initTarget;
-    StockOrderSubject subject = StockOrderSubject.START;
+    StockOrderSubject subject;
     String serial;
     Long jobId;
+
+    public StockOrder() {
+        this.base = null;
+        this.subject = StockOrderSubject.START;
+    }
+
+    public StockOrder(StockSnapshot base, StockOrderSubject subject) {
+        if (base == null)
+            throw new NullPointerException("base");
+        if (subject == null)
+            throw new NullPointerException("subject");
+        this.base = base;
+        this.subject = subject;
+    }
 
     /**
      * 基准库存版本。
