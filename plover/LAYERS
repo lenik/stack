@@ -9,9 +9,7 @@ core/
     plover-collections  通用集合类
     plover-expr         一般函数表达式
     plover-expr-sql     SQL 表达式
-    plover-criteria     组合检索模型
     plover-route        事件路由
-    plover-indexing     索引框架
 
 library/
     plover-commons      公共库
@@ -32,6 +30,8 @@ modeling/
     plover-disp         资源分发与定位
     plover-form         中间表单模型
     plover-orm          对象关系映射辅助工具
+    plover-criteria     组合检索模型
+    plover-indexing     索引框架
     plover-or_ext       ORM 扩展实体类
     plover-view         公共视图模型
     plover-velocity     Velocity 模版工具

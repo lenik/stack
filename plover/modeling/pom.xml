@@ -12,8 +12,10 @@
     <version>0.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>plover-criteria</module>
         <module>plover-disp</module>
         <module>plover-form</module>
+        <module>plover-indexing</module>
         <module>plover-model</module>
         <module>plover-or_ext</module>
         <module>plover-orm</module>

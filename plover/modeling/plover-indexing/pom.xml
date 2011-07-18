@@ -2,27 +2,32 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bee32.plover</groupId>
-        <artifactId>core</artifactId>
+        <artifactId>modeling</artifactId>
         <version>0.3.2-SNAPSHOT</version>
     </parent>
-    <artifactId>plover-criteria</artifactId>
+    <artifactId>plover-indexing</artifactId>
     <version>0.2.101</version>
     <dependencies>
         <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>3.3.2.GA</version>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-arch</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-expr</artifactId>
+            <artifactId>plover-orm</artifactId>
+            <version>0.3.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-criteria</artifactId>
             <version>0.2.101</version>
         </dependency>
+        <dependency>
+            <groupId>com.bee32.plover</groupId>
+            <artifactId>plover-route</artifactId>
+            <version>0.2.100</version>
+        </dependency>
     </dependencies>
-    <name>Plover :: Core :: Criteria</name>
+    <name>Plover :: Modeling :: Indexing</name>
 </project>
