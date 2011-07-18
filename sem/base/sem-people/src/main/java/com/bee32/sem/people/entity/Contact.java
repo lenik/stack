@@ -59,14 +59,12 @@ public class Contact
     /**
      * 联系人
      */
-    @ManyToOne(optional = false)
+    @ManyToOne
     public Party getParty() {
         return party;
     }
 
     public void setParty(Party party) {
-        if (party == null)
-            throw new NullPointerException("party");
         this.party = party;
     }
 

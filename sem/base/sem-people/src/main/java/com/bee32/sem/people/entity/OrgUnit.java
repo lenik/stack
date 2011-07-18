@@ -1,5 +1,6 @@
 package com.bee32.sem.people.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -49,7 +50,7 @@ public class OrgUnit
     /**
      * 部门的联系方式(可选）
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     public Contact getContact() {
         return contact;
     }

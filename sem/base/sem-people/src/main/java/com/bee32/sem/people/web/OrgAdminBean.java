@@ -209,6 +209,11 @@ public class OrgAdminBean
     }
 
     public TreeNode getOrgUnitRoot() {
+	loadOrgUnitTree();
+        return orgUnitRootNode;
+    }
+
+    public void loadOrgUnitTree() {
         if (org != null && org.getId() != null) {
             orgUnitRootNode = new DefaultTreeNode(org, null);
 
@@ -217,20 +222,20 @@ public class OrgAdminBean
                             Restrictions.isNull("parent")));
             List<OrgUnitDto> topOrgUnitDtos = DTOs.marshalList(OrgUnitDto.class, topOrgUnits);
             for(OrgUnitDto orgUnitDto : topOrgUnitDtos) {
-                loadOrgUnitTree(orgUnitDto, orgUnitRootNode);
+		loadOrgUnitRecursive(orgUnitDto, orgUnitRootNode);
             }
-
         }
 
-        return orgUnitRootNode;
     }
 
-    private void loadOrgUnitTree(OrgUnitDto orgUnitDto, TreeNode parentNode) {
+    private void loadOrgUnitRecursive(OrgUnitDto orgUnitDto, TreeNode parentNode) {
         TreeNode orgUnitNode = new DefaultTreeNode(orgUnitDto, parentNode);
 
-        List<OrgUnitDto> subOrgUnits = orgUnitDto.getChildren();
-        for(OrgUnitDto subOrgUnit : subOrgUnits) {
-            loadOrgUnitTree(subOrgUnit, orgUnitNode);
+        List<OrgUnit> subOrgUnits = serviceFor(OrgUnit.class).list(Restrictions.eq("parent.id", orgUnitDto.getId()));
+        List<OrgUnitDto> subOrgUnitDtos = DTOs.marshalList(OrgUnitDto.class, subOrgUnits);
+
+        for(OrgUnitDto subOrgUnit : subOrgUnitDtos) {
+		loadOrgUnitRecursive(subOrgUnit, orgUnitNode);
         }
     }
 
@@ -265,18 +270,9 @@ public class OrgAdminBean
     }
 
     public ContactDto getOrgUnitContact() {
-        orgUnitContact = new ContactDto().create();
-        if (org != null && org.getId() != null) {
-            OrgUnitDto selectedOrgUnit = selectedOrgUnitNode == null? null : (OrgUnitDto) selectedOrgUnitNode.getData();
-            if(selectedOrgUnit != null) {
-                //点选部门，出现公司的所选部门中的人员
-                orgUnitContact = selectedOrgUnit.getContact();
-                if(orgUnitContact.getCategory() == null) {
-                    orgUnitContact.setCategory(new ContactCategoryDto());
-                }
-            }
+        if(orgUnitContact == null) {
+            orgUnitContact = new ContactDto().create();
         }
-
         return orgUnitContact;
     }
 
@@ -458,7 +454,9 @@ public class OrgAdminBean
         }
 
         OrgUnit tempOrgUnit = selectedOrgUnit.unmarshal();
-        tempOrgUnit.getParent().removeChild(tempOrgUnit);
+        if(tempOrgUnit.getParent() != null) {
+            tempOrgUnit.getParent().removeChild(tempOrgUnit);
+        }
         serviceFor(OrgUnit.class).delete(tempOrgUnit);
 
         uiLogger.info("删除部门成功");
@@ -470,24 +468,47 @@ public class OrgAdminBean
             return;
         }
 
-
         orgUnit.setOrg(org);
         serviceFor(OrgUnit.class).save(orgUnit.unmarshal());
+        loadOrgUnitTree();
 
-        FacesMessage msg = new FacesMessage("保存成功!");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        //uiLogger.info("保存部门成功");
+        uiLogger.info("保存部门成功");
     }
 
     public void doSelectParentOrgUnit() {
         orgUnit.setParent((OrgUnitDto) selectedParentOrgUnitNode.getData());
+        role.setOrgUnit((OrgUnitDto) selectedParentOrgUnitNode.getData());
     }
 
     public void onOrgUnitNodeSelect(NodeSelectEvent event) {
-
+        if (org != null && org.getId() != null) {
+            OrgUnitDto selectedOrgUnit = (OrgUnitDto) event.getTreeNode().getData();
+            if(!selectedOrgUnit.isNull()) {
+                //点选部门，出现公司的所选部门中的人员
+                orgUnitContact = selectedOrgUnit.getContact();
+            }
+        }
+        if(orgUnitContact.getId() == null) {
+            orgUnitContact = new ContactDto().create();
+        }
+        if(orgUnitContact.getCategory() == null) {
+            orgUnitContact.setCategory(new ContactCategoryDto());
+        }
     }
 
     public void onOrgUnitNodeUnselect(NodeUnselectEvent event) {
+        orgUnitContact = new ContactDto().create();
+    }
 
+    public void doSaveOrgUnitContact() {
+        OrgUnitDto selectedOrgUnit = selectedOrgUnitNode == null? null : (OrgUnitDto) selectedOrgUnitNode.getData();
+        if(selectedOrgUnit == null) {
+            uiLogger.warn("请先选择对应的部门");
+            return;
+        }
+
+        selectedOrgUnit.setContact(orgUnitContact);
+        serviceFor(OrgUnit.class).saveOrUpdate(selectedOrgUnit.unmarshal());
+        uiLogger.info("保存部门联系方式成功");
     }
 }

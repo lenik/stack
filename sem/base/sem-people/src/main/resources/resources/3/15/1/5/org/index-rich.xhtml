@@ -402,9 +402,11 @@
 													value="#{orgAdminBean.orgUnitContact.qq}" />
 
 											</t:panelGrid>
+											<p:commandButton value="保存部门联系方式" actionListener="#{orgAdminBean.doSaveOrgUnitContact}" update="growl"/>
 
 										</h:panelGroup>
 									</p:panel>
+
 
 									<p:panel header="部门对应人员" toggleable="true">
 										<p:toolbar id="roleToolbar">
@@ -445,13 +447,13 @@
 												<h:outputText value="#{rowIndex + 1}" />
 											</p:column>
 
-
 											<p:column>
 												<f:facet name="header">
 													<h:outputText value="所在部门" />
 												</f:facet>
-												<h:outputText value="#{role.altOrgUnit}" />
+												<h:outputText value="#{role.orgUnit.name}" />
 											</p:column>
+
 											<p:column>
 												<f:facet name="header">
 													<h:outputText value="职务" />
@@ -618,6 +620,12 @@
                         <h:outputLabel for="roleOrgName" value="对应公司" />
                         <h:outputText id="roleOrgName" value="#{orgAdminBean.role.org.name}"/>
 
+                        <h:outputLabel for="roleOrgUnitName" value="对应部门" />
+                        <h:panelGrid columns="2">
+                            <p:inputText id="roleOrgUnitName" value="#{orgAdminBean.role.orgUnit.name}" disabled="true"/>
+                            <p:commandButton value="..." oncomplete="chooseParentOrgUnitDialog.show();"/>
+                        </h:panelGrid>
+
 
                         <h:outputLabel for="rolePersonName" value="对应人员" />
                         <t:panelGrid columns="2">
@@ -625,9 +633,10 @@
                             <p:commandButton value="..." onclick="personHolderDlg.show();"/>
                         </t:panelGrid>
 
-
+                        <!--
                         <h:outputLabel for="roleOrgUnit" value="所在部门" />
                         <p:inputText id="roleOrgUnit" value="#{orgAdminBean.role.altOrgUnit}"/>
+                        -->
 
                         <h:outputLabel for="roleRole" value="职务" />
                         <p:inputText id="roleRole" value="#{orgAdminBean.role.role}"/>
@@ -782,7 +791,7 @@
 
                     <h:panelGrid columns="2">
                         <p:commandButton value="确定"
-                            actionListener="#{orgAdminBean.doSelectParentOrgUnit}" update="orgUnitForm:orgUnitPanel"
+                            actionListener="#{orgAdminBean.doSelectParentOrgUnit}" update="orgUnitForm:orgUnitPanel roleForm:roleOrgUnitName"
                             oncomplete="chooseParentOrgUnitDialog.hide();" />
                         <p:commandButton value="取消"
                             oncomplete="chooseParentOrgUnitDialog.hide();" />

@@ -105,4 +105,13 @@ public class PersonRoleDto
     public void setRoleDetail(String roleDetail) {
         this.roleDetail = roleDetail;
     }
+
+    public OrgUnitDto getOrgUnit() {
+        return orgUnit;
+    }
+
+    public void setOrgUnit(OrgUnitDto orgUnit) {
+        this.orgUnit = orgUnit;
+    }
+
 }

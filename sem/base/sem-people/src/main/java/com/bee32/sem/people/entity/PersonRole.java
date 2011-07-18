@@ -1,5 +1,6 @@
 package com.bee32.sem.people.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -50,7 +51,7 @@ public class PersonRole
     /**
      * 所在部门
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     public OrgUnit getOrgUnit() {
         return orgUnit;
     }
