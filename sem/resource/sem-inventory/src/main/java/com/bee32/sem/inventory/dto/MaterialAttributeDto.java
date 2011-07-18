@@ -15,6 +15,12 @@ public class MaterialAttributeDto
     String name;
     String value;
 
+    public MaterialAttributeDto(MaterialDto material, String name, String value) {
+        this.material = material;
+        this.name = name;
+        this.value = value;
+    }
+
     @Override
     protected void _marshal(MaterialAttribute source) {
         this.material = new MaterialDto().ref(source.getMaterial());
