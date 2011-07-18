@@ -44,6 +44,24 @@ public class StockOrderItem
 
     StockItemState state = StockItemState.NORMAL;
 
+    public StockOrderItem() {
+    }
+
+    public StockOrderItem(StockOrderItem item) {
+        if (item == null)
+            throw new NullPointerException("item");
+        order = item.order;
+        material = item.material;
+        batch = item.batch;
+        location = item.location;
+        quantity = item.quantity;
+        price = item.price;
+        fxrProvider = item.fxrProvider;
+        localPrice = item.localPrice;
+        localTotal = item.localTotal;
+        state = item.state;
+    }
+
     /**
      * 所属订单
      */
@@ -91,6 +109,11 @@ public class StockOrderItem
         return batch;
     }
 
+    @Transient
+    public StockItemKey getKey() {
+        return new StockItemKey(material, getCBatch());
+    }
+
     /**
      * 批号
      */
@@ -108,12 +131,14 @@ public class StockOrderItem
      *
      * @see MaterialPreferredLocation
      */
-    @ManyToOne
+    @ManyToOne(optional = false)
     public StockLocation getLocation() {
         return location;
     }
 
     public void setLocation(StockLocation location) {
+        if (location == null)
+            throw new NullPointerException("location");
         this.location = location;
     }
 
