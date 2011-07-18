@@ -14,11 +14,11 @@ public class StockLocationDto
 
     private static final long serialVersionUID = 1L;
 
-    StockWarehouseDto warehouse;
-    String address;
-    double x;
-    double y;
-    double z;
+    private StockWarehouseDto warehouse;
+    private String address;
+    private double x;
+    private double y;
+    private double z;
 
     BigDecimal capacity;
     Unit capacityUnit = Unit.CUBIC_METER;

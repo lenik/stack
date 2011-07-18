@@ -17,7 +17,6 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.MaterialAttributeDto;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
@@ -89,6 +88,7 @@ public class MaterialViewBean
     public void onNodeSelect(NodeSelectEvent event) {
         MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) selectedMaterialNode.getData();
         materialList = materialCategoryDto.getMaterials();
+<<<<<<< Updated upstream
     }
 
     public List<SelectItem> getUnits() {

@@ -16,9 +16,9 @@ public class MaterialCategoryDto
 
     public static final int MATERIALS = 1;
 
-    String name;
-    List<MaterialDto> materials;
-    CodeGenerator codeGenerator;
+    private String name;
+    private List<MaterialDto> materials;
+    private CodeGenerator codeGenerator;
 
     @Override
     protected void _marshal(MaterialCategory source) {

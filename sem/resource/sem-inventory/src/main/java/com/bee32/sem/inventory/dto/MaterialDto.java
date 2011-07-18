@@ -19,13 +19,13 @@ public class MaterialDto
     public static final int ATTACHMENTS = 2;
     public static final int OPTIONS = 4;
 
-    MaterialCategoryDto category;
-    String serial;
-    String barCode;
-    List<MaterialAttributeDto> attributes;
-    List<UserFileDto> attachments;
-    List<MaterialWarehouseOptionDto> options;
-    List<MaterialPreferredLocationDto> preferredLocations;
+    private MaterialCategoryDto category;
+    private String serial;
+    private String barCode;
+    private List<MaterialAttributeDto> attributes;
+    private List<UserFileDto> attachments;
+    private List<MaterialWarehouseOptionDto> options;
+    private List<MaterialPreferredLocationDto> preferredLocations;
 
     @Override
     protected void _marshal(Material source) {
