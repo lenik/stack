@@ -1,26 +1,17 @@
 package com.bee32.sem.inventory.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
-import com.bee32.plover.orm.cache.Redundant;
-import com.bee32.sem.base.tx.TxEntity;
-import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
+import com.bee32.sem.inventory.tx.entity.StockTransfer;
 
 /**
  * 库存通用订单
@@ -30,7 +21,7 @@ import com.bee32.sem.world.monetary.MCValue;
 @DiscriminatorColumn(name = "stereo", length = 3)
 @DiscriminatorValue("-")
 public class StockOrder
-        extends TxEntity {
+        extends StockItemList {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,11 +29,7 @@ public class StockOrder
     StockSnapshot initTarget;
     StockOrderSubject subject = StockOrderSubject.START;
     String serial;
-    List<StockOrderItem> items = new ArrayList<StockOrderItem>();
-    Long jobRef;
-
-    @Redundant
-    MCValue total;
+    Long jobId;
 
     /**
      * 基准库存版本。
@@ -110,56 +97,42 @@ public class StockOrder
     }
 
     /**
-     * 单据明细
+     * 参考库存作业（可选）
+     * <p>
+     * 注意： 库存作业有多种类型，各自 id 独立，因此这里的参考库存作业具体对应为哪中作业类型要根据科目而定。
+     * <p>
+     * 比如：
+     * <ul>
+     * <li> {@link StockOrderSubject#XFER_IN 调拨入库} 和 {@link StockOrderSubject#XFER_OUT 调拨出库} 对应为
+     * {@link StockTransfer 库存调拨作业}。
+     * <li> {@link StockOrderSubject#OSP_OUT 委外出库} 和 {@link StockOrderSubject#OSP_IN 委外入库} 对应为
+     * {@link StockOutsourcing 委外加工作业}。
+     * </ul>
+     *
+     * @return 作业ID （根据用途对应具体的作业类型），如果没有对应作业则返回 <code>null</code>。
      */
-    @OneToMany(mappedBy = "order")
-    @Cascade(CascadeType.ALL)
-    public List<StockOrderItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<StockOrderItem> items) {
-        if (items == null)
-            throw new NullPointerException("items");
-        this.items = items;
+    public Long getJobId() {
+        return jobId;
     }
 
     /**
      * 参考库存作业（可选）
+     * <p>
+     * 注意： 库存作业有多种类型，各自 id 独立，因此这里的参考库存作业具体对应为哪中作业类型要根据科目而定。
+     * <p>
+     * 比如：
+     * <ul>
+     * <li> {@link StockOrderSubject#XFER_IN 调拨入库} 和 {@link StockOrderSubject#XFER_OUT 调拨出库} 对应为
+     * {@link StockTransfer 库存调拨作业}。
+     * <li> {@link StockOrderSubject#OSP_OUT 委外出库} 和 {@link StockOrderSubject#OSP_IN 委外入库} 对应为
+     * {@link StockOutsourcing 委外加工作业}。
+     * </ul>
+     *
+     * @param jobId
+     *            作业ID （根据用途对应具体的作业类型），如果没有对应作业则设置为 <code>null</code>。
      */
-    public Long getJobRef() {
-        return jobRef;
-    }
-
-    public void setJobRef(Long jobRef) {
-        this.jobRef = jobRef;
-    }
-
-    @Embedded
-    @Redundant
-    public MCValue getTotal() {
-        if (total == null) {
-            for (StockOrderItem item : items) {
-                MCValue sum = new MCValue();
-            }
-        }
-        return total;
-    }
-
-    public void setTotal(MCValue total) {
-        if (total == null)
-            throw new NullPointerException("total");
-        this.total = total;
-    }
-
-    public void invalidateTotal() {
-        total = null;
-    }
-
-    @Override
-    protected void invalidate() {
-        super.invalidate();
-        invalidateTotal();
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
     }
 
     /**
@@ -171,12 +144,12 @@ public class StockOrder
      *            是否复制所有明细项目。
      */
     public StockOrder createPeerOrder(StockOrderSubject peerSubject, boolean copyItems) {
-        if (jobRef == null)
+        if (jobId == null)
             throw new IllegalStateException("没有指定上层的库存作业，创建对等单据没有意义。");
         StockOrder peer = new StockOrder();
         peer.base = base;
         peer.initTarget = initTarget;
-        peer.jobRef = jobRef;
+        peer.jobId = jobId;
         peer.serial = serial; // DUPLICATED?
         peer.subject = peerSubject;
         if (copyItems) {
