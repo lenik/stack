@@ -12,12 +12,14 @@ public class StockWarehouseDto
 
     private static final long serialVersionUID = 1L;
 
+    String name;
     String address;
     String phone;
     PersonDto manager;
 
     @Override
     protected void _marshal(StockWarehouse source) {
+        this.name = source.getName();
         this.address = source.getAddress();
         this.phone = source.getPhone();
         this.manager = mref(PersonDto.class, source.getManager());
@@ -25,6 +27,7 @@ public class StockWarehouseDto
 
     @Override
     protected void _unmarshalTo(StockWarehouse target) {
+        target.setName(name);
         target.setAddress(address);
         target.setPhone(phone);
         merge(target, "manager", manager);
@@ -33,6 +36,14 @@ public class StockWarehouseDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {

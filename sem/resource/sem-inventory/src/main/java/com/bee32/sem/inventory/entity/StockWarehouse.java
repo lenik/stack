@@ -19,10 +19,23 @@ public class StockWarehouse
     private static final long serialVersionUID = 1L;
 
     // Contact contact;
+    String name;
     String address;
     String phone;
 
     Person manager; // Person in charge.
+
+    /**
+     * 仓库名称
+     */
+    @Column(length = 50)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /**
      * 仓库地址。亦用作库位的地址前缀。
