@@ -13,17 +13,20 @@ public class MaterialPreferredLocationDto
 
     MaterialDto material;
     StockLocationDto location;
+    String description;
 
     @Override
     protected void _marshal(MaterialPreferredLocation source) {
         this.material = mref(MaterialDto.class, source.getMaterial());
         this.location = mref(StockLocationDto.class, 0, source.getLocation());
+        this.description = source.getDescription();
     }
 
     @Override
     protected void _unmarshalTo(MaterialPreferredLocation target) {
         merge(target, "material", material);
         merge(target, "location", location);
+        target.setDescription(description);
     }
 
     @Override
