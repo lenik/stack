@@ -38,7 +38,8 @@ public class SEMInventorySamples
         baseOption.setSafetyStock(new BigDecimal(6));
         baseOption.setWarehouse(stockWarehouse);
 
-        stockWarehouse.setAddress("日本");
+        stockWarehouse.setName("东京一号仓库");
+        stockWarehouse.setAddress("東京都中央区八重洲一丁目5番3-103号");
         stockWarehouse.setPhone("911");
         stockWarehouse.setManager(SEMPeopleSamples.jackPerson);
 
@@ -95,14 +96,12 @@ public class SEMInventorySamples
         cskdpRefmaAttr.setValue("凝气胶,巴基球等");
 
         preferredLocation.setMaterial(cskdp);
-        preferredLocation.setBatch("cshdp120st");
         preferredLocation.setLocation(hokaidou);
-        preferredLocation.setComment("...那啥?");
+        preferredLocation.setDescription("...那啥?");
 
         preferredLocation2.setMaterial(cskdp);
-        preferredLocation2.setBatch("coos-july-16");
         preferredLocation2.setLocation(parentStockLocation);
-        preferredLocation2.setComment("R2");
+        preferredLocation2.setDescription("R2");
 
     }
 
