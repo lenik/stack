@@ -26,14 +26,12 @@ public class StockOrder
     private static final long serialVersionUID = 1L;
 
     StockSnapshot base;
-    StockSnapshot initTarget;
+    StockSnapshot spec;
     StockOrderSubject subject;
     String serial;
     Long jobId;
 
     public StockOrder() {
-        this.base = null;
-        this.subject = StockOrderSubject.START;
     }
 
     public StockOrder(StockSnapshot base, StockOrderSubject subject) {
@@ -43,10 +41,12 @@ public class StockOrder
             throw new NullPointerException("subject");
         this.base = base;
         this.subject = subject;
+        if (subject.isPacking())
+            this.spec = base;
     }
 
     /**
-     * 基准库存版本。
+     * 基准库存快照。
      */
     @ManyToOne(optional = false)
     public StockSnapshot getBase() {
@@ -60,17 +60,19 @@ public class StockOrder
     }
 
     /**
-     * 初始化目标
+     * 作为快照冗余的对应快照。
+     * <p>
+     * （取值为 <code>null</code> 或与 {@link #getBase()} 相等）。
      *
      * @see StockOrderSubject#START
      */
     @OneToOne
-    public StockSnapshot getInitTarget() {
-        return initTarget;
+    public StockSnapshot getSpec() {
+        return spec;
     }
 
-    public void setInitTarget(StockSnapshot initTarget) {
-        this.initTarget = initTarget;
+    public void setSpec(StockSnapshot spec) {
+        this.spec = spec;
     }
 
     /**
@@ -162,7 +164,7 @@ public class StockOrder
             throw new IllegalStateException("没有指定上层的库存作业，创建对等单据没有意义。");
         StockOrder peer = new StockOrder();
         peer.base = base;
-        peer.initTarget = initTarget;
+        peer.spec = spec;
         peer.jobId = jobId;
         peer.serial = serial; // DUPLICATED?
         peer.subject = peerSubject;

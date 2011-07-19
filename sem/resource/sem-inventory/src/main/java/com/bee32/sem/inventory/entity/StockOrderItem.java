@@ -39,8 +39,8 @@ public class StockOrderItem
     MCValue price = new MCValue();
 
     transient IFxrProvider fxrProvider;
-    BigDecimal localPrice;
-    BigDecimal localTotal;
+    BigDecimal nativePrice;
+    BigDecimal nativeTotal;
 
     StockItemState state = StockItemState.NORMAL;
 
@@ -57,8 +57,8 @@ public class StockOrderItem
         quantity = item.quantity;
         price = item.price;
         fxrProvider = item.fxrProvider;
-        localPrice = item.localPrice;
-        localTotal = item.localTotal;
+        nativePrice = item.nativePrice;
+        nativeTotal = item.nativeTotal;
         state = item.state;
     }
 
@@ -94,7 +94,7 @@ public class StockOrderItem
     @Redundant
     @NaturalId
     @Column(length = BatchingConfig.CBATCH_MAXLEN, nullable = false)
-    String getCBatch() {
+    public String getCBatch() {
         return computeCanonicalBatch();
     }
 
@@ -128,17 +128,17 @@ public class StockOrderItem
 
     /**
      * 库位
+     * <p>
+     * 对于合并项，可能会丢失冲突的库位信息。
      *
      * @see MaterialPreferredLocation
      */
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     public StockLocation getLocation() {
         return location;
     }
 
     public void setLocation(StockLocation location) {
-        if (location == null)
-            throw new NullPointerException("location");
         this.location = location;
     }
 
@@ -159,6 +159,8 @@ public class StockOrderItem
 
     /**
      * 价格 （入库为原始价格，其余科目的价格用途未知）。
+     * <p>
+     * 对于合并项，如果有外币冲突，将转换为本地货币再进行汇总。
      */
     @Embedded
     public MCValue getPrice() {
@@ -172,6 +174,9 @@ public class StockOrderItem
         invalidateTotal();
     }
 
+    /**
+     * 总价=单价*数量。
+     */
     @Transient
     public MCValue getTotal() {
         MCValue total = price.multiply(quantity);
@@ -204,18 +209,18 @@ public class StockOrderItem
      */
     @Redundant
     @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
-    public synchronized BigDecimal getLocalPrice()
+    public synchronized BigDecimal getNativePrice()
             throws FxrQueryException {
-        if (localPrice == null) {
+        if (nativePrice == null) {
             if (fxrProvider == null)
                 throw new IllegalStateException("No FXR provider is set.");
-            localPrice = price.toLocal(fxrProvider);
+            nativePrice = price.getNativeValue(fxrProvider);
         }
-        return localPrice;
+        return nativePrice;
     }
 
-    void setLocalPrice(BigDecimal localPrice) {
-        this.localPrice = localPrice;
+    void setNativePrice(BigDecimal nativePrice) {
+        this.nativePrice = nativePrice;
         invalidateTotal();
     }
 
@@ -224,20 +229,20 @@ public class StockOrderItem
      */
     @Redundant
     @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
-    public BigDecimal getLocalTotal() {
-        if (localTotal == null) {
-            if (localPrice != null)
-                localTotal = localPrice.multiply(quantity);
+    public BigDecimal getNativeTotal() {
+        if (nativeTotal == null) {
+            if (nativePrice != null)
+                nativeTotal = nativePrice.multiply(quantity);
         }
-        return localTotal;
+        return nativeTotal;
     }
 
-    public void setLocalTotal(BigDecimal localTotal) {
-        this.localTotal = localTotal;
+    public void setNativeTotal(BigDecimal nativeTotal) {
+        this.nativeTotal = nativeTotal;
     }
 
     void invalidateTotal() {
-        localTotal = null;
+        nativeTotal = null;
     }
 
     @Override

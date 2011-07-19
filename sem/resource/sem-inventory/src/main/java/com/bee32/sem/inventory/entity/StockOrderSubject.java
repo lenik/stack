@@ -13,18 +13,28 @@ public final class StockOrderSubject
 
     private static final long serialVersionUID = 1L;
 
+    private final boolean packing;
     private final boolean negative;
 
     static final Map<String, StockOrderSubject> nameMap = new HashMap<String, StockOrderSubject>();
     static final Map<String, StockOrderSubject> valueMap = new HashMap<String, StockOrderSubject>();
 
     StockOrderSubject(String value, String name, boolean negative) {
+        this(value, name, negative, false);
+    }
+
+    StockOrderSubject(String value, String name, boolean negative, boolean packing) {
         super(value, name);
         this.negative = negative;
+        this.packing = packing;
     }
 
     public boolean isNegative() {
         return negative;
+    }
+
+    public boolean isPacking() {
+        return packing;
     }
 
     @Override
@@ -60,26 +70,39 @@ public final class StockOrderSubject
         return subject;
     }
 
-    /** 初值/期初结余 */
-    public static final StockOrderSubject START = new StockOrderSubject("STA", "start", false);
+    /** （冗余）结算【物料】，外币已换算 */
+    public static final StockOrderSubject PACK_M = new StockOrderSubject("PK1", "packM", false, true);
+
+    /** （冗余）结算【物料，合成批号】，外币已换算 */
+    public static final StockOrderSubject PACK_MB = new StockOrderSubject("PK2", "packMB", false, true);
+
+    /** （冗余）结算【物料】，外币分列 */
+    public static final StockOrderSubject PACK_MC = new StockOrderSubject("PX1", "packMC", false, true);
+
+    /** （冗余）结算【物料，合成批号】，外币分列 */
+    public static final StockOrderSubject PACK_MBC = new StockOrderSubject("PX2", "packMBC", false, true);
 
     /** 入库 */
     public static final StockOrderSubject TAKE_IN = new StockOrderSubject("TKI", "takeIn", false);
+
     /** 出库 */
     public static final StockOrderSubject TAKE_OUT = new StockOrderSubject("TKO", "takeOut", true);
 
     /** 调拨出库 */
     public static final StockOrderSubject XFER_OUT = new StockOrderSubject("TXO", "xferOut", true);
+
     /** 调拨入库 */
     public static final StockOrderSubject XFER_IN = new StockOrderSubject("TXI", "xferIn", false);
 
     /** 委外出库 */
     public static final StockOrderSubject OSP_OUT = new StockOrderSubject("OPO", "ospOut", true);
+
     /** 委外入库 */
     public static final StockOrderSubject OSP_IN = new StockOrderSubject("OPI", "ospIn", false);
 
     /** 盘盈 */
     public static final StockOrderSubject STK_PROFIT = new StockOrderSubject("STP", "stkProfit", false);
+
     /** 盘亏 */
     public static final StockOrderSubject STK_SHORTAGE = new StockOrderSubject("STS", "stkShortage", true);
 

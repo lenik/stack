@@ -19,6 +19,7 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.ext.config.DecimalConfig;
 import com.bee32.sem.base.tx.TxEntity;
+import com.bee32.sem.inventory.service.IStockMergeStrategy;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.IFxrProvider;
 import com.bee32.sem.world.monetary.MCValue;
@@ -42,7 +43,7 @@ public class StockItemList
     MCVector total;
 
     transient IFxrProvider fxrProvider;
-    BigDecimal localTotal;
+    BigDecimal nativeTotal;
 
     /**
      * 单据明细，只读。
@@ -120,30 +121,31 @@ public class StockItemList
      */
     @Redundant
     @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
-    public synchronized BigDecimal getLocalTotal()
+    public synchronized BigDecimal getNativeTotal()
             throws FxrQueryException {
-        if (localTotal == null) {
+        if (nativeTotal == null) {
             if (fxrProvider == null)
                 throw new NullPointerException("fxrProvider");
 
-            localTotal = new BigDecimal(0L, MONEY_TOTAL_CONTEXT);
+            nativeTotal = new BigDecimal(0L, MONEY_TOTAL_CONTEXT);
 
             for (StockOrderItem item : items) {
                 item.setFxrProvider(fxrProvider);
-                BigDecimal itemLocalTotal = item.getLocalPrice();
-                localTotal = localTotal.add(itemLocalTotal);
+                BigDecimal itemNativeTotal = item.getNativePrice();
+                nativeTotal = nativeTotal.add(itemNativeTotal);
             }
         }
-        return localTotal;
+        return nativeTotal;
     }
 
-    public void setLocalTotal(BigDecimal localTotal) {
-        this.localTotal = localTotal;
+    public void setNativeTotal(BigDecimal nativeTotal) {
+        this.nativeTotal = nativeTotal;
     }
 
     public void invalidateTotal() {
         total = null;
-        localTotal = null;
+        nativeTotal = null;
+        _mergeMap = null;
     }
 
     @Override
@@ -152,28 +154,73 @@ public class StockItemList
         invalidateTotal();
     }
 
-    Map<StockItemKey, StockOrderItem> toMap() {
-        Map<StockItemKey, StockOrderItem> map = new LinkedHashMap<StockItemKey, StockOrderItem>();
+    IStockMergeStrategy mergeStrategy;
 
-        for (StockOrderItem item : this) {
-            StockOrderItem mergedItem = map.get(item.getCBatch());
-            if (mergedItem == null) {
-                // always create a new one. never share the object.
-                mergedItem = new StockOrderItem(item);
-            } else {
-                // TODO MCV Problem.
-                // mergedItem.merge(item);
-            }
-        }
-        return map;
+    @Transient
+    public IStockMergeStrategy getMergeStrategy() {
+        return mergeStrategy;
     }
 
-    public void merge(StockItemList list) {
+    public void setMergeStrategy(IStockMergeStrategy mergeStrategy) {
+        this.mergeStrategy = mergeStrategy;
+    }
+
+    transient Map<Object, StockOrderItem> _mergeMap;
+
+    @Transient
+    protected synchronized Map<Object, StockOrderItem> getMergeMap()
+            throws FxrQueryException {
+        if (_mergeMap == null) {
+            _mergeMap = new LinkedHashMap<Object, StockOrderItem>();
+            _merge(_mergeMap, this);
+        }
+        return _mergeMap;
+    }
+
+    void _merge(Map<Object, StockOrderItem> map, StockItemList list)
+            throws FxrQueryException {
+        if (map == null)
+            throw new NullPointerException("map");
         if (list == null)
             throw new NullPointerException("list");
-        for (StockOrderItem item : list) {
-            item.getCBatch();
+
+        // Compact myself.
+        for (StockOrderItem item : this) {
+            Object key = mergeStrategy.getMergeKey(item);
+            StockOrderItem merging = map.get(key);
+            if (merging == null) {
+                // always create a new one. never share the object.
+                merging = new StockOrderItem(item);
+                continue;
+            }
+
+            // Merge siblings
+            BigDecimal sumQuantity = merging.getQuantity().add(item.getQuantity());
+            merging.setQuantity(sumQuantity);
+
+            MCValue total = merging.getTotal();
+            MCValue itemTotal = item.getTotal();
+            total = total.addFTN(fxrProvider, itemTotal);
+
+            MCValue avgPrice = total.divide(sumQuantity);
+            merging.setPrice(avgPrice);
+
+            // Set conflicted location to null.
+            StockLocation location = merging.getLocation();
+            if (location != null) {
+                if (!location.equals(item.getLocation())) {
+                    location = null;
+                    merging.setLocation(location);
+                }
+            }
+
         }
+    }
+
+    public synchronized void merge(StockItemList list)
+            throws FxrQueryException {
+        Map<Object, StockOrderItem> map = getMergeMap();
+        _merge(map, list);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.bee32.sem.inventory.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.criterion.Criterion;
@@ -48,8 +49,13 @@ public class StockCriteria
      * 在线性统计库存变更集中，需要排除冗余的库存订单。
      */
     @QueryEntity(StockOrder.class)
-    public static Criterion nonRedundantOrders() {
-        return Restrictions.ne("subject", StockOrderSubject.START.getValue());
+    public static Criterion unpacked() {
+        return Restrictions.ne("subject", Arrays.asList(//
+                StockOrderSubject.PACK_M.getValue(), //
+                StockOrderSubject.PACK_MB.getValue(), //
+                StockOrderSubject.PACK_MC.getValue(), //
+                StockOrderSubject.PACK_MBC.getValue() //
+                ));
     }
 
     /**

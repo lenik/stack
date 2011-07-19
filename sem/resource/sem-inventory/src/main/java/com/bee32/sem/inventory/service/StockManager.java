@@ -43,16 +43,18 @@ public class StockManager
         }
 
         // 2. Compact the new starting
-        StockOrder starting = new StockOrder(snapshot, StockOrderSubject.START);
+        StockOrder packM = new StockOrder(snapshot, StockOrderSubject.PACK_M);
+        StockOrder packMB = new StockOrder(snapshot, StockOrderSubject.PACK_MB);
+        StockOrder packMC = new StockOrder(snapshot, StockOrderSubject.PACK_MC);
+        StockOrder packMBC = new StockOrder(snapshot, StockOrderSubject.PACK_MBC);
         {
-            starting.setInitTarget(snapshot);
-
             List<StockOrder> orders = asFor(StockOrder.class).list(StockCriteria.basedOn(workingBase));
 
-            for (StockOrder order : orders)
-                starting.merge(order);
+            for (StockOrder order : orders) {
+                packM.merge(order);
+            }
 
-            asFor(StockOrder.class).save(starting);
+            asFor(StockOrder.class).save(packM);
         }
 
         // 3. Update the inventory

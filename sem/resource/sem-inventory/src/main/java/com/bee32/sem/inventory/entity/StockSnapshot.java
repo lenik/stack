@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
@@ -34,7 +33,7 @@ public class StockSnapshot
     StockInventory inventory;
     StockSnapshotType type = StockSnapshotType.INITIAL;
 
-    StockOrder starting;
+    List<StockOrder> packedOrders = new ArrayList<StockOrder>();
     List<StockOrder> orders = new ArrayList<StockOrder>();
 
     public StockSnapshot() {
@@ -101,19 +100,33 @@ public class StockSnapshot
     }
 
     /**
-     * 上一起快照汇总后的结余单（轻微冗余）。
+     * 上一起快照汇总后的结余单（冗余）。
      */
     @Redundant
-    @OneToOne(mappedBy = "initTarget")
+    @OneToMany(mappedBy = "spec")
     @Cascade(CascadeType.ALL)
-    public StockOrder getStarting() {
-        return starting;
+    public List<StockOrder> getPackedOrders() {
+        return packedOrders;
     }
 
-    public void setStarting(StockOrder starting) {
-        if (starting == null)
-            throw new NullPointerException("starting");
-        this.starting = starting;
+    public void setPackedOrders(List<StockOrder> packedOrders) {
+        if (packedOrders == null)
+            throw new NullPointerException("packedOrders");
+        this.packedOrders = packedOrders;
+    }
+
+    /**
+     * 获取指定小结科目的小结订单
+     */
+    public StockOrder getPackedOrder(StockOrderSubject packingSubject) {
+        if (packingSubject == null)
+            throw new NullPointerException("packingSubject");
+
+        for (StockOrder order : packedOrders)
+            if (order.subject == packingSubject)
+                return order;
+
+        return null;
     }
 
     @OneToMany(mappedBy = "base")
