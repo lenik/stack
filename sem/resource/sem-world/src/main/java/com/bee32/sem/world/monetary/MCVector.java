@@ -165,14 +165,8 @@ class VirtualMCV
     final Entry<Currency, BigDecimal> entry;
 
     public VirtualMCV(Entry<Currency, BigDecimal> entry) {
-        if (entry == null)
-            throw new NullPointerException("entry");
+        super(entry.getKey(), entry.getValue());
         this.entry = entry;
-    }
-
-    @Override
-    public Currency getCurrency() {
-        return entry.getKey();
     }
 
     @Override
@@ -181,12 +175,8 @@ class VirtualMCV
     }
 
     @Override
-    public BigDecimal getValue() {
-        return entry.getValue();
-    }
-
-    @Override
     public void setValue(BigDecimal value) {
+        super.setValue(value);
         entry.setValue(value);
     }
 
