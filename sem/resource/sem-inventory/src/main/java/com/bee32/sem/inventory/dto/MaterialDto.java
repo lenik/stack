@@ -62,6 +62,14 @@ public class MaterialDto
         this.attributes.add(attr);
     }
 
+    public void addOption(MaterialWarehouseOptionDto option) {
+        this.options.add(option);
+    }
+
+    public void addPreferredLocation(MaterialPreferredLocationDto preferredLocation) {
+        this.preferredLocations.add(preferredLocation);
+    }
+
     public MaterialCategoryDto getCategory() {
         return category;
     }
