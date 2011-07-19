@@ -62,8 +62,8 @@
 
         </h:form>
 
-        <h:form id="material" parentId="false">
-            <p:dialog header="Basic Dialog" widgetVar="materialModual" height="600" width="800">
+        <h:form id="material">
+            <p:dialog header="添加物料" widgetVar="materialModual" height="600" width="800">
                 <t:panelGrid columns="4">
                     <h:outputText value="物料名称" />
                     <t:panelGroup colspan="3">
@@ -77,11 +77,8 @@
 
                     <h:outputText value="物料分类:" />
                     <t:panelGroup colspan="3">
-                    <p:selectOneMenu id="category" value="#{materialViewBean.tempMaterial.category.id}"
-                        style="width:120px;">
-                        <f:selectItem itemLabel="新增分类" itemValue="new" />
-                        <f:selectItems value="#{materialViewBean.categories}" />
-                    </p:selectOneMenu>
+                        <p:inputText id="materialCategory" value="#{materialViewBean.tempMaterial.category.name}" readonly="true" />
+                        <p:commandButton value="..." title="选择物料分类" onclick="categoryTree.show();" />
                     </t:panelGroup>
 
                     <h:outputText value="单位类型:" />
@@ -111,9 +108,38 @@
                             </p:column>
                         </p:dataTable>
                     </t:panelGroup>
-                    <p:commandButton value="..." title="增加属性" oncomplete="attrForm.show();" update="attr:attrDetail"/>
+                    <p:commandButton value="..." title="增加属性" oncomplete="attrForm.show();" update="attr:attrDetail" />
 
                     <h:outputText value="推荐库位" />
+                    <t:panelGroup colspan="2">
+                        <p:dataTable id="preferredLocations" var="location"
+                            value="#{materialViewBean.tempMaterial.preferredLocations}">
+                            <p:column headerText="仓库">
+                                <h:outputText value="#{location.location.warehouse.address}" />
+                            </p:column>
+                            <p:column headerText="库位">
+                                <h:outputText value="#{location.location.address}" />
+                            </p:column>
+                            <p:column headerText="备注">
+                                <h:outputText value="#{location.description}" />
+                            </p:column>
+                        </p:dataTable>
+                    </t:panelGroup>
+                    <p:commandButton value="..." title="添加推荐库位" onclick="preferDialog.show();" />
+
+                    <h:outputText value="物料设置:" />
+                    <t:panelGroup colspan="2">
+                        <p:dataTable id="optionTable" var="opt" value="#{materialViewBean.tempMaterial.options}">
+                            <p:column headerText="仓库">
+                                <h:outputText value="#{opt.warehouse.address}" />
+                            </p:column>
+                            <p:column headerText="安全库存">
+                                <h:outputText value="#{opt.safetyStock}" />
+                            </p:column>
+                        </p:dataTable>
+                    </t:panelGroup>
+                    <p:commandButton value="..." title="添加物料设置" onclick="optionForm.show();" />
+
                     <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}" />
                 </t:panelGrid>
             </p:dialog>
@@ -164,6 +190,72 @@
                 </t:panelGrid>
             </p:dialog>
         </h:form>
+
+        <h:form id="preferredLocation">
+            <p:dialog widgetVar="preferDialog" height="400" weight="300">
+                <t:panelGrid columns="2">
+
+                    <h:outputText value="仓库" />
+                    <p:selectOneMenu value="#{materialViewBean.tempLocation.location.warehouse.id}">
+                        <f:selectItems value="#{materialViewBean.warehouses}" />
+                    </p:selectOneMenu>
+
+                    <h:outputText value="库位" />
+                    <p:inputText value="#{materialViewBean.tempLocation.location.address}" />
+
+                    <h:outputText value="X" />
+                    <p:inputText value="#{materialViewBean.tempLocation.location.x}" />
+
+                    <h:outputText value="y" />
+                    <p:inputText value="#{materialViewBean.tempLocation.location.y}" />
+
+                    <h:outputText value="Z" />
+                    <p:inputText value="#{materialViewBean.tempLocation.location.z}" />
+
+                    <h:outputText value="描述:" />
+                    <p:inputText value="#{materialViewBean.tempLocation.description}" />
+
+                </t:panelGrid>
+                <p:commandButton value="添加" actionListener="#{materialViewBean.doAddPreferredLocation}"
+                    update="material:preferredLocations" oncomplete="preferDialog.hide();" />
+                <p:commandButton value="取消" onclick="preferDialog.hide();" />
+            </p:dialog>
+        </h:form>
+
+        <h:form id="option">
+            <p:dialog widgetVar="optionForm" height="300" width="400">
+                <t:panelGrid columns="2">
+                    <h:outputText value="仓库:" />
+                    <p:selectOneMenu value="#{materialViewBean.option.warehouse.id}" style="width:150px;">
+                        <f:selectItems value="#{materialViewBean.warehouses}" />
+                    </p:selectOneMenu>
+
+                    <h:outputText value="安全库存:" />
+                    <p:inputText value="#{materialViewBean.option.safetyStock}" />
+
+                    <h:outputText value="循环盘点周期" />
+                    <p:inputText value="#{materialViewBean.option.stkPeriod}" />
+                </t:panelGrid>
+                <p:commandButton value="保存" actionListener="#{materialViewBean.doAddOption}"
+                    oncomplete="optionForm.hide();" update="material:optionTable" />
+                <p:commandButton value="取消" onclick="optionForm.hide();" />
+            </p:dialog>
+        </h:form>
+
+        <h:form id="selectCategory">
+            <p:dialog widgetVar="categoryTree" height="500" width="700" modal="true">
+                <p:tree value="#{materialViewBean.root}" var="node" dynamic="true" selectionMode="single"
+                    selection="#{materialViewBean.selectedMaterialCategory}" style="width:150px;">
+                    <p:treeNode>
+                        <h:outputText value="#{node.name}" />
+                    </p:treeNode>
+                </p:tree>
+                <p:commandButton value="选择" actionListener="#{materialViewBean.doSelectCategory}"
+                    update="material:materialCategory" oncomplete="categoryTree.hide();" />
+                <p:commandButton value="取消" onclick="categoryTree.hide();" />
+            </p:dialog>
+        </h:form>
+
 
         <script type="text/javascript">
                                     jQuery(document)
