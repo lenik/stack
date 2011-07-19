@@ -13,6 +13,15 @@ public interface IFxrProvider {
             throws FxrQueryException;
 
     /**
+     * This is the same to {@link FxrTable#getUnitCurrency()}.
+     *
+     * The actual provider should use the native currency as unit currency.
+     *
+     * @return Non-<code>null</code> unit currency in use.
+     */
+    Currency getUnitCurrency();
+
+    /**
      * Get the latest FXR entry.
      * <p>
      * The same to {@link #getLatestFxrTable()}, {@link FxrTable#getQuote(Currency)}.
