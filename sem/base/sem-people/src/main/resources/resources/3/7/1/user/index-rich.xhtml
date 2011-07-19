@@ -77,6 +77,11 @@
                             <f:setPropertyActionListener value="#{user}"
                                 target="#{userAdminBean.user}" />
                         </p:commandLink>
+                        <p:spacer width="10" />
+                        <p:commandLink value="对应人员" oncomplete="personDialog.show()" update="personForm:personPanel">
+                            <f:setPropertyActionListener value="#{user}"
+                                target="#{userAdminBean.user}" />
+                        </p:commandLink>
 					</t:panelGroup>
 				</p:column>
 			</p:dataTable>
@@ -262,6 +267,206 @@
             </p:dialog>
         </h:form>
 
+        <h:form id="personForm">
+            <p:dialog header="对应人员"  widgetVar="personDialog"
+                modal="true" height="500" width="640">
+                <h:panelGroup id="personPanel">
+
+					<p:panel header="详细信息" toggleable="true">
+						<t:panelGrid columns="4" border="1"
+							columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+
+							<h:outputLabel value="姓名" />
+							<h:outputText value="#{userAdminBean.person.name}" />
+							<h:outputLabel value="全名" />
+							<h:outputText value="#{userAdminBean.person.fullName}" />
+
+							<h:outputLabel value="昵称" />
+							<h:outputText value="#{userAdminBean.person.nickName}" />
+							<h:outputLabel value="生日" />
+							<h:outputText value="#{userAdminBean.person.birthday}"/>
+
+							<h:outputLabel value="证件类型" />
+							<h:outputText value="#{userAdminBean.person.sidType.label}"/>
+							<h:outputLabel value="证件号码" />
+							<h:outputText value="#{userAdminBean.person.sid}" />
+
+							<h:outputLabel value="性别" />
+							<h:outputText value="#{userAdminBean.person.sexText}"/>
+							<h:outputLabel value="户籍" />
+							<h:outputText value="#{userAdminBean.person.censusRegister}" />
+
+							<h:outputLabel value="兴趣爱好" />
+							<t:panelGroup colspan="3">
+								<h:outputText value="#{userAdminBean.person.interests}" />
+							</t:panelGroup>
+
+							<h:outputLabel for="personMemo" value="备注" />
+							<t:panelGroup colspan="3">
+								<h:outputText value="#{userAdminBean.person.memo}"/>
+							</t:panelGroup>
+						</t:panelGrid>
+						<p:commandButton value="选择对应人员" onclick="personHolderDlg.show();"/>
+					</p:panel>
+
+					<p:panel header="联系方式" toggleable="true">
+						<p:dataTable id="contacts" var="contact"
+							value="#{userAdminBean.contacts}" resizableColumns="true" rowIndexVar="rowIndex">
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="序号" />
+								</f:facet>
+								<h:outputText value="#{rowIndex + 1}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="分类" />
+								</f:facet>
+								<h:outputText value="#{contact.category.label}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="地址" />
+								</f:facet>
+								<h:outputText value="#{contact.address}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="邮编" />
+								</f:facet>
+								<h:outputText value="#{contact.postCode}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="电话" />
+								</f:facet>
+								<h:outputText value="#{contact.tel}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="移动电话" />
+								</f:facet>
+								<h:outputText value="#{contact.mobile}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="传真" />
+								</f:facet>
+								<h:outputText value="#{contact.fax}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="email" />
+								</f:facet>
+								<h:outputText value="#{contact.email}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="网址" />
+								</f:facet>
+								<h:outputText value="#{contact.website}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="QQ" />
+								</f:facet>
+								<h:outputText value="#{contact.qq}" />
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+
+				</h:panelGroup>
+            </p:dialog>
+
+
+            <p:dialog header="选择联系人" widgetVar="personHolderDlg" modal="true" height="400" width="640">
+                <h:panelGroup>
+
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="联系人名字全部或部份:"/>
+                        <p:inputText value="#{userAdminBean.personPattern}"/>
+                        <p:commandButton value="查找" actionListener="#{userAdminBean.findPerson}" update="persons"
+                                         async="true"/>
+                    </h:panelGrid>
+                    <p:dataTable
+                            id="persons"
+                            var="person"
+                            value="#{userAdminBean.persons}"
+                            resizableColumns="true"
+                            selection="#{userAdminBean.selectedPerson}"
+                            selectionMode="single"
+                            rowIndexVar="rowIndex">
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="序号"/>
+                            </f:facet>
+                            <h:outputText value="#{rowIndex + 1}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="姓名"/>
+                            </f:facet>
+                            <h:outputText value="#{person.name}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="性别"/>
+                            </f:facet>
+                            <h:outputText value="#{person.sexText}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="生日"/>
+                            </f:facet>
+                            <h:outputText value="#{person.birthday}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                                   timeZone="Asia/Shanghai"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="证件类型"/>
+                            </f:facet>
+                            <h:outputText value="#{person.sidType.label}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="证件号码"/>
+                            </f:facet>
+                            <h:outputText value="#{person.sid}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="户籍"/>
+                            </f:facet>
+                            <h:outputText value="#{person.censusRegister}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                    <h:panelGrid columns="2">
+                        <p:commandButton
+                                value="确定"
+                                actionListener="#{userAdminBean.choosePerson}"
+                                oncomplete="personHolderDlg.hide();"
+                                update="personPanel"
+                                async="true"/>
+                        <p:commandButton value="取消" oncomplete="personHolderDlg.hide();"/>
+                    </h:panelGrid>
+                </h:panelGroup>
+            </p:dialog>
+
+
+        </h:form>
 
 
 	</ui:define>

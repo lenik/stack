@@ -1,5 +1,6 @@
 package com.bee32.sem.people.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +18,13 @@ import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.icsf.principal.dto.RoleDto;
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.people.dto.ContactDto;
+import com.bee32.sem.people.dto.PersonDto;
+import com.bee32.sem.people.entity.PartyTagname;
+import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.entity.PersonLogin;
+import com.bee32.sem.people.util.PeopleCriteria;
 
 @Component
 @Scope("view")
@@ -36,6 +44,10 @@ public class UserAdminBean extends PrincipalAdminBean {
 
     private GroupDto selectedGroup;
     private TreeNode selectedGroupNode;
+
+    private String personPattern;
+    private List<PersonDto> persons;
+    private PersonDto selectedPerson;
 
 
     public UserDto getUser() {
@@ -104,6 +116,58 @@ public class UserAdminBean extends PrincipalAdminBean {
     public List<GroupDto> getGroups() {
         return user.getAssignedGroups();
     }
+
+    public PersonDto getPerson() {
+        PersonDto person = new PersonDto().create();
+        if (user != null && user.getId() != null) {
+            PersonLogin personLogin = serviceFor(PersonLogin.class).getUnique(Restrictions.eq("user.id", user.getId()));
+            if(personLogin != null) {
+                person = DTOs.marshal(PersonDto.class, personLogin.getPerson());
+            }
+        }
+
+        return person;
+    }
+
+    public List<ContactDto> getContacts() {
+        List<ContactDto> contacts = new ArrayList<ContactDto>();
+        if (user != null && user.getId() != null) {
+            PersonLogin personLogin = serviceFor(PersonLogin.class).getUnique(Restrictions.eq("user.id", user.getId()));
+            if (personLogin != null) {
+                PersonDto person = DTOs.marshal(PersonDto.class,
+                        personLogin.getPerson());
+                contacts = person.getContacts();
+            }
+        }
+
+        return contacts;
+    }
+
+    public String getPersonPattern() {
+        return personPattern;
+    }
+
+    public void setPersonPattern(String personPattern) {
+        this.personPattern = personPattern;
+    }
+
+    public List<PersonDto> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<PersonDto> persons) {
+        this.persons = persons;
+    }
+
+    public PersonDto getSelectedPerson() {
+        return selectedPerson;
+    }
+
+    public void setSelectedPerson(PersonDto selectedPerson) {
+        this.selectedPerson = selectedPerson;
+    }
+
+
 
 
 
@@ -201,4 +265,25 @@ public class UserAdminBean extends PrincipalAdminBean {
         user.removeAssignedGroup(selectedGroup);
     }
 
+    public void findPerson() {
+        if (personPattern != null && !personPattern.isEmpty()) {
+
+            List<Person> _persons = serviceFor(Person.class).list(//
+                    Restrictions.in("tags", new Object[] { PartyTagname.INTERNAL }), //
+                    PeopleCriteria.nameLike(personPattern));
+
+            persons = DTOs.marshalList(PersonDto.class, _persons);
+        }
+    }
+
+    public void choosePerson() {
+        if (user != null && user.getId() != null) {
+            serviceFor(PersonLogin.class).deleteAll(Restrictions.eq("user.id", user.getId()));
+            PersonLogin personLogin = new PersonLogin();
+            personLogin.setUser(user.unmarshal());
+            personLogin.setPerson(selectedPerson.unmarshal());
+
+            serviceFor(PersonLogin.class).save(personLogin);
+        }
+    }
 }
