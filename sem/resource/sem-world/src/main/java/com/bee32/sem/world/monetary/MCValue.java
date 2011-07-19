@@ -66,26 +66,8 @@ public class MCValue
         this.value = amount;
     }
 
-    @Column(name = "currency", length = 3, nullable = false)
-    public String getCurrencyCode() {
-        return currency.getCurrencyCode();
-    }
-
-    public void setCurrencyCode(String currencyCode) {
-        if (currencyCode == null)
-            setCurrency(null);
-        else {
-            Currency currency = Currency.getInstance(currencyCode); // Already throws IAE, though.
-            if (currency == null)
-                throw new IllegalArgumentException("Bad currency code: " + currencyCode);
-            setCurrency(currency);
-        }
-    }
-
     /**
      * Get the currency.
-     *
-     * @return <code>null</code> for native currency.
      */
     @Transient
     public Currency getCurrency() {
@@ -94,12 +76,30 @@ public class MCValue
 
     /**
      * Set the currency.
-     *
-     * @param currency
-     *            Set to <code>null</code> for native currency.
      */
     void setCurrency(Currency currency) {
+        if (currency == null)
+            throw new NullPointerException("currency");
         this.currency = currency;
+    }
+
+    @Column(name = "currency", length = 3/* , nullable = false */)
+    public String getCurrencyCode() {
+        // if (currency == null)
+        // return null;
+        return currency.getCurrencyCode();
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        // if (currencyCode == null)
+        // setCurrency(null);
+        // else
+        {
+            Currency currency = Currency.getInstance(currencyCode); // Already throws IAE, though.
+            if (currency == null)
+                throw new IllegalArgumentException("Bad currency code: " + currencyCode);
+            setCurrency(currency);
+        }
     }
 
     @Transient
@@ -184,16 +184,78 @@ public class MCValue
         return new MCValue(currency, result);
     }
 
-    public BigDecimal toLocal(IFxrProvider fxrProvider)
+    /**
+     * Add, or fallback to native currency.
+     *
+     * @return Non-<code>null</code> addition result.
+     */
+    public final MCValue addFTN(IFxrProvider fxrProvider, MCValue other)
+            throws FxrQueryException {
+        if (Nullables.equals(currency, other.currency)) {
+            BigDecimal sum = value.add(other.value);
+            return new MCValue(currency, sum);
+        }
+        BigDecimal a = this.getNativeValue(fxrProvider);
+        BigDecimal b = other.getNativeValue(fxrProvider);
+        BigDecimal sum = a.add(b);
+        return new MCValue(null, sum);
+    }
+
+    /**
+     * Add, or fallback to native currency.
+     *
+     * @return Non-<code>null</code> addition result.
+     */
+    public final MCValue addFTN(IFxrProvider fxrProvider, MCValue... others)
+            throws FxrQueryException {
+
+        assert currency != null; // To simplify, null is just not supported here.
+
+        boolean same = true;
+        for (MCValue other : others) {
+            if (!currency.equals(other.currency)) {
+                same = false;
+                break;
+            }
+        }
+
+        BigDecimal sum;
+        if (same) {
+            sum = value;
+            for (MCValue other : others)
+                sum = sum.add(other.value);
+        } else {
+            sum = this.getNativeValue(fxrProvider);
+            for (MCValue other : others) {
+                BigDecimal n = other.getNativeValue(fxrProvider);
+                sum = sum.add(n);
+            }
+        }
+
+        return new MCValue(CurrencyConfig.NATIVE, sum);
+    }
+
+    public MCValue toNative(IFxrProvider fxrProvider)
+            throws FxrQueryException {
+        if (currency == null)
+            return this;
+
+        if (currency.equals(CurrencyConfig.NATIVE))
+            return this;
+
+        BigDecimal nativeValue = getNativeValue(fxrProvider);
+        MCValue _native = new MCValue(CurrencyConfig.NATIVE, nativeValue);
+        return _native;
+    }
+
+    public BigDecimal getNativeValue(IFxrProvider fxrProvider)
             throws FxrQueryException {
         if (fxrProvider == null)
             throw new NullPointerException("fxrProvider");
 
-        Currency quoteCurrency = getCurrency();
-
-        Float _fxr = fxrProvider.getLatestFxr(quoteCurrency);
+        Float _fxr = fxrProvider.getLatestFxr(currency);
         if (_fxr == null)
-            throw new FxrQueryException("The FXR for the specified quote currency is not defined: " + quoteCurrency);
+            throw new FxrQueryException("The FXR for the specified quote currency is not defined: " + currency);
 
         BigDecimal fxr = BigDecimal.valueOf(_fxr);
         BigDecimal local = getValue().multiply(fxr);
@@ -207,10 +269,10 @@ public class MCValue
 
         MCValue o = (MCValue) obj;
 
-        if (!Nullables.equals(getCurrency(), o.getCurrency()))
+        if (!Nullables.equals(currency, o.currency))
             return false;
 
-        if (!getValue().equals(o.getValue()))
+        if (!value.equals(o.value))
             return false;
 
         return true;
@@ -220,10 +282,10 @@ public class MCValue
     public int hashCode() {
         int hash = 0;
 
-        if (getCurrency() != null)
-            hash = getCurrency().hashCode();
+        if (currency != null)
+            hash = currency.hashCode();
 
-        hash += getValue().hashCode();
+        hash += value.hashCode();
 
         return hash;
     }
