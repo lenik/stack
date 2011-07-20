@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface QueryEntity {
+public @interface LeftHand {
 
     Class<?>[] value();
 
