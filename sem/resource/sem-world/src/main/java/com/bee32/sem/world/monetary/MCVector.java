@@ -16,7 +16,7 @@ public class MCVector
     private static final long serialVersionUID = 1L;
 
     Map<Currency, BigDecimal> map = new TreeMap<Currency, BigDecimal>(CurrencyCodeComparator.INSTANCE);
-    Currency conversion = DEFAULT_CURRENCY;
+    Currency conversion = NATIVE_CURRENCY;
 
     @Override
     public MCVector clone() {

@@ -8,14 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.EnterpriseService;
-import com.bee32.sem.world.monetary.CurrencyConfig;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.FxrTable;
+import com.bee32.sem.world.monetary.ICurrencyAware;
 import com.bee32.sem.world.monetary.IFxrUpdater;
 
 public abstract class OnlineFxrUpdater
         extends EnterpriseService
-        implements IFxrUpdater {
+        implements IFxrUpdater, ICurrencyAware {
 
     static Logger logger = LoggerFactory.getLogger(OnlineFxrUpdater.class);
 
@@ -46,7 +46,7 @@ public abstract class OnlineFxrUpdater
         }
 
         Currency unitCurrency = table.getUnitCurrency();
-        if (unitCurrency != CurrencyConfig.DEFAULT) {
+        if (unitCurrency != NATIVE_CURRENCY) {
             logger.error("FXR Update is skipped because of bad unit currency in FXR table: " + unitCurrency);
             return;
         }

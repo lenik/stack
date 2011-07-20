@@ -55,6 +55,6 @@ public interface ICurrencyAware {
     /** 美元 */
     Currency USD = Currency.getInstance("USD");
 
-    Currency DEFAULT_CURRENCY = CurrencyConfig.DEFAULT;
+    Currency NATIVE_CURRENCY = CurrencyConfig.NATIVE;
 
 }
