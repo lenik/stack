@@ -2,6 +2,7 @@ package com.bee32.sem.people.util;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
@@ -34,8 +35,13 @@ public class PeopleCriteria
         return not(in(name, new Object[] { PartyTagname.INTERNAL.getName() }));
     }
 
-    public static DetachedCriteria hasTag(PartyTagname tag) {
-        DetachedCriteria c = DetachedCriteria.forClass(Party.class).createAlias("tags", "tag");
+    public static DetachedCriteria hasTag(String pattern) {
+        DetachedCriteria c = DetachedCriteria
+                .forClass(Party.class)
+                .createAlias("tags", "tag")
+                .add(Restrictions.in("tag.id",
+                        new Object[] { PartyTagname.INTERNAL.getId() }))
+                .add(nameLike(pattern));
         return c;
     }
 

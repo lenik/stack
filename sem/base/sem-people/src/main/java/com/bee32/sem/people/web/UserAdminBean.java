@@ -21,7 +21,6 @@ import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.PersonDto;
-import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonLogin;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -268,9 +267,8 @@ public class UserAdminBean extends PrincipalAdminBean {
     public void findPerson() {
         if (personPattern != null && !personPattern.isEmpty()) {
 
-            List<Person> _persons = serviceFor(Person.class).list(//
-                    Restrictions.in("tags", new Object[] { PartyTagname.INTERNAL }), //
-                    PeopleCriteria.nameLike(personPattern));
+            List<Person> _persons = serviceFor(Person.class).list(
+                    PeopleCriteria.hasTag(personPattern));
 
             persons = DTOs.marshalList(PersonDto.class, _persons);
         }
