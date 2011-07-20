@@ -1,10 +1,9 @@
 package com.bee32.plover.criteria.hibernate;
 
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
 
-class Order
-        extends CriteriaElement {
+public class Order
+        implements ICriteriaElement {
 
     org.hibernate.criterion.Order order;
 
@@ -17,11 +16,6 @@ class Order
     @Override
     public void apply(Criteria criteria) {
         criteria.addOrder(order);
-    }
-
-    @Override
-    protected Criterion buildCriterion() {
-        return null;
     }
 
     /**
