@@ -1,0 +1,99 @@
+#!/bin/bash
+    . shlib-import cliboot
+
+    RCSID='$Id: - @VERSION@ @DATE@ @TIME@ - $'
+    short_opts="hqv"
+    long_opts="help,quiet,verbose,version"
+
+function version() {
+    parse_id "$RCSID"
+    echo "[$BASENAME] "
+    echo "Written by Lenik, Version $rcs_rev, Last updated at $rcs_date"
+}
+
+function help() {
+    version
+    echo
+    echo "Syntax: "
+    echo "    $0 [OPTION] [--] ..."
+    echo
+    echo "Options: "
+    echo "    -q, --quiet             Repeat to get less info"
+    echo "    -v, --verbose           Repeat to get more info"
+    echo "    -h, --help              Show this help page"
+    echo "        --version           Print the version info"
+}
+
+function setopt() {
+    case "$1" in
+        -h|--help)
+            help; exit;;
+        -q|--quiet)
+            LOGLEVEL=$((LOGLEVEL - 1));;
+        -v|--verbose)
+            LOGLEVEL=$((LOGLEVEL + 1));;
+        --version)
+            version; exit;;
+        *)
+            quit "invalid option: $1";;
+    esac
+}
+
+function main() {
+    # PropertyExpression geProperty String propertyName  String otherPropertyName
+    while read -a array; do
+        set "${array[@]}"
+        [ -z "$1" ] && continue
+        shift # return type
+        method=$1
+        shift
+
+        name=`uc -e ${method:0:1}`${method:1}
+        file=$name.java
+        _log1 "Generating $file"
+        echo "package com.bee32.plover.criteria.hibernate;" >$file
+        echo >>$file
+        echo "class $name extends CriteriaElement {" >>$file
+        echo >>$file
+
+        ctor_param=
+        ctor_body=()
+        args=
+        nbody=0
+
+        while [ $# != 0 ]; do
+            ptype="$1"
+            pname="$2"
+            shift 2
+
+            echo "    final $ptype $pname;" >>$file
+            ctor_param="$ctor_param, $ptype $pname"
+            ctor_body[nbody++]="this.$pname = $pname;"
+            args="$args, $pname"
+        done
+        echo >>$file
+
+        if [ -n "$ctor_param" ]; then
+            ctor_param="${ctor_param:2}"
+            args="${args:2}"
+        fi
+
+        # default ctor
+        #echo "    public $name() {}" >>$file
+
+        echo "    public $name($ctor_param) {" >>$file
+        for cb in "${ctor_body[@]}"; do
+            echo "        $cb" >>$file
+        done
+        echo "    }" >>$file
+
+        echo "    @Override protected Criterion buildCriterion() {" >>$file
+        echo "        return Restrictions.$method($args); " >>$file
+        echo "    }" >>$file
+        echo >>$file
+        echo "}" >>$file
+
+    done
+}
+
+boot "$@"

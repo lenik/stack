@@ -32,15 +32,15 @@ import org.hibernate.type.Type;
  */
 public abstract class CriteriaSpec {
 
-    public static Criterion idEq(Object value) {
-        return Restrictions.idEq(value);
+    public static ICriteriaElement idEq(Object value) {
+        return null;
     }
 
-    public static SimpleExpression eq(String propertyName, Object value) {
+    public static SimpleExpression equals(String propertyName, Object value) {
         return Restrictions.eq(propertyName, value);
     }
 
-    public static SimpleExpression ne(String propertyName, Object value) {
+    public static SimpleExpression notEquals(String propertyName, Object value) {
         return Restrictions.ne(propertyName, value);
     }
 
@@ -60,19 +60,19 @@ public abstract class CriteriaSpec {
         return Restrictions.ilike(propertyName, value);
     }
 
-    public static SimpleExpression gt(String propertyName, Object value) {
+    public static SimpleExpression greaterThan(String propertyName, Object value) {
         return Restrictions.gt(propertyName, value);
     }
 
-    public static SimpleExpression lt(String propertyName, Object value) {
+    public static SimpleExpression lessThan(String propertyName, Object value) {
         return Restrictions.lt(propertyName, value);
     }
 
-    public static SimpleExpression le(String propertyName, Object value) {
+    public static SimpleExpression lessOrEquals(String propertyName, Object value) {
         return Restrictions.le(propertyName, value);
     }
 
-    public static SimpleExpression ge(String propertyName, Object value) {
+    public static SimpleExpression greaterOrEquals(String propertyName, Object value) {
         return Restrictions.ge(propertyName, value);
     }
 
