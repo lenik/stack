@@ -115,7 +115,7 @@ public class ChanceActionBean
             edmo.setCriteriaElements(//
                     Order.desc("createdDate"), //
                     ChanceCriteria.actedByCurrentUser(), //
-                    ChanceCriteria.beginWithin(searchBeginTime, searchEndTime));
+                    ChanceCriteria.beganWithin(searchBeginTime, searchEndTime));
             actions = UIHelper.buildLazyDataModel(edmo);
             refreshActionCount(isSearching);
         } else {
@@ -159,7 +159,7 @@ public class ChanceActionBean
 
         int count = serviceFor(ChanceAction.class).count(//
                 ChanceCriteria.actedByCurrentUser(), //
-                forSearch ? ChanceCriteria.beginWithin(searchBeginTime, searchEndTime) : null);
+                forSearch ? ChanceCriteria.beganWithin(searchBeginTime, searchEndTime) : null);
 
         actions.setRowCount(count);
     }

@@ -385,7 +385,7 @@ public class ChanceBean
             List<ChanceAction> _actions = serviceFor(ChanceAction.class).list(//
                     Order.desc("createdDate"), //
                     ChanceCriteria.actedByCurrentUser(), //
-                    ChanceCriteria.beginWithin(searchBeginTime, searchEndTime), //
+                    ChanceCriteria.beganWithin(searchBeginTime, searchEndTime), //
                     ChanceCriteria.danglingChance());
             actions = DTOs.marshalList(ChanceActionDto.class, _actions);
         } else {

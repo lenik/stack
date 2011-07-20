@@ -41,12 +41,12 @@ public class ChanceCriteria
             return equals("actor.id", user.getId());
     }
 
-    public static CriteriaElement beginWithin(Date min, Date max) {
-        if (min == null)
+    public static CriteriaElement beganWithin(Date start, Date end) {
+        if (start == null)
             throw new NullPointerException("start");
-        if (max == null)
+        if (end == null)
             throw new NullPointerException("end");
-        return between("beginTime", min, max);
+        return between("beginTime", start, end);
     }
 
     public static CriteriaElement chanceEquals(Chance chance) {
