@@ -73,6 +73,9 @@ public class MaterialAttribute
     protected Boolean naturalEquals(EntityBase<Long> other) {
         MaterialAttribute o = (MaterialAttribute) other;
 
+        if (material == null || name == null)
+            return false;
+
         if (!material.equals(o.material))
             return false;
 
@@ -85,6 +88,10 @@ public class MaterialAttribute
     @Override
     protected Integer naturalHashCode() {
         int hash = 0;
+
+        if (material == null || name == null)
+            return System.identityHashCode(this);
+
         hash += material.hashCode();
         hash += name.hashCode();
         return hash;

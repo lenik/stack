@@ -63,6 +63,9 @@ public class MaterialPreferredLocationDto
     protected Boolean naturalEquals(EntityDto<MaterialPreferredLocation, Long> other) {
         MaterialPreferredLocationDto o = (MaterialPreferredLocationDto) other;
 
+        if (material == null || location == null)
+            return false;
+
         if (!material.equals(o.material))
             return false;
 
@@ -75,6 +78,10 @@ public class MaterialPreferredLocationDto
     @Override
     protected Integer naturalHashCode() {
         int hash = 0;
+
+        if (material == null || location == null)
+            return System.identityHashCode(this);
+
         hash += material.hashCode();
         hash += location.hashCode();
         return hash;

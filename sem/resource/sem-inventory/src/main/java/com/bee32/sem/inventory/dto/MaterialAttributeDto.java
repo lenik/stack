@@ -64,4 +64,32 @@ public class MaterialAttributeDto
         this.value = value;
     }
 
+    @Override
+    protected Boolean naturalEquals(EntityDto<MaterialAttribute, Long> other) {
+        MaterialAttributeDto o = (MaterialAttributeDto) other;
+
+        if (material == null || name == null)
+            return false;
+
+        if (!material.equals(o.material))
+            return false;
+
+        if (!name.equals(o.name))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        int hash = 0;
+
+        if (material == null || name == null)
+            return System.identityHashCode(this);
+
+        hash += material.hashCode();
+        hash += name.hashCode();
+        return hash;
+    }
+
 }

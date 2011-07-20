@@ -71,4 +71,26 @@ public class MaterialWarehouseOptionDto
         this.stkPeriod = stkPeriod;
     }
 
+    @Override
+    protected Boolean naturalEquals(EntityDto<MaterialWarehouseOption, Long> other) {
+        MaterialWarehouseOptionDto object = (MaterialWarehouseOptionDto) other;
+        if (material == null || warehouse == null)
+            return false;
+        if (!material.equals(object.getMaterial()))
+            return false;
+        if (!warehouse.equals(object.getWarehouse()))
+            return false;
+        return true;
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        int hash = 0;
+        if (material == null || warehouse == null)
+            return System.identityHashCode(this);
+        hash += material.hashCode();
+        hash += warehouse.hashCode();
+        return hash;
+    }
+
 }

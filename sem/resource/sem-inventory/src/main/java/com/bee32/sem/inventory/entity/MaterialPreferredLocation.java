@@ -63,6 +63,9 @@ public class MaterialPreferredLocation
     protected Boolean naturalEquals(EntityBase<Long> other) {
         MaterialPreferredLocation o = (MaterialPreferredLocation) other;
 
+        if (material == null || location == null)
+            return false;
+
         if (!material.equals(o.material))
             return false;
 
@@ -75,6 +78,10 @@ public class MaterialPreferredLocation
     @Override
     protected Integer naturalHashCode() {
         int hash = 0;
+
+        if (material == null || location == null)
+            return System.identityHashCode(this);
+
         hash += material.hashCode();
         hash += location.hashCode();
         return hash;
