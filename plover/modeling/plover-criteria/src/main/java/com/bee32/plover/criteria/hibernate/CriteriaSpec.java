@@ -3,15 +3,7 @@ package com.bee32.plover.criteria.hibernate;
 import java.util.Collection;
 import java.util.Map;
 
-import org.hibernate.criterion.Conjunction;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.NaturalIdentifier;
-import org.hibernate.criterion.PropertyExpression;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
 import org.hibernate.type.Type;
 
 /**
@@ -19,177 +11,197 @@ import org.hibernate.type.Type;
  *
  * <p>
  * 谓词命名的一般原则：<br>
- * 对于 {@link QueryEntity} 中声明的类 C=Foo 和谓词 P=pred，应该可以读作： <cite> Foo is pred.</cite>
+ * 对于 {@link LeftHand} 中声明的类 C=Foo 和谓词 P=pred，应该可以读作： <cite> Foo is pred.</cite>
  *
  * <p>
  * 例如，一个用于判断 Person 是否为成年人 （年龄 >= 18）的谓词 mature：
  *
  * <pre>
- * &#64;{@link QueryEntity}(Person.class) Criterion matured();
+ * &#64;{@link LeftHand}(Person.class) Criterion matured();
  * </pre>
  *
  * 可以读作 <cite> Person is matured. </cite>
  */
 public abstract class CriteriaSpec {
 
-    public static ICriteriaElement idEq(Object value) {
-        return null;
+    protected static CriteriaComposite compose(CriteriaElement... elements) {
+        return new CriteriaComposite(elements);
     }
 
-    public static SimpleExpression equals(String propertyName, Object value) {
-        return Restrictions.eq(propertyName, value);
+    protected static CriteriaElement alias(String associationPath, String alias) {
+        return new Alias(associationPath, alias);
     }
 
-    public static SimpleExpression notEquals(String propertyName, Object value) {
-        return Restrictions.ne(propertyName, value);
+    protected static CriteriaElement alias(String associationPath, String alias, int joinType) {
+        return new Alias(associationPath, alias, joinType);
     }
 
-    public static SimpleExpression like(String propertyName, Object value) {
-        return Restrictions.like(propertyName, value);
+    protected static ICriteriaElement ascOrder(String propertyName) {
+        return Order.asc(propertyName);
     }
 
-    public static SimpleExpression like(String propertyName, String value, MatchMode matchMode) {
-        return Restrictions.like(propertyName, value, matchMode);
+    protected static ICriteriaElement descOrder(String propertyName) {
+        return Order.desc(propertyName);
     }
 
-    public static Criterion ilike(String propertyName, String value, MatchMode matchMode) {
-        return Restrictions.ilike(propertyName, value, matchMode);
+    protected static CriteriaElement idEq(Object value) {
+        return new IdEquals(value);
     }
 
-    public static Criterion ilike(String propertyName, Object value) {
-        return Restrictions.ilike(propertyName, value);
+    protected static CriteriaElement equals(String propertyName, Object value) {
+        return new Equals(propertyName, value);
     }
 
-    public static SimpleExpression greaterThan(String propertyName, Object value) {
-        return Restrictions.gt(propertyName, value);
+    protected static CriteriaElement notEquals(String propertyName, Object value) {
+        return new NotEquals(propertyName, value);
     }
 
-    public static SimpleExpression lessThan(String propertyName, Object value) {
-        return Restrictions.lt(propertyName, value);
+    protected static CriteriaElement like(String propertyName, String value) {
+        return new Like(propertyName, value);
     }
 
-    public static SimpleExpression lessOrEquals(String propertyName, Object value) {
-        return Restrictions.le(propertyName, value);
+    protected static CriteriaElement like(String propertyName, String value, MatchMode matchMode) {
+        return new Like(propertyName, value, matchMode);
     }
 
-    public static SimpleExpression greaterOrEquals(String propertyName, Object value) {
-        return Restrictions.ge(propertyName, value);
+    protected static CriteriaElement likeIgnoreCase(String propertyName, String value) {
+        return new LikeIgnoreCase(propertyName, value);
     }
 
-    public static Criterion between(String propertyName, Object lo, Object hi) {
-        return Restrictions.between(propertyName, lo, hi);
+    protected static CriteriaElement likeIgnoreCase(String propertyName, String value, MatchMode matchMode) {
+        return new LikeIgnoreCase(propertyName, value, matchMode);
     }
 
-    public static Criterion in(String propertyName, Object[] values) {
-        return Restrictions.in(propertyName, values);
+    protected static CriteriaElement greaterThan(String propertyName, Object value) {
+        return new GreaterThan(propertyName, value);
     }
 
-    public static Criterion in(String propertyName, Collection<?> values) {
-        return Restrictions.in(propertyName, values);
+    protected static CriteriaElement lessThan(String propertyName, Object value) {
+        return new LessThan(propertyName, value);
     }
 
-    public static Criterion isNull(String propertyName) {
-        return Restrictions.isNull(propertyName);
+    protected static CriteriaElement lessOrEquals(String propertyName, Object value) {
+        return new LessOrEquals(propertyName, value);
     }
 
-    public static PropertyExpression eqProperty(String propertyName, String otherPropertyName) {
-        return Restrictions.eqProperty(propertyName, otherPropertyName);
+    protected static CriteriaElement greaterOrEquals(String propertyName, Object value) {
+        return new GreaterOrEquals(propertyName, value);
     }
 
-    public static PropertyExpression neProperty(String propertyName, String otherPropertyName) {
-        return Restrictions.neProperty(propertyName, otherPropertyName);
+    protected static CriteriaElement between(String propertyName, Object lo, Object hi) {
+        return new Between(propertyName, lo, hi);
     }
 
-    public static PropertyExpression ltProperty(String propertyName, String otherPropertyName) {
-        return Restrictions.ltProperty(propertyName, otherPropertyName);
+    protected static CriteriaElement in(String propertyName, Object[] values) {
+        return new InArray(propertyName, values);
     }
 
-    public static PropertyExpression leProperty(String propertyName, String otherPropertyName) {
-        return Restrictions.leProperty(propertyName, otherPropertyName);
+    protected static CriteriaElement in(String propertyName, Collection<?> values) {
+        return new InCollection(propertyName, values);
     }
 
-    public static PropertyExpression gtProperty(String propertyName, String otherPropertyName) {
-        return Restrictions.gtProperty(propertyName, otherPropertyName);
+    protected static CriteriaElement isNull(String propertyName) {
+        return new IsNull(propertyName);
     }
 
-    public static PropertyExpression geProperty(String propertyName, String otherPropertyName) {
-        return Restrictions.geProperty(propertyName, otherPropertyName);
+    protected static CriteriaElement propertyEquals(String propertyName, String otherPropertyName) {
+        return new PropertyEquals(propertyName, otherPropertyName);
     }
 
-    public static Criterion isNotNull(String propertyName) {
-        return Restrictions.isNotNull(propertyName);
+    protected static CriteriaElement propertyNotEquals(String propertyName, String otherPropertyName) {
+        return new PropertyNotEquals(propertyName, otherPropertyName);
     }
 
-    public static LogicalExpression and(Criterion lhs, Criterion rhs) {
-        return Restrictions.and(lhs, rhs);
+    protected static CriteriaElement propertyLessThan(String propertyName, String otherPropertyName) {
+        return new PropertyLessThan(propertyName, otherPropertyName);
     }
 
-    public static LogicalExpression or(Criterion lhs, Criterion rhs) {
-        return Restrictions.or(lhs, rhs);
+    protected static CriteriaElement propertyLessOrEquals(String propertyName, String otherPropertyName) {
+        return new PropertyLessOrEquals(propertyName, otherPropertyName);
     }
 
-    public static Criterion not(Criterion expression) {
-        return Restrictions.not(expression);
+    protected static CriteriaElement propertyGreaterThan(String propertyName, String otherPropertyName) {
+        return new PropertyGreaterThan(propertyName, otherPropertyName);
     }
 
-    public static Criterion sqlRestriction(String sql, Object[] values, Type[] types) {
-        return Restrictions.sqlRestriction(sql, values, types);
+    protected static CriteriaElement propertyGreaterOrEquals(String propertyName, String otherPropertyName) {
+        return new PropertyGreaterOrEquals(propertyName, otherPropertyName);
     }
 
-    public static Criterion sqlRestriction(String sql, Object value, Type type) {
-        return Restrictions.sqlRestriction(sql, value, type);
+    protected static CriteriaElement isNotNull(String propertyName) {
+        return new IsNotNull(propertyName);
     }
 
-    public static Criterion sqlRestriction(String sql) {
-        return Restrictions.sqlRestriction(sql);
+    protected static CriteriaElement sqlRestriction(String sql, Object[] values, Type[] types) {
+        return new SqlRestriction(sql, values, types);
     }
 
-    public static Conjunction conjunction() {
-        return Restrictions.conjunction();
+    protected static CriteriaElement sqlRestriction(String sql, Object value, Type type) {
+        return new SqlRestriction(sql, new Object[] { value }, new Type[] { type });
     }
 
-    public static Disjunction disjunction() {
-        return Restrictions.disjunction();
+    protected static CriteriaElement sqlRestriction(String sql) {
+        return new SimpleSqlRestriction(sql);
     }
 
-    public static Criterion allEq(Map<?, ?> propertyNameValues) {
-        return Restrictions.allEq(propertyNameValues);
+    protected static CriteriaElement allEq(Map<?, ?> propertyNameValues) {
+        return new AllEquals(propertyNameValues);
     }
 
-    public static Criterion isEmpty(String propertyName) {
-        return Restrictions.isEmpty(propertyName);
+    protected static CriteriaElement isEmpty(String propertyName) {
+        return new IsEmpty(propertyName);
     }
 
-    public static Criterion isNotEmpty(String propertyName) {
-        return Restrictions.isNotEmpty(propertyName);
+    protected static CriteriaElement isNotEmpty(String propertyName) {
+        return new IsNotEmpty(propertyName);
     }
 
-    public static Criterion sizeEq(String propertyName, int size) {
-        return Restrictions.sizeEq(propertyName, size);
+    protected static CriteriaElement sizeEq(String propertyName, int size) {
+        return new SizeEquals(propertyName, size);
     }
 
-    public static Criterion sizeNe(String propertyName, int size) {
-        return Restrictions.sizeNe(propertyName, size);
+    protected static CriteriaElement sizeNe(String propertyName, int size) {
+        return new SizeNotEquals(propertyName, size);
     }
 
-    public static Criterion sizeGt(String propertyName, int size) {
-        return Restrictions.sizeGt(propertyName, size);
+    protected static CriteriaElement sizeGt(String propertyName, int size) {
+        return new SizeGreaterThan(propertyName, size);
     }
 
-    public static Criterion sizeLt(String propertyName, int size) {
-        return Restrictions.sizeLt(propertyName, size);
+    protected static CriteriaElement sizeLt(String propertyName, int size) {
+        return new SizeLessThan(propertyName, size);
     }
 
-    public static Criterion sizeGe(String propertyName, int size) {
-        return Restrictions.sizeGe(propertyName, size);
+    protected static CriteriaElement sizeGe(String propertyName, int size) {
+        return new SizeGreaterOrEquals(propertyName, size);
     }
 
-    public static Criterion sizeLe(String propertyName, int size) {
-        return Restrictions.sizeLe(propertyName, size);
+    protected static CriteriaElement sizeLe(String propertyName, int size) {
+        return new SizeLessOrEquals(propertyName, size);
     }
 
-    public static NaturalIdentifier naturalId() {
-        return Restrictions.naturalId();
+    protected static CriteriaElement naturalId() {
+        return new NaturalId();
+    }
+
+    protected static Conjunction conjunction() {
+        return new Conjunction();
+    }
+
+    protected static Disjunction disjunction() {
+        return new Disjunction();
+    }
+
+    protected static CriteriaElement and(CriteriaElement lhs, CriteriaElement rhs) {
+        return new And(lhs, rhs);
+    }
+
+    protected static CriteriaElement or(CriteriaElement lhs, CriteriaElement rhs) {
+        return new Or(lhs, rhs);
+    }
+
+    protected static CriteriaElement not(CriteriaElement expression) {
+        return new Not(expression);
     }
 
 }
