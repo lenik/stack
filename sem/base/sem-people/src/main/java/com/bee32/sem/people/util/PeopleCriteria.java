@@ -6,11 +6,8 @@ import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
-import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyTagname;
-import com.bee32.sem.people.entity.PersonLogin;
-import com.bee32.sem.people.entity.PersonRole;
 
 public class PeopleCriteria
         extends CriteriaSpec {
@@ -42,21 +39,6 @@ public class PeopleCriteria
     public static ICriteriaElement internal() {
         return compose(alias("tags", "tag"), //
                 in("tag.id", PartyTagname.INTERNAL.getId()));
-    }
-
-    @LeftHand(OrgUnit.class)
-    public static CriteriaElement orgEquals(long orgId) {
-        return equals("org.id", orgId);
-    }
-
-    @LeftHand(PersonRole.class)
-    public static CriteriaElement orgUnitEquals(long orgUnitId) {
-        return equals("orgUnit.id", orgUnitId);
-    }
-
-    @LeftHand(PersonLogin.class)
-    public static CriteriaElement userEquals(String userId) {
-        return equals("user.id", userId);
     }
 
 }

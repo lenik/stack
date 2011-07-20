@@ -30,6 +30,7 @@ import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.icsf.principal.dto.RoleDto;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 

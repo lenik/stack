@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
@@ -167,7 +168,8 @@ public class OrgAdminBean
             if (selectedOrgUnit != null) {
                 // 点选部门，出现公司的所选部门中的人员
                 List<PersonRole> personRoles = serviceFor(PersonRole.class).list(
-                        PeopleCriteria.orgUnitEquals(selectedOrgUnit.getId()));
+                        new Equals("orgUnit.id", selectedOrgUnit.getId()));
+
                 roles = DTOs.marshalList(PersonRoleDto.class, personRoles);
             } else {
                 // 没有点选部门，出现公司所有的人员
@@ -219,8 +221,9 @@ public class OrgAdminBean
         if (org != null && org.getId() != null) {
             orgUnitRootNode = new DefaultTreeNode(org, null);
 
-            List<OrgUnit> topOrgUnits = serviceFor(OrgUnit.class).list(PeopleCriteria.orgEquals(org.getId()), //
-                    TreeCriteria.root());
+            List<OrgUnit> topOrgUnits = serviceFor(OrgUnit.class).list(//
+                    TreeCriteria.root(), //
+                    new Equals("org.id", org.getId()));
             List<OrgUnitDto> topOrgUnitDtos = DTOs.marshalList(OrgUnitDto.class, topOrgUnits);
             for (OrgUnitDto orgUnitDto : topOrgUnitDtos) {
                 loadOrgUnitRecursive(orgUnitDto, orgUnitRootNode);

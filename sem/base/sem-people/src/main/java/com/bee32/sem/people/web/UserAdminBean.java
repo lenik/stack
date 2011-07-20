@@ -17,6 +17,7 @@ import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.icsf.principal.dto.RoleDto;
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.dto.ContactDto;
 import com.bee32.sem.people.dto.PersonDto;
@@ -117,7 +118,7 @@ public class UserAdminBean
         PersonDto person = new PersonDto().create();
         if (user != null && user.getId() != null) {
             PersonLogin personLogin = serviceFor(PersonLogin.class).getUnique(//
-                    PeopleCriteria.userEquals(user.getId()));
+                    new Equals("user.id", user.getId()));
             if (personLogin != null) {
                 person = DTOs.marshal(PersonDto.class, personLogin.getPerson());
             }
@@ -130,7 +131,7 @@ public class UserAdminBean
         List<ContactDto> contacts = new ArrayList<ContactDto>();
         if (user != null && user.getId() != null) {
             PersonLogin personLogin = serviceFor(PersonLogin.class).getUnique(//
-                    PeopleCriteria.userEquals(user.getId()));
+                    new Equals("user.id", user.getId()));
             if (personLogin != null) {
                 PersonDto person = DTOs.marshal(PersonDto.class, personLogin.getPerson());
                 contacts = person.getContacts();
@@ -203,7 +204,7 @@ public class UserAdminBean
         try {
             serviceFor(User.class).saveOrUpdate(u);
 
-            serviceFor(UserPassword.class).deleteAll(PeopleCriteria.userEquals(user.getId()));
+            serviceFor(UserPassword.class).deleteAll(new Equals("user.id", user.getId()));
             UserPassword pass = new UserPassword(u, password);
             serviceFor(UserPassword.class).save(pass);
             password = "";
@@ -217,7 +218,7 @@ public class UserAdminBean
 
     public void doDelete() {
         try {
-            serviceFor(UserPassword.class).deleteAll(PeopleCriteria.userEquals(user.getId()));
+            serviceFor(UserPassword.class).deleteAll(new Equals("user.id", user.getId()));
 
             serviceFor(User.class).delete(user.unmarshal());
             uiLogger.info("删除成功!");
@@ -268,7 +269,7 @@ public class UserAdminBean
 
     public void choosePerson() {
         if (user != null && user.getId() != null) {
-            serviceFor(PersonLogin.class).deleteAll(PeopleCriteria.userEquals(user.getId()));
+            serviceFor(PersonLogin.class).deleteAll(new Equals("user.id", user.getId()));
             PersonLogin personLogin = new PersonLogin();
             personLogin.setUser(user.unmarshal());
             personLogin.setPerson(selectedPerson.unmarshal());
