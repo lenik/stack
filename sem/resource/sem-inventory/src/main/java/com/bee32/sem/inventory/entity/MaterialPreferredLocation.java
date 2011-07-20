@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
