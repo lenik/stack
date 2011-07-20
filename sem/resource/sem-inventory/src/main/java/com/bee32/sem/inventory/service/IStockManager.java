@@ -5,6 +5,7 @@ import java.util.Date;
 import com.bee32.sem.inventory.entity.StockInventory;
 import com.bee32.sem.inventory.entity.StockSnapshot;
 import com.bee32.sem.inventory.entity.StockSnapshotType;
+import com.bee32.sem.world.monetary.FxrQueryException;
 
 public interface IStockManager {
 
@@ -19,7 +20,8 @@ public interface IStockManager {
      *            快照描述
      * @return 新形成的快照，此快照同时作为逻辑库存的新的基准库存。
      */
-    StockSnapshot commit(StockInventory inventory, StockSnapshotType snapshotType, String description);
+    StockSnapshot pack(StockInventory inventory, StockSnapshotType snapshotType, String description)
+            throws FxrQueryException;
 
     /**
      * 和提交 {@link StockInventory#MAIN 主逻辑库存} 等价。
@@ -35,7 +37,7 @@ public interface IStockManager {
      * @see StockInventory#MAIN
      */
     @Deprecated
-    StockSnapshot commit(StockSnapshotType snapshotType, String description);
+    StockSnapshot pack(StockSnapshotType snapshotType, String description);
 
     /**
      * 获取当前的基准库存。

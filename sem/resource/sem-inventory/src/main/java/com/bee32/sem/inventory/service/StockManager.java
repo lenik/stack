@@ -12,6 +12,7 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockSnapshot;
 import com.bee32.sem.inventory.entity.StockSnapshotType;
 import com.bee32.sem.inventory.util.StockCriteria;
+import com.bee32.sem.world.monetary.FxrQueryException;
 
 public class StockManager
         extends EnterpriseService
@@ -19,7 +20,8 @@ public class StockManager
 
     @Transactional
     @Override
-    public StockSnapshot commit(StockInventory inventory, StockSnapshotType snapshotType, String description) {
+    public StockSnapshot commit(StockInventory inventory, StockSnapshotType snapshotType, String description)
+            throws FxrQueryException {
         if (inventory == null)
             throw new NullPointerException("inventory");
         if (snapshotType == null)
