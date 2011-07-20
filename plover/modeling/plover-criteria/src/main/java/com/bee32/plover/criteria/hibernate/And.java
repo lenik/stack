@@ -3,17 +3,22 @@ package com.bee32.plover.criteria.hibernate;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
-class And extends CriteriaElement {
+class And
+        extends CriteriaElement {
 
-    final Criterion lhs;
-    final Criterion rhs;
+    final CriteriaElement lhs;
+    final CriteriaElement rhs;
 
-    public And(Criterion lhs, Criterion rhs) {
+    public And(CriteriaElement lhs, CriteriaElement rhs) {
         this.lhs = lhs;
         this.rhs = rhs;
     }
-    @Override protected Criterion buildCriterion() {
-        return Restrictions.and(lhs, rhs);
+
+    @Override
+    protected Criterion buildCriterion() {
+        Criterion l = lhs.buildCriterion();
+        Criterion r = rhs.buildCriterion();
+        return Restrictions.and(l, r);
     }
 
 }

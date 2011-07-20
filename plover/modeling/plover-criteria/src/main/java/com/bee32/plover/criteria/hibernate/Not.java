@@ -3,15 +3,19 @@ package com.bee32.plover.criteria.hibernate;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
-class Not extends CriteriaElement {
+class Not
+        extends CriteriaElement {
 
-    final Criterion expression;
+    final CriteriaElement expression;
 
-    public Not(Criterion expression) {
+    public Not(CriteriaElement expression) {
         this.expression = expression;
     }
-    @Override protected Criterion buildCriterion() {
-        return Restrictions.not(expression);
+
+    @Override
+    protected Criterion buildCriterion() {
+        Criterion expr = expression.buildCriterion();
+        return Restrictions.not(expr);
     }
 
 }

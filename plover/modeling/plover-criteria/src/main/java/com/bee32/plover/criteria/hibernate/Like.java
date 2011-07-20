@@ -11,6 +11,10 @@ class Like
     final String value;
     final MatchMode matchMode;
 
+    public Like(String propertyName, String value) {
+        this(propertyName, value, null);
+    }
+
     public Like(String propertyName, String value, MatchMode matchMode) {
         this.propertyName = propertyName;
         this.value = value;
