@@ -4,10 +4,10 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
 import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.criteria.hibernate.CriteriaTemplate;
+import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 
 public class PrincipalCriteria
-        extends CriteriaTemplate {
+        extends CriteriaSpec {
 
     public static Criterion implies(Principal principal) {
         if (principal == null)

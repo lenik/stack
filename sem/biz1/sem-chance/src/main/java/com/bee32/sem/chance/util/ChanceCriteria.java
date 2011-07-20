@@ -7,11 +7,11 @@ import org.hibernate.criterion.Restrictions;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.plover.criteria.hibernate.CriteriaTemplate;
+import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.sem.chance.entity.Chance;
 
 public class ChanceCriteria
-        extends CriteriaTemplate {
+        extends CriteriaSpec {
 
     public static Criterion ownedByCurrentUser() {
         IUserPrincipal currentUser = SessionLoginInfo.requireCurrentUser();

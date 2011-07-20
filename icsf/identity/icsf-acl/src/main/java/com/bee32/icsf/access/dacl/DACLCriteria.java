@@ -8,10 +8,10 @@ import org.hibernate.criterion.Restrictions;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.util.PrincipalCriteria;
-import com.bee32.plover.criteria.hibernate.CriteriaTemplate;
+import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 
 public class DACLCriteria
-        extends CriteriaTemplate {
+        extends CriteriaSpec {
 
     public static Criterion impliesDACE(Principal principal, Permission permission) {
         Conjunction conj = Restrictions.conjunction();
