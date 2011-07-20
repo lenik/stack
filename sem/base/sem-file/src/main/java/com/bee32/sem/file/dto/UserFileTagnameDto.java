@@ -26,7 +26,7 @@ public class UserFileTagnameDto
 
     @Override
     protected void _marshal(UserFileTagname source) {
-        owner = mref(UserDto.class, 0, source.getOwner());
+        owner = mref(UserDto.class, source.getOwner());
         tag = source.getTag();
     }
 

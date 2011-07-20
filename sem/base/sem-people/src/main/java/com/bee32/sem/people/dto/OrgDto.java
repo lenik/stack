@@ -44,7 +44,7 @@ public class OrgDto
             }
         }
 
-        forWhichGroup = mref(GroupDto.class, 0, source.getForWhichGroup());
+        forWhichGroup = mref(GroupDto.class, source.getForWhichGroup());
     }
 
     @Override

@@ -45,7 +45,7 @@ public class AbstractPartyDto<E extends Party>
 
     @Override
     protected void _marshal(E source) {
-        owner = mref(UserDto.class, 0, source.getOwner());
+        owner = mref(UserDto.class, source.getOwner());
         tags = marshalList(PartyTagnameDto.class, source.getTags(), true);
 
         name = source.getName();

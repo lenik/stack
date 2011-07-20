@@ -68,7 +68,7 @@ public abstract class AbstractEventDto<E extends Event>
         stateIndex = source.getState();
 
         status = mref(EventStatusDto.class, source.getStatus());
-        actor = mref(UserDto.class, 0, source.getActor());
+        actor = mref(UserDto.class, source.getActor());
 
         subject = source.getSubject();
         message = source.getMessage();

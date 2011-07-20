@@ -32,7 +32,7 @@ public class MailDeliveryDto
     @Override
     protected void _marshal(MailDelivery source) {
         mail = mref(MailDto.class, source.getMail());
-        folder = mref(MailFolderDto.class, 0, source.getFolder());
+        folder = mref(MailFolderDto.class, source.getFolder());
         party = source.getParty();
 
         flags.bits = source.getFlags();

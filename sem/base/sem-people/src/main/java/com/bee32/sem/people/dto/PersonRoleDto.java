@@ -29,10 +29,10 @@ public class PersonRoleDto
 
     @Override
     protected void _marshal(PersonRole source) {
-        person = mref(PersonDto.class, 0, source.getPerson());
-        org = mref(OrgDto.class, 0, source.getOrg());
+        person = mref(PersonDto.class, source.getPerson());
+        org = mref(OrgDto.class, source.getOrg());
         altOrgUnit = source.getAltOrgUnit();
-        orgUnit = mref(OrgUnitDto.class, 0, source.getOrgUnit());
+        orgUnit = mref(OrgUnitDto.class, source.getOrgUnit());
         role = source.getRole();
         roleDetail = source.getRoleDetail();
         description = source.getDescription();

@@ -36,8 +36,8 @@ public class UserFileDto
 
     @Override
     protected void _marshal(UserFile source) {
-        owner = mref(UserDto.class, 0, source.getOwner());
-        fileBlob = mref(FileBlobDto.class, 0, source.getFileBlob());
+        owner = mref(UserDto.class, source.getOwner());
+        fileBlob = mref(FileBlobDto.class, source.getFileBlob());
         origPath = source.getOrigPath();
         filename = source.getFilename();
         subject = source.getSubject();

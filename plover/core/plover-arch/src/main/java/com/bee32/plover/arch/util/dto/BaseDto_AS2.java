@@ -38,12 +38,16 @@ public abstract class BaseDto_AS2<S, C>
 
     // mref(...) = marshal(..., true)
 
+    /**
+     * mref with a selection is too inefficient, you should avoid of using it.
+     */
+    // @Deprecated
     public <_S, _D extends BaseDto<_S, _C>, _C> _D mref(Class<_D> dtoClass, int selection, _S source) {
         return marshal(dtoClass, selection, source, true);
     }
 
     public <_S, _D extends BaseDto<_S, _C>, _C> _D mref(Class<_D> dtoClass, _S source) {
-        return marshal(dtoClass, -1, source, true);
+        return marshal(dtoClass, 0, source, true);
     }
 
     // marshalList*

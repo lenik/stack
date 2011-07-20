@@ -29,7 +29,7 @@ public class MaterialDto
 
     @Override
     protected void _marshal(Material source) {
-        category = mref(MaterialCategoryDto.class, 0, source.getCategory());
+        category = mref(MaterialCategoryDto.class, source.getCategory());
         serial = source.getSerial();
         barCode = source.getBarCode();
 

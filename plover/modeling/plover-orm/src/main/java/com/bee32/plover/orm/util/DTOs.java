@@ -68,6 +68,7 @@ public abstract class DTOs {
         return new Dummy().marshal(dtoClass, source, refButFilled);
     }
 
+    // @Deprecated
     public static <_S, _D extends BaseDto<_S, _C>, _C> _D mref(Class<_D> dtoClass, int selection, _S source) {
         return new Dummy().mref(dtoClass, selection, source);
     }

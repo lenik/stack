@@ -29,7 +29,7 @@ public class DACEDto
     @Override
     protected void _marshal(DACE source) {
         dacl = new DACLDto().ref(source.getDacl());
-        principal = mref(AbstractPrincipalDto.class, 0, source.getPrincipal());
+        principal = mref(AbstractPrincipalDto.class, source.getPrincipal());
         permission = source.getPermission();
     }
 

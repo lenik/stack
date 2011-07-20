@@ -28,7 +28,7 @@ public class FileAttributeDto
 
     @Override
     protected void _marshal(FileAttribute source) {
-        blob = mref(FileBlobDto.class, 0, source.getBlob());
+        blob = mref(FileBlobDto.class, source.getBlob());
         intVal = source.getIntVal();
         floatVal = source.getFloatVal();
         strVal = source.getStrVal();

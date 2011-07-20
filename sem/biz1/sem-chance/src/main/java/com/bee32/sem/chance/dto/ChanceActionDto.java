@@ -132,7 +132,7 @@ public class ChanceActionDto
         if (source.getChance() == null)
             this.chance = new ChanceDto().ref();
         else
-            this.chance = mref(ChanceDto.class, 0, source.getChance());
+            this.chance = mref(ChanceDto.class, source.getChance());
 
         if (source.getStage() == null)
             this.stage = new ChanceStageDto().ref();
