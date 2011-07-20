@@ -42,6 +42,10 @@ public class MaterialCategoryDto
             throws ParseException {
     }
 
+    public void addMaterial(MaterialDto material) {
+        materials.add(material);
+    }
+
     public String getName() {
         return name;
     }

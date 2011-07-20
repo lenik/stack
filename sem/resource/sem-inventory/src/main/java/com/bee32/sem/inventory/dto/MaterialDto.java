@@ -49,7 +49,6 @@ public class MaterialDto
         target.setSerial(serial);
         target.setBarCode(barCode);
         mergeList(target, "attributes", attributes);
-        mergeList(target, "attchments", attachments);
         mergeList(target, "preferredLocations", preferredLocations);
     }
 
@@ -59,15 +58,18 @@ public class MaterialDto
     }
 
     public void addAttribute(MaterialAttributeDto attr) {
-        this.attributes.add(attr);
+        if (!attributes.contains(attr))
+            this.attributes.add(attr);
     }
 
     public void addOption(MaterialWarehouseOptionDto option) {
-        this.options.add(option);
+        if (!options.contains(option))
+            this.options.add(option);
     }
 
     public void addPreferredLocation(MaterialPreferredLocationDto preferredLocation) {
-        this.preferredLocations.add(preferredLocation);
+        if (!preferredLocations.contains(preferredLocation))
+            this.preferredLocations.add(preferredLocation);
     }
 
     public MaterialCategoryDto getCategory() {

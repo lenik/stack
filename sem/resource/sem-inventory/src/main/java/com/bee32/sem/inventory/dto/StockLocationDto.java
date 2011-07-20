@@ -14,6 +14,7 @@ public class StockLocationDto
 
     private static final long serialVersionUID = 1L;
 
+    private String nodeName;
     private StockWarehouseDto warehouse;
     private String address;
     private double x;
@@ -33,6 +34,7 @@ public class StockLocationDto
 
     @Override
     protected void _marshal(StockLocation source) {
+        this.nodeName = source.getAddress();
         this.warehouse = mref(StockWarehouseDto.class, source.getWarehouse());
         this.address = source.getAddress();
         this.x = source.getX();
@@ -52,6 +54,14 @@ public class StockLocationDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+    }
+
+    public String getNodeName() {
+        return nodeName;
+    }
+
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
     }
 
     public StockWarehouseDto getWarehouse() {
