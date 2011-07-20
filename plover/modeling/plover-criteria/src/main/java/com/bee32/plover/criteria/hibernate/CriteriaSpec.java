@@ -92,7 +92,7 @@ public abstract class CriteriaSpec {
         return new Between(propertyName, lo, hi);
     }
 
-    protected static CriteriaElement in(String propertyName, Object[] values) {
+    protected static CriteriaElement in(String propertyName, Object... values) {
         return new InArray(propertyName, values);
     }
 
