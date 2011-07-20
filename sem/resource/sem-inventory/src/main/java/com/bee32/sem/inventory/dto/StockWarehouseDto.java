@@ -3,12 +3,12 @@ package com.bee32.sem.inventory.dto;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.dto.PersonDto;
 
 public class StockWarehouseDto
-        extends EntityDto<StockWarehouse, Integer> {
+        extends UIEntityDto<StockWarehouse, Integer> {
 
     private static final long serialVersionUID = 1L;
 
