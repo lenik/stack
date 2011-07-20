@@ -74,9 +74,21 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     }
 
     @Override
+    public E getUnique(DetachedCriteria criteria) {
+        checkLoad();
+        return (E) getDao().getUnique(criteria);
+    }
+
+    @Override
     public E getFirst(Criterion... restrictions) {
         checkLoad();
         return getDao().getFirst(restrictions);
+    }
+
+    @Override
+    public E getFirst(DetachedCriteria criteria) {
+        checkLoad();
+        return getDao().getFirst(criteria);
     }
 
     @Transactional(readOnly = true)
@@ -288,11 +300,23 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
         return (List<E>) getDao().list(offset, limit, criteria);
     }
 
+    @Override
+    public List<E> list(DetachedCriteria criteria) {
+        checkList();
+        return (List<E>) getDao().list(criteria);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public int count(Criterion... restrictions) {
         checkCount();
         return getDao().count(restrictions);
+    }
+
+    @Override
+    public int count(DetachedCriteria criteria) {
+        checkCount();
+        return getDao().count(criteria);
     }
 
     @Transactional(readOnly = false)
@@ -307,6 +331,12 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     public void deleteAll(Criterion... restrictions) {
         checkDelete();
         getDao().deleteAll(restrictions);
+    }
+
+    @Override
+    public void deleteAll(DetachedCriteria criteria) {
+        checkDelete();
+        getDao().deleteAll(criteria);
     }
 
     @Transactional(readOnly = false)

@@ -24,6 +24,8 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
      */
     E getUnique(Criterion... restrictions);
 
+    E getUnique(DetachedCriteria detachedCriteria);
+
     /**
      * Get the first result with restrictions.
      *
@@ -33,6 +35,8 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
      * @see #getUnique(Criterion...)
      */
     E getFirst(Criterion... restrictions);
+
+    E getFirst(DetachedCriteria detachedCriteria);
 
     /**
      * List entities with restrictions.
@@ -82,7 +86,9 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
      */
     List<E> list(Order order, int offset, int limit, Criterion... restrictions);
 
-    List<E> list(int offset, int limit, DetachedCriteria criteria);
+    List<E> list(DetachedCriteria detachedCriteria);
+
+    List<E> list(int offset, int limit, DetachedCriteria detachedCriteria);
 
     /**
      * Count of entities with restrictions.
@@ -93,6 +99,8 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
      */
     int count(Criterion... restrictions);
 
+    int count(DetachedCriteria detachedCriteria);
+
     void deleteById(K id);
 
     /**
@@ -102,5 +110,7 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
      *            Restrictions to the selection. (AND).
      */
     void deleteAll(Criterion... restrictions);
+
+    void deleteAll(DetachedCriteria detachedCriteria);
 
 }

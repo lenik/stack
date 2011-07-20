@@ -256,6 +256,11 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     // IEntityManager
 
+    final Criteria createCriteria(DetachedCriteria detachedCriteria) {
+        Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
+        return criteria;
+    }
+
     final Criteria createCriteria(Criterion... restrictions) {
         Criteria criteria = getSession().createCriteria(entityType);
         if (restrictions != null)
@@ -275,8 +280,26 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
+    public E getUnique(DetachedCriteria detachedCriteria) {
+        Criteria criteria = createCriteria(detachedCriteria);
+        E result = (E) criteria.uniqueResult();
+        return result;
+    }
+
+    @Override
     public E getFirst(Criterion... restrictions) {
         Criteria criteria = createCriteria(restrictions);
+        criteria.setMaxResults(1);
+        List<E> list = criteria.list();
+        if (list.isEmpty())
+            return null;
+        else
+            return list.get(0);
+    }
+
+    @Override
+    public E getFirst(DetachedCriteria detachedCriteria) {
+        Criteria criteria = createCriteria(detachedCriteria);
         criteria.setMaxResults(1);
         List<E> list = criteria.list();
         if (list.isEmpty())
@@ -330,8 +353,27 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
+    public List<E> list(DetachedCriteria detachedCriteria) {
+        Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
+        List<E> list = criteria.list();
+        return list;
+    }
+
+    @Override
     public int count(Criterion... restrictions) {
         Criteria criteria = createCriteria(restrictions);
+        criteria.setProjection(Projections.rowCount());
+
+        Object result = criteria.uniqueResult();
+        if (result == null)
+            throw new UnexpectedException("Count() returns null");
+
+        return ((Number) result).intValue();
+    }
+
+    @Override
+    public int count(DetachedCriteria detachedCriteria) {
+        Criteria criteria = createCriteria(detachedCriteria);
         criteria.setProjection(Projections.rowCount());
 
         Object result = criteria.uniqueResult();
@@ -351,6 +393,13 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     @Override
     public void deleteAll(Criterion... restrictions) {
         Criteria criteria = createCriteria(restrictions);
+        List<E> list = criteria.list();
+        getHibernateTemplate().deleteAll(list);
+    }
+
+    @Override
+    public void deleteAll(DetachedCriteria detachedCriteria) {
+        Criteria criteria = createCriteria(detachedCriteria);
         List<E> list = criteria.list();
         getHibernateTemplate().deleteAll(list);
     }
