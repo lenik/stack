@@ -1,52 +1,50 @@
 package com.bee32.icsf.access.dacl;
 
-import org.hibernate.criterion.Conjunction;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.Restrictions;
-
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.util.PrincipalCriteria;
+import com.bee32.plover.criteria.hibernate.Conjunction;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
+import com.bee32.plover.criteria.hibernate.Disjunction;
 
 public class DACLCriteria
         extends CriteriaSpec {
 
-    public static Criterion impliesDACE(Principal principal, Permission permission) {
-        Conjunction conj = Restrictions.conjunction();
+    public static CriteriaElement impliesDACE(Principal principal, Permission permission) {
+        Conjunction conj = conjunction();
         conj.add(PrincipalCriteria.implies(principal));
         conj.add(impliesPermission(permission));
         return conj;
     }
 
-    public static Criterion impliesPermission(Permission permission) {
+    public static CriteriaElement impliesPermission(Permission permission) {
         if (permission == null)
             throw new NullPointerException("permission");
 
-        Disjunction disj = Restrictions.disjunction();
-        disj.add(Restrictions.eq("admin", true));
+        Disjunction disj = disjunction();
+        disj.add(equals("admin", true));
 
         if (!permission.isAdmin()) {
-            Conjunction conj = Restrictions.conjunction();
+            Conjunction conj = conjunction();
 
             if (permission.isReadable())
-                conj.add(Restrictions.eq("readable", true));
+                conj.add(equals("readable", true));
 
             if (permission.isWritable())
-                conj.add(Restrictions.eq("writable", true));
+                conj.add(equals("writable", true));
 
             if (permission.isExecutable())
-                conj.add(Restrictions.eq("executable", true));
+                conj.add(equals("executable", true));
 
             if (permission.isListable())
-                conj.add(Restrictions.eq("listable", true));
+                conj.add(equals("listable", true));
 
             if (permission.isCreatable())
-                conj.add(Restrictions.eq("creatable", true));
+                conj.add(equals("creatable", true));
 
             if (permission.isDeletable())
-                conj.add(Restrictions.eq("deletable", true));
+                conj.add(equals("deletable", true));
 
             disj.add(disj);
         }

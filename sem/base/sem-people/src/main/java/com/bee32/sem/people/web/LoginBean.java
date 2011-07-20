@@ -66,7 +66,7 @@ public class LoginBean extends EntityViewBean {
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "登录错误", "用户不存在");
 		} else {
 			List<UserPassword> plist = serviceFor(UserPassword.class).list(
-					LoginCriteria.userOf(user));
+					LoginCriteria.forUser(user));
 			if(plist.isEmpty()) {
 				msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "登录错误", "密码不存在");
 			} else {

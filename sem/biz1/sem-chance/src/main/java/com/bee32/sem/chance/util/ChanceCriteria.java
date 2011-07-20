@@ -2,62 +2,67 @@ package com.bee32.sem.chance.util;
 
 import java.util.Date;
 
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
-
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
+import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.sem.chance.entity.Chance;
+import com.bee32.sem.chance.entity.ChanceAction;
 
 public class ChanceCriteria
         extends CriteriaSpec {
 
-    public static Criterion ownedByCurrentUser() {
+    public static CriteriaElement ownedByCurrentUser() {
         IUserPrincipal currentUser = SessionLoginInfo.requireCurrentUser();
         return ownedBy(currentUser);
     }
 
-    public static Criterion ownedBy(IUserPrincipal user) {
+    public static CriteriaElement ownedBy(IUserPrincipal user) {
         if (user.getDisplayName().equals("admin"))
             return null;
         else
-            return Restrictions.eq("owner.id", user.getId());
+            return equals("owner.id", user.getId());
     }
 
-    public static Criterion subjectLike(String keyword) {
-        return Restrictions.like("subject", "%" + keyword + "%");
+    public static CriteriaElement subjectLike(String keyword) {
+        return like("subject", "%" + keyword + "%");
     }
 
-    public static Criterion actedByCurrentUser() {
+    public static CriteriaElement actedByCurrentUser() {
         IUserPrincipal currentUser = SessionLoginInfo.requireCurrentUser();
         return actedBy(currentUser);
     }
 
-    public static Criterion actedBy(IUserPrincipal user) {
+    public static CriteriaElement actedBy(IUserPrincipal user) {
         if (user.getDisplayName().equals("admin"))
             return null;
         else
-            return Restrictions.eq("actor.id", user.getId());
+            return equals("actor.id", user.getId());
     }
 
-    public static Criterion beginWithin(Date min, Date max) {
+    public static CriteriaElement beginWithin(Date min, Date max) {
         if (min == null)
             throw new NullPointerException("start");
         if (max == null)
             throw new NullPointerException("end");
-        return Restrictions.between("beginTime", min, max);
+        return between("beginTime", min, max);
     }
 
-    public static Criterion chanceOf(Chance chance) {
-        return Restrictions.eq("chance.id", chance.getId());
+    public static CriteriaElement chanceEquals(Chance chance) {
+        return equals("chance.id", chance.getId());
     }
 
-    public static Criterion nameLike(String namePattern) {
+    public static CriteriaElement nameLike(String namePattern) {
         if (namePattern.isEmpty())
             return null;
-        return Restrictions.or(Restrictions.like("id", "%" + namePattern + "%"),
-                Restrictions.like("fullName", "%" + namePattern + "%"));
+        return or(like("id", "%" + namePattern + "%"), //
+                like("fullName", "%" + namePattern + "%"));
+    }
+
+    @LeftHand(ChanceAction.class)
+    public static CriteriaElement danglingChance() {
+        return isNull("chance");
     }
 
 }

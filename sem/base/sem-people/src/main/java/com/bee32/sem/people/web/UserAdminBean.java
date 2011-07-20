@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.hibernate.criterion.Restrictions;
 import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,16 +26,15 @@ import com.bee32.sem.people.util.PeopleCriteria;
 
 @Component
 @Scope("view")
-public class UserAdminBean extends PrincipalAdminBean {
+public class UserAdminBean
+        extends PrincipalAdminBean {
 
     private static final long serialVersionUID = 1L;
-
 
     private UserDto user;
 
     private String password;
     private String passwordConfirm;
-
 
     private RoleDto selectedRole;
     private TreeNode selectedRoleNode;
@@ -47,7 +45,6 @@ public class UserAdminBean extends PrincipalAdminBean {
     private String personPattern;
     private List<PersonDto> persons;
     private PersonDto selectedPerson;
-
 
     public UserDto getUser() {
         if (user == null) {
@@ -119,8 +116,9 @@ public class UserAdminBean extends PrincipalAdminBean {
     public PersonDto getPerson() {
         PersonDto person = new PersonDto().create();
         if (user != null && user.getId() != null) {
-            PersonLogin personLogin = serviceFor(PersonLogin.class).getUnique(Restrictions.eq("user.id", user.getId()));
-            if(personLogin != null) {
+            PersonLogin personLogin = serviceFor(PersonLogin.class).getUnique(//
+                    PeopleCriteria.userEquals(user.getId()));
+            if (personLogin != null) {
                 person = DTOs.marshal(PersonDto.class, personLogin.getPerson());
             }
         }
@@ -131,10 +129,10 @@ public class UserAdminBean extends PrincipalAdminBean {
     public List<ContactDto> getContacts() {
         List<ContactDto> contacts = new ArrayList<ContactDto>();
         if (user != null && user.getId() != null) {
-            PersonLogin personLogin = serviceFor(PersonLogin.class).getUnique(Restrictions.eq("user.id", user.getId()));
+            PersonLogin personLogin = serviceFor(PersonLogin.class).getUnique(//
+                    PeopleCriteria.userEquals(user.getId()));
             if (personLogin != null) {
-                PersonDto person = DTOs.marshal(PersonDto.class,
-                        personLogin.getPerson());
+                PersonDto person = DTOs.marshal(PersonDto.class, personLogin.getPerson());
                 contacts = person.getContacts();
             }
         }
@@ -166,53 +164,46 @@ public class UserAdminBean extends PrincipalAdminBean {
         this.selectedPerson = selectedPerson;
     }
 
-
-
-
-
-
     @PostConstruct
     public void init() {
-	loadRoleTree();
-	loadGroupTree();
-	}
+        loadRoleTree();
+        loadGroupTree();
+    }
 
-	private void _newUser() {
-		user = new UserDto().create();
-	}
+    private void _newUser() {
+        user = new UserDto().create();
+    }
 
-	public void doNewUser() {
-		editNewStatus = true;
-		_newUser();
-	}
+    public void doNewUser() {
+        editNewStatus = true;
+        _newUser();
+    }
 
-	public void doModifyUser() {
-		editNewStatus = false;
-	}
-
+    public void doModifyUser() {
+        editNewStatus = false;
+    }
 
     public void doSave() {
-	if(editNewStatus) {
-		//新增
-	        Principal existing = serviceFor(Principal.class).get(user.getId());
-	        if (existing != null) {
-	            uiLogger.error("保存失败:用户已存在。");
-	            return;
-	        }
-	}
+        if (editNewStatus) {
+            // 新增
+            Principal existing = serviceFor(Principal.class).get(user.getId());
+            if (existing != null) {
+                uiLogger.error("保存失败:用户已存在。");
+                return;
+            }
+        }
 
-        if(!password.equals(passwordConfirm)) {
+        if (!password.equals(passwordConfirm)) {
             uiLogger.error("密码和密码确认不匹配");
             return;
         }
 
         User u = user.unmarshal(this);
 
-
         try {
             serviceFor(User.class).saveOrUpdate(u);
 
-            serviceFor(UserPassword.class).deleteAll(Restrictions.eq("user.id", u.getId()));
+            serviceFor(UserPassword.class).deleteAll(PeopleCriteria.userEquals(user.getId()));
             UserPassword pass = new UserPassword(u, password);
             serviceFor(UserPassword.class).save(pass);
             password = "";
@@ -225,16 +216,15 @@ public class UserAdminBean extends PrincipalAdminBean {
     }
 
     public void doDelete() {
-		try {
-		    serviceFor(UserPassword.class).deleteAll(Restrictions.eq("user.id", user.getId()));
+        try {
+            serviceFor(UserPassword.class).deleteAll(PeopleCriteria.userEquals(user.getId()));
 
-			serviceFor(User.class).delete(user.unmarshal());
-			uiLogger.info("删除成功!");
-		} catch (DataIntegrityViolationException e) {
-			uiLogger.error("删除失败,违反约束归则,可能你需要删除的用户在其它地方被使用到!");
-		}
+            serviceFor(User.class).delete(user.unmarshal());
+            uiLogger.info("删除成功!");
+        } catch (DataIntegrityViolationException e) {
+            uiLogger.error("删除失败,违反约束归则,可能你需要删除的用户在其它地方被使用到!");
+        }
     }
-
 
     public void doAddRole() {
         user = reload(user);
@@ -267,8 +257,10 @@ public class UserAdminBean extends PrincipalAdminBean {
     public void findPerson() {
         if (personPattern != null && !personPattern.isEmpty()) {
 
-            List<Person> _persons = serviceFor(Person.class).list(
-                    PeopleCriteria.hasTag(personPattern));
+            List<Person> _persons = serviceFor(Person.class).list(//
+                    // Restrictions.in("tags", new Object[] { PartyTagname.INTERNAL }), //
+                    PeopleCriteria.internal(), //
+                    PeopleCriteria.namedLike(personPattern));
 
             persons = DTOs.marshalList(PersonDto.class, _persons);
         }
@@ -276,7 +268,7 @@ public class UserAdminBean extends PrincipalAdminBean {
 
     public void choosePerson() {
         if (user != null && user.getId() != null) {
-            serviceFor(PersonLogin.class).deleteAll(Restrictions.eq("user.id", user.getId()));
+            serviceFor(PersonLogin.class).deleteAll(PeopleCriteria.userEquals(user.getId()));
             PersonLogin personLogin = new PersonLogin();
             personLogin.setUser(user.unmarshal());
             personLogin.setPerson(selectedPerson.unmarshal());
@@ -284,4 +276,5 @@ public class UserAdminBean extends PrincipalAdminBean {
             serviceFor(PersonLogin.class).save(personLogin);
         }
     }
+
 }

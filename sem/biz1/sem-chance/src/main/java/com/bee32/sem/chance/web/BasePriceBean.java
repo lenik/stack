@@ -3,10 +3,10 @@ package com.bee32.sem.chance.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.criterion.Order;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.chance.dto.BasePriceDto;
@@ -62,8 +62,8 @@ public class BasePriceBean
     // detailList = DTOs.marshalList(QuotationDetailDto.class, lqd);
     // }
     List<BasePriceDto> listDetailByMaterial() {
-        List<BasePrice> lqd = serviceFor(BasePrice.class).list(Order.desc("createdDate"),
-                PriceCriteria.listByMaterial(selectedMaterial));
+        List<BasePrice> lqd = serviceFor(BasePrice.class).list(//
+                Order.desc("createdDate"), PriceCriteria.listByMaterial(selectedMaterial));
         return DTOs.marshalList(BasePriceDto.class, lqd);
     }
 
@@ -89,12 +89,14 @@ public class BasePriceBean
 
         if (this.selectedMaterial != null && !selectedMaterial.isEmpty()) {
             if (!this.selectedMaterial.equals(selectedMaterial)) {
-                List<BasePrice> lqd = serviceFor(BasePrice.class).list(Order.desc("createdDate"),
+                List<BasePrice> lqd = serviceFor(BasePrice.class).list(//
+                        Order.desc("createdDate"), //
                         PriceCriteria.listByMaterial(selectedMaterial));
                 basePriceList = DTOs.marshalList(BasePriceDto.class, lqd);
             }
         } else if (this.selectedMaterial == null && !selectedMaterial.isEmpty()) {
-            List<BasePrice> lqd = serviceFor(BasePrice.class).list(Order.desc("createdDate"),
+            List<BasePrice> lqd = serviceFor(BasePrice.class).list(//
+                    Order.desc("createdDate"), //
                     PriceCriteria.listByMaterial(selectedMaterial));
             basePriceList = DTOs.marshalList(BasePriceDto.class, lqd);
         }

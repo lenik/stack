@@ -9,14 +9,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.chance.dto.BasePriceDto;
@@ -295,8 +294,9 @@ public class ChanceBean
         EntityDataModelOptions<Chance, ChanceDto> edmo = new EntityDataModelOptions<Chance, ChanceDto>(Chance.class,
                 ChanceDto.class);
         edmo.setSelection(-1);
-        edmo.setOrder(Order.desc("createdDate"));
-        edmo.setRestrictions(ChanceCriteria.ownedByCurrentUser());
+        edmo.setCriteriaElements(//
+                Order.desc("createdDate"), //
+                ChanceCriteria.ownedByCurrentUser());
         chances = UIHelper.buildLazyDataModel(edmo);
         isSearching = false;
         refreshChanceCount(isSearching);
@@ -372,7 +372,7 @@ public class ChanceBean
         if (!partyPattern.isEmpty()) {
             List<Party> _parties = serviceFor(Party.class).list(//
                     PeopleCriteria.ownedByCurrentUser(), //
-                    PeopleCriteria.nameLike(partyPattern));
+                    PeopleCriteria.namedLike(partyPattern));
             parties = DTOs.marshalList(PartyDto.class, _parties);
         } else {
             List<Party> lp = serviceFor(Party.class).list(PeopleCriteria.ownedByCurrentUser());
@@ -383,12 +383,16 @@ public class ChanceBean
     public void searchAction() {
         if (searchBeginTime != null && searchEndTime != null) {
             List<ChanceAction> _actions = serviceFor(ChanceAction.class).list(//
-                    Order.desc("createdDate"), ChanceCriteria.actedByCurrentUser(), //
-                    ChanceCriteria.beginWithin(searchBeginTime, searchEndTime), Restrictions.isNull("chance"));
+                    Order.desc("createdDate"), //
+                    ChanceCriteria.actedByCurrentUser(), //
+                    ChanceCriteria.beginWithin(searchBeginTime, searchEndTime), //
+                    ChanceCriteria.danglingChance());
             actions = DTOs.marshalList(ChanceActionDto.class, _actions);
         } else {
             List<ChanceAction> lca = serviceFor(ChanceAction.class).list(//
-                    Order.desc("createdDate"), ChanceCriteria.actedByCurrentUser(), Restrictions.isNull("chance"));
+                    Order.desc("createdDate"), //
+                    ChanceCriteria.actedByCurrentUser(), //
+                    ChanceCriteria.danglingChance());
             actions = DTOs.marshalList(ChanceActionDto.class, lca);
         }
     }
@@ -398,9 +402,10 @@ public class ChanceBean
             EntityDataModelOptions<Chance, ChanceDto> edmo = new EntityDataModelOptions<Chance, ChanceDto>(
                     Chance.class, ChanceDto.class);
             edmo.setSelection(-1);
-            edmo.setOrder(Order.desc("createdDate"));
-            edmo.setRestrictions(ChanceCriteria.ownedByCurrentUser());
-            edmo.setRestrictions(ChanceCriteria.subjectLike(subjectPattern));
+            edmo.setCriteriaElements(//
+                    Order.desc("createdDate"), //
+                    ChanceCriteria.ownedByCurrentUser(), //
+                    ChanceCriteria.subjectLike(subjectPattern));
             chances = UIHelper.buildLazyDataModel(edmo);
             isSearching = true;
             refreshChanceCount(isSearching);

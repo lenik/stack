@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import org.hibernate.criterion.Restrictions;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.springframework.context.annotation.Scope;
@@ -26,8 +25,8 @@ import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.Role;
 import com.bee32.icsf.principal.User;
-import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.icsf.principal.dto.AbstractPrincipalDto;
+import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.icsf.principal.dto.RoleDto;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.ClassUtil;
@@ -246,7 +245,7 @@ public class PermissionAdminBean extends EntityViewBean {
 
 		Principal principal = principalDto.unmarshal();
 
-		serviceFor(R_ACE.class).deleteAll(Restrictions.eq("principal", principal));
+		serviceFor(R_ACE.class).deleteAll(new Equals("principal", principal));
 
 		ScannedResourceRegistry srr = getBean(ScannedResourceRegistry.class);
 

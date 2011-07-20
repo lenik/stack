@@ -4,9 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
-
+import com.bee32.plover.criteria.hibernate.CriteriaComposite;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
 
@@ -16,28 +15,27 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<E, 
     final Class<D> dtoClass;
     int selection;
 
-    Order order;
-    List<Criterion> restrictions = Collections.emptyList();
+    List<ICriteriaElement> criteriaElements = Collections.emptyList();
 
     public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass) {
-        this(entityClass, dtoClass, 0, null, Collections.<Criterion> emptyList());
+        this(entityClass, dtoClass, 0, Collections.<ICriteriaElement> emptyList());
     }
 
-    public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int selection, Order order,
-            Criterion... restrictions) {
-        this(entityClass, dtoClass, selection, order, Arrays.asList(restrictions));
+    public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int selection,
+            ICriteriaElement... criteriaElements) {
+        this(entityClass, dtoClass, selection, Arrays.asList(criteriaElements));
     }
 
-    public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int selection, Order order,
-            List<Criterion> restrictions) {
+    public EntityDataModelOptions(Class<E> entityClass, Class<D> dtoClass, int selection,
+            List<ICriteriaElement> criteriaElements) {
 
         if (entityClass == null)
             throw new NullPointerException("entityClass");
         if (dtoClass == null)
             throw new NullPointerException("dtoClass");
 
-        if (restrictions == null)
-            restrictions = Collections.emptyList();
+        if (criteriaElements == null)
+            criteriaElements = Collections.emptyList();
 
         // entityClass = ClassUtil.infer1(getClass(), EntityDataModelOptions.class, 0);
         // dtoClass = ClassUtil.infer1(getClass(), EntityDataModelOptions.class, 1);
@@ -45,8 +43,7 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<E, 
         this.dtoClass = dtoClass;
 
         this.selection = selection;
-        this.order = order;
-        this.restrictions = restrictions;
+        this.criteriaElements = criteriaElements;
     }
 
     public Class<E> getEntityClass() {
@@ -65,26 +62,22 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<E, 
         this.selection = selection;
     }
 
-    public Order getOrder() {
-        return order;
+    public List<ICriteriaElement> getCriteriaElements() {
+        return criteriaElements;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setCriteriaElements(ICriteriaElement... criteriaElements) {
+        setCriteriaElements(Arrays.asList(criteriaElements));
     }
 
-    public List<Criterion> getRestrictions() {
-        return restrictions;
+    public void setCriteriaElements(List<ICriteriaElement> criteriaElements) {
+        if (criteriaElements == null)
+            throw new NullPointerException("criteriaElements");
+        this.criteriaElements = criteriaElements;
     }
 
-    public void setRestrictions(Criterion... restrictions) {
-        setRestrictions(Arrays.asList(restrictions));
-    }
-
-    public void setRestrictions(List<Criterion> restrictions) {
-        if (restrictions == null)
-            throw new NullPointerException("restrictions");
-        this.restrictions = restrictions;
+    public ICriteriaElement compose() {
+        return new CriteriaComposite(criteriaElements);
     }
 
 }

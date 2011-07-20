@@ -5,8 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.hibernate.criterion.Order;
-
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.chance.dto.QuotationDto;
@@ -80,7 +79,8 @@ public class QuotationBean
     public void chooseMaterial() {
         String sm = selectedMaterial;
         BasePrice currentPrice = serviceFor(BasePrice.class).list(//
-                Order.desc("createdDate"), PriceCriteria.listBasePriceByMaterial(sm)).get(0);
+                Order.desc("createdDate"), //
+                PriceCriteria.listBasePriceByMaterial(sm)).get(0);
         QuotationItem qi = new QuotationItem();
         qi.setQuotation(quotation.unmarshal());
         qi.setBasePrice(currentPrice);

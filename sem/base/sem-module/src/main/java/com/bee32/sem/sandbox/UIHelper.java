@@ -6,11 +6,11 @@ import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.ext.dict.NameDictDto;
 import com.bee32.plover.orm.util.DTOs;
@@ -40,8 +40,7 @@ public class UIHelper
         final Class<D> dtoClass = options.getDtoClass();
 
         final int selection = options.getSelection();
-        final Order order = options.getOrder();
-        final Criterion[] restrictions = options.getRestrictions().toArray(new Criterion[0]);
+        final ICriteriaElement composition = options.compose();
 
         return new LazyDataModel<D>() {
 
@@ -51,7 +50,8 @@ public class UIHelper
             public List<D> load(int first, int pageSize, String sortField, SortOrder sortOrder,
                     Map<String, String> filters) {
 
-                List<E> entities = serviceFor(entityClass).list(order, first, pageSize, restrictions);
+                Limit limit = new Limit(first, pageSize);
+                List<E> entities = serviceFor(entityClass).list(limit, composition);
 
                 List<D> dtos = DTOs.marshalList(dtoClass, selection, entities);
 

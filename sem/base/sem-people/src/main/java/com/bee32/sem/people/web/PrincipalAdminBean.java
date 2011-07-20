@@ -2,7 +2,6 @@ package com.bee32.sem.people.web;
 
 import java.util.List;
 
-import org.hibernate.criterion.Restrictions;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -12,10 +11,12 @@ import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.icsf.principal.dto.RoleDto;
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 
-public class PrincipalAdminBean extends EntityViewBean {
+public class PrincipalAdminBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,7 +45,7 @@ public class PrincipalAdminBean extends EntityViewBean {
     protected void loadRoleTree() {
         roleRootNode = new DefaultTreeNode("root", null);
 
-        List<Role> rootRoles = serviceFor(Role.class).list(Restrictions.isNull("parent"));
+        List<Role> rootRoles = serviceFor(Role.class).list(TreeCriteria.root());
         List<RoleDto> rootRoleDtos = DTOs.marshalList(RoleDto.class, -1, rootRoles, true);
 
         for (RoleDto roleDto : rootRoleDtos) {
@@ -64,7 +65,7 @@ public class PrincipalAdminBean extends EntityViewBean {
     protected void loadGroupTree() {
         groupRootNode = new DefaultTreeNode("root", null);
 
-        List<Group> rootGroups = serviceFor(Group.class).list(Restrictions.isNull("parent"));
+        List<Group> rootGroups = serviceFor(Group.class).list(TreeCriteria.root());
         List<GroupDto> rootGroupDtos = DTOs.marshalList(GroupDto.class, -1, rootGroups, true);
 
         for (GroupDto groupDto : rootGroupDtos) {

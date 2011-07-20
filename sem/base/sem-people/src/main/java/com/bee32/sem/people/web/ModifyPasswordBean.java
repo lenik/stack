@@ -77,7 +77,7 @@ public class ModifyPasswordBean extends EntityViewBean {
 
 		User u = (User) SessionLoginInfo.requireCurrentUser();
 		List<UserPassword> plist = serviceFor(UserPassword.class).list(
-				LoginCriteria.userOf(u));
+				LoginCriteria.forUser(u));
 		if(plist.isEmpty()) {
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "修改密码错误", "密码不存在");
 			FacesContext.getCurrentInstance().addMessage(null, msg);

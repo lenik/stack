@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
 
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
-import com.bee32.plover.criteria.hibernate.QueryEntity;
+import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -20,18 +20,18 @@ public class StockCriteria
     /**
      * 基于某快照。
      */
-    @QueryEntity({ StockOrder.class, StockSnapshot.class })
-    public static Criterion basedOn(StockSnapshot snapshot) {
+    @LeftHand({ StockOrder.class, StockSnapshot.class })
+    public static CriteriaElement isBasedOn(StockSnapshot snapshot) {
         if (snapshot == null)
             throw new NullPointerException("snapshot");
-        return Restrictions.eq("base.id", snapshot.getId());
+        return equals("base.id", snapshot.getId());
     }
 
     /**
      * 基于某快照、该快照的祖先快照等。
      */
-    @QueryEntity({ StockOrder.class, StockSnapshot.class })
-    public static Criterion basedUpon(StockSnapshot snapshot) {
+    @LeftHand({ StockOrder.class, StockSnapshot.class })
+    public static CriteriaElement isBasedUpon(StockSnapshot snapshot) {
         List<Integer> parentIds = new ArrayList<Integer>();
 
         StockSnapshot node = snapshot;
@@ -40,7 +40,7 @@ public class StockCriteria
             node = node.getParent();
         }
 
-        return Restrictions.in("base.id", parentIds);
+        return in("base.id", parentIds);
     }
 
     /**
@@ -48,9 +48,9 @@ public class StockCriteria
      * <p>
      * 在线性统计库存变更集中，需要排除冗余的库存订单。
      */
-    @QueryEntity(StockOrder.class)
-    public static Criterion unpacked() {
-        return Restrictions.ne("subject", Arrays.asList(//
+    @LeftHand(StockOrder.class)
+    public static CriteriaElement isUnpacked() {
+        return notEquals("subject", Arrays.asList(//
                 StockOrderSubject.PACK_M.getValue(), //
                 StockOrderSubject.PACK_MB.getValue(), //
                 StockOrderSubject.PACK_MC.getValue(), //
@@ -61,7 +61,7 @@ public class StockCriteria
     /**
      * TODO
      */
-    @QueryEntity(StockOrderItem.class)
+    @LeftHand(StockOrderItem.class)
     public static Criterion peerOf(StockOrderItem item) {
         return null;
     }

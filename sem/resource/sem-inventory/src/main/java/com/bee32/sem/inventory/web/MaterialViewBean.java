@@ -11,13 +11,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import org.hibernate.criterion.Restrictions;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.MaterialAttributeDto;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
@@ -35,6 +35,7 @@ import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.thing.Unit;
 import com.bee32.sem.world.thing.UnitConv;
 import com.bee32.sem.world.thing.UnitConvDto;
+import com.bee32.sem.world.thing.UnitCriteria;
 import com.bee32.sem.world.thing.UnitDto;
 
 @Component
@@ -226,8 +227,7 @@ public class MaterialViewBean
     }
 
     public List<SelectItem> getStandardUnits() {
-        List<Unit> unitList = serviceFor(Unit.class).list(//
-                Restrictions.eq("scale", 0.0));
+        List<Unit> unitList = serviceFor(Unit.class).list(UnitCriteria.standardUnits);
         List<UnitDto> unitDtoList = DTOs.marshalList(UnitDto.class, unitList);
         return UIHelper.selectItemsFromDict(unitDtoList);
     }

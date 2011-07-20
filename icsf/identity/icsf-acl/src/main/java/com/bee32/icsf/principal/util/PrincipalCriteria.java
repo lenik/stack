@@ -1,19 +1,17 @@
 package com.bee32.icsf.principal.util;
 
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
-
 import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 
 public class PrincipalCriteria
         extends CriteriaSpec {
 
-    public static Criterion implies(Principal principal) {
+    public static CriteriaElement implies(Principal principal) {
         if (principal == null)
             throw new NullPointerException("principal");
 
-        return Restrictions.eq("principal.id", principal.getId());
+        return equals("principal.id", principal.getId());
     }
 
 }

@@ -4,11 +4,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.criterion.Criterion;
-
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 
 public class DACLService
         extends EnterpriseService {
@@ -24,7 +23,7 @@ public class DACLService
      */
     public Integer[] aclIndex(Principal principal, Permission permission) {
 
-        Criterion criterion = DACLCriteria.impliesDACE(principal, permission);
+        CriteriaElement criterion = DACLCriteria.impliesDACE(principal, permission);
 
         List<DACE> daceList = asFor(DACE.class).list(criterion);
 

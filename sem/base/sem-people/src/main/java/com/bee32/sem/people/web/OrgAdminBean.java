@@ -6,8 +6,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.NodeUnselectEvent;
 import org.primefaces.event.SelectEvent;
@@ -21,6 +19,8 @@ import org.springframework.stereotype.Component;
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.dto.AbstractPartyDto;
 import com.bee32.sem.people.dto.ContactCategoryDto;
@@ -67,12 +67,12 @@ public class OrgAdminBean
     private OrgUnitDto orgUnit;
     private TreeNode selectedParentOrgUnitNode;
 
-
     @PostConstruct
     public void init() {
 
-        EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(Org.class, OrgDto.class,
-                -1, Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
+        EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
+                Org.class, OrgDto.class, -1, //
+                Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
         orgs = UIHelper.buildLazyDataModel(options);
 
         refreshOrgCount();
@@ -162,13 +162,15 @@ public class OrgAdminBean
         List<PersonRoleDto> roles = new ArrayList<PersonRoleDto>();
 
         if (org != null && org.getId() != null) {
-            OrgUnitDto selectedOrgUnit = selectedOrgUnitNode == null? null : (OrgUnitDto) selectedOrgUnitNode.getData();
-            if(selectedOrgUnit != null) {
-                //点选部门，出现公司的所选部门中的人员
-                List<PersonRole> personRoles = serviceFor(PersonRole.class).list(Restrictions.eq("orgUnit.id", selectedOrgUnit.getId()));
+            OrgUnitDto selectedOrgUnit = selectedOrgUnitNode == null ? null : (OrgUnitDto) selectedOrgUnitNode
+                    .getData();
+            if (selectedOrgUnit != null) {
+                // 点选部门，出现公司的所选部门中的人员
+                List<PersonRole> personRoles = serviceFor(PersonRole.class).list(
+                        PeopleCriteria.orgUnitEquals(selectedOrgUnit.getId()));
                 roles = DTOs.marshalList(PersonRoleDto.class, personRoles);
             } else {
-                //没有点选部门，出现公司所有的人员
+                // 没有点选部门，出现公司所有的人员
                 if (org.getRoles() != null) {
                     roles = new ArrayList<PersonRoleDto>(org.getRoles());
                 }
@@ -209,7 +211,7 @@ public class OrgAdminBean
     }
 
     public TreeNode getOrgUnitRoot() {
-	loadOrgUnitTree();
+        loadOrgUnitTree();
         return orgUnitRootNode;
     }
 
@@ -217,12 +219,11 @@ public class OrgAdminBean
         if (org != null && org.getId() != null) {
             orgUnitRootNode = new DefaultTreeNode(org, null);
 
-            List<OrgUnit> topOrgUnits = serviceFor(OrgUnit.class).list(
-                    Restrictions.and(Restrictions.eq("org.id", org.getId()),
-                            Restrictions.isNull("parent")));
+            List<OrgUnit> topOrgUnits = serviceFor(OrgUnit.class).list(PeopleCriteria.orgEquals(org.getId()), //
+                    TreeCriteria.root());
             List<OrgUnitDto> topOrgUnitDtos = DTOs.marshalList(OrgUnitDto.class, topOrgUnits);
-            for(OrgUnitDto orgUnitDto : topOrgUnitDtos) {
-		loadOrgUnitRecursive(orgUnitDto, orgUnitRootNode);
+            for (OrgUnitDto orgUnitDto : topOrgUnitDtos) {
+                loadOrgUnitRecursive(orgUnitDto, orgUnitRootNode);
             }
         }
 
@@ -231,11 +232,11 @@ public class OrgAdminBean
     private void loadOrgUnitRecursive(OrgUnitDto orgUnitDto, TreeNode parentNode) {
         TreeNode orgUnitNode = new DefaultTreeNode(orgUnitDto, parentNode);
 
-        List<OrgUnit> subOrgUnits = serviceFor(OrgUnit.class).list(Restrictions.eq("parent.id", orgUnitDto.getId()));
+        List<OrgUnit> subOrgUnits = serviceFor(OrgUnit.class).list(TreeCriteria.childOf(orgUnitDto.getId()));
         List<OrgUnitDto> subOrgUnitDtos = DTOs.marshalList(OrgUnitDto.class, subOrgUnits);
 
-        for(OrgUnitDto subOrgUnit : subOrgUnitDtos) {
-		loadOrgUnitRecursive(subOrgUnit, orgUnitNode);
+        for (OrgUnitDto subOrgUnit : subOrgUnitDtos) {
+            loadOrgUnitRecursive(subOrgUnit, orgUnitNode);
         }
     }
 
@@ -270,7 +271,7 @@ public class OrgAdminBean
     }
 
     public ContactDto getOrgUnitContact() {
-        if(orgUnitContact == null) {
+        if (orgUnitContact == null) {
             orgUnitContact = new ContactDto().create();
         }
         return orgUnitContact;
@@ -279,14 +280,6 @@ public class OrgAdminBean
     public void setOrgUnitContact(ContactDto orgUnitContact) {
         this.orgUnitContact = orgUnitContact;
     }
-
-
-
-
-
-
-
-
 
     private void _newOrg() {
         org = new OrgDto().create();
@@ -322,9 +315,9 @@ public class OrgAdminBean
         }
 
         try {
-		Org org = serviceFor(Org.class).load(selectedOrg.getId());
-		org.getContacts().clear();
-		serviceFor(Org.class).save(org);
+            Org org = serviceFor(Org.class).load(selectedOrg.getId());
+            org.getContacts().clear();
+            serviceFor(Org.class).save(org);
             serviceFor(Org.class).delete(org);
             refreshOrgCount();
 
@@ -430,7 +423,7 @@ public class OrgAdminBean
 
             List<Person> _persons = serviceFor(Person.class).list(//
                     PeopleCriteria.ownedByCurrentUser(), //
-                    PeopleCriteria.nameLike(personPattern));
+                    PeopleCriteria.namedLike(personPattern));
             persons = DTOs.marshalList(PersonDto.class, _persons);
         }
     }
@@ -439,7 +432,6 @@ public class OrgAdminBean
         role.setPerson(selectedPerson);
     }
 
-
     public void doNewOrgUnit() {
         orgUnit = new OrgUnitDto().create();
     }
@@ -447,14 +439,15 @@ public class OrgAdminBean
     public void doDeleteOrgUnit() {
         OrgUnitDto selectedOrgUnit = (OrgUnitDto) selectedOrgUnitNode.getData();
 
-        List<OrgUnit> subOrgUnits = serviceFor(OrgUnit.class).list(Restrictions.eq("parent.id", selectedOrgUnit.getId()));
-        if(subOrgUnits == null || subOrgUnits.size() > 0) {
+        List<OrgUnit> subOrgUnits = serviceFor(OrgUnit.class).list(//
+                TreeCriteria.childOf(selectedOrgUnit.getId()));
+        if (subOrgUnits == null || !subOrgUnits.isEmpty()) {
             uiLogger.warn("必须先删除此部门的子部门!");
             return;
         }
 
         OrgUnit tempOrgUnit = selectedOrgUnit.unmarshal();
-        if(tempOrgUnit.getParent() != null) {
+        if (tempOrgUnit.getParent() != null) {
             tempOrgUnit.getParent().removeChild(tempOrgUnit);
         }
         serviceFor(OrgUnit.class).delete(tempOrgUnit);
@@ -483,15 +476,15 @@ public class OrgAdminBean
     public void onOrgUnitNodeSelect(NodeSelectEvent event) {
         if (org != null && org.getId() != null) {
             OrgUnitDto selectedOrgUnit = (OrgUnitDto) event.getTreeNode().getData();
-            if(!selectedOrgUnit.isNull()) {
-                //点选部门，出现公司的所选部门中的人员
+            if (!selectedOrgUnit.isNull()) {
+                // 点选部门，出现公司的所选部门中的人员
                 orgUnitContact = selectedOrgUnit.getContact();
             }
         }
-        if(orgUnitContact.getId() == null) {
+        if (orgUnitContact.getId() == null) {
             orgUnitContact = new ContactDto().create();
         }
-        if(orgUnitContact.getCategory() == null) {
+        if (orgUnitContact.getCategory() == null) {
             orgUnitContact.setCategory(new ContactCategoryDto());
         }
     }
@@ -501,8 +494,8 @@ public class OrgAdminBean
     }
 
     public void doSaveOrgUnitContact() {
-        OrgUnitDto selectedOrgUnit = selectedOrgUnitNode == null? null : (OrgUnitDto) selectedOrgUnitNode.getData();
-        if(selectedOrgUnit == null) {
+        OrgUnitDto selectedOrgUnit = selectedOrgUnitNode == null ? null : (OrgUnitDto) selectedOrgUnitNode.getData();
+        if (selectedOrgUnit == null) {
             uiLogger.warn("请先选择对应的部门");
             return;
         }
@@ -511,4 +504,5 @@ public class OrgAdminBean
         serviceFor(OrgUnit.class).saveOrUpdate(selectedOrgUnit.unmarshal());
         uiLogger.info("保存部门联系方式成功");
     }
+
 }

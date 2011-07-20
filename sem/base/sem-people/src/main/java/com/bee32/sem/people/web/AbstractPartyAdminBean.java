@@ -92,7 +92,7 @@ public abstract class AbstractPartyAdminBean
     }
 
     public List<SelectItem> getOuterTags() {
-        List<PartyTagname> partyTags = serviceFor(PartyTagname.class).list(PeopleCriteria.outerPartyTagList("id"));
+        List<PartyTagname> partyTags = serviceFor(PartyTagname.class).list(PeopleCriteria.externalTagname());
         List<PartyTagnameDto> partyTagDtos = DTOs.marshalList(PartyTagnameDto.class, partyTags);
         return UIHelper.selectItemsFromDict(partyTagDtos);
     }

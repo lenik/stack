@@ -50,7 +50,7 @@ public class StockManager
         StockOrder packMC = new StockOrder(snapshot, StockOrderSubject.PACK_MC);
         StockOrder packMBC = new StockOrder(snapshot, StockOrderSubject.PACK_MBC);
         {
-            List<StockOrder> orders = asFor(StockOrder.class).list(StockCriteria.basedOn(workingBase));
+            List<StockOrder> orders = asFor(StockOrder.class).list(StockCriteria.isBasedOn(workingBase));
 
             for (StockOrder order : orders) {
                 packM.merge(order);

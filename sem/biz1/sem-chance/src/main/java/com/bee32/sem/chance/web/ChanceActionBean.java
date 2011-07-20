@@ -9,7 +9,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import org.hibernate.criterion.Order;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Component;
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceActionStyleDto;
@@ -112,8 +112,8 @@ public class ChanceActionBean
             isSearching = true;
             EntityDataModelOptions<ChanceAction, ChanceActionDto> edmo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
                     ChanceAction.class, ChanceActionDto.class);
-            edmo.setOrder(Order.desc("createdDate"));
-            edmo.setRestrictions(//
+            edmo.setCriteriaElements(//
+                    Order.desc("createdDate"), //
                     ChanceCriteria.actedByCurrentUser(), //
                     ChanceCriteria.beginWithin(searchBeginTime, searchEndTime));
             actions = UIHelper.buildLazyDataModel(edmo);
@@ -147,8 +147,8 @@ public class ChanceActionBean
 
         isSearching = false;
         EntityDataModelOptions<ChanceAction, ChanceActionDto> emdo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
-                ChanceAction.class, ChanceActionDto.class, -1, null, ChanceCriteria.actedByCurrentUser());
-        emdo.setOrder(Order.desc("createdDate"));
+                ChanceAction.class, ChanceActionDto.class, -1, //
+                Order.desc("createdDate"), ChanceCriteria.actedByCurrentUser());
         actions = UIHelper.buildLazyDataModel(emdo);
         refreshActionCount(isSearching);
         initToolbar();
@@ -186,7 +186,7 @@ public class ChanceActionBean
         if (customerPattern != null && !customerPattern.isEmpty()) {
             List<Party> _customers = serviceFor(Party.class).list(//
                     PeopleCriteria.ownedByCurrentUser(), //
-                    PeopleCriteria.nameLike(customerPattern));
+                    PeopleCriteria.namedLike(customerPattern));
             customers = DTOs.marshalList(PartyDto.class, _customers);
         } else {
             List<Party> lp = serviceFor(Party.class).list(PeopleCriteria.ownedByCurrentUser());
