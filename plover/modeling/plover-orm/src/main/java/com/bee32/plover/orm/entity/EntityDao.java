@@ -12,14 +12,12 @@ import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.dao.HibernateDaoSupportUtil;
 import com.bee32.plover.orm.dao.HibernateTemplate;
@@ -199,7 +197,7 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     @Override
     public int count() {
-        return count((Criterion[]) null);
+        return count((ICriteriaElement[]) null);
     }
 
     /**
@@ -256,39 +254,27 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     // IEntityManager
 
-    final Criteria createCriteria(DetachedCriteria detachedCriteria) {
-        Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
-        return criteria;
-    }
-
-    final Criteria createCriteria(Criterion... restrictions) {
+    final Criteria createCriteria(ICriteriaElement... criteriaElements) {
         Criteria criteria = getSession().createCriteria(entityType);
-        if (restrictions != null)
-            for (Criterion restriction : restrictions) {
-                if (restriction == null)
+        if (criteriaElements != null)
+            for (ICriteriaElement elm : criteriaElements) {
+                if (elm == null)
                     continue;
-                criteria.add(restriction);
+                elm.apply(criteria);
             }
         return criteria;
     }
 
     @Override
-    public E getUnique(Criterion... restrictions) {
-        Criteria criteria = createCriteria(restrictions);
-        E result = (E) criteria.uniqueResult();
+    public E getUnique(ICriteriaElement... criteriaElements) {
+        Criteria _criteria = createCriteria(criteriaElements);
+        E result = (E) _criteria.uniqueResult();
         return result;
     }
 
     @Override
-    public E getUnique(DetachedCriteria detachedCriteria) {
-        Criteria criteria = createCriteria(detachedCriteria);
-        E result = (E) criteria.uniqueResult();
-        return result;
-    }
-
-    @Override
-    public E getFirst(Criterion... restrictions) {
-        Criteria criteria = createCriteria(restrictions);
+    public E getFirst(ICriteriaElement... criteriaE) {
+        Criteria criteria = createCriteria(criteriaE);
         criteria.setMaxResults(1);
         List<E> list = criteria.list();
         if (list.isEmpty())
@@ -298,82 +284,15 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public E getFirst(DetachedCriteria detachedCriteria) {
-        Criteria criteria = createCriteria(detachedCriteria);
-        criteria.setMaxResults(1);
-        List<E> list = criteria.list();
-        if (list.isEmpty())
-            return null;
-        else
-            return list.get(0);
-    }
-
-    @Override
-    public final List<E> list(Criterion... restrictions) {
-        return list(null, restrictions);
-    }
-
-    @Override
-    public final List<E> list(Order order, Criterion... restrictions) {
-        return list(order, -1, -1, restrictions);
-    }
-
-    @Override
-    public final List<E> list(int offset, int limit, Criterion... restrictions) {
-        return list(null, offset, limit, restrictions);
-    }
-
-    @Override
-    public List<E> list(Order order, int offset, int limit, Criterion... restrictions) {
-        Criteria criteria = createCriteria(restrictions);
-
-        if (order != null)
-            criteria.addOrder(order);
-
-        if (offset != -1) {
-            criteria.setFirstResult(offset);
-            criteria.setMaxResults(limit);
-        }
-
+    public List<E> list(ICriteriaElement... criteriaE) {
+        Criteria criteria = createCriteria(criteriaE);
         List<E> list = criteria.list();
         return list;
     }
 
     @Override
-    public List<E> list(int offset, int limit, DetachedCriteria detachedCriteria) {
-        Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
-
-        if (offset != -1) {
-            criteria.setFirstResult(offset);
-            criteria.setMaxResults(limit);
-        }
-
-        List<E> list = criteria.list();
-        return list;
-    }
-
-    @Override
-    public List<E> list(DetachedCriteria detachedCriteria) {
-        Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
-        List<E> list = criteria.list();
-        return list;
-    }
-
-    @Override
-    public int count(Criterion... restrictions) {
-        Criteria criteria = createCriteria(restrictions);
-        criteria.setProjection(Projections.rowCount());
-
-        Object result = criteria.uniqueResult();
-        if (result == null)
-            throw new UnexpectedException("Count() returns null");
-
-        return ((Number) result).intValue();
-    }
-
-    @Override
-    public int count(DetachedCriteria detachedCriteria) {
-        Criteria criteria = createCriteria(detachedCriteria);
+    public int count(ICriteriaElement... criteriaE) {
+        Criteria criteria = createCriteria(criteriaE);
         criteria.setProjection(Projections.rowCount());
 
         Object result = criteria.uniqueResult();
@@ -391,15 +310,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public void deleteAll(Criterion... restrictions) {
-        Criteria criteria = createCriteria(restrictions);
-        List<E> list = criteria.list();
-        getHibernateTemplate().deleteAll(list);
-    }
-
-    @Override
-    public void deleteAll(DetachedCriteria detachedCriteria) {
-        Criteria criteria = createCriteria(detachedCriteria);
+    public void deleteAll(ICriteriaElement... criteriaE) {
+        Criteria criteria = createCriteria(criteriaE);
         List<E> list = criteria.list();
         getHibernateTemplate().deleteAll(list);
     }

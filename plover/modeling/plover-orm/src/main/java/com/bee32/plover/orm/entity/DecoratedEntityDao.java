@@ -10,7 +10,6 @@ import javax.servlet.ServletRequest;
 import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
 import org.springframework.dao.DataAccessException;
 
 import com.bee32.plover.arch.BuildException;
@@ -18,6 +17,7 @@ import com.bee32.plover.arch.naming.INamedNode;
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.arch.util.ExceptionSupport;
 import com.bee32.plover.arch.util.IStruct;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.dao.HibernateTemplate;
 
 public class DecoratedEntityDao<E extends Entity<K>, K extends Serializable> {
@@ -236,8 +236,8 @@ public class DecoratedEntityDao<E extends Entity<K>, K extends Serializable> {
         return impl.count();
     }
 
-    public long count(Criterion... restrictions) {
-        return impl.count(restrictions);
+    public long count(ICriteriaElement... criteriaE) {
+        return impl.count(criteriaE);
     }
 
 }

@@ -9,15 +9,13 @@ import javax.servlet.ServletRequest;
 
 import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.BuildException;
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.IStruct;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 
 // @Service
 // /* @Lazy */@Scope("prototype")
@@ -68,25 +66,13 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = true)
     @Override
-    public E getUnique(Criterion... restrictions) {
-        checkLoad();
-        return (E) getDao().getUnique(restrictions);
-    }
-
-    @Override
-    public E getUnique(DetachedCriteria criteria) {
+    public E getUnique(ICriteriaElement... criteria) {
         checkLoad();
         return (E) getDao().getUnique(criteria);
     }
 
     @Override
-    public E getFirst(Criterion... restrictions) {
-        checkLoad();
-        return getDao().getFirst(restrictions);
-    }
-
-    @Override
-    public E getFirst(DetachedCriteria criteria) {
+    public E getFirst(ICriteriaElement... criteria) {
         checkLoad();
         return getDao().getFirst(criteria);
     }
@@ -157,9 +143,9 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = true)
     @Override
-    public List<E> list(Criterion... restrictions) {
+    public List<E> list(ICriteriaElement... criteria) {
         checkList();
-        return (List<E>) getDao().list(restrictions);
+        return (List<E>) getDao().list(criteria);
     }
 
     @Transactional(readOnly = false)
@@ -201,13 +187,6 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = true)
     @Override
-    public List<E> list(Order order, Criterion... restrictions) {
-        checkList();
-        return (List<E>) getDao().list(order, restrictions);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public E lazyLoad(K id) {
         checkLoad();
         // XXX the lazy-init entity returned seems not usable outside of Tx.
@@ -234,13 +213,6 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
     @Override
     public Collection<K> keys() {
         return (Collection<K>) getDao().keys();
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<E> list(int offset, int limit, Criterion... restrictions) {
-        checkList();
-        return (List<E>) getDao().list(offset, limit, restrictions);
     }
 
     @Transactional(readOnly = true)
@@ -288,33 +260,7 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = true)
     @Override
-    public List<E> list(Order order, int offset, int limit, Criterion... restrictions) {
-        checkList();
-        return (List<E>) getDao().list(order, offset, limit, restrictions);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<E> list(int offset, int limit, DetachedCriteria criteria) {
-        checkList();
-        return (List<E>) getDao().list(offset, limit, criteria);
-    }
-
-    @Override
-    public List<E> list(DetachedCriteria criteria) {
-        checkList();
-        return (List<E>) getDao().list(criteria);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public int count(Criterion... restrictions) {
-        checkCount();
-        return getDao().count(restrictions);
-    }
-
-    @Override
-    public int count(DetachedCriteria criteria) {
+    public int count(ICriteriaElement... criteria) {
         checkCount();
         return getDao().count(criteria);
     }
@@ -328,13 +274,7 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = false)
     @Override
-    public void deleteAll(Criterion... restrictions) {
-        checkDelete();
-        getDao().deleteAll(restrictions);
-    }
-
-    @Override
-    public void deleteAll(DetachedCriteria criteria) {
+    public void deleteAll(ICriteriaElement... criteria) {
         checkDelete();
         getDao().deleteAll(criteria);
     }
