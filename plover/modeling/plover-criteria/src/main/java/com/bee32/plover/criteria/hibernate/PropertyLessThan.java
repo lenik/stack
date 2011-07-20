@@ -3,7 +3,10 @@ package com.bee32.plover.criteria.hibernate;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
-class PropertyLessThan extends CriteriaElement {
+public class PropertyLessThan
+        extends CriteriaElement {
+
+    private static final long serialVersionUID = 1L;
 
     final String propertyName;
     final String otherPropertyName;
@@ -12,7 +15,9 @@ class PropertyLessThan extends CriteriaElement {
         this.propertyName = propertyName;
         this.otherPropertyName = otherPropertyName;
     }
-    @Override protected Criterion buildCriterion() {
+
+    @Override
+    protected Criterion buildCriterion() {
         return Restrictions.ltProperty(propertyName, otherPropertyName);
     }
 

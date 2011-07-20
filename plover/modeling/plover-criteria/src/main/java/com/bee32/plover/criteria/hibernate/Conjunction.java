@@ -6,6 +6,8 @@ import org.hibernate.criterion.Restrictions;
 public class Conjunction
         extends CriteriaElement {
 
+    private static final long serialVersionUID = 1L;
+
     org.hibernate.criterion.Conjunction conjunction = Restrictions.conjunction();
 
     Conjunction() {

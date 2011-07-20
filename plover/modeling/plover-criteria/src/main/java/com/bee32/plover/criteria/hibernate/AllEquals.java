@@ -5,8 +5,10 @@ import java.util.Map;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
-class AllEquals
+public class AllEquals
         extends CriteriaElement {
+
+    private static final long serialVersionUID = 1L;
 
     final Map<?, ?> propertyNameValues;
 

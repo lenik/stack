@@ -4,8 +4,10 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 
-class Alias
+public class Alias
         extends CriteriaElement {
+
+    private static final long serialVersionUID = 1L;
 
     final String associationPath;
     final String alias;

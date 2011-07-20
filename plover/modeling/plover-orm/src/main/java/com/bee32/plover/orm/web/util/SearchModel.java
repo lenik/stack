@@ -7,6 +7,8 @@ import com.bee32.plover.orm.entity.Entity;
 public class SearchModel
         extends CriteriaComposite {
 
+    private static final long serialVersionUID = 1L;
+
     private Class<? extends Entity<?>> entityClass;
 
     int firstResult = 0;

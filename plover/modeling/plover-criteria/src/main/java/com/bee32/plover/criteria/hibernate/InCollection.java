@@ -5,8 +5,10 @@ import java.util.Collection;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
-class InCollection
+public class InCollection
         extends CriteriaElement {
+
+    private static final long serialVersionUID = 1L;
 
     final String propertyName;
     final Collection<?> values;

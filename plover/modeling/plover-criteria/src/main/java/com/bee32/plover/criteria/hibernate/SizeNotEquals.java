@@ -3,7 +3,10 @@ package com.bee32.plover.criteria.hibernate;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
-class SizeNotEquals extends CriteriaElement {
+public class SizeNotEquals
+        extends CriteriaElement {
+
+    private static final long serialVersionUID = 1L;
 
     final String propertyName;
     final int size;
@@ -12,7 +15,9 @@ class SizeNotEquals extends CriteriaElement {
         this.propertyName = propertyName;
         this.size = size;
     }
-    @Override protected Criterion buildCriterion() {
+
+    @Override
+    protected Criterion buildCriterion() {
         return Restrictions.sizeNe(propertyName, size);
     }
 

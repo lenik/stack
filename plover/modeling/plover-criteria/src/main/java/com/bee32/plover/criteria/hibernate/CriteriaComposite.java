@@ -10,6 +10,8 @@ import org.hibernate.Criteria;
 public class CriteriaComposite
         implements ICriteriaElement {
 
+    private static final long serialVersionUID = 1L;
+
     protected final List<ICriteriaElement> elements;
 
     public CriteriaComposite(ICriteriaElement... elements) {

@@ -3,8 +3,10 @@ package com.bee32.plover.criteria.hibernate;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
-class SimpleSqlRestriction
+public class SimpleSqlRestriction
         extends CriteriaElement {
+
+    private static final long serialVersionUID = 1L;
 
     final String sql;
 

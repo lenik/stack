@@ -3,7 +3,10 @@ package com.bee32.plover.criteria.hibernate;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
-class Between extends CriteriaElement {
+public class Between
+        extends CriteriaElement {
+
+    private static final long serialVersionUID = 1L;
 
     final String propertyName;
     final Object lo;
@@ -14,7 +17,9 @@ class Between extends CriteriaElement {
         this.lo = lo;
         this.hi = hi;
     }
-    @Override protected Criterion buildCriterion() {
+
+    @Override
+    protected Criterion buildCriterion() {
         return Restrictions.between(propertyName, lo, hi);
     }
 

@@ -5,6 +5,8 @@ import org.hibernate.Criteria;
 public class Limit
         implements ICriteriaElement {
 
+    private static final long serialVersionUID = 1L;
+
     final int offset;
     final int limit;
 

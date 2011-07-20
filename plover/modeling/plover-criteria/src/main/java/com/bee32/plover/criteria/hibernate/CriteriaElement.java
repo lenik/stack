@@ -6,6 +6,8 @@ import org.hibernate.criterion.Criterion;
 public abstract class CriteriaElement
         implements ICriteriaElement {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public void apply(Criteria criteria) {
         Criterion criterion = buildCriterion();

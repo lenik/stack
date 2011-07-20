@@ -5,6 +5,8 @@ import org.hibernate.Criteria;
 public class Order
         implements ICriteriaElement {
 
+    private static final long serialVersionUID = 1L;
+
     org.hibernate.criterion.Order order;
 
     Order(org.hibernate.criterion.Order order) {

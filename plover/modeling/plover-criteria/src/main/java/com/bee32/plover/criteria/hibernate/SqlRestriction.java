@@ -4,8 +4,10 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.Type;
 
-class SqlRestriction
+public class SqlRestriction
         extends CriteriaElement {
+
+    private static final long serialVersionUID = 1L;
 
     final String sql;
     final Object[] values;
