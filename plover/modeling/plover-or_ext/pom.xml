@@ -15,11 +15,6 @@
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-criteria</artifactId>
-            <version>0.2.103</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bee32.plover</groupId>
             <artifactId>plover-ajax</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
