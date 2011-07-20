@@ -41,7 +41,7 @@ public class PeopleCriteria
     @LeftHand(Party.class)
     public static ICriteriaElement internal() {
         return compose(alias("tags", "tag"), //
-                equals("tag.id", PartyTagname.INTERNAL.getId()));
+                in("tag.id", PartyTagname.INTERNAL.getId()));
     }
 
     @LeftHand(OrgUnit.class)
@@ -57,16 +57,6 @@ public class PeopleCriteria
     @LeftHand(PersonLogin.class)
     public static CriteriaElement userEquals(String userId) {
         return equals("user.id", userId);
-    }
-
-    public static DetachedCriteria hasTag(String pattern) {
-        DetachedCriteria c = DetachedCriteria
-                .forClass(Party.class)
-                .createAlias("tags", "tag")
-                .add(Restrictions.in("tag.id",
-                        new Object[] { PartyTagname.INTERNAL.getId() }))
-                .add(nameLike(pattern));
-        return c;
     }
 
 }
