@@ -1,15 +1,13 @@
 package com.bee32.plover.orm.web.util;
 
-import org.hibernate.criterion.DetachedCriteria;
-
+import com.bee32.plover.criteria.hibernate.CriteriaComposite;
+import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.orm.entity.Entity;
 
 public class SearchModel
-        extends DecoratedDetachedCriteria {
+        extends CriteriaComposite {
 
     private Class<? extends Entity<?>> entityClass;
-
-    DetachedCriteria criteria;
 
     int firstResult = 0;
     int maxResults = -1;
@@ -30,21 +28,6 @@ public class SearchModel
         this.entityClass = entityClass;
     }
 
-    @Override
-    protected DetachedCriteria getImpl() {
-        if (criteria == null)
-            criteria = DetachedCriteria.forClass(entityClass);
-        return criteria;
-    }
-
-    public boolean isEmpty() {
-        return (criteria == null && firstResult == 0 && maxResults < 0);
-    }
-
-    public DetachedCriteria getDetachedCriteria() {
-        return criteria;
-    }
-
     public int getFirstResult() {
         return firstResult;
     }
@@ -59,6 +42,22 @@ public class SearchModel
 
     public void setMaxResults(int maxResults) {
         this.maxResults = maxResults;
+    }
+
+    public boolean isDummy() {
+        if (firstResult == 0 && maxResults < 0)
+            return true;
+        if (elements.isEmpty())
+            return true;
+        return false;
+    }
+
+    public CriteriaComposite compose() {
+        CriteriaComposite composite = new CriteriaComposite();
+        Limit limit = new Limit(firstResult, maxResults);
+        composite.add(limit);
+        composite.addAll(elements);
+        return composite;
     }
 
 }

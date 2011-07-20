@@ -7,10 +7,9 @@ import javax.free.ParseException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.criterion.DetachedCriteria;
-
 import com.bee32.plover.ajax.JsonUtil;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.EntityDto;
@@ -86,14 +85,12 @@ public class DataHandler<E extends Entity<K>, K extends Serializable>
 
         listing.fillSearchModel(searchModel, textMap);
 
-        if (searchModel.isEmpty())
+        if (searchModel.isDummy())
             return (List<? extends E>) asFor(eh.getEntityType()).list();
 
-        DetachedCriteria detachedCriteria = searchModel.getDetachedCriteria();
-        int firstResult = searchModel.getFirstResult();
-        int maxResults = searchModel.getMaxResults();
+        CriteriaComposite composite = searchModel.compose();
 
-        return asFor(eh.getEntityType()).list(firstResult, maxResults, detachedCriteria);
+        return asFor(eh.getEntityType()).list(composite);
     }
 
 }
