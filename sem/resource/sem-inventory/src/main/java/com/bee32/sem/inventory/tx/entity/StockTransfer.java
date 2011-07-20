@@ -13,6 +13,7 @@ import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Pink;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.entity.Person;
 
 /**
@@ -28,6 +29,9 @@ public class StockTransfer
     StockOrder source;
     StockOrder dest;
     Person transferredBy;
+
+    StockWarehouse sourceWarehouse;
+    StockWarehouse destWarehouse;
 
     /**
      * 调出单，科目必须为 XFER_OUT.
