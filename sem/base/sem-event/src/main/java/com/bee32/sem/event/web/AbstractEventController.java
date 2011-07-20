@@ -7,8 +7,6 @@ import javax.free.ParseException;
 import javax.free.Strings;
 import javax.inject.Inject;
 
-import org.hibernate.criterion.Restrictions;
-
 import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
@@ -26,6 +24,7 @@ import com.bee32.sem.event.dto.EventStatusDto;
 import com.bee32.sem.event.entity.Activity;
 import com.bee32.sem.event.entity.Event;
 import com.bee32.sem.event.entity.Task;
+import com.bee32.sem.event.util.EventCriteria;
 
 public abstract class AbstractEventController<E extends Event, Dto extends AbstractEventDto<E>>
         extends BasicEntityController<E, Long, Dto> {
@@ -82,13 +81,13 @@ public abstract class AbstractEventController<E extends Event, Dto extends Abstr
 
         Boolean closed = request.getNBoolean("closed");
         if (closed != null)
-            model.add(Restrictions.eq("closed", closed));
+            model.add(EventCriteria.closed(closed));
 
         Integer recent = request.getNInt("recent");
         if (recent != null) {
             long recentSeconds = recent * 86400L;
             Date beginDate = new Date(System.currentTimeMillis() - recentSeconds);
-            model.add(Restrictions.gt("beginTime", beginDate));
+            model.add(EventCriteria.beganFrom(beginDate));
         }
 
     }
