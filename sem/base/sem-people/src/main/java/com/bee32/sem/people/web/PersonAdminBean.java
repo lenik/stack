@@ -8,7 +8,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import org.hibernate.criterion.Order;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Component;
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.dto.UserDto;
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.dto.AbstractPartyDto;
@@ -48,8 +48,9 @@ public class PersonAdminBean
 
     @PostConstruct
     public void init() {
-        EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(Person.class,
-                PersonDto.class, -1, Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
+        EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
+                Person.class, PersonDto.class, -1, //
+                Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
         persons = UIHelper.<Person, PersonDto> buildLazyDataModel(options);
 
         refreshPersonCount();
@@ -183,9 +184,9 @@ public class PersonAdminBean
         }
 
         try {
-		Person person = serviceFor(Person.class).load(selectedPerson.getId());
-		person.getContacts().clear();
-		serviceFor(Person.class).save(person);
+            Person person = serviceFor(Person.class).load(selectedPerson.getId());
+            person.getContacts().clear();
+            serviceFor(Person.class).save(person);
             serviceFor(Person.class).delete(person);
             refreshPersonCount();
 
