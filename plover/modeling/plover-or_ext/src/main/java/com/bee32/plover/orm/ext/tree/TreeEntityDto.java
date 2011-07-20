@@ -35,10 +35,10 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
         super.__marshal(source);
 
         if (selection.contains(PARENT))
-            parent = ($) mref(getClass(), source.getParent());
+            parent = ($) mref(getClass(), selection.bits, source.getParent());
 
         if (selection.contains(CHILDREN))
-            children = marshalList(getClass(), source.getChildren());
+            children = marshalList(getClass(), selection.bits, source.getChildren(), true);
     }
 
     @Override
