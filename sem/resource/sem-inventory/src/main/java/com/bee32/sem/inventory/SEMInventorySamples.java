@@ -30,6 +30,7 @@ public class SEMInventorySamples
     public static MaterialPreferredLocation preferredLocation2 = new MaterialPreferredLocation();
     public static StockWarehouse stockWarehouse = new StockWarehouse();
     public static StockLocation parentStockLocation = new StockLocation();
+    public static StockLocation parentStockLocation1 = new StockLocation();
     public static StockLocation hokaidou = new StockLocation();
 
     static {
@@ -43,10 +44,13 @@ public class SEMInventorySamples
         stockWarehouse.setPhone("911");
         stockWarehouse.setManager(SEMPeopleSamples.jackPerson);
 
-        parentStockLocation.setAddress("圣神布里塔尼亚帝国-11区");
+        parentStockLocation.setAddress("5番-11区");
         parentStockLocation.setWarehouse(stockWarehouse);
 
-        hokaidou.setAddress("北海道第一仓库");
+        parentStockLocation1.setAddress("5番-3区");
+        parentStockLocation1.setWarehouse(stockWarehouse);
+
+        hokaidou.setAddress("5番3号");
         hokaidou.setWarehouse(stockWarehouse);
         hokaidou.setParent(parentStockLocation);
 
@@ -109,6 +113,7 @@ public class SEMInventorySamples
     protected void preamble() {
         add(stockWarehouse);
         add(parentStockLocation);
+        add(parentStockLocation1);
         add(hokaidou);
 
         add(parentCategory);

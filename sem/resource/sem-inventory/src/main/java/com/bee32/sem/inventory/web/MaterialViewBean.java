@@ -1,9 +1,14 @@
 package com.bee32.sem.inventory.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.hibernate.criterion.Restrictions;
@@ -40,39 +45,67 @@ public class MaterialViewBean
     private static final long serialVersionUID = 1L;
 
     public static final String ATTR = "attr";
+    public static final String MATERIALFOTM = "material:materialDetail";
 
     private boolean searching;
     private String materialNamePattern;
     private List<MaterialDto> materialList;
-    private TreeNode root;
+// private TreeNode root;
     private TreeNode selectedMaterialNode;
     private TreeNode selectedMaterialCategory;
     private MaterialDto tempMaterial = new MaterialDto().create();
     private UnitDto newUnit = new UnitDto().create();
     private MaterialAttributeDto tempAttr;
-    private MaterialPreferredLocationDto tempLocation;
+    private MaterialPreferredLocationDto tempPreferredLocation;
     private MaterialWarehouseOptionDto option;
     private TreeNode locationTreeRoot;
+    private TreeNode selectedStockLocation;
+    private UnitConvDto tempUnitConv;
+    private MaterialDto selectedMaterial;
 
     MaterialViewBean() {
-        root = new DefaultTreeNode("root", null);
+// root = new DefaultTreeNode("root", null);
         locationTreeRoot = new DefaultTreeNode("root", null);
         tempAttr = new MaterialAttributeDto(tempMaterial, "", "");
         option = new MaterialWarehouseOptionDto();
         option.setWarehouse(new StockWarehouseDto());
-        tempLocation = new MaterialPreferredLocationDto();
+        tempPreferredLocation = new MaterialPreferredLocationDto();
         StockLocationDto location = new StockLocationDto();
         location.setWarehouse(new StockWarehouseDto());
-        tempLocation.setLocation(location);
+        tempPreferredLocation.setLocation(location);
     }
 
     @PostConstruct
     public void initialize() {
-        buildCategoryTree();
+// buildCategoryTree();
+        buildStockTree();
+    }
+
+    public void editMaterialForm(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        if(selectedMaterial == null){
+            context.addMessage(null, new FacesMessage("提示:","请选择要编辑的物料!"));
+            findComponentEx(MATERIALFOTM).setRendered(false);
+            return;
+        }
+        tempMaterial = selectedMaterial;
+    }
+
+    public void createMaterialForm(){
+        tempMaterial = new MaterialDto().create();
     }
 
     public void doAddAttr() {
+        FacesContext context = FacesContext.getCurrentInstance();
         MaterialAttributeDto tattr = new MaterialAttributeDto(tempMaterial, tempAttr.getName(), tempAttr.getValue());
+        if (tattr.getName().isEmpty()) {
+            context.addMessage(null, new FacesMessage("错误提示:", "自定义属性名称不能为空!"));
+            return;
+        }
+        if (tattr.getValue().isEmpty()) {
+            context.addMessage(null, new FacesMessage("错误提示:", "自定义属性值不能为空!"));
+            return;
+        }
         tempMaterial.addAttribute(tattr);
     }
 
@@ -94,24 +127,10 @@ public class MaterialViewBean
     }
 
     public void doAddPreferredLocation() {
-        MaterialPreferredLocationDto mpld = new MaterialPreferredLocationDto();
+        MaterialPreferredLocationDto mpld = new MaterialPreferredLocationDto().create();
         mpld.setMaterial(tempMaterial);
-
-        StockWarehouse sw = serviceFor(StockWarehouse.class).load(tempLocation.getLocation().getWarehouse().getId());
-        StockWarehouseDto swd = DTOs.mref(StockWarehouseDto.class, sw);
-        double x = tempLocation.getLocation().getX();
-        double y = tempLocation.getLocation().getY();
-        double z = tempLocation.getLocation().getZ();
-        String address = tempLocation.getLocation().getAddress();
-        String desc = tempLocation.getDescription();
-        StockLocationDto sld = new StockLocationDto();
-        sld.setWarehouse(swd);
-        sld.setX(x);
-        sld.setY(y);
-        sld.setZ(z);
-        sld.setAddress(address);
-        mpld.setLocation(sld);
-        mpld.setDescription(desc);
+        mpld.setLocation(tempPreferredLocation.getLocation());
+        mpld.setDescription(tempPreferredLocation.getDescription());
         tempMaterial.addPreferredLocation(mpld);
     }
 
@@ -125,33 +144,69 @@ public class MaterialViewBean
         tempMaterial.setCategory(category);
     }
 
-    public void buildCategoryTree() {
-        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(Restrictions.isNull("parent"));
-        List<MaterialCategoryDto> materialCategoryDtoList = DTOs.marshalList(MaterialCategoryDto.class, rootCategories);
-        for (MaterialCategoryDto mc : materialCategoryDtoList)
-            treeAssembling(mc, root);
+    public void doSelectLocation() {
+        StockLocationDto location = (StockLocationDto) selectedStockLocation.getData();
+        tempPreferredLocation.setLocation(location);
     }
 
-    void treeAssembling(MaterialCategoryDto materialCategory, TreeNode parent) {
+    public void buildCategoryTree(TreeNode parent) {
+        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(Restrictions.isNull("parent"));
+        List<MaterialCategoryDto> materialCategoryDtoList = DTOs.marshalList(MaterialCategoryDto.class, //
+                ~MaterialCategoryDto.MATERIALS, rootCategories);
+        for (MaterialCategoryDto mc : materialCategoryDtoList)
+            categoryTreeAssembler(mc, parent);
+    }
+
+    void categoryTreeAssembler(MaterialCategoryDto materialCategory, TreeNode parent) {
         TreeNode subParentNode = new DefaultTreeNode(materialCategory, parent);
         List<MaterialCategoryDto> childrenList = materialCategory.getChildren();
         if (childrenList != null)
             for (MaterialCategoryDto mc : childrenList)
-                treeAssembling(mc, subParentNode);
+                categoryTreeAssembler(mc, subParentNode);
     }
 
-    public void buildStockTree(){
+    public void buildStockTree() {
         List<StockLocation> stockLocationList = serviceFor(StockLocation.class).list(//
                 Restrictions.isNull("parent"));
         List<StockLocationDto> stockLocationDtoList = DTOs.marshalList(StockLocationDto.class, stockLocationList);
-        //FIXME
-        for(StockLocationDto sld : stockLocationDtoList){
+        Map<String, TreeNode> locationMap = new HashMap<String, TreeNode>();
 
+        for (StockLocationDto location : stockLocationDtoList) {
+            Set<String> warehouseNameSet = locationMap.keySet();
+            if (!warehouseNameSet.contains(location.getWarehouse().getName())) {
+                location.setNodeName(location.getWarehouse().getName());
+                TreeNode treeNode = new DefaultTreeNode(location, locationTreeRoot);
+                locationMap.put(location.getWarehouse().getName(), treeNode);
+            }
         }
+
+        for (StockLocationDto location : stockLocationDtoList) {
+            TreeNode warehouseNode = locationMap.get(location.getWarehouse().getName());
+            StockLocationDto firstLocationLayer = new StockLocationDto();
+            firstLocationLayer.setWarehouse(location.getWarehouse());
+            firstLocationLayer.setNodeName(location.getAddress());
+            firstLocationLayer.setAddress(location.getAddress());
+            firstLocationLayer.setX(location.getX());
+            firstLocationLayer.setY(location.getY());
+            firstLocationLayer.setZ(location.getZ());
+            firstLocationLayer.setChildren(location.getChildren());
+            stockLocationTreeAssembler(firstLocationLayer, warehouseNode);
+        }
+
+    }
+
+    void stockLocationTreeAssembler(StockLocationDto sld, TreeNode node) {
+        TreeNode temp = new DefaultTreeNode(sld, node);
+        List<StockLocationDto> childrenList = sld.getChildren();
+        if (childrenList != null)
+            for (StockLocationDto children : childrenList)
+                stockLocationTreeAssembler(children, temp);
     }
 
     public void onNodeSelect(NodeSelectEvent event) {
         MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) selectedMaterialNode.getData();
+        MaterialCategory categoryEntity = serviceFor(MaterialCategory.class).load(materialCategoryDto.getId());
+        materialCategoryDto = DTOs.marshal(MaterialCategoryDto.class, categoryEntity);
         materialList = materialCategoryDto.getMaterials();
     }
 
@@ -188,10 +243,16 @@ public class MaterialViewBean
         List<StockWarehouseDto> warehouseDtoList = DTOs.marshalList(StockWarehouseDto.class, warehouseList);
         List<SelectItem> items = new ArrayList<SelectItem>();
         for (StockWarehouseDto swd : warehouseDtoList) {
-            SelectItem item = new SelectItem(swd.getId(), swd.getAddress());
+            SelectItem item = new SelectItem(swd.getId(), swd.getName());
             items.add(item);
         }
         return items;
+    }
+
+    public TreeNode getRoot() {
+        TreeNode parent = new DefaultTreeNode("root", null);
+        buildCategoryTree(parent);
+        return parent;
     }
 
     public boolean isSearching() {
@@ -210,13 +271,13 @@ public class MaterialViewBean
         this.materialNamePattern = materialNamePattern;
     }
 
-    public TreeNode getRoot() {
-        return root;
-    }
-
-    public void setRoot(TreeNode root) {
-        this.root = root;
-    }
+// public TreeNode getRoot() {
+// return root;
+// }
+//
+// public void setRoot(TreeNode root) {
+// this.root = root;
+// }
 
     public TreeNode getSelectedMaterialNode() {
         return selectedMaterialNode;
@@ -266,12 +327,12 @@ public class MaterialViewBean
         this.option = option;
     }
 
-    public MaterialPreferredLocationDto getTempLocation() {
-        return tempLocation;
+    public MaterialPreferredLocationDto getTempPreferredLocation() {
+        return tempPreferredLocation;
     }
 
-    public void setTempLocation(MaterialPreferredLocationDto tempLocation) {
-        this.tempLocation = tempLocation;
+    public void setTempPreferredLocation(MaterialPreferredLocationDto tempLocation) {
+        this.tempPreferredLocation = tempLocation;
     }
 
     public TreeNode getSelectedMaterialCategory() {
@@ -288,6 +349,30 @@ public class MaterialViewBean
 
     public void setLocationTreeRoot(TreeNode locationTreeRoot) {
         this.locationTreeRoot = locationTreeRoot;
+    }
+
+    public TreeNode getSelectedStockLocation() {
+        return selectedStockLocation;
+    }
+
+    public void setSelectedStockLocation(TreeNode selectedStockLocation) {
+        this.selectedStockLocation = selectedStockLocation;
+    }
+
+    public UnitConvDto getTempUnitConv() {
+        return tempUnitConv;
+    }
+
+    public void setTempUnitConv(UnitConvDto tempUnitConv) {
+        this.tempUnitConv = tempUnitConv;
+    }
+
+    public MaterialDto getSelectedMaterial() {
+        return selectedMaterial;
+    }
+
+    public void setSelectedMaterial(MaterialDto selectedMaterial) {
+        this.selectedMaterial = selectedMaterial;
     }
 
 }

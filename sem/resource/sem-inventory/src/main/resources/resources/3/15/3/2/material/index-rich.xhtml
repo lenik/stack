@@ -26,12 +26,15 @@
             <p:layout style="min-width:400px;min-height:200px;" id="layout">
 
                 <p:layoutUnit position="north">
-                    <p:commandButton value="新增物料" oncomplete="materialModual.show();" />
+                    <p:commandButton value="新增物料" oncomplete="materialModal.show();"
+                        actionListener="#{materialViewBean.createMaterialForm}" update="material:materialDetail" />
+                    <p:commandButton value="编辑" actionListener="#{materialViewBean.editMaterialForm}"
+                        oncomplete="materialModal.show();" update="material:materialDetail" />
                 </p:layoutUnit>
 
                 <p:layoutUnit position="west" header="物料树" resizable="true" size="200" minSize="40" collapsible="true">
-                    <p:tree value="#{materialViewBean.root}" var="node" dynamic="true" selectionMode="single"
-                        selection="#{materialViewBean.selectedMaterialNode}" style="width:150px;">
+                    <p:tree id="categoryTree" value="#{materialViewBean.root}" var="node" dynamic="true"
+                        selectionMode="single" selection="#{materialViewBean.selectedMaterialNode}" style="width:150px;">
                         <p:ajax event="select" listener="#{materialViewBean.onNodeSelect}" update="main:materialList" />
                         <p:treeNode>
                             <h:outputText value="#{node.name}" />
@@ -40,7 +43,8 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center">
-                    <p:dataTable var="material" value="#{materialViewBean.materialList}" id="materialList">
+                    <p:dataTable var="material" value="#{materialViewBean.materialList}" id="materialList"
+                        selectionMode="single" selection="#{materialViewBean.selectedMaterial}">
                         <p:column headerText="物料名称">
                             <h:outputText value="#{material.name}" />
                         </p:column>
@@ -63,21 +67,23 @@
         </h:form>
 
         <h:form id="material">
-            <p:dialog header="添加物料" widgetVar="materialModual" height="600" width="800">
-                <t:panelGrid columns="4">
+            <p:dialog header="添加物料" widgetVar="materialModal" height="600" width="700">
+                <t:panelGrid columns="5" id="materialDetail">
                     <h:outputText value="物料名称" />
-                    <t:panelGroup colspan="3">
-                        <p:inputText value="#{materialViewBean.tempMaterial.name}" />
+                    <t:panelGroup colspan="4">
+                        <p:inputText value="#{materialViewBean.tempMaterial.name}" style="width:400px;" />
                     </t:panelGroup>
 
                     <h:outputText value="序列号:" />
                     <p:inputText value="#{materialViewBean.tempMaterial.serial}" />
                     <h:outputText value="条形码:" />
                     <p:inputText widgetVar="ttt" value="#{materialViewBean.tempMaterial.barCode}" />
+                    <h:inputHidden value="" />
 
                     <h:outputText value="物料分类:" />
-                    <t:panelGroup colspan="3">
-                        <p:inputText id="materialCategory" value="#{materialViewBean.tempMaterial.category.name}" readonly="true" />
+                    <t:panelGroup colspan="4">
+                        <p:inputText id="materialCategory" value="#{materialViewBean.tempMaterial.category.name}"
+                            readonly="true" />
                         <p:commandButton value="..." title="选择物料分类" onclick="categoryTree.show();" />
                     </t:panelGroup>
 
@@ -89,16 +95,19 @@
                         <f:selectItem itemLabel="新增单位" itemValue="new" />
                         <f:selectItems value="#{materialViewBean.units}" />
                     </p:selectOneMenu>
+                    <h:inputHidden value="" />
 
                     <h:outputText value="单位还算表" />
-                    <t:panelGroup colspan="3">
-                        <p:selectOneMenu value="#{materialViewBean.tempMaterial.unitConv.id}" style="width:180px;">
+                    <t:panelGroup colspan="4">
+                        <p:selectOneMenu id="selectUnitConv" widgetVar="selectUnitConv"
+                            value="#{materialViewBean.tempMaterial.unitConv.id}" style="width:180px;">
+                            <f:selectItem itemLabel="新增单位还算表" itemValue="new" />
                             <f:selectItems value="#{materialViewBean.unitConvs}" />
                         </p:selectOneMenu>
                     </t:panelGroup>
 
                     <h:outputText value="自定义属性:" />
-                    <t:panelGroup colspan="2">
+                    <t:panelGroup colspan="3">
                         <p:dataTable id="attrTable" var="attr" value="#{materialViewBean.tempMaterial.attributes}">
                             <p:column headerText="名称">
                                 <h:outputText value="#{attr.name}" />
@@ -106,16 +115,20 @@
                             <p:column headerText="值">
                                 <h:outputText value="#{attr.value}" />
                             </p:column>
+                            <p:column headerText="操作" style="width:80px;">
+                                <p:commandLink value="编辑" />
+                                <p:commandLink value="删除" />
+                            </p:column>
                         </p:dataTable>
                     </t:panelGroup>
                     <p:commandButton value="..." title="增加属性" oncomplete="attrForm.show();" update="attr:attrDetail" />
 
                     <h:outputText value="推荐库位" />
-                    <t:panelGroup colspan="2">
+                    <t:panelGroup colspan="3">
                         <p:dataTable id="preferredLocations" var="location"
                             value="#{materialViewBean.tempMaterial.preferredLocations}">
                             <p:column headerText="仓库">
-                                <h:outputText value="#{location.location.warehouse.address}" />
+                                <h:outputText value="#{location.location.warehouse.name}" />
                             </p:column>
                             <p:column headerText="库位">
                                 <h:outputText value="#{location.location.address}" />
@@ -123,24 +136,37 @@
                             <p:column headerText="备注">
                                 <h:outputText value="#{location.description}" />
                             </p:column>
+                            <p:column headerText="操作" style="width:80px;">
+                                <p:commandLink value="编辑" />
+                                <p:commandLink value="删除" />
+                            </p:column>
                         </p:dataTable>
                     </t:panelGroup>
                     <p:commandButton value="..." title="添加推荐库位" onclick="preferDialog.show();" />
 
                     <h:outputText value="物料设置:" />
-                    <t:panelGroup colspan="2">
+                    <t:panelGroup colspan="3">
                         <p:dataTable id="optionTable" var="opt" value="#{materialViewBean.tempMaterial.options}">
                             <p:column headerText="仓库">
-                                <h:outputText value="#{opt.warehouse.address}" />
+                                <h:outputText value="#{opt.warehouse.name}" />
                             </p:column>
                             <p:column headerText="安全库存">
                                 <h:outputText value="#{opt.safetyStock}" />
+                            </p:column>
+                            <p:column headerText="循环盘点周期">
+                                <h:outputText value="#{opt.stkPeriod}" />
+                            </p:column>
+                            <p:column headerText="操作" style="width:80px;">
+                                <p:commandLink value="编辑" />
+                                <p:commandLink value="删除" />
                             </p:column>
                         </p:dataTable>
                     </t:panelGroup>
                     <p:commandButton value="..." title="添加物料设置" onclick="optionForm.show();" />
 
-                    <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}" />
+                    <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}"
+                        update="main:categoryTree,main:materialList" oncomplete="materialModal.hide();" />
+                    <p:commandButton value="取消" onclick="materialModal.hide();" />
                 </t:panelGrid>
             </p:dialog>
         </h:form>
@@ -155,14 +181,14 @@
                     <p:inputText value="#{materialViewBean.tempAttr.value}" />
 
                     <p:commandButton value="添加" actionListener="#{materialViewBean.doAddAttr}"
-                        update="material:attrTable" oncomplete="attrForm.hide();" />
+                        update="material:attrTable,note" oncomplete="attrForm.hide();" />
                     <p:commandButton value="取消" onclick="attrForm.hide();" />
                 </t:panelGrid>
             </p:dialog>
         </h:form>
 
         <h:form id="unit">
-            <p:dialog header="添加单位" widgetVar="addUnitForm" height="200" width="270">
+            <p:dialog header="添加单位" widgetVar="addUnitForm" height="300" width="270">
                 <t:panelGrid columns="3">
                     <h:outputText value="代码:" />
                     <t:panelGroup colspan="2">
@@ -192,29 +218,19 @@
         </h:form>
 
         <h:form id="preferredLocation">
-            <p:dialog widgetVar="preferDialog" height="400" weight="300">
-                <t:panelGrid columns="2">
-
-                    <h:outputText value="仓库" />
-                    <p:selectOneMenu value="#{materialViewBean.tempLocation.location.warehouse.id}">
-                        <f:selectItems value="#{materialViewBean.warehouses}" />
-                    </p:selectOneMenu>
-
-                    <h:outputText value="库位" />
-                    <p:inputText value="#{materialViewBean.tempLocation.location.address}" />
-
-                    <h:outputText value="X" />
-                    <p:inputText value="#{materialViewBean.tempLocation.location.x}" />
-
-                    <h:outputText value="y" />
-                    <p:inputText value="#{materialViewBean.tempLocation.location.y}" />
-
-                    <h:outputText value="Z" />
-                    <p:inputText value="#{materialViewBean.tempLocation.location.z}" />
-
-                    <h:outputText value="描述:" />
-                    <p:inputText value="#{materialViewBean.tempLocation.description}" />
-
+            <p:dialog header="添加推荐库位" widgetVar="preferDialog" height="400" width="600">
+                <t:panelGrid columns="5" id="toUpdate">
+                    <h:outputText value="库位:" />
+                    <p:inputText value="#{materialViewBean.tempPreferredLocation.location.address}" readonly="true" />
+                    <h:outputText value="仓库:" />
+                    <p:inputText value="#{materialViewBean.tempPreferredLocation.location.warehouse.name}"
+                        readonly="true" />
+                    <p:commandButton value="..." title="选择库位" onclick="stockLocationTree.show();" />
+                    <h:outputText value="备注:" />
+                    <t:panelGroup colspan="4">
+                        <p:inputTextarea value="#{materialViewBean.tempPreferredLocation.description}"
+                            style="width:300px;height:40px;" />
+                    </t:panelGroup>
                 </t:panelGrid>
                 <p:commandButton value="添加" actionListener="#{materialViewBean.doAddPreferredLocation}"
                     update="material:preferredLocations" oncomplete="preferDialog.hide();" />
@@ -223,7 +239,7 @@
         </h:form>
 
         <h:form id="option">
-            <p:dialog widgetVar="optionForm" height="300" width="400">
+            <p:dialog header="添加仓库设置" widgetVar="optionForm" height="300" width="400">
                 <t:panelGrid columns="2">
                     <h:outputText value="仓库:" />
                     <p:selectOneMenu value="#{materialViewBean.option.warehouse.id}" style="width:150px;">
@@ -243,7 +259,7 @@
         </h:form>
 
         <h:form id="selectCategory">
-            <p:dialog widgetVar="categoryTree" height="500" width="700" modal="true">
+            <p:dialog header="选择物料分类" widgetVar="categoryTree" height="500" width="700" modal="true">
                 <p:tree value="#{materialViewBean.root}" var="node" dynamic="true" selectionMode="single"
                     selection="#{materialViewBean.selectedMaterialCategory}" style="width:150px;">
                     <p:treeNode>
@@ -256,6 +272,54 @@
             </p:dialog>
         </h:form>
 
+        <h:form id="stockLocationTreeForm">
+            <p:dialog header="选择库位" widgetVar="stockLocationTree" height="500" width="700" modal="true">
+                <p:tree value="#{materialViewBean.locationTreeRoot}" var="node" dynamic="true" selectionMode="single"
+                    selection="#{materialViewBean.selectedStockLocation}">
+                    <p:treeNode>
+                        <h:outputText value="#{node.nodeName}" />
+                    </p:treeNode>
+                </p:tree>
+                <p:commandButton value="选择" actionListener="#{materialViewBean.doSelectLocation}"
+                    update="preferredLocation:toUpdate" oncomplete="stockLocationTree.hide();" />
+                <p:commandButton value="取消" onclick="stockLocationTree.hide()" />
+            </p:dialog>
+        </h:form>
+
+        <h:form id="unitConvForm">
+            <p:dialog widgetVar="unitConvDialog" header="新增单位还算表" height="400" width="500">
+                <t:panelGrid columns="2">
+
+                    <h:outputText value="代码:" />
+                    <p:inputText value="" />
+
+                    <h:outputText value="名称:" />
+                    <p:inputText value="" />
+
+                    <h:outputText value="源单位:" />
+                    <p:selectOneMenu value="" style="width:150px;">
+                        <f:selectItems value="" />
+                    </p:selectOneMenu>
+
+                    <h:outputText value="换算表:" />
+                    <p:dataTable var="ratioMap" value="">
+                        <p:column headerText="换算单位">
+                            <h:outputText value="" />
+                        </p:column>
+
+                        <p:column headerText="还算率">
+                            <h:outputText value="" />
+                        </p:column>
+
+                        <p:column headerText="操作">
+                            <p:commandLink value="编辑" />
+                            <p:commandLink value="删除" />
+                        </p:column>
+                    </p:dataTable>
+                </t:panelGrid>
+                <p:commandButton value="..." title="添加还算条目" />
+            </p:dialog>
+        </h:form>
 
         <script type="text/javascript">
                                     jQuery(document)
@@ -270,6 +334,13 @@
                                                                     if (document
                                                                             .getElementById("material:selectUnit_input").value == "new")
                                                                         addUnitForm
+                                                                                .show();
+                                                                });
+                                                        selectUnitConv.jq
+                                                                .change(function() {
+                                                                    if (document
+                                                                            .getElementById("material:selectUnitConv_input").value == "new")
+                                                                        unitConvDialog
                                                                                 .show();
                                                                 });
 
