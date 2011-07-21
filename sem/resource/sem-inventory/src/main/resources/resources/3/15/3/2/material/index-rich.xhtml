@@ -26,16 +26,17 @@
             <p:layout style="min-width:400px;min-height:200px;" id="layout">
 
                 <p:layoutUnit position="north">
-                    <p:commandButton value="新增物料" oncomplete="materialModal.show();"
-                        actionListener="#{materialViewBean.createMaterialForm}" update="material:materialDetail" />
-                    <p:commandButton value="编辑" actionListener="#{materialViewBean.editMaterialForm}"
-                        oncomplete="materialModal.show();" update="material:materialDetail" />
+                    <p:commandButton value="新增物料" oncomplete="materialDialog.show();"
+                        actionListener="#{materialViewBean.createMaterialForm}" update="dialogForm:material" />
+                    <p:commandButton value="新增分类" actionListener="#{materialViewBean.createCategoryForm}" oncomplete="categoryDialog.show();"/>
                 </p:layoutUnit>
 
                 <p:layoutUnit position="west" header="物料树" resizable="true" size="200" minSize="40" collapsible="true">
-                    <p:tree id="categoryTree" value="#{materialViewBean.root}" var="node" dynamic="true"
-                        selectionMode="single" selection="#{materialViewBean.selectedMaterialNode}" style="width:150px;">
-                        <p:ajax event="select" listener="#{materialViewBean.onNodeSelect}" update="main:materialList" />
+                    <p:tree id="categoryTree" value="#{materialViewBean.materialCategoryTree.rootNode}" var="node"
+                        dynamic="true" selectionMode="single"
+                        selection="#{materialViewBean.materialCategoryTree.selectedNode}" style="width:150px;">
+                        <p:ajax event="select" listener="#{materialViewBean.materialCategoryTree.onNodeSelect}"
+                            update="main:materialList" />
                         <p:treeNode>
                             <h:outputText value="#{node.name}" />
                         </p:treeNode>
@@ -43,8 +44,7 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center">
-                    <p:dataTable var="material" value="#{materialViewBean.materialList}" id="materialList"
-                        selectionMode="single" selection="#{materialViewBean.selectedMaterial}">
+                    <p:dataTable var="material" value="#{materialViewBean.materialList}" id="materialList">
                         <p:column headerText="物料名称">
                             <h:outputText value="#{material.name}" />
                         </p:column>
@@ -59,6 +59,7 @@
                         </p:column>
                         <p:column headerText="操作">
                             <p:commandLink value="详细"></p:commandLink>
+                            <p:commandLink value="编辑"></p:commandLink>
                         </p:column>
                     </p:dataTable>
                 </p:layoutUnit>
@@ -66,32 +67,33 @@
 
         </h:form>
 
-        <h:form id="material">
-            <p:dialog header="添加物料" widgetVar="materialModal" height="600" width="700">
-                <t:panelGrid columns="5" id="materialDetail">
+        <h:form id="dialogForm">
+
+            <p:dialog header="添加物料" widgetVar="materialDialog" height="600" width="700">
+                <t:panelGrid columns="5" id="material">
                     <h:outputText value="物料名称" />
                     <t:panelGroup colspan="4">
-                        <p:inputText value="#{materialViewBean.tempMaterial.name}" style="width:400px;" />
+                        <p:inputText value="#{materialViewBean.activeMaterial.name}" style="width:400px;" />
                     </t:panelGroup>
 
                     <h:outputText value="序列号:" />
-                    <p:inputText value="#{materialViewBean.tempMaterial.serial}" />
+                    <p:inputText value="#{materialViewBean.activeMaterial.serial}" />
                     <h:outputText value="条形码:" />
-                    <p:inputText widgetVar="ttt" value="#{materialViewBean.tempMaterial.barCode}" />
+                    <p:inputText widgetVar="ttt" value="#{materialViewBean.activeMaterial.barCode}" />
                     <h:inputHidden value="" />
 
                     <h:outputText value="物料分类:" />
                     <t:panelGroup colspan="4">
-                        <p:inputText id="materialCategory" value="#{materialViewBean.tempMaterial.category.name}"
+                        <p:inputText id="materialCategory" value="#{materialViewBean.activeMaterial.category.name}"
                             readonly="true" />
-                        <p:commandButton value="..." title="选择物料分类" onclick="categoryTree.show();" />
+                        <p:commandButton value="..." title="选择物料分类" onclick="categoryTreeDialog.show();" />
                     </t:panelGroup>
 
                     <h:outputText value="单位类型:" />
-                    <p:inputText value="#{materialViewBean.tempMaterial.unitHint}" />
+                    <p:inputText value="#{materialViewBean.activeMaterial.unitHint}" />
                     <h:outputText value="基础单位:" />
                     <p:selectOneMenu id="selectUnit" widgetVar="selectUnit"
-                        value="#{materialViewBean.tempMaterial.unit.name}" style="width:120px;">
+                        value="#{materialViewBean.activeMaterial.unit.name}" style="width:120px;">
                         <f:selectItem itemLabel="新增单位" itemValue="new" />
                         <f:selectItems value="#{materialViewBean.units}" />
                     </p:selectOneMenu>
@@ -100,7 +102,7 @@
                     <h:outputText value="单位还算表" />
                     <t:panelGroup colspan="4">
                         <p:selectOneMenu id="selectUnitConv" widgetVar="selectUnitConv"
-                            value="#{materialViewBean.tempMaterial.unitConv.id}" style="width:180px;">
+                            value="#{materialViewBean.activeMaterial.unitConv.id}" style="width:180px;">
                             <f:selectItem itemLabel="新增单位还算表" itemValue="new" />
                             <f:selectItems value="#{materialViewBean.unitConvs}" />
                         </p:selectOneMenu>
@@ -108,7 +110,8 @@
 
                     <h:outputText value="自定义属性:" />
                     <t:panelGroup colspan="3">
-                        <p:dataTable id="attrTable" var="attr" value="#{materialViewBean.tempMaterial.attributes}">
+                        <p:dataTable id="attributeTable" var="attr"
+                            value="#{materialViewBean.activeMaterial.attributes}">
                             <p:column headerText="名称">
                                 <h:outputText value="#{attr.name}" />
                             </p:column>
@@ -121,12 +124,13 @@
                             </p:column>
                         </p:dataTable>
                     </t:panelGroup>
-                    <p:commandButton value="..." title="增加属性" oncomplete="attrForm.show();" update="attr:attrDetail" />
+                    <p:commandButton value="..." title="增加属性" oncomplete="attributeDialog.show();"
+                        update="dialogForm:attribute" />
 
                     <h:outputText value="推荐库位" />
                     <t:panelGroup colspan="3">
                         <p:dataTable id="preferredLocations" var="location"
-                            value="#{materialViewBean.tempMaterial.preferredLocations}">
+                            value="#{materialViewBean.activeMaterial.preferredLocations}">
                             <p:column headerText="仓库">
                                 <h:outputText value="#{location.location.warehouse.name}" />
                             </p:column>
@@ -146,7 +150,7 @@
 
                     <h:outputText value="物料设置:" />
                     <t:panelGroup colspan="3">
-                        <p:dataTable id="optionTable" var="opt" value="#{materialViewBean.tempMaterial.options}">
+                        <p:dataTable id="optionTable" var="opt" value="#{materialViewBean.activeMaterial.options}">
                             <p:column headerText="仓库">
                                 <h:outputText value="#{opt.warehouse.name}" />
                             </p:column>
@@ -162,33 +166,29 @@
                             </p:column>
                         </p:dataTable>
                     </t:panelGroup>
-                    <p:commandButton value="..." title="添加物料设置" onclick="optionForm.show();" />
+                    <p:commandButton value="..." title="添加物料设置" onclick="optionDialog.show();" />
 
                     <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}"
-                        update="main:categoryTree,main:materialList" oncomplete="materialModal.hide();" />
-                    <p:commandButton value="取消" onclick="materialModal.hide();" />
+                        update="main:categoryTree,main:materialList" oncomplete="materialDialog.hide();" />
+                    <p:commandButton value="取消" onclick="materialDialog.hide();" />
                 </t:panelGrid>
             </p:dialog>
-        </h:form>
 
-        <h:form id="attr">
-            <p:dialog header="添加属性" widgetVar="attrForm" height="200" width="300">
-                <t:panelGrid columns="2" id="attrDetail">
+            <p:dialog header="添加属性" widgetVar="attributeDialog" height="200" width="300">
+                <t:panelGrid columns="2" id="attribute">
                     <h:outputText value="属性名称" />
-                    <p:inputText value="#{materialViewBean.tempAttr.name}" />
+                    <p:inputText value="#{materialViewBean.activeAttr.name}" />
 
                     <h:outputText value="属性值" />
-                    <p:inputText value="#{materialViewBean.tempAttr.value}" />
+                    <p:inputText value="#{materialViewBean.activeAttr.value}" />
 
                     <p:commandButton value="添加" actionListener="#{materialViewBean.doAddAttr}"
-                        update="material:attrTable,note" oncomplete="attrForm.hide();" />
-                    <p:commandButton value="取消" onclick="attrForm.hide();" />
+                        update="dialogForm:attributeTable,note" oncomplete="attributeDialog.hide();" />
+                    <p:commandButton value="取消" onclick="attributeDialog.hide();" />
                 </t:panelGrid>
             </p:dialog>
-        </h:form>
 
-        <h:form id="unit">
-            <p:dialog widgetVar="addUnitDialog" header="添加单位" height="300" width="270">
+            <p:dialog widgetVar="unitDialog" header="添加单位" height="300" width="270">
                 <t:panelGrid columns="3">
                     <h:outputText value="代码:" />
                     <t:panelGroup colspan="2">
@@ -210,14 +210,12 @@
                     </t:panelGroup>
                     <t:panelGroup colspan="3">
                         <p:commandButton value="确定" actionListener="#{materialViewBean.doAddUhnit}"
-                            update="material:selectUnit" oncomplete="addUnitDialog.hide();" />
-                        <p:commandButton value="取消" onclick="addUnitDialog.hide();" />
+                            update="dialogForm:selectUnit" oncomplete="unitDialog.hide();" />
+                        <p:commandButton value="取消" onclick="unitDialog.hide();" />
                     </t:panelGroup>
                 </t:panelGrid>
             </p:dialog>
-        </h:form>
 
-        <h:form id="preferredLocation">
             <p:dialog header="添加推荐库位" widgetVar="preferDialog" height="400" width="600">
                 <t:panelGrid columns="5" id="toUpdate">
                     <h:outputText value="库位:" />
@@ -233,13 +231,11 @@
                     </t:panelGroup>
                 </t:panelGrid>
                 <p:commandButton value="添加" actionListener="#{materialViewBean.doAddPreferredLocation}"
-                    update="material:preferredLocations" oncomplete="preferDialog.hide();" />
+                    update="dialogForm:preferredLocations" oncomplete="preferDialog.hide();" />
                 <p:commandButton value="取消" onclick="preferDialog.hide();" />
             </p:dialog>
-        </h:form>
 
-        <h:form id="option">
-            <p:dialog header="添加仓库设置" widgetVar="optionForm" height="300" width="400">
+            <p:dialog header="添加仓库设置" widgetVar="optionDialog" height="300" width="400">
                 <t:panelGrid columns="2">
                     <h:outputText value="仓库:" />
                     <p:selectOneMenu value="#{materialViewBean.option.warehouse.id}" style="width:150px;">
@@ -253,40 +249,35 @@
                     <p:inputText value="#{materialViewBean.option.stkPeriod}" />
                 </t:panelGrid>
                 <p:commandButton value="保存" actionListener="#{materialViewBean.doAddOption}"
-                    oncomplete="optionForm.hide();" update="material:optionTable" />
-                <p:commandButton value="取消" onclick="optionForm.hide();" />
+                    oncomplete="optionDialog.hide();" update="dialogForm:optionTable" />
+                <p:commandButton value="取消" onclick="optionDialog.hide();" />
             </p:dialog>
-        </h:form>
 
-        <h:form id="selectCategory">
-            <p:dialog header="选择物料分类" widgetVar="categoryTree" height="500" width="700" modal="true">
-                <p:tree value="#{materialViewBean.root}" var="node" dynamic="true" selectionMode="single"
-                    selection="#{materialViewBean.selectedMaterialCategory}" style="width:150px;">
+            <p:dialog header="选择物料分类" widgetVar="categoryTreeDialog" height="500" width="700" modal="true">
+                <p:tree value="#{materialViewBean.materialCategoryTree.rootNode}" var="node" dynamic="true"
+                    selectionMode="single" selection="#{materialViewBean.materialCategoryTree.selectedCategory}"
+                    style="width:150px;">
                     <p:treeNode>
                         <h:outputText value="#{node.name}" />
                     </p:treeNode>
                 </p:tree>
-                <p:commandButton value="选择" actionListener="#{materialViewBean.doSelectCategory}"
-                    update="material:materialCategory" oncomplete="categoryTree.hide();" />
-                <p:commandButton value="取消" onclick="categoryTree.hide();" />
+                <p:commandButton value="选择" actionListener="#{materialViewBean.materialCategoryTree.onCategorySelect}"
+                    update="dialogForm:materialCategory" oncomplete="categoryTreeDialog.hide();" />
+                <p:commandButton value="取消" onclick="categoryTreeDialog.hide();" />
             </p:dialog>
-        </h:form>
 
-        <h:form id="stockLocationTreeDialogForm">
             <p:dialog widgetVar="stockLocationTreeDialog" header="选择库位" height="500" width="700" modal="true">
-                <p:tree value="#{materialViewBean.treeDialog.rootNode}" var="node" dynamic="true" selectionMode="single"
-                    selection="#{materialViewBean.treeDialog.selectedNode}">
+                <p:tree value="#{materialViewBean.stockLocationTreeDialog.rootNode}" var="node" dynamic="true"
+                    selectionMode="single" selection="#{materialViewBean.stockLocationTreeDialog.selectedNode}">
                     <p:treeNode>
                         <h:outputText value="#{node.nodeText}" />
                     </p:treeNode>
                 </p:tree>
-                <p:commandButton value="选择" actionListener="#{materialViewBean.treeDialog.select}"
+                <p:commandButton value="选择" actionListener="#{materialViewBean.stockLocationTreeDialog.select}"
                     update="preferredLocation:toUpdate" oncomplete="stockLocationTreeDialog.hide();" />
                 <p:commandButton value="取消" onclick="stockLocationTreeDialog.hide()" />
             </p:dialog>
-        </h:form>
 
-        <h:form id="unitConvForm">
             <p:dialog widgetVar="unitConvDialog" header="新增单位还算表" height="400" width="500">
                 <t:panelGrid columns="2">
 
@@ -319,6 +310,23 @@
                 </t:panelGrid>
                 <p:commandButton value="..." title="添加还算条目" />
             </p:dialog>
+
+            <p:dialog id="categoryDialog" header="添加分类" widgetVar="categoryDialog" height="200" width="300">
+                <t:panelGrid columns="2">
+                    <h:outputText value="上级分类" />
+                    <p:inputText value="#{materialViewBean.activeCategory.parent.name}" />
+
+                    <h:outputText value="分类名称" />
+                    <p:inputText value="#{materialViewBean.activeCategory.name}"/>
+
+                    <h:outputText value="代码生成器:" />
+                    <p:selectOneMenu value="#{materialViewBean.activeCategory.codeGenerator.name}" style="width:100px;">
+                        <f:selectItems value="#{materialViewBean.codeGeneratories}" />
+                    </p:selectOneMenu>
+                </t:panelGrid>
+                <p:commandButton value="添加" actionListener="#{materialViewBean.doAddMaterialCategory}" oncomplete="categoryDialog.hide()"/>
+                <p:commandButton value="取消" onclick="categoryDialog.hide()" />
+            </p:dialog>
         </h:form>
 
         <script type="text/javascript">
@@ -326,19 +334,22 @@
                                             .ready(
                                                     function() {
                                                         function getElement(id) {
-                                                            return document.getElementById(id);
+                                                            return document
+                                                                    .getElementById(id);
                                                         }
                                                         selectUnit.jq
                                                                 .change(function() {
                                                                     if (document
-                                                                            .getElementById("material:selectUnit_input").value == "new")
-                                                                        addUnitDialog.show();
+                                                                            .getElementById("dialogForm:selectUnit_input").value == "new")
+                                                                        unitDialog
+                                                                                .show();
                                                                 });
                                                         selectUnitConv.jq
                                                                 .change(function() {
                                                                     if (document
-                                                                            .getElementById("material:selectUnitConv_input").value == "new")
-                                                                        unitConvDialog.show();
+                                                                            .getElementById("dialogForm:selectUnitConv_input").value == "new")
+                                                                        unitConvDialog
+                                                                                .show();
                                                                 });
 
                                                     });
