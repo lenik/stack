@@ -94,7 +94,8 @@ public class StockWarehouseAdminBean
         if (personPattern != null && !personPattern.isEmpty()) {
 
             List<Person> _persons = serviceFor(Person.class).list(
-                    PeopleCriteria.hasTag(personPattern));
+                    PeopleCriteria.internal(),
+                    PeopleCriteria.namedLike(personPattern));
 
             persons = DTOs.marshalList(PersonDto.class, _persons, true);
         }

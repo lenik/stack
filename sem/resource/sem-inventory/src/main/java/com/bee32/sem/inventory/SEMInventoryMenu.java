@@ -19,7 +19,9 @@ public class SEMInventoryMenu
     public static MenuNode SETTINGS = menu(INVENTORY, "settings");
 
     static MenuNode materialAdmin = entry(MATERIAL, 1, "materialAdmin", INVENTORY_.join("material/index-rich.jsf"));
+
     static MenuNode stockWarehouse = entry(SETTINGS, 1, "stockWarehouse", INVENTORY_.join("settings/stockWarehouse/index-rich.jsf"));
+    static MenuNode stockLocation = entry(SETTINGS, 1, "stockLocation", INVENTORY_.join("settings/stockLocation/index-rich.jsf"));
 
 
     @Override
