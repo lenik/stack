@@ -3,7 +3,7 @@ package com.bee32.sem.inventory.service;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 
-public class MPacking
+public class SMS_M
         implements IStockMergeStrategy {
 
     static final class Key {
@@ -35,6 +35,6 @@ public class MPacking
         return new Key(item.getMaterial());
     }
 
-    public static final MPacking INSTANCE = new MPacking();
+    public static final SMS_M INSTANCE = new SMS_M();
 
 }

@@ -5,24 +5,20 @@ import java.util.Currency;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 
-public class MBCPacking
+public class SMS_MC
         implements IStockMergeStrategy {
 
     static final class Key {
 
         Material material;
-        String cbatch;
         Currency currency;
 
-        public Key(Material material, String cbatch, Currency currency) {
+        public Key(Material material, Currency currency) {
             if (material == null)
                 throw new NullPointerException("material");
-            if (cbatch == null)
-                throw new NullPointerException("cbatch");
             if (currency == null)
                 throw new NullPointerException("currency");
             this.material = material;
-            this.cbatch = cbatch;
             this.currency = currency;
         }
 
@@ -35,9 +31,6 @@ public class MBCPacking
             if (!material.equals(o.material))
                 return false;
 
-            if (!cbatch.equals(o.cbatch))
-                return false;
-
             if (!currency.equals(o.currency))
                 return false;
 
@@ -48,7 +41,6 @@ public class MBCPacking
         public int hashCode() {
             int hash = 0;
             hash += material.hashCode();
-            hash += cbatch.hashCode();
             hash += currency.hashCode();
             return hash;
         }
@@ -56,9 +48,9 @@ public class MBCPacking
 
     @Override
     public Object getMergeKey(StockOrderItem item) {
-        return new Key(item.getMaterial(), item.getCBatch(), item.getPrice().getCurrency());
+        return new Key(item.getMaterial(), item.getPrice().getCurrency());
     }
 
-    public static final MBCPacking INSTANCE = new MBCPacking();
+    public static final SMS_MC INSTANCE = new SMS_MC();
 
 }
