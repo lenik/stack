@@ -76,11 +76,17 @@ public final class StockOrderSubject
     /** （冗余）结算【物料，合成批号】，外币已换算 */
     public static final StockOrderSubject PACK_MB = new StockOrderSubject("PK2", "packMB", false, true);
 
+    /** （冗余）结算【物料，合成批号，库位】，外币已换算 */
+    public static final StockOrderSubject PACK_MBL = new StockOrderSubject("PK3", "packMBL", false, true);
+
     /** （冗余）结算【物料】，外币分列 */
     public static final StockOrderSubject PACK_MC = new StockOrderSubject("PX1", "packMC", false, true);
 
     /** （冗余）结算【物料，合成批号】，外币分列 */
     public static final StockOrderSubject PACK_MBC = new StockOrderSubject("PX2", "packMBC", false, true);
+
+    /** （冗余）结算【物料，合成批号，库位】，外币分列 */
+    public static final StockOrderSubject PACK_MBLC = new StockOrderSubject("PX3", "packMBLC", false, true);
 
     /** 入库 */
     public static final StockOrderSubject TAKE_IN = new StockOrderSubject("TKI", "takeIn", false);
