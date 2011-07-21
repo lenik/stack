@@ -70,4 +70,13 @@ public class StockWarehouseDto
         this.manager = manager;
     }
 
+    public String getNodeText() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[" + getName() + "] ");
+        sb.append(getLabel());
+        if (address != null && !address.isEmpty())
+            sb.append(": " + address);
+        return sb.toString();
+    }
+
 }

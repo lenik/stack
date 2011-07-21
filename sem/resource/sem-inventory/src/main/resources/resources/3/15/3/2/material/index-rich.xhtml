@@ -188,7 +188,7 @@
         </h:form>
 
         <h:form id="unit">
-            <p:dialog header="添加单位" widgetVar="addUnitForm" height="300" width="270">
+            <p:dialog widgetVar="addUnitDialog" header="添加单位" height="300" width="270">
                 <t:panelGrid columns="3">
                     <h:outputText value="代码:" />
                     <t:panelGroup colspan="2">
@@ -210,8 +210,8 @@
                     </t:panelGroup>
                     <t:panelGroup colspan="3">
                         <p:commandButton value="确定" actionListener="#{materialViewBean.doAddUhnit}"
-                            update="material:selectUnit" oncomplete="addUnitForm.hide();" />
-                        <p:commandButton value="取消" onclick="addUnitForm.hide();" />
+                            update="material:selectUnit" oncomplete="addUnitDialog.hide();" />
+                        <p:commandButton value="取消" onclick="addUnitDialog.hide();" />
                     </t:panelGroup>
                 </t:panelGrid>
             </p:dialog>
@@ -225,7 +225,7 @@
                     <h:outputText value="仓库:" />
                     <p:inputText value="#{materialViewBean.tempPreferredLocation.location.warehouse.name}"
                         readonly="true" />
-                    <p:commandButton value="..." title="选择库位" onclick="stockLocationTree.show();" />
+                    <p:commandButton value="..." title="选择库位" onclick="stockLocationTreeDialog.show();" />
                     <h:outputText value="备注:" />
                     <t:panelGroup colspan="4">
                         <p:inputTextarea value="#{materialViewBean.tempPreferredLocation.description}"
@@ -272,17 +272,17 @@
             </p:dialog>
         </h:form>
 
-        <h:form id="stockLocationTreeForm">
-            <p:dialog header="选择库位" widgetVar="stockLocationTree" height="500" width="700" modal="true">
-                <p:tree value="#{materialViewBean.locationTreeRoot}" var="node" dynamic="true" selectionMode="single"
-                    selection="#{materialViewBean.selectedStockLocation}">
+        <h:form id="stockLocationTreeDialogForm">
+            <p:dialog widgetVar="stockLocationTreeDialog" header="选择库位" height="500" width="700" modal="true">
+                <p:tree value="#{materialViewBean.treeDialog.rootNode}" var="node" dynamic="true" selectionMode="single"
+                    selection="#{materialViewBean.treeDialog.selectedNode}">
                     <p:treeNode>
-                        <h:outputText value="#{node.nodeName}" />
+                        <h:outputText value="#{node.nodeText}" />
                     </p:treeNode>
                 </p:tree>
-                <p:commandButton value="选择" actionListener="#{materialViewBean.doSelectLocation}"
-                    update="preferredLocation:toUpdate" oncomplete="stockLocationTree.hide();" />
-                <p:commandButton value="取消" onclick="stockLocationTree.hide()" />
+                <p:commandButton value="选择" actionListener="#{materialViewBean.treeDialog.select}"
+                    update="preferredLocation:toUpdate" oncomplete="stockLocationTreeDialog.hide();" />
+                <p:commandButton value="取消" onclick="stockLocationTreeDialog.hide()" />
             </p:dialog>
         </h:form>
 
@@ -326,22 +326,19 @@
                                             .ready(
                                                     function() {
                                                         function getElement(id) {
-                                                            return document
-                                                                    .getElementById(id);
+                                                            return document.getElementById(id);
                                                         }
                                                         selectUnit.jq
                                                                 .change(function() {
                                                                     if (document
                                                                             .getElementById("material:selectUnit_input").value == "new")
-                                                                        addUnitForm
-                                                                                .show();
+                                                                        addUnitDialog.show();
                                                                 });
                                                         selectUnitConv.jq
                                                                 .change(function() {
                                                                     if (document
                                                                             .getElementById("material:selectUnitConv_input").value == "new")
-                                                                        unitConvDialog
-                                                                                .show();
+                                                                        unitConvDialog.show();
                                                                 });
 
                                                     });
