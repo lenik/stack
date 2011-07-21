@@ -3,7 +3,6 @@ package com.bee32.sem.people.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.event.NodeSelectEvent;
@@ -68,9 +67,7 @@ public class OrgAdminBean
     private OrgUnitDto orgUnit;
     private TreeNode selectedParentOrgUnitNode;
 
-    @PostConstruct
-    public void init() {
-
+    public OrgAdminBean() {
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
                 Org.class, OrgDto.class, -1, //
                 Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
