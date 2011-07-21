@@ -4,6 +4,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.dto.PersonDto;
 
@@ -73,10 +74,31 @@ public class StockWarehouseDto
     public String getNodeText() {
         StringBuilder sb = new StringBuilder();
         sb.append("[" + getName() + "] ");
-        sb.append(getLabel());
+        if (getLabel() != null && !getLabel().isEmpty())
+            sb.append(getLabel());
+        if (getLabel() != null && !getLabel().isEmpty() && address != null && !address.isEmpty())
+            sb.append(":");
         if (address != null && !address.isEmpty())
-            sb.append(": " + address);
+            sb.append(address);
         return sb.toString();
+    }
+
+    @Override
+    protected Boolean naturalEquals(EntityDto<StockWarehouse, Integer> other) {
+        StockWarehouseDto o = (StockWarehouseDto) other;
+        if (!name.equals(o.getName()))
+            return false;
+        if (!address.equals(o.getAddress()))
+            return false;
+        return true;
+    }
+
+    @Override
+    protected Integer naturalHashCode() {
+        int hash = 0;
+        hash += name.hashCode();
+        hash += address.hashCode();
+        return hash;
     }
 
 }

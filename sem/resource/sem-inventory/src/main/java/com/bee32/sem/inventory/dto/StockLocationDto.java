@@ -112,9 +112,12 @@ public class StockLocationDto
 
     public String getNodeText() {
         StringBuilder sb = new StringBuilder();
-        sb.append(getLabel());
+        if (getLabel() != null && !getLabel().isEmpty())
+            sb.append(getLabel());
+        if (getLabel() != null && !getLabel().isEmpty() && address != null && !address.isEmpty())
+            sb.append(":");
         if (address != null && !address.isEmpty())
-            sb.append(": " + address);
+            sb.append(address);
         return sb.toString();
     }
 
