@@ -139,7 +139,7 @@ public class SEMPeopleSamples
         Calendar bentleyBirthday = Calendar.getInstance();
         bentleyBirthday.set(1919, 7, 1);
         bentley.setBirthday(bentleyBirthday.getTime());
-        bentley.setTags(Sets.newSet(PartyTagname.SUPPLIER));
+        bentley.setTags(Sets.newSet(PartyTagname.SUPPLIER, PartyTagname.INTERNAL));
 
         weiXiaoBao.setBirthday(bentleyBirthday.getTime());
         weiXiaoBao.setCensusRegister("北京市");
@@ -150,7 +150,7 @@ public class SEMPeopleSamples
         weiXiaoBao.setSex(Gender.MALE);
         weiXiaoBao.setSid("11010116541220517");
         weiXiaoBao.setSidType(PersonSidType.IDENTITYCARD);
-        weiXiaoBao.setTags(Sets.newSet(PartyTagname.CUSTOMER));
+        weiXiaoBao.setTags(Sets.newSet(PartyTagname.CUSTOMER, PartyTagname.INTERNAL));
 
         Contact weiXiaoBaoHome = new Contact();
         weiXiaoBaoHome.setParty(weiXiaoBao);
