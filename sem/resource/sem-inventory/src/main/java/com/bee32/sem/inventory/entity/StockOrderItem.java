@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.cache.Redundant;
@@ -22,6 +23,7 @@ import com.bee32.sem.world.monetary.MCValue;
 
 @Entity
 @Blue
+@BatchSize(size = 100)
 public class StockOrderItem
         extends EntityAuto<Long>
         implements DecimalConfig {
@@ -140,6 +142,19 @@ public class StockOrderItem
 
     public void setLocation(StockLocation location) {
         this.location = location;
+    }
+
+    @ManyToOne
+    @Redundant
+    public StockWarehouse getWarehouse() {
+        if (location == null)
+            return null;
+        else
+            return location.getWarehouse();
+    }
+
+    void setWarehouse(StockWarehouse warehouse) {
+        // OTF redundancy, just ignored.
     }
 
     /**
