@@ -12,13 +12,10 @@ import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.entity.MaterialXP;
 import com.bee32.sem.inventory.entity.StockInventory;
 import com.bee32.sem.inventory.entity.StockInventoryXP;
-import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
-import com.bee32.sem.inventory.entity.StockSnapshot;
-import com.bee32.sem.inventory.entity.StockSnapshotType;
-import com.bee32.sem.inventory.entity.StockSnapshotXP;
+import com.bee32.sem.inventory.entity.StockPeriod;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.world.SEMWorldUnit;
@@ -31,10 +28,7 @@ public class SEMInventoryUnit
     protected void preamble() {
         add(StockInventory.class);
         add(StockInventoryXP.class);
-
-        add(StockSnapshot.class);
-        add(StockSnapshotXP.class);
-        add(StockSnapshotType.class);
+        add(StockPeriod.class);
 
         add(Material.class);
         add(MaterialXP.class);
@@ -49,7 +43,6 @@ public class SEMInventoryUnit
 
         add(StockOrder.class);
         add(StockOrderItem.class);
-        add(StockItemState.class);
     }
 
 }
