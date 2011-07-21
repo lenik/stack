@@ -151,7 +151,7 @@ public class MaterialViewBean
     }
 
     public void buildCategoryTree(TreeNode parent) {
-        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(Restrictions.isNull("parent"));
+        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
         List<MaterialCategoryDto> materialCategoryDtoList = DTOs.marshalList(MaterialCategoryDto.class, //
                 ~MaterialCategoryDto.MATERIALS, rootCategories);
         for (MaterialCategoryDto mc : materialCategoryDtoList)
@@ -168,7 +168,7 @@ public class MaterialViewBean
 
     public void buildStockTree() {
         List<StockLocation> stockLocationList = serviceFor(StockLocation.class).list(//
-                Restrictions.isNull("parent"));
+                TreeCriteria.root());
         List<StockLocationDto> stockLocationDtoList = DTOs.marshalList(StockLocationDto.class, stockLocationList);
         Map<String, TreeNode> locationMap = new HashMap<String, TreeNode>();
 
