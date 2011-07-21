@@ -15,10 +15,10 @@ public class MaterialAttributeDto
     String name;
     String value;
 
-    public MaterialAttributeDto(MaterialDto material, String name, String value) {
+    public MaterialAttributeDto(MaterialDto material) {
         this.material = material;
-        this.name = name;
-        this.value = value;
+        this.name = "";
+        this.value = "";
     }
 
     @Override
