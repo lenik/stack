@@ -39,7 +39,8 @@ public class SEMInventorySamples
         baseOption.setSafetyStock(new BigDecimal(6));
         baseOption.setWarehouse(stockWarehouse);
 
-        stockWarehouse.setName("东京一号仓库");
+        stockWarehouse.setName("TK-01");
+        stockWarehouse.setLabel("东京一号仓库");
         stockWarehouse.setAddress("東京都中央区八重洲一丁目5番3-103号");
         stockWarehouse.setPhone("911");
         stockWarehouse.setManager(SEMPeopleSamples.jackPerson);
