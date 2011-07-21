@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.type.Type;
 
 /**
@@ -204,4 +205,8 @@ public abstract class CriteriaSpec {
         return new Not(expression);
     }
 
+    // Projections.
+    {
+        Projections.projectionList();
+    }
 }
