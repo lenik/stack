@@ -1,5 +1,7 @@
 package com.bee32.sem.inventory.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -9,8 +11,8 @@ import com.bee32.plover.arch.EnterpriseService;
 import com.bee32.sem.inventory.entity.StockInventory;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
-import com.bee32.sem.inventory.entity.StockSnapshot;
-import com.bee32.sem.inventory.entity.StockSnapshotType;
+import com.bee32.sem.inventory.entity.StockPeriod;
+import com.bee32.sem.inventory.entity.StockPeriodType;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
@@ -20,67 +22,70 @@ public class StockManager
 
     @Transactional
     @Override
-    public StockSnapshot commit(StockInventory inventory, StockSnapshotType snapshotType, String description)
+    public StockPeriod pack(StockInventory inventory, StockPeriodType periodType, String description)
             throws FxrQueryException {
         if (inventory == null)
             throw new NullPointerException("inventory");
-        if (snapshotType == null)
-            throw new NullPointerException("snapshotType");
+        if (periodType == null)
+            throw new NullPointerException("periodType");
         if (description == null)
             throw new NullPointerException("description");
 
-        StockSnapshot workingBase = inventory.getWorkingBase();
+        StockPeriod workingBase = inventory.getWorkingBase();
 
         // 1. Create the new snapshot
 
-        StockSnapshot snapshot = new StockSnapshot();
+        StockPeriod period = new StockPeriod();
         {
-            snapshot.setInventory(inventory);
-            snapshot.setType(snapshotType);
-            snapshot.setDescription(description);
-            snapshot.setParent(workingBase);
+            period.setInventory(inventory);
+            period.setType(periodType);
+            period.setDescription(description);
             // snapshot.setStarting(starting);
 
-            asFor(StockSnapshot.class).save(snapshot);
+            asFor(StockPeriod.class).save(period);
         }
 
         // 2. Compact the new starting
-        StockOrder packM = new StockOrder(snapshot, StockOrderSubject.PACK_M);
-        StockOrder packMB = new StockOrder(snapshot, StockOrderSubject.PACK_MB);
-        StockOrder packMC = new StockOrder(snapshot, StockOrderSubject.PACK_MC);
-        StockOrder packMBC = new StockOrder(snapshot, StockOrderSubject.PACK_MBC);
-        {
-            List<StockOrder> orders = asFor(StockOrder.class).list(StockCriteria.isBasedOn(workingBase));
-
-            for (StockOrder order : orders) {
-                packM.merge(order);
-            }
-
-            asFor(StockOrder.class).save(packM);
+        List<StockOrder> packOrders = new ArrayList<StockOrder>();
+        for (StockOrderSubject packSubject : Arrays.asList(//
+                StockOrderSubject.PACK_M, //
+                StockOrderSubject.PACK_MBLC)) {
+            StockOrder packOrder = new StockOrder(period, packSubject);
+            packOrders.add(packOrder);
         }
 
+        List<StockOrder> orders = asFor(StockOrder.class).list(StockCriteria.basedOn(workingBase));
+        for (StockOrder order : orders) {
+            for (StockOrder packOrder : packOrders)
+                packOrder.merge(order);
+        }
+
+        // period.setPackOrders(packOrders);
+        asFor(StockOrder.class).saveAll(packOrders);
+
         // 3. Update the inventory
-        inventory.setWorkingBase(snapshot);
+        inventory.setWorkingBase(period);
         asFor(StockInventory.class).update(inventory);
 
         // Done.
-        return snapshot;
+        return period;
     }
 
     @Transactional
     @Deprecated
     @Override
-    public StockSnapshot commit(StockSnapshotType snapshotType, String description) {
-        return commit(StockInventory.MAIN, snapshotType, description);
+    public StockPeriod pack(StockPeriodType periodType, String description)
+            throws FxrQueryException {
+        return pack(StockInventory.MAIN, periodType, description);
     }
 
     @Override
-    public StockSnapshot getWorkingBase(StockInventory inventory) {
+    public StockPeriod getWorkingBase(StockInventory inventory) {
         return inventory.getWorkingBase();
     }
 
     @Override
-    public StockSnapshot getHistoryBase(Date date) {
+    public StockPeriod getHistoryBase(Date date) {
         return null;
     }
 
