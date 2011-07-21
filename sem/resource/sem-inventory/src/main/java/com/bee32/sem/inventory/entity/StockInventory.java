@@ -24,8 +24,8 @@ public class StockInventory
 
     private static final long serialVersionUID = 1L;
 
-    List<StockSnapshot> snapshots = new ArrayList<StockSnapshot>();
-    StockSnapshot workingBase;
+    List<StockPeriod> snapshots = new ArrayList<StockPeriod>();
+    StockPeriod workingBase;
 
     public StockInventory() {
     }
@@ -51,11 +51,11 @@ public class StockInventory
      */
     @OneToMany(mappedBy = "inventory")
     @Cascade(CascadeType.ALL)
-    public List<StockSnapshot> getSnapshots() {
+    public List<StockPeriod> getSnapshots() {
         return snapshots;
     }
 
-    public void setSnapshots(List<StockSnapshot> snapshots) {
+    public void setSnapshots(List<StockPeriod> snapshots) {
         this.snapshots = snapshots;
     }
 
@@ -64,11 +64,11 @@ public class StockInventory
      */
     @OneToOne
     @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public StockSnapshot getWorkingBase() {
+    public StockPeriod getWorkingBase() {
         return workingBase;
     }
 
-    public void setWorkingBase(StockSnapshot workingBase) {
+    public void setWorkingBase(StockPeriod workingBase) {
         this.workingBase = workingBase;
     }
 

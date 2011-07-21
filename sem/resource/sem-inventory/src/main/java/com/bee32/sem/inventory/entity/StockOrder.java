@@ -25,8 +25,8 @@ public class StockOrder
 
     private static final long serialVersionUID = 1L;
 
-    StockSnapshot base;
-    StockSnapshot spec;
+    StockPeriod base;
+    StockPeriod spec;
     StockOrderSubject subject;
     String serial;
     Long jobId;
@@ -34,7 +34,7 @@ public class StockOrder
     public StockOrder() {
     }
 
-    public StockOrder(StockSnapshot base, StockOrderSubject subject) {
+    public StockOrder(StockPeriod base, StockOrderSubject subject) {
         if (base == null)
             throw new NullPointerException("base");
         if (subject == null)
@@ -46,37 +46,37 @@ public class StockOrder
     }
 
     /**
-     * 基准库存快照。
+     * 基准库存期结。
      */
     @ManyToOne(optional = false)
-    public StockSnapshot getBase() {
+    public StockPeriod getBase() {
         return base;
     }
 
-    public void setBase(StockSnapshot base) {
+    public void setBase(StockPeriod base) {
         if (base == null)
             throw new NullPointerException("base");
         this.base = base;
     }
 
     /**
-     * 作为快照冗余的对应快照。
+     * 本单仅作为某期结的余单。（冗余）
      * <p>
      * （取值为 <code>null</code> 或与 {@link #getBase()} 相等）。
      *
      * @see StockOrderSubject#START
      */
     @OneToOne
-    public StockSnapshot getSpec() {
+    public StockPeriod getSpec() {
         return spec;
     }
 
-    public void setSpec(StockSnapshot spec) {
+    public void setSpec(StockPeriod spec) {
         this.spec = spec;
     }
 
     /**
-     * 科目，定义本订单的用途。
+     * 科目，定义本单的用途。
      */
     @Transient
     public StockOrderSubject getSubject() {

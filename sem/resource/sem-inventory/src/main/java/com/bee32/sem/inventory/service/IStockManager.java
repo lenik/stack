@@ -3,8 +3,8 @@ package com.bee32.sem.inventory.service;
 import java.util.Date;
 
 import com.bee32.sem.inventory.entity.StockInventory;
-import com.bee32.sem.inventory.entity.StockSnapshot;
-import com.bee32.sem.inventory.entity.StockSnapshotType;
+import com.bee32.sem.inventory.entity.StockPeriod;
+import com.bee32.sem.inventory.entity.StockPeriodType;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 public interface IStockManager {
@@ -14,13 +14,13 @@ public interface IStockManager {
      *
      * @param inventory
      *            逻辑库存
-     * @param snapshotType
+     * @param periodType
      *            快照类型
      * @param description
      *            快照描述
      * @return 新形成的快照，此快照同时作为逻辑库存的新的基准库存。
      */
-    StockSnapshot pack(StockInventory inventory, StockSnapshotType snapshotType, String description)
+    StockPeriod pack(StockInventory inventory, StockPeriodType periodType, String description)
             throws FxrQueryException;
 
     /**
@@ -37,16 +37,17 @@ public interface IStockManager {
      * @see StockInventory#MAIN
      */
     @Deprecated
-    StockSnapshot pack(StockSnapshotType snapshotType, String description);
+    StockPeriod pack(StockPeriodType snapshotType, String description)
+            throws FxrQueryException;
 
     /**
      * 获取当前的基准库存。
      */
-    StockSnapshot getWorkingBase(StockInventory inventory);
+    StockPeriod getWorkingBase(StockInventory inventory);
 
     /**
      * 获取指定历史时刻的有效库存快照。
      */
-    StockSnapshot getHistoryBase(Date date);
+    StockPeriod getHistoryBase(Date date);
 
 }
