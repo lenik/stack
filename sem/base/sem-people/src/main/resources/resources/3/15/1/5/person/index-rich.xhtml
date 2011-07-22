@@ -150,6 +150,17 @@
 								</f:facet>
 								<h:outputText value="#{person.owner.displayName}" />
 							</p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="创建日期" />
+                                </f:facet>
+								<h:outputText value="#{person.createdDate}">
+									<f:convertDateTime pattern="yyyy-MM-dd"
+										timeZone="Asia/Shanghai" />
+								</h:outputText>
+							</p:column>
+
 						</p:dataTable>
 					</p:tab>
 					<p:tab title="联系人详细">
