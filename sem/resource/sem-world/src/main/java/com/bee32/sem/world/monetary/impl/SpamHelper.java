@@ -19,7 +19,7 @@ public class SpamHelper {
 
     public static String getAgent(String... list) {
         StringBuilder buf = new StringBuilder(200);
-        for (int i = 0; i <= list.length; i++) {
+        for (int i = 0; i < list.length; i++) {
             if (i != 0)
                 buf.append(' ');
             buf.append(list[i]);
