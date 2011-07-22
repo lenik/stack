@@ -140,7 +140,7 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     public E load(K id) {
         E entity = get(id);
         if (entity == null)
-            throw new ObjectRetrievalFailureException(entityType.getClass(), id);
+            throw new ObjectRetrievalFailureException(entityType, id);
         return entity;
     }
 
