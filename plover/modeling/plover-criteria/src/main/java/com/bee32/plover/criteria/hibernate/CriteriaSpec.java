@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projections;
 import org.hibernate.type.Type;
 
 /**
@@ -45,7 +44,7 @@ public abstract class CriteriaSpec {
         return Order.desc(propertyName);
     }
 
-    protected static CriteriaElement idEq(Object value) {
+    protected static CriteriaElement idEquals(Object value) {
         return new IdEquals(value);
     }
 
@@ -145,7 +144,7 @@ public abstract class CriteriaSpec {
         return new SimpleSqlRestriction(sql);
     }
 
-    protected static CriteriaElement allEq(Map<?, ?> propertyNameValues) {
+    protected static CriteriaElement allEquals(Map<?, ?> propertyNameValues) {
         return new AllEquals(propertyNameValues);
     }
 
@@ -157,27 +156,27 @@ public abstract class CriteriaSpec {
         return new IsNotEmpty(propertyName);
     }
 
-    protected static CriteriaElement sizeEq(String propertyName, int size) {
+    protected static CriteriaElement sizeEquals(String propertyName, int size) {
         return new SizeEquals(propertyName, size);
     }
 
-    protected static CriteriaElement sizeNe(String propertyName, int size) {
+    protected static CriteriaElement sizeNotEquals(String propertyName, int size) {
         return new SizeNotEquals(propertyName, size);
     }
 
-    protected static CriteriaElement sizeGt(String propertyName, int size) {
+    protected static CriteriaElement sizeGreaterThan(String propertyName, int size) {
         return new SizeGreaterThan(propertyName, size);
     }
 
-    protected static CriteriaElement sizeLt(String propertyName, int size) {
+    protected static CriteriaElement sizeLessThan(String propertyName, int size) {
         return new SizeLessThan(propertyName, size);
     }
 
-    protected static CriteriaElement sizeGe(String propertyName, int size) {
+    protected static CriteriaElement sizeGreaterOrEquals(String propertyName, int size) {
         return new SizeGreaterOrEquals(propertyName, size);
     }
 
-    protected static CriteriaElement sizeLe(String propertyName, int size) {
+    protected static CriteriaElement sizeLessOrEquals(String propertyName, int size) {
         return new SizeLessOrEquals(propertyName, size);
     }
 
@@ -206,7 +205,65 @@ public abstract class CriteriaSpec {
     }
 
     // Projections.
-    {
-        Projections.projectionList();
+
+    protected static ProjectionList projectionList() {
+        return new ProjectionList();
     }
+
+    public static ProjectionElement distinct(ProjectionElement proj) {
+        return new Distinct(proj);
+    }
+
+    public static ProjectionElement rowCount() {
+        return new RowCountProjection();
+    }
+
+    public static ProjectionElement count(String propertyName) {
+        return new CountProjection(propertyName);
+    }
+
+    public static ProjectionElement countDistinct(String propertyName) {
+        return new CountProjection(propertyName, true);
+    }
+
+    public static ProjectionElement max(String propertyName) {
+        return new MaxProjection(propertyName);
+    }
+
+    public static ProjectionElement min(String propertyName) {
+        return new MinProjection(propertyName);
+    }
+
+    public static ProjectionElement avg(String propertyName) {
+        return new AvgProjection(propertyName);
+    }
+
+    public static ProjectionElement sum(String propertyName) {
+        return new SumProjection(propertyName);
+    }
+
+    public static ProjectionElement sqlProjection(String sql, String[] columnAliases, Type[] types) {
+        return new SQLProjection(sql, columnAliases, types);
+    }
+
+    public static ProjectionElement sqlGroupProjection(String sql, String groupBy, String[] columnAliases, Type[] types) {
+        return new SQLProjection(sql, groupBy, columnAliases, types);
+    }
+
+    public static ProjectionElement groupProperty(String propertyName) {
+        return new PropertyProjection(propertyName, true);
+    }
+
+    public static ProjectionElement property(String propertyName) {
+        return new PropertyProjection(propertyName);
+    }
+
+    public static ProjectionElement id() {
+        return new IdentifierProjection();
+    }
+
+    public static ProjectionElement alias(ProjectionElement projection, String alias) {
+        return new AliasedProjection(projection, alias);
+    }
+
 }
