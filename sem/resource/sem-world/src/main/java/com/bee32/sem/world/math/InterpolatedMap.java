@@ -3,6 +3,9 @@ package com.bee32.sem.world.math;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * 直线插值。
+ */
 public class InterpolatedMap
         extends TreeMap<Integer, Double> {
 
