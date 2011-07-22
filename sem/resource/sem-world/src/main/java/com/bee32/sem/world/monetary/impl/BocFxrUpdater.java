@@ -61,8 +61,8 @@ public class BocFxrUpdater
      * </table>
      */
     static String START_URL = "http://www.boc.cn/sourcedb/whpj/index.html";
-    static Pattern SYNC_START = Pattern.compile("<th\b.*?>货币名称</th>");
-    static Currency UNIT_CURRENCY = CNY;
+    static Pattern SYNC_START = Pattern.compile("<th\\b.*?>货币名称</th>");
+    static Currency QUOTE_CURRENCY = CNY;
     static Map<String, Currency> REV_MAP = CurrencyNames.getRevMap(zh_CN);
     static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
