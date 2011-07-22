@@ -18,11 +18,11 @@ public class StockCriteria
     /**
      * 基于某快照。
      */
-    @LeftHand({ StockOrder.class, StockSnapshot.class })
-    public static CriteriaElement isBasedOn(StockSnapshot snapshot) {
-        if (snapshot == null)
+    @LeftHand({ StockOrder.class, StockPeriod.class })
+    public static CriteriaElement basedOn(StockPeriod period) {
+        if (period == null)
             throw new NullPointerException("snapshot");
-        return equals("base.id", snapshot.getId());
+        return equals("base.id", period.getId());
     }
 
     /**
