@@ -21,50 +21,74 @@
             <p:growl id="growl" showDetail="true" />
         </h:form>
 
+        <h:outputStylesheet>
+            .fts{
+                vertical-align:top;
+                width:20%;
+            }
+            .std{
+                vertical-align:top;
+                width:80%;
+            }
+        </h:outputStylesheet>
         <h:form id="main">
 
-            <p:layout style="min-width:400px;min-height:200px;" id="layout">
+            <t:panelGrid columns="2" width="100%" columnClasses="ftd,std">
+                <t:panelGroup colspan="2">
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:commandButton value="新增物料" oncomplete="materialDialog.show();"
+                                actionListener="#{materialViewBean.createMaterialForm}" update="dialogForm:material" />
+                            <p:divider />
+                            <p:inputText value="#{materialViewBean.materialPattern}" />
+                            <p:commandButton value="查找" />
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                </t:panelGroup>
 
-                <p:layoutUnit position="north">
-                    <p:commandButton value="新增物料" oncomplete="materialDialog.show();"
-                        actionListener="#{materialViewBean.createMaterialForm}" update="dialogForm:material" />
-                    <p:commandButton value="新增分类" actionListener="#{materialViewBean.createCategoryForm}" oncomplete="categoryDialog.show();"/>
-                </p:layoutUnit>
-
-                <p:layoutUnit position="west" header="物料树" resizable="true" size="200" minSize="40" collapsible="true">
-                    <p:tree id="categoryTree" value="#{materialViewBean.materialCategoryTree.rootNode}" var="node"
-                        dynamic="true" selectionMode="single"
-                        selection="#{materialViewBean.materialCategoryTree.selectedNode}" style="width:150px;">
-                        <p:ajax event="select" listener="#{materialViewBean.materialCategoryTree.onNodeSelect}"
-                            update="main:materialList" />
-                        <p:treeNode>
-                            <h:outputText value="#{node.name}" />
-                        </p:treeNode>
-                    </p:tree>
-                </p:layoutUnit>
-
-                <p:layoutUnit position="center">
-                    <p:dataTable var="material" value="#{materialViewBean.materialList}" id="materialList">
-                        <p:column headerText="物料名称">
-                            <h:outputText value="#{material.name}" />
-                        </p:column>
-                        <p:column headerText="序列号">
-                            <h:outputText value="#{material.serial}" />
-                        </p:column>
-                        <p:column headerText="条形码">
-                            <h:outputText value="#{material.barCode}" />
-                        </p:column>
-                        <p:column headerText="基本单位">
-                            <h:outputText value="#{material.unit.name}" />
-                        </p:column>
-                        <p:column headerText="操作">
-                            <p:commandLink value="详细"></p:commandLink>
-                            <p:commandLink value="编辑"></p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                </p:layoutUnit>
-            </p:layout>
-
+                <p:tree id="categoryTree" expanded="#{materialViewBean.test}"
+                    value="#{materialViewBean.materialCategoryTree.rootNode}" var="node" dynamic="true"
+                    selectionMode="single" selection="#{materialViewBean.materialCategoryTree.selectedNode}"
+                    style="width:90%;">
+                    <p:ajax event="select" listener="#{materialViewBean.materialCategoryTree.onNodeSelect}"
+                        update="main:materialList" />
+                    <p:treeNode>
+                        <h:outputText value="#{node.name}" />
+                    </p:treeNode>
+                </p:tree>
+                <p:dataTable var="material" value="#{materialViewBean.materialList}" id="materialList">
+                    <p:column headerText="物料名称">
+                        <h:outputText value="#{material.name}" />
+                    </p:column>
+                    <p:column headerText="序列号">
+                        <h:outputText value="#{material.serial}" />
+                    </p:column>
+                    <p:column headerText="条形码">
+                        <h:outputText value="#{material.barCode}" />
+                    </p:column>
+                    <p:column headerText="基本单位">
+                        <h:outputText value="#{material.unit.name}" />
+                    </p:column>
+                    <p:column headerText="操作" style="width:80px;">
+                        <p:commandLink title="详细" update="dialogForm:material"
+                            actionListener="#{materialViewBean.setMaterialDialogDisable}"
+                            oncomplete="materialDialog.show();">
+                            <p:graphicImage value="#{location.ICON}/etool16/validate.gif" />
+                            <f:setPropertyActionListener value="#{material}" target="#{materialViewBean.activeMaterial}" />
+                        </p:commandLink>
+                        <p:commandLink title="编辑" update="dialogForm:material"
+                            actionListener="#{materialViewBean.setMaterialDialogEnable}"
+                            oncomplete="materialDialog.show();">
+                            <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" />
+                            <f:setPropertyActionListener value="#{material}" target="#{materialViewBean.activeMaterial}" />
+                        </p:commandLink>
+                        <p:commandLink title="删除" oncomplete="confirmation.show()" process="@this">
+                            <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
+                            <f:setPropertyActionListener value="#{material}" target="#{materialViewBean.activeMaterial}" />
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </t:panelGrid>
         </h:form>
 
         <h:form id="dialogForm">
@@ -73,38 +97,47 @@
                 <t:panelGrid columns="5" id="material">
                     <h:outputText value="物料名称" />
                     <t:panelGroup colspan="4">
-                        <p:inputText value="#{materialViewBean.activeMaterial.name}" style="width:400px;" />
+                        <p:inputText value="#{materialViewBean.activeMaterial.name}"
+                            readonly="#{materialViewBean.editable}" style="width:400px;" />
                     </t:panelGroup>
 
                     <h:outputText value="序列号:" />
-                    <p:inputText value="#{materialViewBean.activeMaterial.serial}" />
+                    <p:inputText value="#{materialViewBean.activeMaterial.serial}"
+                        readonly="#{materialViewBean.editable}" />
                     <h:outputText value="条形码:" />
-                    <p:inputText widgetVar="ttt" value="#{materialViewBean.activeMaterial.barCode}" />
+                    <p:inputText widgetVar="ttt" value="#{materialViewBean.activeMaterial.barCode}"
+                        readonly="#{materialViewBean.editable}" />
                     <h:inputHidden value="" />
 
                     <h:outputText value="物料分类:" />
                     <t:panelGroup colspan="4">
                         <p:inputText id="materialCategory" value="#{materialViewBean.activeMaterial.category.name}"
                             readonly="true" />
-                        <p:commandButton value="..." title="选择物料分类" onclick="categoryTreeDialog.show();" />
+                        <p:commandButton value="..." title="选择物料分类" onclick="categoryTreeDialog.show();"
+                            disabled="#{materialViewBean.editable}" />
                     </t:panelGroup>
 
                     <h:outputText value="单位类型:" />
-                    <p:inputText value="#{materialViewBean.activeMaterial.unitHint}" />
+                    <p:inputText value="#{materialViewBean.activeMaterial.unitHint}"
+                        readonly="#{materialViewBean.editable}" />
                     <h:outputText value="基础单位:" />
                     <p:selectOneMenu id="selectUnit" widgetVar="selectUnit"
-                        value="#{materialViewBean.activeMaterial.unit.name}" style="width:120px;">
-                        <f:selectItem itemLabel="新增单位" itemValue="new" />
+                        value="#{materialViewBean.activeMaterial.unit.name}" disabled="#{materialViewBean.editable}"
+                        style="width:150px;">
+                        <f:selectItem itemLabel="--选择基础单位--" itemValue="" />
                         <f:selectItems value="#{materialViewBean.units}" />
+                        <f:selectItem itemLabel="新增单位" itemValue="new" />
                     </p:selectOneMenu>
                     <h:inputHidden value="" />
 
                     <h:outputText value="单位还算表" />
                     <t:panelGroup colspan="4">
                         <p:selectOneMenu id="selectUnitConv" widgetVar="selectUnitConv"
-                            value="#{materialViewBean.activeMaterial.unitConv.id}" style="width:180px;">
-                            <f:selectItem itemLabel="新增单位还算表" itemValue="new" />
+                            value="#{materialViewBean.activeMaterial.unitConv.id}"
+                            disabled="#{materialViewBean.editable}" style="width:180px;">
+                            <f:selectItem itemLabel="--选择单位还算表--" itemValue=""/>
                             <f:selectItems value="#{materialViewBean.unitConvs}" />
+                            <f:selectItem itemLabel="新增单位还算表" itemValue="new" />
                         </p:selectOneMenu>
                     </t:panelGroup>
 
@@ -119,34 +152,44 @@
                                 <h:outputText value="#{attr.value}" />
                             </p:column>
                             <p:column headerText="操作" style="width:80px;">
-                                <p:commandLink value="编辑" />
-                                <p:commandLink value="删除" />
+                                <p:commandLink title="编辑" oncomplete="attributeDialog.show();"
+                                    disabled="#{materialViewBean.editable}">
+                                    <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" />
+                                </p:commandLink>
+                                <p:commandLink title="删除" disabled="#{materialViewBean.editable}">
+                                    <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
+                                </p:commandLink>
                             </p:column>
                         </p:dataTable>
                     </t:panelGroup>
-                    <p:commandButton value="..." title="增加属性" oncomplete="attributeDialog.show();"
-                        update="dialogForm:attribute" />
+                    <p:commandButton value="..." title="增加属性" disabled="#{materialViewBean.editable}"
+                        oncomplete="attributeDialog.show();" update="dialogForm:attribute" />
 
                     <h:outputText value="推荐库位" />
                     <t:panelGroup colspan="3">
-                        <p:dataTable id="preferredLocations" var="location"
+                        <p:dataTable id="preferredLocations" var="preferredLocation"
                             value="#{materialViewBean.activeMaterial.preferredLocations}">
                             <p:column headerText="仓库">
-                                <h:outputText value="#{location.location.warehouse.name}" />
+                                <h:outputText value="#{preferredLocation.location.warehouse.name}" />
                             </p:column>
                             <p:column headerText="库位">
-                                <h:outputText value="#{location.location.address}" />
+                                <h:outputText value="#{preferredLocation.location.address}" />
                             </p:column>
                             <p:column headerText="备注">
-                                <h:outputText value="#{location.description}" />
+                                <h:outputText value="#{preferredLocation.description}" />
                             </p:column>
                             <p:column headerText="操作" style="width:80px;">
-                                <p:commandLink value="编辑" />
-                                <p:commandLink value="删除" />
+                                <p:commandLink title="编辑" disabled="#{materialViewBean.editable}">
+                                    <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" />
+                                </p:commandLink>
+                                <p:commandLink title="删除" disabled="#{materialViewBean.editable}">
+                                    <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
+                                </p:commandLink>
                             </p:column>
                         </p:dataTable>
                     </t:panelGroup>
-                    <p:commandButton value="..." title="添加推荐库位" onclick="preferDialog.show();" />
+                    <p:commandButton value="..." title="添加推荐库位" disabled="#{materialViewBean.editable}"
+                        onclick="preferDialog.show();" />
 
                     <h:outputText value="物料设置:" />
                     <t:panelGroup colspan="3">
@@ -161,16 +204,22 @@
                                 <h:outputText value="#{opt.stkPeriod}" />
                             </p:column>
                             <p:column headerText="操作" style="width:80px;">
-                                <p:commandLink value="编辑" />
-                                <p:commandLink value="删除" />
+                                <p:commandLink title="编辑" disabled="#{materialViewBean.editable}">
+                                    <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" />
+                                </p:commandLink>
+                                <p:commandLink title="删除" disabled="#{materialViewBean.editable}">
+                                    <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
+                                </p:commandLink>
                             </p:column>
                         </p:dataTable>
                     </t:panelGroup>
-                    <p:commandButton value="..." title="添加物料设置" onclick="optionDialog.show();" />
+                    <p:commandButton value="..." title="添加物料设置" disabled="#{materialViewBean.editable}"
+                        onclick="optionDialog.show();" />
 
                     <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}"
-                        update="main:categoryTree,main:materialList" oncomplete="materialDialog.hide();" />
-                    <p:commandButton value="取消" onclick="materialDialog.hide();" />
+                        update="main:materialList,note" disabled="#{materialViewBean.editable}"
+                        oncomplete="materialDialog.hide();" />
+                    <p:commandButton value="取消" disabled="#{materialViewBean.editable}" onclick="materialDialog.hide();" />
                 </t:panelGrid>
             </p:dialog>
 
@@ -274,7 +323,7 @@
                     </p:treeNode>
                 </p:tree>
                 <p:commandButton value="选择" actionListener="#{materialViewBean.stockLocationTreeDialog.select}"
-                    update="preferredLocation:toUpdate" oncomplete="stockLocationTreeDialog.hide();" />
+                    update="dialogForm:toUpdate" oncomplete="stockLocationTreeDialog.hide();" />
                 <p:commandButton value="取消" onclick="stockLocationTreeDialog.hide()" />
             </p:dialog>
 
@@ -311,22 +360,14 @@
                 <p:commandButton value="..." title="添加还算条目" />
             </p:dialog>
 
-            <p:dialog id="categoryDialog" header="添加分类" widgetVar="categoryDialog" height="200" width="300">
-                <t:panelGrid columns="2">
-                    <h:outputText value="上级分类" />
-                    <p:inputText value="#{materialViewBean.activeCategory.parent.name}" />
+            <p:confirmDialog message="您确定要删除此物料吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
+                widgetVar="confirmation">
 
-                    <h:outputText value="分类名称" />
-                    <p:inputText value="#{materialViewBean.activeCategory.name}"/>
+                <p:commandButton value="删除" update="note,main:materialList" oncomplete="confirmation.hide()"
+                    actionListener="#{materialViewBean.destroyMaterial}" />
+                <p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
 
-                    <h:outputText value="代码生成器:" />
-                    <p:selectOneMenu value="#{materialViewBean.activeCategory.codeGenerator.name}" style="width:100px;">
-                        <f:selectItems value="#{materialViewBean.codeGeneratories}" />
-                    </p:selectOneMenu>
-                </t:panelGrid>
-                <p:commandButton value="添加" actionListener="#{materialViewBean.doAddMaterialCategory}" oncomplete="categoryDialog.hide()"/>
-                <p:commandButton value="取消" onclick="categoryDialog.hide()" />
-            </p:dialog>
+            </p:confirmDialog>
         </h:form>
 
         <script type="text/javascript">
@@ -354,6 +395,7 @@
 
                                                     });
                                 </script>
+
     </ui:define>
 </ui:composition>
 </html>
