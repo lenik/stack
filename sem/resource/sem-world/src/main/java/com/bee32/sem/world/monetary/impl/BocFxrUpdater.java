@@ -72,8 +72,8 @@ public class BocFxrUpdater
     static final int F_SELLING_RATE = 3;
     static final int F_BASE_RATE = 4;
     static final int F_EVAL_RATE = 5;
-    static final int F_QUOTE_DATE = 6;
-    static final int F_QUOTE_TIME = 7;
+    static final int F_DATE = 6;
+    static final int F_TIME = 7;
 
     @Override
     protected FxrTable download()
@@ -89,7 +89,7 @@ public class BocFxrUpdater
             method.releaseConnection();
         }
 
-        FxrTable table = new FxrTable(UNIT_CURRENCY);
+        FxrTable table = new FxrTable(QUOTE_CURRENCY);
 
         Matcher matcher = SYNC_START.matcher(html);
         if (!matcher.find()) {
@@ -117,7 +117,10 @@ public class BocFxrUpdater
             }
 
             if (line.startsWith("</tr>")) {
-                table.putQuote(record);
+                if (record != null) {
+                    // logger.debug("FXR Record: " + record);
+                    table.put(record);
+                }
                 record = null;
                 continue;
             }
@@ -131,46 +134,63 @@ public class BocFxrUpdater
                 if (record != null) {
                     switch (columnIndex) {
                     case F_CNAME:
-                        Currency quoteCurrency = REV_MAP.get(text);
-                        record.setQuoteCurrency(quoteCurrency);
+                        Currency unitCurrency = REV_MAP.get(text);
+                        if (unitCurrency == null) {
+                            logger.warn("Unknown currency name (locale): " + text);
+                            record = null;
+                            continue;
+                        }
+                        record.setUnitCurrency(unitCurrency);
                         break;
 
                     case F_BUYING_RATE:
-                        Float buyingRate = parseFloat(text);
+                        Float buyingRate = parseScale(text);
+                        if (buyingRate == null) {
+                            logger.warn("No buying rate, skipped: " + record.getUnitCurrency());
+                            record = null;
+                            continue;
+                        }
                         record.setBuyingRate(buyingRate);
                         break;
 
                     case F_XBUYING_RATE:
-                        Float xbuyingRate = parseFloat(text);
+                        Float xbuyingRate = parseScale(text);
                         record.setXbuyingRate(xbuyingRate);
                         break;
 
                     case F_SELLING_RATE:
-                        Float sellingRate = parseFloat(text);
+                        Float sellingRate = parseScale(text);
+                        if (sellingRate == null) {
+                            logger.warn("No selling rate, skipped: " + record.getUnitCurrency());
+                            record = null;
+                            continue;
+                        }
                         record.setSellingRate(sellingRate);
                         break;
 
                     case F_BASE_RATE:
-                        Float baseRate = parseFloat(text);
+                        Float baseRate = parseScale(text);
                         record.setBaseRate(baseRate);
                         break;
 
                     case F_EVAL_RATE:
-                        // Not used.
-                        // Float evalRate = parseFloat(text);
-                        // record.setBaseRate(evalRate);
+                        if (record.getBaseRate() == null) {
+                            // Mostly they are the same.
+                            Float evalRate = parseScale(text);
+                            record.setBaseRate(evalRate);
+                        }
                         break;
 
-                    case F_QUOTE_DATE:
+                    case F_DATE:
                         Date date = parseDate(text);
-                        record.setQuoteDate(date);
+                        record.setDate(date);
                         break;
 
-                    case F_QUOTE_TIME:
+                    case F_TIME:
                         // Not used.
                         break;
-                    }
-                }
+                    } // columnIndex
+                } // record != null
                 columnIndex++;
             }
         }
@@ -178,12 +198,17 @@ public class BocFxrUpdater
         return table;
     }
 
-    Float parseFloat(String text) {
+    Float parseScale(String text) {
         if (text == null)
             throw new NullPointerException("text");
+
+        text = text.replace("&nbsp;", " ");
+        text = text.trim();
+
         if (text.isEmpty())
             return null;
         float value = Float.parseFloat(text);
+        value /= 100.0;
         return value;
     }
 
