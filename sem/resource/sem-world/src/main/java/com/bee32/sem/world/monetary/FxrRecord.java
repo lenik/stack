@@ -33,8 +33,10 @@ public class FxrRecord
 
     private static final long serialVersionUID = 1L;
 
-    Date quoteDate;
-    Currency quoteCurrency;
+    // Currency nativeCurrency
+
+    Date date;
+    Currency unitCurrency;
 
     float buyingRate; // cash buying rate
     float sellingRate;
@@ -45,76 +47,45 @@ public class FxrRecord
     public FxrRecord() {
     }
 
-    public FxrRecord(Date quoteDate, Currency quoteCurrency) {
-        this.quoteDate = quoteDate;
-        this.quoteCurrency = quoteCurrency;
+    public FxrRecord(Date date, Currency unitCurrency) {
+        this.date = date;
+        this.unitCurrency = unitCurrency;
     }
 
     @NaturalId
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    public Date getQuoteDate() {
-        return quoteDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setQuoteDate(Date quoteDate) {
-        if (quoteDate == null)
-            throw new NullPointerException("quoteDate");
-        this.quoteDate = quoteDate;
+    public void setDate(Date date) {
+        if (date == null)
+            throw new NullPointerException("date");
+        this.date = date;
     }
 
-    // Currency unitCurrency;
-    //
-    // /**
-    // * 单元货币、或称 base currency, transation currency.
-    // */
-    // @Transient
-    // public Currency getUnitCurrency() {
-    // return unitCurrency;
-    // }
-    //
-    // public void setUnitCurrency(Currency unitCurrency) {
-    // if (unitCurrency == null)
-    // throw new NullPointerException("unitCurrency");
-    // this.unitCurrency = unitCurrency;
-    // }
-    //
-    // @NaturalId
-    // @Column(length = 3, nullable = false)
-    // String get_Unit() {
-    // return unitCurrency.getCurrencyCode();
-    // }
-    //
-    // void set_Unit(String _unitCurrency) {
-    // if (_unitCurrency == null)
-    // throw new NullPointerException("_unitCurrency");
-    // unitCurrency = Currency.getInstance(_unitCurrency);
-    // }
-
-    /**
-     * 报价货币（分子）、或称 price currency, payment currency
-     */
     @Transient
-    public Currency getQuoteCurrency() {
-        return quoteCurrency;
+    public Currency getUnitCurrency() {
+        return unitCurrency;
     }
 
-    public void setQuoteCurrency(Currency quoteCurrency) {
-        if (quoteCurrency == null)
-            throw new NullPointerException("quoteCurrency");
-        this.quoteCurrency = quoteCurrency;
+    public void setUnitCurrency(Currency unitCurrency) {
+        if (unitCurrency == null)
+            throw new NullPointerException("unitCurrency");
+        this.unitCurrency = unitCurrency;
     }
 
     @NaturalId
     @Column(length = 3, nullable = false)
-    String get_Quote() {
-        return quoteCurrency.getCurrencyCode();
+    String get_Unit() {
+        return unitCurrency.getCurrencyCode();
     }
 
-    void set_Quote(String _quoteCurrency) {
-        if (_quoteCurrency == null)
-            throw new NullPointerException("_quoteCurrency");
-        quoteCurrency = Currency.getInstance(_quoteCurrency);
+    void set_Unit(String _unitCurrency) {
+        if (_unitCurrency == null)
+            throw new NullPointerException("_unitCurrency");
+        unitCurrency = Currency.getInstance(_unitCurrency);
     }
 
     /**

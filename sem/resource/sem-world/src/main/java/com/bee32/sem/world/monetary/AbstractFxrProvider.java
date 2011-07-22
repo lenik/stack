@@ -15,13 +15,13 @@ public abstract class AbstractFxrProvider
     public int defaultRateUsage = FXR_MIDDLE_RATE;
 
     @Override
-    public Float getLatestFxr(Currency quoteCurrency)
+    public Float getLatestFxr(Currency unitCurrency)
             throws FxrQueryException {
         FxrTable table = getLatestFxrTable();
         if (table == null)
             return null;
 
-        FxrRecord record = table.getQuote(quoteCurrency);
+        FxrRecord record = table.get(unitCurrency);
         float rate;
         switch (defaultRateUsage) {
         case FXR_BASE_RATE:
