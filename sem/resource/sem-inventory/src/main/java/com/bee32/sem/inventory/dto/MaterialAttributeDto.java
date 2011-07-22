@@ -23,7 +23,7 @@ public class MaterialAttributeDto
 
     @Override
     protected void _marshal(MaterialAttribute source) {
-        this.material = new MaterialDto().ref(source.getMaterial());
+        this.material = mref(MaterialDto.class, source.getMaterial());
         this.name = source.getName();
         this.value = source.getValue();
     }
