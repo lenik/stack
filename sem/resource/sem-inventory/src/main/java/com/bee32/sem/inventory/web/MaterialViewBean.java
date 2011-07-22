@@ -48,11 +48,10 @@ public class MaterialViewBean
     public static final String MATERIALFOTM = "material:materialDetail";
     public static final String CATEGORYDIALOG = "dialogForm:categoryDialog";
 
+    private boolean editable;
     private boolean searching;
-    private String materialNamePattern;
+    private String materialPattern;
     private List<MaterialDto> materialList;
-    private TreeNode selectedMaterialNode;
-    private TreeNode selectedMaterialCategory;
     private MaterialDto activeMaterial = new MaterialDto().create();
     private UnitDto newUnit = new UnitDto().create();
     private MaterialAttributeDto activeAttr;
@@ -60,25 +59,40 @@ public class MaterialViewBean
     private MaterialWarehouseOptionDto option;
     private UnitConvDto tempUnitConv;
     private MaterialDto selectedMaterial;
-    private MaterialCategoryDto activeCategory;
 
     // MaterialDialogModel activeMaterial;
     StockLocationTreeDialogModel stockLocationTreeDialog;
     MaterialCategoryTreeModel materialCategoryTree;
 
     public MaterialViewBean() {
-        activeCategory = new MaterialCategoryDto().create();
         activeAttr = new MaterialAttributeDto(activeMaterial);
-        option = new MaterialWarehouseOptionDto();
-        option.setWarehouse(new StockWarehouseDto());
-        tempPreferredLocation = new MaterialPreferredLocationDto();
-        StockLocationDto location = new StockLocationDto();
-        location.setWarehouse(new StockWarehouseDto());
-        tempPreferredLocation.setLocation(location);
+        option = new MaterialWarehouseOptionDto().create();
+        tempPreferredLocation = new MaterialPreferredLocationDto().create();
+        initLocationTree();
+        initCategoryTree();
+    }
 
+    public void initLocationTree() {
+        List<StockLocation> _rootLocations = serviceFor(StockLocation.class).list(TreeCriteria.root());
+        List<StockLocationDto> rootLocations = DTOs.marshalList(StockLocationDto.class, _rootLocations);
+
+        stockLocationTreeDialog = new StockLocationTreeDialogModel(rootLocations);
+        stockLocationTreeDialog.addSelectListener(new SelectionAdapter() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void itemSelected(SelectionEvent event) {
+                StockLocationDto selectedLocation = (StockLocationDto) event.getSelection();
+                tempPreferredLocation.setLocation(selectedLocation);
+            }
+        });
+    }
+
+    public void initCategoryTree() {
         List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
                 ~MaterialCategoryDto.MATERIALS, rootCategories);
+
         materialCategoryTree = new MaterialCategoryTreeModel(rootCategoryDtos);
         materialCategoryTree.addListner(new SelectionAdapter() {
             private static final long serialVersionUID = 1L;
@@ -100,25 +114,28 @@ public class MaterialViewBean
                 activeMaterial.setCategory(materialCategoryDto);
             }
         });
-
-        List<StockLocation> _rootLocations = serviceFor(StockLocation.class).list(TreeCriteria.root());
-        List<StockLocationDto> rootLocations = DTOs.marshalList(StockLocationDto.class, _rootLocations);
-
-        stockLocationTreeDialog = new StockLocationTreeDialogModel(rootLocations);
-        stockLocationTreeDialog.addSelectListener(new SelectionAdapter() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void itemSelected(SelectionEvent event) {
-                StockLocationDto selectedLocation = (StockLocationDto) event.getSelection();
-                tempPreferredLocation.setLocation(selectedLocation);
-            }
-        });
     }
 
-    public void createCategoryForm() {
+    public void destroyMaterial() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            long id = activeMaterial.getId();
+            Material toDestroy = serviceFor(Material.class).load(id);
+            serviceFor(Material.class).delete(toDestroy);
+            materialList.remove(activeMaterial);
+            context.addMessage(null, new FacesMessage("错误提示:", "删除物料成功"));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("错误提示:", "删除物料失败" + e.getMessage()));
+            e.printStackTrace();
+        }
+    }
 
-        findComponentEx(CATEGORYDIALOG).setRendered(true);
+    public void setMaterialDialogDisable() {
+        editable = true;
+    }
+
+    public void setMaterialDialogEnable() {
+        editable = false;
     }
 
     public void editMaterialForm() {
@@ -132,6 +149,7 @@ public class MaterialViewBean
     }
 
     public void createMaterialForm() {
+        editable = false;
         activeMaterial = new MaterialDto().create();
     }
 
@@ -178,13 +196,49 @@ public class MaterialViewBean
     }
 
     public void doAddMaterial() {
-        Material material = activeMaterial.unmarshal();
-        serviceFor(Material.class).saveOrUpdate(material);
+        FacesContext context = FacesContext.getCurrentInstance();
+        String name = activeMaterial.getName();
+        MaterialCategoryDto category = activeMaterial.getCategory();
+        UnitDto unit = activeMaterial.getUnit();
+        UnitConvDto unitConv = activeMaterial.getUnitConv();
+        if (name == null || name.isEmpty()) {
+            context.addMessage(null, new FacesMessage("错误提示:", "物料名称不能为空!"));
+            return;
+        }
+        if (category == null || category.isNull() || category.isNullRef()) {
+            context.addMessage(null, new FacesMessage("错误提示:", "请选择物料分类!"));
+            return;
+        }
+        if (unit.isNullRef()) {
+            context.addMessage(null, new FacesMessage("错误提示:", "请选择物料的基础单位!"));
+            return;
+        }
+
+        if (unitConv.isNull() || unitConv.isNullRef())
+            unitConv = null;
+        activeMaterial.setUnitConv(unitConv);
+
+        try {
+            Material material = activeMaterial.unmarshal();
+            serviceFor(Material.class).saveOrUpdate(material);
+            context.addMessage(null, new FacesMessage("提示:", "保存物料成功!"));
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("错误提示:", "保存物料失败" + e.getMessage()));
+            e.printStackTrace();
+        }
+
+        TreeNode currentNode = materialCategoryTree.getSelectedNode();
+        TreeNode selectedNode = materialCategoryTree.getSelectedCategory();
+        if (currentNode != null && selectedNode != null) {
+            MaterialCategoryDto currentBranch = (MaterialCategoryDto) currentNode.getData();
+            MaterialCategoryDto selectedBranch = (MaterialCategoryDto) selectedNode.getData();
+            if (currentBranch.getName().equals(selectedBranch.getName())) {
+                if (!materialList.contains(activeMaterial))
+                    materialList.add(selectedMaterial);
+            }
+        }
     }
 
-    public void doAddMaterialCategory(){
-        //TODO materialCategoryTree
-    }
     public List<SelectItem> getUnits() {
         List<Unit> unitList = serviceFor(Unit.class).list();
         List<UnitDto> unitDtoList = DTOs.marshalList(UnitDto.class, unitList);
@@ -225,8 +279,8 @@ public class MaterialViewBean
 
     public List<SelectItem> getCodeGeneratories() {
         List<SelectItem> items = new ArrayList<SelectItem>();
-        items.add(new SelectItem(CodeGenerator.GUID, "GUID"));
-        items.add(new SelectItem(CodeGenerator.NONE, "NONE"));
+        items.add(new SelectItem(CodeGenerator.GUID, CodeGenerator.GUID.getName()));
+        items.add(new SelectItem(CodeGenerator.NONE, CodeGenerator.NONE.getName()));
         return items;
     }
 
@@ -236,22 +290,6 @@ public class MaterialViewBean
 
     public void setSearching(boolean searching) {
         this.searching = searching;
-    }
-
-    public String getMaterialNamePattern() {
-        return materialNamePattern;
-    }
-
-    public void setMaterialNamePattern(String materialNamePattern) {
-        this.materialNamePattern = materialNamePattern;
-    }
-
-    public TreeNode getSelectedMaterialNode() {
-        return selectedMaterialNode;
-    }
-
-    public void setSelectedMaterialNode(TreeNode selectedMaterialNode) {
-        this.selectedMaterialNode = selectedMaterialNode;
     }
 
     public List<MaterialDto> getMaterialList() {
@@ -302,14 +340,6 @@ public class MaterialViewBean
         this.tempPreferredLocation = tempLocation;
     }
 
-    public TreeNode getSelectedMaterialCategory() {
-        return selectedMaterialCategory;
-    }
-
-    public void setSelectedMaterialCategory(TreeNode selectedMaterialCategory) {
-        this.selectedMaterialCategory = selectedMaterialCategory;
-    }
-
     public UnitConvDto getTempUnitConv() {
         return tempUnitConv;
     }
@@ -334,11 +364,19 @@ public class MaterialViewBean
         return materialCategoryTree;
     }
 
-    public MaterialCategoryDto getActiveCategory() {
-        return activeCategory;
+    public boolean isEditable() {
+        return editable;
     }
 
-    public void setActiveCategory(MaterialCategoryDto activeCategory) {
-        this.activeCategory = activeCategory;
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    public String getMaterialPattern() {
+        return materialPattern;
+    }
+
+    public void setMaterialPattern(String materialPattern) {
+        this.materialPattern = materialPattern;
     }
 }
