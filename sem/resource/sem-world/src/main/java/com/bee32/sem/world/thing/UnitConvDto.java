@@ -17,9 +17,8 @@ public class UnitConvDto
 
     public static final int MAP = 1;
 
-    UnitConvDto parent;
     UnitDto unit;
-    Map<UnitDto, Double> ratioMap;
+    Map<UnitDto, Double> scaleMap;
 
     public UnitConvDto() {
         super();
@@ -31,32 +30,30 @@ public class UnitConvDto
 
     @Override
     protected void _marshal(UnitConv source) {
-        parent = mref(UnitConvDto.class, source.getParent());
         unit = mref(UnitDto.class, source.getUnit());
 
         if (selection.contains(MAP)) {
-            ratioMap = new HashMap<UnitDto, Double>();
-            for (Entry<Unit, Double> entry : source.getRatioMap().entrySet()) {
-                UnitDto unit = mref(UnitDto.class, entry.getKey());
-                double ratio = entry.getValue();
-                ratioMap.put(unit, ratio);
+            scaleMap = new HashMap<UnitDto, Double>();
+            for (Entry<Unit, Double> entry : source.getScaleMap().entrySet()) {
+                UnitDto scaleUnit = mref(UnitDto.class, entry.getKey());
+                double scale = entry.getValue();
+                scaleMap.put(scaleUnit, scale);
             }
         }
     }
 
     @Override
     protected void _unmarshalTo(UnitConv target) {
-        merge(target, "parent", parent);
         merge(target, "unit", unit);
 
         if (selection.contains(MAP)) {
-            Map<Unit, Double> _ratioMap = new HashMap<Unit, Double>();
-            for (Entry<UnitDto, Double> entry : ratioMap.entrySet()) {
+            Map<Unit, Double> _scaleMap = new HashMap<Unit, Double>();
+            for (Entry<UnitDto, Double> entry : scaleMap.entrySet()) {
                 Unit _unit = entry.getKey().unmarshal(getSession());
-                double ratio = entry.getValue();
-                _ratioMap.put(_unit, ratio);
+                double scale = entry.getValue();
+                _scaleMap.put(_unit, scale);
             }
-            target.setRatioMap(_ratioMap);
+            target.setScaleMap(_scaleMap);
         }
     }
 
@@ -70,28 +67,24 @@ public class UnitConvDto
         }
     }
 
-    public UnitConvDto getParent() {
-        return parent;
-    }
-
-    public void setParent(UnitConvDto parent) {
-        this.parent = parent;
-    }
-
     public UnitDto getUnit() {
         return unit;
     }
 
     public void setUnit(UnitDto unit) {
+        if (unit == null)
+            throw new NullPointerException("unit");
         this.unit = unit;
     }
 
-    public Map<UnitDto, Double> getRatioMap() {
-        return ratioMap;
+    public Map<UnitDto, Double> getScaleMap() {
+        return scaleMap;
     }
 
-    public void setRatioMap(Map<UnitDto, Double> ratioMap) {
-        this.ratioMap = ratioMap;
+    public void setScaleMap(Map<UnitDto, Double> scaleMap) {
+        if (scaleMap == null)
+            throw new NullPointerException("scaleMap");
+        this.scaleMap = scaleMap;
     }
 
 }
