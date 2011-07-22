@@ -26,6 +26,10 @@ public class SEMInventorySamples
     public static MaterialCategory parentCategory = new MaterialCategory();
     public static MaterialCategory categoryX = new MaterialCategory();
     public static MaterialCategory categoryY = new MaterialCategory();
+    public static MaterialCategory categoryZ = new MaterialCategory();
+    public static MaterialCategory categoryXX = new MaterialCategory();
+    public static MaterialCategory categoryYY = new MaterialCategory();
+    public static MaterialCategory categoryZZ = new MaterialCategory();
     public static MaterialPreferredLocation preferredLocation = new MaterialPreferredLocation();
     public static MaterialPreferredLocation preferredLocation2 = new MaterialPreferredLocation();
     public static StockWarehouse stockWarehouse = new StockWarehouse();
@@ -73,7 +77,6 @@ public class SEMInventorySamples
         gundam.setOptions(Arrays.asList(baseOption));
         gundam.setUnitHint("体积");
 
-
         MaterialAttribute cskdpDistAttr = new MaterialAttribute(cskdp, "炮程", "120km");
         MaterialAttribute cskdpRefmaAttr = new MaterialAttribute(cskdp, "推荐手办", "ABD-432");
         cskdp.setAttributes(Arrays.asList(cskdpDistAttr, cskdpRefmaAttr));
@@ -91,6 +94,26 @@ public class SEMInventorySamples
         categoryY.setMaterials(Arrays.asList(cskdp));
         categoryY.setParent(parentCategory);
         categoryY.setCodeGenerator(CodeGenerator.GUID);
+
+        categoryZ.setName("1-3");
+        categoryZ.setMaterials(Arrays.asList(cskdp));
+        categoryZ.setParent(parentCategory);
+        categoryZ.setCodeGenerator(CodeGenerator.NONE);
+
+        categoryXX.setName("1-3-1");
+        categoryXX.setMaterials(Arrays.asList(cskdp));
+        categoryXX.setParent(categoryZ);
+        categoryXX.setCodeGenerator(CodeGenerator.GUID);
+
+        categoryYY.setName("1-3-2");
+        categoryYY.setMaterials(Arrays.asList(cskdp));
+        categoryYY.setParent(categoryZ);
+        categoryYY.setCodeGenerator(CodeGenerator.GUID);
+
+        categoryZZ.setName("1-3-3");
+        categoryZZ.setMaterials(Arrays.asList(cskdp));
+        categoryZZ.setParent(categoryZ);
+        categoryZZ.setCodeGenerator(CodeGenerator.GUID);
 
         cskdpDistAttr.setMaterial(cskdp);
         cskdpDistAttr.setName("主要材料");
@@ -120,6 +143,10 @@ public class SEMInventorySamples
         add(parentCategory);
         add(categoryX);
         add(categoryY);
+        add(categoryZ);
+        add(categoryXX);
+        add(categoryYY);
+        add(categoryZZ);
         add(cskdp);
         add(gundam);
         add(preferredLocation);
