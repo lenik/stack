@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import javax.free.AbstractNonNullComparator;
-
 public class MCVector
         implements Serializable, ICurrencyAware, Iterable<MCValue> {
 
@@ -180,32 +178,4 @@ class VirtualMCV
         entry.setValue(value);
     }
 
-}
-
-class CurrencyCodeComparator
-        extends AbstractNonNullComparator<Currency> {
-
-    @Override
-    public int compareNonNull(Currency c1, Currency c2) {
-        String code1 = c1.getCurrencyCode();
-        String code2 = c2.getCurrencyCode();
-        int cmp = code1.compareTo(code2);
-        return cmp;
-    }
-
-    public static final CurrencyCodeComparator INSTANCE = new CurrencyCodeComparator();
-}
-
-class CurrencyNumericComparator
-        extends AbstractNonNullComparator<Currency> {
-
-    @Override
-    public int compareNonNull(Currency c1, Currency c2) {
-        int n1 = c1.getNumericCode();
-        int n2 = c2.getNumericCode();
-        int cmp = n1 - n2;
-        return cmp;
-    }
-
-    public static final CurrencyNumericComparator INSTANCE = new CurrencyNumericComparator();
 }
