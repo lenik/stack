@@ -90,6 +90,9 @@ public class MaterialWarehouseOption
     protected Boolean naturalEquals(EntityBase<Long> other) {
         MaterialWarehouseOption o = (MaterialWarehouseOption) other;
 
+        if (material == null || warehouse == null)
+            return false;
+
         if (!material.equals(o.material))
             return false;
 
@@ -102,6 +105,8 @@ public class MaterialWarehouseOption
     @Override
     protected Integer naturalHashCode() {
         int hash = 0;
+        if (material == null || warehouse == null)
+            return System.identityHashCode(this);
         hash += material.hashCode();
         hash += warehouse.hashCode();
         return hash;
