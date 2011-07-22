@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class CurrencyNames {
+public class CurrencyNames
+        implements ILocaleAware, ICurrencyAware {
 
     static final Map<Locale, Map<String, Currency>> localRevMap;
     static {
@@ -30,6 +31,14 @@ public class CurrencyNames {
             String displayName = currency.getDisplayName(locale);
             revMap.put(displayName, currency);
         }
+
+        if (locale.equals(zh_CN)) {
+            revMap.put("卢布", codes.RUB); // 俄国卢布
+            revMap.put("港币", codes.HKD); // 港元
+            revMap.put("韩国元", codes.KRW); // 韩圆
+            revMap.put("泰国铢", codes.THB); // 泰铢
+        }
+
         return revMap;
     }
 
