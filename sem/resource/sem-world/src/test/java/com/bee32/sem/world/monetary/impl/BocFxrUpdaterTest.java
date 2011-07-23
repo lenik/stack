@@ -21,6 +21,7 @@ public class BocFxrUpdaterTest
             throws IOException {
         FxrTable table = updater.download();
         System.out.println(table.toString());
+
     }
 
 }
