@@ -10,20 +10,19 @@ public class MaterialAttributeDto
         extends EntityDto<MaterialAttribute, Long> {
 
     private static final long serialVersionUID = 1L;
+    public static final int MATERIAL = 1;
 
     MaterialDto material;
     String name;
     String value;
 
-    public MaterialAttributeDto(MaterialDto material) {
-        this.material = material;
-        this.name = "";
-        this.value = "";
+    public MaterialAttributeDto() {
     }
 
     @Override
     protected void _marshal(MaterialAttribute source) {
-        this.material = mref(MaterialDto.class, source.getMaterial());
+        if (selection.contains(MATERIAL))
+            this.material = mref(MaterialDto.class, source.getMaterial());
         this.name = source.getName();
         this.value = source.getValue();
     }
