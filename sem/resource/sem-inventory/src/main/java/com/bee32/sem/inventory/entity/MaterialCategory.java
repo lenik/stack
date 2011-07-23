@@ -16,7 +16,7 @@ import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 @Entity
 @BatchSize(size = BatchConfig.TREE)
 public class MaterialCategory
-        extends TreeEntityAuto<Long, MaterialCategory> {
+        extends TreeEntityAuto<Integer, MaterialCategory> {
 
     private static final long serialVersionUID = 1L;
 

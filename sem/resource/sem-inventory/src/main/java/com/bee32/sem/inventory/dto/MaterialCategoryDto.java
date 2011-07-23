@@ -10,7 +10,7 @@ import com.bee32.sem.inventory.entity.CodeGenerator;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 
 public class MaterialCategoryDto
-        extends TreeEntityDto<MaterialCategory, Long, MaterialCategoryDto> {
+        extends TreeEntityDto<MaterialCategory, Integer, MaterialCategoryDto> {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,10 +40,10 @@ public class MaterialCategoryDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-    }
+        name = map.getString("name");
 
-    public void addMaterial(MaterialDto material) {
-        materials.add(material);
+        String _cg = map.getString("codeGenerator");
+        codeGenerator = CodeGenerator.valueOf(_cg);
     }
 
     public String getName() {
@@ -62,6 +62,12 @@ public class MaterialCategoryDto
         if (materials == null)
             throw new NullPointerException("materials");
         this.materials = materials;
+    }
+
+    public void addMaterial(MaterialDto material) {
+        if (material == null)
+            throw new NullPointerException("material");
+        materials.add(material);
     }
 
     public CodeGenerator getCodeGenerator() {

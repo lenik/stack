@@ -6,11 +6,12 @@ import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 public class MaterialCriteria
         extends CriteriaSpec {
 
-    public static CriteriaElement categoryOf(long categoryId) {
+    public static CriteriaElement categoryOf(int categoryId) {
         return equals("category.id", categoryId);
     }
 
-    public static CriteriaElement nameLike(String name){
-        return like("name", "%"+name+"%");
+    public static CriteriaElement namedLike(String name) {
+        return like("name", "%" + name + "%");
     }
+
 }
