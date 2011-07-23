@@ -109,6 +109,15 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         return marshalType.isReference() && id == null;
     }
 
+    public <$ extends EntityDto<E, K>> $ idCollapse(K collapseId) {
+        if (Nullables.equals(this.id, collapseId))
+            ref((K) null);
+
+        @SuppressWarnings("unchecked")
+        $ self = ($) this;
+        return self;
+    }
+
     /**
      * Get ID.
      *
