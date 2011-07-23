@@ -1,49 +1,93 @@
 package com.bee32.sem.world.monetary;
 
 import java.util.Currency;
+import java.util.Date;
+import java.util.List;
 
-import javax.free.UnexpectedException;
+import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.sem.world.math.InterpolatedMap;
 
 public abstract class AbstractFxrProvider
+        extends EnterpriseService
         implements IFxrProvider {
 
-    public static final int FXR_BASE_RATE = 0;
-    public static final int FXR_BUYING_RATE = 1;
-    public static final int FXR_SELLING_RATE = 2;
-    public static final int FXR_MIDDLE_RATE = 3;
+    FxrUsage usage = FxrUsage.MIDDLE;
 
-    public int defaultRateUsage = FXR_MIDDLE_RATE;
+    // @Override
+    // public Currency getQuoteCurrency() {
+    // return getLatestFxrTable().getQuoteCurrency();
+    // }
 
     @Override
-    public Float getLatestFxr(Currency unitCurrency)
+    public Currency getQuoteCurrency() {
+        return ICurrencyAware.NATIVE_CURRENCY;
+    }
+
+    @Override
+    public FxrTable getLatestFxrTable()
             throws FxrQueryException {
-        FxrTable table = getLatestFxrTable();
-        if (table == null)
+        return getFxrTable(new Date());
+    }
+
+    @Override
+    public Float getLatestFxr(Currency unitCurrency, FxrUsage usage)
+            throws FxrQueryException {
+        return getFxr(new Date(), unitCurrency, usage);
+    }
+
+    @Override
+    public FxrTable getFxrTable(Date date)
+            throws FxrQueryException {
+        List<FxrTable> list = getFxrTableSeries(date, 1);
+        if (list.isEmpty())
+            return null;
+        else
+            return list.get(0);
+    }
+
+    static final int DEFAULT_TRACE_COUNT = 10;
+
+    @Override
+    public Float getFxr(Date queryDate, Currency unitCurrency, FxrUsage usage)
+            throws FxrQueryException {
+        if (queryDate == null)
+            throw new NullPointerException("date");
+        if (unitCurrency == null)
+            throw new NullPointerException("unitCurrency");
+        if (usage == null)
+            throw new NullPointerException("usage");
+
+        // OPT cache: date, unitCurrency, usage.
+
+        List<FxrTable> tables = getFxrTableSeries(queryDate, DEFAULT_TRACE_COUNT);
+
+        int intpMax = 3;
+        InterpolatedMap intpMap = new InterpolatedMap();
+
+        for (FxrTable table : tables) {
+            FxrRecord record = table.get(unitCurrency);
+            if (record == null)
+                continue;
+
+            Float rate = record.getRate(usage);
+            if (rate == null)
+                continue;
+
+            intpMap.put(dateint(record.getDate()), (double) rate);
+
+            if (intpMax-- <= 0)
+                break;
+        }
+
+        if (intpMap.isEmpty())
             return null;
 
-        FxrRecord record = table.get(unitCurrency);
-        float rate;
-        switch (defaultRateUsage) {
-        case FXR_BASE_RATE:
-            rate = record.getBaseRate();
-            break;
+        Double intpRate = intpMap.get(dateint(queryDate));
+        return intpRate.floatValue();
+    }
 
-        case FXR_BUYING_RATE:
-            rate = record.getBuyingRate();
-            break;
-
-        case FXR_SELLING_RATE:
-            rate = record.getSellingRate();
-            break;
-
-        case FXR_MIDDLE_RATE:
-            rate = record.getMiddleRate();
-            break;
-
-        default:
-            throw new UnexpectedException();
-        }
-        return rate;
+    static int dateint(Date date) {
+        return (int) (date.getTime() / 86400000);
     }
 
 }
