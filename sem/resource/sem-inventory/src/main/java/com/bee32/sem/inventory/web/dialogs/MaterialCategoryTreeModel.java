@@ -18,7 +18,6 @@ public class MaterialCategoryTreeModel
 
     TreeNode rootNode;
     TreeNode selectedNode;
-    TreeNode selectedCategory;
 
     List<ISelectionListener> selectionListeners = new ArrayList<ISelectionListener>();
 
@@ -44,17 +43,7 @@ public class MaterialCategoryTreeModel
         }
     }
 
-    public void onCategorySelect() {
-        Object data = null;
-        if (selectedCategory != null)
-            data = selectedCategory.getData();
-        SelectionEvent selectEvent = new SelectionEvent(this, data);
-        for (ISelectionListener listener : selectionListeners) {
-            listener.itemSelected(selectEvent);
-        }
-    }
-
-    public void addListner(ISelectionListener selectionListener) {
+    public void addListener(ISelectionListener selectionListener) {
         if (selectionListener == null)
             throw new NullPointerException("selectionListener");
         selectionListeners.add(selectionListener);
@@ -80,14 +69,6 @@ public class MaterialCategoryTreeModel
 
     public void setSelectedNode(TreeNode selectedNode) {
         this.selectedNode = selectedNode;
-    }
-
-    public TreeNode getSelectedCategory() {
-        return selectedCategory;
-    }
-
-    public void setSelectedCategory(TreeNode selectedCategory) {
-        this.selectedCategory = selectedCategory;
     }
 
 }
