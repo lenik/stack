@@ -9,6 +9,7 @@ import javax.faces.model.SelectItem;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
+import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.orm.entity.Entity;
@@ -25,6 +26,19 @@ public class UIHelper
 
         for (NameDictDto<?> entry : dictEntries) {
             SelectItem item = new SelectItem(entry.getDisplayId(), entry.getLabel());
+            items.add(item);
+        }
+
+        return items;
+    }
+
+    public static List<SelectItem> selectItemsFromEnum(Iterable<? extends EnumAlt<?, ?>> enums) {
+        List<SelectItem> items = new ArrayList<SelectItem>();
+
+        for (EnumAlt<?, ?> entry : enums) {
+            Object value = entry.getValue();
+            String label = entry.getLabel();
+            SelectItem item = new SelectItem(value, label);
             items.add(item);
         }
 

@@ -45,10 +45,10 @@ public class MaterialViewBean
 
     private static final long serialVersionUID = 1L;
 
-    public static final String ATTR = "attr";
-    public static final String MATERIALFOTM = "material:materialDetail";
-    public static final String CATEGORYDIALOG = "dialogForm:categoryDialog";
-    public static final String CATEGORYTREE = ""
+    static final String ATTR = "attr";
+    static final String MATERIAL_FORM = "material:materialDetail";
+    static final String CATEGORY_DIALOG = "dialogForm:categoryDialog";
+    static final String CATEGORY_TREE = "";
 
     boolean editable;
     boolean searching;
@@ -255,8 +255,8 @@ public class MaterialViewBean
 
     public void doSearch() {
         if (!materialPattern.isEmpty() && materialPattern != null) {
-            List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.nameLike(materialPattern));
-            findComponent(CATEGORYTREE).setRendered(false);
+            List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.namedLike(materialPattern));
+            findComponent(CATEGORY_TREE).setRendered(false);
             materialList = DTOs.marshalList(MaterialDto.class, _materials, true);
 
         }
@@ -301,10 +301,7 @@ public class MaterialViewBean
     }
 
     public List<SelectItem> getCodeGeneratories() {
-        List<SelectItem> items = new ArrayList<SelectItem>();
-        items.add(new SelectItem(CodeGenerator.GUID, CodeGenerator.GUID.getName()));
-        items.add(new SelectItem(CodeGenerator.NONE, CodeGenerator.NONE.getName()));
-        return items;
+        return UIHelper.selectItemsFromEnum(CodeGenerator.values());
     }
 
     public boolean isSearching() {
