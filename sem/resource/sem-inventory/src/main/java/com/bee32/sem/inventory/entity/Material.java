@@ -108,6 +108,7 @@ public class Material
      * （此属性不可索引）
      */
     @OneToMany(mappedBy = "material")
+    @Cascade(CascadeType.ALL)
     public List<MaterialAttribute> getAttributes() {
         return attributes;
     }
