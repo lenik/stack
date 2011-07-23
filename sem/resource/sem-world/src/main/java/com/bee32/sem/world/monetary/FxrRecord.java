@@ -3,6 +3,7 @@ package com.bee32.sem.world.monetary;
 import java.util.Currency;
 import java.util.Date;
 
+import javax.free.UnexpectedException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
@@ -63,6 +64,11 @@ public class FxrRecord
         if (date == null)
             throw new NullPointerException("date");
         this.date = date;
+    }
+
+    @Transient
+    public int getDateInt() {
+        return (int) (date.getTime() / 86400000);
     }
 
     @Transient
@@ -138,6 +144,22 @@ public class FxrRecord
 
     public void setXbuyingRate(Float xbuyingRate) {
         this.xbuyingRate = xbuyingRate;
+    }
+
+    public Float getRate(FxrUsage usage) {
+        if (usage == null)
+            throw new NullPointerException("usage");
+        switch (usage) {
+        case BASE:
+            return getBaseRate();
+        case BUYING:
+            return getBuyingRate();
+        case SELLING:
+            return getSellingRate();
+        case MIDDLE:
+            return getMiddleRate();
+        }
+        throw new UnexpectedException();
     }
 
 }

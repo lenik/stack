@@ -253,7 +253,7 @@ public class MCValue
         if (fxrProvider == null)
             throw new NullPointerException("fxrProvider");
 
-        Float _fxr = fxrProvider.getLatestFxr(currency);
+        Float _fxr = fxrProvider.getLatestFxr(currency, FxrUsage.MIDDLE);
         if (_fxr == null)
             throw new FxrQueryException("The FXR for the specified quote currency is not defined: " + currency);
 
