@@ -25,7 +25,7 @@ public class MaterialCategoryDto
         this.name = source.getName();
         this.codeGenerator = source.getCodeGenerator();
         if (selection.contains(MATERIALS))
-            this.materials = marshalList(MaterialDto.class, MaterialDto.ATTRBUTES, source.getMaterials());
+            this.materials = marshalList(MaterialDto.class, source.getMaterials());
     }
 
     @Override

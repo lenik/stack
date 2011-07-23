@@ -11,9 +11,6 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialXP;
 import com.bee32.sem.world.thing.ThingDto;
 
-/**
- *
- */
 public class MaterialDto
         extends ThingDto<Material, MaterialXP> {
 
@@ -33,12 +30,12 @@ public class MaterialDto
 
     @Override
     protected void _marshal(Material source) {
-        category = mref(MaterialCategoryDto.class, source.getCategory());
+        category = mref(MaterialCategoryDto.class, ~MaterialCategoryDto.MATERIALS, source.getCategory());
         serial = source.getSerial();
         barCode = source.getBarCode();
 
         if (selection.contains(ATTRBUTES))
-            attributes = marshalList(MaterialAttributeDto.class, 0, source.getAttributes());
+            attributes = marshalList(MaterialAttributeDto.class, ~MaterialAttributeDto.MATERIAL, source.getAttributes());
 
         preferredLocations = marshalList(MaterialPreferredLocationDto.class, source.getPreferredLocations());
         options = marshalList(MaterialWarehouseOptionDto.class, source.getOptions());
@@ -56,6 +53,8 @@ public class MaterialDto
             mergeList(target, "attributes", attributes);
         if (preferredLocations.size() > 0)
             mergeList(target, "preferredLocations", preferredLocations);
+        if (options.size() > 0)
+            mergeList(target, "options", options);
     }
 
     @Override
@@ -66,6 +65,10 @@ public class MaterialDto
     public void addAttribute(MaterialAttributeDto attr) {
         if (!attributes.contains(attr))
             this.attributes.add(attr);
+    }
+
+    public void removeAttribute(MaterialAttributeDto activeAttr) {
+        attributes.remove(activeAttr);
     }
 
     public void addOption(MaterialWarehouseOptionDto option) {
