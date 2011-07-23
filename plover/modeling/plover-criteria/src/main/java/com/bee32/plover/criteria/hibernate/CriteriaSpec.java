@@ -24,7 +24,7 @@ import org.hibernate.type.Type;
  */
 public abstract class CriteriaSpec {
 
-    protected static CriteriaComposite compose(CriteriaElement... elements) {
+    protected static CriteriaComposite compose(ICriteriaElement... elements) {
         return new CriteriaComposite(elements);
     }
 
