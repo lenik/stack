@@ -18,7 +18,6 @@ public class SEMPeopleMenu
 
     static Location PEOPLE_ = WEB_APP.join(SEMPeopleModule.PREFIX_);
     static Location ACCESS_ = WEB_APP.join(IcsfAccessModule.PREFIX_);
-    static Location IDENTITY_ = WEB_APP.join("/3/7/1/");
 
     public static MenuNode PEOPLE = menu(SEMFrameMenu.BASE, "people");
     public static MenuNode SETTINGS = menu(PEOPLE, "dict");
@@ -36,10 +35,6 @@ public class SEMPeopleMenu
     static MenuNode permissionAdmin = entry(SEMFrameMenu.BASE, 10, "permissionAdmin",
             ACCESS_.join("r_list/index-rich.jsf"));
     static MenuNode modifyPassword = entry(SEMFrameMenu.BASE, 9, "modifyPassword", WEB_APP.join("modifyPassword.jsf"));
-
-    static MenuNode roleAdmin = entry(SEMFrameMenu.BASE, 100, "roleAdmin", IDENTITY_.join("role/index-rich.jsf"));
-    static MenuNode groupAdmin = entry(SEMFrameMenu.BASE, 110, "groupAdmin", IDENTITY_.join("group/index-rich.jsf"));
-    static MenuNode userAdmin = entry(SEMFrameMenu.BASE, 120, "userAdmin", IDENTITY_.join("user/index-rich.jsf"));
 
     @Override
     protected void preamble() {
