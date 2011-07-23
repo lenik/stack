@@ -18,10 +18,9 @@ public class SEMInventoryMenu
 
     static MenuNode materialAdmin = entry(MATERIAL, 1, "materialAdmin", INVENTORY_.join("material/index-rich.jsf"));
 
-    static MenuNode materialCategory = entry(SETTINGS, 1, "materialCategory", INVENTORY_.join("settings/materialCategory/index-rich.jsf"));
-    static MenuNode stockWarehouse = entry(SETTINGS, 1, "stockWarehouse", INVENTORY_.join("settings/stockWarehouse/index-rich.jsf"));
-    static MenuNode stockLocation = entry(SETTINGS, 10, "stockLocation", INVENTORY_.join("settings/stockLocation/index-rich.jsf"));
-
+    static MenuNode materialCategory = entry(SETTINGS, 1, "materialCategory", INVENTORY_.join("category/index-rich.jsf"));
+    static MenuNode stockWarehouse = entry(SETTINGS, 1, "stockWarehouse", INVENTORY_.join("warehouse/index-rich.jsf"));
+    static MenuNode stockLocation = entry(SETTINGS, 10, "stockLocation", INVENTORY_.join("location/index-rich.jsf"));
 
     @Override
     protected void preamble() {
