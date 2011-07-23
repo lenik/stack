@@ -87,4 +87,9 @@ public class UnitConvDto
         this.scaleMap = scaleMap;
     }
 
+    public String getDisplayId() {
+        if (getId() != null)
+            return getId();
+        return "";
+    }
 }
