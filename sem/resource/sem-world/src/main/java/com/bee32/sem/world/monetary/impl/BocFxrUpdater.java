@@ -75,8 +75,7 @@ public class BocFxrUpdater
     static final int F_DATE = 6;
     static final int F_TIME = 7;
 
-    @Override
-    protected FxrTable download()
+    protected String getHtml()
             throws IOException {
         HttpClient client = new HttpClient();
         GetMethod method = SpamHelper.prepareGet(START_URL);
@@ -88,6 +87,14 @@ public class BocFxrUpdater
         } finally {
             method.releaseConnection();
         }
+
+        return html;
+    }
+
+    @Override
+    protected FxrTable download()
+            throws IOException {
+        String html = getHtml();
 
         FxrTable table = new FxrTable(QUOTE_CURRENCY);
 
