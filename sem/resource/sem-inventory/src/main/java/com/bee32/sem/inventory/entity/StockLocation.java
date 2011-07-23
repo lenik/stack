@@ -33,7 +33,7 @@ public class StockLocation
     double z;
 
     BigDecimal capacity;
-    Unit capacityUnit = Unit.CUBIC_METER;
+    Unit capacityUnit;
     String capacityUnitHint;
     int rank;
 
@@ -132,7 +132,7 @@ public class StockLocation
     /**
      * 容量单位
      */
-    @ManyToOne(optional = false)
+    @ManyToOne
     public Unit getCapacityUnit() {
         return capacityUnit;
     }

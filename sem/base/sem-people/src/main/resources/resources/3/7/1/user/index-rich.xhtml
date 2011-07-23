@@ -115,14 +115,15 @@
 								value="#{userAdminBean.passwordConfirm}" />
 						</t:panelGroup>
 
-
-						<t:panelGrid colspan="2" columns="2">
-                            <p:commandButton value="保存"
-                                actionListener="#{userAdminBean.doSave}" update="userAdminForm"
-                                oncomplete="editUserDialog.hide();" />
-                            <p:commandButton value="取消" oncomplete="editGroupDialog.hide();" />
-                        </t:panelGrid>
-                    </h:panelGrid>
+						<t:panelGroup colspan="2">
+							<t:panelGrid columns="2">
+								<p:commandButton value="保存"
+									actionListener="#{userAdminBean.doSave}" update="userAdminForm"
+									oncomplete="editUserDialog.hide();" />
+								<p:commandButton value="取消" oncomplete="editGroupDialog.hide();" />
+							</t:panelGrid>
+						</t:panelGroup>
+					</h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
 		</h:form>

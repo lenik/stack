@@ -7,7 +7,7 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.tree.TreeEntityDto;
 import com.bee32.sem.inventory.entity.StockLocation;
-import com.bee32.sem.world.thing.Unit;
+import com.bee32.sem.world.thing.UnitDto;
 
 public class StockLocationDto
         extends TreeEntityDto<StockLocation, Integer, StockLocationDto> {
@@ -21,7 +21,9 @@ public class StockLocationDto
     private double z;
 
     BigDecimal capacity;
-    Unit capacityUnit = Unit.CUBIC_METER;
+    UnitDto capacityUnit;
+    String capacityUnitHint;
+    int rank;
 
     public StockLocationDto() {
         super();
@@ -38,6 +40,10 @@ public class StockLocationDto
         this.x = source.getX();
         this.y = source.getY();
         this.z = source.getZ();
+        this.capacity = source.getCapacity();
+        this.capacityUnit = mref(UnitDto.class, source.getCapacityUnit());
+        this.capacityUnitHint = source.getCapacityUnitHint();
+        this.rank = source.getRank();
     }
 
     @Override
@@ -47,6 +53,10 @@ public class StockLocationDto
         target.setX(x);
         target.setY(y);
         target.setZ(z);
+        target.setCapacity(capacity);
+        merge(target, "capacityUnit", capacityUnit);
+        target.setCapacityUnitHint(capacityUnitHint);
+        target.setRank(rank);
     }
 
     @Override
@@ -102,12 +112,30 @@ public class StockLocationDto
         this.capacity = capacity;
     }
 
-    public Unit getCapacityUnit() {
+
+
+    public UnitDto getCapacityUnit() {
         return capacityUnit;
     }
 
-    public void setCapacityUnit(Unit capacityUnit) {
+    public void setCapacityUnit(UnitDto capacityUnit) {
         this.capacityUnit = capacityUnit;
+    }
+
+    public String getCapacityUnitHint() {
+        return capacityUnitHint;
+    }
+
+    public void setCapacityUnitHint(String capacityUnitHint) {
+        this.capacityUnitHint = capacityUnitHint;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     public String getNodeText() {
@@ -120,5 +148,4 @@ public class StockLocationDto
             sb.append(address);
         return sb.toString();
     }
-
 }

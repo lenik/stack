@@ -87,13 +87,16 @@
                         <h:outputLabel for="fullName" value="全名" />
                         <p:inputText id="fullName" value="#{roleAdminBean.role.fullName}" />
 
-                        <t:panelGrid colspan="2" columns="2">
-                            <p:commandButton value="保存"
-                                actionListener="#{roleAdminBean.doSave}" update="roleAdminForm chooseInheritedRoleForm:chooseInheritedRolePanel"
-                                oncomplete="editRoleDialog.hide();" />
-                            <p:commandButton value="取消" oncomplete="editRoleDialog.hide();" />
-                        </t:panelGrid>
-                    </h:panelGrid>
+						<t:panelGroup colspan="2">
+							<t:panelGrid columns="2">
+								<p:commandButton value="保存"
+									actionListener="#{roleAdminBean.doSave}"
+									update="roleAdminForm chooseInheritedRoleForm:chooseInheritedRolePanel"
+									oncomplete="editRoleDialog.hide();" />
+								<p:commandButton value="取消" oncomplete="editRoleDialog.hide();" />
+							</t:panelGrid>
+						</t:panelGroup>
+					</h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
 		</h:form>
