@@ -11,7 +11,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 
 public abstract class AbstractPrincipalDto<E extends Principal>
-        extends EntityDto<E, String> {
+        extends EntityDto<E, Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,6 +29,7 @@ public abstract class AbstractPrincipalDto<E extends Principal>
 
     protected final int depth = DEPTH_MASK.extract(selection.bits);
 
+    String name;
     String fullName;
     String description;
 
@@ -42,12 +43,14 @@ public abstract class AbstractPrincipalDto<E extends Principal>
 
     @Override
     protected void _marshal(E source) {
+        name = source.getName();
         fullName = source.getFullName();
         description = source.getDescription();
     }
 
     @Override
     protected void _unmarshalTo(E target) {
+        target.setName(name);
         target.setFullName(fullName);
         target.setDescription(description);
     }
@@ -55,24 +58,19 @@ public abstract class AbstractPrincipalDto<E extends Principal>
     @Override
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
-        // this.name = map.getString("name");
+        this.name = map.getString("name");
         this.fullName = map.getString("fullName");
         this.description = map.getString("description");
     }
 
-    @Override
-    public void setId(String id) {
-        if (id != null)
-            id = id.toLowerCase(Locale.ROOT);
-        super.setId(id);
-    }
-
     public String getName() {
-        return getId();
+        return name;
     }
 
     public void setName(String name) {
-        setId(name);
+        if (name != null)
+            name = name.toLowerCase(Locale.ROOT);
+        this.name = name;
     }
 
     public String getFullName() {

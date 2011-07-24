@@ -3,25 +3,25 @@ package com.bee32.icsf.principal;
 import java.util.Collection;
 import java.util.Locale;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NaturalId;
+
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Green;
-import com.bee32.plover.orm.ext.tree.TreeEntity;
+import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 
 @Entity
 @Green
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "steoro", length = 3)
 public abstract class Principal
-        extends TreeEntity<String, Principal>
+        extends TreeEntityAuto<Integer, Principal>
         implements IPrincipal {
 
     private static final long serialVersionUID = 1L;
@@ -44,20 +44,8 @@ public abstract class Principal
         setFullName(fullName);
     }
 
-    @Id
-    @Basic(optional = false)
-    @Column(length = NAME_MAXLEN, unique = true)
-    @Override
-    public String getId() {
-        return getName();
-    }
-
-    @Override
-    protected void setId(String id) {
-        setName(id);
-    }
-
-    @Transient
+    @NaturalId
+    @Column(length = NAME_MAXLEN, nullable = false)
     @Override
     public String getName() {
         return name;
@@ -72,7 +60,7 @@ public abstract class Principal
      *            Non-<code>null</code> name to set.
      * @see #NAME_MAXLEN
      */
-    protected void setName(String name) {
+    public void setName(String name) {
         if (name == null)
             throw new NullPointerException("name");
 
@@ -162,7 +150,7 @@ public abstract class Principal
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<String> other) {
+    protected Boolean naturalEquals(EntityBase<Integer> other) {
         Principal o = (Principal) other;
 
         if (this.name == null || o.name == null)
@@ -174,7 +162,7 @@ public abstract class Principal
     @Override
     protected Integer naturalHashCode() {
         if (name == null)
-            return 0;
+            return System.identityHashCode(this);
         else
             return name.hashCode();
     }

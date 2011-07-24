@@ -10,7 +10,9 @@ public class LoginCriteria
 
     @LeftHand(UserPassword.class)
     public static CriteriaElement forUser(User user) {
-        return equals("user.id", user.getId());
+        if (user == null)
+            throw new NullPointerException("user");
+        return equals("user", user);
     }
 
 }
