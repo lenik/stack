@@ -39,6 +39,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     EntityFlags entityFlags;
 
     int aclId;
+    int ownerId;
 
     public EntityDto() {
         super();
@@ -243,6 +244,14 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         this.aclId = aclId;
     }
 
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
     /**
      * Marshal the common entity fields from the source entity.
      */
@@ -252,8 +261,10 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         version = source.getVersion();
         createdDate = source.getCreatedDate();
         lastModified = source.getLastModified();
-
         setEntityFlags(EntityAccessor.getFlags(source).bits);
+
+        aclId = source.getAclId();
+        ownerId = source.getOwnerId();
     }
 
     /**
@@ -275,6 +286,9 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
         if (entityFlags != null)
             EntityAccessor.getFlags(target).set(entityFlags.bits);
+
+        target.setAclId(aclId);
+        target.setOwnerId(ownerId);
     }
 
     @Override
@@ -312,6 +326,14 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         Integer _entityFlags = map.getNInt("entityFlags");
         if (_entityFlags != null)
             setEntityFlags(_entityFlags);
+
+        Integer aclId = map.getNInt("aclId");
+        if (aclId != null)
+            setAclId(aclId);
+
+        Integer ownerId = map.getNInt("ownerId");
+        if (ownerId != null)
+            setOwnerId(ownerId);
     }
 
     @Override
@@ -330,6 +352,9 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
         if (entityFlags != null)
             map.put("entityFlags", entityFlags);
+
+        map.put("aclId", aclId);
+        map.put("ownerId", ownerId);
     }
 
     /**

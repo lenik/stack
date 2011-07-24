@@ -40,6 +40,7 @@ public abstract class Entity<K extends Serializable>
     boolean keywordUpdated;
 
     int aclId;
+    int ownerId;
 
     public Entity() {
         super(null);
@@ -136,6 +137,15 @@ public abstract class Entity<K extends Serializable>
 
     public void setAclId(int aclId) {
         this.aclId = aclId;
+    }
+
+    @Column(name = "owner", nullable = false)
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int owner) {
+        this.ownerId = owner;
     }
 
     @Override

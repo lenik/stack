@@ -39,7 +39,6 @@ public class UserFileTagnameDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-        owner = new UserDto().ref(map.getString("owner.id"));
         tag = map.getString(tag);
     }
 

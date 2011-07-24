@@ -61,7 +61,7 @@ public class UserFileDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-        owner = new UserDto().ref(map.getString("owner"));
+        owner = new UserDto().ref(map.getInt("owner"));
         fileBlob = new FileBlobDto().ref(map.getString("fileBlob"));
         origPath = map.getString("origPath");
         filename = map.getString("filename");
