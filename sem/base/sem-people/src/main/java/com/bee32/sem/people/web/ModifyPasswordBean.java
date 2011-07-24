@@ -59,7 +59,7 @@ public class ModifyPasswordBean extends EntityViewBean {
 
 	public UserDto getCurrentUser() {
 		User u = (User) SessionLoginInfo.requireCurrentUser();
-		User user = serviceFor(User.class).load(u.getId());
+		User user = serviceFor(User.class).getOrFail(u.getId());
 		UserDto cu = DTOs.marshal(UserDto.class, user);
 
 		return cu;

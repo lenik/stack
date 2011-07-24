@@ -16,7 +16,7 @@ public interface IEntityRepo_H<E extends IEntity<? extends K>, K extends Seriali
      * an exception if not found.
      *
      * <p>
-     * (Override {@link #load(Serializable)} to distinguish with {@link #lazyLoad(Serializable)}.
+     * (Override {@link #getOrFail(Serializable)} to distinguish with {@link #lazyLoad(Serializable)}.
      *
      * <p>
      * <b>WARNING</b>: This is different to {@link HibernateTemplate#load(Class, Serializable)}
@@ -33,7 +33,7 @@ public interface IEntityRepo_H<E extends IEntity<? extends K>, K extends Seriali
      *             in case of Hibernate errors
      */
     @Override
-    E load(K id);
+    E getOrFail(K id);
 
     /**
      * @see HibernateTemplate#load(Class, Serializable).

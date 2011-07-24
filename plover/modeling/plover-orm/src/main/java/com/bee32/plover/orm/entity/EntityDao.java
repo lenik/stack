@@ -137,7 +137,7 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public E load(K id) {
+    public E getOrFail(K id) {
         E entity = get(id);
         if (entity == null)
             throw new ObjectRetrievalFailureException(entityType, id);

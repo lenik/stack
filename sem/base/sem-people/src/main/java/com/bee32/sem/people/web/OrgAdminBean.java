@@ -315,7 +315,7 @@ public class OrgAdminBean
         }
 
         try {
-            Org org = serviceFor(Org.class).load(selectedOrg.getId());
+            Org org = serviceFor(Org.class).getOrFail(selectedOrg.getId());
             org.getContacts().clear();
             serviceFor(Org.class).save(org);
             serviceFor(Org.class).delete(org);

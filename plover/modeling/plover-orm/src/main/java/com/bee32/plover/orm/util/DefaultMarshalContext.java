@@ -23,7 +23,7 @@ public class DefaultMarshalContext
 
     @Override
     public <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {
-        E entity = dataManager.access(entityType).load(id);
+        E entity = dataManager.access(entityType).getOrFail(id);
         return entity;
     }
 

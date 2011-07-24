@@ -80,7 +80,7 @@ public class DecoratedEntityDao<E extends Entity<K>, K extends Serializable> {
     }
 
     public E load(K key) {
-        return impl.load(key);
+        return impl.getOrFail(key);
     }
 
     public void setParent(INamedNode parentLocator) {

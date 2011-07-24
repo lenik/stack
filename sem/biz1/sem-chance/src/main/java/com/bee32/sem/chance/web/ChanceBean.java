@@ -569,13 +569,12 @@ public class ChanceBean
     }
 
     public void drop() {
-        FacesContext context = FacesContext.getCurrentInstance();
         if (selectedChance == null) {
-            context.addMessage(null, new FacesMessage("提示:", "请选择需要删除的销售机会!"));
+            uiLogger.error("请选择需要删除的销售机会!");
             return;
         }
         try {
-            Chance chanceToDelete = serviceFor(Chance.class).load(selectedChance.getId());
+            Chance chanceToDelete = serviceFor(Chance.class).getOrFail(selectedChance.getId());
             for (ChanceAction _action : chanceToDelete.getActions()) {
                 _action.setChance(null);
                 _action.setStage(null);

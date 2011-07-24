@@ -45,7 +45,7 @@ public abstract class EntityViewBean
     @Override
     public <E extends Entity<K>, K extends Serializable> //
     E loadEntity(Class<E> entityType, K id) {
-        E entity = serviceFor(entityType).load(id);
+        E entity = serviceFor(entityType).getOrFail(id);
         return entity;
     }
 
@@ -54,7 +54,7 @@ public abstract class EntityViewBean
         Class<? extends E> entityType = (Class<? extends E>) entity.getClass();
         K id = entity.getId();
 
-        E reloaded = serviceFor(entityType).load(id);
+        E reloaded = serviceFor(entityType).getOrFail(id);
 
         return reloaded;
     }
@@ -70,7 +70,7 @@ public abstract class EntityViewBean
         Class<? extends E> entityType = dto.getEntityType();
         K id = dto.getId();
 
-        E reloaded = serviceFor(entityType).load(id);
+        E reloaded = serviceFor(entityType).getOrFail(id);
 
         D remarshalled = DTOs.marshal(dtoType, selection, reloaded);
         return remarshalled;

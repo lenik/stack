@@ -347,7 +347,7 @@ public class ChanceActionBean
         }
 
         if (!stage.isNullRef()) {
-            ChanceStage tempStage = serviceFor(ChanceStage.class).load(stage.getId());
+            ChanceStage tempStage = serviceFor(ChanceStage.class).getOrFail(stage.getId());
             stage = DTOs.mref(ChanceStageDto.class, tempStage);
         }
 // stage = reload(stage);
@@ -357,14 +357,14 @@ public class ChanceActionBean
         if (chanceId == null)
             chance = null;
         else {
-            Chance __chance = serviceFor(Chance.class).load(chanceId);
+            Chance __chance = serviceFor(Chance.class).getOrFail(chanceId);
             chance = DTOs.mref(ChanceDto.class, __chance);
         }
         action.setChance(chance);
 
         String styleId = action.getStyle().getId();
         if (styleId.isEmpty()) {
-            context.addMessage(null, new FacesMessage("提示", "请选择洽谈方式"));
+            uiLogger.error("请选择洽谈方式");
             return;
         }
         ChanceActionStyleDto style = new ChanceActionStyleDto().ref(styleId);

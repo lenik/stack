@@ -114,9 +114,9 @@ public class PlaySamples
         User ur1 = null;
         User ur2 = null;
         try {
-            gr1 = asFor(Group.class).load(g1.getId());
-            ur1 = asFor(User.class).load(u1.getId());
-            ur2 = asFor(User.class).load(u2.getId());
+            gr1 = asFor(Group.class).getOrFail(g1.getId());
+            ur1 = asFor(User.class).getOrFail(u1.getId());
+            ur2 = asFor(User.class).getOrFail(u2.getId());
 
             assertTrue(ur1.implies(gr1));
             assertFalse(gr1.implies(ur1));

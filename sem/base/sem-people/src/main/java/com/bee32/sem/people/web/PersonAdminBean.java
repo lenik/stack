@@ -184,7 +184,7 @@ public class PersonAdminBean
         }
 
         try {
-            Person person = serviceFor(Person.class).load(selectedPerson.getId());
+            Person person = serviceFor(Person.class).getOrFail(selectedPerson.getId());
             person.getContacts().clear();
             serviceFor(Person.class).save(person);
             serviceFor(Person.class).delete(person);

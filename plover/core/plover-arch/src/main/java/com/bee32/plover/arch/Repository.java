@@ -82,7 +82,7 @@ public abstract class Repository<K, T>
     }
 
     @Override
-    public T load(K key) {
+    public T getOrFail(K key) {
         T value = get(key);
         if (value == null)
             throw new IllegalUsageException("No record with key=" + key);

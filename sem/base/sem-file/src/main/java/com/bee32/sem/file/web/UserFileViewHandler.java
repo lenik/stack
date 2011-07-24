@@ -21,7 +21,7 @@ public class UserFileViewHandler
 
         String _id = req.getParameter("id");
         long id = Long.parseLong(_id);
-        UserFile userFile = asFor(UserFile.class).load(id);
+        UserFile userFile = asFor(UserFile.class).getOrFail(id);
 
         FileBlob blob = userFile.getFileBlob();
         String filename = userFile.getFilename();

@@ -30,7 +30,7 @@ public class DeleteHandler<E extends Entity<K>, K extends Serializable>
             return Javascripts.alertAndBack("非法对象标识: " + idString + ": " + e.getMessage()).dump(result);
         }
 
-        E entity = asFor(eh.getEntityType()).load(id);
+        E entity = asFor(eh.getEntityType()).getOrFail(id);
         if (entity == null)
             return Javascripts.alertAndBack("对象不存在: " + idString).dump(result);
 

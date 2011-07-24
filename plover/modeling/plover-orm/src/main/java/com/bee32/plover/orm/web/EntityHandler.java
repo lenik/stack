@@ -66,7 +66,7 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
     @Override
     public <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id)
             throws DataAccessException {
-        return asFor(entityType).load(id);
+        return asFor(entityType).getOrFail(id);
     }
 
     @Override

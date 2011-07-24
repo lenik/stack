@@ -62,7 +62,7 @@ public interface IRepository<K, T>
      * @throws IllegalUsageException
      *             If object doesn't exist.
      */
-    T load(K key);
+    T getOrFail(K key);
 
     Collection<K> keys();
 

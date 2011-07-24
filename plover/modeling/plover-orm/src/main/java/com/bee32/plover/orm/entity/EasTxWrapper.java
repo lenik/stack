@@ -59,9 +59,9 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = true)
     @Override
-    public E load(K id) {
+    public E getOrFail(K id) {
         checkLoad();
-        return (E) getDao().load(id);
+        return (E) getDao().getOrFail(id);
     }
 
     @Transactional(readOnly = true)

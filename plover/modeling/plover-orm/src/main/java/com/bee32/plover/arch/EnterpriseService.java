@@ -33,7 +33,7 @@ public abstract class EnterpriseService
 
     @Override
     public <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {
-        return asFor(entityType).load(id);
+        return asFor(entityType).getOrFail(id);
     }
 
     @Override

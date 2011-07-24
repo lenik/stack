@@ -63,7 +63,7 @@ public abstract class EntityController<E extends Entity<K>, K extends Serializab
 
     @Override
     public <_E extends Entity<_K>, _K extends Serializable> _E loadEntity(Class<_E> entityType, _K id) {
-        return dataManager.access(entityType).load(id);
+        return dataManager.access(entityType).getOrFail(id);
     }
 
 }

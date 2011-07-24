@@ -16,7 +16,7 @@ public class TypePrefDao<E extends TypePrefEntity>
     // }
 
     public E load(Class<?> clazz) {
-        return load(ABBR.abbr(clazz));
+        return getOrFail(ABBR.abbr(clazz));
     }
 
     public void deleteByKey(Class<?> clazz) {
