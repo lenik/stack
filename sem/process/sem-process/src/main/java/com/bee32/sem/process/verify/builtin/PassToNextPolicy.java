@@ -28,20 +28,20 @@ import com.bee32.sem.process.verify.VerifyResult;
 @Entity
 @DiscriminatorValue("NXT")
 @Alias("p2next")
-public class PassToNext
+public class PassToNextPolicy
         extends VerifyPolicy {
 
     private static final long serialVersionUID = 1L;
 
-    static Logger logger = LoggerFactory.getLogger(PassToNext.class);
+    static Logger logger = LoggerFactory.getLogger(PassToNextPolicy.class);
 
     private List<PassStep> sequences;
 
-    public PassToNext() {
+    public PassToNextPolicy() {
         this(new ArrayList<PassStep>());
     }
 
-    public PassToNext(List<PassStep> sequence) {
+    public PassToNextPolicy(List<PassStep> sequence) {
         super(IPassEvents.class);
         if (sequence == null)
             throw new NullPointerException("sequence");

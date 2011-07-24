@@ -20,7 +20,7 @@ public class PassStep
 
     private static final long serialVersionUID = 1L;
 
-    private PassToNext policy;
+    private PassToNextPolicy policy;
 
     public boolean optional;
     private int order;
@@ -30,7 +30,7 @@ public class PassStep
     public PassStep() {
     }
 
-    public PassStep(PassToNext policy, int order, Principal responsible, boolean optional) {
+    public PassStep(PassToNextPolicy policy, int order, Principal responsible, boolean optional) {
         if (policy == null)
             throw new NullPointerException("policy");
         if (responsible == null)
@@ -44,11 +44,11 @@ public class PassStep
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    public PassToNext getPolicy() {
+    public PassToNextPolicy getPolicy() {
         return policy;
     }
 
-    public void setPolicy(PassToNext policy) {
+    public void setPolicy(PassToNextPolicy policy) {
         if (policy == null)
             throw new NullPointerException("policy");
         this.policy = policy;

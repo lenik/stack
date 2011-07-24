@@ -5,10 +5,10 @@ import java.util.Collection;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.sem.process.verify.builtin.AllowList;
+import com.bee32.sem.process.verify.builtin.AllowListPolicy;
 import com.bee32.sem.process.verify.builtin.IMultiLevelContext;
-import com.bee32.sem.process.verify.builtin.MultiLevel;
-import com.bee32.sem.process.verify.builtin.PassToNext;
+import com.bee32.sem.process.verify.builtin.MultiLevelPolicy;
+import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
 import com.bee32.sem.process.verify.util.AllowedBySupport;
 
 public class VerifyPolicyManagerTest
@@ -19,9 +19,9 @@ public class VerifyPolicyManagerTest
         Collection<Class<? extends VerifyPolicy>> all //
         = VerifyPolicyManager.list();
 
-        assertTrue(all.contains(AllowList.class));
-        assertTrue(all.contains(MultiLevel.class));
-        assertTrue(all.contains(PassToNext.class));
+        assertTrue(all.contains(AllowListPolicy.class));
+        assertTrue(all.contains(MultiLevelPolicy.class));
+        assertTrue(all.contains(PassToNextPolicy.class));
     }
 
     @Test
@@ -29,9 +29,9 @@ public class VerifyPolicyManagerTest
         Collection<Class<? extends VerifyPolicy>> all //
         = VerifyPolicyManager.forBean(SimpleBean.class);
 
-        assertTrue(all.contains(AllowList.class));
-        assertTrue(all.contains(MultiLevel.class));
-        assertFalse(all.contains(PassToNext.class));
+        assertTrue(all.contains(AllowListPolicy.class));
+        assertTrue(all.contains(MultiLevelPolicy.class));
+        assertFalse(all.contains(PassToNextPolicy.class));
     }
 
     static class SimpleBean

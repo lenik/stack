@@ -13,15 +13,15 @@ public class PassEvents
 
     private static final long serialVersionUID = 1L;
 
-    private PassToNext policy;
+    private PassToNextPolicy policy;
     private List<VerifyEvent> events;
     private int position;
 
-    public PassEvents(PassToNext policy) {
+    public PassEvents(PassToNextPolicy policy) {
         this(policy, 0, new ArrayList<VerifyEvent>());
     }
 
-    public PassEvents(PassToNext policy, int position, List<VerifyEvent> events) {
+    public PassEvents(PassToNextPolicy policy, int position, List<VerifyEvent> events) {
         if (policy == null)
             throw new NullPointerException("policy");
         if (events == null)
@@ -31,11 +31,11 @@ public class PassEvents
         this.events = events;
     }
 
-    public PassToNext getPolicy() {
+    public PassToNextPolicy getPolicy() {
         return policy;
     }
 
-    public void setPolicy(PassToNext policy) {
+    public void setPolicy(PassToNextPolicy policy) {
         this.policy = policy;
     }
 

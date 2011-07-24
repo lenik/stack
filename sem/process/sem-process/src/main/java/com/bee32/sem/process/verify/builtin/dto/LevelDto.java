@@ -4,10 +4,10 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.sem.process.verify.builtin.Level;
+import com.bee32.sem.process.verify.builtin.MultiLevel;
 
 public class LevelDto
-        extends EntityDto<Level, Integer> {
+        extends EntityDto<MultiLevel, Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,14 +20,14 @@ public class LevelDto
     }
 
     @Override
-    protected void _marshal(Level source) {
+    protected void _marshal(MultiLevel source) {
         multiLevel = new MultiLevelDto().ref(source.getMultiLevel());
         limit = source.getLimit();
         targetPolicy = mref(VerifyPolicyDto.class, source.getTargetPolicy());
     }
 
     @Override
-    protected void _unmarshalTo(Level target) {
+    protected void _unmarshalTo(MultiLevel target) {
         target.setLimit(limit);
 
         merge(target, "multiLevel", multiLevel);

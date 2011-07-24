@@ -8,10 +8,10 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHelper;
-import com.bee32.sem.process.verify.builtin.PassToNext;
+import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
 
 public class PassToNextDto
-        extends AbstractVerifyPolicyDto<PassToNext> {
+        extends AbstractVerifyPolicyDto<PassToNextPolicy> {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,13 +36,13 @@ public class PassToNextDto
     }
 
     @Override
-    protected void _marshal(PassToNext source) {
+    protected void _marshal(PassToNextPolicy source) {
         if (selection.contains(SEQUENCES))
             sequences = marshalList(PassStepDto.class, source.getSequences());
     }
 
     @Override
-    protected void _unmarshalTo(PassToNext target) {
+    protected void _unmarshalTo(PassToNextPolicy target) {
         if (selection.contains(SEQUENCES))
             mergeList(target, "sequences", sequences);
     }
@@ -64,7 +64,7 @@ public class PassToNextDto
     }
 
     static {
-        EntityHelper.getInstance(PassToNext.class).setSelection(SEQUENCES);
+        EntityHelper.getInstance(PassToNextPolicy.class).setSelection(SEQUENCES);
     }
 
 }

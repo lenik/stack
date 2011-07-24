@@ -15,12 +15,12 @@ import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.SEMProcessModule;
-import com.bee32.sem.process.verify.builtin.AllowList;
+import com.bee32.sem.process.verify.builtin.AllowListPolicy;
 import com.bee32.sem.process.verify.builtin.dto.AllowListDto;
 
 @RequestMapping(AllowListController.PREFIX + "*")
 public class AllowListController
-        extends BasicEntityController<AllowList, Integer, AllowListDto> {
+        extends BasicEntityController<AllowListPolicy, Integer, AllowListDto> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "list/";
 

@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.bee32.plover.orm.web.basic.BasicEntityController;
 import com.bee32.plover.orm.web.util.DataTableDxo;
 import com.bee32.sem.process.SEMProcessModule;
-import com.bee32.sem.process.verify.builtin.PassToNext;
+import com.bee32.sem.process.verify.builtin.PassToNextPolicy;
 import com.bee32.sem.process.verify.builtin.dao.PassStepDao;
 import com.bee32.sem.process.verify.builtin.dto.PassStepDto;
 import com.bee32.sem.process.verify.builtin.dto.PassToNextDto;
 
 @RequestMapping(PassToNextController.PREFIX + "*")
 public class PassToNextController
-        extends BasicEntityController<PassToNext, Integer, PassToNextDto> {
+        extends BasicEntityController<PassToNextPolicy, Integer, PassToNextDto> {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "p2next/";
 

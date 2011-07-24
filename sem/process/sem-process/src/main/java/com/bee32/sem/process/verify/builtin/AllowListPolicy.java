@@ -25,26 +25,26 @@ import com.bee32.sem.process.verify.VerifyResult;
 @Entity
 @DiscriminatorValue("LS")
 @Alias("list")
-public class AllowList
+public class AllowListPolicy
         extends VerifyPolicy {
 
     private static final long serialVersionUID = 1L;
 
     private Set<Principal> responsibles;
 
-    public AllowList() {
+    public AllowListPolicy() {
         this(new Principal[0]);
     }
 
-    public AllowList(Principal singleManager) {
+    public AllowListPolicy(Principal singleManager) {
         this(new Principal[] { singleManager });
     }
 
-    public AllowList(Principal... responsibles) {
+    public AllowListPolicy(Principal... responsibles) {
         this(Arrays.asList(responsibles));
     }
 
-    public AllowList(Collection<? extends Principal> responsibles) {
+    public AllowListPolicy(Collection<? extends Principal> responsibles) {
         super(IAllowedByContext.class);
         if (responsibles == null)
             throw new NullPointerException("responsibles");

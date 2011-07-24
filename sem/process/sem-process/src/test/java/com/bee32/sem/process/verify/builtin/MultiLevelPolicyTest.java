@@ -15,7 +15,7 @@ import com.bee32.sem.process.verify.builtin.dao.MultiLevelDao;
 
 @Ignore
 @Using(SEMProcessUnit.class)
-public class MultiLevelTest
+public class MultiLevelPolicyTest
         extends WiredDaoTestCase {
 
     @Inject
@@ -24,10 +24,10 @@ public class MultiLevelTest
     @Test
     public void testLimitOrder() {
         Integer id = SEMVerifyPolicySamples.macLevel.getId();
-        MultiLevel mlevel = dao.get(id);
-        List<Level> ranges = mlevel.getLevels();
+        MultiLevelPolicy mlevel = dao.get(id);
+        List<MultiLevel> ranges = mlevel.getLevels();
         long limit1 = ranges.get(0).getLimit();
-        Level limit2 = ranges.get(1);
+        MultiLevel limit2 = ranges.get(1);
         assertEquals(1000, limit1);
         assertEquals(10000, limit2);
     }

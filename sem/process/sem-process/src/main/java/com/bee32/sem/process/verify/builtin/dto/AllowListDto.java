@@ -9,10 +9,10 @@ import javax.free.TypeConvertException;
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHelper;
-import com.bee32.sem.process.verify.builtin.AllowList;
+import com.bee32.sem.process.verify.builtin.AllowListPolicy;
 
 public class AllowListDto
-        extends AbstractVerifyPolicyDto<AllowList> {
+        extends AbstractVerifyPolicyDto<AllowListPolicy> {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,13 +29,13 @@ public class AllowListDto
     }
 
     @Override
-    protected void _marshal(AllowList source) {
+    protected void _marshal(AllowListPolicy source) {
         if (selection.contains(RESPONSIBLES))
             responsibles = marshalList(PrincipalDto.class, 0, source.getResponsibles());
     }
 
     @Override
-    protected void _unmarshalTo(AllowList target) {
+    protected void _unmarshalTo(AllowListPolicy target) {
         if (selection.contains(RESPONSIBLES))
             mergeSet(target, "responsibles", responsibles);
     }
@@ -66,7 +66,7 @@ public class AllowListDto
     }
 
     static {
-        EntityHelper.getInstance(AllowList.class).setSelection(RESPONSIBLES);
+        EntityHelper.getInstance(AllowListPolicy.class).setSelection(RESPONSIBLES);
     }
 
 }
