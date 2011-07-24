@@ -18,9 +18,10 @@ import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockPeriod;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.SEMPeopleUnit;
+import com.bee32.sem.process.SEMProcessUnit;
 import com.bee32.sem.world.SEMWorldUnit;
 
-@ImportUnit({ SEMPeopleUnit.class, SEMWorldUnit.class, SEMFileUnit.class })
+@ImportUnit({ SEMPeopleUnit.class, SEMWorldUnit.class, SEMFileUnit.class, SEMProcessUnit.class })
 public class SEMInventoryUnit
         extends PersistenceUnit {
 
