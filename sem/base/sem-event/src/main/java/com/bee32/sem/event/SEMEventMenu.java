@@ -14,20 +14,21 @@ public class SEMEventMenu
         extends MenuContribution
         implements ITypeAbbrAware {
 
-    static Location EVENT = WEB_APP.join(EventController.PREFIX + "/");
+    static Location EVENT_ = WEB_APP.join(EventController.PREFIX_);
 
-    public static MenuNode eventAdmin = menu(SEMFrameMenu.MAIN, "event"); // MAIN/Admin
-    public static MenuNode event = menu(SEMFrameMenu.MAIN, "event");
+    public static MenuNode EVENT = menu(SEMFrameMenu.MAIN, "event");
+    public static MenuNode ADMIN = menu(EVENT, "eventAdmin"); // MAIN/Admin
 
-    static MenuNode categories = entry(eventAdmin, 10, "categories", getDictIndex(EventCategory.class));
-    static MenuNode priorities = entry(eventAdmin, 11, "priorities", //
+    static MenuNode categories = entry(ADMIN, 10, "categories", getDictIndex(EventCategory.class));
+    static MenuNode priorities = entry(ADMIN, 11, "priorities", //
             WEB_APP.join(EventPriorityController.PREFIX).join("index.do"));
 
-    static MenuNode states = entry(eventAdmin, 12, "states", getDictIndex(EventStatus.class));
-    static MenuNode pendingTasks = entry(event, 10, "pendingTasks", EVENT.join("index.do?stereo=TSK&closed=false"));
-    static MenuNode completedTasks = entry(event, 11, "completedTasks", EVENT.join("index.do?stereo=TSK&closed=true"));
-    static MenuNode eventIndex = entry(event, 20, "eventIndex", EVENT.join("index.do?recent=30"));
-    static MenuNode activityIndex = entry(event, 30, "activityIndex", EVENT.join("index.do?stereo=ACT&recent=30"));
+    static MenuNode states = entry(ADMIN, 12, "states", getDictIndex(EventStatus.class));
+
+    static MenuNode pendingTasks = entry(EVENT, 10, "pendingTasks", EVENT_.join("index.do?stereo=TSK&closed=false"));
+    static MenuNode completedTasks = entry(EVENT, 11, "completedTasks", EVENT_.join("index.do?stereo=TSK&closed=true"));
+    static MenuNode eventIndex = entry(EVENT, 20, "eventIndex", EVENT_.join("index.do?recent=30"));
+    static MenuNode activityIndex = entry(EVENT, 30, "activityIndex", EVENT_.join("index.do?stereo=ACT&recent=30"));
 
     @Override
     protected void preamble() {

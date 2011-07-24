@@ -20,7 +20,7 @@ public class SEMChanceModuleTest
 
     @Override
     protected int getRefreshPeriod() {
-        return 2;
+        return 10;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class SEMChanceModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMChanceModuleTest().browseAndWait(SEMChanceModule.PREFIX + "/price/quotation-rich.jsf");
+        new SEMChanceModuleTest().browseAndWait(SEMChanceModule.PREFIX + "/price/");
     }
 
 }

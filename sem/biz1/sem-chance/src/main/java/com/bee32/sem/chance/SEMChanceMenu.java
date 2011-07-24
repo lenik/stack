@@ -17,7 +17,7 @@ public class SEMChanceMenu
 
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
     static Location CHANCE_ = WEB_APP.join(SEMChanceModule.PREFIX_);
-    static Location PRICELOCATION = WEB_APP.join(SEMChanceModule.PREFIX_);
+    static Location PRICE_ = WEB_APP.join(SEMChanceModule.PREFIX_);
 
     public static MenuNode CHANCE = menu(SEMFrameMenu.BIZ1, "chance");
     public static MenuNode CHANCE_DICT = menu(CHANCE, "dict");
@@ -28,12 +28,12 @@ public class SEMChanceMenu
     static MenuNode actionStyle = entry(CHANCE_DICT, "actionStyle", getDictIndex(ChanceActionStyle.class));
     static MenuNode stage = entry(CHANCE_DICT, "stage", getDictIndex(ChanceStage.class));
 
-    static MenuNode chance = entry(CHANCE, -1, "chance", CHANCE_.join("chance/index-rich.jsf"));
-    static MenuNode action = entry(CHANCE, 0, "action", CHANCE_.join("action/index-rich.jsf"));
+    static MenuNode chance = entry(CHANCE, -1, "chance", CHANCE_.join("chance/"));
+    static MenuNode action = entry(CHANCE, 0, "action", CHANCE_.join("action/"));
 
-// static MenuNode competitor = entry(CHANCE, "competitor", CHANCE_.join("competitor/index.jsf "));
-    static MenuNode basePrice = entry(PRICE, "basePrice", PRICELOCATION.join("price/base-rich.jsf"));
-    static MenuNode quotation = entry(PRICE, "quotation", PRICELOCATION.join("price/quotation-rich.jsf"));
+// static MenuNode competitor = entry(CHANCE, "competitor", CHANCE_.join("competitor/ "));
+    static MenuNode basePrice = entry(PRICE, "price", PRICE_.join("price/"));
+    static MenuNode quotation = entry(PRICE, "quotation", PRICE_.join("quote/"));
 
     @Override
     protected void preamble() {
