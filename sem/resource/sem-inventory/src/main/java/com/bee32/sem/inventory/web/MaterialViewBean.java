@@ -3,8 +3,6 @@ package com.bee32.sem.inventory.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.model.TreeNode;
@@ -133,16 +131,14 @@ public class MaterialViewBean
     }
 
     public void destroyMaterial() {
-        FacesContext context = FacesContext.getCurrentInstance();
         try {
             long id = activeMaterial.getId();
-            Material toDestroy = serviceFor(Material.class).load(id);
+            Material toDestroy = serviceFor(Material.class).getOrFail(id);
             serviceFor(Material.class).delete(toDestroy);
             materialList.remove(activeMaterial);
-            context.addMessage(null, new FacesMessage("错误提示:", "删除物料成功"));
+            uiLogger.info("删除物料成功");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("错误提示:", "删除物料失败" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("删除物料失败" + e.getMessage(), e);
         }
     }
 
@@ -164,18 +160,17 @@ public class MaterialViewBean
     }
 
     public void doAddAttr() {
-        FacesContext context = FacesContext.getCurrentInstance();
         MaterialAttributeDto tattr = new MaterialAttributeDto().create();
         tattr.setMaterial(activeMaterial);
         tattr.setName(activeAttr.getName());
         tattr.setValue(activeAttr.getValue());
 
         if (tattr.getName().isEmpty()) {
-            context.addMessage(null, new FacesMessage("错误提示:", "自定义属性名称不能为空!"));
+            uiLogger.error("自定义属性名称不能为空!");
             return;
         }
         if (tattr.getValue().isEmpty()) {
-            context.addMessage(null, new FacesMessage("错误提示:", "自定义属性值不能为空!"));
+            uiLogger.error("自定义属性值不能为空!");
             return;
         }
         activeMaterial.addAttribute(tattr);
@@ -190,7 +185,7 @@ public class MaterialViewBean
     public void doAddOption() {
         MaterialWarehouseOptionDto mwod = new MaterialWarehouseOptionDto();
         mwod.setMaterial(activeMaterial);
-        StockWarehouse sw = serviceFor(StockWarehouse.class).load(activeOption.getWarehouse().getId());
+        StockWarehouse sw = serviceFor(StockWarehouse.class).getOrFail(activeOption.getWarehouse().getId());
         StockWarehouseDto swd = DTOs.mref(StockWarehouseDto.class, sw);
         mwod.setWarehouse(swd);
         mwod.setSafetyStock(activeOption.getSafetyStock());
@@ -207,21 +202,20 @@ public class MaterialViewBean
     }
 
     public void doAddMaterial() {
-        FacesContext context = FacesContext.getCurrentInstance();
         String name = activeMaterial.getName();
         MaterialCategoryDto category = activeMaterial.getCategory();
         UnitDto unit = activeMaterial.getUnit();
         UnitConvDto unitConv = activeMaterial.getUnitConv();
         if (name == null || name.isEmpty()) {
-            context.addMessage(null, new FacesMessage("错误提示:", "物料名称不能为空!"));
+            uiLogger.error("物料名称不能为空!");
             return;
         }
         if (category == null || category.isNull() || category.isNullRef()) {
-            context.addMessage(null, new FacesMessage("错误提示:", "请选择物料分类!"));
+            uiLogger.error("请选择物料分类!");
             return;
         }
         if (unit.isNullRef()) {
-            context.addMessage(null, new FacesMessage("错误提示:", "请选择物料的基础单位!"));
+            uiLogger.error("请选择物料的基础单位!");
             return;
         }
 
@@ -235,10 +229,9 @@ public class MaterialViewBean
 
             activeMaterial = DTOs.marshal(MaterialDto.class, material);
 
-            context.addMessage(null, new FacesMessage("提示:", "保存物料成功!"));
+            uiLogger.error("保存物料成功!");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("错误提示:", "保存物料失败" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("保存物料失败" + e.getMessage(), e);
         }
 
         TreeNode currentNode = materialCategoryTree.getSelectedNode();

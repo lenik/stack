@@ -121,10 +121,12 @@ public class ChanceActionBean
         } else {
             initList();
             if (searchBeginTime == null) {
-                context.addMessage(null, new FacesMessage("提示", "开始时间为空"));
+                uiLogger.error("开始时间为空");
+                return;
             }
             if (searchEndTime == null) {
-                context.addMessage(null, new FacesMessage("提示", "结束时间为空"));
+                uiLogger.error("结束时间为空");
+                return;
             }
         }
 
@@ -393,10 +395,9 @@ public class ChanceActionBean
             saveable = true;
             selectedAction = null;
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("提示", "保存销售机会行动记录成功!"));
+            uiLogger.info("保存销售机会行动记录成功!");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("错误", "保存行动记录失败:" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("保存行动记录失败:" + e.getMessage(), e);
         }
 
     }

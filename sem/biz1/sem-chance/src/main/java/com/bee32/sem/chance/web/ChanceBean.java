@@ -583,15 +583,13 @@ public class ChanceBean
             serviceFor(Chance.class).delete(chanceToDelete);
             refreshChanceCount(isSearching);
             initToolbar();
-            context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
+            uiLogger.info("成功删除行动记录");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("错误", "删除销售机会失败:" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("删除销售机会失败:" + e.getMessage(), e);
         }
     }
 
     public void unRelating() {
-        FacesContext context = FacesContext.getCurrentInstance();
         try {
             ChanceActionDto actionDto = selectedAction;
             ChanceAction chanceAction = actionDto.unmarshal();
@@ -600,10 +598,9 @@ public class ChanceBean
             chanceAction.setStage(null);
             serviceFor(ChanceAction.class).save(chanceAction);
             unRelating = true;
-            context.addMessage(null, new FacesMessage("提示", "反关联成功"));
+            uiLogger.info("反关联成功");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("错误提示", "反关联失败:" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("反关联失败:" + e.getMessage(), e);
         }
     }
 
