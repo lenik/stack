@@ -119,7 +119,7 @@ public class GroupAdminBean extends PrincipalAdminBean {
     public void doSave() {
 	if(editNewStatus) {
 		//新增
-	        Principal existing = serviceFor(Principal.class).get(group.getId());
+	        Principal existing = serviceFor(Principal.class).getByName(group.getName());
 	        if (existing != null) {
 	            uiLogger.error("保存失败:组已存在。");
 	            return;

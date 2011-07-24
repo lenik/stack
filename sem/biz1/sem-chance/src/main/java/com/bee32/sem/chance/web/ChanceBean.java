@@ -13,8 +13,6 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.bee32.icsf.login.SessionLoginInfo;
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
@@ -272,8 +270,6 @@ public class ChanceBean
     public void createQuotationForm() {
         quotation = new QuotationDto().create();
         quotation.setChance(chance);
-        UserDto creator = new UserDto().ref(SessionLoginInfo.requireCurrentUser().getId());
-        quotation.setCreator(creator);
     }
 
     public void onQuotationRowSelect() {
@@ -531,9 +527,6 @@ public class ChanceBean
         if (!sourceId.isEmpty())
             csd = new ChanceSourceDto().ref(sourceId);
         chance.setSource(csd);
-
-        UserDto owner = new UserDto().ref(SessionLoginInfo.requireCurrentUser().getId());
-        chance.setOwner(owner);
 
         ChanceStageDto tempStage = null;
         String chanceStageId = chance.getStage().getId();

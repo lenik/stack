@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.free.ParseException;
 
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.chance.entity.Quotation;
@@ -14,7 +13,6 @@ public class QuotationDto
 
     private static final long serialVersionUID = 1L;
 
-    private UserDto creator;
     private String subject;
     private ChanceDto chance;
     private List<QuotationItemDto> items;
@@ -25,7 +23,6 @@ public class QuotationDto
 
     @Override
     protected void _marshal(Quotation source) {
-        this.creator = new UserDto().ref(source.getCreator());
         this.subject = source.getSubject();
         this.chance = mref(ChanceDto.class, source.getChance());
         this.items = marshalList(QuotationItemDto.class, source.getItems());
@@ -37,7 +34,6 @@ public class QuotationDto
 
     @Override
     protected void _unmarshalTo(Quotation target) {
-        merge(target, "creator", creator);
         target.setSubject(subject);
         merge(target, "chance", chance);
         mergeList(target, "items", items);
@@ -58,14 +54,6 @@ public class QuotationDto
 
     public void removeItem(QuotationItemDto qid){
         this.items.remove(qid);
-    }
-
-    public UserDto getCreator() {
-        return creator;
-    }
-
-    public void setCreator(UserDto creator) {
-        this.creator = creator;
     }
 
     public String getSubject() {

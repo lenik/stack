@@ -12,7 +12,6 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityAuto;
 
 /**
@@ -24,7 +23,6 @@ public class Quotation
 
     private static final long serialVersionUID = 1L;
 
-    User creator;
     String subject;
     Chance chance;
     List<QuotationItem> items = new ArrayList<QuotationItem>();
@@ -34,19 +32,6 @@ public class Quotation
     String remark;
 
     public Quotation() {
-    }
-
-    /**
-     * 报价人
-     */
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
     }
 
     /**

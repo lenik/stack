@@ -18,7 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,7 +26,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.xp.EntityExt;
 
@@ -43,8 +41,6 @@ public abstract class Party
         extends EntityExt<Integer, PartyXP> {
 
     private static final long serialVersionUID = 1L;
-
-    User owner;
 
     Set<PartyTagname> tags;
 
@@ -68,18 +64,6 @@ public abstract class Party
 
     protected Party(String name) {
         this.name = name;
-    }
-
-    /**
-     * 记录的持有者
-     */
-    @ManyToOne
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
     }
 
     @ManyToMany

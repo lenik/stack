@@ -14,9 +14,6 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.bee32.icsf.login.SessionLoginInfo;
-import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.Gender;
@@ -148,10 +145,6 @@ public class PersonAdminBean
 
     private void _newPerson() {
         person = new PersonDto().create();
-
-        IUserPrincipal currentUser = SessionLoginInfo.getCurrentUser();
-        UserDto user = new UserDto().ref(currentUser.getId());
-        person.setOwner(user);
     }
 
     public void doNew() {

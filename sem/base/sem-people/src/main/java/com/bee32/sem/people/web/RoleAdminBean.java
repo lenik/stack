@@ -123,7 +123,7 @@ public class RoleAdminBean extends PrincipalAdminBean {
     public void doSave() {
 	if(editNewStatus) {
 		//新增
-	        Principal existing = serviceFor(Principal.class).get(role.getId());
+	        Principal existing = serviceFor(Principal.class).getByName(role.getName());
 	        if (existing != null) {
 	            uiLogger.error("保存失败:角色已存在。");
 	            return;

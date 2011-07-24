@@ -10,7 +10,6 @@ public class GroupDto
     private static final long serialVersionUID = 1L;
 
     GroupDto inheritedGroup;
-    UserDto owner;
     RoleDto primaryRole;
 
     List<GroupDto> derivedGroups;
@@ -41,7 +40,6 @@ public class GroupDto
 
         if (selection.contains(EXT)) {
             inheritedGroup = mref(GroupDto.class, _selection, source.getInheritedGroup());
-            owner = mref(UserDto.class, _selection, source.getOwner());
             primaryRole = mref(RoleDto.class, _selection, source.getPrimaryRole());
         }
 
@@ -61,7 +59,6 @@ public class GroupDto
 
         if (selection.contains(EXT)) {
             merge(target, "inheritedGroup", inheritedGroup);
-            merge(target, "owner", owner);
             merge(target, "primaryRole", primaryRole);
         }
 
@@ -77,14 +74,6 @@ public class GroupDto
 
     public void setInheritedGroup(GroupDto inheritedGroup) {
         this.inheritedGroup = inheritedGroup;
-    }
-
-    public UserDto getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserDto owner) {
-        this.owner = owner;
     }
 
     public RoleDto getPrimaryRole() {

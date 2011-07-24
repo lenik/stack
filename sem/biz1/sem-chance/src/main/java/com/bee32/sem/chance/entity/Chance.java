@@ -15,7 +15,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
@@ -30,7 +29,6 @@ public class Chance
 
     private static final long serialVersionUID = 1L;
 
-    User owner;
     ChanceCategory category = ChanceCategory.NORMAL;
     ChanceSourceType source = ChanceSourceType.OTHER;
     String subject = "";
@@ -93,19 +91,6 @@ public class Chance
         if (content == null)
             throw new NullPointerException("content");
         this.content = content;
-    }
-
-    /**
-     * 负责人
-     */
-    @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
     }
 
     @OneToMany(mappedBy = "chance")

@@ -15,9 +15,6 @@ import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.bee32.icsf.login.SessionLoginInfo;
-import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
@@ -283,10 +280,6 @@ public class OrgAdminBean
 
     private void _newOrg() {
         org = new OrgDto().create();
-
-        IUserPrincipal currentUser = SessionLoginInfo.getCurrentUser();
-        UserDto user = new UserDto().ref(currentUser.getId());
-        org.setOwner(user);
     }
 
     public void doNew() {

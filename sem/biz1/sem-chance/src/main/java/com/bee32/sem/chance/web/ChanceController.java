@@ -38,7 +38,7 @@ public class ChanceController
 
     @Override
     protected void fillDataRow(DataTableDxo tab, ChanceDto dto) {
-        tab.push(dto.getOwner().getName());
+        // tab.push(dto.getOwnerId());
         tab.push(dto.getCategory().getLabel());
         tab.push(dto.getSource().getLabel());
         tab.push(dto.getSubject());

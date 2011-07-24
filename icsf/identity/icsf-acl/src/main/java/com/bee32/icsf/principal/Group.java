@@ -19,7 +19,6 @@ public class Group
 
     private static final long serialVersionUID = 1L;
 
-    User owner;
     Role primaryRole;
 
     List<Role> assignedRoles = new ArrayList<Role>();;
@@ -38,7 +37,6 @@ public class Group
 
     public Group(String name, String fullName, User owner, User... memberUsers) {
         super(name, fullName);
-        this.owner = owner;
 
         addMemberUser(owner);
 
@@ -65,17 +63,6 @@ public class Group
     public void setDerivedGroups(List<Group> derivedGroups) {
         List<Principal> children = cast(derivedGroups);
         setChildren(children);
-    }
-
-    @ManyToOne
-    @Override
-    public User getOwner() {
-        return owner;
-    }
-
-    @Override
-    public void setOwner(User owner) {
-        this.owner = (User) owner;
     }
 
     @ManyToOne

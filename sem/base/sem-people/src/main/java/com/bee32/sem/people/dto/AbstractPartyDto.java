@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.free.ParseException;
 
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
 import com.bee32.sem.people.entity.Party;
@@ -19,8 +18,6 @@ public class AbstractPartyDto<E extends Party>
     public static final int CONTACTS = 1;
     public static final int RECORDS = 2;
     public static final int ROLES = 4;
-
-    UserDto owner;
 
     String name;
     String fullName;
@@ -45,7 +42,6 @@ public class AbstractPartyDto<E extends Party>
 
     @Override
     protected void _marshal(E source) {
-        owner = mref(UserDto.class, source.getOwner());
         tags = marshalList(PartyTagnameDto.class, source.getTags(), true);
 
         name = source.getName();
@@ -69,8 +65,6 @@ public class AbstractPartyDto<E extends Party>
 
     @Override
     protected void _unmarshalTo(E target) {
-        merge(target, "owner", owner);
-
         target.setName(name);
         target.setFullName(fullName);
         target.setNickName(nickName);
@@ -92,14 +86,6 @@ public class AbstractPartyDto<E extends Party>
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-    }
-
-    public UserDto getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserDto owner) {
-        this.owner = owner;
     }
 
     public String getName() {

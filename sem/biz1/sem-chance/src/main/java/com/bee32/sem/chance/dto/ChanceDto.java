@@ -5,7 +5,6 @@ import java.util.List;
 import javax.free.ParseException;
 import javax.free.Strings;
 
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.sem.chance.entity.Chance;
@@ -23,7 +22,6 @@ public class ChanceDto
     String party;
     String date;
     String shortContent;
-    UserDto owner;
     ChanceCategoryDto category;
     ChanceSourceDto source;
     String subject;
@@ -54,7 +52,6 @@ public class ChanceDto
         this.party = partyString;
         this.date = DateToRange.fullFormat.format(source.getCreatedDate()).substring(0, 16);
         this.shortContent = Strings.ellipse(source.getContent(), 16);
-        this.owner = mref(UserDto.class, source.getOwner());
         this.category = mref(ChanceCategoryDto.class, source.getCategory());
         this.source = mref(ChanceSourceDto.class, source.getSource());
         this.subject = source.getSubject();
@@ -71,7 +68,6 @@ public class ChanceDto
 
     @Override
     protected void _unmarshalTo(Chance target) {
-        merge(target, "owner", owner);
         merge(target, "category", category);
         merge(target, "source", source);
         target.setSubject(subject);
@@ -149,14 +145,6 @@ public class ChanceDto
 
     public void setShortContent(String shortContent) {
         this.shortContent = shortContent;
-    }
-
-    public UserDto getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserDto owner) {
-        this.owner = owner;
     }
 
     public ChanceCategoryDto getCategory() {

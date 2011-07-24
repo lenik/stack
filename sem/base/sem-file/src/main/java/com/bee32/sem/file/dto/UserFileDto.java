@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.free.ParseException;
 
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.file.entity.UserFile;
@@ -17,7 +16,6 @@ public class UserFileDto
 
     public static final int TAGS = 1;
 
-    UserDto owner;
     FileBlobDto fileBlob;
 
     String origPath;
@@ -36,7 +34,6 @@ public class UserFileDto
 
     @Override
     protected void _marshal(UserFile source) {
-        owner = mref(UserDto.class, source.getOwner());
         fileBlob = mref(FileBlobDto.class, source.getFileBlob());
         origPath = source.getOrigPath();
         filename = source.getFilename();
@@ -48,7 +45,6 @@ public class UserFileDto
 
     @Override
     protected void _unmarshalTo(UserFile target) {
-        merge(target, "owner", owner);
         merge(target, "fileBlob", fileBlob);
         target.setOrigPath(origPath);
         target.setFilename(filename);
@@ -61,7 +57,6 @@ public class UserFileDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-        owner = new UserDto().ref(map.getInt("owner"));
         fileBlob = new FileBlobDto().ref(map.getString("fileBlob"));
         origPath = map.getString("origPath");
         filename = map.getString("filename");
@@ -77,16 +72,6 @@ public class UserFileDto
                 tags.add(tag);
             }
         }
-    }
-
-    public UserDto getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserDto owner) {
-        if (owner == null)
-            throw new NullPointerException("owner");
-        this.owner = owner;
     }
 
     public FileBlobDto getFileBlob() {

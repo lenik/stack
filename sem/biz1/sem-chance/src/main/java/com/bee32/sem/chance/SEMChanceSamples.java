@@ -96,7 +96,7 @@ public class SEMChanceSamples
         quotationItem1.setNumber(2);
         quotationItem1.setRemark("羽与晃宿相爱,遥共语,但说平生,不及军事.");
 
-        quotation.setCreator(IcsfPrincipalSamples.eva);
+        quotation.setOwner(IcsfPrincipalSamples.eva);
         quotation.setSubject("7月2号报价");
         quotation.setChance(chance);
         quotation.setItems(Arrays.<QuotationItem> asList(quotationItem1));

@@ -42,6 +42,8 @@ public abstract class Entity<K extends Serializable>
     int aclId;
     int ownerId;
 
+    transient Entity<Integer> _owner;
+
     public Entity() {
         super(null);
     }
@@ -140,12 +142,25 @@ public abstract class Entity<K extends Serializable>
     }
 
     @Column(name = "owner", nullable = false)
-    public int getOwnerId() {
+    public synchronized int getOwnerId() {
+        if (_owner != null) {
+            Integer _id = _owner.getId();
+            if (_id == null)
+                throw new NullPointerException("owner.id isn't initialized.");
+            ownerId = _id;
+            _owner = null;
+        }
         return ownerId;
     }
 
     public void setOwnerId(int owner) {
         this.ownerId = owner;
+    }
+
+    public void setOwner(Entity<Integer> owner) {
+        if (owner == null)
+            throw new NullPointerException("owner");
+        this._owner = owner;
     }
 
     @Override

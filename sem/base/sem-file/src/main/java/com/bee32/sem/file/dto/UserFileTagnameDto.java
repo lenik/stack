@@ -2,7 +2,6 @@ package com.bee32.sem.file.dto;
 
 import javax.free.ParseException;
 
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.plover.orm.util.EntityDto;
@@ -13,7 +12,6 @@ public class UserFileTagnameDto
 
     private static final long serialVersionUID = 1L;
 
-    UserDto owner;
     String tag;
 
     public UserFileTagnameDto() {
@@ -26,13 +24,11 @@ public class UserFileTagnameDto
 
     @Override
     protected void _marshal(UserFileTagname source) {
-        owner = mref(UserDto.class, source.getOwner());
         tag = source.getTag();
     }
 
     @Override
     protected void _unmarshalTo(UserFileTagname target) {
-        merge(target, "owner", owner);
         target.setTag(tag);
     }
 
@@ -46,9 +42,6 @@ public class UserFileTagnameDto
     protected Boolean naturalEquals(EntityDto<UserFileTagname, Long> other) {
         UserFileTagnameDto o = (UserFileTagnameDto) other;
 
-        if (!owner.equals(o.owner))
-            return false;
-
         if (!tag.equals(o.tag))
             return false;
 
@@ -58,19 +51,8 @@ public class UserFileTagnameDto
     @Override
     protected Integer naturalHashCode() {
         int hash = 0;
-        hash += owner.hashCode();
         hash += tag.hashCode();
         return hash;
-    }
-
-    public UserDto getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserDto owner) {
-        if (owner == null)
-            throw new NullPointerException("owner");
-        this.owner = owner;
     }
 
     public String getTag() {

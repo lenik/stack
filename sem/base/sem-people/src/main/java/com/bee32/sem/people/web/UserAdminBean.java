@@ -187,7 +187,7 @@ public class UserAdminBean
     public void doSave() {
         if (editNewStatus) {
             // 新增
-            Principal existing = serviceFor(Principal.class).get(user.getId());
+            Principal existing = serviceFor(Principal.class).getByName(user.getName());
             if (existing != null) {
                 uiLogger.error("保存失败:用户已存在。");
                 return;

@@ -10,7 +10,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.EntityAuto;
 
 /**
@@ -22,7 +21,6 @@ public class UserFile
 
     private static final long serialVersionUID = 1L;
 
-    User owner;
     FileBlob fileBlob;
 
     String origPath;
@@ -30,18 +28,6 @@ public class UserFile
     String subject = "";
 
     Set<UserFileTagname> tags = new HashSet<UserFileTagname>();
-
-    /**
-     * 文件的属主用户。
-     */
-    @ManyToOne(optional = false)
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
 
     /**
      * 文件数据。
