@@ -12,8 +12,7 @@ public class SEMFileMenu
 
     public static MenuNode FILE = menu(SEMFrameMenu.BASE, "file");
 
-    static MenuNode personAdmin = entry(FILE, 1, "fileUpload", FILE_.join("index-rich.jsf"));
-
+    static MenuNode userFile = entry(FILE, 1, "userFile", FILE_.join("userfile/"));
 
     @Override
     protected void preamble() {
