@@ -31,14 +31,14 @@ public abstract class EntityViewBean
 
     protected static <E extends Entity<? extends K>, K extends Serializable> //
     IEntityAccessService<E, K> serviceFor(Class<E> entityType) {
-        IEntityAccessService<E, K> service = getDataManager().access(entityType);
+        IEntityAccessService<E, K> service = getDataManager().asFor(entityType);
         return service;
     }
 
     @Override
     public <E extends Entity<? extends K>, K extends Serializable> //
     IEntityAccessService<E, K> asFor(Class<? extends E> entityType) {
-        IEntityAccessService<E, K> service = getDataManager().access(entityType);
+        IEntityAccessService<E, K> service = getDataManager().asFor(entityType);
         return service;
     }
 

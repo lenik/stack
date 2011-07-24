@@ -23,14 +23,14 @@ public class DefaultMarshalContext
 
     @Override
     public <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {
-        E entity = dataManager.access(entityType).getOrFail(id);
+        E entity = dataManager.asFor(entityType).getOrFail(id);
         return entity;
     }
 
     @Override
     public <E extends Entity<? extends K>, K extends Serializable> IEntityAccessService<E, K> asFor(
             Class<? extends E> entityType) {
-        IEntityAccessService<E, K> service = dataManager.access(entityType);
+        IEntityAccessService<E, K> service = dataManager.asFor(entityType);
         return service;
     }
 

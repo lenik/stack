@@ -35,7 +35,7 @@ public class GEntityPlayer
 
     <E extends Entity<? extends K>, K extends Serializable> //
     IEntityAccessService<E, K> asFor(Class<E> entityType) {
-        IEntityAccessService<E, K> service = dataManager.access(entityType);
+        IEntityAccessService<E, K> service = dataManager.asFor(entityType);
         return service;
     }
 
@@ -52,7 +52,7 @@ public class GEntityPlayer
 
     @Transactional(readOnly = true)
     public void doList() {
-        List<CatFavTag> tags = dataManager.access(CatFavTag.class).list();
+        List<CatFavTag> tags = dataManager.asFor(CatFavTag.class).list();
         for (CatFavTag tag : tags)
             System.out.println("Tag: " + tag);
     }

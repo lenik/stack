@@ -64,7 +64,7 @@ public class PlaySamples
 
     <E extends Entity<K>, K extends Serializable> //
     IEntityAccessService<E, K> asFor(Class<E> entityType) {
-        IEntityAccessService<E, K> service = dataManager.access(entityType);
+        IEntityAccessService<E, K> service = dataManager.asFor(entityType);
         return service;
     }
 

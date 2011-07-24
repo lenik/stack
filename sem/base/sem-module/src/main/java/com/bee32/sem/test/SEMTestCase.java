@@ -85,7 +85,7 @@ public class SEMTestCase
                 throw new IllegalStateException("Application context isn't initalized, yet.");
 
             CommonDataManager dataManager = appContext.getBean(CommonDataManager.class);
-            User user = dataManager.access(User.class).getByName(userName);
+            User user = dataManager.asFor(User.class).getByName(userName);
 
             SessionLoginInfo.setCurrentUser(user);
         }

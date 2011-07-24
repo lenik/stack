@@ -72,7 +72,7 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
     @Override
     public <_E extends Entity<? extends _K>, _K extends Serializable> //
     IEntityAccessService<_E, _K> asFor(Class<? extends _E> entityType) {
-        IEntityAccessService<_E, _K> service = dataManager.access(entityType);
+        IEntityAccessService<_E, _K> service = dataManager.asFor(entityType);
         return service;
     }
 

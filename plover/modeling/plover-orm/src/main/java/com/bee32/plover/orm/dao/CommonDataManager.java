@@ -15,11 +15,13 @@ import com.bee32.plover.orm.entity.EasTxWrapper;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityDao;
 import com.bee32.plover.orm.entity.IEntityAccessService;
+import com.bee32.plover.orm.util.IEntityMarshalContext;
 
 @Service
 @Lazy
 // @Transactional(readOnly = true)
-public class CommonDataManager {
+public class CommonDataManager
+        implements IEntityMarshalContext {
 
     static Logger logger = LoggerFactory.getLogger(CommonDataManager.class);
 
@@ -29,8 +31,9 @@ public class CommonDataManager {
     @Inject
     DaoManager daoManager;
 
+    @Override
     public <E extends Entity<? extends K>, K extends Serializable> //
-    IEntityAccessService<E, K> access(Class<? extends E> entityType) {
+    IEntityAccessService<E, K> asFor(Class<? extends E> entityType) {
 
         EntityDao<E, K> dao = daoManager.getDaoFor(entityType);
         if (dao == null)
@@ -43,4 +46,10 @@ public class CommonDataManager {
 
         return wrapper;
     }
+
+    @Override
+    public <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {
+        return asFor(entityType).getOrFail(id);
+    }
+
 }

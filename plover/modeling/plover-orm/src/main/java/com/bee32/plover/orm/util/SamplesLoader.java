@@ -119,7 +119,7 @@ public class SamplesLoader
 
                     try {
                         @SuppressWarnings("unchecked")
-                        IEntityAccessService<Entity<?>, ?> eas = dataManager.access(Entity.class);
+                        IEntityAccessService<Entity<?>, ?> eas = dataManager.asFor(Entity.class);
                         eas.saveAll(sideA);
 
                         confManager.setConf(packAVersionKey, "1");
@@ -148,7 +148,7 @@ public class SamplesLoader
                         continue;
 
                     try {
-                        dataManager.access(sampleType).saveOrUpdate(sample);
+                        dataManager.asFor(sampleType).saveOrUpdate(sample);
                         confManager.setConf(sampleVersionKey, "1");
                         // dataManager.flush();
                     } catch (Exception e) {
@@ -175,18 +175,20 @@ public class SamplesLoader
 
                 try {
                     @SuppressWarnings("unchecked")
-                    IEntityAccessService<Entity<?>, ?> eas = dataManager.access(Entity.class);
+                    IEntityAccessService<Entity<?>, ?> eas = dataManager.asFor(Entity.class);
                     eas.saveAll(sideZ);
 
                     confManager.setConf(packZVersionKey, "1");
 
                     // dataManager.flush();
                 } catch (Exception e) {
-                    logger.error("Failed to load samples from " + pack, e);
+                    logger.error("Failed to load samples (Z) from " + pack, e);
                 }
 
             }
         } // !sideA.empty
+
+        pack.more(dataManager);
 
         pack.endLoad();
     }

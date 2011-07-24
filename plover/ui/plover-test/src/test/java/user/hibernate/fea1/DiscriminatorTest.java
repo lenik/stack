@@ -20,7 +20,7 @@ public class DiscriminatorTest
 
     @Test
     public void listAllColors() {
-        IEntityAccessService<Color, String> colorDao = dataManager.access(Color.class);
+        IEntityAccessService<Color, String> colorDao = dataManager.asFor(Color.class);
 
         for (Color color : ColorSystem.getPredefinedColors())
             colorDao.save(color);
@@ -33,8 +33,8 @@ public class DiscriminatorTest
 
     @Test
     public void listCMYKOnly() {
-        IEntityAccessService<Color, String> colorDao = dataManager.access(Color.class);
-        IEntityAccessService<CMYK, String> cmykDao = dataManager.access(CMYK.class);
+        IEntityAccessService<Color, String> colorDao = dataManager.asFor(Color.class);
+        IEntityAccessService<CMYK, String> cmykDao = dataManager.asFor(CMYK.class);
 
         for (Color color : ColorSystem.getPredefinedColors())
             colorDao.save(color);
@@ -45,8 +45,8 @@ public class DiscriminatorTest
 
     @Test
     public void listRGBBased() {
-        IEntityAccessService<Color, String> colorDso = dataManager.access(Color.class);
-        IEntityAccessService<RGB, String> rgbDao = dataManager.access(RGB.class);
+        IEntityAccessService<Color, String> colorDso = dataManager.asFor(Color.class);
+        IEntityAccessService<RGB, String> rgbDao = dataManager.asFor(RGB.class);
         for (Color color : ColorSystem.getPredefinedColors())
             colorDso.save(color);
 

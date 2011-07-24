@@ -88,7 +88,7 @@ public class VerifyPolicyPrefController
 
         for (Class<? extends VerifyPolicy> candidatePolicyType : VerifyPolicyManager.getCandidates(verifiableType)) {
 
-            List<? extends VerifyPolicy> candidatePolicies = dataManager.access(candidatePolicyType).list();
+            List<? extends VerifyPolicy> candidatePolicies = dataManager.asFor(candidatePolicyType).list();
 
             for (VerifyPolicyDto candidate : DTOs.marshalList(VerifyPolicyDto.class, candidatePolicies))
                 candidates.add(candidate);
