@@ -13,9 +13,9 @@ import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.entity.Competitor;
 import com.bee32.sem.chance.entity.Quotation;
 import com.bee32.sem.chance.entity.QuotationItem;
-import com.bee32.sem.people.SEMPeopleUnit;
+import com.bee32.sem.inventory.SEMInventoryUnit;
 
-@ImportUnit({ SEMPeopleUnit.class })
+@ImportUnit({ SEMInventoryUnit.class })
 public class SEMChanceUnit
         extends PersistenceUnit {
 
