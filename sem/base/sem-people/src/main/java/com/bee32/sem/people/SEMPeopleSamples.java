@@ -9,6 +9,7 @@ import javax.free.Dates;
 import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.misc.Sets;
@@ -68,8 +69,6 @@ public class SEMPeopleSamples
         abcRAD.setInheritedGroup(abcCorp);
         abcCorp.getDerivedGroups().add(abcRAD);
 
-        abcRAD.setOwner(User.admin);
-
         // admin.setPasswordByString("");
 
         {
@@ -111,7 +110,7 @@ public class SEMPeopleSamples
         tang.setPrimaryGroup(abcRAD);
         tang.addAssignedGroup(abcSales);
         abcRAD.addMemberUser(tang);
-        abcSales.setOwner(tang);
+        abcRAD.setOwner(User.admin);
         abcSales.addMemberUser(tang);
     }
 
@@ -194,12 +193,20 @@ public class SEMPeopleSamples
 
     @Override
     protected void preamble() {
+        add(humanCorp);
+        addBulk(abcCorp, abcRAD, abcSales);
+
+        addBulk(jack, tang);
+        addBulk(jackPerson, tangPerson);
+
         add(abcOrg);
-        add(jackPerson);
-        add(tangPerson);
-        add(bugatti);
-        add(bentley);
-        add(weiXiaoBao);
+        addBulk(bugatti, bentley, weiXiaoBao);
+    }
+
+    @Override
+    protected void more(IEntityMarshalContext context) {
+        abcSales.setOwnerId(tang.getId());
+        context.asFor(Group.class).merge(abcSales);
     }
 
 }

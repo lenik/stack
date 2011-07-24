@@ -48,8 +48,7 @@ public class SamplesLoader
             throws BeansException {
 
         // Eagerly scan all the contributions.
-        for (SampleContribution contrib : ImportSamplesUtil.applyImports(applicationContext))
-            ;
+        ImportSamplesUtil.applyImports(applicationContext);
     }
 
     private static Closure<SampleContribution> NO_PROGRESS;

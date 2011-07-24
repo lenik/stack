@@ -3,6 +3,7 @@ package com.bee32.icsf.principal;
 import static com.bee32.icsf.login.UserPassword.digest;
 
 import com.bee32.icsf.login.UserPassword;
+import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.orm.util.SampleContribution;
 
 /**
@@ -26,8 +27,6 @@ public class IcsfPrincipalSamples
     public static User kate = new User("Kate", sunCorp, Role.userRole);
 
     static {
-        solaRobots.setOwner(eva);
-        sunCorp.setOwner(tom);
         eva.setPrimaryGroup(solaRobots);
         tom.setPrimaryGroup(sunCorp);
 
@@ -52,6 +51,13 @@ public class IcsfPrincipalSamples
         add(new UserPassword(alice, digest("ALICE")));
         add(new UserPassword(tom, digest("TOM")));
         add(new UserPassword(kate, digest("KATE")));
+    }
+
+    @Override
+    protected void more(IEntityMarshalContext context) {
+        solaRobots.setOwnerId(eva.getId());
+        sunCorp.setOwnerId(tom.getId());
+        context.asFor(Group.class).saveOrUpdateAll(solaRobots, sunCorp);
     }
 
 }

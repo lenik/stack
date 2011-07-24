@@ -59,4 +59,7 @@ public class SamplePackage
     public void endLoad() {
     }
 
+    protected void more(IEntityMarshalContext context) {
+    }
+
 }
