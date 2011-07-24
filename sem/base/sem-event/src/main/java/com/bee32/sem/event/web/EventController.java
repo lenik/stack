@@ -11,5 +11,6 @@ public class EventController
         extends AbstractEventController<Event, EventDto> {
 
     public static final String PREFIX = SEMEventModule.PREFIX + "/event";
+    public static final String PREFIX_ = PREFIX + "/";
 
 }

@@ -13,6 +13,7 @@ public class SEMProcessModule
         extends EnterpriseModule {
 
     public static final String PREFIX = "/3/15/2/1";
+    public static final String PREFIX_ = PREFIX + "/";
 
     @Override
     protected void preamble() {

@@ -9,6 +9,7 @@ public class SEMMailModule
         extends EnterpriseModule {
 
     public static final String PREFIX = "/3/15/1/7";
+    public static final String PREFIX_ = PREFIX + "/";
 
     @Override
     protected void preamble() {
