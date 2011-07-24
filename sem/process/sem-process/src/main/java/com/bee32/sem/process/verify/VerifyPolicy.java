@@ -8,7 +8,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
 
-import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
@@ -27,8 +26,10 @@ public abstract class VerifyPolicy
 
     private final Class<? extends IVerifyContext> contextClass;
 
-    public VerifyPolicy() {
-        contextClass = ClassUtil.infer1(getClass(), VerifyPolicy.class, 0);
+    public VerifyPolicy(Class<? extends IVerifyContext> contextClass) {
+        if (contextClass == null)
+            throw new NullPointerException("contextClass");
+        this.contextClass = contextClass;
     }
 
     @Transient

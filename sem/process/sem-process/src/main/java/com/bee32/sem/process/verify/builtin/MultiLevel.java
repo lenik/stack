@@ -35,6 +35,10 @@ public class MultiLevel
     private List<Level> levels;
     private LevelMap levelMap;
 
+    public MultiLevel() {
+        super(IMultiLevelContext.class);
+    }
+
     /**
      * @return Non-null range set.
      */

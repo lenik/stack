@@ -42,6 +42,7 @@ public class PassToNext
     }
 
     public PassToNext(List<PassStep> sequence) {
+        super(IPassEvents.class);
         if (sequence == null)
             throw new NullPointerException("sequence");
         this.sequences = sequence;

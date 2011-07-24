@@ -6,8 +6,8 @@ import static com.bee32.icsf.principal.IcsfPrincipalSamples.kate;
 import static com.bee32.icsf.principal.IcsfPrincipalSamples.wallE;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.plover.orm.util.ImportSamples;
+import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.process.verify.builtin.AllowList;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 

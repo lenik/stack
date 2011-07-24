@@ -33,19 +33,19 @@ public class AllowList
     private Set<Principal> responsibles;
 
     public AllowList() {
+        this(new Principal[0]);
     }
 
     public AllowList(Principal singleManager) {
-        addResponsible(singleManager);
+        this(new Principal[] { singleManager });
     }
 
     public AllowList(Principal... responsibles) {
-        if (responsibles == null)
-            throw new NullPointerException("responsibles");
-        this.responsibles = new HashSet<Principal>(Arrays.asList(responsibles));
+        this(Arrays.asList(responsibles));
     }
 
     public AllowList(Collection<? extends Principal> responsibles) {
+        super(IAllowedByContext.class);
         if (responsibles == null)
             throw new NullPointerException("responsibles");
         this.responsibles = new HashSet<Principal>(responsibles);
