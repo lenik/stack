@@ -31,7 +31,6 @@ public class SEMChanceSamples
     public static ChanceAction chanceAction1 = new ChanceAction();
     public static ChanceAction chanceAction2 = new ChanceAction();
     public static Competitor competitor = new Competitor();
-    public static QuotationItem quotationItem1 = new QuotationItem();
     public static Quotation quotation = new Quotation();
 
     static {
@@ -88,18 +87,9 @@ public class SEMChanceSamples
         chance.addAction(chanceAction2);
 // chance.setActions(Arrays.asList(chanceAction1, chanceAction2));
 
-        quotationItem1.setQuotation(quotation);
-        quotationItem1.setBasePrice(BasePrice.tempQD1);
-        quotationItem1.setMaterial("宾得XR");
-        quotationItem1.setDiscount(0.88);
-        quotationItem1.setPrice(3800);
-        quotationItem1.setNumber(2);
-        quotationItem1.setRemark("羽与晃宿相爱,遥共语,但说平生,不及军事.");
-
         quotation.setOwner(IcsfPrincipalSamples.eva);
         quotation.setSubject("7月2号报价");
         quotation.setChance(chance);
-        quotation.setItems(Arrays.<QuotationItem> asList(quotationItem1));
         quotation.setAmount(7600);
         quotation.setRecommend("发顺丰加保价");
         quotation.setPayment("网上转帐");
@@ -111,15 +101,6 @@ public class SEMChanceSamples
     protected void preamble() {
 
         // add <price>->quotionDetail
-        add(BasePrice.tempQD1);
-        add(BasePrice.tempQD2);
-        add(BasePrice.tempQD3);
-        add(BasePrice.tempQD4);
-        add(BasePrice.tempQD5);
-        add(BasePrice.tempQD6);
-        add(BasePrice.tempQD7);
-        add(BasePrice.tempQD8);
-        add(BasePrice.tempQD9);
 
         // CurrentPrice
         add(CurrentPrice.pentax);
@@ -133,8 +114,30 @@ public class SEMChanceSamples
         add(chanceAction2);
 
         // add <price>->quotation and quotationItem
-        add(quotationItem1);
         add(quotation);
+
+        BasePrice basePrice1;
+        add(basePrice1 = new BasePrice("宾得XR", 6000, "第一代"));
+        add(new BasePrice("宾得XR", 7000, "第二代"));
+        add(new BasePrice("宾得XR", 8000, "第三代"));
+        add(new BasePrice("宾得XR", 9000, "第四代"));
+
+        add(new BasePrice("猪肉", 5, "纯天然"));
+        add(new BasePrice("猪肉", 8, "无污染"));
+        add(new BasePrice("猪肉", 15, "添加剂"));
+        add(new BasePrice("猪肉", 20, "瘦肉精"));
+        add(new BasePrice("猪肉", 25, "还是吃牛肉吧"));
+
+        QuotationItem quotationItem1 = new QuotationItem();
+        add(quotationItem1);
+        quotationItem1.setQuotation(quotation);
+        quotationItem1.setBasePrice(basePrice1);
+        quotationItem1.setMaterial("宾得XR");
+        quotationItem1.setDiscount(0.88);
+        quotationItem1.setPrice(3800);
+        quotationItem1.setNumber(2);
+        quotationItem1.setRemark("羽与晃宿相爱,遥共语,但说平生,不及军事.");
+        add(quotationItem1);
     }
 
 }
