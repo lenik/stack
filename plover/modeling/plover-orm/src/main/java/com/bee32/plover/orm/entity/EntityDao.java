@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.dao.HibernateDaoSupportUtil;
@@ -281,6 +282,13 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
             return null;
         else
             return list.get(0);
+    }
+
+    @Override
+    public E getByName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        return getFirst(new Equals("name", name));
     }
 
     @Override

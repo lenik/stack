@@ -35,6 +35,11 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
     E getFirst(ICriteriaElement... criteriaElements);
 
     /**
+     * Retrieve an object by name.
+     */
+    E getByName(String name);
+
+    /**
      * List entities with restrictions.
      *
      * @param restrictions

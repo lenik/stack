@@ -11,7 +11,6 @@ import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.context.OSIVFilter;
 import com.bee32.plover.orm.dao.CommonDataManager;
-import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.unit.UsingUtil;
@@ -86,8 +85,7 @@ public class SEMTestCase
                 throw new IllegalStateException("Application context isn't initalized, yet.");
 
             CommonDataManager dataManager = appContext.getBean(CommonDataManager.class);
-            IEntityAccessService<User, String> userService = dataManager.access(User.class);
-            User user = userService.load(userName);
+            User user = dataManager.access(User.class).getByName(userName);
 
             SessionLoginInfo.setCurrentUser(user);
         }

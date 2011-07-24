@@ -77,6 +77,12 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
         return getDao().getFirst(criteria);
     }
 
+    @Override
+    public E getByName(String name) {
+        checkLoad();
+        return getDao().getByName(name);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public boolean contains(Object entity) {

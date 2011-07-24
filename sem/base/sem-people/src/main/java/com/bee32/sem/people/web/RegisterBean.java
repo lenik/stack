@@ -66,7 +66,7 @@ public class RegisterBean extends EntityViewBean {
 			return;
 		}
 
-		User user = serviceFor(User.class).get(username);
+		User user = serviceFor(User.class).getByName(username);
 		if(user != null) {
 			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "注册错误", "此用户名已经存在");
 			FacesContext.getCurrentInstance().addMessage(null, msg);

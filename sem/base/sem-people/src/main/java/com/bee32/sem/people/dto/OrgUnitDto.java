@@ -47,7 +47,7 @@ public class OrgUnitDto
         name = map.getString("name");
         org = new OrgDto().ref(map.getNInt("org"));
         contact = new ContactDto().ref(map.getNInt("contact"));
-        forWhichGroup = new GroupDto().ref(map.getString("forWhichGroup"));
+        forWhichGroup = new GroupDto().ref(map.getInt("forWhichGroup"));
     }
 
     public String getName() {
