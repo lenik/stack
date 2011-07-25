@@ -4,10 +4,10 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
-import com.bee32.sem.chance.entity.Competitor;
+import com.bee32.sem.chance.entity.ChanceCompetitor;
 
-public class CompetitorDto
-        extends UIEntityDto<Competitor, Integer> {
+public class ChanceCompetitorDto
+        extends UIEntityDto<ChanceCompetitor, Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +22,7 @@ public class CompetitorDto
     private String comment;
 
     @Override
-    protected void _marshal(Competitor source) {
+    protected void _marshal(ChanceCompetitor source) {
         this.name = source.getName();
         this.chance = mref(ChanceDto.class, source.getChance());
         this.price = source.getPrice();
@@ -35,7 +35,7 @@ public class CompetitorDto
     }
 
     @Override
-    protected void _unmarshalTo(Competitor target) {
+    protected void _unmarshalTo(ChanceCompetitor target) {
         target.setName(name);
         merge(target, "chance", chance);
         target.setPrice(price);

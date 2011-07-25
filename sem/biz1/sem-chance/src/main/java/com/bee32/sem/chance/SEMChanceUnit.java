@@ -11,7 +11,7 @@ import com.bee32.sem.chance.entity.ChanceQuotation;
 import com.bee32.sem.chance.entity.ChanceQutationItem;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
-import com.bee32.sem.chance.entity.Competitor;
+import com.bee32.sem.chance.entity.ChanceCompetitor;
 import com.bee32.sem.inventory.SEMInventoryUnit;
 
 @ImportUnit({ SEMInventoryUnit.class })
@@ -28,7 +28,7 @@ public class SEMChanceUnit
         add(Chance.class);
         add(ChanceParty.class);
         add(ChanceAction.class);
-        add(Competitor.class);
+        add(ChanceCompetitor.class);
 
         add(ChanceQuotation.class);
         add(ChanceQutationItem.class);

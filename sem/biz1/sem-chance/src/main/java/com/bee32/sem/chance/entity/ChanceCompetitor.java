@@ -13,7 +13,7 @@ import com.bee32.plover.orm.ext.color.UIEntityAuto;
  */
 @Entity
 @Green
-public class Competitor
+public class ChanceCompetitor
         extends UIEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
@@ -28,7 +28,7 @@ public class Competitor
     String tactic;
     String comment;
 
-    public Competitor() {
+    public ChanceCompetitor() {
     }
 
     /**

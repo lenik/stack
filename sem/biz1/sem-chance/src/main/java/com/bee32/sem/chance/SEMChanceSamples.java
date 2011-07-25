@@ -15,7 +15,7 @@ import com.bee32.sem.chance.entity.ChanceQuotation;
 import com.bee32.sem.chance.entity.ChanceQutationItem;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
-import com.bee32.sem.chance.entity.Competitor;
+import com.bee32.sem.chance.entity.ChanceCompetitor;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.people.entity.Party;
 
@@ -28,7 +28,7 @@ public class SEMChanceSamples
     public static ChanceParty party2 = new ChanceParty();
     public static ChanceAction chanceAction1 = new ChanceAction();
     public static ChanceAction chanceAction2 = new ChanceAction();
-    public static Competitor competitor = new Competitor();
+    public static ChanceCompetitor competitor = new ChanceCompetitor();
     public static ChanceQuotation quotation = new ChanceQuotation();
 
     static {
