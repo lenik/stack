@@ -37,8 +37,8 @@
 			<p:treeTable id="stockLocationTable" value="#{stockLocationAdminBean.root}"
 				var="stockLocation">
 				<p:column>
-					<f:facet name="header">名称</f:facet>
-					<h:outputText value="#{stockLocation.label}" />
+					<f:facet name="header">库位</f:facet>
+					<h:outputText value="#{stockLocation.nodeText}" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">所属仓库</f:facet>

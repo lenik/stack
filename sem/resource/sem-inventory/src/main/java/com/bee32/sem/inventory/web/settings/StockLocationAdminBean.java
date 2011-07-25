@@ -64,43 +64,40 @@ public class StockLocationAdminBean
 
     public List<SelectItem> getStockWarehouses() {
         List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class).list();
-        List<StockWarehouseDto> stockWarehouseDtos = DTOs.marshalList(
-                StockWarehouseDto.class, stockWarehouses);
+        List<StockWarehouseDto> stockWarehouseDtos = DTOs.marshalList(StockWarehouseDto.class, stockWarehouses, true);
 
         List<SelectItem> items = new ArrayList<SelectItem>();
 
         for (StockWarehouseDto stockWarehouseDto : stockWarehouseDtos) {
-            SelectItem item = new SelectItem(stockWarehouseDto.getId(), stockWarehouseDto.getName());
+            String label = stockWarehouseDto.getName();
+            SelectItem item = new SelectItem(stockWarehouseDto.getId(), label);
             items.add(item);
         }
 
         return items;
     }
 
-
     public TreeNode getRoot() {
-        if(root == null) {
+        if (root == null) {
             root = new DefaultTreeNode("", null);
         }
         return root;
     }
 
     public StockLocationDto getStockLocation() {
-        if(stockLocation == null) {
+        if (stockLocation == null) {
             _newStockLocation();
         }
         return stockLocation;
     }
 
-
     public void setStockLocation(StockLocationDto stockLocation) {
         this.stockLocation = stockLocation;
     }
 
-
     public List<SelectItem> getUnits() {
         List<Unit> units = serviceFor(Unit.class).list();
-        List<UnitDto> unitDtos = DTOs.marshalList(UnitDto.class, units);
+        List<UnitDto> unitDtos = DTOs.marshalList(UnitDto.class, units, true);
         return UIHelper.selectItemsFromDict(unitDtos);
     }
 
@@ -108,14 +105,9 @@ public class StockLocationAdminBean
         return selectedParentStockLocationNode;
     }
 
-
-    public void setSelectedParentStockLocationNode(
-            TreeNode selectedParentStockLocationNode) {
+    public void setSelectedParentStockLocationNode(TreeNode selectedParentStockLocationNode) {
         this.selectedParentStockLocationNode = selectedParentStockLocationNode;
     }
-
-
-
 
     public void onSwChange(AjaxBehaviorEvent e) {
         loadStockLocationTree();
@@ -125,10 +117,10 @@ public class StockLocationAdminBean
         if (selectedWarehouse != null) {
             root = new DefaultTreeNode(selectedWarehouse, null);
 
-            List<StockLocation> topLocations = serviceFor(StockLocation.class)
-                    .list(TreeCriteria.root(), new Equals("warehouse.id", selectedWarehouse.getId()));
-            List<StockLocationDto> topLocationDtos = DTOs.marshalList(
-                    StockLocationDto.class, -1, topLocations, true);
+            List<StockLocation> topLocations = serviceFor(StockLocation.class).list(//
+                    TreeCriteria.root(), //
+                    new Equals("warehouse.id", selectedWarehouse.getId()));
+            List<StockLocationDto> topLocationDtos = DTOs.marshalList(StockLocationDto.class, -1, topLocations, true);
 
             for (StockLocationDto stockLocationDto : topLocationDtos) {
                 loadStockLocationRecursive(stockLocationDto, root);
@@ -159,14 +151,14 @@ public class StockLocationAdminBean
     }
 
     public void doSave() {
-        if(selectedWarehouse == null) {
+        if (selectedWarehouse == null) {
             uiLogger.warn("请先选择需要添加库位的仓库");
             return;
         }
 
         stockLocation.setWarehouse(selectedWarehouse);
 
-        if(stockLocation.getCapacityUnit().getId().isEmpty()) {
+        if (stockLocation.getCapacityUnit().getId().isEmpty()) {
             UnitDto nullUnitDto = new UnitDto().ref();
             stockLocation.setCapacityUnit(nullUnitDto);
         }

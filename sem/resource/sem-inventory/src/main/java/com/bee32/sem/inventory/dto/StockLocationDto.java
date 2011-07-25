@@ -48,15 +48,15 @@ public class StockLocationDto
 
     @Override
     protected void _unmarshalTo(StockLocation target) {
-        merge(target, "warehouse", warehouse);
         target.setAddress(address);
         target.setX(x);
         target.setY(y);
         target.setZ(z);
         target.setCapacity(capacity);
-        merge(target, "capacityUnit", capacityUnit);
         target.setCapacityUnitHint(capacityUnitHint);
         target.setRank(rank);
+        merge(target, "warehouse", warehouse);
+        merge(target, "capacityUnit", capacityUnit);
     }
 
     @Override
@@ -69,6 +69,8 @@ public class StockLocationDto
     }
 
     public void setWarehouse(StockWarehouseDto warehouse) {
+        if (warehouse == null)
+            throw new NullPointerException("warehouse");
         this.warehouse = warehouse;
     }
 
@@ -112,8 +114,6 @@ public class StockLocationDto
         this.capacity = capacity;
     }
 
-
-
     public UnitDto getCapacityUnit() {
         return capacityUnit;
     }
@@ -148,4 +148,5 @@ public class StockLocationDto
             sb.append(address);
         return sb.toString();
     }
+
 }
