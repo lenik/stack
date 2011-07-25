@@ -47,23 +47,23 @@ public class MCValue
         value = mcv.value;
     }
 
-    public MCValue(Currency currency, int amount) {
-        this(currency, new BigDecimal(amount, DecimalConfig.MONEY_ITEM_CONTEXT));
+    public MCValue(Currency currency, int value) {
+        this(currency, new BigDecimal(value, DecimalConfig.MONEY_ITEM_CONTEXT));
     }
 
-    public MCValue(Currency currency, long amount) {
-        this(currency, new BigDecimal(amount, DecimalConfig.MONEY_ITEM_CONTEXT));
+    public MCValue(Currency currency, long value) {
+        this(currency, new BigDecimal(value, DecimalConfig.MONEY_ITEM_CONTEXT));
     }
 
-    public MCValue(Currency currency, double amount) {
-        this(currency, new BigDecimal(amount, DecimalConfig.MONEY_ITEM_CONTEXT));
+    public MCValue(Currency currency, double value) {
+        this(currency, new BigDecimal(value, DecimalConfig.MONEY_ITEM_CONTEXT));
     }
 
-    public MCValue(Currency currency, BigDecimal amount) {
-        if (amount == null)
-            throw new NullPointerException("amount");
+    public MCValue(Currency currency, BigDecimal value) {
+        if (value == null)
+            throw new NullPointerException("value");
         this.currency = currency;
-        this.value = amount;
+        this.value = value;
     }
 
     /**
