@@ -77,7 +77,7 @@ public class MaterialViewBean
 
     public void initLocationTree() {
         List<StockLocation> _rootLocations = serviceFor(StockLocation.class).list(TreeCriteria.root());
-        List<StockLocationDto> rootLocations = DTOs.marshalList(StockLocationDto.class, _rootLocations);
+        List<StockLocationDto> rootLocations = DTOs.marshalList(StockLocationDto.class, _rootLocations, true);
 
         stockLocationTreeDialog = new StockLocationTreeDialogModel(rootLocations);
         stockLocationTreeDialog.addSelectListener(new SelectionAdapter() {
