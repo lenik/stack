@@ -37,6 +37,8 @@ public class Material
     List<MaterialWarehouseOption> options = new ArrayList<MaterialWarehouseOption>();
     List<MaterialPreferredLocation> preferredLocations = new ArrayList<MaterialPreferredLocation>();
 
+    // List<MaterialPrice> prices = new ArrayList<MaterialPrice>();
+
     // ------------------------------------------------------------------------
     // 需要索引的常用的物料属性（这些属性和单位还算无关）。
     //

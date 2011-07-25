@@ -25,6 +25,9 @@ import com.bee32.sem.world.monetary.FxrTable;
 import com.bee32.sem.world.monetary.ICurrencyAware;
 import com.bee32.sem.world.monetary.ILocaleAware;
 
+/**
+ * @test BocFxrUpdaterTest
+ */
 @Service
 @Lazy
 public class BocFxrUpdater

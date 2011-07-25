@@ -60,13 +60,13 @@ public class SEMInventorySamples
         hokaidou.setParent(parentStockLocation);
 
         cskdp.setName("超时空大炮");
+        cskdp.setUnitHint("体积");
         cskdp.setUnit(Unit.CUBIC_METER);
         cskdp.setBarCode("1693612370098");
         cskdp.setSerial("CSKDP-01");
         cskdp.setCategory(parentCategory);
         cskdp.setPreferredLocations(Arrays.asList(preferredLocation));
         cskdp.setOptions(Arrays.asList(baseOption));
-        cskdp.setUnitHint("体积");
 
         gundam.setName("机动战士高达");
         gundam.setUnit(Unit.CUBIC_METER);
