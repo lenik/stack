@@ -32,11 +32,11 @@ public abstract class RepositoryNode<K, Tn extends INamed>
         super(name);
     }
 
-    public RepositoryNode(Class<K> keyType, Class<Tn> objectType) {
+    public RepositoryNode(Class<? extends K> keyType, Class<? extends Tn> objectType) {
         super(keyType, objectType);
     }
 
-    public RepositoryNode(String name, Class<K> keyType, Class<Tn> objectType) {
+    public RepositoryNode(String name, Class<? extends K> keyType, Class<? extends Tn> objectType) {
         super(name, keyType, objectType);
     }
 

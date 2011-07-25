@@ -19,8 +19,8 @@ public abstract class Repository<K, T>
         extends Component
         implements IRepository<K, T> {
 
-    protected Class<K> keyType;
-    protected Class<T> objectType;
+    protected Class<? extends K> keyType;
+    protected Class<? extends T> objectType;
 
     public Repository() {
         super();
@@ -32,7 +32,7 @@ public abstract class Repository<K, T>
         introspect();
     }
 
-    public Repository(Class<K> keyType, Class<T> objectType) {
+    public Repository(Class<? extends K> keyType, Class<? extends T> objectType) {
         super();
 
         if (keyType == null)
@@ -44,7 +44,7 @@ public abstract class Repository<K, T>
         this.objectType = objectType;
     }
 
-    public Repository(String name, Class<K> keyType, Class<T> objectType) {
+    public Repository(String name, Class<? extends K> keyType, Class<? extends T> objectType) {
         super(name);
 
         if (keyType == null)
@@ -65,12 +65,12 @@ public abstract class Repository<K, T>
     }
 
     @Override
-    public Class<K> getKeyType() {
+    public Class<? extends K> getKeyType() {
         return keyType;
     }
 
     @Override
-    public Class<T> getObjectType() {
+    public Class<? extends T> getObjectType() {
         return objectType;
     }
 

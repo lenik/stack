@@ -18,7 +18,7 @@ public abstract class EntityRepository<E extends IEntity<? extends K>, K extends
 
     static Logger logger = LoggerFactory.getLogger(EntityRepository.class);
 
-    protected Class<E> entityType;
+    protected Class<? extends E> entityType;
 
     public EntityRepository() {
         super();
@@ -28,11 +28,11 @@ public abstract class EntityRepository<E extends IEntity<? extends K>, K extends
         super(name);
     }
 
-    public EntityRepository(Class<E> entityType, Class<K> keyType) {
+    public EntityRepository(Class<? extends E> entityType, Class<? extends K> keyType) {
         super(keyType, entityType);
     }
 
-    public EntityRepository(String name, Class<E> entityType, Class<K> keyType) {
+    public EntityRepository(String name, Class<? extends E> entityType, Class<? extends K> keyType) {
         super(name, keyType, entityType);
     }
 
@@ -43,7 +43,7 @@ public abstract class EntityRepository<E extends IEntity<? extends K>, K extends
     }
 
     @Override
-    public Class<E> getEntityType() {
+    public Class<? extends E> getEntityType() {
         return entityType;
     }
 

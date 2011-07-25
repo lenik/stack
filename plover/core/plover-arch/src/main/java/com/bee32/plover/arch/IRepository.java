@@ -18,7 +18,7 @@ public interface IRepository<K, T>
      *
      * @return Non-<code>null</code> class of the key.
      */
-    Class<K> getKeyType();
+    Class<? extends K> getKeyType();
 
     /**
      * Get the instance type.
