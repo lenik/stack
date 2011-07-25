@@ -6,9 +6,9 @@ import java.util.Currency;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.arch.util.dto.MarshalException;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
+import com.bee32.sem.world.monetary.IFxrProvider;
 import com.bee32.sem.world.monetary.MCValue;
 
 public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
@@ -20,6 +20,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
 
     MCValue price = new MCValue();
 
+    transient IFxrProvider fxrProvider;
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
 
@@ -29,12 +30,6 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
 
         quantity = source.getQuantity();
         price = new MCValue(source.getPrice());
-        try {
-            nativePrice = source.getNativePrice();
-            nativeTotal = source.getNativeTotal();
-        } catch (FxrQueryException e) {
-            throw new MarshalException(e.getMessage(), e);
-        }
     }
 
     @Override
@@ -66,6 +61,19 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         if (quantity == null)
             throw new NullPointerException("quantity");
         this.quantity = quantity;
+        nativeTotal = null;
+    }
+
+    public MCValue getPrice() {
+        return price;
+    }
+
+    public void setPrice(MCValue price) {
+        if (price == null)
+            throw new NullPointerException("price");
+        this.price = price;
+        nativePrice = null;
+        nativeTotal = null;
     }
 
     public Currency getPriceCurrency() {
@@ -80,7 +88,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         if (currencyCode == null)
             throw new NullPointerException("currencyCode");
         Currency currency = Currency.getInstance(currencyCode);
-        price = new MCValue(currency, price.getValue());
+        setPrice(new MCValue(currency, price.getValue()));
     }
 
     public BigDecimal getPriceValue() {
@@ -90,14 +98,44 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
     public void setPriceValue(BigDecimal value) {
         if (value == null)
             throw new NullPointerException("value");
-        price = new MCValue(price.getCurrency(), value);
+        setPrice(new MCValue(price.getCurrency(), value));
     }
 
-    public BigDecimal getNativePrice() {
+    /**
+     * 总价=单价*数量。
+     */
+    public MCValue getTotal() {
+        MCValue total = price.multiply(quantity);
+        return total;
+    }
+
+    public IFxrProvider getFxrProvider() {
+        return fxrProvider;
+    }
+
+    public void setFxrProvider(IFxrProvider fxrProvider) {
+        if (fxrProvider == null)
+            throw new NullPointerException("fxrProvider");
+        this.fxrProvider = fxrProvider;
+    }
+
+    public BigDecimal getNativePrice()
+            throws FxrQueryException {
+        if (nativePrice == null) {
+            if (fxrProvider == null)
+                throw new IllegalStateException("No FXR provider is set.");
+            nativePrice = price.getNativeValue(fxrProvider);
+        }
         return nativePrice;
     }
 
-    public BigDecimal getNativeTotal() {
+    public BigDecimal getNativeTotal()
+            throws FxrQueryException {
+        if (nativeTotal == null) {
+            BigDecimal price = getNativePrice();
+            if (price != null)
+                nativeTotal = price.multiply(quantity);
+        }
         return nativeTotal;
     }
 
