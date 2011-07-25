@@ -7,14 +7,14 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialPrice;
-import com.bee32.sem.world.thing.GeneralOrderItem;
+import com.bee32.sem.world.thing.AbstractOrderItem;
 
 /**
  * 报价单里面的条目
  */
 @Entity
 public class ChanceQutationItem
-        extends GeneralOrderItem {
+        extends AbstractOrderItem {
 
     private static final long serialVersionUID = 1L;
 

@@ -17,7 +17,7 @@ import com.bee32.sem.world.monetary.MCValue;
 
 @MappedSuperclass
 @Blue
-public abstract class GeneralOrderItem
+public abstract class AbstractOrderItem
         extends UIEntityAuto<Long>
         implements DecimalConfig {
 
@@ -31,10 +31,10 @@ public abstract class GeneralOrderItem
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
 
-    public GeneralOrderItem() {
+    public AbstractOrderItem() {
     }
 
-    public GeneralOrderItem(GeneralOrderItem item) {
+    public AbstractOrderItem(AbstractOrderItem item) {
         quantity = item.quantity;
         price = new MCValue(item.price);
         fxrProvider = item.fxrProvider;
@@ -142,10 +142,12 @@ public abstract class GeneralOrderItem
      */
     @Redundant
     @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
-    public BigDecimal getNativeTotal() {
+    public BigDecimal getNativeTotal()
+            throws FxrQueryException {
         if (nativeTotal == null) {
-            if (nativePrice != null)
-                nativeTotal = nativePrice.multiply(quantity);
+            BigDecimal price = getNativePrice();
+            if (price != null)
+                nativeTotal = price.multiply(quantity);
         }
         return nativeTotal;
     }
