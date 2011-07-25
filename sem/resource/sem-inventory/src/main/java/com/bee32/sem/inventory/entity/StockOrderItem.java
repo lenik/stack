@@ -12,13 +12,13 @@ import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.sem.inventory.config.BatchingConfig;
-import com.bee32.sem.world.thing.GeneralOrderItem;
+import com.bee32.sem.world.thing.AbstractOrderItem;
 
 @Entity
 @Blue
 @BatchSize(size = 100)
 public class StockOrderItem
-        extends GeneralOrderItem {
+        extends AbstractOrderItem {
 
     private static final long serialVersionUID = 1L;
 
@@ -164,6 +164,9 @@ public class StockOrderItem
         if (!material.equals(o.material))
             return false;
 
+        if (!getCBatch().equals(o.getCBatch()))
+            return false;
+
         return true;
     }
 
@@ -172,6 +175,7 @@ public class StockOrderItem
         int hash = 0;
         hash += order.hashCode();
         hash += material.hashCode();
+        hash += getCBatch().hashCode();
         return hash;
     }
 
