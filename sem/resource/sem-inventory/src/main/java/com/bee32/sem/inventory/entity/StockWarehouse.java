@@ -28,12 +28,16 @@ public class StockWarehouse
     /**
      * 仓库名称
      */
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        if (name.isEmpty())
+            throw new IllegalArgumentException("Empty stock warehouse name.");
         this.name = name;
     }
 
