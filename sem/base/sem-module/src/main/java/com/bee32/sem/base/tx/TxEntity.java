@@ -1,8 +1,8 @@
 package com.bee32.sem.base.tx;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.ext.color.MomentInterval;
 import com.bee32.plover.orm.ext.color.Pink;
 
@@ -22,7 +22,15 @@ public class TxEntity
 
     String name;
 
-    User creator;
     // logs...?
+
+    @Column(length = 40)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }
