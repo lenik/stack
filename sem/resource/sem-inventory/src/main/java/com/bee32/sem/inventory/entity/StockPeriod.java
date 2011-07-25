@@ -73,6 +73,17 @@ public class StockPeriod
     }
 
     /**
+     * 是否已检出为工作版本
+     */
+    public boolean isCheckedOut() {
+        return checkedOut;
+    }
+
+    public void setCheckedOut(boolean checkedOut) {
+        this.checkedOut = checkedOut;
+    }
+
+    /**
      * 期结余单
      */
     @Redundant
