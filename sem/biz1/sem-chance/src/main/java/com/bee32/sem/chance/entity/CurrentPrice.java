@@ -5,15 +5,14 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
-import com.bee32.plover.orm.ext.color.Green;
+import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 /**
  * 当前物料报价
  */
-
 @Entity
-@Green
+@Blue
 public class CurrentPrice
         extends UIEntityAuto<Long> {
 
@@ -47,6 +46,4 @@ public class CurrentPrice
         this.currentPrice = currentPrice;
     }
 
-    public static CurrentPrice pentax = new CurrentPrice(null, BasePrice.tempQD4);
-    public static CurrentPrice pork = new CurrentPrice(null, BasePrice.tempQD9);
 }
