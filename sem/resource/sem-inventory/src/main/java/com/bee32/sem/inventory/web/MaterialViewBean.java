@@ -3,12 +3,15 @@ package com.bee32.sem.inventory.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.lang.StringUtils;
 import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.frame.ui.SelectionAdapter;
@@ -46,7 +49,9 @@ public class MaterialViewBean
     static final String ATTR = "attr";
     static final String MATERIAL_FORM = "material:materialDetail";
     static final String CATEGORY_DIALOG = "dialogForm:categoryDialog";
-    static final String CATEGORY_TREE = "";
+    static final String CATEGORY_TREE = "main:categoryTree";
+    static final String BUTTON_SEARCH = "main:searchBtn";
+    static final String BUTTON_RESET = "main:resetBtn";
 
     boolean editable;
     boolean searching;
@@ -64,6 +69,8 @@ public class MaterialViewBean
     MaterialCategoryTreeModel materialCategoryTree;
     MaterialCategoryTreeModel selectCategoryTree;
 
+    private List<UnitConvDto> unitConvDtoList;
+
     public MaterialViewBean() {
         activeAttr = new MaterialAttributeDto().create();
         activeAttr.setMaterial(activeMaterial);
@@ -73,6 +80,11 @@ public class MaterialViewBean
         initLocationTree();
         initMaterialCategoryTree();
         initSelectCategoryTree();
+    }
+
+    @PostConstruct
+    public void initButton() {
+        findComponentEx(BUTTON_RESET).setEnabled(false);
     }
 
     public void initLocationTree() {
@@ -103,7 +115,9 @@ public class MaterialViewBean
             @Override
             public void itemSelected(SelectionEvent event) {
                 MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) event.getSelection();
-                activeMaterial.setCategory(materialCategoryDto);
+                if (materialCategoryDto != null) {
+                    activeMaterial.setCategory(materialCategoryDto);
+                }
             }
 
         });
@@ -182,6 +196,7 @@ public class MaterialViewBean
         serviceFor(Unit.class).save(unit);
     }
 
+
     public void doAddOption() {
         MaterialWarehouseOptionDto mwod = new MaterialWarehouseOptionDto();
         mwod.setMaterial(activeMaterial);
@@ -250,9 +265,17 @@ public class MaterialViewBean
         if (!materialPattern.isEmpty() && materialPattern != null) {
             List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.namedLike(materialPattern));
             findComponent(CATEGORY_TREE).setRendered(false);
+            findComponentEx(BUTTON_SEARCH).setEnabled(false);
+            findComponentEx(BUTTON_RESET).setEnabled(true);
             materialList = DTOs.marshalList(MaterialDto.class, _materials, true);
-
         }
+    }
+
+    public void resetSearch() {
+        materialPattern = null;
+        findComponent(CATEGORY_TREE).setRendered(true);
+        findComponentEx(BUTTON_SEARCH).setEnabled(true);
+        findComponentEx(BUTTON_RESET).setEnabled(false);
     }
 
     public List<SelectItem> getUnits() {
@@ -277,8 +300,15 @@ public class MaterialViewBean
     }
 
     public List<SelectItem> getUnitConvs() {
-        List<UnitConv> unitConvList = serviceFor(UnitConv.class).list();
-        List<UnitConvDto> unitConvDtoList = DTOs.marshalList(UnitConvDto.class, unitConvList);
+        if (unitConvDtoList == null) {
+            String unitId = activeMaterial.getUnit().getId();
+            if (StringUtils.isEmpty(unitId))
+                unitConvDtoList = new ArrayList<UnitConvDto>();
+            else {
+                List<UnitConv> unitConvList = serviceFor(UnitConv.class).list(new Equals("unit.id", unitId));
+                unitConvDtoList = DTOs.marshalList(UnitConvDto.class, unitConvList, true);
+            }
+        }
         return UIHelper.selectItemsFromDict(unitConvDtoList);
     }
 
@@ -396,6 +426,15 @@ public class MaterialViewBean
 
     public MaterialCategoryTreeModel getSelectCategoryTree() {
         return selectCategoryTree;
+    }
+
+    public String getSelectedUnit() {
+        return activeMaterial.getUnit().getId();
+    }
+
+    public void setSelectedUnit(String selectedUnit) {
+        this.activeMaterial.getUnit().setId(selectedUnit);
+        unitConvDtoList = null;
     }
 
 }
