@@ -33,15 +33,11 @@ public class StockLocationAdminBean
 
     protected boolean editNewStatus; // true:新增状态;false:修改状态;
 
-    private StockWarehouseDto selectedWarehouse;
-
-    private TreeNode root;
-
+    private StockWarehouseDto selectedWarehouse = new StockWarehouseDto().ref();
     private StockLocationDto stockLocation;
 
+    private TreeNode root;
     private TreeNode selectedParentStockLocationNode;
-
-
 
     public boolean isEditNewStatus() {
         return editNewStatus;
@@ -52,9 +48,6 @@ public class StockLocationAdminBean
     }
 
     public StockWarehouseDto getSelectedWarehouse() {
-        if(selectedWarehouse == null) {
-            selectedWarehouse = new StockWarehouseDto().create();
-        }
         return selectedWarehouse;
     }
 
