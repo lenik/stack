@@ -22,7 +22,7 @@
         </h:form>
 
         <h:outputStylesheet>
-            .fts{
+            .ftd{
                 vertical-align:top;
                 width:20%;
             }
@@ -41,7 +41,10 @@
                                 actionListener="#{materialViewBean.createMaterialForm}" update="dialogForm:material" />
                             <p:divider />
                             <p:inputText value="#{materialViewBean.materialPattern}" />
-                            <p:commandButton value="查找" actionListener="#{materialViewBean.doSearch}" update="main"/>
+                            <p:commandButton value="查找" id="searchBtn" actionListener="#{materialViewBean.doSearch}"
+                                update="main" />
+                            <p:commandButton value="取消查找" id="resetBtn" actionListener="#{materialViewBean.resetSearch}"
+                                update="main" />
                         </p:toolbarGroup>
                     </p:toolbar>
                 </t:panelGroup>
@@ -123,9 +126,8 @@
                     <p:inputText value="#{materialViewBean.activeMaterial.unitHint}"
                         readonly="#{materialViewBean.editable}" />
                     <h:outputText value="单位:" />
-                    <p:selectOneMenu id="selectUnit" widgetVar="selectUnit"
-                        value="#{materialViewBean.activeMaterial.unit.name}" disabled="#{materialViewBean.editable}"
-                        style="width:150px;">
+                    <p:selectOneMenu id="selectUnit" widgetVar="selectUnit" value="#{materialViewBean.selectedUnit}"
+                        disabled="#{materialViewBean.editable}" style="width:150px;" update="dialogForm:selectUnitConv">
                         <f:selectItem itemLabel="" itemValue="" />
                         <f:selectItem itemLabel="新增单位" itemValue="new" />
                         <f:selectItems value="#{materialViewBean.units}" />
@@ -233,12 +235,11 @@
                     <p:commandButton value="..." title="添加物料设置" disabled="#{materialViewBean.editable}"
                         onclick="optionDialog.show();" />
                 </t:panelGrid>
-                <p:selectOneMenu value="333" widgetVar="test" onchange="alert(111);">
+                <p:selectOneMenu value="333" widgetVar="test" disabled="#{materialViewBean.editable}">
                     <f:selectItem itemLabel="111" itemValue="111" />
                     <f:selectItem itemLabel="222" itemValue="222" />
                     <f:selectItem itemLabel="333" itemValue="333" />
                 </p:selectOneMenu>
-                <p:inputText value="test" widgetVar="ttt" />
 
                 <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}"
                     update="main:materialList,note" disabled="#{materialViewBean.editable}"
@@ -395,22 +396,24 @@
         </h:form>
 
         <h:outputScript>
-          <script type="text/javascript">
         jQuery(document).ready(function(){
-                selectUnit.jq.click(function() {
-                    alert("change");
-                    //if (document.getElementById("dialogForm:selectUnit_input").value == "new"){
-                    //    unitDialog.show();
-                    //}
-                });
+            test.jq.change(function() {
+                alert("change");
+            });
 
-                selectUnitConv.jq.change(function() {
-                    if (document.getElementById("dialogForm:selectUnitConv_input").value == "new"){
-                        unitConvDialog.show();
-                    }
-                });
+            selectUnit.jq.change(function() {
+                alert("change==>selectUnit");
+                //if (document.getElementById("dialogForm:selectUnit_input").value == "new"){
+                //    unitDialog.show();
+                //}
+            });
+
+            selectUnitConv.jq.change(function() {
+                if (document.getElementById("dialogForm:selectUnitConv_input").value == "new"){
+                    unitConvDialog.show();
+                }
+            });
         });
-        </script>
         </h:outputScript>
 
 
