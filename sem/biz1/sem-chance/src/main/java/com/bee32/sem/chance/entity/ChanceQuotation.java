@@ -18,20 +18,20 @@ import com.bee32.plover.orm.entity.EntityAuto;
  * 报价单
  */
 @Entity
-public class Quotation
+public class ChanceQuotation
         extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
     String subject;
     Chance chance;
-    List<QuotationItem> items = new ArrayList<QuotationItem>();
+    List<ChanceQutationItem> items = new ArrayList<ChanceQutationItem>();
     double amount = 0.0;
     String recommend;
     String payment;
     String remark;
 
-    public Quotation() {
+    public ChanceQuotation() {
     }
 
     /**
@@ -64,11 +64,11 @@ public class Quotation
      */
     @OneToMany(mappedBy = "quotation")
     @Cascade(CascadeType.DELETE_ORPHAN)
-    public List<QuotationItem> getItems() {
+    public List<ChanceQutationItem> getItems() {
         return items;
     }
 
-    public void setItems(List<QuotationItem> items) {
+    public void setItems(List<ChanceQutationItem> items) {
         this.items = items;
     }
 

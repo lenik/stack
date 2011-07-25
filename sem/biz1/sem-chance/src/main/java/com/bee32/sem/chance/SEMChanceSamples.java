@@ -6,18 +6,16 @@ import java.util.Calendar;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
-import com.bee32.sem.chance.entity.BasePrice;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceParty;
+import com.bee32.sem.chance.entity.ChanceQuotation;
+import com.bee32.sem.chance.entity.ChanceQutationItem;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.entity.Competitor;
-import com.bee32.sem.chance.entity.CurrentPrice;
-import com.bee32.sem.chance.entity.Quotation;
-import com.bee32.sem.chance.entity.QuotationItem;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.people.entity.Party;
 
@@ -31,7 +29,7 @@ public class SEMChanceSamples
     public static ChanceAction chanceAction1 = new ChanceAction();
     public static ChanceAction chanceAction2 = new ChanceAction();
     public static Competitor competitor = new Competitor();
-    public static Quotation quotation = new Quotation();
+    public static ChanceQuotation quotation = new ChanceQuotation();
 
     static {
 
@@ -99,12 +97,7 @@ public class SEMChanceSamples
 
     @Override
     protected void preamble() {
-
         // add <price>->quotionDetail
-
-        // CurrentPrice
-        add(CurrentPrice.pentax);
-        add(CurrentPrice.pentax);
 
         add(chance);
         add(party);
@@ -116,6 +109,7 @@ public class SEMChanceSamples
         // add <price>->quotation and quotationItem
         add(quotation);
 
+        // TODO Refactor to MaterialPrices.
         BasePrice basePrice1;
         add(basePrice1 = new BasePrice("宾得XR", 6000, "第一代"));
         add(new BasePrice("宾得XR", 7000, "第二代"));
@@ -128,7 +122,7 @@ public class SEMChanceSamples
         add(new BasePrice("猪肉", 20, "瘦肉精"));
         add(new BasePrice("猪肉", 25, "还是吃牛肉吧"));
 
-        QuotationItem quotationItem1 = new QuotationItem();
+        ChanceQutationItem quotationItem1 = new ChanceQutationItem();
         add(quotationItem1);
         quotationItem1.setQuotation(quotation);
         quotationItem1.setBasePrice(basePrice1);

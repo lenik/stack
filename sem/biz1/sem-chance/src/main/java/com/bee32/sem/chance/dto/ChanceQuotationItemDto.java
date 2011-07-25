@@ -4,14 +4,14 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.sem.chance.entity.QuotationItem;
+import com.bee32.sem.chance.entity.ChanceQutationItem;
 
-public class QuotationItemDto
-        extends EntityDto<QuotationItem, Long> {
+public class ChanceQuotationItemDto
+        extends EntityDto<ChanceQutationItem, Long> {
 
     private static final long serialVersionUID = 1L;
 
-    private QuotationDto quotation;
+    private ChanceQuotationDto quotation;
     private String material;
     private double discount;
     private BasePriceDto basePrice;
@@ -21,8 +21,8 @@ public class QuotationItemDto
     private String remark;
 
     @Override
-    protected void _marshal(QuotationItem source) {
-        this.quotation = new QuotationDto().ref(source.getQuotation());
+    protected void _marshal(ChanceQutationItem source) {
+        this.quotation = new ChanceQuotationDto().ref(source.getQuotation());
         this.material = source.getMaterial();
         this.discount = source.getDiscount();
         this.basePrice = mref(BasePriceDto.class, source.getBasePrice());
@@ -33,7 +33,7 @@ public class QuotationItemDto
     }
 
     @Override
-    protected void _unmarshalTo(QuotationItem target) {
+    protected void _unmarshalTo(ChanceQutationItem target) {
         merge(target, "quotation", quotation);
         merge(target, "basePrice", basePrice);
         target.setMaterial(material);
@@ -48,11 +48,11 @@ public class QuotationItemDto
             throws ParseException {
     }
 
-    public QuotationDto getQuotation() {
+    public ChanceQuotationDto getQuotation() {
         return quotation;
     }
 
-    public void setQuotationInvoice(QuotationDto quotation) {
+    public void setQuotationInvoice(ChanceQuotationDto quotation) {
         this.quotation = quotation;
     }
 

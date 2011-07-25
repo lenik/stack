@@ -23,16 +23,16 @@ import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
 import com.bee32.sem.chance.dto.ChanceSourceDto;
 import com.bee32.sem.chance.dto.ChanceStageDto;
-import com.bee32.sem.chance.dto.QuotationDto;
-import com.bee32.sem.chance.dto.QuotationItemDto;
+import com.bee32.sem.chance.dto.ChanceQuotationDto;
+import com.bee32.sem.chance.dto.ChanceQuotationItemDto;
 import com.bee32.sem.chance.entity.BasePrice;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
-import com.bee32.sem.chance.entity.Quotation;
-import com.bee32.sem.chance.entity.QuotationItem;
+import com.bee32.sem.chance.entity.ChanceQuotation;
+import com.bee32.sem.chance.entity.ChanceQutationItem;
 import com.bee32.sem.chance.util.ChanceCriteria;
 import com.bee32.sem.chance.util.PriceCriteria;
 import com.bee32.sem.people.dto.PartyDto;
@@ -91,13 +91,13 @@ public class ChanceBean
     private boolean isPriceEditing;
     private boolean isQuantityEditing;
 
-    private List<QuotationDto> quotations;
-    private QuotationDto selectedQuotation;
-    private QuotationDto quotation;
+    private List<ChanceQuotationDto> quotations;
+    private ChanceQuotationDto selectedQuotation;
+    private ChanceQuotationDto quotation;
     private List<String> materials;
     private String selectedMaterial;
     private String materialPattern;
-    private QuotationItemDto selectedQuotationItem;
+    private ChanceQuotationItemDto selectedQuotationItem;
     private double temPrice = 0.0;
     private int temQuantity = 0;
     private boolean quotationItemPriceRendered;
@@ -154,7 +154,7 @@ public class ChanceBean
         BasePrice currentPrice = serviceFor(BasePrice.class).list(//
                 Order.desc("createdDate"), //
                 PriceCriteria.listBasePriceByMaterial(sm)).get(0);
-        QuotationItemDto qi = new QuotationItemDto().create();
+        ChanceQuotationItemDto qi = new ChanceQuotationItemDto().create();
         qi.setQuotationInvoice(quotation);
 
         qi.setBasePrice(DTOs.mref(BasePriceDto.class, currentPrice));
@@ -167,10 +167,10 @@ public class ChanceBean
     }
 
     void listQuotationByChance(ChanceDto chance) {
-        List<Quotation> quotationList = serviceFor(Quotation.class).list(//
+        List<ChanceQuotation> quotationList = serviceFor(ChanceQuotation.class).list(//
                 Order.desc("createdDate"), //
                 PriceCriteria.listQuotationByChance(chance.getId()));
-        quotations = DTOs.marshalList(QuotationDto.class, quotationList);
+        quotations = DTOs.marshalList(ChanceQuotationDto.class, quotationList);
     }
 
     public void calculatePriceChange() {
@@ -218,7 +218,7 @@ public class ChanceBean
         if (isQuantityEditing)
             selectedQuotationItem.setNumber(itemQuantity);
         selectedQuotationItem.setAmount(itemPrice * itemQuantity);
-        for (QuotationItemDto qid : quotation.getItems()) {
+        for (ChanceQuotationItemDto qid : quotation.getItems()) {
             total += qid.getAmount();
         }
         quotation.setAmount(total);
@@ -228,14 +228,14 @@ public class ChanceBean
     public void saveQuotation() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            Quotation quotationEntity = quotation.unmarshal();
+            ChanceQuotation quotationEntity = quotation.unmarshal();
 // if(quotationEntity.getChance().getId() == null)
 // serviceFor(Chance)
             @SuppressWarnings("rawtypes")
             List<Entity> entityList = new ArrayList<Entity>();
             if (!quotations.contains(quotation))
                 quotations.add(quotation);
-            for (QuotationItem tempItem : quotationEntity.getItems()) {
+            for (ChanceQutationItem tempItem : quotationEntity.getItems()) {
                 entityList.add(tempItem);
             }
             entityList.add(quotationEntity);
@@ -251,9 +251,9 @@ public class ChanceBean
 
     public void dropQuotation() {
         FacesContext context = FacesContext.getCurrentInstance();
-        Quotation quo = selectedQuotation.unmarshal();
+        ChanceQuotation quo = selectedQuotation.unmarshal();
         try {
-            serviceFor(Quotation.class).delete(quo);
+            serviceFor(ChanceQuotation.class).delete(quo);
             quotations.remove(selectedQuotation);
             quotationOptionable = quotationDetailable = true;
             context.addMessage(null, new FacesMessage("提示:", "成功删除报价单"));
@@ -268,7 +268,7 @@ public class ChanceBean
     }
 
     public void createQuotationForm() {
-        quotation = new QuotationDto().create();
+        quotation = new ChanceQuotationDto().create();
         quotation.setChance(chance);
     }
 
@@ -315,7 +315,7 @@ public class ChanceBean
         initToolbar();
         editable = false;
         chance = new ChanceDto();
-        quotations = new ArrayList<QuotationDto>();
+        quotations = new ArrayList<ChanceQuotationDto>();
         relating = false;
         unRelating = false;
     }
@@ -450,7 +450,7 @@ public class ChanceBean
         chance = new ChanceDto();
         setActiveTab(TAB_FORM);
         generatedToobar();
-        quotations = new ArrayList<QuotationDto>();
+        quotations = new ArrayList<ChanceQuotationDto>();
         fieldRendered = false;
         quotationAdd = false;
         editable = false;
@@ -853,27 +853,27 @@ public class ChanceBean
         this.isQuantityEditing = isQuantityEditing;
     }
 
-    public List<QuotationDto> getQuotations() {
+    public List<ChanceQuotationDto> getQuotations() {
         return quotations;
     }
 
-    public void setQuotations(List<QuotationDto> quotations) {
+    public void setQuotations(List<ChanceQuotationDto> quotations) {
         this.quotations = quotations;
     }
 
-    public QuotationDto getSelectedQuotation() {
+    public ChanceQuotationDto getSelectedQuotation() {
         return selectedQuotation;
     }
 
-    public void setSelectedQuotation(QuotationDto selectedQuotation) {
+    public void setSelectedQuotation(ChanceQuotationDto selectedQuotation) {
         this.selectedQuotation = selectedQuotation;
     }
 
-    public QuotationDto getQuotation() {
+    public ChanceQuotationDto getQuotation() {
         return quotation;
     }
 
-    public void setQuotation(QuotationDto quotation) {
+    public void setQuotation(ChanceQuotationDto quotation) {
         this.quotation = quotation;
     }
 
@@ -901,11 +901,11 @@ public class ChanceBean
         this.materialPattern = materialPattern;
     }
 
-    public QuotationItemDto getSelectedQuotationItem() {
+    public ChanceQuotationItemDto getSelectedQuotationItem() {
         return selectedQuotationItem;
     }
 
-    public void setSelectedQuotationItem(QuotationItemDto selectedQuotationItem) {
+    public void setSelectedQuotationItem(ChanceQuotationItemDto selectedQuotationItem) {
         this.selectedQuotationItem = selectedQuotationItem;
     }
 

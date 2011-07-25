@@ -6,26 +6,26 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.sem.chance.entity.Quotation;
+import com.bee32.sem.chance.entity.ChanceQuotation;
 
-public class QuotationDto
-        extends EntityDto<Quotation, Long> {
+public class ChanceQuotationDto
+        extends EntityDto<ChanceQuotation, Long> {
 
     private static final long serialVersionUID = 1L;
 
     private String subject;
     private ChanceDto chance;
-    private List<QuotationItemDto> items;
+    private List<ChanceQuotationItemDto> items;
     private double amount;
     private String recommend;
     private String payment;
     private String remark;
 
     @Override
-    protected void _marshal(Quotation source) {
+    protected void _marshal(ChanceQuotation source) {
         this.subject = source.getSubject();
         this.chance = mref(ChanceDto.class, source.getChance());
-        this.items = marshalList(QuotationItemDto.class, source.getItems());
+        this.items = marshalList(ChanceQuotationItemDto.class, source.getItems());
         this.amount = source.getAmount();
         this.recommend = source.getRecommend();
         this.payment = source.getPayment();
@@ -33,7 +33,7 @@ public class QuotationDto
     }
 
     @Override
-    protected void _unmarshalTo(Quotation target) {
+    protected void _unmarshalTo(ChanceQuotation target) {
         target.setSubject(subject);
         merge(target, "chance", chance);
         mergeList(target, "items", items);
@@ -48,11 +48,11 @@ public class QuotationDto
             throws ParseException {
     }
 
-    public void addItem(QuotationItemDto qid) {
+    public void addItem(ChanceQuotationItemDto qid) {
         this.items.add(qid);
     }
 
-    public void removeItem(QuotationItemDto qid){
+    public void removeItem(ChanceQuotationItemDto qid){
         this.items.remove(qid);
     }
 
@@ -72,11 +72,11 @@ public class QuotationDto
         this.chance = chance;
     }
 
-    public List<QuotationItemDto> getItems() {
+    public List<ChanceQuotationItemDto> getItems() {
         return items;
     }
 
-    public void setItems(List<QuotationItemDto> items) {
+    public void setItems(List<ChanceQuotationItemDto> items) {
         this.items = items;
     }
 

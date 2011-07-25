@@ -8,14 +8,14 @@ import javax.annotation.PostConstruct;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.sem.chance.dto.QuotationDto;
-import com.bee32.sem.chance.dto.QuotationItemDto;
+import com.bee32.sem.chance.dto.ChanceQuotationDto;
+import com.bee32.sem.chance.dto.ChanceQuotationItemDto;
 import com.bee32.sem.chance.entity.BasePrice;
-import com.bee32.sem.chance.entity.Quotation;
-import com.bee32.sem.chance.entity.QuotationItem;
+import com.bee32.sem.chance.entity.ChanceQuotation;
+import com.bee32.sem.chance.entity.ChanceQutationItem;
 import com.bee32.sem.chance.util.PriceCriteria;
 
-public class QuotationBean
+public class ChanceQuotationBean
         extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
@@ -24,14 +24,14 @@ public class QuotationBean
     private boolean detailable;
     private boolean orderable;
 
-    private List<QuotationDto> quotations;
-    private QuotationDto selectedQuotation;
-    private QuotationDto quotation;
+    private List<ChanceQuotationDto> quotations;
+    private ChanceQuotationDto selectedQuotation;
+    private ChanceQuotationDto quotation;
     private List<String> materials;
     private String selectedMaterial;
     private String materialPattern;
 
-    QuotationBean() {
+    ChanceQuotationBean() {
         initMaterial();
     }
 
@@ -46,9 +46,9 @@ public class QuotationBean
 
     @PostConstruct
     public void init() {
-        List<Quotation> lq = serviceFor(Quotation.class).list();
-        quotations = DTOs.marshalList(QuotationDto.class, lq);
-        quotation = new QuotationDto().ref(new Quotation());
+        List<ChanceQuotation> lq = serviceFor(ChanceQuotation.class).list();
+        quotations = DTOs.marshalList(ChanceQuotationDto.class, lq);
+        quotation = new ChanceQuotationDto().ref(new ChanceQuotation());
     }
 
     public void onRowSelect() {
@@ -81,14 +81,14 @@ public class QuotationBean
         BasePrice currentPrice = serviceFor(BasePrice.class).list(//
                 Order.desc("createdDate"), //
                 PriceCriteria.listBasePriceByMaterial(sm)).get(0);
-        QuotationItem qi = new QuotationItem();
+        ChanceQutationItem qi = new ChanceQutationItem();
         qi.setQuotation(quotation.unmarshal());
         qi.setBasePrice(currentPrice);
         qi.setMaterial(sm);
 // qi.setDiscount()
 // qi.setPrice();
 // qi.setNumber()
-        QuotationItemDto qid = DTOs.mref(QuotationItemDto.class, qi);
+        ChanceQuotationItemDto qid = DTOs.mref(ChanceQuotationItemDto.class, qi);
         quotation.addItem(qid);
     }
 
@@ -116,27 +116,27 @@ public class QuotationBean
         this.orderable = orderable;
     }
 
-    public List<QuotationDto> getQuotations() {
+    public List<ChanceQuotationDto> getQuotations() {
         return quotations;
     }
 
-    public void setQuotations(List<QuotationDto> quotations) {
+    public void setQuotations(List<ChanceQuotationDto> quotations) {
         this.quotations = quotations;
     }
 
-    public QuotationDto getSelectedQuotation() {
+    public ChanceQuotationDto getSelectedQuotation() {
         return selectedQuotation;
     }
 
-    public void setSelectedQuotation(QuotationDto selectedQuotation) {
+    public void setSelectedQuotation(ChanceQuotationDto selectedQuotation) {
         this.selectedQuotation = selectedQuotation;
     }
 
-    public QuotationDto getQuotation() {
+    public ChanceQuotationDto getQuotation() {
         return quotation;
     }
 
-    public void setQuotation(QuotationDto quotation) {
+    public void setQuotation(ChanceQuotationDto quotation) {
         this.quotation = quotation;
     }
 
