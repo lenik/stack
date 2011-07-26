@@ -1,5 +1,10 @@
 package com.bee32.plover.orm.dao;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,16 +14,19 @@ import java.util.TreeMap;
 
 import javax.free.IllegalUsageError;
 import javax.free.NotImplementedException;
+import javax.free.UnexpectedException;
 
 import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
 import org.springframework.dao.DataAccessException;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityRepository;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntityAccessService;
+import com.bee32.plover.orm.unit.PersistenceUnit;
 
 public class MemoryDao
         extends EntityRepository<Entity<?>, Serializable>
@@ -36,7 +44,14 @@ public class MemoryDao
 
     final Map<Serializable, Entity<?>> table;
 
-    MemoryDao(Class<? extends Entity<?>> entityType) {
+    static void scanAll() {
+        PersistenceUnit unit = CustomizedSessionFactoryBean.getForceUnit();
+        for (Class<?> entityType : unit.getClasses()) {
+
+        }
+    }
+
+    private MemoryDao(Class<? extends Entity<?>> entityType) {
         super(entityType, EntityUtil.getKeyType(entityType));
         Map<Serializable, Entity<?>> table = database.get(entityType);
         if (table == null) {
@@ -57,7 +72,7 @@ public class MemoryDao
                     included = _superType.getAnnotation(javax.persistence.Entity.class) != null;
 
                 if (included)
-                    parent = new MemoryDao(superType);
+                    parent = getInstance(superType);
             }
         }
         this.parent = parent;
@@ -66,10 +81,47 @@ public class MemoryDao
             parent.addChild(this);
     }
 
+    static final Map<Class<? extends Entity<?>>, MemoryDao> instances = new HashMap<Class<? extends Entity<?>>, MemoryDao>();
+
+    static synchronized MemoryDao getInstance(Class<? extends Entity<?>> entityType) {
+        MemoryDao instance = instances.get(entityType);
+        if (instance == null) {
+            instance = new MemoryDao(entityType);
+        }
+        return instance;
+    }
+
     void addChild(MemoryDao childDao) {
         if (children.contains(childDao))
             throw new IllegalUsageError("Duplicated child memdao: " + childDao);
         children.add(childDao);
+    }
+
+    /**
+     * Clone an object thru java serialization.
+     */
+    static <T extends Serializable> T dup(T obj) {
+        if (obj == null)
+            return null;
+
+        try {
+            ByteArrayOutputStream bufOut = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(bufOut);
+            out.writeObject(obj);
+            out.flush();
+
+            byte[] data = bufOut.toByteArray();
+
+            ByteArrayInputStream bufIn = new ByteArrayInputStream(data);
+            ObjectInputStream in = new ObjectInputStream(bufIn);
+            T copy = (T) in.readObject();
+
+            return copy;
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } catch (ClassNotFoundException e) {
+            throw new UnexpectedException(e.getMessage(), e);
+        }
     }
 
     @Override
@@ -86,21 +138,25 @@ public class MemoryDao
 
     @Override
     public Entity<?> get(Serializable key) {
-        Entity<?> entity = table.get(key);
-        if (entity != null)
-            return entity;
-
-        for (MemoryDao child : children) {
-            entity = child.get(key);
-            if (entity != null)
-                return entity;
-        }
-        return null;
+        Entity<?> _o = table.get(key);
+        if (_o == null)
+            for (MemoryDao child : children) {
+                _o = child.get(key);
+                if (_o != null)
+                    break;
+            }
+        if (_o == null)
+            return null;
+        else
+            return dup(_o);
     }
 
     @Override
     public List<Entity<?>> list() {
-        ArrayList<Entity<?>> copy = new ArrayList<Entity<?>>(table.values());
+        ArrayList<Entity<?>> copy = new ArrayList<Entity<?>>();
+        for (Entity<?> _o : table.values()) {
+            copy.add(dup(_o));
+        }
         return copy;
     }
 
@@ -159,8 +215,12 @@ public class MemoryDao
     @Override
     public Entity<?> merge(Entity<?> entity)
             throws DataAccessException {
+
         Class<?> entityType = entity.getClass();
         // getInstance(entityType)
+
+        Entity<?> _o = dup(entity);
+
         throw new NotImplementedException();
     }
 
@@ -224,6 +284,9 @@ public class MemoryDao
     public Serializable save(Entity<?> entity) {
         Class<?> entityType = entity.getClass();
         // getInstance
+
+        Entity<?> _o = dup(entity);
+
         throw new NotImplementedException();
     }
 

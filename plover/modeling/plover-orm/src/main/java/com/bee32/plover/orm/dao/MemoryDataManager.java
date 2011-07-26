@@ -17,7 +17,7 @@ public class MemoryDataManager
         @SuppressWarnings("unchecked")
         Class<E> et = (Class<E>) entityType;
 
-        MemoryDao memdao = new MemoryDao(et);
+        MemoryDao memdao = MemoryDao.getInstance(et);
 
         @SuppressWarnings("unchecked")
         IEntityAccessService<E, K> memEas = (IEntityAccessService<E, K>) memdao;
