@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
-import com.bee32.sem.chance.dto.BasePriceDto;
-import com.bee32.sem.chance.entity.BasePrice;
 import com.bee32.sem.chance.util.PriceCriteria;
+import com.bee32.sem.inventory.dto.MaterialPriceDto;
+import com.bee32.sem.inventory.entity.MaterialPrice;
 
 @Component
 @Scope("view")
@@ -29,7 +29,7 @@ public class BasePriceBean
     private double price;
     private String remark;
 
-    private List<BasePriceDto> basePriceList;
+    private List<MaterialPriceDto> basePriceList;
 
     void init() {
         material = new ArrayList<String>();
@@ -61,15 +61,15 @@ public class BasePriceBean
     // PriceCriteria.listByMaterial(selectedMaterial));
     // detailList = DTOs.marshalList(QuotationDetailDto.class, lqd);
     // }
-    List<BasePriceDto> listDetailByMaterial() {
-        List<BasePrice> lqd = serviceFor(BasePrice.class).list(//
+    List<MaterialPriceDto> listDetailByMaterial() {
+        List<MaterialPrice> lqd = serviceFor(MaterialPrice.class).list(//
                 Order.desc("createdDate"), PriceCriteria.listByMaterial(selectedMaterial));
-        return DTOs.marshalList(BasePriceDto.class, lqd);
+        return DTOs.marshalList(MaterialPriceDto.class, lqd);
     }
 
     public void addQuotationDetail() {
-        BasePrice basePrice = new BasePrice(selectedMaterial, price, remark);
-        serviceFor(BasePrice.class).saveOrUpdate(basePrice);
+        MaterialPrice basePrice = new MaterialPrice(selectedMaterial, price, remark);
+        serviceFor(MaterialPrice.class).saveOrUpdate(basePrice);
         basePriceList = listDetailByMaterial();
     }
 
@@ -89,25 +89,25 @@ public class BasePriceBean
 
         if (this.selectedMaterial != null && !selectedMaterial.isEmpty()) {
             if (!this.selectedMaterial.equals(selectedMaterial)) {
-                List<BasePrice> lqd = serviceFor(BasePrice.class).list(//
+                List<MaterialPrice> lqd = serviceFor(MaterialPrice.class).list(//
                         Order.desc("createdDate"), //
                         PriceCriteria.listByMaterial(selectedMaterial));
-                basePriceList = DTOs.marshalList(BasePriceDto.class, lqd);
+                basePriceList = DTOs.marshalList(MaterialPriceDto.class, lqd);
             }
         } else if (this.selectedMaterial == null && !selectedMaterial.isEmpty()) {
-            List<BasePrice> lqd = serviceFor(BasePrice.class).list(//
+            List<MaterialPrice> lqd = serviceFor(MaterialPrice.class).list(//
                     Order.desc("createdDate"), //
                     PriceCriteria.listByMaterial(selectedMaterial));
-            basePriceList = DTOs.marshalList(BasePriceDto.class, lqd);
+            basePriceList = DTOs.marshalList(MaterialPriceDto.class, lqd);
         }
         this.selectedMaterial = selectedMaterial;
     }
 
-    public List<BasePriceDto> getBasePriceList() {
+    public List<MaterialPriceDto> getBasePriceList() {
         return basePriceList;
     }
 
-    public void setBasePriceList(List<BasePriceDto> basePriceList) {
+    public void setBasePriceList(List<MaterialPriceDto> basePriceList) {
         this.basePriceList = basePriceList;
     }
 

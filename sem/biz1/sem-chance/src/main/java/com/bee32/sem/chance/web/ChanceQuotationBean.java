@@ -10,10 +10,10 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.chance.dto.ChanceQuotationDto;
 import com.bee32.sem.chance.dto.ChanceQuotationItemDto;
-import com.bee32.sem.chance.entity.BasePrice;
 import com.bee32.sem.chance.entity.ChanceQuotation;
-import com.bee32.sem.chance.entity.ChanceQutationItem;
+import com.bee32.sem.chance.entity.ChanceQuotationItem;
 import com.bee32.sem.chance.util.PriceCriteria;
+import com.bee32.sem.inventory.entity.MaterialPrice;
 
 public class ChanceQuotationBean
         extends EntityViewBean {
@@ -78,10 +78,10 @@ public class ChanceQuotationBean
 
     public void chooseMaterial() {
         String sm = selectedMaterial;
-        BasePrice currentPrice = serviceFor(BasePrice.class).list(//
+        MaterialPrice currentPrice = serviceFor(MaterialPrice.class).list(//
                 Order.desc("createdDate"), //
                 PriceCriteria.listBasePriceByMaterial(sm)).get(0);
-        ChanceQutationItem qi = new ChanceQutationItem();
+        ChanceQuotationItem qi = new ChanceQuotationItem();
         qi.setQuotation(quotation.unmarshal());
         qi.setBasePrice(currentPrice);
         qi.setMaterial(sm);

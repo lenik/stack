@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.web;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,31 +17,32 @@ import org.springframework.stereotype.Component;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.sem.chance.dto.BasePriceDto;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceCategoryDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
-import com.bee32.sem.chance.dto.ChanceSourceDto;
-import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.dto.ChanceQuotationDto;
 import com.bee32.sem.chance.dto.ChanceQuotationItemDto;
-import com.bee32.sem.chance.entity.BasePrice;
+import com.bee32.sem.chance.dto.ChanceSourceDto;
+import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceCategory;
+import com.bee32.sem.chance.entity.ChanceQuotation;
+import com.bee32.sem.chance.entity.ChanceQuotationItem;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
-import com.bee32.sem.chance.entity.ChanceQuotation;
-import com.bee32.sem.chance.entity.ChanceQutationItem;
 import com.bee32.sem.chance.util.ChanceCriteria;
 import com.bee32.sem.chance.util.PriceCriteria;
+import com.bee32.sem.inventory.dto.MaterialPriceDto;
+import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.world.monetary.MCValue;
 
 @Component
 @Scope("view")
@@ -98,8 +100,8 @@ public class ChanceBean
     private String selectedMaterial;
     private String materialPattern;
     private ChanceQuotationItemDto selectedQuotationItem;
-    private double temPrice = 0.0;
-    private int temQuantity = 0;
+    private MCValue temPrice = new MCValue();
+    private BigDecimal temQuantity = new BigDecimal(0);
     private boolean quotationItemPriceRendered;
     private boolean quotationItemNumberRendered;
 
@@ -151,18 +153,15 @@ public class ChanceBean
 
     public void chooseMaterial() {
         String sm = selectedMaterial;
-        BasePrice currentPrice = serviceFor(BasePrice.class).list(//
+        MaterialPrice currentPrice = serviceFor(MaterialPrice.class).list(//
                 Order.desc("createdDate"), //
                 PriceCriteria.listBasePriceByMaterial(sm)).get(0);
         ChanceQuotationItemDto qi = new ChanceQuotationItemDto().create();
-        qi.setQuotationInvoice(quotation);
+        qi.setQuotation(quotation);
 
-        qi.setBasePrice(DTOs.mref(BasePriceDto.class, currentPrice));
+        qi.setBasePrice(DTOs.mref(MaterialPriceDto.class, currentPrice));
 
         qi.setMaterial(sm);
-        qi.setDiscount(0);
-        qi.setPrice(0.0);
-        qi.setNumber(0);
         quotation.addItem(qi);
     }
 
@@ -205,23 +204,19 @@ public class ChanceBean
 
     public void editQuantity() {
         quotationItemNumberRendered = !quotationItemNumberRendered;
-        temQuantity = selectedQuotationItem.getNumber();
+        temQuantity = selectedQuotationItem.getQuantity();
         isQuantityEditing = true;
     }
 
     public void calculateQuotaionAmount() {
-        double total = 0.0;
-        int itemQuantity = isQuantityEditing == true ? temQuantity : selectedQuotationItem.getNumber();
-        double itemPrice = isPriceEditing == true ? temPrice : selectedQuotationItem.getPrice();
+        BigDecimal total = new BigDecimal(0);
+        BigDecimal itemQuantity = isQuantityEditing == true ? temQuantity : selectedQuotationItem.getQuantity();
+        MCValue itemPrice = isPriceEditing == true ? temPrice : selectedQuotationItem.getPrice();
         if (isPriceEditing)
             selectedQuotationItem.setPrice(itemPrice);
         if (isQuantityEditing)
-            selectedQuotationItem.setNumber(itemQuantity);
-        selectedQuotationItem.setAmount(itemPrice * itemQuantity);
-        for (ChanceQuotationItemDto qid : quotation.getItems()) {
-            total += qid.getAmount();
-        }
-        quotation.setAmount(total);
+            selectedQuotationItem.setQuantity(itemQuantity);
+        // quotation.getTotal();
     }
 
     @SuppressWarnings("unchecked")
@@ -235,7 +230,7 @@ public class ChanceBean
             List<Entity> entityList = new ArrayList<Entity>();
             if (!quotations.contains(quotation))
                 quotations.add(quotation);
-            for (ChanceQutationItem tempItem : quotationEntity.getItems()) {
+            for (ChanceQuotationItem tempItem : quotationEntity.getItems()) {
                 entityList.add(tempItem);
             }
             entityList.add(quotationEntity);
@@ -909,19 +904,15 @@ public class ChanceBean
         this.selectedQuotationItem = selectedQuotationItem;
     }
 
-    public double getTemPrice() {
+    public MCValue getTemPrice() {
         return temPrice;
     }
 
-    public void setTemPrice(double temPrice) {
-        this.temPrice = temPrice;
-    }
-
-    public int getTemQuantity() {
+    public BigDecimal getTemQuantity() {
         return temQuantity;
     }
 
-    public void setTemQuantity(int temQuantity) {
+    public void setTemQuantity(BigDecimal temQuantity) {
         this.temQuantity = temQuantity;
     }
 
