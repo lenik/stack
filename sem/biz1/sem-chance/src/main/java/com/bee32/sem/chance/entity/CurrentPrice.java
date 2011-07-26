@@ -7,6 +7,7 @@ import javax.persistence.OneToOne;
 
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.sem.inventory.entity.MaterialPrice;
 
 /**
  * 当前物料报价
@@ -22,28 +23,6 @@ public class CurrentPrice
     List<Object> xxx;
     // 当前物料的基础价格
     @OneToOne
-    BasePrice currentPrice;
-
-    public CurrentPrice(List<Object> xxx, BasePrice currentPrice) {
-        super();
-        this.xxx = xxx;
-        this.currentPrice = currentPrice;
-    }
-
-    public List<Object> getXxx() {
-        return xxx;
-    }
-
-    public void setXxx(List<Object> xxx) {
-        this.xxx = xxx;
-    }
-
-    public BasePrice getCurrentPrice() {
-        return currentPrice;
-    }
-
-    public void setCurrentPrice(BasePrice currentPrice) {
-        this.currentPrice = currentPrice;
-    }
+    MaterialPrice currentPrice;
 
 }

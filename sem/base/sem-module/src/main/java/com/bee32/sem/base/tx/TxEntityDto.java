@@ -15,6 +15,14 @@ public abstract class TxEntityDto<E extends TxEntity>
 
     String name;
 
+    public TxEntityDto() {
+        super();
+    }
+
+    public TxEntityDto(int selection) {
+        super(selection);
+    }
+
     protected void __marshal(E source) {
         super.__marshal(source);
         name = source.getName();
