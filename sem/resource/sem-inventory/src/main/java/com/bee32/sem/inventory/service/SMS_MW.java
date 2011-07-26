@@ -7,6 +7,8 @@ import com.bee32.sem.inventory.entity.StockWarehouse;
 public class SMS_MW
         implements IStockMergeStrategy {
 
+    private static final long serialVersionUID = 1L;
+
     static final class Key {
 
         Material material;
