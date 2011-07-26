@@ -1,6 +1,7 @@
 package com.bee32.sem.world.thing;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 import com.bee32.plover.orm.ext.dict.NameDict;
 
@@ -14,7 +15,7 @@ public class Unit
     private static final long serialVersionUID = 1L;
 
     Unit stdUnit;
-    double scale;
+    Double scale;
 
     public Unit() {
         super();
@@ -34,6 +35,12 @@ public class Unit
         super(name, label, description);
     }
 
+    /**
+     * Get the standard unit.
+     *
+     * @return <code>null</code> if this unit itself is a standard unit.
+     */
+    @ManyToOne
     public Unit getStdUnit() {
         return stdUnit;
     }
@@ -42,11 +49,11 @@ public class Unit
         this.stdUnit = stdUnit;
     }
 
-    public double getScale() {
+    public Double getScale() {
         return scale;
     }
 
-    public void setScale(double scale) {
+    public void setScale(Double scale) {
         this.scale = scale;
     }
 

@@ -15,8 +15,9 @@ public class UnitDto
     @Override
     protected void _marshal(Unit source) {
         super._marshal(source);
-        stdUnit = new UnitDto().ref(source.getStdUnit());
-        scale = source.getScale();
+        stdUnit = mref(UnitDto.class, source.getStdUnit());
+        if (source.getScale() != null)
+            scale = source.getScale();
     }
 
     @Override

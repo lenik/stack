@@ -1,6 +1,8 @@
 package com.bee32.sem.world.thing;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -18,6 +20,7 @@ public class UnitConvDto
     public static final int MAP = 1;
 
     UnitDto unit;
+    List<ScaleItem> itemList = new ArrayList<ScaleItem>();
     Map<UnitDto, Double> scaleMap;
 
     public UnitConvDto() {
@@ -40,6 +43,15 @@ public class UnitConvDto
                 scaleMap.put(scaleUnit, scale);
             }
         }
+
+        for (Entry<Unit, Double> entry : source.getScaleMap().entrySet()) {
+            UnitDto scaleUnit = mref(UnitDto.class, entry.getKey());
+            double scale = entry.getValue();
+            ScaleItem item = new ScaleItem();
+            item.setUnit(scaleUnit);
+            item.setScale(scale);
+            itemList.add(item);
+        }
     }
 
     @Override
@@ -55,6 +67,14 @@ public class UnitConvDto
             }
             target.setScaleMap(_scaleMap);
         }
+
+        Map<Unit, Double> _map = new HashMap<Unit, Double>();
+        for (ScaleItem item : itemList) {
+            Unit _unit = item.getUnit().unmarshal();
+            double scale = item.getScale();
+            _map.put(_unit, scale);
+        }
+        target.setScaleMap(_map);
     }
 
     @Override
@@ -67,6 +87,10 @@ public class UnitConvDto
         }
     }
 
+    public void addScaleItem(ScaleItem item) {
+        this.itemList.add(item);
+    }
+
     public UnitDto getUnit() {
         return unit;
     }
@@ -75,6 +99,14 @@ public class UnitConvDto
         if (unit == null)
             throw new NullPointerException("unit");
         this.unit = unit;
+    }
+
+    public List<ScaleItem> getItemList() {
+        return itemList;
+    }
+
+    public void setItemList(List<ScaleItem> itemList) {
+        this.itemList = itemList;
     }
 
     public Map<UnitDto, Double> getScaleMap() {
