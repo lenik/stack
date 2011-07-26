@@ -122,10 +122,10 @@ public abstract class Repository<K, T>
     }
 
     @Override
-    public void delete(Object obj) {
+    public boolean delete(Object obj) {
         T instance = objectType.cast(obj);
         K key = getKey(instance);
-        deleteByKey(key);
+        return deleteByKey(key);
     }
 
     @Override

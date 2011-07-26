@@ -141,17 +141,19 @@ public interface IRepository<K, T>
      *            The object key, may be <code>null</code> if null-key is used.
      * @param obj
      *            Non-<code>null</code> object object.
+     * @return <code>true</code> if actually deleted.
      * @see Map#remove(Object)
      */
-    void deleteByKey(K key);
+    boolean deleteByKey(K key);
 
     /**
      * Delete an object from underlying persistent layer.
      *
      * @param obj
      *            Non-<code>null</code> object object.
+     * @return <code>true</code> if actually deleted.
      */
-    void delete(Object obj);
+    boolean delete(Object obj);
 
     /**
      * @see Map#clear()

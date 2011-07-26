@@ -29,7 +29,8 @@ public class EmptyEntityRepository<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    public void deleteByKey(Serializable key) {
+    public boolean deleteByKey(Serializable key) {
+        return false;
     }
 
     @Override

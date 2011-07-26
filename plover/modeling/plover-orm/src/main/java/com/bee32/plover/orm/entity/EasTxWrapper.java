@@ -179,9 +179,9 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = false)
     @Override
-    public void delete(Object entity) {
+    public boolean delete(Object entity) {
         checkDelete();
-        getDao().delete(entity);
+        return getDao().delete(entity);
     }
 
     @Transactional(readOnly = true)
@@ -230,10 +230,10 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = false)
     @Override
-    public void delete(Object entity, LockMode lockMode)
+    public boolean delete(Object entity, LockMode lockMode)
             throws DataAccessException {
         checkDelete();
-        getDao().delete(entity, lockMode);
+        return getDao().delete(entity, lockMode);
     }
 
     @Transactional(readOnly = false)
@@ -273,9 +273,9 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = false)
     @Override
-    public void deleteById(K id) {
+    public boolean deleteById(K id) {
         checkDelete();
-        getDao().deleteById(id);
+        return getDao().deleteById(id);
     }
 
     @Transactional(readOnly = false)
@@ -287,9 +287,9 @@ public class EasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
 
     @Transactional(readOnly = false)
     @Override
-    public void deleteByKey(K key) {
+    public boolean deleteByKey(K key) {
         checkDelete();
-        getDao().deleteByKey(key);
+        return getDao().deleteByKey(key);
     }
 
     @Transactional(readOnly = false)

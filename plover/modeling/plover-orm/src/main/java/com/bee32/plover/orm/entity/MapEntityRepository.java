@@ -82,8 +82,9 @@ public class MapEntityRepository<E extends IEntity<K>, K extends Serializable>
     }
 
     @Override
-    public void deleteByKey(Serializable key) {
-        getMap().remove(key);
+    public boolean deleteByKey(Serializable key) {
+        E removed = getMap().remove(key);
+        return removed != null;
     }
 
     @Override

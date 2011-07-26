@@ -57,7 +57,7 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
      */
     int count(ICriteriaElement... criteriaElements);
 
-    void deleteById(K id);
+    boolean deleteById(K id);
 
     /**
      * Delete entities with restrictions.

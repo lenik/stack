@@ -68,15 +68,20 @@ public abstract class JpaEntityRepository<E extends IEntity<K>, K extends Serial
     }
 
     @Override
-    public void deleteByKey(K key) {
+    public boolean deleteByKey(K key) {
         E entity = get(key);
-        if (entity != null)
+        if (entity != null) {
             template.remove(entity);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public void delete(Object entity) {
+    public boolean delete(Object entity) {
         template.remove(entity);
+        return true;
     }
 
 }

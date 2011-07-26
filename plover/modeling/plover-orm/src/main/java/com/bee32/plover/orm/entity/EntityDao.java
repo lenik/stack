@@ -179,13 +179,15 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public void delete(Object entity) {
+    public boolean delete(Object entity) {
         getHibernateTemplate().delete(entity);
+        // count??
+        return true;
     }
 
     @Override
-    public void deleteByKey(K key) {
-        deleteById(key);
+    public boolean deleteByKey(K key) {
+        return deleteById(key);
     }
 
     @Override
@@ -222,9 +224,10 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public void delete(Object entity, LockMode lockMode)
+    public boolean delete(Object entity, LockMode lockMode)
             throws DataAccessException {
         getHibernateTemplate().delete(entity, lockMode);
+        return true;
     }
 
     @Override
@@ -311,10 +314,11 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public void deleteById(K id) {
+    public boolean deleteById(K id) {
         String entityName = getEntityType().getSimpleName();
         String hql = "delete from " + entityName + " where id=?";
-        getHibernateTemplate().bulkUpdate(hql, id);
+        int rows = getHibernateTemplate().bulkUpdate(hql, id);
+        return rows != 0;
     }
 
     @Override

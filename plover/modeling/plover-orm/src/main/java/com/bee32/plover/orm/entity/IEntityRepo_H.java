@@ -46,7 +46,7 @@ public interface IEntityRepo_H<E extends IEntity<? extends K>, K extends Seriali
     void update(E entity, LockMode lockMode)
             throws DataAccessException;
 
-    void delete(Object entity, LockMode lockMode)
+    boolean delete(Object entity, LockMode lockMode)
             throws DataAccessException;
 
     E merge(E entity)
