@@ -14,6 +14,17 @@ public class CriteriaComposite
 
     protected final List<ICriteriaElement> elements;
 
+    public CriteriaComposite(ICriteriaElement[] av, ICriteriaElement... bv) {
+        this(cat(av, bv));
+    }
+
+    static ICriteriaElement[] cat(ICriteriaElement[] car, ICriteriaElement[] cdr) {
+        ICriteriaElement[] cat = new ICriteriaElement[car.length + cdr.length];
+        System.arraycopy(car, 0, cat, 0, car.length);
+        System.arraycopy(cdr, 0, cat, car.length, cdr.length);
+        return cat;
+    }
+
     public CriteriaComposite(ICriteriaElement... elements) {
         this(Arrays.asList(elements));
     }
