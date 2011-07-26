@@ -12,6 +12,7 @@ import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 import com.bee32.plover.orm.ext.config.DecimalConfig;
 import com.bee32.sem.world.monetary.FxrQueryException;
+import com.bee32.sem.world.monetary.ICurrencyAware;
 import com.bee32.sem.world.monetary.IFxrProvider;
 import com.bee32.sem.world.monetary.MCValue;
 
@@ -19,7 +20,7 @@ import com.bee32.sem.world.monetary.MCValue;
 @Blue
 public abstract class AbstractOrderItem
         extends UIEntityAuto<Long>
-        implements DecimalConfig {
+        implements DecimalConfig, ICurrencyAware {
 
     private static final long serialVersionUID = 1L;
 
@@ -85,6 +86,13 @@ public abstract class AbstractOrderItem
             throw new NullPointerException("price");
         this.price = price;
         invalidateTotal();
+    }
+
+    /**
+     * Set price in native currency.
+     */
+    public final void setPrice(double price) {
+        setPrice(new MCValue(NATIVE_CURRENCY, price));
     }
 
     /**

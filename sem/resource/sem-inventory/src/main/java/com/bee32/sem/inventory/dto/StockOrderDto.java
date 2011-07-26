@@ -40,4 +40,48 @@ public class StockOrderDto
             throws ParseException {
     }
 
+    public StockPeriodDto getBase() {
+        return base;
+    }
+
+    public void setBase(StockPeriodDto base) {
+        if (base == null)
+            throw new NullPointerException("base");
+        this.base = base;
+    }
+
+    public StockPeriodDto getSpec() {
+        return spec;
+    }
+
+    public void setSpec(StockPeriodDto spec) {
+        this.spec = spec;
+    }
+
+    public StockOrderSubject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(StockOrderSubject subject) {
+        if (subject == null)
+            throw new NullPointerException("subject");
+        this.subject = subject;
+    }
+
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
+
+    public Long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
+    }
+
 }
