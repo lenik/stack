@@ -1,0 +1,61 @@
+package com.bee32.plover.orm.dao;
+
+import javax.free.IllegalUsageException;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.bee32.plover.orm.builtin.PloverConf;
+import com.bee32.plover.orm.entity.EntityAuto;
+
+public class SimpleIdGeneratorTest
+        extends Assert {
+
+    @Test(expected = IllegalUsageException.class)
+    public void testGenerateSpec() {
+        PloverConf conf = new PloverConf();
+        SimpleIdGenerator.generate(conf);
+    }
+
+    @Test
+    public void testGenerateInt() {
+        IntCase a = new IntCase();
+        int id = (Integer) SimpleIdGenerator.generate(a);
+        assertEquals(1, id);
+    }
+
+    @Test
+    public void testGenerateLong() {
+        LongCase a = new LongCase();
+        long id = (Long) SimpleIdGenerator.generate(a);
+        assertEquals(1L, id);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testGenerateDouble() {
+        DoubleCase a = new DoubleCase();
+        SimpleIdGenerator.generate(a);
+    }
+
+}
+
+class IntCase
+        extends EntityAuto<Integer> {
+
+    private static final long serialVersionUID = 1L;
+
+}
+
+class LongCase
+        extends EntityAuto<Long> {
+
+    private static final long serialVersionUID = 1L;
+
+}
+
+class DoubleCase
+        extends EntityAuto<Double> {
+
+    private static final long serialVersionUID = 1L;
+
+}
