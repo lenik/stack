@@ -5,30 +5,33 @@ import java.util.Date;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.sem.inventory.entity.MaterialPrice;
+import com.bee32.sem.world.monetary.ICurrencyAware;
 import com.bee32.sem.world.monetary.MCValue;
 
 public class MaterialPriceDto
-        extends EntityDto<MaterialPrice, Long> {
+        extends UIEntityDto<MaterialPrice, Long>
+        implements ICurrencyAware {
 
     private static final long serialVersionUID = 1L;
 
     MaterialDto material;
-    Date sinceDate;
+    Date date;
     MCValue price;
-    String comment;
 
     @Override
     protected void _marshal(MaterialPrice source) {
         this.material = marshal(MaterialDto.class, 0, source.getMaterial());
-        this.sinceDate = source.getSinceDate();
+        this.date = source.getDate();
         this.price = source.getPrice();
-        this.comment = source.getComment();
     }
 
     @Override
     protected void _unmarshalTo(MaterialPrice target) {
+        merge(target, "material", material);
+        target.setDate(date);
+        target.setPrice(price);
     }
 
     @Override
@@ -41,15 +44,19 @@ public class MaterialPriceDto
     }
 
     public void setMaterial(MaterialDto material) {
+        if (material == null)
+            throw new NullPointerException("material");
         this.material = material;
     }
 
-    public Date getSinceDate() {
-        return sinceDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setSinceDate(Date sinceDate) {
-        this.sinceDate = sinceDate;
+    public void setDate(Date date) {
+        if (date == null)
+            throw new NullPointerException("date");
+        this.date = date;
     }
 
     public MCValue getPrice() {
@@ -57,14 +64,16 @@ public class MaterialPriceDto
     }
 
     public void setPrice(MCValue price) {
+        if (price == null)
+            throw new NullPointerException("price");
         this.price = price;
     }
 
-    public String getComment() {
-        return comment;
+    /**
+     * Set price in native currency.
+     */
+    public final void setPrice(double price) {
+        setPrice(new MCValue(NATIVE_CURRENCY, price));
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 }

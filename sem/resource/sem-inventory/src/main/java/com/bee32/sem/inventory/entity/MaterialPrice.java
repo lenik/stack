@@ -11,8 +11,9 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.sem.world.monetary.ICurrencyAware;
 import com.bee32.sem.world.monetary.MCValue;
 
 /**
@@ -20,14 +21,14 @@ import com.bee32.sem.world.monetary.MCValue;
  */
 @Entity
 public class MaterialPrice
-        extends EntityAuto<Long> {
+        extends UIEntityAuto<Long>
+        implements ICurrencyAware {
 
     private static final long serialVersionUID = 1L;
 
     Material material;
-    Date sinceDate = new Date();
+    Date date = new Date();
     MCValue price = new MCValue();
-    String comment;
 
     /**
      * 物料
@@ -46,14 +47,16 @@ public class MaterialPrice
      * 价格有效起始时间。
      */
     @NaturalId
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    public Date getSinceDate() {
-        return sinceDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setSinceDate(Date sinceDate) {
-        this.sinceDate = sinceDate;
+    public void setDate(Date date) {
+        if (date == null)
+            throw new NullPointerException("date");
+        this.date = date;
     }
 
     /**
@@ -71,15 +74,10 @@ public class MaterialPrice
     }
 
     /**
-     * 备注
+     * Set price in native currency.
      */
-    @Column(length = 100)
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
+    public final void setPrice(double price) {
+        setPrice(new MCValue(NATIVE_CURRENCY, price));
     }
 
     @Override
@@ -89,7 +87,7 @@ public class MaterialPrice
         if (!material.equals(o.material))
             return false;
 
-        if (!sinceDate.equals(o.sinceDate))
+        if (!date.equals(o.date))
             return false;
 
         return true;
@@ -99,7 +97,7 @@ public class MaterialPrice
     protected Integer naturalHashCode() {
         int hash = 0;
         hash += material.hashCode();
-        hash += sinceDate.hashCode();
+        hash += date.hashCode();
         return hash;
     }
 

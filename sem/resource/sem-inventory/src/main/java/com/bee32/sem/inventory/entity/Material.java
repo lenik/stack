@@ -9,11 +9,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CollectionOfElements;
 
+import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.world.thing.Thing;
 
@@ -37,7 +39,7 @@ public class Material
     List<MaterialWarehouseOption> options = new ArrayList<MaterialWarehouseOption>();
     List<MaterialPreferredLocation> preferredLocations = new ArrayList<MaterialPreferredLocation>();
 
-    // List<MaterialPrice> prices = new ArrayList<MaterialPrice>();
+    List<MaterialPrice> prices = new ArrayList<MaterialPrice>();
 
     // ------------------------------------------------------------------------
     // 需要索引的常用的物料属性（这些属性和单位还算无关）。
@@ -156,6 +158,54 @@ public class Material
 
     public void setPreferredLocations(List<MaterialPreferredLocation> preferredLocations) {
         this.preferredLocations = preferredLocations;
+    }
+
+    /**
+     * Get the prices list, the latest price the first.
+     *
+     * @return Non-<code>null</code> price list.
+     */
+    @OneToMany(mappedBy = "material")
+    @OrderBy("date DESC")
+    public List<MaterialPrice> getPrices() {
+        return prices;
+    }
+
+    /**
+     * Set the prices list.
+     *
+     * @param prices
+     *            Price list. Should have been sorted in descend order by date.
+     */
+    public void setPrices(List<MaterialPrice> prices) {
+        if (prices == null)
+            throw new NullPointerException("prices");
+        this.prices = prices;
+    }
+
+    /**
+     * Get the latest material price.
+     *
+     * @return The latest material. <code>null</code> if there isn't any material price defined.
+     */
+    @Redundant
+    public MaterialPrice getLatestPrice() {
+        if (prices.isEmpty())
+            return null;
+        MaterialPrice first = prices.get(0);
+        return first;
+    }
+
+    /**
+     * Add the latest material price to the price list.
+     *
+     * @param price
+     *            Non-<code>null</code> material price.
+     */
+    public void addLatestPrice(MaterialPrice price) {
+        if (price == null)
+            throw new NullPointerException("price");
+        prices.add(0, price);
     }
 
 }

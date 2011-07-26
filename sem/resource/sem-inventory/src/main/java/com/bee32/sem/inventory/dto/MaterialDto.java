@@ -19,6 +19,7 @@ public class MaterialDto
     public static final int ATTRBUTES = 1;
     public static final int ATTACHMENTS = 2;
     public static final int OPTIONS = 4;
+    public static final int PRICES = 8;
 
     private MaterialCategoryDto category;
     private String serial;
@@ -27,6 +28,7 @@ public class MaterialDto
     private List<UserFileDto> attachments;
     private List<MaterialWarehouseOptionDto> options;
     private List<MaterialPreferredLocationDto> preferredLocations;
+    private List<MaterialPriceDto> prices;
 
     @Override
     protected void _marshal(Material source) {
@@ -37,11 +39,14 @@ public class MaterialDto
         if (selection.contains(ATTRBUTES))
             attributes = marshalList(MaterialAttributeDto.class, ~MaterialAttributeDto.MATERIAL, source.getAttributes());
 
-        preferredLocations = marshalList(MaterialPreferredLocationDto.class, source.getPreferredLocations());
+        preferredLocations = marshalList(MaterialPreferredLocationDto.class, source.getPreferredLocations(), true);
         options = marshalList(MaterialWarehouseOptionDto.class, source.getOptions());
 
         if (selection.contains(ATTACHMENTS))
-            attachments = marshalList(UserFileDto.class, source.getAttachments());
+            attachments = marshalList(UserFileDto.class, source.getAttachments(), true);
+
+        if (selection.contains(PRICES))
+            prices = marshalList(MaterialPriceDto.class, source.getPrices(), true);
     }
 
     @Override
@@ -49,12 +54,10 @@ public class MaterialDto
         merge(target, "category", category);
         target.setSerial(serial);
         target.setBarCode(barCode);
-        if (attributes.size() > 0)
-            mergeList(target, "attributes", attributes);
-        if (preferredLocations.size() > 0)
-            mergeList(target, "preferredLocations", preferredLocations);
-        if (options.size() > 0)
-            mergeList(target, "options", options);
+        mergeList(target, "attributes", attributes);
+        mergeList(target, "preferredLocations", preferredLocations);
+        mergeList(target, "options", options);
+        mergeList(target, "prices", prices);
     }
 
     @Override
@@ -145,6 +148,23 @@ public class MaterialDto
         if (preferredLocations == null)
             throw new NullPointerException("preferredLocations");
         this.preferredLocations = preferredLocations;
+    }
+
+    public List<MaterialPriceDto> getPrices() {
+        return prices;
+    }
+
+    public void setPrices(List<MaterialPriceDto> prices) {
+        if (prices == null)
+            throw new NullPointerException("prices");
+        this.prices = prices;
+    }
+
+    public MaterialPriceDto getLatestPrice() {
+        if (prices.isEmpty())
+            return null;
+        else
+            return prices.get(0);
     }
 
     @Override
