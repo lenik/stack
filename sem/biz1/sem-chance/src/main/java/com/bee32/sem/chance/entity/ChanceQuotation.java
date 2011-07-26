@@ -1,50 +1,25 @@
 package com.bee32.sem.chance.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.sem.world.thing.AbstractOrder;
 
 /**
  * 报价单
  */
 @Entity
 public class ChanceQuotation
-        extends EntityAuto<Long> {
+        extends AbstractOrder<ChanceQuotationItem> {
 
     private static final long serialVersionUID = 1L;
 
-    String subject;
     Chance chance;
-    List<ChanceQutationItem> items = new ArrayList<ChanceQutationItem>();
-    double amount = 0.0;
+    String subject;
     String recommend;
     String payment;
-    String remark;
-
-    public ChanceQuotation() {
-    }
-
-    /**
-     * 主题
-     */
-    @Column(nullable = false, length = 50)
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
 
     /**
      * 对应机会
@@ -56,33 +31,29 @@ public class ChanceQuotation
     }
 
     public void setChance(Chance chance) {
+        if (chance == null)
+            throw new NullPointerException("chance");
         this.chance = chance;
     }
 
     /**
-     * 明细
+     * 主题
      */
-    @OneToMany(mappedBy = "quotation")
-    @Cascade(CascadeType.DELETE_ORPHAN)
-    public List<ChanceQutationItem> getItems() {
-        return items;
+    @Column(nullable = false, length = 50)
+    public String getSubject() {
+        return subject;
     }
 
-    public void setItems(List<ChanceQutationItem> items) {
-        this.items = items;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setSubject(String subject) {
+        if (subject == null)
+            throw new NullPointerException("subject");
+        this.subject = subject;
     }
 
     /**
      * 交付说明
      */
+    @Column(length = 150)
     public String getRecommend() {
         return recommend;
     }
@@ -94,6 +65,7 @@ public class ChanceQuotation
     /**
      * 付款说明
      */
+    @Column(length = 150)
     public String getPayment() {
         return payment;
     }
@@ -102,14 +74,4 @@ public class ChanceQuotation
         this.payment = payment;
     }
 
-    /**
-     * 备注
-     */
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 }

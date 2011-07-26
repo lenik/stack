@@ -3,32 +3,31 @@ package com.bee32.sem.chance.dto;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.chance.entity.ChanceQutationItem;
+import com.bee32.sem.chance.entity.ChanceQuotationItem;
+import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.dto.MaterialPriceDto;
 import com.bee32.sem.world.thing.AbstractOrderItemDto;
 
 public class ChanceQuotationItemDto
-        extends AbstractOrderItemDto<ChanceQutationItem> {
+        extends AbstractOrderItemDto<ChanceQuotationItem> {
 
     private static final long serialVersionUID = 1L;
 
     private ChanceQuotationDto quotation;
-    private String material;
-    private double discount;
-    private BasePriceDto basePrice;
+    private MaterialDto material;
+    private float discount;
 
     @Override
-    protected void _marshal(ChanceQutationItem source) {
+    protected void _marshal(ChanceQuotationItem source) {
         this.quotation = new ChanceQuotationDto().ref(source.getQuotation());
-        this.material = source.getMaterial();
+        this.material = mref(MaterialDto.class, source.getMaterial());
         this.discount = source.getDiscount();
-        this.basePrice = mref(BasePriceDto.class, source.getBasePrice());
     }
 
     @Override
-    protected void _unmarshalTo(ChanceQutationItem target) {
+    protected void _unmarshalTo(ChanceQuotationItem target) {
         merge(target, "quotation", quotation);
-        merge(target, "basePrice", basePrice);
-        target.setMaterial(material);
+        merge(target, "material", material);
         target.setDiscount(discount);
     }
 
@@ -41,32 +40,30 @@ public class ChanceQuotationItemDto
         return quotation;
     }
 
-    public void setQuotationInvoice(ChanceQuotationDto quotation) {
+    public void setQuotation(ChanceQuotationDto quotation) {
         this.quotation = quotation;
     }
 
-    public String getMaterial() {
+    public MaterialDto getMaterial() {
         return material;
     }
 
-    public void setMaterial(String material) {
+    public void setMaterial(MaterialDto material) {
+        if (material == null)
+            throw new NullPointerException("material");
         this.material = material;
     }
 
-    public double getDiscount() {
+    public float getDiscount() {
         return discount;
     }
 
-    public void setDiscount(double discount) {
+    public void setDiscount(float discount) {
         this.discount = discount;
     }
 
-    public BasePriceDto getBasePrice() {
-        return basePrice;
-    }
-
-    public void setBasePrice(BasePriceDto basePrice) {
-        this.basePrice = basePrice;
+    public MaterialPriceDto getBasePrice() {
+        return material.getLatestPrice();
     }
 
 }
