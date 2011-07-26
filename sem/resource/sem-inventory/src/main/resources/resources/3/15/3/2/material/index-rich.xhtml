@@ -132,11 +132,10 @@
                     <h:outputText value="单位提示:" />
                     <p:inputText value="#{materialViewBean.activeMaterial.unitHint}"
                         readonly="#{materialViewBean.editable}" />
-                    <h:outputText value="单位:" />
+                    <h:outputText value="主单位:" />
                     <p:selectOneMenu id="selectUnit" widgetVar="selectUnit" value="#{materialViewBean.selectedUnit}"
                         disabled="#{materialViewBean.editable}" style="width:150px;" update="dialogForm:selectUnitConv">
-                        <f:selectItem itemLabel="" itemValue="" />
-                        <f:selectItem itemLabel="新增单位" itemValue="new" />
+                        <f:selectItem itemLabel="--选择单位--" itemValue="" />
                         <f:selectItems value="#{materialViewBean.units}" />
                     </p:selectOneMenu>
                     <h:inputHidden value="" />
@@ -254,7 +253,7 @@
                 <p:commandButton value="取消" disabled="#{materialViewBean.editable}" onclick="materialDialog.hide();" />
             </p:dialog>
 
-            <p:dialog header="添加属性" widgetVar="attributeDialog" height="200" width="300">
+            <p:dialog header="自定义属性" widgetVar="attributeDialog" height="200" width="300" modal="true">
                 <t:panelGrid columns="2" id="attribute">
                     <h:outputText value="属性名称" />
                     <p:inputText value="#{materialViewBean.activeAttr.name}" />
@@ -296,7 +295,7 @@
                 </t:panelGrid>
             </p:dialog>
 
-            <p:dialog header="添加推荐库位" widgetVar="preferDialog" height="400" width="600">
+            <p:dialog header="推荐库位" widgetVar="preferDialog" height="400" width="600" modal="true">
                 <t:panelGrid columns="5" id="toUpdate">
                     <h:outputText value="库位:" />
                     <p:inputText value="#{materialViewBean.activePreferredLocation.location.address}" readonly="true" />
@@ -315,7 +314,7 @@
                 <p:commandButton value="取消" onclick="preferDialog.hide();" />
             </p:dialog>
 
-            <p:dialog header="添加仓库设置" widgetVar="optionDialog" height="300" width="400">
+            <p:dialog header="仓库设置" widgetVar="optionDialog" height="300" width="400" modal="true">
                 <t:panelGrid columns="2" id="option">
                     <h:outputText value="仓库:" />
                     <p:selectOneMenu value="#{materialViewBean.activeOption.warehouse.id}" style="width:150px;">
@@ -333,10 +332,10 @@
                 <p:commandButton value="取消" onclick="optionDialog.hide();" />
             </p:dialog>
 
-            <p:dialog header="选择物料分类" widgetVar="categoryTreeDialog" height="500" width="700" modal="true">
+            <p:dialog header="选择物料分类" widgetVar="categoryTreeDialog" height="400" width="700" modal="true">
                 <p:tree value="#{materialViewBean.selectCategoryTree.rootNode}" var="node" dynamic="true"
                     selectionMode="single" selection="#{materialViewBean.selectCategoryTree.selectedNode}"
-                    style="width:150px;">
+                    style="width:100%">
                     <p:treeNode>
                         <h:outputText value="#{node.name}" />
                     </p:treeNode>
@@ -348,7 +347,8 @@
 
             <p:dialog widgetVar="stockLocationTreeDialog" header="选择库位" height="500" width="700" modal="true">
                 <p:tree value="#{materialViewBean.stockLocationTreeDialog.rootNode}" var="node" dynamic="true"
-                    selectionMode="single" selection="#{materialViewBean.stockLocationTreeDialog.selectedNode}">
+                    selectionMode="single" selection="#{materialViewBean.stockLocationTreeDialog.selectedNode}"
+                    style="width:100%">
                     <p:treeNode>
                         <h:outputText value="#{node.nodeText}" />
                     </p:treeNode>
