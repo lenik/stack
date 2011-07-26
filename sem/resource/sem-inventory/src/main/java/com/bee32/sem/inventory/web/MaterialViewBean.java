@@ -52,6 +52,8 @@ public class MaterialViewBean
     static final String CATEGORY_TREE = "main:categoryTree";
     static final String BUTTON_SEARCH = "main:searchBtn";
     static final String BUTTON_RESET = "main:resetBtn";
+    static final String PANEL_INFO = "main:searchInfo";
+    static final String BUTTON_PRESEARCH = "main:preSearchBtn";
 
     boolean editable;
     boolean searching;
@@ -84,7 +86,7 @@ public class MaterialViewBean
 
     @PostConstruct
     public void initButton() {
-        findComponentEx(BUTTON_RESET).setEnabled(false);
+        findComponent(PANEL_INFO).setRendered(false);
     }
 
     public void initLocationTree() {
@@ -196,7 +198,6 @@ public class MaterialViewBean
         serviceFor(Unit.class).save(unit);
     }
 
-
     public void doAddOption() {
         MaterialWarehouseOptionDto mwod = new MaterialWarehouseOptionDto();
         mwod.setMaterial(activeMaterial);
@@ -261,12 +262,15 @@ public class MaterialViewBean
         }
     }
 
+    public void searchForm() {
+        findComponentEx(BUTTON_PRESEARCH).setEnabled(false);
+        findComponent(CATEGORY_TREE).setRendered(false);
+        findComponent(PANEL_INFO).setRendered(true);
+    }
+
     public void doSearch() {
         if (!materialPattern.isEmpty() && materialPattern != null) {
             List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.namedLike(materialPattern));
-            findComponent(CATEGORY_TREE).setRendered(false);
-            findComponentEx(BUTTON_SEARCH).setEnabled(false);
-            findComponentEx(BUTTON_RESET).setEnabled(true);
             materialList = DTOs.marshalList(MaterialDto.class, _materials, true);
         }
     }
@@ -274,8 +278,8 @@ public class MaterialViewBean
     public void resetSearch() {
         materialPattern = null;
         findComponent(CATEGORY_TREE).setRendered(true);
-        findComponentEx(BUTTON_SEARCH).setEnabled(true);
-        findComponentEx(BUTTON_RESET).setEnabled(false);
+        findComponent(PANEL_INFO).setRendered(false);
+        findComponentEx(BUTTON_PRESEARCH).setEnabled(true);
     }
 
     public List<SelectItem> getUnits() {
