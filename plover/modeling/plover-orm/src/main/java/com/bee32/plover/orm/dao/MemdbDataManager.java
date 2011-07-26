@@ -7,7 +7,7 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 
 @NotAComponent
-public class MemoryDataManager
+public class MemdbDataManager
         extends CommonDataManager {
 
     @Override
@@ -17,7 +17,7 @@ public class MemoryDataManager
         @SuppressWarnings("unchecked")
         Class<E> et = (Class<E>) entityType;
 
-        MemoryDao memdao = MemoryDao.getInstance(et);
+        Memdb memdao = Memdb.getInstance(et);
 
         @SuppressWarnings("unchecked")
         IEntityAccessService<E, K> memEas = (IEntityAccessService<E, K>) memdao;
@@ -25,6 +25,6 @@ public class MemoryDataManager
         return memEas;
     }
 
-    public static final MemoryDataManager INSTANCE = new MemoryDataManager();
+    public static final MemdbDataManager INSTANCE = new MemdbDataManager();
 
 }

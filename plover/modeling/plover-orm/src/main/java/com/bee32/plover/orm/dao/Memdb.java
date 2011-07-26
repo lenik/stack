@@ -32,7 +32,7 @@ import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.entity.NonUniqueException;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
-public class MemoryDao
+public class Memdb
         extends EntityRepository<Entity<?>, Serializable>
         implements IEntityAccessService<Entity<?>, Serializable> {
 
@@ -42,12 +42,12 @@ public class MemoryDao
         database = new HashMap<Class<? extends Entity<?>>, Map<Serializable, Entity<?>>>();
     }
 
-    final MemoryDao parent;
-    final List<MemoryDao> children = new ArrayList<MemoryDao>();
+    final Memdb parent;
+    final List<Memdb> children = new ArrayList<Memdb>();
 
     final Map<Serializable, Entity<?>> table;
 
-    private MemoryDao(Class<? extends Entity<?>> entityType) {
+    private Memdb(Class<? extends Entity<?>> entityType) {
         super(entityType, EntityUtil.getKeyType(entityType));
         Map<Serializable, Entity<?>> table = database.get(entityType);
         if (table == null) {
@@ -56,7 +56,7 @@ public class MemoryDao
         }
         this.table = table;
 
-        MemoryDao parent = null;
+        Memdb parent = null;
         Class<?> _superType = entityType.getSuperclass();
         if (_superType != null) {
             if (Entity.class.isAssignableFrom(_superType)) {
@@ -75,13 +75,13 @@ public class MemoryDao
             parent.addChild(this);
     }
 
-    void addChild(MemoryDao childDao) {
+    void addChild(Memdb childDao) {
         if (children.contains(childDao))
             throw new IllegalUsageError("Duplicated child memdao: " + childDao);
         children.add(childDao);
     }
 
-    protected MemoryDao access(Entity<?> entity) {
+    protected Memdb access(Entity<?> entity) {
         if (entity == null)
             throw new NullPointerException("entity");
 
@@ -93,7 +93,7 @@ public class MemoryDao
             throw new IllegalArgumentException("Can't handle entity of " + entityType //
                     + " by a " + this.entityType.getSimpleName() + " memory-dao.");
 
-        MemoryDao specDao = getInstance(entityType);
+        Memdb specDao = getInstance(entityType);
         return specDao;
     }
 
@@ -124,7 +124,7 @@ public class MemoryDao
     public synchronized boolean deleteByKey(Serializable key) {
         Entity<?> removed = table.remove(key);
 
-        for (MemoryDao child : children)
+        for (Memdb child : children)
             child.deleteByKey(key);
 
         return removed != null;
@@ -134,7 +134,7 @@ public class MemoryDao
     public synchronized void deleteAll() {
         table.clear();
 
-        for (MemoryDao child : children)
+        for (Memdb child : children)
             child.deleteAll();
     }
 
@@ -172,7 +172,7 @@ public class MemoryDao
     @Override
     public synchronized Entity<?> merge(Entity<?> entity)
             throws DataAccessException {
-        MemoryDao spec = access(entity);
+        Memdb spec = access(entity);
         if (spec != this)
             return spec.merge(entity);
 
@@ -190,7 +190,7 @@ public class MemoryDao
     }
 
     void _put(Serializable id, Entity<?> _o) {
-        MemoryDao node = this;
+        Memdb node = this;
         while (node != null) {
             node.table.put(id, _o);
             node = node.parent;
@@ -202,7 +202,7 @@ public class MemoryDao
     public void evict(Entity<?> entity)
             throws DataAccessException {
         // do nothing here.
-        for (MemoryDao child : children)
+        for (Memdb child : children)
             child.evict(entity);
     }
 
@@ -211,7 +211,7 @@ public class MemoryDao
     public void replicate(Entity<?> entity, ReplicationMode replicationMode)
             throws DataAccessException {
         // do nothing here.
-        for (MemoryDao child : children)
+        for (Memdb child : children)
             child.replicate(entity, replicationMode);
     }
 
@@ -219,7 +219,7 @@ public class MemoryDao
     @Override
     public void flush() {
         // do nothing here.
-        for (MemoryDao child : children)
+        for (Memdb child : children)
             child.flush();
     }
 
@@ -279,7 +279,7 @@ public class MemoryDao
         @SuppressWarnings("unchecked")
         Entity<Serializable> entity = (Entity<Serializable>) _entity;
 
-        MemoryDao spec = access(entity);
+        Memdb spec = access(entity);
         if (spec != this)
             return spec.save(entity);
 
@@ -300,7 +300,7 @@ public class MemoryDao
 
     @Override
     public void update(Entity<?> entity) {
-        MemoryDao spec = access(entity);
+        Memdb spec = access(entity);
         if (spec != this) {
             spec.update(entity);
             return;
@@ -316,7 +316,7 @@ public class MemoryDao
 
     @Override
     public void refresh(Entity<?> entity) {
-        MemoryDao spec = access(entity);
+        Memdb spec = access(entity);
         if (spec != this) {
             spec.refresh(entity);
             return;
@@ -329,12 +329,12 @@ public class MemoryDao
         entity.populate(existing); // may not been well implemented by specific entity types.
     }
 
-    static final Map<Class<? extends Entity<?>>, MemoryDao> instances = new HashMap<Class<? extends Entity<?>>, MemoryDao>();
+    static final Map<Class<? extends Entity<?>>, Memdb> instances = new HashMap<Class<? extends Entity<?>>, Memdb>();
 
-    public static synchronized MemoryDao getInstance(Class<? extends Entity<?>> entityType) {
-        MemoryDao instance = instances.get(entityType);
+    public static synchronized Memdb getInstance(Class<? extends Entity<?>> entityType) {
+        Memdb instance = instances.get(entityType);
         if (instance == null) {
-            instance = new MemoryDao(entityType);
+            instance = new Memdb(entityType);
         }
         return instance;
     }
