@@ -8,6 +8,7 @@ import javax.free.UnexpectedException;
 import javax.inject.Inject;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
 import org.hibernate.Session;
@@ -270,10 +271,15 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public E getUnique(ICriteriaElement... criteriaElements) {
+    public E getUnique(ICriteriaElement... criteriaElements)
+            throws HibernateException {
         Criteria _criteria = createCriteria(criteriaElements);
-        E result = (E) _criteria.uniqueResult();
-        return result;
+        try {
+            E result = (E) _criteria.uniqueResult();
+            return result;
+        } catch (HibernateException e) {
+            throw new NonUniqueException(e);
+        }
     }
 
     @Override

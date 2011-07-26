@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.criterion.Criterion;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -18,11 +17,12 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
      * @param restrictions
      *            Restrictions to the selection. (AND).
      * @return The matched entity, or <code>null</code> if none matched.
-     * @throws HibernateException
+     * @throws NonUniqueException
      *             If there is more than one matching result
      * @see Criteria#uniqueResult()
      */
-    E getUnique(ICriteriaElement... criteriaElements);
+    E getUnique(ICriteriaElement... criteriaElements)
+            throws NonUniqueException;
 
     /**
      * Get the first result with restrictions.
