@@ -10,6 +10,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -189,6 +190,7 @@ public class Material
      * @return The latest material. <code>null</code> if there isn't any material price defined.
      */
     @Redundant
+    @Transient
     public MaterialPrice getLatestPrice() {
         if (prices.isEmpty())
             return null;
