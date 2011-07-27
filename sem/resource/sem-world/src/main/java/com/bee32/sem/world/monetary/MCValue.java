@@ -90,16 +90,38 @@ public class MCValue
         return currency.getCurrencyCode();
     }
 
-    public void setCurrencyCode(String currencyCode) {
-        // if (currencyCode == null)
-        // setCurrency(null);
-        // else
-        {
-            Currency currency = Currency.getInstance(currencyCode); // Already throws IAE, though.
-            if (currency == null)
-                throw new IllegalArgumentException("Bad currency code: " + currencyCode);
-            setCurrency(currency);
-        }
+    void setCurrencyCode(String currencyCode) {
+        Currency currency = Currency.getInstance(currencyCode); // Already throws IAE, though.
+        if (currency == null)
+            throw new IllegalArgumentException("Bad currency code: " + currencyCode);
+        setCurrency(currency);
+    }
+
+    public MCValue currency(Currency currency) {
+        return new MCValue(currency, value);
+    }
+
+    public MCValue currency(String currencyCode) {
+        Currency currency = Currency.getInstance(currencyCode); // Already throws IAE, though.
+        if (currency == null)
+            throw new IllegalArgumentException("Bad currency code: " + currencyCode);
+        return new MCValue(currency, value);
+    }
+
+    public MCValue value(BigDecimal value) {
+        return new MCValue(currency, value);
+    }
+
+    public MCValue value(int value) {
+        return new MCValue(currency, value);
+    }
+
+    public MCValue value(long value) {
+        return new MCValue(currency, value);
+    }
+
+    public MCValue value(double value) {
+        return new MCValue(currency, value);
     }
 
     @Transient
