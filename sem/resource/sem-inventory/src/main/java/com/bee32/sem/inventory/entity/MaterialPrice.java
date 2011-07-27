@@ -27,7 +27,7 @@ public class MaterialPrice
     private static final long serialVersionUID = 1L;
 
     Material material;
-    Date date = new Date();
+    Date date = LocalDateUtil.truncate(new Date());
     MCValue price = new MCValue();
 
     /**
@@ -47,7 +47,7 @@ public class MaterialPrice
      * 价格有效起始时间。
      */
     @NaturalId
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     public Date getDate() {
         return date;
@@ -56,6 +56,7 @@ public class MaterialPrice
     public void setDate(Date date) {
         if (date == null)
             throw new NullPointerException("date");
+        date = LocalDateUtil.truncate(date);
         this.date = date;
     }
 
@@ -84,6 +85,9 @@ public class MaterialPrice
     protected Boolean naturalEquals(EntityBase<Long> other) {
         MaterialPrice o = (MaterialPrice) other;
 
+        if (material == null || date == null)
+            return false;
+
         if (!material.equals(o.material))
             return false;
 
@@ -96,6 +100,10 @@ public class MaterialPrice
     @Override
     protected Integer naturalHashCode() {
         int hash = 0;
+
+        if (material == null || date == null)
+            return System.identityHashCode(this);
+
         hash += material.hashCode();
         hash += date.hashCode();
         return hash;
