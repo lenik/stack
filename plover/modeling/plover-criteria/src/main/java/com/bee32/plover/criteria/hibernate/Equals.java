@@ -1,24 +1,38 @@
 package com.bee32.plover.criteria.hibernate;
 
+import javax.free.Nullables;
+
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.expression.Expression;
 
 public class Equals
-        extends CriteriaElement {
+        extends PropertyCriteriaElement {
 
     private static final long serialVersionUID = 1L;
 
-    final String propertyName;
     final Object value;
 
     public Equals(String propertyName, Object value) {
-        this.propertyName = propertyName;
+        super(propertyName);
         this.value = value;
     }
 
     @Override
     protected Criterion buildCriterion() {
         return Restrictions.eq(propertyName, value);
+    }
+
+    @Override
+    protected Expression compile() {
+        return compile(propertyName);
+    }
+
+    @Override
+    protected boolean filterValue(Object val) {
+        // Class<?> exprType = expr.getClass();
+        // ParserUtil.parse(exprType, value);
+        return Nullables.equals(val, value);
     }
 
 }

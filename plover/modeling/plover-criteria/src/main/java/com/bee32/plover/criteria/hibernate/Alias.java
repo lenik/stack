@@ -3,6 +3,7 @@ package com.bee32.plover.criteria.hibernate;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
+import org.springframework.expression.EvaluationContext;
 
 public class Alias
         extends CriteriaElement {
@@ -35,6 +36,12 @@ public class Alias
     @Override
     protected Criterion buildCriterion() {
         return null;
+    }
+
+    @Override
+    public boolean filter(Object obj, EvaluationContext context) {
+        // context.setVariable(alias, associationPath);
+        return true;
     }
 
 }

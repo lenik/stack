@@ -2,6 +2,7 @@ package com.bee32.plover.criteria.hibernate;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.expression.EvaluationContext;
 
 public class Not
         extends CriteriaElement {
@@ -18,6 +19,11 @@ public class Not
     protected Criterion buildCriterion() {
         Criterion expr = expression.buildCriterion();
         return Restrictions.not(expr);
+    }
+
+    @Override
+    public boolean filter(Object obj, EvaluationContext context) {
+        return !expression.filter(obj, context);
     }
 
 }

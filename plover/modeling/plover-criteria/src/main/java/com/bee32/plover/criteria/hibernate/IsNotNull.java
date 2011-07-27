@@ -4,19 +4,22 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
 public class IsNotNull
-        extends CriteriaElement {
+        extends PropertyCriteriaElement {
 
     private static final long serialVersionUID = 1L;
 
-    final String propertyName;
-
     public IsNotNull(String propertyName) {
-        this.propertyName = propertyName;
+        super(propertyName);
     }
 
     @Override
     protected Criterion buildCriterion() {
         return Restrictions.isNotNull(propertyName);
+    }
+
+    @Override
+    protected boolean filterValue(Object val) {
+        return val != null;
     }
 
 }

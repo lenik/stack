@@ -2,6 +2,7 @@ package com.bee32.plover.criteria.hibernate;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.expression.EvaluationContext;
 
 public class SimpleSqlRestriction
         extends CriteriaElement {
@@ -17,6 +18,11 @@ public class SimpleSqlRestriction
     @Override
     protected Criterion buildCriterion() {
         return Restrictions.sqlRestriction(sql);
+    }
+
+    @Override
+    public boolean filter(Object obj, EvaluationContext context) {
+        throw new UnsupportedOperationException("filter by sql criterion isn't supported");
     }
 
 }

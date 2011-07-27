@@ -1,15 +1,16 @@
 package com.bee32.plover.criteria.hibernate;
 
+import javax.free.NotImplementedException;
+
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 public class Like
-        extends CriteriaElement {
+        extends PropertyCriteriaElement {
 
     private static final long serialVersionUID = 1L;
 
-    final String propertyName;
     final String value;
     final MatchMode matchMode;
 
@@ -18,7 +19,7 @@ public class Like
     }
 
     public Like(String propertyName, String value, MatchMode matchMode) {
-        this.propertyName = propertyName;
+        super(propertyName);
         this.value = value;
         this.matchMode = matchMode;
     }
@@ -29,6 +30,11 @@ public class Like
             return Restrictions.like(propertyName, value);
         else
             return Restrictions.like(propertyName, value, matchMode);
+    }
+
+    @Override
+    protected boolean filterValue(Object val) {
+        throw new NotImplementedException("LIKE");
     }
 
 }

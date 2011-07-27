@@ -1,15 +1,16 @@
 package com.bee32.plover.criteria.hibernate;
 
+import javax.free.NotImplementedException;
+
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 public class LikeIgnoreCase
-        extends CriteriaElement {
+        extends PropertyCriteriaElement {
 
     private static final long serialVersionUID = 1L;
 
-    final String propertyName;
     final String value;
     final MatchMode matchMode;
 
@@ -18,7 +19,7 @@ public class LikeIgnoreCase
     }
 
     public LikeIgnoreCase(String propertyName, String value, MatchMode matchMode) {
-        this.propertyName = propertyName;
+        super(propertyName);
         this.value = value;
         this.matchMode = matchMode;
     }
@@ -29,6 +30,11 @@ public class LikeIgnoreCase
             return Restrictions.ilike(propertyName, value);
         else
             return Restrictions.ilike(propertyName, value, matchMode);
+    }
+
+    @Override
+    protected boolean filterValue(Object val) {
+        throw new NotImplementedException("Like");
     }
 
 }

@@ -2,6 +2,7 @@ package com.bee32.plover.criteria.hibernate;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.expression.EvaluationContext;
 
 public class Or
         extends CriteriaElement {
@@ -21,6 +22,17 @@ public class Or
         Criterion l = lhs.buildCriterion();
         Criterion r = rhs.buildCriterion();
         return Restrictions.or(l, r);
+    }
+
+    @Override
+    public boolean filter(Object obj, EvaluationContext context) {
+        if (lhs.filter(obj, context))
+            return true;
+
+        if (rhs.filter(obj, context))
+            return true;
+
+        return false;
     }
 
 }

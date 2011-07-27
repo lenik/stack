@@ -1,6 +1,7 @@
 package com.bee32.plover.criteria.hibernate;
 
 import org.hibernate.Criteria;
+import org.springframework.expression.EvaluationContext;
 
 public class Limit
         implements ICriteriaElement {
@@ -21,6 +22,12 @@ public class Limit
             criteria.setFirstResult(offset);
             criteria.setFetchSize(limit);
         }
+    }
+
+    @Override
+    public boolean filter(Object obj, EvaluationContext context) {
+        // context.setlimit...?
+        return true;
     }
 
 }

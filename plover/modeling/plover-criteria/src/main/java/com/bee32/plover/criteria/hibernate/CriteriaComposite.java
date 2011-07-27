@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.springframework.expression.EvaluationContext;
 
 public class CriteriaComposite
         implements ICriteriaElement {
@@ -58,6 +59,14 @@ public class CriteriaComposite
 
     public boolean remove(ICriteriaElement element) {
         return elements.remove(element);
+    }
+
+    @Override
+    public boolean filter(Object obj, EvaluationContext context) {
+        for (ICriteriaElement element : elements)
+            if (!element.filter(obj, context))
+                return false;
+        return true;
     }
 
 }
