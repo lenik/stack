@@ -11,6 +11,7 @@ public class MaterialPreferredLocationDto
         extends UIEntityDto<MaterialPreferredLocation, Long> {
 
     private static final long serialVersionUID = 1L;
+    public static final int MATERIAL = 1;
 
     MaterialDto material;
     StockLocationDto location;
@@ -19,7 +20,8 @@ public class MaterialPreferredLocationDto
 
     @Override
     protected void _marshal(MaterialPreferredLocation source) {
-        material = mref(MaterialDto.class, source.getMaterial());
+        if (selection.contains(MATERIAL))
+            material = mref(MaterialDto.class, source.getMaterial());
         location = mref(StockLocationDto.class, source.getLocation());
         permanent = source.isPermanent();
     }

@@ -12,6 +12,7 @@ public class MaterialWarehouseOptionDto
         extends EntityDto<MaterialWarehouseOption, Long> {
 
     private static final long serialVersionUID = 1L;
+    public static final int MATERIAL = 1;
 
     MaterialDto material;
     StockWarehouseDto warehouse;
@@ -20,7 +21,8 @@ public class MaterialWarehouseOptionDto
 
     @Override
     protected void _marshal(MaterialWarehouseOption source) {
-        this.material = mref(MaterialDto.class, source.getMaterial());
+        if (selection.contains(MATERIAL))
+            this.material = mref(MaterialDto.class, source.getMaterial());
         this.warehouse = mref(StockWarehouseDto.class, source.getWarehouse());
         this.safetyStock = source.getSafetyStock();
         this.stkPeriod = source.getStkPeriod();

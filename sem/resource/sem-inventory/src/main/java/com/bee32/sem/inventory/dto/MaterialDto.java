@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.free.ParseException;
@@ -28,7 +29,7 @@ public class MaterialDto
     private List<UserFileDto> attachments;
     private List<MaterialWarehouseOptionDto> options;
     private List<MaterialPreferredLocationDto> preferredLocations;
-    private List<MaterialPriceDto> prices;
+    private List<MaterialPriceDto> prices = new ArrayList<MaterialPriceDto>();
 
     @Override
     protected void _marshal(Material source) {
@@ -39,8 +40,10 @@ public class MaterialDto
         if (selection.contains(ATTRBUTES))
             attributes = marshalList(MaterialAttributeDto.class, ~MaterialAttributeDto.MATERIAL, source.getAttributes());
 
-        preferredLocations = marshalList(MaterialPreferredLocationDto.class, source.getPreferredLocations(), true);
-        options = marshalList(MaterialWarehouseOptionDto.class, source.getOptions());
+        preferredLocations = marshalList(MaterialPreferredLocationDto.class, ~MaterialPreferredLocationDto.MATERIAL,
+                source.getPreferredLocations(), true);
+        options = marshalList(MaterialWarehouseOptionDto.class, ~MaterialWarehouseOptionDto.MATERIAL,
+                source.getOptions());
 
         if (selection.contains(ATTACHMENTS))
             attachments = marshalList(UserFileDto.class, source.getAttachments(), true);
@@ -82,6 +85,14 @@ public class MaterialDto
     public void addPreferredLocation(MaterialPreferredLocationDto preferredLocation) {
         if (!preferredLocations.contains(preferredLocation))
             this.preferredLocations.add(preferredLocation);
+    }
+
+    public void addPrice(MaterialPriceDto price) {
+        int existingIndex = prices.indexOf(price);
+        if (existingIndex == -1)
+            prices.add(price);
+        else
+            prices.set(existingIndex, price);
     }
 
     public MaterialCategoryDto getCategory() {
