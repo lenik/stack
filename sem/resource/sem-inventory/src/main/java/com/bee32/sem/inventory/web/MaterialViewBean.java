@@ -1,7 +1,9 @@
 package com.bee32.sem.inventory.web;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
@@ -20,6 +22,7 @@ import com.bee32.sem.inventory.dto.MaterialAttributeDto;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.MaterialPreferredLocationDto;
+import com.bee32.sem.inventory.dto.MaterialPriceDto;
 import com.bee32.sem.inventory.dto.MaterialWarehouseOptionDto;
 import com.bee32.sem.inventory.dto.StockLocationDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -33,6 +36,8 @@ import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.inventory.web.dialogs.StockLocationTreeDialogModel;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.world.monetary.CurrencyConfig;
+import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.thing.Unit;
 import com.bee32.sem.world.thing.UnitConv;
 import com.bee32.sem.world.thing.UnitConvDto;
@@ -46,17 +51,11 @@ public class MaterialViewBean
 
     private static final long serialVersionUID = 1L;
 
-    static final String ATTR = "attr";
-    static final String MATERIAL_FORM = "material:materialDetail";
-    static final String CATEGORY_DIALOG = "dialogForm:categoryDialog";
     static final String CATEGORY_TREE = "main:categoryTree";
-    static final String BUTTON_SEARCH = "main:searchBtn";
-    static final String BUTTON_RESET = "main:resetBtn";
     static final String PANEL_INFO = "main:searchInfo";
     static final String BUTTON_PRESEARCH = "main:preSearchBtn";
 
     boolean editable;
-    boolean searching;
     String materialPattern;
     List<MaterialDto> materialList;
     MaterialDto selectedMaterial;
@@ -66,6 +65,8 @@ public class MaterialViewBean
     MaterialPreferredLocationDto activePreferredLocation;
     MaterialWarehouseOptionDto activeOption;
     UnitConvDto tempUnitConv;
+    double value;
+    String currencyCode;
 
     StockLocationTreeDialogModel stockLocationTreeDialog;
     MaterialCategoryTreeModel materialCategoryTree;
@@ -77,6 +78,7 @@ public class MaterialViewBean
         activeAttr = new MaterialAttributeDto().create();
         activeAttr.setMaterial(activeMaterial);
 
+        currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
         activeOption = new MaterialWarehouseOptionDto().create();
         activePreferredLocation = new MaterialPreferredLocationDto().create();
         initLocationTree();
@@ -175,6 +177,22 @@ public class MaterialViewBean
         activeMaterial = new MaterialDto().create();
     }
 
+    public void createPriceForm() {
+        value = 0.0;
+        currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
+    }
+
+    public void doAddMCValue() {
+        MaterialPriceDto mpd = new MaterialPriceDto().create();
+        mpd.setMaterial(activeMaterial);
+
+        Currency currency = Currency.getInstance(currencyCode);
+        MCValue mcv = new MCValue(currency, value);
+        mpd.setPrice(mcv);
+
+        activeMaterial.addPrice(mpd);
+    }
+
     public void doAddAttr() {
         MaterialAttributeDto tattr = new MaterialAttributeDto().create();
         tattr.setMaterial(activeMaterial);
@@ -235,8 +253,8 @@ public class MaterialViewBean
             return;
         }
 
-        if (unitConv.isNull() || unitConv.isNullRef() || unitConv.getUnit().isNull())
-            unitConv = null;
+        if (unitConv.getId() == null || unitConv.getId().isEmpty())
+            unitConv = new UnitConvDto().ref();
         activeMaterial.setUnitConv(unitConv);
 
         try {
@@ -245,7 +263,7 @@ public class MaterialViewBean
 
             activeMaterial = DTOs.marshal(MaterialDto.class, material);
 
-            uiLogger.error("保存物料成功!");
+            uiLogger.info("保存物料成功!");
         } catch (Exception e) {
             uiLogger.error("保存物料失败" + e.getMessage(), e);
         }
@@ -331,12 +349,14 @@ public class MaterialViewBean
         return UIHelper.selectItemsFromEnum(CodeGenerator.values());
     }
 
-    public boolean isSearching() {
-        return searching;
-    }
-
-    public void setSearching(boolean searching) {
-        this.searching = searching;
+    public List<SelectItem> getCurrencies() {
+        List<Currency> currencyList = CurrencyConfig.list();
+        List<SelectItem> items = new ArrayList<SelectItem>();
+        for (Currency currency : currencyList) {
+            SelectItem item = new SelectItem(currency.getCurrencyCode(), CurrencyConfig.format(currency));
+            items.add(item);
+        }
+        return items;
     }
 
     public List<MaterialDto> getMaterialList() {
@@ -353,6 +373,14 @@ public class MaterialViewBean
 
     public void setActiveMaterial(MaterialDto activeMaterial) {
         this.activeMaterial = activeMaterial;
+    }
+
+    public String getActiveMaterialPrice() {
+        MaterialPriceDto latestPrice = activeMaterial.getLatestPrice();
+        if (latestPrice == null)
+            return "(尚无价格)";
+        else
+            return latestPrice.getPrice().getValue().toString() + "(" + latestPrice.getPrice().getCurrencyCode() + ")";
     }
 
     public UnitDto getNewUnit() {
@@ -439,6 +467,22 @@ public class MaterialViewBean
     public void setSelectedUnit(String selectedUnit) {
         this.activeMaterial.getUnit().setId(selectedUnit);
         unitConvDtoList = null;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
 }

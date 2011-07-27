@@ -77,7 +77,7 @@
                     <p:column headerText="条形码">
                         <h:outputText value="#{material.barCode}" />
                     </p:column>
-                    <p:column headerText="基本单位">
+                    <p:column headerText="主单位">
                         <h:outputText value="#{material.unit.name}" />
                     </p:column>
                     <p:column headerText="操作" style="width:80px;">
@@ -105,7 +105,38 @@
 
         <h:form id="dialogForm">
 
-            <p:dialog header="添加物料" widgetVar="materialDialog" height="600" width="700">
+            <p:dialog header="基础价格" widgetVar="materialPrice" height="400" width="600" modal="true">
+                <p:panel>
+                    <t:panelGrid columns="4" id="temp">
+                        <h:outputText value="设置价格:" />
+                        <p:inputText value="#{materialViewBean.value}" />
+
+                        <h:outputText value="币种:" />
+                        <p:selectOneMenu value="#{materialViewBean.currencyCode}" style="width:170px;">
+                            <f:selectItems value="#{materialViewBean.currencies}" />
+                        </p:selectOneMenu>
+                    </t:panelGrid>
+                    <p:commandButton value="添加" actionListener="#{materialViewBean.doAddMCValue}"
+                        update="dialogForm:histPrice" />
+                    <p:separator />
+                    <h:outputText value="历史价格表:" />
+                    <p:dataTable id="histPrice" var="item" value="#{materialViewBean.activeMaterial.prices}">
+                        <p:column headerText="日期">
+                            <h:outputText value="#{item.date}" />
+                        </p:column>
+                        <p:column headerText="价格">
+                            <h:outputText value="#{item.price.value}" />
+                        </p:column>
+                        <p:column headerText="货币代码">
+                            <h:outputText value="#{item.price.currency.currencyCode}" />
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="确定" update="note,dialogForm:currentPrice" oncomplete="materialPrice.hide();" />
+                    <p:commandButton value="取消" onclick="materialPrice.hide();" />
+                </p:panel>
+            </p:dialog>
+
+            <p:dialog header="物料" widgetVar="materialDialog" height="600" width="700">
                 <t:panelGrid columns="5" id="material">
                     <h:outputText value="物料名称" />
                     <t:panelGroup colspan="4">
@@ -129,15 +160,22 @@
                             disabled="#{materialViewBean.editable}" />
                     </t:panelGroup>
 
-                    <h:outputText value="单位提示:" />
-                    <p:inputText value="#{materialViewBean.activeMaterial.unitHint}"
-                        readonly="#{materialViewBean.editable}" />
+                    <h:outputText value="当前价格:" />
+                        <h:outputText id="currentPrice" value="#{materialViewBean.activeMaterialPrice}" />
+                    <t:panelGroup colspan="3">
+                        <p:commandButton value="..." title="设置价格" actionListener="#{materialViewBean.createPriceForm}"
+                            oncomplete="materialPrice.show();" update="dialogForm:temp,dialogForm:histPrice" />
+                    </t:panelGroup>
+
                     <h:outputText value="主单位:" />
                     <p:selectOneMenu id="selectUnit" widgetVar="selectUnit" value="#{materialViewBean.selectedUnit}"
                         disabled="#{materialViewBean.editable}" style="width:150px;" update="dialogForm:selectUnitConv">
                         <f:selectItem itemLabel="--选择单位--" itemValue="" />
                         <f:selectItems value="#{materialViewBean.units}" />
                     </p:selectOneMenu>
+                    <h:outputText value="单位提示:" />
+                    <p:inputText value="#{materialViewBean.activeMaterial.unitHint}"
+                        readonly="#{materialViewBean.editable}" />
                     <h:inputHidden value="" />
 
                     <h:outputText value="单位还算表" />
@@ -149,6 +187,22 @@
                             <f:selectItems value="#{materialViewBean.unitConvs}" />
                             <f:selectItem itemLabel="新增单位换算表" itemValue="new" />
                         </p:selectOneMenu>
+
+                        <h:outputScript>
+                            jQuery(document).ready(function(){
+                                selectUnit.jq.change(function() {
+                                    if (document.getElementById("dialogForm:selectUnit_input").value == "new"){
+                                        unitDialog.show();
+                                    }
+                                });
+
+                                selectUnitConv.jq.change(function() {
+                                    if (document.getElementById("dialogForm:selectUnitConv_input").value == "new"){
+                                        unitConvDialog.show();
+                                    }
+                                });
+                            });
+                        </h:outputScript>
                     </t:panelGroup>
 
                     <h:outputText value="自定义属性:" />
@@ -179,7 +233,7 @@
                     <p:commandButton value="..." title="增加属性" disabled="#{materialViewBean.editable}"
                         oncomplete="attributeDialog.show();" update="dialogForm:attribute" />
 
-                    <h:outputText value="推荐库位" />
+                    <h:outputText value="推荐库位:" />
                     <t:panelGroup colspan="3">
                         <p:dataTable id="preferredLocations" var="preferredLocation"
                             value="#{materialViewBean.activeMaterial.preferredLocations}">
@@ -241,11 +295,7 @@
                     <p:commandButton value="..." title="添加物料设置" disabled="#{materialViewBean.editable}"
                         onclick="optionDialog.show();" />
                 </t:panelGrid>
-                <p:selectOneMenu value="333" widgetVar="test" disabled="#{materialViewBean.editable}">
-                    <f:selectItem itemLabel="111" itemValue="111" />
-                    <f:selectItem itemLabel="222" itemValue="222" />
-                    <f:selectItem itemLabel="this is a test" itemValue="333" />
-                </p:selectOneMenu>
+
 
                 <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}"
                     update="main:materialList,note" disabled="#{materialViewBean.editable}"
@@ -402,26 +452,7 @@
 
         </h:form>
 
-        <h:outputScript>
-        jQuery(document).ready(function(){
-            test.jq.change(function() {
-                alert("change");
-            });
 
-            selectUnit.jq.change(function() {
-                alert("change==>selectUnit");
-                //if (document.getElementById("dialogForm:selectUnit_input").value == "new"){
-                //    unitDialog.show();
-                //}
-            });
-
-            selectUnitConv.jq.change(function() {
-                if (document.getElementById("dialogForm:selectUnitConv_input").value == "new"){
-                    unitConvDialog.show();
-                }
-            });
-        });
-        </h:outputScript>
 
 
     </ui:define>
