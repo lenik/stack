@@ -168,6 +168,7 @@ public class Material
      */
     @OneToMany(mappedBy = "material")
     @OrderBy("date DESC")
+    @Cascade(CascadeType.ALL)
     public List<MaterialPrice> getPrices() {
         return prices;
     }
