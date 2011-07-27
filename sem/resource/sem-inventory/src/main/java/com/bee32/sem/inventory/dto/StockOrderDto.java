@@ -17,6 +17,8 @@ public class StockOrderDto
     String serial;
     Long jobId;
 
+    StockWarehouseDto warehouse;
+
     @Override
     protected void _marshal(StockOrder source) {
         base = mref(StockPeriodDto.class, source.getBase());
@@ -24,6 +26,7 @@ public class StockOrderDto
         subject = source.getSubject();
         serial = source.getSerial();
         jobId = source.getJobId();
+        warehouse = mref(StockWarehouseDto.class, source.getWarehouse());
     }
 
     @Override
@@ -33,6 +36,7 @@ public class StockOrderDto
         target.setSubject(subject);
         target.setSerial(serial);
         target.setJobId(jobId);
+        merge(target, "warehouse", warehouse);
     }
 
     @Override
@@ -82,6 +86,16 @@ public class StockOrderDto
 
     public void setJobId(Long jobId) {
         this.jobId = jobId;
+    }
+
+    public StockWarehouseDto getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(StockWarehouseDto warehouse) {
+        if (warehouse == null)
+            throw new NullPointerException("warehouse");
+        this.warehouse = warehouse;
     }
 
 }

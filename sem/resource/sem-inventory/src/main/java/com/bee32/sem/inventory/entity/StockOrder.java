@@ -31,6 +31,8 @@ public class StockOrder
     String serial;
     Long jobId;
 
+    StockWarehouse warehouse; // Redundant.
+
     public StockOrder() {
     }
 
@@ -149,6 +151,22 @@ public class StockOrder
      */
     public void setJobId(Long jobId) {
         this.jobId = jobId;
+    }
+
+    /**
+     * 订单（首选）仓库。
+     *
+     * 通常所有订单项目应该和本仓库一致。
+     */
+    @ManyToOne(optional = false)
+    public StockWarehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(StockWarehouse warehouse) {
+        if (warehouse == null)
+            throw new NullPointerException("warehouse");
+        this.warehouse = warehouse;
     }
 
     /**
