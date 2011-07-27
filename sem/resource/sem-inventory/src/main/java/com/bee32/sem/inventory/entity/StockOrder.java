@@ -184,7 +184,7 @@ public class StockOrder
         peer.base = base;
         peer.spec = spec;
         peer.jobId = jobId;
-        peer.serial = serial; // DUPLICATED?
+        peer.serial = serial; // SHOULD DUPLICATED?
         peer.subject = peerSubject;
         if (copyItems) {
             peer.items.addAll(items);

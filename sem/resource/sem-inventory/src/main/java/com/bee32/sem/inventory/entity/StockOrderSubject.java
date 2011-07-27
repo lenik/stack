@@ -52,6 +52,10 @@ public final class StockOrderSubject
         return Collections.unmodifiableCollection(values);
     }
 
+    /**
+     * @throws NoSuchEnumException
+     *             If the value is undefined.
+     */
     public static StockOrderSubject valueOf(String value) {
         if (value == null)
             return null;

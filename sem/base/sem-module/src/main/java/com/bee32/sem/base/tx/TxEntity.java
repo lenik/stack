@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import com.bee32.plover.orm.ext.color.MomentInterval;
-import com.bee32.plover.orm.ext.color.Pink;
 
 /**
  * 事务性实体所具有的特性：
@@ -14,7 +13,6 @@ import com.bee32.plover.orm.ext.color.Pink;
  * <li>事务的一般属性：标题、制单人、起始/终止时间、简短标题、备注信息等。
  */
 @MappedSuperclass
-@Pink
 public class TxEntity
         extends MomentInterval {
 

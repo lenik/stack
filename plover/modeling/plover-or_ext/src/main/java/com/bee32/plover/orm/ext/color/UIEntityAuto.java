@@ -8,13 +8,6 @@ import javax.persistence.MappedSuperclass;
 
 import com.bee32.plover.orm.entity._AutoId;
 
-/**
- * <b>green</b>
- * <p>
- * party, place, or thing — Something tangible, uniquely identifiable. Normally, if you get through
- * the above three questions and end up here, your class is a "green." The user of the system and
- * the sub-sections of the system they visit are all PPTs.
- */
 @MappedSuperclass
 @_AutoId
 public abstract class UIEntityAuto<K extends Serializable>
