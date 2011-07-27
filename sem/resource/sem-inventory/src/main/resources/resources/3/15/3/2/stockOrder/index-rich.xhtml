@@ -17,9 +17,151 @@
 
     <ui:define name="content">
 
-        <h:form id="mainForm">
-            <h:outputText value="#{stockOrderAdminBean.type}"/>
-        </h:form>
+        <h:outputStylesheet>
+            .detail_col_title {
+                width:150px;
+                text-align: right;
+            }
+
+            .detail_col_value {
+            }
+
+            .align_top {
+                vertical-align:top;
+            }
+
+            .col_left {
+                width: 350px;
+            }
+        </h:outputStylesheet>
+
+
+		<h:form id="mainForm">
+			<p:growl id="growl" showDetail="true" />
+
+			<h:inputHidden id="pageTitle"
+				value="#{stockOrderAdminBean.subject.displayName}管理" />
+
+
+            <h:panelGrid columns="2">
+                <h:outputText value="仓库:" />
+                <p:selectOneMenu id="stockWarehouseId" value="#{stockOrderAdminBean.selectedWarehouse.id}" style="width:200px;">
+                    <f:selectItem itemValue="" itemLabel="--选择仓库--" />
+                    <f:selectItems value="#{stockOrderAdminBean.stockWarehouses}" />
+                    <p:ajax listener="#{stockOrderAdminBean.onSwChange}" update="mainForm" event="change"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+
+            <h:panelGrid columns="6">
+				<h:outputText value="时间段:" />
+				<h:outputText value="从" />
+				<p:calendar id="limitDateFrom" navigator="true" locale="zh_CN"
+					pattern="yyyy-MM-dd" value="#{stockOrderAdminBean.limitDateFrom}"
+					showOn="button" />
+				<h:outputText value="到" />
+				<p:calendar id="limitDateTo" navigator="true" locale="zh_CN"
+					pattern="yyyy-MM-dd" value="#{stockOrderAdminBean.limitDateTo}"
+					showOn="button" />
+				<p:commandButton value="限定" actionListener="#{stockOrderAdminBean.limit}"/>
+			</h:panelGrid>
+
+			<p:toolbar id="toolbar">
+				<p:toolbarGroup align="left">
+					<p:commandButton value="新增" actionListener="#{stockOrderAdminBean.new_}"
+						disabled="#{stockOrderAdminBean.editable}" update="mainForm" async="true" />
+					<p:commandButton value="修改"
+						actionListener="#{stockOrderAdminBean.modify}"
+						disabled="#{stockOrderAdminBean.editable}" update="mainForm" async="true" />
+					<p:commandButton value="删除"
+						actionListener="#{stockOrderAdminBean.delete}"
+						disabled="#{stockOrderAdminBean.editable}" update="mainForm" async="true" />
+					<p:divider />
+					<p:commandButton value="保存" actionListener="#{stockOrderAdminBean.save}"
+						disabled="#{!stockOrderAdminBean.editable}" update="mainForm" async="true" />
+					<p:commandButton value="取消"
+						actionListener="#{stockOrderAdminBean.cancel}"
+						disabled="#{!stockOrderAdminBean.editable}" update="mainForm" async="true" />
+					<p:divider />
+					<p:commandButton value="审核"
+						disabled="#{orgAdminBean.editable}"
+						onclick="verifyDlg.show();" />
+					<p:divider />
+					<p:commandButton value="第一条"
+						actionListener="#{stockOrderAdminBean.first}"
+						disabled="#{stockOrderAdminBean.editable}" update="mainForm"
+						async="true" />
+					<p:commandButton value="上一条"
+						actionListener="#{stockOrderAdminBean.previous}"
+						disabled="#{stockOrderAdminBean.editable}" update="mainForm"
+						async="true" />
+
+					<p:inputText value="#{stockOrderAdminBean.goNumber}" style="width:30px;"/>
+					<p:commandButton value="前往"
+                        actionListener="#{stockOrderAdminBean.go}"
+                        disabled="#{stockOrderAdminBean.editable}" update="mainForm"
+                        async="true" />
+
+					<p:commandButton value="下一条"
+						actionListener="#{stockOrderAdminBean.next}"
+						disabled="#{stockOrderAdminBean.editable}" update="mainForm"
+						async="true" />
+					<p:commandButton value="最末条"
+						actionListener="#{stockOrderAdminBean.last}"
+						disabled="#{stockOrderAdminBean.editable}" update="mainForm"
+						async="true" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panel header="#{stockOrderAdminBean.subject.displayName}">
+
+				<t:panelGrid columns="4">
+
+					<h:outputText value="时间" />
+					<p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
+						value="#{stockOrderAdminBean.stockOrder.createdDate}" showOn="button" />
+					<h:outputText value="标签" />
+					<p:inputText value="" />
+
+					<h:outputText value="描述" />
+					<t:panelGroup colspan="3">
+                        <p:inputText value="" />
+					</t:panelGroup>
+
+					<h:outputText value="制单人" />
+                    <p:inputText value="" />
+                    <h:outputText value="单据状态" />
+                    <p:inputText value="" />
+				</t:panelGrid>
+
+                <t:panelGrid columns="2">
+                    <h:outputText value="明细"/>
+                    <p:commandButton value="新增" actionListener="#{stockOrderAdminBean.newItem}"/>
+                </t:panelGrid>
+
+				<p:dataTable id="orgs" var="item"
+					value="#{stockOrderAdminBean.items}"
+					resizableColumns="true" selectionMode="single"
+					rowIndexVar="rowIndex">
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="序号" />
+						</f:facet>
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+
+				</p:dataTable>
+
+
+			</p:panel>
+		</h:form>
+
+
+
+
+        <h:outputScript>
+            document.title = $("#mainForm\\:pageTitle").val();
+        </h:outputScript>
 
 	</ui:define>
 </ui:composition>
