@@ -312,4 +312,9 @@ public class MCValue
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return currency.getCurrencyCode() + "$ " + value;
+    }
+
 }
