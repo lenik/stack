@@ -19,10 +19,11 @@ public class ChanceCriteria
     }
 
     public static CriteriaElement ownedBy(IUserPrincipal user) {
-        if (user.getDisplayName().equals("admin"))
-            return null;
-        else
-            return equals("owner.id", user.getId());
+//        if (user.getDisplayName().equals("admin"))
+//            return null;
+//        else
+//            return equals("owner.id", user.getId());
+        return null;
     }
 
     public static CriteriaElement subjectLike(String keyword) {
