@@ -33,9 +33,6 @@ import com.bee32.sem.chance.entity.ChanceQuotationItem;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.util.ChanceCriteria;
-import com.bee32.sem.chance.util.PriceCriteria;
-import com.bee32.sem.inventory.dto.MaterialPriceDto;
-import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -66,7 +63,6 @@ public class ChanceBean
     private boolean fieldRendered;
     private boolean chancePartyEdit;
     private boolean roleRendered;
-    private String tempRole;
     private boolean isChancePartyEditing;
 
     private String subjectPattern;
@@ -75,7 +71,7 @@ public class ChanceBean
     private Date searchEndTime;
     private LazyDataModel<ChanceDto> chances;
     private ChanceDto selectedChance;
-    private ChanceDto chance;
+    private ChanceDto activeChance = new ChanceDto().create();
     private List<ChanceActionDto> actions;
     private ChanceActionDto[] selectedActions;
     private ChanceActionDto selectedAction;
@@ -107,31 +103,28 @@ public class ChanceBean
 
     // quotation methods
 
-    ChanceBean() {
-        initMaterial();
-    }
-
-    void initMaterial() {
-        materials = new ArrayList<String>();
-        materials.add("尼康D200");
-        materials.add("松下GF3");
-        materials.add("佳能D300");
-        materials.add("宾得XR");
-        materials.add("猪肉");
-    }
+//    void initMaterial() {
+//        materials = new ArrayList<String>();
+//        materials.add("尼康D200");
+//        materials.add("松下GF3");
+//        materials.add("佳能D300");
+//        materials.add("宾得XR");
+//        materials.add("猪肉");
+//    }
 
     public void findMaterial() {
-        if (!materialPattern.isEmpty()) {
-            List<String> temp = new ArrayList<String>();
-            initMaterial();
-            for (String s : materials) {
-                if (s.contains(materialPattern))
-                    temp.add(s);
-            }
-            setMaterials(temp);
-        } else {
-            initMaterial();
-        }
+        //XXX
+//        if (!materialPattern.isEmpty()) {
+//            List<String> temp = new ArrayList<String>();
+//            initMaterial();
+//            for (String s : materials) {
+//                if (s.contains(materialPattern))
+//                    temp.add(s);
+//            }
+//            setMaterials(temp);
+//        } else {
+//            initMaterial();
+//        }
     }
 
     public void viewQuotationDetail() {
@@ -152,38 +145,41 @@ public class ChanceBean
     }
 
     public void chooseMaterial() {
-        String sm = selectedMaterial;
-        MaterialPrice currentPrice = serviceFor(MaterialPrice.class).list(//
-                Order.desc("createdDate"), //
-                PriceCriteria.listBasePriceByMaterial(sm)).get(0);
-        ChanceQuotationItemDto qi = new ChanceQuotationItemDto().create();
-        qi.setQuotation(quotation);
-
-        qi.setBasePrice(DTOs.mref(MaterialPriceDto.class, currentPrice));
-
-        qi.setMaterial(sm);
-        quotation.addItem(qi);
+        //XXX
+//        String sm = selectedMaterial;
+//        MaterialPrice currentPrice = serviceFor(MaterialPrice.class).list(//
+//                Order.desc("createdDate"), //
+//                PriceCriteria.listBasePriceByMaterial(sm)).get(0);
+//        ChanceQuotationItemDto qi = new ChanceQuotationItemDto().create();
+//        qi.setQuotation(quotation);
+//
+//        qi.setBasePrice(DTOs.mref(MaterialPriceDto.class, currentPrice));
+//
+//        qi.setMaterial(sm);
+//        quotation.addItem(qi);
     }
 
     void listQuotationByChance(ChanceDto chance) {
-        List<ChanceQuotation> quotationList = serviceFor(ChanceQuotation.class).list(//
-                Order.desc("createdDate"), //
-                PriceCriteria.listQuotationByChance(chance.getId()));
-        quotations = DTOs.marshalList(ChanceQuotationDto.class, quotationList);
+//        List<ChanceQuotation> quotationList = serviceFor(ChanceQuotation.class).list(//
+//                Order.desc("createdDate"), //
+//                PriceCriteria.listQuotationByChance(chance.getId()));
+//        quotations = DTOs.marshalList(ChanceQuotationDto.class, quotationList);
     }
 
     public void calculatePriceChange() {
-        double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
-        selectedQuotationItem.setAmount(amount);
-        quotationItemPriceRendered = !quotationItemPriceRendered;
-        isPriceEditing = false;
+        //XXX
+//        double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
+//        selectedQuotationItem.setAmount(amount);
+//        quotationItemPriceRendered = !quotationItemPriceRendered;
+//        isPriceEditing = false;
     }
 
     public void calculateNumberChange() {
-        double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
-        selectedQuotationItem.setAmount(amount);
-        quotationItemNumberRendered = !quotationItemNumberRendered;
-        isQuantityEditing = false;
+        //XXX
+//        double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
+//        selectedQuotationItem.setAmount(amount);
+//        quotationItemNumberRendered = !quotationItemNumberRendered;
+//        isQuantityEditing = false;
     }
 
     public void editPrice() {
@@ -264,7 +260,7 @@ public class ChanceBean
 
     public void createQuotationForm() {
         quotation = new ChanceQuotationDto().create();
-        quotation.setChance(chance);
+        quotation.setChance(activeChance);
     }
 
     public void onQuotationRowSelect() {
@@ -309,7 +305,7 @@ public class ChanceBean
         initList();
         initToolbar();
         editable = false;
-        chance = new ChanceDto();
+        activeChance = new ChanceDto();
         quotations = new ArrayList<ChanceQuotationDto>();
         relating = false;
         unRelating = false;
@@ -413,8 +409,8 @@ public class ChanceBean
         if (selectedActions.length == 0) {
             return;
         }
-        chance.addActions(selectedActions);
-        Chance _chance = chance.unmarshal();
+        activeChance.addActions(selectedActions);
+        Chance _chance = activeChance.unmarshal();
         try {
             for (ChanceAction _action : _chance.getActions()) {
                 if (_action.getChance() == null)
@@ -435,14 +431,14 @@ public class ChanceBean
         if (selectedParty == null)
             return;
         ChancePartyDto chancePartyDto = new ChancePartyDto().create();
-        chancePartyDto.setChance(chance);
+        chancePartyDto.setChance(activeChance);
         chancePartyDto.setParty(selectedParty);
         chancePartyDto.setRole("普通客户");
-        chance.addChanceParty(chancePartyDto);
+        activeChance.addChanceParty(chancePartyDto);
     }
 
     public void createForm() {
-        chance = new ChanceDto();
+        activeChance = new ChanceDto().create();
         setActiveTab(TAB_FORM);
         generatedToobar();
         quotations = new ArrayList<ChanceQuotationDto>();
@@ -458,8 +454,8 @@ public class ChanceBean
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("提示:", "请选择需要修改的销售机会!"));
             return;
         }
-        chance = selectedChance;
-        listQuotationByChance(chance);
+        activeChance = selectedChance;
+        listQuotationByChance(activeChance);
         setActiveTab(TAB_FORM);
         generatedToobar();
         relating = false;
@@ -470,8 +466,8 @@ public class ChanceBean
     }
 
     public void detailForm() {
-        chance = selectedChance;
-        listQuotationByChance(chance);
+        activeChance = selectedChance;
+        listQuotationByChance(activeChance);
         setActiveTab(TAB_FORM);
         generatedToobar();
         fieldRendered = true;
@@ -492,47 +488,47 @@ public class ChanceBean
     }
 
     public void dropCustomer() {
-        chance.deleteChanceParty(selectedChanceParty);
+        activeChance.deleteChanceParty(selectedChanceParty);
     }
 
     public void saveChance() {
         FacesContext context = FacesContext.getCurrentInstance();
-        String subject = chance.getSubject();
+        String subject = activeChance.getSubject();
         if (subject.isEmpty()) {
             context.addMessage(null, new FacesMessage("错误提示", "机会标题不能为空!"));
             return;
         }
 
-        if (chance.getParties().isEmpty()) {
+        if (activeChance.getParties().isEmpty()) {
             context.addMessage(null, new FacesMessage("错误提示", "请选择机会对应的客户!"));
             return;
         }
-        String content = chance.getContent();
+        String content = activeChance.getContent();
         if (content.isEmpty())
-            chance.setContent("");
+            activeChance.setContent("");
 
-        String categoryId = chance.getCategory().getId();
+        String categoryId = activeChance.getCategory().getId();
         ChanceCategoryDto ccd = null;
         if (!categoryId.isEmpty())
             ccd = new ChanceCategoryDto().ref(categoryId);
-        chance.setCategory(ccd);
+        activeChance.setCategory(ccd);
 
-        String sourceId = chance.getSource().getId();
+        String sourceId = activeChance.getSource().getId();
         ChanceSourceDto csd = null;
         if (!sourceId.isEmpty())
             csd = new ChanceSourceDto().ref(sourceId);
-        chance.setSource(csd);
+        activeChance.setSource(csd);
 
         ChanceStageDto tempStage = null;
-        String chanceStageId = chance.getStage().getId();
+        String chanceStageId = activeChance.getStage().getId();
         if (chanceStageId.isEmpty())
             tempStage = new ChanceStageDto().ref(ChanceStage.INIT.getId());
         else
             tempStage = new ChanceStageDto().ref(chanceStageId);
 
-        chance.setStage(tempStage);
+        activeChance.setStage(tempStage);
 
-        Chance _chance = chance.unmarshal();
+        Chance _chance = activeChance.unmarshal();
 
         try {
 
@@ -581,7 +577,7 @@ public class ChanceBean
         try {
             ChanceActionDto actionDto = selectedAction;
             ChanceAction chanceAction = actionDto.unmarshal();
-            chance.deleteAction(actionDto);
+            activeChance.deleteAction(actionDto);
             chanceAction.setChance(null);
             chanceAction.setStage(null);
             serviceFor(ChanceAction.class).save(chanceAction);
@@ -672,14 +668,6 @@ public class ChanceBean
         this.roleRendered = roleRendered;
     }
 
-    public String getTempRole() {
-        return tempRole;
-    }
-
-    public void setTempRole(String tempRole) {
-        this.tempRole = tempRole;
-    }
-
     public boolean isChancePartyEditing() {
         return isChancePartyEditing;
     }
@@ -736,12 +724,12 @@ public class ChanceBean
         this.selectedChance = selectedChance;
     }
 
-    public ChanceDto getChance() {
-        return chance;
+    public ChanceDto getActiveChance() {
+        return activeChance;
     }
 
-    public void setChance(ChanceDto chance) {
-        this.chance = chance;
+    public void setActiveChance(ChanceDto chance) {
+        this.activeChance = chance;
     }
 
     public List<ChanceActionDto> getActions() {

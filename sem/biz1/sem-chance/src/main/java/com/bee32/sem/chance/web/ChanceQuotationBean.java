@@ -5,15 +5,10 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.chance.dto.ChanceQuotationDto;
-import com.bee32.sem.chance.dto.ChanceQuotationItemDto;
 import com.bee32.sem.chance.entity.ChanceQuotation;
-import com.bee32.sem.chance.entity.ChanceQuotationItem;
-import com.bee32.sem.chance.util.PriceCriteria;
-import com.bee32.sem.inventory.entity.MaterialPrice;
 
 public class ChanceQuotationBean
         extends EntityViewBean {
@@ -77,19 +72,17 @@ public class ChanceQuotationBean
     }
 
     public void chooseMaterial() {
-        String sm = selectedMaterial;
-        MaterialPrice currentPrice = serviceFor(MaterialPrice.class).list(//
-                Order.desc("createdDate"), //
-                PriceCriteria.listBasePriceByMaterial(sm)).get(0);
-        ChanceQuotationItem qi = new ChanceQuotationItem();
-        qi.setQuotation(quotation.unmarshal());
-        qi.setBasePrice(currentPrice);
-        qi.setMaterial(sm);
-// qi.setDiscount()
-// qi.setPrice();
-// qi.setNumber()
-        ChanceQuotationItemDto qid = DTOs.mref(ChanceQuotationItemDto.class, qi);
-        quotation.addItem(qid);
+        //XXX
+//        String sm = selectedMaterial;
+//        MaterialPrice currentPrice = serviceFor(MaterialPrice.class).list(//
+//                Order.desc("createdDate"), //
+//                PriceCriteria.listBasePriceByMaterial(sm)).get(0);
+//        ChanceQuotationItem qi = new ChanceQuotationItem();
+//        qi.setQuotation(quotation.unmarshal());
+//        qi.setBasePrice(currentPrice);
+//        qi.setMaterial(sm);
+//        ChanceQuotationItemDto qid = DTOs.mref(ChanceQuotationItemDto.class, qi);
+//        quotation.addItem(qid);
     }
 
     public boolean isEditable() {
