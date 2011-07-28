@@ -22,7 +22,7 @@ public class StockOrderItem
 
     private static final long serialVersionUID = 1L;
 
-    StockOrder order;
+    StockOrder parent;
     Material material;
     String batch;
     StockLocation location;
@@ -33,7 +33,7 @@ public class StockOrderItem
 
     public StockOrderItem(StockOrderItem item) {
         super(item);
-        order = item.order;
+        parent = item.parent;
         material = item.material;
         batch = item.batch;
         location = item.location;
@@ -45,12 +45,12 @@ public class StockOrderItem
      */
     @NaturalId
     @ManyToOne(optional = false)
-    public StockOrder getOrder() {
-        return order;
+    public StockOrder getParent() {
+        return getParent();
     }
 
-    public void setOrder(StockOrder order) {
-        this.order = order;
+    public void setParent(StockOrder parent) {
+        this.parent = parent;
     }
 
     /**
@@ -161,7 +161,7 @@ public class StockOrderItem
     protected Boolean naturalEquals(EntityBase<Long> other) {
         StockOrderItem o = (StockOrderItem) other;
 
-        if (!order.equals(o.order))
+        if (!parent.equals(o.parent))
             return false;
 
         if (!material.equals(o.material))
@@ -176,7 +176,7 @@ public class StockOrderItem
     @Override
     protected Integer naturalHashCode() {
         int hash = 0;
-        hash += order.hashCode();
+        hash += parent.hashCode();
         hash += material.hashCode();
         hash += getCBatch().hashCode();
         return hash;

@@ -13,7 +13,7 @@ public class StockOrderItemDto
 
     private static final long serialVersionUID = 1L;
 
-    StockOrderDto order;
+    StockOrderDto parent;
     MaterialDto material;
     String batch;
     StockLocationDto location;
@@ -21,7 +21,7 @@ public class StockOrderItemDto
 
     @Override
     protected void _marshal(StockOrderItem source) {
-        order = mref(StockOrderDto.class, source.getOrder());
+        parent = mref(StockOrderDto.class, source.getParent());
         material = mref(MaterialDto.class, source.getMaterial());
         batch = source.getBatch();
         location = mref(StockLocationDto.class, source.getLocation());
@@ -30,7 +30,7 @@ public class StockOrderItemDto
 
     @Override
     protected void _unmarshalTo(StockOrderItem target) {
-        merge(target, "order", order);
+        merge(target, "parent", parent);
         merge(target, "material", material);
         target.setBatch(batch);
         merge(target, "location", location);
@@ -44,14 +44,14 @@ public class StockOrderItemDto
         map.getString("state");
     }
 
-    public StockOrderDto getOrder() {
-        return order;
+    public StockOrderDto getParent() {
+        return parent;
     }
 
-    public void setOrder(StockOrderDto order) {
-        if (order == null)
-            throw new NullPointerException("order");
-        this.order = order;
+    public void setParent(StockOrderDto parent) {
+        if (parent == null)
+            throw new NullPointerException("parent");
+        this.parent = parent;
     }
 
     public MaterialDto getMaterial() {
@@ -105,7 +105,7 @@ public class StockOrderItemDto
     protected Boolean naturalEquals(EntityDto<StockOrderItem, Long> other) {
         StockOrderItemDto o = (StockOrderItemDto) other;
 
-        if (!order.equals(o.order))
+        if (!parent.equals(o.parent))
             return false;
 
         if (!material.equals(o.material))
@@ -120,7 +120,7 @@ public class StockOrderItemDto
     @Override
     protected Integer naturalHashCode() {
         int hash = 0;
-        hash += order.hashCode();
+        hash += parent.hashCode();
         hash += material.hashCode();
         hash += getCBatch().hashCode();
         return hash;
