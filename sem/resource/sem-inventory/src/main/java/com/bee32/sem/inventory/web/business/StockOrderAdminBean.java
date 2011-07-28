@@ -47,7 +47,7 @@ public class StockOrderAdminBean
 
     private StockOrderDto stockOrder = new StockOrderDto().ref();
 
-    private StockOrderItemDto orderItem;
+    private StockOrderItemDto orderItem = new StockOrderItemDto().ref();
     private StockOrderItemDto selectedOrderItem;
 
 

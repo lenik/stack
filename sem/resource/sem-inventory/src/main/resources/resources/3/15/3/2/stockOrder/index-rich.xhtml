@@ -219,9 +219,9 @@
                         <h:outputLabel value="单价" />
                         <p:inputText value="#{stockOrderAdminBean.orderItem.price.value}" />
                         <h:outputLabel value="币种" />
-                        <p:selectOneMenu value="#{stockOrderAdminBean.orderItem.price.currency.code}" style="width:150px;">
+                        <p:selectOneMenu value="#{stockOrderAdminBean.orderItem.price.currency.currencyCode}" style="width:150px;">
                             <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                            <f:selectItems value="#{orgAdminBean.currencies}" />
+                            <f:selectItems value="#{stockOrderAdminBean.currencies}" />
                         </p:selectOneMenu>
 
 
