@@ -120,8 +120,11 @@ public class StockOrderItem
         this.location = location;
     }
 
-    @ManyToOne
+    /**
+     * 仓库
+     */
     @Redundant
+    @ManyToOne
     public StockWarehouse getWarehouse() {
         if (location == null)
             return null;
