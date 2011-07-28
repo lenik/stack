@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -42,7 +41,7 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
      * @see #addItem(Item)
      * @see #removeItem(Item)
      */
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "parent")
     @Cascade(CascadeType.ALL)
     public List<Item> getItems() {
         return Collections.unmodifiableList(items);
@@ -111,7 +110,8 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
      *             外汇查询异常。
      */
     @Redundant
-    @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
+    @Transient
+    //@Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
     public synchronized BigDecimal getNativeTotal()
             throws FxrQueryException {
         if (nativeTotal == null) {
