@@ -38,6 +38,7 @@ import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.CurrencyConfig;
 import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.thing.ScaleItem;
 import com.bee32.sem.world.thing.Unit;
 import com.bee32.sem.world.thing.UnitConv;
 import com.bee32.sem.world.thing.UnitConvDto;
@@ -68,6 +69,10 @@ public class MaterialViewBean
     double value;
     String currencyCode;
 
+    UnitConvDto activeUnitConv = new UnitConvDto().create();
+    ScaleItem activeScaleItem;
+    ScaleItem selectedScale;
+
     StockLocationTreeDialogModel stockLocationTreeDialog;
     MaterialCategoryTreeModel materialCategoryTree;
     MaterialCategoryTreeModel selectCategoryTree;
@@ -81,6 +86,11 @@ public class MaterialViewBean
         currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
         activeOption = new MaterialWarehouseOptionDto().create();
         activePreferredLocation = new MaterialPreferredLocationDto().create();
+
+        activeScaleItem = new ScaleItem();
+        UnitDto unit = new UnitDto().create();
+        activeScaleItem.setUnit(unit);
+
         initLocationTree();
         initMaterialCategoryTree();
         initSelectCategoryTree();
@@ -182,6 +192,32 @@ public class MaterialViewBean
         currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
     }
 
+    public void createScaleItem() {
+        activeScaleItem = new ScaleItem();
+        UnitDto unitDto = new UnitDto().create();
+        activeScaleItem.setUnit(unitDto);
+    }
+
+    public void doAddScaleItem() {
+        String id = activeScaleItem.getUnit().getId();
+        Unit _unit = serviceFor(Unit.class).getOrFail(id);
+        UnitDto unit = DTOs.marshal(UnitDto.class, _unit);
+        activeScaleItem.setUnit(unit);
+        activeUnitConv.addScaleItem(activeScaleItem);
+    }
+
+    public void doSaveUnitConv() {
+        try {
+            UnitConv ucv = activeUnitConv.unmarshal();
+            activeMaterial.setUnitConv(activeUnitConv);
+            serviceFor(UnitConv.class).saveOrUpdate(ucv);
+            uiLogger.info("保存单位还算表" + activeUnitConv.getLabel() + "成功");
+            activeUnitConv = new UnitConvDto().create();
+        } catch (Exception e) {
+            uiLogger.error("保存单位还算表" + activeUnitConv.getLabel() + "失败:" + e.getMessage(), e);
+        }
+    }
+
     public void doAddMCValue() {
         MaterialPriceDto mpd = new MaterialPriceDto().create();
         mpd.setMaterial(activeMaterial);
@@ -258,24 +294,29 @@ public class MaterialViewBean
         activeMaterial.setUnitConv(unitConv);
 
         try {
-            Material material = activeMaterial.unmarshal();
-            serviceFor(Material.class).saveOrUpdate(material);
+            Material materialEntity = activeMaterial.unmarshal();
+            serviceFor(Material.class).saveOrUpdate(materialEntity);
 
-            activeMaterial = DTOs.marshal(MaterialDto.class, material);
+//            activeMaterial = DTOs.marshal(MaterialDto.class, materialEntity);
 
             uiLogger.info("保存物料成功!");
         } catch (Exception e) {
             uiLogger.error("保存物料失败" + e.getMessage(), e);
         }
 
-        TreeNode currentNode = materialCategoryTree.getSelectedNode();
-        TreeNode selectedNode = selectCategoryTree.getSelectedNode();
-        if (currentNode != null && selectedNode != null) {
-            MaterialCategoryDto currentBranch = (MaterialCategoryDto) currentNode.getData();
-            MaterialCategoryDto selectedBranch = (MaterialCategoryDto) selectedNode.getData();
-            if (currentBranch.getName().equals(selectedBranch.getName())) {
-                if (!materialList.contains(activeMaterial))
-                    materialList.add(activeMaterial);
+        if (materialList.contains(activeMaterial)) {
+            int index = materialList.indexOf(activeMaterial);
+            materialList.set(index, activeMaterial);
+        } else {
+            TreeNode currentNode = materialCategoryTree.getSelectedNode();
+            TreeNode selectedNode = selectCategoryTree.getSelectedNode();
+            if (currentNode != null && selectedNode != null) {
+                MaterialCategoryDto currentBranch = (MaterialCategoryDto) currentNode.getData();
+                MaterialCategoryDto selectedBranch = (MaterialCategoryDto) selectedNode.getData();
+                if (currentBranch.getName().equals(selectedBranch.getName())) {
+                    if (!materialList.contains(activeMaterial))
+                        materialList.add(activeMaterial);
+                }
             }
         }
     }
@@ -322,14 +363,12 @@ public class MaterialViewBean
     }
 
     public List<SelectItem> getUnitConvs() {
-        if (unitConvDtoList == null) {
-            String unitId = activeMaterial.getUnit().getId();
-            if (StringUtils.isEmpty(unitId))
-                unitConvDtoList = new ArrayList<UnitConvDto>();
-            else {
-                List<UnitConv> unitConvList = serviceFor(UnitConv.class).list(new Equals("unit.id", unitId));
-                unitConvDtoList = DTOs.marshalList(UnitConvDto.class, unitConvList, true);
-            }
+        String unitId = activeMaterial.getUnit().getId();
+        if (StringUtils.isEmpty(unitId))
+            unitConvDtoList = new ArrayList<UnitConvDto>();
+        else {
+            List<UnitConv> unitConvList = serviceFor(UnitConv.class).list(new Equals("unit.id", unitId));
+            unitConvDtoList = DTOs.marshalList(UnitConvDto.class, unitConvList, true);
         }
         return UIHelper.selectItemsFromDict(unitConvDtoList);
     }
@@ -483,6 +522,30 @@ public class MaterialViewBean
 
     public void setCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
+    }
+
+    public UnitConvDto getActiveUnitConv() {
+        return activeUnitConv;
+    }
+
+    public ScaleItem getActiveScaleItem() {
+        return activeScaleItem;
+    }
+
+    public ScaleItem getSelectedScale() {
+        return selectedScale;
+    }
+
+    public void setActiveUnitConv(UnitConvDto activeUnitConv) {
+        this.activeUnitConv = activeUnitConv;
+    }
+
+    public void setActiveScaleItem(ScaleItem activeScaleItem) {
+        this.activeScaleItem = activeScaleItem;
+    }
+
+    public void setSelectedScale(ScaleItem selectedScale) {
+        this.selectedScale = selectedScale;
     }
 
 }
