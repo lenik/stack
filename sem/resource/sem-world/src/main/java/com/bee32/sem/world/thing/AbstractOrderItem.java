@@ -129,7 +129,8 @@ public abstract class AbstractOrderItem
      *             外汇查询异常。
      */
     @Redundant
-    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
+    @Transient
+//    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
     public synchronized BigDecimal getNativePrice()
             throws FxrQueryException {
         if (nativePrice == null) {
@@ -149,7 +150,8 @@ public abstract class AbstractOrderItem
      * 【冗余】本地货币表示的金额。
      */
     @Redundant
-    @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
+    @Transient
+//    @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
     public BigDecimal getNativeTotal()
             throws FxrQueryException {
         if (nativeTotal == null) {
