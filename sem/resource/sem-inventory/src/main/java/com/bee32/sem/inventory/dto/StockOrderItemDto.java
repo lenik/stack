@@ -1,5 +1,7 @@
 package com.bee32.sem.inventory.dto;
 
+import java.util.Date;
+
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
@@ -16,6 +18,7 @@ public class StockOrderItemDto
     StockOrderDto parent;
     MaterialDto material;
     String batch;
+    Date expirationDate;
     StockLocationDto location;
     StockItemState state;
 
@@ -24,6 +27,7 @@ public class StockOrderItemDto
         parent = mref(StockOrderDto.class, source.getParent());
         material = mref(MaterialDto.class, source.getMaterial());
         batch = source.getBatch();
+        expirationDate = source.getExpirationDate();
         location = mref(StockLocationDto.class, source.getLocation());
         state = source.getState();
     }
@@ -33,6 +37,7 @@ public class StockOrderItemDto
         merge(target, "parent", parent);
         merge(target, "material", material);
         target.setBatch(batch);
+        target.setExpirationDate(expirationDate);
         merge(target, "location", location);
         target.setState(state);
     }
@@ -70,6 +75,14 @@ public class StockOrderItemDto
 
     public void setBatch(String batch) {
         this.batch = batch;
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     public String getCBatch() {

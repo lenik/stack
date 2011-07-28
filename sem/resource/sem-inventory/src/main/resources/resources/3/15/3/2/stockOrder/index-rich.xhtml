@@ -39,7 +39,7 @@
 		<h:form id="mainForm">
 			<p:growl id="growl" showDetail="true" />
 
-			<h:inputHidden id="pageTitle"
+			<h:inputHidden id="pageTitle" readonly="true"
 				value="#{stockOrderAdminBean.subject.displayName}管理" />
 
 
@@ -83,7 +83,7 @@
 						disabled="#{!stockOrderAdminBean.editable}" update="mainForm" async="true" />
 					<p:divider />
 					<p:commandButton value="审核"
-						disabled="#{orgAdminBean.editable}"
+						disabled="#{stockOrderAdminBean.editable}"
 						onclick="verifyDlg.show();" />
 					<p:divider />
 					<p:commandButton value="第一条"
@@ -96,6 +96,7 @@
 						async="true" />
 
 					<p:inputText value="#{stockOrderAdminBean.goNumber}" style="width:30px;"/>
+					<h:outputText value="/#{stockOrderAdminBean.count}"/>
 					<p:commandButton value="前往"
                         actionListener="#{stockOrderAdminBean.go}"
                         disabled="#{stockOrderAdminBean.editable}" update="mainForm"
@@ -118,25 +119,29 @@
 
 					<h:outputText value="时间" />
 					<p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
-						value="#{stockOrderAdminBean.stockOrder.createdDate}" showOn="button" />
+						value="#{stockOrderAdminBean.stockOrder.createdDate}" showOn="button"
+						disabled="#{!stockOrderAdminBean.editable}"
+						 />
 					<h:outputText value="标签" />
-					<p:inputText value="" />
+					<p:inputText value="#{stockOrderAdminBean.stockOrder.label}" disabled="#{!stockOrderAdminBean.editable}"/>
 
 					<h:outputText value="描述" />
 					<t:panelGroup colspan="3">
-                        <p:inputText value="" />
+                        <p:inputText value="#{stockOrderAdminBean.stockOrder.description}" disabled="#{!stockOrderAdminBean.editable}"/>
 					</t:panelGroup>
 
 					<h:outputText value="制单人" />
-                    <p:inputText value="" />
+                    <p:inputText value="#{stockOrderAdminBean.creator}" disabled="true"/>
                     <h:outputText value="单据状态" />
-                    <p:inputText value="" />
+                    <p:inputText value="" disabled="true"/>
 				</t:panelGrid>
 
                 <t:panelGrid columns="2">
                     <h:outputText value="明细"/>
-                    <p:commandButton value="新增" actionListener="#{stockOrderAdminBean.newItem}"/>
-                </t:panelGrid>
+					<p:commandButton value="新增" onclick="itemDialog.show();"
+						actionListener="#{stockOrderAdminBean.newItem}"
+						disabled="#{!stockOrderAdminBean.editable}" />
+				</t:panelGrid>
 
 				<p:dataTable id="orgs" var="item"
 					value="#{stockOrderAdminBean.items}"
@@ -150,6 +155,31 @@
 						<h:outputText value="#{rowIndex + 1}" />
 					</p:column>
 
+
+
+					<p:column headerText="操作" style="width:120px;">
+						<h:panelGrid columns="3" cellpadding="2" styleClass="actions">
+							<p:commandButton update=""
+								oncomplete="stockWarehouseDialog.show()"
+								image="ui-icon ui-icon-search" title="查看">
+								<f:setPropertyActionListener value="#{item}"
+									target="#{stockOrderAdminBean.selectedStockOrderItem}" />
+							</p:commandButton>
+							<p:commandButton update="" disabled="#{!stockOrderAdminBean.editable}"
+								onclick="itemDialog.show()"
+								image="ui-icon ui-icon-pencil" title="修改">
+								<f:setPropertyActionListener value="#{item}"
+                                    target="#{stockOrderAdminBean.selectedStockOrderItem}"/>
+							</p:commandButton>
+							<p:commandButton update="" disabled="#{!stockOrderAdminBean.editable}"
+								oncomplete="confirmation.show()" image="ui-icon ui-icon-close"
+								title="删除">
+								<f:setPropertyActionListener value="#{item}"
+                                    target="#{stockOrderAdminBean.selectedStockOrderItem}" />
+							</p:commandButton>
+						</h:panelGrid>
+					</p:column>
+
 				</p:dataTable>
 
 
@@ -157,9 +187,73 @@
 		</h:form>
 
 
+		<h:form id="itemForm">
+			<p:dialog header="#{stockOrderAdminBean.subject.displayName}项目编辑" widgetVar="itemDialog" modal="true"
+				height="500" width="640">
+				<h:panelGroup id="itemPanel">
+
+					<p:growl id="growl1" showDetail="true" />
+
+					<t:panelGrid columns="4"
+						columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+
+						<h:outputLabel value="物料" />
+						<t:panelGroup colspan="3">
+							<p:inputText value="#{stockOrderAdminBean.orderItem.material.name}"/>
+							<p:commandButton value="..."/>
+						</t:panelGroup>
+
+						<h:outputLabel value="批号" />
+						<p:inputText value="#{stockOrderAdminBean.orderItem.batch}" />
+						<h:outputLabel value="有效期" />
+						<p:calendar navigator="true" locale="zh_CN"
+                                    pattern="yyyy-MM-dd" value="#{stockOrderAdminBean.orderItem.expirationDate}"
+                                    showOn="button" />
+
+                        <h:outputLabel value="库位" />
+                        <t:panelGroup colspan="3">
+                            <p:inputText value="#{stockOrderAdminBean.orderItem.location.nodeText}"/>
+                            <p:commandButton value="..."/>
+                        </t:panelGroup>
+
+                        <h:outputLabel value="单价" />
+                        <p:inputText value="#{stockOrderAdminBean.orderItem.price.value}" />
+                        <h:outputLabel value="币种" />
+                        <p:selectOneMenu value="#{stockOrderAdminBean.orderItem.price.currency.code}" style="width:150px;">
+                            <f:selectItem itemValue="" itemLabel="--选择币种--" />
+                            <f:selectItems value="#{orgAdminBean.currencies}" />
+                        </p:selectOneMenu>
 
 
-        <h:outputScript>
+                        <h:outputLabel value="数量" />
+                        <t:panelGroup colspan="3">
+                            <p:inputText value="#{stockOrderAdminBean.orderItem.quantity}"/>
+                        </t:panelGroup>
+
+
+						<h:panelGroup />
+						<t:panelGroup colspan="2">
+							<t:panelGrid columns="2">
+								<p:commandButton value="保存"
+									actionListener="#{stockOrderAdminBean.doSaveItem}"
+									oncomplete="itemDialog.hide();" async="true"
+									update="mainForm" />
+								<p:commandButton value="取消"
+									oncomplete="itemDialog.hide();" />
+							</t:panelGrid>
+						</t:panelGroup>
+						<h:panelGroup />
+
+					</t:panelGrid>
+				</h:panelGroup>
+
+			</p:dialog>
+		</h:form>
+
+
+
+
+		<h:outputScript>
             document.title = $("#mainForm\\:pageTitle").val();
         </h:outputScript>
 

@@ -1,8 +1,12 @@
 package com.bee32.sem.inventory.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
@@ -25,6 +29,7 @@ public class StockOrderItem
     StockOrder parent;
     Material material;
     String batch;
+    Date expirationDate;
     StockLocation location;
     StockItemState state = StockItemState.NORMAL;
 
@@ -36,6 +41,7 @@ public class StockOrderItem
         parent = item.parent;
         material = item.material;
         batch = item.batch;
+        expirationDate = item.expirationDate;
         location = item.location;
         state = item.state;
     }
@@ -102,6 +108,18 @@ public class StockOrderItem
 
     public void setBatch(String batch) {
         this.batch = batch;
+    }
+
+    /*
+     * 有效期
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     /**
