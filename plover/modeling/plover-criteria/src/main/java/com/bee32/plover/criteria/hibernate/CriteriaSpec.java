@@ -65,11 +65,11 @@ public abstract class CriteriaSpec {
     }
 
     protected static CriteriaElement likeIgnoreCase(String propertyName, String value) {
-        return new LikeIgnoreCase(propertyName, value);
+        return new Like(true, propertyName, value);
     }
 
     protected static CriteriaElement likeIgnoreCase(String propertyName, String value, MatchMode matchMode) {
-        return new LikeIgnoreCase(propertyName, value, matchMode);
+        return new Like(true, propertyName, value, matchMode);
     }
 
     protected static CriteriaElement greaterThan(String propertyName, Object value) {
