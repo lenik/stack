@@ -2,6 +2,7 @@ package com.bee32.sem.inventory;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Calendar;
 
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
@@ -10,6 +11,7 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialAttribute;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
+import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockWarehouse;
@@ -80,6 +82,25 @@ public class SEMInventorySamples
         MaterialAttribute cskdpDistAttr = new MaterialAttribute(cskdp, "炮程", "120km");
         MaterialAttribute cskdpRefmaAttr = new MaterialAttribute(cskdp, "推荐手办", "ABD-432");
         cskdp.setAttributes(Arrays.asList(cskdpDistAttr, cskdpRefmaAttr));
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2011);
+        cal.set(Calendar.MONTH, 5);
+        cal.set(Calendar.DAY_OF_MONTH, 19);
+
+        MaterialPrice price_chskdp1 = new MaterialPrice();
+        price_chskdp1.setMaterial(cskdp);
+        price_chskdp1.setDate(cal.getTime());
+        price_chskdp1.setPrice(1212.1212);
+        MaterialPrice price_chskdp2 = new MaterialPrice();
+        price_chskdp2.setMaterial(cskdp);
+        price_chskdp2.setPrice(3434.34);
+        cskdp.setPrices(Arrays.asList(price_chskdp1, price_chskdp2));
+
+        MaterialPrice price_gundam = new MaterialPrice();
+        price_gundam.setMaterial(gundam);
+        price_gundam.setPrice(5656.56);
+        gundam.setPrices(Arrays.asList(price_gundam));
 
         parentCategory.setName("1");
         parentCategory.setMaterials(Arrays.asList(cskdp));
