@@ -90,7 +90,7 @@ public class MaterialDto
     public void addPrice(MaterialPriceDto price) {
         int existingIndex = prices.indexOf(price);
         if (existingIndex == -1)
-            prices.add(price);
+            prices.add(0, price);
         else
             prices.set(existingIndex, price);
     }
@@ -176,6 +176,15 @@ public class MaterialDto
             return null;
         else
             return prices.get(0);
+    }
+
+    public String getCurrentPrice() {
+        MaterialPriceDto materialPriceDto = getLatestPrice();
+        if (materialPriceDto == null)
+            return "(尚无价格)";
+        else
+            return materialPriceDto.getPrice().getValue().toString() + "("
+                    + materialPriceDto.getPrice().getCurrencyCode() + ")";
     }
 
     @Override
