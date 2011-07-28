@@ -13,20 +13,20 @@ public class ChanceQuotationItemDto
 
     private static final long serialVersionUID = 1L;
 
-    private ChanceQuotationDto quotation;
+    private ChanceQuotationDto parent;
     private MaterialDto material;
     private float discount;
 
     @Override
     protected void _marshal(ChanceQuotationItem source) {
-        this.quotation = new ChanceQuotationDto().ref(source.getQuotation());
+        this.parent = new ChanceQuotationDto().ref(source.getParent());
         this.material = mref(MaterialDto.class, source.getMaterial());
         this.discount = source.getDiscount();
     }
 
     @Override
     protected void _unmarshalTo(ChanceQuotationItem target) {
-        merge(target, "quotation", quotation);
+        merge(target, "parent", parent);
         merge(target, "material", material);
         target.setDiscount(discount);
     }
@@ -36,12 +36,14 @@ public class ChanceQuotationItemDto
             throws ParseException {
     }
 
-    public ChanceQuotationDto getQuotation() {
-        return quotation;
+    public ChanceQuotationDto getParent() {
+        return parent;
     }
 
-    public void setQuotation(ChanceQuotationDto quotation) {
-        this.quotation = quotation;
+    public void setParent(ChanceQuotationDto parent) {
+        if (parent == null)
+            throw new NullPointerException("parent");
+        this.parent = parent;
     }
 
     public MaterialDto getMaterial() {

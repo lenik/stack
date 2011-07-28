@@ -17,7 +17,7 @@ public class ChanceQuotationItem
 
     private static final long serialVersionUID = 1L;
 
-    ChanceQuotation quotation;
+    ChanceQuotation parent;
 
     Material material;
     float discount;
@@ -27,14 +27,14 @@ public class ChanceQuotationItem
      */
     @NaturalId
     @ManyToOne
-    public ChanceQuotation getQuotation() {
-        return quotation;
+    public ChanceQuotation getParent() {
+        return parent;
     }
 
-    public void setQuotation(ChanceQuotation quotation) {
-        if (quotation == null)
-            throw new NullPointerException("quotation");
-        this.quotation = quotation;
+    public void setParent(ChanceQuotation parent) {
+        if (parent == null)
+            throw new NullPointerException("parent");
+        this.parent = parent;
     }
 
     /**
