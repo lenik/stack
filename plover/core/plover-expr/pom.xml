@@ -9,6 +9,11 @@
     <version>0.2.101</version>
     <dependencies>
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+        </dependency>
+        <dependency>
             <groupId>javax.free</groupId>
             <artifactId>fj5</artifactId>
             <version>1.1</version>
