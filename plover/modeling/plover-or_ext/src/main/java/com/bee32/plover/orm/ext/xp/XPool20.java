@@ -20,8 +20,8 @@ import com.bee32.plover.orm.entity.Entity;
  * <li>2 floats
  * <li>2 doubles
  * <li>2 date/time
- * <li>5 char[32]
- * <li>2 char[64]
+ * <li>5 char[LEN_A]
+ * <li>2 char[LEN_AA]
  * </ul>
  */
 @MappedSuperclass
@@ -177,7 +177,7 @@ public abstract class XPool20<Es extends Entity<?>>
         this.date2 = date2;
     }
 
-    @Column(length = 32)
+    @Column(length = LEN_A)
     public String getA1() {
         return a1;
     }
@@ -186,7 +186,7 @@ public abstract class XPool20<Es extends Entity<?>>
         this.a1 = a1;
     }
 
-    @Column(length = 32)
+    @Column(length = LEN_A)
     public String getA2() {
         return a2;
     }
@@ -195,7 +195,7 @@ public abstract class XPool20<Es extends Entity<?>>
         this.a2 = a2;
     }
 
-    @Column(length = 32)
+    @Column(length = LEN_A)
     public String getA3() {
         return a3;
     }
@@ -204,7 +204,7 @@ public abstract class XPool20<Es extends Entity<?>>
         this.a3 = a3;
     }
 
-    @Column(length = 32)
+    @Column(length = LEN_A)
     public String getA4() {
         return a4;
     }
@@ -213,7 +213,7 @@ public abstract class XPool20<Es extends Entity<?>>
         this.a4 = a4;
     }
 
-    @Column(length = 32)
+    @Column(length = LEN_A)
     public String getA5() {
         return a5;
     }
@@ -222,7 +222,7 @@ public abstract class XPool20<Es extends Entity<?>>
         this.a5 = a5;
     }
 
-    @Column(length = 64)
+    @Column(length = LEN_AA)
     public String getAa1() {
         return aa1;
     }
@@ -231,7 +231,7 @@ public abstract class XPool20<Es extends Entity<?>>
         this.aa1 = aa1;
     }
 
-    @Column(length = 64)
+    @Column(length = LEN_AA)
     public String getAa2() {
         return aa2;
     }

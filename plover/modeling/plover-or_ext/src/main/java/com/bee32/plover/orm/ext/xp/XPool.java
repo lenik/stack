@@ -15,6 +15,10 @@ public abstract class XPool<Es extends Entity<?>>
 
     private static final long serialVersionUID = 1L;
 
+    public static final int LEN_A = 32;
+    public static final int LEN_AA = 64;
+    public static final int LEN_AAAA = 250; // slightly smaller than 256.
+
     Long id;
 
     Es source;

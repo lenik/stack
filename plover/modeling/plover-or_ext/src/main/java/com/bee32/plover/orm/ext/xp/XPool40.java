@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.ext.xp;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import com.bee32.plover.orm.entity.Entity;
@@ -28,6 +29,7 @@ public class XPool40<Es extends Entity<?>>
     String aaaa2;
     String aaaa3;
 
+    @Column(length = LEN_A)
     public String getA6() {
         return a6;
     }
@@ -36,6 +38,7 @@ public class XPool40<Es extends Entity<?>>
         this.a6 = a6;
     }
 
+    @Column(length = LEN_A)
     public String getA7() {
         return a7;
     }
@@ -44,6 +47,7 @@ public class XPool40<Es extends Entity<?>>
         this.a7 = a7;
     }
 
+    @Column(length = LEN_A)
     public String getA8() {
         return a8;
     }
@@ -52,6 +56,7 @@ public class XPool40<Es extends Entity<?>>
         this.a8 = a8;
     }
 
+    @Column(length = LEN_A)
     public String getA9() {
         return a9;
     }
@@ -60,6 +65,7 @@ public class XPool40<Es extends Entity<?>>
         this.a9 = a9;
     }
 
+    @Column(length = LEN_A)
     public String getA10() {
         return a10;
     }
@@ -68,6 +74,7 @@ public class XPool40<Es extends Entity<?>>
         this.a10 = a10;
     }
 
+    @Column(length = LEN_AA)
     public String getAa3() {
         return aa3;
     }
@@ -76,6 +83,7 @@ public class XPool40<Es extends Entity<?>>
         this.aa3 = aa3;
     }
 
+    @Column(length = LEN_AA)
     public String getAa4() {
         return aa4;
     }
@@ -84,6 +92,7 @@ public class XPool40<Es extends Entity<?>>
         this.aa4 = aa4;
     }
 
+    @Column(length = LEN_AA)
     public String getAa5() {
         return aa5;
     }
@@ -92,6 +101,7 @@ public class XPool40<Es extends Entity<?>>
         this.aa5 = aa5;
     }
 
+    @Column(length = LEN_AAAA)
     public String getAaaa2() {
         return aaaa2;
     }
@@ -100,6 +110,7 @@ public class XPool40<Es extends Entity<?>>
         this.aaaa2 = aaaa2;
     }
 
+    @Column(length = LEN_AAAA)
     public String getAaaa3() {
         return aaaa3;
     }
