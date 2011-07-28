@@ -17,11 +17,11 @@ import com.bee32.sem.chance.entity.ChanceQuotation;
 import com.bee32.sem.chance.entity.ChanceQuotationItem;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
-import com.bee32.sem.inventory.entity.MaterialPrice;
+import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.people.entity.Party;
 
-@ImportSamples({ SEMPeopleSamples.class, IcsfPrincipalSamples.class })
+@ImportSamples({ SEMPeopleSamples.class, IcsfPrincipalSamples.class, SEMInventorySamples.class })
 public class SEMChanceSamples
         extends SampleContribution {
 
@@ -87,13 +87,25 @@ public class SEMChanceSamples
         chance.addAction(chanceAction2);
 // chance.setActions(Arrays.asList(chanceAction1, chanceAction2));
 
+        ChanceQuotationItem item1 = new ChanceQuotationItem();
+        item1.setParent(quotation);
+        item1.setMaterial(SEMInventorySamples.cskdp);
+        item1.setDiscount(1);
+        item1.setQuantity(new BigDecimal(3));
+        item1.setPrice(SEMInventorySamples.cskdp.getLatestPrice().getPrice());
+
+//        ChanceQuotationItem item2 = new ChanceQuotationItem();
+//        item2.setQuotation(quotation);
+//        item2.setMaterial(SEMInventorySamples.gundam);
+//        item2.setDiscount(0.9f);
+
+
         quotation.setOwner(IcsfPrincipalSamples.eva);
         quotation.setSubject("7月2号报价");
         quotation.setChance(chance);
-        quotation.setAmount(7600);
         quotation.setRecommend("发顺丰加保价");
         quotation.setPayment("网上转帐");
-        quotation.setRemark("良好的开始");
+        quotation.addItem(item1);
 
     }
 
@@ -111,29 +123,6 @@ public class SEMChanceSamples
         // add <price>->quotation and quotationItem
         add(quotation);
 
-        // TODO Refactor to MaterialPrices.
-        MaterialPrice basePrice1;
-        add(basePrice1 = new MaterialPrice("宾得XR", 6000, "第一代"));
-        add(new MaterialPrice("宾得XR", 7000, "第二代"));
-        add(new MaterialPrice("宾得XR", 8000, "第三代"));
-        add(new MaterialPrice("宾得XR", 9000, "第四代"));
-
-        add(new MaterialPrice("猪肉", 5, "纯天然"));
-        add(new MaterialPrice("猪肉", 8, "无污染"));
-        add(new MaterialPrice("猪肉", 15, "添加剂"));
-        add(new MaterialPrice("猪肉", 20, "瘦肉精"));
-        add(new MaterialPrice("猪肉", 25, "还是吃牛肉吧"));
-
-        ChanceQuotationItem quotationItem1 = new ChanceQuotationItem();
-        add(quotationItem1);
-        quotationItem1.setDescription("羽与晃宿相爱,遥共语,但说平生,不及军事.");
-        quotationItem1.setQuotation(quotation);
-        quotationItem1.setBasePrice(basePrice1);
-        quotationItem1.setMaterial("宾得XR");
-        quotationItem1.setDiscount(0.88f);
-        quotationItem1.setPrice(3800);
-        quotationItem1.setQuantity(new BigDecimal(2));
-        add(quotationItem1);
     }
 
 }
