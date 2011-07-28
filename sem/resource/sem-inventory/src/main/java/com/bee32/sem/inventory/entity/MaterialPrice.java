@@ -27,7 +27,8 @@ public class MaterialPrice
     private static final long serialVersionUID = 1L;
 
     Material material;
-    Date date = LocalDateUtil.truncate(new Date());
+    Date date = new Date();
+//    Date date = LocalDateUtil.truncate(new Date());
     MCValue price = new MCValue();
 
     /**
@@ -56,7 +57,7 @@ public class MaterialPrice
     public void setDate(Date date) {
         if (date == null)
             throw new NullPointerException("date");
-        date = LocalDateUtil.truncate(date);
+//        date = LocalDateUtil.truncate(date);
         this.date = date;
     }
 

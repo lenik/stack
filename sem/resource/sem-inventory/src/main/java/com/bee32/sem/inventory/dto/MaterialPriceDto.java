@@ -7,7 +7,6 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.sem.inventory.entity.LocalDateUtil;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.world.monetary.ICurrencyAware;
 import com.bee32.sem.world.monetary.MCValue;
@@ -58,7 +57,8 @@ public class MaterialPriceDto
     public void setDate(Date date) {
         if (date == null)
             throw new NullPointerException("date");
-        this.date = LocalDateUtil.truncate(date);
+        this.date = date;
+//        this.date = LocalDateUtil.truncate(date);
     }
 
     public MCValue getPrice() {
