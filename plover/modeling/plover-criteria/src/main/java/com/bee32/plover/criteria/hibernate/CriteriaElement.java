@@ -17,4 +17,8 @@ public abstract class CriteriaElement
 
     protected abstract Criterion buildCriterion();
 
+    public final boolean filter(Object obj) {
+        return filter(obj, null);
+    }
+
 }
