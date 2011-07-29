@@ -13,7 +13,7 @@ public class PersonDto
 
     private static final long serialVersionUID = 1L;
 
-    Character sex;
+    char sex;
 
     String censusRegister;
     PersonSidTypeDto sidType;
@@ -67,17 +67,15 @@ public class PersonDto
             mergeSet(target, "roles", roles);
     }
 
-    public Character getSex() {
+    public char getSex() {
         return sex;
     }
 
-    public void setSex(Character sex) {
+    public void setSex(char sex) {
         this.sex = sex;
     }
 
     public String getSexText() {
-        if (sex == null)
-            return null;
         return Gender.valueOf(sex).getDisplayName();
     }
 
