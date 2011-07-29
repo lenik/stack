@@ -16,6 +16,7 @@ import overlay.Overlay;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.orm.util.EntityFormatter;
+import com.bee32.plover.orm.util.ErrorResult;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.IMultiFormat;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -23,7 +24,7 @@ import com.bee32.plover.util.PrettyPrintStream;
 @MappedSuperclass
 public abstract class Entity<K extends Serializable>
         extends EntityBase<K>
-        implements IMultiFormat {
+        implements IMultiFormat, IEntityLifecycle {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,10 +47,12 @@ public abstract class Entity<K extends Serializable>
 
     public Entity() {
         super(null);
+        entityCreate();
     }
 
     public Entity(String name) {
         super(name);
+        entityCreate();
     }
 
     protected abstract void setId(K id);
@@ -358,6 +361,81 @@ public abstract class Entity<K extends Serializable>
             return null;
 
         return thatClass.cast(thatLike);
+    }
+
+    static EntityLifecycleAddons addons = EntityLifecycleAddons.getInstance();
+
+    @Override
+    public void entityCreate() {
+        addons.entityCreate(this);
+    }
+
+    /**
+     * Validate this entity.
+     * <p>
+     * Entity can only be saved or updated if it's validated.
+     * <p>
+     * When override this method, you should `return super.validate()` at the end.
+     *
+     * @return <code>null</code> if validated, or non-<code>null</code> error result contains the
+     *         error message.
+     */
+    @Override
+    public ErrorResult entityValidate() {
+        return addons.entityValidate(this);
+    }
+
+    /**
+     * Test if this entity is allowed to be modified.
+     * <p>
+     * When override this method, you must
+     *
+     * <pre>
+     * return super.{@link #entityCheckModify()};
+     * </pre>
+     *
+     * at the end.
+     *
+     * @return Non-<code>null</code> error result to prevent this entity from being modified.
+     */
+    @Override
+    public ErrorResult entityCheckModify() {
+        if (isLocked())
+            return ErrorResult.error("Entity is locked");
+        return addons.entityCheckModify(this);
+    }
+
+    /**
+     * Test if this entity is allowed to be modified.
+     * <p>
+     * When override this method, you must
+     *
+     * <pre>
+     * return super.{@link #entityCheckDelete()};
+     * </pre>
+     *
+     * at the end.
+     *
+     * @return Non-<code>null</code> error result to prevent this entity from being deleted.
+     */
+    @Override
+    public ErrorResult entityCheckDelete() {
+        if (isLocked())
+            return ErrorResult.error("Entity is locked");
+        return addons.entityCheckDelete(this);
+    }
+
+    @Override
+    public void entityUpdated() {
+        addons.entityUpdated(this);
+    }
+
+    /**
+     * Called after the entity is removed from the database.
+     */
+    @Override
+    public void entityDeleted() {
+        addons.entityDeleted(this);
     }
 
 }
