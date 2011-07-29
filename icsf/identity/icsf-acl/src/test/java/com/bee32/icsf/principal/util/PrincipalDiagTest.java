@@ -1,4 +1,4 @@
-package com.bee32.icsf.principal;
+package com.bee32.icsf.principal.util;
 
 import static org.junit.Assert.assertTrue;
 
@@ -6,7 +6,11 @@ import java.util.Locale;
 
 import org.junit.Test;
 
+import com.bee32.icsf.principal.Group;
+import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.builtins.MultiPrincipal;
+import com.bee32.icsf.principal.util.PrincipalCheckException;
+import com.bee32.icsf.principal.util.PrincipalDiag;
 
 public class PrincipalDiagTest {
 

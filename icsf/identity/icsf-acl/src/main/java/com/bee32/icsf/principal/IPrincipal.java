@@ -49,7 +49,6 @@ public interface IPrincipal
      *            待测试的被蕴含的安全主体。
      * @return 仅当本主体蕴含了指定的 <code>principal</code> 则返回 <code>true</code>，如果蕴含关系不能确定或表示不蕴含则返回
      *         <code>false</code>。
-     * @see PrincipalImplication#getLUB()
      */
     boolean implies(IPrincipal principal);
 

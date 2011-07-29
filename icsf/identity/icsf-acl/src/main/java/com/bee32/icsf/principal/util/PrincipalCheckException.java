@@ -1,4 +1,4 @@
-package com.bee32.icsf.principal;
+package com.bee32.icsf.principal.util;
 
 import com.bee32.icsf.InternalSecurityException;
 

@@ -1,9 +1,11 @@
-package com.bee32.icsf.principal;
+package com.bee32.icsf.principal.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import com.bee32.icsf.principal.IPrincipal;
 
 public class PrincipalImplication {
 

@@ -1,7 +1,9 @@
-package com.bee32.icsf.principal;
+package com.bee32.icsf.principal.util;
 
 import javax.free.EncodeException;
 import javax.free.XMLs;
+
+import com.bee32.icsf.principal.Group;
 
 public class PrincipalToXML {
 
