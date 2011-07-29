@@ -39,7 +39,7 @@ public class SuperfishMenuBuilder {
     String resolve(ILocationContext location) {
         HttpServletRequest request = this.request;
         if (request == null)
-            request = ThreadServletContext.getRequest();
+            request = ThreadServletContext.getRequestOpt();
 
         if (request == null)
             return location.toString();

@@ -58,7 +58,7 @@ public class ModifyPasswordBean extends EntityViewBean {
 
 
 	public UserDto getCurrentUser() {
-		User u = (User) SessionLoginInfo.requireCurrentUser();
+		User u = (User) SessionLoginInfo.getUser();
 		User user = serviceFor(User.class).getOrFail(u.getId());
 		UserDto cu = DTOs.marshal(UserDto.class, user);
 
@@ -75,7 +75,7 @@ public class ModifyPasswordBean extends EntityViewBean {
 			return;
 		}
 
-		User u = (User) SessionLoginInfo.requireCurrentUser();
+		User u = (User) SessionLoginInfo.getUser();
 		List<UserPassword> plist = serviceFor(UserPassword.class).list(
 				LoginCriteria.forUser(u));
 		if(plist.isEmpty()) {

@@ -12,7 +12,7 @@ public class ThreadHttpContext
         extends ThreadServletContext {
 
     public static WebApplicationContext getWebApplicationContext() {
-        ServletContext sc = getServletContext();
+        ServletContext sc = getServletContextOpt();
         if (sc == null)
             return null;
         return WebApplicationContextUtils.getWebApplicationContext(sc);
@@ -23,7 +23,7 @@ public class ThreadHttpContext
     }
 
     public static WebApplicationContext requireWebApplicationContext() {
-        return WebApplicationContextUtils.getWebApplicationContext(requireServletContext());
+        return WebApplicationContextUtils.getWebApplicationContext(getServletContext());
     }
 
     public static ApplicationContext requireApplicationContext() {

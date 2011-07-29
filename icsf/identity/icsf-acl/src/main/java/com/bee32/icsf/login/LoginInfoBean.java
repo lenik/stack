@@ -19,7 +19,7 @@ public class LoginInfoBean
     @Override
     protected HttpSession getSession() {
         // return session;
-        return ThreadServletContext.getSession();
+        return ThreadServletContext.getSessionOpt();
     }
 
     // @Inject
@@ -30,7 +30,7 @@ public class LoginInfoBean
 
     @Override
     protected HttpSession requireSession() {
-        return ThreadServletContext.requireSession();
+        return ThreadServletContext.getSession();
     }
 
 }

@@ -9,7 +9,7 @@ public class UILoginBean
     private static final long serialVersionUID = 1L;
 
     public String getUserName() {
-        String name = SessionLoginInfo.requireCurrentUser().getName();
+        String name = SessionLoginInfo.getUser().getName();
         return name;
     }
 

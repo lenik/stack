@@ -19,7 +19,7 @@ public class PeopleCriteria
     }
 
     public static CriteriaElement ownedByCurrentUser() {
-        IUserPrincipal currentUser = SessionLoginInfo.requireCurrentUser();
+        IUserPrincipal currentUser = SessionLoginInfo.getUser();
         if (currentUser.getName().equals("admin"))
             return null;
         else

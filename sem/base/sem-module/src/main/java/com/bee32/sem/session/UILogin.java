@@ -40,7 +40,7 @@ public class UILogin
         writer.writeAttribute("id", getClientId(context), "id");
         writer.writeAttribute("name", getClientId(context), "clientId"); // ???
 
-        IUserPrincipal currentUser = SessionLoginInfo.requireCurrentUser();
+        IUserPrincipal currentUser = SessionLoginInfo.getUser();
         writer.write("Logged in as " + currentUser.getName());
 
         if (_1) {

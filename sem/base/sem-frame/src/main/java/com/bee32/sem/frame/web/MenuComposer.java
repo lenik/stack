@@ -29,7 +29,7 @@ public class MenuComposer
         super.doAfterCompose(comp);
 
         // XXX - Zk Composer 怎么获取有用的 ServletRequest?
-        HttpServletRequest request = ThreadServletContext.requireRequest();
+        HttpServletRequest request = ThreadServletContext.getRequest();
 
         new ZkMenuBuilder(SEMFrameMenu.MAIN, menubar, request).buildMenubar();
     }

@@ -29,7 +29,7 @@ public class StyleLibrary
     @Override
     protected void formatHeader(IIndentedOut out)
             throws IOException {
-        HttpServletRequest req = ThreadServletContext.requireRequest();
+        HttpServletRequest req = ThreadServletContext.getRequest();
         out.print("<style type='text/css' src='" + location.resolve(req) + "'>");
     }
 

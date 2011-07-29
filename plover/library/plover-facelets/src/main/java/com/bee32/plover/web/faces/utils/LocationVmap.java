@@ -67,7 +67,7 @@ public class LocationVmap
 
     @Override
     public String toString() {
-        HttpServletRequest request = ThreadServletContext.requireRequest();
+        HttpServletRequest request = ThreadServletContext.getRequest();
 
         switch (mode) {
         case ABSOLUTE:

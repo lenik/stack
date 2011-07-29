@@ -14,7 +14,7 @@ public class ChanceCriteria
         extends CriteriaSpec {
 
     public static CriteriaElement ownedByCurrentUser() {
-        IUserPrincipal currentUser = SessionLoginInfo.requireCurrentUser();
+        IUserPrincipal currentUser = SessionLoginInfo.getUser();
         return ownedBy(currentUser);
     }
 
@@ -31,7 +31,7 @@ public class ChanceCriteria
     }
 
     public static CriteriaElement actedByCurrentUser() {
-        IUserPrincipal currentUser = SessionLoginInfo.requireCurrentUser();
+        IUserPrincipal currentUser = SessionLoginInfo.getUser();
         return actedBy(currentUser);
     }
 

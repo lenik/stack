@@ -23,7 +23,7 @@ public class LogoutController extends MultiActionController {
 
 			@Override
 			protected String eval() throws Exception {
-				SessionLoginInfo.setCurrentUser(null);
+				SessionLoginInfo.setUser(null);
 
 				return null;
 			}

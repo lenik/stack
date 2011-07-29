@@ -58,9 +58,9 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
 
         IUserPrincipal currentUser = null;
 
-        HttpSession session = ThreadHttpContext.getSession();
+        HttpSession session = ThreadHttpContext.getSessionOpt();
         if (session != null) {
-            currentUser = SessionLoginInfo.getCurrentUser(session);
+            currentUser = SessionLoginInfo.getUserOpt(session);
             // if (currentUser ==null)
             // currentUser = User.ANONYMOUS;
         }

@@ -69,7 +69,7 @@ public abstract class ScriptElement
             for (Object obj : contents) {
                 String str;
                 if (obj instanceof ITextForRequest) {
-                    HttpServletRequest req = ThreadServletContext.requireRequest();
+                    HttpServletRequest req = ThreadServletContext.getRequest();
                     str = ((ITextForRequest) obj).resolve(req);
                 } else
                     str = obj.toString();

@@ -10,12 +10,12 @@ public class ThreadServletContext {
     static final ThreadLocal<HttpServletRequest> threadLocalRequests = new ThreadLocal<HttpServletRequest>();
     static final ThreadLocal<HttpServletResponse> threadLocalResponses = new ThreadLocal<HttpServletResponse>();
 
-    public static HttpServletRequest getRequest() {
+    public static HttpServletRequest getRequestOpt() {
         return threadLocalRequests.get();
     }
 
-    public static HttpServletRequest requireRequest() {
-        HttpServletRequest request = getRequest();
+    public static HttpServletRequest getRequest() {
+        HttpServletRequest request = getRequestOpt();
 
         if (request == null)
             throw new IllegalStateException("Not in an http-request scope");
@@ -27,12 +27,12 @@ public class ThreadServletContext {
         threadLocalRequests.set(request);
     }
 
-    public static HttpServletResponse getResponse() {
+    public static HttpServletResponse getResponseOpt() {
         return threadLocalResponses.get();
     }
 
-    public static HttpServletResponse requireResponse() {
-        HttpServletResponse response = getResponse();
+    public static HttpServletResponse getResponse() {
+        HttpServletResponse response = getResponseOpt();
 
         if (response == null)
             throw new IllegalStateException("Not in an http-request scope");
@@ -44,30 +44,30 @@ public class ThreadServletContext {
         threadLocalResponses.set(response);
     }
 
-    public static HttpSession getSession() {
-        HttpServletRequest request = getRequest();
+    public static HttpSession getSessionOpt() {
+        HttpServletRequest request = getRequestOpt();
         if (request == null)
             return null;
         return request.getSession();
     }
 
-    public static HttpSession requireSession() {
-        return requireRequest().getSession();
+    public static HttpSession getSession() {
+        return getRequest().getSession();
     }
 
-    public static ServletContext getServletContext() {
-        HttpSession session = getSession();
+    public static ServletContext getServletContextOpt() {
+        HttpSession session = getSessionOpt();
         if (session == null)
             return null;
         return session.getServletContext();
     }
 
-    public static ServletContext requireServletContext() {
-        return requireSession().getServletContext();
+    public static ServletContext getServletContext() {
+        return getSession().getServletContext();
     }
 
-    public static ServletContext requireApplication() {
-        return requireServletContext();
+    public static ServletContext getApplication() {
+        return getServletContext();
     }
 
 }

@@ -372,7 +372,7 @@ public class ChanceActionBean
         ChanceActionStyleDto style = new ChanceActionStyleDto().ref(styleId);
         action.setStyle(style);
 
-        UserDto actor = new UserDto().ref(SessionLoginInfo.requireCurrentUser().getId());
+        UserDto actor = new UserDto().ref(SessionLoginInfo.getUser().getId());
         action.setActor(actor);
 
         try {

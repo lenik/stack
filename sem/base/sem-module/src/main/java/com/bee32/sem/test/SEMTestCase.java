@@ -87,7 +87,7 @@ public class SEMTestCase
             CommonDataManager dataManager = appContext.getBean(CommonDataManager.class);
             User user = dataManager.asFor(User.class).getByName(userName);
 
-            SessionLoginInfo.setCurrentUser(user);
+            SessionLoginInfo.setUser(user);
         }
     }
 

@@ -28,13 +28,13 @@ public class LoginInfo {
     protected HttpSession getSession() {
         if (session != null)
             return session;
-        return ThreadServletContext.getSession();
+        return ThreadServletContext.getSessionOpt();
     }
 
     protected HttpSession requireSession() {
         if (session != null)
             return session;
-        return ThreadServletContext.requireSession();
+        return ThreadServletContext.getSession();
     }
 
     protected void setSession(HttpSession session) {

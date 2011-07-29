@@ -54,7 +54,7 @@ public class LoginBean
     public void login(ActionEvent even) {
         boolean loggedIn = false;
 
-        SessionLoginInfo.setCurrentUser(null);
+        SessionLoginInfo.setUser(null);
 
         User user = serviceFor(User.class).getByName(username);
         if (user == null) {
@@ -77,7 +77,7 @@ public class LoginBean
             return;
         }
 
-        SessionLoginInfo.setCurrentUser(user);
+        SessionLoginInfo.setUser(user);
         loggedIn = true;
         uiLogger.info("登录成功");
 

@@ -17,7 +17,7 @@ public class LoginEntityAddon
     public void entityCreate(Entity<?> entity) {
         super.entityCreate(entity);
 
-        IUserPrincipal owner = SessionLoginInfo.getCurrentUser();
+        IUserPrincipal owner = SessionLoginInfo.getUserOpt();
         if (owner == null)
             owner = User.admin;
 

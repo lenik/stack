@@ -65,7 +65,7 @@ public class AccessCheckAdvice
         if (apResource == null)
             return;
 
-        IUserPrincipal currentUser = SessionLoginInfo.getCurrentUser();
+        IUserPrincipal currentUser = SessionLoginInfo.getUserOpt();
 
         String errMessage = null;
         if (currentUser == null) {
@@ -88,7 +88,7 @@ public class AccessCheckAdvice
             // XXX 能否通过抛出异常的方法，而不是控制 response?
 
             // HttpServletRequest request = ThreadServletContext.requireRequest();
-            HttpServletResponse response = ThreadServletContext.requireResponse();
+            HttpServletResponse response = ThreadServletContext.getResponse();
 
             response.setCharacterEncoding("utf-8");
 

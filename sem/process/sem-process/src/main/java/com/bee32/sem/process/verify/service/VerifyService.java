@@ -148,7 +148,7 @@ public class VerifyService
         if (entity == null)
             throw new NullPointerException("entity");
 
-        IUserPrincipal __currentUser = SessionLoginInfo.requireCurrentUser();
+        IUserPrincipal __currentUser = SessionLoginInfo.getUser();
 
         // XXX
         // userService.get(0, __currentUser.getId());
