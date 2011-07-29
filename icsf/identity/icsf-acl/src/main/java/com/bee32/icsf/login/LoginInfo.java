@@ -1,13 +1,20 @@
 package com.bee32.icsf.login;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.IGroupPrincipal;
 import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.plover.servlet.util.ThreadServletContext;
+import com.bee32.plover.servlet.util.ThreadHttpContext;
 
+@Component
+@Scope("session")
 public class LoginInfo {
 
     static Logger logger = Logger.getLogger(LoginInfo.class);
@@ -16,31 +23,36 @@ public class LoginInfo {
     static final String CURRENT_DEPT = "__current_dept";
     static final String CURRENT_USER = "__current_user";
 
-    HttpSession session;
+    final HttpSession session;
+    static Map<String, Object> staticAttr = new HashMap<String, Object>();
 
     public LoginInfo() {
+        this(ThreadHttpContext.getSession());
     }
 
     public LoginInfo(HttpSession session) {
         this.session = session;
     }
 
-    protected HttpSession getSession() {
+    Object get(String key) {
         if (session != null)
-            return session;
-        return ThreadServletContext.getSessionOpt();
+            return session.getAttribute(key);
+        else
+            return staticAttr.get(key);
     }
 
-    protected HttpSession requireSession() {
+    void set(String key, Object value) {
         if (session != null)
-            return session;
-        return ThreadServletContext.getSession();
+            session.setAttribute(key, value);
+        else
+            staticAttr.put(key, value);
     }
 
-    protected void setSession(HttpSession session) {
-        this.session = session;
-        // Not used:
-        // ThreadServletContext.setSession(session);
+    void remove(String key) {
+        if (session != null)
+            session.removeAttribute(key);
+        else
+            staticAttr.remove(key);
     }
 
     /**
@@ -49,10 +61,7 @@ public class LoginInfo {
      * @return 如果未定义（未登录）返回 <code>null</code>。
      */
     public IGroupPrincipal getCurrentCorp() {
-        if (getSession() == null)
-            return null;
-
-        Object current_corp = getSession().getAttribute(CURRENT_CORP);
+        Object current_corp = get(CURRENT_CORP);
         if (current_corp == null)
             return null;
 
@@ -69,10 +78,7 @@ public class LoginInfo {
      * @return 如果未定义（未登录）返回 <code>null</code>。
      */
     public IGroupPrincipal getCurrentDepartment() {
-        if (getSession() == null)
-            return null;
-
-        Object current_dept = getSession().getAttribute(CURRENT_DEPT);
+        Object current_dept = get(CURRENT_DEPT);
 
         if (current_dept == null) {
             IUserPrincipal currentUser = getCurrentUser();
@@ -95,10 +101,7 @@ public class LoginInfo {
      * @return 如果未定义（未登录）返回 <code>null</code>。
      */
     public IUserPrincipal getCurrentUser() {
-        if (getSession() == null)
-            return null;
-
-        Object current_user = getSession().getAttribute(CURRENT_USER);
+        Object current_user = get(CURRENT_USER);
         if (current_user == null)
             return null;
 
@@ -116,12 +119,10 @@ public class LoginInfo {
      *            当前公司，用 <code>null</code> 用于清除当前设置。
      */
     public void setCurrentCorp(IGroupPrincipal corp) {
-        HttpSession session = requireSession();
-
         if (corp == null)
-            session.removeAttribute(CURRENT_CORP);
+            remove(CURRENT_CORP);
         else
-            session.setAttribute(CURRENT_CORP, corp);
+            set(CURRENT_CORP, corp);
     }
 
     /**
@@ -131,12 +132,10 @@ public class LoginInfo {
      *            当前部门，用 <code>null</code> 用于清除当前设置。
      */
     public void setCurrentDepartment(IGroupPrincipal department) {
-        HttpSession session = requireSession();
-
         if (department == null)
-            session.removeAttribute(CURRENT_DEPT);
+            remove(CURRENT_DEPT);
         else
-            session.setAttribute(CURRENT_DEPT, department);
+            set(CURRENT_DEPT, department);
     }
 
     /**
@@ -146,12 +145,10 @@ public class LoginInfo {
      *            当前用户，用 <code>null</code> 用于清除当前设置。
      */
     public void setCurrentUser(IUserPrincipal user) {
-        HttpSession session = requireSession();
-
         if (user == null)
-            session.removeAttribute(CURRENT_USER);
+            remove(CURRENT_USER);
         else
-            session.setAttribute(CURRENT_USER, user);
+            set(CURRENT_USER, user);
     }
 
 }
