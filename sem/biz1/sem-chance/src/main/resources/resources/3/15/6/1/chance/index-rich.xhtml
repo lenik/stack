@@ -26,24 +26,24 @@
             <p:panel header="销售机会">
                 <p:toolbar id="toolbar">
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="新增" actionListener="#{chanceBean.createForm}" update="chanceForm"
-                            async="false" disabled="#{chanceBean.edable}" />
+                        <p:commandButton id="chanceNewButton" value="新增" actionListener="#{chanceBean.createForm}" update="chanceForm"
+                            async="true" />
                         <p:divider />
-                        <p:commandButton value="编辑" actionListener="#{chanceBean.editForm}"
+                        <p:commandButton id="chanceEditBUtton" value="编辑" actionListener="#{chanceBean.editForm}"
                             disabled="#{chanceBean.edable}" update="chanceForm:toolbar,chanceForm:mainTab,prompting"
                             async="true" />
-                        <p:commandButton value="删除" actionListener="#{chanceBean.drop}"
-                            disabled="#{chanceBean.edable}" update="chanceForm,prompting" />
+                        <p:commandButton id="chanceDeleteButton" value="删除" actionListener="#{chanceBean.drop}" disabled="#{chanceBean.edable}"
+                            update="chanceForm,prompting" />
                         <p:divider />
-                        <p:commandButton value="保存" actionListener="#{chanceBean.saveChance}"
+                        <p:commandButton id="chanceAddButton" value="保存" actionListener="#{chanceBean.saveChance}"
                             disabled="#{!chanceBean.edable}" update="chanceForm:toolbar,chanceForm:mainTab,prompting"
                             async="false" />
                         <p:divider />
-                        <p:commandButton value="取消" actionListener="#{chanceBean.cancel}"
+                        <p:commandButton id="chanceResetButton" value="取消" actionListener="#{chanceBean.cancel}"
                             disabled="#{!chanceBean.edable}" update="chanceForm" async="true" />
                         <p:divider />
-                        <p:commandButton value="详细" actionListener="#{chanceBean.detailForm}"
-                            disabled="#{chanceBean.detailable}" update="chanceForm:mainTab" />
+                        <p:commandButton id="chanceDetailButton" value="详细" actionListener="#{chanceBean.detailForm}"
+                            update="chanceForm:mainTab,chanceForm:toolbar" />
                         <p:divider />
                         <h:outputLabel for="subjectPattern" value="机会标题:" />
                         <p:inputText id="subjectPattern" value="#{chanceBean.subjectPattern}" />
@@ -104,8 +104,8 @@
                                 columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
                                 <h:outputLabel for="subject" value="机会标题:" />
                                 <t:panelGroup colspan="3">
-                                    <p:inputText id="subject" value="#{chanceBean.activeChance.subject}" style="width:100%;"
-                                        readonly="#{chanceBean.editable}" />
+                                    <p:inputText id="subject" value="#{chanceBean.activeChance.subject}"
+                                        style="width:100%;" readonly="#{chanceBean.editable}" />
                                 </t:panelGroup>
 
                                 <h:outputLabel for="category" value="机会分类:" />
@@ -174,8 +174,7 @@
                             </t:panelGrid>
                         </p:fieldset>
 
-                        <p:fieldset legend="机会行动历史记录" toggleable="true" toggleSpeed="300" collapsed="true"
-                            rendered="#{chanceBean.fieldRendered}">
+                        <p:fieldset id="actionHistoryField" legend="机会行动历史记录" toggleable="true" toggleSpeed="300">
 
                             <p:toolbar id="actionToolbar">
                                 <p:toolbarGroup align="left" disabled="#{chanceBean.editable}">
@@ -229,20 +228,19 @@
                         </p:fieldset>
 
 
-                        <p:fieldset legend="报价" toggleable="true" toggleSpeed="300" collapsed="true"
-                            rendered="#{chanceBean.fieldRendered}">
+                        <p:fieldset id="quotationField" legend="报价" toggleable="true" toggleSpeed="300">
                             <p:toolbar id="quotationToolbar">
                                 <p:toolbarGroup align="left">
                                     <p:commandButton value="添加" actionListener="#{chanceBean.createQuotationForm}"
-                                        oncomplete="dlg.show();" update="quotationForm:quotationGrid"
+                                        oncomplete="quotationDialog.show();" update="quotationForm:quotationGrid"
                                         disabled="#{chanceBean.quotationAdd}" />
                                     <p:commandButton value="编辑" actionListener="#{chanceBean.editQuotation}"
-                                        oncomplete="dlg.show();" update="quotationForm:quotationGrid"
+                                        oncomplete="quotationDialog.show();" update="quotationForm:quotationGrid"
                                         disabled="#{chanceBean.quotationOptionable}" />
                                     <p:commandButton value="删除" onclick="quotationConfirmation.show();"
                                         disabled="#{chanceBean.quotationOptionable}" />
                                     <p:commandButton value="详细" actionListener="#{chanceBean.viewQuotationDetail}"
-                                        oncomplete="dlg.show();" update="quotationForm:quotationGrid"
+                                        oncomplete="quotationDialog.show();" update="quotationForm:quotationGrid"
                                         disabled="#{chanceBean.quotationDetailable}" />
                                 </p:toolbarGroup>
                             </p:toolbar>
@@ -484,7 +482,7 @@
 
         <h:form id="quotationForm">
 
-            <p:dialog header="报价单" widgetVar="dlg" modal="true" height="600" width="900">
+            <p:dialog header="报价单" widgetVar="quotationDialog" modal="true" height="600" width="900">
 
                 <t:panelGrid columns="3" id="quotationGrid">
                     <h:outputLabel for="quotationSubject" value="标题:" />
@@ -575,9 +573,9 @@
                     </t:panelGroup>
                     <t:panelGroup colspan="3">
                         <p:commandButton value="保存" actionListener="#{chanceBean.saveQuotation}"
-                            oncomplete="dlg.hide();" update="chanceForm:quotationList, prompting"
+                            oncomplete="quotationDialog.hide();" update="chanceForm:quotationList, prompting"
                             disabled="#{chanceBean.quotationEdit}" />
-                        <p:commandButton value="取消" onclick="dlg.hide();" />
+                        <p:commandButton value="取消" onclick="quotationDialog.hide();" />
                     </t:panelGroup>
                 </t:panelGrid>
             </p:dialog>
@@ -667,10 +665,10 @@
                         </t:panelGrid>
                     </t:panelGroup>
 
-<!--                     <h:outputLabel for="amount_quotationItem" value="总计:" /> -->
-<!--                     <t:panelGroup colspan="2"> -->
-<!--                         <h:outputText id="amount_quotationItem" value="#{chanceBean.selectedQuotationItem.amount}" /> -->
-<!--                     </t:panelGroup> -->
+                    <!--                     <h:outputLabel for="amount_quotationItem" value="总计:" /> -->
+                    <!--                     <t:panelGroup colspan="2"> -->
+                    <!--                         <h:outputText id="amount_quotationItem" value="#{chanceBean.selectedQuotationItem.amount}" /> -->
+                    <!--                     </t:panelGroup> -->
 
                     <h:outputText value="备注:" />
                     <t:panelGroup colspan="2">

@@ -10,6 +10,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.component.fieldset.Fieldset;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -51,16 +53,24 @@ public class ChanceBean
     public static final int TAB_INDEX = 0;
     public static final int TAB_FORM = 1;
 
+    static final String FIELD_ACTIONHISTORY = "chanceForm:actionHistoryField";
+    static final String FIELD_QUOTATION = "chanceForm:quotationField";
+
+    static final String BUTTON_CHANCE_NEW = "chanceForm:chanceNewButton";
+    static final String BUTTON_CHANCE_EDIT = "chanceForm:chanceEditButton";
+    static final String BUTTON_CHANCE_DELETE = "chanceForm:chanceDeleteButton";
+    static final String BUTTON_CHANCE_ADD = "chanceForm:chanceAddButtton";
+    static final String BUTTON_CHANCE_RESET = "chanceForm:chanceResetButton";
+    static final String BUTTON_CHANCE_DETAIL = "chanceForm:detailButton";
+
     // 判断是不是在查找状态
     private boolean isSearching;
 
     private boolean edable;
-    private boolean detailable;
     private boolean relating = true;
     private boolean unRelating = true;
     private boolean actionDetail = true;
     private boolean editable;
-    private boolean fieldRendered;
     private boolean chancePartyEdit;
     private boolean roleRendered;
     private boolean isChancePartyEditing;
@@ -103,28 +113,28 @@ public class ChanceBean
 
     // quotation methods
 
-//    void initMaterial() {
-//        materials = new ArrayList<String>();
-//        materials.add("尼康D200");
-//        materials.add("松下GF3");
-//        materials.add("佳能D300");
-//        materials.add("宾得XR");
-//        materials.add("猪肉");
-//    }
+// void initMaterial() {
+// materials = new ArrayList<String>();
+// materials.add("尼康D200");
+// materials.add("松下GF3");
+// materials.add("佳能D300");
+// materials.add("宾得XR");
+// materials.add("猪肉");
+// }
 
     public void findMaterial() {
-        //XXX
-//        if (!materialPattern.isEmpty()) {
-//            List<String> temp = new ArrayList<String>();
-//            initMaterial();
-//            for (String s : materials) {
-//                if (s.contains(materialPattern))
-//                    temp.add(s);
-//            }
-//            setMaterials(temp);
-//        } else {
-//            initMaterial();
-//        }
+        // XXX
+// if (!materialPattern.isEmpty()) {
+// List<String> temp = new ArrayList<String>();
+// initMaterial();
+// for (String s : materials) {
+// if (s.contains(materialPattern))
+// temp.add(s);
+// }
+// setMaterials(temp);
+// } else {
+// initMaterial();
+// }
     }
 
     public void viewQuotationDetail() {
@@ -145,41 +155,41 @@ public class ChanceBean
     }
 
     public void chooseMaterial() {
-        //XXX
-//        String sm = selectedMaterial;
-//        MaterialPrice currentPrice = serviceFor(MaterialPrice.class).list(//
-//                Order.desc("createdDate"), //
-//                PriceCriteria.listBasePriceByMaterial(sm)).get(0);
-//        ChanceQuotationItemDto qi = new ChanceQuotationItemDto().create();
-//        qi.setQuotation(quotation);
+        // XXX
+// String sm = selectedMaterial;
+// MaterialPrice currentPrice = serviceFor(MaterialPrice.class).list(//
+// Order.desc("createdDate"), //
+// PriceCriteria.listBasePriceByMaterial(sm)).get(0);
+// ChanceQuotationItemDto qi = new ChanceQuotationItemDto().create();
+// qi.setQuotation(quotation);
 //
-//        qi.setBasePrice(DTOs.mref(MaterialPriceDto.class, currentPrice));
+// qi.setBasePrice(DTOs.mref(MaterialPriceDto.class, currentPrice));
 //
-//        qi.setMaterial(sm);
-//        quotation.addItem(qi);
+// qi.setMaterial(sm);
+// quotation.addItem(qi);
     }
 
     void listQuotationByChance(ChanceDto chance) {
-//        List<ChanceQuotation> quotationList = serviceFor(ChanceQuotation.class).list(//
-//                Order.desc("createdDate"), //
-//                PriceCriteria.listQuotationByChance(chance.getId()));
-//        quotations = DTOs.marshalList(ChanceQuotationDto.class, quotationList);
+// List<ChanceQuotation> quotationList = serviceFor(ChanceQuotation.class).list(//
+// Order.desc("createdDate"), //
+// PriceCriteria.listQuotationByChance(chance.getId()));
+// quotations = DTOs.marshalList(ChanceQuotationDto.class, quotationList);
     }
 
     public void calculatePriceChange() {
-        //XXX
-//        double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
-//        selectedQuotationItem.setAmount(amount);
-//        quotationItemPriceRendered = !quotationItemPriceRendered;
-//        isPriceEditing = false;
+        // XXX
+// double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
+// selectedQuotationItem.setAmount(amount);
+// quotationItemPriceRendered = !quotationItemPriceRendered;
+// isPriceEditing = false;
     }
 
     public void calculateNumberChange() {
-        //XXX
-//        double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
-//        selectedQuotationItem.setAmount(amount);
-//        quotationItemNumberRendered = !quotationItemNumberRendered;
-//        isQuantityEditing = false;
+        // XXX
+// double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
+// selectedQuotationItem.setAmount(amount);
+// quotationItemNumberRendered = !quotationItemNumberRendered;
+// isQuantityEditing = false;
     }
 
     public void editPrice() {
@@ -292,12 +302,9 @@ public class ChanceBean
 
     public void initToolbar() {
         edable = false;
-        detailable = selectedChance == null ? true : false;
-    }
-
-    public void generatedToobar() {
-        edable = true;
-        detailable = true;
+        boolean temp = selectedChance == null ? true : false;
+        CommandButton button_detail = (CommandButton) findComponent(BUTTON_CHANCE_DETAIL);
+        button_detail.setDisabled(temp);
     }
 
     @PostConstruct
@@ -318,11 +325,11 @@ public class ChanceBean
     }
 
     public void onRowSelect() {
-        detailable = false;
+        findComponentEx(BUTTON_CHANCE_DETAIL).setEnabled(true);
     }
 
     public void onRowUnselect() {
-        detailable = true;
+        findComponentEx(BUTTON_CHANCE_DETAIL).setEnabled(false);
     }
 
     public void onActionRowSelect() {
@@ -440,9 +447,13 @@ public class ChanceBean
     public void createForm() {
         activeChance = new ChanceDto().create();
         setActiveTab(TAB_FORM);
-        generatedToobar();
+        edable = true;
+        boolean tempBoolean = selectedChance == null ? true : false;
+        CommandButton button_detail = (CommandButton) findComponent(BUTTON_CHANCE_DETAIL);
+        button_detail.setDisabled(tempBoolean);
         quotations = new ArrayList<ChanceQuotationDto>();
-        fieldRendered = false;
+        findComponent(FIELD_ACTIONHISTORY).setRendered(false);
+        findComponent(FIELD_QUOTATION).setRendered(false);
         quotationAdd = false;
         editable = false;
         relating = true;
@@ -457,20 +468,33 @@ public class ChanceBean
         activeChance = selectedChance;
         listQuotationByChance(activeChance);
         setActiveTab(TAB_FORM);
-        generatedToobar();
+        edable = true;
+        CommandButton button_detail = (CommandButton) findComponent(BUTTON_CHANCE_DETAIL);
+        button_detail.setDisabled(true);
         relating = false;
         unRelating = true;
         editable = false;
-        fieldRendered = true;
+        findComponent(FIELD_ACTIONHISTORY).setRendered(true);
+        findComponent(FIELD_QUOTATION).setRendered(true);
         quotationAdd = false;
     }
 
     public void detailForm() {
-        activeChance = selectedChance;
+        setActiveChance(selectedChance);
         listQuotationByChance(activeChance);
         setActiveTab(TAB_FORM);
-        generatedToobar();
-        fieldRendered = true;
+        edable = false;
+        boolean tempBoolean = selectedChance == null ? true : false;
+        CommandButton button_detail = (CommandButton) findComponent(BUTTON_CHANCE_DETAIL);
+        button_detail.setDisabled(tempBoolean);
+
+        Fieldset actionHistoryField = (Fieldset) findComponent(FIELD_ACTIONHISTORY);
+        actionHistoryField.setCollapsed(false);
+        actionHistoryField.setRendered(true);
+        Fieldset quotationField = (Fieldset) findComponent(FIELD_QUOTATION);
+        quotationField.setRendered(true);
+        quotationField.setCollapsed(false);
+
         quotationAdd = true;
         editable = true;
     }
@@ -479,7 +503,8 @@ public class ChanceBean
         initToolbar();
         setActiveTab(TAB_INDEX);
         editable = false;
-        fieldRendered = false;
+        findComponent(FIELD_ACTIONHISTORY).setRendered(false);
+        findComponent(FIELD_QUOTATION).setRendered(false);
         quotationAdd = false;
     }
 
@@ -492,15 +517,14 @@ public class ChanceBean
     }
 
     public void saveChance() {
-        FacesContext context = FacesContext.getCurrentInstance();
         String subject = activeChance.getSubject();
         if (subject.isEmpty()) {
-            context.addMessage(null, new FacesMessage("错误提示", "机会标题不能为空!"));
+            uiLogger.error("错误提示", "机会标题不能为空!");
             return;
         }
 
         if (activeChance.getParties().isEmpty()) {
-            context.addMessage(null, new FacesMessage("错误提示", "请选择机会对应的客户!"));
+            uiLogger.error("错误提示", "请选择机会对应的客户!");
             return;
         }
         String content = activeChance.getContent();
@@ -544,11 +568,11 @@ public class ChanceBean
             setActiveTab(TAB_INDEX);
             initToolbar();
             editable = true;
-            fieldRendered = false;
-            context.addMessage(null, new FacesMessage("提示", "保存销售机会成功"));
+            findComponent(FIELD_ACTIONHISTORY).setRendered(false);
+            findComponent(FIELD_QUOTATION).setRendered(false);
+            uiLogger.info("提示", "保存销售机会成功");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("错误", "保存销售机会失败: " + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("保存销售机会失败: " + e.getMessage(), e);
         }
     }
 
@@ -604,14 +628,6 @@ public class ChanceBean
         this.edable = edable;
     }
 
-    public boolean isDetailable() {
-        return detailable;
-    }
-
-    public void setDetailable(boolean detailable) {
-        this.detailable = detailable;
-    }
-
     public boolean isRelating() {
         return relating;
     }
@@ -642,14 +658,6 @@ public class ChanceBean
 
     public void setEditable(boolean editable) {
         this.editable = editable;
-    }
-
-    public boolean isFieldRendered() {
-        return fieldRendered;
-    }
-
-    public void setFieldRendered(boolean fieldRendered) {
-        this.fieldRendered = fieldRendered;
     }
 
     public boolean isChancePartyEdit() {
