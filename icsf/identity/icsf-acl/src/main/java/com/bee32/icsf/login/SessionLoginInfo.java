@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import com.bee32.icsf.principal.IGroupPrincipal;
 import com.bee32.icsf.principal.IUserPrincipal;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 
 public abstract class SessionLoginInfo {
@@ -70,6 +71,16 @@ public abstract class SessionLoginInfo {
 
     public static IGroupPrincipal getDepartmentOpt() {
         return getDepartment(ThreadServletContext.getSessionOpt());
+    }
+
+    public static synchronized void runAs(User user, Runnable runnable) {
+        IUserPrincipal prev = SessionLoginInfo.getUser();
+        SessionLoginInfo.setUser(user);
+        try {
+            runnable.run();
+        } finally {
+            SessionLoginInfo.setUser(prev);
+        }
     }
 
 }
