@@ -9,6 +9,8 @@ import com.bee32.plover.servlet.util.ThreadServletContext;
 public abstract class SessionLoginInfo {
 
     public static IUserPrincipal getCurrentUser(HttpSession session) {
+        if (session == null)
+            return null;
         return new LoginInfo(session).getCurrentUser();
     }
 
@@ -20,6 +22,8 @@ public abstract class SessionLoginInfo {
     }
 
     public static IGroupPrincipal getCurrentCorp(HttpSession session) {
+        if (session == null)
+            return null;
         return new LoginInfo(session).getCurrentCorp();
     }
 
@@ -41,33 +45,32 @@ public abstract class SessionLoginInfo {
 
     // Thread local session:
 
-    static HttpSession getSession() {
-        return ThreadServletContext.requireSession();
-    }
-
+    /**
+     * @return <code>null</code> If not logged in yet.
+     */
     public static IUserPrincipal getCurrentUser() {
-        return getCurrentUser(getSession());
+        return getCurrentUser(ThreadServletContext.getSession());
     }
 
     public static void setCurrentUser(IUserPrincipal user) {
-        setCurrentUser(getSession(), user);
+        setCurrentUser(ThreadServletContext.requireSession(), user);
     }
 
     public static IUserPrincipal requireCurrentUser() {
-        return requireCurrentUser(getSession());
+        return requireCurrentUser(ThreadServletContext.requireSession());
 
     }
 
     public static IGroupPrincipal getCurrentCorp() {
-        return getCurrentCorp(getSession());
+        return getCurrentCorp(ThreadServletContext.getSession());
     }
 
     public static void setCurrentCorp(IGroupPrincipal corp) {
-        setCurrentCorp(getSession(), corp);
+        setCurrentCorp(ThreadServletContext.requireSession(), corp);
     }
 
     public static IGroupPrincipal getCurrentDepartment() {
-        return getCurrentDepartment(getSession());
+        return getCurrentDepartment(ThreadServletContext.getSession());
     }
 
 }

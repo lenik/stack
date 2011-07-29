@@ -38,7 +38,7 @@ public class VerifyHandler<E extends VerifiableEntity<K, C>, //
 
         final String _id = req.getParameter("id");
 
-        final IUserPrincipal __currentUser = SessionLoginInfo.getCurrentUser();
+        final IUserPrincipal __currentUser = SessionLoginInfo.requireCurrentUser();
 
         SuccessOrFailMessage sof = new SuccessOrFailMessage("审核完成。") {
 
