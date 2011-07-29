@@ -5,6 +5,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+/**
+ * No-lazy: eagerly load samples.
+ */
 @Component
 public class SamplesLoaderActivator
         implements ApplicationContextAware {

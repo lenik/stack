@@ -20,14 +20,14 @@ public class IcsfIdentityUnit
 
     @Override
     protected void preamble() {
+        // add(Realm.class);
 
         add(Principal.class);
         add(User.class);
         add(Group.class);
         add(Role.class);
-        // add(Realm.class);
-
         add(UserEmail.class);
+
         add(UserPassword.class);
         add(PrivateQuestion.class);
 

@@ -46,7 +46,6 @@ public class SamplesLoader
     @Override
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
-
         // Eagerly scan all the contributions.
         ImportSamplesUtil.applyImports(applicationContext);
     }
