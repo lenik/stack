@@ -9,7 +9,8 @@ import com.bee32.plover.orm.util.DTOs;
 
 @Transactional(readOnly = true)
 public class PloverConfManager
-        extends EnterpriseService {
+        extends EnterpriseService
+        implements IPloverConfManager {
 
     @Inject
     PloverConfDao dao;
