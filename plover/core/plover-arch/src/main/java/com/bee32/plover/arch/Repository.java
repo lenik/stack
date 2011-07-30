@@ -42,6 +42,8 @@ public abstract class Repository<K, T>
 
         this.keyType = keyType;
         this.objectType = objectType;
+
+        introspect();
     }
 
     public Repository(String name, Class<? extends K> keyType, Class<? extends T> objectType) {
@@ -54,9 +56,14 @@ public abstract class Repository<K, T>
 
         this.keyType = keyType;
         this.objectType = objectType;
+
+        introspect();
     }
 
     protected void introspect() {
+        if (objectType != null)
+            return;
+
         Type[] repositoryArgs = ClassUtil.getTypeArgs(getClass(), Repository.class);
         keyType = ClassUtil.bound1(repositoryArgs[0]);
         objectType = ClassUtil.bound1(repositoryArgs[1]);
