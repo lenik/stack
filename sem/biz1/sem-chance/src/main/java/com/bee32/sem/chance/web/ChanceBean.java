@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceCategoryDto;
@@ -35,6 +36,14 @@ import com.bee32.sem.chance.entity.ChanceQuotationItem;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.util.ChanceCriteria;
+import com.bee32.sem.frame.ui.SelectionAdapter;
+import com.bee32.sem.frame.ui.SelectionEvent;
+import com.bee32.sem.inventory.dto.MaterialCategoryDto;
+import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.MaterialCategory;
+import com.bee32.sem.inventory.util.MaterialCriteria;
+import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -59,57 +68,93 @@ public class ChanceBean
     static final String BUTTON_CHANCE_NEW = "chanceForm:chanceNewButton";
     static final String BUTTON_CHANCE_EDIT = "chanceForm:chanceEditButton";
     static final String BUTTON_CHANCE_DELETE = "chanceForm:chanceDeleteButton";
-    static final String BUTTON_CHANCE_ADD = "chanceForm:chanceAddButtton";
+    static final String BUTTON_CHANCE_ADD = "chanceForm:chanceAddButton";
     static final String BUTTON_CHANCE_RESET = "chanceForm:chanceResetButton";
-    static final String BUTTON_CHANCE_DETAIL = "chanceForm:detailButton";
+    static final String BUTTON_CHANCE_DETAIL = "chanceForm:chanceDetailButton";
+    static final String BUTTON_CHANCE_RELATEACTION = "chanceForm:relateActionButton";
+    static final String BUTTON_CHANCE_UNRELATEACTION = "chanceForm:unrelateActionButton";
+    static final String BUTTON_CHANCE_VIEWACTION = "chanceForm:viewActionDetailButton";
+
+    static final String BUTTON_QUOTATION_NEW = "chanceForm:chanceNewQuotationButton";
+    static final String BUTTON_QUOTATION_EDIT = "chanceForm:chanceEditQuotationButton";
+    static final String BUTTON_QUOTATION_DELETE = "chanceForm:chanceDeleteQuotationButton";
+    static final String BUTTON_QUOTATION_VIEW = "chanceForm:chanceViewQuotationButton";
 
     // 判断是不是在查找状态
-    private boolean isSearching;
+    boolean isSearching;
 
-    private boolean edable;
-    private boolean relating = true;
-    private boolean unRelating = true;
-    private boolean actionDetail = true;
-    private boolean editable;
-    private boolean chancePartyEdit;
-    private boolean roleRendered;
-    private boolean isChancePartyEditing;
+    boolean editable;
+    boolean chancePartyEdit;
+    boolean roleRendered;
+    boolean isChancePartyEditing;
 
-    private String subjectPattern;
-    private String partyPattern;
-    private Date searchBeginTime;
-    private Date searchEndTime;
-    private LazyDataModel<ChanceDto> chances;
-    private ChanceDto selectedChance;
-    private ChanceDto activeChance = new ChanceDto().create();
-    private List<ChanceActionDto> actions;
-    private ChanceActionDto[] selectedActions;
-    private ChanceActionDto selectedAction;
-    private ChanceActionDto tempAction = new ChanceActionDto();
-    private ChancePartyDto selectedChanceParty;
-    private PartyDto selectedParty;
-    private List<PartyDto> parties;
+    String subjectPattern;
+    String partyPattern;
+    Date searchBeginTime;
+    Date searchEndTime;
+    LazyDataModel<ChanceDto> chances;
+    ChanceDto selectedChance;
+    ChanceDto activeChance = new ChanceDto().create();
+    List<ChanceActionDto> actions;
+    ChanceActionDto[] selectedActions;
+    ChanceActionDto selectedAction;
+    ChanceActionDto activeAction = new ChanceActionDto().create();
+    ChancePartyDto selectedChanceParty;
+    PartyDto selectedParty;
+    List<PartyDto> parties;
 
     // quotation fields
 
-    private boolean quotationOptionable;
-    private boolean quotationEdit;
-    private boolean quotationAdd;
-    private boolean quotationDetailable = true;
-    private boolean isPriceEditing;
-    private boolean isQuantityEditing;
+    boolean quotationEdit;
+    boolean isPriceEditing;
+    boolean isQuantityEditing;
 
-    private List<ChanceQuotationDto> quotations;
-    private ChanceQuotationDto selectedQuotation;
-    private ChanceQuotationDto quotation;
-    private List<String> materials;
-    private String selectedMaterial;
-    private String materialPattern;
-    private ChanceQuotationItemDto selectedQuotationItem;
-    private MCValue temPrice = new MCValue();
-    private BigDecimal temQuantity = new BigDecimal(0);
-    private boolean quotationItemPriceRendered;
-    private boolean quotationItemNumberRendered;
+    List<ChanceQuotationDto> quotations;
+    ChanceQuotationDto selectedQuotation;
+    ChanceQuotationDto activeQuotation;
+    String materialPattern;
+    ChanceQuotationItemDto selectedQuotationItem;
+    MCValue temPrice = new MCValue();
+    BigDecimal temQuantity = new BigDecimal(0);
+    boolean quotationItemPriceRendered;
+    boolean quotationItemNumberRendered;
+
+    MaterialCategoryTreeModel materialTree;
+    List<MaterialDto> materialList;
+    MaterialDto selectedMaterial;
+
+    ChanceBean() {
+        CommandButton button_new = (CommandButton) findComponent(BUTTON_CHANCE_NEW);
+        button_new.setDisabled(false);
+        CommandButton button_edit = (CommandButton) findComponent(BUTTON_CHANCE_EDIT);
+        button_edit.setDisabled(false);
+        CommandButton button_delete = (CommandButton) findComponent(BUTTON_CHANCE_DELETE);
+        button_delete.setDisabled(false);
+        CommandButton button_add = (CommandButton) findComponent(BUTTON_CHANCE_ADD);
+        button_add.setDisabled(true);
+        CommandButton button_reset = (CommandButton) findComponent(BUTTON_CHANCE_RESET);
+        button_reset.setDisabled(true);
+        CommandButton button_detail = (CommandButton) findComponent(BUTTON_CHANCE_DETAIL);
+        button_detail.setDisabled(true);
+
+        CommandButton button_relating = (CommandButton) findComponent(BUTTON_CHANCE_RELATEACTION);
+        button_relating.setDisabled(true);
+        CommandButton button_unrelating = (CommandButton) findComponent(BUTTON_CHANCE_UNRELATEACTION);
+        button_unrelating.setDisabled(true);
+        CommandButton button_viewAction = (CommandButton) findComponent(BUTTON_CHANCE_VIEWACTION);
+        button_viewAction.setDisabled(true);
+
+        initMaterialCategoryTree();
+    }
+
+    @PostConstruct
+    public void initialization() {
+        initList();
+        editable = false;
+        quotations = new ArrayList<ChanceQuotationDto>();
+// relating = false;
+// unRelating = false;
+    }
 
     // quotation methods
 
@@ -139,34 +184,30 @@ public class ChanceBean
 
     public void viewQuotationDetail() {
         if (selectedQuotation != null)
-            quotation = selectedQuotation;
+            activeQuotation = selectedQuotation;
         quotationEdit = true;
     }
 
     public void viewActionDetail() {
         if (selectedAction != null)
-            tempAction = selectedAction;
+            activeAction = selectedAction;
     }
 
     public void editQuotation() {
         if (selectedQuotation != null)
-            quotation = selectedQuotation;
+            activeQuotation = selectedQuotation;
         quotationEdit = false;
     }
 
     public void chooseMaterial() {
-        // XXX
-// String sm = selectedMaterial;
-// MaterialPrice currentPrice = serviceFor(MaterialPrice.class).list(//
-// Order.desc("createdDate"), //
-// PriceCriteria.listBasePriceByMaterial(sm)).get(0);
-// ChanceQuotationItemDto qi = new ChanceQuotationItemDto().create();
-// qi.setQuotation(quotation);
-//
-// qi.setBasePrice(DTOs.mref(MaterialPriceDto.class, currentPrice));
-//
-// qi.setMaterial(sm);
-// quotation.addItem(qi);
+        MaterialDto mdto = null;
+        if (selectedMaterial != null)
+            mdto = selectedMaterial;
+        ChanceQuotationItemDto item = new ChanceQuotationItemDto().create();
+        item.setParent(activeQuotation);
+        item.setMaterial(mdto);
+        item.setDiscount(1f);
+        activeQuotation.addItem(item);
     }
 
     void listQuotationByChance(ChanceDto chance) {
@@ -185,8 +226,7 @@ public class ChanceBean
     }
 
     public void calculateNumberChange() {
-        // XXX
-// double amount = selectedQuotationItem.getPrice() * selectedQuotationItem.getNumber();
+        selectedQuotationItem.setPriceValue(new BigDecimal(19));
 // selectedQuotationItem.setAmount(amount);
 // quotationItemNumberRendered = !quotationItemNumberRendered;
 // isQuantityEditing = false;
@@ -227,65 +267,106 @@ public class ChanceBean
 
     @SuppressWarnings("unchecked")
     public void saveQuotation() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        ChanceQuotation quotationEntity = activeQuotation.unmarshal();
+        if (quotationEntity.getItems() == null || quotationEntity.getItems().size() == 0) {
+            uiLogger.error("错误提示:", "请添加明细");
+            return;
+        }
+        @SuppressWarnings("rawtypes")
+        List<Entity> entityList = new ArrayList<Entity>();
+        if (!quotations.contains(activeQuotation))
+            quotations.add(activeQuotation);
+        for (ChanceQuotationItem tempItem : quotationEntity.getItems()) {
+            entityList.add(tempItem);
+        }
+        entityList.add(quotationEntity);
+
         try {
-            ChanceQuotation quotationEntity = quotation.unmarshal();
 // if(quotationEntity.getChance().getId() == null)
 // serviceFor(Chance)
-            @SuppressWarnings("rawtypes")
-            List<Entity> entityList = new ArrayList<Entity>();
-            if (!quotations.contains(quotation))
-                quotations.add(quotation);
-            for (ChanceQuotationItem tempItem : quotationEntity.getItems()) {
-                entityList.add(tempItem);
-            }
-            entityList.add(quotationEntity);
             serviceFor(Entity.class).saveOrUpdateAll(entityList);
-            if (selectedQuotation == null)
-                quotationOptionable = quotationDetailable = true;
-            context.addMessage(null, new FacesMessage("提示", "保存报价单成功"));
+            if (selectedQuotation == null) {
+                CommandButton button_quotation_edit = (CommandButton) findComponent(BUTTON_QUOTATION_EDIT);
+                button_quotation_edit.setDisabled(true);
+                CommandButton button_quotation_delete = (CommandButton) findComponent(BUTTON_QUOTATION_DELETE);
+                button_quotation_delete.setDisabled(true);
+                CommandButton button_quotation_view = (CommandButton) findComponent(BUTTON_QUOTATION_VIEW);
+                button_quotation_view.setDisabled(true);
+            }
+            uiLogger.info("提示", "保存报价单成功");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("错误提示", "保存报价单错误:" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("保存报价单错误:" + e.getMessage(), e);
         }
     }
 
     public void dropQuotation() {
-        FacesContext context = FacesContext.getCurrentInstance();
         ChanceQuotation quo = selectedQuotation.unmarshal();
         try {
             serviceFor(ChanceQuotation.class).delete(quo);
             quotations.remove(selectedQuotation);
-            quotationOptionable = quotationDetailable = true;
-            context.addMessage(null, new FacesMessage("提示:", "成功删除报价单"));
+            CommandButton button_quotation_edit = (CommandButton) findComponent(BUTTON_QUOTATION_EDIT);
+            button_quotation_edit.setDisabled(true);
+            CommandButton button_quotation_delete = (CommandButton) findComponent(BUTTON_QUOTATION_DELETE);
+            button_quotation_delete.setDisabled(true);
+            CommandButton button_quotation_viwe = (CommandButton) findComponent(BUTTON_QUOTATION_VIEW);
+            button_quotation_viwe.setDisabled(true);
+            uiLogger.info("提示:", "成功删除报价单");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("错误提示:", "删除报价单失败" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("删除报价单失败" + e.getMessage(), e);
         }
     }
 
     public void dropQuotationItem() {
-        quotation.removeItem(selectedQuotationItem);
+        activeQuotation.removeItem(selectedQuotationItem);
     }
 
     public void createQuotationForm() {
-        quotation = new ChanceQuotationDto().create();
-        quotation.setChance(activeChance);
+        activeQuotation = new ChanceQuotationDto().create();
+        activeQuotation.setChance(activeChance);
     }
 
     public void onQuotationRowSelect() {
-        if (editable != true)
-            quotationOptionable = false;
-        quotationDetailable = false;
+        if (editable != true) {
+            CommandButton button_edit = (CommandButton) findComponent(BUTTON_QUOTATION_EDIT);
+            button_edit.setDisabled(false);
+            CommandButton button_delete = (CommandButton) findComponent(BUTTON_QUOTATION_DELETE);
+            button_delete.setDisabled(false);
+        }
+        CommandButton button_quotation_view = (CommandButton) findComponent(BUTTON_QUOTATION_VIEW);
+        button_quotation_view.setDisabled(false);
     }
 
     public void onQuotationRowUnselect() {
-        if (editable != true)
-            quotationOptionable = true;
-        quotationDetailable = true;
+        if (editable != true) {
+            CommandButton button_edit = (CommandButton) findComponent(BUTTON_QUOTATION_EDIT);
+            button_edit.setDisabled(true);
+            CommandButton button_delete = (CommandButton) findComponent(BUTTON_QUOTATION_DELETE);
+            button_delete.setDisabled(true);
+        }
+        CommandButton button_quotation_view = (CommandButton) findComponent(BUTTON_QUOTATION_VIEW);
+        button_quotation_view.setDisabled(true);
     }
 
-    // chanceBean methods
+    /** 生成物料树 */
+    public void initMaterialCategoryTree() {
+        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
+        List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
+                ~MaterialCategoryDto.MATERIALS, rootCategories);
+
+        materialTree = new MaterialCategoryTreeModel(rootCategoryDtos);
+        materialTree.addListener(new SelectionAdapter() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void itemSelected(SelectionEvent event) {
+                MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) event.getSelection();
+                List<Material> _materials = serviceFor(Material.class).list(//
+                        // Order.asc("name"),
+                        MaterialCriteria.categoryOf(materialCategoryDto.getId()));
+                materialList = DTOs.marshalList(MaterialDto.class, _materials, true);
+            }
+        });
+    }
 
     public void initList() {
         EntityDataModelOptions<Chance, ChanceDto> edmo = new EntityDataModelOptions<Chance, ChanceDto>(Chance.class,
@@ -297,25 +378,26 @@ public class ChanceBean
         chances = UIHelper.buildLazyDataModel(edmo);
         isSearching = false;
         refreshChanceCount(isSearching);
-        quotationOptionable = true;
+        CommandButton button_quotation_edit = (CommandButton) findComponent(BUTTON_QUOTATION_EDIT);
+        button_quotation_edit.setDisabled(true);
+        CommandButton button_quotation_delete = (CommandButton) findComponent(BUTTON_QUOTATION_DELETE);
+        button_quotation_delete.setDisabled(true);
     }
 
     public void initToolbar() {
-        edable = false;
+        CommandButton button_new = (CommandButton) findComponent(BUTTON_CHANCE_NEW);
+        button_new.setDisabled(false);
+        CommandButton button_edit = (CommandButton) findComponent(BUTTON_CHANCE_EDIT);
+        button_edit.setDisabled(false);
+        CommandButton button_delete = (CommandButton) findComponent(BUTTON_CHANCE_DELETE);
+        button_delete.setDisabled(false);
+        CommandButton button_add = (CommandButton) findComponent(BUTTON_CHANCE_ADD);
+        button_add.setDisabled(true);
+        CommandButton button_reset = (CommandButton) findComponent(BUTTON_CHANCE_RESET);
+        button_reset.setDisabled(true);
         boolean temp = selectedChance == null ? true : false;
         CommandButton button_detail = (CommandButton) findComponent(BUTTON_CHANCE_DETAIL);
         button_detail.setDisabled(temp);
-    }
-
-    @PostConstruct
-    public void initialization() {
-        initList();
-        initToolbar();
-        editable = false;
-        activeChance = new ChanceDto();
-        quotations = new ArrayList<ChanceQuotationDto>();
-        relating = false;
-        unRelating = false;
     }
 
     void refreshChanceCount(boolean forSearch) {
@@ -333,15 +415,23 @@ public class ChanceBean
     }
 
     public void onActionRowSelect() {
-        if (editable != true)
-            unRelating = false;
-        actionDetail = false;
+        if (editable != true) {
+            CommandButton button_unrelate = (CommandButton) findComponent(BUTTON_CHANCE_UNRELATEACTION);
+            button_unrelate.setDisabled(false);
+        }
+
+        CommandButton button_viewAction = (CommandButton) findComponent(BUTTON_CHANCE_VIEWACTION);
+        button_viewAction.setDisabled(false);
     }
 
     public void onActionRowUnselect() {
-        if (editable != true)
-            unRelating = true;
-        actionDetail = true;
+        if (editable != true) {
+            CommandButton button_unrelate = (CommandButton) findComponent(BUTTON_CHANCE_UNRELATEACTION);
+            button_unrelate.setDisabled(true);
+        }
+
+        CommandButton button_viewAction = (CommandButton) findComponent(BUTTON_CHANCE_VIEWACTION);
+        button_viewAction.setDisabled(true);
     }
 
     public List<SelectItem> getCategory() {
@@ -445,19 +535,36 @@ public class ChanceBean
     }
 
     public void createForm() {
+        editable = false;
         activeChance = new ChanceDto().create();
-        setActiveTab(TAB_FORM);
-        edable = true;
-        boolean tempBoolean = selectedChance == null ? true : false;
-        CommandButton button_detail = (CommandButton) findComponent(BUTTON_CHANCE_DETAIL);
-        button_detail.setDisabled(tempBoolean);
         quotations = new ArrayList<ChanceQuotationDto>();
+        setActiveTab(TAB_FORM);
+
+        CommandButton button_quotation_add = (CommandButton) findComponent(BUTTON_QUOTATION_NEW);
+        button_quotation_add.setDisabled(false);
+        CommandButton button_quotation_view = (CommandButton) findComponent(BUTTON_QUOTATION_VIEW);
+        button_quotation_view.setDisabled(true);
+
+        CommandButton button_new = (CommandButton) findComponent(BUTTON_CHANCE_NEW);
+        button_new.setDisabled(true);
+        CommandButton button_edit = (CommandButton) findComponent(BUTTON_CHANCE_EDIT);
+        button_edit.setDisabled(true);
+        CommandButton button_delete = (CommandButton) findComponent(BUTTON_CHANCE_DELETE);
+        button_delete.setDisabled(true);
+        CommandButton button_add = (CommandButton) findComponent(BUTTON_CHANCE_ADD);
+        button_add.setDisabled(false);
+        CommandButton button_reset = (CommandButton) findComponent(BUTTON_CHANCE_RESET);
+        button_reset.setDisabled(false);
+// boolean tempBoolean = selectedChance == null ? true : false;
+        CommandButton button_detail = (CommandButton) findComponent(BUTTON_CHANCE_DETAIL);
+        button_detail.setDisabled(true);
         findComponent(FIELD_ACTIONHISTORY).setRendered(false);
         findComponent(FIELD_QUOTATION).setRendered(false);
-        quotationAdd = false;
-        editable = false;
-        relating = true;
-        unRelating = true;
+
+// CommandButton button_relate = (CommandButton) findComponent(BUTTON_CHANCE_RELATEACTION);
+// button_relate.setDisabled(true);
+// CommandButton button_unrelate = (CommandButton) findComponent(BUTTON_CHANCE_UNRELATEACTION);
+// button_unrelate.setDisabled(true);
     }
 
     public void editForm() {
@@ -465,25 +572,55 @@ public class ChanceBean
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("提示:", "请选择需要修改的销售机会!"));
             return;
         }
-        activeChance = selectedChance;
+        setActiveChance(selectedChance);
         listQuotationByChance(activeChance);
         setActiveTab(TAB_FORM);
-        edable = true;
+
+        CommandButton button_new = (CommandButton) findComponent(BUTTON_CHANCE_NEW);
+        button_new.setDisabled(true);
+        CommandButton button_edit = (CommandButton) findComponent(BUTTON_CHANCE_EDIT);
+        button_edit.setDisabled(true);
+        CommandButton button_delete = (CommandButton) findComponent(BUTTON_CHANCE_DELETE);
+        button_delete.setDisabled(true);
+        CommandButton button_add = (CommandButton) findComponent(BUTTON_CHANCE_ADD);
+        button_add.setDisabled(false);
+        CommandButton button_reset = (CommandButton) findComponent(BUTTON_CHANCE_RESET);
+        button_reset.setDisabled(false);
+
         CommandButton button_detail = (CommandButton) findComponent(BUTTON_CHANCE_DETAIL);
         button_detail.setDisabled(true);
-        relating = false;
-        unRelating = true;
+
+        CommandButton button_relate = (CommandButton) findComponent(BUTTON_CHANCE_RELATEACTION);
+        button_relate.setDisabled(false);
+        CommandButton button_unrelate = (CommandButton) findComponent(BUTTON_CHANCE_UNRELATEACTION);
+        button_unrelate.setDisabled(true);
+
         editable = false;
         findComponent(FIELD_ACTIONHISTORY).setRendered(true);
         findComponent(FIELD_QUOTATION).setRendered(true);
-        quotationAdd = false;
+
+        CommandButton button_quotation_new = (CommandButton) findComponent(BUTTON_QUOTATION_NEW);
+        button_quotation_new.setDisabled(false);
+        CommandButton button_quotation_view = (CommandButton) findComponent(BUTTON_QUOTATION_VIEW);
+        button_quotation_view.setDisabled(true);
     }
 
     public void detailForm() {
         setActiveChance(selectedChance);
         listQuotationByChance(activeChance);
         setActiveTab(TAB_FORM);
-        edable = false;
+
+        CommandButton button_new = (CommandButton) findComponent(BUTTON_CHANCE_NEW);
+        button_new.setDisabled(false);
+        CommandButton button_edit = (CommandButton) findComponent(BUTTON_CHANCE_EDIT);
+        button_edit.setDisabled(false);
+        CommandButton button_delete = (CommandButton) findComponent(BUTTON_CHANCE_DELETE);
+        button_delete.setDisabled(false);
+        CommandButton button_add = (CommandButton) findComponent(BUTTON_CHANCE_ADD);
+        button_add.setDisabled(true);
+        CommandButton button_reset = (CommandButton) findComponent(BUTTON_CHANCE_RESET);
+        button_reset.setDisabled(true);
+
         boolean tempBoolean = selectedChance == null ? true : false;
         CommandButton button_detail = (CommandButton) findComponent(BUTTON_CHANCE_DETAIL);
         button_detail.setDisabled(tempBoolean);
@@ -495,7 +632,15 @@ public class ChanceBean
         quotationField.setRendered(true);
         quotationField.setCollapsed(false);
 
-        quotationAdd = true;
+        CommandButton button_relate = (CommandButton) findComponent(BUTTON_CHANCE_RELATEACTION);
+        button_relate.setDisabled(true);
+        CommandButton button_unrelate = (CommandButton) findComponent(BUTTON_CHANCE_UNRELATEACTION);
+        button_unrelate.setDisabled(true);
+
+        CommandButton button_quotation_view = (CommandButton) findComponent(BUTTON_QUOTATION_VIEW);
+        button_quotation_view.setDisabled(true);
+        CommandButton button_quotation_new = (CommandButton) findComponent(BUTTON_QUOTATION_NEW);
+        button_quotation_new.setDisabled(true);
         editable = true;
     }
 
@@ -505,7 +650,8 @@ public class ChanceBean
         editable = false;
         findComponent(FIELD_ACTIONHISTORY).setRendered(false);
         findComponent(FIELD_QUOTATION).setRendered(false);
-        quotationAdd = false;
+        CommandButton button_quotation_new = (CommandButton) findComponent(BUTTON_QUOTATION_NEW);
+        button_quotation_new.setDisabled(false);
     }
 
     public void editCustomerRole() {
@@ -605,7 +751,8 @@ public class ChanceBean
             chanceAction.setChance(null);
             chanceAction.setStage(null);
             serviceFor(ChanceAction.class).save(chanceAction);
-            unRelating = true;
+            CommandButton button_unrelate = (CommandButton) findComponent(BUTTON_CHANCE_UNRELATEACTION);
+            button_unrelate.setDisabled(true);
             uiLogger.info("反关联成功");
         } catch (Exception e) {
             uiLogger.error("反关联失败:" + e.getMessage(), e);
@@ -618,38 +765,6 @@ public class ChanceBean
 
     public void setSearching(boolean isSearching) {
         this.isSearching = isSearching;
-    }
-
-    public boolean isEdable() {
-        return edable;
-    }
-
-    public void setEdable(boolean edable) {
-        this.edable = edable;
-    }
-
-    public boolean isRelating() {
-        return relating;
-    }
-
-    public void setRelating(boolean relating) {
-        this.relating = relating;
-    }
-
-    public boolean isUnRelating() {
-        return unRelating;
-    }
-
-    public void setUnRelating(boolean unRelating) {
-        this.unRelating = unRelating;
-    }
-
-    public boolean isActionDetail() {
-        return actionDetail;
-    }
-
-    public void setActionDetail(boolean actionDetail) {
-        this.actionDetail = actionDetail;
     }
 
     public boolean isEditable() {
@@ -764,12 +879,12 @@ public class ChanceBean
         this.selectedAction = selectedAction;
     }
 
-    public ChanceActionDto getTempAction() {
-        return tempAction;
+    public ChanceActionDto getActiveAction() {
+        return activeAction;
     }
 
-    public void setTempAction(ChanceActionDto tempAction) {
-        this.tempAction = tempAction;
+    public void setActiveAction(ChanceActionDto activeAction) {
+        this.activeAction = activeAction;
     }
 
     public ChancePartyDto getSelectedChanceParty() {
@@ -796,36 +911,12 @@ public class ChanceBean
         this.parties = parties;
     }
 
-    public boolean isQuotationOptionable() {
-        return quotationOptionable;
-    }
-
-    public void setQuotationOptionable(boolean quotationOptionable) {
-        this.quotationOptionable = quotationOptionable;
-    }
-
     public boolean isQuotationEdit() {
         return quotationEdit;
     }
 
     public void setQuotationEdit(boolean quotationEdit) {
         this.quotationEdit = quotationEdit;
-    }
-
-    public boolean isQuotationAdd() {
-        return quotationAdd;
-    }
-
-    public void setQuotationAdd(boolean quotationAdd) {
-        this.quotationAdd = quotationAdd;
-    }
-
-    public boolean isQuotationDetailable() {
-        return quotationDetailable;
-    }
-
-    public void setQuotationDetailable(boolean quotationDetailable) {
-        this.quotationDetailable = quotationDetailable;
     }
 
     public boolean isPriceEditing() {
@@ -860,27 +951,19 @@ public class ChanceBean
         this.selectedQuotation = selectedQuotation;
     }
 
-    public ChanceQuotationDto getQuotation() {
-        return quotation;
+    public ChanceQuotationDto getActiveQuotation() {
+        return activeQuotation;
     }
 
-    public void setQuotation(ChanceQuotationDto quotation) {
-        this.quotation = quotation;
+    public void setActiveQuotation(ChanceQuotationDto activeQuotation) {
+        this.activeQuotation = activeQuotation;
     }
 
-    public List<String> getMaterials() {
-        return materials;
-    }
-
-    public void setMaterials(List<String> materials) {
-        this.materials = materials;
-    }
-
-    public String getSelectedMaterial() {
+    public MaterialDto getSelectedMaterial() {
         return selectedMaterial;
     }
 
-    public void setSelectedMaterial(String selectedMaterial) {
+    public void setSelectedMaterial(MaterialDto selectedMaterial) {
         this.selectedMaterial = selectedMaterial;
     }
 
@@ -926,6 +1009,18 @@ public class ChanceBean
 
     public void setQuotationItemNumberRendered(boolean quotationItemNumberRendered) {
         this.quotationItemNumberRendered = quotationItemNumberRendered;
+    }
+
+    public MaterialCategoryTreeModel getMaterialTree() {
+        return materialTree;
+    }
+
+    public List<MaterialDto> getMaterialList() {
+        return materialList;
+    }
+
+    public void setMaterialList(List<MaterialDto> materialList) {
+        this.materialList = materialList;
     }
 
 }
