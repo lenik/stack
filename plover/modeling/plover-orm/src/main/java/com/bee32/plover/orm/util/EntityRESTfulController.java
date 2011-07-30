@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityRepository;
@@ -32,7 +33,7 @@ import com.bee32.plover.restful.IRESTfulResponse;
 public class EntityRESTfulController<E extends Entity<K>, K extends Serializable> {
 
     @Inject
-    CommonDataManager dataManager;
+    CommonDataManager dataManager = MemdbDataManager.getInstance();
 
     protected <_E extends Entity<? extends _K>, _K extends Serializable> //
     IEntityAccessService<_E, _K> asFor(Class<? extends _E> entityType) {

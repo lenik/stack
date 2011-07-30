@@ -25,6 +25,7 @@ import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.context.TestDataConfig;
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.Using;
@@ -60,7 +61,7 @@ public class PlaySamples
     AbstractPrincipalDao<? extends Principal> principalDao;
 
     @Inject
-    CommonDataManager dataManager;
+    CommonDataManager dataManager = MemdbDataManager.getInstance();
 
     <E extends Entity<K>, K extends Serializable> //
     IEntityAccessService<E, K> asFor(Class<E> entityType) {

@@ -8,6 +8,7 @@ import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.config.test.DefaultTestSessionFactoryBean;
 import com.bee32.plover.orm.context.TestDataConfig;
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.UsingUtil;
 import com.bee32.plover.test.WiredTestCase;
@@ -17,7 +18,7 @@ public abstract class WiredDaoTestCase
         extends WiredTestCase {
 
     @Inject
-    protected CommonDataManager dataManager;
+    protected CommonDataManager dataManager = MemdbDataManager.getInstance();
 
     public WiredDaoTestCase() {
     }

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -19,7 +20,7 @@ public class DefaultMarshalContext
         implements IEntityMarshalContext {
 
     @Inject
-    CommonDataManager dataManager;
+    CommonDataManager dataManager = MemdbDataManager.getInstance();
 
     @Override
     public <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id) {

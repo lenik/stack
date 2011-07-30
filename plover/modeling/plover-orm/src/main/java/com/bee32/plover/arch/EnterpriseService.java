@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
@@ -21,7 +22,7 @@ public abstract class EnterpriseService
         implements IEntityMarshalContext {
 
     @Inject
-    protected CommonDataManager dataManager;
+    protected CommonDataManager dataManager = MemdbDataManager.getInstance();
 
     public EnterpriseService() {
         super();

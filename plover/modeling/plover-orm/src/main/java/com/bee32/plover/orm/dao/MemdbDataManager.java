@@ -17,14 +17,18 @@ public class MemdbDataManager
         @SuppressWarnings("unchecked")
         Class<E> et = (Class<E>) entityType;
 
-        Memdb memdao = Memdb.getInstance(et);
+        MemTable tab = MemTable.getInstance(et);
 
         @SuppressWarnings("unchecked")
-        IEntityAccessService<E, K> memEas = (IEntityAccessService<E, K>) memdao;
+        IEntityAccessService<E, K> eas = (IEntityAccessService<E, K>) tab;
 
-        return memEas;
+        return eas;
     }
 
-    public static final MemdbDataManager INSTANCE = new MemdbDataManager();
+    static final MemdbDataManager instance = new MemdbDataManager();
+
+    public static MemdbDataManager getInstance() {
+        return instance;
+    }
 
 }

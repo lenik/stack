@@ -32,10 +32,10 @@ public class SamplesLoader
     static Logger logger = LoggerFactory.getLogger(SamplesLoader.class);
 
     @Inject
-    PloverConfManager confManager;
+    IPloverConfManager confManager = StaticPloverConfManager.getInstance();
 
     @Inject
-    CommonDataManager dataManager;
+    CommonDataManager dataManager = MemdbDataManager.getInstance();
 
     PersistenceUnit unit;
 

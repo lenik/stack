@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.junit.Test;
 
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
@@ -16,7 +17,7 @@ public class DiscriminatorTest
         extends WiredDaoTestCase {
 
     @Inject
-    CommonDataManager dataManager;
+    CommonDataManager dataManager = MemdbDataManager.getInstance();
 
     @Test
     public void listAllColors() {
