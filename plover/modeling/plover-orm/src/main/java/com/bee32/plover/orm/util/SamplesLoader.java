@@ -16,13 +16,16 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.orm.builtin.PloverConfManager;
+import com.bee32.plover.orm.builtin.IPloverConfManager;
+import com.bee32.plover.orm.builtin.StaticPloverConfManager;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
+import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 @Component
 @Lazy
@@ -46,7 +49,11 @@ public class SamplesLoader
     @Override
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
-        // Eagerly scan all the contributions.
+        /**
+         * 立即分析 {@link ImportSamples} 依赖关系。
+         *
+         * ImportSamples
+         */
         ImportSamplesUtil.applyImports(applicationContext);
     }
 
@@ -63,7 +70,23 @@ public class SamplesLoader
      */
     static IdentityHashSet loadedPackages = new IdentityHashSet();
 
-    public synchronized void loadSamples(SamplePackage pack, Closure<SampleContribution> progress) {
+    public synchronized void loadSamples(final SamplePackage pack, final Closure<SampleContribution> progress) {
+
+        class LoadingProcess
+                implements Runnable {
+            @Override
+            public void run() {
+                _loadSamples(pack, progress);
+            }
+        }
+
+        LoadingProcess process = new LoadingProcess();
+
+        // Load without logged-in user stuff.
+        ThreadHttpContext.escape(process);
+    }
+
+    void _loadSamples(SamplePackage pack, Closure<SampleContribution> progress) {
         if (pack == null)
             throw new NullPointerException("pack");
 
@@ -71,7 +94,7 @@ public class SamplesLoader
             return;
 
         for (SamplePackage dependency : pack.getDependencies())
-            loadSamples(dependency, progress);
+            _loadSamples(dependency, progress);
 
         List<Entity<?>> sideA = new ArrayList<Entity<?>>();
         List<Entity<?>> sideZ = new ArrayList<Entity<?>>();
