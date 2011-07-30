@@ -70,4 +70,13 @@ public class ThreadServletContext {
         return getServletContext();
     }
 
+    public static synchronized void escape(Runnable runnable) {
+        HttpServletRequest request = getRequestOpt();
+        try {
+            runnable.run();
+        } finally {
+            setRequest(request);
+        }
+    }
+
 }
