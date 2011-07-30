@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import javax.free.IllegalUsageError;
-import javax.free.NotImplementedException;
 import javax.free.UnexpectedException;
 
 import org.hibernate.LockMode;
@@ -31,8 +31,9 @@ import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.entity.NonUniqueException;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.util.PrettyPrintStream;
 
-public class Memdb
+public class MemTable
         extends EntityRepository<Entity<?>, Serializable>
         implements IEntityAccessService<Entity<?>, Serializable> {
 
@@ -42,12 +43,12 @@ public class Memdb
         database = new HashMap<Class<? extends Entity<?>>, Map<Serializable, Entity<?>>>();
     }
 
-    final Memdb parent;
-    final List<Memdb> children = new ArrayList<Memdb>();
+    final MemTable parent;
+    final List<MemTable> children = new ArrayList<MemTable>();
 
     final Map<Serializable, Entity<?>> table;
 
-    private Memdb(Class<? extends Entity<?>> entityType) {
+    private MemTable(Class<? extends Entity<?>> entityType) {
         super(entityType, EntityUtil.getKeyType(entityType));
         Map<Serializable, Entity<?>> table = database.get(entityType);
         if (table == null) {
@@ -56,7 +57,7 @@ public class Memdb
         }
         this.table = table;
 
-        Memdb parent = null;
+        MemTable parent = null;
         Class<?> _superType = entityType.getSuperclass();
         if (_superType != null) {
             if (Entity.class.isAssignableFrom(_superType)) {
@@ -75,13 +76,13 @@ public class Memdb
             parent.addChild(this);
     }
 
-    void addChild(Memdb childDao) {
+    void addChild(MemTable childDao) {
         if (children.contains(childDao))
             throw new IllegalUsageError("Duplicated child memdao: " + childDao);
         children.add(childDao);
     }
 
-    protected Memdb access(Entity<?> entity) {
+    protected MemTable access(Entity<?> entity) {
         if (entity == null)
             throw new NullPointerException("entity");
 
@@ -93,7 +94,7 @@ public class Memdb
             throw new IllegalArgumentException("Can't handle entity of " + entityType //
                     + " by a " + this.entityType.getSimpleName() + " memory-dao.");
 
-        Memdb specDao = getInstance(entityType);
+        MemTable specDao = getInstance(entityType);
         return specDao;
     }
 
@@ -124,7 +125,7 @@ public class Memdb
     public synchronized boolean deleteByKey(Serializable key) {
         Entity<?> removed = table.remove(key);
 
-        for (Memdb child : children)
+        for (MemTable child : children)
             child.deleteByKey(key);
 
         return removed != null;
@@ -134,8 +135,10 @@ public class Memdb
     public synchronized void deleteAll() {
         table.clear();
 
-        for (Memdb child : children)
+        for (MemTable child : children)
             child.deleteAll();
+
+        SimpleIdGenerator.reset(entityType);
     }
 
     @Override
@@ -172,7 +175,7 @@ public class Memdb
     @Override
     public synchronized Entity<?> merge(Entity<?> entity)
             throws DataAccessException {
-        Memdb spec = access(entity);
+        MemTable spec = access(entity);
         if (spec != this)
             return spec.merge(entity);
 
@@ -190,7 +193,7 @@ public class Memdb
     }
 
     void _put(Serializable id, Entity<?> _o) {
-        Memdb node = this;
+        MemTable node = this;
         while (node != null) {
             node.table.put(id, _o);
             node = node.parent;
@@ -202,7 +205,7 @@ public class Memdb
     public void evict(Entity<?> entity)
             throws DataAccessException {
         // do nothing here.
-        for (Memdb child : children)
+        for (MemTable child : children)
             child.evict(entity);
     }
 
@@ -211,7 +214,7 @@ public class Memdb
     public void replicate(Entity<?> entity, ReplicationMode replicationMode)
             throws DataAccessException {
         // do nothing here.
-        for (Memdb child : children)
+        for (MemTable child : children)
             child.replicate(entity, replicationMode);
     }
 
@@ -219,7 +222,7 @@ public class Memdb
     @Override
     public void flush() {
         // do nothing here.
-        for (Memdb child : children)
+        for (MemTable child : children)
             child.flush();
     }
 
@@ -269,7 +272,19 @@ public class Memdb
 
     @Override
     public List<Entity<?>> list(ICriteriaElement... criteriaElements) {
-        throw new NotImplementedException();
+        CriteriaComposite composite = new CriteriaComposite(criteriaElements);
+
+        List<Entity<?>> selection = new ArrayList<Entity<?>>();
+
+        for (Entity<?> entity : table.values()) {
+            if (!composite.filter(entity, null))
+                continue;
+
+            Entity<?> dup = dup(entity);
+            selection.add(dup);
+        }
+
+        return selection;
     }
 
     // ER.
@@ -279,7 +294,7 @@ public class Memdb
         @SuppressWarnings("unchecked")
         Entity<Serializable> entity = (Entity<Serializable>) _entity;
 
-        Memdb spec = access(entity);
+        MemTable spec = access(entity);
         if (spec != this)
             return spec.save(entity);
 
@@ -300,7 +315,7 @@ public class Memdb
 
     @Override
     public void update(Entity<?> entity) {
-        Memdb spec = access(entity);
+        MemTable spec = access(entity);
         if (spec != this) {
             spec.update(entity);
             return;
@@ -316,7 +331,7 @@ public class Memdb
 
     @Override
     public void refresh(Entity<?> entity) {
-        Memdb spec = access(entity);
+        MemTable spec = access(entity);
         if (spec != this) {
             spec.refresh(entity);
             return;
@@ -329,12 +344,12 @@ public class Memdb
         entity.populate(existing); // may not been well implemented by specific entity types.
     }
 
-    static final Map<Class<? extends Entity<?>>, Memdb> instances = new HashMap<Class<? extends Entity<?>>, Memdb>();
+    static final Map<Class<? extends Entity<?>>, MemTable> instances = new HashMap<Class<? extends Entity<?>>, MemTable>();
 
-    public static synchronized Memdb getInstance(Class<? extends Entity<?>> entityType) {
-        Memdb instance = instances.get(entityType);
+    public static synchronized MemTable getInstance(Class<? extends Entity<?>> entityType) {
+        MemTable instance = instances.get(entityType);
         if (instance == null) {
-            instance = new Memdb(entityType);
+            instance = new MemTable(entityType);
         }
         return instance;
     }
@@ -375,6 +390,32 @@ public class Memdb
             throw new RuntimeException(e.getMessage(), e);
         } catch (ClassNotFoundException e) {
             throw new UnexpectedException(e.getMessage(), e);
+        }
+    }
+
+    public static void dump() {
+        PrettyPrintStream out = new PrettyPrintStream();
+        dump(out);
+        System.out.println(out);
+    }
+
+    public static void dump(PrettyPrintStream out) {
+        for (Entry<Class<? extends Entity<?>>, Map<Serializable, Entity<?>>> tabEntry : database.entrySet()) {
+            Class<? extends Entity<?>> type = tabEntry.getKey();
+            Map<Serializable, Entity<?>> table = tabEntry.getValue();
+
+            out.println("Entity: " + type.getSimpleName());
+
+            out.enter();
+
+            for (Entry<Serializable, Entity<?>> entry : table.entrySet()) {
+                // Serializable id = entry.getKey();
+                Entity<?> record = entry.getValue();
+                out.println(record);
+                out.println();
+            }
+            out.leave();
+            out.println();
         }
     }
 
