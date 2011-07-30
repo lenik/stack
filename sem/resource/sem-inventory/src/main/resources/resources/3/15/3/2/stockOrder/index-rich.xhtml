@@ -19,7 +19,7 @@
 
         <h:outputStylesheet>
             .detail_col_title {
-                width:150px;
+                width:80px;
                 text-align: right;
             }
 
@@ -48,7 +48,7 @@
                 <p:selectOneMenu id="stockWarehouseId" value="#{stockOrderAdminBean.selectedWarehouse.id}" style="width:200px;">
                     <f:selectItem itemValue="" itemLabel="--选择仓库--" />
                     <f:selectItems value="#{stockOrderAdminBean.stockWarehouses}" />
-                    <p:ajax listener="#{stockOrderAdminBean.onSwChange}" update="mainForm" event="change"/>
+                    <p:ajax listener="#{stockOrderAdminBean.onSwChange}" update="mainForm chooseStockLocationForm:chooseStockLocationPanel" event="change"/>
                 </p:selectOneMenu>
             </h:panelGrid>
 
@@ -95,7 +95,8 @@
 						disabled="#{stockOrderAdminBean.editable}" update="mainForm"
 						async="true" />
 
-					<p:inputText value="#{stockOrderAdminBean.goNumber}" style="width:30px;"/>
+					<p:inputText value="#{stockOrderAdminBean.goNumber}"
+						disabled="#{stockOrderAdminBean.editable}" style="width:30px;" />
 					<h:outputText value="/#{stockOrderAdminBean.count}"/>
 					<p:commandButton value="前往"
                         actionListener="#{stockOrderAdminBean.go}"
@@ -140,12 +141,12 @@
                     <h:outputText value="明细"/>
 					<p:commandButton value="新增" onclick="itemDialog.show();"
 						actionListener="#{stockOrderAdminBean.newItem}"
+						update="itemForm:itemPanel"
 						disabled="#{!stockOrderAdminBean.editable}" />
 				</t:panelGrid>
 
 				<p:dataTable id="orgs" var="item"
-					value="#{stockOrderAdminBean.items}"
-					resizableColumns="true" selectionMode="single"
+					value="#{stockOrderAdminBean.items}" resizableColumns="true"
 					rowIndexVar="rowIndex">
 
 					<p:column>
@@ -155,29 +156,72 @@
 						<h:outputText value="#{rowIndex + 1}" />
 					</p:column>
 
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="物料"/>
+                        </f:facet>
+                        <h:outputText value="#{item.material.name}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="批号"/>
+                        </f:facet>
+                        <h:outputText value="#{item.batch}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="库位"/>
+                        </f:facet>
+                        <h:outputText value="#{item.location.nodeText}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="单价"/>
+                        </f:facet>
+                        <h:outputText value="#{item.price.value}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="币种"/>
+                        </f:facet>
+                        <h:outputText value="#{item.price.currencyText}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="数量"/>
+                        </f:facet>
+                        <h:outputText value="#{item.quantity}" />
+                    </p:column>
 
 
-					<p:column headerText="操作" style="width:120px;">
-						<h:panelGrid columns="3" cellpadding="2" styleClass="actions">
-							<p:commandButton update=""
-								oncomplete="stockWarehouseDialog.show()"
-								image="ui-icon ui-icon-search" title="查看">
+					<p:column>
+						<f:facet name="header">操作</f:facet>
+						<t:panelGroup>
+							<p:commandLink update="" oncomplete="stockWarehouseDialog.show()"
+								value="查看">
 								<f:setPropertyActionListener value="#{item}"
 									target="#{stockOrderAdminBean.selectedStockOrderItem}" />
-							</p:commandButton>
-							<p:commandButton update="" disabled="#{!stockOrderAdminBean.editable}"
-								onclick="itemDialog.show()"
-								image="ui-icon ui-icon-pencil" title="修改">
+							</p:commandLink>
+							<p:spacer width="10" />
+							<p:commandLink update=""
+								disabled="#{!stockOrderAdminBean.editable}"
+								onclick="itemDialog.show()" value="修改">
 								<f:setPropertyActionListener value="#{item}"
-                                    target="#{stockOrderAdminBean.selectedStockOrderItem}"/>
-							</p:commandButton>
-							<p:commandButton update="" disabled="#{!stockOrderAdminBean.editable}"
-								oncomplete="confirmation.show()" image="ui-icon ui-icon-close"
-								title="删除">
+									target="#{stockOrderAdminBean.selectedStockOrderItem}" />
+							</p:commandLink>
+							<p:spacer width="10" />
+							<p:commandLink update=""
+								disabled="#{!stockOrderAdminBean.editable}"
+								oncomplete="confirmation.show()" value="删除">
 								<f:setPropertyActionListener value="#{item}"
-                                    target="#{stockOrderAdminBean.selectedStockOrderItem}" />
-							</p:commandButton>
-						</h:panelGrid>
+									target="#{stockOrderAdminBean.selectedStockOrderItem}" />
+							</p:commandLink>
+						</t:panelGroup>
 					</p:column>
 
 				</p:dataTable>
@@ -199,8 +243,8 @@
 
 						<h:outputLabel value="物料" />
 						<t:panelGroup colspan="3">
-							<p:inputText value="#{stockOrderAdminBean.orderItem.material.name}"/>
-							<p:commandButton value="..."/>
+							<p:inputText value="#{stockOrderAdminBean.orderItem.material.name}" readonly="true"/>
+							<p:commandButton value="..." onclick="materialDialog.show();"/>
 						</t:panelGroup>
 
 						<h:outputLabel value="批号" />
@@ -212,14 +256,14 @@
 
                         <h:outputLabel value="库位" />
                         <t:panelGroup colspan="3">
-                            <p:inputText value="#{stockOrderAdminBean.orderItem.location.nodeText}"/>
-                            <p:commandButton value="..."/>
+                            <p:inputText value="#{stockOrderAdminBean.orderItem.location.nodeText}" readonly="true"/>
+                            <p:commandButton value="..." onclick="chooseStockLocationDialog.show();"/>
                         </t:panelGroup>
 
                         <h:outputLabel value="单价" />
-                        <p:inputText value="#{stockOrderAdminBean.orderItem.price.value}" />
+                        <p:inputText value="#{stockOrderAdminBean.orderItemPrice}" />
                         <h:outputLabel value="币种" />
-                        <p:selectOneMenu value="#{stockOrderAdminBean.orderItem.price.currency.currencyCode}" style="width:150px;">
+                        <p:selectOneMenu value="#{stockOrderAdminBean.orderItemPriceCurrency}" style="width:200px;">
                             <f:selectItem itemValue="" itemLabel="--选择币种--" />
                             <f:selectItems value="#{stockOrderAdminBean.currencies}" />
                         </p:selectOneMenu>
@@ -249,6 +293,124 @@
 
 			</p:dialog>
 		</h:form>
+
+
+		<h:form id="materialForm">
+			<p:dialog header="选择物料" widgetVar="materialDialog" modal="true"
+				height="400" width="640">
+				<h:panelGroup>
+
+					<h:panelGrid columns="3">
+						<h:outputLabel value="物料名字全部或部份:" />
+						<p:inputText value="#{stockOrderAdminBean.materialPattern}" />
+						<p:commandButton value="查找"
+							actionListener="#{stockOrderAdminBean.findMaterial}" update="materials"
+							async="true" />
+					</h:panelGrid>
+					<p:dataTable id="materials" var="material"
+						value="#{stockOrderAdminBean.materials}" resizableColumns="true"
+						selection="#{stockOrderAdminBean.selectedMaterial}" selectionMode="single"
+						rowIndexVar="rowIndex">
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="序号" />
+							</f:facet>
+							<h:outputText value="#{rowIndex + 1}" />
+						</p:column>
+
+						<p:column headerText="物料名称">
+							<h:outputText value="#{material.name}" />
+						</p:column>
+
+						<p:column headerText="序列号">
+							<h:outputText value="#{material.serial}" />
+						</p:column>
+
+						<p:column headerText="条形码">
+							<h:outputText value="#{material.barCode}" />
+						</p:column>
+
+						<p:column headerText="主单位">
+							<h:outputText value="#{material.unit.name}" />
+						</p:column>
+
+					</p:dataTable>
+					<h:panelGrid columns="2">
+						<p:commandButton value="确定"
+							actionListener="#{stockOrderAdminBean.chooseMaterial}"
+							oncomplete="materialDialog.hide();" update="itemForm:itemPanel"
+							async="true" />
+						<p:commandButton value="取消" oncomplete="materialDialog.hide();" />
+					</h:panelGrid>
+				</h:panelGroup>
+			</p:dialog>
+
+		</h:form>
+
+
+
+		<h:form id="chooseStockLocationForm">
+			<p:dialog header="选择库位" widgetVar="chooseStockLocationDialog"
+				modal="true" height="500" width="640">
+				<h:panelGroup id="chooseStockLocationPanel">
+
+					<p:panel header="预设库位" toggleable="true">
+						<p:dataTable id="preferredLocations" var="stockLocation"
+							value="#{stockOrderAdminBean.preferredLocations}" resizableColumns="true"
+							selection="#{stockOrderAdminBean.selectedPreferredStockLocation}"
+							selectionMode="single" rowIndexVar="rowIndex">
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="序号" />
+								</f:facet>
+								<h:outputText value="#{rowIndex + 1}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">库位</f:facet>
+								<h:outputText value="#{stockLocation.nodeText}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">所属仓库</f:facet>
+								<h:outputText value="#{stockLocation.warehouse.name}" />
+							</p:column>
+						</p:dataTable>
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="确定"
+                                actionListener="#{stockOrderAdminBean.doSelectPreferredStockLocation}"
+                                update="itemForm:itemPanel"
+                                oncomplete="chooseStockLocationDialog.hide();" />
+                            <p:commandButton value="取消"
+                                oncomplete="chooseStockLocationDialog.hide();" />
+                        </h:panelGrid>
+					</p:panel>
+					<p:panel header="所有库位" toggleable="true">
+						<p:tree value="#{stockOrderAdminBean.locationRoot}"
+							var="stockLocation" selectionMode="single"
+							selection="#{stockOrderAdminBean.selectedStockLocationNode}">
+							<p:treeNode>
+								<h:outputText value="#{stockLocation.nodeText}" />
+							</p:treeNode>
+						</p:tree>
+
+						<h:panelGrid columns="2">
+							<p:commandButton value="确定"
+								actionListener="#{stockOrderAdminBean.doSelectStockLocation}"
+								update="itemForm:itemPanel"
+								oncomplete="chooseStockLocationDialog.hide();" />
+							<p:commandButton value="取消"
+								oncomplete="chooseStockLocationDialog.hide();" />
+						</h:panelGrid>
+					</p:panel>
+
+
+
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+
 
 
 

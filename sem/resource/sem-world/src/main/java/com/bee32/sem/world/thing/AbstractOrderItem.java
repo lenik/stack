@@ -24,7 +24,7 @@ public abstract class AbstractOrderItem
 
     private static final long serialVersionUID = 1L;
 
-    BigDecimal quantity;
+    BigDecimal quantity = new BigDecimal(0);
 
     MCValue price = new MCValue();
 

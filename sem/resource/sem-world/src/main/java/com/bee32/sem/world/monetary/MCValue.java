@@ -97,6 +97,11 @@ public class MCValue
         setCurrency(currency);
     }
 
+    @Transient
+    public String getCurrencyText() {
+        return CurrencyConfig.format(currency);
+    }
+
     public MCValue currency(Currency currency) {
         return new MCValue(currency, value);
     }

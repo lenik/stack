@@ -2,6 +2,7 @@ package com.bee32.sem.inventory.entity;
 
 import java.util.Date;
 
+import javax.free.Nullables;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -52,7 +53,7 @@ public class StockOrderItem
     @NaturalId
     @ManyToOne(optional = false)
     public StockOrder getParent() {
-        return getParent();
+        return parent;
     }
 
     public void setParent(StockOrder parent) {
@@ -179,10 +180,10 @@ public class StockOrderItem
     protected Boolean naturalEquals(EntityBase<Long> other) {
         StockOrderItem o = (StockOrderItem) other;
 
-        if (!parent.equals(o.parent))
+        if (!Nullables.equals(parent, o.parent))
             return false;
 
-        if (!material.equals(o.material))
+        if (!Nullables.equals(material,o.material))
             return false;
 
         if (!getCBatch().equals(o.getCBatch()))
@@ -194,7 +195,9 @@ public class StockOrderItem
     @Override
     protected Integer naturalHashCode() {
         int hash = 0;
-        hash += parent.hashCode();
+        if(parent != null)
+            hash += parent.hashCode();
+        if(material != null)
         hash += material.hashCode();
         hash += getCBatch().hashCode();
         return hash;
