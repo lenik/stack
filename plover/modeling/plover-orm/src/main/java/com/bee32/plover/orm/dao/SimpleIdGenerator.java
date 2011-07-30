@@ -18,7 +18,17 @@ public class SimpleIdGenerator {
 
     private static final Map<Class<?>, Long> allSeqs = new HashMap<Class<?>, Long>();
 
+    public static synchronized void reset(Class<?> entityType) {
+        if (entityType == null)
+            throw new NullPointerException("entityType");
+
+        allSeqs.remove(entityType);
+    }
+
     static synchronized long next(Class<?> entityType) {
+        if (entityType == null)
+            throw new NullPointerException("entityType");
+
         Long seq = allSeqs.get(entityType);
         if (seq == null)
             seq = 1L;
