@@ -16,6 +16,7 @@ public abstract class EntityBase<K extends Serializable>
     private static final long serialVersionUID = 1L;
 
     protected boolean autoId;
+    protected String name;
 
     transient Entity<?> nextOfMicroLoop;
 
@@ -25,6 +26,7 @@ public abstract class EntityBase<K extends Serializable>
 
     public EntityBase(String name) {
         super(name);
+        this.name = name;
     }
 
     String _internalName() {

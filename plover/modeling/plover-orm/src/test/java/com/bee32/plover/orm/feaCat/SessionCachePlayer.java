@@ -23,7 +23,7 @@ import com.bee32.plover.test.FeaturePlayer;
 @Service
 @Scope("prototype")
 @Lazy
-@Using(Animals.class)
+@Using(AnimalUnit.class)
 @Import(WiredDaoTestCase.class)
 public class SessionCachePlayer
         extends FeaturePlayer<SessionCachePlayer> {

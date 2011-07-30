@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.orm.dao.CatDao;
-import com.bee32.plover.orm.feaCat.Animals;
+import com.bee32.plover.orm.feaCat.AnimalUnit;
 import com.bee32.plover.orm.feaCat.Cat;
 import com.bee32.plover.orm.feaCat.Tiger;
 import com.bee32.plover.orm.unit.Using;
 
-@Using(Animals.class)
+@Using(AnimalUnit.class)
 public class WiredDaoTestCaseTest
         extends WiredDaoTestCase {
 

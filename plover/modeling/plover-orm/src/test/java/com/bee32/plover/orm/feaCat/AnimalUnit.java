@@ -2,12 +2,8 @@ package com.bee32.plover.orm.feaCat;
 
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
-public class Animals
+public class AnimalUnit
         extends PersistenceUnit {
-
-    public Animals() {
-        super("animals");
-    }
 
     protected void preamble() {
         add(Cat.class);
@@ -15,9 +11,9 @@ public class Animals
         add(CatFavTag.class);
     }
 
-    static final Animals instance = new Animals();
+    static final AnimalUnit instance = new AnimalUnit();
 
-    public static Animals getInstance() {
+    public static AnimalUnit getInstance() {
         return instance;
     }
 

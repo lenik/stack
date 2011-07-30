@@ -13,7 +13,7 @@ import com.bee32.plover.orm.dao.CatDao;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 
-@Using(Animals.class)
+@Using(AnimalUnit.class)
 public class CatUsageTest
         extends WiredDaoTestCase {
 
