@@ -43,6 +43,11 @@ public class ImportSamplesUtil {
         return instance;
     }
 
+    /**
+     * 将标准 {@link ImportSamples} 记入依赖项。
+     *
+     * 注：{@link ImportSamples} 仅在此处被分析并被转换为依赖。
+     */
     public static void applyImports(SampleContribution contrib) {
         Class<?> clazz = contrib.getClass();
 

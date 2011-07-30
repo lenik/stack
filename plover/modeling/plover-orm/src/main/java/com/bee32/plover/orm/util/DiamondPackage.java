@@ -6,14 +6,16 @@ import java.util.Map;
 public class DiamondPackage
         extends SamplePackage {
 
-    DiamondPackage start;
+    final DiamondPackage base;
 
-    public DiamondPackage() {
+    public DiamondPackage(DiamondPackage _super) {
         super();
+        this.base = _super;
     }
 
-    public DiamondPackage(String name) {
+    public DiamondPackage(String name, DiamondPackage base) {
         super(name);
+        this.base = base;
     }
 
     @Override
@@ -21,12 +23,10 @@ public class DiamondPackage
         return true;
     }
 
-    public DiamondPackage getStart() {
-        return start;
-    }
-
-    public void setStart(DiamondPackage start) {
-        this.start = start;
+    public void insert(SamplePackage pack) {
+        addDependency(pack);
+        if (base != null)
+            pack.addDependency(base);
     }
 
     static final Map<String, DiamondPackage> virtualPackages;
@@ -49,16 +49,18 @@ public class DiamondPackage
         EVERYTHING = createDiamond(EVERYTHING_NAME, WORSE);
     }
 
-    static DiamondPackage createDiamond(String name, DiamondPackage dependOn) {
-        DiamondPackage startPackage = new DiamondPackage(name + ":start");
-        DiamondPackage endPackage = new DiamondPackage(name + ":end");
+    static DiamondPackage createDiamond(String name, DiamondPackage parent) {
+        DiamondPackage base = new DiamondPackage(name + ":start", parent);
+        DiamondPackage diamond = new DiamondPackage(name + ":end", base);
 
-        if (dependOn != null)
-            startPackage.dependencies.add(dependOn);
-        endPackage.start = startPackage;
+        if (parent != null)
+            base.addDependency(parent);
 
-        virtualPackages.put(name, endPackage);
-        return endPackage;
+        if (base != null)
+            diamond.addDependency(base);
+
+        virtualPackages.put(name, diamond);
+        return diamond;
     }
 
     public static Map<String, DiamondPackage> getVirtualPackages() {

@@ -47,13 +47,8 @@ public abstract class SampleContribution
         ImportSamplesUtil.register(this);
     }
 
-    protected void addToDiamond(DiamondPackage diamondEnd) {
-        DiamondPackage diamondStart = diamondEnd.getStart();
-
-        diamondEnd.addDependency(this);
-        if (diamondStart != null) {
-            this.addDependency(diamondStart);
-        }
+    protected void addToDiamond(DiamondPackage diamond) {
+        diamond.insert(this);
     }
 
     /**
