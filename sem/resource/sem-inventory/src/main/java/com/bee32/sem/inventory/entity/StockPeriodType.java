@@ -33,6 +33,13 @@ public class StockPeriodType
         return valueMap;
     }
 
+    public static StockPeriodType forName(String altName) {
+        StockPeriodType type = nameMap.get(altName);
+        if (type == null)
+            throw new NoSuchEnumException(StockPeriodType.class, altName);
+        return type;
+    }
+
     public static Collection<StockPeriodType> values() {
         Collection<StockPeriodType> values = valueMap.values();
         return Collections.unmodifiableCollection(values);
@@ -46,13 +53,6 @@ public class StockPeriodType
         if (type == null)
             throw new NoSuchEnumException(StockPeriodType.class, value);
 
-        return type;
-    }
-
-    public static StockPeriodType valueOf(String altName) {
-        StockPeriodType type = nameMap.get(altName);
-        if (type == null)
-            throw new NoSuchEnumException(StockPeriodType.class, altName);
         return type;
     }
 

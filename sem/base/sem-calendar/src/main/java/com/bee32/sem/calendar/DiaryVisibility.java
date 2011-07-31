@@ -15,6 +15,9 @@ public class DiaryVisibility
 
     private static final long serialVersionUID = 1L;
 
+    static final Map<String, DiaryVisibility> nameMap = new HashMap<String, DiaryVisibility>();
+    static final Map<Character, DiaryVisibility> valueMap = new HashMap<Character, DiaryVisibility>();
+
     final Location icon;
 
     private DiaryVisibility(char value, String name, String icon) {
@@ -26,9 +29,6 @@ public class DiaryVisibility
         return icon;
     }
 
-    static final Map<String, DiaryVisibility> nameMap = new HashMap<String, DiaryVisibility>();
-    static final Map<Character, DiaryVisibility> valueMap = new HashMap<Character, DiaryVisibility>();
-
     @Override
     protected Map<String, DiaryVisibility> getNameMap() {
         return nameMap;
@@ -39,20 +39,20 @@ public class DiaryVisibility
         return valueMap;
     }
 
+    public static DiaryVisibility forName(String name) {
+        DiaryVisibility instance = nameMap.get(name);
+        if (instance != null)
+            return instance;
+        throw new IllegalUsageException(//
+                "Invalid DiaryVisibility name: " + name);
+    }
+
     public static DiaryVisibility valueOf(char value) {
         DiaryVisibility instance = valueMap.get(value);
         if (instance != null)
             return instance;
         throw new IllegalUsageException(String.format(//
                 "Invalid DiaryVisibility value: 0x%x" + value));
-    }
-
-    public static DiaryVisibility valueOf(String name) {
-        DiaryVisibility instance = nameMap.get(name);
-        if (instance != null)
-            return instance;
-        throw new IllegalUsageException(//
-                "Invalid DiaryVisibility name: " + name);
     }
 
     public static final DiaryVisibility PRIVATE //

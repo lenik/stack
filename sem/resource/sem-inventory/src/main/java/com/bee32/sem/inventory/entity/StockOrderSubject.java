@@ -47,6 +47,13 @@ public final class StockOrderSubject
         return valueMap;
     }
 
+    public static StockOrderSubject forName(String altName) {
+        StockOrderSubject subject = nameMap.get(altName);
+        if (subject == null)
+            throw new NoSuchEnumException(StockOrderSubject.class, altName);
+        return subject;
+    }
+
     public static Collection<StockOrderSubject> values() {
         Collection<StockOrderSubject> values = valueMap.values();
         return Collections.unmodifiableCollection(values);
@@ -64,13 +71,6 @@ public final class StockOrderSubject
         if (subject == null)
             throw new NoSuchEnumException(StockOrderSubject.class, value);
 
-        return subject;
-    }
-
-    public static StockOrderSubject get(String altName) {
-        StockOrderSubject subject = nameMap.get(altName);
-        if (subject == null)
-            throw new NoSuchEnumException(StockOrderSubject.class, altName);
         return subject;
     }
 

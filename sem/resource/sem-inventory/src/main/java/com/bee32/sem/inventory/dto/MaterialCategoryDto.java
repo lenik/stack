@@ -42,7 +42,7 @@ public class MaterialCategoryDto
             throws ParseException {
         name = map.getString("name");
 
-        String _cg = map.getString("codeGenerator");
+        char _cg = map.getChar("codeGenerator");
         codeGenerator = CodeGenerator.valueOf(_cg);
     }
 

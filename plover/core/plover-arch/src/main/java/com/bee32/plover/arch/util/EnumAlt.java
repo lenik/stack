@@ -25,6 +25,13 @@ class ${EnumType}
     static final Map<String, ${EnumType}> nameMap = new HashMap<String, ${EnumType}>();
     static final Map<${ValType}, ${EnumType}> valueMap = new HashMap<${ValType}, ${EnumType}>();
 
+    public static ${EnumType} forName(String altName) {
+        ${EnumType} ${typeName:localVar} = nameMap.get(altName);
+        if (${typeName:localVar} == null)
+            throw new NoSuchEnumException(${EnumType}.class, altName);
+        return ${typeName:localVar};
+    }
+
     public static Collection<${EnumType}> values() {
         Collection<${EnumType}> values = valueMap.values();
         return Collections.unmodifiableCollection(values);
@@ -38,13 +45,6 @@ class ${EnumType}
         if (${typeName:localVar} == null)
             throw new NoSuchEnumException(${EnumType}.class, value);
 
-        return ${typeName:localVar};
-    }
-
-    public static ${EnumType} valueOf(String altName) {
-        ${EnumType} ${typeName:localVar} = nameMap.get(altName);
-        if (${typeName:localVar} == null)
-            throw new NoSuchEnumException(${EnumType}.class, altName);
         return ${typeName:localVar};
     }
 

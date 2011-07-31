@@ -16,6 +16,9 @@ public class CodeGenerator
 
     private static final long serialVersionUID = 1L;
 
+    static final Map<String, CodeGenerator> nameMap = new HashMap<String, CodeGenerator>();
+    static final Map<Character, CodeGenerator> valueMap = new HashMap<Character, CodeGenerator>();
+
     public CodeGenerator(char value, String name) {
         super(value, name);
     }
@@ -28,6 +31,13 @@ public class CodeGenerator
     @Override
     protected Map<Character, CodeGenerator> getValueMap() {
         return valueMap;
+    }
+
+    public static CodeGenerator forName(String altName) {
+        CodeGenerator CodeGenerator = nameMap.get(altName);
+        if (CodeGenerator == null)
+            throw new NoSuchEnumException(CodeGenerator.class, altName);
+        return CodeGenerator;
     }
 
     public static Collection<CodeGenerator> values() {
@@ -47,16 +57,6 @@ public class CodeGenerator
             throw new NoSuchEnumException(CodeGenerator.class, value);
         return CodeGenerator;
     }
-
-    public static CodeGenerator valueOf(String altName) {
-        CodeGenerator CodeGenerator = nameMap.get(altName);
-        if (CodeGenerator == null)
-            throw new NoSuchEnumException(CodeGenerator.class, altName);
-        return CodeGenerator;
-    }
-
-    static final Map<String, CodeGenerator> nameMap = new HashMap<String, CodeGenerator>();
-    static final Map<Character, CodeGenerator> valueMap = new HashMap<Character, CodeGenerator>();
 
     /** 手动输入 */
     public static final CodeGenerator NONE = new CodeGenerator('N', "none");

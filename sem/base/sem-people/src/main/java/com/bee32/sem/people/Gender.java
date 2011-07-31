@@ -30,6 +30,13 @@ public class Gender
         return valueMap;
     }
 
+    public static Gender forName(String altName) {
+        Gender gender = nameMap.get(altName);
+        if (gender == null)
+            throw new NoSuchEnumException(Gender.class, altName);
+        return gender;
+    }
+
     public static Collection<Gender> values() {
         Collection<Gender> values = valueMap.values();
         return Collections.unmodifiableCollection(values);
@@ -48,13 +55,6 @@ public class Gender
 
     public static Gender valueOf(char value) {
         return valueOf(new Character(value));
-    }
-
-    public static Gender valueOf(String altName) {
-        Gender gender = nameMap.get(altName);
-        if (gender == null)
-            throw new NoSuchEnumException(Gender.class, altName);
-        return gender;
     }
 
     public static final Gender MALE = new Gender('m', "male");

@@ -19,7 +19,7 @@ public class GenderTest
 
     @Test(expected = NoSuchEnumException.class)
     public void testGetInstance_NotExist() {
-        Gender.valueOf("x");
+        Gender.valueOf('Z');
     }
 
     /**

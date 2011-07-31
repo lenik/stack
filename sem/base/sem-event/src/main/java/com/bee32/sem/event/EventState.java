@@ -57,6 +57,14 @@ public class EventState
         return (sel & SEL_MASK) | ((classIndex << CLASS_SHIFT) & CLASS_MASK);
     }
 
+    public static EventState forName(String altName) {
+        EventState definedState = nameMap.get(altName);
+        if (definedState != null)
+            return definedState;
+
+        throw new IllegalUsageException("Invalid state: " + altName);
+    }
+
     public static EventState valueOf(int altId) {
         EventState definedState = valueMap.get(altId);
         if (definedState != null)
@@ -64,14 +72,6 @@ public class EventState
 
         String idHex = Integer.toHexString(altId);
         throw new IllegalUsageException("Invalid state: 0x" + idHex);
-    }
-
-    public static EventState valueOf(String altName) {
-        EventState definedState = nameMap.get(altName);
-        if (definedState != null)
-            return definedState;
-
-        throw new IllegalUsageException("Invalid state: " + altName);
     }
 
     public static List<Integer> list(int mask) {

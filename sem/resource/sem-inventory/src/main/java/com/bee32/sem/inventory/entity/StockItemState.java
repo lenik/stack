@@ -44,6 +44,13 @@ public class StockItemState
         return valueMap;
     }
 
+    public static StockItemState forName(String altName) {
+        StockItemState state = nameMap.get(altName);
+        if (state == null)
+            throw new NoSuchEnumException(StockItemState.class, altName);
+        return state;
+    }
+
     public static Collection<StockItemState> values() {
         Collection<StockItemState> values = valueMap.values();
         return Collections.unmodifiableCollection(values);
@@ -61,13 +68,6 @@ public class StockItemState
         if (state == null)
             throw new NoSuchEnumException(StockItemState.class, value);
 
-        return state;
-    }
-
-    public static StockItemState valueOf(String altName) {
-        StockItemState state = nameMap.get(altName);
-        if (state == null)
-            throw new NoSuchEnumException(StockItemState.class, altName);
         return state;
     }
 
