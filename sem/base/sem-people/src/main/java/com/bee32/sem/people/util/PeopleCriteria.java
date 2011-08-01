@@ -15,7 +15,7 @@ public class PeopleCriteria
     public static CriteriaElement ownedBy(IUserPrincipal user) {
         if (user == null)
             throw new NullPointerException("user");
-        return equals("owner.id", user.getId());
+        return equals("owner", user.getId());
     }
 
     public static CriteriaElement ownedByCurrentUser() {
