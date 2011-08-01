@@ -145,7 +145,7 @@
 						disabled="#{!stockOrderAdminBean.editable}" />
 				</t:panelGrid>
 
-				<p:dataTable id="orgs" var="item"
+				<p:dataTable id="items" var="item"
 					value="#{stockOrderAdminBean.items}" resizableColumns="true"
 					rowIndexVar="rowIndex">
 
@@ -202,25 +202,25 @@
 					<p:column>
 						<f:facet name="header">操作</f:facet>
 						<t:panelGroup>
-							<p:commandLink update="" oncomplete="stockWarehouseDialog.show()"
+							<p:commandLink update="" oncomplete=""
 								value="查看">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{stockOrderAdminBean.selectedStockOrderItem}" />
+									target="#{stockOrderAdminBean.orderItem}" />
 							</p:commandLink>
 							<p:spacer width="10" />
 							<p:commandLink update="itemForm:itemPanel"
 								disabled="#{!stockOrderAdminBean.editable}"
 								actionListener="#{stockOrderAdminBean.modifyItem}"
-								onclick="itemDialog.show()" value="修改">
+								oncomplete="itemDialog.show()" value="修改">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{stockOrderAdminBean.selectedStockOrderItem}" />
+									target="#{stockOrderAdminBean.orderItem}" />
 							</p:commandLink>
 							<p:spacer width="10" />
-							<p:commandLink update=""
+							<p:commandLink
 								disabled="#{!stockOrderAdminBean.editable}"
-								oncomplete="confirmation.show()" value="删除">
+								oncomplete="deleteConfirmDialog.show()" value="删除">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{stockOrderAdminBean.selectedStockOrderItem}" />
+									target="#{stockOrderAdminBean.orderItem}" />
 							</p:commandLink>
 						</t:panelGroup>
 					</p:column>
@@ -256,12 +256,17 @@
                                     showOn="button" />
 
                         <h:outputLabel value="库位" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText value="#{stockOrderAdminBean.orderItem.location.nodeText}" readonly="true"/>
-                            <p:commandButton value="..." onclick="chooseStockLocationDialog.show();"/>
-                        </t:panelGroup>
+						<t:panelGroup colspan="3">
+							<p:inputText
+								value="#{stockOrderAdminBean.orderItem.location.nodeText}"
+								readonly="true" />
+							<p:commandButton value="..."
+								oncomplete="chooseStockLocationDialog.show();"
+								actionListener="#{stockOrderAdminBean.updateLocations}"
+								update="chooseStockLocationForm:chooseStockLocationPanel" />
+						</t:panelGroup>
 
-                        <h:outputLabel value="单价" />
+						<h:outputLabel value="单价" />
                         <p:inputText value="#{stockOrderAdminBean.orderItemPrice}" />
                         <h:outputLabel value="币种" />
                         <p:selectOneMenu value="#{stockOrderAdminBean.orderItemPriceCurrency}" style="width:200px;">
@@ -413,6 +418,19 @@
 		</h:form>
 
 
+        <h:form id="deleteConfirmForm">
+            <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认"
+                severity="alert" widgetVar="deleteConfirmDialog" modal="true">
+
+                <p:commandButton value="确定"
+                    update="mainForm:items"
+                    actionListener="#{stockOrderAdminBean.deleteItem}"
+                    oncomplete="deleteConfirmDialog.hide()" />
+                <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()"
+                    type="button" />
+
+            </p:confirmDialog>
+        </h:form>
 
 
 

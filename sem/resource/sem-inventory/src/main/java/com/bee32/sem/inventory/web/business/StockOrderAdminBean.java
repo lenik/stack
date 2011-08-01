@@ -21,6 +21,7 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.GreaterOrEquals;
+import com.bee32.plover.criteria.hibernate.LessOrEquals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
@@ -32,6 +33,7 @@ import com.bee32.sem.inventory.dto.StockLocationDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
+import com.bee32.sem.inventory.entity.LocalDateUtil;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrder;
@@ -63,7 +65,8 @@ public class StockOrderAdminBean extends EntityViewBean implements
     private StockOrderItemDto orderItem = new StockOrderItemDto().create().ref();
     private BigDecimal orderItemPrice = new BigDecimal(0);
     private String orderItemPriceCurrency = NATIVE_CURRENCY.getCurrencyCode();
-    private StockOrderItemDto selectedOrderItem;
+
+    private boolean newItemStatus;
 
     private String materialPattern;
     private List<MaterialDto> materials;
@@ -186,8 +189,8 @@ public class StockOrderAdminBean extends EntityViewBean implements
 
     public int getCount() {
         count = serviceFor(StockOrder.class).count(
-                new And(new GreaterOrEquals("createdDate", limitDateFrom),
-                        new GreaterOrEquals("createdDate", limitDateTo)),
+                new And(new GreaterOrEquals("createdDate", LocalDateUtil.minTimeOfDay(limitDateFrom)),
+                        new LessOrEquals("createdDate", LocalDateUtil.maxTimeOfDay(limitDateTo))),
                 new Equals("subject_", subject.getValue()),
                 new Equals("warehouse.id", selectedWarehouse.getId()));
         return count;
@@ -199,14 +202,6 @@ public class StockOrderAdminBean extends EntityViewBean implements
 
     public void setOrderItem(StockOrderItemDto orderItem) {
         this.orderItem = orderItem;
-    }
-
-    public StockOrderItemDto getSelectedOrderItem() {
-        return selectedOrderItem;
-    }
-
-    public void setSelectedOrderItem(StockOrderItemDto selectedOrderItem) {
-        this.selectedOrderItem = selectedOrderItem;
     }
 
     public List<SelectItem> getCurrencies() {
@@ -283,11 +278,13 @@ public class StockOrderAdminBean extends EntityViewBean implements
     public List<StockLocationDto> getPreferredLocations() {
         List<StockLocationDto> stockLocations = new ArrayList<StockLocationDto>();
 
-        if (selectedMaterial != null) {
-            List<MaterialPreferredLocationDto> preferredLocations = selectedMaterial
+        if (orderItem != null && orderItem.getMaterial() != null) {
+            List<MaterialPreferredLocationDto> preferredLocations = orderItem.getMaterial()
                     .getPreferredLocations();
-            for (MaterialPreferredLocationDto preferredLocation : preferredLocations) {
-                stockLocations.add(preferredLocation.getLocation());
+            if(preferredLocations != null) {
+                for (MaterialPreferredLocationDto preferredLocation : preferredLocations) {
+                    stockLocations.add(preferredLocation.getLocation());
+                }
             }
         }
 
@@ -303,7 +300,13 @@ public class StockOrderAdminBean extends EntityViewBean implements
         this.selectedPreferredStockLocation = selectedPreferredStockLocation;
     }
 
+    public boolean isNewItemStatus() {
+        return newItemStatus;
+    }
 
+    public void setNewItemStatus(boolean newItemStatus) {
+        this.newItemStatus = newItemStatus;
+    }
 
 
 
@@ -355,12 +358,19 @@ public class StockOrderAdminBean extends EntityViewBean implements
     }
 
     private void loadStockOrder(int goNumber) {
+        //刷新总记录数
+        getCount();
+
+        if(goNumber < 1) goNumber = 1;
+        if(goNumber > count) goNumber = count;
+
+
         stockOrder = new StockOrderDto().create();
         if (selectedWarehouse != null) {
             List<StockOrder> oneList = serviceFor(StockOrder.class).list(
                     new Limit(goNumber - 1, 1),
-                    new And(new GreaterOrEquals("createdDate", limitDateFrom),
-                            new GreaterOrEquals("createdDate", limitDateTo)),
+                    new And(new GreaterOrEquals("createdDate", LocalDateUtil.minTimeOfDay(limitDateFrom)),
+                            new LessOrEquals("createdDate", LocalDateUtil.maxTimeOfDay(limitDateTo))),
                     new Equals("subject_", getSubject().getValue()),
                     new Equals("warehouse.id", selectedWarehouse.getId()));
 
@@ -392,16 +402,23 @@ public class StockOrderAdminBean extends EntityViewBean implements
     }
 
     public void delete() {
-
+        serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
+        uiLogger.info("删除成功!");
+        loadStockOrder(goNumber);
     }
 
     public void save() {
-
+        stockOrder.setSubject(subject);
+        stockOrder.setWarehouse(selectedWarehouse);
+        serviceFor(StockOrder.class).save(stockOrder.unmarshal());
+        uiLogger.info("保存成功");
+        loadStockOrder(1);
         editable = false;
     }
 
     public void cancel() {
 
+        loadStockOrder(goNumber);
         editable = false;
     }
 
@@ -419,7 +436,7 @@ public class StockOrderAdminBean extends EntityViewBean implements
         if (goNumber < 1) {
             goNumber = 1;
         } else if (goNumber > count) {
-            goNumber = count + 1;
+            goNumber = count;
         }
     }
 
@@ -427,7 +444,7 @@ public class StockOrderAdminBean extends EntityViewBean implements
         goNumber++;
 
         if (goNumber > count)
-            goNumber = count + 1;
+            goNumber = count;
     }
 
     public void last() {
@@ -438,11 +455,18 @@ public class StockOrderAdminBean extends EntityViewBean implements
         orderItem = new StockOrderItemDto().create();
         orderItemPrice = new BigDecimal(0);
         orderItemPriceCurrency = NATIVE_CURRENCY.getCurrencyCode();
+
+        newItemStatus = true;
     }
 
     public void modifyItem() {
-        orderItem = selectedOrderItem;
+        newItemStatus = false;
     }
+
+    public void deleteItem() {
+        stockOrder.removeItem(orderItem);
+    }
+
 
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {
@@ -459,10 +483,17 @@ public class StockOrderAdminBean extends EntityViewBean implements
     }
 
     public void doSaveItem() {
+        orderItem.setParent(stockOrder);
         MCValue newPrice = new MCValue(
                 Currency.getInstance(orderItemPriceCurrency), orderItemPrice);
         orderItem.setPrice(newPrice);
-        stockOrder.addItem(orderItem);
+        if(newItemStatus) {
+            stockOrder.addItem(orderItem);
+        }
+    }
+
+    public void updateLocations() {
+
     }
 
     public void doSelectStockLocation() {

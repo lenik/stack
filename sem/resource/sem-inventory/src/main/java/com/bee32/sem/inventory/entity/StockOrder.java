@@ -52,14 +52,14 @@ public class StockOrder
     /**
      * 基准库存期结。
      */
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     public StockPeriod getBase() {
         return base;
     }
 
     public void setBase(StockPeriod base) {
-        if (base == null)
-            throw new NullPointerException("base");
+//        if (base == null)
+//            throw new NullPointerException("base");
         this.base = base;
     }
 
