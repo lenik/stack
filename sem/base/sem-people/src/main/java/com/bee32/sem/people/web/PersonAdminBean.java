@@ -46,7 +46,7 @@ public class PersonAdminBean
     @PostConstruct
     public void init() {
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
-                Person.class, PersonDto.class, -1, //
+                Person.class, PersonDto.class, 0, //
                 Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
         persons = UIHelper.<Person, PersonDto> buildLazyDataModel(options);
 
@@ -162,7 +162,7 @@ public class PersonAdminBean
             return;
         }
 
-        person = selectedPerson;
+        person = reload(selectedPerson, -1);
 
         setActiveTab(TAB_FORM);
         editable = true;
@@ -220,7 +220,7 @@ public class PersonAdminBean
         }
 
         setActiveTab(TAB_FORM);
-        person = selectedPerson;
+        person = reload(selectedPerson, -1);
     }
 
     public void onRowSelect(SelectEvent event) {

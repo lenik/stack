@@ -66,7 +66,7 @@ public class OrgAdminBean
 
     public OrgAdminBean() {
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
-                Org.class, OrgDto.class, -1, //
+                Org.class, OrgDto.class, 0, //
                 Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
         orgs = UIHelper.buildLazyDataModel(options);
 
@@ -295,7 +295,7 @@ public class OrgAdminBean
             return;
         }
 
-        org = selectedOrg;
+        org = reload(selectedOrg, -1);
 
         setActiveTab(TAB_FORM);
         editable = true;
@@ -346,7 +346,7 @@ public class OrgAdminBean
         }
 
         setActiveTab(TAB_FORM);
-        org = selectedOrg;
+        org = reload(selectedOrg, -1);
     }
 
     public void onRowSelect(SelectEvent event) {
