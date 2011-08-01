@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if ! svn info >/dev/null 2>&1; then
-	echo "Current directory isn't versioned. "
-	exit 1
-fi
-
 for envf in ../../.env ../.env .env; do
     if [ -f $envf ]; then
         . $envf
@@ -14,8 +9,7 @@ done
 for d in "$@"; do
 
     mkdir -p $d
-    svn add --depth empty $d/
-    svn propset svn:ignore '*.tar.gz' $d/
+    echo '*.tar.gz' > $d/.gitignore
 
     cd $d
 
@@ -53,7 +47,7 @@ pre-remove.sh: pre-remove.sh.in Makefile
 	\$(do_subst) <\$(srcdir)/pre-remove.sh.in >\$@
 EOT
 
-    svn add *
+    git add .
 
     # reconf2 after added. so exclude gen stuff.
     autoreconf2 -is
@@ -82,14 +76,16 @@ EOT
 		vi control
 	cd ..
 
-	svn add --depth empty debian
-	svnpsl svn:ignore "$d" '*.log' '*.ex' '*.EX' '*.substvars' 'files' \; debian
-	svn add debian/{control,postinst,prerm,postrm,docs,rules,copyright,compat,README.*}
+	for x in "$d" '*.log' '*.ex' '*.EX' '*.substvars' 'files'; do
+            echo "debian/$x" >>.gitignore
+        done
+
+	git add debian/{control,postinst,prerm,postrm,docs,rules,copyright,compat,README.*}
 
     # makelook
 
 	cd ..
 
-	svn ci -m "Initial by sdu-creator" "$d"
+	git commit -m "$d is initialized by sdu-creator" "$d"
 
 done
