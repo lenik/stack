@@ -1,11 +1,12 @@
 package com.bee32.plover.orm.ext.dict;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Blue;
 
 /**
@@ -79,26 +80,8 @@ public abstract class NameDict
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<String> other) {
-        String name = getName();
-        String otherName = other.getName();
-        if (name == null || otherName == null)
-            return false;
-
-        if (!name.equals(otherName))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        String name = getName();
-
-        if (name == null)
-            return 0;
-        else
-            return name.hashCode();
+    protected Serializable naturalId() {
+        return name;
     }
 
 }

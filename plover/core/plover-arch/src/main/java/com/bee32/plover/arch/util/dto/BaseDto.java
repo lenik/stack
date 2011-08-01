@@ -1,5 +1,7 @@
 package com.bee32.plover.arch.util.dto;
 
+import java.io.Serializable;
+
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.Flags32;
 
@@ -99,9 +101,15 @@ public abstract class BaseDto<S, C>
         @SuppressWarnings("unchecked")
         BaseDto<S, C> other = (BaseDto<S, C>) obj;
 
-        Boolean naturalEquals = naturalEquals(other);
-        if (naturalEquals != null)
-            return naturalEquals;
+        Serializable nid = getNaturalId();
+        if (nid != null) {
+            Serializable nidOther = other.getNaturalId();
+            if (nidOther == null) {
+                // logger.warn("Natural Id of the other DTO is null: " + other);
+                return false;
+            }
+            return nid.equals(nidOther);
+        }
 
         return contentEquals(other);
     }
@@ -137,11 +145,15 @@ public abstract class BaseDto<S, C>
      */
     @Override
     public final int hashCode() {
-        Integer idHash = naturalHashCode();
-        if (idHash != null)
-            return idHash;
-        else
-            return contentHashCode();
+        Serializable nid = getNaturalId();
+        if (nid != null)
+            return nid.hashCode();
+
+        return contentHashCode();
+    }
+
+    protected final Serializable getNaturalId() {
+        return naturalId();
     }
 
     /**
@@ -153,12 +165,12 @@ public abstract class BaseDto<S, C>
      * @return 返回 <code>true</code>或 <code>false</code> 表示自然键等价或不等价。返回<code>null</code>
      *         表示无法判定是否自然键等价。
      */
-    protected Boolean naturalEquals(BaseDto<S, C> other) {
-        return idEquals(other);
+    protected Serializable naturalId() {
+        return System.identityHashCode(this);
     }
 
-    protected Integer naturalHashCode() {
-        return idHashCode();
+    protected static Serializable naturalId(BaseDto<?, ?> o) {
+        return o.getNaturalId();
     }
 
     protected abstract boolean idEquals(BaseDto<S, C> other);

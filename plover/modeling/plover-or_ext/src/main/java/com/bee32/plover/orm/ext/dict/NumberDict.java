@@ -1,11 +1,11 @@
 package com.bee32.plover.orm.ext.dict;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-
-import com.bee32.plover.orm.entity.EntityBase;
 
 @MappedSuperclass
 public abstract class NumberDict
@@ -46,9 +46,8 @@ public abstract class NumberDict
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Integer> other) {
-        NumberDict o = (NumberDict) other;
-        return number == o.number;
+    protected Serializable naturalId() {
+        return number;
     }
 
 }

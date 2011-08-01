@@ -15,6 +15,7 @@ import org.hibernate.annotations.Index;
 import overlay.Overlay;
 
 import com.bee32.plover.arch.Component;
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.orm.util.EntityFormatter;
 import com.bee32.plover.orm.util.ErrorResult;
 import com.bee32.plover.util.FormatStyle;
@@ -270,20 +271,33 @@ public abstract class Entity<K extends Serializable>
         @SuppressWarnings("unchecked")
         Entity<K> other = (Entity<K>) obj;
 
-        Boolean naturalEquals = naturalEquals(other);
-        if (naturalEquals != null)
-            return naturalEquals;
+        Object nid = naturalId();
+        if (nid != null) {
+            Object nidOther = other.naturalId();
+
+            if (nidOther == null) {
+                // logger.warning("Natural Id isn't defined on other entity: " + other);
+                return false;
+            }
+
+            return nid.equals(nidOther);
+        }
 
         return contentEquals(other);
     }
 
     @Override
     protected final int hashCodeSpecific() {
-        Integer idHash = naturalHashCode();
-        if (idHash != null)
-            return idHash;
+        Object nid = naturalId();
+        if (nid != null)
+            return nid.hashCode();
         else
             return contentHashCode();
+    }
+
+    @Transient
+    public final Serializable getNaturalId() {
+        return naturalId();
     }
 
     /**
@@ -294,33 +308,19 @@ public abstract class Entity<K extends Serializable>
      *
      * @return 返回 <code>true</code>或 <code>false</code> 表示自然键等价或不等价。返回<code>null</code>
      *         表示无法判定是否自然键等价。
+     * @see IdComposite
      */
-    protected Boolean naturalEquals(EntityBase<K> other) {
-        return idEquals(other);
+    protected Serializable naturalId() {
+        return getId();
     }
 
-    protected Integer naturalHashCode() {
-        return idHashCode();
-    }
-
-    protected final boolean idEquals(EntityBase<K> other) {
-        K id1 = getId();
-        K id2 = other.getId();
-
-        if (id1 == null || id2 == null)
-            return false;
-
-        return id1.equals(id2);
-    }
-
-    protected final int idHashCode() {
-        K id = getId();
-        if (id != null)
-            return id.hashCode();
-        return System.identityHashCode(this);
+    protected static Serializable naturalId(Entity<?> entity) {
+        return entity.naturalId();
     }
 
     /**
+     * By default, there is no content-equality, the same operator is used.
+     *
      * @param other
      *            Non-<code>null</code> entity whose contents instead of the key need to be
      *            compared.
@@ -329,6 +329,9 @@ public abstract class Entity<K extends Serializable>
         return this == other;
     }
 
+    /**
+     * By default, content hash code is the same as system identity.
+     */
     protected int contentHashCode() {
         return System.identityHashCode(this);
     }

@@ -533,14 +533,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     }
 
     @Override
-    protected final Boolean naturalEquals(BaseDto<E, IEntityMarshalContext> other) {
-        @SuppressWarnings("unchecked")
-        EntityDto<E, K> o = (EntityDto<E, K>) other;
-        return naturalEquals(o);
-    }
-
-    protected Boolean naturalEquals(EntityDto<E, K> other) {
-        return idEquals(other);
+    protected Serializable naturalId() {
+        return getId();
     }
 
     @Override

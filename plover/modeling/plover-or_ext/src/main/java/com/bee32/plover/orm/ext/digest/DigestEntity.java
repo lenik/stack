@@ -3,6 +3,7 @@ package com.bee32.plover.orm.ext.digest;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
@@ -10,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.UIEntitySpec;
 
 @MappedSuperclass
@@ -146,29 +146,8 @@ public abstract class DigestEntity
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<String> other) {
-        DigestEntity o = (DigestEntity) other;
-
-        String digest = getDigest();
-        String otherDigest = o.getDigest();
-
-        if (digest == null || otherDigest == null)
-            return false;
-
-        if (!digest.equals(otherDigest))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        String digest = getDigest();
-
-        if (digest == null)
-            return 0;
-        else
-            return digest.hashCode();
+    protected Serializable naturalId() {
+        return getDigest();
     }
 
 }
