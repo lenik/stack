@@ -1,8 +1,10 @@
 package com.bee32.plover.orm.feaCat;
 
 import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "tiger_seq")
 public class Tiger
         extends Cat {
 

@@ -28,7 +28,7 @@ import com.bee32.plover.test.FeaturePlayer;
 public class GEntityPlayer
         extends FeaturePlayer<GEntityPlayer> {
 
-    static Logger logger = LoggerFactory.getLogger(SessionCachePlayer.class);
+    static Logger logger = LoggerFactory.getLogger(GEntityPlayer.class);
 
     @Inject
     CommonDataManager dataManager;
@@ -43,6 +43,12 @@ public class GEntityPlayer
     public void doFill() {
         Cat tom = new Cat("Tom", "black");
         asFor(Cat.class).save(tom);
+
+        for (int i = 1; i < 10; i++) {
+            int k = i + 0;
+            Cat kind = new Cat("Kind" + k, "speed: " + k);
+            asFor(Cat.class).save(kind);
+        }
 
         CatFavTag catFavTag = new CatFavTag();
         catFavTag.setWho(tom);

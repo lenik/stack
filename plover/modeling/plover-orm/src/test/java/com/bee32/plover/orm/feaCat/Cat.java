@@ -7,17 +7,18 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.EntityBase;
 
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "cat_seq", allocationSize = 1)
 public class Cat
-        extends EntityAuto<Long> {
+        extends SuperEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
