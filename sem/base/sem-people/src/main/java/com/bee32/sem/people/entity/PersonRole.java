@@ -4,6 +4,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Yellow;
@@ -13,6 +14,7 @@ import com.bee32.plover.orm.ext.color.Yellow;
  */
 @Entity
 @Yellow
+@SequenceGenerator(name = "idgen", sequenceName = "person_role_seq", allocationSize = 1)
 public class PersonRole
         extends EntityAuto<Integer> {
 

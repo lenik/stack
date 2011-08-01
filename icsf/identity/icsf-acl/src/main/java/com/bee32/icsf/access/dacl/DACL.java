@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "dacl_seq", allocationSize = 1)
 public class DACL
         extends TreeEntityAuto<Integer, DACL> {
 

@@ -3,6 +3,7 @@ package com.bee32.sem.people.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.xp.EntityExt;
@@ -15,6 +16,7 @@ import com.bee32.plover.orm.ext.xp.EntityExt;
 // @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 // @DiscriminatorColumn(name = "stereo", length = 4)
 // @DiscriminatorValue("-")
+@SequenceGenerator(name = "idgen", sequenceName = "contact_seq", allocationSize = 1)
 public class Contact
         extends EntityExt<Integer, ContactXP> {
 

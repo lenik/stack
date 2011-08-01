@@ -3,8 +3,8 @@ package com.bee32.sem.inventory.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 import com.bee32.sem.people.entity.Person;
 
@@ -12,7 +12,7 @@ import com.bee32.sem.people.entity.Person;
  * 仓库
  */
 @Entity
-@Green
+@SequenceGenerator(name = "idgen", sequenceName = "stock_warehouse_seq", allocationSize = 1)
 public class StockWarehouse
         extends UIEntityAuto<Integer> {
 

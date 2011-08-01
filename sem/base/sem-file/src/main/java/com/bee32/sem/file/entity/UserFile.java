@@ -9,13 +9,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.color.Green;
 
 /**
  * 用户文件。
  */
 @Entity
+@Green
+@SequenceGenerator(name = "idgen", sequenceName = "user_file_seq", allocationSize = 1)
 public class UserFile
         extends EntityAuto<Long> {
 

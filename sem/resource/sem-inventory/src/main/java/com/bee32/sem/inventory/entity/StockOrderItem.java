@@ -6,6 +6,7 @@ import javax.free.Nullables;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -15,13 +16,12 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.entity.EntityBase;
-import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.sem.inventory.config.BatchingConfig;
 import com.bee32.sem.world.thing.AbstractOrderItem;
 
 @Entity
-@Blue
 @BatchSize(size = 100)
+@SequenceGenerator(name = "idgen", sequenceName = "stock_order_item_seq", allocationSize = 1)
 public class StockOrderItem
         extends AbstractOrderItem {
 

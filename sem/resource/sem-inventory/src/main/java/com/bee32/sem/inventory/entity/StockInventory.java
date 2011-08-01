@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -19,6 +20,7 @@ import com.bee32.plover.orm.ext.xp.EntityExt;
  */
 @Entity
 @Green
+@SequenceGenerator(name = "idgen", sequenceName = "stock_inventory_seq", allocationSize = 1)
 public class StockInventory
         extends EntityExt<Integer, StockInventoryXP> {
 

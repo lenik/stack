@@ -25,10 +25,10 @@ public class EntityFlags
     public static final int WARN = 1 << 11;
     public static final int ERROR = 1 << 12;
 
-    public static final int BOLD = 1 << 13;
-    public static final int ITALIC = 1 << 14;
-    public static final int UNDERLINE = 1 << 15;
-    public static final int STRIKELINE = 1 << 16;
+    public static final int BOLD = 1 << 16;
+    public static final int ITALIC = 1 << 17;
+    public static final int UNDERLINE = 1 << 18;
+    public static final int STRIKELINE = 1 << 19;
 
     public EntityFlags() {
         super();

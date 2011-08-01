@@ -2,6 +2,7 @@ package com.bee32.sem.file.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
@@ -12,6 +13,7 @@ import com.bee32.plover.orm.ext.color.UIEntityAuto;
  * 用户用语文件分类的标签。
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "user_file_tagname_seq", allocationSize = 1)
 public class UserFileTagname
         extends UIEntityAuto<Long> {
 

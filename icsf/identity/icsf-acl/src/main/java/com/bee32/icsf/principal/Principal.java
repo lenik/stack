@@ -8,18 +8,18 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.entity.EntityBase;
-import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 
 @Entity
-@Green
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "steoro", length = 3)
+@SequenceGenerator(name = "idgen", sequenceName = "principal_seq", allocationSize = 1)
 public abstract class Principal
         extends TreeEntityAuto<Integer, Principal>
         implements IPrincipal {

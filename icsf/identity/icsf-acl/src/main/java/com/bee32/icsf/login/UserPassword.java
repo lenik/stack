@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -20,6 +21,7 @@ import com.bee32.plover.orm.ext.color.Blue;
 
 @Entity
 @Blue
+@SequenceGenerator(name = "idgen", sequenceName = "user_password_seq", allocationSize = 1)
 public class UserPassword
         extends EntityAuto<Long> {
 

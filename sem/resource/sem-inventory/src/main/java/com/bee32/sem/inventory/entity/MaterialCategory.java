@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
@@ -15,6 +16,7 @@ import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 
 @Entity
 @BatchSize(size = BatchConfig.TREE)
+@SequenceGenerator(name = "idgen", sequenceName = "material_category_seq", allocationSize = 1)
 public class MaterialCategory
         extends TreeEntityAuto<Integer, MaterialCategory> {
 

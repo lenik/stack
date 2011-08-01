@@ -4,6 +4,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.orm.ext.color.MomentInterval;
 
@@ -11,6 +12,7 @@ import com.bee32.plover.orm.ext.color.MomentInterval;
  * 人或组织的社会档案记录.
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "party_record_seq", allocationSize = 1)
 public class PartyRecord
         extends MomentInterval {
 

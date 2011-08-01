@@ -3,6 +3,7 @@ package com.bee32.sem.process.verify.builtin;
 import javax.free.Nullables;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.bee32.plover.collections.map.IRangeMapEntry;
@@ -13,6 +14,7 @@ import com.bee32.sem.process.verify.VerifyPolicy;
 
 @Entity
 @Blue
+@SequenceGenerator(name = "idgen", sequenceName = "multi_level_seq", allocationSize = 1)
 public class MultiLevel
         extends EntityAuto<Integer>
         implements IRangeMapEntry<Long, VerifyPolicy> {

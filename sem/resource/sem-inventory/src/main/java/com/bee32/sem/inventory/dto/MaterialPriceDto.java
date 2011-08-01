@@ -6,7 +6,6 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
-import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.world.monetary.ICurrencyAware;
 import com.bee32.sem.world.monetary.MCValue;
@@ -76,35 +75,6 @@ public class MaterialPriceDto
      */
     public final void setPrice(double price) {
         setPrice(new MCValue(NATIVE_CURRENCY, price));
-    }
-
-    @Override
-    protected Boolean naturalEquals(EntityDto<MaterialPrice, Long> other) {
-        MaterialPriceDto o = (MaterialPriceDto) other;
-
-        if (material == null || date == null)
-            return false;
-
-        if (!material.equals(o.getMaterial()))
-            return false;
-
-        if (!date.equals(o.getDate()))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-
-        if (material == null || date == null)
-            return System.identityHashCode(this);
-
-        hash += material.hashCode();
-        hash += date.hashCode();
-
-        return hash;
     }
 
 }

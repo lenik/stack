@@ -19,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -37,6 +38,7 @@ import com.bee32.plover.orm.ext.xp.EntityExt;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
+@SequenceGenerator(name = "idgen", sequenceName = "party_seq", allocationSize = 1)
 public abstract class Party
         extends EntityExt<Integer, PartyXP> {
 

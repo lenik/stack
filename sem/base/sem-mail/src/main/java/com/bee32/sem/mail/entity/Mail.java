@@ -13,6 +13,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -28,6 +29,7 @@ import com.bee32.sem.mail.util.EmailUtil;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("MAIL")
+@SequenceGenerator(name = "idgen", sequenceName = "mail_seq", allocationSize = 1)
 public class Mail
         extends EntityAuto<Long> {
 

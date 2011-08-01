@@ -28,7 +28,7 @@ public abstract class CustomizedSessionFactoryBean
     public CustomizedSessionFactoryBean(String name) {
         super(name);
 
-        this.overrides = new Properties();
+        overrides = new Properties();
 
         Properties properties = DataConfig.getProperties(name);
 

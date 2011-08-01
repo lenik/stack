@@ -2,7 +2,7 @@ package com.bee32.sem.inventory.tx.entity;
 
 import javax.persistence.MappedSuperclass;
 
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.sem.base.tx.TxEntity;
 
 @MappedSuperclass
 // @Entity
@@ -10,7 +10,7 @@ import com.bee32.plover.orm.ext.color.UIEntityAuto;
 // @DiscriminatorColumn(name = "stereo", length = 3)
 // @DiscriminatorValue("n/a")
 public abstract class StockJob
-        extends UIEntityAuto<Long> {
+        extends TxEntity {
 
     private static final long serialVersionUID = 1L;
 

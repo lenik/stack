@@ -3,6 +3,7 @@ package com.bee32.sem.process.verify.builtin;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.entity.EntityAuto;
@@ -15,6 +16,7 @@ import com.bee32.plover.util.PrettyPrintStream;
  */
 @Entity
 @Blue
+@SequenceGenerator(name = "idgen", sequenceName = "pass_step_seq", allocationSize = 1)
 public class PassStep
         extends EntityAuto<Integer> {
 

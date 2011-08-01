@@ -8,6 +8,7 @@ import javax.persistence.MappedSuperclass;
 import com.bee32.plover.orm.entity.Entity;
 
 @MappedSuperclass
+@Green
 abstract class UIEntity<K extends Serializable>
         extends Entity<K>
         implements IUserFriendly {

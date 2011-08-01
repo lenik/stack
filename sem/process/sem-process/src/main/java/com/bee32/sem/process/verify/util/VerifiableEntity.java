@@ -102,7 +102,6 @@ public abstract class VerifiableEntity<K extends Serializable, C extends IVerify
         this.verifyTask = verifyTask;
     }
 
-    @Transient
     @Override
     protected boolean isLocked() {
         if (VerifyState.VERIFIED.equals(verifyState))

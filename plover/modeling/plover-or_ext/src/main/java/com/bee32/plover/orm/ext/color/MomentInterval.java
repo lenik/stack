@@ -8,7 +8,7 @@ import javax.persistence.TemporalType;
 
 @MappedSuperclass
 @Pink
-public class MomentInterval
+public abstract class MomentInterval
         extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;

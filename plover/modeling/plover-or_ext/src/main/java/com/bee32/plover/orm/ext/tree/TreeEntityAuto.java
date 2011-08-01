@@ -3,6 +3,7 @@ package com.bee32.plover.orm.ext.tree;
 import java.io.Serializable;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -30,7 +31,7 @@ public abstract class TreeEntityAuto<K extends Serializable, $ extends TreeEntit
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
     @Override
     public K getId() {
         return id;

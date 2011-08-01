@@ -3,11 +3,13 @@ package com.bee32.sem.inventory.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.Blue;
 
 /**
  * 用户定义的物料属性。
@@ -15,6 +17,8 @@ import com.bee32.plover.orm.entity.EntityBase;
  * 这些属性仅供查看用，即不能用做搜索的关键字，也不能用于任何计算。 如果需要搜索和计算，应该在 MaterialXP 上做扩展。
  */
 @Entity
+@Blue
+@SequenceGenerator(name = "idgen", sequenceName = "material_attribute_seq", allocationSize = 1)
 public class MaterialAttribute
         extends EntityAuto<Long> {
 

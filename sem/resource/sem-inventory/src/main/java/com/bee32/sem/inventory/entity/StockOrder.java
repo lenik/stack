@@ -8,6 +8,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
@@ -20,6 +21,7 @@ import com.bee32.sem.inventory.tx.entity.StockTransfer;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 3)
 @DiscriminatorValue("-")
+@SequenceGenerator(name = "idgen", sequenceName = "stock_order_seq", allocationSize = 1)
 public class StockOrder
         extends StockItemList {
 

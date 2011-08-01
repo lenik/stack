@@ -6,6 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -15,6 +16,7 @@ import com.bee32.plover.orm.ext.color.Green;
 
 @Entity
 @Green
+@SequenceGenerator(name = "idgen", sequenceName = "mail_folder_seq", allocationSize = 1)
 public class MailFolder
         extends EntityAuto<Integer> {
 

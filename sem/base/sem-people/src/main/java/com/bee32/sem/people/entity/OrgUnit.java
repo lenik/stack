@@ -5,13 +5,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.icsf.principal.Group;
-import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 
 @Entity
-@Green
+@SequenceGenerator(name = "idgen", sequenceName = "org_unit_seq", allocationSize = 1)
 public class OrgUnit
         extends TreeEntityAuto<Long, OrgUnit> {
 

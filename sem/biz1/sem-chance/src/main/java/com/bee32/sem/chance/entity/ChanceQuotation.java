@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.sem.world.thing.AbstractOrder;
 
@@ -11,6 +12,7 @@ import com.bee32.sem.world.thing.AbstractOrder;
  * 报价单
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "chance_quotation_seq", allocationSize = 1)
 public class ChanceQuotation
         extends AbstractOrder<ChanceQuotationItem> {
 

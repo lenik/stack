@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
@@ -20,6 +21,7 @@ import com.bee32.plover.orm.ext.color.Blue;
  */
 @Entity
 @Blue
+@SequenceGenerator(name = "idgen", sequenceName = "material_warehouse_option", allocationSize = 1)
 public class MaterialWarehouseOption
         extends EntityAuto<Long> {
 

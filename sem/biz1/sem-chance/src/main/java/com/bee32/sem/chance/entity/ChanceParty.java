@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
@@ -17,6 +18,7 @@ import com.bee32.sem.people.entity.Party;
  */
 @Entity
 @Yellow
+@SequenceGenerator(name = "idgen", sequenceName = "chance_party_seq", allocationSize = 1)
 public class ChanceParty
         extends EntityAuto<Long> {
 

@@ -6,12 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 import com.bee32.sem.world.monetary.ICurrencyAware;
 import com.bee32.sem.world.monetary.MCValue;
@@ -20,6 +21,8 @@ import com.bee32.sem.world.monetary.MCValue;
  * 物料的基准价格（随时间变化）。
  */
 @Entity
+@Blue
+@SequenceGenerator(name = "idgen", sequenceName = "material_price_seq", allocationSize = 1)
 public class MaterialPrice
         extends UIEntityAuto<Long>
         implements ICurrencyAware {
@@ -28,7 +31,7 @@ public class MaterialPrice
 
     Material material;
     Date date = new Date();
-//    Date date = LocalDateUtil.truncate(new Date());
+// Date date = LocalDateUtil.truncate(new Date());
     MCValue price = new MCValue();
 
     /**
@@ -57,7 +60,7 @@ public class MaterialPrice
     public void setDate(Date date) {
         if (date == null)
             throw new NullPointerException("date");
-//        date = LocalDateUtil.truncate(date);
+// date = LocalDateUtil.truncate(date);
         this.date = date;
     }
 
@@ -80,34 +83,6 @@ public class MaterialPrice
      */
     public final void setPrice(double price) {
         setPrice(new MCValue(NATIVE_CURRENCY, price));
-    }
-
-    @Override
-    protected Boolean naturalEquals(EntityBase<Long> other) {
-        MaterialPrice o = (MaterialPrice) other;
-
-        if (material == null || date == null)
-            return false;
-
-        if (!material.equals(o.material))
-            return false;
-
-        if (!date.equals(o.date))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-
-        if (material == null || date == null)
-            return System.identityHashCode(this);
-
-        hash += material.hashCode();
-        hash += date.hashCode();
-        return hash;
     }
 
 }

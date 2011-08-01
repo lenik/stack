@@ -12,6 +12,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cascade;
@@ -23,11 +24,14 @@ import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
 import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
+@Green
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "stereo")
+@SequenceGenerator(name = "idgen", sequenceName = "food_seq", allocationSize = 1)
 public class Food
         extends UIEntityAuto<Integer> {
 

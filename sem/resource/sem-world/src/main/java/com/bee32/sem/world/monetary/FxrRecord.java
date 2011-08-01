@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.free.UnexpectedException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -29,6 +30,7 @@ import com.bee32.plover.orm.ext.color.Blue;
  */
 @Entity
 @Blue
+@SequenceGenerator(name = "idgen", sequenceName = "fxr_record_seq", allocationSize = 1)
 public class FxrRecord
         extends EntityAuto<Long> {
 

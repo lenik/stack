@@ -3,13 +3,13 @@ package com.bee32.sem.inventory.tx.entity;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.entity.EntityBase;
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.people.entity.Org;
@@ -21,8 +21,9 @@ import com.bee32.sem.people.entity.Org;
  * @see StockOrderSubject#F_CHECKIN
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "stock_outsourcing_seq", allocationSize = 1)
 public class StockOutsourcing
-        extends UIEntityAuto<Long> {
+        extends StockJob {
 
     private static final long serialVersionUID = 1L;
 

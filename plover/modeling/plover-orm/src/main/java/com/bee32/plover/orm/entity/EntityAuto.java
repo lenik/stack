@@ -3,11 +3,13 @@ package com.bee32.plover.orm.entity;
 import java.io.Serializable;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 @_AutoId
+// @SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "xxx_seq")
 public abstract class EntityAuto<K extends Serializable>
         extends Entity<K> {
 
@@ -28,7 +30,7 @@ public abstract class EntityAuto<K extends Serializable>
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
     @Override
     public K getId() {
         return id;

@@ -438,4 +438,17 @@ public abstract class Entity<K extends Serializable>
         addons.entityDeleted(this);
     }
 
+    static final int lockMask = EntityFlags.LOCKED //
+            | EntityFlags.USER_LOCK1 //
+            | EntityFlags.USER_LOCK2 //
+            | EntityFlags.USER_LOCK3;
+
+    @Transient
+    @Override
+    protected boolean isLocked() {
+        EntityFlags ef = EntityAccessor.getFlags(this);
+        int x = ef.bits & lockMask;
+        return x != 0;
+    }
+
 }

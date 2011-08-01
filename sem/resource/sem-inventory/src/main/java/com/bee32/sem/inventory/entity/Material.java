@@ -10,6 +10,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
@@ -24,6 +25,7 @@ import com.bee32.sem.world.thing.Thing;
  * 物料
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "material_seq", allocationSize = 1)
 public class Material
         extends Thing<MaterialXP> {
 

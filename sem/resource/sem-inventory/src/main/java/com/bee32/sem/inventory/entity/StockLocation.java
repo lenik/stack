@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 import com.bee32.sem.world.thing.Unit;
@@ -21,6 +22,7 @@ import com.bee32.sem.world.thing.Unit;
  * </ul>
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "stock_location_seq", allocationSize = 1)
 public class StockLocation
         extends TreeEntityAuto<Integer, StockLocation> {
 

@@ -9,6 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -19,6 +20,7 @@ import com.bee32.sem.mail.MailFlags;
 
 @Entity
 @Pink
+@SequenceGenerator(name = "idgen", sequenceName = "mail_delivery_seq", allocationSize = 1)
 public class MailDelivery
         extends EntityAuto<Long> {
 

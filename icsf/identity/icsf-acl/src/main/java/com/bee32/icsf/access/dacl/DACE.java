@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
@@ -15,6 +16,7 @@ import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.EntityBase;
 
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "dace_seq", allocationSize = 1)
 public class DACE
         extends EntityAuto<Long> {
 

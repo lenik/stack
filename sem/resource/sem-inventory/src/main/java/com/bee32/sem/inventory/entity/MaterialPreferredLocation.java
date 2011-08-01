@@ -3,13 +3,17 @@ package com.bee32.sem.inventory.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
+@Blue
+@SequenceGenerator(name = "idgen", sequenceName = "material_preferred_location_seq", allocationSize = 1)
 public class MaterialPreferredLocation
         extends UIEntityAuto<Long> {
 

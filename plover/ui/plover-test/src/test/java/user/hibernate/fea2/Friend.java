@@ -7,10 +7,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
+import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
+@Green
+@SequenceGenerator(name = "idgen", sequenceName = "friend_seq", allocationSize = 1)
 public class Friend
         extends UIEntityAuto<Integer> {
 

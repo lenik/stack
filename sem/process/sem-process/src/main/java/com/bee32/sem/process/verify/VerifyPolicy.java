@@ -6,6 +6,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityBase;
@@ -15,6 +16,7 @@ import com.bee32.plover.orm.ext.color.UIEntityAuto;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "stereo", length = 4)
 @DiscriminatorValue("-")
+@SequenceGenerator(name = "idgen", sequenceName = "verify_policy_seq", allocationSize = 1)
 public abstract class VerifyPolicy
         extends UIEntityAuto<Integer>
         implements IVerifyPolicy {

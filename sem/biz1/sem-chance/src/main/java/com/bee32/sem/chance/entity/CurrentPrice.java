@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
@@ -14,6 +15,7 @@ import com.bee32.sem.inventory.entity.MaterialPrice;
  */
 @Entity
 @Blue
+@SequenceGenerator(name = "idgen", sequenceName = "current_price_seq", allocationSize = 1)
 public class CurrentPrice
         extends UIEntityAuto<Long> {
 

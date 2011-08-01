@@ -3,11 +3,15 @@ package com.bee32.plover.bookstore;
 import javax.free.Nullables;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
+@Green
+@SequenceGenerator(name = "idgen", sequenceName = "book_seq", allocationSize = 1)
 public class Book
         extends UIEntityAuto<Integer> {
 

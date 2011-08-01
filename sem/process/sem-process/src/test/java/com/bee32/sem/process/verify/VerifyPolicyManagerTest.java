@@ -2,6 +2,9 @@ package com.bee32.sem.process.verify;
 
 import java.util.Collection;
 
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,6 +37,8 @@ public class VerifyPolicyManagerTest
         assertFalse(all.contains(PassToNextPolicy.class));
     }
 
+    @Entity
+    @SequenceGenerator(name = "idgen", sequenceName = "vpm_simple_bean_seq", allocationSize = 1)
     static class SimpleBean
             extends AllowedBySupport<Long, IMultiLevelContext>
             implements IMultiLevelContext {

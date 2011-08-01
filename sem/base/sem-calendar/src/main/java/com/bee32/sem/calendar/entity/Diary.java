@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -18,6 +19,7 @@ import com.bee32.sem.calendar.ICalendarEvent;
 
 @Entity
 @Pink
+@SequenceGenerator(name = "idgen", sequenceName = "diary_seq", allocationSize = 1)
 public class Diary
         extends EntityAuto<Long>
         implements ICalendarEvent {

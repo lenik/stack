@@ -3,6 +3,7 @@ package com.bee32.sem.people.entity;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
@@ -13,6 +14,7 @@ import com.bee32.plover.orm.ext.color.Yellow;
 
 @Entity
 @Yellow
+@SequenceGenerator(name = "idgen", sequenceName = "person_login_seq", allocationSize = 1)
 public class PersonLogin
         extends EntityAuto<Long> {
 

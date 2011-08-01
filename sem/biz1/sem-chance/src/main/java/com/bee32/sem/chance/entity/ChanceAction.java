@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.bee32.icsf.principal.User;
@@ -22,6 +23,7 @@ import com.bee32.sem.people.entity.Party;
 
 @Entity
 @Pink
+@SequenceGenerator(name = "idgen", sequenceName = "chance_action_seq", allocationSize = 1)
 public class ChanceAction
         extends MomentInterval
         implements ICalendarEvent, Comparable<ChanceAction> {

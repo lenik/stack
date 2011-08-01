@@ -4,6 +4,7 @@ import javax.free.ParseException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
@@ -14,6 +15,7 @@ import com.bee32.plover.orm.ext.color.Blue;
 
 @Entity
 @Blue
+@SequenceGenerator(name = "idgen", sequenceName = "entity_column_seq", allocationSize = 1)
 public class EntityColumn
         extends EntityAuto<Integer> {
 

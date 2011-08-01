@@ -3,6 +3,7 @@ package com.bee32.icsf.access.alt;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
@@ -20,6 +21,7 @@ import com.bee32.plover.util.PrettyPrintStream;
 @Entity
 @Blue
 @BatchSize(size = 100)
+@SequenceGenerator(name = "idgen", sequenceName = "r_ace_seq", allocationSize = 1)
 public class R_ACE
         extends EntityAuto<Long> {
 

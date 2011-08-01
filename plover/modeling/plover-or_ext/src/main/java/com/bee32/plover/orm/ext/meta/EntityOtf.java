@@ -5,7 +5,8 @@ import com.bee32.plover.orm.ext.color.Blue;
 
 // @Entity
 @Blue
-public class EntityOtf
+// @SequenceGenerator(name = "idgen", sequenceName = "entity_otf", allocationSize = 1)
+public abstract class EntityOtf
         extends EntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;

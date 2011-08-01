@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
@@ -24,6 +25,7 @@ import com.bee32.plover.orm.ext.color.UIEntityAuto;
  */
 @Entity
 @Green
+@SequenceGenerator(name = "idgen", sequenceName = "chance_seq", allocationSize = 1)
 public class Chance
         extends UIEntityAuto<Long> {
 
