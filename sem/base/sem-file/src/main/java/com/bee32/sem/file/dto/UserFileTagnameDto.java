@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.sem.file.entity.UserFileTagname;
@@ -51,6 +52,8 @@ public class UserFileTagnameDto
 
     @Override
     protected Serializable naturalId() {
+        if (tag == null)
+            return new DummyId(this);
         return tag;
     }
 

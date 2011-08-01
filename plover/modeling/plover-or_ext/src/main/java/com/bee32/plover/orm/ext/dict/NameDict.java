@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.orm.ext.color.Blue;
 
 /**
@@ -81,6 +82,8 @@ public abstract class NameDict
 
     @Override
     protected Serializable naturalId() {
+        if (name == null)
+            return new DummyId(this);
         return name;
     }
 

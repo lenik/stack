@@ -271,28 +271,28 @@ public abstract class Entity<K extends Serializable>
         @SuppressWarnings("unchecked")
         Entity<K> other = (Entity<K>) obj;
 
-        Object nid = naturalId();
-        if (nid != null) {
-            Object nidOther = other.naturalId();
+        Serializable nid = naturalId();
+        if (nid == null)
+            return idEquals(other);
 
-            if (nidOther == null) {
-                // logger.warning("Natural Id isn't defined on other entity: " + other);
-                return false;
-            }
+        Serializable nidOther = other.naturalId();
 
-            return nid.equals(nidOther);
+        if (nidOther == null) {
+            // logger.warning("Natural Id isn't defined on other entity: " + other);
+            return false;
         }
 
-        return contentEquals(other);
+        return nid.equals(nidOther);
     }
 
     @Override
     protected final int hashCodeSpecific() {
-        Object nid = naturalId();
-        if (nid != null)
-            return nid.hashCode();
+        Serializable nid = naturalId();
+        if (nid == null)
+            return idHashCode();
+
         else
-            return contentHashCode();
+            return nid.hashCode();
     }
 
     @Transient
@@ -311,7 +311,7 @@ public abstract class Entity<K extends Serializable>
      * @see IdComposite
      */
     protected Serializable naturalId() {
-        return getId();
+        return null;
     }
 
     protected static Serializable naturalId(Entity<?> entity) {
@@ -319,6 +319,25 @@ public abstract class Entity<K extends Serializable>
             return null;
         else
             return entity.naturalId();
+    }
+
+    protected boolean idEquals(EntityBase<K> other) {
+        Entity<K> o = (Entity<K>) other;
+
+        K id = getId();
+        if (id == null)
+            return other == null;
+
+        K idOther = o.getId();
+        return id.equals(idOther);
+    }
+
+    protected int idHashCode() {
+        int hash = 0;
+        K id = getId();
+        if (id != null)
+            hash += id.hashCode();
+        return hash;
     }
 
     /**

@@ -14,6 +14,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.arch.util.DummyId;
+
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "cat_seq", allocationSize = 1)
 public class Cat
@@ -94,6 +96,8 @@ public class Cat
 
     @Override
     public Serializable naturalId() {
+        if (name == null)
+            return new DummyId(this);
         return name;
     }
 

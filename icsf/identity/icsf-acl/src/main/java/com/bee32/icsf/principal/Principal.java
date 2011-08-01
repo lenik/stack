@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 
 @Entity
@@ -151,6 +152,8 @@ public abstract class Principal
 
     @Override
     protected Serializable naturalId() {
+        if (name == null)
+            return new DummyId(this);
         return name;
     }
 

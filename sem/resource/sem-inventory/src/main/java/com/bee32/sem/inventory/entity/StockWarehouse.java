@@ -1,10 +1,15 @@
 package com.bee32.sem.inventory.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.NaturalId;
+
+import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 import com.bee32.sem.people.entity.Person;
 
@@ -28,6 +33,7 @@ public class StockWarehouse
     /**
      * 仓库名称
      */
+    @NaturalId
     @Column(length = 50, nullable = false)
     public String getName() {
         return name;
@@ -77,6 +83,14 @@ public class StockWarehouse
 
     public void setManager(Person manager) {
         this.manager = manager;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        if (name == null)
+            return new DummyId(this);
+        else
+            return name;
     }
 
 }

@@ -8,6 +8,7 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 /**
@@ -39,6 +40,8 @@ public class UserFileTagname
 
     @Override
     protected Serializable naturalId() {
+        if (tag == null)
+            return new DummyId(this);
         return tag;
     }
 

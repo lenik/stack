@@ -147,7 +147,11 @@ public abstract class DigestEntity
 
     @Override
     protected Serializable naturalId() {
-        return getDigest();
+        String digest = getDigest();
+        // assert digest != null;
+        if (digest == null)
+            throw new NullPointerException("digest");
+        return digest;
     }
 
 }

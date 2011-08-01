@@ -24,6 +24,7 @@ import org.hibernate.annotations.MapKeyManyToMany;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
+import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
@@ -110,6 +111,8 @@ public class Food
 
     @Override
     protected Serializable naturalId() {
+        if (name == null)
+            return new DummyId(this);
         return name;
     }
 

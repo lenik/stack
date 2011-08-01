@@ -102,16 +102,15 @@ public abstract class BaseDto<S, C>
         BaseDto<S, C> other = (BaseDto<S, C>) obj;
 
         Serializable nid = getNaturalId();
-        if (nid != null) {
-            Serializable nidOther = other.getNaturalId();
-            if (nidOther == null) {
-                // logger.warn("Natural Id of the other DTO is null: " + other);
-                return false;
-            }
-            return nid.equals(nidOther);
-        }
+        if (nid == null)
+            return idEquals(other);
 
-        return contentEquals(other);
+        Serializable nidOther = other.getNaturalId();
+        if (nidOther == null) {
+            // logger.warn("Natural Id of the other DTO is null: " + other);
+            return false;
+        }
+        return nid.equals(nidOther);
     }
 
     /**
@@ -146,10 +145,10 @@ public abstract class BaseDto<S, C>
     @Override
     public final int hashCode() {
         Serializable nid = getNaturalId();
-        if (nid != null)
+        if (nid == null)
+            return idHashCode();
+        else
             return nid.hashCode();
-
-        return contentHashCode();
     }
 
     protected final Serializable getNaturalId() {
@@ -166,7 +165,7 @@ public abstract class BaseDto<S, C>
      *         表示无法判定是否自然键等价。
      */
     protected Serializable naturalId() {
-        return System.identityHashCode(this);
+        return null;
     }
 
     protected static Serializable naturalId(BaseDto<?, ?> o) {
