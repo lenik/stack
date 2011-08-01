@@ -440,6 +440,10 @@ public class StockOrderAdminBean extends EntityViewBean implements
         orderItemPriceCurrency = NATIVE_CURRENCY.getCurrencyCode();
     }
 
+    public void modifyItem() {
+        orderItem = selectedOrderItem;
+    }
+
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {
 

@@ -208,8 +208,9 @@
 									target="#{stockOrderAdminBean.selectedStockOrderItem}" />
 							</p:commandLink>
 							<p:spacer width="10" />
-							<p:commandLink update=""
+							<p:commandLink update="itemForm:itemPanel"
 								disabled="#{!stockOrderAdminBean.editable}"
+								actionListener="#{stockOrderAdminBean.modifyItem}"
 								onclick="itemDialog.show()" value="修改">
 								<f:setPropertyActionListener value="#{item}"
 									target="#{stockOrderAdminBean.selectedStockOrderItem}" />
