@@ -328,7 +328,7 @@
                                 <p:commandLink title="编辑" disabled="#{materialViewBean.editable}"
                                     oncomplete="preferDialog.show();" update="dialogForm:toUpdate">
                                     <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" />
-                                    <f:setPropertyActionListener value="preferredLocation"
+                                    <f:setPropertyActionListener value="#{preferredLocation}"
                                         target="#{materialViewBean.activePreferredLocation}" />
                                 </p:commandLink>
                                 <p:commandLink title="删除" disabled="#{materialViewBean.editable}"
