@@ -206,7 +206,7 @@ public class SEMPeopleSamples
     @Override
     protected void more(IEntityMarshalContext context) {
         abcSales.setOwnerId(tang.getId());
-        context.asFor(Group.class).merge(abcSales);
+        context.asFor(Group.class).saveOrUpdate(abcSales);
     }
 
 }
