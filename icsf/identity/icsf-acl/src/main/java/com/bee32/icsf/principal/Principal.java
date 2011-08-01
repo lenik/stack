@@ -18,7 +18,7 @@ import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "steoro", length = 3)
+@DiscriminatorColumn(name = "stereo", length = 3)
 @SequenceGenerator(name = "idgen", sequenceName = "principal_seq", allocationSize = 1)
 public abstract class Principal
         extends TreeEntityAuto<Integer, Principal>
