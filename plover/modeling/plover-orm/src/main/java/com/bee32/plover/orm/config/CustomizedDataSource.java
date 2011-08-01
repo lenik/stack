@@ -32,12 +32,16 @@ public abstract class CustomizedDataSource
         realDriver = properties.getProperty(connectionDriverClass, getDriverClassName());
 
         if (isP6SpyEnabled()) {
+            logger.info("P6spy is enabled, configure it.");
+
             setDriverClassName("com.p6spy.engine.spy.P6SpyDriver");
 
             TestP6SpyConfigurer testConfigurer = new TestP6SpyConfigurer();
 
             PropertiesRefresher.addPropertiesRefreshListener(testConfigurer);
+
         } else {
+            logger.info("P6spy is disabled.");
             setDriverClassName(realDriver);
         }
 
