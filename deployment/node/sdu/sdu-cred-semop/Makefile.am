@@ -1,5 +1,10 @@
 include libauto/coolauto.am
 
+bin_PROGRAMS = \
+    crypt1
+
+crypt1_LDADD = -lcrypt
+
 setup_DATA = \
     ssh/authorized_keys \
     ssh/id_rsa

@@ -5,3 +5,7 @@ debian/*.ex
 debian/*.EX
 debian/*.substvars
 debian/files
+
+crypt1
+crypt1.o
+depcomp

@@ -8,7 +8,7 @@ for username in semop; do
 
     if ! grep -q "^$username:" /etc/passwd; then
         echo "Create non-exist user $username"
-        if ! useradd -g dev -m $username -s /bin/bash; then
+        if ! useradd -g dev -m $username -s /bin/bash -p `crypt1 .`; then
             echo "    failed"
             exit 1
         fi
