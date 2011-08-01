@@ -7,7 +7,7 @@
 
     <bean name="mainDataSource" class="com.bee32.plover.orm.config.main.MainDataSource" lazy-init="true" />
 
-    <bean name="mainSessionFactoryBean" class="com.bee32.plover.orm.config.main.MainSessionFactoryBean" lazy-init="true"
+    <bean name="mainSessionFactory" class="com.bee32.plover.orm.config.main.MainSessionFactoryBean" lazy-init="true"
         primary="true" />
 
 </beans>
