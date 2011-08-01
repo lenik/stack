@@ -56,7 +56,8 @@ public class UIHelper
         final int selection = options.getSelection();
         final ICriteriaElement composition = options.compose();
 
-        return new LazyDataModel<D>() {
+        class LDM
+                extends LazyDataModel<D> {
 
             private static final long serialVersionUID = 1L;
 
@@ -71,7 +72,9 @@ public class UIHelper
 
                 return dtos;
             }
-        };
+        }
+
+        return new LDM();
     }
 
 }

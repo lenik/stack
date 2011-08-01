@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.free.Caller;
+
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.Entity;
@@ -11,6 +13,7 @@ import com.bee32.plover.orm.util.EntityDto;
 
 public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<E, ?>> {
 
+    final Class<?> creator = Caller.getCallerClass(1);
     final Class<E> entityClass;
     final Class<D> dtoClass;
     int selection;
