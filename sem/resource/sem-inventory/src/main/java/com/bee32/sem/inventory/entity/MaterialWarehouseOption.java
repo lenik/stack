@@ -21,7 +21,7 @@ import com.bee32.plover.orm.ext.color.Blue;
  */
 @Entity
 @Blue
-@SequenceGenerator(name = "idgen", sequenceName = "material_warehouse_option", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "material_warehouse_option_seq", allocationSize = 1)
 public class MaterialWarehouseOption
         extends EntityAuto<Long> {
 
