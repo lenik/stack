@@ -21,7 +21,7 @@ import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.people.entity.Party;
 
-@ImportSamples({ SEMPeopleSamples.class, IcsfPrincipalSamples.class, SEMInventorySamples.class })
+@ImportSamples({ SEMInventorySamples.class })
 public class SEMChanceSamples
         extends SampleContribution {
 
@@ -94,11 +94,10 @@ public class SEMChanceSamples
         item1.setQuantity(new BigDecimal(3));
         item1.setPrice(SEMInventorySamples.cskdp.getLatestPrice().getPrice());
 
-//        ChanceQuotationItem item2 = new ChanceQuotationItem();
-//        item2.setQuotation(quotation);
-//        item2.setMaterial(SEMInventorySamples.gundam);
-//        item2.setDiscount(0.9f);
-
+// ChanceQuotationItem item2 = new ChanceQuotationItem();
+// item2.setQuotation(quotation);
+// item2.setMaterial(SEMInventorySamples.gundam);
+// item2.setDiscount(0.9f);
 
         quotation.setOwner(IcsfPrincipalSamples.eva);
         quotation.setSubject("7月2号报价");

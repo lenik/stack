@@ -96,9 +96,10 @@ public class SamplesLoader
         for (SamplePackage dependency : pack.getDependencies())
             _loadSamples(dependency, progress);
 
+        pack.beginLoad();
+
         List<Entity<?>> sideA = new ArrayList<Entity<?>>();
         List<Entity<?>> sideZ = new ArrayList<Entity<?>>();
-        pack.beginLoad();
 
         // Classify to A/Z
         for (Entity<?> sample : pack.getInstances()) {
