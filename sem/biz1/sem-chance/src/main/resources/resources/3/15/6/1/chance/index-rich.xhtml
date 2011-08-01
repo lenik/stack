@@ -182,19 +182,19 @@
                             <p:toolbar id="actionToolbar">
                                 <p:toolbarGroup align="left" disabled="#{chanceBean.editable}">
                                     <p:commandButton id="relateActionButton" value="增加关联"
-                                        disabled="#{chanceBean.relating}" onclick="chooseChanceActionDialog.show();" />
+                                        actionListener="#{chanceBean.initActiveActions}"
+                                        update="dialogForm:activeActionList"
+                                        oncomplete="chooseChanceActionDialog.show();" />
                                     <p:commandButton id="unrelateActionButton" value="取消关联"
-                                        actionListener="#{chanceBean.unRelating}" disabled="#{chanceBean.unRelating}"
-                                        update="chanceForm:actions,chanceForm:actionToolbar,prompting" async="true" />
+                                        onclick="deleteActionConfirm.show();" />
                                     <p:commandButton id="viewActionDetailButton" value="详细"
-                                        disabled="#{chanceBean.actionDetail}"
-                                        actionListener="#{chanceBean.viewActionDetail}" update="dialogFrom:actionDetail"
-                                        oncomplete="actioDetailDialog.show();" async="true" />
+                                        actionListener="#{chanceBean.viewActionDetail}"
+                                        update="dialogFrom:actionDetail,prompting"
+                                        oncomplete="actioDetailDialog.show();" />
                                 </p:toolbarGroup>
                             </p:toolbar>
-                            <p:dataTable id="actions" var="action" value="#{chanceBean.activeChance.actions}"
-                                resizableColumns="true" selection="#{chanceBean.selectedAction}" selectionMode="single"
-                                rowIndexVar="rowIndex">
+                            <p:dataTable id="actionHistories" var="action" value="#{chanceBean.activeChance.actions}"
+                                selection="#{chanceBean.selectedAction}" selectionMode="single" rowIndexVar="rowIndex">
                                 <p:ajax event="rowSelect" listener="#{chanceBean.onActionRowSelect}"
                                     update="chanceForm:actionToolbar" />
                                 <p:ajax event="rowUnselect" listener="#{chanceBean.onActionRowUnselect}"
@@ -304,6 +304,14 @@
                     actionListener="#{chanceBean.dropQuotationItem}" async="true" />
                 <p:commandButton value="取消" onclick="itemConfirmation.hide()" type="button" />
             </p:confirmDialog>
+
+            <p:confirmDialog message="确定要取消此行动记录的关联?" hideEffect="explode" header="注意" severity="alert"
+                widgetVar="deleteActionConfirm">
+                <p:commandButton value="确定" actionListener="#{chanceBean.unRelating}"
+                    update="chanceForm:actionHistories,chanceForm:actionToolbar,prompting"
+                    oncomplete="deleteActionConfirm.hide();" />
+                <p:commandButton value="取消" onclick="deleteActionConfirm.hide();" />
+            </p:confirmDialog>
         </h:form>
 
         <h:form id="dialogForm">
@@ -363,11 +371,11 @@
                         <p:calendar id="set" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
                             value="#{chanceBean.searchEndTime}" showOn="button" />
                         <p:commandButton value="查找" actionListener="#{chanceBean.searchAction}"
-                            update="dialogForm:actions" async="true" />
+                            update="dialogForm:activeActionList" async="true" />
 
                     </h:panelGrid>
-                    <p:dataTable id="actions" var="action" value="#{chanceBean.actions}" resizableColumns="true"
-                        selection="#{chanceBean.selectedActions}" rowIndexVar="rowIndex">
+                    <p:dataTable id="activeActionList" var="action" value="#{chanceBean.activeActions}"
+                        resizableColumns="true" selection="#{chanceBean.selectedActions}" rowIndexVar="rowIndex">
 
                         <p:column selectionMode="multiple" style="width:40px;" />
                         <p:column headerText="序号" style="width:45px;">
@@ -393,7 +401,7 @@
 
                     <h:panelGrid columns="2">
                         <p:commandButton value="选择" actionListener="#{chanceBean.doAttachActions}"
-                            oncomplete="chooseChanceActionDialog.hide();" update="chanceForm:actions,prompting"
+                            oncomplete="chooseChanceActionDialog.hide();" update="chanceForm:actionHistories,prompting"
                             async="true" />
                         <p:commandButton value="取消" oncomplete="chooseChanceActionDialog.hide();" />
                     </h:panelGrid>
@@ -512,9 +520,9 @@
 
         <h:form id="quotationForm">
 
-            <p:dialog header="报价单" widgetVar="quotationDialog" modal="true" height="600" width="900">
+            <p:dialog header="报价单" widgetVar="quotationDialog" modal="true" height="500" width="700">
 
-                <t:panelGrid columns="3" id="quotationGrid">
+                <t:panelGrid columns="3" id="quotationGrid" style="width:100%;">
                     <h:outputLabel for="quotationSubject" value="标题:" />
                     <t:panelGroup colspan="2">
                         <p:inputText id="quotationSubject" value="#{chanceBean.activeQuotation.subject}"
@@ -530,10 +538,10 @@
                     <h:outputText value="明细:" />
 
                     <p:dataTable id="quotationItem" var="item" value="#{chanceBean.activeQuotation.items}"
-                        style="width:750px;">
+                        style="width:100%;">
 
                         <p:column headerText="产品" style="width:70px;">
-                            <h:outputText value="#{item.material}" />
+                            <h:outputText value="#{item.material.name}" />
                         </p:column>
 
                         <p:column headerText="折扣" style="width:80px;">
@@ -608,9 +616,9 @@
                     <h:outputText value="单价:" />
                     <t:panelGroup id="unitPrice" colspan="2">
                         <t:panelGrid columns="5">
-                            <h:outputText value="#{chanceBean.selectedQuotationItem.price}"
+                            <h:outputText value="#{chanceBean.selectedQuotationItem.viewPrice}"
                                 rendered="#{!chanceBean.quotationItemPriceRendered}" />
-                            <p:inputText value="#{chanceBean.selectedQuotationItem.price}"
+                            <p:inputText value="#{chanceBean.selectedQuotationItem.viewPrice}"
                                 rendered="#{chanceBean.quotationItemPriceRendered}">
                             </p:inputText>
                             <p:commandLink title="修改" actionListener="#{chanceBean.editPrice}"
@@ -646,9 +654,10 @@
                     </t:panelGroup>
 
                     <t:panelGroup colspan="3">
-                        <p:commandButton value="确定" actionListener="#{chanceBean.calculateQuotaionAmount}"
-                            oncomplete="quotationDetail.hide();" update="quotationForm:quotationGrid" />
-                        <p:commandButton value="取消" onclick="quotationDetail.hide();" />
+                        <p:commandButton value="确定" actionListener="#{chanceBean.editQuotationItem}"
+                            oncomplete="quotationDetail.hide();" update="quotationForm:quotationItem" />
+                        <p:commandButton value="取消" actionListener="#{chanceBean.uneditQuotationItem}"
+                            oncomplete="quotationDetail.hide();" />
                     </t:panelGroup>
                 </t:panelGrid>
             </p:dialog>

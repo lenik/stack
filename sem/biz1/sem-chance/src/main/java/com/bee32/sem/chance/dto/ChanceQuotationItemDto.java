@@ -13,15 +13,17 @@ public class ChanceQuotationItemDto
 
     private static final long serialVersionUID = 1L;
 
-    private ChanceQuotationDto parent;
-    private MaterialDto material;
-    private float discount;
+    ChanceQuotationDto parent;
+    MaterialDto material;
+    float discount;
+    double viewPrice = 0.0;
 
     @Override
     protected void _marshal(ChanceQuotationItem source) {
         this.parent = new ChanceQuotationDto().ref(source.getParent());
         this.material = mref(MaterialDto.class, source.getMaterial());
         this.discount = source.getDiscount();
+        this.viewPrice = getPrice().getValue().doubleValue();
     }
 
     @Override
@@ -29,6 +31,7 @@ public class ChanceQuotationItemDto
         merge(target, "parent", parent);
         merge(target, "material", material);
         target.setDiscount(discount);
+        target.setPrice(viewPrice);
     }
 
     @Override
@@ -66,6 +69,14 @@ public class ChanceQuotationItemDto
 
     public MaterialPriceDto getBasePrice() {
         return material.getLatestPrice();
+    }
+
+    public double getViewPrice() {
+        return viewPrice;
+    }
+
+    public void setViewPrice(double viewPrice) {
+        this.viewPrice = viewPrice;
     }
 
 }

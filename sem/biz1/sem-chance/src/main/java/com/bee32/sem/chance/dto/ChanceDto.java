@@ -101,7 +101,8 @@ public class ChanceDto
     }
 
     public void deleteAction(ChanceActionDto action) {
-        this.actions.remove(action);
+        if (actions.contains(action))
+            this.actions.remove(action);
         refreshStage();
     }
 
