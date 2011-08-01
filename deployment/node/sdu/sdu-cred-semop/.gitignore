@@ -1,0 +1,7 @@
+*.tar.gz
+debian/sdu-cred-semop
+debian/*.log
+debian/*.ex
+debian/*.EX
+debian/*.substvars
+debian/files
