@@ -1,8 +1,8 @@
 package com.bee32.sem.inventory.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import javax.free.Nullables;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -14,8 +14,8 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.orm.cache.Redundant;
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.sem.inventory.config.BatchingConfig;
 import com.bee32.sem.world.thing.AbstractOrderItem;
 
@@ -177,30 +177,8 @@ public class StockOrderItem
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Long> other) {
-        StockOrderItem o = (StockOrderItem) other;
-
-        if (!Nullables.equals(parent, o.parent))
-            return false;
-
-        if (!Nullables.equals(material,o.material))
-            return false;
-
-        if (!getCBatch().equals(o.getCBatch()))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-        if(parent != null)
-            hash += parent.hashCode();
-        if(material != null)
-        hash += material.hashCode();
-        hash += getCBatch().hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(naturalId(parent), naturalId(material), getCBatch());
     }
 
 }

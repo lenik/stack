@@ -1,9 +1,11 @@
 package com.bee32.sem.inventory.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
@@ -74,25 +76,8 @@ public class MaterialWarehouseOptionDto
     }
 
     @Override
-    protected Boolean naturalEquals(EntityDto<MaterialWarehouseOption, Long> other) {
-        MaterialWarehouseOptionDto object = (MaterialWarehouseOptionDto) other;
-        if (material == null || warehouse == null)
-            return false;
-        if (!material.equals(object.getMaterial()))
-            return false;
-        if (!warehouse.equals(object.getWarehouse()))
-            return false;
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-        if (material == null || warehouse == null)
-            return System.identityHashCode(this);
-        hash += material.hashCode();
-        hash += warehouse.hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(naturalId(material), naturalId(warehouse));
     }
 
 }

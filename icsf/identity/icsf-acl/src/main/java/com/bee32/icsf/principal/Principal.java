@@ -1,5 +1,6 @@
 package com.bee32.icsf.principal;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -13,7 +14,6 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 
 @Entity
@@ -150,21 +150,8 @@ public abstract class Principal
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Integer> other) {
-        Principal o = (Principal) other;
-
-        if (this.name == null || o.name == null)
-            return false;
-
-        return name.equals(o.name);
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        if (name == null)
-            return System.identityHashCode(this);
-        else
-            return name.hashCode();
+    protected Serializable naturalId() {
+        return name;
     }
 
 }

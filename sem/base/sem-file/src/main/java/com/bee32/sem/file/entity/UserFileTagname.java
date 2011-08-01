@@ -1,12 +1,13 @@
 package com.bee32.sem.file.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 /**
@@ -37,18 +38,8 @@ public class UserFileTagname
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Long> other) {
-        UserFileTagname o = (UserFileTagname) other;
-        if (!tag.equals(o.tag))
-            return false;
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-        hash += tag.hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return tag;
     }
 
 }

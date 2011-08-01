@@ -1,5 +1,7 @@
 package com.bee32.icsf.access.alt;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -12,8 +14,8 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
 import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.orm.entity.EntityAuto;
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -124,25 +126,8 @@ public class R_ACE
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Long> otherEntity) {
-        R_ACE other = (R_ACE) otherEntity;
-
-        if (!qualifiedName.equals(other.qualifiedName))
-            return false;
-
-        if (!principal.equals(other.principal))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        final int prime = 31;
-        int result = 0;
-        result = prime * result + qualifiedName.hashCode();
-        result = prime * result + principal.hashCode();
-        return result;
+    protected Serializable naturalId() {
+        return new IdComposite(qualifiedName, naturalId(principal));
     }
 
     @Override

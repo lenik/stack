@@ -1,7 +1,10 @@
 package com.bee32.sem.file.dto;
 
+import java.io.Serializable;
+
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.file.entity.FileAttribute;
@@ -52,24 +55,8 @@ public class FileAttributeDto
     }
 
     @Override
-    protected Boolean naturalEquals(EntityDto<FileAttribute, Long> other) {
-        FileAttributeDto o = (FileAttributeDto) other;
-
-        if (!blob.equals(o.blob))
-            return false;
-
-        if (!key.equals(o.key))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-        hash += blob.hashCode();
-        hash += key.hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(naturalId(blob), key);
     }
 
     public FileBlobDto getBlob() {

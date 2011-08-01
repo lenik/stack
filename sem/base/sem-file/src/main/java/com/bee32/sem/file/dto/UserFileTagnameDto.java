@@ -1,10 +1,11 @@
 package com.bee32.sem.file.dto;
 
+import java.io.Serializable;
+
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
-import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.file.entity.UserFileTagname;
 
 public class UserFileTagnameDto
@@ -38,23 +39,6 @@ public class UserFileTagnameDto
         tag = map.getString(tag);
     }
 
-    @Override
-    protected Boolean naturalEquals(EntityDto<UserFileTagname, Long> other) {
-        UserFileTagnameDto o = (UserFileTagnameDto) other;
-
-        if (!tag.equals(o.tag))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-        hash += tag.hashCode();
-        return hash;
-    }
-
     public String getTag() {
         return tag;
     }
@@ -63,6 +47,11 @@ public class UserFileTagnameDto
         if (tag == null)
             throw new NullPointerException("tag");
         this.tag = tag;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        return tag;
     }
 
 }

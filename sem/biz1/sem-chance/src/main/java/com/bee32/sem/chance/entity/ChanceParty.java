@@ -1,5 +1,7 @@
 package com.bee32.sem.chance.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -8,8 +10,8 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.orm.entity.EntityAuto;
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Yellow;
 import com.bee32.sem.people.entity.Party;
 
@@ -66,26 +68,8 @@ public class ChanceParty
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Long> other) {
-        ChanceParty o = (ChanceParty) other;
-
-        if (!chance.equals(o.chance))
-            return false;
-
-        if (!party.equals(o.party))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-        if (chance != null)
-            hash = hash * 37 + chance.hashCode();
-        if (party != null)
-            hash = hash * 37 + party.hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(naturalId(chance), naturalId(party));
     }
 
 }

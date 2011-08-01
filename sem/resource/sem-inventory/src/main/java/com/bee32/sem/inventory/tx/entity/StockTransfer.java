@@ -1,5 +1,7 @@
 package com.bee32.sem.inventory.tx.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -9,7 +11,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.entity.EntityBase;
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
@@ -77,24 +79,8 @@ public class StockTransfer
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Long> other) {
-        StockTransfer o = (StockTransfer) other;
-
-        if (!source.equals(o.source))
-            return false;
-
-        if (!dest.equals(o.dest))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-        hash += source.hashCode();
-        hash += dest.hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(naturalId(source), naturalId(dest));
     }
 
 }

@@ -3,6 +3,7 @@ package com.bee32.sem.inventory.entity;
 import static com.bee32.plover.orm.ext.config.DecimalConfig.QTY_ITEM_PRECISION;
 import static com.bee32.plover.orm.ext.config.DecimalConfig.QTY_ITEM_SCALE;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -12,8 +13,8 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.orm.entity.EntityAuto;
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Blue;
 
 /**
@@ -89,29 +90,8 @@ public class MaterialWarehouseOption
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Long> other) {
-        MaterialWarehouseOption o = (MaterialWarehouseOption) other;
-
-        if (material == null || warehouse == null)
-            return false;
-
-        if (!material.equals(o.material))
-            return false;
-
-        if (!warehouse.equals(o.warehouse))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-        if (material == null || warehouse == null)
-            return System.identityHashCode(this);
-        hash += material.hashCode();
-        hash += warehouse.hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(naturalId(material), naturalId(warehouse));
     }
 
 }

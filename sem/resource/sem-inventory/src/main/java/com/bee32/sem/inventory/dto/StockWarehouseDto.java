@@ -1,10 +1,12 @@
 package com.bee32.sem.inventory.dto;
 
+import java.io.Serializable;
+
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
-import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.dto.PersonDto;
 
@@ -84,21 +86,8 @@ public class StockWarehouseDto
     }
 
     @Override
-    protected Boolean naturalEquals(EntityDto<StockWarehouse, Integer> other) {
-        StockWarehouseDto o = (StockWarehouseDto) other;
-        if (!name.equals(o.getName()))
-            return false;
-        if (!address.equals(o.getAddress()))
-            return false;
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-        hash += name.hashCode();
-        hash += address.hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(name, address);
     }
 
 }

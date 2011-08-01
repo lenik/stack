@@ -1,5 +1,7 @@
 package com.bee32.sem.inventory.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -7,8 +9,8 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.orm.entity.EntityAuto;
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Blue;
 
 /**
@@ -74,31 +76,8 @@ public class MaterialAttribute
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Long> other) {
-        MaterialAttribute o = (MaterialAttribute) other;
-
-        if (material == null || name == null)
-            return false;
-
-        if (!material.equals(o.material))
-            return false;
-
-        if (!name.equals(o.name))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-
-        if (material == null || name == null)
-            return System.identityHashCode(this);
-
-        hash += material.hashCode();
-        hash += name.hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(naturalId(material), name);
     }
 
 }

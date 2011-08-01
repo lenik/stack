@@ -9,7 +9,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
@@ -102,15 +101,5 @@ public abstract class VerifyPolicy
      * @return {@link #VERIFIED} means verified, otherwise the error message.
      */
     public abstract VerifyResult evaluate(IVerifyContext context);
-
-    @Override
-    protected Boolean naturalEquals(EntityBase<Integer> other) {
-        return idEquals(other);
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        return idHashCode();
-    }
 
 }

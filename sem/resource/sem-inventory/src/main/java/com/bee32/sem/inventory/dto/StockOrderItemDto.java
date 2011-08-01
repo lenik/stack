@@ -1,11 +1,12 @@
 package com.bee32.sem.inventory.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.world.thing.AbstractOrderItemDto;
@@ -115,28 +116,8 @@ public class StockOrderItemDto
     }
 
     @Override
-    protected Boolean naturalEquals(EntityDto<StockOrderItem, Long> other) {
-        StockOrderItemDto o = (StockOrderItemDto) other;
-
-        if (!parent.equals(o.parent))
-            return false;
-
-        if (!material.equals(o.material))
-            return false;
-
-        if (!getCBatch().equals(o.getCBatch()))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-        hash += parent.hashCode();
-        hash += material.hashCode();
-        hash += getCBatch().hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(naturalId(parent), naturalId(material), getCBatch());
     }
 
 }

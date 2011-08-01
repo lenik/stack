@@ -6,7 +6,6 @@ import java.util.List;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialXP;
@@ -185,25 +184,6 @@ public class MaterialDto
         else
             return materialPriceDto.getPrice().getValue().toString() + "("
                     + materialPriceDto.getPrice().getCurrencyCode() + ")";
-    }
-
-    @Override
-    protected Boolean naturalEquals(EntityDto<Material, Long> other) {
-        MaterialDto o = (MaterialDto) other;
-        if (o.getId() == null)
-            return false;
-        if (o.getId() != getId())
-            return false;
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-        if (getId() == null)
-            return System.identityHashCode(this);
-        hash += getId().hashCode();
-        return hash;
     }
 
 }

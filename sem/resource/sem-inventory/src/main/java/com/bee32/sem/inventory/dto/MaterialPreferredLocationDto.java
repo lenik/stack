@@ -1,10 +1,12 @@
 package com.bee32.sem.inventory.dto;
 
+import java.io.Serializable;
+
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
-import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 
 public class MaterialPreferredLocationDto
@@ -62,31 +64,8 @@ public class MaterialPreferredLocationDto
     }
 
     @Override
-    protected Boolean naturalEquals(EntityDto<MaterialPreferredLocation, Long> other) {
-        MaterialPreferredLocationDto o = (MaterialPreferredLocationDto) other;
-
-        if (material == null || location == null)
-            return false;
-
-        if (!material.equals(o.material))
-            return false;
-
-        if (!location.equals(o.location))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-
-        if (material == null || location == null)
-            return System.identityHashCode(this);
-
-        hash += material.hashCode();
-        hash += location.hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(naturalId(material), naturalId(location));
     }
 
 }

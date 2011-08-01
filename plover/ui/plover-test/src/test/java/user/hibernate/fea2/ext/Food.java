@@ -1,5 +1,6 @@
 package user.hibernate.fea2.ext;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
@@ -23,7 +24,6 @@ import org.hibernate.annotations.MapKeyManyToMany;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
@@ -109,18 +109,8 @@ public class Food
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Integer> other) {
-        Food o = (Food) other;
-
-        if (name == null || o.name == null)
-            return false;
-
-        return name.equals(o.name);
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        return name == null ? 0 : name.hashCode();
+    protected Serializable naturalId() {
+        return name;
     }
 
 }

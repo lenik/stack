@@ -1,5 +1,7 @@
 package com.bee32.icsf.access.dacl;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -12,8 +14,8 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.orm.entity.EntityAuto;
-import com.bee32.plover.orm.entity.EntityBase;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "dace_seq", allocationSize = 1)
@@ -154,24 +156,8 @@ public class DACE
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Long> other) {
-        DACE o = (DACE) other;
-
-        if (!dacl.equals(o.dacl))
-            return false;
-
-        if (!principal.equals(o.principal))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-        hash += dacl.hashCode();
-        hash += principal.hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(naturalId(dacl), naturalId(principal));
     }
 
 }

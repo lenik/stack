@@ -1,7 +1,10 @@
 package com.bee32.sem.inventory.dto;
 
+import java.io.Serializable;
+
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.inventory.entity.MaterialAttribute;
@@ -64,31 +67,8 @@ public class MaterialAttributeDto
     }
 
     @Override
-    protected Boolean naturalEquals(EntityDto<MaterialAttribute, Long> other) {
-        MaterialAttributeDto o = (MaterialAttributeDto) other;
-
-        if (material == null || name == null)
-            return false;
-
-        if (!material.equals(o.material))
-            return false;
-
-        if (!name.equals(o.name))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-
-        if (material == null || name == null)
-            return System.identityHashCode(this);
-
-        hash += material.hashCode();
-        hash += name.hashCode();
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(naturalId(material), name);
     }
 
 }

@@ -1,7 +1,10 @@
 package com.bee32.sem.chance.dto;
 
+import java.io.Serializable;
+
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.chance.entity.ChanceParty;
@@ -68,26 +71,8 @@ public class ChancePartyDto
     }
 
     @Override
-    protected Boolean naturalEquals(EntityDto<ChanceParty, Long> other) {
-        ChancePartyDto o = (ChancePartyDto) other;
-
-        if (!o.chance.equals(chance))
-            return false;
-
-        if (!o.party.equals(party))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = 0;
-
-        hash += chance.hashCode();
-        hash += party.hashCode();
-
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(naturalId(chance), naturalId(party));
     }
 
 }

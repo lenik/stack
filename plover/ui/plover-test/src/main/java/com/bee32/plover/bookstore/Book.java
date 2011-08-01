@@ -1,11 +1,11 @@
 package com.bee32.plover.bookstore;
 
-import javax.free.Nullables;
+import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
@@ -28,12 +28,14 @@ public class Book
         this.content = content;
     }
 
-    @Basic
+    @Basic(optional = false)
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
         this.name = name;
     }
 
@@ -46,21 +48,8 @@ public class Book
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Integer> otherEntity) {
-        Book o = (Book) otherEntity;
-
-        if (!Nullables.equals(name, o.name))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
+    protected Serializable naturalId() {
+        return name;
     }
 
 }

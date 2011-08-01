@@ -1,14 +1,15 @@
 package com.bee32.sem.process.verify.builtin;
 
-import javax.free.Nullables;
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.collections.map.IRangeMapEntry;
 import com.bee32.plover.orm.entity.EntityAuto;
-import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.sem.process.verify.VerifyPolicy;
 
@@ -80,26 +81,8 @@ public class MultiLevel
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Integer> other) {
-        MultiLevel o = (MultiLevel) other;
-
-        if (limit != o.limit)
-            return false;
-
-        if (!Nullables.equals(policy, o.policy))
-            return false;
-
-        return true;
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        int hash = new Long(limit).hashCode();
-
-        if (policy != null)
-            hash += policy.getId().hashCode();
-
-        return hash;
+    protected Serializable naturalId() {
+        return new IdComposite(limit, naturalId(policy));
     }
 
     // --o IRangeMapEntry

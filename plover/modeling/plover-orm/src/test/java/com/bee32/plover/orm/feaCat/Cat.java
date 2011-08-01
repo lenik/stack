@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.feaCat;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -12,8 +13,6 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
-
-import com.bee32.plover.orm.entity.EntityBase;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "cat_seq", allocationSize = 1)
@@ -94,18 +93,8 @@ public class Cat
     }
 
     @Override
-    protected Boolean naturalEquals(EntityBase<Long> other) {
-        Cat o = (Cat) other;
-
-        if (name == null || o.name == null)
-            return false;
-
-        return name.equals(o.name);
-    }
-
-    @Override
-    protected Integer naturalHashCode() {
-        return name == null ? 0 : name.hashCode();
+    public Serializable naturalId() {
+        return name;
     }
 
 }
