@@ -121,7 +121,7 @@ public class SamplesLoader
                 sideA.add(sample);
         }
 
-        // Load Side-B (before)
+        // Load Side-A (before)
         if (!sideA.isEmpty()) {
             String packAVersionKey = "sampack.a." + pack.getName();
             String packAVersion = confManager.getConfValue(packAVersionKey);
@@ -178,9 +178,9 @@ public class SamplesLoader
                     }
                 } // for
             } // packBOnce
-        } // B.empty
+        } // A.empty
 
-        // Load Side A. (after)
+        // Load Side Z. (after)
         if (!sideZ.isEmpty()) {
             String packZVersionKey = "sampack.z." + pack.getName();
             String packZVersion = confManager.getConfValue(packZVersionKey);
@@ -207,10 +207,11 @@ public class SamplesLoader
                     logger.error("Failed to load samples (Z) from " + pack, e);
                 }
 
-            }
-        } // !sideA.empty
+                // more is only belonged to side Z.
+                pack.more(dataManager);
 
-        pack.more(dataManager);
+            } // loaded?
+        } // !sideZ.empty
 
         pack.endLoad();
     }
