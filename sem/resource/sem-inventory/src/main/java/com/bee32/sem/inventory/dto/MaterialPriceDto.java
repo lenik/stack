@@ -19,19 +19,23 @@ public class MaterialPriceDto
     MaterialDto material;
     Date date;
     MCValue price;
+    double viewPrice;
 
     @Override
     protected void _marshal(MaterialPrice source) {
         this.material = marshal(MaterialDto.class, 0, source.getMaterial());
         this.date = source.getDate();
         this.price = source.getPrice();
+        this.viewPrice = price.getValue().doubleValue();
     }
 
     @Override
     protected void _unmarshalTo(MaterialPrice target) {
         merge(target, "material", material);
         target.setDate(date);
-        target.setPrice(new MCValue(price));
+        MCValue _mprice = new MCValue(price);
+        _mprice.value(viewPrice);
+        target.setPrice(new MCValue(_mprice));
     }
 
     @Override
@@ -68,6 +72,15 @@ public class MaterialPriceDto
         if (price == null)
             throw new NullPointerException("price");
         this.price = price;
+    }
+
+
+    public double getViewPrice() {
+        return viewPrice;
+    }
+
+    public void setViewPrice(double viewPrice) {
+        this.viewPrice = viewPrice;
     }
 
     /**
