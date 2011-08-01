@@ -67,7 +67,9 @@ public class LoginEntityAddon
             ownerName = owner.getDisplayName();
         }
 
-        logger.debug("Set owner of new entity: " + ownerName);
+        if (logger.isTraceEnabled())
+            logger.trace("Set owner of new entity: " + ownerName);
+
         entity.setOwnerId(ownerId);
     }
 
