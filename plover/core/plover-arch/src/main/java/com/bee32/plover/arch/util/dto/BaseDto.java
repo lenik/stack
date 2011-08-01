@@ -170,7 +170,10 @@ public abstract class BaseDto<S, C>
     }
 
     protected static Serializable naturalId(BaseDto<?, ?> o) {
-        return o.getNaturalId();
+        if (o == null)
+            return null;
+        else
+            return o.getNaturalId();
     }
 
     protected abstract boolean idEquals(BaseDto<S, C> other);

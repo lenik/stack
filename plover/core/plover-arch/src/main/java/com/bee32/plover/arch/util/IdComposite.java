@@ -1,7 +1,6 @@
 package com.bee32.plover.arch.util;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 public class IdComposite
         implements Serializable {
@@ -21,12 +20,33 @@ public class IdComposite
 
         IdComposite other = (IdComposite) obj;
 
-        return Arrays.equals(elements, other.elements);
+        if (elements.length != other.elements.length)
+            return false;
+
+        for (int i = 0; i < elements.length; i++) {
+            Serializable o1 = elements[i];
+            Serializable o2 = other.elements[i];
+
+            if (o1 == null || o2 == null)
+                return false;
+
+            if (!o1.equals(o2))
+                return false;
+        }
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(elements);
+        int hash = 0;
+        for (int i = 0; i < elements.length; i++) {
+            Serializable o = elements[i];
+            if (o == null)
+                hash += System.identityHashCode(this); // meaningless..?
+            else
+                hash += o.hashCode();
+        }
+        return hash;
     }
 
     @Override
@@ -35,7 +55,13 @@ public class IdComposite
         for (int i = 0; i < elements.length; i++) {
             if (i != 0)
                 sb.append("::");
-            sb.append(elements[i]);
+
+            Serializable o = elements[i];
+
+            if (o == null)
+                sb.append("(null)");
+            else
+                sb.append(o);
         }
         return sb.toString();
     }
