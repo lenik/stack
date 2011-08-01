@@ -6,7 +6,7 @@ import javax.persistence.SequenceGenerator;
 import com.bee32.plover.orm.ext.xp.XPool30;
 
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "stock_inventory_xp_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "stock_inventoryxp_seq", allocationSize = 1)
 public class StockInventoryXP
         extends XPool30<StockInventory> {
 

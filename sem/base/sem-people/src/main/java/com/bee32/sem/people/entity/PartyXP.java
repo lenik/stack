@@ -6,7 +6,7 @@ import javax.persistence.SequenceGenerator;
 import com.bee32.plover.orm.ext.xp.XPool40;
 
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "party_xp_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "partyxp_seq", allocationSize = 1)
 public class PartyXP
         extends XPool40<Party> {
 

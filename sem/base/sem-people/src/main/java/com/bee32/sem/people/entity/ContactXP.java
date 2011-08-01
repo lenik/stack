@@ -6,7 +6,7 @@ import javax.persistence.SequenceGenerator;
 import com.bee32.plover.orm.ext.xp.XPool30;
 
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "contact_xp_seq", allocationSize = 1)
+@SequenceGenerator(name = "idgen", sequenceName = "contactxp_seq", allocationSize = 1)
 public class ContactXP
         extends XPool30<Contact> {
 
