@@ -13,29 +13,19 @@ import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "org_unit_seq", allocationSize = 1)
 public class OrgUnit
-        extends TreeEntityAuto<Long, OrgUnit> {
+        extends TreeEntityAuto<Integer, OrgUnit> {
 
     private static final long serialVersionUID = 1L;
 
-    String name;
     Org org;
+    String name;
     Contact contact;
     Group forWhichGroup;
-
-    @Column(length = 30, nullable = false)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-        this.name = name;
-    }
 
     /**
      * 属主组织。
      */
+    // @NaturalId
     @ManyToOne(optional = false)
     public Org getOrg() {
         return org;
@@ -45,6 +35,18 @@ public class OrgUnit
         if (org == null)
             throw new NullPointerException("org");
         this.org = org;
+    }
+
+    // @NaturalId
+    @Column(length = 30, nullable = false)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        this.name = name;
     }
 
     /**

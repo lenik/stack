@@ -8,7 +8,7 @@ import com.bee32.plover.orm.ext.tree.TreeEntityDto;
 import com.bee32.sem.people.entity.OrgUnit;
 
 public class OrgUnitDto
-        extends TreeEntityDto<OrgUnit, Long, OrgUnitDto> {
+        extends TreeEntityDto<OrgUnit, Integer, OrgUnitDto> {
 
     private static final long serialVersionUID = 1L;
 
