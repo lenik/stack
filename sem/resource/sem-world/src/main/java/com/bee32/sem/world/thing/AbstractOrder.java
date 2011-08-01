@@ -2,7 +2,6 @@ package com.bee32.sem.world.thing;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,13 +43,17 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
     @OneToMany(mappedBy = "parent")
     @Cascade(CascadeType.ALL)
     public List<Item> getItems() {
-        return Collections.unmodifiableList(items);
+        // TODO Collections.unmodifiableList(items);
+        return items;
     }
 
     public void setItems(List<Item> items) {
         if (items == null)
             throw new NullPointerException("items");
-        this.items = items;
+        if (this.items != items) {
+            this.items = items;
+            invalidateTotal();
+        }
     }
 
     public synchronized void addItem(Item item) {
@@ -111,7 +114,7 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
      */
     @Redundant
     @Transient
-    //@Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
+    // @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
     public synchronized BigDecimal getNativeTotal()
             throws FxrQueryException {
         if (nativeTotal == null) {
