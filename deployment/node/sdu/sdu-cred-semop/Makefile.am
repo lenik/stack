@@ -1,5 +1,8 @@
 include libauto/coolauto.am
 
+setup_DATA = \
+    ssh/authorized_keys \
+    ssh/id_rsa
 
 setup_SCRIPTS = \
     post-install.sh \

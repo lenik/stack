@@ -1,2 +1,35 @@
-#!/bin/sh
+#!/bin/bash
+
 # master-file
+
+setupdir=@setupdir@
+
+for username in semop; do
+
+    if ! grep -q "^$username:" /etc/passwd; then
+        echo "Create non-exist user $username"
+        if ! useradd -g dev -m $username -s /bin/bash; then
+            echo "    failed"
+            exit 1
+        fi
+    fi
+
+    IFS=: read name x uid gid cmt home sh \
+            < <(grep "^$username:" /etc/passwd)
+
+    echo "Configure user $name, home $home"
+
+    _sshdir=$home/.ssh
+    install -m 0700 -o $uid -g $gid -d $_sshdir
+
+    install -m 0600 -o $uid -g $gid $setupdir/authorized_keys $_sshdir/
+
+    for k in identity id_rsa id_dsa; do
+        if [ -f $setupdir/$k ]; then
+            install -m 0600 -o $uid -g $gid $setupdir/$k $_sshdir/
+        fi
+    done
+
+done
+
+exit 0
