@@ -1,6 +1,8 @@
 package com.bee32.plover.orm.util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.free.IdentityHashSet;
@@ -16,6 +18,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.builtin.IPloverConfManager;
 import com.bee32.plover.orm.builtin.StaticPloverConfManager;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
@@ -44,6 +47,12 @@ public class SamplesLoader
 
     public SamplesLoader() {
         unit = CustomizedSessionFactoryBean.getForceUnit();
+    }
+
+    <E extends Entity<? extends K>, K extends Serializable> //
+    IEntityAccessService<E, K> asFor(Class<? extends E> entityType) {
+        IEntityAccessService<E, K> service = dataManager.asFor(entityType);
+        return service;
     }
 
     @Override
@@ -86,6 +95,7 @@ public class SamplesLoader
         ThreadHttpContext.escape(process);
     }
 
+    @SuppressWarnings("unchecked")
     void _loadSamples(SamplePackage pack, Closure<SampleContribution> progress) {
         if (pack == null)
             throw new NullPointerException("pack");
@@ -138,6 +148,9 @@ public class SamplesLoader
             if (packAOnce) {
                 if ("1".equals(packAVersion)) {
                     logger.debug("  (A) Already loaded: " + pack.getName());
+
+                    // Never reload specs.
+
                 } else {
                     if (logger.isDebugEnabled()) {
                         String message = String.format("Loading[%d]: %d A-samples from %s", //
@@ -146,13 +159,12 @@ public class SamplesLoader
                     }
 
                     try {
-                        @SuppressWarnings("unchecked")
-                        IEntityAccessService<Entity<?>, ?> eas = dataManager.asFor(Entity.class);
+                        IEntityAccessService<Entity<?>, ?> eas = asFor(Entity.class);
                         eas.saveAll(specList);
 
                         confManager.setConf(packAVersionKey, "1");
 
-                        // dataManager.flush();
+                        // flush();
                     } catch (Exception e) {
                         logger.error("Failed to load (A) samples from " + pack, e);
                     }
@@ -176,7 +188,7 @@ public class SamplesLoader
                         continue;
 
                     try {
-                        dataManager.asFor(sampleType).saveOrUpdate(sample);
+                        asFor(sampleType).saveOrUpdate(sample);
                         confManager.setConf(sampleVersionKey, "1");
                         // dataManager.flush();
                     } catch (Exception e) {
@@ -194,6 +206,36 @@ public class SamplesLoader
             if ("1".equals(packZVersion)) {
                 logger.debug("  (Z) Already loaded: " + pack.getName());
 
+                // Reload naturals.
+                Iterator<Entity<?>> iter = autoList.iterator();
+                while (iter.hasNext()) {
+                    Entity<Serializable> item = (Entity<Serializable>) iter.next();
+                    Class<? extends Entity<?>> itemType = (Class<? extends Entity<?>>) item.getClass();
+
+                    Serializable nid = item.getNaturalId();
+                    if (nid != null) {
+                        logger.debug("      Reload " + itemType.getSimpleName() + " : " + nid);
+
+                        ICriteriaElement selector = item.getSelector();
+
+                        Entity<?> existing;
+                        try {
+                            existing = asFor(itemType).getUnique(selector);
+
+                        } catch (Exception e) {
+                            logger.error("      Failed to reload " + itemType.getSimpleName() + " : " + nid, e);
+                            continue;
+                        }
+
+                        if (existing == null)
+                            throw new IllegalStateException("Entity isn't persisted: " + item);
+
+                        EntityAccessor.setId(item, (Serializable) existing.getId());
+
+                        asFor(itemType).evict(existing);
+                    }
+                }
+
             } else {
                 if (logger.isDebugEnabled()) {
                     String message = String.format("Loading[%d]: %d Z-samples from %s", //
@@ -202,9 +244,7 @@ public class SamplesLoader
                 }
 
                 try {
-                    @SuppressWarnings("unchecked")
-                    IEntityAccessService<Entity<?>, ?> eas = dataManager.asFor(Entity.class);
-                    eas.saveAll(autoList);
+                    asFor(Entity.class).saveAll(autoList);
 
                     confManager.setConf(packZVersionKey, "1");
 
