@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
@@ -27,7 +26,6 @@ public class Person
     Gender sex = Gender.OTHER;
 
     String censusRegister;
-    PersonSidType sidType = PersonSidType.IDENTITYCARD;
 
     Set<PersonRole> roles = new HashSet<PersonRole>();
 
@@ -37,6 +35,10 @@ public class Person
 
     public Person(String name) {
         super(name);
+    }
+
+    {
+        sidType = PartySidType.IDENTITYCARD;
     }
 
     @Column(name = "sex")
@@ -76,21 +78,6 @@ public class Person
      */
     public void setCensusRegister(String censusRegister) {
         this.censusRegister = censusRegister;
-    }
-
-    /**
-     * 身份证件类型 (SID = Social ID)
-     */
-    @ManyToOne
-    public PersonSidType getSidType() {
-        return sidType;
-    }
-
-    /**
-     * 身份证件类型 (SID = Social ID)
-     */
-    public void setSidType(PersonSidType sidType) {
-        this.sidType = sidType;
     }
 
     @OneToMany(mappedBy = "person")

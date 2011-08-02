@@ -20,10 +20,10 @@ import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.dto.AbstractPartyDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
-import com.bee32.sem.people.dto.PersonSidTypeDto;
+import com.bee32.sem.people.dto.PartySidTypeDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.Person;
-import com.bee32.sem.people.entity.PersonSidType;
+import com.bee32.sem.people.entity.PartySidType;
 import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
@@ -118,8 +118,8 @@ public class PersonAdminBean
     }
 
     public List<SelectItem> getSidTypes() {
-        List<PersonSidType> sidTypes = serviceFor(PersonSidType.class).list();
-        List<PersonSidTypeDto> sidTypeDtos = DTOs.marshalList(PersonSidTypeDto.class, sidTypes);
+        List<PartySidType> sidTypes = serviceFor(PartySidType.class).list();
+        List<PartySidTypeDto> sidTypeDtos = DTOs.marshalList(PartySidTypeDto.class, sidTypes);
         return UIHelper.selectItemsFromDict(sidTypeDtos);
     }
 

@@ -17,10 +17,10 @@ import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgType;
+import com.bee32.sem.people.entity.PartySidType;
 import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
-import com.bee32.sem.people.entity.PersonSidType;
 
 @ImportSamples(IcsfPrincipalSamples.class)
 public class SEMPeopleSamples
@@ -110,7 +110,6 @@ public class SEMPeopleSamples
         tang.setPrimaryGroup(abcRAD);
         tang.addAssignedGroup(abcSales);
         abcRAD.addMemberUser(tang);
-        abcRAD.setOwner(User.admin);
         abcSales.addMemberUser(tang);
     }
 
@@ -120,11 +119,9 @@ public class SEMPeopleSamples
         abcOrg.setType(OrgType.LTD_CORP);
         abcOrg.setSize(20);
         abcOrg.setInterests("互联网搜索");
-        abcOrg.setOwner(IcsfPrincipalSamples.eva);
 
         bugatti.setFullName("Ettore Bugatti ONE - 77");
         bugatti.setNickName("ONE - 77");
-        bugatti.setOwner(IcsfPrincipalSamples.eva);
         bugatti.setSid("294741103659387246x");
         Calendar one77Birthday = Calendar.getInstance();
         one77Birthday.set(1909, 1, 1);
@@ -133,7 +130,6 @@ public class SEMPeopleSamples
 
         bentley.setFullName("Walter Owen Bentley");
         bentley.setNickName("Arnage");
-        bentley.setOwner(IcsfPrincipalSamples.eva);
         bentley.setSid("580672610347561394");
         Calendar bentleyBirthday = Calendar.getInstance();
         bentleyBirthday.set(1919, 7, 1);
@@ -145,10 +141,9 @@ public class SEMPeopleSamples
         weiXiaoBao.setFullName("韦小宝");
         weiXiaoBao.setInterests("吃饭睡觉玩老婆");
         weiXiaoBao.setNickName("小宝");
-        weiXiaoBao.setOwner(IcsfPrincipalSamples.eva);
         weiXiaoBao.setSex(Gender.MALE);
         weiXiaoBao.setSid("11010116541220517");
-        weiXiaoBao.setSidType(PersonSidType.IDENTITYCARD);
+        weiXiaoBao.setSidType(PartySidType.IDENTITYCARD);
         weiXiaoBao.setTags(Sets.newSet(PartyTagname.CUSTOMER, PartyTagname.INTERNAL));
 
         Contact weiXiaoBaoHome = new Contact();

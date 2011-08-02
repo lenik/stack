@@ -6,7 +6,6 @@ import java.util.Set;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
-import com.bee32.sem.people.entity.PersonSidType;
 
 public class PersonDto
         extends AbstractPartyDto<Person> {
@@ -16,7 +15,6 @@ public class PersonDto
     char sex;
 
     String censusRegister;
-    PersonSidTypeDto sidType;
 
     Set<PersonRoleDto> roles;
 
@@ -36,9 +34,6 @@ public class PersonDto
 
         censusRegister = source.getCensusRegister();
 
-        PersonSidType _sidType = source.getSidType();
-        sidType = mref(PersonSidTypeDto.class, _sidType);
-
         if (selection.contains(ROLES)) {
             roles = new HashSet<PersonRoleDto>();
             for (PersonRole role : source.getRoles()) {
@@ -55,13 +50,6 @@ public class PersonDto
         target.setSex(Gender.valueOf(sex));
 
         target.setCensusRegister(censusRegister);
-
-        // XXX - Should remove this later.
-        String sidTypeId = sidType.getId();
-        if (sidTypeId != null && sidTypeId.isEmpty())
-            sidTypeId = null;
-        sidType.setId(sidTypeId);
-        merge(target, "sidType", sidType);
 
         if (selection.contains(ROLES))
             mergeSet(target, "roles", roles);
@@ -85,14 +73,6 @@ public class PersonDto
 
     public void setCensusRegister(String censusRegister) {
         this.censusRegister = censusRegister;
-    }
-
-    public PersonSidTypeDto getSidType() {
-        return sidType;
-    }
-
-    public void setSidType(PersonSidTypeDto sidType) {
-        this.sidType = sidType;
     }
 
     public Set<PersonRoleDto> getRoles() {

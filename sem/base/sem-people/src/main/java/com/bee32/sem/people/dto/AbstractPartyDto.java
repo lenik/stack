@@ -1,10 +1,12 @@
 package com.bee32.sem.people.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.xp.EntityExtDto;
 import com.bee32.sem.people.entity.Party;
@@ -23,9 +25,11 @@ public class AbstractPartyDto<E extends Party>
     String fullName;
     String nickName;
 
+    PartySidTypeDto sidType;
+    String sid;
+
     Date birthday;
     String interests;
-    String sid;
     String memo;
 
     List<PartyTagnameDto> tags;
@@ -48,13 +52,13 @@ public class AbstractPartyDto<E extends Party>
         fullName = source.getFullName();
         nickName = source.getNickName();
 
-        birthday = source.getBirthday();
+        sidType = mref(PartySidTypeDto.class, source.getSidType());
+        sid = source.getSid();
 
+        birthday = source.getBirthday();
         interests = source.getInterests();
 
         memo = source.getMemo();
-
-        sid = source.getSid();
 
         if (selection.contains(CONTACTS))
             contacts = marshalList(ContactDto.class, source.getContacts(), true);
@@ -69,9 +73,17 @@ public class AbstractPartyDto<E extends Party>
         target.setFullName(fullName);
         target.setNickName(nickName);
 
+        target.setSid(sid);
+
+        // XXX - Should remove this later.
+        String sidTypeId = sidType.getId();
+        if (sidTypeId != null && sidTypeId.isEmpty())
+            sidTypeId = null;
+        sidType.setId(sidTypeId);
+        merge(target, "sidType", sidType);
+
         target.setBirthday(birthday);
         target.setInterests(interests);
-        target.setSid(sid);
         target.setMemo(memo);
 
         mergeSet(target, "tags", tags);
@@ -120,6 +132,33 @@ public class AbstractPartyDto<E extends Party>
         return name;
     }
 
+    public PartySidTypeDto getSidType() {
+        return sidType;
+    }
+
+    public void setSidType(PartySidTypeDto sidType) {
+        this.sidType = sidType;
+    }
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        if (sid != null && sid.isEmpty())
+            sid = null;
+        this.sid = sid;
+
+        if (sid == null)
+            sidType = null;
+    }
+
+    public String getXid() {
+        if (sidType == null || sid == null || sid.isEmpty())
+            return null;
+        return sidType.getId() + ":" + sid;
+    }
+
     public Date getBirthday() {
         return birthday;
     }
@@ -134,14 +173,6 @@ public class AbstractPartyDto<E extends Party>
 
     public void setInterests(String interests) {
         this.interests = interests;
-    }
-
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSid(String sid) {
-        this.sid = sid;
     }
 
     public String getMemo() {
@@ -174,6 +205,15 @@ public class AbstractPartyDto<E extends Party>
 
     public void setContacts(List<ContactDto> contacts) {
         this.contacts = contacts;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        String xid = getXid();
+        if (xid == null)
+            return new DummyId(this);
+        else
+            return xid;
     }
 
 }

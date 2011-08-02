@@ -16,7 +16,7 @@ import com.bee32.sem.people.entity.PartyXP;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonLogin;
 import com.bee32.sem.people.entity.PersonRole;
-import com.bee32.sem.people.entity.PersonSidType;
+import com.bee32.sem.people.entity.PartySidType;
 
 @ImportUnit(SEMBaseUnit.class)
 public class SEMPeopleUnit
@@ -36,7 +36,7 @@ public class SEMPeopleUnit
         add(PartyTagname.class);
         add(Person.class);
         add(PersonRole.class);
-        add(PersonSidType.class);
+        add(PartySidType.class);
         add(PersonLogin.class);
     }
 

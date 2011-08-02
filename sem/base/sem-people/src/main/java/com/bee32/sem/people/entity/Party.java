@@ -1,5 +1,6 @@
 package com.bee32.sem.people.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -26,7 +28,11 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.xp.EntityExt;
 
@@ -50,13 +56,14 @@ public abstract class Party
     String fullName;
     String nickName;
 
+    PartySidType sidType = PartySidType.IDENTITYCARD;
+    String sid;
+
     Date birthday;
 
     String interests;
 
     String memo;
-
-    String sid;
 
     List<Contact> contacts = new ArrayList<Contact>();
     List<PartyRecord> records = new ArrayList<PartyRecord>();
@@ -143,6 +150,48 @@ public abstract class Party
     }
 
     /**
+     * 证件类型 (SID = Social ID)
+     */
+    @ManyToOne
+    public PartySidType getSidType() {
+        return sidType;
+    }
+
+    /**
+     * 证件类型 (SID = Social ID)
+     */
+    public void setSidType(PartySidType sidType) {
+        this.sidType = sidType;
+    }
+
+    /**
+     * 证件号码 (SID = Social ID)
+     */
+    @Column(length = 30)
+    public String getSid() {
+        return sid;
+    }
+
+    /**
+     * 证件号码 (SID = Social ID)
+     */
+    public void setSid(String sid) {
+        this.sid = sid;
+    }
+
+    @NaturalId
+    @Column(length = 40)
+    String getXid() {
+        if (sidType == null || sid == null || sid.isEmpty())
+            return null;
+        return sidType.getId() + ":" + sid;
+    }
+
+    void setXid(String xid) {
+        // work on the fly.
+    }
+
+    /**
      * 出生日期
      */
     @Temporal(TemporalType.DATE)
@@ -211,21 +260,6 @@ public abstract class Party
         return diff;
     }
 
-    /**
-     * 身份证件号码 (SID = Social ID)
-     */
-    @Column(length = 30)
-    public String getSid() {
-        return sid;
-    }
-
-    /**
-     * 身份证件号码 (SID = Social ID)
-     */
-    public void setSid(String sid) {
-        this.sid = sid;
-    }
-
     @OneToMany(mappedBy = "party")
     @Cascade({ CascadeType.ALL })
     public List<Contact> getContacts() {
@@ -248,4 +282,18 @@ public abstract class Party
         this.records = records;
     }
 
+    @Override
+    protected Serializable naturalId() {
+        String xid = getXid();
+        if (xid == null)
+            return new DummyId(this);
+        else
+            return xid;
+    }
+
+    @Override
+    protected ICriteriaElement selector(String prefix) {
+        String xid = getXid();
+        return new Equals(prefix + "xid", xid);
+    }
 }

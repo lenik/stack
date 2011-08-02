@@ -38,6 +38,10 @@ public class Org
         super(name);
     }
 
+    {
+        sidType = PartySidType.TAX_ID;
+    }
+
     @ManyToOne
     public OrgType getType() {
         return type;
