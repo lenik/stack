@@ -97,10 +97,10 @@ public class MaterialWarehouseOption
     }
 
     @Override
-    protected CriteriaElement naturalSelector(String prefix) {
+    protected CriteriaElement selector(String prefix) {
         return new And(//
-                naturalSelector(prefix + "material", material), //
-                naturalSelector(prefix + "warehouse", warehouse));
+                selector(prefix + "material", material), //
+                selector(prefix + "warehouse", warehouse));
     }
 
 }

@@ -16,8 +16,10 @@ import overlay.Overlay;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.Alias;
+import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.util.EntityFormatter;
 import com.bee32.plover.orm.util.ErrorResult;
 import com.bee32.plover.util.FormatStyle;
@@ -324,21 +326,34 @@ public abstract class Entity<K extends Serializable>
     }
 
     @Transient
-    public CriteriaElement getNaturalSelector() {
-        return naturalSelector(null);
+    public final ICriteriaElement getSelector() {
+        return selector("");
     }
 
-    protected CriteriaElement naturalSelector(String prefix) {
+    /**
+     * Get the criteria construction for natural id selection.
+     *
+     * @param prefix
+     *            Non-null property name prefix.
+     */
+    protected ICriteriaElement selector(String prefix) {
         return new Equals(prefix + "id", getId());
     }
 
-    protected static CriteriaElement naturalSelector(String property, Entity<?> entity) {
-        String prefix;
+    protected static ICriteriaElement selector(String property, Entity<?> entity) {
         if (property == null)
-            prefix = "";
+            return entity.selector("");
+
+        String prefix = property + ".";
+        ICriteriaElement selector = entity.selector(prefix);
+
+        Serializable nid = entity.getNaturalId();
+        if (nid == null)
+            return selector;
         else
-            prefix = property + ".";
-        return entity.naturalSelector(prefix);
+            return new CriteriaComposite(//
+                    new Alias(property, property), //
+                    selector);
     }
 
     protected boolean idEquals(EntityBase<K> other) {

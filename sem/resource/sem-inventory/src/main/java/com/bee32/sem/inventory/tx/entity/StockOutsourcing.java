@@ -83,8 +83,8 @@ public class StockOutsourcing
     @Override
     protected CriteriaElement selector(String prefix) {
         return new And(//
-                naturalSelector(prefix + "sentOrder", sentOrder), //
-                naturalSelector(prefix + "receivedOrder", receivedOrder));
+                selector(prefix + "sentOrder", sentOrder), //
+                selector(prefix + "receivedOrder", receivedOrder));
     }
 
 }

@@ -73,10 +73,10 @@ public class MaterialPreferredLocation
     }
 
     @Override
-    protected CriteriaElement naturalSelector(String prefix) {
+    protected CriteriaElement selector(String prefix) {
         return new And(//
-                naturalSelector(prefix + "material", material), //
-                naturalSelector(prefix + "location", location));
+                selector(prefix + "material", material), //
+                selector(prefix + "location", location));
     }
 
 }

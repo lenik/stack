@@ -87,9 +87,9 @@ public class FileAttribute
     }
 
     @Override
-    protected CriteriaElement naturalSelector(String prefix) {
+    protected CriteriaElement selector(String prefix) {
         return new And(//
-                naturalSelector(prefix + "blob", blob), //
+                selector(prefix + "blob", blob), //
                 new Equals(prefix + "key", key));
     }
 

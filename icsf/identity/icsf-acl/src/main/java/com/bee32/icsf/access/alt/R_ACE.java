@@ -134,10 +134,10 @@ public class R_ACE
     }
 
     @Override
-    public CriteriaElement naturalSelector(String prefix) {
+    public CriteriaElement selector(String prefix) {
         return new And(//
                 new Equals(prefix + "qualifiedName", qualifiedName), //
-                naturalSelector(prefix + "principal", principal));
+                selector(prefix + "principal", principal));
     }
 
     @Override

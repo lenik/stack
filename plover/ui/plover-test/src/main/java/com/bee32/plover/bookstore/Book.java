@@ -58,7 +58,7 @@ public class Book
     }
 
     @Override
-    protected CriteriaElement naturalSelector(String prefix) {
+    protected CriteriaElement selector(String prefix) {
         if (name == null)
             throw new NullPointerException("name");
         return new Equals(prefix + "name", name);

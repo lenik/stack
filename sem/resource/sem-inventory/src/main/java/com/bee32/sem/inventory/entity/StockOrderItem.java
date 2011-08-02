@@ -188,8 +188,8 @@ public class StockOrderItem
     protected CriteriaElement selector(String prefix) {
         String cBatch = getCBatch();
         return new Conjunction(//
-                naturalSelector(prefix + "parent", parent), //
-                naturalSelector(prefix + "material", material), //
+                selector(prefix + "parent", parent), //
+                selector(prefix + "material", material), //
                 new Equals(prefix + "cBatch", cBatch));
     }
 

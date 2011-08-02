@@ -88,8 +88,8 @@ public class StockTransfer
     @Override
     protected CriteriaElement selector(String prefix) {
         return new And(//
-                naturalSelector(prefix + "source", source), //
-                naturalSelector(prefix + "dest", dest));
+                selector(prefix + "source", source), //
+                selector(prefix + "dest", dest));
     }
 
 }
