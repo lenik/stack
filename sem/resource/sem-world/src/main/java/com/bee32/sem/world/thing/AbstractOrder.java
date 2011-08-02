@@ -81,6 +81,7 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
     @Transient
     public synchronized MCVector getTotal() {
         if (total == null) {
+            total = new MCVector();
             for (Item item : items) {
                 MCValue itemTotal = item.getTotal();
                 total.add(itemTotal);

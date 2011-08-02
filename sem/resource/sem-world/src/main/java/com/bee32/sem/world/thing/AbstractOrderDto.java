@@ -88,6 +88,7 @@ public abstract class AbstractOrderDto< //
 
     public MCVector getTotal() {
         if (total == null) {
+            total = new MCVector();
             for (ItemDto item : items) {
                 MCValue itemTotal = item.getTotal();
                 total.add(itemTotal);
