@@ -15,6 +15,9 @@ import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.And;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.util.FormatStyle;
@@ -128,6 +131,13 @@ public class R_ACE
     @Override
     protected Serializable naturalId() {
         return new IdComposite(qualifiedName, naturalId(principal));
+    }
+
+    @Override
+    public CriteriaElement selector(String prefix) {
+        return new And(//
+                new Equals(prefix + "qualifiedName", qualifiedName), //
+                selector(prefix + "principal", principal));
     }
 
     @Override

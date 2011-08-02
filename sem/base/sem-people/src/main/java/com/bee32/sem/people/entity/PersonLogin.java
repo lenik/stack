@@ -11,6 +11,7 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Yellow;
 
@@ -49,6 +50,11 @@ public class PersonLogin
         if (user == null)
             return new DummyId(this);
         return user;
+    }
+
+    @Override
+    protected CriteriaElement selector(String prefix) {
+        return selector(prefix + "user", user);
     }
 
 }

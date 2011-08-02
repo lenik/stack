@@ -10,6 +10,8 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 import com.bee32.sem.people.entity.Person;
 
@@ -91,6 +93,13 @@ public class StockWarehouse
             return new DummyId(this);
         else
             return name;
+    }
+
+    @Override
+    protected CriteriaElement selector(String prefix) {
+        if (name == null)
+            throw new NullPointerException("name");
+        return new Equals(prefix + "name", name);
     }
 
 }

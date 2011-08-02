@@ -10,6 +10,9 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.And;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 
@@ -78,6 +81,15 @@ public class MaterialAttribute
     @Override
     protected Serializable naturalId() {
         return new IdComposite(naturalId(material), name);
+    }
+
+    @Override
+    protected CriteriaElement selector(String prefix) {
+        if (name == null)
+            throw new NullPointerException("name");
+        return new And(//
+                selector(prefix + "material", material), //
+                new Equals(prefix + "name", name));
     }
 
 }

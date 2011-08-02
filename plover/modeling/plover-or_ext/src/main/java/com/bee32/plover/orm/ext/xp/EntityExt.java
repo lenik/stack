@@ -28,7 +28,7 @@ public abstract class EntityExt<K extends Serializable, X extends XPool<?>>
     }
 
     @OneToMany
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(CascadeType.ALL)
     final List<X> getXPool() {
         return pool();
     }

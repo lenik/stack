@@ -12,6 +12,8 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.And;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
@@ -81,6 +83,13 @@ public class StockTransfer
     @Override
     protected Serializable naturalId() {
         return new IdComposite(naturalId(source), naturalId(dest));
+    }
+
+    @Override
+    protected CriteriaElement selector(String prefix) {
+        return new And(//
+                selector(prefix + "source", source), //
+                selector(prefix + "dest", dest));
     }
 
 }

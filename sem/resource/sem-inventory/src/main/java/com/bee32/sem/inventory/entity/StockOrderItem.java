@@ -15,6 +15,9 @@ import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.Conjunction;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.sem.inventory.config.BatchingConfig;
 import com.bee32.sem.world.thing.AbstractOrderItem;
@@ -179,6 +182,15 @@ public class StockOrderItem
     @Override
     protected Serializable naturalId() {
         return new IdComposite(naturalId(parent), naturalId(material), getCBatch());
+    }
+
+    @Override
+    protected CriteriaElement selector(String prefix) {
+        String cBatch = getCBatch();
+        return new Conjunction(//
+                selector(prefix + "parent", parent), //
+                selector(prefix + "material", material), //
+                new Equals(prefix + "cBatch", cBatch));
     }
 
 }

@@ -14,6 +14,8 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.And;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 
@@ -92,6 +94,13 @@ public class MaterialWarehouseOption
     @Override
     protected Serializable naturalId() {
         return new IdComposite(naturalId(material), naturalId(warehouse));
+    }
+
+    @Override
+    protected CriteriaElement selector(String prefix) {
+        return new And(//
+                selector(prefix + "material", material), //
+                selector(prefix + "warehouse", warehouse));
     }
 
 }

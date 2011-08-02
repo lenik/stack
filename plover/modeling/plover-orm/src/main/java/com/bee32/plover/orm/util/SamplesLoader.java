@@ -68,7 +68,7 @@ public class SamplesLoader
      * Static: the samples-loader maybe instantiated twice cuz WebAppCtx & AppCtx. So here just make
      * the map static to avoid of duplicates.
      */
-    static IdentityHashSet loadedPackages = new IdentityHashSet();
+    static IdentityHashSet scannedPackages = new IdentityHashSet();
 
     public synchronized void loadSamples(final SamplePackage pack, final Closure<SampleContribution> progress) {
 
@@ -90,7 +90,7 @@ public class SamplesLoader
         if (pack == null)
             throw new NullPointerException("pack");
 
-        if (!loadedPackages.add(pack))
+        if (!scannedPackages.add(pack))
             return;
 
         for (SamplePackage dependency : pack.getDependencies())
@@ -98,8 +98,9 @@ public class SamplesLoader
 
         pack.beginLoad();
 
-        List<Entity<?>> sideA = new ArrayList<Entity<?>>();
-        List<Entity<?>> sideZ = new ArrayList<Entity<?>>();
+        List<Entity<?>> autoList = new ArrayList<Entity<?>>();
+        // List<Entity<?>> naturalList = new ArrayList<Entity<?>>();
+        List<Entity<?>> specList = new ArrayList<Entity<?>>();
 
         // Classify to A/Z
         for (Entity<?> sample : pack.getInstances()) {
@@ -116,13 +117,18 @@ public class SamplesLoader
 
             boolean isAutoId = EntityAccessor.isAutoId(sample);
             if (isAutoId)
-                sideZ.add(sample);
-            else
-                sideA.add(sample);
+                autoList.add(sample);
+            else {
+                // Serializable naturalId = sample.getNaturalId();
+                // if (naturalId == null)
+                specList.add(sample);
+                // else
+                // naturalList.add(sample);
+            }
         }
 
         // Load Side-A (before)
-        if (!sideA.isEmpty()) {
+        if (!specList.isEmpty()) {
             String packAVersionKey = "sampack.a." + pack.getName();
             String packAVersion = confManager.getConfValue(packAVersionKey);
             String packAPrefix = "sample.";
@@ -134,15 +140,15 @@ public class SamplesLoader
                     logger.debug("  (A) Already loaded: " + pack.getName());
                 } else {
                     if (logger.isDebugEnabled()) {
-                        String message = String.format("Loading[%d]: %d B-samples from %s", //
-                                ++loadIndex, sideA.size(), pack);
+                        String message = String.format("Loading[%d]: %d A-samples from %s", //
+                                ++loadIndex, specList.size(), pack);
                         logger.debug(message);
                     }
 
                     try {
                         @SuppressWarnings("unchecked")
                         IEntityAccessService<Entity<?>, ?> eas = dataManager.asFor(Entity.class);
-                        eas.saveAll(sideA);
+                        eas.saveAll(specList);
 
                         confManager.setConf(packAVersionKey, "1");
 
@@ -153,7 +159,7 @@ public class SamplesLoader
                 }
 
             } else {
-                for (Entity<?> sample : sideA) {
+                for (Entity<?> sample : specList) {
                     if (logger.isDebugEnabled()) {
                         String message = String.format("Loading[%d]: Single A-sample from %s", //
                                 ++loadIndex, pack);
@@ -181,7 +187,7 @@ public class SamplesLoader
         } // A.empty
 
         // Load Side Z. (after)
-        if (!sideZ.isEmpty()) {
+        if (!autoList.isEmpty()) {
             String packZVersionKey = "sampack.z." + pack.getName();
             String packZVersion = confManager.getConfValue(packZVersionKey);
 
@@ -191,14 +197,14 @@ public class SamplesLoader
             } else {
                 if (logger.isDebugEnabled()) {
                     String message = String.format("Loading[%d]: %d Z-samples from %s", //
-                            ++loadIndex, sideZ.size(), pack);
+                            ++loadIndex, autoList.size(), pack);
                     logger.debug(message);
                 }
 
                 try {
                     @SuppressWarnings("unchecked")
                     IEntityAccessService<Entity<?>, ?> eas = dataManager.asFor(Entity.class);
-                    eas.saveAll(sideZ);
+                    eas.saveAll(autoList);
 
                     confManager.setConf(packZVersionKey, "1");
 

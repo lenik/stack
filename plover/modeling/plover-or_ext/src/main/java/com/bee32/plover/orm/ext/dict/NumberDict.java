@@ -7,6 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.Equals;
+
 @MappedSuperclass
 public abstract class NumberDict
         extends DictEntity<Integer> {
@@ -48,6 +51,11 @@ public abstract class NumberDict
     @Override
     protected Serializable naturalId() {
         return number;
+    }
+
+    @Override
+    protected CriteriaElement selector(String prefix) {
+        return new Equals(prefix + "number", number);
     }
 
 }

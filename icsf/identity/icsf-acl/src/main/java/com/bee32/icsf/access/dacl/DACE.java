@@ -15,6 +15,8 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.And;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
 
 @Entity
@@ -158,6 +160,13 @@ public class DACE
     @Override
     protected Serializable naturalId() {
         return new IdComposite(naturalId(dacl), naturalId(principal));
+    }
+
+    @Override
+    public CriteriaElement selector(String prefix) {
+        return new And(//
+                selector(prefix + "dacl", dacl), //
+                selector(prefix + "principal", principal));
     }
 
 }

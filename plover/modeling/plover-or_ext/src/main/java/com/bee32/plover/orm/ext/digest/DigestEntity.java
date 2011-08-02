@@ -3,7 +3,6 @@ package com.bee32.plover.orm.ext.digest;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
@@ -143,15 +142,6 @@ public abstract class DigestEntity
             sb.append(low);
         }
         return sb.toString();
-    }
-
-    @Override
-    protected Serializable naturalId() {
-        String digest = getDigest();
-        // assert digest != null;
-        if (digest == null)
-            throw new NullPointerException("digest");
-        return digest;
     }
 
 }

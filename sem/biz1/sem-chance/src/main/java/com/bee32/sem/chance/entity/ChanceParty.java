@@ -11,6 +11,8 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.And;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Yellow;
 import com.bee32.sem.people.entity.Party;
@@ -70,6 +72,13 @@ public class ChanceParty
     @Override
     protected Serializable naturalId() {
         return new IdComposite(naturalId(chance), naturalId(party));
+    }
+
+    @Override
+    protected CriteriaElement selector(String prefix) {
+        return new And(//
+                selector(prefix + "chance", chance), //
+                selector(prefix + "party", party));
     }
 
 }

@@ -9,6 +9,9 @@ import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.collections.map.IRangeMapEntry;
+import com.bee32.plover.criteria.hibernate.And;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.sem.process.verify.VerifyPolicy;
@@ -83,6 +86,13 @@ public class MultiLevel
     @Override
     protected Serializable naturalId() {
         return new IdComposite(limit, naturalId(policy));
+    }
+
+    @Override
+    protected CriteriaElement selector(String prefix) {
+        return new And(//
+                new Equals(prefix + "limit", limit), //
+                selector(prefix + "policy", policy));
     }
 
     // --o IRangeMapEntry

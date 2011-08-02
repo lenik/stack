@@ -14,7 +14,12 @@ public class Conjunction
 
     List<CriteriaElement> elements = new ArrayList<CriteriaElement>();
 
-    Conjunction() {
+    public Conjunction() {
+    }
+
+    public Conjunction(CriteriaElement... elements) {
+        for (CriteriaElement e : elements)
+            this.elements.add(e);
     }
 
     @Override

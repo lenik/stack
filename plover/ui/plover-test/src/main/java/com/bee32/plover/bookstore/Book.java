@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
@@ -53,6 +55,13 @@ public class Book
         if (name == null)
             return new DummyId(this);
         return name;
+    }
+
+    @Override
+    protected CriteriaElement selector(String prefix) {
+        if (name == null)
+            throw new NullPointerException("name");
+        return new Equals(prefix + "name", name);
     }
 
 }

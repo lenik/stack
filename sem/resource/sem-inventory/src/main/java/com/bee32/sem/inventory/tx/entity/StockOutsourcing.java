@@ -12,6 +12,8 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.And;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.people.entity.Org;
@@ -76,6 +78,13 @@ public class StockOutsourcing
     @Override
     protected Serializable naturalId() {
         return new IdComposite(naturalId(sentOrder), naturalId(receivedOrder));
+    }
+
+    @Override
+    protected CriteriaElement selector(String prefix) {
+        return new And(//
+                selector(prefix + "sentOrder", sentOrder), //
+                selector(prefix + "receivedOrder", receivedOrder));
     }
 
 }
