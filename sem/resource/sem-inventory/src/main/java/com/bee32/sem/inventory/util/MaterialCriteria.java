@@ -1,5 +1,7 @@
 package com.bee32.sem.inventory.util;
 
+import org.zkoss.lang.Strings;
+
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 
@@ -11,6 +13,8 @@ public class MaterialCriteria
     }
 
     public static CriteriaElement namedLike(String name) {
+        if (Strings.isEmpty(name))
+            return null;
         return like("name", "%" + name + "%");
     }
 
