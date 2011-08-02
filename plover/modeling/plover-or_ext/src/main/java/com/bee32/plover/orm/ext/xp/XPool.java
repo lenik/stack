@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.ext.xp;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,7 +27,7 @@ public abstract class XPool<Es extends Entity<?>>
     XPoolModel model;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
     @Override
     public Long getId() {
         return id;
