@@ -2,6 +2,7 @@ package com.bee32.icsf.access.shield;
 
 import java.io.Serializable;
 
+import javax.free.Order;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -28,6 +29,7 @@ import com.bee32.plover.servlet.util.ThreadHttpContext;
 @Service
 @Primary
 /* @Lazy */@Scope("prototype")
+@Order(0)
 public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializable>
         extends EasTxWrapperCat<E, K>
         implements InitializingBean {
