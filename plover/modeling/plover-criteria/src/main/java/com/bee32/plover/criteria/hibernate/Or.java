@@ -1,5 +1,6 @@
 package com.bee32.plover.criteria.hibernate;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.expression.EvaluationContext;
@@ -9,18 +10,28 @@ public class Or
 
     private static final long serialVersionUID = 1L;
 
-    final CriteriaElement lhs;
-    final CriteriaElement rhs;
+    final ICriteriaElement lhs;
+    final ICriteriaElement rhs;
 
-    public Or(CriteriaElement lhs, CriteriaElement rhs) {
+    public Or(ICriteriaElement lhs, ICriteriaElement rhs) {
         this.lhs = lhs;
         this.rhs = rhs;
     }
 
     @Override
+    public void apply(Criteria criteria) {
+        lhs.apply(criteria);
+        rhs.apply(criteria);
+    }
+
+    @Override
     protected Criterion buildCriterion() {
-        Criterion l = lhs.buildCriterion();
-        Criterion r = rhs.buildCriterion();
+        Criterion l = lhs.getCriterion();
+        Criterion r = rhs.getCriterion();
+        if (l == null)
+            return r;
+        if (r == null)
+            return l;
         return Restrictions.or(l, r);
     }
 

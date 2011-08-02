@@ -1,10 +1,9 @@
 package com.bee32.plover.criteria.hibernate;
 
 import org.hibernate.Criteria;
-import org.springframework.expression.EvaluationContext;
 
 public class Order
-        implements ICriteriaElement {
+        extends SpecialCriteriaElement {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,12 +38,6 @@ public class Order
      */
     public static Order desc(String propertyName) {
         return new Order(org.hibernate.criterion.Order.desc(propertyName));
-    }
-
-    @Override
-    public boolean filter(Object obj, EvaluationContext context) {
-        // TODO How to sort...??
-        return true;
     }
 
 }

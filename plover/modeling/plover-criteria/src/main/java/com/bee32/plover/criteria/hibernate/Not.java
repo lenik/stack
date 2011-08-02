@@ -1,5 +1,6 @@
 package com.bee32.plover.criteria.hibernate;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.expression.EvaluationContext;
@@ -9,15 +10,22 @@ public class Not
 
     private static final long serialVersionUID = 1L;
 
-    final CriteriaElement expression;
+    final ICriteriaElement expression;
 
-    public Not(CriteriaElement expression) {
+    public Not(ICriteriaElement expression) {
         this.expression = expression;
     }
 
     @Override
+    public void apply(Criteria criteria) {
+        expression.apply(criteria);
+    }
+
+    @Override
     protected Criterion buildCriterion() {
-        Criterion expr = expression.buildCriterion();
+        Criterion expr = expression.getCriterion();
+        if (expr == null)
+            return null;
         return Restrictions.not(expr);
     }
 

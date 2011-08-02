@@ -3,6 +3,7 @@ package com.bee32.plover.criteria.hibernate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.expression.EvaluationContext;
@@ -12,23 +13,31 @@ public class Disjunction
 
     private static final long serialVersionUID = 1L;
 
-    List<CriteriaElement> elements = new ArrayList<CriteriaElement>();
+    List<ICriteriaElement> elements = new ArrayList<ICriteriaElement>();
 
-    Disjunction() {
+    public Disjunction() {
+    }
+
+    @Override
+    public void apply(Criteria criteria) {
+        for (ICriteriaElement e : elements)
+            e.apply(criteria);
     }
 
     @Override
     protected Criterion buildCriterion() {
         org.hibernate.criterion.Disjunction disj = Restrictions.disjunction();
-        for (CriteriaElement e : elements) {
-            Criterion criterion = e.buildCriterion();
-            disj.add(criterion);
+        for (ICriteriaElement e : elements) {
+            Criterion criterion = e.getCriterion();
+            if (criterion != null)
+                disj.add(criterion);
         }
         return disj;
     }
 
-    public Disjunction add(CriteriaElement element) {
-        elements.add(element);
+    public Disjunction add(ICriteriaElement element) {
+        if (element != null)
+            elements.add(element);
         return this;
     }
 

@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import javax.free.Nullables;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.expression.EvaluationContext;
@@ -17,6 +18,10 @@ public class IdEquals
 
     public IdEquals(Object value) {
         this.value = value;
+    }
+
+    @Override
+    public void apply(Criteria criteria) {
     }
 
     @Override

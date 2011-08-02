@@ -1,5 +1,6 @@
 package com.bee32.plover.criteria.hibernate;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.expression.EvaluationContext;
@@ -13,6 +14,10 @@ public class SimpleSqlRestriction
 
     public SimpleSqlRestriction(String sql) {
         this.sql = sql;
+    }
+
+    @Override
+    public void apply(Criteria criteria) {
     }
 
     @Override

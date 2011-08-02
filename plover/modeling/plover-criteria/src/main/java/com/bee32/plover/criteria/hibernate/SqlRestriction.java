@@ -1,5 +1,6 @@
 package com.bee32.plover.criteria.hibernate;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.Type;
@@ -18,6 +19,10 @@ public class SqlRestriction
         this.sql = sql;
         this.values = values;
         this.types = types;
+    }
+
+    @Override
+    public void apply(Criteria criteria) {
     }
 
     @Override

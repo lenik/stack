@@ -3,6 +3,7 @@ package com.bee32.plover.criteria.hibernate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.expression.EvaluationContext;
@@ -12,28 +13,36 @@ public class Conjunction
 
     private static final long serialVersionUID = 1L;
 
-    List<CriteriaElement> elements = new ArrayList<CriteriaElement>();
+    List<ICriteriaElement> elements = new ArrayList<ICriteriaElement>();
 
     public Conjunction() {
     }
 
-    public Conjunction(CriteriaElement... elements) {
-        for (CriteriaElement e : elements)
+    public Conjunction(ICriteriaElement... elements) {
+        for (ICriteriaElement e : elements)
             this.elements.add(e);
+    }
+
+    @Override
+    public void apply(Criteria criteria) {
+        for (ICriteriaElement e : elements)
+            e.apply(criteria);
     }
 
     @Override
     protected Criterion buildCriterion() {
         org.hibernate.criterion.Conjunction conj = Restrictions.conjunction();
-        for (CriteriaElement e : elements) {
-            Criterion criterion = e.buildCriterion();
-            conj.add(criterion);
+        for (ICriteriaElement e : elements) {
+            Criterion criterion = e.getCriterion();
+            if (criterion != null)
+                conj.add(criterion);
         }
         return conj;
     }
 
     public Conjunction add(CriteriaElement element) {
-        elements.add(element);
+        if (element != null)
+            elements.add(element);
         return this;
     }
 

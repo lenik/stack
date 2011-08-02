@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.expression.EvaluationContext;
 
 public class CriteriaComposite
@@ -33,16 +36,34 @@ public class CriteriaComposite
     public CriteriaComposite(List<? extends ICriteriaElement> elements) {
         if (elements == null)
             throw new NullPointerException("elements");
-        this.elements = new ArrayList<ICriteriaElement>(elements);
+        this.elements = new ArrayList<ICriteriaElement>();
+        for (ICriteriaElement e : elements)
+            if (e != null)
+                this.elements.add(e);
     }
 
     @Override
     public void apply(Criteria criteria) {
-        for (ICriteriaElement element : elements) {
-            if (element == null)
-                continue;
+        for (ICriteriaElement element : elements)
             element.apply(criteria);
+    }
+
+    @Override
+    public Criterion getCriterion() {
+        if (elements.isEmpty())
+            return null;
+
+        if (elements.size() == 1) {
+            return elements.get(0).getCriterion();
         }
+
+        Conjunction conj = Restrictions.conjunction();
+        for (ICriteriaElement element : elements) {
+            Criterion criterion = element.getCriterion();
+            if (criterion != null)
+                conj.add(criterion);
+        }
+        return conj;
     }
 
     public int size() {
@@ -50,11 +71,15 @@ public class CriteriaComposite
     }
 
     public void add(ICriteriaElement element) {
+        if (element == null)
+            throw new NullPointerException("element");
         elements.add(element);
     }
 
     public void addAll(Collection<? extends ICriteriaElement> es) {
-        elements.addAll(es);
+        for (ICriteriaElement e : es)
+            if (e != null)
+                elements.add(e);
     }
 
     public boolean remove(ICriteriaElement element) {

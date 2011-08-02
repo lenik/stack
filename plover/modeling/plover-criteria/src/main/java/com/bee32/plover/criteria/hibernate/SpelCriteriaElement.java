@@ -1,5 +1,6 @@
 package com.bee32.plover.criteria.hibernate;
 
+import org.hibernate.Criteria;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -11,6 +12,10 @@ abstract class SpelCriteriaElement
     private static final long serialVersionUID = 1L;
 
     protected static final SpelExpressionParser PARSER = new SpelExpressionParser();
+
+    @Override
+    public void apply(Criteria criteria) {
+    }
 
     @Override
     public boolean filter(Object obj, EvaluationContext context) {

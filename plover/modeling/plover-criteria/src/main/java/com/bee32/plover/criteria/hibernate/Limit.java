@@ -4,7 +4,7 @@ import org.hibernate.Criteria;
 import org.springframework.expression.EvaluationContext;
 
 public class Limit
-        implements ICriteriaElement {
+        extends SpecialCriteriaElement {
 
     private static final long serialVersionUID = 1L;
 

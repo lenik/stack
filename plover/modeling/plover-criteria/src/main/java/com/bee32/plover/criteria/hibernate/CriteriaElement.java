@@ -1,6 +1,5 @@
 package com.bee32.plover.criteria.hibernate;
 
-import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 
 public abstract class CriteriaElement
@@ -8,11 +7,13 @@ public abstract class CriteriaElement
 
     private static final long serialVersionUID = 1L;
 
+//    @Override
+//    public void apply(Criteria criteria) {
+//    }
+
     @Override
-    public void apply(Criteria criteria) {
-        Criterion criterion = buildCriterion();
-        if (criterion != null)
-            criteria.add(criterion);
+    public final Criterion getCriterion() {
+        return buildCriterion();
     }
 
     protected abstract Criterion buildCriterion();
