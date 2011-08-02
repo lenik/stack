@@ -53,8 +53,8 @@ public class PersonLogin
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
-        return selector(prefix + "user", user);
+    protected CriteriaElement naturalSelector(String prefix) {
+        return naturalSelector(prefix + "user", user);
     }
 
 }

@@ -84,11 +84,11 @@ public class MaterialAttribute
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
+    protected CriteriaElement naturalSelector(String prefix) {
         if (name == null)
             throw new NullPointerException("name");
         return new And(//
-                selector(prefix + "material", material), //
+                naturalSelector(prefix + "material", material), //
                 new Equals(prefix + "name", name));
     }
 

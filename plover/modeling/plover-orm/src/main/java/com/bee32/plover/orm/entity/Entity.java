@@ -323,17 +323,22 @@ public abstract class Entity<K extends Serializable>
             return entity.naturalId();
     }
 
-    protected static CriteriaElement selector(String property, Entity<?> entity) {
+    @Transient
+    public CriteriaElement getNaturalSelector() {
+        return naturalSelector(null);
+    }
+
+    protected CriteriaElement naturalSelector(String prefix) {
+        return new Equals(prefix + "id", getId());
+    }
+
+    protected static CriteriaElement naturalSelector(String property, Entity<?> entity) {
         String prefix;
         if (property == null)
             prefix = "";
         else
             prefix = property + ".";
-        return entity.selector(prefix);
-    }
-
-    protected CriteriaElement selector(String prefix) {
-        return new Equals(prefix + "id", getId());
+        return entity.naturalSelector(prefix);
     }
 
     protected boolean idEquals(EntityBase<K> other) {

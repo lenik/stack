@@ -48,7 +48,7 @@ public class UserFileTagname
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
+    protected CriteriaElement naturalSelector(String prefix) {
         if (tag == null)
             throw new NullPointerException("tag");
         return new Equals(prefix + "tag", tag);

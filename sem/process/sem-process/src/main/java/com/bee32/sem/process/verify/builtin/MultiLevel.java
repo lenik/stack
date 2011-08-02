@@ -89,10 +89,10 @@ public class MultiLevel
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
+    protected CriteriaElement naturalSelector(String prefix) {
         return new And(//
                 new Equals(prefix + "limit", limit), //
-                selector(prefix + "policy", policy));
+                naturalSelector(prefix + "policy", policy));
     }
 
     // --o IRangeMapEntry

@@ -54,7 +54,7 @@ public abstract class NumberDict
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
+    protected CriteriaElement naturalSelector(String prefix) {
         return new Equals(prefix + "number", number);
     }
 

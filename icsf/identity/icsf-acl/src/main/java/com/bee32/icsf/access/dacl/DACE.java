@@ -163,10 +163,10 @@ public class DACE
     }
 
     @Override
-    public CriteriaElement selector(String prefix) {
+    public CriteriaElement naturalSelector(String prefix) {
         return new And(//
-                selector(prefix + "dacl", dacl), //
-                selector(prefix + "principal", principal));
+                naturalSelector(prefix + "dacl", dacl), //
+                naturalSelector(prefix + "principal", principal));
     }
 
 }

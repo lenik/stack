@@ -75,10 +75,10 @@ public class ChanceParty
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
+    protected CriteriaElement naturalSelector(String prefix) {
         return new And(//
-                selector(prefix + "chance", chance), //
-                selector(prefix + "party", party));
+                naturalSelector(prefix + "chance", chance), //
+                naturalSelector(prefix + "party", party));
     }
 
 }
