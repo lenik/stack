@@ -139,35 +139,28 @@ public class SamplesLoader
 
         // Load Side-A (before)
         if (!specList.isEmpty()) {
-            String packAVersionKey = "sampack.a." + pack.getName();
-            String packAVersion = confManager.getConfValue(packAVersionKey);
+            // String packAVersionKey = "sampack.a." + pack.getName();
+            // String packAVersion = confManager.getConfValue(packAVersionKey);
             String packAPrefix = "sample.";
 
             boolean packAOnce = true;
 
             if (packAOnce) {
-                if ("1".equals(packAVersion)) {
-                    logger.debug("  (A) Already loaded: " + pack.getName());
+                // Always save/update spec-entities.
 
-                    // Never reload specs.
+                if (logger.isDebugEnabled()) {
+                    String message = String.format("Loading[%d]: %d A-samples from %s", //
+                            ++loadIndex, specList.size(), pack);
+                    logger.info(message);
+                }
 
-                } else {
-                    if (logger.isDebugEnabled()) {
-                        String message = String.format("Loading[%d]: %d A-samples from %s", //
-                                ++loadIndex, specList.size(), pack);
-                        logger.debug(message);
-                    }
+                try {
+                    IEntityAccessService<Entity<?>, ?> eas = asFor(Entity.class);
+                    eas.saveOrUpdateAll(specList);
 
-                    try {
-                        IEntityAccessService<Entity<?>, ?> eas = asFor(Entity.class);
-                        eas.saveAll(specList);
-
-                        confManager.setConf(packAVersionKey, "1");
-
-                        // flush();
-                    } catch (Exception e) {
-                        logger.error("Failed to load (A) samples from " + pack, e);
-                    }
+                    // confManager.setConf(packAVersionKey, "1");
+                } catch (Exception e) {
+                    logger.error("Failed to load (A) samples from " + pack, e);
                 }
 
             } else {
@@ -204,17 +197,19 @@ public class SamplesLoader
             String packZVersion = confManager.getConfValue(packZVersionKey);
 
             if ("1".equals(packZVersion)) {
-                logger.debug("  (Z) Already loaded: " + pack.getName());
+                logger.info("  (Z) Already loaded: " + pack.getName());
 
                 // Reload naturals.
                 Iterator<Entity<?>> iter = autoList.iterator();
+                List<Entity<Serializable>> fixq = new ArrayList<Entity<Serializable>>();
+
                 while (iter.hasNext()) {
                     Entity<Serializable> item = (Entity<Serializable>) iter.next();
                     Class<? extends Entity<?>> itemType = (Class<? extends Entity<?>>) item.getClass();
 
                     Serializable nid = item.getNaturalId();
                     if (nid != null) {
-                        logger.debug("      Reload " + itemType.getSimpleName() + " : " + nid);
+                        logger.info("      Reload " + itemType.getSimpleName() + " : " + nid);
 
                         ICriteriaElement selector = item.getSelector();
 
@@ -227,12 +222,26 @@ public class SamplesLoader
                             continue;
                         }
 
-                        if (existing == null)
-                            throw new IllegalStateException("Entity isn't persisted: " + item);
+                        if (existing == null) {
+                            fixq.add(item);
+                            continue;
+                        }
 
                         EntityAccessor.setId(item, (Serializable) existing.getId());
-
                         asFor(itemType).evict(existing);
+                    }
+                }
+
+                if (!fixq.isEmpty()) {
+                    for (Entity<Serializable> item : fixq) {
+                        Serializable nid = item.getNaturalId();
+                        logger.warn("    Auto fix: readd missing entity " + item.getClass().getSimpleName() + " : "
+                                + nid);
+                    }
+                    try {
+                        asFor(Entity.class).saveAll(fixq);
+                    } catch (Exception e) {
+                        logger.error("      Auto fix failed.", e);
                     }
                 }
 
@@ -240,7 +249,7 @@ public class SamplesLoader
                 if (logger.isDebugEnabled()) {
                     String message = String.format("Loading[%d]: %d Z-samples from %s", //
                             ++loadIndex, autoList.size(), pack);
-                    logger.debug(message);
+                    logger.info(message);
                 }
 
                 try {
@@ -251,6 +260,12 @@ public class SamplesLoader
                     // dataManager.flush();
                 } catch (Exception e) {
                     logger.error("Failed to load samples (Z) from " + pack, e);
+
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Samples in the pack: ");
+                        for (Entity<?> entity : autoList)
+                            logger.debug("    -- " + entity);
+                    }
                 }
 
                 // more is only belonged to side Z.
