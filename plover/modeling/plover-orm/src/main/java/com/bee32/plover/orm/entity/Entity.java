@@ -16,6 +16,8 @@ import overlay.Overlay;
 
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.util.EntityFormatter;
 import com.bee32.plover.orm.util.ErrorResult;
 import com.bee32.plover.util.FormatStyle;
@@ -319,6 +321,19 @@ public abstract class Entity<K extends Serializable>
             return null;
         else
             return entity.naturalId();
+    }
+
+    protected static CriteriaElement selector(String property, Entity<?> entity) {
+        String prefix;
+        if (property == null)
+            prefix = "";
+        else
+            prefix = property + ".";
+        return entity.selector(prefix);
+    }
+
+    protected CriteriaElement selector(String prefix) {
+        return new Equals(prefix + "id", getId());
     }
 
     protected boolean idEquals(EntityBase<K> other) {
