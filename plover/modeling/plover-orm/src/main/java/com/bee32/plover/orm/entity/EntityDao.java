@@ -13,6 +13,7 @@ import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projections;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
@@ -266,6 +267,10 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
                 if (elm == null)
                     continue;
                 elm.apply(criteria);
+
+                Criterion criterion = elm.getCriterion();
+                if (criterion != null)
+                    criteria.add(criterion);
             }
         return criteria;
     }
