@@ -12,8 +12,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.plover.criteria.hibernate.Alias;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.inject.cref.Import;
-import com.bee32.plover.orm.builtin.PloverConf;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
@@ -42,25 +43,22 @@ public class GEntityPlayer
 
     @Transactional
     public void doFill() {
-        Tiger tig = new Tiger("tig1", "black");
-//
-//        Tiger tigerOld = asFor(Tiger.class).getFirst(tig.getNaturalSelector());
-//        if (tigerOld != null) {
-//            logger.info("Reuse: " + tigerOld);
-//            tig = tigerOld;
-//        }
+        Tiger lucy = new Tiger("Lucy", "black");
+        Tiger child = new Tiger("Child", "pink");
 
-        PloverConf conf1 = new PloverConf("aaa", "bb");
-        asFor(PloverConf.class).saveOrUpdate(conf1);
+        child.setParent(lucy);
 
-        tig.setConf(conf1);
-        asFor(Tiger.class).saveOrUpdate(tig);
+        asFor(Tiger.class).save(lucy);
+        asFor(Tiger.class).save(child);
 
     }
 
     @Transactional(readOnly = true)
     public void doList() {
-        List<Tiger> tigers = dataManager.asFor(Tiger.class).list();
+        List<Tiger> tigers = asFor(Tiger.class).list(//
+                new Alias("parent", "parent"), //
+                new Equals("parent.name", "Lucy"));
+
         for (Tiger t : tigers)
             System.out.println("Tiger: " + t);
     }
