@@ -33,6 +33,18 @@ public class EntityAccessor {
         return entity.getEntityFlags();
     }
 
+    public static void setOwner(Entity<?> entity, Entity<Integer> owner) {
+        entity.setOwner(owner);
+    }
+
+    public static void setOwnerId(Entity<?> entity, Integer ownerId) {
+        entity.setOwnerId(ownerId);
+    }
+
+    public static void setAclId(Entity<?> entity, Integer aclId) {
+        entity.setAclId(aclId);
+    }
+
     static final boolean useAutoIdAnnotation = false;
 
     /**

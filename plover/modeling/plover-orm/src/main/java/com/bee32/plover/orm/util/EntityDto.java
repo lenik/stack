@@ -38,8 +38,8 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
     EntityFlags entityFlags;
 
-    int aclId;
-    int ownerId;
+    Integer aclId;
+    Integer ownerId;
 
     public EntityDto() {
         super();
@@ -236,19 +236,19 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * </pre>
      */
 
-    public int getAclId() {
+    public Integer getAclId() {
         return aclId;
     }
 
-    public void setAclId(int aclId) {
+    public void setAclId(Integer aclId) {
         this.aclId = aclId;
     }
 
-    public int getOwnerId() {
+    public Integer getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(int ownerId) {
+    public void setOwnerId(Integer ownerId) {
         this.ownerId = ownerId;
     }
 
@@ -287,8 +287,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         if (entityFlags != null)
             EntityAccessor.getFlags(target).set(entityFlags.bits);
 
-        target.setAclId(aclId);
-        target.setOwnerId(ownerId);
+        if (aclId != null)
+            EntityAccessor.setAclId(target, aclId);
+
+        if (ownerId != null)
+            EntityAccessor.setOwnerId(target, ownerId);
     }
 
     @Override
@@ -353,8 +356,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         if (entityFlags != null)
             map.put("entityFlags", entityFlags);
 
-        map.put("aclId", aclId);
-        map.put("ownerId", ownerId);
+        if (aclId != null)
+            map.put("aclId", aclId);
+
+        if (ownerId != null)
+            map.put("ownerId", ownerId);
     }
 
     /**

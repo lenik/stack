@@ -6,71 +6,40 @@ import org.slf4j.LoggerFactory;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.AbstractEntityLifecycleAddon;
 import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.entity.EntityAccessor;
 
 public class LoginEntityAddon
         extends AbstractEntityLifecycleAddon {
 
     static Logger logger = LoggerFactory.getLogger(LoginEntityAddon.class);
 
-    User getCurrentUser() {
+    User getContextUser() {
         User user = (User) SessionLoginInfo.getUserOpt();
-        if (user != null) {
-            assert user.getId() != null;
+        if (user != null)
             return user;
-        }
-
-        if (User.admin == null)
-            return null;
-
-        Integer adminId = User.admin.getId();
-        if (adminId == null)
-            return null;
-
-        return User.admin;
+        else
+            return User.admin;
     }
-
-    static final int PRE_ADMIN = -1;
 
     @Override
     public void entityCreate(Entity<?> entity) {
         super.entityCreate(entity);
 
-        int ownerId = entity.getOwnerId();
+        Integer ownerId = entity.getOwnerId();
 
         // Ignore if the owner is already specified.
-        if (ownerId > 0)
+        if (ownerId != null)
             return;
 
-        // EntityFlags ef = EntityAccessor.getFlags(entity);
-        User owner = User.admin;
-
-        switch (ownerId) {
-        case PRE_ADMIN:
-            owner = User.admin;
-            if (owner == null || owner.getId() == null)
-                // defer to next time.
-                return;
-            else
-                break;
-
-        case 0:
-            owner = getCurrentUser();
-            break;
-        }
-
-        String ownerName;
-        if (owner == null || owner.getId() == null) {
-            ownerId = PRE_ADMIN;
-            ownerName = "(pre-init) admin";
-        } else {
-            ownerId = owner.getId();
-            ownerName = owner.getDisplayName();
-        }
+        // EntityFlags ef = EntityAccessor.getFlags(owner); ...?
+        User owner = getContextUser();
+        if (owner == null)
+            return;
 
         if (logger.isTraceEnabled())
-            logger.trace("Set owner of new entity: " + ownerName);
+            logger.trace("Set owner of new entity: " + owner.getName());
 
-        entity.setOwnerId(ownerId);
+        EntityAccessor.setOwner(entity, owner);
     }
 
 }

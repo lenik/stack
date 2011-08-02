@@ -45,8 +45,8 @@ public abstract class Entity<K extends Serializable>
     String keyword;
     boolean keywordUpdated;
 
-    int aclId;
-    int ownerId;
+    Integer aclId;
+    Integer ownerId;
 
     transient Entity<Integer> _owner;
 
@@ -140,32 +140,30 @@ public abstract class Entity<K extends Serializable>
         return null;
     }
 
-    @Column(name = "acl", nullable = false)
-    public int getAclId() {
+    @Column(name = "acl")
+    public Integer getAclId() {
         return aclId;
     }
 
-    public void setAclId(int aclId) {
+    void setAclId(Integer aclId) {
         this.aclId = aclId;
     }
 
-    @Column(name = "owner", nullable = false)
-    public synchronized int getOwnerId() {
+    @Column(name = "owner")
+    public synchronized Integer getOwnerId() {
         if (_owner != null) {
             Integer _id = _owner.getId();
-            if (_id == null)
-                throw new NullPointerException("owner.id isn't initialized.");
             ownerId = _id;
             _owner = null;
         }
         return ownerId;
     }
 
-    public void setOwnerId(int owner) {
+    public void setOwnerId(Integer owner) {
         this.ownerId = owner;
     }
 
-    public void setOwner(Entity<Integer> owner) {
+    void setOwner(Entity<Integer> owner) {
         if (owner == null)
             throw new NullPointerException("owner");
         this._owner = owner;

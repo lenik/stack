@@ -42,7 +42,7 @@ public class FileUploadBean
         userFile.setOrigPath(upFile.getFileName());
 
         User currUser = (User) SessionLoginInfo.getUser();
-        userFile.setOwner(currUser);
+        userFile.setOwnerId(currUser.getId());
 
         try {
             FileBlob fileBlob = FileBlob.commit(tempFile, true);
