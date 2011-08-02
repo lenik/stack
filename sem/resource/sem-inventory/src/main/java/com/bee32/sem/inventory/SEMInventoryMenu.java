@@ -28,8 +28,9 @@ public class SEMInventoryMenu
 
 
         public static MenuNode BUSINESS = menu(INVENTORY, 20, "business");
-            static MenuNode takeIn = entry(BUSINESS, 1, "takeIn", INVENTORY_.join("stockOrder/?subject=" + StockOrderSubject.TAKE_IN.getValue()));
-            static MenuNode takeOut = entry(BUSINESS, 2, "takeOut", INVENTORY_.join("stockOrder/?subject=" + StockOrderSubject.TAKE_OUT.getValue()));
+            static MenuNode init = entry(BUSINESS, 1, "init", INVENTORY_.join("init/"));
+            static MenuNode takeIn = entry(BUSINESS, 2, "takeIn", INVENTORY_.join("take/?subject=" + StockOrderSubject.TAKE_IN.getValue()));
+            static MenuNode takeOut = entry(BUSINESS, 3, "takeOut", INVENTORY_.join("take/?subject=" + StockOrderSubject.TAKE_OUT.getValue()));
 
 
     @Override

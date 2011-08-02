@@ -2,25 +2,17 @@ package com.bee32.sem.inventory.web.business;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Currency;
-import java.util.Date;
 import java.util.List;
 
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.criterion.MatchMode;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
-import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
@@ -32,38 +24,28 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockLocation;
-import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
-import com.bee32.sem.inventory.util.StockCriteria;
-import com.bee32.sem.misc.EntityCriteria;
-import com.bee32.sem.world.monetary.CurrencyUtil;
+import com.bee32.sem.world.monetary.CurrencyConfig;
 import com.bee32.sem.world.monetary.ICurrencyAware;
 import com.bee32.sem.world.monetary.MCValue;
 
-@Component
-@Scope("view")
-public class StockOrderAdminBean
-        extends EntityViewBean
-        implements ICurrencyAware {
+public class StockOrderBaseBean extends EntityViewBean implements
+        ICurrencyAware {
 
     private static final long serialVersionUID = 1L;
 
-    private StockOrderSubject subject = null;
+    protected StockOrderSubject subject = null;
 
-    private StockWarehouseDto selectedWarehouse = new StockWarehouseDto().ref();
-    private Date limitDateFrom;
-    private Date limitDateTo;
+    protected StockWarehouseDto selectedWarehouse = new StockWarehouseDto().ref();
 
-    private boolean editable = false;
-    private int goNumber;
-    private int count;
+    protected boolean editable = false;
 
-    private StockOrderDto stockOrder = new StockOrderDto().ref();
+    protected StockOrderDto stockOrder = new StockOrderDto().ref();
 
     private StockOrderItemDto orderItem = new StockOrderItemDto().create().ref();
     private BigDecimal orderItemPrice = new BigDecimal(0);
-    private Currency orderItemPriceCurrency = NATIVE_CURRENCY;
+    private String orderItemPriceCurrency = NATIVE_CURRENCY.getCurrencyCode();
 
     private boolean newItemStatus;
 
@@ -75,28 +57,9 @@ public class StockOrderAdminBean
     private TreeNode selectedStockLocationNode;
     private StockLocationDto selectedPreferredStockLocation;
 
-    public StockOrderAdminBean() {
-        Calendar c = Calendar.getInstance();
-        // 取这个月的第一天
-        c.set(Calendar.DAY_OF_MONTH, 1);
-        limitDateFrom = c.getTime();
 
-        // 最这个月的最后一天
-        c.add(Calendar.MONTH, 1);
-        c.add(Calendar.DAY_OF_MONTH, -1);
-        limitDateTo = c.getTime();
+    protected List<StockOrderItemDto> itemsNeedToRemoveWhenModify = new ArrayList<StockOrderItemDto>();
 
-        goNumber = 1;
-
-        try {
-            HttpServletRequest req = getRequest();
-            String s = req.getParameter("subject").toString();
-            subject = StockOrderSubject.valueOf(s);
-
-        } catch (Exception e) {
-            uiLogger.warn("非正常方式进入库存业务功能!");
-        }
-    }
 
     public StockWarehouseDto getSelectedWarehouse() {
         return selectedWarehouse;
@@ -106,21 +69,7 @@ public class StockOrderAdminBean
         this.selectedWarehouse = selectedWarehouse;
     }
 
-    public Date getLimitDateFrom() {
-        return limitDateFrom;
-    }
 
-    public void setLimitDateFrom(Date limitDateFrom) {
-        this.limitDateFrom = limitDateFrom;
-    }
-
-    public Date getLimitDateTo() {
-        return limitDateTo;
-    }
-
-    public void setLimitDateTo(Date limitDateTo) {
-        this.limitDateTo = limitDateTo;
-    }
 
     public boolean isEditable() {
         return editable;
@@ -130,17 +79,12 @@ public class StockOrderAdminBean
         this.editable = editable;
     }
 
-    public int getGoNumber() {
-        return goNumber;
-    }
-
-    public void setGoNumber(int goNumber) {
-        this.goNumber = goNumber;
-    }
 
     public List<SelectItem> getStockWarehouses() {
-        List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class).list();
-        List<StockWarehouseDto> stockWarehouseDtos = DTOs.marshalList(StockWarehouseDto.class, stockWarehouses, true);
+        List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class)
+                .list();
+        List<StockWarehouseDto> stockWarehouseDtos = DTOs.marshalList(
+                StockWarehouseDto.class, stockWarehouses, true);
 
         List<SelectItem> items = new ArrayList<SelectItem>();
 
@@ -181,13 +125,6 @@ public class StockOrderAdminBean
         return null;
     }
 
-    public int getCount() {
-        count = serviceFor(StockOrder.class).count(//
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                StockCriteria.subjectOf(getSubject()), //
-                new Equals("warehouse.id", selectedWarehouse.getId()));
-        return count;
-    }
 
     public StockOrderItemDto getOrderItem() {
         return orderItem;
@@ -198,7 +135,16 @@ public class StockOrderAdminBean
     }
 
     public List<SelectItem> getCurrencies() {
-        return CurrencyUtil.selectItems();
+        List<Currency> currencies = CurrencyConfig.list();
+        List<SelectItem> currencyItems = new ArrayList<SelectItem>();
+        for (Currency c : currencies) {
+            SelectItem i = new SelectItem();
+            i.setLabel(CurrencyConfig.format(c));
+            i.setValue(c.getCurrencyCode());
+            currencyItems.add(i);
+        }
+
+        return currencyItems;
     }
 
     public String getMaterialPattern() {
@@ -234,16 +180,14 @@ public class StockOrderAdminBean
     }
 
     public String getOrderItemPriceCurrency() {
-        if (orderItemPriceCurrency == null)
-            return NATIVE_CURRENCY.getCurrencyCode();
-        else
-            return orderItemPriceCurrency.getCurrencyCode();
+        if (orderItemPriceCurrency == null) {
+            orderItemPriceCurrency = NATIVE_CURRENCY.getCurrencyCode();
+        }
+        return orderItemPriceCurrency;
     }
 
-    public void setOrderItemPriceCurrency(String currencyCode) {
-        if (currencyCode == null)
-            throw new NullPointerException("currencyCode");
-        this.orderItemPriceCurrency = Currency.getInstance(currencyCode);
+    public void setOrderItemPriceCurrency(String orderItemPriceCurrency) {
+        this.orderItemPriceCurrency = orderItemPriceCurrency;
     }
 
     public TreeNode getLocationRoot() {
@@ -265,8 +209,9 @@ public class StockOrderAdminBean
         List<StockLocationDto> stockLocations = new ArrayList<StockLocationDto>();
 
         if (orderItem != null && orderItem.getMaterial() != null) {
-            List<MaterialPreferredLocationDto> preferredLocations = orderItem.getMaterial().getPreferredLocations();
-            if (preferredLocations != null) {
+            List<MaterialPreferredLocationDto> preferredLocations = orderItem.getMaterial()
+                    .getPreferredLocations();
+            if(preferredLocations != null) {
                 for (MaterialPreferredLocationDto preferredLocation : preferredLocations) {
                     stockLocations.add(preferredLocation.getLocation());
                 }
@@ -280,7 +225,8 @@ public class StockOrderAdminBean
         return selectedPreferredStockLocation;
     }
 
-    public void setSelectedPreferredStockLocation(StockLocationDto selectedPreferredStockLocation) {
+    public void setSelectedPreferredStockLocation(
+            StockLocationDto selectedPreferredStockLocation) {
         this.selectedPreferredStockLocation = selectedPreferredStockLocation;
     }
 
@@ -292,15 +238,23 @@ public class StockOrderAdminBean
         this.newItemStatus = newItemStatus;
     }
 
-    private void loadStockLocationTree() {
+
+
+
+
+
+
+
+    protected void loadStockLocationTree() {
         if (selectedWarehouse != null) {
             locationRoot = new DefaultTreeNode(selectedWarehouse, null);
 
-            List<StockLocation> topLocations = serviceFor(StockLocation.class).list(//
+            List<StockLocation> topLocations = serviceFor(StockLocation.class)
+                    .list(//
                     TreeCriteria.root(), //
                     new Equals("warehouse.id", selectedWarehouse.getId()));
-
-            List<StockLocationDto> topLocationDtos = DTOs.marshalList(StockLocationDto.class, -1, topLocations, true);
+            List<StockLocationDto> topLocationDtos = DTOs.marshalList(
+                    StockLocationDto.class, -1, topLocations, true);
 
             for (StockLocationDto stockLocationDto : topLocationDtos) {
                 loadStockLocationRecursive(stockLocationDto, locationRoot);
@@ -308,117 +262,23 @@ public class StockOrderAdminBean
         }
     }
 
-    private void loadStockLocationRecursive(StockLocationDto stockLocationDto, TreeNode parentTreeNode) {
-        TreeNode stockLocationNode = new DefaultTreeNode(stockLocationDto, parentTreeNode);
+    private void loadStockLocationRecursive(StockLocationDto stockLocationDto,
+            TreeNode parentTreeNode) {
+        TreeNode stockLocationNode = new DefaultTreeNode(stockLocationDto,
+                parentTreeNode);
 
-        List<StockLocationDto> subStockLocations = stockLocationDto.getChildren();
+        List<StockLocationDto> subStockLocations = stockLocationDto
+                .getChildren();
         for (StockLocationDto subStockLocation : subStockLocations) {
             loadStockLocationRecursive(subStockLocation, stockLocationNode);
         }
     }
 
-    public void onSwChange(AjaxBehaviorEvent e) {
-        loadStockOrder(goNumber);
-        loadStockLocationTree();
-    }
-
-    private void loadStockOrder(int goNumber) {
-        // 刷新总记录数
-        getCount();
-
-        if (goNumber < 1)
-            goNumber = 1;
-        if (goNumber > count)
-            goNumber = count;
-
-        stockOrder = new StockOrderDto().create();
-
-        if (selectedWarehouse != null) {
-            StockOrder firstOrder = serviceFor(StockOrder.class).getFirst(//
-                    new Offset(goNumber - 1), //
-                    EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                    StockCriteria.subjectOf(getSubject()), //
-                    new Equals("warehouse.id", selectedWarehouse.getId()));
-
-            if (firstOrder != null)
-                stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
-        }
-    }
-
-    public void limit() {
-        loadStockOrder(goNumber);
-    }
-
-    public void new_() {
-        if (selectedWarehouse.getId() == null) {
-            uiLogger.warn("请选择对应的仓库!");
-            return;
-        }
-
-        stockOrder = new StockOrderDto().create();
-        stockOrder.setCreatedDate(new Date());
-        editable = true;
-    }
-
-    public void modify() {
-
-        editable = true;
-    }
-
-    public void delete() {
-        serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
-        uiLogger.info("删除成功!");
-        loadStockOrder(goNumber);
-    }
-
-    public void save() {
-        stockOrder.setSubject(subject);
-        stockOrder.setWarehouse(selectedWarehouse);
-        serviceFor(StockOrder.class).save(stockOrder.unmarshal());
-        uiLogger.info("保存成功");
-        loadStockOrder(1);
-        editable = false;
-    }
-
-    public void cancel() {
-
-        loadStockOrder(goNumber);
-        editable = false;
-    }
-
-    public void first() {
-        goNumber = 1;
-    }
-
-    public void previous() {
-        goNumber--;
-        if (goNumber < 1)
-            goNumber = 1;
-    }
-
-    public void go() {
-        if (goNumber < 1) {
-            goNumber = 1;
-        } else if (goNumber > count) {
-            goNumber = count;
-        }
-    }
-
-    public void next() {
-        goNumber++;
-
-        if (goNumber > count)
-            goNumber = count;
-    }
-
-    public void last() {
-        goNumber = count + 1;
-    }
 
     public void newItem() {
         orderItem = new StockOrderItemDto().create();
         orderItemPrice = new BigDecimal(0);
-        orderItemPriceCurrency = NATIVE_CURRENCY;
+        orderItemPriceCurrency = NATIVE_CURRENCY.getCurrencyCode();
 
         newItemStatus = true;
     }
@@ -429,13 +289,18 @@ public class StockOrderAdminBean
 
     public void deleteItem() {
         stockOrder.removeItem(orderItem);
+
+        if(orderItem.getId() != null) {
+            itemsNeedToRemoveWhenModify.add(orderItem);
+        }
     }
+
 
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {
 
-            List<Material> _materials = serviceFor(Material.class).list(//
-                    new Like("name", materialPattern, MatchMode.ANYWHERE));
+            List<Material> _materials = serviceFor(Material.class).list(
+                    new Like("name", "%" + materialPattern + "%"));
 
             materials = DTOs.marshalList(MaterialDto.class, _materials);
         }
@@ -447,12 +312,12 @@ public class StockOrderAdminBean
 
     public void doSaveItem() {
         orderItem.setParent(stockOrder);
-
-        MCValue newPrice = new MCValue(orderItemPriceCurrency, orderItemPrice);
+        MCValue newPrice = new MCValue(
+                Currency.getInstance(orderItemPriceCurrency), orderItemPrice);
         orderItem.setPrice(newPrice);
-
-        if (newItemStatus)
+        if(newItemStatus) {
             stockOrder.addItem(orderItem);
+        }
     }
 
     public void updateLocations() {
@@ -466,5 +331,4 @@ public class StockOrderAdminBean
     public void doSelectPreferredStockLocation() {
         orderItem.setLocation(selectedPreferredStockLocation);
     }
-
 }

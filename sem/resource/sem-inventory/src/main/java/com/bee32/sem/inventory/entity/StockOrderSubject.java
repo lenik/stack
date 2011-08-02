@@ -92,6 +92,9 @@ public final class StockOrderSubject
     /** （冗余）结算【物料，合成批号，库位】，外币分列 */
     public static final StockOrderSubject PACK_MBLC = new StockOrderSubject("PX3", "packMBLC", false, true);
 
+    /** 初始化 */
+    public static final StockOrderSubject INIT = new StockOrderSubject("INIT", "init", false);
+
     /** 入库 */
     public static final StockOrderSubject TAKE_IN = new StockOrderSubject("TKI", "takeIn", false);
 
