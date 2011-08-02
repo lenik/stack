@@ -38,7 +38,6 @@ public class SEMChanceSamples
         Calendar cal = Calendar.getInstance();
         cal.set(2011, 4, 8);
         chance.setSubject("新办公楼布线及机房设备安装");
-        chance.setOwner(IcsfPrincipalSamples.eva);
         // chance.setCreatedDate(cal.getTime());
         chance.setSource(ChanceSourceType.DEVELOP);
         chance.setContent("需要专门的安防系统，能够在浦东的销售中心直接监控闵行区厂房实时录像和声音");
@@ -99,7 +98,6 @@ public class SEMChanceSamples
 // item2.setMaterial(SEMInventorySamples.gundam);
 // item2.setDiscount(0.9f);
 
-        quotation.setOwner(IcsfPrincipalSamples.eva);
         quotation.setSubject("7月2号报价");
         quotation.setChance(chance);
         quotation.setRecommend("发顺丰加保价");
