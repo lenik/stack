@@ -94,7 +94,6 @@ public interface IEntityRepo_H<E extends IEntity<? extends K>, K extends Seriali
      *            a persistent instance
      * @see Session#evict(Object)
      */
-    @Deprecated
     void evict(E entity)
             throws DataAccessException;
 

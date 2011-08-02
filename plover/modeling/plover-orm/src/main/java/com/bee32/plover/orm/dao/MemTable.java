@@ -200,7 +200,6 @@ public class MemTable
         }
     }
 
-    @Deprecated
     @Override
     public void evict(Entity<?> entity)
             throws DataAccessException {
