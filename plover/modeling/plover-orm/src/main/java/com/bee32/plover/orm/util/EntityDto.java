@@ -190,6 +190,14 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         return EntityUtil.parseId(getKeyType(), idString);
     }
 
+    protected String getName() {
+        throw new NotImplementedException();
+    }
+
+    protected void setName() {
+        throw new NotImplementedException();
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }

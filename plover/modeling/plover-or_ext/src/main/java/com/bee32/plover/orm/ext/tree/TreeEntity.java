@@ -1,9 +1,12 @@
 package com.bee32.plover.orm.ext.tree;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.free.ICharOut;
+import javax.free.Stdio;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
@@ -19,18 +22,18 @@ import com.bee32.plover.orm.ext.color.UIEntitySpec;
  *
  * @param K
  *            The key/identity type.
- * @param $
+ * @param T
  *            The same type as declared.
  *
  */
 @MappedSuperclass
-public abstract class TreeEntity<K extends Serializable, $>
+public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K, T>>
         extends UIEntitySpec<K> {
 
     private static final long serialVersionUID = 1L;
 
-    $ parent;
-    List<$> children = new ArrayList<$>();
+    T parent;
+    List<T> children = new ArrayList<T>();
 
     public TreeEntity() {
         super();
@@ -40,17 +43,23 @@ public abstract class TreeEntity<K extends Serializable, $>
         super(name);
     }
 
-    @Transient
-    public boolean isRoot() {
-        return parent != null;
+    public TreeEntity(T parent, String name) {
+        super(name);
+        if (parent != null)
+            parent.addChild(self());
+    }
+
+    @SuppressWarnings("unchecked")
+    protected final T self() {
+        return (T) this;
     }
 
     @ManyToOne
-    public $ getParent() {
+    public T getParent() {
         return parent;
     }
 
-    public void setParent($ parent) {
+    public void setParent(T parent) {
         if (parent != null)
             checkNode(false, parent);
         this.parent = parent;
@@ -61,28 +70,121 @@ public abstract class TreeEntity<K extends Serializable, $>
      */
     @OneToMany(mappedBy = "parent")
     @Cascade(CascadeType.ALL)
-    public List<$> getChildren() {
+    public List<T> getChildren() {
         return children;
     }
 
-    public void setChildren(List<$> children) {
+    public void setChildren(List<T> children) {
         if (children == null)
             throw new NullPointerException("children");
         this.children = children;
     }
 
-    public void addChild($ child) {
+    public void addChild(T child) {
         if (child == null)
             throw new NullPointerException("child");
+
         checkNode(true, child);
+
+        child.setParent(self());
         children.add(child);
     }
 
-    public boolean removeChild($ child) {
+    public boolean removeChild(T child) {
         if (child == null)
             throw new NullPointerException("child");
+
         checkNode(true, child);
+
+        child.setParent(null);
         return children.remove(child);
+    }
+
+    @Transient
+    public boolean isRoot() {
+        return parent != null;
+    }
+
+    int indexOf(T child) {
+        return children.indexOf(child);
+    }
+
+    @Transient
+    public int getIndex() {
+        if (parent == null)
+            return 0;
+        T self = self();
+        return parent.indexOf(self);
+    }
+
+    public int size() {
+        return children.size();
+    }
+
+    @Transient
+    public int getDepth() {
+        int depth = 0;
+        T node = self();
+        while (node != null) {
+            node = node.getParent();
+            depth++;
+        }
+        return depth;
+    }
+
+    @Transient
+    public boolean isFirst() {
+        if (parent == null)
+            return true;
+        else
+            return getIndex() == 0;
+    }
+
+    @Transient
+    public boolean isLast() {
+        if (parent == null)
+            return true;
+        else
+            return getIndex() == parent.size() - 1;
+    }
+
+    @Transient
+    public String getGraphPrefix() {
+        if (parent == null)
+            return "";
+
+        StringBuilder buf = new StringBuilder();
+
+        if (!isLast())
+            buf.append(" -| "); // _|-_
+        else
+            buf.append(" -` "); // _`-_
+
+        T node = parent;
+        while (node != null) {
+            if (!node.isLast())
+                buf.append("  | "); // _|__
+            else
+                buf.append("    "); // ____
+            node = node.getParent();
+        }
+
+        buf.reverse();
+        return buf.toString();
+    }
+
+    @Transient
+    public String getNodeLabel() {
+        // return naturalId().toString();
+        String str = getName();
+        if (str == null)
+            str = "(noname)";
+
+        String label = getLabel();
+        if (label != null)
+            str += " 【" + label + "】";
+
+        return str;
     }
 
     /**
@@ -95,7 +197,7 @@ public abstract class TreeEntity<K extends Serializable, $>
      * @throws IllegalArgumentException
      *             If the node type is illegal.
      */
-    protected void checkNode(boolean isChild, $ node) {
+    protected void checkNode(boolean isChild, T node) {
         Class<?> selfType = getClass();
         Class<?> nodeType = node.getClass();
         if (!selfType.equals(nodeType))
@@ -111,11 +213,10 @@ public abstract class TreeEntity<K extends Serializable, $>
     public boolean checkLoopFast(int order) {
         if (order < 1)
             throw new IllegalArgumentException("Order should be positive integer: " + order);
-        TreeEntity<K, $> node = this;
+        T node = self();
         for (int i = 0; i < order; i++) {
 
-            @SuppressWarnings("unchecked")
-            TreeEntity<K, $> _node = (TreeEntity<K, $>) node.getParent();
+            T _node = node.getParent();
             node = _node;
 
             if (node == null)
@@ -132,6 +233,21 @@ public abstract class TreeEntity<K extends Serializable, $>
             tv.add(t);
         }
         return tv;
+    }
+
+    void dump(ICharOut out)
+            throws IOException {
+        out.write(getGraphPrefix());
+        out.write(getNodeLabel());
+        out.write('\n');
+
+        for (T child : children)
+            child.dump(out);
+    }
+
+    public void dump()
+            throws IOException {
+        dump(Stdio.cout);
     }
 
 }

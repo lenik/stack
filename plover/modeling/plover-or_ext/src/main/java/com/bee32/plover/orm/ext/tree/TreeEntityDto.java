@@ -10,7 +10,7 @@ import javax.free.TypeConvertException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
 
-public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serializable, $ extends TreeEntityDto<E, K, $>>
+public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serializable, T extends TreeEntityDto<E, K, T>>
         extends UIEntityDto<E, K> {
 
     private static final long serialVersionUID = 1L;
@@ -18,8 +18,8 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
     public static final int PARENT = 0x00010000;
     public static final int CHILDREN = 0x00020000;
 
-    $ parent;
-    List<$> children;
+    T parent;
+    List<T> children;
 
     public TreeEntityDto() {
         super();
@@ -35,7 +35,7 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
         super.__marshal(source);
 
         if (selection.contains(PARENT))
-            parent = ($) mref(getClass(), selection.bits, source.getParent());
+            parent = (T) mref(getClass(), selection.bits, source.getParent());
 
         if (selection.contains(CHILDREN))
             children = marshalList(getClass(), selection.bits, source.getChildren(), true);
@@ -63,40 +63,119 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
             parent = createAnother().ref(parentId);
 
         if (selection.contains(CHILDREN)) {
-            children = new ArrayList<$>();
+            children = new ArrayList<T>();
             for (TextMap childMap : map.shift("child")) {
                 String _childId = childMap.getString("id");
                 K childId = parseId(_childId);
-                $ child = createAnother().ref(childId);
+                T child = createAnother().ref(childId);
                 children.add(child);
             }
         }
     }
 
-    protected $ createAnother() {
+    @SuppressWarnings("unchecked")
+    protected final T self() {
+        return (T) this;
+    }
+
+    protected T createAnother() {
         try {
-            return ($) getClass().newInstance();
+            return (T) getClass().newInstance();
         } catch (Exception e) {
             throw new RuntimeException("Failed to instantiate another DTO: " + e.getMessage(), e);
         }
     }
 
-    public $ getParent() {
+    public T getParent() {
         return parent;
     }
 
-    public void setParent($ parent) {
+    public void setParent(T parent) {
         this.parent = parent;
     }
 
-    public List<$> getChildren() {
+    public List<T> getChildren() {
         return children;
     }
 
-    public void setChildren(List<$> children) {
+    public void setChildren(List<T> children) {
         if (children == null)
             throw new NullPointerException("children");
         this.children = children;
+    }
+
+    public int indexOf(T child) {
+        return children.indexOf(child);
+    }
+
+    public int getIndex() {
+        if (parent == null)
+            return 0;
+        T self = self();
+        return parent.indexOf(self);
+    }
+
+    public int size() {
+        return children.size();
+    }
+
+    public int getDepth() {
+        int depth = 0;
+        T node = self();
+        while (node != null) {
+            node = node.getParent();
+            depth++;
+        }
+        return depth;
+    }
+
+    public boolean isRoot() {
+        return parent == null;
+    }
+
+    public boolean isFirst() {
+        return getIndex() == 0;
+    }
+
+    public boolean isLast() {
+        return getIndex() == parent.size() - 1;
+    }
+
+    public String getGraphPrefix() {
+        if (parent == null)
+            return "";
+
+        StringBuilder buf = new StringBuilder();
+
+        if (!isLast())
+            buf.append(" -| "); // _|-_
+        else
+            buf.append(" -` "); // _`-_
+
+        T node = parent;
+        while (node != null) {
+            if (!node.isLast())
+                buf.append("  | "); // _|__
+            else
+                buf.append("    "); // ____
+            node = node.getParent();
+        }
+
+        buf.reverse();
+        return buf.toString();
+    }
+
+    public String getNodeLabel() {
+        // return naturalId().toString();
+        String str = getName();
+        if (str == null)
+            str = "(noname)";
+
+        String label = getLabel();
+        if (label != null)
+            str += " 【" + label + "】";
+
+        return str;
     }
 
 }

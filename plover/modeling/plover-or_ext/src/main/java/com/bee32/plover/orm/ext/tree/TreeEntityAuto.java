@@ -26,6 +26,10 @@ public abstract class TreeEntityAuto<K extends Serializable, $ extends TreeEntit
         super(name);
     }
 
+    public TreeEntityAuto($ parent, String name) {
+        super(parent, name);
+    }
+
     {
         autoId = true;
     }
