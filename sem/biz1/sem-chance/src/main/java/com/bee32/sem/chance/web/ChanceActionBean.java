@@ -5,10 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -36,9 +35,6 @@ import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 
-/**
- *
- */
 @Component
 @Scope("view")
 public class ChanceActionBean
@@ -49,21 +45,23 @@ public class ChanceActionBean
     static final int TAB_INDEX = 0;
     static final int TAB_FORM = 1;
 
-    static final String DETAIL_BUTTON = "chanceActionForm:detailButton";
+    static final String BUTTON_NEWACTION = "chanceActionForm:newActionButton";
+    static final String BUTTON_EDITACTION = "chanceActionForm:editActionButton";
+    static final String BUTTON_DELETEACTION = "chanceActionForm:deleteActionButton";
+    static final String BUTTON_SAVEACTION = "chanceActionForm:saveActionButton";
+    static final String BUTTON_RESET = "chanceActionForm:resetButton";
+    static final String BUTTON_VIEWACTION = "chanceActionForm:viewActionButton";
     static final String DETAIL_TAB = "chanceActionForm:newAction";
+    static final String DATATABLE_ACTIONS = "chanceActionForm:actions";
+    static final String DATATABLE_PARTIES = "customerForm:customers";
+    static final String DATATABLE_PARTNERS = "partnerForm:partners";
 
-    // 判断是不是在查找状态 TODO
     private boolean isSearching;
 
     // 查找日志
     private Date searchBeginTime;
     private Date searchEndTime;
-    private boolean add;
-    private boolean edable;
-    private boolean detail;
-    private boolean back;
-    private boolean saveable;
-    private boolean searchable;
+
     private boolean editable;
 
     // 日志列表
@@ -101,12 +99,10 @@ public class ChanceActionBean
     public void init() {
         initList();
         action = null;
-        searchable = false;
         editable = false;
     }
 
     public void search() {
-        FacesContext context = FacesContext.getCurrentInstance();
 
         if (searchBeginTime != null && searchEndTime != null) {
             isSearching = true;
@@ -118,31 +114,27 @@ public class ChanceActionBean
                     ChanceCriteria.beganWithin(searchBeginTime, searchEndTime));
             actions = UIHelper.buildLazyDataModel(edmo);
             refreshActionCount(isSearching);
-        } else {
-            initList();
-            if (searchBeginTime == null) {
-                uiLogger.error("开始时间为空");
-                return;
-            }
-            if (searchEndTime == null) {
-                uiLogger.error("结束时间为空");
-                return;
-            }
+        }
+        if (searchBeginTime == null) {
+            uiLogger.error("开始时间为空");
+        }
+        if (searchEndTime == null) {
+            uiLogger.error("结束时间为空");
         }
 
         initToolbar();
-        searchable = false;
-        selectedAction = null;
         setActiveTab(TAB_INDEX);
     }
 
     void initToolbar() {
+        boolean temp = selectedAction == null ? false : true;
         setActiveTab(TAB_INDEX);
-        add = false;
-        edable = true;
-        detail = true;
-        back = true;
-        saveable = true;
+        findComponentEx(BUTTON_NEWACTION).setEnabled(true);
+        findComponentEx(BUTTON_EDITACTION).setEnabled(true);
+        findComponentEx(BUTTON_DELETEACTION).setEnabled(true);
+        findComponentEx(BUTTON_VIEWACTION).setEnabled(temp);
+        findComponentEx(BUTTON_RESET).setEnabled(false);
+        findComponentEx(BUTTON_SAVEACTION).setEnabled(false);
     }
 
     public void initList() {
@@ -154,7 +146,6 @@ public class ChanceActionBean
         actions = UIHelper.buildLazyDataModel(emdo);
         refreshActionCount(isSearching);
         initToolbar();
-        searchable = false;
     }
 
     void refreshActionCount(boolean forSearch) {
@@ -164,12 +155,6 @@ public class ChanceActionBean
                 forSearch ? ChanceCriteria.beganWithin(searchBeginTime, searchEndTime) : null);
 
         actions.setRowCount(count);
-    }
-
-    public void reInitSearch() {
-        initList();
-        searchBeginTime = null;
-        searchEndTime = null;
     }
 
     public void findChances() {
@@ -184,6 +169,11 @@ public class ChanceActionBean
         chances = DTOs.marshalList(ChanceDto.class, _chances);
     }
 
+    public void chooseCustomerForm() {
+        DataTable table = (DataTable) findComponent(DATATABLE_PARTIES);
+        table.clearSelectedRowIndexes();
+    }
+
     public void findCustomer() {
         if (customerPattern != null && !customerPattern.isEmpty()) {
             List<Party> _customers = serviceFor(Party.class).list(//
@@ -194,6 +184,11 @@ public class ChanceActionBean
             List<Party> lp = serviceFor(Party.class).list(PeopleCriteria.ownedByCurrentUser());
             customers = DTOs.marshalList(PartyDto.class, lp);
         }
+    }
+
+    public void choosePartnerForm() {
+        DataTable table = (DataTable) findComponent(DATATABLE_PARTNERS);
+        table.clearSelectedRowIndexes();
     }
 
     public void findPartner() {
@@ -211,77 +206,90 @@ public class ChanceActionBean
         action = new ChanceActionDto().create();
         selectedAction = null;
         setActiveTab(TAB_FORM);
-        add = true;
-        edable = true;
 
-        findComponentEx(DETAIL_BUTTON).setEnabled(false);
+        findComponent(DETAIL_TAB).setRendered(true);
 
-        detail = true;
-
-        saveable = false;
-        back = false;
+        findComponentEx(BUTTON_NEWACTION).setEnabled(false);
+        findComponentEx(BUTTON_EDITACTION).setEnabled(false);
+        findComponentEx(BUTTON_DELETEACTION).setEnabled(false);
+        findComponentEx(BUTTON_VIEWACTION).setEnabled(false);
+        findComponentEx(BUTTON_SAVEACTION).setEnabled(true);
+        findComponentEx(BUTTON_RESET).setEnabled(true);
         editable = false;
     }
 
     public void editForm() {
+        if (selectedAction == null) {
+            uiLogger.error("请选择行动记录");
+            return;
+        }
         action = selectedAction;
         setActiveTab(TAB_FORM);
-        add = true;
-        edable = true;
+        findComponent(DETAIL_TAB).setRendered(true);
 
-        findComponentEx(DETAIL_BUTTON).setEnabled(false);
+        findComponentEx(BUTTON_NEWACTION).setEnabled(false);
+        findComponentEx(BUTTON_EDITACTION).setEnabled(false);
+        findComponentEx(BUTTON_DELETEACTION).setEnabled(false);
+        findComponentEx(BUTTON_VIEWACTION).setEnabled(false);
+        findComponentEx(BUTTON_SAVEACTION).setEnabled(true);
+        findComponentEx(BUTTON_RESET).setEnabled(true);
 
-        saveable = false;
-        back = false;
         editable = false;
     }
 
     public void doDetailForm() {
         action = selectedAction;
         setActiveTab(TAB_FORM);
-        add = false;
-        edable = true;
-
-        findComponentEx(DETAIL_BUTTON).setEnabled(false);
         findComponentEx(DETAIL_TAB).setRendered(true);
 
-        back = false;
-        saveable = true;
+        findComponentEx(BUTTON_NEWACTION).setEnabled(true);
+        findComponentEx(BUTTON_EDITACTION).setEnabled(false);
+        findComponentEx(BUTTON_DELETEACTION).setEnabled(false);
+        findComponentEx(BUTTON_VIEWACTION).setEnabled(false);
+        findComponentEx(BUTTON_RESET).setEnabled(true);
+        findComponentEx(BUTTON_SAVEACTION).setEnabled(false);
         editable = true;
     }
 
     public void drop() {
-        FacesContext context = FacesContext.getCurrentInstance();
 
+        if (selectedAction == null) {
+            uiLogger.error("请选择行动记录");
+            return;
+        }
         try {
             serviceFor(ChanceAction.class).delete(selectedAction.unmarshal());
             refreshActionCount(isSearching);
-            add = false;
-            edable = true;
 
-            findComponentEx(DETAIL_BUTTON).setEnabled(false);
+            findComponentEx(BUTTON_NEWACTION).setEnabled(true);
+            findComponentEx(BUTTON_VIEWACTION).setEnabled(false);
+            findComponentEx(BUTTON_SAVEACTION).setEnabled(false);
+            findComponentEx(BUTTON_RESET).setEnabled(false);
 
-            saveable = true;
-            back = true;
+            DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
+            table.clearSelectedRowIndexes();
+
             editable = false;
-            selectedAction = null;
-            context.addMessage(null, new FacesMessage("提示", "成功删除行动记录"));
+            uiLogger.info("提示", "成功删除行动记录!");
+
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("错误", "删除行动记录错误:" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("删除行动记录错误:" + e.getMessage(), e);
         }
 
     }
 
     public void cancel() {
         setActiveTab(TAB_INDEX);
-        add = false;
-        edable = true;
+        DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
+        table.clearSelectedRowIndexes();
+        findComponent(DETAIL_TAB).setRendered(false);
+        findComponentEx(BUTTON_EDITACTION).setEnabled(true);
+        findComponentEx(BUTTON_NEWACTION).setEnabled(true);
+        findComponentEx(BUTTON_DELETEACTION).setEnabled(true);
+        findComponentEx(BUTTON_VIEWACTION).setEnabled(false);
+        findComponentEx(BUTTON_SAVEACTION).setEnabled(false);
+        findComponentEx(BUTTON_RESET).setEnabled(false);
 
-        findComponentEx(DETAIL_BUTTON).setEnabled(false);
-
-        saveable = true;
-        back = true;
         editable = false;
         selectedAction = null;
     }
@@ -321,17 +329,15 @@ public class ChanceActionBean
 
     public void saveAction() {
 
-        FacesContext context = FacesContext.getCurrentInstance();
-
         Date begin = action.getBeginTime();
         if (begin == null) {
-            context.addMessage(null, new FacesMessage("错误提示", "开始时间不能为空"));
+            uiLogger.error("错误提示", "开始时间不能为空");
             return;
         }
 
         Date end = action.getEndTime();
         if (end == null) {
-            context.addMessage(null, new FacesMessage("错误提示", "结束时间不能为空"));
+            uiLogger.error("错误提示", "结束时间不能为空");
             return;
         }
 
@@ -344,7 +350,7 @@ public class ChanceActionBean
         Long chanceId = action.getChance().getId();
 
         if (chanceId == null && !stage.isNullRef()) {
-            context.addMessage(null, new FacesMessage("错误提示", "必须先选择机会,才能设置机会阶段"));
+            uiLogger.error("错误提示", "必须先选择机会,才能设置机会阶段");
             return;
         }
 
@@ -366,7 +372,7 @@ public class ChanceActionBean
 
         String styleId = action.getStyle().getId();
         if (styleId.isEmpty()) {
-            uiLogger.error("请选择洽谈方式");
+            uiLogger.error("错误提示:", "请选择洽谈方式!");
             return;
         }
         ChanceActionStyleDto style = new ChanceActionStyleDto().ref(styleId);
@@ -386,14 +392,16 @@ public class ChanceActionBean
 
             init();
             setActiveTab(TAB_INDEX);
-            add = false;
-            edable = true;
+            findComponent(DETAIL_TAB).setRendered(false);
+            DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
+            table.clearSelectedRowIndexes();
 
-            findComponentEx(DETAIL_BUTTON).setEnabled(false);
-
-            back = true;
-            saveable = true;
-            selectedAction = null;
+            findComponentEx(BUTTON_NEWACTION).setEnabled(true);
+            findComponentEx(BUTTON_EDITACTION).setEnabled(true);
+            findComponentEx(BUTTON_DELETEACTION).setEnabled(true);
+            findComponentEx(BUTTON_VIEWACTION).setEnabled(false);
+            findComponentEx(BUTTON_RESET).setEnabled(false);
+            findComponentEx(BUTTON_SAVEACTION).setEnabled(false);
 
             uiLogger.info("保存销售机会行动记录成功!");
         } catch (Exception e) {
@@ -403,23 +411,11 @@ public class ChanceActionBean
     }
 
     public void onRowSelect(SelectEvent event) {
-        add = false;
-        edable = false;
-
-        findComponentEx(DETAIL_BUTTON).setEnabled(true);
-
-        saveable = true;
-        back = true;
+        findComponentEx(BUTTON_VIEWACTION).setEnabled(true);
     }
 
     public void onRowUnselect(UnselectEvent event) {
-        add = false;
-        edable = true;
-
-        findComponentEx(DETAIL_BUTTON).setEnabled(false);
-
-        saveable = true;
-        back = true;
+        findComponentEx(BUTTON_VIEWACTION).setEnabled(false);
     }
 
     public boolean isSearching() {
@@ -444,54 +440,6 @@ public class ChanceActionBean
 
     public void setSearchEndTime(Date searchEndTime) {
         this.searchEndTime = searchEndTime;
-    }
-
-    public boolean isAdd() {
-        return add;
-    }
-
-    public void setAdd(boolean add) {
-        this.add = add;
-    }
-
-    public boolean isEdable() {
-        return edable;
-    }
-
-    public void setEdable(boolean edable) {
-        this.edable = edable;
-    }
-
-    public boolean isDetail() {
-        return detail;
-    }
-
-    public void setDetail(boolean detail) {
-        this.detail = detail;
-    }
-
-    public boolean isBack() {
-        return back;
-    }
-
-    public void setBack(boolean back) {
-        this.back = back;
-    }
-
-    public boolean isSaveable() {
-        return saveable;
-    }
-
-    public void setSaveable(boolean saveable) {
-        this.saveable = saveable;
-    }
-
-    public boolean isSearchable() {
-        return searchable;
-    }
-
-    public void setSearchable(boolean searchable) {
-        this.searchable = searchable;
     }
 
     public boolean isEditable() {

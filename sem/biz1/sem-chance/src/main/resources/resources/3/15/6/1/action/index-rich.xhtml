@@ -42,26 +42,23 @@
 
                 <p:toolbar id="productToolbar">
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="新增" actionListener="#{chanceActionBean.createForm}"
-                            disabled="#{chanceActionBean.add}" update="chanceActionForm" async="false" />
-
+                        <p:commandButton id="newActionButton" value="新增" actionListener="#{chanceActionBean.createForm}"
+                            update="chanceActionForm" async="false" />
                         <p:divider />
-                        <p:commandButton value="编辑" actionListener="#{chanceActionBean.editForm}"
-                            disabled="#{chanceActionBean.edable}" update="chanceActionForm" async="true" />
-                        <p:commandButton value="删除" disabled="#{chanceActionBean.edable}"
-                            oncomplete="confirmation.show();" />
+                        <p:commandButton id="editActionButton" value="编辑" actionListener="#{chanceActionBean.editForm}"
+                            update="chanceActionForm,prompting" />
+                        <p:commandButton id="deleteActionButton" value="删除" actionListener="#{chanceActionBean.drop}"
+                            update="chanceActionForm:actions,prompting,chanceActionForm:productToolbar" />
                         <p:divider />
-                        <p:commandButton value="保存" actionListener="#{chanceActionBean.saveAction}"
-                            disabled="#{chanceActionBean.saveable}" update="chanceActionForm,prompting" async="false" />
+                        <p:commandButton id="saveActionButton" value="保存"
+                            actionListener="#{chanceActionBean.saveAction}" update="chanceActionForm,prompting"
+                            disabled="true" />
                         <p:divider />
-                        <p:commandButton value="取消" actionListener="#{chanceActionBean.cancel}"
-                            disabled="#{chanceActionBean.back}"
-                            update="chanceActionForm:productToolbar chanceActionForm:mainTab" async="true" />
+                        <p:commandButton id="resetButton" value="取消" actionListener="#{chanceActionBean.cancel}"
+                            update="chanceActionForm:productToolbar chanceActionForm:mainTab" disabled="true" />
                         <p:divider />
-                        <p:commandButton
-                            id="detailButton"
-                            value="详细" actionListener="#{chanceActionBean.doDetailForm}"
-                            update="chanceActionForm" async="true" />
+                        <p:commandButton id="viewActionButton" value="详细"
+                            actionListener="#{chanceActionBean.doDetailForm}" update="chanceActionForm" disabled="true" />
                         <p:divider />
 
                         <h:outputLabel for="btime" value="时间段:" />
@@ -71,7 +68,7 @@
                         <p:calendar id="etime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
                             value="#{chanceActionBean.searchEndTime}" showOn="button" />
                         <p:commandButton value="查找" actionListener="#{chanceActionBean.search}"
-                            disabled="#{chanceActionBean.searchable}" update="chanceActionForm" async="true" />
+                            update="chanceActionForm,prompting" async="true" />
 
                     </p:toolbarGroup>
                 </p:toolbar>
@@ -95,10 +92,10 @@
                             <p:column headerText="时间段" style="width:120px;">
                                 <h:outputText value="#{action.timeRange}" />
                             </p:column>
-                            <p:column headerText="负责人">
+                            <p:column headerText="负责人" style="width:60px;">
                                 <h:outputText value="#{action.actor.displayName}" />
                             </p:column>
-                            <p:column headerText="类型">
+                            <p:column headerText="类型" style="width:50px;">
                                 <h:outputText value="#{action.actionType}" />
                             </p:column>
                             <p:column headerText="洽谈类型" style="width:70px;">
@@ -164,7 +161,9 @@
                                             </p:commandLink>
                                         </p:column>
                                     </p:dataList>
-                                    <p:commandButton title="挑选拜访客户" value="..." onclick="chooseCustomerDialog.show();"
+                                    <p:commandButton title="挑选拜访客户" value="..."
+                                        actionLIstener="#{chanceActionBean.chooseCustomerForm}"
+                                        oncomplete="chooseCustomerDialog.show();" update="customerForm:customers"
                                         disabled="#{chanceActionBean.editable}" />
                                 </h:panelGrid>
 
@@ -186,8 +185,9 @@
                                             </p:commandLink>
                                         </p:column>
                                     </p:dataList>
-                                    <p:commandButton title="挑选工作伙伴" value="..." onclick="choosePartnerDialog.show();"
-                                        disabled="#{chanceActionBean.editable}" />
+                                    <p:commandButton title="挑选工作伙伴" value="..." update="partnerForm:partners"
+                                        actionListener="#{chanceActionBean.choosePartnerForm}"
+                                        oncomplete="choosePartnerDialog.show();" disabled="#{chanceActionBean.editable}" />
                                 </h:panelGrid>
 
                             </t:panelGroup>
@@ -256,10 +256,6 @@
 
                         <p:column headerText="来源" style="width:100px;">
                             <h:outputText value="#{chance.source.label}" />
-                        </p:column>
-
-                        <p:column headerText="负责人" style="width:100px;">
-                            <h:outputText value="#{chance.owner.displayName}" />
                         </p:column>
 
                     </p:dataTable>

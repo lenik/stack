@@ -21,6 +21,7 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.chance.dto.ChanceActionDto;
+import com.bee32.sem.chance.dto.ChanceActionStyleDto;
 import com.bee32.sem.chance.dto.ChanceCategoryDto;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.dto.ChancePartyDto;
@@ -30,6 +31,7 @@ import com.bee32.sem.chance.dto.ChanceSourceDto;
 import com.bee32.sem.chance.dto.ChanceStageDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceAction;
+import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceQuotation;
 import com.bee32.sem.chance.entity.ChanceSourceType;
@@ -154,7 +156,8 @@ public class ChanceBean
     }
 
     public void findMaterial() {
-        // XXX
+        List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.namedLike(materialPattern));
+        materialList = DTOs.marshalList(MaterialDto.class, _materials);
     }
 
     public void viewQuotationDetail() {
@@ -213,6 +216,12 @@ public class ChanceBean
         isPriceEditing = true;
     }
 
+    public List<SelectItem> getChanceActionStyles() {
+        List<ChanceActionStyle> chanceActionStyleList = serviceFor(ChanceActionStyle.class).list();
+        List<ChanceActionStyleDto> chanceActionStyleDtoList = DTOs.marshalList(ChanceActionStyleDto.class,
+                chanceActionStyleList);
+        return UIHelper.selectItemsFromDict(chanceActionStyleDtoList);
+    }
 // public void uneditPrice() {
 // quotationItemPriceRendered = !quotationItemPriceRendered;
 // selectedQuotationItem.setPrice(temPrice);

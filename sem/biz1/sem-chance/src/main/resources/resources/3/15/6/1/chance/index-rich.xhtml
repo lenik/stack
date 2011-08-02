@@ -24,11 +24,11 @@
         <h:outputStylesheet>
             .ftd{
                 vertical-align:top;
-                width:40%;
+                width:35%;
             }
             .std{
                 vertical-align:top;
-                width:60%;
+                width:65%;
             }
         </h:outputStylesheet>
 
@@ -265,6 +265,7 @@
                                 <p:column headerText="报价日期">
                                     <h:outputText value="#{item.createdDate}" />
                                 </p:column>
+
                             </p:dataTable>
 
                         </p:fieldset>
@@ -430,7 +431,7 @@
                     <h:outputLabel for="style" value="洽谈方式:" />
                     <p:selectOneMenu id="style" value="#{chanceBean.activeAction.style.displayId}" style="width: 100px;"
                         disabled="#{true}">
-                        <f:selectItems value="#{chanceActionBean.chanceActionStyles}" />
+                        <f:selectItems value="#{chanceBean.chanceActionStyles}" />
                     </p:selectOneMenu>
 
                     <h:outputLabel for="pgroup" value="拜访客户:" />
@@ -488,7 +489,7 @@
                     </t:panelGroup>
 
                     <p:tree id="materialTree" value="#{chanceBean.materialTree.rootNode}" var="node" dynamic="true"
-                        selectionMode="single" selection="#{chanceBean.materialTree.selectedNode}" style="width:100%;">
+                        selectionMode="single" selection="#{chanceBean.materialTree.selectedNode}" style="width:95%;">
                         <p:ajax event="select" listener="#{chanceBean.materialTree.onNodeSelect}"
                             update="dialogForm:materialList" />
                         <p:treeNode>
@@ -499,11 +500,17 @@
                     <p:dataTable id="materialList" var="item" value="#{chanceBean.materialList}" resizableColumns="true"
                         selection="#{chanceBean.selectedMaterial}" selectionMode="single" rowIndexVar="rowIndex">
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="物料名称" />
-                            </f:facet>
+                        <p:column headerText="产品名称">
                             <h:outputText value="#{item.name}" />
+                        </p:column>
+                        <p:column headerText="产品分类">
+                            <h:outputText value="#{item.category.name}" />
+                        </p:column>
+                        <p:column headerText="序列号">
+                            <h:outputText value="#{item.serial}" />
+                        </p:column>
+                        <p:column headerText="条形码">
+                            <h:outputText value="#{item.barCode}" />
                         </p:column>
 
                     </p:dataTable>
