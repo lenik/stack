@@ -7,6 +7,8 @@ public class IdComposite
 
     private static final long serialVersionUID = 1L;
 
+    public static final String NID_SEPARATOR = "->";
+
     final Serializable[] elements;
 
     public IdComposite(Serializable... elements) {
@@ -54,7 +56,7 @@ public class IdComposite
         StringBuilder sb = new StringBuilder(elements.length * 20);
         for (int i = 0; i < elements.length; i++) {
             if (i != 0)
-                sb.append("::");
+                sb.append(NID_SEPARATOR);
 
             Serializable o = elements[i];
 
