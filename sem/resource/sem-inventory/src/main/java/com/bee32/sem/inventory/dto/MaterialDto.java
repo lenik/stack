@@ -1,10 +1,12 @@
 package com.bee32.sem.inventory.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.free.ParseException;
 
+import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.entity.Material;
@@ -184,6 +186,14 @@ public class MaterialDto
         else
             return materialPriceDto.getPrice().getValue().toString() + "("
                     + materialPriceDto.getPrice().getCurrencyCode() + ")";
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        if (serial == null)
+            return new DummyId(this);
+        else
+            return serial;
     }
 
 }
