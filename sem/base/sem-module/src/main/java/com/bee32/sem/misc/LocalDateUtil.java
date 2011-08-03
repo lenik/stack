@@ -1,4 +1,4 @@
-package com.bee32.sem.inventory.entity;
+package com.bee32.sem.misc;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -11,10 +11,10 @@ public class LocalDateUtil {
         return new Date(time);
     }
 
-    public static Date minTimeOfDay(Date date) {
+    public static Date startOfTheNextDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-
+        cal.add(Calendar.DATE, days);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
@@ -22,15 +22,12 @@ public class LocalDateUtil {
         return cal.getTime();
     }
 
-    public static Date maxTimeOfDay(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
+    public static Date startOfTheDay(Date date) {
+        return startOfTheNextDays(date, 0);
+    }
 
-        cal.set(Calendar.HOUR_OF_DAY, 23);
-        cal.set(Calendar.MINUTE, 59);
-        cal.set(Calendar.SECOND, 59);
-        cal.set(Calendar.MILLISECOND, 999);
-        return cal.getTime();
+    public static Date startOfTheNextDay(Date date) {
+        return startOfTheNextDays(date, 1);
     }
 
 }
