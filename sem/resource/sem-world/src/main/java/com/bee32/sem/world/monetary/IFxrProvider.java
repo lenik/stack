@@ -20,16 +20,22 @@ public interface IFxrProvider {
      *
      * @return The FXR table towards the floor of a specific date. <code>null</code> if none.
      */
-    List<FxrTable> getFxrTableSeries(Date date, int nprev)
-            throws FxrQueryException;
+    List<FxrTable> getFxrTableSeries(Date date, int nprev);
 
     /**
      * Get the FXR table towards the floor of a specific date.
      *
      * @return The FXR table towards the floor of a specific date. <code>null</code> if none.
+     * @throws FxrQueryException
      */
-    FxrTable getFxrTable(Date date)
-            throws FxrQueryException;
+    FxrTable getFxrTable(Date date);
+
+    /**
+     * Get the latest FXR table.
+     *
+     * @return Non-<code>null</code> {@link FxrTable}.
+     */
+    FxrTable getLatestFxrTable();
 
     /**
      * Get the FXR of a specific unit currency towards the floor of a specific date.
@@ -37,14 +43,6 @@ public interface IFxrProvider {
      * @return <code>null</code> if none.
      */
     Float getFxr(Date date, Currency unitCurrency, FxrUsage usage)
-            throws FxrQueryException;
-
-    /**
-     * Get the latest FXR table.
-     *
-     * @return Non-<code>null</code> {@link FxrTable}.
-     */
-    FxrTable getLatestFxrTable()
             throws FxrQueryException;
 
     /**

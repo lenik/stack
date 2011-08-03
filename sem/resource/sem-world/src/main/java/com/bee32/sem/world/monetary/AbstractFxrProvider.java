@@ -9,7 +9,7 @@ import com.bee32.sem.world.math.InterpolatedMap;
 
 public abstract class AbstractFxrProvider
         extends EnterpriseService
-        implements IFxrProvider {
+        implements IFxrProvider, ICurrencyAware {
 
     FxrUsage usage = FxrUsage.MIDDLE;
 
@@ -24,25 +24,17 @@ public abstract class AbstractFxrProvider
     }
 
     @Override
-    public FxrTable getLatestFxrTable()
-            throws FxrQueryException {
-        return getFxrTable(new Date());
-    }
-
-    @Override
-    public Float getLatestFxr(Currency unitCurrency, FxrUsage usage)
-            throws FxrQueryException {
-        return getFxr(new Date(), unitCurrency, usage);
-    }
-
-    @Override
-    public FxrTable getFxrTable(Date date)
-            throws FxrQueryException {
+    public FxrTable getFxrTable(Date date) {
         List<FxrTable> list = getFxrTableSeries(date, 1);
         if (list.isEmpty())
             return null;
         else
             return list.get(0);
+    }
+
+    @Override
+    public FxrTable getLatestFxrTable() {
+        return getFxrTable(new Date());
     }
 
     static final int DEFAULT_TRACE_COUNT = 10;
@@ -84,6 +76,12 @@ public abstract class AbstractFxrProvider
 
         Double intpRate = intpMap.get(dateint(queryDate));
         return intpRate.floatValue();
+    }
+
+    @Override
+    public Float getLatestFxr(Currency unitCurrency, FxrUsage usage)
+            throws FxrQueryException {
+        return getFxr(new Date(), unitCurrency, usage);
     }
 
     static int dateint(Date date) {

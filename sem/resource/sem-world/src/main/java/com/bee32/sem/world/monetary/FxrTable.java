@@ -2,9 +2,12 @@ package com.bee32.sem.world.monetary;
 
 import java.util.Collection;
 import java.util.Currency;
+import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+
+import javax.free.Dates;
 
 public class FxrTable
         implements ICurrencyAware, ILocaleAware {
@@ -49,8 +52,16 @@ public class FxrTable
 
     @Override
     public String toString() {
+        if (unitMap.isEmpty())
+            return "(Empty FXR Table)";
+
         StringBuilder buf = new StringBuilder();
-        buf.append("Quote currency: " + quoteCurrency + "\n");
+
+        Entry<Currency, FxrRecord> first = unitMap.entrySet().iterator().next();
+        Date date = first.getValue().getDate();
+        buf.append("Date: " + Dates.YYYY_MM_DD.format(date) + "\n");
+        buf.append("Quote-Currency: " + quoteCurrency + "\n");
+
         for (Entry<Currency, FxrRecord> entry : unitMap.entrySet()) {
             FxrRecord record = entry.getValue();
 

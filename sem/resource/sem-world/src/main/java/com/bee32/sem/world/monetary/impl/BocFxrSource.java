@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -30,11 +28,11 @@ import com.bee32.sem.world.monetary.ILocaleAware;
  */
 @Service
 @Lazy
-public class BocFxrUpdater
-        extends OnlineFxrUpdater
+public class BocFxrSource
+        extends OnlineFxrSource
         implements ICurrencyAware, ILocaleAware {
 
-    static final Logger logger = LoggerFactory.getLogger(BocFxrUpdater.class);
+    static final Logger logger = LoggerFactory.getLogger(BocFxrSource.class);
 
     /**
      * HTML:
@@ -78,26 +76,12 @@ public class BocFxrUpdater
     static final int F_DATE = 6;
     static final int F_TIME = 7;
 
-    protected String getHtml()
-            throws IOException {
-        HttpClient client = new HttpClient();
-        GetMethod method = SpamHelper.prepareGet(START_URL);
-
-        String html;
-        try {
-            client.executeMethod(method);
-            html = method.getResponseBodyAsString();
-        } finally {
-            method.releaseConnection();
-        }
-
-        return html;
-    }
-
     @Override
-    protected FxrTable download()
+    public FxrTable download()
             throws IOException {
-        String html = getHtml();
+        String html = httpGet(START_URL);
+        if (html == null)
+            return null;
 
         FxrTable table = new FxrTable(QUOTE_CURRENCY);
 

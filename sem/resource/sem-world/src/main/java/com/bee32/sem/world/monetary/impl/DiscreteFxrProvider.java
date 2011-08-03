@@ -1,6 +1,7 @@
 package com.bee32.sem.world.monetary.impl;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -8,12 +9,12 @@ import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.sem.world.monetary.AbstractFxrProvider;
 import com.bee32.sem.world.monetary.FxrCriteria;
-import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.FxrRecord;
 import com.bee32.sem.world.monetary.FxrTable;
 
@@ -43,8 +44,7 @@ public class DiscreteFxrProvider
     TreeMap<Date, List<FxrTable>> fxrtabsCache = new TreeMap<Date, List<FxrTable>>();
 
     @Override
-    public synchronized List<FxrTable> getFxrTableSeries(Date queryDate, int nprev)
-            throws FxrQueryException {
+    public synchronized List<FxrTable> getFxrTableSeries(Date queryDate, int nprev) {
 
         if (queryDate == null)
             throw new NullPointerException("queryDate");
@@ -98,6 +98,39 @@ public class DiscreteFxrProvider
         }
 
         return series;
+    }
+
+    static Date lastUpdatedDate;
+
+    @Transactional(readOnly = false)
+    public synchronized void commit(FxrTable table) {
+
+        Currency quoteCurrency = table.getQuoteCurrency();
+        if (quoteCurrency != NATIVE_CURRENCY)
+            throw new IllegalArgumentException("FXR table of bad quote currency: " + quoteCurrency);
+
+        if (lastUpdatedDate == null) {
+            FxrRecord mostRecentRecord = asFor(FxrRecord.class).getFirst(Order.desc("date"));
+            if (mostRecentRecord == null)
+                lastUpdatedDate = new Date(0); // 1970-1-1
+            else
+                lastUpdatedDate = mostRecentRecord.getDate();
+        }
+
+        List<FxrRecord> newRecords = new ArrayList<FxrRecord>();
+        Date maxDate = lastUpdatedDate;
+        for (FxrRecord record : table.getRecords()) {
+            // record.date > lastUpdatedDate?
+            Date date = record.getDate();
+            if (date.compareTo(lastUpdatedDate) > 0) {
+                newRecords.add(record);
+                if (date.compareTo(maxDate) > 0)
+                    maxDate = date;
+            }
+        }
+
+        asFor(FxrRecord.class).saveAll(newRecords);
+        lastUpdatedDate = maxDate;
     }
 
 }
