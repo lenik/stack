@@ -55,6 +55,14 @@ public class FxrTable
         return unitMap.values();
     }
 
+    public Date getFirstDate() {
+        if (unitMap.isEmpty())
+            return null;
+        Entry<Currency, FxrRecord> first = unitMap.entrySet().iterator().next();
+        Date date = first.getValue().getDate();
+        return date;
+    }
+
     @Override
     public String toString() {
         if (unitMap.isEmpty())
@@ -62,9 +70,7 @@ public class FxrTable
 
         StringBuilder buf = new StringBuilder();
 
-        Entry<Currency, FxrRecord> first = unitMap.entrySet().iterator().next();
-        Date date = first.getValue().getDate();
-        buf.append("Date: " + Dates.YYYY_MM_DD.format(date) + "\n");
+        buf.append("Date: " + Dates.YYYY_MM_DD.format(getFirstDate()) + "\n");
         buf.append("Quote-Currency: " + quoteCurrency + "\n");
 
         for (Entry<Currency, FxrRecord> entry : unitMap.entrySet()) {
