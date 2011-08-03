@@ -210,59 +210,60 @@ public abstract class CriteriaSpec {
         return new ProjectionList();
     }
 
-    public static ProjectionElement distinct(ProjectionElement proj) {
+    protected static ProjectionElement distinct(ProjectionElement proj) {
         return new Distinct(proj);
     }
 
-    public static ProjectionElement rowCount() {
+    protected static ProjectionElement rowCount() {
         return new RowCountProjection();
     }
 
-    public static ProjectionElement count(String propertyName) {
+    protected static ProjectionElement count(String propertyName) {
         return new CountProjection(propertyName);
     }
 
-    public static ProjectionElement countDistinct(String propertyName) {
+    protected static ProjectionElement countDistinct(String propertyName) {
         return new CountProjection(propertyName, true);
     }
 
-    public static ProjectionElement max(String propertyName) {
+    protected static ProjectionElement max(String propertyName) {
         return new MaxProjection(propertyName);
     }
 
-    public static ProjectionElement min(String propertyName) {
+    protected static ProjectionElement min(String propertyName) {
         return new MinProjection(propertyName);
     }
 
-    public static ProjectionElement avg(String propertyName) {
+    protected static ProjectionElement avg(String propertyName) {
         return new AvgProjection(propertyName);
     }
 
-    public static ProjectionElement sum(String propertyName) {
+    protected static ProjectionElement sum(String propertyName) {
         return new SumProjection(propertyName);
     }
 
-    public static ProjectionElement sqlProjection(String sql, String[] columnAliases, Type[] types) {
+    protected static ProjectionElement sqlProjection(String sql, String[] columnAliases, Type[] types) {
         return new SQLProjection(sql, columnAliases, types);
     }
 
-    public static ProjectionElement sqlGroupProjection(String sql, String groupBy, String[] columnAliases, Type[] types) {
+    protected static ProjectionElement sqlGroupProjection(String sql, String groupBy, String[] columnAliases,
+            Type[] types) {
         return new SQLProjection(sql, groupBy, columnAliases, types);
     }
 
-    public static ProjectionElement groupProperty(String propertyName) {
+    protected static ProjectionElement groupProperty(String propertyName) {
         return new PropertyProjection(propertyName, true);
     }
 
-    public static ProjectionElement property(String propertyName) {
+    protected static ProjectionElement property(String propertyName) {
         return new PropertyProjection(propertyName);
     }
 
-    public static ProjectionElement id() {
+    protected static ProjectionElement id() {
         return new IdentifierProjection();
     }
 
-    public static ProjectionElement alias(ProjectionElement projection, String alias) {
+    protected static ProjectionElement alias(ProjectionElement projection, String alias) {
         return new AliasedProjection(projection, alias);
     }
 
