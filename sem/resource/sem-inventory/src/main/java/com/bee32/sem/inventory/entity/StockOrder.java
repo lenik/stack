@@ -93,7 +93,7 @@ public class StockOrder
         this.subject = subject;
     }
 
-    @Column(length = 3, nullable = false)
+    @Column(length = 4, nullable = false)
     String getSubject_() {
         return subject.getValue();
     }

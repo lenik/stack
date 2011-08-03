@@ -117,11 +117,10 @@
 				<t:panelGrid columns="4">
 
 					<h:outputText value="时间" />
-                    <p:calendar navigator="true" locale="zh_CN"
-                        pattern="yyyy-MM-dd" readonly="true"
-                        value="#{takeAdminBean.stockOrder.createdDate}"
-                        showOn="button"
-                        disabled="#{!takeAdminBean.editable}" />
+                    <h:outputText value="#{takeAdminBean.stockOrder.createdDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"
+                            timeZone="Asia/Shanghai" />
+                    </h:outputText>
                     <h:outputText value="标签" />
 					<p:inputText value="#{takeAdminBean.stockOrder.label}" disabled="#{!takeAdminBean.editable}"/>
 

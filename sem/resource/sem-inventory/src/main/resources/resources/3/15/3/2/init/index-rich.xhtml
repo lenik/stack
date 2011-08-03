@@ -48,28 +48,11 @@
                 </p:selectOneMenu>
             </h:panelGrid>
 
-            <h:panelGrid columns="6">
-				<h:outputText value="时间段:" />
-				<h:outputText value="从" />
-				<p:calendar id="limitDateFrom" navigator="true" locale="zh_CN"
-					pattern="yyyy-MM-dd" value="#{initAdminBean.limitDateFrom}"
-					showOn="button" />
-				<h:outputText value="到" />
-				<p:calendar id="limitDateTo" navigator="true" locale="zh_CN"
-					pattern="yyyy-MM-dd" value="#{initAdminBean.limitDateTo}"
-					showOn="button" />
-				<p:commandButton value="限定" actionListener="#{initAdminBean.limit}" async="true" update="mainForm"/>
-			</h:panelGrid>
 
 			<p:toolbar id="toolbar">
 				<p:toolbarGroup align="left">
-					<p:commandButton value="新增" actionListener="#{initAdminBean.new_}"
-						disabled="#{initAdminBean.editable}" update="mainForm" async="true" />
 					<p:commandButton value="修改"
 						actionListener="#{initAdminBean.modify}"
-						disabled="#{initAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="删除"
-						onclick="deleteConfirmDialog.show();"
 						disabled="#{initAdminBean.editable}" update="mainForm" async="true" />
 					<p:divider />
 					<p:commandButton value="保存" actionListener="#{initAdminBean.save}"
@@ -81,30 +64,6 @@
 					<p:commandButton value="审核"
 						disabled="#{initAdminBean.editable}"
 						onclick="verifyDlg.show();" />
-					<p:divider />
-					<p:commandButton value="第一条"
-						actionListener="#{initAdminBean.first}"
-						disabled="#{initAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="上一条"
-						actionListener="#{initAdminBean.previous}"
-						disabled="#{initAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="下一条"
-						actionListener="#{initAdminBean.next}"
-						disabled="#{initAdminBean.editable}" update="mainForm"
-						async="true" />
-					<p:commandButton value="最末条"
-						actionListener="#{initAdminBean.last}"
-						disabled="#{initAdminBean.editable}" update="mainForm"
-						async="true" />
-                    <p:inputText value="#{initAdminBean.goNumber}"
-                        disabled="#{initAdminBean.editable}" style="width:30px;" />
-                    <h:outputText value="/#{initAdminBean.count}"/>
-                    <p:commandButton value="前往"
-                        actionListener="#{initAdminBean.go}"
-                        disabled="#{initAdminBean.editable}" update="mainForm"
-                        async="true" />
 				</p:toolbarGroup>
 			</p:toolbar>
 
@@ -113,10 +72,10 @@
 				<t:panelGrid columns="4">
 
 					<h:outputText value="时间" />
-					<p:calendar navigator="true" locale="zh_CN" pattern="yyyy-MM-dd"
-						value="#{initAdminBean.stockOrder.createdDate}" showOn="button"
-						disabled="#{!initAdminBean.editable}"
-						 />
+                    <h:outputText value="#{initAdminBean.stockOrder.createdDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"
+                            timeZone="Asia/Shanghai" />
+                    </h:outputText>
 					<h:outputText value="标签" />
 					<p:inputText value="#{initAdminBean.stockOrder.label}" disabled="#{!initAdminBean.editable}"/>
 
