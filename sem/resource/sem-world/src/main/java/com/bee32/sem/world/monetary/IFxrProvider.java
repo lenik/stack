@@ -18,7 +18,7 @@ public interface IFxrProvider {
     /**
      * Get the FXR table towards the floor and several tables before of a specific date.
      *
-     * @return The FXR table towards the floor of a specific date. <code>null</code> if none.
+     * @return The FXR table towards the floor of a specific date.
      */
     List<FxrTable> getFxrTableSeries(Date date, int nprev);
 
