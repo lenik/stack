@@ -13,7 +13,7 @@
 
 <ui:composition template="/template/primefaces.xhtml">
 
-    <ui:define name="title">初始化管理</ui:define>
+    <ui:define name="title">盘点管理</ui:define>
 
     <ui:define name="content">
 
@@ -39,53 +39,96 @@
 		<h:form id="mainForm">
 			<p:growl id="growl" showDetail="true" />
 
+
+
             <h:panelGrid columns="2">
                 <h:outputText value="仓库:" />
-                <p:selectOneMenu id="stockWarehouseId" value="#{initAdminBean.selectedWarehouse.id}" style="width:200px;">
+                <p:selectOneMenu id="stockWarehouseId" value="#{stocktakingAdminBean.selectedWarehouse.id}" style="width:200px;">
                     <f:selectItem itemValue="" itemLabel="--选择仓库--" />
-                    <f:selectItems value="#{initAdminBean.stockWarehouses}" />
-                    <p:ajax listener="#{initAdminBean.onSwChange}" update="mainForm chooseStockLocationForm:chooseStockLocationPanel" event="change"/>
+                    <f:selectItems value="#{stocktakingAdminBean.stockWarehouses}" />
+                    <p:ajax listener="#{stocktakingAdminBean.onSwChange}" update="mainForm chooseStockLocationForm:chooseStockLocationPanel" event="change"/>
                 </p:selectOneMenu>
             </h:panelGrid>
 
+            <h:panelGrid columns="6">
+				<h:outputText value="时间段:" />
+				<h:outputText value="从" />
+				<p:calendar id="limitDateFrom" navigator="true" locale="zh_CN"
+					pattern="yyyy-MM-dd" value="#{stocktakingAdminBean.limitDateFrom}"
+					showOn="button" />
+				<h:outputText value="到" />
+				<p:calendar id="limitDateTo" navigator="true" locale="zh_CN"
+					pattern="yyyy-MM-dd" value="#{stocktakingAdminBean.limitDateTo}"
+					showOn="button" />
+				<p:commandButton value="限定" actionListener="#{stocktakingAdminBean.limit}" async="true" update="mainForm"/>
+			</h:panelGrid>
 
 			<p:toolbar id="toolbar">
 				<p:toolbarGroup align="left">
+					<p:commandButton value="新增" actionListener="#{stocktakingAdminBean.new_}"
+						disabled="#{stocktakingAdminBean.editable}" update="mainForm" async="true" />
 					<p:commandButton value="修改"
-						actionListener="#{initAdminBean.modify}"
-						disabled="#{initAdminBean.editable}" update="mainForm" async="true" />
+						actionListener="#{stocktakingAdminBean.modify}"
+						disabled="#{stocktakingAdminBean.editable}" update="mainForm" async="true" />
+					<p:commandButton value="删除"
+						onclick="deleteConfirmDialog.show();"
+						disabled="#{stocktakingAdminBean.editable}" update="mainForm" async="true" />
 					<p:divider />
-					<p:commandButton value="保存" actionListener="#{initAdminBean.save}"
-						disabled="#{!initAdminBean.editable}" update="mainForm" async="true" />
+					<p:commandButton value="保存" actionListener="#{stocktakingAdminBean.save}"
+						disabled="#{!stocktakingAdminBean.editable}" update="mainForm" async="true" />
 					<p:commandButton value="取消"
-						actionListener="#{initAdminBean.cancel}"
-						disabled="#{!initAdminBean.editable}" update="mainForm" async="true" />
+						actionListener="#{stocktakingAdminBean.cancel}"
+						disabled="#{!stocktakingAdminBean.editable}" update="mainForm" async="true" />
 					<p:divider />
 					<p:commandButton value="审核"
-						disabled="#{initAdminBean.editable}"
+						disabled="#{stocktakingAdminBean.editable}"
 						onclick="verifyDlg.show();" />
+					<p:divider />
+					<p:commandButton value="第一条"
+						actionListener="#{stocktakingAdminBean.first}"
+						disabled="#{stocktakingAdminBean.editable}" update="mainForm"
+						async="true" />
+					<p:commandButton value="上一条"
+						actionListener="#{stocktakingAdminBean.previous}"
+						disabled="#{stocktakingAdminBean.editable}" update="mainForm"
+						async="true" />
+					<p:commandButton value="下一条"
+						actionListener="#{stocktakingAdminBean.next}"
+						disabled="#{stocktakingAdminBean.editable}" update="mainForm"
+						async="true" />
+					<p:commandButton value="最末条"
+						actionListener="#{stocktakingAdminBean.last}"
+						disabled="#{stocktakingAdminBean.editable}" update="mainForm"
+						async="true" />
+                    <p:inputText value="#{stocktakingAdminBean.goNumber}"
+                        disabled="#{stocktakingAdminBean.editable}" style="width:30px;" />
+                    <h:outputText value="/#{stocktakingAdminBean.count}"/>
+                    <p:commandButton value="前往"
+                        actionListener="#{stocktakingAdminBean.go}"
+                        disabled="#{stocktakingAdminBean.editable}" update="mainForm"
+                        async="true" />
 				</p:toolbarGroup>
 			</p:toolbar>
 
-			<p:panel header="#{initAdminBean.subject.displayName}">
+			<p:panel header="#{stocktakingAdminBean.subject.displayName}">
 
 				<t:panelGrid columns="4">
 
 					<h:outputText value="时间" />
-                    <h:outputText value="#{initAdminBean.stockOrder.createdDate}">
+                    <h:outputText value="#{stocktakingAdminBean.stockOrder.createdDate}">
                         <f:convertDateTime pattern="yyyy-MM-dd"
                             timeZone="Asia/Shanghai" />
                     </h:outputText>
-					<h:outputText value="标签" />
-					<p:inputText value="#{initAdminBean.stockOrder.label}" disabled="#{!initAdminBean.editable}"/>
+                    <h:outputText value="标签" />
+					<p:inputText value="#{stocktakingAdminBean.stockOrder.label}" disabled="#{!stocktakingAdminBean.editable}"/>
 
 					<h:outputText value="描述" />
 					<t:panelGroup colspan="3">
-                        <p:inputText value="#{initAdminBean.stockOrder.description}" disabled="#{!initAdminBean.editable}"/>
+                        <p:inputText value="#{stocktakingAdminBean.stockOrder.description}" disabled="#{!stocktakingAdminBean.editable}"/>
 					</t:panelGroup>
 
 					<h:outputText value="制单人" />
-                    <p:inputText value="#{initAdminBean.creator}" disabled="true"/>
+                    <p:inputText value="#{stocktakingAdminBean.creator}" disabled="true"/>
                     <h:outputText value="单据状态" />
                     <p:inputText value="" disabled="true"/>
 				</t:panelGrid>
@@ -93,13 +136,13 @@
                 <t:panelGrid columns="2">
                     <h:outputText value="明细"/>
 					<p:commandButton value="新增明细" onclick="itemDialog.show();"
-						actionListener="#{initAdminBean.newItem}"
+						actionListener="#{stocktakingAdminBean.newItem}"
 						update="itemForm:itemPanel"
-						disabled="#{!initAdminBean.editable}" />
+						disabled="#{!stocktakingAdminBean.editable}" />
 				</t:panelGrid>
 
 				<p:dataTable id="items" var="item"
-					value="#{initAdminBean.items}" resizableColumns="true"
+					value="#{stocktakingAdminBean.items}" resizableColumns="true"
 					rowIndexVar="rowIndex">
 
 					<p:column>
@@ -127,7 +170,11 @@
                         <f:facet name="header">
                             <h:outputText value="有效期"/>
                         </f:facet>
-                        <h:outputText value="#{item.expirationDate}" />
+                        <h:outputText
+                            value="#{item.expirationDate}">
+                            <f:convertDateTime pattern="yyyy-MM-dd"
+                                timeZone="Asia/Shanghai" />
+                        </h:outputText>
                     </p:column>
 
                     <p:column>
@@ -166,28 +213,28 @@
 							<p:commandLink update="" oncomplete=""
 								value="查看">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{initAdminBean.orderItem}" />
+									target="#{stocktakingAdminBean.orderItem}" />
 							</p:commandLink>
 							<p:spacer width="10" />
                              -->
 
 							<p:commandLink update="itemForm:itemPanel"
-								disabled="#{!initAdminBean.editable}"
-								actionListener="#{initAdminBean.modifyItem}"
+								disabled="#{!stocktakingAdminBean.editable}"
+								actionListener="#{stocktakingAdminBean.modifyItem}"
 								oncomplete="itemDialog.show()" value="修改">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{initAdminBean.orderItem}" />
+									target="#{stocktakingAdminBean.orderItem}" />
                                 <f:setPropertyActionListener value="#{item.priceValue}"
-                                    target="#{initAdminBean.orderItemPrice}" />
+                                    target="#{stocktakingAdminBean.orderItemPrice}" />
                                 <f:setPropertyActionListener value="#{item.priceCurrencyCode}"
-                                    target="#{initAdminBean.orderItemPriceCurrency}" />
+                                    target="#{stocktakingAdminBean.orderItemPriceCurrency}" />
 							</p:commandLink>
 							<p:spacer width="10" />
 							<p:commandLink
-								disabled="#{!initAdminBean.editable}"
+								disabled="#{!stocktakingAdminBean.editable}"
 								oncomplete="deleteItemConfirmDialog.show()" value="删除">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{initAdminBean.orderItem}" />
+									target="#{stocktakingAdminBean.orderItem}" />
 							</p:commandLink>
 						</t:panelGroup>
 					</p:column>
@@ -200,7 +247,7 @@
 
 
 		<h:form id="itemForm">
-			<p:dialog header="#{initAdminBean.subject.displayName}项目编辑" widgetVar="itemDialog" modal="true"
+			<p:dialog header="#{stocktakingAdminBean.subject.displayName}项目编辑" widgetVar="itemDialog" modal="true"
 				height="500" width="640">
 				<h:panelGroup id="itemPanel">
 
@@ -211,40 +258,49 @@
 
 						<h:outputLabel value="物料" />
 						<t:panelGroup colspan="3">
-							<p:inputText value="#{initAdminBean.orderItem.material.name}" readonly="true"/>
+							<p:inputText value="#{stocktakingAdminBean.orderItem.material.name}" readonly="true"/>
 							<p:commandButton value="..." onclick="materialDialog.show();"/>
 						</t:panelGroup>
 
 						<h:outputLabel value="批号" />
-						<p:inputText value="#{initAdminBean.orderItem.batch}" />
-						<h:outputLabel value="有效期" />
-						<p:calendar navigator="true" locale="zh_CN"
-                                    pattern="yyyy-MM-dd" value="#{initAdminBean.orderItem.expirationDate}"
-                                    showOn="button" />
+                        <t:panelGroup>
+                            <p:outputText readonly="true"
+                                value="#{stocktakingAdminBean.orderItem.batch}" />
+                            <p:commandButton value="..."
+                                onclick="chooseStockLedgerDialog.show();" />
+                        </t:panelGroup>
+                        <h:outputLabel value="有效期" />
+                        <h:outputText
+                            value="#{item.expirationDate}">
+                            <f:convertDateTime pattern="yyyy-MM-dd"
+                                timeZone="Asia/Shanghai" />
+                        </h:outputText>
 
                         <h:outputLabel value="库位" />
-						<t:panelGroup colspan="3">
-							<p:inputText
-								value="#{initAdminBean.orderItem.location.nodeText}"
-								readonly="true" />
-							<p:commandButton value="..."
-								oncomplete="chooseStockLocationDialog.show();"
-								actionListener="#{initAdminBean.updateLocations}"
-								update="chooseStockLocationForm:chooseStockLocationPanel" />
-						</t:panelGroup>
+                        <p:outputText
+                            value="#{stocktakingAdminBean.orderItem.location.nodeText}"
+                            readonly="true" />
 
-						<h:outputLabel value="单价" />
-                        <p:inputText value="#{initAdminBean.orderItemPrice}" />
+
+                        <h:outputLabel value="单价" />
+                        <p:outputText value="#{stocktakingAdminBean.orderItemPrice}" />
                         <h:outputLabel value="币种" />
-                        <p:selectOneMenu value="#{initAdminBean.orderItemPriceCurrency}" style="width:200px;">
-                            <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                            <f:selectItems value="#{initAdminBean.currencies}" />
-                        </p:selectOneMenu>
+                        <h:outputText value="#{stocktakingAdminBean.orderItemPriceCurrency}" />
 
 
-                        <h:outputLabel value="数量" />
+                        <h:outputLabel value="帐面数量" />
                         <t:panelGroup colspan="3">
-                            <p:inputText value="#{initAdminBean.orderItem.quantity}"/>
+                            <p:outputText value="#{stocktakingAdminBean.orderItem.quantity}"/>
+                        </t:panelGroup>
+
+                        <h:outputLabel value="盘点数量" />
+                        <t:panelGroup colspan="3">
+                            <p:outputText value="#{stocktakingAdminBean.orderItem.quantity}"/>
+                        </t:panelGroup>
+
+                        <h:outputLabel value="盈亏数量" />
+                        <t:panelGroup colspan="3">
+                            <p:outputText value="#{stocktakingAdminBean.orderItem.quantity}"/>
                         </t:panelGroup>
 
 
@@ -252,7 +308,7 @@
 						<t:panelGroup colspan="2">
 							<t:panelGrid columns="2">
 								<p:commandButton value="保存"
-									actionListener="#{initAdminBean.doSaveItem}"
+									actionListener="#{stocktakingAdminBean.doSaveItem}"
 									oncomplete="itemDialog.hide();" async="true"
 									update="mainForm" />
 								<p:commandButton value="取消"
@@ -275,14 +331,14 @@
 
 					<h:panelGrid columns="3">
 						<h:outputLabel value="物料名字全部或部份:" />
-						<p:inputText value="#{initAdminBean.materialPattern}" />
+						<p:inputText value="#{stocktakingAdminBean.materialPattern}" />
 						<p:commandButton value="查找"
-							actionListener="#{initAdminBean.findMaterial}" update="materials"
+							actionListener="#{stocktakingAdminBean.findMaterial}" update="materials"
 							async="true" />
 					</h:panelGrid>
 					<p:dataTable id="materials" var="material"
-						value="#{initAdminBean.materials}" resizableColumns="true"
-						selection="#{initAdminBean.selectedMaterial}" selectionMode="single"
+						value="#{stocktakingAdminBean.materials}" resizableColumns="true"
+						selection="#{stocktakingAdminBean.selectedMaterial}" selectionMode="single"
 						rowIndexVar="rowIndex">
 
 						<p:column>
@@ -311,7 +367,7 @@
 					</p:dataTable>
 					<h:panelGrid columns="2">
 						<p:commandButton value="确定"
-							actionListener="#{initAdminBean.chooseMaterial}"
+							actionListener="#{stocktakingAdminBean.chooseMaterial}"
 							oncomplete="materialDialog.hide();" update="itemForm:itemPanel"
 							async="true" />
 						<p:commandButton value="取消" oncomplete="materialDialog.hide();" />
@@ -322,68 +378,19 @@
 		</h:form>
 
 
+        <h:form id="deleteConfirmForm">
+            <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认"
+                severity="alert" widgetVar="deleteConfirmDialog" modal="true">
 
-		<h:form id="chooseStockLocationForm">
-			<p:dialog header="选择库位" widgetVar="chooseStockLocationDialog"
-				modal="true" height="500" width="640">
-				<h:panelGroup id="chooseStockLocationPanel">
+                <p:commandButton value="确定"
+                    update="mainForm"
+                    actionListener="#{stocktakingAdminBean.delete}"
+                    oncomplete="deleteConfirmDialog.hide()" />
+                <p:commandButton value="取消" onclick="deleteConfirmDialog.hide()"
+                    type="button" />
 
-					<p:panel header="预设库位" toggleable="true">
-						<p:dataTable id="preferredLocations" var="stockLocation"
-							value="#{initAdminBean.preferredLocations}" resizableColumns="true"
-							selection="#{initAdminBean.selectedPreferredStockLocation}"
-							selectionMode="single" rowIndexVar="rowIndex">
-
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="序号" />
-								</f:facet>
-								<h:outputText value="#{rowIndex + 1}" />
-							</p:column>
-
-							<p:column>
-								<f:facet name="header">库位</f:facet>
-								<h:outputText value="#{stockLocation.nodeText}" />
-							</p:column>
-							<p:column>
-								<f:facet name="header">所属仓库</f:facet>
-								<h:outputText value="#{stockLocation.warehouse.name}" />
-							</p:column>
-						</p:dataTable>
-                        <h:panelGrid columns="2">
-                            <p:commandButton value="确定"
-                                actionListener="#{initAdminBean.doSelectPreferredStockLocation}"
-                                update="itemForm:itemPanel"
-                                oncomplete="chooseStockLocationDialog.hide();" />
-                            <p:commandButton value="取消"
-                                oncomplete="chooseStockLocationDialog.hide();" />
-                        </h:panelGrid>
-					</p:panel>
-					<p:panel header="所有库位" toggleable="true">
-						<p:tree value="#{initAdminBean.locationRoot}"
-							var="stockLocation" selectionMode="single"
-							selection="#{initAdminBean.selectedStockLocationNode}">
-							<p:treeNode>
-								<h:outputText value="#{stockLocation.nodeText}" />
-							</p:treeNode>
-						</p:tree>
-
-						<h:panelGrid columns="2">
-							<p:commandButton value="确定"
-								actionListener="#{initAdminBean.doSelectStockLocation}"
-								update="itemForm:itemPanel"
-								oncomplete="chooseStockLocationDialog.hide();" />
-							<p:commandButton value="取消"
-								oncomplete="chooseStockLocationDialog.hide();" />
-						</h:panelGrid>
-					</p:panel>
-
-
-
-				</h:panelGroup>
-			</p:dialog>
-		</h:form>
-
+            </p:confirmDialog>
+        </h:form>
 
         <h:form id="deleteItemConfirmForm">
             <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认"
@@ -391,15 +398,13 @@
 
                 <p:commandButton value="确定"
                     update="mainForm:items"
-                    actionListener="#{initAdminBean.deleteItem}"
+                    actionListener="#{stocktakingAdminBean.deleteItem}"
                     oncomplete="deleteItemConfirmDialog.hide()" />
                 <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()"
                     type="button" />
 
             </p:confirmDialog>
         </h:form>
-
-
 
 	</ui:define>
 </ui:composition>

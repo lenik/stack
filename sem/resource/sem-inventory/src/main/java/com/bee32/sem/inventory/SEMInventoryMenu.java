@@ -31,6 +31,9 @@ public class SEMInventoryMenu
             static MenuNode init = entry(BUSINESS, 1, "init", INVENTORY_.join("init/"));
             static MenuNode takeIn = entry(BUSINESS, 2, "takeIn", INVENTORY_.join("take/?subject=" + StockOrderSubject.TAKE_IN.getValue()));
             static MenuNode takeOut = entry(BUSINESS, 3, "takeOut", INVENTORY_.join("take/?subject=" + StockOrderSubject.TAKE_OUT.getValue()));
+            static MenuNode stocktaking = entry(BUSINESS, 3, "stocktaking", INVENTORY_.join("stocktaking/"));
+            static MenuNode transferOut = entry(BUSINESS, 3, "transferOut", INVENTORY_.join("transferOut/"));
+            static MenuNode transferIn = entry(BUSINESS, 3, "transferIn", INVENTORY_.join("transferIn/"));
 
 
     @Override
