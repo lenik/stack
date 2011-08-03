@@ -1,6 +1,8 @@
 package com.bee32.plover.web.faces.utils;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
@@ -18,6 +20,13 @@ public abstract class FacesContextSupport {
             throw new NullPointerException("No application context in the Faces context");
 
         return appContext;
+    }
+
+    protected static HttpServletRequest getRequest() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        Object request = externalContext.getRequest();
+        return (HttpServletRequest) request;
     }
 
     /**
