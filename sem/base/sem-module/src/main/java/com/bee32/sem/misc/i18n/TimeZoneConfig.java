@@ -1,4 +1,4 @@
-package com.bee32.sem.world.monetary;
+package com.bee32.sem.misc.i18n;
 
 import java.util.List;
 import java.util.Locale;
@@ -7,7 +7,15 @@ import java.util.TimeZone;
 public class TimeZoneConfig
         implements ITimeZoneAware, ILocaleAware {
 
-    public static final TimeZone NATIVE = TZ_DEFAULT;
+    static TimeZone NATIVE = TimeZone.getDefault();
+
+    public static TimeZone getNative() {
+        return NATIVE;
+    }
+
+    public static void setNative(TimeZone _native) {
+        NATIVE = _native;
+    }
 
     public static List<TimeZone> list() {
         return list(TimeZoneOrder.OFFSET);

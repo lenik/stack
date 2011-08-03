@@ -11,6 +11,10 @@ public class LocalDateUtil {
         return new Date(time);
     }
 
+    public static int dateInt(Date date) {
+        return (int) (date.getTime() / 86400000);
+    }
+
     public static Date startOfTheNextDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

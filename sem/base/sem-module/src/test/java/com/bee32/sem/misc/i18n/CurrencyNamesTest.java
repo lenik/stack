@@ -1,4 +1,4 @@
-package com.bee32.sem.world.monetary;
+package com.bee32.sem.misc.i18n;
 
 import java.util.Currency;
 import java.util.Locale;
@@ -6,6 +6,9 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.bee32.sem.misc.i18n.CurrencyNames;
+import com.bee32.sem.misc.i18n.ICurrencyAware;
 
 public class CurrencyNamesTest
         extends Assert

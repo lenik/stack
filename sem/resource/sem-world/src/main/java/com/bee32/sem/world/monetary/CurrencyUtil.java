@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import com.bee32.sem.misc.i18n.CurrencyConfig;
+
 public class CurrencyUtil {
 
     public static List<SelectItem> selectItems() {

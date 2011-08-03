@@ -1,4 +1,4 @@
-package com.bee32.sem.world.monetary;
+package com.bee32.sem.misc.i18n;
 
 import java.util.Currency;
 import java.util.HashMap;
