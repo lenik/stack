@@ -60,11 +60,11 @@ public class DiscreteFxrProvider
         List<FxrTable> series = new ArrayList<FxrTable>();
 
         if (nprev == NPREV_NORM) {
-            series = fxrtabsCache.get(queryDate);
-            if (series != null)
-                return series;
+            List<FxrTable> cached = fxrtabsCache.get(queryDate);
+            if (cached != null)
+                return cached;
             else
-                fxrtabsCache.put(queryDate, series);
+                fxrtabsCache.put(queryDate, cached = series);
         }
 
         int limit = appxTableSize * nprev;
