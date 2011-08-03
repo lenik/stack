@@ -9,7 +9,7 @@ public class FxrCriteria
         extends CriteriaSpec {
 
     public static ICriteriaElement beforeThan(Date date, int limit) {
-        return compose(lessThan("date", date));
+        return compose(lessOrEquals("date", date));
     }
 
 }
