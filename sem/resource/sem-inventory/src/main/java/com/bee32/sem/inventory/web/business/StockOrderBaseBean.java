@@ -112,9 +112,12 @@ public class StockOrderBaseBean extends EntityViewBean implements
     public String getCreator() {
         if (stockOrder == null)
             return "";
-        User u = serviceFor(User.class).get(stockOrder.getOwnerId());
-        if (u == null)
+
+        Integer ownerId = stockOrder.getOwnerId();
+        if (ownerId == null)
             return "";
+
+        User u = serviceFor(User.class).get(ownerId);
         return u.getDisplayName();
     }
 

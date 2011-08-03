@@ -130,7 +130,7 @@ public class TakeAdminBean extends StockOrderBaseBean {
         }
 
         stockOrder = new StockOrderDto().create();
-        stockOrder.setCreatedDate(new Date());
+        //stockOrder.setCreatedDate(new Date());
         editable = true;
     }
 
