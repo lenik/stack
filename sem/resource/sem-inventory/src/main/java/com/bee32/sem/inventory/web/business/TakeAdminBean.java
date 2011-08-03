@@ -2,7 +2,6 @@ package com.bee32.sem.inventory.web.business;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -12,18 +11,15 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.GreaterOrEquals;
-import com.bee32.plover.criteria.hibernate.LessOrEquals;
-import com.bee32.plover.criteria.hibernate.Limit;
-import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.entity.LocalDateUtil;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.util.StockCriteria;
+import com.bee32.sem.misc.EntityCriteria;
 
 @Component
 @Scope("view")
@@ -88,10 +84,9 @@ public class TakeAdminBean extends StockOrderBaseBean {
     }
 
     public int getCount() {
-        count = serviceFor(StockOrder.class).count(
-                new And(new GreaterOrEquals("createdDate", LocalDateUtil.minTimeOfDay(limitDateFrom)),
-                        new LessOrEquals("createdDate", LocalDateUtil.maxTimeOfDay(limitDateTo))),
-                new Equals("subject_", subject.getValue()),
+        count = serviceFor(StockOrder.class).count(//
+                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                StockCriteria.subjectOf(getSubject()), //
                 new Equals("warehouse.id", selectedWarehouse.getId()));
         return count;
     }
@@ -113,18 +108,14 @@ public class TakeAdminBean extends StockOrderBaseBean {
 
         stockOrder = new StockOrderDto().create();
         if (selectedWarehouse != null) {
-            List<StockOrder> oneList = serviceFor(StockOrder.class).list(
-                    new Limit(goNumber - 1, 1),
-                    new And(new GreaterOrEquals("createdDate", LocalDateUtil.minTimeOfDay(limitDateFrom)),
-                            new LessOrEquals("createdDate", LocalDateUtil.maxTimeOfDay(limitDateTo))),
-                    new Equals("subject_", getSubject().getValue()),
-                    new Equals("warehouse.id", selectedWarehouse.getId()),
-                    Order.desc("id"));
+            StockOrder firstOrder = serviceFor(StockOrder.class).getFirst(//
+                    new Offset(goNumber - 1), //
+                    EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                    StockCriteria.subjectOf(getSubject()), //
+                    new Equals("warehouse.id", selectedWarehouse.getId()));
 
-            if (oneList.size() > 0) {
-                StockOrder s = oneList.get(0);
-                stockOrder = DTOs.marshal(StockOrderDto.class, s);
-            }
+            if (firstOrder != null)
+                stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
         }
     }
 

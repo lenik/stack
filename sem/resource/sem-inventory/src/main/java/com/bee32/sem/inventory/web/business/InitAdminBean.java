@@ -12,16 +12,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.criteria.hibernate.And;
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.GreaterOrEquals;
-import com.bee32.plover.criteria.hibernate.LessOrEquals;
-import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.entity.LocalDateUtil;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 
@@ -88,11 +82,11 @@ public class InitAdminBean extends StockOrderBaseBean {
     }
 
     public int getCount() {
-        count = serviceFor(StockOrder.class).count(
-                new And(new GreaterOrEquals("createdDate", LocalDateUtil.minTimeOfDay(limitDateFrom)),
-                        new LessOrEquals("createdDate", LocalDateUtil.maxTimeOfDay(limitDateTo))),
-                new Equals("subject_", subject.getValue()),
-                new Equals("warehouse.id", selectedWarehouse.getId()));
+//        count = serviceFor(StockOrder.class).count(
+//                new And(new GreaterOrEquals("createdDate", LocalDateUtil.minTimeOfDay(limitDateFrom)),
+//                        new LessOrEquals("createdDate", LocalDateUtil.maxTimeOfDay(limitDateTo))),
+//                new Equals("subject_", subject.getValue()),
+//                new Equals("warehouse.id", selectedWarehouse.getId()));
         return count;
     }
 
@@ -114,11 +108,11 @@ public class InitAdminBean extends StockOrderBaseBean {
         stockOrder = new StockOrderDto().create();
         if (selectedWarehouse != null) {
             List<StockOrder> oneList = serviceFor(StockOrder.class).list(
-                    new Limit(goNumber - 1, 1),
-                    new And(new GreaterOrEquals("createdDate", LocalDateUtil.minTimeOfDay(limitDateFrom)),
-                            new LessOrEquals("createdDate", LocalDateUtil.maxTimeOfDay(limitDateTo))),
-                    new Equals("subject_", getSubject().getValue()),
-                    new Equals("warehouse.id", selectedWarehouse.getId()),
+//                    new Limit(goNumber - 1, 1),
+//                    new And(new GreaterOrEquals("createdDate", LocalDateUtil.minTimeOfDay(limitDateFrom)),
+//                            new LessOrEquals("createdDate", LocalDateUtil.maxTimeOfDay(limitDateTo))),
+//                    new Equals("subject_", getSubject().getValue()),
+//                    new Equals("warehouse.id", selectedWarehouse.getId()),
                     Order.desc("id"));
 
             if (oneList.size() > 0) {
