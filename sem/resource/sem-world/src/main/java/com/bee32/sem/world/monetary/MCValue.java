@@ -259,7 +259,7 @@ public class MCValue
             }
         }
 
-        return new MCValue(CurrencyConfig.NATIVE, sum);
+        return new MCValue(CurrencyConfig.getNative(), sum);
     }
 
     public MCValue toNative(IFxrProvider fxrProvider)
@@ -267,11 +267,11 @@ public class MCValue
         if (currency == null)
             return this;
 
-        if (currency.equals(CurrencyConfig.NATIVE))
+        if (currency.equals(CurrencyConfig.getNative()))
             return this;
 
         BigDecimal nativeValue = getNativeValue(fxrProvider);
-        MCValue _native = new MCValue(CurrencyConfig.NATIVE, nativeValue);
+        MCValue _native = new MCValue(CurrencyConfig.getNative(), nativeValue);
         return _native;
     }
 

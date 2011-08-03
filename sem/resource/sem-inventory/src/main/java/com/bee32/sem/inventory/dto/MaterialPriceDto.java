@@ -7,12 +7,11 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.sem.inventory.entity.MaterialPrice;
-import com.bee32.sem.world.monetary.ICurrencyAware;
+import com.bee32.sem.world.monetary.CurrencyConfig;
 import com.bee32.sem.world.monetary.MCValue;
 
 public class MaterialPriceDto
-        extends UIEntityDto<MaterialPrice, Long>
-        implements ICurrencyAware {
+        extends UIEntityDto<MaterialPrice, Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -61,7 +60,7 @@ public class MaterialPriceDto
         if (date == null)
             throw new NullPointerException("date");
         this.date = date;
-//        this.date = LocalDateUtil.truncate(date);
+// this.date = LocalDateUtil.truncate(date);
     }
 
     public MCValue getPrice() {
@@ -73,7 +72,6 @@ public class MaterialPriceDto
             throw new NullPointerException("price");
         this.price = price;
     }
-
 
     public double getViewPrice() {
         return viewPrice;
@@ -87,7 +85,7 @@ public class MaterialPriceDto
      * Set price in native currency.
      */
     public final void setPrice(double price) {
-        setPrice(new MCValue(NATIVE_CURRENCY, price));
+        setPrice(new MCValue(CurrencyConfig.getNative(), price));
     }
 
 }

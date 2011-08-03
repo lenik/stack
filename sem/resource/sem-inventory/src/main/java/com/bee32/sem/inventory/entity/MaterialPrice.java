@@ -14,7 +14,7 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
-import com.bee32.sem.world.monetary.ICurrencyAware;
+import com.bee32.sem.world.monetary.CurrencyConfig;
 import com.bee32.sem.world.monetary.MCValue;
 
 /**
@@ -24,8 +24,7 @@ import com.bee32.sem.world.monetary.MCValue;
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "material_price_seq", allocationSize = 1)
 public class MaterialPrice
-        extends UIEntityAuto<Long>
-        implements ICurrencyAware {
+        extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -82,7 +81,7 @@ public class MaterialPrice
      * Set price in native currency.
      */
     public final void setPrice(double price) {
-        setPrice(new MCValue(NATIVE_CURRENCY, price));
+        setPrice(new MCValue(CurrencyConfig.getNative(), price));
     }
 
 }

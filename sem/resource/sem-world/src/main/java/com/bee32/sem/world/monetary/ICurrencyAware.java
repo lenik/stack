@@ -661,6 +661,4 @@ public interface ICurrencyAware {
         Currency ZWN = Currency.getInstance("ZWN");
     }
 
-    Currency NATIVE_CURRENCY = CurrencyConfig.NATIVE;
-
 }

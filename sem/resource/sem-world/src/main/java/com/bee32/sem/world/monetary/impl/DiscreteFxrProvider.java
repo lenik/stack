@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.sem.world.monetary.AbstractFxrProvider;
+import com.bee32.sem.world.monetary.CurrencyConfig;
 import com.bee32.sem.world.monetary.FxrCriteria;
 import com.bee32.sem.world.monetary.FxrRecord;
 import com.bee32.sem.world.monetary.FxrTable;
@@ -42,6 +43,8 @@ public class DiscreteFxrProvider
 
     static int NPREV_NORM = 10;
     TreeMap<Date, List<FxrTable>> fxrtabsCache = new TreeMap<Date, List<FxrTable>>();
+
+    static Date lastUpdatedDate;
 
     @Override
     public synchronized List<FxrTable> getFxrTableSeries(Date queryDate, int nprev) {
@@ -100,13 +103,11 @@ public class DiscreteFxrProvider
         return series;
     }
 
-    static Date lastUpdatedDate;
-
     @Transactional(readOnly = false)
     public synchronized void commit(FxrTable table) {
 
         Currency quoteCurrency = table.getQuoteCurrency();
-        if (quoteCurrency != NATIVE_CURRENCY)
+        if (quoteCurrency != CurrencyConfig.getNative())
             throw new IllegalArgumentException("FXR table of bad quote currency: " + quoteCurrency);
 
         if (lastUpdatedDate == null) {

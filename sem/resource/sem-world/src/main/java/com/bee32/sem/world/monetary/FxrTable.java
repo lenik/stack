@@ -18,7 +18,7 @@ public class FxrTable
     final Map<Currency, FxrRecord> unitMap;
 
     public FxrTable() {
-        this(NATIVE_CURRENCY);
+        this(CurrencyConfig.getNative());
     }
 
     public FxrTable(Currency quoteCurrency) {

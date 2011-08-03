@@ -7,12 +7,22 @@ import java.util.Locale;
 public class CurrencyConfig
         implements ILocaleAware {
 
-    public static final Currency NATIVE;
+    private static Currency nativeCurrency;
 
     static {
         // DEFAULT = ICurrencyAware.CNY;
         Locale nativeLocale = Locale.getDefault();
-        NATIVE = Currency.getInstance(nativeLocale);
+        nativeCurrency = Currency.getInstance(nativeLocale);
+    }
+
+    public static Currency getNative() {
+        return nativeCurrency;
+    }
+
+    public static void setNative(Currency _nativeCurrency) {
+        if (_nativeCurrency == null)
+            throw new NullPointerException("_nativeCurrency");
+        nativeCurrency = _nativeCurrency;
     }
 
     public static List<Currency> list() {

@@ -9,12 +9,12 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class MCVector
-        implements Serializable, ICurrencyAware, Iterable<MCValue> {
+        implements Serializable, Iterable<MCValue> {
 
     private static final long serialVersionUID = 1L;
 
     Map<Currency, BigDecimal> map = new TreeMap<Currency, BigDecimal>(CurrencyCodeComparator.INSTANCE);
-    Currency conversion = NATIVE_CURRENCY;
+    Currency conversion = CurrencyConfig.getNative();
 
     @Override
     public MCVector clone() {

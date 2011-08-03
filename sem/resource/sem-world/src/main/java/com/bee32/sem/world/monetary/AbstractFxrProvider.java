@@ -20,7 +20,7 @@ public abstract class AbstractFxrProvider
 
     @Override
     public Currency getQuoteCurrency() {
-        return ICurrencyAware.NATIVE_CURRENCY;
+        return CurrencyConfig.getNative();
     }
 
     @Override

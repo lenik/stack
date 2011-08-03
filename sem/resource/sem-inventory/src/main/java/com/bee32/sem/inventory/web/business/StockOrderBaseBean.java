@@ -26,12 +26,16 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.inventory.util.StockCriteria;
+import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.world.monetary.CurrencyConfig;
-import com.bee32.sem.world.monetary.ICurrencyAware;
+import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.monetary.MCValue;
 
-public class StockOrderBaseBean extends EntityViewBean implements
-        ICurrencyAware {
+@Component
+@Scope("view")
+public class StockOrderAdminBean
+        extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,7 +49,7 @@ public class StockOrderBaseBean extends EntityViewBean implements
 
     private StockOrderItemDto orderItem = new StockOrderItemDto().create().ref();
     private BigDecimal orderItemPrice = new BigDecimal(0);
-    private String orderItemPriceCurrency = NATIVE_CURRENCY.getCurrencyCode();
+    private Currency orderItemPriceCurrency = CurrencyConfig.getNative();
 
     private boolean newItemStatus;
 
@@ -183,10 +187,10 @@ public class StockOrderBaseBean extends EntityViewBean implements
     }
 
     public String getOrderItemPriceCurrency() {
-        if (orderItemPriceCurrency == null) {
-            orderItemPriceCurrency = NATIVE_CURRENCY.getCurrencyCode();
-        }
-        return orderItemPriceCurrency;
+        if (orderItemPriceCurrency == null)
+            return CurrencyConfig.getNative().getCurrencyCode();
+        else
+            return orderItemPriceCurrency.getCurrencyCode();
     }
 
     public void setOrderItemPriceCurrency(String orderItemPriceCurrency) {
@@ -281,7 +285,7 @@ public class StockOrderBaseBean extends EntityViewBean implements
     public void newItem() {
         orderItem = new StockOrderItemDto().create();
         orderItemPrice = new BigDecimal(0);
-        orderItemPriceCurrency = NATIVE_CURRENCY.getCurrencyCode();
+        orderItemPriceCurrency = CurrencyConfig.getNative();
 
         newItemStatus = true;
     }

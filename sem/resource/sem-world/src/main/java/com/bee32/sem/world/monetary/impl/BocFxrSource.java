@@ -22,6 +22,7 @@ import com.bee32.sem.world.monetary.FxrRecord;
 import com.bee32.sem.world.monetary.FxrTable;
 import com.bee32.sem.world.monetary.ICurrencyAware;
 import com.bee32.sem.world.monetary.ILocaleAware;
+import com.bee32.sem.world.monetary.ITimeZoneAware;
 
 /**
  * @test BocFxrUpdaterTest
@@ -30,7 +31,7 @@ import com.bee32.sem.world.monetary.ILocaleAware;
 @Lazy
 public class BocFxrSource
         extends OnlineFxrSource
-        implements ICurrencyAware, ILocaleAware {
+        implements ICurrencyAware, ILocaleAware, ITimeZoneAware {
 
     static final Logger logger = LoggerFactory.getLogger(BocFxrSource.class);
 
@@ -65,7 +66,10 @@ public class BocFxrSource
     static Pattern SYNC_START = Pattern.compile("<th\\b.*?>货币名称</th>");
     static Currency QUOTE_CURRENCY = CNY;
     static Map<String, Currency> REV_MAP = CurrencyNames.getRevMap(zh_CN);
-    static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", zh_CN);
+    static {
+        DATE_FORMAT.setTimeZone(TZ_SHANGHAI);
+    }
 
     static final int F_CNAME = 0;
     static final int F_BUYING_RATE = 1;
