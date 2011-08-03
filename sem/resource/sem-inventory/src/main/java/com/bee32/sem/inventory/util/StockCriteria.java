@@ -6,6 +6,7 @@ import org.hibernate.criterion.Criterion;
 
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
@@ -40,6 +41,11 @@ public class StockCriteria
                 StockOrderSubject.PACK_MBC.getValue(), //
                 StockOrderSubject.PACK_MBLC.getValue() //
                 )));
+    }
+
+    @LeftHand(StockOrder.class)
+    public static CriteriaElement subjectOf(StockOrderSubject subject) {
+        return new Equals("subject_", subject.getValue());
     }
 
     /**

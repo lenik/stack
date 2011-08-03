@@ -7,23 +7,20 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.criterion.MatchMode;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.GreaterOrEquals;
-import com.bee32.plover.criteria.hibernate.LessOrEquals;
 import com.bee32.plover.criteria.hibernate.Like;
-import com.bee32.plover.criteria.hibernate.Limit;
+import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
@@ -33,20 +30,22 @@ import com.bee32.sem.inventory.dto.StockLocationDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
-import com.bee32.sem.inventory.entity.LocalDateUtil;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
-import com.bee32.sem.world.monetary.CurrencyConfig;
+import com.bee32.sem.inventory.util.StockCriteria;
+import com.bee32.sem.misc.EntityCriteria;
+import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.monetary.ICurrencyAware;
 import com.bee32.sem.world.monetary.MCValue;
 
 @Component
 @Scope("view")
-public class StockOrderAdminBean extends EntityViewBean implements
-        ICurrencyAware {
+public class StockOrderAdminBean
+        extends EntityViewBean
+        implements ICurrencyAware {
 
     private static final long serialVersionUID = 1L;
 
@@ -64,7 +63,7 @@ public class StockOrderAdminBean extends EntityViewBean implements
 
     private StockOrderItemDto orderItem = new StockOrderItemDto().create().ref();
     private BigDecimal orderItemPrice = new BigDecimal(0);
-    private String orderItemPriceCurrency = NATIVE_CURRENCY.getCurrencyCode();
+    private Currency orderItemPriceCurrency = NATIVE_CURRENCY;
 
     private boolean newItemStatus;
 
@@ -75,8 +74,6 @@ public class StockOrderAdminBean extends EntityViewBean implements
     private TreeNode locationRoot;
     private TreeNode selectedStockLocationNode;
     private StockLocationDto selectedPreferredStockLocation;
-
-
 
     public StockOrderAdminBean() {
         Calendar c = Calendar.getInstance();
@@ -92,8 +89,7 @@ public class StockOrderAdminBean extends EntityViewBean implements
         goNumber = 1;
 
         try {
-            HttpServletRequest req = (HttpServletRequest) FacesContext
-                    .getCurrentInstance().getExternalContext().getRequest();
+            HttpServletRequest req = getRequest();
             String s = req.getParameter("subject").toString();
             subject = StockOrderSubject.valueOf(s);
 
@@ -143,10 +139,8 @@ public class StockOrderAdminBean extends EntityViewBean implements
     }
 
     public List<SelectItem> getStockWarehouses() {
-        List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class)
-                .list();
-        List<StockWarehouseDto> stockWarehouseDtos = DTOs.marshalList(
-                StockWarehouseDto.class, stockWarehouses, true);
+        List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class).list();
+        List<StockWarehouseDto> stockWarehouseDtos = DTOs.marshalList(StockWarehouseDto.class, stockWarehouses, true);
 
         List<SelectItem> items = new ArrayList<SelectItem>();
 
@@ -188,10 +182,9 @@ public class StockOrderAdminBean extends EntityViewBean implements
     }
 
     public int getCount() {
-        count = serviceFor(StockOrder.class).count(
-                new And(new GreaterOrEquals("createdDate", LocalDateUtil.minTimeOfDay(limitDateFrom)),
-                        new LessOrEquals("createdDate", LocalDateUtil.maxTimeOfDay(limitDateTo))),
-                new Equals("subject_", subject.getValue()),
+        count = serviceFor(StockOrder.class).count(//
+                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                StockCriteria.subjectOf(getSubject()), //
                 new Equals("warehouse.id", selectedWarehouse.getId()));
         return count;
     }
@@ -205,16 +198,7 @@ public class StockOrderAdminBean extends EntityViewBean implements
     }
 
     public List<SelectItem> getCurrencies() {
-        List<Currency> currencies = CurrencyConfig.list();
-        List<SelectItem> currencyItems = new ArrayList<SelectItem>();
-        for (Currency c : currencies) {
-            SelectItem i = new SelectItem();
-            i.setLabel(CurrencyConfig.format(c));
-            i.setValue(c.getCurrencyCode());
-            currencyItems.add(i);
-        }
-
-        return currencyItems;
+        return CurrencyUtil.selectItems();
     }
 
     public String getMaterialPattern() {
@@ -250,14 +234,16 @@ public class StockOrderAdminBean extends EntityViewBean implements
     }
 
     public String getOrderItemPriceCurrency() {
-        if (orderItemPriceCurrency == null) {
-            orderItemPriceCurrency = NATIVE_CURRENCY.getCurrencyCode();
-        }
-        return orderItemPriceCurrency;
+        if (orderItemPriceCurrency == null)
+            return NATIVE_CURRENCY.getCurrencyCode();
+        else
+            return orderItemPriceCurrency.getCurrencyCode();
     }
 
-    public void setOrderItemPriceCurrency(String orderItemPriceCurrency) {
-        this.orderItemPriceCurrency = orderItemPriceCurrency;
+    public void setOrderItemPriceCurrency(String currencyCode) {
+        if (currencyCode == null)
+            throw new NullPointerException("currencyCode");
+        this.orderItemPriceCurrency = Currency.getInstance(currencyCode);
     }
 
     public TreeNode getLocationRoot() {
@@ -279,9 +265,8 @@ public class StockOrderAdminBean extends EntityViewBean implements
         List<StockLocationDto> stockLocations = new ArrayList<StockLocationDto>();
 
         if (orderItem != null && orderItem.getMaterial() != null) {
-            List<MaterialPreferredLocationDto> preferredLocations = orderItem.getMaterial()
-                    .getPreferredLocations();
-            if(preferredLocations != null) {
+            List<MaterialPreferredLocationDto> preferredLocations = orderItem.getMaterial().getPreferredLocations();
+            if (preferredLocations != null) {
                 for (MaterialPreferredLocationDto preferredLocation : preferredLocations) {
                     stockLocations.add(preferredLocation.getLocation());
                 }
@@ -295,8 +280,7 @@ public class StockOrderAdminBean extends EntityViewBean implements
         return selectedPreferredStockLocation;
     }
 
-    public void setSelectedPreferredStockLocation(
-            StockLocationDto selectedPreferredStockLocation) {
+    public void setSelectedPreferredStockLocation(StockLocationDto selectedPreferredStockLocation) {
         this.selectedPreferredStockLocation = selectedPreferredStockLocation;
     }
 
@@ -308,23 +292,15 @@ public class StockOrderAdminBean extends EntityViewBean implements
         this.newItemStatus = newItemStatus;
     }
 
-
-
-
-
-
-
-
     private void loadStockLocationTree() {
         if (selectedWarehouse != null) {
             locationRoot = new DefaultTreeNode(selectedWarehouse, null);
 
-            List<StockLocation> topLocations = serviceFor(StockLocation.class)
-                    .list(//
+            List<StockLocation> topLocations = serviceFor(StockLocation.class).list(//
                     TreeCriteria.root(), //
                     new Equals("warehouse.id", selectedWarehouse.getId()));
-            List<StockLocationDto> topLocationDtos = DTOs.marshalList(
-                    StockLocationDto.class, -1, topLocations, true);
+
+            List<StockLocationDto> topLocationDtos = DTOs.marshalList(StockLocationDto.class, -1, topLocations, true);
 
             for (StockLocationDto stockLocationDto : topLocationDtos) {
                 loadStockLocationRecursive(stockLocationDto, locationRoot);
@@ -332,25 +308,14 @@ public class StockOrderAdminBean extends EntityViewBean implements
         }
     }
 
-    private void loadStockLocationRecursive(StockLocationDto stockLocationDto,
-            TreeNode parentTreeNode) {
-        TreeNode stockLocationNode = new DefaultTreeNode(stockLocationDto,
-                parentTreeNode);
+    private void loadStockLocationRecursive(StockLocationDto stockLocationDto, TreeNode parentTreeNode) {
+        TreeNode stockLocationNode = new DefaultTreeNode(stockLocationDto, parentTreeNode);
 
-        List<StockLocationDto> subStockLocations = stockLocationDto
-                .getChildren();
+        List<StockLocationDto> subStockLocations = stockLocationDto.getChildren();
         for (StockLocationDto subStockLocation : subStockLocations) {
             loadStockLocationRecursive(subStockLocation, stockLocationNode);
         }
     }
-
-
-
-
-
-
-
-
 
     public void onSwChange(AjaxBehaviorEvent e) {
         loadStockOrder(goNumber);
@@ -358,26 +323,25 @@ public class StockOrderAdminBean extends EntityViewBean implements
     }
 
     private void loadStockOrder(int goNumber) {
-        //刷新总记录数
+        // 刷新总记录数
         getCount();
 
-        if(goNumber < 1) goNumber = 1;
-        if(goNumber > count) goNumber = count;
-
+        if (goNumber < 1)
+            goNumber = 1;
+        if (goNumber > count)
+            goNumber = count;
 
         stockOrder = new StockOrderDto().create();
+
         if (selectedWarehouse != null) {
-            List<StockOrder> oneList = serviceFor(StockOrder.class).list(
-                    new Limit(goNumber - 1, 1),
-                    new And(new GreaterOrEquals("createdDate", LocalDateUtil.minTimeOfDay(limitDateFrom)),
-                            new LessOrEquals("createdDate", LocalDateUtil.maxTimeOfDay(limitDateTo))),
-                    new Equals("subject_", getSubject().getValue()),
+            StockOrder firstOrder = serviceFor(StockOrder.class).getFirst(//
+                    new Offset(goNumber - 1), //
+                    EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                    StockCriteria.subjectOf(getSubject()), //
                     new Equals("warehouse.id", selectedWarehouse.getId()));
 
-            if (oneList.size() > 0) {
-                StockOrder s = oneList.get(0);
-                stockOrder = DTOs.marshal(StockOrderDto.class, s);
-            }
+            if (firstOrder != null)
+                stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
         }
     }
 
@@ -454,7 +418,7 @@ public class StockOrderAdminBean extends EntityViewBean implements
     public void newItem() {
         orderItem = new StockOrderItemDto().create();
         orderItemPrice = new BigDecimal(0);
-        orderItemPriceCurrency = NATIVE_CURRENCY.getCurrencyCode();
+        orderItemPriceCurrency = NATIVE_CURRENCY;
 
         newItemStatus = true;
     }
@@ -467,12 +431,11 @@ public class StockOrderAdminBean extends EntityViewBean implements
         stockOrder.removeItem(orderItem);
     }
 
-
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {
 
-            List<Material> _materials = serviceFor(Material.class).list(
-                    new Like("name", "%" + materialPattern + "%"));
+            List<Material> _materials = serviceFor(Material.class).list(//
+                    new Like("name", materialPattern, MatchMode.ANYWHERE));
 
             materials = DTOs.marshalList(MaterialDto.class, _materials);
         }
@@ -484,12 +447,12 @@ public class StockOrderAdminBean extends EntityViewBean implements
 
     public void doSaveItem() {
         orderItem.setParent(stockOrder);
-        MCValue newPrice = new MCValue(
-                Currency.getInstance(orderItemPriceCurrency), orderItemPrice);
+
+        MCValue newPrice = new MCValue(orderItemPriceCurrency, orderItemPrice);
         orderItem.setPrice(newPrice);
-        if(newItemStatus) {
+
+        if (newItemStatus)
             stockOrder.addItem(orderItem);
-        }
     }
 
     public void updateLocations() {
@@ -503,4 +466,5 @@ public class StockOrderAdminBean extends EntityViewBean implements
     public void doSelectPreferredStockLocation() {
         orderItem.setLocation(selectedPreferredStockLocation);
     }
+
 }
