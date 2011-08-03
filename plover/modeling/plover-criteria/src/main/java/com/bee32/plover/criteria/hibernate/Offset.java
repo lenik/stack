@@ -3,23 +3,22 @@ package com.bee32.plover.criteria.hibernate;
 import org.hibernate.Criteria;
 import org.springframework.expression.EvaluationContext;
 
-public class Limit
-        extends Offset {
+public class Offset
+        extends SpecialCriteriaElement {
 
     private static final long serialVersionUID = 1L;
 
-    final int limit;
+    final int offset;
 
-    public Limit(int offset, int limit) {
-        super(offset);
-        this.limit = limit;
+    public Offset(int offset) {
+        this.offset = offset;
     }
 
     @Override
     public void apply(Criteria criteria) {
-        super.apply(criteria);
-        if (limit > 0)
-            criteria.setFetchSize(limit);
+        if (offset != -1) {
+            criteria.setFirstResult(offset);
+        }
     }
 
     @Override
