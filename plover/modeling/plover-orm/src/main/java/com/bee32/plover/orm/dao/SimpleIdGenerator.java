@@ -61,7 +61,10 @@ public class SimpleIdGenerator {
         GenerationType strategy = generatedValue.strategy();
         // TABLE, SEQUENCE, AUTO, etc.
         switch (strategy) {
+        case AUTO:
         case SEQUENCE:
+            break;
+        case TABLE:
             throw new UnsupportedOperationException("Couldn't simulate a TABLE-generator used by " + entityType);
         }
 
