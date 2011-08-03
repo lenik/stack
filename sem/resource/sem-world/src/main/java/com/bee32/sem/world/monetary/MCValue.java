@@ -14,6 +14,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
 import com.bee32.plover.orm.ext.config.DecimalConfig;
+import com.bee32.sem.misc.i18n.CurrencyConfig;
 
 /**
  * Multi-currency value, or multi-currency amount.

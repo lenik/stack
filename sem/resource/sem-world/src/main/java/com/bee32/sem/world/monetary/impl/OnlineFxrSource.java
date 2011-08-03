@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.EnterpriseService;
-import com.bee32.sem.world.monetary.ICurrencyAware;
+import com.bee32.sem.misc.i18n.ICurrencyAware;
 import com.bee32.sem.world.monetary.IFxrSource;
 
 public abstract class OnlineFxrSource

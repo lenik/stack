@@ -5,6 +5,8 @@ import java.util.Locale;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.bee32.sem.misc.i18n.ICurrencyAware;
+
 public class MCValueTest
         extends Assert
         implements ICurrencyAware {

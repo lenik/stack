@@ -8,12 +8,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import com.bee32.sem.misc.i18n.CurrencyConfig;
+import com.bee32.sem.misc.i18n.CurrencyOrder;
+
 public class MCVector
         implements Serializable, Iterable<MCValue> {
 
     private static final long serialVersionUID = 1L;
 
-    Map<Currency, BigDecimal> map = new TreeMap<Currency, BigDecimal>(CurrencyCodeComparator.INSTANCE);
+    Map<Currency, BigDecimal> map = new TreeMap<Currency, BigDecimal>(CurrencyOrder.CODE);
     Currency conversion = CurrencyConfig.getNative();
 
     @Override

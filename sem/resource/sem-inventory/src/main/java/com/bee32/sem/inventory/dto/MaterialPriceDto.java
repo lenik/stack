@@ -7,7 +7,7 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.sem.inventory.entity.MaterialPrice;
-import com.bee32.sem.world.monetary.CurrencyConfig;
+import com.bee32.sem.misc.i18n.CurrencyConfig;
 import com.bee32.sem.world.monetary.MCValue;
 
 public class MaterialPriceDto

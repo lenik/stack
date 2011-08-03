@@ -9,6 +9,11 @@ import java.util.TreeMap;
 
 import javax.free.Dates;
 
+import com.bee32.sem.misc.i18n.CurrencyConfig;
+import com.bee32.sem.misc.i18n.CurrencyOrder;
+import com.bee32.sem.misc.i18n.ICurrencyAware;
+import com.bee32.sem.misc.i18n.ILocaleAware;
+
 public class FxrTable
         implements ICurrencyAware, ILocaleAware {
 
@@ -26,7 +31,7 @@ public class FxrTable
             throw new NullPointerException("quoteCurrency");
         this.quoteCurrency = quoteCurrency;
 
-        unitMap = new TreeMap<Currency, FxrRecord>(CurrencyCodeComparator.INSTANCE);
+        unitMap = new TreeMap<Currency, FxrRecord>(CurrencyOrder.CODE);
     }
 
     public Currency getQuoteCurrency() {

@@ -26,15 +26,11 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
-import com.bee32.sem.inventory.util.StockCriteria;
-import com.bee32.sem.misc.EntityCriteria;
-import com.bee32.sem.world.monetary.CurrencyConfig;
+import com.bee32.sem.misc.i18n.CurrencyConfig;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.monetary.MCValue;
 
-@Component
-@Scope("view")
-public class StockOrderAdminBean
+public class StockOrderBaseBean
         extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;

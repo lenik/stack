@@ -17,12 +17,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.bee32.sem.world.monetary.CurrencyNames;
+import com.bee32.sem.misc.i18n.CurrencyNames;
+import com.bee32.sem.misc.i18n.ICurrencyAware;
+import com.bee32.sem.misc.i18n.ILocaleAware;
+import com.bee32.sem.misc.i18n.ITimeZoneAware;
 import com.bee32.sem.world.monetary.FxrRecord;
 import com.bee32.sem.world.monetary.FxrTable;
-import com.bee32.sem.world.monetary.ICurrencyAware;
-import com.bee32.sem.world.monetary.ILocaleAware;
-import com.bee32.sem.world.monetary.ITimeZoneAware;
 
 /**
  * @test BocFxrUpdaterTest
@@ -68,7 +68,7 @@ public class BocFxrSource
     static Map<String, Currency> REV_MAP = CurrencyNames.getRevMap(zh_CN);
     static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", zh_CN);
     static {
-        DATE_FORMAT.setTimeZone(TZ_SHANGHAI);
+        DATE_FORMAT.setTimeZone(TZ_PRC);
     }
 
     static final int F_CNAME = 0;

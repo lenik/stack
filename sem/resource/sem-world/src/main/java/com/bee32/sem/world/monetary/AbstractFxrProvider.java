@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.sem.misc.LocalDateUtil;
+import com.bee32.sem.misc.i18n.CurrencyConfig;
+import com.bee32.sem.misc.i18n.ICurrencyAware;
 import com.bee32.sem.world.math.InterpolatedMap;
 
 public abstract class AbstractFxrProvider
@@ -65,7 +68,8 @@ public abstract class AbstractFxrProvider
             if (rate == null)
                 continue;
 
-            intpMap.put(dateint(record.getDate()), (double) rate);
+            int sday = LocalDateUtil.dateInt(record.getDate());
+            intpMap.put(sday, (double) rate);
 
             if (intpMax-- <= 0)
                 break;
@@ -74,18 +78,17 @@ public abstract class AbstractFxrProvider
         if (intpMap.isEmpty())
             return null;
 
-        Double intpRate = intpMap.get(dateint(queryDate));
-        return intpRate.floatValue();
+        Double intpRate = intpMap.get(LocalDateUtil.dateInt(queryDate));
+        if (intpRate == null)
+            return null;
+        else
+            return intpRate.floatValue();
     }
 
     @Override
     public Float getLatestFxr(Currency unitCurrency, FxrUsage usage)
             throws FxrQueryException {
         return getFxr(new Date(), unitCurrency, usage);
-    }
-
-    static int dateint(Date date) {
-        return (int) (date.getTime() / 86400000);
     }
 
 }
