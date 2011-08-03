@@ -21,11 +21,11 @@ public class GreaterThan
     }
 
     @Override
-    protected boolean filterValue(Object val) {
+    protected boolean filterValue(Object var) {
         @SuppressWarnings("unchecked")
-        Comparable<Object> lhs = (Comparable<Object>) value;
+        Comparable<Object> _var = (Comparable<Object>) var;
 
-        int cmp = lhs.compareTo(value);
+        int cmp = _var.compareTo(value);
 
         return cmp > 0;
     }

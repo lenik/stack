@@ -23,8 +23,8 @@ public class NotEquals
     }
 
     @Override
-    protected boolean filterValue(Object val) {
-        return !Nullables.equals(val, value);
+    protected boolean filterValue(Object var) {
+        return !Nullables.equals(var, value);
     }
 
 }

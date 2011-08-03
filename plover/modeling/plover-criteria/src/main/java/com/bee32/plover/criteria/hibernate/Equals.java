@@ -29,10 +29,10 @@ public class Equals
     }
 
     @Override
-    protected boolean filterValue(Object val) {
+    protected boolean filterValue(Object var) {
         // Class<?> exprType = expr.getClass();
         // ParserUtil.parse(exprType, value);
-        return Nullables.equals(val, value);
+        return Nullables.equals(var, value);
     }
 
 }
