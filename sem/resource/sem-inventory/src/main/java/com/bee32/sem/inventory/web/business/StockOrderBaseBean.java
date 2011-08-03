@@ -57,9 +57,7 @@ public class StockOrderBaseBean
     private TreeNode selectedStockLocationNode;
     private StockLocationDto selectedPreferredStockLocation;
 
-
     protected List<StockOrderItemDto> itemsNeedToRemoveWhenModify = new ArrayList<StockOrderItemDto>();
-
 
     public StockWarehouseDto getSelectedWarehouse() {
         return selectedWarehouse;
@@ -69,8 +67,6 @@ public class StockOrderBaseBean
         this.selectedWarehouse = selectedWarehouse;
     }
 
-
-
     public boolean isEditable() {
         return editable;
     }
@@ -79,12 +75,9 @@ public class StockOrderBaseBean
         this.editable = editable;
     }
 
-
     public List<SelectItem> getStockWarehouses() {
-        List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class)
-                .list();
-        List<StockWarehouseDto> stockWarehouseDtos = DTOs.marshalList(
-                StockWarehouseDto.class, stockWarehouses, true);
+        List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class).list();
+        List<StockWarehouseDto> stockWarehouseDtos = DTOs.marshalList(StockWarehouseDto.class, stockWarehouses, true);
 
         List<SelectItem> items = new ArrayList<SelectItem>();
 
@@ -117,17 +110,15 @@ public class StockOrderBaseBean
         if (ownerId == null)
             return "";
 
-        User u = serviceFor(User.class).get(ownerId);
+        User u = serviceFor(User.class).getOrFail(ownerId);
         return u.getDisplayName();
     }
 
     public List<StockOrderItemDto> getItems() {
-        if (stockOrder != null) {
-            return stockOrder.getItems();
-        }
-        return null;
+        if (stockOrder == null)
+            return null;
+        return stockOrder.getItems();
     }
-
 
     public StockOrderItemDto getOrderItem() {
         return orderItem;
@@ -138,16 +129,7 @@ public class StockOrderBaseBean
     }
 
     public List<SelectItem> getCurrencies() {
-        List<Currency> currencies = CurrencyConfig.list();
-        List<SelectItem> currencyItems = new ArrayList<SelectItem>();
-        for (Currency c : currencies) {
-            SelectItem i = new SelectItem();
-            i.setLabel(CurrencyConfig.format(c));
-            i.setValue(c.getCurrencyCode());
-            currencyItems.add(i);
-        }
-
-        return currencyItems;
+        return CurrencyUtil.selectItems();
     }
 
     public String getMaterialPattern() {
@@ -189,8 +171,8 @@ public class StockOrderBaseBean
             return orderItemPriceCurrency.getCurrencyCode();
     }
 
-    public void setOrderItemPriceCurrency(String orderItemPriceCurrency) {
-        this.orderItemPriceCurrency = orderItemPriceCurrency;
+    public void setOrderItemPriceCurrency(String currencyCode) {
+        this.orderItemPriceCurrency = Currency.getInstance(currencyCode);
     }
 
     public TreeNode getLocationRoot() {
@@ -212,9 +194,8 @@ public class StockOrderBaseBean
         List<StockLocationDto> stockLocations = new ArrayList<StockLocationDto>();
 
         if (orderItem != null && orderItem.getMaterial() != null) {
-            List<MaterialPreferredLocationDto> preferredLocations = orderItem.getMaterial()
-                    .getPreferredLocations();
-            if(preferredLocations != null) {
+            List<MaterialPreferredLocationDto> preferredLocations = orderItem.getMaterial().getPreferredLocations();
+            if (preferredLocations != null) {
                 for (MaterialPreferredLocationDto preferredLocation : preferredLocations) {
                     stockLocations.add(preferredLocation.getLocation());
                 }
@@ -228,8 +209,7 @@ public class StockOrderBaseBean
         return selectedPreferredStockLocation;
     }
 
-    public void setSelectedPreferredStockLocation(
-            StockLocationDto selectedPreferredStockLocation) {
+    public void setSelectedPreferredStockLocation(StockLocationDto selectedPreferredStockLocation) {
         this.selectedPreferredStockLocation = selectedPreferredStockLocation;
     }
 
@@ -241,23 +221,14 @@ public class StockOrderBaseBean
         this.newItemStatus = newItemStatus;
     }
 
-
-
-
-
-
-
-
     protected void loadStockLocationTree() {
         if (selectedWarehouse != null) {
             locationRoot = new DefaultTreeNode(selectedWarehouse, null);
 
-            List<StockLocation> topLocations = serviceFor(StockLocation.class)
-                    .list(//
+            List<StockLocation> topLocations = serviceFor(StockLocation.class).list(//
                     TreeCriteria.root(), //
                     new Equals("warehouse.id", selectedWarehouse.getId()));
-            List<StockLocationDto> topLocationDtos = DTOs.marshalList(
-                    StockLocationDto.class, -1, topLocations, true);
+            List<StockLocationDto> topLocationDtos = DTOs.marshalList(StockLocationDto.class, -1, topLocations, true);
 
             for (StockLocationDto stockLocationDto : topLocationDtos) {
                 loadStockLocationRecursive(stockLocationDto, locationRoot);
@@ -265,18 +236,14 @@ public class StockOrderBaseBean
         }
     }
 
-    private void loadStockLocationRecursive(StockLocationDto stockLocationDto,
-            TreeNode parentTreeNode) {
-        TreeNode stockLocationNode = new DefaultTreeNode(stockLocationDto,
-                parentTreeNode);
+    private void loadStockLocationRecursive(StockLocationDto stockLocationDto, TreeNode parentTreeNode) {
+        TreeNode stockLocationNode = new DefaultTreeNode(stockLocationDto, parentTreeNode);
 
-        List<StockLocationDto> subStockLocations = stockLocationDto
-                .getChildren();
+        List<StockLocationDto> subStockLocations = stockLocationDto.getChildren();
         for (StockLocationDto subStockLocation : subStockLocations) {
             loadStockLocationRecursive(subStockLocation, stockLocationNode);
         }
     }
-
 
     public void newItem() {
         orderItem = new StockOrderItemDto().create();
@@ -293,17 +260,15 @@ public class StockOrderBaseBean
     public void deleteItem() {
         stockOrder.removeItem(orderItem);
 
-        if(orderItem.getId() != null) {
+        if (orderItem.getId() != null) {
             itemsNeedToRemoveWhenModify.add(orderItem);
         }
     }
 
-
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {
 
-            List<Material> _materials = serviceFor(Material.class).list(
-                    new Like("name", "%" + materialPattern + "%"));
+            List<Material> _materials = serviceFor(Material.class).list(new Like("name", "%" + materialPattern + "%"));
 
             materials = DTOs.marshalList(MaterialDto.class, _materials);
         }
@@ -315,10 +280,9 @@ public class StockOrderBaseBean
 
     public void doSaveItem() {
         orderItem.setParent(stockOrder);
-        MCValue newPrice = new MCValue(
-                Currency.getInstance(orderItemPriceCurrency), orderItemPrice);
+        MCValue newPrice = new MCValue(orderItemPriceCurrency, orderItemPrice);
         orderItem.setPrice(newPrice);
-        if(newItemStatus) {
+        if (newItemStatus) {
             stockOrder.addItem(orderItem);
         }
     }
@@ -334,4 +298,5 @@ public class StockOrderBaseBean
     public void doSelectPreferredStockLocation() {
         orderItem.setLocation(selectedPreferredStockLocation);
     }
+
 }
