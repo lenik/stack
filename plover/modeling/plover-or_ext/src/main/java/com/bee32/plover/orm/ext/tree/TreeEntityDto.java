@@ -1,10 +1,13 @@
 package com.bee32.plover.orm.ext.tree;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.free.ICharOut;
 import javax.free.ParseException;
+import javax.free.Stdio;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
@@ -176,6 +179,21 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
             str += " 【" + label + "】";
 
         return str;
+    }
+
+    void dump(ICharOut out)
+            throws IOException {
+        out.write(getGraphPrefix());
+        out.write(getNodeLabel());
+        out.write('\n');
+
+        for (T child : children)
+            child.dump(out);
+    }
+
+    public void dump()
+            throws IOException {
+        dump(Stdio.cout);
     }
 
 }
