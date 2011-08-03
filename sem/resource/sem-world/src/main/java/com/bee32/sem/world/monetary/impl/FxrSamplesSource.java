@@ -21,6 +21,10 @@ public class FxrSamplesSource
 
     int index = 0;
 
+    public int getCount() {
+        return FILES.length;
+    }
+
     static class Iter
             extends PrefetchedIterator<FxrTable> {
 
