@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import javax.free.NotImplementedException;
 import javax.free.UnexpectedException;
 import javax.inject.Inject;
 
@@ -13,8 +14,10 @@ import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.ObjectRetrievalFailureException;
@@ -149,7 +152,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     @Override
     public K save(E entity) {
-        Serializable key = getHibernateTemplate().save(entity);
+        HibernateTemplate template = getHibernateTemplate();
+        Serializable key = template.save(entity);
         // XXX - convert serializable to K.
         return keyType.cast(key);
     }
@@ -195,7 +199,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     @Override
     public void deleteAll() {
         HibernateTemplate template = getHibernateTemplate();
-        template.bulkUpdate("delete from " + entityType.getSimpleName());
+        String hql = "delete from " + entityType.getSimpleName();
+        template.bulkUpdate(hql);
         // List<? extends E> list = template.loadAll(entityType);
         // template.deleteAll(list);
     }
@@ -275,6 +280,20 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
         return criteria;
     }
 
+    @Deprecated
+    final String toClause(ICriteriaElement... criteriaElements) {
+        // Session session = getSession();
+        // Criteria criteria = session.createCriteria(entityType);
+        Conjunction conj = Restrictions.conjunction();
+        for (ICriteriaElement e : criteriaElements) {
+            Criterion criterion = e.getCriterion();
+            if (criterion == null)
+                continue;
+            conj.add(criterion);
+        }
+        throw new NotImplementedException("Couldn't obtain a CriteriaQuery");
+    }
+
     @Override
     public E getUnique(ICriteriaElement... criteriaElements)
             throws HibernateException {
@@ -333,10 +352,15 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public void deleteAll(ICriteriaElement... criteriaE) {
-        Criteria criteria = createCriteria(criteriaE);
+    public int deleteAll(ICriteriaElement... criteriaElements) {
+        HibernateTemplate template = getHibernateTemplate();
+
+        Criteria criteria = createCriteria(criteriaElements);
         List<E> list = criteria.list();
-        getHibernateTemplate().deleteAll(list);
+        template.deleteAll(list);
+
+        // approx.
+        return list.size();
     }
 
     /**
