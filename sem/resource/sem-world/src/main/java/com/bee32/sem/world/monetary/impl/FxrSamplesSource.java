@@ -59,7 +59,7 @@ public class FxrSamplesSource
 
         String file = FILES[index++];
 
-        URL url = BocFxrSourceTest.class.getResource(file);
+        URL url = FxrSamplesSource.class.getResource(file);
 
         String html = new URLResource(url).forRead().readTextContents();
         return html;
