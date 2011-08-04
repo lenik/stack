@@ -7,6 +7,8 @@ import org.junit.Test;
 public class InterpolatedMapTest
         extends Assert {
 
+    static final double EPS = 1e-20;
+
     InterpolatedMap imap = new InterpolatedMap();
 
     @Before
@@ -20,39 +22,39 @@ public class InterpolatedMapTest
     public void testGetInterpolatedNoPoint()
             throws Exception {
         InterpolatedMap imap = new InterpolatedMap();
-        assertEquals(Double.NaN, imap.getInterpolated(10), 0.000001);
+        assertEquals(Double.NaN, imap.getInterpolated(10), EPS);
     }
 
     @Test
     public void testGetInterpolatedCenterPoint()
             throws Exception {
-        assertEquals(150.0, imap.getInterpolated(15), 0.000001);
+        assertEquals(150.0, imap.getInterpolated(15), EPS);
     }
 
     @Test
     public void testGetInterpolated()
             throws Exception {
-        assertEquals(120.0, imap.getInterpolated(12), 0.000001);
+        assertEquals(120.0, imap.getInterpolated(12), EPS);
     }
 
     @Test
     public void testGetInterpolatedNoA()
             throws Exception {
-        assertEquals(100.0, imap.getInterpolated(5), 0.000001);
+        assertEquals(100.0, imap.getInterpolated(5), EPS);
     }
 
     @Test
     public void testGetInterpolatedNoB()
             throws Exception {
-        assertEquals(400.0, imap.getInterpolated(55), 0.000001);
+        assertEquals(400.0, imap.getInterpolated(55), EPS);
     }
 
     @Test
     public void testGetInterpolatedBoundaries()
             throws Exception {
-        assertEquals(100.0, imap.getInterpolated(10), 0.000001);
-        assertEquals(200.0, imap.getInterpolated(20), 0.000001);
-        assertEquals(400.0, imap.getInterpolated(30), 0.000001);
+        assertEquals(100.0, imap.getInterpolated(10), EPS);
+        assertEquals(200.0, imap.getInterpolated(20), EPS);
+        assertEquals(400.0, imap.getInterpolated(30), EPS);
     }
 
 }
