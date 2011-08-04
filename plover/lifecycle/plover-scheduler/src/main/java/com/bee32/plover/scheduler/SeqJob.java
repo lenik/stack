@@ -1,10 +1,10 @@
-package com.bee32.sem.world.monetary;
+package com.bee32.plover.scheduler;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-public class ContJob
+public class SeqJob
         implements Job {
 
     @Override
