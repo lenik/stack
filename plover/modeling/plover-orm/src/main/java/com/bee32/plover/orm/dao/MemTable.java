@@ -263,10 +263,14 @@ public class MemTable
     }
 
     @Override
-    public void deleteAll(ICriteriaElement... criteriaElements) {
+    public int deleteAll(ICriteriaElement... criteriaElements) {
         List<Entity<?>> list = list(criteriaElements);
-        for (Entity<?> entity : list)
-            delete(entity);
+        int count = 0;
+        for (Entity<?> entity : list) {
+            if (delete(entity))
+                count++;
+        }
+        return count;
     }
 
     @Override
