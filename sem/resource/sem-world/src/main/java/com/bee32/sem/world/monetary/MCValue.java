@@ -281,8 +281,8 @@ public class MCValue
         if (fxrProvider == null)
             throw new NullPointerException("fxrProvider");
 
-        Float _fxr = fxrProvider.getLatestFxr(currency, FxrUsage.MIDDLE);
-        if (_fxr == null)
+        float _fxr = fxrProvider.getLatestFxr(currency, FxrUsage.MIDDLE);
+        if (Float.isNaN(_fxr))
             throw new FxrQueryException("The FXR for the specified quote currency is not defined: " + currency);
 
         BigDecimal fxr = BigDecimal.valueOf(_fxr);
