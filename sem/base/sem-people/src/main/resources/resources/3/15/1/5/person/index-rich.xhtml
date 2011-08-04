@@ -146,6 +146,13 @@
 
                             <p:column>
                                 <f:facet name="header">
+                                    <h:outputText value="持有者" />
+                                </f:facet>
+                                <h:outputText value="#{owner.fullName}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
                                     <h:outputText value="创建日期" />
                                 </f:facet>
 								<h:outputText value="#{person.createdDate}">
@@ -153,6 +160,13 @@
 										timeZone="Asia/Shanghai" />
 								</h:outputText>
 							</p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="所有人" />
+                                </f:facet>
+                                <h:outputText value="#{person.owner.name}"/>
+                            </p:column>
 
 						</p:dataTable>
 					</p:tab>

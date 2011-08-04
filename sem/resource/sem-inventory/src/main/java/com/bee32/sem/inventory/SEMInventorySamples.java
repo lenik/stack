@@ -27,6 +27,10 @@ public class SEMInventorySamples
     public static StockLocation area2 = new StockLocation();
     public static StockLocation hokaidou = new StockLocation();
 
+    public static StockWarehouse stockWarehouseRawMaterialOne = new StockWarehouse();
+    public static StockLocation loc1 = new StockLocation();
+    public static StockLocation loc11 = new StockLocation();
+
     public static Material cskdp = new Material();
     public static Material gundam = new Material();
 
@@ -54,6 +58,16 @@ public class SEMInventorySamples
         hokaidou.setAddress("5番3号");
         hokaidou.setWarehouse(stockWarehouse);
         hokaidou.setParent(area1);
+
+        stockWarehouseRawMaterialOne.setName("1#原材料仓库");
+        stockWarehouseRawMaterialOne.setLabel("1#原材料仓库");
+
+        loc1.setAddress("第一排");
+        loc1.setWarehouse(stockWarehouseRawMaterialOne);
+
+        loc11.setAddress("第一号");
+        loc11.setWarehouse(stockWarehouseRawMaterialOne);
+        loc11.setParent(loc1);
 
         MaterialPreferredLocation cskdpPL1 = new MaterialPreferredLocation();
         cskdpPL1.setMaterial(cskdp);
@@ -125,6 +139,9 @@ public class SEMInventorySamples
 
         addBulk(area1, area2);
         add(hokaidou);
+
+        add(stockWarehouseRawMaterialOne);
+        addBulk(loc1, loc11);
 
         addBulk(catCard, cardNature, cardBeast, cardEmotion, emotSad, emotLone, emotBlue);
 
