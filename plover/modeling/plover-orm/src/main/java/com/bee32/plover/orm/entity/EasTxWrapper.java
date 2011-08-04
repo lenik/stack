@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.free.IllegalUsageError;
 import javax.servlet.ServletRequest;
 
 import org.hibernate.LockMode;
@@ -91,14 +92,21 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Override
     public K save(E entity) {
         checkSave();
-        return (K) getDao().save(entity);
+
+        EntityDao<E, K> dao = getDao();
+        K id = (K) dao.save(entity);
+        dao.flush();
+        return id;
     }
 
     @Transactional(readOnly = false)
     @Override
     public void update(E entity) {
         checkUpdate();
-        getDao().update(entity);
+
+        EntityDao<E, K> dao = getDao();
+        dao.update(entity);
+        dao.flush();
     }
 
     @Transactional(readOnly = true)
@@ -123,7 +131,10 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Override
     public void saveAll(E... entities) {
         checkSave();
-        getDao().saveAll(entities);
+
+        EntityDao<E, K> dao = getDao();
+        dao.saveAll(entities);
+        dao.flush();
     }
 
     @Transactional(readOnly = true)
@@ -172,14 +183,20 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         if (haveOld)
             checkUpdate();
 
-        getDao().saveOrUpdateAll(entities);
+        EntityDao<E, K> dao = getDao();
+        dao.saveOrUpdateAll(entities);
+        dao.flush();
     }
 
     @Transactional(readOnly = false)
     @Override
     public boolean delete(Object entity) {
         checkDelete();
-        return getDao().delete(entity);
+
+        EntityDao<E, K> dao = getDao();
+        boolean status = dao.delete(entity);
+        dao.flush();
+        return status;
     }
 
     @Transactional(readOnly = true)
@@ -245,7 +262,10 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Override
     public void evict(E entity)
             throws DataAccessException {
-        getDao().evict(entity);
+        EntityDao<E, K> dao = getDao();
+        // Comment out for strict mode.
+        // dao.flush();
+        dao.evict(entity);
     }
 
     // TODO How to use replicate?
@@ -256,10 +276,10 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         getDao().replicate(entity, replicationMode);
     }
 
-    // XXX Does flush useful here?
     @Override
+    @Deprecated
     public void flush() {
-        getDao().flush();
+        throw new IllegalUsageError("ETW.flush should never be called.");
     }
 
     @Transactional(readOnly = true)
@@ -273,28 +293,43 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Override
     public boolean deleteById(K id) {
         checkDelete();
-        return getDao().deleteById(id);
+
+        EntityDao<E, K> dao = getDao();
+        boolean status = getDao().deleteById(id);
+        dao.flush();
+        return status;
     }
 
     @Transactional(readOnly = false)
     @Override
-    public void deleteAll(ICriteriaElement... criteria) {
+    public int deleteAll(ICriteriaElement... criteria) {
         checkDelete();
-        getDao().deleteAll(criteria);
+
+        EntityDao<E, K> dao = getDao();
+        int count = dao.deleteAll(criteria);
+        dao.flush();
+        return count;
     }
 
     @Transactional(readOnly = false)
     @Override
     public boolean deleteByKey(K key) {
         checkDelete();
-        return getDao().deleteByKey(key);
+
+        EntityDao<E, K> dao = getDao();
+        boolean status = dao.deleteByKey(key);
+        dao.flush();
+        return status;
     }
 
     @Transactional(readOnly = false)
     @Override
     public void deleteAll() {
         checkDelete();
-        getDao().deleteAll();
+
+        EntityDao<E, K> dao = getDao();
+        dao.deleteAll();
+        dao.flush();
     }
 
     @Transactional(readOnly = true)
