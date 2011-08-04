@@ -17,6 +17,7 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockPeriod;
 import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.people.SEMPeopleUnit;
 import com.bee32.sem.process.SEMProcessUnit;
 import com.bee32.sem.world.SEMWorldUnit;
@@ -44,6 +45,8 @@ public class SEMInventoryUnit
 
         add(StockOrder.class);
         add(StockOrderItem.class);
+
+        add(StockTransfer.class);
     }
 
 }

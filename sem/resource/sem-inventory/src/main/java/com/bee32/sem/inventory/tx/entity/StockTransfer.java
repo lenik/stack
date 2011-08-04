@@ -41,7 +41,6 @@ public class StockTransfer
      *
      * @see StockOrderSubject#XFER_OUT
      */
-    @NaturalId
     @OneToOne(optional = false)
     @Cascade(CascadeType.ALL)
     public StockOrder getSource() {
@@ -57,8 +56,7 @@ public class StockTransfer
      *
      * @see StockOrderSubject#XFER_IN
      */
-    @NaturalId
-    @OneToOne(optional = false)
+    @OneToOne
     @Cascade(CascadeType.ALL)
     public StockOrder getDest() {
         return dest;
@@ -80,16 +78,25 @@ public class StockTransfer
         this.transferredBy = transferredBy;
     }
 
-    @Override
-    protected Serializable naturalId() {
-        return new IdComposite(naturalId(source), naturalId(dest));
+
+    @ManyToOne
+    public StockWarehouse getSourceWarehouse() {
+        return sourceWarehouse;
     }
 
-    @Override
-    protected CriteriaElement selector(String prefix) {
-        return new And(//
-                selector(prefix + "source", source), //
-                selector(prefix + "dest", dest));
+    public void setSourceWarehouse(StockWarehouse sourceWarehouse) {
+        this.sourceWarehouse = sourceWarehouse;
     }
+
+    @ManyToOne
+    public StockWarehouse getDestWarehouse() {
+        return destWarehouse;
+    }
+
+    public void setDestWarehouse(StockWarehouse destWarehouse) {
+        this.destWarehouse = destWarehouse;
+    }
+
+
 
 }

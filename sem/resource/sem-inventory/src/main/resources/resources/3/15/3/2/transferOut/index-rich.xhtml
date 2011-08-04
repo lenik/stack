@@ -13,7 +13,7 @@
 
 <ui:composition template="/template/primefaces.xhtml">
 
-    <ui:define name="title">调拨-调出</ui:define>
+    <ui:define name="title">调拨-调出管理</ui:define>
 
     <ui:define name="content">
 
@@ -112,8 +112,36 @@
 			<p:panel header="#{transferOutAdminBean.subject.displayName}">
 
 				<t:panelGrid columns="4">
+                    <h:outputLabel value="目标仓库"/>
+                    <t:panelGroup colspan="3">
+                        <p:selectOneMenu
+                            value="#{transferOutAdminBean.stockTransfer.destWarehouse.id}"
+                            disabled="#{!transferOutAdminBean.editable}"
+                            style="width:200px;">
+                            <f:selectItem itemValue=""
+                                itemLabel="--选择仓库--" />
+                            <f:selectItems
+                                value="#{transferOutAdminBean.stockWarehouses}" />
+                        </p:selectOneMenu>
+                    </t:panelGroup>
 
-					<h:outputText value="时间" />
+                    <h:outputLabel value="调拨人员"/>
+                    <t:panelGroup colspan="3">
+                        <p:inputText id="transferredBy" readonly="true"
+                            value="#{transferOutAdminBean.stockTransfer.transferredBy.displayName}"
+                            disabled="#{!transferOutAdminBean.editable}"
+                            style="width:200px;" />
+                        <p:commandButton value="..."
+                            onclick="personHolderDlg.show();"
+                            disabled="#{!transferOutAdminBean.editable}" />
+                    </t:panelGroup>
+
+
+                    <t:panelGroup colspan="4">
+                        <hr />
+                    </t:panelGroup>
+
+                    <h:outputText value="时间" />
                     <h:outputText value="#{transferOutAdminBean.stockOrder.createdDate}">
                         <f:convertDateTime pattern="yyyy-MM-dd"
                             timeZone="Asia/Shanghai" />
@@ -454,6 +482,92 @@
             </p:confirmDialog>
         </h:form>
 
-	</ui:define>
+        <h:form id="personForm">
+            <p:dialog header="选择联系人" widgetVar="personHolderDlg"
+                modal="true" height="400" width="640">
+                <h:panelGroup>
+
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="联系人名字全部或部份:" />
+                        <p:inputText
+                            value="#{userAdminBean.personPattern}" />
+                        <p:commandButton value="查找"
+                            actionListener="#{userAdminBean.findPerson}"
+                            update="persons" async="true" />
+                    </h:panelGrid>
+                    <p:dataTable id="persons" var="person"
+                        value="#{userAdminBean.persons}"
+                        resizableColumns="true"
+                        selection="#{userAdminBean.selectedPerson}"
+                        selectionMode="single" rowIndexVar="rowIndex">
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="序号" />
+                            </f:facet>
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="姓名" />
+                            </f:facet>
+                            <h:outputText value="#{person.name}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="性别" />
+                            </f:facet>
+                            <h:outputText value="#{person.sexText}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="生日" />
+                            </f:facet>
+                            <h:outputText value="#{person.birthday}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="证件类型" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{person.sidType.label}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="证件号码" />
+                            </f:facet>
+                            <h:outputText value="#{person.sid}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="户籍" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{person.censusRegister}" />
+                        </p:column>
+
+                    </p:dataTable>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="确定"
+                            actionListener="#{userAdminBean.choosePerson}"
+                            oncomplete="personHolderDlg.hide();"
+                            update="mainFrom:transferredBy" async="true" />
+                        <p:commandButton value="取消"
+                            oncomplete="personHolderDlg.hide();" />
+                    </h:panelGrid>
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
+    </ui:define>
 </ui:composition>
 </html>
