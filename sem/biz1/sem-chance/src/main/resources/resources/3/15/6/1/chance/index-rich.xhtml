@@ -612,7 +612,7 @@
                 <t:panelGrid columns="3" id="quotationItemDetail">
                     <h:outputText value="物料:" />
                     <t:panelGroup colspan="2">
-                        <h:outputText value="#{chanceBean.selectedQuotationItem.material}" />
+                        <h:outputText value="#{chanceBean.selectedQuotationItem.material.name}" />
                     </t:panelGroup>
 
                     <h:outputText value="基础价格:" />
@@ -620,41 +620,49 @@
                         <h:outputText value="#{chanceBean.selectedQuotationItem.basePrice.price}" />
                     </t:panelGroup>
 
+                    <h:outputText value="折扣" />
+                    <t:panelGroup colspan="2" >
+                        <t:panelGrid columns="3" id="discount">
+                            <h:outputText id="outputDiscount" value="#{chanceBean.selectedQuotationItem.discount}" />
+                            <p:inputText id="inputDiscount" value="#{chanceBean.selectedQuotationItem.discount}" />
+                            <p:commandLink id="editDiscount" title="修改" actionListener="#{chanceBean.editDiscount}"
+                                update="quotationForm:discount, prompting">
+                                <span class="ui-icon ui-icon-pencil"></span>
+                            </p:commandLink>
+                            <p:commandLink id="sureDiscount" title="确定" actionListener="#{chanceBean.sureDiscount}"
+                                update="quotationForm:discount">
+                                <span class="ui-icon ui-icon-check"></span>
+                            </p:commandLink>
+                        </t:panelGrid>
+                    </t:panelGroup>
+
                     <h:outputText value="单价:" />
                     <t:panelGroup id="unitPrice" colspan="2">
-                        <t:panelGrid columns="5">
-                            <h:outputText value="#{chanceBean.selectedQuotationItem.viewPrice}"
-                                rendered="#{!chanceBean.quotationItemPriceRendered}" />
-                            <p:inputText value="#{chanceBean.selectedQuotationItem.viewPrice}"
-                                rendered="#{chanceBean.quotationItemPriceRendered}">
-                            </p:inputText>
-                            <p:commandLink title="修改" actionListener="#{chanceBean.editPrice}"
-                                rendered="#{!chanceBean.quotationItemPriceRendered}"
+                        <t:panelGrid columns="3">
+                            <h:outputText id="outputPrice" value="#{chanceBean.selectedQuotationItem.viewPrice}" />
+                            <p:inputText id="inputPrice" value="#{chanceBean.selectedQuotationItem.viewPrice}" />
+                            <p:commandLink id="editPrice" title="修改" actionListener="#{chanceBean.editPrice}"
                                 update="quotationForm:unitPrice, prompting">
                                 <span class="ui-icon ui-icon-pencil"></span>
                             </p:commandLink>
-                            <p:commandLink title="确定" actionListener="#{chanceBean.calculatePriceChange}"
-                                update="quotationForm:amount_quotationItem,quotationForm:unitPrice"
-                                rendered="#{chanceBean.quotationItemPriceRendered}">
+                            <p:commandLink id="surePrice" title="确定" actionListener="#{chanceBean.calculatePriceChange}"
+                                update="quotationForm:unitPrice">
                                 <span class="ui-icon ui-icon-check"></span>
                             </p:commandLink>
                         </t:panelGrid>
                     </t:panelGroup>
 
                     <h:outputText value="数量" />
-                    <t:panelGroup id="number" colspan="2">
-                        <t:panelGrid columns="5">
-                            <h:outputText value="#{chanceBean.selectedQuotationItem.quantity}"
-                                rendered="#{!chanceBean.quotationItemNumberRendered}" />
-                            <p:inputText value="#{chanceBean.selectedQuotationItem.quantity}"
-                                rendered="#{chanceBean.quotationItemNumberRendered}" />
-                            <p:commandLink title="修改" actionListener="#{chanceBean.editQuantity}"
-                                update="quotationForm:number" rendered="#{!chanceBean.quotationItemNumberRendered}">
+                    <t:panelGroup id="quantity" colspan="2">
+                        <t:panelGrid columns="3">
+                            <h:outputText id="outputQuantity" value="#{chanceBean.selectedQuotationItem.quantity}" />
+                            <p:inputText id="inputQuantity" value="#{chanceBean.selectedQuotationItem.quantity}" />
+                            <p:commandLink id="editQuantity" title="修改" actionListener="#{chanceBean.editQuantity}"
+                                update="quotationForm:quantity">
                                 <span class="ui-icon ui-icon-pencil"></span>
                             </p:commandLink>
-                            <p:commandLink title="确定" actionListener="#{chanceBean.calculateNumberChange}"
-                                update="quotationForm:amount_quotationItem,quotationForm:number"
-                                rendered="#{chanceBean.quotationItemNumberRendered}">
+                            <p:commandLink id="sureQuantity" title="确定"
+                                actionListener="#{chanceBean.calculateNumberChange}" update="quotationForm:quantity">
                                 <span class="ui-icon ui-icon-check"></span>
                             </p:commandLink>
                         </t:panelGrid>

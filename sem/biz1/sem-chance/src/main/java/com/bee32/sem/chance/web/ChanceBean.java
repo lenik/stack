@@ -81,6 +81,21 @@ public class ChanceBean
     static final String BUTTON_QUOTATION_DELETE = "chanceForm:chanceDeleteQuotationButton";
     static final String BUTTON_QUOTATION_VIEW = "chanceForm:chanceViewQuotationButton";
 
+    static final String OUTPUT_DISCOUNT = "quotationForm:outputDiscount";
+    static final String INPUT_DISCOUNT = "quotationForm:inputDiscount";
+    static final String COMMANDLINK_EDITDISCOUNT = "quotationForm:editDiscount";
+    static final String COMMANDLINK_SUREDISCOUNT = "quotationForm:sureDiscount";
+
+    static final String OUTPUT_PRICE = "quotationForm:outputPrice";
+    static final String INPUT_PRICE = "quotationForm:inputPrice";
+    static final String COMMANDLINK_EDITPRICE = "quotationForm:editPrice";
+    static final String COMMANDLINK_SUREPIRCE = "quotationForm:surePrice";
+
+    static final String OUTPUT_QUANTITY = "quotationForm:outputQuantity";
+    static final String INPUT_QUANTITY = "quotationForm:inputQuantity";
+    static final String COMMANDLINK_EDITQUANTITY = "quotationForm:editQuantity";
+    static final String COMMANDLINK_SUREQUANTITY = "quotationForm:sureQuantity";
+
     // 判断是不是在查找状态
     boolean isSearching;
 
@@ -107,6 +122,7 @@ public class ChanceBean
     // quotation fields
 
     boolean quotationEdit;
+    boolean isDiscountEdting;
     boolean isPriceEditing;
     boolean isQuantityEditing;
 
@@ -117,33 +133,37 @@ public class ChanceBean
     ChanceQuotationItemDto selectedQuotationItem;
     MCValue temPrice = new MCValue();
     BigDecimal temQuantity = new BigDecimal(0);
-    boolean quotationItemPriceRendered;
-    boolean quotationItemNumberRendered;
 
     MaterialCategoryTreeModel materialTree;
     List<MaterialDto> materialList;
     MaterialDto selectedMaterial;
 
     ChanceBean() {
-        CommandButton button_new = (CommandButton) findComponent(BUTTON_CHANCE_NEW);
-        button_new.setDisabled(false);
-        CommandButton button_edit = (CommandButton) findComponent(BUTTON_CHANCE_EDIT);
-        button_edit.setDisabled(false);
-        CommandButton button_delete = (CommandButton) findComponent(BUTTON_CHANCE_DELETE);
-        button_delete.setDisabled(false);
-        CommandButton button_add = (CommandButton) findComponent(BUTTON_CHANCE_ADD);
-        button_add.setDisabled(true);
-        CommandButton button_reset = (CommandButton) findComponent(BUTTON_CHANCE_RESET);
-        button_reset.setDisabled(true);
-        CommandButton button_detail = (CommandButton) findComponent(BUTTON_CHANCE_DETAIL);
-        button_detail.setDisabled(true);
+        findComponentEx(BUTTON_CHANCE_NEW).setEnabled(true);
+        findComponentEx(BUTTON_CHANCE_EDIT).setEnabled(true);
+        findComponentEx(BUTTON_CHANCE_DELETE).setEnabled(true);
+        findComponentEx(BUTTON_CHANCE_ADD).setEnabled(false);
+        findComponentEx(BUTTON_CHANCE_RESET).setEnabled(false);
+        findComponentEx(BUTTON_CHANCE_DETAIL).setEnabled(false);
 
-        CommandButton button_relating = (CommandButton) findComponent(BUTTON_CHANCE_RELATEACTION);
-        button_relating.setDisabled(true);
-        CommandButton button_unrelating = (CommandButton) findComponent(BUTTON_CHANCE_UNRELATEACTION);
-        button_unrelating.setDisabled(true);
-        CommandButton button_viewAction = (CommandButton) findComponent(BUTTON_CHANCE_VIEWACTION);
-        button_viewAction.setDisabled(true);
+        findComponentEx(BUTTON_CHANCE_RELATEACTION).setEnabled(false);
+        findComponentEx(BUTTON_CHANCE_UNRELATEACTION).setEnabled(false);
+        findComponentEx(BUTTON_CHANCE_VIEWACTION).setEnabled(false);
+
+        findComponent(OUTPUT_DISCOUNT).setRendered(true);
+        findComponent(INPUT_DISCOUNT).setRendered(false);
+        findComponent(COMMANDLINK_EDITDISCOUNT).setRendered(true);
+        findComponent(COMMANDLINK_SUREDISCOUNT).setRendered(false);
+
+        findComponent(OUTPUT_PRICE).setRendered(true);
+        findComponent(INPUT_PRICE).setRendered(false);
+        findComponent(COMMANDLINK_EDITPRICE).setRendered(true);
+        findComponent(COMMANDLINK_SUREPIRCE).setRendered(false);
+
+        findComponent(OUTPUT_QUANTITY).setRendered(true);
+        findComponent(INPUT_QUANTITY).setRendered(false);
+        findComponent(COMMANDLINK_EDITQUANTITY).setRendered(true);
+        findComponent(COMMANDLINK_SUREQUANTITY).setRendered(false);
 
         initMaterialCategoryTree();
     }
@@ -176,7 +196,7 @@ public class ChanceBean
 
     public void editQuotation() {
         if (selectedQuotation != null)
-            activeQuotation = selectedQuotation;
+            activeQuotation = reload(selectedQuotation);
         quotationEdit = false;
     }
 
@@ -201,19 +221,44 @@ public class ChanceBean
         // XXX
         MCValue _price = new MCValue(selectedQuotationItem.getPriceCurrency(), selectedQuotationItem.getViewPrice());
         selectedQuotationItem.setPrice(_price);
-        quotationItemPriceRendered = !quotationItemPriceRendered;
+        findComponent(OUTPUT_PRICE).setRendered(true);
+        findComponent(INPUT_PRICE).setRendered(false);
+        findComponent(COMMANDLINK_EDITPRICE).setRendered(true);
+        findComponent(COMMANDLINK_SUREPIRCE).setRendered(false);
         isPriceEditing = false;
     }
 
     public void calculateNumberChange() {
-        quotationItemNumberRendered = !quotationItemNumberRendered;
+        findComponent(OUTPUT_QUANTITY).setRendered(true);
+        findComponent(INPUT_QUANTITY).setRendered(false);
+        findComponent(COMMANDLINK_EDITQUANTITY).setRendered(true);
+        findComponent(COMMANDLINK_SUREQUANTITY).setRendered(false);
         isQuantityEditing = false;
     }
 
     public void editPrice() {
-        quotationItemPriceRendered = !quotationItemPriceRendered;
+        findComponent(OUTPUT_PRICE).setRendered(false);
+        findComponent(INPUT_PRICE).setRendered(true);
+        findComponent(COMMANDLINK_EDITPRICE).setRendered(false);
+        findComponent(COMMANDLINK_SUREPIRCE).setRendered(true);
         temPrice = selectedQuotationItem.getPrice();
         isPriceEditing = true;
+    }
+
+    public void editDiscount() {
+        findComponent(OUTPUT_DISCOUNT).setRendered(false);
+        findComponent(INPUT_DISCOUNT).setRendered(true);
+        findComponent(COMMANDLINK_EDITDISCOUNT).setRendered(false);
+        findComponent(COMMANDLINK_SUREDISCOUNT).setRendered(true);
+        isDiscountEdting = true;
+    }
+
+    public void sureDiscount() {
+        findComponent(OUTPUT_DISCOUNT).setRendered(true);
+        findComponent(INPUT_DISCOUNT).setRendered(false);
+        findComponent(COMMANDLINK_EDITDISCOUNT).setRendered(true);
+        findComponent(COMMANDLINK_SUREDISCOUNT).setRendered(false);
+        isDiscountEdting = false;
     }
 
     public List<SelectItem> getChanceActionStyles() {
@@ -222,6 +267,7 @@ public class ChanceBean
                 chanceActionStyleList);
         return UIHelper.selectItemsFromDict(chanceActionStyleDtoList);
     }
+
 // public void uneditPrice() {
 // quotationItemPriceRendered = !quotationItemPriceRendered;
 // selectedQuotationItem.setPrice(temPrice);
@@ -233,7 +279,10 @@ public class ChanceBean
 // }
 
     public void editQuantity() {
-        quotationItemNumberRendered = !quotationItemNumberRendered;
+        findComponent(OUTPUT_QUANTITY).setRendered(false);
+        findComponent(INPUT_QUANTITY).setRendered(true);
+        findComponent(COMMANDLINK_EDITQUANTITY).setRendered(false);
+        findComponent(COMMANDLINK_SUREQUANTITY).setRendered(true);
         temQuantity = selectedQuotationItem.getQuantity();
         isQuantityEditing = true;
     }
@@ -250,6 +299,21 @@ public class ChanceBean
     public void uneditQuotationItem() {
         selectedQuotationItem.setQuantity(temQuantity);
         selectedQuotationItem.setPrice(temPrice);
+        findComponent(OUTPUT_DISCOUNT).setRendered(true);
+        findComponent(OUTPUT_PRICE).setRendered(true);
+        findComponent(OUTPUT_QUANTITY).setRendered(true);
+
+        findComponent(INPUT_DISCOUNT).setRendered(false);
+        findComponent(INPUT_PRICE).setRendered(false);
+        findComponent(INPUT_QUANTITY).setRendered(false);
+
+        findComponent(COMMANDLINK_EDITDISCOUNT).setRendered(true);
+        findComponent(COMMANDLINK_EDITPRICE).setRendered(true);
+        findComponent(COMMANDLINK_EDITQUANTITY).setRendered(true);
+
+        findComponent(COMMANDLINK_SUREDISCOUNT).setRendered(false);
+        findComponent(COMMANDLINK_SUREPIRCE).setRendered(false);
+        findComponent(COMMANDLINK_EDITQUANTITY).setRendered(false);
     }
 
     public void saveQuotation() {
@@ -269,12 +333,9 @@ public class ChanceBean
             serviceFor(ChanceQuotation.class).saveOrUpdate(quotationEntity);
             quotations.add(activeQuotation);
             if (selectedQuotation == null) {
-                CommandButton button_quotation_edit = (CommandButton) findComponent(BUTTON_QUOTATION_EDIT);
-                button_quotation_edit.setDisabled(true);
-                CommandButton button_quotation_delete = (CommandButton) findComponent(BUTTON_QUOTATION_DELETE);
-                button_quotation_delete.setDisabled(true);
-                CommandButton button_quotation_view = (CommandButton) findComponent(BUTTON_QUOTATION_VIEW);
-                button_quotation_view.setDisabled(true);
+                findComponentEx(BUTTON_QUOTATION_EDIT).setEnabled(false);
+                findComponentEx(BUTTON_QUOTATION_DELETE).setEnabled(false);
+                findComponentEx(BUTTON_QUOTATION_VIEW).setEnabled(false);
             }
             uiLogger.info("提示", "保存报价单成功");
         } catch (Exception e) {
@@ -985,22 +1046,6 @@ public class ChanceBean
 
     public void setTemQuantity(BigDecimal temQuantity) {
         this.temQuantity = temQuantity;
-    }
-
-    public boolean isQuotationItemPriceRendered() {
-        return quotationItemPriceRendered;
-    }
-
-    public void setQuotationItemPriceRendered(boolean quotationItemPriceRendered) {
-        this.quotationItemPriceRendered = quotationItemPriceRendered;
-    }
-
-    public boolean isQuotationItemNumberRendered() {
-        return quotationItemNumberRendered;
-    }
-
-    public void setQuotationItemNumberRendered(boolean quotationItemNumberRendered) {
-        this.quotationItemNumberRendered = quotationItemNumberRendered;
     }
 
     public MaterialCategoryTreeModel getMaterialTree() {
