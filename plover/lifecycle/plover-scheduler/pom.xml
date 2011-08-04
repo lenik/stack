@@ -9,9 +9,9 @@
     <version>0.3.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
-            <groupId>opensymphony</groupId>
+            <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-            <version>1.6.3</version>
+            <version>2.0.2</version>
         </dependency>
     </dependencies>
     <name>Plover :: Lifecycle :: Scheduler</name>
