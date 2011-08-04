@@ -11,6 +11,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NaturalId;
+
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
 
@@ -107,6 +109,7 @@ public class StockOrder
     /**
      * 单据序列号。Serial ID, or Second ID.
      */
+    @NaturalId
     @Column(length = 40)
     public String getSerial() {
         return serial;
