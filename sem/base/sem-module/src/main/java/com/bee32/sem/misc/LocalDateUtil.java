@@ -15,7 +15,7 @@ public class LocalDateUtil {
         return (int) (date.getTime() / 86400000);
     }
 
-    public static Date startOfTheNextDays(Date date, int days) {
+    public static Date beginOfTheNextDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DATE, days);
@@ -26,12 +26,18 @@ public class LocalDateUtil {
         return cal.getTime();
     }
 
-    public static Date startOfTheDay(Date date) {
-        return startOfTheNextDays(date, 0);
+    public static Date endOfTheNextDays(Date date, int days) {
+        Date begin = beginOfTheNextDays(date, days + 1);
+        Date prev = new Date(begin.getTime() - 1);
+        return prev;
     }
 
-    public static Date startOfTheNextDay(Date date) {
-        return startOfTheNextDays(date, 1);
+    public static Date beginOfTheDay(Date date) {
+        return beginOfTheNextDays(date, 0);
+    }
+
+    public static Date endOfTheDay(Date date) {
+        return endOfTheNextDays(date, 0);
     }
 
 }

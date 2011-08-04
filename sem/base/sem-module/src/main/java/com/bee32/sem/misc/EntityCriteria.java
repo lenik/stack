@@ -14,8 +14,8 @@ public class EntityCriteria
      */
     public static CriteriaElement betweenEx(String property, Date beginDate, Date endDate) {
         return new Between(property, //
-                LocalDateUtil.startOfTheDay(beginDate), //
-                LocalDateUtil.startOfTheNextDay(endDate));
+                LocalDateUtil.beginOfTheDay(beginDate), //
+                LocalDateUtil.endOfTheDay(endDate));
     }
 
     public static CriteriaElement createdBetweenEx(Date beginDate, Date endDate) {
