@@ -1,8 +1,12 @@
 package com.bee32.plover.orm.feaCat;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.bee32.plover.orm.builtin.PloverConf;
 
@@ -13,7 +17,8 @@ public class Tiger
 
     private static final long serialVersionUID = 1L;
 
-    private int power;
+    int power;
+    Date birthday;
 
     PloverConf conf;
 
@@ -31,6 +36,15 @@ public class Tiger
 
     public void setPower(int power) {
         this.power = power;
+    }
+
+    @Temporal(TemporalType.DATE)
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     @ManyToOne

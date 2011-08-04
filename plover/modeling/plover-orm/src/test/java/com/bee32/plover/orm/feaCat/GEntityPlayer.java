@@ -1,6 +1,7 @@
 package com.bee32.plover.orm.feaCat;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -12,8 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.criteria.hibernate.Alias;
-import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
@@ -41,23 +41,30 @@ public class GEntityPlayer
         return service;
     }
 
-    @Transactional
+    @Transactional(readOnly = false)
     public void doFill() {
         Tiger lucy = new Tiger("Lucy", "black");
-        Tiger child = new Tiger("Child", "pink");
+        lucy.setBirthday(new Date());
 
-        child.setParent(lucy);
+        ICriteriaElement selector = lucy.getSelector();
 
+        int count = asFor(Tiger.class).deleteAll(selector);
+        System.out.println("Deleted: " + count);
         asFor(Tiger.class).save(lucy);
-        asFor(Tiger.class).save(child);
+        asFor(Tiger.class).evict(lucy);
 
+        Tiger reload = asFor(Tiger.class).getFirst(selector);
+        Date birthday = reload.getBirthday();
+        System.out.println(birthday);
+
+        long time = birthday.getTime();
+        Date d2 = new Date(time);
+        System.out.println(d2);
     }
 
     @Transactional(readOnly = true)
     public void doList() {
-        List<Tiger> tigers = asFor(Tiger.class).list(//
-                new Alias("parent", "parent"), //
-                new Equals("parent.name", "Lucy"));
+        List<Tiger> tigers = asFor(Tiger.class).list();
 
         for (Tiger t : tigers)
             System.out.println("Tiger: " + t);
