@@ -1,6 +1,9 @@
 package com.bee32.sem.inventory.web;
 
+import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
@@ -17,12 +20,16 @@ import com.bee32.sem.frame.ui.SelectionAdapter;
 import com.bee32.sem.frame.ui.SelectionEvent;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.dto.MaterialPriceDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
+import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
+import com.bee32.sem.misc.i18n.CurrencyConfig;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.thing.ScaleItem;
 import com.bee32.sem.world.thing.Unit;
 import com.bee32.sem.world.thing.UnitConv;
@@ -56,8 +63,10 @@ public class MaterialSettingsBean
     ScaleItem activeScaleItem;
     ScaleItem selectedScale;
 
+    double value;
+    String currencyCode;
+
     List<MaterialDto> materialList;
-    MaterialDto selectedMaterial;
     MaterialDto activeMaterial;
 
     MaterialCategoryTreeModel materialCategorySelectTree;
@@ -68,6 +77,8 @@ public class MaterialSettingsBean
         activeScaleItem = new ScaleItem();
         UnitDto unit = new UnitDto().create();
         activeScaleItem.setUnit(unit);
+
+        currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
 
         initSelectCategoryTree();
         initMainTree();
@@ -129,18 +140,10 @@ public class MaterialSettingsBean
             public void itemSelected(SelectionEvent event) {
                 MaterialCategoryDto cad = (MaterialCategoryDto) event.getSelection();
                 List<Material> materials = serviceFor(Material.class).list(MaterialCriteria.categoryOf(cad.getId()));
-                materialList = DTOs.marshalList(MaterialDto.class, 0, materials);
+                materialList = DTOs.marshalList(MaterialDto.class, MaterialDto.PRICES, materials);
             }
 
         });
-    }
-
-    public void onRowSelect() {
-        activeMaterial = selectedMaterial;
-    }
-
-    public void onRowUnselect() {
-
     }
 
     public void initUnitConvList() {
@@ -163,11 +166,6 @@ public class MaterialSettingsBean
         cantEdit = false;
         activeUnitConv = new UnitConvDto().create();
     }
-
-// public void editUnitConvForm() {
-// activeUnitConv = selectedUnitConv;
-// activeUnitConv = reload(activeUnitConv);
-// }
 
     public void doAddScaleItem() {
         String id = activeScaleItem.getUnit().getId();
@@ -210,11 +208,6 @@ public class MaterialSettingsBean
         activeUnit = new UnitDto().create();
     }
 
-// public void editUnitForm() {
-// activeUnit = selectedUnit;
-// activeUnit = reload(activeUnit);
-// }
-
     public void doSaveUnit() {
         String stuId = activeUnit.getStdUnit().getId();
         UnitDto stdUnit = null;
@@ -251,6 +244,18 @@ public class MaterialSettingsBean
     public void editCategoryForm() {
         activeCategory = (MaterialCategoryDto) materialCategoryMainTree.getSelectedNode().getData();
         activeCategory = reload(activeCategory);
+    }
+
+    public void updatePrice() {
+        List<MaterialPrice> prices = activeMaterial.unmarshal().getPrices();
+        try {
+            Material material_entity = serviceFor(Material.class).getOrFail(activeMaterial.getId());
+            material_entity.setPrices(prices);
+            serviceFor(Material.class).saveOrUpdate(material_entity);
+            uiLogger.info("更新价格成功!");
+        } catch (Exception e) {
+            uiLogger.error("更新价格失败:" + e.getMessage(), e);
+        }
     }
 
     public void doSaveCategory() {
@@ -297,6 +302,17 @@ public class MaterialSettingsBean
         unitConvEditable = false;
     }
 
+    public void doAddMCValue() {
+        MaterialPriceDto mpd = new MaterialPriceDto().create();
+        mpd.setMaterial(activeMaterial);
+
+        Currency currency = Currency.getInstance(currencyCode);
+        MCValue mcv = new MCValue(currency, value);
+        mpd.setPrice(mcv);
+
+        activeMaterial.addPrice(mpd);
+    }
+
     public String onFlowProcess(FlowEvent event) {
         return event.getNewStep();
     }
@@ -311,6 +327,16 @@ public class MaterialSettingsBean
         List<Unit> unitList = serviceFor(Unit.class).list();
         List<UnitDto> unitDtoList = DTOs.marshalList(UnitDto.class, unitList);
         return UIHelper.selectItemsFromDict(unitDtoList);
+    }
+
+    public List<SelectItem> getCurrencies() {
+        List<Currency> currencyList = CurrencyConfig.list();
+        List<SelectItem> items = new ArrayList<SelectItem>();
+        for (Currency currency : currencyList) {
+            SelectItem item = new SelectItem(currency.getCurrencyCode(), CurrencyConfig.format(currency));
+            items.add(item);
+        }
+        return items;
     }
 
     public MaterialCategoryDto getActiveCategory() {
@@ -435,20 +461,28 @@ public class MaterialSettingsBean
         this.materialList = materialList;
     }
 
-    public MaterialDto getSelectedMaterial() {
-        return selectedMaterial;
-    }
-
-    public void setSelectedMaterial(MaterialDto selectedMaterial) {
-        this.selectedMaterial = selectedMaterial;
-    }
-
     public MaterialDto getActiveMaterial() {
         return activeMaterial;
     }
 
     public void setActiveMaterial(MaterialDto activeMaterial) {
         this.activeMaterial = activeMaterial;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
 }

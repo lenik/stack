@@ -192,7 +192,7 @@
                             <f:selectItems value="#{materialViewBean.currencies}" />
                         </p:selectOneMenu>
                     </t:panelGrid>
-                    <p:commandButton value="添加" onclick="addPriceConfirm.show();" />
+                    <p:commandButton value="添加" oncomplete="addPriceConfirm.show();" update="dialogForm:tempConfirm" />
                     <p:separator />
                     <h:outputText value="历史价格表:" />
                     <p:dataTable id="histPrice" var="item" value="#{materialViewBean.activeMaterial.prices}">
@@ -212,7 +212,8 @@
             </p:dialog>
 
             <p:dialog header="物料" widgetVar="materialDialog" height="600" width="700">
-                <t:panelGrid columns="5" id="material" columnClasses="material_dialog_label, material_dialog_txt,material_dialog_label, material_dialog_txt">
+                <t:panelGrid columns="5" id="material"
+                    columnClasses="material_dialog_label, material_dialog_txt,material_dialog_label, material_dialog_txt">
                     <h:outputText value="物料名称" />
                     <t:panelGroup colspan="4">
                         <p:inputText value="#{materialViewBean.activeMaterial.name}"
@@ -240,7 +241,8 @@
                     <h:outputText id="currentPrice" value="#{materialViewBean.activeMaterialPrice}" />
                     <t:panelGroup colspan="3">
                         <p:commandButton value="..." title="设置价格" actionListener="#{materialViewBean.createPriceForm}"
-                            oncomplete="materialPrice.show();" update="dialogForm:temp,dialogForm:histPrice" />
+                            oncomplete="materialPrice.show();" disabled="#{materialViewBean.editable}"
+                            update="dialogForm:temp,dialogForm:histPrice" />
                     </t:panelGroup>
 
                     <h:outputText value="主单位:" />
@@ -373,18 +375,15 @@
                     <p:commandButton value="..." title="添加物料设置" disabled="#{materialViewBean.editable}"
                         onclick="optionDialog.show();" />
 
-                    <t:panelGroup/>
-					<t:panelGroup colspan="4">
-						<p:commandButton value="保存"
-							actionListener="#{materialViewBean.doAddMaterial}"
-							update="main:materialList,note"
-							disabled="#{materialViewBean.editable}"
-							oncomplete="materialDialog.hide();" />
-						<p:commandButton value="取消"
-							disabled="#{materialViewBean.editable}"
-							onclick="materialDialog.hide();" />
-					</t:panelGroup>
-				</t:panelGrid>
+                    <t:panelGroup />
+                    <t:panelGroup colspan="4">
+                        <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}"
+                            update="main:materialList,note" disabled="#{materialViewBean.editable}"
+                            oncomplete="materialDialog.hide();" />
+                        <p:commandButton value="取消" disabled="#{materialViewBean.editable}"
+                            onclick="materialDialog.hide();" />
+                    </t:panelGroup>
+                </t:panelGrid>
 
 
 
@@ -506,7 +505,7 @@
 
             <p:dialog header="提示" severity="alert" widgetVar="addPriceConfirm" modal="true">
 
-                <t:panelGrid columns="2">
+                <t:panelGrid columns="2" id="tempConfirm">
                     <h:outputText value="确认价格:" />
                     <h:outputText value="#{materialViewBean.value}" />
 
