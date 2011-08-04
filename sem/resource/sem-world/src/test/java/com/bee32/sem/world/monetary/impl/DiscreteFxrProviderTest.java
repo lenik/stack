@@ -73,22 +73,30 @@ public class DiscreteFxrProviderTest
             throws FxrQueryException {
         Date date1 = parseDate("2011-07-23");
         Date date2 = parseDate("2011-08-03");
-        // int t1 = LocalDateUtil.dateInt(date1);
-        // int t2 = LocalDateUtil.dateInt(date2);
 
         // 6.4313
-        float usd1 = fxp.getFxr(date1, USD, FxrUsage.BUYING);
+        Float usd1 = fxp.getFxr(date1, USD, FxrUsage.BUYING);
         // 6.4228
-        float usd2 = fxp.getFxr(date2, USD, FxrUsage.BUYING);
+        Float usd2 = fxp.getFxr(date2, USD, FxrUsage.BUYING);
 
-        // 6.42705
-        float expected = (usd1 + usd2) / 2;
+        @SuppressWarnings("unused")
+        float expected = (usd1 + usd2) / 2; // = 6.42705
 
         long midTime = (date1.getTime() + date2.getTime()) / 2;
-        Date midDate = new Date(midTime); // 2011-7-28 12:00:00
-        Float mid = fxp.getFxr(midDate, USD, FxrUsage.BUYING);
 
-        assertEquals(expected, mid, epsilon);
+        // here: int truncation loss
+        Date midDate = new Date(midTime); // 2011-7-28 12:00:00
+
+        // 6.426664
+        float mid = fxp.getFxr(midDate, USD, FxrUsage.BUYING);
+
+        // // 0.0007227
+        // int t1 = LocalDateUtil.dayIndex(date1);
+        // int t2 = LocalDateUtil.dayIndex(date2);
+        // float eps = Math.abs((usd2 - usd1) / (t2 - t1));
+        // assertEquals(expected, mid, eps);
+
+        assertEquals(6.426664, mid, 0.00001);
     }
 
     static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");

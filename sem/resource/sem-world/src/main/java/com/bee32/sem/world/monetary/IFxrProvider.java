@@ -44,9 +44,9 @@ public interface IFxrProvider {
      *
      * @param unitCurrency
      *            The unit currency to be queried.
-     * @return <code>null</code> if the FXR for the specified unit currency is not defined.
+     * @return {@link Float#NaN} if the FXR for the specified unit currency is not defined.
      */
-    Float getLatestFxr(Currency unitCurrency, FxrUsage usage)
+    float getLatestFxr(Currency unitCurrency, FxrUsage usage)
             throws FxrQueryException;
 
     /**
@@ -57,9 +57,9 @@ public interface IFxrProvider {
     /**
      * Get the FXR of a specific unit currency towards the floor of a specific date.
      *
-     * @return <code>null</code> if none.
+     * @return {@link Float#NaN} if the desired FXR is not defined.
      */
-    Float getFxr(Date date, Currency unitCurrency, FxrUsage usage)
+    float getFxr(Date date, Currency unitCurrency, FxrUsage usage)
             throws FxrQueryException;
 
     void commit(FxrTable table);

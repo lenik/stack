@@ -5,16 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import com.bee32.plover.arch.EnterpriseService;
-import com.bee32.sem.misc.LocalDateUtil;
 import com.bee32.sem.misc.i18n.CurrencyConfig;
 import com.bee32.sem.misc.i18n.ICurrencyAware;
-import com.bee32.sem.world.math.InterpolatedMap;
 
 public abstract class AbstractFxrProvider
         extends EnterpriseService
         implements IFxrProvider, ICurrencyAware {
 
-    FxrUsage usage = FxrUsage.MIDDLE;
+    protected FxrUsage usage = FxrUsage.MIDDLE;
 
     // @Override
     // public Currency getQuoteCurrency() {
@@ -40,10 +38,16 @@ public abstract class AbstractFxrProvider
         return getFxrTable(new Date());
     }
 
+    @Override
+    public float getLatestFxr(Currency unitCurrency, FxrUsage usage)
+            throws FxrQueryException {
+        return getFxr(new Date(), unitCurrency, usage);
+    }
+
     static final int DEFAULT_TRACE_COUNT = 10;
 
     @Override
-    public Float getFxr(Date queryDate, Currency unitCurrency, FxrUsage usage)
+    public float getFxr(Date queryDate, Currency unitCurrency, FxrUsage usage)
             throws FxrQueryException {
         if (queryDate == null)
             throw new NullPointerException("date");
@@ -52,43 +56,14 @@ public abstract class AbstractFxrProvider
         if (usage == null)
             throw new NullPointerException("usage");
 
-        // OPT cache: date, unitCurrency, usage.
+        FxrMap fxrMap = getFxrMap(unitCurrency, usage);
 
-        List<FxrTable> tables = getFxrTableSeries(queryDate, DEFAULT_TRACE_COUNT);
+        double rate = fxrMap.eval(queryDate);
+        if (Double.isNaN(rate))
+            // throw new IllegalStateException("Have not enough samples for interpolation.");
+            return Float.NaN;
 
-        int intpMax = 3;
-        InterpolatedMap intpMap = new InterpolatedMap();
-
-        for (FxrTable table : tables) {
-            FxrRecord record = table.get(unitCurrency);
-            if (record == null)
-                continue;
-
-            Float rate = record.getRate(usage);
-            if (rate == null)
-                continue;
-
-            int dayx = LocalDateUtil.dayIndex(record.getDate());
-            intpMap.put(dayx, (double) rate);
-
-            if (intpMax-- <= 0)
-                break;
-        }
-
-        if (intpMap.isEmpty())
-            return null;
-
-        Double intpRate = intpMap.get(LocalDateUtil.dayIndex(queryDate));
-        if (intpRate == null)
-            return null;
-        else
-            return intpRate.floatValue();
-    }
-
-    @Override
-    public Float getLatestFxr(Currency unitCurrency, FxrUsage usage)
-            throws FxrQueryException {
-        return getFxr(new Date(), unitCurrency, usage);
+        return (float) rate;
     }
 
 }
