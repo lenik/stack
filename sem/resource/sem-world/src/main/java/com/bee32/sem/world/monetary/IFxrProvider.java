@@ -38,14 +38,6 @@ public interface IFxrProvider {
     FxrTable getLatestFxrTable();
 
     /**
-     * Get the FXR of a specific unit currency towards the floor of a specific date.
-     *
-     * @return <code>null</code> if none.
-     */
-    Float getFxr(Date date, Currency unitCurrency, FxrUsage usage)
-            throws FxrQueryException;
-
-    /**
      * Get the latest FXR entry.
      * <p>
      * The same to {@link #getLatestFxrTable()}, {@link FxrTable#getQuote(Currency)}.
@@ -56,5 +48,20 @@ public interface IFxrProvider {
      */
     Float getLatestFxr(Currency unitCurrency, FxrUsage usage)
             throws FxrQueryException;
+
+    /**
+     * @return Non-<code>null</code> self-managed FXR map.
+     */
+    FxrMap getFxrMap(Currency unitCurrency, FxrUsage usage);
+
+    /**
+     * Get the FXR of a specific unit currency towards the floor of a specific date.
+     *
+     * @return <code>null</code> if none.
+     */
+    Float getFxr(Date date, Currency unitCurrency, FxrUsage usage)
+            throws FxrQueryException;
+
+    void commit(FxrTable table);
 
 }

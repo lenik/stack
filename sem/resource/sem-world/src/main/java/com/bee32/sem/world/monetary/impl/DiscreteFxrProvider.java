@@ -16,8 +16,10 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.sem.misc.i18n.CurrencyConfig;
 import com.bee32.sem.world.monetary.AbstractFxrProvider;
 import com.bee32.sem.world.monetary.FxrCriteria;
+import com.bee32.sem.world.monetary.FxrMap;
 import com.bee32.sem.world.monetary.FxrRecord;
 import com.bee32.sem.world.monetary.FxrTable;
+import com.bee32.sem.world.monetary.FxrUsage;
 
 /**
  * 离散量外汇查询
@@ -103,6 +105,12 @@ public class DiscreteFxrProvider
         return series;
     }
 
+    @Override
+    public FxrMap getFxrMap(Currency unitCurrency, FxrUsage usage) {
+        return null;
+    }
+
+    @Override
     @Transactional(readOnly = false)
     public synchronized void commit(FxrTable table) {
 
