@@ -68,8 +68,8 @@ public abstract class AbstractFxrProvider
             if (rate == null)
                 continue;
 
-            int sday = LocalDateUtil.dateInt(record.getDate());
-            intpMap.put(sday, (double) rate);
+            int dayx = LocalDateUtil.dayIndex(record.getDate());
+            intpMap.put(dayx, (double) rate);
 
             if (intpMax-- <= 0)
                 break;
@@ -78,7 +78,7 @@ public abstract class AbstractFxrProvider
         if (intpMap.isEmpty())
             return null;
 
-        Double intpRate = intpMap.get(LocalDateUtil.dateInt(queryDate));
+        Double intpRate = intpMap.get(LocalDateUtil.dayIndex(queryDate));
         if (intpRate == null)
             return null;
         else

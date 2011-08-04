@@ -11,8 +11,33 @@ public class LocalDateUtil {
         return new Date(time);
     }
 
-    public static int dateInt(Date date) {
+    public static int dayIndex(Date date) {
         return (int) (date.getTime() / 86400000);
+    }
+
+    public static int monthIndex(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int year = cal.get(Calendar.YEAR); // year = "2011"
+        int month = cal.get(Calendar.MONTH); // JANUARY = 0
+        return year * 12 + month;
+    }
+
+    public static Date beginOfMonthIndex(int monthIndex) {
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.set(Calendar.YEAR, monthIndex / 12);
+        cal.set(Calendar.MONTH, monthIndex % 12);
+        return cal.getTime();
+    }
+
+    public static Date endOfMonthIndex(int monthIndex) {
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.set(Calendar.YEAR, monthIndex / 12);
+        cal.set(Calendar.MONTH, monthIndex % 12 + 1);
+        cal.add(Calendar.MILLISECOND, -1);
+        return cal.getTime();
     }
 
     public static Date beginOfTheNextDays(Date date, int days) {
