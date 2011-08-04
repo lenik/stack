@@ -24,7 +24,7 @@ public class ChanceQuotationItem
     ChanceQuotation parent;
 
     Material material;
-    float discount;
+    float discount = 1;
 
     /**
      * 对应报价单
