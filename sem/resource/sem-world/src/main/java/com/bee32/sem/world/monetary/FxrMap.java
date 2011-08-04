@@ -21,9 +21,8 @@ public class FxrMap {
     final Currency unit;
     final FxrUsage usage;
 
-    InterpolatedMap imap;
-
-    Set<Integer> loadedMonths = new TreeSet<Integer>();
+    transient InterpolatedMap imap = new InterpolatedMap();
+    transient Set<Integer> loadedMonths = new TreeSet<Integer>();
 
     public FxrMap(Currency unit, FxrUsage usage) {
         if (unit == null)
@@ -34,7 +33,15 @@ public class FxrMap {
         this.usage = usage;
     }
 
-    public synchronized void lazyLoad(Date from, Date to) {
+    public Currency getUnit() {
+        return unit;
+    }
+
+    public FxrUsage getUsage() {
+        return usage;
+    }
+
+    protected synchronized void lazyLoad(Date from, Date to) {
         int x1 = LocalDateUtil.monthIndex(from) - 1;
         int x2 = LocalDateUtil.monthIndex(to) + 1;
         for (int x = x1; x <= x2; x++) {
@@ -57,15 +64,36 @@ public class FxrMap {
 
         for (FxrRecord record : records) {
             Date date = record.getDate();
-            int dayx = LocalDateUtil.dayIndex(date);
 
             Float rate = record.getRate(usage);
             if (rate == null)
                 // Some rates for specific usage may be optional.
                 continue;
 
-            imap.put(dayx, rate.doubleValue());
+            plot(date, rate);
         }
+    }
+
+    public void plot(Date date, float rate) {
+        if (date == null)
+            throw new NullPointerException("date");
+        int dayx = LocalDateUtil.dayIndex(date);
+        imap.put(dayx, (double) rate);
+    }
+
+    /**
+     * Get an interpolated rate at specific date.
+     *
+     * @return {@link Double#NaN} if not defined.
+     */
+    public double eval(Date date) {
+        int dayx = LocalDateUtil.dayIndex(date);
+        double rate = imap.eval(dayx);
+        return rate;
+    }
+
+    public String toString() {
+        return "FxrMap<" + unit.getCurrencyCode() + "/" + usage + ">: " + imap.size() + " entries";
     }
 
     CommonDataManager dataManager;

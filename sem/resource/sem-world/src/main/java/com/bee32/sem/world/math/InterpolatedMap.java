@@ -11,7 +11,25 @@ public class InterpolatedMap
 
     private static final long serialVersionUID = 1L;
 
-    public double getInterpolated(int x) {
+    /**
+     * Get the declared point.
+     *
+     * You should call {@link #eval(int)} instead, to get the interpolated value.
+     *
+     * @see #eval(int)
+     */
+    @Deprecated
+    @Override
+    public Double get(Object key) {
+        return super.get(key);
+    }
+
+    /**
+     * Interpolate at given input.
+     *
+     * @return {@link Double#NaN} if not defined.
+     */
+    public double eval(int x) {
         Map.Entry<Integer, Double> A = floorEntry(x);
         Map.Entry<Integer, Double> B = ceilingEntry(x);
 
