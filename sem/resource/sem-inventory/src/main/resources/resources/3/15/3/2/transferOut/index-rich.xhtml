@@ -127,9 +127,9 @@
 
                     <h:outputLabel value="调拨人员"/>
                     <t:panelGroup colspan="3">
-                        <p:inputText id="transferredBy" readonly="true"
-                            value="#{transferOutAdminBean.stockTransfer.transferredBy.displayName}"
+                        <p:inputText id="transferredby" readonly="true"
                             disabled="#{!transferOutAdminBean.editable}"
+                            value="#{transferOutAdminBean.stockTransfer.transferredBy.displayName}"
                             style="width:200px;" />
                         <p:commandButton value="..."
                             onclick="personHolderDlg.show();"
@@ -490,15 +490,15 @@
                     <h:panelGrid columns="3">
                         <h:outputLabel value="联系人名字全部或部份:" />
                         <p:inputText
-                            value="#{userAdminBean.personPattern}" />
+                            value="#{transferOutAdminBean.personPattern}" />
                         <p:commandButton value="查找"
-                            actionListener="#{userAdminBean.findPerson}"
+                            actionListener="#{transferOutAdminBean.findPerson}"
                             update="persons" async="true" />
                     </h:panelGrid>
                     <p:dataTable id="persons" var="person"
-                        value="#{userAdminBean.persons}"
+                        value="#{transferOutAdminBean.persons}"
                         resizableColumns="true"
-                        selection="#{userAdminBean.selectedPerson}"
+                        selection="#{transferOutAdminBean.selectedPerson}"
                         selectionMode="single" rowIndexVar="rowIndex">
 
                         <p:column>
@@ -512,7 +512,7 @@
                             <f:facet name="header">
                                 <h:outputText value="姓名" />
                             </f:facet>
-                            <h:outputText value="#{person.name}" />
+                            <h:outputText value="#{person.displayName}" />
                         </p:column>
 
                         <p:column>
@@ -558,9 +558,9 @@
                     </p:dataTable>
                     <h:panelGrid columns="2">
                         <p:commandButton value="确定"
-                            actionListener="#{userAdminBean.choosePerson}"
+                            actionListener="#{transferOutAdminBean.choosePerson}"
                             oncomplete="personHolderDlg.hide();"
-                            update="mainFrom:transferredBy" async="true" />
+                            update="mainForm" async="true" />
                         <p:commandButton value="取消"
                             oncomplete="personHolderDlg.hide();" />
                     </h:panelGrid>

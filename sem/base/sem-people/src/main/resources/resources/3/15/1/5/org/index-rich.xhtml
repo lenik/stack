@@ -481,7 +481,7 @@
 												<f:facet name="header">
 													<h:outputText value="姓名" />
 												</f:facet>
-												<h:outputText value="#{role.person.name}" />
+												<h:outputText value="#{role.person.displayName}" />
 											</p:column>
 
 											<p:column>
@@ -639,7 +639,7 @@
 
                         <h:outputLabel for="rolePersonName" value="对应人员" />
                         <t:panelGrid columns="2">
-                            <h:outputText id="rolePersonName" value="#{orgAdminBean.role.person.name}"/>
+                            <h:outputText id="rolePersonName" value="#{orgAdminBean.role.person.displayName}"/>
                             <p:commandButton value="..." onclick="personHolderDlg.show();"/>
                         </t:panelGrid>
 
@@ -698,7 +698,7 @@
                             <f:facet name="header">
                                 <h:outputText value="姓名"/>
                             </f:facet>
-                            <h:outputText value="#{person.name}"/>
+                            <h:outputText value="#{person.displayName}"/>
                         </p:column>
 
                         <p:column>

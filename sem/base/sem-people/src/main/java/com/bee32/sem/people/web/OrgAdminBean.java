@@ -418,7 +418,7 @@ public class OrgAdminBean
             List<Person> _persons = serviceFor(Person.class).list(//
                     EntityCriteria.ownedByCurrentUser(), //
                     PeopleCriteria.namedLike(personPattern));
-            persons = DTOs.marshalList(PersonDto.class, _persons);
+            persons = DTOs.marshalList(PersonDto.class, _persons, true);
         }
     }
 

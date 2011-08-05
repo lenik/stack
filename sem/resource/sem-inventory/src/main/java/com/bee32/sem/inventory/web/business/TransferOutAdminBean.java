@@ -22,6 +22,8 @@ import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PersonDto;
+import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.util.PeopleCriteria;
 
 @Component
 @Scope("view")
@@ -197,9 +199,9 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
 
     @Transactional
     public void delete() {
-        serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
-        serviceFor(StockTransfer.class).delete(
+        serviceFor(StockTransfer.class).deleteAll(
                 new Equals("source.id", stockOrder.getId()));
+        //serviceFor(StockOrder.class).deleteById(stockOrder.getId());
         uiLogger.info("删除成功!");
         loadStockOrder(goNumber);
     }
@@ -231,8 +233,8 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
             serviceFor(StockOrder.class).delete(item.unmarshal());
         }
 
-        //保存新的stockOrder
-        serviceFor(StockOrder.class).saveOrUpdate(stockOrder.unmarshal());
+//        //保存新的stockOrder
+//        serviceFor(StockOrder.class).saveOrUpdate(stockOrder.unmarshal());
 
         stockTransfer.setSourceWarehouse(selectedWarehouse);
         stockTransfer.setSource(stockOrder);
@@ -284,6 +286,18 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
     public void last() {
         goNumber = count + 1;
         loadStockOrder(goNumber);
+    }
+
+    public void findPerson() {
+        if (personPattern != null && !personPattern.isEmpty()) {
+
+            List<Person> _persons = serviceFor(Person.class).list(//
+                    // Restrictions.in("tags", new Object[] { PartyTagname.INTERNAL }), //
+                    PeopleCriteria.internal(), //
+                    PeopleCriteria.namedLike(personPattern));
+
+            persons = DTOs.marshalList(PersonDto.class, _persons, true);
+        }
     }
 
     public void choosePerson() {
