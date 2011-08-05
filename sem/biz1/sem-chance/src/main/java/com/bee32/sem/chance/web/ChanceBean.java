@@ -45,6 +45,7 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
+import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -418,7 +419,7 @@ public class ChanceBean
         edmo.setSelection(-1);
         edmo.setCriteriaElements(//
                 Order.desc("createdDate"), //
-                ChanceCriteria.ownedByCurrentUser());
+                EntityCriteria.ownedByCurrentUser());
         chances = UIHelper.buildLazyDataModel(edmo);
         isSearching = false;
         refreshChanceCount(isSearching);
@@ -445,7 +446,7 @@ public class ChanceBean
     }
 
     void refreshChanceCount(boolean forSearch) {
-        int count = serviceFor(Chance.class).count(ChanceCriteria.ownedByCurrentUser(),//
+        int count = serviceFor(Chance.class).count(EntityCriteria.ownedByCurrentUser(),//
                 forSearch ? ChanceCriteria.subjectLike(subjectPattern) : null);
         chances.setRowCount(count);
     }
@@ -499,11 +500,11 @@ public class ChanceBean
     public void findParty() {
         if (!partyPattern.isEmpty()) {
             List<Party> _parties = serviceFor(Party.class).list(//
-                    PeopleCriteria.ownedByCurrentUser(), //
+                    EntityCriteria.ownedByCurrentUser(), //
                     PeopleCriteria.namedLike(partyPattern));
             parties = DTOs.marshalList(PartyDto.class, _parties);
         } else {
-            List<Party> lp = serviceFor(Party.class).list(PeopleCriteria.ownedByCurrentUser());
+            List<Party> lp = serviceFor(Party.class).list(EntityCriteria.ownedByCurrentUser());
             parties = DTOs.marshalList(PartyDto.class, lp);
         }
     }
@@ -532,7 +533,7 @@ public class ChanceBean
             edmo.setSelection(-1);
             edmo.setCriteriaElements(//
                     Order.desc("createdDate"), //
-                    ChanceCriteria.ownedByCurrentUser(), //
+                    EntityCriteria.ownedByCurrentUser(), //
                     ChanceCriteria.subjectLike(subjectPattern));
             chances = UIHelper.buildLazyDataModel(edmo);
             isSearching = true;

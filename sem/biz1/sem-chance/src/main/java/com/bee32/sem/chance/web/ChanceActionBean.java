@@ -28,6 +28,7 @@ import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.util.ChanceCriteria;
+import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
@@ -161,10 +162,10 @@ public class ChanceActionBean
         List<Chance> _chances;
         if (chancePattern != null && !chancePattern.isEmpty()) {
             _chances = serviceFor(Chance.class).list(//
-                    Order.desc("createdDate"), ChanceCriteria.ownedByCurrentUser(), //
+                    Order.desc("createdDate"), EntityCriteria.ownedByCurrentUser(), //
                     ChanceCriteria.subjectLike(chancePattern));
         } else {
-            _chances = serviceFor(Chance.class).list(ChanceCriteria.ownedByCurrentUser());
+            _chances = serviceFor(Chance.class).list(EntityCriteria.ownedByCurrentUser());
         }
         chances = DTOs.marshalList(ChanceDto.class, _chances);
     }
@@ -177,11 +178,11 @@ public class ChanceActionBean
     public void findCustomer() {
         if (customerPattern != null && !customerPattern.isEmpty()) {
             List<Party> _customers = serviceFor(Party.class).list(//
-                    PeopleCriteria.ownedByCurrentUser(), //
+                    EntityCriteria.ownedByCurrentUser(), //
                     PeopleCriteria.namedLike(customerPattern));
             customers = DTOs.marshalList(PartyDto.class, _customers);
         } else {
-            List<Party> lp = serviceFor(Party.class).list(PeopleCriteria.ownedByCurrentUser());
+            List<Party> lp = serviceFor(Party.class).list(EntityCriteria.ownedByCurrentUser());
             customers = DTOs.marshalList(PartyDto.class, lp);
         }
     }
