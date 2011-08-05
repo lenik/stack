@@ -16,15 +16,15 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.dto.AbstractPartyDto;
+import com.bee32.sem.people.dto.PartySidTypeDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
-import com.bee32.sem.people.dto.PartySidTypeDto;
 import com.bee32.sem.people.entity.Party;
-import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PartySidType;
-import com.bee32.sem.people.util.PeopleCriteria;
+import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
@@ -47,7 +47,7 @@ public class PersonAdminBean
     public void init() {
         EntityDataModelOptions<Person, PersonDto> options = new EntityDataModelOptions<Person, PersonDto>(//
                 Person.class, PersonDto.class, 0, //
-                Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
+                Order.desc("id"), EntityCriteria.ownedByCurrentUser());
         persons = UIHelper.<Person, PersonDto> buildLazyDataModel(options);
 
         refreshPersonCount();
@@ -56,7 +56,7 @@ public class PersonAdminBean
     }
 
     void refreshPersonCount() {
-        int count = serviceFor(Person.class).count(PeopleCriteria.ownedByCurrentUser());
+        int count = serviceFor(Person.class).count(EntityCriteria.ownedByCurrentUser());
         persons.setRowCount(count);
     }
 

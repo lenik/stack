@@ -325,15 +325,15 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public List<E> list(ICriteriaElement... criteriaE) {
-        Criteria criteria = createCriteria(criteriaE);
+    public List<E> list(ICriteriaElement... criteriaElements) {
+        Criteria criteria = createCriteria(criteriaElements);
         List<E> list = criteria.list();
         return list;
     }
 
     @Override
-    public int count(ICriteriaElement... criteriaE) {
-        Criteria criteria = createCriteria(criteriaE);
+    public int count(ICriteriaElement... criteriaElements) {
+        Criteria criteria = createCriteria(criteriaElements);
         criteria.setProjection(Projections.rowCount());
 
         Object result = criteria.uniqueResult();

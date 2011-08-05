@@ -19,6 +19,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.AbstractPartyDto;
 import com.bee32.sem.people.dto.ContactCategoryDto;
 import com.bee32.sem.people.dto.ContactDto;
@@ -67,7 +68,7 @@ public class OrgAdminBean
     public OrgAdminBean() {
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
                 Org.class, OrgDto.class, 0, //
-                Order.desc("id"), PeopleCriteria.ownedByCurrentUser());
+                Order.desc("id"), EntityCriteria.ownedByCurrentUser());
         orgs = UIHelper.buildLazyDataModel(options);
 
         refreshOrgCount();
@@ -77,7 +78,7 @@ public class OrgAdminBean
     }
 
     void refreshOrgCount() {
-        int count = serviceFor(Org.class).count(PeopleCriteria.ownedByCurrentUser());
+        int count = serviceFor(Org.class).count(EntityCriteria.ownedByCurrentUser());
         orgs.setRowCount(count);
     }
 
@@ -415,7 +416,7 @@ public class OrgAdminBean
         if (personPattern != null && !personPattern.isEmpty()) {
 
             List<Person> _persons = serviceFor(Person.class).list(//
-                    PeopleCriteria.ownedByCurrentUser(), //
+                    EntityCriteria.ownedByCurrentUser(), //
                     PeopleCriteria.namedLike(personPattern));
             persons = DTOs.marshalList(PersonDto.class, _persons);
         }

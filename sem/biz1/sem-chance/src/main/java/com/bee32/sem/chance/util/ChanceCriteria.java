@@ -13,19 +13,6 @@ import com.bee32.sem.chance.entity.ChanceAction;
 public class ChanceCriteria
         extends CriteriaSpec {
 
-    public static CriteriaElement ownedByCurrentUser() {
-        IUserPrincipal currentUser = SessionLoginInfo.getUser();
-        return ownedBy(currentUser);
-    }
-
-    public static CriteriaElement ownedBy(IUserPrincipal user) {
-//        if (user.getDisplayName().equals("admin"))
-//            return null;
-//        else
-//            return equals("owner.id", user.getId());
-        return null;
-    }
-
     public static CriteriaElement subjectLike(String keyword) {
         return like("subject", "%" + keyword + "%");
     }
