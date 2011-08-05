@@ -208,7 +208,9 @@ public class ChanceActionBean
             uiLogger.error("请选择行动记录");
             return;
         }
-        action = selectedAction;
+        ChanceAction _action = serviceFor(ChanceAction.class).getOrFail(selectedAction.getId());
+        action = DTOs.marshal(ChanceActionDto.class, _action);
+
         setActiveTab(TAB_FORM);
         findComponent(DETAIL_TAB).setRendered(true);
 

@@ -197,7 +197,7 @@ public class ChanceBean
 
     public void editQuotation() {
         if (selectedQuotation != null)
-            activeQuotation = reload(selectedQuotation);
+            activeQuotation = selectedQuotation;
         quotationEdit = false;
     }
 
@@ -332,7 +332,9 @@ public class ChanceBean
 
         try {
             serviceFor(ChanceQuotation.class).saveOrUpdate(quotationEntity);
-            quotations.add(activeQuotation);
+
+            if (activeQuotation.getId() == null)
+                quotations.add(DTOs.marshal(ChanceQuotationDto.class, quotationEntity));
             if (selectedQuotation == null) {
                 findComponentEx(BUTTON_QUOTATION_EDIT).setEnabled(false);
                 findComponentEx(BUTTON_QUOTATION_DELETE).setEnabled(false);
