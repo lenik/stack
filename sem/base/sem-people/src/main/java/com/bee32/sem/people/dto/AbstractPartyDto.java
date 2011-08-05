@@ -48,7 +48,9 @@ public class AbstractPartyDto<E extends Party>
         super(selection);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see com.bee32.plover.arch.util.dto.BaseDto_Skel#_marshal(java.lang.Object)
      */
     @Override
@@ -163,6 +165,8 @@ public class AbstractPartyDto<E extends Party>
     }
 
     public void setSidType(PartySidTypeDto sidType) {
+        if (sidType == null)
+            throw new NullPointerException("sidType");
         this.sidType = sidType;
     }
 
@@ -174,9 +178,6 @@ public class AbstractPartyDto<E extends Party>
         if (sid != null && sid.isEmpty())
             sid = null;
         this.sid = sid;
-
-        if (sid == null)
-            sidType = null;
     }
 
     public String getXid() {
