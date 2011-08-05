@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +16,10 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
@@ -31,6 +35,8 @@ public class Chance
 
     private static final long serialVersionUID = 1L;
 
+    String serial;
+
     ChanceCategory category = ChanceCategory.NORMAL;
     ChanceSourceType source = ChanceSourceType.OTHER;
     String subject = "";
@@ -40,6 +46,16 @@ public class Chance
     List<ChanceAction> actions = new ArrayList<ChanceAction>();
 
     ChanceStage stage = ChanceStage.INIT;
+
+    @NaturalId
+    @Column(length = 30)
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
 
     /**
      * 类型
@@ -63,7 +79,7 @@ public class Chance
 
     public void setSubject(String subject) {
         if (subject == null)
-            throw new NullPointerException("can't set Null to Chance.subject");
+            throw new NullPointerException("subject");
         this.subject = subject;
     }
 
@@ -77,7 +93,7 @@ public class Chance
 
     public void setSource(ChanceSourceType source) {
         if (source == null)
-            throw new NullPointerException("can't set Null to Chance.source");
+            throw new NullPointerException("source");
         this.source = source;
     }
 
@@ -103,7 +119,7 @@ public class Chance
 
     public void setParties(List<ChanceParty> parties) {
         if (parties == null)
-            throw new NullPointerException("can't set Null to Chance.parties");
+            throw new NullPointerException("parties");
         this.parties = parties;
     }
 
@@ -115,7 +131,7 @@ public class Chance
 
     public void setActions(List<ChanceAction> actions) {
         if (actions == null)
-            throw new NullPointerException("can't set Null to Chance.actions");
+            throw new NullPointerException("actions");
         this.actions = actions;
     }
 
@@ -174,6 +190,16 @@ public class Chance
 // ca = getActions().get(lastIndex);
         }
         return ca;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        return serial;
+    }
+
+    @Override
+    protected ICriteriaElement selector(String prefix) {
+        return new Equals(prefix + "serial", serial);
     }
 
 }

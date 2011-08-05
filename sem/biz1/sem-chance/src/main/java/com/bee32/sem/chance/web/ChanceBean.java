@@ -547,10 +547,12 @@ public class ChanceBean
     }
 
     public void doAttachActions() {
-        if (selectedActions.length == 0) {
+        if (selectedActions.length == 0)
             return;
-        }
-        activeChance.addActions(selectedActions);
+
+        for (ChanceActionDto action : selectedActions)
+            activeChance.addAction(action);
+
         Chance _chance = activeChance.unmarshal();
         try {
             for (ChanceAction _action : _chance.getActions()) {
@@ -574,7 +576,7 @@ public class ChanceBean
         chancePartyDto.setChance(activeChance);
         chancePartyDto.setParty(selectedParty);
         chancePartyDto.setRole("普通客户");
-        activeChance.addChanceParty(chancePartyDto);
+        activeChance.addParty(chancePartyDto);
     }
 
     public void createForm() {
@@ -704,7 +706,7 @@ public class ChanceBean
     }
 
     public void dropCustomer() {
-        activeChance.deleteChanceParty(selectedChanceParty);
+        activeChance.removeParty(selectedChanceParty);
     }
 
     public void initActiveActions() {

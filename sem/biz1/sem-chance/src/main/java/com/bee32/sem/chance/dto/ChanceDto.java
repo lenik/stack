@@ -19,13 +19,15 @@ public class ChanceDto
     public static final int PARTIES = 1;
     public static final int ACTIONS = 2;
 
-    String party;
-    String date;
-    String shortContent;
+    String serial;
+
     ChanceCategoryDto category;
-    ChanceSourceDto source;
     String subject;
     String content;
+    String date;
+
+    String party;
+    ChanceSourceDto source;
 
     List<ChancePartyDto> parties;
     List<ChanceActionDto> actions;
@@ -42,6 +44,8 @@ public class ChanceDto
 
     @Override
     protected void _marshal(Chance source) {
+        this.serial = source.getSerial();
+
         String partyString = null;
         for (ChanceParty party : source.getParties()) {
             if (partyString == null)
@@ -50,8 +54,8 @@ public class ChanceDto
                 partyString += "," + party.getParty().getName();
         }
         this.party = partyString;
+
         this.date = DateToRange.fullFormat.format(source.getCreatedDate()).substring(0, 16);
-        this.shortContent = Strings.ellipse(source.getContent(), 16);
         this.category = mref(ChanceCategoryDto.class, source.getCategory());
         this.source = mref(ChanceSourceDto.class, source.getSource());
         this.subject = source.getSubject();
@@ -68,6 +72,8 @@ public class ChanceDto
 
     @Override
     protected void _unmarshalTo(Chance target) {
+        target.setSerial(serial);
+
         merge(target, "category", category);
         merge(target, "source", source);
         target.setSubject(subject);
@@ -84,19 +90,22 @@ public class ChanceDto
             throws ParseException {
     }
 
-    public void addChanceParty(ChancePartyDto chanceParty) {
+    public void addParty(ChancePartyDto chanceParty) {
+        if (chanceParty == null)
+            throw new NullPointerException("chanceParty");
         if (!parties.contains(chanceParty))
             this.parties.add(chanceParty);
     }
 
-    public void deleteChanceParty(ChancePartyDto chanceParty) {
+    public void removeParty(ChancePartyDto chanceParty) {
         if (parties.contains(chanceParty))
             parties.remove(chanceParty);
     }
 
-    public void addActions(ChanceActionDto... actions) {
-        for (ChanceActionDto action : actions)
-            this.actions.add(action);
+    public void addAction(ChanceActionDto action) {
+        if (action == null)
+            throw new NullPointerException("action");
+        actions.add(action);
         refreshStage();
     }
 
@@ -141,11 +150,7 @@ public class ChanceDto
     }
 
     public String getShortContent() {
-        return shortContent;
-    }
-
-    public void setShortContent(String shortContent) {
-        this.shortContent = shortContent;
+        return Strings.ellipse(content, 16);
     }
 
     public ChanceCategoryDto getCategory() {
@@ -169,6 +174,8 @@ public class ChanceDto
     }
 
     public void setSubject(String subject) {
+        if (subject == null)
+            throw new NullPointerException("subject");
         this.subject = subject;
     }
 
@@ -185,6 +192,8 @@ public class ChanceDto
     }
 
     public void setParties(List<ChancePartyDto> parties) {
+        if (parties == null)
+            throw new NullPointerException("parties");
         this.parties = parties;
     }
 
@@ -193,6 +202,8 @@ public class ChanceDto
     }
 
     public void setActions(List<ChanceActionDto> actions) {
+        if (actions == null)
+            throw new NullPointerException("actions");
         this.actions = actions;
     }
 
