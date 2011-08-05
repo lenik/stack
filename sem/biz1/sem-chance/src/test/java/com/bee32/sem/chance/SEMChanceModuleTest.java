@@ -30,7 +30,7 @@ public class SEMChanceModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMChanceModuleTest().browseAndWait(SEMChanceModule.PREFIX + "/price/");
+        new SEMChanceModuleTest().browseAndWait(SEMChanceModule.PREFIX + "/chance/");
     }
 
 }
