@@ -4,15 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
@@ -28,8 +24,6 @@ import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
-@Component
-@Scope("view")
 public class PersonAdminBean
         extends AbstractPartyAdminBean {
 
@@ -155,10 +149,8 @@ public class PersonAdminBean
     }
 
     public void doModify() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         if (selectedPerson == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择需要修改的联系人!"));
+            uiLogger.info("提示:请选择需要修改的联系人!");
             return;
         }
 
@@ -169,10 +161,8 @@ public class PersonAdminBean
     }
 
     public void doDelete() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         if (selectedPerson == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择需要删除的联系人!"));
+            uiLogger.info("提示:请选择需要删除的联系人!");
             return;
         }
 
@@ -184,24 +174,20 @@ public class PersonAdminBean
             refreshPersonCount();
 
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "删除联系人失败;" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("提示:删除联系人失败", e);
         }
     }
 
     public void doSave() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         try {
             serviceFor(Person.class).saveOrUpdate(person.unmarshal());
             refreshPersonCount();
 
             setActiveTab(TAB_INDEX);
             editable = false;
-            context.addMessage(null, new FacesMessage("提示", "联系人保存成功"));
+            uiLogger.info("提示:联系人保存成功");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "联系人保存失败" + e.getMessage()));
-            e.printStackTrace();
+            uiLogger.error("错误:联系人保存失败", e);
         }
     }
 
@@ -214,8 +200,7 @@ public class PersonAdminBean
 
     public void doDetail() {
         if (selectedPerson == null) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("提示", "请选择需要查看详细信息的联系人!"));
+            uiLogger.info("提示:请选择需要查看详细信息的联系人!");
             return;
         }
 

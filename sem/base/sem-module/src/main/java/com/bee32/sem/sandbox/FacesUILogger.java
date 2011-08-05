@@ -78,6 +78,9 @@ public class FacesUILogger
                     message = title + message.substring(1);
             }
 
+            if (e != null)
+                message += "\n（错误消息：" + e.getMessage() + "）";
+
             FacesMessage facesMessage = new FacesMessage(getSeverity(), title, message);
             String clientId = null; // XXX clientId purpose?
 

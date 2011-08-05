@@ -12,8 +12,6 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Order;
@@ -38,8 +36,6 @@ import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
-@Component
-@Scope("view")
 public class OrgAdminBean
         extends AbstractPartyAdminBean {
 
@@ -316,7 +312,7 @@ public class OrgAdminBean
             refreshOrgCount();
 
         } catch (Exception e) {
-            uiLogger.error("提示:删除客户/供应商失败;" + e.getMessage());
+            uiLogger.error("提示:删除客户/供应商失败", e);
         }
     }
 
@@ -329,7 +325,7 @@ public class OrgAdminBean
             editable = false;
             uiLogger.info("提示:客户/供应商保存成功");
         } catch (Exception e) {
-            uiLogger.error("提示:客户/供应商保存失败" + e.getMessage());
+            uiLogger.error("提示:客户/供应商保存失败", e);
         }
     }
 
@@ -384,7 +380,7 @@ public class OrgAdminBean
             serviceFor(Org.class).saveOrUpdate(org.unmarshal());
 
         } catch (Exception e) {
-            uiLogger.error("提示:去除相关人员关联失败;" + e.getMessage());
+            uiLogger.error("提示:去除相关人员关联失败", e);
         }
     }
 
@@ -400,7 +396,7 @@ public class OrgAdminBean
 
             uiLogger.info("提示:相关人员设置关联成功");
         } catch (Exception e) {
-            uiLogger.info("提示:相关人员设置关联失败" + e.getMessage());
+            uiLogger.info("提示:相关人员设置关联失败", e);
         }
     }
 
