@@ -32,7 +32,7 @@ public class SEMChanceMenu
     static MenuNode action = entry(CHANCE, 0, "action", CHANCE_.join("action/"));
 
 // static MenuNode competitor = entry(CHANCE, "competitor", CHANCE_.join("competitor/ "));
-    static MenuNode basePrice = entry(PRICE, "price", PRICE_.join("price/"));
+//    static MenuNode basePrice = entry(PRICE, "price", PRICE_.join("price/"));
     static MenuNode quotation = entry(PRICE, "quotation", PRICE_.join("quote/"));
 
     @Override
