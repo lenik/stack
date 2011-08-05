@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Offset;
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
@@ -153,11 +154,15 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
         stockOrder = new StockOrderDto().create();
         stockTransfer = new StockTransferDto().create();
         if (selectedWarehouse != null) {
-            StockOrder firstOrder = serviceFor(StockOrder.class).getFirst(//
-                    new Offset(goNumber - 1), //
-                    EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                    StockCriteria.subjectOf(getSubject()), //
-                    new Equals("warehouse.id", selectedWarehouse.getId()));
+            StockOrder firstOrder = serviceFor(StockOrder.class)
+                    .getFirst(
+                            //
+                            new Offset(goNumber - 1), //
+                            EntityCriteria.createdBetweenEx(limitDateFrom,
+                                    limitDateTo), //
+                            StockCriteria.subjectOf(getSubject()), //
+                            new Equals("warehouse.id", selectedWarehouse
+                                    .getId()), Order.desc("id"));
 
             if (firstOrder != null) {
                 stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
@@ -181,6 +186,7 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
             return;
         }
 
+        stockTransfer = new StockTransferDto().create();
         stockOrder = new StockOrderDto().create();
         //stockOrder.setCreatedDate(new Date());
         editable = true;
