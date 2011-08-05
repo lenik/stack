@@ -11,7 +11,10 @@ public class PeopleCriteria
         extends CriteriaSpec {
 
     public static CriteriaElement namedLike(String keyword) {
-        return or(like("name", "%" + keyword + "%"), like("fullName", "%" + keyword + "%"));
+        if (keyword == null || keyword.isEmpty())
+            return null;
+        else
+            return or(like("name", "%" + keyword + "%"), like("fullName", "%" + keyword + "%"));
     }
 
     @LeftHand(PartyTagname.class)
