@@ -139,10 +139,9 @@ public class ChanceActionBean
     }
 
     public void initList() {
-
         isSearching = false;
         EntityDataModelOptions<ChanceAction, ChanceActionDto> emdo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
-                ChanceAction.class, ChanceActionDto.class, -1, //
+                ChanceAction.class, ChanceActionDto.class, 0, //
                 Order.desc("createdDate"), ChanceCriteria.actedByCurrentUser());
         actions = UIHelper.buildLazyDataModel(emdo);
         refreshActionCount(isSearching);
@@ -150,7 +149,6 @@ public class ChanceActionBean
     }
 
     void refreshActionCount(boolean forSearch) {
-
         int count = serviceFor(ChanceAction.class).count(//
                 ChanceCriteria.actedByCurrentUser(), //
                 forSearch ? ChanceCriteria.beganWithin(searchBeginTime, searchEndTime) : null);
@@ -159,15 +157,11 @@ public class ChanceActionBean
     }
 
     public void findChances() {
-        List<Chance> _chances;
-        if (chancePattern != null && !chancePattern.isEmpty()) {
-            _chances = serviceFor(Chance.class).list(//
-                    Order.desc("createdDate"), EntityCriteria.ownedByCurrentUser(), //
-                    ChanceCriteria.subjectLike(chancePattern));
-        } else {
-            _chances = serviceFor(Chance.class).list(EntityCriteria.ownedByCurrentUser());
-        }
-        chances = DTOs.marshalList(ChanceDto.class, _chances);
+        List<Chance> _chances = serviceFor(Chance.class).list(//
+                Order.desc("createdDate"), EntityCriteria.ownedByCurrentUser(), //
+                ChanceCriteria.subjectLike(chancePattern));
+
+        chances = DTOs.marshalList(ChanceDto.class, 0, _chances, true);
     }
 
     public void chooseCustomerForm() {
@@ -176,15 +170,11 @@ public class ChanceActionBean
     }
 
     public void findCustomer() {
-        if (customerPattern != null && !customerPattern.isEmpty()) {
-            List<Party> _customers = serviceFor(Party.class).list(//
-                    EntityCriteria.ownedByCurrentUser(), //
-                    PeopleCriteria.namedLike(customerPattern));
-            customers = DTOs.marshalList(PartyDto.class, _customers);
-        } else {
-            List<Party> lp = serviceFor(Party.class).list(EntityCriteria.ownedByCurrentUser());
-            customers = DTOs.marshalList(PartyDto.class, lp);
-        }
+        List<Party> parties = serviceFor(Party.class).list(//
+                EntityCriteria.ownedByCurrentUser(), //
+                PeopleCriteria.namedLike(customerPattern));
+
+        customers = DTOs.marshalList(PartyDto.class, 0, parties, true);
     }
 
     public void choosePartnerForm() {
@@ -193,14 +183,8 @@ public class ChanceActionBean
     }
 
     public void findPartner() {
-        List<User> _partners;
-        if (partnerPattern != null && !partnerPattern.isEmpty()) {
-            _partners = serviceFor(User.class).list(//
-                    ChanceCriteria.nameLike(partnerPattern));
-        } else {
-            _partners = serviceFor(User.class).list();
-        }
-        partners = DTOs.marshalList(UserDto.class, _partners);
+        List<User> _partners = serviceFor(User.class).list(ChanceCriteria.nameLike(partnerPattern));
+        partners = DTOs.marshalList(UserDto.class, 0, _partners, true);
     }
 
     public void createForm() {
@@ -322,10 +306,9 @@ public class ChanceActionBean
     }
 
     public List<SelectItem> getChanceActionStyles() {
-        List<ChanceActionStyle> chanceActionStyleList = serviceFor(ChanceActionStyle.class).list();
-        List<ChanceActionStyleDto> chanceActionStyleDtoList = DTOs.marshalList(ChanceActionStyleDto.class,
-                chanceActionStyleList);
-        return UIHelper.selectItemsFromDict(chanceActionStyleDtoList);
+        List<ChanceActionStyle> _styles = serviceFor(ChanceActionStyle.class).list();
+        List<ChanceActionStyleDto> styles = DTOs.marshalList(ChanceActionStyleDto.class, _styles);
+        return UIHelper.selectItemsFromDict(styles);
     }
 
     public void saveAction() {

@@ -14,7 +14,10 @@ public class ChanceCriteria
         extends CriteriaSpec {
 
     public static CriteriaElement subjectLike(String keyword) {
-        return like("subject", "%" + keyword + "%");
+        if (keyword == null || keyword.isEmpty())
+            return null;
+        else
+            return like("subject", "%" + keyword + "%");
     }
 
     public static CriteriaElement actedByCurrentUser() {
@@ -42,7 +45,7 @@ public class ChanceCriteria
     }
 
     public static CriteriaElement nameLike(String namePattern) {
-        if (namePattern.isEmpty())
+        if (namePattern == null || namePattern.isEmpty())
             return null;
         return or(like("id", "%" + namePattern + "%"), //
                 like("fullName", "%" + namePattern + "%"));
