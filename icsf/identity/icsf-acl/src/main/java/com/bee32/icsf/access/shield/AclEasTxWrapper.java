@@ -1,8 +1,12 @@
 package com.bee32.icsf.access.shield;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
+import javax.free.JavaioFile;
 import javax.free.Order;
+import javax.free.SystemProperties;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -54,8 +58,25 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
         entityNS = registry.getNamespace(EntityResourceNS.NS);
     }
 
+    static boolean enabled = true;
+    static {
+        File home = new File(SystemProperties.getUserHome());
+        File aclFile = new File(home, ".data/acl");
+        if (aclFile.exists()) {
+            try {
+                String s = new JavaioFile(aclFile).forRead().readTextContents().trim();
+                if ("0".equals(s))
+                    enabled = false;
+            } catch (IOException e) {
+            }
+        }
+    }
+
     @Override
     protected void require(int bits) {
+        if (!enabled)
+            return;
+
         Permission requiredPermission = new Permission(bits);
 
         IUserPrincipal currentUser = null;
