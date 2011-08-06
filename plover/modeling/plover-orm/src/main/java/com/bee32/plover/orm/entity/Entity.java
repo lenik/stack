@@ -159,8 +159,9 @@ public abstract class Entity<K extends Serializable>
         return ownerId;
     }
 
-    public void setOwnerId(Integer owner) {
+    public synchronized void setOwnerId(Integer owner) {
         this.ownerId = owner;
+        _owner = null;
     }
 
     void setOwner(Entity<Integer> owner) {
