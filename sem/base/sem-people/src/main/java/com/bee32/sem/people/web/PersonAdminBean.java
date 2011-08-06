@@ -9,6 +9,7 @@ import javax.faces.model.SelectItem;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
+import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
@@ -24,6 +25,7 @@ import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
+@Scope("view")
 public class PersonAdminBean
         extends AbstractPartyAdminBean {
 

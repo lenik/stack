@@ -12,6 +12,7 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
+import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Order;
@@ -36,6 +37,7 @@ import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
+@Scope("view")
 public class OrgAdminBean
         extends AbstractPartyAdminBean {
 
