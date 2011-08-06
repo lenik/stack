@@ -65,37 +65,41 @@ public abstract class ServletTestCase
         contextPath = "/app" + rand;
     }
 
-    private final class LocalSTL
+    final class LocalSTL
             extends ServletTestLibrary {
 
         private LocalSTL() {
             super(ServletTestCase.this.getClass());
         }
 
+        ServletTestCase getOuter() {
+            return ServletTestCase.this;
+        }
+
         @Override
         public void startup()
                 throws Exception {
             super.startup();
-            ServletTestCase.this.onServerStartup();
+            getOuter().onServerStartup();
         }
 
         @Override
         public void shutdown()
                 throws Exception {
-            ServletTestCase.this.onServerShutdown();
+            getOuter().onServerShutdown();
             super.shutdown();
         }
 
         @Override
         public int getPort() {
-            return ServletTestCase.this.getPort();
+            return getOuter().getPort();
         }
 
         @Override
         protected void configureContext() {
             super.configureContext();
 
-            ServletTestCase.this.configureContext();
+            getOuter().configureContext();
 
             if (!checkContext)
                 throw new IllegalUsageException("configureContext is overrided.");
@@ -105,7 +109,7 @@ public abstract class ServletTestCase
         protected void configureBuiltinServlets() {
             super.configureBuiltinServlets();
 
-            ServletTestCase.this.configureBuiltinServlets();
+            getOuter().configureBuiltinServlets();
 
             if (!checkBuiltinServlets)
                 throw new IllegalUsageException("configureBuiltinServlets is overrided.");
@@ -115,12 +119,12 @@ public abstract class ServletTestCase
         protected void configureServlets() {
             super.configureServlets();
 
-            ServletTestCase.this.configureServlets();
+            getOuter().configureServlets();
         }
 
         @Override
         protected void configureFallbackServlets() {
-            ServletTestCase.this.configureFallbackServlets();
+            getOuter().configureFallbackServlets();
 
             super.configureFallbackServlets();
 
