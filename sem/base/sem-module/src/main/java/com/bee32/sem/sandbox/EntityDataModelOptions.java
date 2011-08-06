@@ -80,7 +80,12 @@ public class EntityDataModelOptions<E extends Entity<?>, D extends EntityDto<E, 
     }
 
     public ICriteriaElement compose() {
-        return new CriteriaComposite(criteriaElements);
+        if (criteriaElements.isEmpty())
+            return null;
+        else if (criteriaElements.size() == 1)
+            return criteriaElements.get(0);
+        else
+            return new CriteriaComposite(criteriaElements);
     }
 
 }
