@@ -41,17 +41,17 @@ public class WebAppConfigure
     }
 
     @Override
-    public void onServerStartup() {
+    public void onServerStartup(ServletTestLibrary stl) {
         Iterator<IWebAppConfigurer> iter = configurers.iterator();
         while (iter.hasNext())
-            iter.next().onServerShutdown();
+            iter.next().onServerShutdown(stl);
     }
 
     @Override
-    public void onServerShutdown() {
+    public void onServerShutdown(ServletTestLibrary stl) {
         Iterator<IWebAppConfigurer> iter = configurers.descendingIterator();
         while (iter.hasNext())
-            iter.next().onServerShutdown();
+            iter.next().onServerShutdown(stl);
     }
 
     public static WebAppConfigure INSTANCE = new WebAppConfigure();
