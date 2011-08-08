@@ -20,24 +20,8 @@
 
     <ui:define name="title">文件上传</ui:define>
 
-
     <ui:define name="content">
-
-
-		<h:form enctype="multipart/form-data">
-
-			<p:growl id="messages" showDetail="true" />
-
-			<p:panel header="文件上传">
-
-				<p:fileUpload
-					fileUploadListener="#{fileUploadBean.handleFileUpload}"
-					mode="advanced" update="messages" multiple="true"
-					allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
-
-			</p:panel>
-		</h:form>
-
+    <ui:include src="upload.xhtml" />
 
 	</ui:define>
 </ui:composition>
