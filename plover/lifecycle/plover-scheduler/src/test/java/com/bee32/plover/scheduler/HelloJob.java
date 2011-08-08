@@ -9,7 +9,6 @@ import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerKey;
 import org.quartz.impl.JobDetailImpl;
@@ -71,8 +70,8 @@ public class HelloJob
         this.trig = trig;
     }
 
-    public static void main(String[] args)
-            throws SchedulerException, Exception {
+    static void start()
+            throws Exception {
         Scheduler sched = StdSchedulerFactory.getDefaultScheduler();
         sched.setJobFactory(new PropertySettingJobFactory());
 
@@ -92,6 +91,11 @@ public class HelloJob
 
         sched.shutdown(true); // wait=false
 
+    }
+
+    public static void main(String[] args)
+            throws Exception {
+        start();
     }
 
     static SimpleTriggerImpl timeout(int ms) {
