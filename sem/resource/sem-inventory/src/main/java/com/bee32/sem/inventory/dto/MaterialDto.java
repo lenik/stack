@@ -51,6 +51,9 @@ public class MaterialDto
 
         if (selection.contains(PRICES))
             prices = marshalList(MaterialPriceDto.class, source.getPrices(), true);
+
+        if (selection.contains(ATTACHMENTS))
+            attachments = marshalList(UserFileDto.class, source.getAttachments());
     }
 
     @Override
@@ -62,6 +65,7 @@ public class MaterialDto
         mergeList(target, "preferredLocations", preferredLocations);
         mergeList(target, "options", options);
         mergeList(target, "prices", prices);
+        mergeList(target, "attachments", attachments);
     }
 
     @Override
@@ -94,6 +98,12 @@ public class MaterialDto
             prices.add(0, price);
         else
             prices.set(existingIndex, price);
+    }
+
+    public void addAttachment(UserFileDto attachment){
+        if (attachment == null)
+            throw new NullPointerException("attachment");
+        attachments.add(attachment);
     }
 
     public MaterialCategoryDto getCategory() {
