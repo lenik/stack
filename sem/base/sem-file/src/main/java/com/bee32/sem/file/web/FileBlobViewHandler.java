@@ -21,6 +21,9 @@ public class FileBlobViewHandler
 
         String hash = req.getParameter("hash");
 
+        if (hash == null)
+            throw new IllegalArgumentException("Hash of blob isn't specified.");
+
         FileBlob blob = asFor(FileBlob.class).get(hash);
         if (blob == null)
             return Javascripts.alertAndBack("文件不存在: hash=" + hash).dump(result);

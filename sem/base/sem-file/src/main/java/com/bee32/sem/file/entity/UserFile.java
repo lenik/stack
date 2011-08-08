@@ -3,6 +3,7 @@ package com.bee32.sem.file.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.free.FilePath;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -10,6 +11,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Green;
@@ -28,7 +30,7 @@ public class UserFile
     FileBlob fileBlob;
 
     String origPath;
-    String filename;
+    String fileName;
     String subject = "";
 
     Set<UserFileTagname> tags = new HashSet<UserFileTagname>();
@@ -52,7 +54,7 @@ public class UserFile
      *
      * It's just existed for reference purpose, or for reconstruct the original fs-tree.
      */
-    @Column(length = 100)
+    @Column(length = 120)
     public String getOrigPath() {
         return origPath;
     }
@@ -64,13 +66,28 @@ public class UserFile
     /**
      * 用户对上传的文件重命名。
      */
-    @Column(length = 80)
-    public String getFilename() {
-        return filename;
+    @Column(length = 50)
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setFileName(String fileName) {
+        if (fileName != null) {
+            fileName = fileName.trim();
+            if (fileName.isEmpty())
+                fileName = null;
+        }
+        this.fileName = fileName;
+    }
+
+    @Transient
+    public String getDownloadName() {
+        if (fileName != null)
+            return fileName;
+        String path = getOrigPath();
+        String ext = FilePath.getExtension(path, true);
+        String name = "Noname" + ext;
+        return name;
     }
 
     /**

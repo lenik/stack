@@ -255,6 +255,8 @@ public class FileBlob
         byte[] header = source.forRead().readBytes(headerMin);
         fileBlob.setHeader(header);
 
+        fileBlob.setLength(temporaryFile.length());
+
         if (!deleteAfterCommitted) {
             logger.debug("Delete the committed file: " + localFile);
             localFile.delete();

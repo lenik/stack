@@ -122,6 +122,14 @@ public class HttpBlobDumper {
             InputStreamSource source = new InputStreamSource(in);
             OutputStreamTarget target = new OutputStreamTarget(out);
             target.forWrite().writeBytes(source);
+
+            // byte[] block = new byte[4096];
+            // int cb;
+            // while ((cb = in.read(block)) != -1) {
+            // out.write(block, 0, cb);
+            // }
+            //
+            // out.flush();
         } catch (IOException e) {
             throw e;
         }

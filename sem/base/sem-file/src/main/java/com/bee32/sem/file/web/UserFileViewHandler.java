@@ -2,6 +2,8 @@ package com.bee32.sem.file.web;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
+
 import com.bee32.plover.orm.web.EntityHandler;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
@@ -17,14 +19,19 @@ public class UserFileViewHandler
 
     @Override
     protected ActionResult _handleRequest(ActionRequest req, ActionResult result)
-            throws IOException {
+            throws IOException, ServletException {
 
         String _id = req.getParameter("id");
+        if (_id == null)
+            throw new IllegalArgumentException("User file id isn't specified.");
+
         long id = Long.parseLong(_id);
         UserFile userFile = asFor(UserFile.class).getOrFail(id);
+        if (userFile == null)
+            throw new ServletException("User file with id=" + id + " isn't existed.");
 
         FileBlob blob = userFile.getFileBlob();
-        String filename = userFile.getFilename();
+        String filename = userFile.getDownloadName();
         String description = userFile.getSubject();
 
         req.setAttribute(HttpBlobDumper.ATTR_BLOB, blob);

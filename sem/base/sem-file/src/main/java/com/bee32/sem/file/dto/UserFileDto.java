@@ -19,7 +19,7 @@ public class UserFileDto
     FileBlobDto fileBlob;
 
     String origPath;
-    String filename;
+    String fileName;
     String subject;
 
     Set<UserFileTagnameDto> tags;
@@ -36,7 +36,7 @@ public class UserFileDto
     protected void _marshal(UserFile source) {
         fileBlob = mref(FileBlobDto.class, source.getFileBlob());
         origPath = source.getOrigPath();
-        filename = source.getFilename();
+        fileName = source.getFileName();
         subject = source.getSubject();
 
         if (selection.contains(TAGS))
@@ -47,7 +47,7 @@ public class UserFileDto
     protected void _unmarshalTo(UserFile target) {
         merge(target, "fileBlob", fileBlob);
         target.setOrigPath(origPath);
-        target.setFilename(filename);
+        target.setFileName(fileName);
         target.setSubject(subject);
 
         if (selection.contains(TAGS))
@@ -59,7 +59,7 @@ public class UserFileDto
             throws ParseException {
         fileBlob = new FileBlobDto().ref(map.getString("fileBlob"));
         origPath = map.getString("origPath");
-        filename = map.getString("filename");
+        fileName = map.getString("filename");
         subject = map.getString("subject");
 
         if (selection.contains(TAGS)) {
@@ -92,14 +92,14 @@ public class UserFileDto
         this.origPath = origPath;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFilename(String filename) {
-        if (filename == null)
-            throw new NullPointerException("filename");
-        this.filename = filename;
+    public void setFileName(String fileName) {
+        if (fileName == null)
+            throw new NullPointerException("fileName");
+        this.fileName = fileName;
     }
 
     public String getSubject() {
