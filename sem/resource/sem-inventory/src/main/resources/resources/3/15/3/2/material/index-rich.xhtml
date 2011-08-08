@@ -41,6 +41,7 @@
 
 
         </h:outputStylesheet>
+
         <h:form id="main">
 
             <t:panelGrid columns="2" width="100%" columnClasses="ftd,std">
@@ -211,7 +212,7 @@
                 </p:panel>
             </p:dialog>
 
-            <p:dialog header="物料" widgetVar="materialDialog" height="600" width="700">
+            <p:dialog header="物料" widgetVar="materialDialog" height="600" width="800">
                 <t:panelGrid columns="5" id="material"
                     columnClasses="material_dialog_label, material_dialog_txt,material_dialog_label, material_dialog_txt">
                     <h:outputText value="物料名称" />
@@ -223,10 +224,10 @@
                     <h:outputText value="序列号:" />
                     <p:inputText value="#{materialViewBean.activeMaterial.serial}"
                         readonly="#{materialViewBean.editable}" />
-                    <h:panelGroup />
                     <h:outputText value="条形码:" />
-                    <p:inputText widgetVar="ttt" value="#{materialViewBean.activeMaterial.barCode}"
+                    <p:inputText value="#{materialViewBean.activeMaterial.barCode}"
                         readonly="#{materialViewBean.editable}" />
+                    <t:panelGroup />
 
 
                     <h:outputText value="物料分类:" />
@@ -252,10 +253,10 @@
                         <f:selectItem itemLabel="新增单位" itemValue="new" />
                         <f:selectItems value="#{materialViewBean.units}" />
                     </p:selectOneMenu>
-                    <h:panelGroup />
                     <h:outputText value="单位提示:" />
                     <p:inputText value="#{materialViewBean.activeMaterial.unitHint}"
                         readonly="#{materialViewBean.editable}" />
+                    <t:panelGroup />
 
 
                     <h:outputText value="单位换算表" />
@@ -354,7 +355,7 @@
                             <p:column headerText="安全库存">
                                 <h:outputText value="#{opt.safetyStock}" />
                             </p:column>
-                            <p:column headerText="循环盘点周期">
+                            <p:column headerText="循环盘点周期" style="width:100px;">
                                 <h:outputText value="#{opt.stkPeriod}" />
                             </p:column>
                             <p:column headerText="操作" style="width:80px;">
@@ -375,8 +376,47 @@
                     <p:commandButton value="..." title="添加物料设置" disabled="#{materialViewBean.editable}"
                         onclick="optionDialog.show();" />
 
-                    <t:panelGroup />
+                    <h:outputText value="附件列表:" />
                     <t:panelGroup colspan="4">
+                        <p:dataTable id="attachList" value="#{materialViewBean.activeMaterial.attachments}"
+                            var="attachment">
+                            <p:column headerText="">
+                                <img src="#{location.WEB_APP}/3/15/1/6/file/view.do?id=#{attachment.id}" width="16"
+                                    height="16" border="0" />
+                            </p:column>
+                            <p:column headerText="附件名称">
+                                <h:outputText value="#{attachment.origPath}" />
+                            </p:column>
+                            <p:column headerText="标题">
+                                <h:outputText value="#{attachment.subject}" />
+                            </p:column>
+                            <p:column headerText="操作">
+                                <p:commandLink title="删除" disabled="#{materialViewBean.editable}"
+                                    update="dialogForm:attachList">
+                                    <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
+                                    <p:collector value="#{attachment}"
+                                        removeFrom="#{materialViewBean.activeMaterial.attachments}" />
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </t:panelGroup>
+
+                    <t:panelGroup colspan="5">
+                        <h:form enctype="multipart/form-data">
+
+                            <p:growl id="growl" showDetail="true" />
+
+                            <p:panel header="文件上传">
+
+                                <p:fileUpload fileUploadListener="#{materialViewBean.handleFileUpload}" mode="advanced"
+                                    update="growl,dialogForm:attachList" multiple="true"
+                                    allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
+
+                            </p:panel>
+                        </h:form>
+                    </t:panelGroup>
+
+                    <t:panelGroup colspan="5">
                         <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}"
                             update="main:materialList,note" disabled="#{materialViewBean.editable}"
                             oncomplete="materialDialog.hide();" />
