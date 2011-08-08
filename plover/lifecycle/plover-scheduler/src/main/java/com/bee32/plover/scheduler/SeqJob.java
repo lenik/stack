@@ -8,8 +8,9 @@ public class SeqJob
         implements Job {
 
     @Override
-    public void execute(JobExecutionContext jobexecutioncontext)
+    public void execute(JobExecutionContext context)
             throws JobExecutionException {
+
     }
 
 }
