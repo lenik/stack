@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
@@ -32,13 +33,21 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
     private static final long serialVersionUID = 1L;
 
+    private StockOrderSubject subjectOut = null;
+
+    private StockOrderDto stockOrderOut = new StockOrderDto().ref();
+
     private StockTransferDto stockTransfer = new StockTransferDto().create();
+    private StockTransferDto stockTransferOut = new StockTransferDto().create();
 
     private Date limitDateFrom;
     private Date limitDateTo;
 
     private int goNumber;
     private int count;
+
+    private int goNumberOut;
+    private int countOut;
 
 
     private String personPattern;
@@ -59,11 +68,30 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
         goNumber = 1;
 
+        goNumberOut = 1;
+
         subject = StockOrderSubject.XFER_IN;
+        subjectOut = StockOrderSubject.XFER_OUT;
     }
 
 
 
+
+    public StockOrderSubject getSubjectOut() {
+        return subjectOut;
+    }
+
+    public void setSubjectOut(StockOrderSubject subjectOut) {
+        this.subjectOut = subjectOut;
+    }
+
+    public StockOrderDto getStockOrderOut() {
+        return stockOrderOut;
+    }
+
+    public void setStockOrderOut(StockOrderDto stockOrderOut) {
+        this.stockOrderOut = stockOrderOut;
+    }
 
     public Date getLimitDateFrom() {
         return limitDateFrom;
@@ -89,11 +117,26 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         this.goNumber = goNumber;
     }
 
+    public int getGoNumberOut() {
+        return goNumberOut;
+    }
+
+    public void setGoNumberOut(int goNumberOut) {
+        this.goNumberOut = goNumberOut;
+    }
+
     public int getCount() {
         count = serviceFor(StockOrder.class).count(//
                 EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 StockCriteria.subjectOf(getSubject()), //
                 new Equals("warehouse.id", selectedWarehouse.getId()));
+        return count;
+    }
+
+    public int getCountOut() {
+        countOut = serviceFor(StockTransfer.class).count(//
+                new Equals("destWarehouse.id", selectedWarehouse.getId()),
+                new IsNull("dest.id"));
         return count;
     }
 
@@ -104,6 +147,14 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
     public void setStockTransfer(StockTransferDto stockTransfer) {
         this.stockTransfer = stockTransfer;
+    }
+
+    public StockTransferDto getStockTransferOut() {
+        return stockTransferOut;
+    }
+
+    public void setStockTransferOut(StockTransferDto stockTransferOut) {
+        this.stockTransferOut = stockTransferOut;
     }
 
     public String getPersonPattern() {
@@ -140,6 +191,7 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
     public void onSwChange(AjaxBehaviorEvent e) {
         loadStockOrder(goNumber);
+        loadStockOrderOut(goNumberOut);
         loadStockLocationTree();
     }
 
@@ -168,7 +220,7 @@ public class TransferInAdminBean extends StockOrderBaseBean {
                 stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
 
                 StockTransfer t = serviceFor(StockTransfer.class)
-                        .getUnique(new Equals("source.id", stockOrder.getId()));
+                        .getUnique(new Equals("dest.id", stockOrder.getId()));
                 if(t != null) {
                     stockTransfer = DTOs.marshal(StockTransferDto.class, t);
                 }
@@ -176,21 +228,41 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         }
     }
 
+    private void loadStockOrderOut(int goNumber) {
+        //刷新总记录数
+        getCountOut();
+
+        if(goNumberOut < 1) goNumberOut = 1;
+        if(goNumberOut > count) goNumberOut = count;
+
+
+        stockOrderOut = new StockOrderDto().create();
+        stockTransfer = new StockTransferDto().create();
+        if (selectedWarehouse != null) {
+
+            StockTransfer firstTransfer = serviceFor(StockTransfer.class).getFirst(
+                    new Offset(goNumberOut - 1),
+                    new Equals("destWarehouse.id", selectedWarehouse.getId()),
+                    new IsNull("dest.id"));
+
+            if(firstTransfer != null) {
+                stockTransferOut = DTOs.marshal(StockTransferDto.class, firstTransfer);
+
+                StockOrder o = serviceFor(StockOrder.class).getUnique(
+                        new Equals("id", stockTransferOut.getSource().getId())
+                        );
+                if(o != null) {
+                    stockOrderOut = DTOs.marshal(StockOrderDto.class, o);
+                }
+            }
+        }
+    }
+
+
     public void limit() {
         loadStockOrder(goNumber);
     }
 
-    public void new_() {
-        if (selectedWarehouse.getId() == null) {
-            uiLogger.warn("请选择对应的仓库!");
-            return;
-        }
-
-        stockTransfer = new StockTransferDto().create();
-        stockOrder = new StockOrderDto().create();
-        //stockOrder.setCreatedDate(new Date());
-        editable = true;
-    }
 
     public void modify() {
         if(stockOrder.getId() == null) {
@@ -293,6 +365,56 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         goNumber = count + 1;
         loadStockOrder(goNumber);
     }
+
+
+
+
+
+
+    public void firstOut() {
+        goNumberOut = 1;
+        loadStockOrderOut(goNumberOut);
+    }
+
+    public void previousOut() {
+        goNumberOut--;
+        if (goNumberOut < 1)
+            goNumberOut = 1;
+        loadStockOrderOut(goNumberOut);
+    }
+
+    public void goOut() {
+        if (goNumberOut < 1) {
+            goNumberOut = 1;
+        } else if (goNumberOut > countOut) {
+            goNumberOut = countOut;
+        }
+        loadStockOrderOut(goNumberOut);
+    }
+
+    public void nextOut() {
+        goNumberOut++;
+
+        if (goNumberOut > countOut)
+            goNumberOut = countOut;
+        loadStockOrderOut(goNumberOut);
+    }
+
+    public void lastOut() {
+        goNumberOut = countOut + 1;
+        loadStockOrderOut(goNumberOut);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     public void findPerson() {
         if (personPattern != null && !personPattern.isEmpty()) {

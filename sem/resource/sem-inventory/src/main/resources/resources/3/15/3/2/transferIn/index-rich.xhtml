@@ -64,8 +64,9 @@
 
 			<p:toolbar id="toolbar">
 				<p:toolbarGroup align="left">
-					<p:commandButton value="新增" actionListener="#{transferInAdminBean.new_}"
-						disabled="#{transferInAdminBean.editable}" update="mainForm" async="true" />
+                    <p:commandButton value="新增"
+                        actionListener="#{transferOutAdminBean.new_}"
+                        disabled="#{transferOutAdminBean.editable}" update="mainForm" async="true" />
 					<p:commandButton value="修改"
 						actionListener="#{transferInAdminBean.modify}"
 						disabled="#{transferInAdminBean.editable}" update="mainForm" async="true" />
@@ -112,28 +113,14 @@
 			<p:panel header="#{transferInAdminBean.subject.displayName}" toggleable="true">
 
 				<t:panelGrid columns="4">
-                    <h:outputLabel value="目标仓库"/>
+                    <h:outputLabel value="源仓库"/>
                     <t:panelGroup colspan="3">
-                        <p:selectOneMenu
-                            value="#{transferInAdminBean.stockTransfer.destWarehouse.id}"
-                            disabled="#{!transferInAdminBean.editable}"
-                            style="width:200px;">
-                            <f:selectItem itemValue=""
-                                itemLabel="--选择仓库--" />
-                            <f:selectItems
-                                value="#{transferInAdminBean.stockWarehouses}" />
-                        </p:selectOneMenu>
+                        <h:outputText value="#{transferInAdminBean.stockTransfer.sourceWarehouse.name}"/>
                     </t:panelGroup>
 
                     <h:outputLabel value="调拨人员"/>
                     <t:panelGroup colspan="3">
-                        <p:inputText id="transferredby" readonly="true"
-                            disabled="#{!transferInAdminBean.editable}"
-                            value="#{transferInAdminBean.stockTransfer.transferredBy.displayName}"
-                            style="width:200px;" />
-                        <p:commandButton value="..."
-                            onclick="personHolderDlg.show();"
-                            disabled="#{!transferInAdminBean.editable}" />
+                        <h:outputText value="#{transferInAdminBean.stockTransfer.transferredBy.displayName}"/>
                     </t:panelGroup>
 
 
@@ -160,13 +147,7 @@
                     <p:inputText value="" disabled="true"/>
 				</t:panelGrid>
 
-                <t:panelGrid columns="2">
-                    <h:outputText value="明细"/>
-					<p:commandButton value="新增明细" onclick="itemDialog.show();"
-						actionListener="#{transferInAdminBean.newItem}"
-						update="itemForm:itemPanel"
-						disabled="#{!transferInAdminBean.editable}" />
-				</t:panelGrid>
+                <h:outputText value="明细"/>
 
 				<p:dataTable id="items" var="item"
 					value="#{transferInAdminBean.items}" resizableColumns="true"
@@ -232,27 +213,6 @@
 					<p:column>
 						<f:facet name="header">操作</f:facet>
 						<t:panelGroup>
-                            <!--
-							<p:commandLink update="" oncomplete=""
-								value="查看">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{transferInAdminBean.orderItem}" />
-							</p:commandLink>
-							<p:spacer width="10" />
-                             -->
-
-							<p:commandLink update="itemForm:itemPanel"
-								disabled="#{!transferInAdminBean.editable}"
-								actionListener="#{transferInAdminBean.modifyItem}"
-								oncomplete="itemDialog.show()" value="修改">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{transferInAdminBean.orderItem}" />
-                                <f:setPropertyActionListener value="#{item.priceValue}"
-                                    target="#{transferInAdminBean.orderItemPrice}" />
-                                <f:setPropertyActionListener value="#{item.priceCurrencyCode}"
-                                    target="#{transferInAdminBean.orderItemPriceCurrency}" />
-							</p:commandLink>
-							<p:spacer width="10" />
 							<p:commandLink
 								disabled="#{!transferInAdminBean.editable}"
 								oncomplete="deleteItemConfirmDialog.show()" value="删除">
@@ -270,34 +230,161 @@
             <p:panel header="未拨入的单据" toggleable="true">
                 <p:toolbar id="toolbar1">
                     <p:toolbarGroup align="left">
+                        <p:commandButton value="拨入"
+                            actionListener="#{transferInAdminBean.transferIn}"
+                            update="mainForm" async="true"/>
+                        <p:divider />
                         <p:commandButton value="第一条"
-                            actionListener="#{transferInAdminBean.first}"
-                            disabled="#{transferInAdminBean.editable}"
-                            update="mainForm" async="true" />
+                            actionListener="#{transferInAdminBean.firstOut}"
+                            update="mainForm:transferOuts" async="true" />
                         <p:commandButton value="上一条"
-                            actionListener="#{transferInAdminBean.previous}"
+                            actionListener="#{transferInAdminBean.previousOut}"
                             disabled="#{transferInAdminBean.editable}"
-                            update="mainForm" async="true" />
+                            update="mainForm:transferOuts" async="true" />
                         <p:commandButton value="下一条"
-                            actionListener="#{transferInAdminBean.next}"
+                            actionListener="#{transferInAdminBean.nextOut}"
                             disabled="#{transferInAdminBean.editable}"
-                            update="mainForm" async="true" />
+                            update="mainForm:transferOuts" async="true" />
                         <p:commandButton value="最末条"
-                            actionListener="#{transferInAdminBean.last}"
+                            actionListener="#{transferInAdminBean.lastOut}"
                             disabled="#{transferInAdminBean.editable}"
-                            update="mainForm" async="true" />
+                            update="mainForm:transferOuts" async="true" />
                         <p:inputText
-                            value="#{transferInAdminBean.goNumber}"
+                            value="#{transferInAdminBean.goNumberOut}"
                             disabled="#{transferInAdminBean.editable}"
                             style="width:30px;" />
                         <h:outputText
-                            value="/#{transferInAdminBean.count}" />
+                            value="/#{transferInAdminBean.countOut}" />
                         <p:commandButton value="前往"
-                            actionListener="#{transferInAdminBean.go}"
+                            actionListener="#{transferInAdminBean.goOut}"
                             disabled="#{transferInAdminBean.editable}"
-                            update="mainForm" async="true" />
+                            update="mainForm:transferOuts" async="true" />
                     </p:toolbarGroup>
                 </p:toolbar>
+
+                <p:panel id="transferOuts">
+
+                    <t:panelGrid columns="4">
+
+                        <h:outputLabel value="调拨人员" />
+                        <t:panelGroup colspan="3">
+                            <h:outputText value="#{transferInAdminBean.stockTransfer.transferredBy.displayName}" />
+                        </t:panelGroup>
+
+                        <t:panelGroup colspan="4">
+                            <hr />
+                        </t:panelGroup>
+
+                        <h:outputText value="时间" />
+                        <h:outputText
+                            value="#{transferInAdminBean.stockOrderOut.createdDate}">
+                            <f:convertDateTime pattern="yyyy-MM-dd"
+                                timeZone="Asia/Shanghai" />
+                        </h:outputText>
+                        <h:outputText value="标签" />
+                        <h:outputText
+                            value="#{transferInAdminBean.stockOrderOut.label}"/>
+
+                        <h:outputText value="描述" />
+                        <t:panelGroup colspan="3">
+                            <h:outputText
+                                value="#{transferInAdminBean.stockOrderOut.description}"/>
+                        </t:panelGroup>
+
+                        <h:outputText value="制单人" />
+                        <h:outputText
+                            value="#{transferInAdminBean.creatorOut}"/>
+                        <h:outputText value="单据状态" />
+                        <p:inputText value="" disabled="true" />
+                    </t:panelGrid>
+
+                    <h:outputText value="明细" />
+
+                    <p:dataTable id="itemsOut" var="item"
+                        value="#{transferInAdminBean.itemsOut}"
+                        resizableColumns="true" rowIndexVar="rowIndex">
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="序号" />
+                            </f:facet>
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="物料" />
+                            </f:facet>
+                            <h:outputText value="#{item.material.name}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="批号" />
+                            </f:facet>
+                            <h:outputText value="#{item.batch}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="有效期" />
+                            </f:facet>
+                            <h:outputText value="#{item.expirationDate}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="库位" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{item.location.nodeText}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="单价" />
+                            </f:facet>
+                            <h:outputText value="#{item.price.value}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="币种" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{item.price.currencyText}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="数量" />
+                            </f:facet>
+                            <h:outputText value="#{item.quantity}" />
+                        </p:column>
+
+
+                        <p:column>
+                            <f:facet name="header">操作</f:facet>
+                            <t:panelGroup>
+
+                                <p:commandLink
+                                    update="itemForm:itemPanel"
+                                    disabled="#{!transferInAdminBean.editable}"
+                                    actionListener="#{transferInAdminBean.transferItem}"
+                                    oncomplete="itemDialog.show()"
+                                    value="拨入">
+                                    <f:setPropertyActionListener
+                                        value="#{item}"
+                                        target="#{transferInAdminBean.orderItemOut}" />
+                                </p:commandLink>
+                            </t:panelGroup>
+                        </p:column>
+
+                    </p:dataTable>
+
+
+                </p:panel>
+
 
             </p:panel>
         </h:form>
