@@ -2,7 +2,9 @@ package com.bee32.plover.web.faces;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ServiceLoader;
 
+import org.apache.myfaces.renderkit.ErrorPageRenderer;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,6 +25,11 @@ public class PloverErrorPageRendererTest
         StringWriter buffer = new StringWriter();
         renderer.writeException(buffer, new Exception());
         System.out.println(buffer);
+
+        System.out.println("Services: ");
+        for (ErrorPageRenderer epr : ServiceLoader.load(ErrorPageRenderer.class)) {
+            System.out.println("EPR: " + epr);
+        }
     }
 
 }
