@@ -111,10 +111,9 @@ public class FileBlob
         return newInputStream();
     }
 
-    @Transient
-    LocalStorage container = LocalStorage.INSTANCE;
+    static LocalStorage container = LocalStorage.INSTANCE;
 
-    IFile temporaryFile;
+    transient IFile temporaryFile;
 
     @Transient
     IFile getTemporaryFile() {
