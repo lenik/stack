@@ -73,7 +73,8 @@ public abstract class CompositeController
                 req.setPrefix(_prefix);
 
                 String pathWithoutActionName = null;
-                if (lastSlash != -1)
+                // It seems lastSlash == 0, cuz internalPath starts with /.
+                if (lastSlash != -1 && lastSlash != 0)
                     pathWithoutActionName = internalPath.substring(0, lastSlash);
 
                 // request.setAttribute(PATH_PARAMETER_ATTRIBUTE, pathWithoutActionName);

@@ -89,7 +89,7 @@ public abstract class EntityHandler<E extends Entity<K>, K extends Serializable>
             typeAbbr = pathParam;
         }
 
-        if (typeAbbr != null) {
+        if (typeAbbr != null && !typeAbbr.isEmpty()) {
             Class<? extends E> entityType;
             try {
                 entityType = (Class<? extends E>) ABBR.expand(typeAbbr);
