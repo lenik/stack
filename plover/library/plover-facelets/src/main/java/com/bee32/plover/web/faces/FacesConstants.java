@@ -80,6 +80,15 @@ public interface FacesConstants {
      */
     String SKIP_COMMENTS = "facelets.SKIP_COMMENTS";
 
+    /**
+     * Possible values:
+     * <ul>
+     * <li>Production
+     * <li>Development
+     * </ul>
+     */
+    String PROJECT_STAGE = "javax.faces.PROJECT_STAGE";
+
     String DEFAULT_SUFFIX = "javax.faces.DEFAULT_SUFFIX";
 
     String RI_VALIDATE_XML = "com.sun.faces.validateXml";

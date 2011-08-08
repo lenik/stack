@@ -83,8 +83,10 @@ public class FaceletsTestCase
             context.addInitParam(DEFAULT_SUFFIX, ".xhtml");
 
             // Special Debug Output for Development
-            if (isDebugMode())
+            if (isDebugMode()) {
                 context.addInitParam(DEVELOPMENT, "true");
+                context.addInitParam(PROJECT_STAGE, "Development");
+            }
 
             context.addInitParam(REFRESH_PERIOD, String.valueOf(getRefreshPeriod()));
 
