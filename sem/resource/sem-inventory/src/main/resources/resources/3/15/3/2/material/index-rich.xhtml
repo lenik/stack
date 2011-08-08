@@ -381,16 +381,11 @@
                         <p:dataTable id="attachList" value="#{materialViewBean.activeMaterial.attachments}"
                             var="attachment">
                             <p:column headerText="">
-                                <img src="#{location.WEB_APP}/3/15/1/6/file/view.do?id=#{attachment.id}" width="16"
-                                    height="16" border="0" />
-                            </p:column>
-                            <p:column headerText="附件名称">
+                                <img src="#{location.WEB_APP}/3/15/1/6/file/view.do?id=#{attachment.id}" width="24"
+                                    height="24" border="0" />
                                 <h:outputText value="#{attachment.origPath}" />
                             </p:column>
-                            <p:column headerText="标题">
-                                <h:outputText value="#{attachment.subject}" />
-                            </p:column>
-                            <p:column headerText="操作">
+                            <p:column headerText="操作" style="width:80px;">
                                 <p:commandLink title="删除" disabled="#{materialViewBean.editable}"
                                     update="dialogForm:attachList">
                                     <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
@@ -403,16 +398,10 @@
 
                     <t:panelGroup colspan="5">
                         <h:form enctype="multipart/form-data">
-
-                            <p:growl id="growl" showDetail="true" />
-
-                            <p:panel header="文件上传">
-
-                                <p:fileUpload fileUploadListener="#{materialViewBean.handleFileUpload}" mode="advanced"
-                                    update="growl,dialogForm:attachList" multiple="true"
-                                    allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
-
-                            </p:panel>
+                            <p:growl id="message" />
+                            <p:fileUpload fileUploadListener="#{materialViewBean.handleFileUpload}" mode="advanced"
+                                update="message,dialogForm:attachList" multiple="true"
+                                allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
                         </h:form>
                     </t:panelGroup>
 
