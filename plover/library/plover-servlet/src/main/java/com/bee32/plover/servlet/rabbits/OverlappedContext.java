@@ -23,7 +23,7 @@ public class OverlappedContext
     public Resource getResource(String path)
             throws MalformedURLException {
 
-        // logger.debug("OC::GET " + path);
+         logger.debug("OC::GET " + path);
 
         if (path == null || !path.startsWith("/"))
             throw new MalformedURLException(path);
