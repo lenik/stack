@@ -27,20 +27,9 @@ import javax.free.Strings;
 import javax.free.SystemProperties;
 
 import com.bee32.plover.orm.util.EntityFormatter;
+import com.bee32.plover.xutil.m2.MavenPath;
 
 public class NLSInitiator {
-
-    public static File getSiblingResource(File dir) {
-        String resdir = dir.getPath();
-
-        // src/main/java => src/main/resources
-        // target/classes => src/main/resources
-        // target/test-classes => src/test/resources
-        resdir = resdir.replaceFirst("/src/main/java", "/src/main/resources");
-        resdir = resdir.replaceFirst("/target/classes", "/src/main/resources");
-        resdir = resdir.replaceFirst("/target/test-classes", "/src/test/resources");
-        return new File(resdir);
-    }
 
     static Set<String> skippedProps = new HashSet<String>();
     static {
@@ -177,7 +166,7 @@ public class NLSInitiator {
             throws Exception {
         for (File classdir : UCLDumper.getLocalClasspaths())
             if (classdir.isDirectory()) {
-                File resdir = getSiblingResource(classdir);
+                File resdir = MavenPath.getSiblingResource(classdir);
 
                 System.out.println("Scan " + classdir);
 
