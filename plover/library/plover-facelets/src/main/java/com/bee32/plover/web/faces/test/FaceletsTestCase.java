@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.servlet.rabbits.OverlappedBases;
 import com.bee32.plover.servlet.test.WiredServletTestCase;
+import com.bee32.plover.web.faces.FaceletsConfig;
 
 public class FaceletsTestCase
         extends WiredServletTestCase {
@@ -20,8 +21,8 @@ public class FaceletsTestCase
 
     public FaceletsTestCase() {
         OverlappedBases.add("resources/");
-        stl.welcomeList.add("index-ftc.jsf");
-        stl.welcomeList.add("index.jsf");
+        stl.welcomeList.add("index-ftc." + FaceletsConfig.extension);
+        stl.welcomeList.add("index." + FaceletsConfig.extension);
     }
 
     /**

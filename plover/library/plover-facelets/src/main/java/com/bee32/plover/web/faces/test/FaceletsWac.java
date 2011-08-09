@@ -13,6 +13,7 @@ import com.bee32.plover.servlet.rabbits.RabbitServletContext;
 import com.bee32.plover.servlet.test.OuterWac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
 import com.bee32.plover.web.faces.ClassResourceResolver;
+import com.bee32.plover.web.faces.FaceletsConfig;
 import com.bee32.plover.web.faces.FacesConstants;
 
 public class FaceletsWac
@@ -70,10 +71,10 @@ public class FaceletsWac
         }
 
         // Faces Servlet, must be load-on-startup, but STL seems not support.
-        ServletHolder facesServlet = stl.addServlet(FacesServlet.class, "*.jsf");
+        ServletHolder facesServlet = stl.addServlet(FacesServlet.class, "*." + FaceletsConfig.extension);
         facesServlet.setInitOrder(0);
 
-        stl.addFilter(FileUploadFilter.class, "*.jsf", 0);
+        stl.addFilter(FileUploadFilter.class, "*." + FaceletsConfig.extension, 0);
     }
 
 }
