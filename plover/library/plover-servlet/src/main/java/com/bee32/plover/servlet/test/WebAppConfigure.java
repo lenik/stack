@@ -60,4 +60,12 @@ public class WebAppConfigure
         return INSTANCE;
     }
 
+    // Dump all
+    public static void main(String[] args) {
+        System.out.println("WAC Dump: ");
+        for (IWebAppConfigurer c : getInstance().configurers) {
+            System.out.println("  WAC Service: " + c);
+        }
+    }
+
 }
