@@ -69,7 +69,7 @@ public class SEMChanceSamples
         chanceAction1.setChance(chance);
         chanceAction1.setBeginTime(cal.getTime());
         chanceAction1.setEndTime(cal.getTime());
-        chanceAction1.setDescription("在北京、上海、广州三个重点区域发展8至10家大OEM厂商");
+        chanceAction1.setMoreInfo("在北京、上海、广州三个重点区域发展8至10家大OEM厂商");
         chanceAction1.setSpending("打的15, 吃饭30,住宿100,共145");
         chanceAction1.setActor(IcsfPrincipalSamples.eva);
         chanceAction1.setStyle(ChanceActionStyle.INTERNET);
@@ -78,7 +78,7 @@ public class SEMChanceSamples
 
         chanceAction2.setBeginTime(cal.getTime());
         chanceAction2.setEndTime(cal.getTime());
-        chanceAction2.setDescription("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        chanceAction2.setMoreInfo("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         chanceAction2.setSpending("spendingspendingspendingspendingspendingspending");
         chanceAction2.setActor(IcsfPrincipalSamples.eva);
         chanceAction2.setStyle(ChanceActionStyle.TALK);

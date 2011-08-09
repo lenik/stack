@@ -254,6 +254,8 @@ public class ChanceActionDto
     }
 
     public String getSubject() {
+        if (moreInfo == null)
+            return "(无标题)";
         return Strings.ellipse(getMoreInfo(), 16);
     }
 

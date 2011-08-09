@@ -131,7 +131,7 @@ public class ChanceAction
     /**
      * 产生费用明细
      */
-    @Column(length = 300, nullable = false)
+    @Column(length = 1000, nullable = false)
     public String getSpending() {
         return spending;
     }
