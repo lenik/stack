@@ -19,11 +19,11 @@ import com.bee32.sem.process.verify.builtin.dto.LevelDto;
 import com.bee32.sem.process.verify.builtin.dto.MultiLevelDto;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 
-@RequestMapping(MultiLevelController.PREFIX + "*")
+@RequestMapping(MultiLevelController.PREFIX + "/*")
 public class MultiLevelController
         extends BasicEntityController<MultiLevelPolicy, Integer, MultiLevelDto> {
 
-    public static final String PREFIX = SEMProcessModule.PREFIX + "level/";
+    public static final String PREFIX = SEMProcessModule.PREFIX + "/level";
 
     @Inject
     LevelDao levelDao;

@@ -18,11 +18,11 @@ import com.bee32.sem.process.SEMProcessModule;
 import com.bee32.sem.process.verify.builtin.AllowListPolicy;
 import com.bee32.sem.process.verify.builtin.dto.AllowListDto;
 
-@RequestMapping(AllowListController.PREFIX + "*")
+@RequestMapping(AllowListController.PREFIX + "/*")
 public class AllowListController
         extends BasicEntityController<AllowListPolicy, Integer, AllowListDto> {
 
-    public static final String PREFIX = SEMProcessModule.PREFIX + "list/";
+    public static final String PREFIX = SEMProcessModule.PREFIX + "/list";
 
     @Inject
     UserDao userDao;

@@ -27,11 +27,11 @@ import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 import com.bee32.sem.process.verify.service.VerifyService;
 import com.bee32.sem.process.verify.util.VerifiableEntity;
 
-@RequestMapping(VerifyPolicyPrefController.PREFIX + "*")
+@RequestMapping(VerifyPolicyPrefController.PREFIX + "/*")
 public class VerifyPolicyPrefController
         extends BasicEntityController<VerifyPolicyPref, String, VerifyPolicyPrefDto> {
 
-    public static final String PREFIX = SEMProcessModule.PREFIX + "pref/";
+    public static final String PREFIX = SEMProcessModule.PREFIX + "/pref";
 
     static Logger logger = LoggerFactory.getLogger(VerifyPolicyPrefController.class);
 

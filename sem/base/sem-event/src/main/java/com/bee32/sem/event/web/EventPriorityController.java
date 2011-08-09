@@ -8,11 +8,11 @@ import com.bee32.sem.event.SEMEventModule;
 import com.bee32.sem.event.dto.EventPriorityDto;
 import com.bee32.sem.event.entity.EventPriority;
 
-@RequestMapping(EventPriorityController.PREFIX + "*")
+@RequestMapping(EventPriorityController.PREFIX + "/*")
 public class EventPriorityController
         extends BasicEntityController<EventPriority, Integer, EventPriorityDto> {
 
-    public static final String PREFIX = SEMEventModule.PREFIX + "priority/";
+    public static final String PREFIX = SEMEventModule.PREFIX + "/priority";
 
     @Override
     protected void fillDataRow(DataTableDxo tab, EventPriorityDto dto) {

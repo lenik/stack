@@ -12,11 +12,11 @@ import com.bee32.sem.process.verify.builtin.dao.PassStepDao;
 import com.bee32.sem.process.verify.builtin.dto.PassStepDto;
 import com.bee32.sem.process.verify.builtin.dto.PassToNextDto;
 
-@RequestMapping(PassToNextController.PREFIX + "*")
+@RequestMapping(PassToNextController.PREFIX + "/*")
 public class PassToNextController
         extends BasicEntityController<PassToNextPolicy, Integer, PassToNextDto> {
 
-    public static final String PREFIX = SEMProcessModule.PREFIX + "p2next/";
+    public static final String PREFIX = SEMProcessModule.PREFIX + "/p2next";
 
     @Inject
     PassStepDao seqDao;
