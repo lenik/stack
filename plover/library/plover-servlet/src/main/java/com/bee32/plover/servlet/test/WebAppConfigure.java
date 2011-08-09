@@ -4,10 +4,15 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.TreeSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bee32.plover.arch.util.OrderComparator;
 
 public class WebAppConfigure
         implements IWebAppConfigurer {
+
+    static Logger logger = LoggerFactory.getLogger(WebAppConfigure.class);
 
     TreeSet<IWebAppConfigurer> configurers;
 
@@ -30,14 +35,18 @@ public class WebAppConfigure
 
     @Override
     public void configureContext(ServletTestLibrary stl) {
-        for (IWebAppConfigurer c : configurers)
+        for (IWebAppConfigurer c : configurers) {
+            logger.debug("Configure servlet context from " + c.getClass());
             c.configureContext(stl);
+        }
     }
 
     @Override
     public void configureServlets(ServletTestLibrary stl) {
-        for (IWebAppConfigurer c : configurers)
+        for (IWebAppConfigurer c : configurers) {
+            logger.debug("Configure servlets from " + c.getClass());
             c.configureServlets(stl);
+        }
     }
 
     @Override
