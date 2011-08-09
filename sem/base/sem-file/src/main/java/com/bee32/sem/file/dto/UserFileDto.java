@@ -3,14 +3,20 @@ package com.bee32.sem.file.dto;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.free.FilePath;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.rtx.location.ILocationConstants;
+import com.bee32.plover.rtx.location.Location;
+import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.util.Mime;
 import com.bee32.sem.file.entity.UserFile;
 
 public class UserFileDto
-        extends EntityDto<UserFile, Long> {
+        extends EntityDto<UserFile, Long>
+        implements ILocationConstants {
 
     private static final long serialVersionUID = 1L;
 
@@ -118,6 +124,26 @@ public class UserFileDto
         if (tags == null)
             throw new NullPointerException("tags");
         this.tags = tags;
+    }
+
+    public String getImageHref() {
+        Location iconLoc;
+
+        String mimeType = "file";
+
+        String extension = FilePath.getExtension(origPath, false);
+        Mime mime = Mime.getInstanceByExtension(extension);
+        if (mime != null)
+            mimeType = mime.getName();
+
+        if (mimeType.startsWith("image/")) {
+            iconLoc = WEB_APP.join("/3/15/1/6/file/view.do?id=" + id);
+        } else {
+            iconLoc = ICON.join("obj16/elements_obj.gif");
+        }
+
+        String href = iconLoc.resolve(ThreadHttpContext.getRequest());
+        return href;
     }
 
 }
