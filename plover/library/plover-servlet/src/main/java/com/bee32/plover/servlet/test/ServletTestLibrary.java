@@ -28,12 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.ISupportLibrary;
-import com.bee32.plover.servlet.rabbits.Favicon;
-import com.bee32.plover.servlet.rabbits.Logo;
-import com.bee32.plover.servlet.rabbits.OverlappedResourceServlet;
 import com.bee32.plover.servlet.rabbits.RabbitServer;
 import com.bee32.plover.servlet.rabbits.RabbitServletContext;
-import com.bee32.plover.servlet.util.ThreadServletContextFilter;
 
 public class ServletTestLibrary
         extends RabbitServer
@@ -48,6 +44,8 @@ public class ServletTestLibrary
     private String[] hintFilenames = { "WEB-INF/web.xml", "index.html" };
 
     private boolean initialized;
+
+    WebAppConfigure wac = WebAppConfigure.getInstance();
 
     public ServletTestLibrary() {
         this(null);
@@ -95,10 +93,8 @@ public class ServletTestLibrary
         if (initialized)
             return;
 
-        configureContext();
-        configureBuiltinServlets();
-        configureServlets();
-        configureFallbackServlets();
+        wac.configureContext(this);
+        wac.configureServlets(this);
 
         // Find the resource base.
         if (hintFilenames != null) {
@@ -164,43 +160,6 @@ public class ServletTestLibrary
     public final List<String> welcomeList = new ArrayList<String>();
     {
         welcomeList.add("index.html");
-    }
-
-    protected void configureContext() {
-        String[] welcomeFiles = welcomeList.toArray(new String[0]);
-        getServletContext().setWelcomeFiles(welcomeFiles);
-    }
-
-    protected void configureBuiltinServlets() {
-
-        addFilter(RequestLogger.class, "*", 0);
-
-        addServlet(Favicon.class, "/favicon.ico");
-
-        // The wildcard * is needed, cuz they are class resources, not overlapped resources.
-        addServlet(Logo.class, "/logo/*");
-        addFilter(Welcome.class, "/", 0);
-
-        // Use filter to get the reponse object.
-        // addEventListener(new ThreadServletContextListener());
-        addFilter(ThreadServletContextFilter.class, "/*", 0);
-    }
-
-    /**
-     * Config servlet, filter, etc.
-     * <p>
-     * Don't call {@link #start()} here.
-     */
-    protected void configureServlets() {
-    }
-
-    protected void configureFallbackServlets() {
-        // Add the fallback-servlet.
-        // Otherwise, the filter won't work.
-
-        ServletHolder ors = addServlet(OverlappedResourceServlet.class, "/");
-        // See DefaultServlet._welcomeServlets
-        ors.setInitParameter("welcomeServlets", "true");
     }
 
     public ServletHolder addServlet(String servletName, Class<? extends HttpServlet> servlet, String pathSpec) {

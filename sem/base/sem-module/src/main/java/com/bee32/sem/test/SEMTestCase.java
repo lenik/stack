@@ -9,14 +9,12 @@ import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
-import com.bee32.plover.orm.context.OSIVFilter;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.unit.UsingUtil;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
-import com.bee32.plover.restful.DispatchServlet;
 import com.bee32.plover.restful.RESTfulConfig;
 import com.bee32.plover.zk.test.ZkTestCase;
 
@@ -52,17 +50,6 @@ public class SEMTestCase
         CustomizedSessionFactoryBean.setForceUnit(unit);
 
         stl.welcomeList.add("index-rich.jsf");
-    }
-
-    @Override
-    protected final void configureBuiltinServlets() {
-        super.configureBuiltinServlets();
-
-        // OSIV filter should before dispatch filter.
-        stl.addFilter(OSIVFilter.class, "/*", 0);
-
-        // Also enable Restful service.
-        stl.addServlet(DispatchServlet.class, PREFIX + "/*");
     }
 
     @Override

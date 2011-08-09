@@ -3,11 +3,11 @@ package com.bee32.plover.servlet.test;
 import com.bee32.plover.servlet.test.ServletTestCase.LocalSTL;
 
 public class ServletTestCaseWac
-        extends AbstractWebAppConfigurer {
+        extends OuterWac<ServletTestCase> {
 
     @Override
     public int getOrder() {
-        return USER_ORDER_BASE - 1;
+        return NORMAL_ORDER - 1;
     }
 
     ServletTestCase getOuter(ServletTestLibrary stl) {
@@ -18,38 +18,28 @@ public class ServletTestCaseWac
     }
 
     @Override
-    public void configureServer(ServletTestLibrary stl) {
-        ServletTestCase stc = getOuter(stl);
-        if (stc != null)
-            ; // stc.configureServer();
+    protected void configureServer(ServletTestLibrary stl, ServletTestCase outer) {
+        // outer.configureServer();
     }
 
     @Override
-    public void configureContext(ServletTestLibrary stl) {
-        ServletTestCase stc = getOuter(stl);
-        if (stc != null)
-            stc.configureContext();
+    protected void configureContext(ServletTestLibrary stl, ServletTestCase outer) {
+        outer.configureContext();
     }
 
     @Override
-    public void configureServlets(ServletTestLibrary stl) {
-        ServletTestCase stc = getOuter(stl);
-        if (stc != null)
-            stc.configureServlets();
+    protected void configureServlets(ServletTestLibrary stl, ServletTestCase outer) {
+        outer.configureServlets();
     }
 
     @Override
-    public void onServerStartup(ServletTestLibrary stl) {
-        ServletTestCase stc = getOuter(stl);
-        if (stc != null)
-            stc.onServerStartup();
+    protected void onServerStartup(ServletTestLibrary stl, ServletTestCase outer) {
+        outer.onServerStartup();
     }
 
     @Override
-    public void onServerShutdown(ServletTestLibrary stl) {
-        ServletTestCase stc = getOuter(stl);
-        if (stc != null)
-            stc.onServerShutdown();
+    protected void onServerShutdown(ServletTestLibrary stl, ServletTestCase outer) {
+        outer.onServerShutdown();
     }
 
 }

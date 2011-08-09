@@ -23,7 +23,6 @@ public class BookModuleTest
     @Test
     public void testBookModuleCredit()
             throws Exception {
-        setupH2Console();
 
         String creditUri = PREFIX + "/" + bookModuleOid + "/credit";
         String credit = stl.httpGet(creditUri).getContent();

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Random;
 
-import javax.free.IllegalUsageException;
 import javax.free.Strings;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -28,10 +27,6 @@ public abstract class ServletTestCase
 
     protected ServletTestLibrary stl;
     protected String contextPath;
-
-    private boolean checkContext;;
-    private boolean checkBuiltinServlets;
-    private boolean checkFallbackServlets;
 
     /**
      * This ServletContext is read from in-memory server.
@@ -95,43 +90,6 @@ public abstract class ServletTestCase
             return getOuter().getPort();
         }
 
-        @Override
-        protected void configureContext() {
-            super.configureContext();
-
-            getOuter().configureContext();
-
-            if (!checkContext)
-                throw new IllegalUsageException("configureContext is overrided.");
-        }
-
-        @Override
-        protected void configureBuiltinServlets() {
-            super.configureBuiltinServlets();
-
-            getOuter().configureBuiltinServlets();
-
-            if (!checkBuiltinServlets)
-                throw new IllegalUsageException("configureBuiltinServlets is overrided.");
-        }
-
-        @Override
-        protected void configureServlets() {
-            super.configureServlets();
-
-            getOuter().configureServlets();
-        }
-
-        @Override
-        protected void configureFallbackServlets() {
-            getOuter().configureFallbackServlets();
-
-            super.configureFallbackServlets();
-
-            if (!checkFallbackServlets)
-                throw new IllegalUsageException("configureFallbackServlets is overrided.");
-        }
-
     }
 
     protected int getPort() {
@@ -143,22 +101,12 @@ public abstract class ServletTestCase
     }
 
     protected void configureContext() {
-        checkContext = true;
         stl.setContextPath(getContextPath());
         stl.addEventListener(this);
     }
 
-    protected void configureBuiltinServlets() {
-        checkBuiltinServlets = true;
-
-        stl.addFilter(SessionMonitorFilter.class, "/*", 0);
+    protected void configureServlets() {
     }
-
-    protected void configureFallbackServlets() {
-        checkFallbackServlets = true;
-    }
-
-    protected abstract void configureServlets();
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {

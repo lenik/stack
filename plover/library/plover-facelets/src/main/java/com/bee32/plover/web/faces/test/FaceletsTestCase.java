@@ -3,38 +3,20 @@ package com.bee32.plover.web.faces.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.webapp.FacesServlet;
-import javax.free.StringArray;
-
-import org.apache.myfaces.webapp.StartupServletContextListener;
-import org.mortbay.jetty.servlet.ServletHolder;
-import org.primefaces.webapp.filter.FileUploadFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.servlet.rabbits.OverlappedBases;
-import com.bee32.plover.servlet.rabbits.RabbitServletContext;
 import com.bee32.plover.servlet.test.WiredServletTestCase;
-import com.bee32.plover.web.faces.ClassResourceResolver;
-import com.bee32.plover.web.faces.FacesConstants;
-
-enum FaceletsProvider {
-
-    JSF_RI, // Sun JSF Reference Implementation
-
-    APACHE_MYFACES, // Apache MyFaces
-
-}
 
 public class FaceletsTestCase
-        extends WiredServletTestCase
-        implements FacesConstants {
+        extends WiredServletTestCase {
 
     static final FaceletsProvider faceletsProvider = FaceletsProvider.APACHE_MYFACES;
 
     static Logger logger = LoggerFactory.getLogger(FaceletsTestCase.class);
 
-    private List<String> taglibs = new ArrayList<String>();
+    List<String> taglibs = new ArrayList<String>();
 
     public FaceletsTestCase() {
         OverlappedBases.add("resources/");
@@ -63,64 +45,6 @@ public class FaceletsTestCase
 
     protected int getRefreshPeriod() {
         return 300;
-    }
-
-    @Override
-    protected void configureBuiltinServlets() {
-        super.configureBuiltinServlets();
-
-        RabbitServletContext context = stl.getServletContext();
-        {
-
-            if (!taglibs.isEmpty()) {
-                String libraries = StringArray.join(";", taglibs);
-                context.addInitParam(LIBRARIES, libraries);
-            }
-
-            context.addInitParam(RESOURCE_RESOLVER, ClassResourceResolver.class.getName());
-
-            // - Use Documents Saved as *.xhtml
-            context.addInitParam(DEFAULT_SUFFIX, ".xhtml");
-
-            // Special Debug Output for Development
-            if (isDebugMode()) {
-                context.addInitParam(DEVELOPMENT, "true");
-                context.addInitParam(PROJECT_STAGE, "Development");
-            }
-
-            context.addInitParam(REFRESH_PERIOD, String.valueOf(getRefreshPeriod()));
-
-            if (isStrictMode()) {
-                // Optional JSF-RI Parameters to Help Debug
-                context.addInitParam(RI_VALIDATE_XML, "true");
-                context.addInitParam(RI_VERIFY_OBJECTS, "true");
-                // Optional Myfaces-Impl Parameters.
-                context.addInitParam(MF_VALIDATE_XML, "true");
-                context.addInitParam(MF_STRICT_XHTML_LINKS, "true");
-            }
-        }
-
-        switch (faceletsProvider) {
-        case JSF_RI:
-            // For jsf-ri only:
-            // stl.addEventListener(new ConfigureListener());
-            // stl.addEventListener(new FaceletsWebappLifecycleListener());
-            throw new UnsupportedOperationException("JSF-RI isn't supported anymore");
-
-        case APACHE_MYFACES:
-            stl.addEventListener(new StartupServletContextListener());
-            break;
-        }
-
-        // Faces Servlet, must be load-on-startup, but STL seems not support.
-        ServletHolder facesServlet = stl.addServlet(FacesServlet.class, "*.jsf");
-        facesServlet.setInitOrder(0);
-
-        stl.addFilter(FileUploadFilter.class, "*.jsf", 0);
-    }
-
-    @Override
-    protected void configureServlets() {
     }
 
 }

@@ -54,6 +54,10 @@ public class WebAppConfigure
             iter.next().onServerShutdown(stl);
     }
 
-    public static WebAppConfigure INSTANCE = new WebAppConfigure();
+    static WebAppConfigure INSTANCE = new WebAppConfigure();
+
+    public static WebAppConfigure getInstance() {
+        return INSTANCE;
+    }
 
 }
