@@ -5,9 +5,12 @@ import java.util.ServiceLoader;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
 public class QuartzInitializerListener
         extends org.quartz.ee.servlet.QuartzInitializerListener {
@@ -26,10 +29,17 @@ public class QuartzInitializerListener
     }
 
     @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        super.contextInitialized(sce);
+    public void contextInitialized(ServletContextEvent event) {
+        super.contextInitialized(event);
 
-        SchedulerFactory factory = getSchedulerFactory(sce.getServletContext());
+        SchedulerFactory factory = getSchedulerFactory(event.getServletContext());
+
+        try {
+            Scheduler sched = factory.getScheduler();
+            sched.setJobFactory(new SpringBeanJobFactory());
+        } catch (SchedulerException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
 
         for (IQuartzConfigurer configurer : ServiceLoader.load(IQuartzConfigurer.class)) {
             logger.debug("Load Quartz configuration: " + configurer);
@@ -42,10 +52,10 @@ public class QuartzInitializerListener
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        super.contextDestroyed(sce);
+    public void contextDestroyed(ServletContextEvent event) {
+        super.contextDestroyed(event);
 
-        SchedulerFactory factory = getSchedulerFactory(sce.getServletContext());
+        SchedulerFactory factory = getSchedulerFactory(event.getServletContext());
 
         for (IQuartzConfigurer configurer : ServiceLoader.load(IQuartzConfigurer.class)) {
             logger.debug("Unload Quartz configuration: " + configurer);
