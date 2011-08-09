@@ -129,8 +129,22 @@ public class RabbitServer {
         return servletContext.addFilter(filterClass, pathSpec, dispatches);
     }
 
+    /**
+     * Add servlet without mapping, and load-on-startup.
+     */
+    public ServletHolder addServlet(Class<?> servlet) {
+        return servletContext.addServlet(servlet, null);
+    }
+
     public ServletHolder addServlet(Class<?> servlet, String pathSpec) {
         return servletContext.addServlet(servlet, pathSpec);
+    }
+
+    /**
+     * Add servlet without mapping, and load-on-startup.
+     */
+    public ServletHolder addServlet(String className) {
+        return servletContext.addServlet(className, null);
     }
 
     public ServletHolder addServlet(String className, String pathSpec) {
