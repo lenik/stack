@@ -3,6 +3,8 @@ package com.bee32.plover.scheduler;
 import java.util.Date;
 import java.util.Random;
 
+import javax.inject.Inject;
+
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
@@ -17,16 +19,24 @@ import org.quartz.impl.triggers.SimpleTriggerImpl;
 import org.quartz.simpl.PropertySettingJobFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
+@Component
+@Lazy
 public class HelloJob
         implements Job {
 
     static Logger logger = LoggerFactory.getLogger(HelloJob.class);
 
+    @Inject
+    HelloBean helloBean;
+
     String name;
     String trig;
 
     static int seq = 0;
+    static int strig = 0;
 
     @Override
     public void execute(JobExecutionContext context)
@@ -40,16 +50,18 @@ public class HelloJob
 
     void _execute(JobExecutionContext context)
             throws Exception {
-        System.out.println("Hello, " + name + " (trig=" + trig + ")");
+        String threadName = Thread.currentThread().getName();
+        System.out.println("Hello, " + name + "/" + trig + "/" + threadName + " -> " + helloBean);
 
         Scheduler sched = context.getScheduler();
 
         JobDetail jd = context.getJobDetail();
-        jd.getJobDataMap().put("name", "T " + (++seq));
+        jd.getJobDataMap().put("name", "J " + (++seq));
         sched.addJob(jd, true);
 
         TriggerKey key = new TriggerKey("timeout");
         SimpleTriggerImpl tr = timeout(10);
+        tr.getJobDataMap().put("trig", "T" + (++strig));
         Thread.sleep(new Random().nextInt(1000));
         sched.rescheduleJob(key, tr);
     }
