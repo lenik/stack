@@ -119,7 +119,7 @@ public class ChanceAction
         this.style = style;
     }
 
-    @Column(length = 4000)
+    @Column(length = 10000)
     public String getMoreInfo() {
         return moreInfo;
     }

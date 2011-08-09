@@ -254,7 +254,7 @@ public class ChanceActionDto
     }
 
     public String getSubject() {
-        return Strings.ellipse(getDescription(), 16);
+        return Strings.ellipse(getMoreInfo(), 16);
     }
 
     public String getSpending() {

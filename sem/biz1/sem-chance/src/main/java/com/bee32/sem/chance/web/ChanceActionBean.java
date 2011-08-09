@@ -327,8 +327,8 @@ public class ChanceActionBean
             return;
         }
 
-        if (action.getDescription() == null)
-            action.setDescription("");
+        if (action.getMoreInfo() == null)
+            action.setMoreInfo("");
         if (action.getSpending() == null)
             action.setSpending("");
 
