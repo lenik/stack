@@ -9,10 +9,8 @@ import com.bee32.plover.servlet.test.ServletTestLibrary;
 public class SharedDispatcherServletTest
         extends ServletTestLibrary {
 
-    @Override
-    protected void configureServlets() {
+    public SharedDispatcherServletTest() {
         addServlet("dispatcher", SharedDispatcherServlet.class, "/");
-
         setHintRoots("WEB-INF/dispatcher-servlet.xml");
     }
 
