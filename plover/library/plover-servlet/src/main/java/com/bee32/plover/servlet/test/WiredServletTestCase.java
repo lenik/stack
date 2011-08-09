@@ -60,8 +60,8 @@ public abstract class WiredServletTestCase
     }
 
     @Override
-    protected void configureBuiltinServlets() {
-        super.configureBuiltinServlets();
+    protected void configureServlets() {
+        super.configureServlets();
 
         if (isSpringMVCEnabled()) {
             // Add spring mvc support here.

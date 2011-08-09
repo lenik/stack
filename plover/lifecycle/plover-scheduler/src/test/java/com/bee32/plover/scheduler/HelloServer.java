@@ -8,11 +8,6 @@ public class HelloServer
         extends WiredServletTestCase {
 
     @Override
-    protected void configureServlets() {
-
-    }
-
-    @Override
     public void mainLoop()
             throws IOException {
         new HelloServer().browseAndWait();
