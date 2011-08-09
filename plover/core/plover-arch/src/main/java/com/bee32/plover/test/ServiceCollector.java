@@ -1,11 +1,12 @@
 package com.bee32.plover.test;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.free.JavaioFile;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.inject.ComponentTemplate;
@@ -40,10 +41,11 @@ public class ServiceCollector<T>
         wired._collect();
     }
 
-    Set<File> created = new HashSet<File>();
-
     protected final void _collect()
             throws IOException {
+
+        Map<File, StringBuilder> commit = new HashMap<File, StringBuilder>();
+
         for (T service : application.getBeansOfType(prototype).values()) {
 
             Class<? extends Object> serviceType = service.getClass();
@@ -52,13 +54,35 @@ public class ServiceCollector<T>
             File resdir = MavenPath.getResourceDir(serviceType);
             File sfile = new File(resdir, "META-INF/services/" + prototype.getName());
 
-            boolean newFile = created.add(sfile);
-            FileWriter writer = new FileWriter(sfile, !newFile);
-            PrintWriter out = new PrintWriter(writer);
+            StringBuilder buf = commit.get(sfile);
+            if (buf == null) {
+                buf = new StringBuilder();
+                commit.put(sfile, buf);
+            }
 
-            out.println(serviceType.getName());
+            buf.append(serviceType.getName());
+            buf.append("\n");
+        }
 
-            out.close();
+        for (Entry<File, StringBuilder> entry : commit.entrySet()) {
+            File _file = entry.getKey();
+            String content = entry.getValue().toString();
+
+            JavaioFile file = new JavaioFile(_file);
+
+            // TODO Not work.
+            // file.setCreateParentsMode(true);
+            _file.getParentFile().mkdirs();
+
+            // The same?
+            if (file.exists() == Boolean.TRUE) {
+                String old = file.forRead().readTextContents();
+                if (content.equals(old))
+                    continue;
+            }
+
+            System.out.println("Update " + _file);
+            file.forWrite().write(content);
         }
     }
 
