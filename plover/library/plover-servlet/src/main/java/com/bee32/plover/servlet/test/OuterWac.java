@@ -9,7 +9,7 @@ public abstract class OuterWac<T extends ServletTestCase>
     final Class<T> outerType;
 
     public OuterWac() {
-        outerType = ClassUtil.infer1(getClass(), OuterWac.class, 1);
+        outerType = ClassUtil.infer1(getClass(), OuterWac.class, 0);
     }
 
     T getOuter(ServletTestLibrary stl) {
