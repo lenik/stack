@@ -7,8 +7,7 @@ import com.bee32.plover.servlet.test.WiredServletTestCase;
 public class HelloServer
         extends WiredServletTestCase {
 
-    @Override
-    public void mainLoop()
+    public static void main(String[] args)
             throws IOException {
         new HelloServer().browseAndWait();
     }
