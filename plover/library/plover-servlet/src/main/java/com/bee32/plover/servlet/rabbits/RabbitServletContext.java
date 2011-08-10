@@ -16,12 +16,15 @@ public class RabbitServletContext
     }
 
     public synchronized void addInitParam(String name, String value) {
-        Map<String, String> initParams = getInitParams();
-        if (initParams == null) {
-            initParams = new HashMap<String, String>();
-            setInitParams(initParams);
+        Map<String, String> _initParams = getInitParams();
+        if (_initParams == null) {
+            setInitParams(new HashMap<String, String>());
+            _initParams = getInitParams();
         }
-        initParams.put(name, value);
+
+        assert _initParams != null;
+
+        _initParams.put(name, value);
     }
 
     @Override
