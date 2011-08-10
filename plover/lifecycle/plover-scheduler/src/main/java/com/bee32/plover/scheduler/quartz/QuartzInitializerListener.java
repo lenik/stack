@@ -7,9 +7,9 @@ import javax.servlet.ServletContextEvent;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
+import org.quartz.spi.JobFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
 public class QuartzInitializerListener
         extends org.quartz.ee.servlet.QuartzInitializerListener {
@@ -24,7 +24,10 @@ public class QuartzInitializerListener
 
         try {
             Scheduler sched = factory.getScheduler();
-            sched.setJobFactory(new SpringBeanJobFactory());
+
+            JobFactory jobFactory = new InjectedJobFactory();
+            sched.setJobFactory(jobFactory);
+
         } catch (SchedulerException e) {
             throw new RuntimeException(e.getMessage(), e);
         }

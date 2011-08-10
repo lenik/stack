@@ -20,7 +20,10 @@ public class QuartzWac
 
     @Override
     public void configureServlets(ServletTestLibrary stl) {
+        // ServletHolder holder =
         stl.addServlet(QuartzMonitorServlet.class, "/quartz/*");
+        // holder.setInitParameter(QuartzConfig.SCHED_SC_KEY_NAME, QuartzConfig.SCHED_SC_KEY);
+        stl.getServletContext().addInitParam(QuartzConfig.SCHED_SC_KEY_NAME, QuartzConfig.SCHED_SC_KEY);
     }
 
 }
