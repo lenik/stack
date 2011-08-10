@@ -22,4 +22,9 @@ public interface IFxrSource {
     FxrTable download()
             throws IOException;
 
+    /**
+     * A finite source is finished when {@link #download()} returns <code>null</code>.
+     */
+    boolean isFinite();
+
 }
