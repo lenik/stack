@@ -8,14 +8,14 @@ import org.quartz.impl.triggers.SimpleTriggerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.scheduler.quartz.AbstractQuartzConfigurer;
+import com.bee32.plover.scheduler.quartz.AbstractQuartzJobConfigurer;
 import com.bee32.plover.scheduler.util.Jobs;
 import com.bee32.plover.scheduler.util.Triggers;
 
-public class HelloQuartzConfigurer
-        extends AbstractQuartzConfigurer {
+public class HelloQjc
+        extends AbstractQuartzJobConfigurer {
 
-    static Logger logger = LoggerFactory.getLogger(HelloQuartzConfigurer.class);
+    static Logger logger = LoggerFactory.getLogger(HelloQjc.class);
 
     @Override
     public void load(SchedulerFactory schedulerFactory)
@@ -26,13 +26,6 @@ public class HelloQuartzConfigurer
         SimpleTriggerImpl trigger = Triggers.timeout("timeout", 0);
 
         sched.scheduleJob(job1, trigger);
-    }
-
-    @Override
-    public void unload(SchedulerFactory schedulerFactory)
-            throws SchedulerException {
-        // Scheduler sched = schedulerFactory.getScheduler();
-        logger.debug("Hello quartz unloaded.");
     }
 
 }

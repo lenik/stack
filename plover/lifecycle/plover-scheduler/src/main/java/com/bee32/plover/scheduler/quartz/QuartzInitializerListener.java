@@ -32,7 +32,7 @@ public class QuartzInitializerListener
             throw new RuntimeException(e.getMessage(), e);
         }
 
-        for (IQuartzConfigurer configurer : ServiceLoader.load(IQuartzConfigurer.class)) {
+        for (IQuartzJobConfigurer configurer : ServiceLoader.load(IQuartzJobConfigurer.class)) {
             logger.debug("Load Quartz configuration: " + configurer);
             try {
                 configurer.load(factory);
@@ -48,7 +48,7 @@ public class QuartzInitializerListener
 
         SchedulerFactory factory = QuartzConfig.getSchedulerFactory(event.getServletContext());
 
-        for (IQuartzConfigurer configurer : ServiceLoader.load(IQuartzConfigurer.class)) {
+        for (IQuartzJobConfigurer configurer : ServiceLoader.load(IQuartzJobConfigurer.class)) {
             logger.debug("Unload Quartz configuration: " + configurer);
             try {
                 configurer.unload(factory);

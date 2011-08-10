@@ -3,7 +3,7 @@ package com.bee32.plover.scheduler.quartz;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 
-public interface IQuartzConfigurer {
+public interface IQuartzJobConfigurer {
 
     void load(SchedulerFactory schedulerFactory)
             throws SchedulerException;
