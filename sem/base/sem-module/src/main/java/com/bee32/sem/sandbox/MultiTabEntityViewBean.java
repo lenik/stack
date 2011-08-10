@@ -1,7 +1,10 @@
 package com.bee32.sem.sandbox;
 
+import org.springframework.context.annotation.Scope;
+
 import com.bee32.plover.orm.util.EntityViewBean;
 
+@Scope("view")
 public class MultiTabEntityViewBean
         extends EntityViewBean {
 
