@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.event.entity.EventPriority;
@@ -28,7 +28,7 @@ import com.bee32.sem.process.verify.util.VerifiableEntity;
 import com.bee32.sem.process.verify.util.VerifiableEntityAccessor;
 
 public class VerifyService
-        extends EnterpriseService
+        extends DataService
         implements IVerifyPolicy {
 
     @Inject

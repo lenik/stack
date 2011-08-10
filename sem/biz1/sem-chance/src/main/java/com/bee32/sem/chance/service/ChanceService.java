@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.principal.dao.UserDao;
-import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.plover.arch.DataService;
 import com.bee32.sem.chance.dao.ChanceActionDao;
 import com.bee32.sem.chance.dao.ChanceDao;
 import com.bee32.sem.chance.entity.Chance;
@@ -18,7 +18,7 @@ import com.bee32.sem.people.dao.PartyDao;
 import com.bee32.sem.people.entity.Party;
 
 public class ChanceService
-        extends EnterpriseService
+        extends DataService
         implements IChanceService {
 
     @Inject

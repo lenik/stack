@@ -6,14 +6,14 @@ import java.util.List;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.plover.arch.DataService;
 import com.bee32.sem.calendar.ICalendarSource;
 import com.bee32.sem.chance.util.ChanceCriteria;
 
 @Component
 @Lazy
 public class ChanceCalendarSource
-        extends EnterpriseService
+        extends DataService
         implements ICalendarSource {
 
     @Override

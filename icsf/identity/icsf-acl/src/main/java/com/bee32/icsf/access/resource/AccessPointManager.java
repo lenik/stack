@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.access.annotation.AccessCheck;
 import com.bee32.plover.arch.ComponentBuilder;
-import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.ui.res.InjectedAppearance;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.res.PropertyDispatcher;
@@ -122,7 +122,7 @@ public class AccessPointManager
     private static final Set<Class<?>> checkBaseClasses = new HashSet<Class<?>>();
 
     static {
-        checkBaseClasses.add(EnterpriseService.class);
+        checkBaseClasses.add(DataService.class);
     }
 
     public static void registerCheckClass(Class<?> checkClass) {

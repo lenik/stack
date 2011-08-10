@@ -1,9 +1,9 @@
 package com.bee32.sem.service;
 
-import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.plover.arch.DataService;
 
 public class PeopleService
-        extends EnterpriseService
+        extends DataService
         implements IPeopleService {
 
 

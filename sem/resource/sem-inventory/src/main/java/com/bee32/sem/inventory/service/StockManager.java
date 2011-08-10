@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.plover.arch.DataService;
 import com.bee32.sem.inventory.entity.StockInventory;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -17,7 +17,7 @@ import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
 public class StockManager
-        extends EnterpriseService
+        extends DataService
         implements IStockManager {
 
     @Transactional

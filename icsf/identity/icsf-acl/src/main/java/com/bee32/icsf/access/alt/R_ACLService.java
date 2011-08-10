@@ -11,10 +11,10 @@ import com.bee32.icsf.access.ResourcePermission;
 import com.bee32.icsf.access.annotation.AccessCheck;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.plover.arch.DataService;
 
 public class R_ACLService
-        extends EnterpriseService {
+        extends DataService {
 
     @Inject
     R_ACLDao r_ACLDao;

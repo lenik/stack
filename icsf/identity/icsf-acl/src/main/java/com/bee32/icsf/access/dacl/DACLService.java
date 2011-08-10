@@ -6,11 +6,11 @@ import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.arch.EnterpriseService;
+import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 
 public class DACLService
-        extends EnterpriseService {
+        extends DataService {
 
     /**
      * 查找蕴涵给定 principal -> permission 的 ACL 列表。
