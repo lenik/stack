@@ -26,6 +26,9 @@ public interface IEntityMarshalContext {
      */
     <E extends Entity<K>, K extends Serializable> E loadEntity(Class<E> entityType, K id);
 
+    /**
+     * Get (Data-) Access-Service for specific entity type.
+     */
     <E extends Entity<? extends K>, K extends Serializable> //
     IEntityAccessService<E, K> asFor(Class<? extends E> entityType);
 
