@@ -64,21 +64,9 @@
 
 			<p:toolbar id="toolbar">
 				<p:toolbarGroup align="left">
-                    <p:commandButton value="新增"
-                        actionListener="#{transferOutAdminBean.new_}"
-                        disabled="#{transferOutAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="修改"
-						actionListener="#{transferInAdminBean.modify}"
-						disabled="#{transferInAdminBean.editable}" update="mainForm" async="true" />
 					<p:commandButton value="删除"
 						onclick="deleteConfirmDialog.show();"
 						disabled="#{transferInAdminBean.editable}" update="mainForm" async="true" />
-					<p:divider />
-					<p:commandButton value="保存" actionListener="#{transferInAdminBean.save}"
-						disabled="#{!transferInAdminBean.editable}" update="mainForm" async="true" />
-					<p:commandButton value="取消"
-						actionListener="#{transferInAdminBean.cancel}"
-						disabled="#{!transferInAdminBean.editable}" update="mainForm" async="true" />
 					<p:divider />
 					<p:commandButton value="审核"
 						disabled="#{transferInAdminBean.editable}"
@@ -227,42 +215,53 @@
 
 			</p:panel>
 
-            <p:panel header="未拨入的单据" toggleable="true">
+            <p:panel id="transferOuts" header="未拨入的单据" toggleable="true">
                 <p:toolbar id="toolbar1">
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="拨入"
-                            actionListener="#{transferInAdminBean.transferIn}"
+                        <p:commandButton value="开始拨入"
+                            actionListener="#{transferInAdminBean.transferInStart}"
+                            disabled="#{transferInAdminBean.transferring}"
+                            update="mainForm" async="true"/>
+                        <p:divider />
+                        <p:commandButton value="完成拨入"
+                            actionListener="#{transferInAdminBean.transferInDone}"
+                            disabled="#{!transferInAdminBean.transferring}"
+                            update="mainForm" async="true"/>
+                        <p:commandButton value="取消拨入"
+                            actionListener="#{transferInAdminBean.cancelTransferIn}"
+                            disabled="#{!transferInAdminBean.transferring}"
                             update="mainForm" async="true"/>
                         <p:divider />
                         <p:commandButton value="第一条"
                             actionListener="#{transferInAdminBean.firstOut}"
+                            disabled="#{transferInAdminBean.transferring}"
                             update="mainForm:transferOuts" async="true" />
                         <p:commandButton value="上一条"
                             actionListener="#{transferInAdminBean.previousOut}"
-                            disabled="#{transferInAdminBean.editable}"
+                            disabled="#{transferInAdminBean.transferring}"
                             update="mainForm:transferOuts" async="true" />
                         <p:commandButton value="下一条"
                             actionListener="#{transferInAdminBean.nextOut}"
-                            disabled="#{transferInAdminBean.editable}"
+                            disabled="#{transferInAdminBean.transferring}"
                             update="mainForm:transferOuts" async="true" />
                         <p:commandButton value="最末条"
                             actionListener="#{transferInAdminBean.lastOut}"
-                            disabled="#{transferInAdminBean.editable}"
+                            disabled="#{transferInAdminBean.transferring}"
                             update="mainForm:transferOuts" async="true" />
                         <p:inputText
                             value="#{transferInAdminBean.goNumberOut}"
-                            disabled="#{transferInAdminBean.editable}"
+                            disabled="#{transferInAdminBean.transferring}"
                             style="width:30px;" />
                         <h:outputText
                             value="/#{transferInAdminBean.countOut}" />
                         <p:commandButton value="前往"
                             actionListener="#{transferInAdminBean.goOut}"
-                            disabled="#{transferInAdminBean.editable}"
+                            disabled="#{transferInAdminBean.transferring}"
                             update="mainForm:transferOuts" async="true" />
                     </p:toolbarGroup>
                 </p:toolbar>
 
-                <p:panel id="transferOuts">
+                <p:panel>
 
                     <t:panelGrid columns="4">
 
@@ -369,7 +368,7 @@
 
                                 <p:commandLink
                                     update="itemForm:itemPanel"
-                                    disabled="#{!transferInAdminBean.editable}"
+                                    disabled="#{!transferInAdminBean.transferring}"
                                     actionListener="#{transferInAdminBean.transferItem}"
                                     oncomplete="itemDialog.show()"
                                     value="拨入">

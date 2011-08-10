@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.criteria.hibernate.Offset;
@@ -54,6 +55,8 @@ public class TransferInAdminBean extends StockOrderBaseBean {
     private List<PersonDto> persons;
     private PersonDto selectedPerson;
 
+    private boolean transferring;   //是否在拨入状态
+
 
     public TransferInAdminBean() {
         Calendar c = Calendar.getInstance();
@@ -72,6 +75,8 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
         subject = StockOrderSubject.XFER_IN;
         subjectOut = StockOrderSubject.XFER_OUT;
+
+        transferring = false;
     }
 
 
@@ -137,7 +142,7 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         countOut = serviceFor(StockTransfer.class).count(//
                 new Equals("destWarehouse.id", selectedWarehouse.getId()),
                 new IsNull("dest.id"));
-        return count;
+        return countOut;
     }
 
 
@@ -181,6 +186,31 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         this.selectedPerson = selectedPerson;
     }
 
+    public String getCreatorOut() {
+        if (stockOrderOut == null)
+            return "";
+
+        Integer ownerId = stockOrderOut.getOwnerId();
+        if (ownerId == null)
+            return "";
+
+        User u = serviceFor(User.class).getOrFail(ownerId);
+        return u.getDisplayName();
+    }
+
+    public List<StockOrderItemDto> getItemsOut() {
+        if (stockOrderOut == null)
+            return null;
+        return stockOrderOut.getItems();
+    }
+
+    public boolean isTransferring() {
+        return transferring;
+    }
+
+    public void setTransferring(boolean transferring) {
+        this.transferring = transferring;
+    }
 
 
 
@@ -195,12 +225,18 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         loadStockLocationTree();
     }
 
-    private void loadStockOrder(int goNumber) {
+    private void loadStockOrder(int position) {
         //刷新总记录数
         getCount();
 
-        if(goNumber < 1) goNumber = 1;
-        if(goNumber > count) goNumber = count;
+        if(position < 1) {
+            goNumber = 1;
+            position = 1;
+        }
+        if(goNumber > count) {
+            goNumber = count;
+            position = count;
+        }
 
 
         stockOrder = new StockOrderDto().create();
@@ -209,7 +245,7 @@ public class TransferInAdminBean extends StockOrderBaseBean {
             StockOrder firstOrder = serviceFor(StockOrder.class)
                     .getFirst(
                             //
-                            new Offset(goNumber - 1), //
+                            new Offset(position - 1), //
                             EntityCriteria.createdBetweenEx(limitDateFrom,
                                     limitDateTo), //
                             StockCriteria.subjectOf(getSubject()), //
@@ -228,12 +264,18 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         }
     }
 
-    private void loadStockOrderOut(int goNumber) {
+    private void loadStockOrderOut(int position) {
         //刷新总记录数
         getCountOut();
 
-        if(goNumberOut < 1) goNumberOut = 1;
-        if(goNumberOut > count) goNumberOut = count;
+        if(position < 1) {
+            goNumberOut = 1;
+            position = 1;
+        }
+        if(goNumberOut > countOut) {
+            goNumberOut = countOut;
+            position = countOut;
+        }
 
 
         stockOrderOut = new StockOrderDto().create();
@@ -241,7 +283,7 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         if (selectedWarehouse != null) {
 
             StockTransfer firstTransfer = serviceFor(StockTransfer.class).getFirst(
-                    new Offset(goNumberOut - 1),
+                    new Offset(position - 1),
                     new Equals("destWarehouse.id", selectedWarehouse.getId()),
                     new IsNull("dest.id"));
 
@@ -409,8 +451,29 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
 
 
+    public void transferInStart() {
+        stockOrder = new StockOrderDto().create();
+
+        editable = true;
+        transferring = true;
+    }
+
+    public void transferInDone() {
+        loadStockOrder(1);
+        loadStockOrderOut(goNumberOut);
+
+        editable = false;
+        transferring = false;
+    }
 
 
+    public void cancelTransferIn() {
+        loadStockOrder(goNumber);
+        loadStockOrderOut(goNumberOut);
+
+        editable = false;
+        transferring = false;
+    }
 
 
 
