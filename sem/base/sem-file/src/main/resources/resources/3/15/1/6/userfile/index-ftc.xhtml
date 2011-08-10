@@ -22,8 +22,10 @@
         </h:form>
 
         <h:form id="main">
-            <p:selectManyCheckbox value="#{userFileAdmin.selectedTags}">
-                <
+            <p:selectManyCheckbox id="checkbox_tagId" value="#{userFileAdmin.selectedTags}">
+                <f:selectItem itemLabel="全部" itemValue="1" />
+                <f:selectItems value="#{userFileAdmin.userFileTags}" />
+                <p:ajax update="note:message" listener="#{userFileAdmin.addMessage}" />
             </p:selectManyCheckbox>
             <p:dataGrid id="fileGrid" value="#{userFileAdmin.userFileList}" var="file" columns="5" rows="12"
                 paginator="true" effect="true" rowsPerPageTemplate="9,12,15"
@@ -32,19 +34,32 @@
                 <p:column>
                     <p:panel header="#{file.origPath}">
                         <img src="#{file.imageHref}" height="36" width="36" border="0" />
-                        <p:commandLink value="test" />
+                        <p:commandLink value="delete" />
                     </p:panel>
                 </p:column>
 
             </p:dataGrid>
+
+            <p:commandButton value="uploadFile" onclick="uploadDialog.show();" />
+
+            <p:dialog widgetVar="uploadDialog" header="附件上传" height="400" width="600">
+                <h:form enctype="multipart/form-data">
+
+                    <p:inputText value="#{userFileAdmin.fileSubject}" />
+                    <p:inputText value="#{userFileAdmin.fileName}" />
+
+                    <p:selectOneMenu value="#{userFileAdmin.uploadTag}" style="width:200px;">
+                        <f:selectItem itemLabel="Option 1" itemValue="1" />
+                        <f:selectItems value="#{userFileAdmin.userFileTags}" />
+                    </p:selectOneMenu>
+
+                    <p:fileUpload fileUploadListener="#{userFileAdmin.handleFileUpload}" mode="advanced"
+                        update="note:message,main:fileGrid" multiple="true" allowTypes="png,gif,jpg,doc,docx,xsl,xslx"
+                        oncomplete="uploadDialog.hide();" />
+                </h:form>
+            </p:dialog>
+
         </h:form>
-
-
-        <h:form enctype="multipart/form-data">
-            <p:fileUpload fileUploadListener="#{userFileAdmin.handleFileUpload}" mode="advanced"
-                update="note:message,main:fileGrid" multiple="true" allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
-        </h:form>
-
 
 
 
