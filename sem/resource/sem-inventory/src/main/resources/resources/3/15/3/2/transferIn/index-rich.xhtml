@@ -108,9 +108,14 @@
 
                     <h:outputLabel value="调拨人员"/>
                     <t:panelGroup colspan="3">
-                        <h:outputText value="#{transferInAdminBean.stockTransfer.transferredBy.displayName}"/>
+                        <p:inputText id="transferredby" readonly="true"
+                            disabled="#{!transferInAdminBean.editable}"
+                            value="#{transferInAdminBean.stockTransfer.transferredBy.displayName}"
+                            style="width:200px;" />
+                        <p:commandButton value="..."
+                            onclick="personHolderDlg.show();"
+                            disabled="#{!transferInAdminBean.editable}" />
                     </t:panelGroup>
-
 
                     <t:panelGroup colspan="4">
                         <hr />
@@ -369,12 +374,17 @@
                                 <p:commandLink
                                     update="itemForm:itemPanel"
                                     disabled="#{!transferInAdminBean.transferring}"
-                                    actionListener="#{transferInAdminBean.transferItem}"
                                     oncomplete="itemDialog.show()"
                                     value="拨入">
                                     <f:setPropertyActionListener
                                         value="#{item}"
                                         target="#{transferInAdminBean.orderItemOut}" />
+                                    <f:setPropertyActionListener
+                                        value="#{item.priceValue}"
+                                        target="#{transferInAdminBean.orderItemPrice}" />
+                                    <f:setPropertyActionListener
+                                        value="#{item.priceCurrencyCode}"
+                                        target="#{transferInAdminBean.orderItemPriceCurrency}" />
                                 </p:commandLink>
                             </t:panelGroup>
                         </p:column>
@@ -401,32 +411,27 @@
 
 						<h:outputLabel value="物料" />
 						<t:panelGroup colspan="3">
-							<p:inputText value="#{transferInAdminBean.orderItem.material.name}" readonly="true"/>
-							<p:commandButton value="..." onclick="materialDialog.show();"/>
+							<h:outputText value="#{transferInAdminBean.orderItemOut.material.name}"/>
 						</t:panelGroup>
 
 						<h:outputLabel value="批号" />
-						<p:inputText value="#{transferInAdminBean.orderItem.batch}" />
+						<h:outputText value="#{transferInAdminBean.orderItemOut.batch}" />
 						<h:outputLabel value="有效期" />
-						<p:calendar navigator="true" locale="zh_CN"
-                                    pattern="yyyy-MM-dd" value="#{transferInAdminBean.orderItem.expirationDate}"
-                                    showOn="button" />
+                        <h:outputText value="#{transferInAdminBean.orderItemOut.expirationDate}">
+                            <f:convertDateTime pattern="yyyy-MM-dd"
+                                timeZone="Asia/Shanghai" />
+                        </h:outputText>
 
                         <h:outputLabel value="库位" />
 						<t:panelGroup colspan="3">
-							<p:inputText
-								value="#{transferInAdminBean.orderItem.location.nodeText}"
-								readonly="true" />
-							<p:commandButton value="..."
-								oncomplete="chooseStockLocationDialog.show();"
-								actionListener="#{transferInAdminBean.updateLocations}"
-								update="chooseStockLocationForm:chooseStockLocationPanel" />
+							<h:outputText
+								value="#{transferInAdminBean.orderItemOut.location.nodeText}" />
 						</t:panelGroup>
 
 						<h:outputLabel value="单价" />
-                        <p:inputText value="#{transferInAdminBean.orderItemPrice}" />
+                        <h:outputText value="#{transferInAdminBean.orderItemPrice}" />
                         <h:outputLabel value="币种" />
-                        <p:selectOneMenu value="#{transferInAdminBean.orderItemPriceCurrency}" style="width:200px;">
+                        <p:selectOneMenu value="#{transferInAdminBean.orderItemPriceCurrency}" disabled="true" style="width:200px;">
                             <f:selectItem itemValue="" itemLabel="--选择币种--" />
                             <f:selectItems value="#{transferInAdminBean.currencies}" />
                         </p:selectOneMenu>
@@ -434,7 +439,7 @@
 
                         <h:outputLabel value="数量" />
                         <t:panelGroup colspan="3">
-                            <p:inputText value="#{transferInAdminBean.orderItem.quantity}"/>
+                            <h:outputText value="#{transferInAdminBean.orderItemOut.quantity}"/>
                         </t:panelGroup>
 
 
@@ -442,7 +447,7 @@
 						<t:panelGroup colspan="2">
 							<t:panelGrid columns="2">
 								<p:commandButton value="保存"
-									actionListener="#{transferInAdminBean.doSaveItem}"
+									actionListener="#{transferInAdminBean.transferItemIn}"
 									oncomplete="itemDialog.hide();" async="true"
 									update="mainForm" />
 								<p:commandButton value="取消"
@@ -456,61 +461,6 @@
 
 			</p:dialog>
 		</h:form>
-
-
-		<h:form id="materialForm">
-			<p:dialog header="选择物料" widgetVar="materialDialog" modal="true"
-				height="400" width="640">
-				<h:panelGroup>
-
-					<h:panelGrid columns="3">
-						<h:outputLabel value="物料名字全部或部份:" />
-						<p:inputText value="#{transferInAdminBean.materialPattern}" />
-						<p:commandButton value="查找"
-							actionListener="#{transferInAdminBean.findMaterial}" update="materials"
-							async="true" />
-					</h:panelGrid>
-					<p:dataTable id="materials" var="material"
-						value="#{transferInAdminBean.materials}" resizableColumns="true"
-						selection="#{transferInAdminBean.selectedMaterial}" selectionMode="single"
-						rowIndexVar="rowIndex">
-
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="序号" />
-							</f:facet>
-							<h:outputText value="#{rowIndex + 1}" />
-						</p:column>
-
-						<p:column headerText="物料名称">
-							<h:outputText value="#{material.name}" />
-						</p:column>
-
-						<p:column headerText="序列号">
-							<h:outputText value="#{material.serial}" />
-						</p:column>
-
-						<p:column headerText="条形码">
-							<h:outputText value="#{material.barCode}" />
-						</p:column>
-
-						<p:column headerText="主单位">
-							<h:outputText value="#{material.unit.name}" />
-						</p:column>
-
-					</p:dataTable>
-					<h:panelGrid columns="2">
-						<p:commandButton value="确定"
-							actionListener="#{transferInAdminBean.chooseMaterial}"
-							oncomplete="materialDialog.hide();" update="itemForm:itemPanel"
-							async="true" />
-						<p:commandButton value="取消" oncomplete="materialDialog.hide();" />
-					</h:panelGrid>
-				</h:panelGroup>
-			</p:dialog>
-
-		</h:form>
-
 
 
 		<h:form id="chooseStockLocationForm">

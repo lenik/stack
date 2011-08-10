@@ -41,6 +41,8 @@ public class TransferInAdminBean extends StockOrderBaseBean {
     private StockTransferDto stockTransfer = new StockTransferDto().create();
     private StockTransferDto stockTransferOut = new StockTransferDto().create();
 
+    private StockOrderItemDto orderItemOut = new StockOrderItemDto().create().ref();
+
     private Date limitDateFrom;
     private Date limitDateTo;
 
@@ -212,6 +214,14 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         this.transferring = transferring;
     }
 
+    public StockOrderItemDto getOrderItemOut() {
+        return orderItemOut;
+    }
+
+    public void setOrderItemOut(StockOrderItemDto orderItemOut) {
+        this.orderItemOut = orderItemOut;
+    }
+
 
 
 
@@ -306,17 +316,6 @@ public class TransferInAdminBean extends StockOrderBaseBean {
     }
 
 
-    public void modify() {
-        if(stockOrder.getId() == null) {
-            uiLogger.warn("当前没有对应的单据");
-            return;
-        }
-
-        itemsNeedToRemoveWhenModify.clear();
-
-        editable = true;
-    }
-
     @Transactional
     public void delete() {
         serviceFor(StockTransfer.class).deleteAll(
@@ -368,11 +367,6 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         editable = false;
     }
 
-    public void cancel() {
-
-        loadStockOrder(goNumber);
-        editable = false;
-    }
 
     public void first() {
         goNumber = 1;
@@ -452,6 +446,12 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
 
     public void transferInStart() {
+        if(countOut <= 0) {
+            uiLogger.warn("没有可以拨入的单据");
+            return;
+        }
+
+
         stockOrder = new StockOrderDto().create();
 
         editable = true;
