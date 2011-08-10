@@ -42,6 +42,8 @@ public class TransferInAdminBean extends StockOrderBaseBean {
     private StockTransferDto stockTransferOut = new StockTransferDto().create();
 
     private StockOrderItemDto orderItemOut = new StockOrderItemDto().create().ref();
+    private StockOrderItemDto orderItemIn = new StockOrderItemDto().create().ref();
+    private StockOrderItemDto selectedItemIn;
 
     private Date limitDateFrom;
     private Date limitDateTo;
@@ -222,6 +224,21 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         this.orderItemOut = orderItemOut;
     }
 
+    public StockOrderItemDto getOrderItemIn() {
+        return orderItemIn;
+    }
+
+    public void setOrderItemIn(StockOrderItemDto orderItemIn) {
+        this.orderItemIn = orderItemIn;
+    }
+
+    public StockOrderItemDto getSelectedItemIn() {
+        return selectedItemIn;
+    }
+
+    public void setSelectedItemIn(StockOrderItemDto selectedItemIn) {
+        this.selectedItemIn = selectedItemIn;
+    }
 
 
 
@@ -493,5 +510,26 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
     public void choosePerson() {
         stockTransfer.setTransferredBy(selectedPerson);
+    }
+
+    public void newItemIn() {
+        orderItemIn = new StockOrderItemDto().create().ref();
+        orderItemIn.setMaterial(orderItemOut.getMaterial());
+        orderItemIn.setBatch(orderItemOut.getBatch());
+        orderItemIn.setExpirationDate(orderItemOut.getExpirationDate());
+        orderItemIn.setPrice(orderItemOut.getPrice());
+    }
+
+    public void deleteItemIn() {
+        if(selectedItemIn == null) {
+            uiLogger.warn("请选择要删除的拨入项目");
+            return;
+        }
+
+        stockOrder.getItems().remove(selectedItemIn);
+    }
+
+    public void saveItemIn() {
+        stockOrder.getItems().add(orderItemIn);
     }
 }
