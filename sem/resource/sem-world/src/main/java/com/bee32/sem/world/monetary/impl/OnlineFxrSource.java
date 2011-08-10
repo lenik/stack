@@ -7,13 +7,10 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.plover.arch.EnterpriseService;
-import com.bee32.sem.misc.i18n.ICurrencyAware;
-import com.bee32.sem.world.monetary.IFxrSource;
+import com.bee32.sem.world.monetary.AbstractFxrSource;
 
 public abstract class OnlineFxrSource
-        extends EnterpriseService
-        implements IFxrSource, ICurrencyAware {
+        extends AbstractFxrSource {
 
     static Logger logger = LoggerFactory.getLogger(OnlineFxrSource.class);
 
@@ -23,6 +20,11 @@ public abstract class OnlineFxrSource
     @Override
     public int getPreferredInterval() {
         return INTERVAL_DEBUG;
+    }
+
+    @Override
+    public boolean isFinite() {
+        return false;
     }
 
     protected String httpGet(String uri)

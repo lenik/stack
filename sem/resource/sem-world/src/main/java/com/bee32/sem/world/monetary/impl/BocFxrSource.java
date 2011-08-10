@@ -14,11 +14,8 @@ import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
 
 import com.bee32.sem.misc.i18n.CurrencyNames;
-import com.bee32.sem.misc.i18n.ICurrencyAware;
 import com.bee32.sem.misc.i18n.ILocaleAware;
 import com.bee32.sem.misc.i18n.ITimeZoneAware;
 import com.bee32.sem.world.monetary.FxrRecord;
@@ -27,11 +24,9 @@ import com.bee32.sem.world.monetary.FxrTable;
 /**
  * @test BocFxrUpdaterTest
  */
-@Service
-@Lazy
 public class BocFxrSource
         extends OnlineFxrSource
-        implements ICurrencyAware, ILocaleAware, ITimeZoneAware {
+        implements ILocaleAware, ITimeZoneAware {
 
     static final Logger logger = LoggerFactory.getLogger(BocFxrSource.class);
 

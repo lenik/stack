@@ -25,6 +25,11 @@ public class FxrSamplesSource
         return FILES.length;
     }
 
+    @Override
+    public boolean isFinite() {
+        return true;
+    }
+
     static class Iter
             extends PrefetchedIterator<FxrTable> {
 
