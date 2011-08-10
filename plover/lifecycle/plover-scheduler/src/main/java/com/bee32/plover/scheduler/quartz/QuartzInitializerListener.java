@@ -2,7 +2,6 @@ package com.bee32.plover.scheduler.quartz;
 
 import java.util.ServiceLoader;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
 import org.quartz.Scheduler;
@@ -17,22 +16,11 @@ public class QuartzInitializerListener
 
     static Logger logger = LoggerFactory.getLogger(QuartzInitializerListener.class);
 
-    static SchedulerFactory getSchedulerFactory(ServletContext servletContext) {
-        String factoryKey = servletContext.getInitParameter("quartz:servlet-context-factory-key");
-        if (factoryKey == null)
-            factoryKey = servletContext.getInitParameter("servlet-context-factory-key");
-        if (factoryKey == null)
-            factoryKey = QUARTZ_FACTORY_KEY;
-
-        Object factory = servletContext.getAttribute(factoryKey);
-        return (SchedulerFactory) factory;
-    }
-
     @Override
     public void contextInitialized(ServletContextEvent event) {
         super.contextInitialized(event);
 
-        SchedulerFactory factory = getSchedulerFactory(event.getServletContext());
+        SchedulerFactory factory = QuartzConfig.getSchedulerFactory(event.getServletContext());
 
         try {
             Scheduler sched = factory.getScheduler();
@@ -55,7 +43,7 @@ public class QuartzInitializerListener
     public void contextDestroyed(ServletContextEvent event) {
         super.contextDestroyed(event);
 
-        SchedulerFactory factory = getSchedulerFactory(event.getServletContext());
+        SchedulerFactory factory = QuartzConfig.getSchedulerFactory(event.getServletContext());
 
         for (IQuartzConfigurer configurer : ServiceLoader.load(IQuartzConfigurer.class)) {
             logger.debug("Unload Quartz configuration: " + configurer);
