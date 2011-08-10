@@ -49,6 +49,7 @@ repr/
 ui/
     plover-widgets      SWT 控件
     plover-test         测试框架与工具
+    plover-chart        图表支持
 
 web-ui/
     plover-zk           Zk 支持

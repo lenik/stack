@@ -12,6 +12,7 @@
     <version>0.3.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>plover-chart</module>
         <module>plover-test</module>
         <module>plover-widgets</module>
     </modules>
