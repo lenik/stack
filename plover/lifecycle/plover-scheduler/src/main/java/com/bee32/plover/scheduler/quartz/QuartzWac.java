@@ -1,5 +1,6 @@
 package com.bee32.plover.scheduler.quartz;
 
+import com.bee32.plover.scheduler.stat.QuartzMonitorServlet;
 import com.bee32.plover.servlet.test.AbstractWebAppConfigurer;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
 
@@ -15,6 +16,11 @@ public class QuartzWac
     public void configureContext(ServletTestLibrary stl) {
         // stl.addServlet(QuartzInitializerServlet.class);
         stl.addEventListener(new QuartzInitializerListener());
+    }
+
+    @Override
+    public void configureServlets(ServletTestLibrary stl) {
+        stl.addServlet(QuartzMonitorServlet.class, "/quartz/*");
     }
 
 }
