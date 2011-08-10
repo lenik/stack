@@ -5,12 +5,15 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.component.UIComponent;
 import javax.faces.model.SelectItem;
 import javax.free.TempFile;
 
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.User;
@@ -22,6 +25,8 @@ import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.entity.UserFileTagname;
 import com.bee32.sem.file.util.UserFileCriteria;
 
+@Component
+@Scope("view")
 public class UserFileAdmin
         extends EntityViewBean {
 
@@ -29,7 +34,7 @@ public class UserFileAdmin
 
     static final String CHECKBOX_TAGS = "main:checkbox_tagId";
 
-    List<Long> selectedTags;
+    List<String> selectedTags;
     List<UserFileDto> userFileList;
     Long uploadTag;
     String fileSubject;
@@ -41,8 +46,20 @@ public class UserFileAdmin
 
     public void addMessage() {
         SelectManyCheckbox checkboxes = (SelectManyCheckbox) findComponent(CHECKBOX_TAGS);
+        List<UIComponent> children = checkboxes.getChildren();
+// UISelectItem all = (UISelectItem) children.get(0);
+// UISelectItems otherTags = (UISelectItems) children.get(1);
+        String s1 = "";
+        for (UIComponent c : children) {
+            s1 += c.getClass().toString();
+        }
+
         int childCount = checkboxes.getChildCount();
-        uiLogger.info("childCount:" + childCount);
+        String s = "";
+        for (String l : selectedTags) {
+            s += l;
+        }
+        uiLogger.info(fileName + fileSubject);
     }
 
     public void initUserFile() {
@@ -60,10 +77,11 @@ public class UserFileAdmin
 
     public void handleFileUpload(FileUploadEvent event) {
 
-        if (uploadTag == null) {
-            uiLogger.error("请选择附件分类!");
-            return;
-        }
+// if (uploadTag == null) {
+// uiLogger.error("请选择附件分类!");
+// return;
+// }
+        uiLogger.info(fileSubject + fileName + uploadTag);
 
         String fileName = event.getFile().getFileName();
         UploadedFile upFile = event.getFile();
@@ -103,28 +121,16 @@ public class UserFileAdmin
         uiLogger.info("上传成功:" + fileName);
     }
 
+    public List<String> getSelectedTags() {
+        return selectedTags;
+    }
+
     public List<UserFileDto> getUserFileList() {
         return userFileList;
     }
 
-    public void setUserFileList(List<UserFileDto> userFileList) {
-        this.userFileList = userFileList;
-    }
-
-    public List<Long> getSelectedTags() {
-        return selectedTags;
-    }
-
-    public void setSelectedTags(List<Long> selectedTags) {
-        this.selectedTags = selectedTags;
-    }
-
     public Long getUploadTag() {
         return uploadTag;
-    }
-
-    public void setUploadTag(Long uploadTag) {
-        this.uploadTag = uploadTag;
     }
 
     public String getFileSubject() {
@@ -133,6 +139,18 @@ public class UserFileAdmin
 
     public String getFileName() {
         return fileName;
+    }
+
+    public void setSelectedTags(List<String> selectedTags) {
+        this.selectedTags = selectedTags;
+    }
+
+    public void setUserFileList(List<UserFileDto> userFileList) {
+        this.userFileList = userFileList;
+    }
+
+    public void setUploadTag(Long uploadTag) {
+        this.uploadTag = uploadTag;
     }
 
     public void setFileSubject(String fileSubject) {
