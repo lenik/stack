@@ -23,7 +23,7 @@ public class BocFxrSourceTest
         for (int i = 0; i < FxrSamplesSource.FILES.length; i++) {
             FxrTable tab = src.download();
             System.out.println("Table " + i + ":");
-            System.out.println(tab);
+            System.out.println(tab.dump());
             System.out.println();
         }
     }

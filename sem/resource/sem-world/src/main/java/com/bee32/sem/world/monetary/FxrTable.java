@@ -65,6 +65,10 @@ public class FxrTable
 
     @Override
     public String toString() {
+        return "FXR-Table: " + Dates.YYYY_MM_DD.format(getFirstDate());
+    }
+
+    public String dump() {
         if (unitMap.isEmpty())
             return "(Empty FXR Table)";
 
