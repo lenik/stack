@@ -1,7 +1,5 @@
 package com.bee32.plover.scheduler;
 
-import java.util.Random;
-
 import javax.inject.Inject;
 
 import org.quartz.Job;
@@ -64,10 +62,10 @@ public class HelloJob
 
         TriggerKey key = new TriggerKey("timeout");
 
-        SimpleTriggerImpl tr = Triggers.timeout("timeout", 10);
+        SimpleTriggerImpl tr = Triggers.timeout("timeout", 10000);
         tr.getJobDataMap().put("trig", "T" + (++strig));
 
-        Thread.sleep(new Random().nextInt(1000));
+        // Thread.sleep(new Random().nextInt(1000));
         sched.rescheduleJob(key, tr);
     }
 
