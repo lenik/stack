@@ -6,6 +6,6 @@ import com.bee32.plover.inject.ComponentTemplate;
 
 @ComponentTemplate
 @Lazy
-public abstract class EnterpriseServiceFacade {
+public abstract class DataServiceFacade {
 
 }

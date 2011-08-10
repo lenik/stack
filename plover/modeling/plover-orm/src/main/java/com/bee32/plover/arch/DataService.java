@@ -17,18 +17,18 @@ import com.bee32.plover.orm.util.IEntityMarshalContext;
 @Transactional(readOnly = true)
 @ComponentTemplate
 @Lazy
-public abstract class EnterpriseService
+public abstract class DataService
         extends Component
         implements IEntityMarshalContext {
 
     @Inject
     protected CommonDataManager dataManager = MemdbDataManager.getInstance();
 
-    public EnterpriseService() {
+    public DataService() {
         super();
     }
 
-    public EnterpriseService(String serviceName) {
+    public DataService(String serviceName) {
         super(serviceName);
     }
 
