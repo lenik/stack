@@ -1,6 +1,5 @@
 package com.bee32.sem.test;
 
-import javax.free.IllegalUsageException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.ApplicationContext;
@@ -8,11 +7,7 @@ import org.springframework.context.ApplicationContext;
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.inject.cref.Import;
-import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
-import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.plover.orm.unit.Using;
-import com.bee32.plover.orm.unit.UsingUtil;
 import com.bee32.plover.orm.util.SamplesLoader;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.restful.RESTfulConfig;
@@ -42,13 +37,6 @@ public class SEMTestCase
     protected ApplicationContext appContext;
 
     public SEMTestCase() {
-        Using useUnit = getClass().getAnnotation(Using.class);
-        if (useUnit == null)
-            throw new IllegalUsageException("@Using isn't defined on " + getClass());
-
-        PersistenceUnit unit = UsingUtil.getUsingUnit(getClass());
-        CustomizedSessionFactoryBean.setForceUnit(unit);
-
         stl.welcomeList.add("index-rich.jsf");
     }
 
