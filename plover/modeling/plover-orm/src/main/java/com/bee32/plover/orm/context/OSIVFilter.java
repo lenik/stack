@@ -24,8 +24,8 @@ public class OSIVFilter
     boolean enabled = true;
 
     static Set<String> includeExtensions = new HashSet<String>();
-    static Set<String> includes = new HashSet<String>();
-    static Set<String> excludes = new HashSet<String>();
+    static Set<String> includePatterns = new HashSet<String>();
+    static Set<String> excludePatterns = new HashSet<String>();
 
     static {
         String mvcExt = MVCConfig.SUFFIX;
@@ -35,7 +35,7 @@ public class OSIVFilter
         includeExtensions.add(mvcExt);
         includeExtensions.add("jsf"); // See FaceletsConfig.extension
 
-        excludes.add("/javax.faces.resource/"); // myfaces etc. static resources.
+        excludePatterns.add("/javax.faces.resource/"); // myfaces etc. static resources.
     }
 
     public OSIVFilter() {
@@ -44,7 +44,7 @@ public class OSIVFilter
 
     @Override
     protected SessionFactory lookupSessionFactory() {
-        logger.debug("Lookup OSIV session factory");
+        // logger.debug("Lookup OSIV session factory");
 
         WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 
@@ -60,7 +60,12 @@ public class OSIVFilter
     @Override
     protected final boolean shouldNotFilter(HttpServletRequest request)
             throws ServletException {
-        return !filter(request);
+
+        boolean included = filter(request);
+        if (included) {
+            logger.debug("OSIV-Request: " + request.getRequestURI());
+        }
+        return !included;
     }
 
     protected boolean filter(HttpServletRequest request) {
@@ -72,16 +77,16 @@ public class OSIVFilter
         String uri = request.getRequestURI();
         String extension = FilePath.getExtension(uri);
 
-        if (includeExtensions.contains(extension))
-            return true;
-
-        for (String inc : includes)
-            if (uri.contains(inc))
+        for (String include : includePatterns)
+            if (uri.contains(include))
                 return true;
 
-        for (String exc : excludes)
-            if (uri.contains(exc))
+        for (String exclude : excludePatterns)
+            if (uri.contains(exclude))
                 return false;
+
+        if (includeExtensions.contains(extension))
+            return true;
 
         return true;
     }
