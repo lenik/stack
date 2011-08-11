@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if cd /tmp && rm -f pom.xml; then
+
+    echo "获取最新版 plover-parent"
+
+    for ver in 7; do
+        mvn dependency:get \
+            -DrepoUrl=http://m2.bee32.com/releases \
+            -Dartifact=com.bee32.plover:plover-parent:$ver:pom \
+            -Ddetail=true \
+            || echo "获取版本 $ver 失败"
+    done
+
+else
+    echo "No /tmp dir, or there is a pom.xml in /tmp"
+fi
