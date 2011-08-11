@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bee32.plover</groupId>
     <artifactId>plover-parent</artifactId>
-    <version>5</version>
+    <version>6</version>
     <packaging>pom</packaging>
     <dependencyManagement>
         <dependencies>
@@ -95,14 +95,6 @@
                 </includes>
             </resource>
             <resource>
-                <directory>src/test/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
-            <resource>
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
@@ -112,7 +104,17 @@
             </resource>
             <resource>
                 <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <targetPath>../test-classes</targetPath>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/test/resources</directory>
                 <filtering>false</filtering>
+                <targetPath>../test-classes</targetPath>
                 <excludes>
                     <exclude>**/*.properties</exclude>
                     <exclude>**/*.xml</exclude>
