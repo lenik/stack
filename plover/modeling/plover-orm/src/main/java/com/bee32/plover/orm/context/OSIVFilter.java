@@ -23,7 +23,7 @@ public class OSIVFilter
 
     boolean enabled = true;
 
-    static Set<String> filterExtensions = new HashSet<String>();
+    static Set<String> includeExtensions = new HashSet<String>();
     static Set<String> includes = new HashSet<String>();
     static Set<String> excludes = new HashSet<String>();
 
@@ -32,8 +32,8 @@ public class OSIVFilter
         if (mvcExt.startsWith("."))
             mvcExt = mvcExt.substring(1);
 
-        filterExtensions.add(mvcExt);
-        filterExtensions.add("jsf"); // See FaceletsConfig.extension
+        includeExtensions.add(mvcExt);
+        includeExtensions.add("jsf"); // See FaceletsConfig.extension
 
         excludes.add("/javax.faces.resource/"); // myfaces etc. static resources.
     }
@@ -71,9 +71,9 @@ public class OSIVFilter
 
         String uri = request.getRequestURI();
         String extension = FilePath.getExtension(uri);
-        boolean filter = filterExtensions.contains(extension);
-        if (!filter)
-            return false;
+
+        if (includeExtensions.contains(extension))
+            return true;
 
         for (String inc : includes)
             if (uri.contains(inc))
