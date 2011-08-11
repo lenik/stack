@@ -6,10 +6,10 @@ import com.bee32.plover.servlet.test.ServletTestCase.LocalSTL;
 public abstract class OuterWac<T extends ServletTestCase>
         extends AbstractWebAppConfigurer {
 
-    final Class<T> outerType;
+    final Class<T> outerDeclType;
 
     public OuterWac() {
-        outerType = ClassUtil.infer1(getClass(), OuterWac.class, 0);
+        outerDeclType = ClassUtil.infer1(getClass(), OuterWac.class, 0);
     }
 
     T getOuter(ServletTestLibrary stl) {
@@ -18,10 +18,10 @@ public abstract class OuterWac<T extends ServletTestCase>
         LocalSTL localStl = (LocalSTL) stl;
         ServletTestCase outer = localStl.getOuter();
 
-        if (!outerType.isInstance(outer))
+        if (!outerDeclType.isInstance(outer))
             return null;
 
-        return outerType.cast(outer);
+        return outerDeclType.cast(outer);
     }
 
     protected void configureServer(ServletTestLibrary stl, T outer) {
