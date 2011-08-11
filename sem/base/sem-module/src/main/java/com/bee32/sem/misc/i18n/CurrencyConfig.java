@@ -13,6 +13,9 @@ public class CurrencyConfig
         // DEFAULT = ICurrencyAware.CNY;
         Locale nativeLocale = Locale.getDefault();
         nativeCurrency = Currency.getInstance(nativeLocale);
+
+        // XXX - Force set to CNY.
+        nativeCurrency = ICurrencyAware.CNY;
     }
 
     public static Currency getNative() {
