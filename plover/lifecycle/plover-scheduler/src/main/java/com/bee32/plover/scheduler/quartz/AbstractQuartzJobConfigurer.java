@@ -3,7 +3,9 @@ package com.bee32.plover.scheduler.quartz;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 
-//@ComponentTemplate
+import com.bee32.plover.inject.ServiceTemplate;
+
+@ServiceTemplate
 public abstract class AbstractQuartzJobConfigurer
         implements IQuartzJobConfigurer {
 

@@ -1,6 +1,8 @@
 package com.bee32.plover.servlet.test;
 
-//@ComponentTemplate
+import com.bee32.plover.inject.ServiceTemplate;
+
+@ServiceTemplate
 public abstract class AbstractWebAppConfigurer
         implements IWebAppConfigurer {
 

@@ -26,6 +26,11 @@ public class FxrSamplesSource
     }
 
     @Override
+    public int getPreferredInterval() {
+        return 0;
+    }
+
+    @Override
     public boolean isFinite() {
         return true;
     }
