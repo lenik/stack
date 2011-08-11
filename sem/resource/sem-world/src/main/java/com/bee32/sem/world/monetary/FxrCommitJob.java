@@ -2,6 +2,8 @@ package com.bee32.sem.world.monetary;
 
 import java.io.IOException;
 
+import javax.free.IllegalUsageException;
+
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -28,6 +30,9 @@ public class FxrCommitJob
         extends DataService
         implements Job {
 
+    public static final String SOURCE_KEY = "source";
+    public static final String INTERVAL_KEY = "interval";
+
     static Logger logger = LoggerFactory.getLogger(FxrCommitJob.class);
 
     @Inject
@@ -52,6 +57,9 @@ public class FxrCommitJob
     void _execute(JobExecutionContext context)
             throws SchedulerException, IOException {
 
+        if (intervalMs == 0)
+            throw new IllegalUsageException("Interval isn't set.");
+
         Scheduler sched = context.getScheduler();
 
         FxrTable table = downloadAndCommit();
@@ -69,9 +77,9 @@ public class FxrCommitJob
         SimpleTriggerImpl trigger = Triggers.timeout(triggerKey.getName(), intervalMs);
 
         // Reinit interval
-        JobDataMap jobDataMap = new JobDataMap();
-        jobDataMap.put("interval", intervalMs);
-        trigger.setJobDataMap(jobDataMap);
+        JobDataMap triggerDataMap = new JobDataMap();
+        triggerDataMap.put(INTERVAL_KEY, getInterval());
+        trigger.setJobDataMap(triggerDataMap);
 
         sched.rescheduleJob(triggerKey, trigger);
     }

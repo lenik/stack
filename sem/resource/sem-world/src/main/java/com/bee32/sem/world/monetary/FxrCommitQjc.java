@@ -40,7 +40,7 @@ public class FxrCommitQjc
             JobDetailImpl jobDetail = Jobs.declare(jobName, FxrCommitJob.class);
 
             JobDataMap jobDataMap = new JobDataMap();
-            jobDataMap.put("source", fxrSource);
+            jobDataMap.put(FxrCommitJob.SOURCE_KEY, fxrSource);
             jobDetail.setJobDataMap(jobDataMap);
 
             SimpleTriggerImpl trigger = Triggers.timeout("T:" + jobName, INITIAL_DELAY);
@@ -48,7 +48,8 @@ public class FxrCommitQjc
             JobDataMap triggerDataMap = new JobDataMap();
 
             int interval = fxrSource.getPreferredInterval();
-            triggerDataMap.put("interval", interval);
+            triggerDataMap.put(FxrCommitJob.INTERVAL_KEY, interval);
+            trigger.setJobDataMap(triggerDataMap);
 
             sched.scheduleJob(jobDetail, trigger);
         }
