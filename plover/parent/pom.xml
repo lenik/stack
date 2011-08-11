@@ -1,8 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bee32.plover</groupId>
     <artifactId>plover-parent</artifactId>
-    <version>6</version>
+    <version>7</version>
     <packaging>pom</packaging>
     <dependencyManagement>
         <dependencies>
@@ -102,25 +103,25 @@
                     <exclude>**/*.xml</exclude>
                 </excludes>
             </resource>
-            <resource>
+        </resources>
+        <testResources>
+            <testResource>
                 <directory>src/test/resources</directory>
                 <filtering>true</filtering>
-                <targetPath>../test-classes</targetPath>
                 <includes>
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
                 </includes>
-            </resource>
-            <resource>
+            </testResource>
+            <testResource>
                 <directory>src/test/resources</directory>
                 <filtering>false</filtering>
-                <targetPath>../test-classes</targetPath>
                 <excludes>
                     <exclude>**/*.properties</exclude>
                     <exclude>**/*.xml</exclude>
                 </excludes>
-            </resource>
-        </resources>
+            </testResource>
+        </testResources>
     </build>
     <distributionManagement>
         <repository>

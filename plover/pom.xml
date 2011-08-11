@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.bee32.plover</groupId>
         <artifactId>plover-parent</artifactId>
-        <version>6</version>
+        <version>7</version>
     </parent>
     <groupId>com.bee32.plover</groupId>
     <artifactId>plover</artifactId>
