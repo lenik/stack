@@ -3,6 +3,7 @@ package com.bee32.sem.world.monetary;
 import java.io.IOException;
 
 import javax.free.IllegalUsageException;
+import javax.inject.Inject;
 
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -21,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.scheduler.util.Triggers;
-import com.bee32.plover.web.faces.view.Inject;
 import com.bee32.sem.world.monetary.impl.DiscreteFxrProvider;
 
 @Service
