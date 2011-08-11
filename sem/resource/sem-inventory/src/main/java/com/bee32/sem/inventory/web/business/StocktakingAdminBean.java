@@ -16,6 +16,7 @@ import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
+import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.util.StockCriteria;
@@ -207,5 +208,16 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
     public void last() {
         goNumber = count + 1;
         loadStockOrder(goNumber);
+    }
+
+    @Override
+    public StockOrderItemDto getOrderItem_() {
+        return orderItem;
+    }
+
+
+    @Override
+    public StockWarehouseDto getSelectedWarehouse_() {
+        return selectedWarehouse;
     }
 }

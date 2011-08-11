@@ -18,6 +18,7 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
+import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.dto.tx.StockTransferDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -531,5 +532,16 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
     public void saveItemIn() {
         stockOrder.getItems().add(orderItemIn);
+    }
+
+    @Override
+    public StockOrderItemDto getOrderItem_() {
+        return orderItemIn;
+    }
+
+
+    @Override
+    public StockWarehouseDto getSelectedWarehouse_() {
+        return selectedWarehouse;
     }
 }
