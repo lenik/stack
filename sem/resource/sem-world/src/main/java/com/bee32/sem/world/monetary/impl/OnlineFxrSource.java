@@ -14,12 +14,15 @@ public abstract class OnlineFxrSource
 
     static Logger logger = LoggerFactory.getLogger(OnlineFxrSource.class);
 
-    static final int INTERVAL_DEBUG = 1; // each minute.
-    static final int INTERVAL_PRODUCT = 12 * 60; // twice a day.
+    /**
+     * each minute. This is useless cuz SamplesFxrSource is used.
+     */
+    static final int INTERVAL_DEBUG = 60;
+    static final int INTERVAL_PRODUCT = 12 * 3600; // twice a day.
 
     @Override
     public int getPreferredInterval() {
-        return INTERVAL_DEBUG;
+        return INTERVAL_PRODUCT;
     }
 
     @Override
