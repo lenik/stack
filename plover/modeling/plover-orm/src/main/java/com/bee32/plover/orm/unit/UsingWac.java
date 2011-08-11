@@ -20,9 +20,9 @@ public class UsingWac
         Class<?> outerType = outer.getClass();
         Using useUnit = outerType.getAnnotation(Using.class);
         if (useUnit == null)
-            throw new IllegalUsageException("@Using isn't defined on " + getClass());
+            throw new IllegalUsageException("@Using isn't defined on " + outerType);
 
-        PersistenceUnit unit = UsingUtil.getUsingUnit(getClass());
+        PersistenceUnit unit = UsingUtil.getUsingUnit(outerType);
         CustomizedSessionFactoryBean.setForceUnit(unit);
     }
 
