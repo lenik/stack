@@ -2,7 +2,10 @@ package com.bee32.plover.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -32,7 +35,7 @@ import com.bee32.plover.xutil.m2.MavenPath;
 public abstract class ServiceCollector<T>
         extends WiredTestCase {
 
-    final Class<T> prototype;
+    protected final Class<T> prototype;
 
     public ServiceCollector() {
         prototype = ClassUtil.infer1(getClass(), ServiceCollector.class, 0);
@@ -52,33 +55,50 @@ public abstract class ServiceCollector<T>
         wired._collect();
     }
 
-    protected final void _collect()
+    private Map<File, StringBuilder> files;
+
+    synchronized void _collect()
             throws IOException {
+        files = new HashMap<File, StringBuilder>();
+        scan();
+        commit(files);
+        files = null;
+    }
 
-        Map<File, StringBuilder> commit = new HashMap<File, StringBuilder>();
+    protected void scan() {
+        for (Class<?> serviceType : getExtensions(prototype)) {
+            publish(prototype, serviceType);
+        }
+    }
 
-        // for (T service : application.getBeansOfType(prototype, true, false).values()) {
-        // Class<? extends Object> serviceType = service.getClass();
+    protected void publish(Class<?> prototype, Class<?> serviceType) {
+        System.out.println("    Service: " + serviceType);
 
-        for (String beanName : application.getBeanNamesForType(prototype, true, false)) {
-            Class<?> serviceType = application.getType(beanName);
+        File resdir = MavenPath.getResourceDir(serviceType);
+        File sfile = new File(resdir, "META-INF/services/" + prototype.getName());
 
-            System.out.println("Service: " + serviceType);
-
-            File resdir = MavenPath.getResourceDir(serviceType);
-            File sfile = new File(resdir, "META-INF/services/" + prototype.getName());
-
-            StringBuilder buf = commit.get(sfile);
-            if (buf == null) {
-                buf = new StringBuilder();
-                commit.put(sfile, buf);
-            }
-
-            buf.append(serviceType.getName());
-            buf.append("\n");
+        StringBuilder buf = files.get(sfile);
+        if (buf == null) {
+            buf = new StringBuilder();
+            files.put(sfile, buf);
         }
 
-        for (Entry<File, StringBuilder> entry : commit.entrySet()) {
+        buf.append(serviceType.getName());
+        buf.append("\n");
+    }
+
+    protected Collection<Class<?>> getExtensions(Class<?> base) {
+        List<Class<?>> list = new ArrayList<Class<?>>();
+        for (String beanName : application.getBeanNamesForType(base, true, false)) {
+            Class<?> serviceType = application.getType(beanName);
+            list.add(serviceType);
+        }
+        return list;
+    }
+
+    protected void commit(Map<File, StringBuilder> files)
+            throws IOException {
+        for (Entry<File, StringBuilder> entry : files.entrySet()) {
             File _file = entry.getKey();
             String content = entry.getValue().toString();
 
