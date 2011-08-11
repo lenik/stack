@@ -9,6 +9,7 @@ import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerContext;
 import org.quartz.SchedulerException;
+import org.quartz.Trigger;
 import org.quartz.simpl.PropertySettingJobFactory;
 import org.quartz.spi.TriggerFiredBundle;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ public class InjectedJobFactory
         SchedulerContext schedulerContext = scheduler.getContext();
 
         JobDetail jobDetail = bundle.getJobDetail();
+        Trigger trigger = bundle.getTrigger();
+
         Class<? extends Job> jobClass = jobDetail.getJobClass();
         Job job;
 
@@ -45,13 +48,15 @@ public class InjectedJobFactory
             throw se;
         }
 
-        JobDataMap jobDataMap = new JobDataMap();
-        mergeProperties(jobDataMap, scheduler.getContext());
-        mergeProperties(jobDataMap, bundle.getJobDetail().getJobDataMap());
-        mergeProperties(jobDataMap, bundle.getTrigger().getJobDataMap());
+        JobDataMap all = new JobDataMap();
+        JobDataMap jobDataMap = jobDetail.getJobDataMap();
+        JobDataMap triggerDataMap = trigger.getJobDataMap();
 
-        setBeanProps(job, jobDataMap);
+        mergeProperties(all, scheduler.getContext());
+        mergeProperties(all, jobDataMap);
+        mergeProperties(all, triggerDataMap);
 
+        setBeanProps(job, all);
         return job;
     }
 
