@@ -127,8 +127,11 @@ public class DiscreteFxrProvider
     public synchronized void commit(FxrTable table) {
 
         Currency quoteCurrency = table.getQuoteCurrency();
-        if (quoteCurrency != CurrencyConfig.getNative())
-            throw new IllegalArgumentException("FXR table of bad quote currency: " + quoteCurrency);
+        if (quoteCurrency != CurrencyConfig.getNative()) {
+            String message = String.format("FXR table of bad quote currency: %s (Native: %s)", //
+                    quoteCurrency, CurrencyConfig.getNative());
+            throw new IllegalArgumentException(message);
+        }
 
         if (lastUpdatedDate == null) {
             FxrRecord mostRecentRecord = asFor(FxrRecord.class).getFirst(Order.desc("date"));

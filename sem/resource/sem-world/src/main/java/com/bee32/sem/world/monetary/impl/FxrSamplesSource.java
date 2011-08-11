@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 
+import javax.free.IllegalUsageException;
 import javax.free.PrefetchedIterator;
 import javax.free.URLResource;
 
@@ -70,6 +71,9 @@ public class FxrSamplesSource
         String file = FILES[index++];
 
         URL url = FxrSamplesSource.class.getResource(file);
+
+        if (url == null)
+            throw new IllegalUsageException("Sample file isn't existed: " + file);
 
         String html = new URLResource(url).forRead().readTextContents();
         return html;
