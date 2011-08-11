@@ -34,7 +34,6 @@ public class FxrCommitQjc
         Scheduler sched = schedulerFactory.getScheduler();
 
         for (IFxrSource fxrSource : ServiceLoader.load(IFxrSource.class)) {
-
             String jobName = "FXR:" + fxrSource.getClass().getName();
 
             JobDetailImpl jobDetail = Jobs.declare(jobName, FxrCommitJob.class);

@@ -28,7 +28,7 @@ public class FxrSamplesSource
 
     @Override
     public int getPreferredInterval() {
-        return 0;
+        return 1;
     }
 
     @Override

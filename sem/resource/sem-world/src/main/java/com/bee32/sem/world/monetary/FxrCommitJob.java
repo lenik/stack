@@ -39,30 +39,41 @@ public class FxrCommitJob
     IFxrProvider fxrProvider = new DiscreteFxrProvider();
 
     IFxrSource source;
-    int intervalMs;
+    int intervalMs = -1;
+
+    boolean locked;
 
     @Transactional(readOnly = false)
     @Override
-    public void execute(JobExecutionContext context)
+    public synchronized void execute(JobExecutionContext context)
             throws JobExecutionException {
+        if (locked)
+            throw new IllegalStateException("Non-reentrant.");
+        locked = true;
+
         try {
             _execute(context);
         } catch (JobExecutionException e) {
             throw e;
         } catch (Exception e) {
             throw new JobExecutionException(e.getMessage(), e);
+        } finally {
+            locked = false;
         }
     }
 
     void _execute(JobExecutionContext context)
             throws SchedulerException, IOException {
 
-        if (intervalMs == 0)
+        if (intervalMs == -1)
             throw new IllegalUsageException("Interval isn't set.");
 
         Scheduler sched = context.getScheduler();
 
         FxrTable table = downloadAndCommit();
+
+        System.err.println("Download: " + source.getClass().getSimpleName() + " -> " + table);
+
         if (table == null) {
             if (source.isFinite()) {
                 // completed.
@@ -74,6 +85,7 @@ public class FxrCommitJob
         }
 
         TriggerKey triggerKey = context.getTrigger().getKey();
+
         SimpleTriggerImpl trigger = Triggers.timeout(triggerKey.getName(), intervalMs);
 
         // Reinit interval
