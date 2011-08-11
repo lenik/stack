@@ -7,8 +7,13 @@ import org.quartz.impl.triggers.SimpleTriggerImpl;
 
 public class Triggers {
 
+    /**
+     * Retry once, a minute later.
+     *
+     * @see #timeout(String, int, int, int)
+     */
     public static SimpleTriggerImpl timeout(String name, int ms) {
-        return timeout(name, ms, 1000, 1);
+        return timeout(name, ms, 60000, 1);
     }
 
     /**
@@ -22,6 +27,9 @@ public class Triggers {
      * <li>中间空缺的窗口不应该计入 repeat count。即 (now - trigger.beginTime) / repeatInterval 这部分应该不做考虑。 (See
      * JobFastforwardTest)
      * </ul>
+     *
+     * @param retryInterval
+     *            In milliseconds.
      */
     public static SimpleTriggerImpl timeout(String name, int ms, int retryInterval, int retryCount) {
         SimpleTriggerImpl trigger = new SimpleTriggerImpl();
