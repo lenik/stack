@@ -1,18 +1,23 @@
 package com.bee32.sem.file.util;
 
-import com.bee32.icsf.login.SessionLoginInfo;
-import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import java.util.Collection;
+
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.LeftHand;
+import com.bee32.sem.file.entity.UserFile;
 
 public class UserFileCriteria
         extends CriteriaSpec {
-    public static CriteriaElement ownerByCurrentUser() {
-        IUserPrincipal currentUser = SessionLoginInfo.getUser();
 
-        if (currentUser.getDisplayName().equals("admin"))
+    @LeftHand(UserFile.class)
+    public static ICriteriaElement withAnyTagIn(Collection<String> tags) {
+        if (tags == null)
+            throw new NullPointerException("tags");
+        if (tags.isEmpty())
             return null;
-        else
-            return equals("owner.id", currentUser.getId());
+        return compose(alias("tags", "tag"), //
+                in("tag.id", tags));
     }
+
 }

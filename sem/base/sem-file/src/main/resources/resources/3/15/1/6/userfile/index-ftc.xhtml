@@ -33,31 +33,46 @@
                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                 <p:column>
-                    <p:panel header="#{file.origPath}">
+                    <p:panel header="#{file.fileName}">
                         <img src="#{file.imageHref}" height="36" width="36" border="0" />
-                        <p:commandLink value="delete" />
+                        <p:commandLink title="编辑" oncomplete="fileDialog.show();" update="main:fileDialogPanel">
+                            <f:setPropertyActionListener value="#{file}" target="#{userFileAdmin.activeFile}" />
+                            <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" />
+                        </p:commandLink>
                     </p:panel>
                 </p:column>
 
             </p:dataGrid>
 
-            <p:commandButton value="uploadFile" onclick="uploadDialog.show();" />
+            <p:dialog widgetVar="fileDialog" height="600" width="800">
+                <p:panel id="fileDialogPanel">
+                    <t:panelGrid columns="2">
+                        <t:panelGroup colspan="2">
+                            <img src="#{file.imageHref}" border="0" />
+                        </t:panelGroup>
 
-            <h:form enctype="multipart/form-data">
-                <p:dialog widgetVar="uploadDialog" header="附件上传" height="400" width="600">
+                        <h:outputText value="文件名:" />
+                        <p:inputText value="#{userFileAdmin.activeFile.fileName}" />
 
-                    <p:inputText value="#{userFileAdmin.fileSubject}" />
-                    <p:inputText value="#{userFileAdmin.fileName}" />
-                    <p:selectOneMenu value="#{userFileAdmin.uploadTag}" style="width:200px;">
-                        <f:selectItems value="#{userFileAdmin.userFileTags}" />
-                    </p:selectOneMenu>
-                    <p:fileUpload fileUploadListener="#{userFileAdmin.handleFileUpload}" mode="advanced"
-                        update="note:message,main:fileGrid" multiple="true" allowTypes="png,gif,jpg,doc,docx,xsl,xslx"
-                        oncomplete="uploadDialog.hide();" />
-                </p:dialog>
-            </h:form>
+                        <h:outputText value="文件标题:" />
+                        <p:inputText value="#{userFileAdmin.activeFile.subject}" />
+
+                        <h:outputText value="文件路径:" />
+                        <p:inputText value="#{userFileAdmin.activeFile.origPath}" />
+
+                    </t:panelGrid>
+
+                </p:panel>
+            </p:dialog>
+        </h:form>
+
+        <h:form enctype="multipart/form-data">
+
+            <p:fileUpload fileUploadListener="#{userFileAdmin.handleFileUpload}" mode="advanced"
+                update="note:message,main:fileGrid" multiple="true" allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
 
         </h:form>
+
 
 
 

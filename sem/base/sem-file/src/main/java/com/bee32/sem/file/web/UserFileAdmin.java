@@ -5,11 +5,9 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.UIComponent;
 import javax.faces.model.SelectItem;
 import javax.free.TempFile;
 
-import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.context.annotation.Scope;
@@ -23,7 +21,7 @@ import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.entity.UserFileTagname;
-import com.bee32.sem.file.util.UserFileCriteria;
+import com.bee32.sem.misc.EntityCriteria;
 
 @Component
 @Scope("view")
@@ -36,6 +34,7 @@ public class UserFileAdmin
 
     List<String> selectedTags;
     List<UserFileDto> userFileList;
+    UserFileDto activeFile = new UserFileDto().create();
     Long uploadTag;
     String fileSubject;
     String fileName;
@@ -45,30 +44,18 @@ public class UserFileAdmin
     }
 
     public void addMessage() {
-        SelectManyCheckbox checkboxes = (SelectManyCheckbox) findComponent(CHECKBOX_TAGS);
-        List<UIComponent> children = checkboxes.getChildren();
-// UISelectItem all = (UISelectItem) children.get(0);
-// UISelectItems otherTags = (UISelectItems) children.get(1);
-        String s1 = "";
-        for (UIComponent c : children) {
-            s1 += c.getClass().toString();
-        }
-
-        int childCount = checkboxes.getChildCount();
-        String s = "";
-        for (String l : selectedTags) {
-            s += l;
-        }
+//        List<UserFile> files = serviceFor(UserFile.class).list(UserFileCriteria.withAnyTagIn(selectedTags));
+//        userFileList = DTOs.marshalList(UserFileDto.class, files);
         uiLogger.info(fileName + fileSubject);
     }
 
     public void initUserFile() {
-        List<UserFile> userFiles = serviceFor(UserFile.class).list(UserFileCriteria.ownerByCurrentUser());
+        List<UserFile> userFiles = serviceFor(UserFile.class).list(EntityCriteria.ownedByCurrentUser());
         userFileList = DTOs.marshalList(UserFileDto.class, userFiles);
     }
 
     public List<SelectItem> getUserFileTags() {
-        List<UserFileTagname> tags = serviceFor(UserFileTagname.class).list(UserFileCriteria.ownerByCurrentUser());
+        List<UserFileTagname> tags = serviceFor(UserFileTagname.class).list(EntityCriteria.ownedByCurrentUser());
         List<SelectItem> items = new ArrayList<SelectItem>();
         for (UserFileTagname tag : tags)
             items.add(new SelectItem(tag.getId(), tag.getTag()));
@@ -77,10 +64,6 @@ public class UserFileAdmin
 
     public void handleFileUpload(FileUploadEvent event) {
 
-// if (uploadTag == null) {
-// uiLogger.error("请选择附件分类!");
-// return;
-// }
         uiLogger.info(fileSubject + fileName + uploadTag);
 
         String fileName = event.getFile().getFileName();
@@ -159,6 +142,14 @@ public class UserFileAdmin
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public UserFileDto getActiveFile() {
+        return activeFile;
+    }
+
+    public void setActiveFile(UserFileDto activeFile) {
+        this.activeFile = activeFile;
     }
 
 }

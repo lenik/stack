@@ -27,6 +27,7 @@ public class UserFileDto
     String origPath;
     String fileName;
     String subject;
+    String imageHref;
 
     Set<UserFileTagnameDto> tags;
 
@@ -44,7 +45,7 @@ public class UserFileDto
         origPath = source.getOrigPath();
         fileName = source.getFileName();
         subject = source.getSubject();
-
+        imageHref = getHref();
         if (selection.contains(TAGS))
             tags = marshalSet(UserFileTagnameDto.class, 0, source.getTags(), true);
     }
@@ -126,7 +127,7 @@ public class UserFileDto
         this.tags = tags;
     }
 
-    public String getImageHref() {
+    public String getHref(){
         Location iconLoc;
 
         String mimeType = "file";
@@ -146,4 +147,11 @@ public class UserFileDto
         return href;
     }
 
+    public String getImageHref() {
+        return imageHref;
+    }
+
+    public void setImageHref(String imageHref){
+        this.imageHref = imageHref;
+    }
 }
