@@ -60,6 +60,11 @@ public class StockOrderItemDto
         this.parent = parent;
     }
 
+    @Override
+    protected Date getDate() {
+        return parent.getBeginTime();
+    }
+
     public MaterialDto getMaterial() {
         return material;
     }

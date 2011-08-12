@@ -1,6 +1,7 @@
 package com.bee32.sem.inventory.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -58,6 +59,8 @@ public class StockItemList
         if (list == null)
             throw new NullPointerException("list");
 
+        Date fxrDate = getBeginTime();
+
         // Compact myself.
         for (StockOrderItem item : this) {
             Object key = mergeStrategy.getMergeKey(item);
@@ -74,7 +77,7 @@ public class StockItemList
 
             MCValue total = merging.getTotal();
             MCValue itemTotal = item.getTotal();
-            total = total.addFTN(fxrProvider, itemTotal);
+            total = total.addFTN(fxrDate, itemTotal, fxrDate, fxrProvider);
 
             MCValue avgPrice = total.divide(sumQuantity);
             merging.setPrice(avgPrice);

@@ -2,6 +2,7 @@ package com.bee32.sem.world.thing;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.Date;
 
 import javax.free.ParseException;
 
@@ -52,6 +53,8 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         BigDecimal _price = map.getBigDecimal("price");
         price = new MCValue(currency, _price);
     }
+
+    protected abstract Date getDate();
 
     public BigDecimal getQuantity() {
         return quantity;
@@ -124,7 +127,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         if (nativePrice == null) {
             if (fxrProvider == null)
                 throw new IllegalStateException("No FXR provider is set.");
-            nativePrice = price.getNativeValue(fxrProvider);
+            nativePrice = price.getNativeValue(getDate(), fxrProvider);
         }
         return nativePrice;
     }

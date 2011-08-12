@@ -63,6 +63,11 @@ public class StockOrderItem
         this.parent = parent;
     }
 
+    @Override
+    protected Date _getDate() {
+        return parent.getBeginTime();
+    }
+
     /**
      * 物料
      */

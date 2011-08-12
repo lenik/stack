@@ -6,7 +6,7 @@ import static com.bee32.plover.orm.ext.config.DecimalConfig.MONEY_ITEM_SCALE;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Currency;
-import java.util.Locale;
+import java.util.Date;
 
 import javax.free.Nullables;
 import javax.persistence.Column;
@@ -28,16 +28,11 @@ public class MCValue
 
     private static final long serialVersionUID = 1L;
 
-    public static Currency DEFAULT_CURRENCY;
-    static {
-        Locale defaultLocale = Locale.getDefault();
-        DEFAULT_CURRENCY = Currency.getInstance(defaultLocale);
-    }
-
-    private/* final */Currency currency = DEFAULT_CURRENCY;
+    private/* final */Currency currency;
     private/* final */BigDecimal value;
 
     public MCValue() {
+        currency = CurrencyConfig.getNative();
         value = new BigDecimal(0);
     }
 
@@ -61,6 +56,8 @@ public class MCValue
     }
 
     public MCValue(Currency currency, BigDecimal value) {
+        if (currency == null)
+            throw new NullPointerException("currency");
         if (value == null)
             throw new NullPointerException("value");
         this.currency = currency;
@@ -92,9 +89,12 @@ public class MCValue
     }
 
     void setCurrencyCode(String currencyCode) {
-        Currency currency = Currency.getInstance(currencyCode); // Already throws IAE, though.
-        if (currency == null)
-            throw new IllegalArgumentException("Bad currency code: " + currencyCode);
+        if (currencyCode == null)
+            throw new NullPointerException("currencyCode");
+
+        // throws IllegalArgumentException if currency code is illegal.
+        Currency currency = Currency.getInstance(currencyCode);
+
         setCurrency(currency);
     }
 
@@ -217,53 +217,19 @@ public class MCValue
      *
      * @return Non-<code>null</code> addition result.
      */
-    public final MCValue addFTN(IFxrProvider fxrProvider, MCValue other)
+    public final MCValue addFTN(Date date, MCValue other, Date otherDate, IFxrProvider fxrProvider)
             throws FxrQueryException {
         if (Nullables.equals(currency, other.currency)) {
             BigDecimal sum = value.add(other.value);
             return new MCValue(currency, sum);
         }
-        BigDecimal a = this.getNativeValue(fxrProvider);
-        BigDecimal b = other.getNativeValue(fxrProvider);
+        BigDecimal a = this.getNativeValue(date, fxrProvider);
+        BigDecimal b = other.getNativeValue(otherDate, fxrProvider);
         BigDecimal sum = a.add(b);
-        return new MCValue(null, sum);
+        return new MCValue(fxrProvider.getQuoteCurrency(), sum);
     }
 
-    /**
-     * Add, or fallback to native currency.
-     *
-     * @return Non-<code>null</code> addition result.
-     */
-    public final MCValue addFTN(IFxrProvider fxrProvider, MCValue... others)
-            throws FxrQueryException {
-
-        assert currency != null; // To simplify, null is just not supported here.
-
-        boolean same = true;
-        for (MCValue other : others) {
-            if (!currency.equals(other.currency)) {
-                same = false;
-                break;
-            }
-        }
-
-        BigDecimal sum;
-        if (same) {
-            sum = value;
-            for (MCValue other : others)
-                sum = sum.add(other.value);
-        } else {
-            sum = this.getNativeValue(fxrProvider);
-            for (MCValue other : others) {
-                BigDecimal n = other.getNativeValue(fxrProvider);
-                sum = sum.add(n);
-            }
-        }
-
-        return new MCValue(CurrencyConfig.getNative(), sum);
-    }
-
-    public MCValue toNative(IFxrProvider fxrProvider)
+    public MCValue toNative(Date date, IFxrProvider fxrProvider)
             throws FxrQueryException {
         if (currency == null)
             return this;
@@ -271,12 +237,12 @@ public class MCValue
         if (currency.equals(CurrencyConfig.getNative()))
             return this;
 
-        BigDecimal nativeValue = getNativeValue(fxrProvider);
+        BigDecimal nativeValue = getNativeValue(date, fxrProvider);
         MCValue _native = new MCValue(CurrencyConfig.getNative(), nativeValue);
         return _native;
     }
 
-    public BigDecimal getNativeValue(IFxrProvider fxrProvider)
+    public BigDecimal getNativeValue(Date date, IFxrProvider fxrProvider)
             throws FxrQueryException {
         if (fxrProvider == null)
             throw new NullPointerException("fxrProvider");

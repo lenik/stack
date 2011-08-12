@@ -1,6 +1,7 @@
 package com.bee32.sem.world.thing;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -42,6 +43,9 @@ public abstract class AbstractOrderItem
         nativePrice = item.nativePrice;
         nativeTotal = item.nativeTotal;
     }
+
+    @Transient
+    protected abstract Date _getDate();
 
     /**
      * 数量
@@ -130,13 +134,13 @@ public abstract class AbstractOrderItem
      */
     @Redundant
     @Transient
-//    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
+// @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
     public synchronized BigDecimal getNativePrice()
             throws FxrQueryException {
         if (nativePrice == null) {
             if (fxrProvider == null)
                 throw new IllegalStateException("No FXR provider is set.");
-            nativePrice = price.getNativeValue(fxrProvider);
+            nativePrice = price.getNativeValue(_getDate(), fxrProvider);
         }
         return nativePrice;
     }
@@ -151,7 +155,7 @@ public abstract class AbstractOrderItem
      */
     @Redundant
     @Transient
-//    @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
+// @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
     public BigDecimal getNativeTotal()
             throws FxrQueryException {
         if (nativeTotal == null) {

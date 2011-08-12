@@ -1,5 +1,7 @@
 package com.bee32.sem.chance.entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -41,10 +43,16 @@ public class ChanceQuotationItem
         this.parent = parent;
     }
 
+    @Override
+    protected Date _getDate() {
+        return parent.getBeginTime();
+    }
+
     /**
      * 物料
      */
-    @NaturalId(mutable = true) // XXX Should be immutable.
+    @NaturalId(mutable = true)
+    // XXX Should be immutable.
     @ManyToOne
     public Material getMaterial() {
         return material;

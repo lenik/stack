@@ -1,5 +1,7 @@
 package com.bee32.sem.chance.dto;
 
+import java.util.Date;
+
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
@@ -47,6 +49,11 @@ public class ChanceQuotationItemDto
         if (parent == null)
             throw new NullPointerException("parent");
         this.parent = parent;
+    }
+
+    @Override
+    protected Date getDate() {
+        return parent.getBeginTime();
     }
 
     public MaterialDto getMaterial() {
