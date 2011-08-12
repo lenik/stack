@@ -77,6 +77,9 @@ public class OSIVFilter
         String uri = request.getRequestURI();
         String extension = FilePath.getExtension(uri);
 
+        if (includeExtensions.contains(extension))
+            return true;
+
         for (String include : includePatterns)
             if (uri.contains(include))
                 return true;
@@ -84,9 +87,6 @@ public class OSIVFilter
         for (String exclude : excludePatterns)
             if (uri.contains(exclude))
                 return false;
-
-        if (includeExtensions.contains(extension))
-            return true;
 
         return true;
     }
