@@ -138,7 +138,7 @@ public class OverlappedResourceServlet
         Mime mime = Mime.getInstanceByExtension(extension);
 
         if (mime != null) {
-            String contentType = mime.getName();
+            String contentType = mime.getContentType();
             resp.setContentType(contentType);
         }
 

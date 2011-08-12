@@ -5,6 +5,9 @@ import java.util.TreeSet;
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.util.Mime;
 
+/**
+ * Content formatter.
+ */
 public class ContentFormat
         extends Component
         implements IContentFormat {
@@ -13,7 +16,7 @@ public class ContentFormat
     private final TreeSet<IContentRenderer> renderers;
 
     public ContentFormat(Mime contentType) {
-        this(contentType.getName(), contentType);
+        this(contentType.getContentType(), contentType);
     }
 
     public ContentFormat(String name, Mime contentType) {
