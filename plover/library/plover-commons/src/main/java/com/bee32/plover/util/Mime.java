@@ -7,20 +7,20 @@ public class Mime
 
     private static final long serialVersionUID = 1L;
 
-    private final String name;
+    private final String contentType;
     private final String preferredExtension;
 
-    public Mime(String name, String preferredExtension) {
-        if (name == null)
-            throw new NullPointerException("name");
+    public Mime(String contentType, String preferredExtension) {
+        if (contentType == null)
+            throw new NullPointerException("contentType");
         if (preferredExtension == null)
             throw new NullPointerException("preferredExtension");
-        this.name = name;
+        this.contentType = contentType;
         this.preferredExtension = preferredExtension;
     }
 
-    public String getName() {
-        return name;
+    public String getContentType() {
+        return contentType;
     }
 
     /**
@@ -36,7 +36,7 @@ public class Mime
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((contentType == null) ? 0 : contentType.hashCode());
         result = prime * result + ((preferredExtension == null) ? 0 : preferredExtension.hashCode());
         return result;
     }
@@ -49,23 +49,27 @@ public class Mime
             return false;
         if (getClass() != obj.getClass())
             return false;
+
         Mime other = (Mime) obj;
-        if (name == null) {
-            if (other.name != null)
+
+        if (contentType == null) {
+            if (other.contentType != null)
                 return false;
-        } else if (!name.equals(other.name))
+        } else if (!contentType.equals(other.contentType))
             return false;
+
         if (preferredExtension == null) {
             if (other.preferredExtension != null)
                 return false;
         } else if (!preferredExtension.equals(other.preferredExtension))
             return false;
+
         return true;
     }
 
     @Override
     public String toString() {
-        return name;
+        return contentType;
     }
 
     public static Mime getInstance(String contentType) {

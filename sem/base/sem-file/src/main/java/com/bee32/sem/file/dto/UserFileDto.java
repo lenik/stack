@@ -127,17 +127,19 @@ public class UserFileDto
         this.tags = tags;
     }
 
-    public String getHref(){
+    public String getHref() {
         Location iconLoc;
 
-        String mimeType = "file";
+        String contentType = "file";
 
-        String extension = FilePath.getExtension(origPath, false);
-        Mime mime = Mime.getInstanceByExtension(extension);
-        if (mime != null)
-            mimeType = mime.getName();
+        if (origPath != null) {
+            String extension = FilePath.getExtension(origPath, false);
+            Mime mime = Mime.getInstanceByExtension(extension);
+            if (mime != null)
+                contentType = mime.getContentType();
+        }
 
-        if (mimeType.startsWith("image/")) {
+        if (contentType.startsWith("image/")) {
             iconLoc = WEB_APP.join("/3/15/1/6/file/view.do?id=" + id);
         } else {
             iconLoc = ICON.join("obj16/elements_obj.gif");
@@ -151,7 +153,7 @@ public class UserFileDto
         return imageHref;
     }
 
-    public void setImageHref(String imageHref){
+    public void setImageHref(String imageHref) {
         this.imageHref = imageHref;
     }
 }
