@@ -1,8 +1,15 @@
 package com.bee32.sem.base.tx;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.NaturalId;
+
+import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.ext.color.MomentInterval;
 
 /**
@@ -18,17 +25,32 @@ public class TxEntity
 
     private static final long serialVersionUID = 1L;
 
-    String name;
+    String serial;
 
-    // logs...?
-
-    @Column(length = 40)
-    public String getName() {
-        return name;
+    /**
+     * 单据序列号。Serial ID, or Second ID.
+     */
+    @NaturalId
+    @Column(length = 30)
+    public String getSerial() {
+        return serial;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
+
+    @Override
+    protected final Serializable naturalId() {
+        if (serial == null)
+            return new DummyId(this);
+        else
+            return serial;
+    }
+
+    @Override
+    protected ICriteriaElement selector(String prefix) {
+        return new Equals(prefix + "serial", serial);
     }
 
 }

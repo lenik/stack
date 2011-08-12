@@ -11,8 +11,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.NaturalId;
-
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
 
@@ -32,7 +30,6 @@ public class StockOrder
     StockPeriod base;
     StockPeriod spec;
     StockOrderSubject subject;
-    String serial;
     Long jobId;
 
     StockWarehouse warehouse; // Redundant.
@@ -60,8 +57,8 @@ public class StockOrder
     }
 
     public void setBase(StockPeriod base) {
-//        if (base == null)
-//            throw new NullPointerException("base");
+// if (base == null)
+// throw new NullPointerException("base");
         this.base = base;
     }
 
@@ -104,19 +101,6 @@ public class StockOrder
         if (subject == null)
             throw new NullPointerException("subject");
         this.subject = StockOrderSubject.valueOf(subject);
-    }
-
-    /**
-     * 单据序列号。Serial ID, or Second ID.
-     */
-    @NaturalId
-    @Column(length = 40)
-    public String getSerial() {
-        return serial;
-    }
-
-    public void setSerial(String serial) {
-        this.serial = serial;
     }
 
     /**
@@ -189,7 +173,6 @@ public class StockOrder
         peer.base = base;
         peer.spec = spec;
         peer.jobId = jobId;
-        peer.serial = serial; // SHOULD DUPLICATED?
         peer.subject = peerSubject;
         if (copyItems) {
             peer.items.addAll(items);

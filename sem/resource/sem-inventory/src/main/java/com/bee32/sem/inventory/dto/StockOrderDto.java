@@ -14,7 +14,6 @@ public class StockOrderDto
     StockPeriodDto base;
     StockPeriodDto spec;
     StockOrderSubject subject;
-    String serial;
     Long jobId;
 
     StockWarehouseDto warehouse;
@@ -24,7 +23,6 @@ public class StockOrderDto
         base = mref(StockPeriodDto.class, source.getBase());
         spec = mref(StockPeriodDto.class, source.getSpec());
         subject = source.getSubject();
-        serial = source.getSerial();
         jobId = source.getJobId();
         warehouse = mref(StockWarehouseDto.class, source.getWarehouse());
     }
@@ -34,7 +32,6 @@ public class StockOrderDto
         merge(target, "base", base);
         merge(target, "spec", spec);
         target.setSubject(subject);
-        target.setSerial(serial);
         target.setJobId(jobId);
         merge(target, "warehouse", warehouse);
     }
@@ -70,14 +67,6 @@ public class StockOrderDto
         if (subject == null)
             throw new NullPointerException("subject");
         this.subject = subject;
-    }
-
-    public String getSerial() {
-        return serial;
-    }
-
-    public void setSerial(String serial) {
-        this.serial = serial;
     }
 
     public Long getJobId() {

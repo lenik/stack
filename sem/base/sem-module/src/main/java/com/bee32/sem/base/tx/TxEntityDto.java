@@ -1,10 +1,12 @@
 package com.bee32.sem.base.tx;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.MomentIntervalDto;
 
@@ -13,7 +15,7 @@ public abstract class TxEntityDto<E extends TxEntity>
 
     private static final long serialVersionUID = 1L;
 
-    String name;
+    String serial;
 
     public TxEntityDto() {
         super();
@@ -25,33 +27,41 @@ public abstract class TxEntityDto<E extends TxEntity>
 
     protected void __marshal(E source) {
         super.__marshal(source);
-        name = source.getName();
+        serial = source.getSerial();
     }
 
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
-        target.setName(name);
+        target.setSerial(serial);
     }
 
     @Override
     protected void __parse(TextMap map)
             throws ParseException, TypeConvertException {
         super.__parse(map);
-        name = map.getString("name");
+        serial = map.getString("serial");
     }
 
     @Override
     protected void __export(Map<String, Object> map) {
         super.__export(map);
-        map.put("name", name);
+        map.put("serial", serial);
     }
 
-    public String getName() {
-        return name;
+    public String getSerial() {
+        return serial;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        if (serial == null)
+            return new DummyId(this);
+        else
+            return serial;
     }
 
 }

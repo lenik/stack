@@ -1,7 +1,5 @@
 package com.bee32.sem.inventory.tx.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -9,11 +7,7 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.And;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
@@ -78,7 +72,6 @@ public class StockTransfer
         this.transferredBy = transferredBy;
     }
 
-
     @ManyToOne
     public StockWarehouse getSourceWarehouse() {
         return sourceWarehouse;
@@ -96,7 +89,5 @@ public class StockTransfer
     public void setDestWarehouse(StockWarehouse destWarehouse) {
         this.destWarehouse = destWarehouse;
     }
-
-
 
 }
