@@ -2,6 +2,7 @@ package com.bee32.sem.test;
 
 import javax.servlet.http.HttpSession;
 
+import org.mortbay.resource.Resource;
 import org.springframework.context.ApplicationContext;
 
 import com.bee32.icsf.login.SessionLoginInfo;
@@ -35,6 +36,11 @@ public class SEMTestCase
     protected String PREFIX = RESTfulConfig.preferredPrefix;
 
     protected ApplicationContext appContext;
+
+    static {
+        // XXX zip-closed fix. could be a bug of jetty.
+        Resource.setDefaultUseCaches(false);
+    }
 
     public SEMTestCase() {
         stl.welcomeList.add("index-rich.jsf");
