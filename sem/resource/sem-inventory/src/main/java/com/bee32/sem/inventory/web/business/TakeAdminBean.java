@@ -100,12 +100,20 @@ public class TakeAdminBean extends StockOrderBaseBean {
         loadStockLocationTree();
     }
 
-    private void loadStockOrder(int goNumber) {
+    private void loadStockOrder(int position) {
         //刷新总记录数
         getCount();
 
-        if(goNumber < 1) goNumber = 1;
-        if(goNumber > count) goNumber = count;
+        goNumber = position;
+
+        if(position < 1) {
+            goNumber = 1;
+            position = 1;
+        }
+        if(goNumber > count) {
+            goNumber = count;
+            position = count;
+        }
 
 
         stockOrder = new StockOrderDto().create();
@@ -113,7 +121,7 @@ public class TakeAdminBean extends StockOrderBaseBean {
             StockOrder firstOrder = serviceFor(StockOrder.class)
                     .getFirst(
                             //
-                            new Offset(goNumber - 1), //
+                            new Offset(position - 1), //
                             EntityCriteria.createdBetweenEx(limitDateFrom,
                                     limitDateTo), //
                             StockCriteria.subjectOf(getSubject()), //

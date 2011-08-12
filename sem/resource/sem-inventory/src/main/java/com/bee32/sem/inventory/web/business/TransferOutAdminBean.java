@@ -148,6 +148,8 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
         //刷新总记录数
         getCount();
 
+        goNumber = position;
+
         if(position < 1) {
             goNumber = 1;
             position = 1;

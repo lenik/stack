@@ -257,6 +257,8 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         //刷新总记录数
         getCount();
 
+        goNumber = position;
+
         if(position < 1) {
             goNumber = 1;
             position = 1;
@@ -271,14 +273,11 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         stockTransfer = new StockTransferDto().create();
         if (selectedWarehouse != null) {
             StockOrder firstOrder = serviceFor(StockOrder.class)
-                    .getFirst(
-                            //
+                    .getFirst( //
                             new Offset(position - 1), //
-                            EntityCriteria.createdBetweenEx(limitDateFrom,
-                                    limitDateTo), //
+                            EntityCriteria.createdBetweenEx(limitDateFrom,limitDateTo), //
                             StockCriteria.subjectOf(getSubject()), //
-                            new Equals("warehouse.id", selectedWarehouse
-                                    .getId()), Order.desc("id"));
+                            new Equals("warehouse.id", selectedWarehouse.getId()), Order.desc("id"));
 
             if (firstOrder != null) {
                 stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
@@ -296,6 +295,8 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         //刷新总记录数
         getCountOut();
 
+        goNumberOut = position;
+
         if(position < 1) {
             goNumberOut = 1;
             position = 1;
@@ -307,7 +308,7 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
 
         stockOrderOut = new StockOrderDto().create();
-        stockTransfer = new StockTransferDto().create();
+        stockTransferOut = new StockTransferDto().create();
         if (selectedWarehouse != null) {
 
             StockTransfer firstTransfer = serviceFor(StockTransfer.class).getFirst(
@@ -333,57 +334,22 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         loadStockOrder(goNumber);
     }
 
-
     @Transactional
     public void delete() {
-        serviceFor(StockTransfer.class).deleteAll(
-                new Equals("source.id", stockOrder.getId()));
-        //serviceFor(StockOrder.class).deleteById(stockOrder.getId());
+        //若加入事务标记后，清空StockTransfer.dest后，不会马上反应到数据库中，
+        //导致StockOrder被引用，不能删除，会出错
+        StockTransfer t = serviceFor(StockTransfer.class).getUnique(
+                new Equals("dest.id", stockOrder.getId()));
+        if (t != null) {
+            t.setDest(null);
+            serviceFor(StockTransfer.class).saveOrUpdate(t);
+        }
+        serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
+
         uiLogger.info("删除成功!");
         loadStockOrder(goNumber);
     }
 
-    @Transactional
-    public void save() {
-        if(selectedWarehouse.getId().equals(stockTransfer.getDestWarehouse().getId())) {
-            uiLogger.warn("调拨源仓库和目标仓库不能相同");
-            return;
-        }
-
-
-//        if(stockOrder.getItems() != null && stockOrder.getItems().size() <= 0) {
-//            uiLogger.warn("单据上至少应该有一条明细");
-//            return;
-//        }
-
-
-        stockOrder.setSubject(subject);
-        stockOrder.setWarehouse(selectedWarehouse);
-
-        if(stockOrder.getId() == null) {
-            //新增
-            goNumber = 1;
-        }
-
-        //删除需要删除的item
-        for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-            serviceFor(StockOrder.class).delete(item.unmarshal());
-        }
-
-//        //保存新的stockOrder
-//        serviceFor(StockOrder.class).saveOrUpdate(stockOrder.unmarshal());
-
-        stockTransfer.setSourceWarehouse(selectedWarehouse);
-        stockTransfer.setSource(stockOrder);
-        StockTransfer _stockTransfer = stockTransfer.unmarshal();
-        //保存stockTransfer
-        serviceFor(StockTransfer.class).saveOrUpdate(_stockTransfer);
-
-
-        uiLogger.info("保存成功");
-        loadStockOrder(goNumber);
-        editable = false;
-    }
 
 
     public void first() {
@@ -469,14 +435,33 @@ public class TransferInAdminBean extends StockOrderBaseBean {
             return;
         }
 
-
         stockOrder = new StockOrderDto().create();
+        stockTransfer.setSourceWarehouse(stockTransferOut.getSourceWarehouse());
 
         editable = true;
         transferring = true;
     }
 
+    @Transactional
     public void transferInDone() {
+//        if(stockOrder.getItems() != null && stockOrder.getItems().size() <= 0) {
+//            uiLogger.warn("单据上至少应该有一条明细");
+//            return;
+//        }
+
+
+        stockOrder.setSubject(subject);
+        stockOrder.setWarehouse(selectedWarehouse);
+
+        stockTransferOut.setDestWarehouse(selectedWarehouse);
+        stockTransferOut.setDest(stockOrder);
+        StockTransfer _stockTransferOut = stockTransferOut.unmarshal();
+        //保存stockTransferOut
+        serviceFor(StockTransfer.class).saveOrUpdate(_stockTransferOut);
+
+
+        uiLogger.info("拨入成功");
+
         loadStockOrder(1);
         loadStockOrderOut(goNumberOut);
 
@@ -514,7 +499,7 @@ public class TransferInAdminBean extends StockOrderBaseBean {
     }
 
     public void newItemIn() {
-        orderItemIn = new StockOrderItemDto().create().ref();
+        orderItemIn = new StockOrderItemDto().create();
         orderItemIn.setMaterial(orderItemOut.getMaterial());
         orderItemIn.setBatch(orderItemOut.getBatch());
         orderItemIn.setExpirationDate(orderItemOut.getExpirationDate());
@@ -531,6 +516,7 @@ public class TransferInAdminBean extends StockOrderBaseBean {
     }
 
     public void saveItemIn() {
+        orderItemIn.setParent(stockOrder);
         stockOrder.getItems().add(orderItemIn);
     }
 
