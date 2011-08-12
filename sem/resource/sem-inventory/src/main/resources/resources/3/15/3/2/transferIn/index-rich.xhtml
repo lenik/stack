@@ -610,12 +610,12 @@
                 <p:panel id="itemInPanel">
                     <h:panelGrid columns="2">
                         <h:outputText value="数量"/>
-                        <p:inputText value="#{transferOutAdminBean.orderItemIn.quantity}"/>
+                        <p:inputText value="#{transferInAdminBean.orderItemIn.quantity}"/>
 
                         <h:outputText value="库位"/>
                         <t:panelGroup>
                             <p:inputText
-                                value="#{transferOutAdminBean.orderItemIn.location.nodeText}"
+                                value="#{transferInAdminBean.orderItemIn.location.nodeText}"
                                 readonly="true" />
                             <p:commandButton value="..."
                                 oncomplete="chooseStockLocationDialog.show();"
