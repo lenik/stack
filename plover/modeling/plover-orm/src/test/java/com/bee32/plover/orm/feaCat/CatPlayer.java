@@ -27,10 +27,10 @@ import com.bee32.plover.test.FeaturePlayer;
 @Lazy
 @Using(AnimalUnit.class)
 @Import(WiredDaoTestCase.class)
-public class GEntityPlayer
-        extends FeaturePlayer<GEntityPlayer> {
+public class CatPlayer
+        extends FeaturePlayer<CatPlayer> {
 
-    static Logger logger = LoggerFactory.getLogger(GEntityPlayer.class);
+    static Logger logger = LoggerFactory.getLogger(CatPlayer.class);
 
     @Inject
     CommonDataManager dataManager;
@@ -72,11 +72,11 @@ public class GEntityPlayer
 
     public static void main(String[] args)
             throws Exception {
-        new GEntityPlayer().mainLoop();
+        new CatPlayer().mainLoop();
     }
 
     @Override
-    protected void main(GEntityPlayer player)
+    protected void main(CatPlayer player)
             throws Exception {
         player.doFill();
         player.doList();

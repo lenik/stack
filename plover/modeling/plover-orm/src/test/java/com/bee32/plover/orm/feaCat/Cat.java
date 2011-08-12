@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -108,6 +109,11 @@ public class Cat
         if (name == null)
             throw new NullPointerException("name");
         return new Equals(prefix + "name", name);
+    }
+
+    @Transient
+    protected String getInternal() {
+        return "Int";
     }
 
 }

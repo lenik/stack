@@ -56,4 +56,9 @@ public class Tiger
         this.conf = conf;
     }
 
+    @Override
+    protected String getInternal() {
+        return "Hello";
+    }
+
 }
