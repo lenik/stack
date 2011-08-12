@@ -3,7 +3,10 @@ package com.bee32.sem.file.web;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.model.SelectItem;
 import javax.free.TempFile;
@@ -21,6 +24,7 @@ import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.entity.UserFileTagname;
+import com.bee32.sem.file.util.UserFileCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 
 @Component
@@ -38,20 +42,47 @@ public class UserFileAdmin
     Long uploadTag;
     String fileSubject;
     String fileName;
+    int activeIndex;
 
     public UserFileAdmin() {
         initUserFile();
     }
 
     public void addMessage() {
-//        List<UserFile> files = serviceFor(UserFile.class).list(UserFileCriteria.withAnyTagIn(selectedTags));
-//        userFileList = DTOs.marshalList(UserFileDto.class, files);
-        uiLogger.info(fileName + fileSubject);
+        List<Long> idList = new ArrayList<Long>();
+        for (String tagId : selectedTags)
+            idList.add(Long.parseLong(tagId));
+        List<UserFile> files = serviceFor(UserFile.class).list(UserFileCriteria.withAnyTagIn(idList));
+        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.ACTIVETAG, files);
     }
 
     public void initUserFile() {
         List<UserFile> userFiles = serviceFor(UserFile.class).list(EntityCriteria.ownedByCurrentUser());
-        userFileList = DTOs.marshalList(UserFileDto.class, userFiles);
+        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.ACTIVETAG, userFiles);
+    }
+
+    public void editUserFile() {
+        UserFileTagname uft = serviceFor(UserFileTagname.class).getOrFail(activeFile.getActiveTag().getId());
+        Set<UserFileTagname> set = new HashSet<UserFileTagname>(Arrays.asList(uft));
+        UserFile file = activeFile.unmarshal();
+        file.setTags(set);
+        try {
+            serviceFor(UserFile.class).saveOrUpdate(file);
+            uiLogger.info("编辑附件" + activeFile.getFileName() + "成功");
+        } catch (Exception e) {
+            uiLogger.error("编辑附件失败:" + e.getMessage(), e);
+        }
+        userFileList.set(activeIndex, activeFile);
+    }
+
+    public void removeFile() {
+        try {
+            serviceFor(UserFile.class).deleteById(activeFile.getId());
+            uiLogger.info("删除附件:" + activeFile.getFileName() + "成功");
+            userFileList.remove(activeFile);
+        } catch (Exception e) {
+            uiLogger.error("删除附件失败:" + e.getMessage(), e);
+        }
     }
 
     public List<SelectItem> getUserFileTags() {
@@ -63,8 +94,6 @@ public class UserFileAdmin
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-
-        uiLogger.info(fileSubject + fileName + uploadTag);
 
         String fileName = event.getFile().getFileName();
         UploadedFile upFile = event.getFile();
@@ -90,6 +119,8 @@ public class UserFileAdmin
             FileBlob fileBlob = FileBlob.commit(tempFile, true);
 
             userFile.setFileBlob(fileBlob);
+            userFile.setFileName("未命名");
+            userFile.setSubject("无标题");
 
             serviceFor(FileBlob.class).saveOrUpdate(fileBlob);
             serviceFor(UserFile.class).save(userFile);
@@ -149,7 +180,8 @@ public class UserFileAdmin
     }
 
     public void setActiveFile(UserFileDto activeFile) {
-        this.activeFile = activeFile;
+        activeIndex = userFileList.indexOf(activeFile);
+        this.activeFile = reload(activeFile);
     }
 
 }

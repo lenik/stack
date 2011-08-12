@@ -11,7 +11,7 @@ public class UserFileCriteria
         extends CriteriaSpec {
 
     @LeftHand(UserFile.class)
-    public static ICriteriaElement withAnyTagIn(Collection<String> tags) {
+    public static ICriteriaElement withAnyTagIn(Collection<Long> tags) {
         if (tags == null)
             throw new NullPointerException("tags");
         if (tags.isEmpty())

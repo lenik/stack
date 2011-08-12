@@ -3,13 +3,19 @@ package com.bee32.sem.file;
 import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.file.entity.UserFileTagname;
 
-public class SEMFileSamples extends SampleContribution{
+public class SEMFileSamples
+        extends SampleContribution {
 
+    public static UserFileTagname defaultTag;
     public static UserFileTagname tag1;
     public static UserFileTagname tag2;
     public static UserFileTagname tag3;
 
-    static{
+    static {
+
+        defaultTag = new UserFileTagname();
+        defaultTag.setTag("默认标签");
+
         tag1 = new UserFileTagname();
         tag1.setTag("自然系");
 
@@ -22,6 +28,7 @@ public class SEMFileSamples extends SampleContribution{
 
     @Override
     protected void preamble() {
+        add(defaultTag);
         add(tag1);
         add(tag2);
         add(tag3);

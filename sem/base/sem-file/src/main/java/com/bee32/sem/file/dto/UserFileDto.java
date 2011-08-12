@@ -1,6 +1,8 @@
 package com.bee32.sem.file.dto;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.free.FilePath;
@@ -13,6 +15,7 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.util.Mime;
 import com.bee32.sem.file.entity.UserFile;
+import com.bee32.sem.file.entity.UserFileTagname;
 
 public class UserFileDto
         extends EntityDto<UserFile, Long>
@@ -21,6 +24,7 @@ public class UserFileDto
     private static final long serialVersionUID = 1L;
 
     public static final int TAGS = 1;
+    public static final int ACTIVETAG = 2;
 
     FileBlobDto fileBlob;
 
@@ -28,8 +32,10 @@ public class UserFileDto
     String fileName;
     String subject;
     String imageHref;
+    String tags_string;
 
     Set<UserFileTagnameDto> tags;
+    UserFileTagnameDto activeTag;
 
     public UserFileDto() {
         super();
@@ -46,8 +52,22 @@ public class UserFileDto
         fileName = source.getFileName();
         subject = source.getSubject();
         imageHref = getHref();
+        if (!source.getTags().isEmpty())
+            for (UserFileTagname ut : source.getTags())
+                tags_string += ut.getTag() + "";
+        else
+            tags_string = "没有标签";
+
         if (selection.contains(TAGS))
             tags = marshalSet(UserFileTagnameDto.class, 0, source.getTags(), true);
+        if (selection.contains(ACTIVETAG)) {
+            List<UserFileTagname> tempTags = new ArrayList<UserFileTagname>(source.getTags());
+            if (tempTags.size() > 0)
+                activeTag = marshal(UserFileTagnameDto.class, 0, tempTags.get(0));
+            else
+                activeTag = new UserFileTagnameDto().create();
+        }
+
     }
 
     @Override
@@ -155,5 +175,21 @@ public class UserFileDto
 
     public void setImageHref(String imageHref) {
         this.imageHref = imageHref;
+    }
+
+    public UserFileTagnameDto getActiveTag() {
+        return activeTag;
+    }
+
+    public void setActiveTag(UserFileTagnameDto activeTag) {
+        this.activeTag = activeTag;
+    }
+
+    public String getTags_string() {
+        return tags_string;
+    }
+
+    public void setTags_string(String tags_string) {
+        this.tags_string = tags_string;
     }
 }
