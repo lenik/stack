@@ -2,6 +2,8 @@ package com.bee32.plover.orm.ext.color;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -13,7 +15,7 @@ public abstract class MomentInterval
 
     private static final long serialVersionUID = 1L;
 
-    Date beginTime;
+    Date beginTime = new Date();
     Date endTime;
 
     public MomentInterval() {
@@ -26,6 +28,8 @@ public abstract class MomentInterval
     }
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Basic(optional = false)
+    @Column(nullable = false)
     public Date getBeginTime() {
         return beginTime;
     }

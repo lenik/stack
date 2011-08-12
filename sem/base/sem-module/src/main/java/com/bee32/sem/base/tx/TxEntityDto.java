@@ -25,11 +25,13 @@ public abstract class TxEntityDto<E extends TxEntity>
         super(selection);
     }
 
+    @Override
     protected void __marshal(E source) {
         super.__marshal(source);
         serial = source.getSerial();
     }
 
+    @Override
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
         target.setSerial(serial);
