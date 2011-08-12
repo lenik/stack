@@ -2,6 +2,7 @@ package com.bee32.plover.util;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashSet;
@@ -9,6 +10,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.free.UnexpectedException;
+
+import org.hibernate.collection.AbstractPersistentCollection;
 import org.springframework.ui.Model;
 
 import com.bee32.plover.arch.Component;
@@ -194,7 +198,29 @@ public abstract class ObjectFormatter<T> {
         out.print("]");
     }
 
+    static final Method APC_isConnectedToSession;
+    static {
+        try {
+            APC_isConnectedToSession = AbstractPersistentCollection.class.getDeclaredMethod("isConnectedToSession");
+            APC_isConnectedToSession.setAccessible(true);
+        } catch (ReflectiveOperationException e) {
+            throw new Error("Failed to init APC.isConnectedToSession method.", e);
+        }
+    }
+
     void formatCollection(Collection<?> val, FormatStyle format, int depth) {
+        if (val instanceof AbstractPersistentCollection) {
+            try {
+                Object connected = APC_isConnectedToSession.invoke(val);
+                if (connected != Boolean.TRUE) {
+                    out.print("APC/ERROR: Out of session.");
+                    return;
+                }
+            } catch (ReflectiveOperationException e) {
+                throw new UnexpectedException(e);
+            }
+        }
+
         Collection<?> collection = (Collection<?>) val;
         if (collection.isEmpty()) {
             out.print("()");
