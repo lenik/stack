@@ -115,7 +115,7 @@ public abstract class ObjectFormatter<T> {
                 formatValue(fieldValue, format, depth);
             } catch (Exception e) {
                 out.print("(error: " + e.getMessage() + ")");
-                e.printStackTrace();
+                // e.printStackTrace();
             }
 
             out.print("; ");
