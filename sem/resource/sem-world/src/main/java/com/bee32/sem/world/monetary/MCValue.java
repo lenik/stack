@@ -217,16 +217,16 @@ public class MCValue
      *
      * @return Non-<code>null</code> addition result.
      */
-    public final MCValue addFTN(Date date, MCValue other, Date otherDate, IFxrProvider fxrProvider)
+    public final MCValue addFTN(Date date, MCValue other, Date otherDate)
             throws FxrQueryException {
         if (Nullables.equals(currency, other.currency)) {
             BigDecimal sum = value.add(other.value);
             return new MCValue(currency, sum);
         }
-        BigDecimal a = this.getNativeValue(date, fxrProvider);
-        BigDecimal b = other.getNativeValue(otherDate, fxrProvider);
+        BigDecimal a = this.getNativeValue(date);
+        BigDecimal b = other.getNativeValue(otherDate);
         BigDecimal sum = a.add(b);
-        return new MCValue(fxrProvider.getQuoteCurrency(), sum);
+        return new MCValue(CurrencyConfig.getNative(), sum);
     }
 
     public MCValue toNative(Date date, IFxrProvider fxrProvider)
@@ -237,15 +237,15 @@ public class MCValue
         if (currency.equals(CurrencyConfig.getNative()))
             return this;
 
-        BigDecimal nativeValue = getNativeValue(date, fxrProvider);
+        BigDecimal nativeValue = getNativeValue(date);
         MCValue _native = new MCValue(CurrencyConfig.getNative(), nativeValue);
         return _native;
     }
 
-    public BigDecimal getNativeValue(Date date, IFxrProvider fxrProvider)
+    public BigDecimal getNativeValue(Date date)
             throws FxrQueryException {
-        if (fxrProvider == null)
-            throw new NullPointerException("fxrProvider");
+
+        IFxrProvider fxrProvider = FxrProviderFactory.getFxrProvider();
 
         float _fxr = fxrProvider.getLatestFxr(currency, FxrUsage.MIDDLE);
         if (Float.isNaN(_fxr))

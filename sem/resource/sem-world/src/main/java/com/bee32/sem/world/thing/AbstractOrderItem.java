@@ -14,7 +14,6 @@ import com.bee32.plover.orm.ext.color.UIEntityAuto;
 import com.bee32.plover.orm.ext.config.DecimalConfig;
 import com.bee32.sem.misc.i18n.CurrencyConfig;
 import com.bee32.sem.world.monetary.FxrQueryException;
-import com.bee32.sem.world.monetary.IFxrProvider;
 import com.bee32.sem.world.monetary.MCValue;
 
 @MappedSuperclass
@@ -29,7 +28,6 @@ public abstract class AbstractOrderItem
 
     MCValue price = new MCValue();
 
-    transient IFxrProvider fxrProvider;
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
 
@@ -39,13 +37,12 @@ public abstract class AbstractOrderItem
     public AbstractOrderItem(AbstractOrderItem item) {
         quantity = item.quantity;
         price = new MCValue(item.price);
-        fxrProvider = item.fxrProvider;
         nativePrice = item.nativePrice;
         nativeTotal = item.nativeTotal;
     }
 
     @Transient
-    protected abstract Date _getDate();
+    protected abstract Date getFxrDate();
 
     /**
      * 数量
@@ -109,23 +106,6 @@ public abstract class AbstractOrderItem
     }
 
     /**
-     * 获取外汇查询服务，该服务用于计算本地货币表示的价格和本地货币表示的金额。
-     */
-    @Transient
-    public IFxrProvider getFxrProvider() {
-        return fxrProvider;
-    }
-
-    /**
-     * 设置外汇查询服务，该服务用于计算本地货币表示的价格和本地货币表示的金额。
-     */
-    public void setFxrProvider(IFxrProvider fxrProvider) {
-        if (fxrProvider == null)
-            throw new NullPointerException("fxrProvider");
-        this.fxrProvider = fxrProvider;
-    }
-
-    /**
      * 【冗余】本地货币表示的价格。
      *
      * @return 本地货币表示的价格，非 <code>null</code>。
@@ -138,9 +118,7 @@ public abstract class AbstractOrderItem
     public synchronized BigDecimal getNativePrice()
             throws FxrQueryException {
         if (nativePrice == null) {
-            if (fxrProvider == null)
-                throw new IllegalStateException("No FXR provider is set.");
-            nativePrice = price.getNativeValue(_getDate(), fxrProvider);
+            nativePrice = price.getNativeValue(getFxrDate());
         }
         return nativePrice;
     }

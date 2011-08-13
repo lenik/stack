@@ -9,7 +9,6 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
-import com.bee32.sem.world.monetary.IFxrProvider;
 import com.bee32.sem.world.monetary.MCValue;
 
 public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
@@ -21,7 +20,6 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
 
     MCValue price = new MCValue();
 
-    transient IFxrProvider fxrProvider;
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
 
@@ -112,22 +110,10 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         return total;
     }
 
-    public IFxrProvider getFxrProvider() {
-        return fxrProvider;
-    }
-
-    public void setFxrProvider(IFxrProvider fxrProvider) {
-        if (fxrProvider == null)
-            throw new NullPointerException("fxrProvider");
-        this.fxrProvider = fxrProvider;
-    }
-
     public BigDecimal getNativePrice()
             throws FxrQueryException {
         if (nativePrice == null) {
-            if (fxrProvider == null)
-                throw new IllegalStateException("No FXR provider is set.");
-            nativePrice = price.getNativeValue(getDate(), fxrProvider);
+            nativePrice = price.getNativeValue(getDate());
         }
         return nativePrice;
     }

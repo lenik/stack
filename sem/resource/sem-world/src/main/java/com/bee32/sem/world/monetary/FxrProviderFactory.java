@@ -20,12 +20,15 @@ public class FxrProviderFactory {
         return context;
     }
 
+    /**
+     * 获取外汇查询服务，该服务用于计算本地货币表示的价格和本地货币表示的金额。
+     */
     public static IFxrProvider getFxrProvider() {
         ApplicationContext appctx = getApplicationContext();
 
         Map<String, IFxrProvider> beans = appctx.getBeansOfType(IFxrProvider.class);
         if (beans.isEmpty())
-            return null;
+            throw new IllegalStateException("No available FXP Provider.");
 
         IFxrProvider first = beans.values().iterator().next();
         return first;

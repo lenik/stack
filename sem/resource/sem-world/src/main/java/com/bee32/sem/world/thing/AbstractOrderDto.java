@@ -11,7 +11,6 @@ import com.bee32.plover.orm.ext.config.DecimalConfig;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.misc.i18n.ICurrencyAware;
 import com.bee32.sem.world.monetary.FxrQueryException;
-import com.bee32.sem.world.monetary.IFxrProvider;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
 
@@ -31,7 +30,6 @@ public abstract class AbstractOrderDto< //
     List<ItemDto> items;
     MCVector total;
 
-    transient IFxrProvider fxrProvider;
     BigDecimal nativeTotal;
 
     public AbstractOrderDto() {
@@ -106,15 +104,15 @@ public abstract class AbstractOrderDto< //
     public BigDecimal getNativeTotal()
             throws FxrQueryException {
         if (nativeTotal == null) {
-            if (fxrProvider == null)
-                throw new NullPointerException("fxrProvider");
-
-            nativeTotal = new BigDecimal(0L, MONEY_TOTAL_CONTEXT);
-
-            for (ItemDto item : items) {
-                item.setFxrProvider(fxrProvider);
-                BigDecimal itemNativeTotal = item.getNativePrice();
-                nativeTotal = nativeTotal.add(itemNativeTotal);
+            synchronized (this) {
+                if (nativeTotal == null) {
+                    BigDecimal sum = new BigDecimal(0L, MONEY_TOTAL_CONTEXT);
+                    for (ItemDto item : items) {
+                        BigDecimal itemNativeTotal = item.getNativePrice();
+                        sum = sum.add(itemNativeTotal);
+                    }
+                    nativeTotal = sum;
+                }
             }
         }
         return nativeTotal;

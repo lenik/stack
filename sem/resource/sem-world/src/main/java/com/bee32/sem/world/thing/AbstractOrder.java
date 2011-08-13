@@ -17,7 +17,6 @@ import com.bee32.plover.orm.ext.config.DecimalConfig;
 import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.misc.i18n.ICurrencyAware;
 import com.bee32.sem.world.monetary.FxrQueryException;
-import com.bee32.sem.world.monetary.IFxrProvider;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
 
@@ -31,7 +30,6 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
     protected List<Item> items = new ArrayList<Item>();
     transient MCVector total;
 
-    protected transient IFxrProvider fxrProvider;
     BigDecimal nativeTotal; // Redundant.
 
     /**
@@ -91,23 +89,6 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
     }
 
     /**
-     * 获取外汇查询服务，该服务用于计算本地货币表示的价格和本地货币表示的金额。
-     */
-    @Transient
-    public IFxrProvider getFxrProvider() {
-        return fxrProvider;
-    }
-
-    /**
-     * 设置外汇查询服务，该服务用于计算本地货币表示的价格和本地货币表示的金额。
-     */
-    public void setFxrProvider(IFxrProvider fxrProvider) {
-        if (fxrProvider == null)
-            throw new NullPointerException("fxrProvider");
-        this.fxrProvider = fxrProvider;
-    }
-
-    /**
      * 【冗余】获取用本地货币表示的总金额。
      *
      * @throws FxrQueryException
@@ -119,15 +100,15 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
     public synchronized BigDecimal getNativeTotal()
             throws FxrQueryException {
         if (nativeTotal == null) {
-            if (fxrProvider == null)
-                throw new NullPointerException("fxrProvider");
-
-            nativeTotal = new BigDecimal(0L, MONEY_TOTAL_CONTEXT);
-
-            for (Item item : items) {
-                item.setFxrProvider(fxrProvider);
-                BigDecimal itemNativeTotal = item.getNativePrice();
-                nativeTotal = nativeTotal.add(itemNativeTotal);
+            synchronized (this) {
+                if (nativeTotal == null) {
+                    BigDecimal sum = new BigDecimal(0L, MONEY_TOTAL_CONTEXT);
+                    for (Item item : items) {
+                        BigDecimal itemNativeTotal = item.getNativePrice();
+                        sum = sum.add(itemNativeTotal);
+                    }
+                    nativeTotal = sum;
+                }
             }
         }
         return nativeTotal;
