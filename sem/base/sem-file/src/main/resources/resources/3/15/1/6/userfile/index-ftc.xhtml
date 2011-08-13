@@ -17,14 +17,20 @@
 
     <ui:define name="content">
 
+        <h:outputStylesheet>
+            .ftd{vertical-align:top;}
+            .std{vertical-align:top;}
+        </h:outputStylesheet>
+
         <h:form id="note">
             <p:growl id="message" showDetail="true" />
         </h:form>
 
         <h:form id="main">
             <p:selectManyCheckbox id="checkbox_tagId" value="#{userFileAdmin.selectedTags}">
+                <f:selectItem itemLabel="无标签" itemValue="0" />
                 <f:selectItems value="#{userFileAdmin.userFileTags}" />
-                <p:ajax update="note:message,main:fileGrid" listener="#{userFileAdmin.addMessage}" />
+                <p:ajax update="note:message,main:fileList" listener="#{userFileAdmin.addMessage}" />
             </p:selectManyCheckbox>
 
             <p:separator />
@@ -84,13 +90,12 @@
             <!--                                 <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" /> -->
             <!--                             </p:commandLink> -->
 
-
             <!--                         </t:panelGrid> -->
             <!--                     </p:panel> -->
             <!--                 </p:column> -->
 
             <!--             </p:dataGrid> -->
-
+            <p:commandButton value="标签管理" onclick="tagAdminDialog.show();" />
         </h:form>
 
         <h:form id="dialogForm">
@@ -103,6 +108,46 @@
 
             </p:confirmDialog>
 
+            <p:confirmDialog message="确定要删除此标签吗?" hideEffect="explode" header="提示" severity="alert"
+                widgetVar="deleteTagConfirmation" modal="true">
+
+                <p:commandButton value="删除" actionListener="#{userFileAdmin.deleteTag}"
+                    oncomplete="deleteTagConfirmation.hide();" update="dialogForm:tagAdmin,note:message" />
+                <p:commandButton value="取消" onclick="deleteTagConfirmation.hide()" />
+            </p:confirmDialog>
+
+            <p:dialog widgetVar="selectTagsDialog" width="300" height="400" head="选择标签">
+                <p:selectManyMenu value="#{userFileAdmin.selectedTagsToAdd}">
+                    <f:selectItems value="#{userFileAdmin.userFileTags}" />
+                </p:selectManyMenu>
+            </p:dialog>
+
+            <p:dialog widgetVar="tagAdminDialog" height="400" width="600" header="标签管理">
+                <t:panelGrid columns="2" columnClasses="ftd,std" style="width:100%;" id="tagAdmin">
+                    <p:selectOneListbox value="#{userFileAdmin.activeTag.id}">
+                        <f:selectItems value="#{userFileAdmin.userFileTags}" />
+                    </p:selectOneListbox>
+                    <t:panelGroup>
+                        <p:commandButton value="新标签" actionListener="#{userFileAdmin.createNewTag}"
+                            oncomplete="activeTagDialog.show();" update="dialogForm:activeTag,main:checkbox_tagId" />
+                        <br />
+                        <p:commandButton value="删除标签" onclick="deleteTagConfirmation.show();"
+                            update="main:checkbox_tagId,dialogForm:activeTag" />
+                        <br />
+
+                    </t:panelGroup>
+                </t:panelGrid>
+            </p:dialog>
+
+            <p:dialog widgetVar="activeTagDialog" height="300" width="400">
+                <t:panelGrid columns="2" id="activeTag">
+                    <h:outputText value="标签名称:" />
+                    <p:inputText value="#{userFileAdmin.activeTag.tag}" />
+                </t:panelGrid>
+                <p:commandButton value="保存" actionListener="#{userFileAdmin.saveOrUpdateTag}"
+                    oncomplete="activeTagDialog.hide()" update="dialogForm:tagAdmin,note:message" />
+                <p:commandButton value="取消" onclick="activeTagDialog.hide();" />
+            </p:dialog>
 
             <p:dialog widgetVar="fileDialog" height="500" width="700">
                 <p:panel id="fileDialogPanel">
@@ -124,12 +169,17 @@
                         <p:selectOneMenu value="#{userFileAdmin.activeFile.activeTag.id}" style="width:150px;">
                             <f:selectItems value="#{userFileAdmin.userFileTags}" />
                         </p:selectOneMenu>
-
-                        <p:commandButton value="确定" actionListener="#{userFileAdmin.editUserFile}"
-                            oncomplete="fileDialog.hide();" update="main:fileGrid" />
-                        <p:commandButton value="取消" onclick="fileDialog.hide();" />
-
                     </t:panelGrid>
+                    <p:panel>
+                        <p:selectOneListbox value="#{userFileAdmin.activeTag}">
+                            <f:selectItems value="#{userFileAdmin.userFileTags}" />
+                        </p:selectOneListbox>
+                    </p:panel>
+
+                    <p:commandButton value="确定" actionListener="#{userFileAdmin.editUserFile}"
+                        oncomplete="fileDialog.hide();" update="main:fileGrid" />
+                    <p:commandButton value="取消" onclick="fileDialog.hide();" />
+
 
                 </p:panel>
             </p:dialog>

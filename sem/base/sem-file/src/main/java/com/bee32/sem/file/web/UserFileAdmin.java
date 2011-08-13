@@ -21,6 +21,7 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.file.dto.UserFileDto;
+import com.bee32.sem.file.dto.UserFileTagnameDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.entity.UserFileTagname;
@@ -36,16 +37,53 @@ public class UserFileAdmin
 
     static final String CHECKBOX_TAGS = "main:checkbox_tagId";
 
+    List<SelectItem> userFileTags;
     List<String> selectedTags;
     List<UserFileDto> userFileList;
     UserFileDto activeFile = new UserFileDto().create();
-    Long uploadTag;
     String fileSubject;
     String fileName;
     int activeIndex;
+    List<UserFileTagnameDto> selectedTagsToAdd;
+    UserFileTagnameDto activeTag = new UserFileTagnameDto().create();
 
     public UserFileAdmin() {
         initUserFile();
+        refreshTags();
+    }
+
+    public void refreshTags() {
+        List<UserFileTagname> tags = serviceFor(UserFileTagname.class).list(EntityCriteria.ownedByCurrentUser());
+        List<SelectItem> items = new ArrayList<SelectItem>();
+        for (UserFileTagname tag : tags)
+            items.add(new SelectItem(tag.getId(), tag.getTag()));
+        userFileTags = items;
+    }
+
+    public void createNewTag() {
+        activeTag = new UserFileTagnameDto().create();
+    }
+
+    public void deleteTag() {
+        try {
+            serviceFor(UserFileTagname.class).deleteById(activeTag.getId());
+            refreshTags();
+            uiLogger.info("删除标签成功!");
+        } catch (Exception e) {
+            uiLogger.error("删除标签失败:" + e.getMessage(), e);
+        }
+    }
+
+    public void saveOrUpdateTag() {
+        UserFileTagname uft = activeTag.unmarshal();
+        try {
+            serviceFor(UserFileTagname.class).saveOrUpdate(uft);
+            SelectItem item = new SelectItem(uft.getId(), activeTag.getTag());
+            userFileTags.add(item);
+            uiLogger.info("保存标签成功!");
+        } catch (Exception e) {
+            uiLogger.error("保存标签失败:" + e.getMessage(), e);
+        }
     }
 
     public void addMessage() {
@@ -83,14 +121,6 @@ public class UserFileAdmin
         } catch (Exception e) {
             uiLogger.error("删除附件失败:" + e.getMessage(), e);
         }
-    }
-
-    public List<SelectItem> getUserFileTags() {
-        List<UserFileTagname> tags = serviceFor(UserFileTagname.class).list(EntityCriteria.ownedByCurrentUser());
-        List<SelectItem> items = new ArrayList<SelectItem>();
-        for (UserFileTagname tag : tags)
-            items.add(new SelectItem(tag.getId(), tag.getTag()));
-        return items;
     }
 
     public void handleFileUpload(FileUploadEvent event) {
@@ -143,10 +173,6 @@ public class UserFileAdmin
         return userFileList;
     }
 
-    public Long getUploadTag() {
-        return uploadTag;
-    }
-
     public String getFileSubject() {
         return fileSubject;
     }
@@ -161,10 +187,6 @@ public class UserFileAdmin
 
     public void setUserFileList(List<UserFileDto> userFileList) {
         this.userFileList = userFileList;
-    }
-
-    public void setUploadTag(Long uploadTag) {
-        this.uploadTag = uploadTag;
     }
 
     public void setFileSubject(String fileSubject) {
@@ -182,6 +204,26 @@ public class UserFileAdmin
     public void setActiveFile(UserFileDto activeFile) {
         activeIndex = userFileList.indexOf(activeFile);
         this.activeFile = reload(activeFile);
+    }
+
+    public UserFileTagnameDto getActiveTag() {
+        return activeTag;
+    }
+
+    public void setActiveTag(UserFileTagnameDto activeTag) {
+        this.activeTag = activeTag;
+    }
+
+    public List<UserFileTagnameDto> getSelectedTagsToAdd() {
+        return selectedTagsToAdd;
+    }
+
+    public void setSelectedTagsToAdd(List<UserFileTagnameDto> selectedTagsToAdd) {
+        this.selectedTagsToAdd = selectedTagsToAdd;
+    }
+
+    public List<SelectItem> getUserFileTags() {
+        return userFileTags;
     }
 
 }
