@@ -24,6 +24,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.sem.file.entity.UserFile;
+import com.bee32.sem.world.color.TrueColor;
 import com.bee32.sem.world.thing.Thing;
 
 /**
@@ -53,7 +54,7 @@ public class Material
     // ------------------------------------------------------------------------
     // 需要索引的常用的物料属性（这些属性和单位还算无关）。
     //
-    String color;
+    TrueColor color;
 
     int packageWidth;
     int packageHeight;
@@ -139,13 +140,27 @@ public class Material
     /**
      * 颜色
      */
-    @Column(length = 10)
-    String getColor() {
+    @Transient
+    public TrueColor getColor() {
         return color;
     }
 
-    void setColor(String color) {
+    public void setColor(TrueColor color) {
         this.color = color;
+    }
+
+    @Column(length = 12)
+    public String getColorName() {
+        if (color == null)
+            return null;
+        return color.getName();
+    }
+
+    public void setColorName(String colorName) {
+        if (colorName == null)
+            color = null;
+        else
+            color = new TrueColor(colorName);
     }
 
     /**
