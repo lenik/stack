@@ -229,7 +229,7 @@ public class MCValue
         return new MCValue(CurrencyConfig.getNative(), sum);
     }
 
-    public MCValue toNative(Date date, IFxrProvider fxrProvider)
+    public MCValue toNative(Date date)
             throws FxrQueryException {
         if (currency == null)
             return this;
