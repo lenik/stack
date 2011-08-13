@@ -13,8 +13,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.NaturalId;
-
+import com.bee32.icsf.login.SessionLoginInfo;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -52,6 +52,12 @@ public class Component
     BigDecimal electricityFee = new BigDecimal(0);
     BigDecimal equipmentCost = new BigDecimal(0);
 
+    User creator;
+
+    public Component() {
+        creator = (User) SessionLoginInfo.getUserOpt();
+    }
+
     /**
      * 上一个版本。
      */
@@ -67,7 +73,7 @@ public class Component
     /**
      * 对应物料
      */
-    @NaturalId
+    // @NaturalId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     public Material getMaterial() {
         return material;
@@ -234,6 +240,15 @@ public class Component
             throws MaterialPriceNotFoundException, FxrQueryException {
         BigDecimal price = priceStrategy.getPrice(this);
         return price;
+    }
+
+    @ManyToOne
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
     @Override

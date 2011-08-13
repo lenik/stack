@@ -9,6 +9,7 @@ import javax.free.UnexpectedException;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.inventory.SEMInventorySamples;
+import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sems.bom.entity.Component;
 
 @ImportSamples({ SEMInventorySamples.class })
@@ -22,10 +23,11 @@ public class SEMBomSamples
         product.setMaterial(SEMInventorySamples.gundam);
         product.setValidDateFrom(parseDate("2010-03-05"));
         product.setValidDateTo(parseDate("2503-03-04"));
+        product.setCreator(SEMPeopleSamples.jack);
 
         component.setDescription("组成组成组成组成");
         component.setParent(product);
-        component.setMaterial(SEMInventorySamples.gundam);
+        component.setMaterial(SEMInventorySamples.cskdp);
         component.setQuantity(20L);
         component.setValid(true);
         component.setValidDateFrom(parseDate("2010-03-05"));

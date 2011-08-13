@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.tree.TreeEntityDto;
@@ -32,6 +33,8 @@ public class ComponentDto
     BigDecimal electricityFee;
     BigDecimal equipmentCost;
 
+    UserDto creator;
+
     public ComponentDto() {
         super();
     }
@@ -55,6 +58,8 @@ public class ComponentDto
         otherFee = source.getOtherFee();
         electricityFee = source.getElectricityFee();
         equipmentCost = source.getEquipmentCost();
+
+        creator = mref(UserDto.class, source.getCreator());
     }
 
     @Override
@@ -71,6 +76,8 @@ public class ComponentDto
         target.setOtherFee(otherFee);
         target.setElectricityFee(electricityFee);
         target.setEquipmentCost(equipmentCost);
+
+        merge(target, "creator", creator);
     }
 
     @Override
@@ -178,6 +185,14 @@ public class ComponentDto
         total = total.add(electricityFee);
         total = total.add(equipmentCost);
         return total;
+    }
+
+    public UserDto getCreator() {
+        return creator;
+    }
+
+    public void setCreator(UserDto creator) {
+        this.creator = creator;
     }
 
     @Override

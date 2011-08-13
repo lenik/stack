@@ -93,15 +93,9 @@
                                 </p:column>
                                 <p:column >
                                     <f:facet name="header">
-                                        <h:outputText value="更新人" />
-                                    </f:facet>
-                                    <h:outputText value="#{product.updateBy.name}" />
-                                </p:column>
-                                <p:column >
-                                    <f:facet name="header">
                                         <h:outputText value="建立日期" />
                                     </f:facet>
-                                    <h:outputText value="#{product.date}" >
+                                    <h:outputText value="#{product.createdDate}" >
                                         <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai"/>
                                     </h:outputText>
                                 </p:column>
