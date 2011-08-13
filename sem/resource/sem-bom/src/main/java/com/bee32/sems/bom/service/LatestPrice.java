@@ -2,11 +2,12 @@ package com.bee32.sems.bom.service;
 
 import java.math.BigDecimal;
 
-import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.MaterialPrice;
+import com.bee32.sem.world.monetary.FxrQueryException;
 
 public class LatestPrice
-        extends MaterialPriceStrategy {
+        extends PriceStrategy {
 
     private static final long serialVersionUID = 1L;
 
@@ -15,11 +16,15 @@ public class LatestPrice
     }
 
     @Override
-    public BigDecimal getPrice(IEntityMarshalContext ctx, Material material) {
-//    case NEWESTPRICE:
-//        rawMaterialPrice = sortedPrices.get(sortedPrices.lastKey());
-//        break;
-        return null;
+    public BigDecimal getPrice(Material material)
+            throws FxrQueryException, MaterialPriceNotFoundException {
+        MaterialPrice latestPrice = material.getLatestPrice();
+
+        if (latestPrice == null)
+            throw new MaterialPriceNotFoundException(material);
+
+        BigDecimal price = latestPrice.getNativePrice();
+        return price;
     }
 
 }

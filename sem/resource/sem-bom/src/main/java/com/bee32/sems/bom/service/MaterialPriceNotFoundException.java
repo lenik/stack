@@ -11,6 +11,10 @@ public class MaterialPriceNotFoundException
         super();
     }
 
+    public MaterialPriceNotFoundException(Material material) {
+        super("不能取得物料[" + material.getName() + "]的单价");
+    }
+
     public MaterialPriceNotFoundException(Material material, Throwable cause) {
         super("不能取得物料[" + material.getName() + "]的单价", cause);
     }
