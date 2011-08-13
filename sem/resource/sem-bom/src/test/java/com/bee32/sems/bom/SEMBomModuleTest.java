@@ -22,7 +22,7 @@ public class SEMBomModuleTest
     public static void main(String[] args)
             throws IOException {
         new SEMBomModuleTest().browseAndWait(//
-                "bom/bomAdminJsf.jsf");
+                SEMBomModule.PREFIX + "/component");
     }
 
 }
