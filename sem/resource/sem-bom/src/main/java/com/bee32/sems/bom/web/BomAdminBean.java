@@ -33,10 +33,12 @@ public class BomAdminBean
 
     private static final long serialVersionUID = 1L;
 
+    protected static final int TAB_INDEX = 0;
+    protected static final int TAB_FORM = 1;
+
     private boolean editable;
     private boolean editableComp;
 
-    private int currTab;
     private int currTabComp;
 
     private ComponentDto product;
@@ -49,7 +51,7 @@ public class BomAdminBean
 
     private int flag;
 
-    private String materialPartten;
+    private String materialPattern;
     private List<MaterialDto> materials;
     private MaterialDto selectedMaterial;
 
@@ -66,7 +68,6 @@ public class BomAdminBean
 
         refreshProductCount();
 
-        currTab = 0;
         editable = false;
 
         currTabComp = 0;
@@ -148,14 +149,6 @@ public class BomAdminBean
         this.selectedProduct = selectedProduct;
     }
 
-    public int getCurrTab() {
-        return currTab;
-    }
-
-    public void setCurrTab(int currTab) {
-        this.currTab = currTab;
-    }
-
     public int getCurrTabComp() {
         return currTabComp;
     }
@@ -172,12 +165,12 @@ public class BomAdminBean
         this.products = products;
     }
 
-    public String getMaterialPartten() {
-        return materialPartten;
+    public String getMaterialPattern() {
+        return materialPattern;
     }
 
-    public void setMaterialPartten(String materialPartten) {
-        this.materialPartten = materialPartten;
+    public void setMaterialPattern(String materialPattern) {
+        this.materialPattern = materialPattern;
     }
 
     public List<MaterialDto> getMaterials() {
@@ -207,7 +200,7 @@ public class BomAdminBean
     }
 
     public void new_() {
-        currTab = 1;
+        setActiveTab(TAB_FORM);
         editable = true;
 
         newProduct();
@@ -246,7 +239,7 @@ public class BomAdminBean
 
             refreshProductCount();
 
-            currTab = 0;
+            setActiveTab(TAB_INDEX);
             editable = false;
             uiLogger.info("产品保存成功");
         } catch (Exception e) {
@@ -255,9 +248,8 @@ public class BomAdminBean
     }
 
     public void cancel_() {
-        currTab = 0;
+        setActiveTab(TAB_INDEX);
         editable = false;
-
         newProduct();
     }
 
@@ -267,12 +259,12 @@ public class BomAdminBean
             return;
         }
 
-        currTab = 1;
+        setActiveTab(TAB_FORM);
         product = selectedProduct;
     }
 
     public void refresh_() {
-        currTab = 0;
+        setActiveTab(TAB_INDEX);
         selectedProduct = null;
         refreshProductCount();
     }
@@ -377,9 +369,9 @@ public class BomAdminBean
     }
 
     public void findMaterial() {
-        if (materialPartten != null && !materialPartten.isEmpty()) {
+        if (materialPattern != null && !materialPattern.isEmpty()) {
 
-            String[] keyword = materialPartten.split(" ");
+            String[] keyword = materialPattern.split(" ");
 
             for (int i = 0; i < keyword.length; i++) {
                 keyword[i] = keyword[i].trim();
@@ -411,7 +403,7 @@ public class BomAdminBean
             Component _product = selectedProduct.unmarshal(this);
             price = _product.calcPrice();
         } catch (MaterialPriceNotFoundException e) {
-            uiLogger.error("没有找到此产品的原材料原价格!");
+            uiLogger.error("没有找到此产品的原材料原价格!", e);
         }
     }
 
