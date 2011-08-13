@@ -34,25 +34,6 @@ public abstract class PriceStrategy
         return valueMap;
     }
 
-    public BigDecimal getPrice(Component product)
-            throws MaterialPriceNotFoundException, FxrQueryException {
-
-        BigDecimal total = product.getExtraCost();
-
-        for (Component child : product.getChildren()) {
-            BigDecimal childExtra = child.getExtraCost();
-            BigDecimal childRaw = getPrice(child.getMaterial());
-
-            total = total.add(childExtra);
-            total = total.add(childRaw);
-        }
-
-        return total;
-    }
-
-    public abstract BigDecimal getPrice(Material material)
-            throws MaterialPriceNotFoundException, FxrQueryException;
-
     public static Collection<PriceStrategy> values() {
         Collection<PriceStrategy> values = valueMap.values();
         return Collections.unmodifiableCollection(values);
@@ -76,17 +57,35 @@ public abstract class PriceStrategy
         return strategy;
     }
 
+    /**
+     * 计算零件的价格
+     */
+    public BigDecimal getPrice(Component product)
+            throws MaterialPriceNotFoundException, FxrQueryException {
+
+        BigDecimal total = product.getExtraCost();
+
+        for (Component child : product.getChildren()) {
+            BigDecimal childExtra = child.getExtraCost();
+            BigDecimal childRaw = getPrice(child.getMaterial());
+
+            total = total.add(childExtra);
+            total = total.add(childRaw);
+        }
+
+        return total;
+    }
+
+    /**
+     * 获取物料的价格
+     */
+    public abstract BigDecimal getPrice(Material material)
+            throws MaterialPriceNotFoundException, FxrQueryException;
+
+    /** 平均价格策略 */
     public static AveragePrice AVERAGE = new AveragePrice("AVG", "average");
+
+    /** 最新价格策略 */
     public static LatestPrice LATEST = new LatestPrice("LTS", "latest");
-
-    static PriceStrategy defaultStrategy = LATEST;
-
-    public static PriceStrategy getDefault() {
-        return defaultStrategy;
-    }
-
-    public static void setDefault(PriceStrategy defaultStrategy) {
-        PriceStrategy.defaultStrategy = defaultStrategy;
-    }
 
 }

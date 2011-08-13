@@ -134,6 +134,9 @@ public class Component
         this.validDateTo = validDateTo;
     }
 
+    /**
+     * 价格策略。（默认使用 最新价格策略）
+     */
     @Transient
     public PriceStrategy getPriceStrategy() {
         return priceStrategy;
@@ -212,6 +215,9 @@ public class Component
         this.equipmentCost = equipmentCost;
     }
 
+    /**
+     * 工资、设备等额外费用。
+     */
     @Transient
     public BigDecimal getExtraCost() {
         BigDecimal total = new BigDecimal(0);
