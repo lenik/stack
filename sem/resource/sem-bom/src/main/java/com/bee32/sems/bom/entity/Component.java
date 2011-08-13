@@ -43,7 +43,7 @@ public class Component
     Date validDateFrom;
     Date validDateTo;
 
-    PriceStrategy priceStrategy = PriceStrategy.getDefault();
+    PriceStrategy priceStrategy = PriceStrategy.LATEST;
 
     BigDecimal wage = new BigDecimal(0);
     BigDecimal otherFee = new BigDecimal(0);
