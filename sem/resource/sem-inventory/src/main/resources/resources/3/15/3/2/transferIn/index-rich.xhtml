@@ -108,13 +108,7 @@
 
                     <h:outputLabel value="调拨人员"/>
                     <t:panelGroup colspan="3">
-                        <p:inputText id="transferredby" readonly="true"
-                            disabled="#{!transferInAdminBean.editable}"
-                            value="#{transferInAdminBean.stockTransfer.transferredBy.displayName}"
-                            style="width:200px;" />
-                        <p:commandButton value="..."
-                            onclick="personHolderDlg.show();"
-                            disabled="#{!transferInAdminBean.editable}" />
+                        <h:outputText value="#{transferInAdminBean.stockTransfer.transferredBy.displayName}" />
                     </t:panelGroup>
 
                     <t:panelGroup colspan="4">
