@@ -22,7 +22,7 @@ public class SEMBomModuleTest
     public static void main(String[] args)
             throws IOException {
         new SEMBomModuleTest().browseAndWait(//
-                "login.htm");
+                "bom/bomAdminJsf.jsf");
     }
 
 }
