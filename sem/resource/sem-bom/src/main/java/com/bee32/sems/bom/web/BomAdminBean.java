@@ -6,15 +6,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 
-import com.bee32.icsf.login.SessionLoginInfo;
-import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
@@ -25,10 +22,10 @@ import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sems.bom.dto.ComponentDto;
 import com.bee32.sems.bom.entity.Component;
 import com.bee32.sems.bom.service.MaterialPriceNotFoundException;
-import com.bee32.sems.bom.service.MaterialPriceStrategy;
 
 @Scope("view")
 public class BomAdminBean
@@ -60,7 +57,6 @@ public class BomAdminBean
 
     @PostConstruct
     public void init() {
-
         EntityDataModelOptions<Component, ComponentDto> options = new EntityDataModelOptions<Component, ComponentDto>(//
                 Component.class, ComponentDto.class, 0, //
                 Order.desc("id"), //
@@ -128,9 +124,6 @@ public class BomAdminBean
 
     private void newProduct() {
         product = new ComponentDto();
-
-        IUserPrincipal currUser = (IUserPrincipal) SessionLoginInfo.getUser();
-
         MaterialDto material = new MaterialDto();
         product.setMaterial(material);
     }
@@ -221,8 +214,6 @@ public class BomAdminBean
     }
 
     public void delete_() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         if (selectedProduct == null) {
             uiLogger.info("请以单击选择需要删除的产品!");
             return;
@@ -247,8 +238,6 @@ public class BomAdminBean
     }
 
     public void save_() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         try {
             product.setLastModified(new Date());
 
@@ -274,7 +263,6 @@ public class BomAdminBean
 
     public void detail_() {
         if (selectedProduct == null) {
-            FacesContext context = FacesContext.getCurrentInstance();
             uiLogger.info("请以单击选择需要查看详细内容的产品");
             return;
         }
@@ -298,7 +286,6 @@ public class BomAdminBean
     }
 
     public void newComp_() {
-        FacesContext context = FacesContext.getCurrentInstance();
         if (product == null || product.getId() == null) {
             uiLogger.error("请选择相应的产品!");
             return;
@@ -311,8 +298,6 @@ public class BomAdminBean
     }
 
     public void deleteComp_() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         if (selectedComponent == null) {
             uiLogger.error("请以单击选择需要删除的BOM组件!");
             return;
@@ -328,8 +313,6 @@ public class BomAdminBean
     }
 
     public void saveComp_() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         if (product == null || product.getId() == null) {
             uiLogger.error("请选择相应的产品!");
             return;
@@ -359,7 +342,6 @@ public class BomAdminBean
 
     public void detailComp_() {
         if (selectedComponent == null) {
-            FacesContext context = FacesContext.getCurrentInstance();
             uiLogger.error("请以单击选择需要查看详细内容的BOM组件!");
             return;
         }
@@ -417,19 +399,17 @@ public class BomAdminBean
             component.setMaterial(selectedMaterial);
     }
 
-    public void calcPrice() {
-        FacesContext context = FacesContext.getCurrentInstance();
+    public void calcPrice()
+            throws FxrQueryException {
 
         if (selectedProduct == null) {
             uiLogger.error("请以单击选择需要计算价格的产品!");
             return;
         }
 
-        MaterialPriceStrategy priceStrategy = MaterialPriceStrategy.getDefault();
-
         try {
             Component _product = selectedProduct.unmarshal(this);
-            price = priceStrategy.getPrice(this, _product);
+            price = _product.calcPrice();
         } catch (MaterialPriceNotFoundException e) {
             uiLogger.error("没有找到此产品的原材料原价格!");
         }

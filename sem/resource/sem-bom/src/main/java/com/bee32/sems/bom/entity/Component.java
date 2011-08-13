@@ -20,6 +20,9 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.ext.config.DecimalConfig;
 import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.world.monetary.FxrQueryException;
+import com.bee32.sems.bom.service.MaterialPriceNotFoundException;
+import com.bee32.sems.bom.service.PriceStrategy;
 
 /**
  * 零件 （包括成品和半成品）
@@ -39,6 +42,8 @@ public class Component
     boolean valid;
     Date validDateFrom;
     Date validDateTo;
+
+    PriceStrategy priceStrategy = PriceStrategy.getDefault();
 
     BigDecimal wage = new BigDecimal(0);
     BigDecimal otherFee = new BigDecimal(0);
@@ -129,6 +134,28 @@ public class Component
         this.validDateTo = validDateTo;
     }
 
+    @Transient
+    public PriceStrategy getPriceStrategy() {
+        return priceStrategy;
+    }
+
+    public void setPriceStrategy(PriceStrategy priceStrategy) {
+        if (priceStrategy == null)
+            throw new NullPointerException("priceStrategy");
+        this.priceStrategy = priceStrategy;
+    }
+
+    @Column(name = "priceStrategy", length = 3)
+    String getPriceStrategy_() {
+        return priceStrategy.getValue();
+    }
+
+    void setPriceStrategy_(String strategy) {
+        if (strategy == null)
+            throw new NullPointerException("strategy");
+        priceStrategy = PriceStrategy.valueOf(strategy);
+    }
+
     /**
      * 工资
      */
@@ -193,6 +220,12 @@ public class Component
         total = total.add(electricityFee);
         total = total.add(equipmentCost);
         return total;
+    }
+
+    public BigDecimal calcPrice()
+            throws MaterialPriceNotFoundException, FxrQueryException {
+        BigDecimal price = priceStrategy.getPrice(this);
+        return price;
     }
 
     @Override
