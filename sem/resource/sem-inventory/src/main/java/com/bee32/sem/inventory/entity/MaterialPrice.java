@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,12 +10,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 import com.bee32.sem.misc.i18n.CurrencyConfig;
+import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 
 /**
@@ -75,6 +78,13 @@ public class MaterialPrice
         if (price == null)
             throw new NullPointerException("price");
         this.price = price;
+    }
+
+    @Transient
+    public BigDecimal getNativePrice()
+            throws FxrQueryException {
+        MCValue mcv = price.toNative(date);
+        return mcv.getValue();
     }
 
     /**
