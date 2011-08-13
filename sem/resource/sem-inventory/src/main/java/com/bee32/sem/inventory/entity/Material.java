@@ -40,6 +40,7 @@ public class Material
 
     String serial;
     String barCode;
+    String modelSpec;
 
     List<MaterialAttribute> attributes = new ArrayList<MaterialAttribute>();
     List<UserFile> attachments = new ArrayList<UserFile>();
@@ -52,8 +53,14 @@ public class Material
     // ------------------------------------------------------------------------
     // 需要索引的常用的物料属性（这些属性和单位还算无关）。
     //
-    // String packageSize;
-    // String packageWeight;
+    String color;
+
+    int packageWidth;
+    int packageHeight;
+    int packageLength;
+    int packageWeight;
+    int netWeight;
+
     // ------------------------------------------------------------------------
 
     public Material() {
@@ -115,6 +122,85 @@ public class Material
      */
     public void setBarCode(String barCode) {
         this.barCode = barCode;
+    }
+
+    /**
+     * 规格型号
+     */
+    @Column(length = 30)
+    public String getModelSpec() {
+        return modelSpec;
+    }
+
+    public void setModelSpec(String modelSpec) {
+        this.modelSpec = modelSpec;
+    }
+
+    /**
+     * 颜色
+     */
+    @Column(length = 10)
+    String getColor() {
+        return color;
+    }
+
+    void setColor(String color) {
+        this.color = color;
+    }
+
+    /**
+     * 装箱宽度（单位：厘米）
+     */
+    public int getPackageWidth() {
+        return packageWidth;
+    }
+
+    public void setPackageWidth(int packageWidth) {
+        this.packageWidth = packageWidth;
+    }
+
+    /**
+     * 装箱高度（单位：厘米）
+     */
+    public int getPackageHeight() {
+        return packageHeight;
+    }
+
+    public void setPackageHeight(int packageHeight) {
+        this.packageHeight = packageHeight;
+    }
+
+    /**
+     * 装箱长度（单位：厘米）
+     */
+    public int getPackageLength() {
+        return packageLength;
+    }
+
+    public void setPackageLength(int packageLength) {
+        this.packageLength = packageLength;
+    }
+
+    /**
+     * 毛重（单位：克）
+     */
+    public int getPackageWeight() {
+        return packageWeight;
+    }
+
+    public void setPackageWeight(int packageWeight) {
+        this.packageWeight = packageWeight;
+    }
+
+    /**
+     * 净重（单位：克）
+     */
+    public int getNetWeight() {
+        return netWeight;
+    }
+
+    public void setNetWeight(int netWeight) {
+        this.netWeight = netWeight;
     }
 
     /**

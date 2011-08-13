@@ -23,20 +23,38 @@ public class MaterialDto
     public static final int OPTIONS = 4;
     public static final int PRICES = 8;
 
-    private MaterialCategoryDto category;
-    private String serial;
-    private String barCode;
-    private List<MaterialAttributeDto> attributes;
-    private List<UserFileDto> attachments;
-    private List<MaterialWarehouseOptionDto> options;
-    private List<MaterialPreferredLocationDto> preferredLocations;
-    private List<MaterialPriceDto> prices = new ArrayList<MaterialPriceDto>();
+    MaterialCategoryDto category;
+    String serial;
+    String barCode;
+    String modelSpec;
+
+    String color;
+
+    int packageWidth;
+    int packageHeight;
+    int packageLength;
+    int packageWeight;
+    int netWeight;
+
+    List<MaterialAttributeDto> attributes;
+    List<UserFileDto> attachments;
+    List<MaterialWarehouseOptionDto> options;
+    List<MaterialPreferredLocationDto> preferredLocations;
+    List<MaterialPriceDto> prices = new ArrayList<MaterialPriceDto>();
 
     @Override
     protected void _marshal(Material source) {
         category = mref(MaterialCategoryDto.class, ~MaterialCategoryDto.MATERIALS, source.getCategory());
         serial = source.getSerial();
         barCode = source.getBarCode();
+        modelSpec = source.getModelSpec();
+
+        // color=source.getColor();
+        packageWidth = source.getPackageWidth();
+        packageHeight = source.getPackageHeight();
+        packageLength = source.getPackageLength();
+        packageWeight = source.getPackageWeight();
+        netWeight = source.getNetWeight();
 
         if (selection.contains(ATTRBUTES))
             attributes = marshalList(MaterialAttributeDto.class, ~MaterialAttributeDto.MATERIAL, source.getAttributes());
@@ -59,8 +77,17 @@ public class MaterialDto
     @Override
     protected void _unmarshalTo(Material target) {
         merge(target, "category", category);
+
         target.setSerial(serial);
         target.setBarCode(barCode);
+        target.setModelSpec(modelSpec);
+        // target.setColor(color);
+        target.setPackageWidth(packageWidth);
+        target.setPackageHeight(packageHeight);
+        target.setPackageLength(packageLength);
+        target.setPackageWeight(packageWeight);
+        target.setNetWeight(netWeight);
+
         mergeList(target, "attributes", attributes);
         mergeList(target, "preferredLocations", preferredLocations);
         mergeList(target, "options", options);
@@ -100,7 +127,7 @@ public class MaterialDto
             prices.set(existingIndex, price);
     }
 
-    public void addAttachment(UserFileDto attachment){
+    public void addAttachment(UserFileDto attachment) {
         if (attachment == null)
             throw new NullPointerException("attachment");
         attachments.add(attachment);
@@ -130,6 +157,62 @@ public class MaterialDto
 
     public void setBarCode(String barCode) {
         this.barCode = barCode;
+    }
+
+    public String getModelSpec() {
+        return modelSpec;
+    }
+
+    public void setModelSpec(String modelSpec) {
+        this.modelSpec = modelSpec;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public int getPackageWidth() {
+        return packageWidth;
+    }
+
+    public void setPackageWidth(int packageWidth) {
+        this.packageWidth = packageWidth;
+    }
+
+    public int getPackageHeight() {
+        return packageHeight;
+    }
+
+    public void setPackageHeight(int packageHeight) {
+        this.packageHeight = packageHeight;
+    }
+
+    public int getPackageLength() {
+        return packageLength;
+    }
+
+    public void setPackageLength(int packageLength) {
+        this.packageLength = packageLength;
+    }
+
+    public int getPackageWeight() {
+        return packageWeight;
+    }
+
+    public void setPackageWeight(int packageWeight) {
+        this.packageWeight = packageWeight;
+    }
+
+    public int getNetWeight() {
+        return netWeight;
+    }
+
+    public void setNetWeight(int netWeight) {
+        this.netWeight = netWeight;
     }
 
     public List<MaterialAttributeDto> getAttributes() {
