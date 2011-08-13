@@ -77,7 +77,7 @@ public class StockItemList
 
             MCValue total = merging.getTotal();
             MCValue itemTotal = item.getTotal();
-            total = total.addFTN(fxrDate, itemTotal, fxrDate, fxrProvider);
+            total = total.addFTN(fxrDate, itemTotal, fxrDate);
 
             MCValue avgPrice = total.divide(sumQuantity);
             merging.setPrice(avgPrice);

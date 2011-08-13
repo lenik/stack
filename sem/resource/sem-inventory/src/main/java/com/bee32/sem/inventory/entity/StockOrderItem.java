@@ -63,8 +63,9 @@ public class StockOrderItem
         this.parent = parent;
     }
 
+    @Transient
     @Override
-    protected Date _getDate() {
+    protected Date getFxrDate() {
         return parent.getBeginTime();
     }
 

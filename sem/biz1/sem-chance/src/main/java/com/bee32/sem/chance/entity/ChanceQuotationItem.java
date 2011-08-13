@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
@@ -43,8 +44,9 @@ public class ChanceQuotationItem
         this.parent = parent;
     }
 
+    @Transient
     @Override
-    protected Date _getDate() {
+    protected Date getFxrDate() {
         return parent.getBeginTime();
     }
 

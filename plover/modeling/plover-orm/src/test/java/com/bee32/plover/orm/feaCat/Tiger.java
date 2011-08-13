@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.bee32.plover.orm.builtin.PloverConf;
 
@@ -56,6 +57,7 @@ public class Tiger
         this.conf = conf;
     }
 
+    @Transient
     @Override
     protected String getInternal() {
         return "Hello";
