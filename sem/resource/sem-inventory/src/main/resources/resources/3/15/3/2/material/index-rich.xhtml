@@ -129,7 +129,7 @@
                         </p:selectOneMenu>
 
                         <h:outputText value="换算率" />
-                        <p:inputText value="#{materialSettingsBean.activeScaleItem.scale}" />
+                        <p:inputText value="#{materialViewBean.activeScaleItem.scale}" />
                     </t:panelGrid>
                     <p:commandButton value="确定" actionListener="#{materialViewBean.doAddScaleItem}"
                         update="dialogForm:scaleList" oncomplete="scaleDialog.hide();" />
@@ -229,13 +229,30 @@
                         readonly="#{materialViewBean.editable}" />
                     <t:panelGroup />
 
-
+                    <h:outputText value="规格型号:" />
+                    <p:inputText value="#{materialViewBean.activeMaterial.modelSpec}" />
                     <h:outputText value="物料分类:" />
-                    <t:panelGroup colspan="4">
+                    <t:panelGroup colspan="2">
                         <p:inputText id="materialCategory" value="#{materialViewBean.activeMaterial.category.name}"
                             readonly="true" />
                         <p:commandButton value="..." title="选择物料分类" onclick="categoryTreeDialog.show();"
                             disabled="#{materialViewBean.editable}" />
+                    </t:panelGroup>
+
+                    <h:outputText value="毛重(克):" />
+                    <p:inputText value="#{materialViewBean.activeMaterial.packageWeight}" />
+                    <h:outputText value="净重(克):" />
+                    <p:inputText value="#{materialViewBean.activeMaterial.netWeight}" />
+                    <t:panelGroup />
+
+                    <h:outputText value="装箱尺寸:" />
+                    <t:panelGroup colspan="4">
+                        <h:outputText value="长(cm)" />
+                        <p:inputText value="#{materialViewBean.activeMaterial.packageLength}" style="width:50px;" />
+                        <h:outputText value="宽(cm)" />
+                        <p:inputText value="#{materialViewBean.activeMaterial.packageWidth}" style="width:50px;" />
+                        <h:outputText value="高(cm)" />
+                        <p:inputText value="#{materialViewBean.activeMaterial.packageHeight}" style="width:50px;" />
                     </t:panelGroup>
 
                     <h:outputText value="当前价格:" />
@@ -245,6 +262,8 @@
                             oncomplete="materialPrice.show();" disabled="#{materialViewBean.editable}"
                             update="dialogForm:temp,dialogForm:histPrice" />
                     </t:panelGroup>
+
+
 
                     <h:outputText value="主单位:" />
                     <p:selectOneMenu id="selectUnit" widgetVar="selectUnit" value="#{materialViewBean.selectedUnit}"
@@ -381,8 +400,7 @@
                         <p:dataTable id="attachList" value="#{materialViewBean.activeMaterial.attachments}"
                             var="attachment">
                             <p:column headerText="">
-                                <img src="#{attachment.imageHref}" width="24"
-                                    height="24" border="0" />
+                                <img src="#{attachment.imageHref}" width="24" height="24" border="0" />
                                 <h:outputText value="#{attachment.origPath}" />
                             </p:column>
                             <p:column headerText="操作" style="width:80px;">

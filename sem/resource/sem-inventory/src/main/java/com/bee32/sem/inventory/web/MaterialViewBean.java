@@ -68,7 +68,7 @@ public class MaterialViewBean
 
     boolean editable;
     String materialPattern;
-    List<MaterialDto> materialList;
+    List<MaterialDto> materialList = new ArrayList<MaterialDto>();
     MaterialDto selectedMaterial;
     MaterialDto activeMaterial = new MaterialDto().create();
     UnitDto newUnit = new UnitDto().create();
@@ -89,7 +89,7 @@ public class MaterialViewBean
 
     private List<UnitConvDto> unitConvDtoList;
 
-//    public List<UserFileDto> uploadedFiles = new ArrayList<UserFileDto>();
+// public List<UserFileDto> uploadedFiles = new ArrayList<UserFileDto>();
 
     public void handleFileUpload(FileUploadEvent event) {
         String fileName = event.getFile().getFileName();
@@ -247,6 +247,7 @@ public class MaterialViewBean
         activeScaleItem = new ScaleItem();
         UnitDto unitDto = new UnitDto().create();
         activeScaleItem.setUnit(unitDto);
+        activeScaleItem.setScale(0.0);
     }
 
     public void doAddScaleItem() {
@@ -343,7 +344,6 @@ public class MaterialViewBean
         if (unitConv.getId() == null || unitConv.getId().isEmpty())
             unitConv = new UnitConvDto().ref();
         activeMaterial.setUnitConv(unitConv);
-
 
         try {
             Material materialEntity = activeMaterial.unmarshal();
