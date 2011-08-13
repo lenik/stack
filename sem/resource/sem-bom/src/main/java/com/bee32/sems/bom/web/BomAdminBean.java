@@ -105,7 +105,7 @@ public class BomAdminBean
     }
 
     private void newComponent() {
-        component = new ComponentDto();
+        component = new ComponentDto().create();
 
         MaterialDto material = new MaterialDto();
         component.setMaterial(material);
@@ -124,7 +124,7 @@ public class BomAdminBean
     }
 
     private void newProduct() {
-        product = new ComponentDto();
+        product = new ComponentDto().create();
         MaterialDto material = new MaterialDto();
         product.setMaterial(material);
     }

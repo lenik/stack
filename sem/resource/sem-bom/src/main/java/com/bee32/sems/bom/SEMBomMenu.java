@@ -2,9 +2,9 @@ package com.bee32.sems.bom;
 
 import com.bee32.plover.orm.ext.dict.CommonDictController;
 import com.bee32.plover.rtx.location.Location;
-import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuContribution;
 import com.bee32.sem.frame.menu.MenuNode;
+import com.bee32.sem.inventory.SEMInventoryMenu;
 
 public class SEMBomMenu
         extends MenuContribution {
@@ -12,9 +12,7 @@ public class SEMBomMenu
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
     static Location BOM_ = WEB_APP.join(SEMBomModule.PREFIX_);
 
-    public static MenuNode BOM = menu(SEMFrameMenu.RESOURCE, "bom");
-
-    static MenuNode bomadmin = entry(BOM, "bomadmin", WEB_APP.join("bom/bomAdminJsf.htm"));
+    static MenuNode bomadmin = entry(SEMInventoryMenu.MATERIAL, "bomadmin", BOM_.join("component/"));
 
     @Override
     protected void preamble() {

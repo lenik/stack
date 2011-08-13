@@ -69,9 +69,9 @@
                                     selectionMode="single"
                                     rowIndexVar="rowIndex">
 
-                                <p:ajax event="selectRow" listener="#{bomAdminBean.onRowSelect}" update="bomForm:productToolbar priceForm:productName" />
+<!--                                 <p:ajax event="selectRow" listener="#{bomAdminBean.onRowSelect}" update="bomForm:productToolbar priceForm:productName" />
                                 <p:ajax event="unselectRow" listener="#{bomAdminBean.onRowUnselect}" update="bomForm:productToolbar priceForm:productName" />
-
+ -->
                                 <p:column >
                                     <f:facet name="header">
                                         <h:outputText value="序号" />
@@ -271,7 +271,7 @@
 
                                             <h:outputLabel for="compDesc" value="描述"/>
                                             <t:panelGroup colspan="3">
-                                                <p:inputTextarea id="compDesc" rows="5" style="width:480px;" value="#{bomAdminBean.component.desc}"/>
+                                                <p:inputTextarea id="compDesc" rows="5" style="width:480px;" value="#{bomAdminBean.component.description}"/>
                                             </t:panelGroup>
                                         </t:panelGrid>
                                     </p:tab>
@@ -320,48 +320,21 @@
                             <f:facet name="header">
                                 <h:outputText value="物料编码" />
                             </f:facet>
-                            <h:outputText value="#{material.code}" />
+                            <h:outputText value="#{material.serial}" />
                         </p:column>
 
-                        <p:column >
+                         <p:column >
                             <f:facet name="header">
                                 <h:outputText value="规格型号" />
                             </f:facet>
-                            <h:outputText value="#{material.specification}" />
+                            <h:outputText value="#{material.modelSpec}" />
                         </p:column>
 
                         <p:column >
                             <f:facet name="header">
                                 <h:outputText value="计量单位" />
                             </f:facet>
-                            <h:outputText value="#{material.mainUnit.unitDTO.name}" />
-                        </p:column>
-
-                        <p:column >
-                            <f:facet name="header">
-                                <h:outputText value="颜色" />
-                            </f:facet>
-                            <h:outputText value="#{material.color}" />
-                        </p:column>
-
-                        <p:column >
-                            <f:facet name="header">
-                                <h:outputText value="克重" />
-                            </f:facet>
-                            <t:panelGroup>
-                                <h:outputText value="#{material.weight}" />
-                                <h:outputText value="#{material.weightUnit.name}" />
-                            </t:panelGroup>
-                        </p:column>
-
-                        <p:column >
-                            <f:facet name="header">
-                                <h:outputText value="门幅" />
-                            </f:facet>
-                            <t:panelGroup>
-                                <h:outputText value="#{material.width}" />
-                                <h:outputText value="#{material.widthUnit.name}" />
-                            </t:panelGroup>
+                            <h:outputText value="#{material.unit.name}" />
                         </p:column>
 
                     </p:dataTable>

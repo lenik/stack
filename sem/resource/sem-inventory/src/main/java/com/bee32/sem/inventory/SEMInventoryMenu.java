@@ -13,7 +13,7 @@ public class SEMInventoryMenu
 
     static Location INVENTORY_ = WEB_APP.join(SEMInventoryModule.PREFIX_);
 
-    public static MenuNode INVENTORY = menu(SEMFrameMenu.MAIN, "inventory");
+    public static MenuNode INVENTORY = menu(SEMFrameMenu.RESOURCE, "inventory");
 
 
         public static MenuNode SETTINGS = menu(INVENTORY, 1, "settings");

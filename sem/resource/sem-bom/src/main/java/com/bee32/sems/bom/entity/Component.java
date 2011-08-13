@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -28,6 +29,7 @@ import com.bee32.sems.bom.service.PriceStrategy;
  * 零件 （包括成品和半成品）
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "component_seq", allocationSize = 1)
 public class Component
         extends TreeEntityAuto<Long, Component>
         implements DecimalConfig {
@@ -37,7 +39,7 @@ public class Component
     Component obsolete;
 
     Material material;
-    BigDecimal quantity;
+    BigDecimal quantity = new BigDecimal(1);
 
     boolean valid;
     Date validDateFrom;

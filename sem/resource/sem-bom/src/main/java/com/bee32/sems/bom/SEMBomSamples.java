@@ -1,9 +1,9 @@
 package com.bee32.sems.bom;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.free.Dates;
 import javax.free.UnexpectedException;
 
 import com.bee32.plover.orm.util.ImportSamples;
@@ -32,11 +32,9 @@ public class SEMBomSamples
         component.setValidDateTo(parseDate("2503-03-04"));
     }
 
-    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
     static Date parseDate(String str) {
         try {
-            return sdf.parse(str);
+            return Dates.YYYY_MM_DD.parse(str);
         } catch (ParseException e) {
             throw new UnexpectedException(e);
         }
