@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Locale;
 
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.plover.servlet.test.RabbitServletContext;
 import com.bee32.sem.test.SEMTestCase;
 
 @Using(SEMBomUnit.class)
@@ -26,12 +25,4 @@ public class SEMBomModuleTest
                 "login.htm");
     }
 
-    @Override
-    protected void configureContext() {
-        super.configureContext();
-
-        RabbitServletContext context = stl.getServletContext();
-        context.addInitParam("com.sun.faces.expressionFactory", "com.sun.el.ExpressionFactoryImpl");
-        context.addInitParam("primefaces.THEME", "bluesky");
-    }
 }

@@ -1,85 +1,87 @@
 package com.bee32.sems.bom.web;
 
-import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.web.jsf.FacesContextUtils;
 
+import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.plover.servlet.util.ThreadHttpContext;
-import com.bee32.sem.user.util.SessionLoginInfo;
-import com.bee32.sems.bom.dto.ComponentDTO;
-import com.bee32.sems.bom.dto.ProductDTO;
-import com.bee32.sems.bom.service.BomServiceFacade;
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.orm.ext.tree.TreeCriteria;
+import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.misc.EntityCriteria;
+import com.bee32.sem.sandbox.EntityDataModelOptions;
+import com.bee32.sem.sandbox.MultiTabEntityViewBean;
+import com.bee32.sem.sandbox.UIHelper;
+import com.bee32.sems.bom.dto.ComponentDto;
+import com.bee32.sems.bom.entity.Component;
 import com.bee32.sems.bom.service.MaterialPriceNotFoundException;
-import com.bee32.sems.material.dto.MaterialDTO;
-import com.bee32.sems.material.service.MaterialServiceFacade;
-import com.bee32.sems.org.dao.PersonDao;
-import com.bee32.sems.org.dto.PersonDTO;
-import com.bee32.sems.org.entity.Person;
-import org.primefaces.event.UnselectEvent;
+import com.bee32.sems.bom.service.MaterialPriceStrategy;
 
-@Component
 @Scope("view")
-public class BomAdminBean implements Serializable {
+public class BomAdminBean
+        extends MultiTabEntityViewBean {
+
+    private static final long serialVersionUID = 1L;
+
     private boolean editable;
     private boolean editableComp;
 
     private int currTab;
     private int currTabComp;
 
-    private ProductDTO product;
-    private ComponentDTO component;
+    private ComponentDto product;
+    private ComponentDto component;
 
-    private ProductDTO selectedProduct;
-    private ComponentDTO selectedComponent;
+    private ComponentDto selectedProduct;
+    private ComponentDto selectedComponent;
 
-    private LazyDataModel<ProductDTO> products;
+    private LazyDataModel<ComponentDto> products;
 
     private int flag;
 
     private String materialPartten;
-    private List<MaterialDTO> materials;
-    private MaterialDTO selectedMaterial;
+    private List<MaterialDto> materials;
+    private MaterialDto selectedMaterial;
 
-    private Double price;
-
-
+    private BigDecimal price;
 
     @PostConstruct
     public void init() {
-        //这里必须定义了两个BomServiceFacade,不能只定义一个final的BomServiceFacade,
-        //因为会造成jsf的序列化问题
-        products = new LazyDataModel<ProductDTO>() {
-            @Override
-            public List<ProductDTO> load(int first, int pageSize, String sortField, boolean sortOrder, Map<String, String> filters) {
-                BomServiceFacade bomServiceFacade
-                    = (BomServiceFacade) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("bomServiceFacadeImpl");
-                return bomServiceFacade.listProduct(first, pageSize);
-            }
-        };
 
-        BomServiceFacade bomServiceFacade
-                    = (BomServiceFacade) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("bomServiceFacadeImpl");
-        products.setRowCount((int) bomServiceFacade.productCount());
+        EntityDataModelOptions<Component, ComponentDto> options = new EntityDataModelOptions<Component, ComponentDto>(//
+                Component.class, ComponentDto.class, 0, //
+                Order.desc("id"), //
+                TreeCriteria.root(), //
+                EntityCriteria.ownedByCurrentUser());
+        products = UIHelper.<Component, ComponentDto> buildLazyDataModel(options);
+
+        refreshProductCount();
 
         currTab = 0;
         editable = false;
 
         currTabComp = 0;
         editableComp = false;
+    }
+
+    void refreshProductCount() {
+        int count = serviceFor(Component.class).count(//
+                TreeCriteria.root(), //
+                EntityCriteria.ownedByCurrentUser());
+        products.setRowCount(count);
     }
 
     public boolean isEditable() {
@@ -98,64 +100,58 @@ public class BomAdminBean implements Serializable {
         this.editableComp = editableComp;
     }
 
-    public ComponentDTO getComponent() {
-        if(component == null) {
+    public ComponentDto getComponent() {
+        if (component == null) {
             newComponent();
         }
         return component;
     }
 
     private void newComponent() {
-        component = new ComponentDTO();
+        component = new ComponentDto();
 
-        MaterialDTO material = new MaterialDTO();
+        MaterialDto material = new MaterialDto();
         component.setMaterial(material);
         component.setValid(true);
     }
 
-    public void setComponent(ComponentDTO component) {
+    public void setComponent(ComponentDto component) {
         this.component = component;
     }
 
-    public ProductDTO getProduct() {
-        if(product == null) {
+    public ComponentDto getProduct() {
+        if (product == null) {
             newProduct();
         }
         return product;
     }
 
     private void newProduct() {
-        product = new ProductDTO();
+        product = new ComponentDto();
 
-        HttpSession session = ThreadHttpContext.requireSession();
-        IUserPrincipal currUser = (IUserPrincipal) SessionLoginInfo.getCurrentUser(session);
-        PersonDao personDao
-                        = (PersonDao) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("personDao");
-        Person person = personDao.load(currUser.getId());
-        PersonDTO creator = new PersonDTO().marshal(person);
-        product.setCreator(creator);
+        IUserPrincipal currUser = (IUserPrincipal) SessionLoginInfo.getUser();
 
-        MaterialDTO material = new MaterialDTO();
+        MaterialDto material = new MaterialDto();
         product.setMaterial(material);
     }
 
-    public void setProduct(ProductDTO product) {
+    public void setProduct(ComponentDto product) {
         this.product = product;
     }
 
-    public ComponentDTO getSelectedComponent() {
+    public ComponentDto getSelectedComponent() {
         return selectedComponent;
     }
 
-    public void setSelectedComponent(ComponentDTO selectedComponent) {
+    public void setSelectedComponent(ComponentDto selectedComponent) {
         this.selectedComponent = selectedComponent;
     }
 
-    public ProductDTO getSelectedProduct() {
+    public ComponentDto getSelectedProduct() {
         return selectedProduct;
     }
 
-    public void setSelectedProduct(ProductDTO selectedProduct) {
+    public void setSelectedProduct(ComponentDto selectedProduct) {
         this.selectedProduct = selectedProduct;
     }
 
@@ -175,11 +171,11 @@ public class BomAdminBean implements Serializable {
         this.currTabComp = currTabComp;
     }
 
-    public LazyDataModel<ProductDTO> getProducts() {
+    public LazyDataModel<ComponentDto> getProducts() {
         return products;
     }
 
-    public void setProducts(LazyDataModel<ProductDTO> products) {
+    public void setProducts(LazyDataModel<ComponentDto> products) {
         this.products = products;
     }
 
@@ -191,37 +187,31 @@ public class BomAdminBean implements Serializable {
         this.materialPartten = materialPartten;
     }
 
-    public List<MaterialDTO> getMaterials() {
+    public List<MaterialDto> getMaterials() {
         return materials;
     }
 
-    public void setMaterials(List<MaterialDTO> materials) {
+    public void setMaterials(List<MaterialDto> materials) {
         this.materials = materials;
     }
 
-    public MaterialDTO getSelectedMaterial() {
+    public MaterialDto getSelectedMaterial() {
         return selectedMaterial;
     }
 
-    public void setSelectedMaterial(MaterialDTO selectedMaterial) {
+    public void setSelectedMaterial(MaterialDto selectedMaterial) {
         this.selectedMaterial = selectedMaterial;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
     public boolean isProductSelected() {
-        if(selectedProduct != null)
+        if (selectedProduct != null)
             return true;
         return false;
     }
-
-
-
-
-
-
 
     public void new_() {
         currTab = 1;
@@ -234,28 +224,24 @@ public class BomAdminBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (selectedProduct == null) {
-            context.addMessage(null, new FacesMessage("提示", "请以单击选择需要删除的产品!"));
+            uiLogger.info("请以单击选择需要删除的产品!");
             return;
         }
 
         try {
-            BomServiceFacade bomServiceFacade
-                    = (BomServiceFacade) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("bomServiceFacadeImpl");
-
-            List<ComponentDTO> components = bomServiceFacade.listComponent(selectedProduct.getId());
-            if(components != null && components.size() > 0) {
-                context.addMessage(null, new FacesMessage("提示", "此产品已经包含组件，必须先删除相应组件，才能删除本产品!"));
+            int childrenCount = serviceFor(Component.class).count(new Equals("parent.id", selectedProduct.getId()));
+            if (childrenCount != 0) {
+                uiLogger.error("此产品已经包含组件，必须先删除相应组件，才能删除本产品!");
                 return;
             }
 
-            bomServiceFacade.deleteProduct(selectedProduct.getId());
+            serviceFor(Component.class).deleteById(selectedProduct.getId());
 
-            products.setRowCount((int) bomServiceFacade.productCount());
+            refreshProductCount();
 
-
-            context.addMessage(null, new FacesMessage("提示", "删除产品成功"));
+            uiLogger.info("删除产品成功");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "删除产品失败;" + e.getMessage()));
+            uiLogger.error("删除产品失败;", e);
         }
 
     }
@@ -264,20 +250,18 @@ public class BomAdminBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
 
         try {
-            BomServiceFacade bomServiceFacade
-                    = (BomServiceFacade) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("bomServiceFacadeImpl");
+            product.setLastModified(new Date());
 
-            product.setDate(new Date());
+            Component _product = product.unmarshal(this);
+            serviceFor(Component.class).saveOrUpdate(_product);
 
-            bomServiceFacade.addProduct(product);
-
-            products.setRowCount((int) bomServiceFacade.productCount());
+            refreshProductCount();
 
             currTab = 0;
             editable = false;
-            context.addMessage(null, new FacesMessage("提示", "产品保存成功"));
+            uiLogger.info("产品保存成功");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "保存产品失败" + e.getMessage()));
+            uiLogger.error("保存产品失败", e);
         }
     }
 
@@ -289,9 +273,9 @@ public class BomAdminBean implements Serializable {
     }
 
     public void detail_() {
-        if(selectedProduct == null) {
+        if (selectedProduct == null) {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("提示", "请以单击选择需要查看详细内容的产品"));
+            uiLogger.info("请以单击选择需要查看详细内容的产品");
             return;
         }
 
@@ -301,11 +285,8 @@ public class BomAdminBean implements Serializable {
 
     public void refresh_() {
         currTab = 0;
-        BomServiceFacade bomServiceFacade
-                    = (BomServiceFacade) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("bomServiceFacadeImpl");
-
         selectedProduct = null;
-        products.setRowCount((int) bomServiceFacade.productCount());
+        refreshProductCount();
     }
 
     public void onRowSelect(SelectEvent event) {
@@ -318,8 +299,8 @@ public class BomAdminBean implements Serializable {
 
     public void newComp_() {
         FacesContext context = FacesContext.getCurrentInstance();
-        if(product == null || product.getId() == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择相应的产品!"));
+        if (product == null || product.getId() == null) {
+            uiLogger.error("请选择相应的产品!");
             return;
         }
 
@@ -333,43 +314,39 @@ public class BomAdminBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (selectedComponent == null) {
-            context.addMessage(null, new FacesMessage("提示", "请以单击选择需要删除的BOM组件!"));
+            uiLogger.error("请以单击选择需要删除的BOM组件!");
             return;
         }
 
         try {
-            BomServiceFacade bomServiceFacade
-                    = (BomServiceFacade) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("bomServiceFacadeImpl");
+            serviceFor(Component.class).deleteById(selectedComponent.getId());
 
-            bomServiceFacade.deleteComponent(selectedComponent.getId());
-
-            context.addMessage(null, new FacesMessage("提示", "删除BOM组件成功"));
+            uiLogger.info("删除BOM组件成功");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "删除BOM组件失败" + e.getMessage()));
+            uiLogger.error("删除BOM组件失败", e);
         }
     }
 
     public void saveComp_() {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if(product == null || product.getId() == null) {
-            context.addMessage(null, new FacesMessage("提示", "请选择相应的产品!"));
+        if (product == null || product.getId() == null) {
+            uiLogger.error("请选择相应的产品!");
             return;
         }
 
         try {
-            BomServiceFacade bomServiceFacade
-                    = (BomServiceFacade) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("bomServiceFacadeImpl");
+            ComponentDto parentRef = new ComponentDto().ref(product);
+            component.setParent(parentRef);
 
-            component.setProductId(product.getId());
-            bomServiceFacade.addComponent(component);
-
+            Component _component = component.unmarshal(this);
+            serviceFor(Component.class).saveOrUpdate(_component);
 
             currTabComp = 0;
             editableComp = false;
-            context.addMessage(null, new FacesMessage("提示", "保存BOM组件成功"));
+            uiLogger.info("保存BOM组件成功");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("提示", "保存BOM组件失败" + e.getMessage()));
+            uiLogger.error("保存BOM组件失败", e);
         }
     }
 
@@ -383,7 +360,7 @@ public class BomAdminBean implements Serializable {
     public void detailComp_() {
         if (selectedComponent == null) {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("提示", "请以单击选择需要查看详细内容的BOM组件!"));
+            uiLogger.error("请以单击选择需要查看详细内容的BOM组件!");
             return;
         }
 
@@ -396,18 +373,18 @@ public class BomAdminBean implements Serializable {
         selectedComponent = null;
     }
 
-    public List<ComponentDTO> getComponents() {
-        List<ComponentDTO> components = new ArrayList<ComponentDTO>();
+    public List<ComponentDto> getComponents() {
+        List<Component> _children;
 
-        if(product != null && product.getId() != null) {
-            BomServiceFacade bomServiceFacade
-                    = (BomServiceFacade) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("bomServiceFacadeImpl");
-            components = bomServiceFacade.listComponent(product.getId());
-        }
+        if (product != null && product.getId() != null)
+            _children = serviceFor(Component.class).list(//
+                    TreeCriteria.childOf(product.getId()));
+        else
+            _children = new ArrayList<Component>();
 
-        return components;
+        List<ComponentDto> children = DTOs.marshalList(ComponentDto.class, 0, _children, true);
+        return children;
     }
-
 
     public void setMaterialChoose() {
         this.flag = 0;
@@ -417,11 +394,8 @@ public class BomAdminBean implements Serializable {
         this.flag = 1;
     }
 
-
     public void findMaterial() {
-        if(materialPartten != null && !materialPartten.isEmpty()) {
-            MaterialServiceFacade materialServiceFacade
-                        = (MaterialServiceFacade) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("materialServiceFacadeImpl");
+        if (materialPartten != null && !materialPartten.isEmpty()) {
 
             String[] keyword = materialPartten.split(" ");
 
@@ -429,15 +403,17 @@ public class BomAdminBean implements Serializable {
                 keyword[i] = keyword[i].trim();
             }
 
-            materials = materialServiceFacade.findMaterial(keyword);
-
+            List<Material> _materials = serviceFor(Material.class).list(//
+                    // TODO MaterialCriteria.namedLike(keyword)
+                    );
+            materials = DTOs.marshalList(MaterialDto.class, 0, _materials, true);
         }
     }
 
     public void chooseMaterial() {
-        if(flag == 0)
+        if (flag == 0)
             product.setMaterial(selectedMaterial);
-        if(flag == 1)
+        if (flag == 1)
             component.setMaterial(selectedMaterial);
     }
 
@@ -445,17 +421,18 @@ public class BomAdminBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (selectedProduct == null) {
-            context.addMessage(null, new FacesMessage("提示", "请以单击选择需要计算价格的产品!"));
+            uiLogger.error("请以单击选择需要计算价格的产品!");
             return;
         }
 
-        BomServiceFacade bomServiceFacade
-                = (BomServiceFacade) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("bomServiceFacadeImpl");
+        MaterialPriceStrategy priceStrategy = MaterialPriceStrategy.getDefault();
 
         try {
-            price = bomServiceFacade.productPrice(selectedProduct);
+            Component _product = selectedProduct.unmarshal(this);
+            price = priceStrategy.getPrice(this, _product);
         } catch (MaterialPriceNotFoundException e) {
-            context.addMessage(null, new FacesMessage("提示", "没有找到此产品的原材料原价格!"));
+            uiLogger.error("没有找到此产品的原材料原价格!");
         }
     }
+
 }

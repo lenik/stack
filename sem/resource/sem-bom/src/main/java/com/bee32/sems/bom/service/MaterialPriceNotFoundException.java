@@ -1,14 +1,18 @@
 package com.bee32.sems.bom.service;
 
-public class MaterialPriceNotFoundException extends Exception {
-    private String materialName;
+import com.bee32.sem.inventory.entity.Material;
 
-    public void setMaterialName(String materialName) {
-        this.materialName = materialName;
+public class MaterialPriceNotFoundException
+        extends Exception {
+
+    private static final long serialVersionUID = 1L;
+
+    public MaterialPriceNotFoundException() {
+        super();
     }
 
-    @Override
-    public String getMessage() {
-        return "不能取得物料[" + materialName + "]的单价";
+    public MaterialPriceNotFoundException(Material material, Throwable cause) {
+        super("不能取得物料[" + material.getName() + "]的单价", cause);
     }
+
 }

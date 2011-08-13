@@ -1,81 +1,102 @@
-package com.bee32.sems.bom.entity;
+package com.bee32.sems.bom.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.NaturalId;
+import javax.free.NotImplementedException;
+import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.CriteriaComposite;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.ext.config.DecimalConfig;
-import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
-import com.bee32.sem.inventory.entity.Material;
+import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.ext.tree.TreeEntityDto;
+import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sems.bom.entity.Component;
 
-/**
- * 零件 （包括成品和半成品）
- */
-@Entity
-public class Component
-        extends TreeEntityAuto<Long, Component>
-        implements DecimalConfig {
+public class ComponentDto
+        extends TreeEntityDto<Component, Long, ComponentDto> {
 
     private static final long serialVersionUID = 1L;
 
-    Component obsolete;
+    ComponentDto obsolete;
 
-    Material material;
+    MaterialDto material;
     BigDecimal quantity;
 
     boolean valid;
     Date validDateFrom;
     Date validDateTo;
 
-    BigDecimal wage = new BigDecimal(0);
-    BigDecimal otherFee = new BigDecimal(0);
-    BigDecimal electricityFee = new BigDecimal(0);
-    BigDecimal equipmentCost = new BigDecimal(0);
+    BigDecimal wage;
+    BigDecimal otherFee;
+    BigDecimal electricityFee;
+    BigDecimal equipmentCost;
 
-    /**
-     * 上一个版本。
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    public Component getObsolete() {
+    public ComponentDto() {
+        super();
+    }
+
+    public ComponentDto(int selection) {
+        super(selection);
+    }
+
+    @Override
+    protected void _marshal(Component source) {
+        obsolete = new ComponentDto().ref(source.getObsolete());
+
+        material = mref(MaterialDto.class, source.getMaterial());
+        quantity = source.getQuantity();
+
+        valid = source.isValid();
+        validDateFrom = source.getValidDateFrom();
+        validDateTo = source.getValidDateTo();
+
+        wage = source.getWage();
+        otherFee = source.getOtherFee();
+        electricityFee = source.getElectricityFee();
+        equipmentCost = source.getEquipmentCost();
+    }
+
+    @Override
+    protected void _unmarshalTo(Component target) {
+        merge(target, "obsolete", obsolete);
+        merge(target, "material", material);
+        target.setQuantity(quantity);
+
+        target.setValid(valid);
+        target.setValidDateFrom(validDateFrom);
+        target.setValidDateTo(validDateTo);
+
+        target.setWage(wage);
+        target.setOtherFee(otherFee);
+        target.setElectricityFee(electricityFee);
+        target.setEquipmentCost(equipmentCost);
+    }
+
+    @Override
+    protected void _parse(TextMap map)
+            throws ParseException {
+        throw new NotImplementedException();
+    }
+
+    public ComponentDto getObsolete() {
         return obsolete;
     }
 
-    public void setObsolete(Component obsolete) {
+    public void setObsolete(ComponentDto obsolete) {
         this.obsolete = obsolete;
     }
 
-    /**
-     * 对应物料
-     */
-    @NaturalId
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    public Material getMaterial() {
+    public MaterialDto getMaterial() {
         return material;
     }
 
-    public void setMaterial(Material material) {
+    public void setMaterial(MaterialDto material) {
         if (material == null)
             throw new NullPointerException("material");
         this.material = material;
     }
 
-    /**
-     * 数量
-     */
-    @Column(precision = QTY_ITEM_PRECISION, scale = QTY_ITEM_SCALE, nullable = false)
     public BigDecimal getQuantity() {
         return quantity;
     }
@@ -86,17 +107,6 @@ public class Component
         this.quantity = quantity;
     }
 
-    public void setQuantity(long quantity) {
-        this.quantity = new BigDecimal(quantity);
-    }
-
-    public void setQuantity(double quantity) {
-        this.quantity = new BigDecimal(quantity);
-    }
-
-    /**
-     * 是否有效
-     */
     public boolean isValid() {
         return valid;
     }
@@ -105,10 +115,6 @@ public class Component
         this.valid = valid;
     }
 
-    /**
-     * 起用日期
-     */
-    @Temporal(TemporalType.TIMESTAMP)
     public Date getValidDateFrom() {
         return validDateFrom;
     }
@@ -117,10 +123,6 @@ public class Component
         this.validDateFrom = validDateFrom;
     }
 
-    /**
-     * 无效日期
-     */
-    @Temporal(TemporalType.TIMESTAMP)
     public Date getValidDateTo() {
         return validDateTo;
     }
@@ -129,10 +131,6 @@ public class Component
         this.validDateTo = validDateTo;
     }
 
-    /**
-     * 工资
-     */
-    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE, nullable = false)
     public BigDecimal getWage() {
         return wage;
     }
@@ -143,10 +141,6 @@ public class Component
         this.wage = wage;
     }
 
-    /**
-     * 其它费用
-     */
-    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE, nullable = false)
     public BigDecimal getOtherFee() {
         return otherFee;
     }
@@ -157,10 +151,6 @@ public class Component
         this.otherFee = otherFee;
     }
 
-    /**
-     * 电费
-     */
-    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE, nullable = false)
     public BigDecimal getElectricityFee() {
         return electricityFee;
     }
@@ -171,10 +161,6 @@ public class Component
         this.electricityFee = electricityFee;
     }
 
-    /**
-     * 设备费
-     */
-    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE, nullable = false)
     public BigDecimal getEquipmentCost() {
         return equipmentCost;
     }
@@ -185,8 +171,7 @@ public class Component
         this.equipmentCost = equipmentCost;
     }
 
-    @Transient
-    public BigDecimal getExtraCost() {
+    public BigDecimal getPricePart() {
         BigDecimal total = new BigDecimal(0);
         total = total.add(wage);
         total = total.add(otherFee);
@@ -200,13 +185,6 @@ public class Component
         return new IdComposite(//
                 naturalId(getParent()), //
                 naturalId(material));
-    }
-
-    @Override
-    protected ICriteriaElement selector(String prefix) {
-        return new CriteriaComposite( //
-                selector(prefix + "parent", getParent()), //
-                selector(prefix + "material", material));
     }
 
 }

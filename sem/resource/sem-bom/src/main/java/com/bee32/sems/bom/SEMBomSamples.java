@@ -2,67 +2,50 @@ package com.bee32.sems.bom;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
-import org.zkoss.zhtml.Q;
+import javax.free.UnexpectedException;
 
-import com.bee32.plover.orm.util.EntitySamplesContribution;
 import com.bee32.plover.orm.util.ImportSamples;
+import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sems.bom.entity.Component;
-import com.bee32.sems.bom.entity.Product;
-import com.bee32.sems.inventory.SEMInventorySamples;
-import com.bee32.sems.material.SEMMaterialSamples;
-import com.bee32.sems.org.SEMOrgSamples;
 
 @ImportSamples({ SEMInventorySamples.class })
 public class SEMBomSamples
-        extends EntitySamplesContribution {
+        extends SampleContribution {
 
-    public static Product product = new Product();
+    public static Component product = new Component();
     public static Component component = new Component();
 
-
-
-
-
     static {
+        product.setMaterial(SEMInventorySamples.gundam);
+        product.setValidDateFrom(parseDate("2010-03-05"));
+        product.setValidDateTo(parseDate("2503-03-04"));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        product.setMaterial(SEMMaterialSamples.goldBang);
-        product.setCreator(SEMOrgSamples.jack);
-        product.setDate(new Date());
-        try {
-            product.setValidDateFrom(sdf.parse("2010-03-05"));
-            product.setValidDateTo(sdf.parse("2503-03-04"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
-        component.setProduct(product);
-        component.setMaterial(SEMMaterialSamples.moonKnife);
+        component.setDescription("组成组成组成组成");
+        component.setParent(product);
+        component.setMaterial(SEMInventorySamples.gundam);
         component.setQuantity(20L);
         component.setValid(true);
-        component.setDesc("组成组成组成组成");
+        component.setValidDateFrom(parseDate("2010-03-05"));
+        component.setValidDateTo(parseDate("2503-03-04"));
+    }
+
+    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    static Date parseDate(String str) {
         try {
-            component.setValidDateFrom(sdf.parse("2010-03-05"));
-            component.setValidDateTo(sdf.parse("2503-03-04"));
+            return sdf.parse(str);
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new UnexpectedException(e);
         }
     }
 
     @Override
     protected void preamble() {
-        addNormalSample(product);
-        addNormalSample(component);
-    }
-
-    @Override
-    public void beginLoad() {
-        System.err.println("Begin to load bom samples");
+        add(product);
+        add(component);
     }
 
 }

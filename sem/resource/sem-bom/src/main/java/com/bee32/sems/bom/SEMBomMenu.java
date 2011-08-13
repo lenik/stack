@@ -1,20 +1,20 @@
 package com.bee32.sems.bom;
 
-import com.bee32.sem.frame.Contribution;
+import com.bee32.plover.orm.ext.dict.CommonDictController;
+import com.bee32.plover.rtx.location.Location;
+import com.bee32.sem.frame.builtins.SEMFrameMenu;
 import com.bee32.sem.frame.menu.MenuContribution;
-import com.bee32.sem.frame.menu.MenuEntry;
+import com.bee32.sem.frame.menu.MenuNode;
 
 public class SEMBomMenu
         extends MenuContribution {
 
-    @Contribution(".")
-    MenuEntry bom = new MenuEntry("bom");
+    static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
+    static Location BOM_ = WEB_APP.join(SEMBomModule.PREFIX_);
 
-        @Contribution("bom")
-        MenuEntry bomadmin = new MenuEntry(1, "bomadmin", WEB_APP.join("bom/bomAdminJsf.htm"));
+    public static MenuNode BOM = menu(SEMFrameMenu.RESOURCE, "bom");
 
-        @Contribution("bom")
-        MenuEntry materialPriceStrategy = new MenuEntry(2, "materialPriceStrategy", WEB_APP.join("bom/materialPriceStrategy.htm"));
+    static MenuNode bomadmin = entry(BOM, "bomadmin", WEB_APP.join("bom/bomAdminJsf.htm"));
 
     @Override
     protected void preamble() {
