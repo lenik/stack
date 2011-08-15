@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,8 +27,11 @@ import java.util.Set;
 import javax.free.Strings;
 import javax.free.SystemProperties;
 
+import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.orm.util.EntityFormatter;
 import com.bee32.plover.xutil.m2.MavenPath;
+import com.bee32.sem.frame.menu.MenuContribution;
+import com.bee32.sem.frame.menu.MenuEntry;
 
 /**
  * Usage:
@@ -57,26 +61,24 @@ public class NLSInitiator {
 
     static boolean beanProperties = false;
 
-    public static Map<String, String> getNLSMap(Class<?> type) {
-        Set<String> keys = new HashSet<String>();
-        keys.add("");
+    static void collectBeanProperties(Class<?> type, Set<String> keys) {
+        try {
+            for (PropertyDescriptor property : Introspector.getBeanInfo(type).getPropertyDescriptors()) {
 
-        if (beanProperties)
-            try {
-                for (PropertyDescriptor property : Introspector.getBeanInfo(type).getPropertyDescriptors()) {
+                String name = property.getName();
+                if (name.startsWith("_"))
+                    continue;
+                if (skippedProps.contains(name))
+                    continue;
 
-                    String name = property.getName();
-                    if (name.startsWith("_"))
-                        continue;
-                    if (skippedProps.contains(name))
-                        continue;
-
-                    keys.add(name);
-                }
-            } catch (IntrospectionException e) {
-                throw new RuntimeException(e.getMessage(), e);
+                keys.add(name);
             }
+        } catch (IntrospectionException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 
+    static void collectMembers(Class<?> type, Set<String> keys, Class<?> includeMemberType) {
         Set<Class<?>> stopClasses = EntityFormatter.getStopClasses();
 
         while (type != null && !stopClasses.contains(type)) {
@@ -102,13 +104,19 @@ public class NLSInitiator {
             }
 
             for (Field field : type.getDeclaredFields()) {
-
                 int modifiers = field.getModifiers();
-                if (!Modifier.isPublic(modifiers))
+
+                boolean inc = false;
+
+                if (Modifier.isPublic(modifiers))
+                    inc = true;
+                else if (includeMemberType != null && includeMemberType.isAssignableFrom(field.getType()))
+                    inc = true;
+
+                if (!inc)
                     continue;
 
                 String name = field.getName();
-
                 if (name.startsWith("_"))
                     continue;
 
@@ -118,6 +126,35 @@ public class NLSInitiator {
             // Only local declarations.
             // type = type.getSuperclass();
             break;
+        }
+    }
+
+    static void collectEnum(Class<?> type, Set<String> keys) {
+        try {
+            Method _values = type.getMethod("values");
+            Collection<EnumAlt<?, ?>> items = (Collection<EnumAlt<?, ?>>) _values.invoke(null);
+            for (EnumAlt<?, ?> item : items) {
+                String itemName = item.getName();
+                keys.add(itemName);
+            }
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    public static Map<String, String> getNLSMap(Class<?> type) {
+        Set<String> keys = new HashSet<String>();
+        keys.add("");
+
+        if (beanProperties)
+            collectBeanProperties(type, keys);
+
+        if (EnumAlt.class.isAssignableFrom(type)) {
+            collectEnum(type, keys);
+        } else if (MenuContribution.class.isAssignableFrom(type)) {
+            collectMembers(type, keys, MenuEntry.class);
+        } else {
+            collectMembers(type, keys, null);
         }
 
         Map<String, String> map = new HashMap<String, String>();

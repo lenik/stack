@@ -23,7 +23,7 @@ public class GenderTest
     }
 
     /**
-     * TODO CLG
+     * TODO ContextLocalGroup
      */
     @Test
     public void testGetLabel() {

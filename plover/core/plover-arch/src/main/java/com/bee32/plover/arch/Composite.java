@@ -141,6 +141,9 @@ public abstract class Composite
 
     }
 
+    /**
+     * Get NLS resource by component name instead of field name.
+     */
     protected boolean isUsingComponentName() {
         return false;
     }
