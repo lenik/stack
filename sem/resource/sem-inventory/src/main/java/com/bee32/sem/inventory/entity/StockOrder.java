@@ -93,11 +93,11 @@ public class StockOrder
     }
 
     @Column(length = 4, nullable = false)
-    String getSubject_() {
+    String get_subject() {
         return subject.getValue();
     }
 
-    void setSubject_(String subject) {
+    void set_subject(String subject) {
         if (subject == null)
             throw new NullPointerException("subject");
         this.subject = StockOrderSubject.valueOf(subject);

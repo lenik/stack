@@ -33,7 +33,7 @@ public class StockCriteria
      */
     @LeftHand(StockOrder.class)
     public static CriteriaElement unpacked() {
-        return not(in("subject", Arrays.asList(//
+        return not(in("_subject", Arrays.asList(//
                 StockOrderSubject.PACK_M.getValue(), //
                 StockOrderSubject.PACK_MB.getValue(), //
                 StockOrderSubject.PACK_MBL.getValue(), //
@@ -45,7 +45,7 @@ public class StockCriteria
 
     @LeftHand(StockOrder.class)
     public static CriteriaElement subjectOf(StockOrderSubject subject) {
-        return new Equals("subject_", subject.getValue());
+        return new Equals("_subject", subject.getValue());
     }
 
     /**

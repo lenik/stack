@@ -42,12 +42,12 @@ public class Person
     }
 
     @Column(name = "sex")
-    char getSex_() {
+    char get_sex() {
         return sex.getValue();
     }
 
-    void setSex_(char sex_) {
-        sex = Gender.valueOf(sex_);
+    void set_sex(char _sex) {
+        sex = Gender.valueOf(_sex);
     }
 
     /**

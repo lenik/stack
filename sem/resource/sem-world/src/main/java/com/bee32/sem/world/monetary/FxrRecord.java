@@ -1,5 +1,8 @@
 package com.bee32.sem.world.monetary;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.util.Currency;
 import java.util.Date;
 
@@ -73,6 +76,9 @@ public class FxrRecord
         return (int) (date.getTime() / 86400000);
     }
 
+    /**
+     * 单位货币 (系数为1）
+     */
     @Transient
     public Currency getUnitCurrency() {
         return unitCurrency;
@@ -85,12 +91,12 @@ public class FxrRecord
     }
 
     @NaturalId
-    @Column(length = 3, nullable = false)
-    String get_Unit() {
+    @Column(name = "unit", length = 3, nullable = false)
+    String get_unit() {
         return unitCurrency.getCurrencyCode();
     }
 
-    void set_Unit(String _unitCurrency) {
+    void set_unit(String _unitCurrency) {
         if (_unitCurrency == null)
             throw new NullPointerException("_unitCurrency");
         unitCurrency = Currency.getInstance(_unitCurrency);
@@ -164,4 +170,10 @@ public class FxrRecord
         throw new UnexpectedException();
     }
 
+    public static void main(String[] args)
+            throws IntrospectionException {
+        for (PropertyDescriptor pd : Introspector.getBeanInfo(FxrRecord.class).getPropertyDescriptors()) {
+            System.out.println(pd.getName());
+        }
+    }
 }
