@@ -7,6 +7,7 @@ import javax.free.UnexpectedException;
 
 import org.springframework.context.ApplicationContext;
 
+import com.bee32.plover.inject.GlobalAppCtx;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.sem.world.monetary.impl.DiscreteFxrProvider;
 import com.bee32.sem.world.monetary.impl.FxrSamplesSource;
@@ -15,6 +16,8 @@ public class FxrProviderFactory {
 
     static ApplicationContext getApplicationContext() {
         ApplicationContext context = ThreadHttpContext.getApplicationContext();
+        if (context == null)
+            context = GlobalAppCtx.getApplicationContext();
         return context;
     }
 
