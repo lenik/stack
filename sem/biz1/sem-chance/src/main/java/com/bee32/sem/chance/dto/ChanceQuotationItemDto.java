@@ -52,7 +52,7 @@ public class ChanceQuotationItemDto
     }
 
     @Override
-    protected Date getDate() {
+    protected Date getFxrDate() {
         return parent.getBeginTime();
     }
 

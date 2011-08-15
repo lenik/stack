@@ -61,7 +61,7 @@ public class StockOrderItemDto
     }
 
     @Override
-    protected Date getDate() {
+    protected Date getFxrDate() {
         return parent.getBeginTime();
     }
 
