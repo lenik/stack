@@ -39,6 +39,13 @@ public abstract class PriceStrategy
         return Collections.unmodifiableCollection(values);
     }
 
+    public static PriceStrategy forName(String altName) {
+        PriceStrategy strategy = nameMap.get(altName);
+        if (strategy == null)
+            throw new NoSuchEnumException(PriceStrategy.class, altName);
+        return strategy;
+    }
+
     public static PriceStrategy valueOf(String value) {
         if (value == null)
             return null;
@@ -47,13 +54,6 @@ public abstract class PriceStrategy
         if (strategy == null)
             throw new NoSuchEnumException(PriceStrategy.class, value);
 
-        return strategy;
-    }
-
-    public static PriceStrategy nameOf(String altName) {
-        PriceStrategy strategy = nameMap.get(altName);
-        if (strategy == null)
-            throw new NoSuchEnumException(PriceStrategy.class, altName);
         return strategy;
     }
 

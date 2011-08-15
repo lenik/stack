@@ -2,6 +2,8 @@ package com.bee32.sem.event;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,9 @@ public class EventState
 
     private static final long serialVersionUID = 1L;
 
+    static Map<String, EventState> nameMap = new HashMap<String, EventState>();
+    static Map<Integer, EventState> valueMap = new HashMap<Integer, EventState>();
+
     public static final int SEL_MASK = 0xff000000;
     public static final int SEL_EVENT = 0x01000000;
     public static final int SEL_ACTIVITY = 0x02000000;
@@ -27,9 +32,6 @@ public class EventState
     public EventState(int id, String name) {
         super(id, name);
     }
-
-    static Map<String, EventState> nameMap = new HashMap<String, EventState>();
-    static Map<Integer, EventState> valueMap = new HashMap<Integer, EventState>();
 
     @Override
     protected Map<String, EventState> getNameMap() {
@@ -55,6 +57,11 @@ public class EventState
 
     protected static int __class__(int sel, int classIndex) {
         return (sel & SEL_MASK) | ((classIndex << CLASS_SHIFT) & CLASS_MASK);
+    }
+
+    public static Collection<? extends EventState> values() {
+        Collection<EventState> values = valueMap.values();
+        return Collections.unmodifiableCollection(values);
     }
 
     public static EventState forName(String altName) {

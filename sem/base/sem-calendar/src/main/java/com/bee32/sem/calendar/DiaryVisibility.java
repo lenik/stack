@@ -1,5 +1,7 @@
 package com.bee32.sem.calendar;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +39,11 @@ public class DiaryVisibility
     @Override
     protected Map<Character, DiaryVisibility> getValueMap() {
         return valueMap;
+    }
+
+    public static Collection<DiaryVisibility> values() {
+        Collection<DiaryVisibility> values = valueMap.values();
+        return Collections.unmodifiableCollection(values);
     }
 
     public static DiaryVisibility forName(String name) {

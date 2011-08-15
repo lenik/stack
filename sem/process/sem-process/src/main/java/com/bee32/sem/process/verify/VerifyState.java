@@ -1,5 +1,11 @@
 package com.bee32.sem.process.verify;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.bee32.plover.arch.util.NoSuchEnumException;
 import com.bee32.sem.event.EventFlags;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.EventStateClass;
@@ -8,6 +14,9 @@ public class VerifyState
         extends EventState {
 
     private static final long serialVersionUID = 1L;
+
+    static final Map<String, VerifyState> nameMap = new HashMap<String, VerifyState>();
+    static final Map<Integer, VerifyState> valueMap = new HashMap<Integer, VerifyState>();
 
     private final boolean closed;
     private final int eventFlags;
@@ -23,6 +32,32 @@ public class VerifyState
 
         displayName = _nls(name + ".label", name);
         description = _nls(name + ".description", null);
+
+        nameMap.put(name, this);
+        valueMap.put(id, this);
+    }
+
+    public static Collection<VerifyState> values() {
+        Collection<VerifyState> values = valueMap.values();
+        return Collections.unmodifiableCollection(values);
+    }
+
+    public static VerifyState forName(String altName) {
+        VerifyState verifyState = nameMap.get(altName);
+        if (verifyState == null)
+            throw new NoSuchEnumException(VerifyState.class, altName);
+        return verifyState;
+    }
+
+    public static VerifyState valueOf(Integer value) {
+        if (value == null)
+            return null;
+
+        VerifyState verifyState = valueMap.get(value);
+        if (verifyState == null)
+            throw new NoSuchEnumException(VerifyState.class, value);
+
+        return verifyState;
     }
 
     public boolean isClosed() {
