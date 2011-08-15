@@ -22,15 +22,12 @@
             .std{vertical-align:top;}
         </h:outputStylesheet>
 
-        <h:form id="note">
-            <p:growl id="message" showDetail="true" />
-        </h:form>
-
         <h:form id="main">
+            <p:growl id="message" showDetail="true" />
             <p:selectManyCheckbox id="checkbox_tagId" value="#{userFileAdmin.selectedTags}">
                 <f:selectItem itemLabel="无标签" itemValue="0" />
                 <f:selectItems value="#{userFileAdmin.userFileTags}" />
-                <p:ajax update="note:message,main:fileList" listener="#{userFileAdmin.addMessage}" />
+                <p:ajax update="main:message,main:fileList" listener="#{userFileAdmin.addMessage}" />
             </p:selectManyCheckbox>
 
             <p:separator />
@@ -99,6 +96,7 @@
         </h:form>
 
         <h:form id="dialogForm">
+            <p:growl id="message" showDetail="true" />
             <p:confirmDialog message="您确定要删除此附件吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="confirmation">
 
@@ -112,7 +110,7 @@
                 widgetVar="deleteTagConfirmation" modal="true">
 
                 <p:commandButton value="删除" actionListener="#{userFileAdmin.deleteTag}"
-                    oncomplete="deleteTagConfirmation.hide();" update="dialogForm:tagAdmin,note:message" />
+                    oncomplete="deleteTagConfirmation.hide();" update="dialogForm:tagAdmin,dialogForm:message" />
                 <p:commandButton value="取消" onclick="deleteTagConfirmation.hide()" />
             </p:confirmDialog>
 
@@ -122,31 +120,31 @@
                 </p:selectManyMenu>
             </p:dialog>
 
-            <p:dialog widgetVar="tagAdminDialog" height="400" width="600" header="标签管理">
+            <p:dialog widgetVar="tagAdminDialog" height="400" width="600" header="标签管理" modal="true">
                 <t:panelGrid columns="2" columnClasses="ftd,std" style="width:100%;" id="tagAdmin">
                     <p:selectOneListbox value="#{userFileAdmin.activeTag.id}">
                         <f:selectItems value="#{userFileAdmin.userFileTags}" />
                     </p:selectOneListbox>
                     <t:panelGroup>
                         <p:commandButton value="新标签" actionListener="#{userFileAdmin.createNewTag}"
-                            oncomplete="activeTagDialog.show();" update="dialogForm:activeTag,main:checkbox_tagId" />
+                            oncomplete="newTagDialog.show();" update="dialogForm:newTag,main:checkbox_tagId" />
                         <br />
                         <p:commandButton value="删除标签" onclick="deleteTagConfirmation.show();"
-                            update="main:checkbox_tagId,dialogForm:activeTag" />
+                            update="main:checkbox_tagId,dialogForm:newTag" />
                         <br />
 
                     </t:panelGroup>
                 </t:panelGrid>
             </p:dialog>
 
-            <p:dialog widgetVar="activeTagDialog" height="300" width="400">
-                <t:panelGrid columns="2" id="activeTag">
+            <p:dialog widgetVar="newTagDialog" height="300" width="400">
+                <t:panelGrid columns="2" id="newTag">
                     <h:outputText value="标签名称:" />
-                    <p:inputText value="#{userFileAdmin.activeTag.tag}" />
+                    <p:inputText value="#{userFileAdmin.newTag.tag}" />
                 </t:panelGrid>
                 <p:commandButton value="保存" actionListener="#{userFileAdmin.saveOrUpdateTag}"
-                    oncomplete="activeTagDialog.hide()" update="dialogForm:tagAdmin,note:message" />
-                <p:commandButton value="取消" onclick="activeTagDialog.hide();" />
+                    oncomplete="newTagDialog.hide()" update="dialogForm:tagAdmin,dialogForm:message" />
+                <p:commandButton value="取消" onclick="newTagDialog.hide();" />
             </p:dialog>
 
             <p:dialog widgetVar="fileDialog" height="500" width="700">
@@ -186,9 +184,9 @@
         </h:form>
 
         <h:form enctype="multipart/form-data">
-
+            <p:growl id="message" showDetail="true" />
             <p:fileUpload fileUploadListener="#{userFileAdmin.handleFileUpload}" mode="advanced"
-                update="note:message,main:fileList" multiple="true" allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
+                update="message,main:fileList" multiple="true" allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
 
         </h:form>
 

@@ -7,10 +7,10 @@ import com.bee32.plover.orm.unit.Using;
 import com.bee32.sem.test.SEMTestCase;
 
 @Using(SEMFileUnit.class)
-public class UserFileModelTest
+public class UserFileTest
         extends SEMTestCase {
 
-    public UserFileModelTest() {
+    public UserFileTest() {
         super();
     }
 
@@ -31,7 +31,7 @@ public class UserFileModelTest
 
     public static void main(String[] args)
             throws IOException {
-        new UserFileModelTest().browseAndWait(SEMFileModule.PREFIX + "/userfile/");
+        new UserFileTest().browseAndWait(SEMFileModule.PREFIX + "/userfile/");
     }
 
     static {

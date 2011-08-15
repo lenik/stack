@@ -46,6 +46,7 @@ public class UserFileAdmin
     int activeIndex;
     List<UserFileTagnameDto> selectedTagsToAdd;
     UserFileTagnameDto activeTag = new UserFileTagnameDto().create();
+    UserFileTagnameDto newTag = new UserFileTagnameDto().create();
 
     public UserFileAdmin() {
         initUserFile();
@@ -61,7 +62,7 @@ public class UserFileAdmin
     }
 
     public void createNewTag() {
-        activeTag = new UserFileTagnameDto().create();
+        newTag = new UserFileTagnameDto().create();
     }
 
     public void deleteTag() {
@@ -75,10 +76,10 @@ public class UserFileAdmin
     }
 
     public void saveOrUpdateTag() {
-        UserFileTagname uft = activeTag.unmarshal();
+        UserFileTagname tag = newTag.unmarshal();
         try {
-            serviceFor(UserFileTagname.class).saveOrUpdate(uft);
-            SelectItem item = new SelectItem(uft.getId(), activeTag.getTag());
+            serviceFor(UserFileTagname.class).saveOrUpdate(tag);
+            SelectItem item = new SelectItem(tag.getId(), newTag.getTag());
             userFileTags.add(item);
             uiLogger.info("保存标签成功!");
         } catch (Exception e) {
@@ -224,6 +225,14 @@ public class UserFileAdmin
 
     public List<SelectItem> getUserFileTags() {
         return userFileTags;
+    }
+
+    public UserFileTagnameDto getNewTag() {
+        return newTag;
+    }
+
+    public void setNewTag(UserFileTagnameDto newTag) {
+        this.newTag = newTag;
     }
 
 }
