@@ -16,6 +16,7 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.util.StockCriteria;
 
 @Component
 @Scope("view")
@@ -37,7 +38,7 @@ public class InitAdminBean extends StockOrderBaseBean {
         stockOrder = new StockOrderDto().create();
         if (selectedWarehouse != null) {
             List<StockOrder> oneList = serviceFor(StockOrder.class).list(
-                    new Equals("subject_", getSubject().getValue()),
+                    StockCriteria.subjectOf(getSubject()),
                     new Equals("warehouse.id", selectedWarehouse.getId()),
                     Order.desc("id"));
 
