@@ -1,7 +1,11 @@
 package com.bee32.sem.inventory.tx.entity;
 
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.service.IStockLedgerService;
@@ -16,11 +20,14 @@ public class StockTaking
 
     private static final long serialVersionUID = 1L;
 
-    StockOrder book;
-    StockOrder delta;
-    StockOrder input;
+    StockOrder expected;
+    StockOrder actual;
+    StockOrder adjustment = new StockOrder();
 
     IStockLedgerService stockLedgerService;
+
+    public StockTaking() {
+    }
 
     @Transient
     public IStockLedgerService getStockLedgerService() {
@@ -32,30 +39,36 @@ public class StockTaking
     }
 
     @OneToOne
-    public StockOrder getBook() {
-        return book;
+    @JoinColumn(name = "s1", nullable = false)
+    @Cascade(CascadeType.ALL)
+    public StockOrder getExpected() {
+        return expected;
     }
 
-    public void setBook(StockOrder book) {
-        this.book = book;
+    public void setExpected(StockOrder expected) {
+        this.expected = expected;
     }
 
     @OneToOne
-    public StockOrder getDelta() {
-        return delta;
+    @JoinColumn(name = "s2", nullable = false)
+    @Cascade(CascadeType.ALL)
+    public StockOrder getAdjustment() {
+        return adjustment;
     }
 
-    public void setDelta(StockOrder delta) {
-        this.delta = delta;
+    public void setAdjustment(StockOrder adjustment) {
+        if (adjustment == null)
+            throw new NullPointerException("adjustment");
+        this.adjustment = adjustment;
     }
 
     @Transient
-    public StockOrder getInput() {
-        return input;
+    public StockOrder getActual() {
+        return actual;
     }
 
-    public void setInput(StockOrder input) {
-        this.input = input;
+    public void setActual(StockOrder actual) {
+        this.actual = actual;
     }
 
 }
