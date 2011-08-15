@@ -9,7 +9,7 @@ import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.dao.CommonDataManager;
-import com.bee32.plover.orm.util.SamplesLoader;
+import com.bee32.plover.orm.util.SamplesLoaderActivator;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
 import com.bee32.plover.restful.RESTfulConfig;
 import com.bee32.plover.zk.test.ZkTestCase;
@@ -35,7 +35,7 @@ public class SEMTestCase
 
     protected String PREFIX = RESTfulConfig.preferredPrefix;
 
-    protected ApplicationContext appContext;
+    protected ApplicationContext appctx;
 
     static {
         // XXX zip-closed fix. could be a bug of jetty.
@@ -48,9 +48,10 @@ public class SEMTestCase
 
     @Override
     protected void applicationInitialized(ApplicationContext context) {
-        this.appContext = context;
-        SamplesLoader samplesLoader = context.getBean(SamplesLoader.class);
-        samplesLoader.loadNormalSamples();
+        this.appctx = context;
+
+        SamplesLoaderActivator.setLoadNormalSamples(true);
+        context.getBean(SamplesLoaderActivator.class);
     }
 
     protected String getLoggedInUser() {
@@ -62,10 +63,10 @@ public class SEMTestCase
         String userName = getLoggedInUser();
 
         if (userName != null) {
-            if (appContext == null)
+            if (appctx == null)
                 throw new IllegalStateException("Application context isn't initalized, yet.");
 
-            CommonDataManager dataManager = appContext.getBean(CommonDataManager.class);
+            CommonDataManager dataManager = appctx.getBean(CommonDataManager.class);
             User user = dataManager.asFor(User.class).getByName(userName);
 
             SessionLoginInfo.setUser(user);
