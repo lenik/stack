@@ -1,16 +1,15 @@
 package com.bee32.plover.orm.util;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Lazy;
+
+import com.bee32.plover.inject.ActivatorBean;
 
 /**
  * No-lazy: eagerly load samples.
  */
-@Component
+@Lazy
 public class SamplesLoaderActivator
-        implements ApplicationContextAware {
+        extends ActivatorBean {
 
     private static boolean loadNormalSamples;
     private static boolean loadWorseSamples;
@@ -32,19 +31,16 @@ public class SamplesLoaderActivator
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext)
-            throws BeansException {
-
+    public void activate() {
         if (loadNormalSamples) {
-            SamplesLoader samplesLoader = applicationContext.getBean(SamplesLoader.class);
+            SamplesLoader samplesLoader = appctx.getBean(SamplesLoader.class);
             samplesLoader.loadNormalSamples();
         }
 
         if (loadWorseSamples) {
-            SamplesLoader samplesLoader = applicationContext.getBean(SamplesLoader.class);
+            SamplesLoader samplesLoader = appctx.getBean(SamplesLoader.class);
             samplesLoader.loadWorseSamples();
         }
-
     }
 
 }
