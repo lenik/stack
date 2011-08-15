@@ -247,7 +247,7 @@ public class MCValue
 
         IFxrProvider fxrProvider = FxrProviderFactory.getFxrProvider();
 
-        float _fxr = fxrProvider.getLatestFxr(currency, FxrUsage.MIDDLE);
+        float _fxr = fxrProvider.getFxr(date, currency, FxrUsage.MIDDLE);
         if (Float.isNaN(_fxr))
             throw new FxrQueryException("The FXR for the specified quote currency is not defined: " + currency);
 
