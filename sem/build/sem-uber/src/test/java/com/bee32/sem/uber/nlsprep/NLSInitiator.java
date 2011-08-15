@@ -29,6 +29,16 @@ import javax.free.SystemProperties;
 import com.bee32.plover.orm.util.EntityFormatter;
 import com.bee32.plover.xutil.m2.MavenPath;
 
+/**
+ * Usage:
+ *
+ *
+ * Post-collect:
+ *
+ *
+ * Pre-merge:
+ *
+ */
 public class NLSInitiator {
 
     static Set<String> skippedProps = new HashSet<String>();
@@ -156,9 +166,14 @@ public class NLSInitiator {
 
         for (String key : keys) {
             Object val = map.get(key);
+            String sval = String.valueOf(val);
 
             String PADDING = Strings.repeat(maxlen - key.length(), ' ');
-            out.println(key + PADDING + " = " + val);
+
+            out.print(key + PADDING + " =");
+            if (!sval.isEmpty())
+                out.print(' ');
+            out.println(sval);
         }
     }
 
