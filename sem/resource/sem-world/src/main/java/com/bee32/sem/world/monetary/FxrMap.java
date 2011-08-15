@@ -87,6 +87,10 @@ public class FxrMap {
      * @return {@link Double#NaN} if not defined.
      */
     public double eval(Date date) {
+
+        // Load the month cover this specific date point.
+        lazyLoad(date, date);
+
         int dayx = LocalDateUtil.dayIndex(date);
         double rate = imap.eval(dayx);
         return rate;
