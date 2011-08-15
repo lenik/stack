@@ -88,6 +88,9 @@
                     <p:column headerText="条形码">
                         <h:outputText value="#{material.barCode}" />
                     </p:column>
+                    <p:column headerText="规格型号">
+                        <h:outputText value="#{material.modelSpec}" />
+                    </p:column>
                     <p:column headerText="主单位">
                         <h:outputText value="#{material.unit.name}" />
                     </p:column>
@@ -140,17 +143,17 @@
             <p:dialog header="单位换算表" widgetVar="unitConvDialog" height="500" width="700" modal="true">
                 <p:panel id="unitConvForm">
                     <t:panelGrid columns="2">
-                        <h:outputText value="代码:" />
+                        <h:outputText value="英文代码:" />
                         <p:inputText value="#{materialViewBean.activeUnitConv.name}" />
 
-                        <h:outputText value="名称:" />
+                        <h:outputText value="换算表名称:" />
                         <p:inputText value="#{materialViewBean.activeUnitConv.label}" />
 
                         <h:outputText value="源单位:" />
-                        <p:selectOneMenu value="#{materialViewBean.activeUnitConv.unit.displayId}" style="width:100px;">
-                            <f:selectItem itemLabel="" itemValue="" />
-                            <f:selectItems value="#{materialViewBean.units}" />
-                        </p:selectOneMenu>
+                        <h:outputText value="#{materialViewBean.activeUnitConv.unit.label}" />
+                        <!--                         <p:selectOneMenu value="#{materialViewBean.activeUnitConv.unit.displayId}" style="width:100px;"> -->
+                        <!--                             <f:selectItems value="#{materialViewBean.units}" /> -->
+                        <!--                         </p:selectOneMenu> -->
                     </t:panelGrid>
                     <h:outputText value="换算表:" />
                     <p:dataTable var="item" value="#{materialViewBean.activeUnitConv.itemList}" id="scaleList">
@@ -178,6 +181,10 @@
                         oncomplete="unitConvDialog.hide();"
                         update="dialogForm:selectUnitConv,note,dialogForm:unitConvForm" />
                     <p:commandButton value="取消" onclick="unitConvDialog.hide();" />
+                    <br />
+                    <h:outputText value="例如:" />
+                    <br />
+                    <h:outputText value="源单位:'米', 换算单位:'千克', 换算率:'0.08'. 一米 = 0.08千克" />
                 </p:panel>
             </p:dialog>
 
@@ -218,7 +225,7 @@
                     <h:outputText value="物料名称" />
                     <t:panelGroup colspan="4">
                         <p:inputText value="#{materialViewBean.activeMaterial.name}"
-                            readonly="#{materialViewBean.editable}" style="width:400px;" />
+                            readonly="#{materialViewBean.editable}" style="width:420px;" />
                     </t:panelGroup>
 
                     <h:outputText value="序列号:" />
@@ -230,7 +237,8 @@
                     <t:panelGroup />
 
                     <h:outputText value="规格型号:" />
-                    <p:inputText value="#{materialViewBean.activeMaterial.modelSpec}" />
+                    <p:inputText value="#{materialViewBean.activeMaterial.modelSpec}"
+                        readonly="#{materialViewBean.editable}" />
                     <h:outputText value="物料分类:" />
                     <t:panelGroup colspan="2">
                         <p:inputText id="materialCategory" value="#{materialViewBean.activeMaterial.category.name}"
@@ -240,19 +248,24 @@
                     </t:panelGroup>
 
                     <h:outputText value="毛重(克):" />
-                    <p:inputText value="#{materialViewBean.activeMaterial.packageWeight}" />
+                    <p:inputText value="#{materialViewBean.activeMaterial.packageWeight}"
+                        readonly="#{materialViewBean.editable}" />
                     <h:outputText value="净重(克):" />
-                    <p:inputText value="#{materialViewBean.activeMaterial.netWeight}" />
+                    <p:inputText value="#{materialViewBean.activeMaterial.netWeight}"
+                        readonly="#{materialViewBean.editable}" />
                     <t:panelGroup />
 
                     <h:outputText value="装箱尺寸:" />
                     <t:panelGroup colspan="4">
                         <h:outputText value="长(cm)" />
-                        <p:inputText value="#{materialViewBean.activeMaterial.packageLength}" style="width:50px;" />
+                        <p:inputText value="#{materialViewBean.activeMaterial.packageLength}" style="width:50px;"
+                            readonly="#{materialViewBean.editable}" />
                         <h:outputText value="宽(cm)" />
-                        <p:inputText value="#{materialViewBean.activeMaterial.packageWidth}" style="width:50px;" />
+                        <p:inputText value="#{materialViewBean.activeMaterial.packageWidth}" style="width:50px;"
+                            readonly="#{materialViewBean.editable}" />
                         <h:outputText value="高(cm)" />
-                        <p:inputText value="#{materialViewBean.activeMaterial.packageHeight}" style="width:50px;" />
+                        <p:inputText value="#{materialViewBean.activeMaterial.packageHeight}" style="width:50px;"
+                            readonly="#{materialViewBean.editable}" />
                     </t:panelGroup>
 
                     <h:outputText value="当前价格:" />
@@ -271,8 +284,9 @@
                         <f:selectItem itemLabel="--选择单位--" itemValue="" />
                         <f:selectItem itemLabel="新增单位" itemValue="new" />
                         <f:selectItems value="#{materialViewBean.units}" />
+                        <p:ajax listener="#{materialViewBean.doSelectedUnit}" update="dialogForm:unitConvForm" />
                     </p:selectOneMenu>
-                    <h:outputText value="单位提示:" />
+                    <h:outputText value="单位类别描述:" />
                     <p:inputText value="#{materialViewBean.activeMaterial.unitHint}"
                         readonly="#{materialViewBean.editable}" />
                     <t:panelGroup />
@@ -284,8 +298,8 @@
                             value="#{materialViewBean.activeMaterial.unitConv.displayId}"
                             disabled="#{materialViewBean.editable}" style="width:180px;">
                             <f:selectItem itemLabel="--选择单位换算表--" itemValue="" />
-                            <f:selectItems value="#{materialViewBean.unitConvs}" />
                             <f:selectItem itemLabel="新增单位换算表" itemValue="new" />
+                            <f:selectItems value="#{materialViewBean.unitConvs}" />
                         </p:selectOneMenu>
 
                         <h:outputScript>
@@ -396,7 +410,7 @@
                         onclick="optionDialog.show();" />
 
                     <h:outputText value="附件列表:" />
-                    <t:panelGroup colspan="4">
+                    <t:panelGroup colspan="3">
                         <p:dataTable id="attachList" value="#{materialViewBean.activeMaterial.attachments}"
                             var="attachment">
                             <p:column headerText="">
@@ -413,12 +427,13 @@
                             </p:column>
                         </p:dataTable>
                     </t:panelGroup>
+                    <t:panelGroup />
 
                     <t:panelGroup colspan="5">
                         <h:form enctype="multipart/form-data">
                             <p:growl id="message" />
                             <p:fileUpload fileUploadListener="#{materialViewBean.handleFileUpload}" mode="advanced"
-                                update="message,dialogForm:attachList" multiple="true"
+                                update="message,dialogForm:attachList" multiple="true" label="上传附件"
                                 allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
                         </h:form>
                     </t:panelGroup>
@@ -452,17 +467,18 @@
 
             <p:dialog widgetVar="unitDialog" header="添加单位" height="300" width="270">
                 <t:panelGrid columns="3">
-                    <h:outputText value="代码:" />
+                    <h:outputText value="国际单位代码:" />
                     <t:panelGroup colspan="2">
                         <p:inputText value="#{materialViewBean.newUnit.name}" />
                     </t:panelGroup>
-                    <h:outputText value="名称:" />
+                    <h:outputText value="中文单位名称:" />
                     <t:panelGroup colspan="2">
                         <p:inputText value="#{materialViewBean.newUnit.label}" />
                     </t:panelGroup>
                     <h:outputText value="基本单位:" />
                     <t:panelGroup colspan="2">
                         <p:selectOneMenu value="#{materialViewBean.newUnit.stdUnit.id}" style="width:100px;">
+                            <f:selectItem itemLabel="无" itemValue="" />
                             <f:selectItems value="#{materialViewBean.standardUnits}" />
                         </p:selectOneMenu>
                     </t:panelGroup>

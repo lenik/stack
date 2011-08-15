@@ -89,6 +89,13 @@ public class MaterialViewBean
 
     private List<UnitConvDto> unitConvDtoList;
 
+    public void doSelectedUnit() {
+        String unitId = activeMaterial.getUnit().getId();
+        Unit unit = serviceFor(Unit.class).getOrFail(unitId);
+        UnitDto unitDto = DTOs.marshal(UnitDto.class, unit);
+        activeUnitConv.setUnit(unitDto);
+    }
+
 // public List<UserFileDto> uploadedFiles = new ArrayList<UserFileDto>();
 
     public void handleFileUpload(FileUploadEvent event) {

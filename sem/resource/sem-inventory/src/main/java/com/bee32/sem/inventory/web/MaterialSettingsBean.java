@@ -5,10 +5,8 @@ import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
-import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
-import org.primefaces.component.tree.Tree;
 import org.primefaces.event.FlowEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -87,10 +85,6 @@ public class MaterialSettingsBean
         initUnitConvList();
     }
 
-    @PostConstruct
-    public void initPage() {
-    }
-
     public void initMainTree() {
         List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
@@ -144,6 +138,10 @@ public class MaterialSettingsBean
             }
 
         });
+    }
+
+    public void refreshCategorySelectTree() {
+        initSelectCategoryTree();
     }
 
     public void initUnitConvList() {
@@ -263,9 +261,7 @@ public class MaterialSettingsBean
             MaterialCategory category = activeCategory.unmarshal();
             serviceFor(MaterialCategory.class).saveOrUpdate(category);
             initMainTree();
-            initSelectCategoryTree();
-            Tree mainTree = (Tree) findComponent(TREE_MAIN);
-            mainTree.setExpanded(true);
+// initSelectCategoryTree();
             uiLogger.info("保存物料分类:" + activeCategory.getName() + "成功!");
         } catch (Exception e) {
             uiLogger.error("保存物料失败:" + e.getMessage(), e);
@@ -281,11 +277,9 @@ public class MaterialSettingsBean
             serviceFor(MaterialCategory.class).delete(entity);
             initMainTree();
             initSelectCategoryTree();
-            Tree mainTree = (Tree) findComponent(TREE_MAIN);
-            mainTree.setExpanded(true);
             uiLogger.info("删除物料分类成功!");
         } catch (Exception e) {
-            uiLogger.error("删除物料分类成功!" + e.getMessage(), e);
+            uiLogger.error("删除物料分类失败:" + e.getMessage());
         }
     }
 

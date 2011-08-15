@@ -17,12 +17,7 @@
 
     <ui:define name="content">
 
-        <h:form id="note">
-            <p:growl id="growl" showDetail="true" />
-        </h:form>
-
-        <h:form id="main">
-            <h:outputStylesheet>
+        <h:outputStylesheet>
                 .column1{
                     vertical-align:top;
                     width:35%;
@@ -31,10 +26,12 @@
                     vertical-align:top;
                     width:65%;
                 }
-            </h:outputStylesheet>
+        </h:outputStylesheet>
+
+        <h:form id="mainForm">
+            <p:growl id="growl" showDetail="true" />
 
             <p:tabView>
-
                 <p:tab title="物料分类设置">
 
                     <p:toolbar>
@@ -47,7 +44,7 @@
                                 update="dialogForm:categoryForm" oncomplete="categoryWizardDialog.show();"
                                 disabled="#{!materialSettingsBean.categoryOptionable}" />
                             <p:commandButton id="deleteCategory" value="删除" title="删除分类"
-                                actionListener="#{materialSettingsBean.destroyCategory}" update="main:mainTree,note"
+                                actionListener="#{materialSettingsBean.destroyCategory}" update="mainForm:mainTree mainForm:growl"
                                 disabled="#{!materialSettingsBean.categoryOptionable}" />
                         </p:toolbarGroup>
                     </p:toolbar>
@@ -56,13 +53,16 @@
                         <p:tree id="mainTree" value="#{materialSettingsBean.materialCategoryMainTree.rootNode}"
                             var="node" dynamic="true" selectionMode="single"
                             selection="#{materialSettingsBean.materialCategoryMainTree.selectedNode}">
+
                             <p:ajax event="select" listener="#{materialSettingsBean.onCategoryNodeSelect}"
-                                update="main:editCategory,main:deleteCategory" />
+                                update="mainForm:editCategory,mainForm:deleteCategory" />
                             <p:ajax event="unselect" listener="#{materialSettingsBean.onCategoryNodeUnselect}"
-                                update="main:editCategory,main:deleteCategory" />
+                                update="mainForm:editCategory,mainForm:deleteCategory" />
+
                             <p:treeNode>
                                 <h:outputText value="#{node.name}" />
                             </p:treeNode>
+
                         </p:tree>
                     </p:panel>
 
@@ -159,17 +159,12 @@
                 </p:tab>
 
                 <p:tab title="基础价格设置">
-                    <p:toolbar>
-                        <p:toolbarGroup>
-                            <p:commandButton value="查找物料" />
-                            <p:commandButton value="设置新价格" />
-                        </p:toolbarGroup>
-                    </p:toolbar>
+
                     <t:panelGrid columns="2" columnClasses="column1,column2" style="width:100%;">
                         <p:tree value="#{materialSettingsBean.materialPriceTree.rootNode}" var="node" dynamic="true"
                             selectionMode="single" selection="#{materialSettingsBean.materialPriceTree.selectedNode}">
                             <p:ajax event="select" listener="#{materialSettingsBean.materialPriceTree.onNodeSelect}"
-                                update="main:materialList" />
+                                update="mainForm:materialList" />
                             <p:treeNode>
                                 <h:outputText value="#{node.name}" />
                             </p:treeNode>
@@ -252,7 +247,7 @@
                     </p:column>
                 </p:dataTable>
                 <p:commandButton value="确定" actionListener="#{materialSettingsBean.updatePrice}"
-                    oncomplete="priceDialog.hide();" update="main:materialList" />
+                    oncomplete="priceDialog.hide();" update="mainForm:materialList" />
                 <p:commandButton value="取消" onclick="priceDialog.hide();" />
             </p:dialog>
 
@@ -260,7 +255,7 @@
             <p:confirmDialog message="确定要删除此单位吗?" showEffect="bounce" hideEffect="explode" header="提示" severity="alert"
                 widgetVar="unitConfirmation">
 
-                <p:commandButton value="确定" update="note,main:unitList" oncomplete="unitConfirmation.hide()"
+                <p:commandButton value="确定" update="mainForm:growl,mainForm:unitList" oncomplete="unitConfirmation.hide()"
                     actionListener="#{materialSettingsBean.destroyUnit}" />
                 <p:commandButton value="取消" onclick="unitConfirmation.hide()" type="button" />
 
@@ -269,8 +264,8 @@
             <p:confirmDialog message="确定要删除此单位还算表吗?" showEffect="bounce" hideEffect="explode" header="提示"
                 severity="alert" widgetVar="unitConvConfirmation">
 
-                <p:commandButton value="确定" update="note,main:unitConvList" oncomplete="unitConvConfirmation.hide()"
-                    actionListener="#{materialSettingsBean.destroyUnitConv}" />
+                <p:commandButton value="确定" update="mainForm:growl,mainForm:unitConvList"
+                    oncomplete="unitConvConfirmation.hide()" actionListener="#{materialSettingsBean.destroyUnitConv}" />
                 <p:commandButton value="取消" onclick="unitConvConfirmation.hide()" type="button" />
 
             </p:confirmDialog>
@@ -296,7 +291,7 @@
                         <p:inputText value="#{materialSettingsBean.activeUnit.scale}" />
                     </t:panelGrid>
                     <p:commandButton value="保存" actionListener="#{materialSettingsBean.doSaveUnit}"
-                        oncomplete="unitDialog.hide();" update="main:unitList,note" />
+                        oncomplete="unitDialog.hide();" update="mainForm:unitList,mainForm:growl" />
                     <p:commandButton value="取消" onclick="unitDialog.hide();" />
                 </p:panel>
             </p:dialog>
@@ -347,7 +342,7 @@
                         disabled="#{materialSettingsBean.unitConvEditable}" />
                     <p:separator />
                     <p:commandButton value="保存" actionListener="#{materialSettingsBean.doSaveUnitConv}"
-                        oncomplete="unitConvDialog.hide();" update="main:unitConvList,note"
+                        oncomplete="unitConvDialog.hide();" update="mainForm:unitConvList,mainForm:growl"
                         disabled="#{materialSettingsBean.unitConvEditable}" />
                     <p:commandButton value="取消" onclick="unitConvDialog.hide();" />
                 </p:panel>
@@ -373,19 +368,21 @@
             </p:dialog>
 
             <p:dialog header="物料分类" widgetVar="categoryWizardDialog" height="250" width="450" modal="true">
-                <p:panel id="categoryForm">
-                    <t:panelGrid columns="2">
+                <p:panel>
+                    <t:panelGrid columns="2" id="categoryForm">
                         <h:outputText value="上级分类:" />
                         <t:panelGroup colspan="1">
                             <p:inputText value="#{materialSettingsBean.activeCategory.parent.name}" readonly="true" />
-                            <p:commandButton value="..." title="选择上级分类" onclick="categorySelectDialog.show();" />
+                            <p:commandButton value="..." title="选择上级分类"
+                                actionListener="#{materialSettingsBean.refreshCategorySelectTree}"
+                                oncomplete="categorySelectDialog.show();" update="dialogForm:upperCategorySelect" />
                         </t:panelGroup>
 
                         <h:outputText value="分类名称:" />
                         <p:inputText value="#{materialSettingsBean.activeCategory.name}" />
 
                         <p:commandButton value="确认" actionListener="#{materialSettingsBean.doSaveCategory}"
-                            oncomplete="categoryWizardDialog.hide();" update="main:mainTree,note" />
+                            oncomplete="categoryWizardDialog.hide();" update="mainForm:mainTree,mainForm:growl" />
                         <p:commandButton value="取消" onclick="categoryWizardDialog.hide();" />
 
                     </t:panelGrid>
@@ -395,7 +392,7 @@
             <p:dialog header="选择上级分类" widgetVar="categorySelectDialog" height="500" width="700" modal="true">
                 <p:tree value="#{materialSettingsBean.materialCategorySelectTree.rootNode}" var="node" dynamic="true"
                     selectionMode="single" selection="#{materialSettingsBean.materialCategorySelectTree.selectedNode}"
-                    style="width:100%;">
+                    style="width:100%;" id="upperCategorySelect">
                     <p:treeNode>
                         <h:outputText value="#{node.name}" />
                     </p:treeNode>
