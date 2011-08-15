@@ -72,6 +72,14 @@ public abstract class AbstractOrderItem
         invalidateTotal();
     }
 
+    public void setQuantity(long quantity) {
+        setQuantity(new BigDecimal(quantity));
+    }
+
+    public void setQuantity(double quantity) {
+        setQuantity(new BigDecimal(quantity));
+    }
+
     /**
      * 价格 （入库为原始价格，其余科目的价格用途未知）。
      * <p>
@@ -113,8 +121,7 @@ public abstract class AbstractOrderItem
      *             外汇查询异常。
      */
     @Redundant
-    @Transient
-// @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
+    @Column(precision = MONEY_ITEM_PRECISION, scale = MONEY_ITEM_SCALE)
     public synchronized BigDecimal getNativePrice()
             throws FxrQueryException {
         if (nativePrice == null) {
@@ -132,8 +139,7 @@ public abstract class AbstractOrderItem
      * 【冗余】本地货币表示的金额。
      */
     @Redundant
-    @Transient
-// @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
+    @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
     public BigDecimal getNativeTotal()
             throws FxrQueryException {
         if (nativeTotal == null) {

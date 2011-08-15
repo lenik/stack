@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -95,8 +96,7 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
      *             外汇查询异常。
      */
     @Redundant
-    @Transient
-    // @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
+    @Column(precision = MONEY_TOTAL_PRECISION, scale = MONEY_TOTAL_SCALE)
     public synchronized BigDecimal getNativeTotal()
             throws FxrQueryException {
         if (nativeTotal == null) {
