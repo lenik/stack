@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -32,6 +33,8 @@ public class Cat
     Cat parent;
 
     Set<Cat> children;
+
+    CaveAddr addr;
 
     public Cat() {
     }
@@ -114,6 +117,15 @@ public class Cat
     @Transient
     protected String getInternal() {
         return "Int";
+    }
+
+    @Embedded
+    public CaveAddr getAddr() {
+        return addr;
+    }
+
+    public void setAddr(CaveAddr addr) {
+        this.addr = addr;
     }
 
 }

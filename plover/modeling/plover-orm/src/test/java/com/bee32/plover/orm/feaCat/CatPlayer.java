@@ -45,14 +45,21 @@ public class CatPlayer
     public void doFill() {
         Tiger lucy = new Tiger("Lucy", "black");
         lucy.setBirthday(new Date());
+        lucy.setAddr(new CaveAddr("ZJ", "11 X Rd."));
 
         ICriteriaElement selector = lucy.getSelector();
 
+        System.out.println("Pre-clean");
         int count = asFor(Tiger.class).deleteAll(selector);
-        System.out.println("Deleted: " + count);
+        System.out.println("    Deleted: " + count);
+
+        System.out.println("Save lucy");
         asFor(Tiger.class).save(lucy);
+
+        System.out.println("Evict lucy");
         asFor(Tiger.class).evict(lucy);
 
+        System.out.println("Get first");
         Tiger reload = asFor(Tiger.class).getFirst(selector);
         Date birthday = reload.getBirthday();
         System.out.println(birthday);
@@ -64,6 +71,7 @@ public class CatPlayer
 
     @Transactional(readOnly = true)
     public void doList() {
+        System.out.println("List tigers");
         List<Tiger> tigers = asFor(Tiger.class).list();
 
         for (Tiger t : tigers)
