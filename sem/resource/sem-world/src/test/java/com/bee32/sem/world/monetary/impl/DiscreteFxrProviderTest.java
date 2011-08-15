@@ -1,15 +1,12 @@
 package com.bee32.sem.world.monetary.impl;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bee32.plover.test.TestSupport;
 import com.bee32.sem.misc.i18n.CurrencyConfig;
 import com.bee32.sem.misc.i18n.ICurrencyAware;
 import com.bee32.sem.misc.i18n.ITimeZoneAware;
@@ -18,7 +15,7 @@ import com.bee32.sem.world.monetary.FxrTable;
 import com.bee32.sem.world.monetary.FxrUsage;
 
 public class DiscreteFxrProviderTest
-        extends Assert
+        extends TestSupport
         implements ICurrencyAware, ITimeZoneAware {
 
     static {
@@ -66,8 +63,6 @@ public class DiscreteFxrProviderTest
         assertEquals(latestDate, tableDate);
     }
 
-    static final double epsilon = 1e-10;
-
     @Test
     public void testGetFxr_CNY()
             throws FxrQueryException {
@@ -96,20 +91,7 @@ public class DiscreteFxrProviderTest
         // float eps = Math.abs((usd2 - usd1) / (t2 - t1));
         // assertEquals(expected, mid, eps);
 
-        assertEquals(6.426664, mid, 0.00001);
-    }
-
-    static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    static {
-        DATE_FORMAT.setTimeZone(TZ_PRC);
-    }
-
-    static Date parseDate(String s) {
-        try {
-            return DATE_FORMAT.parse(s);
-        } catch (ParseException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        assertEqualsX(6.426664f, mid);
     }
 
 }
