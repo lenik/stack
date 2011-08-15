@@ -1,6 +1,7 @@
 package com.bee32.sem.inventory.tx.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -37,6 +38,7 @@ public class StockTransfer
      */
     @OneToOne(optional = false)
     @Cascade(CascadeType.ALL)
+    @JoinColumn(name = "s1")
     public StockOrder getSource() {
         return source;
     }
@@ -52,6 +54,7 @@ public class StockTransfer
      */
     @OneToOne
     @Cascade(CascadeType.ALL)
+    @JoinColumn(name = "s2")
     public StockOrder getDest() {
         return dest;
     }

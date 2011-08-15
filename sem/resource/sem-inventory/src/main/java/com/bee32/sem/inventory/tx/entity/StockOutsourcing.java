@@ -1,6 +1,7 @@
 package com.bee32.sem.inventory.tx.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -26,8 +27,8 @@ public class StockOutsourcing
 
     private static final long serialVersionUID = 1L;
 
-    StockOrder sentOrder;
-    StockOrder receivedOrder;
+    StockOrder output;
+    StockOrder input;
     Org processedBy;
 
     /**
@@ -36,12 +37,13 @@ public class StockOutsourcing
     @NaturalId
     @OneToOne(optional = false)
     @Cascade(CascadeType.ALL)
-    public StockOrder getSentOrder() {
-        return sentOrder;
+    @JoinColumn(name = "s1")
+    public StockOrder getOutput() {
+        return output;
     }
 
-    public void setSentOrder(StockOrder sentOrder) {
-        this.sentOrder = sentOrder;
+    public void setOutput(StockOrder output) {
+        this.output = output;
     }
 
     /**
@@ -50,12 +52,13 @@ public class StockOutsourcing
     @NaturalId
     @OneToOne(optional = false)
     @Cascade(CascadeType.ALL)
-    public StockOrder getReceivedOrder() {
-        return receivedOrder;
+    @JoinColumn(name = "s2")
+    public StockOrder getInput() {
+        return input;
     }
 
-    public void setReceivedOrder(StockOrder receivedOrder) {
-        this.receivedOrder = receivedOrder;
+    public void setInput(StockOrder input) {
+        this.input = input;
     }
 
     /**
