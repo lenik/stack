@@ -18,7 +18,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
 
     BigDecimal quantity;
 
-    MCValue price = new MCValue();
+    MCValue price;
 
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
@@ -28,7 +28,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         super.__marshal(source);
 
         quantity = source.getQuantity();
-        price = new MCValue(source.getPrice());
+        price = source.getPrice();
     }
 
     @Override
@@ -52,7 +52,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         price = new MCValue(currency, _price);
     }
 
-    protected abstract Date getDate();
+    protected abstract Date getFxrDate();
 
     public BigDecimal getQuantity() {
         return quantity;
@@ -113,7 +113,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
     public BigDecimal getNativePrice()
             throws FxrQueryException {
         if (nativePrice == null) {
-            nativePrice = price.getNativeValue(getDate());
+            nativePrice = price.getNativeValue(getFxrDate());
         }
         return nativePrice;
     }
