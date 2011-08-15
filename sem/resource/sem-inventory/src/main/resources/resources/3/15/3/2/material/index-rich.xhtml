@@ -478,8 +478,8 @@
                     <h:outputText value="基本单位:" />
                     <t:panelGroup colspan="2">
                         <p:selectOneMenu value="#{materialViewBean.newUnit.stdUnit.id}" style="width:100px;">
-                            <f:selectItem itemLabel="无" itemValue="" />
                             <f:selectItems value="#{materialViewBean.standardUnits}" />
+                            <f:selectItem itemLabel="无" itemValue="none" />
                         </p:selectOneMenu>
                     </t:panelGroup>
                     <h:outputText value="倍率:" />

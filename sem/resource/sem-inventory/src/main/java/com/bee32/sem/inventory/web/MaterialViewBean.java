@@ -17,6 +17,7 @@ import org.primefaces.model.TreeNode;
 import org.primefaces.model.UploadedFile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.zkoss.lang.Strings;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.User;
@@ -91,9 +92,11 @@ public class MaterialViewBean
 
     public void doSelectedUnit() {
         String unitId = activeMaterial.getUnit().getId();
-        Unit unit = serviceFor(Unit.class).getOrFail(unitId);
-        UnitDto unitDto = DTOs.marshal(UnitDto.class, unit);
-        activeUnitConv.setUnit(unitDto);
+        if (!unitId.endsWith("new") && !Strings.isEmpty(unitId)) {
+            Unit unit = serviceFor(Unit.class).getOrFail(unitId);
+            UnitDto unitDto = DTOs.marshal(UnitDto.class, unit);
+            activeUnitConv.setUnit(unitDto);
+        }
     }
 
 // public List<UserFileDto> uploadedFiles = new ArrayList<UserFileDto>();
@@ -306,6 +309,11 @@ public class MaterialViewBean
     }
 
     public void doAddUhnit() {
+        if (newUnit.getStdUnit().getId().equals("none")) {
+            UnitDto temp = new UnitDto().ref();
+            newUnit.setStdUnit(temp);
+            newUnit.setScale(0);
+        }
         activeMaterial.setUnit(newUnit);
         Unit unit = newUnit.unmarshal();
         serviceFor(Unit.class).save(unit);
