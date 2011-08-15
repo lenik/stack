@@ -8,7 +8,6 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.Like;
@@ -24,7 +23,6 @@ import com.bee32.sem.misc.i18n.CurrencyConfig;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.monetary.MCValue;
 
-@Component
 @Scope("view")
 public abstract class StockOrderBaseBean extends LocationAboutBean {
 

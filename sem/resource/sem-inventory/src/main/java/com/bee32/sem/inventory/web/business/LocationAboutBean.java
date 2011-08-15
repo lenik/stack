@@ -6,7 +6,6 @@ import java.util.List;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
@@ -18,7 +17,6 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockLocation;
 
-@Component
 @Scope("view")
 public abstract class LocationAboutBean extends EntityViewBean {
 
