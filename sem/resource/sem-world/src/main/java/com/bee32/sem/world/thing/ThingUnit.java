@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 
 @Entity
-public class SEMWorldThingUnit
+public class ThingUnit
         extends PersistenceUnit {
 
     @Override

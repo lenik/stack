@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.sem.test.SEMTestCase;
 
-@Using(SEMWorldMonetaryUnit.class)
+@Using(MonetaryUnit.class)
 public class FxrCommitJobTest
         // extends QuartzPlayer
         extends SEMTestCase {

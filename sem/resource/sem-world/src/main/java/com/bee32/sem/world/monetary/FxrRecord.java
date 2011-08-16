@@ -58,6 +58,16 @@ public class FxrRecord
         this.unitCurrency = unitCurrency;
     }
 
+    public FxrRecord(Date date, Currency unitCurrency, float buyingRate, float sellingRate, //
+            float baseRate, Float xbuyingRate) {
+        this.date = date;
+        this.unitCurrency = unitCurrency;
+        this.buyingRate = buyingRate;
+        this.sellingRate = sellingRate;
+        this.baseRate = baseRate;
+        this.xbuyingRate = xbuyingRate;
+    }
+
     @NaturalId
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
