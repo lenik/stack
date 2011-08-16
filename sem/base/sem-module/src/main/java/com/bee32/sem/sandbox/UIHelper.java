@@ -32,6 +32,17 @@ public class UIHelper
         return items;
     }
 
+    public static List<SelectItem> selectItemsFromDict2(Iterable<? extends NameDictDto<?>> dictEntries) {
+        List<SelectItem> items = new ArrayList<SelectItem>();
+
+        for (NameDictDto<?> entry : dictEntries) {
+            SelectItem item = new SelectItem(entry.getDisplayId(), entry.getLabel() + " (" + entry.getName() + ")");
+            items.add(item);
+        }
+
+        return items;
+    }
+
     public static List<SelectItem> selectItemsFromEnum(Iterable<? extends EnumAlt<?, ?>> enums) {
         List<SelectItem> items = new ArrayList<SelectItem>();
 
