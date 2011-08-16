@@ -78,8 +78,16 @@ public class FacesUILogger
                     message = title + message.substring(1);
             }
 
-            if (e != null)
-                message += "\n（错误消息：" + e.getMessage() + "）";
+            if (e != null) {
+                String err = e.getMessage();
+
+                message += "（错误消息：" + err + "）";
+
+                message = message.replace("\n", "<br>");
+                message = message.replace("&", "&amp;");
+                message = message.replace("<", "&lt;");
+                message = "<div style='color: #ff0033; font-size: small; font-style: italic'>" + message + "</div>";
+            }
 
             FacesMessage facesMessage = new FacesMessage(getSeverity(), title, message);
             String clientId = null; // XXX clientId purpose?
