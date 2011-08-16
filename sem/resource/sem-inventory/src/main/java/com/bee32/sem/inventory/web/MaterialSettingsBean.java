@@ -180,7 +180,7 @@ public class MaterialSettingsBean
             initUnitConvList();
             uiLogger.info("保存单位还算表" + activeUnitConv.getLabel() + "成功");
         } catch (Exception e) {
-            uiLogger.error("保存单位还算表" + activeUnitConv.getLabel() + "失败:" + e.getMessage(), e);
+            uiLogger.error("保存单位还算表" + activeUnitConv.getLabel() + "失败", e);
         }
     }
 
@@ -192,7 +192,7 @@ public class MaterialSettingsBean
             initUnitConvList();
             uiLogger.info("删除单位还算表" + selectedUnitConv.getLabel() + "成功");
         } catch (Exception e) {
-            uiLogger.error("删除单位还算表" + selectedUnitConv.getLabel() + "失败" + e.getMessage(), e);
+            uiLogger.error("删除单位还算表" + selectedUnitConv.getLabel() + "失败", e);
         }
     }
 
@@ -219,7 +219,7 @@ public class MaterialSettingsBean
             initUnitList();
             uiLogger.info("保存单位" + activeUnit.getLabel() + "成功!");
         } catch (Exception e) {
-            uiLogger.error("保存单位" + activeUnit.getLabel() + "错误:" + e.getMessage(), e);
+            uiLogger.error("保存单位" + activeUnit.getLabel() + "错误", e);
         }
     }
 
@@ -231,7 +231,7 @@ public class MaterialSettingsBean
             initUnitList();
             uiLogger.info("删除单位" + selectedUnit.getLabel() + "成功");
         } catch (Exception e) {
-            uiLogger.error("删除单位" + selectedUnit.getLabel() + "失败:" + e.getMessage(), e);
+            uiLogger.error("删除单位" + selectedUnit.getLabel() + "失败", e);
         }
     }
 
@@ -252,7 +252,7 @@ public class MaterialSettingsBean
             serviceFor(Material.class).saveOrUpdate(material_entity);
             uiLogger.info("更新价格成功!");
         } catch (Exception e) {
-            uiLogger.error("更新价格失败:" + e.getMessage(), e);
+            uiLogger.error("更新价格失败", e);
         }
     }
 
@@ -264,7 +264,7 @@ public class MaterialSettingsBean
 // initSelectCategoryTree();
             uiLogger.info("保存物料分类:" + activeCategory.getName() + "成功!");
         } catch (Exception e) {
-            uiLogger.error("保存物料失败:" + e.getMessage(), e);
+            uiLogger.error("保存物料失败", e);
         }
     }
 
@@ -279,7 +279,7 @@ public class MaterialSettingsBean
             initSelectCategoryTree();
             uiLogger.info("删除物料分类成功!");
         } catch (Exception e) {
-            uiLogger.error("删除物料分类失败:" + e.getMessage());
+            uiLogger.error("删除物料分类失败", e);
         }
     }
 
