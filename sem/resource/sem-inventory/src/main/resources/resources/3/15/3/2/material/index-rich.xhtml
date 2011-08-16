@@ -222,10 +222,19 @@
             <p:dialog header="物料" widgetVar="materialDialog" height="600" width="800">
                 <t:panelGrid columns="5" id="material"
                     columnClasses="material_dialog_label, material_dialog_txt,material_dialog_label, material_dialog_txt">
+
+                    <h:outputText value="物料分类:" />
+                    <t:panelGroup colspan="4">
+                        <p:inputText id="materialCategory" value="#{materialViewBean.activeMaterial.category.name}"
+                            readonly="true" />
+                        <p:commandButton value="..." title="选择物料分类" onclick="categoryTreeDialog.show();"
+                            disabled="#{materialViewBean.editable}" />
+                    </t:panelGroup>
+
                     <h:outputText value="物料名称" />
                     <t:panelGroup colspan="4">
                         <p:inputText value="#{materialViewBean.activeMaterial.name}"
-                            readonly="#{materialViewBean.editable}" style="width:420px;" />
+                            readonly="#{materialViewBean.editable}" style="width:430px;" />
                     </t:panelGroup>
 
                     <h:outputText value="序列号:" />
@@ -237,14 +246,9 @@
                     <t:panelGroup />
 
                     <h:outputText value="规格型号:" />
-                    <p:inputText value="#{materialViewBean.activeMaterial.modelSpec}"
-                        readonly="#{materialViewBean.editable}" />
-                    <h:outputText value="物料分类:" />
-                    <t:panelGroup colspan="2">
-                        <p:inputText id="materialCategory" value="#{materialViewBean.activeMaterial.category.name}"
-                            readonly="true" />
-                        <p:commandButton value="..." title="选择物料分类" onclick="categoryTreeDialog.show();"
-                            disabled="#{materialViewBean.editable}" />
+                    <t:panelGroup colspan="4">
+                        <p:inputText value="#{materialViewBean.activeMaterial.modelSpec}"
+                            readonly="#{materialViewBean.editable}" style="width:430px;" />
                     </t:panelGroup>
 
                     <h:outputText value="毛重(克):" />
@@ -257,15 +261,16 @@
 
                     <h:outputText value="装箱尺寸:" />
                     <t:panelGroup colspan="4">
-                        <h:outputText value="长(cm)" />
+                        <h:outputText value="长" />
                         <p:inputText value="#{materialViewBean.activeMaterial.packageLength}" style="width:50px;"
                             readonly="#{materialViewBean.editable}" />
-                        <h:outputText value="宽(cm)" />
+                        <h:outputText value="cm X 宽" />
                         <p:inputText value="#{materialViewBean.activeMaterial.packageWidth}" style="width:50px;"
                             readonly="#{materialViewBean.editable}" />
-                        <h:outputText value="高(cm)" />
+                        <h:outputText value="cm X 高" />
                         <p:inputText value="#{materialViewBean.activeMaterial.packageHeight}" style="width:50px;"
                             readonly="#{materialViewBean.editable}" />
+                        <h:outputText value="cm" />
                     </t:panelGroup>
 
                     <h:outputText value="当前价格:" />
@@ -286,10 +291,10 @@
                         <f:selectItems value="#{materialViewBean.units}" />
                         <p:ajax listener="#{materialViewBean.doSelectedUnit}" update="dialogForm:unitConvForm" />
                     </p:selectOneMenu>
-                    <h:outputText value="单位类别描述:" />
+                    <h:outputText value="单位提示:" />
                     <p:inputText value="#{materialViewBean.activeMaterial.unitHint}"
                         readonly="#{materialViewBean.editable}" />
-                    <t:panelGroup />
+                    <h:outputText value="(重量,长度等)" />
 
 
                     <h:outputText value="单位换算表" />
@@ -379,7 +384,7 @@
                     <p:commandButton value="..." title="添加推荐库位" disabled="#{materialViewBean.editable}"
                         onclick="preferDialog.show();" />
 
-                    <h:outputText value="物料设置:" />
+                    <h:outputText value="仓库设置:" />
                     <t:panelGroup colspan="3">
                         <p:dataTable id="optionTable" var="opt" value="#{materialViewBean.activeMaterial.options}">
                             <p:column headerText="仓库">
@@ -414,8 +419,16 @@
                         <p:dataTable id="attachList" value="#{materialViewBean.activeMaterial.attachments}"
                             var="attachment">
                             <p:column headerText="">
-                                <img src="#{attachment.imageHref}" width="24" height="24" border="0" />
+
+                                <!--                                 <p:lightBox> -->
+                                <!--                                     <h:outputLink value="#{attachment.imageHref}" -->
+                                <!--                                         title="#{attachment.fileName} - #{attachment.subject}"> -->
+                                <h:graphicImage value="/3/15/1/6/file/view.do?id=#{attachment.id}" width="24"
+                                    height="24" />
                                 <h:outputText value="#{attachment.origPath}" />
+                                <!--                                     </h:outputLink> -->
+                                <!--                                 </p:lightBox> -->
+
                             </p:column>
                             <p:column headerText="操作" style="width:80px;">
                                 <p:commandLink title="删除" disabled="#{materialViewBean.editable}"
@@ -424,6 +437,9 @@
                                     <p:collector value="#{attachment}"
                                         removeFrom="#{materialViewBean.activeMaterial.attachments}" />
                                 </p:commandLink>
+
+                                <a href="#{location.WEB_APP}/3/15/1/6/file/download.do?id=#{attachment.id}">下载</a>
+
                             </p:column>
                         </p:dataTable>
                     </t:panelGroup>

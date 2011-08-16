@@ -410,7 +410,7 @@ public class MaterialViewBean
     public List<SelectItem> getUnits() {
         List<Unit> unitList = serviceFor(Unit.class).list();
         List<UnitDto> unitDtoList = DTOs.marshalList(UnitDto.class, unitList);
-        return UIHelper.selectItemsFromDict(unitDtoList);
+        return UIHelper.selectItemsFromDict2(unitDtoList);
     }
 
     public List<SelectItem> getCategories() {
