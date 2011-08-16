@@ -13,12 +13,14 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.GreaterThan;
+import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
+import com.bee32.plover.orm.ext.tree.TreeEntityDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
-import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
@@ -59,11 +61,9 @@ public class BomAdminBean
 
     @PostConstruct
     public void init() {
-        EntityDataModelOptions<Component, ComponentDto> options = new EntityDataModelOptions<Component, ComponentDto>(//
-                Component.class, ComponentDto.class, 0, //
-                Order.desc("id"), //
-                TreeCriteria.root(), //
-                EntityCriteria.ownedByCurrentUser());
+       EntityDataModelOptions<Component, ComponentDto> options = new EntityDataModelOptions<Component, ComponentDto>(//
+                Component.class, ComponentDto.class, TreeEntityDto.PARENT, //
+                Order.desc("id"));
         products = UIHelper.<Component, ComponentDto> buildLazyDataModel(options);
 
         refreshProductCount();
@@ -75,9 +75,7 @@ public class BomAdminBean
     }
 
     void refreshProductCount() {
-        int count = serviceFor(Component.class).count(//
-                TreeCriteria.root(), //
-                EntityCriteria.ownedByCurrentUser());
+        int count = serviceFor(Component.class).count();
         products.setRowCount(count);
     }
 
@@ -371,16 +369,15 @@ public class BomAdminBean
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {
 
-            String[] keyword = materialPattern.split(" ");
+//            String[] keyword = materialPattern.split(" ");
+//
+//            for (int i = 0; i < keyword.length; i++) {
+//                keyword[i] = keyword[i].trim();
+//            }
 
-            for (int i = 0; i < keyword.length; i++) {
-                keyword[i] = keyword[i].trim();
-            }
+            List<Material> _materials = serviceFor(Material.class).list(new Like("name", "%" + materialPattern + "%"));
 
-            List<Material> _materials = serviceFor(Material.class).list(//
-                    // TODO MaterialCriteria.namedLike(keyword)
-                    );
-            materials = DTOs.marshalList(MaterialDto.class, 0, _materials, true);
+            materials = DTOs.marshalList(MaterialDto.class, _materials);
         }
     }
 

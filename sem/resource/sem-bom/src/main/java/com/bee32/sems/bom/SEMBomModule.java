@@ -9,7 +9,7 @@ public class SEMBomModule
         extends EnterpriseModule {
 
     public static final String PREFIX = "/3/15/3/4";
-    public static final String PREFIX_ = PREFIX;
+    public static final String PREFIX_ = PREFIX + "/";
 
     @Override
     protected void preamble() {

@@ -39,241 +39,362 @@
             <p:growl id="growl" showDetail="true" />
 
             <p:panel header="BOM管理">
-                <p:panel>
-                    <p:toolbar id="productToolbar">
-                        <p:toolbarGroup align="left">
-                            <p:commandButton value="新增" actionListener="#{bomAdminBean.new_}" disabled="#{bomAdminBean.editable}" update="bomForm" async="true"/>
-                            <p:commandButton value="删除" actionListener="#{bomAdminBean.delete_}" disabled="#{bomAdminBean.editable}" update="bomForm" async="true"/>
-                            <p:divider />
-                            <p:commandButton value="保存" actionListener="#{bomAdminBean.save_}" disabled="#{!bomAdminBean.editable}" update="bomForm" async="true"/>
-                            <p:commandButton value="取消" actionListener="#{bomAdminBean.cancel_}" disabled="#{!bomAdminBean.editable}" update="bomForm" async="true"/>
-                            <p:divider />
-                            <p:commandButton value="明细" actionListener="#{bomAdminBean.detail_}" disabled="#{bomAdminBean.editable or (not bomAdminBean.productSelected)}" update="bomForm" async="true"/>
-                            <p:commandButton value="价格" disabled="#{bomAdminBean.editable or (not bomAdminBean.productSelected)}" onclick="priceDlg.show();"/>
-                            <p:divider/>
-                            <p:commandButton value="刷新" actionListener="#{bomAdminBean.refresh_}" disabled="#{bomAdminBean.editable}" update="bomForm" async="true"/>
-                        </p:toolbarGroup>
-                    </p:toolbar>
-                </p:panel>
-                <p:panel>
-                    <p:tabView id="productTab" activeIndex="#{bomAdminBean.activeTab}">
-                        <p:tab id="productList" title="BOM列表">
-                            <p:dataTable
-                                    id="products"
-                                    var="product" value="#{bomAdminBean.products}"
-                                    paginator="true" rows="10" lazy="true"
-                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                    rowsPerPageTemplate="5,10,15"
-                                    resizableColumns="true"
-                                    selection="#{bomAdminBean.selectedProduct}"
-                                    selectionMode="single"
-                                    rowIndexVar="rowIndex">
+                <p:toolbar id="productToolbar">
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="新增"
+                            actionListener="#{bomAdminBean.new_}"
+                            disabled="#{bomAdminBean.editable}"
+                            update="bomForm" async="true" />
+                        <p:commandButton value="删除"
+                            actionListener="#{bomAdminBean.delete_}"
+                            disabled="#{bomAdminBean.editable}"
+                            update="bomForm" async="true" />
+                        <p:divider />
+                        <p:commandButton value="保存"
+                            actionListener="#{bomAdminBean.save_}"
+                            disabled="#{!bomAdminBean.editable}"
+                            update="bomForm" async="true" />
+                        <p:commandButton value="取消"
+                            actionListener="#{bomAdminBean.cancel_}"
+                            disabled="#{!bomAdminBean.editable}"
+                            update="bomForm" async="true" />
+                        <p:divider />
+                        <p:commandButton value="明细"
+                            actionListener="#{bomAdminBean.detail_}"
+                            disabled="#{bomAdminBean.editable or (not bomAdminBean.productSelected)}"
+                            update="bomForm" async="true" />
+                        <p:commandButton value="价格"
+                            disabled="#{bomAdminBean.editable or (not bomAdminBean.productSelected)}"
+                            onclick="priceDlg.show();" />
+                        <p:divider />
+                        <p:commandButton value="刷新"
+                            actionListener="#{bomAdminBean.refresh_}"
+                            disabled="#{bomAdminBean.editable}"
+                            update="bomForm" async="true" />
+                    </p:toolbarGroup>
+                </p:toolbar>
 
-<!--                                 <p:ajax event="selectRow" listener="#{bomAdminBean.onRowSelect}" update="bomForm:productToolbar priceForm:productName" />
-                                <p:ajax event="unselectRow" listener="#{bomAdminBean.onRowUnselect}" update="bomForm:productToolbar priceForm:productName" />
- -->
-                                <p:column >
-                                    <f:facet name="header">
-                                        <h:outputText value="序号" />
-                                    </f:facet>
-                                    <h:outputText value="#{rowIndex + 1}" />
-                                </p:column>
+                <p:tabView id="productTab"
+                    activeIndex="#{bomAdminBean.activeTab}">
+                    <p:tab id="productList" title="BOM列表">
+                        <p:dataTable id="products" var="product"
+                            value="#{bomAdminBean.products}"
+                            paginator="true" rows="10" lazy="true"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="5,10,15"
+                            resizableColumns="true"
+                            selection="#{bomAdminBean.selectedProduct}"
+                            selectionMode="single"
+                            rowIndexVar="rowIndex">
 
-                                <p:column >
-                                    <f:facet name="header">
-                                        <h:outputText value="物料" />
-                                    </f:facet>
-                                    <h:outputText value="#{product.material.name}" />
-                                </p:column>
-                                <p:column >
-                                    <f:facet name="header">
-                                        <h:outputText value="创建人" />
-                                    </f:facet>
-                                    <h:outputText value="#{product.creator.name}" />
-                                </p:column>
-                                <p:column >
-                                    <f:facet name="header">
-                                        <h:outputText value="建立日期" />
-                                    </f:facet>
-                                    <h:outputText value="#{product.createdDate}" >
-                                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai"/>
-                                    </h:outputText>
-                                </p:column>
-                                <p:column >
-                                    <f:facet name="header">
-                                        <h:outputText value="生效日期" />
-                                    </f:facet>
-                                    <h:outputText value="#{product.validDateFrom}" >
-                                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai"/>
-                                    </h:outputText>
+                            <p:ajax event="rowSelect"
+                                listener="#{bomAdminBean.onRowSelect}"
+                                update="bomForm:productToolbar priceForm:productName" />
+                            <p:ajax event="rowUnselect"
+                                listener="#{bomAdminBean.onRowUnselect}"
+                                update="bomForm:productToolbar priceForm:productName" />
 
-                                </p:column>
-                                <p:column >
-                                    <f:facet name="header">
-                                        <h:outputText value="失效日期" />
-                                    </f:facet>
-                                    <h:outputText value="#{product.validDateTo}" >
-                                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai"/>
-                                    </h:outputText>
-                                </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="序号" />
+                                </f:facet>
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
 
-                            </p:dataTable>
-                        </p:tab>
-                        <p:tab id="productDetail" title="BOM详细">
-                            <p:panel header="BOM信息" toggleable="true">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="物料" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{product.material.name}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="创建人" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{product.creator.name}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="建立日期" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{product.createdDate}">
+                                    <f:convertDateTime
+                                        pattern="yyyy-MM-dd"
+                                        timeZone="Asia/Shanghai" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="生效日期" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{product.validDateFrom}">
+                                    <f:convertDateTime
+                                        pattern="yyyy-MM-dd"
+                                        timeZone="Asia/Shanghai" />
+                                </h:outputText>
 
-                                <h:inputHidden id="productId" value="#{bomAdminBean.product.id}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="失效日期" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{product.validDateTo}">
+                                    <f:convertDateTime
+                                        pattern="yyyy-MM-dd"
+                                        timeZone="Asia/Shanghai" />
+                                </h:outputText>
+                            </p:column>
 
-                                <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="类型" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{product.parent.id==null? '产品' : '半成品'}" />
+                            </p:column>
 
-                                    <h:outputLabel for="materialName" value="物料"/>
-                                    <t:panelGroup colspan="3">
-                                        <h:inputHidden id="materialId" value="#{bomAdminBean.product.material.id}"/>
-                                        <h:outputText id="materialName" value="#{bomAdminBean.product.material.name}"/>
-                                        <p:commandButton title="挑选物料" value="..." onclick="chooseMaterialDlg.show();" actionListener="#{bomAdminBean.setMaterialChoose}"/>
-                                    </t:panelGroup>
+                        </p:dataTable>
+                    </p:tab>
+                    <p:tab id="productDetail" title="BOM详细">
+                        <p:panel header="BOM信息" toggleable="true">
 
-                                    <h:outputLabel for="productValidDateFrom" value="生效日期"/>
-                                    <p:calendar
-                                            id="productValidDateFrom"
-                                            pattern="yyyy-MM-dd"
-                                            value="#{bomAdminBean.product.validDateFrom}"
-                                            showOn="button"/>
-                                    <h:outputLabel for="productValidDateTo" value="失效日期"/>
-                                    <p:calendar
-                                            id="productValidDateTo"
-                                            pattern="yyyy-MM-dd"
-                                            value="#{bomAdminBean.product.validDateTo}"
-                                            showOn="button"/>
+                            <h:inputHidden id="productId"
+                                value="#{bomAdminBean.product.id}" />
 
-                                    <h:outputLabel for="wage" value="工资"/>
-                                    <p:inputText id="wage" value="#{bomAdminBean.product.wage}"/>
-                                    <h:outputLabel for="otherFee" value="其他费用"/>
-                                    <p:inputText id="otherFee" value="#{bomAdminBean.product.otherFee}"/>
+                            <t:panelGrid columns="4"
+                                columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
-                                    <h:outputLabel for="electricityFee" value="电费"/>
-                                    <p:inputText id="electricityFee" value="#{bomAdminBean.product.electricityFee}"/>
-                                    <h:outputLabel for="equipmentCost" value="设备费"/>
-                                    <p:inputText id="equipmentCost" value="#{bomAdminBean.product.equipmentCost}"/>
+                                <h:outputLabel for="materialName"
+                                    value="物料" />
+                                <t:panelGroup colspan="3">
+                                    <h:inputHidden id="materialId"
+                                        value="#{bomAdminBean.product.material.id}" />
+                                    <h:outputText id="materialName"
+                                        value="#{bomAdminBean.product.material.name}" />
+                                    <p:commandButton title="挑选物料"
+                                        value="..."
+                                        onclick="chooseMaterialDlg.show();"
+                                        actionListener="#{bomAdminBean.setMaterialChoose}" />
+                                </t:panelGroup>
 
-                                </t:panelGrid>
-                            </p:panel>
+                                <h:outputLabel
+                                    for="productValidDateFrom"
+                                    value="生效日期" />
+                                <p:calendar id="productValidDateFrom"
+                                    pattern="yyyy-MM-dd"
+                                    value="#{bomAdminBean.product.validDateFrom}"
+                                    navigator="true" locale="zh_CN"
+                                    showOn="button" />
+                                <h:outputLabel for="productValidDateTo"
+                                    value="失效日期" />
+                                <p:calendar id="productValidDateTo"
+                                    pattern="yyyy-MM-dd"
+                                    value="#{bomAdminBean.product.validDateTo}"
+                                    navigator="true" locale="zh_CN"
+                                    showOn="button" />
 
-                            <p:panel header="BOM明细" toggleable="true">
-                                <p:toolbar>
-                                    <p:toolbarGroup align="left">
-                                        <p:commandButton value="新增" actionListener="#{bomAdminBean.newComp_}" disabled="#{bomAdminBean.editableComp}" update="bomForm" async="true"/>
-                                        <p:commandButton value="删除" actionListener="#{bomAdminBean.deleteComp_}" disabled="#{bomAdminBean.editableComp}" update="bomForm" async="true"/>
-                                        <p:divider />
-                                        <p:commandButton value="保存" actionListener="#{bomAdminBean.saveComp_}" disabled="#{!bomAdminBean.editableComp}" update="bomForm" async="true"/>
-                                        <p:commandButton value="取消" actionListener="#{bomAdminBean.cancelComp_}" disabled="#{!bomAdminBean.editableComp}" update="bomForm" async="true"/>
-                                        <p:divider />
-                                        <p:commandButton value="明细" actionListener="#{bomAdminBean.detailComp_}" disabled="#{bomAdminBean.editableComp}" update="bomForm" async="true"/>
-                                        <p:divider/>
-                                        <p:commandButton value="刷新" actionListener="#{bomAdminBean.refreshComp_}" disabled="#{bomAdminBean.editableComp}" update="bomForm" async="true"/>
-                                    </p:toolbarGroup>
-                                </p:toolbar>
+                                <h:outputLabel for="wage" value="工资" />
+                                <p:inputText id="wage"
+                                    value="#{bomAdminBean.product.wage}" />
+                                <h:outputLabel for="otherFee"
+                                    value="其他费用" />
+                                <p:inputText id="otherFee"
+                                    value="#{bomAdminBean.product.otherFee}" />
 
-                                <p:tabView id="componentTab" activeIndex="#{bomAdminBean.currTabComp}">
-                                    <p:tab id="componentList" title="BOM组件列表">
-                                        <p:dataTable
-                                                id="components"
-                                                var="comp"
-                                                value="#{bomAdminBean.components}"
-                                                resizableColumns="true"
-                                                selection="#{bomAdminBean.selectedComponent}"
-                                                selectionMode="single"
-                                                rowIndexVar="rowIndex">
+                                <h:outputLabel for="electricityFee"
+                                    value="电费" />
+                                <p:inputText id="electricityFee"
+                                    value="#{bomAdminBean.product.electricityFee}" />
+                                <h:outputLabel for="equipmentCost"
+                                    value="设备费" />
+                                <p:inputText id="equipmentCost"
+                                    value="#{bomAdminBean.product.equipmentCost}" />
 
-                                            <p:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="序号"/>
-                                                </f:facet>
-                                                <h:outputText value="#{rowIndex + 1}"/>
-                                            </p:column>
+                            </t:panelGrid>
+                        </p:panel>
 
-                                            <p:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="物料"/>
-                                                </f:facet>
-                                                <h:outputText value="#{comp.material.name}"/>
-                                            </p:column>
+                        <p:panel id="detailPanel" header="BOM明细" toggleable="true">
+                            <p:toolbar>
+                                <p:toolbarGroup align="left">
+                                    <p:commandButton value="新增"
+                                        actionListener="#{bomAdminBean.newComp_}"
+                                        disabled="#{bomAdminBean.editableComp}"
+                                        update="bomForm:detailPanel bomForm:growl" async="true" />
+                                    <p:commandButton value="删除"
+                                        actionListener="#{bomAdminBean.deleteComp_}"
+                                        disabled="#{bomAdminBean.editableComp}"
+                                        update="bomForm:detailPanel bomForm:growl" async="true" />
+                                    <p:divider />
+                                    <p:commandButton value="保存"
+                                        actionListener="#{bomAdminBean.saveComp_}"
+                                        disabled="#{!bomAdminBean.editableComp}"
+                                        update="bomForm:detailPanel bomForm:growl" async="true" />
+                                    <p:commandButton value="取消"
+                                        actionListener="#{bomAdminBean.cancelComp_}"
+                                        disabled="#{!bomAdminBean.editableComp}"
+                                        update="bomForm:detailPanel bomForm:growl" async="true" />
+                                    <p:divider />
+                                    <p:commandButton value="明细"
+                                        actionListener="#{bomAdminBean.detailComp_}"
+                                        disabled="#{bomAdminBean.editableComp}"
+                                        update="bomForm:detailPanel bomForm:growl" async="true" />
+                                    <p:divider />
+                                    <p:commandButton value="刷新"
+                                        actionListener="#{bomAdminBean.refreshComp_}"
+                                        disabled="#{bomAdminBean.editableComp}"
+                                        update="bomForm:detailPanel bomForm:growl" async="true" />
+                                </p:toolbarGroup>
+                            </p:toolbar>
 
-                                            <p:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="数量"/>
-                                                </f:facet>
-                                                <h:outputText value="#{comp.quantity}"/>
-                                            </p:column>
+                            <p:tabView id="componentTab"
+                                activeIndex="#{bomAdminBean.currTabComp}">
+                                <p:tab id="componentList"
+                                    title="BOM组件列表">
+                                    <p:dataTable id="components"
+                                        var="comp"
+                                        value="#{bomAdminBean.components}"
+                                        resizableColumns="true"
+                                        selection="#{bomAdminBean.selectedComponent}"
+                                        selectionMode="single"
+                                        rowIndexVar="rowIndex">
 
-                                            <p:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="是否有效"/>
-                                                </f:facet>
-                                                <p:selectBooleanCheckbox value="#{comp.valid}" disabled="true"/>
-                                            </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="序号" />
+                                            </f:facet>
+                                            <h:outputText
+                                                value="#{rowIndex + 1}" />
+                                        </p:column>
 
-                                            <p:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="生效日期"/>
-                                                </f:facet>
-                                                <h:outputText value="#{comp.validDateFrom}">
-                                                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai"/>
-                                                </h:outputText>
-                                            </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="物料" />
+                                            </f:facet>
+                                            <h:outputText
+                                                value="#{comp.material.name}" />
+                                        </p:column>
 
-                                            <p:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="失效日期"/>
-                                                </f:facet>
-                                                <h:outputText value="#{comp.validDateTo}">
-                                                    <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Shanghai"/>
-                                                </h:outputText>
-                                            </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="数量" />
+                                            </f:facet>
+                                            <h:outputText
+                                                value="#{comp.quantity}" />
+                                        </p:column>
 
-                                        </p:dataTable>
-                                    </p:tab>
-                                    <p:tab id="componentDetail" title="BOM组件详细">
-                                        <t:panelGrid columns="4" columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText
+                                                    value="是否有效" />
+                                            </f:facet>
+                                            <p:selectBooleanCheckbox
+                                                value="#{comp.valid}"
+                                                disabled="true" />
+                                        </p:column>
 
-                                            <h:outputLabel for="materialNameComp" value="物料"/>
-                                            <t:panelGroup>
-                                                <h:inputHidden id="materialIdComp" value="#{bomAdminBean.component.material.id}"/>
-                                                <h:outputText id="materialNameComp" value="#{bomAdminBean.component.material.name}"/>
-                                                <p:commandButton title="挑选物料" value="..." onclick="chooseMaterialDlg.show();" actionListener="#{bomAdminBean.setMaterialChooseComp}"/>
-                                            </t:panelGroup>
-                                            <h:outputLabel for="compValid" value="是否有效"/>
-                                            <p:selectBooleanCheckbox id="compValid" value="#{bomAdminBean.component.valid}"/>
-
-                                            <h:outputLabel for="compValidDateFrom" value="生效日期"/>
-                                            <p:calendar
-                                                    id="compValidDateFrom"
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText
+                                                    value="生效日期" />
+                                            </f:facet>
+                                            <h:outputText
+                                                value="#{comp.validDateFrom}">
+                                                <f:convertDateTime
                                                     pattern="yyyy-MM-dd"
-                                                    value="#{bomAdminBean.component.validDateFrom}"
-                                                    showOn="button" />
-                                            <h:outputLabel for="compValidDateTo" value="失效日期"/>
-                                            <p:calendar
-                                                    id="compValidDateTo"
+                                                    timeZone="Asia/Shanghai" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText
+                                                    value="失效日期" />
+                                            </f:facet>
+                                            <h:outputText
+                                                value="#{comp.validDateTo}">
+                                                <f:convertDateTime
                                                     pattern="yyyy-MM-dd"
-                                                    value="#{bomAdminBean.component.validDateTo}"
-                                                    showOn="button" />
+                                                    timeZone="Asia/Shanghai" />
+                                            </h:outputText>
+                                        </p:column>
 
-                                            <h:outputLabel for="compValidDateTo" value="数量"/>
-                                            <t:panelGroup colspan="3">
-                                                <p:inputText id="compQuantity" value="#{bomAdminBean.component.quantity}"/>
-                                            </t:panelGroup>
+                                    </p:dataTable>
+                                </p:tab>
+                                <p:tab id="componentDetail"
+                                    title="BOM组件详细">
+                                    <t:panelGrid columns="4"
+                                        columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
-                                            <h:outputLabel for="compDesc" value="描述"/>
-                                            <t:panelGroup colspan="3">
-                                                <p:inputTextarea id="compDesc" rows="5" style="width:480px;" value="#{bomAdminBean.component.description}"/>
-                                            </t:panelGroup>
-                                        </t:panelGrid>
-                                    </p:tab>
-                                </p:tabView>
-                            </p:panel>
-                        </p:tab>
-                    </p:tabView>
-                </p:panel>
+                                        <h:outputLabel
+                                            for="materialNameComp"
+                                            value="物料" />
+                                        <t:panelGroup>
+                                            <h:inputHidden
+                                                id="materialIdComp"
+                                                value="#{bomAdminBean.component.material.id}" />
+                                            <h:outputText
+                                                id="materialNameComp"
+                                                value="#{bomAdminBean.component.material.name}" />
+                                            <p:commandButton
+                                                title="挑选物料" value="..."
+                                                onclick="chooseMaterialDlg.show();"
+                                                actionListener="#{bomAdminBean.setMaterialChooseComp}" />
+                                        </t:panelGroup>
+                                        <h:outputLabel for="compValid"
+                                            value="是否有效" />
+                                        <p:selectBooleanCheckbox
+                                            id="compValid"
+                                            value="#{bomAdminBean.component.valid}" />
+
+                                        <h:outputLabel
+                                            for="compValidDateFrom"
+                                            value="生效日期" />
+                                        <p:calendar
+                                            id="compValidDateFrom"
+                                            pattern="yyyy-MM-dd"
+                                            value="#{bomAdminBean.component.validDateFrom}"
+                                            navigator="true"
+                                            locale="zh_CN"
+                                            showOn="button" />
+                                        <h:outputLabel
+                                            for="compValidDateTo"
+                                            value="失效日期" />
+                                        <p:calendar id="compValidDateTo"
+                                            pattern="yyyy-MM-dd"
+                                            value="#{bomAdminBean.component.validDateTo}"
+                                            navigator="true"
+                                            locale="zh_CN"
+                                            showOn="button" />
+
+                                        <h:outputLabel
+                                            for="compValidDateTo"
+                                            value="数量" />
+                                        <t:panelGroup colspan="3">
+                                            <p:inputText
+                                                id="compQuantity"
+                                                value="#{bomAdminBean.component.quantity}" />
+                                        </t:panelGroup>
+
+                                        <h:outputLabel for="compDesc"
+                                            value="描述" />
+                                        <t:panelGroup colspan="3">
+                                            <p:inputTextarea
+                                                id="compDesc" rows="5"
+                                                style="width:480px;"
+                                                value="#{bomAdminBean.component.description}" />
+                                        </t:panelGroup>
+                                    </t:panelGrid>
+                                </p:tab>
+                            </p:tabView>
+                        </p:panel>
+                    </p:tab>
+                </p:tabView>
+
             </p:panel>
 
         </h:form>
