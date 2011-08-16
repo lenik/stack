@@ -3,7 +3,6 @@ package com.bee32.sem.file.web;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,16 +34,17 @@ public class UserFileAdmin
 
     private static final long serialVersionUID = 1L;
 
-    static final String CHECKBOX_TAGS = "main:checkbox_tagId";
-
     List<SelectItem> userFileTags;
+    /* checkbox ids */
     List<String> selectedTags;
+    List<SelectItem> selectedTagItems = new ArrayList<SelectItem>();
     List<UserFileDto> userFileList;
     UserFileDto activeFile = new UserFileDto().create();
     String fileSubject;
     String fileName;
     int activeIndex;
-    List<UserFileTagnameDto> selectedTagsToAdd;
+    List<String> selectedTagsToAdd;
+    String activeTagId;
     UserFileTagnameDto activeTag = new UserFileTagnameDto().create();
     UserFileTagnameDto newTag = new UserFileTagnameDto().create();
 
@@ -53,12 +53,42 @@ public class UserFileAdmin
         refreshTags();
     }
 
+    public void setActiveFile() {
+        // XXX
+    }
+
     public void refreshTags() {
         List<UserFileTagname> tags = serviceFor(UserFileTagname.class).list(EntityCriteria.ownedByCurrentUser());
         List<SelectItem> items = new ArrayList<SelectItem>();
         for (UserFileTagname tag : tags)
             items.add(new SelectItem(tag.getId(), tag.getTag()));
         userFileTags = items;
+    }
+
+    public void doSelectTags() {
+
+        List<SelectItem> temp = activeFile.getTagItems();
+        for(SelectItem item : temp){
+            item.getValue();
+        }
+        List<SelectItem> itemList = new ArrayList<SelectItem>();
+        for (String tagId : selectedTagsToAdd) {
+            UserFileTagname tagename = serviceFor(UserFileTagname.class).getOrFail(Long.parseLong(tagId));
+            UserFileTagnameDto dto = DTOs.marshal(UserFileTagnameDto.class, tagename);
+            itemList.add(new SelectItem(dto.getId(), dto.getTag()));
+        }
+        activeFile.setTagItems(itemList);
+    }
+
+    public void removeActiveTag() {
+        int tempIndex = 0;
+        for (SelectItem item : selectedTagItems) {
+            long tagId = (Long) item.getValue();
+            long tempId = Long.parseLong(activeTagId);
+            if (tagId == tempId)
+                tempIndex = selectedTagItems.indexOf(item);
+        }
+        selectedTagItems.remove(tempIndex);
     }
 
     public void createNewTag() {
@@ -92,17 +122,20 @@ public class UserFileAdmin
         for (String tagId : selectedTags)
             idList.add(Long.parseLong(tagId));
         List<UserFile> files = serviceFor(UserFile.class).list(UserFileCriteria.withAnyTagIn(idList));
-        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.ACTIVETAG, files);
+        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, files);
     }
 
     public void initUserFile() {
         List<UserFile> userFiles = serviceFor(UserFile.class).list(EntityCriteria.ownedByCurrentUser());
-        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.ACTIVETAG, userFiles);
+        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, userFiles);
     }
 
     public void editUserFile() {
-        UserFileTagname uft = serviceFor(UserFileTagname.class).getOrFail(activeFile.getActiveTag().getId());
-        Set<UserFileTagname> set = new HashSet<UserFileTagname>(Arrays.asList(uft));
+
+        Set<UserFileTagname> set = new HashSet<UserFileTagname>();
+        for (SelectItem item : selectedTagItems)
+            set.add(serviceFor(UserFileTagname.class).getOrFail((Long) item.getValue()));
+
         UserFile file = activeFile.unmarshal();
         file.setTags(set);
         try {
@@ -215,11 +248,11 @@ public class UserFileAdmin
         this.activeTag = activeTag;
     }
 
-    public List<UserFileTagnameDto> getSelectedTagsToAdd() {
+    public List<String> getSelectedTagsToAdd() {
         return selectedTagsToAdd;
     }
 
-    public void setSelectedTagsToAdd(List<UserFileTagnameDto> selectedTagsToAdd) {
+    public void setSelectedTagsToAdd(List<String> selectedTagsToAdd) {
         this.selectedTagsToAdd = selectedTagsToAdd;
     }
 
@@ -233,6 +266,22 @@ public class UserFileAdmin
 
     public void setNewTag(UserFileTagnameDto newTag) {
         this.newTag = newTag;
+    }
+
+    public List<SelectItem> getSelectedTagItems() {
+        return selectedTagItems;
+    }
+
+    public void setSelectedTagItems(List<SelectItem> selectedTagItems) {
+        this.selectedTagItems = selectedTagItems;
+    }
+
+    public String getActiveTagId() {
+        return activeTagId;
+    }
+
+    public void setActiveTagId(String acitveTagId) {
+        this.activeTagId = acitveTagId;
     }
 
 }

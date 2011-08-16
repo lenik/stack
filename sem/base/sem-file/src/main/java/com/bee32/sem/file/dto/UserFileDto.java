@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.faces.model.SelectItem;
 import javax.free.FilePath;
 import javax.free.ParseException;
 
@@ -35,7 +36,9 @@ public class UserFileDto
     String tags_string;
 
     Set<UserFileTagnameDto> tags;
-    UserFileTagnameDto activeTag;
+// UserFileTagnameDto activeTag;
+    List<UserFileTagnameDto> tagList;
+    List<SelectItem> tagItems;
 
     public UserFileDto() {
         super();
@@ -58,15 +61,20 @@ public class UserFileDto
         else
             tags_string = "没有标签";
 
-        if (selection.contains(TAGS))
+        if (selection.contains(TAGS)) {
             tags = marshalSet(UserFileTagnameDto.class, 0, source.getTags(), true);
-        if (selection.contains(ACTIVETAG)) {
-            List<UserFileTagname> tempTags = new ArrayList<UserFileTagname>(source.getTags());
-            if (tempTags.size() > 0)
-                activeTag = marshal(UserFileTagnameDto.class, 0, tempTags.get(0));
-            else
-                activeTag = new UserFileTagnameDto().create();
+            for (UserFileTagnameDto tag : tags) {
+                tagItems.add(new SelectItem(tag.getId(), tag.getTag()));
+            }
+
         }
+// if (selection.contains(ACTIVETAG)) {
+// List<UserFileTagname> tempTags = new ArrayList<UserFileTagname>(source.getTags());
+// if (tempTags.size() > 0)
+// activeTag = marshal(UserFileTagnameDto.class, 0, tempTags.get(0));
+// else
+// activeTag = new UserFileTagnameDto().create();
+// }
 
     }
 
@@ -77,8 +85,10 @@ public class UserFileDto
         target.setFileName(fileName);
         target.setSubject(subject);
 
-        if (selection.contains(TAGS))
+        if (selection.contains(TAGS)) {
+            tags = new HashSet<UserFileTagnameDto>(tagList);
             mergeSet(target, "tags", tags);
+        }
     }
 
     @Override
@@ -98,6 +108,7 @@ public class UserFileDto
                 UserFileTagnameDto tag = new UserFileTagnameDto().ref(_tagL);
                 tags.add(tag);
             }
+            tagList = new ArrayList<UserFileTagnameDto>(tags);
         }
     }
 
@@ -177,13 +188,13 @@ public class UserFileDto
         this.imageHref = imageHref;
     }
 
-    public UserFileTagnameDto getActiveTag() {
-        return activeTag;
-    }
-
-    public void setActiveTag(UserFileTagnameDto activeTag) {
-        this.activeTag = activeTag;
-    }
+// public UserFileTagnameDto getActiveTag() {
+// return activeTag;
+// }
+//
+// public void setActiveTag(UserFileTagnameDto activeTag) {
+// this.activeTag = activeTag;
+// }
 
     public String getTags_string() {
         return tags_string;
@@ -192,4 +203,21 @@ public class UserFileDto
     public void setTags_string(String tags_string) {
         this.tags_string = tags_string;
     }
+
+    public List<UserFileTagnameDto> getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(List<UserFileTagnameDto> tagList) {
+        this.tagList = tagList;
+    }
+
+    public List<SelectItem> getTagItems() {
+        return tagItems;
+    }
+
+    public void setTagItems(List<SelectItem> tagItems) {
+        this.tagItems = tagItems;
+    }
+
 }
