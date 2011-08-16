@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.free.ICharOut;
 import javax.free.Stdio;
+import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
@@ -15,6 +16,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.ext.color.UIEntitySpec;
 
 /**
@@ -121,7 +123,8 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
         return children.size();
     }
 
-    @Transient
+    @Redundant
+    @Column(nullable = false)
     public int getDepth() {
         int depth = 0;
         T node = self();
@@ -130,6 +133,9 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
             depth++;
         }
         return depth;
+    }
+
+    void setDepth(int depth) {
     }
 
     @Transient
