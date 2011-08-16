@@ -71,7 +71,8 @@ public class SamplesLoader
         NO_PROGRESS = NOPClosure.getInstance();
     }
 
-    static int loadIndex = 0;
+    int loadIndex = 0;
+    int simLoadIndex = 0;
 
     /**
      * Static: the samples-loader maybe instantiated twice cuz WebAppCtx & AppCtx. So here just make
@@ -80,6 +81,13 @@ public class SamplesLoader
     static IdentityHashSet scannedPackages = new IdentityHashSet();
 
     public synchronized void loadSamples(final SamplePackage pack, final Closure<SampleContribution> progress) {
+
+        if (logger.isDebugEnabled()) {
+            _simLoadSamples(pack, new IdentityHashSet());
+
+            logger.debug("Normal samples structure: ");
+            SampleDumper.dump(DiamondPackage.NORMAL);
+        }
 
         class LoadingProcess
                 implements Runnable {
@@ -93,6 +101,17 @@ public class SamplesLoader
 
         // Load without logged-in user stuff.
         ThreadHttpContext.escape(process);
+    }
+
+    void _simLoadSamples(SamplePackage pack, IdentityHashSet set) {
+        if (!set.add(pack))
+            return;
+
+        for (SamplePackage dependency : pack.getDependencies())
+            _simLoadSamples(dependency, set);
+
+        int objId = ObjectPool.id(pack);
+        logger.info("Pre-Load: " + (++simLoadIndex) + ", " + pack.getName() + " @" + objId);
     }
 
     @SuppressWarnings("unchecked")
@@ -278,10 +297,6 @@ public class SamplesLoader
     }
 
     public void loadNormalSamples() {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Normal samples structure: ");
-            SampleDumper.dump(DiamondPackage.NORMAL);
-        }
         loadSamples(DiamondPackage.NORMAL, NO_PROGRESS);
     }
 

@@ -43,10 +43,6 @@ public abstract class SampleContribution
         addToDiamond(diamond);
     }
 
-    {
-        ImportSamplesUtil.register(this);
-    }
-
     protected void addToDiamond(DiamondPackage diamond) {
         diamond.insert(this);
     }
