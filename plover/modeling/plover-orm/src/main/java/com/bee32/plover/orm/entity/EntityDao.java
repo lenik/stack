@@ -102,7 +102,8 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     /** {@inheritDoc} */
     @Override
     public List<E> list() {
-        return (List<E>) getHibernateTemplate().loadAll(entityType);
+        List<E> list = (List<E>) getHibernateTemplate().loadAll(entityType);
+        return postLoadDecorated(list);
     }
 
     @SuppressWarnings("unchecked")
@@ -131,7 +132,7 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
         if (entity == null)
             return null;
 
-        // post-load?
+        postLoad(entity);
 
         return entity;
     }
@@ -139,6 +140,14 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     @Override
     public E lazyLoad(K id) {
         E entity = getHibernateTemplate().load(entityType, id);
+
+        try {
+            postLoad(entity);
+        } catch (ObjectRetrievalFailureException e) {
+            // XXX entity maybe not existed.
+            // But should it be this exception type?
+            throw e;
+        }
         return entity;
     }
 
@@ -147,11 +156,14 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
         E entity = get(id);
         if (entity == null)
             throw new ObjectRetrievalFailureException(entityType, id);
+
         return entity;
     }
 
     @Override
     public K save(E entity) {
+        preSave(entity);
+
         HibernateTemplate template = getHibernateTemplate();
         Serializable key = template.save(entity);
         // XXX - convert serializable to K.
@@ -159,19 +171,32 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
-    public void saveAll(Collection<? extends E> objects) {
+    public void saveAll(Collection<? extends E> entities) {
+        if (entities == null)
+            throw new NullPointerException("objects");
+
+        for (E entity : entities)
+            preSave(entity);
+
         // Need transactional wrapper.
-        getHibernateTemplate().saveOrUpdateAll(objects);
+        getHibernateTemplate().saveOrUpdateAll(entities);
     }
 
     @Override
     public void saveOrUpdateAll(Collection<? extends E> entities) {
+        if (entities == null)
+            throw new NullPointerException("entities");
+
+        for (E entity : entities)
+            preSave(entity);
+
         // Need transactional wrapper.
         getHibernateTemplate().saveOrUpdateAll(entities);
     }
 
     @Override
     public void update(E entity) {
+        preSave(entity);
         getHibernateTemplate().update(entity);
     }
 
@@ -181,28 +206,36 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     public void saveOrUpdate(E entity) {
+        preSave(entity);
         getHibernateTemplate().saveOrUpdate(entity);
     }
 
     @Override
-    public boolean delete(Object entity) {
+    public boolean delete(Object _entity) {
+        @SuppressWarnings("unchecked")
+        E entity = (E) _entity;
+
+        preDelete(entity);
         getHibernateTemplate().delete(entity);
         // count??
         return true;
     }
 
     @Override
-    public boolean deleteByKey(K key) {
+    public final boolean deleteByKey(K key) {
         return deleteById(key);
     }
 
     @Override
     public void deleteAll() {
         HibernateTemplate template = getHibernateTemplate();
-        String hql = "delete from " + entityType.getSimpleName();
-        template.bulkUpdate(hql);
-        // List<? extends E> list = template.loadAll(entityType);
-        // template.deleteAll(list);
+        // String hql = "delete from " + entityType.getSimpleName();
+        // template.bulkUpdate(hql);
+        List<? extends E> list = template.loadAll(entityType);
+        for (E e : list)
+            preDelete(e);
+
+        template.deleteAll(list);
     }
 
     @Override
@@ -221,18 +254,33 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     @Override
     public E retrieve(K key, LockMode lockMode)
             throws DataAccessException {
-        return getHibernateTemplate().get(entityType, key, lockMode);
+        E entity = getHibernateTemplate().get(entityType, key, lockMode);
+
+        if (entity != null)
+            postLoad(entity);
+
+        return entity;
     }
 
     @Override
     public void update(E entity, LockMode lockMode)
             throws DataAccessException {
+        if (entity == null)
+            throw new NullPointerException("entity");
+
+        preSave(entity);
+
         getHibernateTemplate().update(entity, lockMode);
     }
 
     @Override
-    public boolean delete(Object entity, LockMode lockMode)
+    public boolean delete(Object _entity, LockMode lockMode)
             throws DataAccessException {
+        @SuppressWarnings("unchecked")
+        E entity = (E) _entity;
+
+        preDelete(entity);
+
         getHibernateTemplate().delete(entity, lockMode);
         return true;
     }
@@ -298,12 +346,17 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     public E getUnique(ICriteriaElement... criteriaElements)
             throws HibernateException {
         Criteria _criteria = createCriteria(criteriaElements);
+        E entity;
         try {
-            E result = (E) _criteria.uniqueResult();
-            return result;
+            entity = (E) _criteria.uniqueResult();
         } catch (HibernateException e) {
             throw new NonUniqueException(e);
         }
+
+        if (entity != null)
+            postLoad(entity);
+
+        return entity;
     }
 
     @Override
@@ -313,12 +366,15 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
         List<E> list = criteria.list();
         if (list.isEmpty())
             return null;
-        else
-            return list.get(0);
+
+        E first = list.get(0);
+        postLoad(first);
+
+        return first;
     }
 
     @Override
-    public E getByName(String name) {
+    public final E getByName(String name) {
         if (name == null)
             throw new NullPointerException("name");
         return getFirst(new Equals("name", name));
@@ -328,7 +384,7 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     public List<E> list(ICriteriaElement... criteriaElements) {
         Criteria criteria = createCriteria(criteriaElements);
         List<E> list = criteria.list();
-        return list;
+        return postLoadDecorated(list);
     }
 
     @Override
@@ -345,10 +401,17 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
     @Override
     public boolean deleteById(K id) {
-        String entityName = getEntityType().getSimpleName();
-        String hql = "delete from " + entityName + " where id=?";
-        int rows = getHibernateTemplate().bulkUpdate(hql, id);
-        return rows != 0;
+        HibernateTemplate template = getHibernateTemplate();
+        E entity = template.get(getEntityType(), id);
+        if (entity == null) {
+            logger.debug("Entity isn't existed: " + getEntityType() + " id=" + id);
+            return false;
+        }
+
+        preDelete(entity);
+
+        template.delete(entity);
+        return true;
     }
 
     @Override
@@ -357,6 +420,10 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
 
         Criteria criteria = createCriteria(criteriaElements);
         List<E> list = criteria.list();
+
+        for (E e : list)
+            preDelete(e);
+
         template.deleteAll(list);
 
         // approx.
@@ -368,12 +435,29 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
      * 3. Extensions.
      * </pre>
      */
-    public void postLoad(E entity) {
 
+    /**
+     * Post loading.
+     *
+     * Please be aware of lazy-init entity.
+     */
+    protected void postLoad(E entity) {
     }
 
-    public void preSave(E entity) {
+    protected final <T> List<T> postLoadDecorated(List<T> list) {
+        return list;
+    }
 
+    /**
+     * Inject redundant attributes to the entity before save
+     */
+    protected void preSave(E entity) {
+    }
+
+    /**
+     * Update references (like depth) before delete.
+     */
+    protected void preDelete(E entity) {
     }
 
 }
