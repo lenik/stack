@@ -23,6 +23,8 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         implements IEntityAccessService<E, K> {
 
     EntityDao<E, K> dao;
+    boolean autoFlush = true;
+    boolean autoBulkFlush = true;
 
     public EntityDao<E, K> getDao() {
         if (dao == null)
@@ -95,7 +97,8 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
 
         EntityDao<E, K> dao = getDao();
         K id = (K) dao.save(entity);
-        dao.flush();
+
+        autoFlush();
         return id;
     }
 
@@ -106,7 +109,8 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
 
         EntityDao<E, K> dao = getDao();
         dao.update(entity);
-        dao.flush();
+
+        autoFlush();
     }
 
     @Transactional(readOnly = true)
@@ -125,6 +129,8 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
             // EntitySpec?
             checkUpdate();
         getDao().saveOrUpdate(entity);
+
+        autoFlush();
     }
 
     @Transactional(readOnly = false)
@@ -134,7 +140,8 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
 
         EntityDao<E, K> dao = getDao();
         dao.saveAll(entities);
-        dao.flush();
+
+        autoBulkFlush();
     }
 
     @Transactional(readOnly = true)
@@ -148,12 +155,14 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     public void saveAll(Collection<? extends E> entities) {
         checkSave();
         getDao().saveAll(entities);
+        autoBulkFlush();
     }
 
     @Transactional(readOnly = false)
     @Override
     public void saveOrUpdateAll(E... entities) {
         saveOrUpdateAll(Arrays.asList(entities));
+        autoBulkFlush();
     }
 
     @Transactional(readOnly = true)
@@ -185,7 +194,8 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
 
         EntityDao<E, K> dao = getDao();
         dao.saveOrUpdateAll(entities);
-        dao.flush();
+
+        autoBulkFlush();
     }
 
     @Transactional(readOnly = false)
@@ -195,7 +205,9 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
 
         EntityDao<E, K> dao = getDao();
         boolean status = dao.delete(entity);
-        dao.flush();
+
+        autoFlush();
+
         return status;
     }
 
@@ -228,6 +240,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
             throws DataAccessException {
         checkUpdate();
         getDao().update(entity, lockMode);
+        autoFlush();
     }
 
     @Transactional(readOnly = true)
@@ -248,7 +261,9 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     public boolean delete(Object entity, LockMode lockMode)
             throws DataAccessException {
         checkDelete();
-        return getDao().delete(entity, lockMode);
+        boolean status = getDao().delete(entity, lockMode);
+        autoFlush();
+        return status;
     }
 
     @Transactional(readOnly = false)
@@ -266,6 +281,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         // Comment out for strict mode.
         // dao.flush();
         dao.evict(entity);
+        // autoFlush();
     }
 
     // TODO How to use replicate?
@@ -293,10 +309,8 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Override
     public boolean deleteById(K id) {
         checkDelete();
-
-        EntityDao<E, K> dao = getDao();
         boolean status = getDao().deleteById(id);
-        dao.flush();
+        autoFlush();
         return status;
     }
 
@@ -304,10 +318,8 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Override
     public int deleteAll(ICriteriaElement... criteria) {
         checkDelete();
-
-        EntityDao<E, K> dao = getDao();
-        int count = dao.deleteAll(criteria);
-        dao.flush();
+        int count = getDao().deleteAll(criteria);
+        autoBulkFlush();
         return count;
     }
 
@@ -318,7 +330,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
 
         EntityDao<E, K> dao = getDao();
         boolean status = dao.deleteByKey(key);
-        dao.flush();
+        autoFlush();
         return status;
     }
 
@@ -326,10 +338,8 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     @Override
     public void deleteAll() {
         checkDelete();
-
-        EntityDao<E, K> dao = getDao();
-        dao.deleteAll();
-        dao.flush();
+        getDao().deleteAll();
+        autoBulkFlush();
     }
 
     @Transactional(readOnly = true)
@@ -378,4 +388,11 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
     protected void checkDelete() {
     }
 
+    protected void autoFlush() {
+        getDao().flush();
+    }
+
+    protected void autoBulkFlush() {
+        autoFlush();
+    }
 }
