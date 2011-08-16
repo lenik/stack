@@ -15,10 +15,10 @@ import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.SEMPeopleSamples;
-import com.bee32.sem.world.thing.SEMWorldThingSamples;
+import com.bee32.sem.world.SEMWorldSamples;
 import com.bee32.sem.world.thing.Unit;
 
-@ImportSamples({ SEMPeopleSamples.class, SEMWorldThingSamples.class })
+@ImportSamples({ SEMPeopleSamples.class, SEMWorldSamples.class })
 public class SEMInventorySamples
         extends SampleContribution {
 

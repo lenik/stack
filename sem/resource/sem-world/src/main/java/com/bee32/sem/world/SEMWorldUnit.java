@@ -2,12 +2,12 @@ package com.bee32.sem.world;
 
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
-import com.bee32.sem.world.monetary.SEMWorldMonetaryUnit;
-import com.bee32.sem.world.thing.SEMWorldThingUnit;
+import com.bee32.sem.world.monetary.MonetaryUnit;
+import com.bee32.sem.world.thing.ThingUnit;
 
 @ImportUnit({//
-/*    */SEMWorldThingUnit.class, //
-        SEMWorldMonetaryUnit.class, //
+/*    */ThingUnit.class, //
+        MonetaryUnit.class, //
 })
 public class SEMWorldUnit
         extends PersistenceUnit {
