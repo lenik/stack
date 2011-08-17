@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.bee32.plover.arch.util.ClassCatalog;
+import com.bee32.plover.orm.util.ObjectPool;
 import com.bee32.plover.util.PrettyPrintStream;
 
 public class PUnitDumper {
@@ -23,8 +24,14 @@ public class PUnitDumper {
         }
     }
 
+    public static String dump(ClassCatalog catalog) {
+        PrettyPrintStream out = new PrettyPrintStream();
+        dump(out, catalog);
+        return out.toString();
+    }
+
     public static void dump(PrettyPrintStream out, ClassCatalog catalog) {
-        out.println(catalog.getName());
+        out.println(catalog.getName() + " @" + ObjectPool.id(catalog));
 
         Set<? extends ClassCatalog> dependencies = catalog.getDependencies();
         if (!dependencies.isEmpty()) {

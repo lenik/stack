@@ -20,7 +20,7 @@ public class UsingUtil {
 
         PersistenceUnit unit;
         try {
-            unit = unitClass.newInstance();
+            unit = PersistenceUnit.getInstance(unitClass);
         } catch (Exception e) {
             throw new IllegalUsageException("Failed to instantiate PUnit " + unitClass, e);
         }

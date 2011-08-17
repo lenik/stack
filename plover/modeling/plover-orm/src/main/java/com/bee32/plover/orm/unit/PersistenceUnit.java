@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.unit;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
 
@@ -18,6 +20,8 @@ public abstract class PersistenceUnit
 
     static Logger logger = LoggerFactory.getLogger(PersistenceUnit.class);
 
+    static Map<Class<?>, PersistenceUnit> instances = new HashMap<Class<?>, PersistenceUnit>();
+
     private boolean postProcessed;
 
     public PersistenceUnit(ClassCatalog... imports) {
@@ -26,6 +30,25 @@ public abstract class PersistenceUnit
 
     public PersistenceUnit(String name, ClassCatalog... imports) {
         super(name, imports);
+    }
+
+    {
+        if (instances.containsValue(this))
+            throw new IllegalStateException("PUnit instance duplicated: " + this);
+        instances.put(getClass(), this);
+    }
+
+    public static synchronized PersistenceUnit getInstance(Class<? extends PersistenceUnit> unitClass) {
+        PersistenceUnit instance = instances.get(unitClass);
+        if (instance == null) {
+            try {
+                instance = unitClass.newInstance();
+            } catch (ReflectiveOperationException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+            instances.put(unitClass, instance);
+        }
+        return instance;
     }
 
     @Override
@@ -76,7 +99,7 @@ public abstract class PersistenceUnit
             for (Class<? extends PersistenceUnit> unitClass : unitClasses) {
                 PersistenceUnit importUnit;
                 try {
-                    importUnit = unitClass.newInstance();
+                    importUnit = getInstance(unitClass);
                 } catch (Exception e) {
                     throw new IllegalUsageException("Failed to instantiate imported unit " + unitClass, e);
                 }
