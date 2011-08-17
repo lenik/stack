@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
@@ -14,9 +15,12 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
+@Blue
+@SequenceGenerator(name = "idgen", sequenceName = "palette_color_seq", allocationSize = 1)
 public class PaletteColor
         extends UIEntityAuto<Integer> {
 

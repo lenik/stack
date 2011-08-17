@@ -5,10 +5,12 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.orm.ext.dict.ShortNameDict;
 
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "palette_seq", allocationSize = 1)
 public class Palette
         extends ShortNameDict {
 
