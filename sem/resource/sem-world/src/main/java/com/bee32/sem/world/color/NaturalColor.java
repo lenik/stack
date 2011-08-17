@@ -44,7 +44,14 @@ public class NaturalColor
 
     @Transient
     public TrueColor getTrueColor() {
-        return trueColor;
+        if (palette == null)
+            return trueColor;
+
+        if (sampleName == null)
+            throw new IllegalStateException("Palette sample has not been set.");
+
+        PaletteColor _color = palette.getColor(sampleName);
+        return _color.getTrueColor();
     }
 
     @Column(name = "trueColor", nullable = false)
@@ -54,6 +61,13 @@ public class NaturalColor
 
     void set_trueColor(long _trueColor) {
         trueColor.setLong(_trueColor);
+    }
+
+    public String getName() {
+        if (palette != null)
+            return palette.getName() + ":" + sampleName;
+        else
+            return trueColor.toString();
     }
 
 }
