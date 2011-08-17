@@ -63,6 +63,7 @@ public class NaturalColor
         trueColor.setLong(_trueColor);
     }
 
+    @Transient
     public String getName() {
         if (palette != null)
             return palette.getName() + ":" + sampleName;
