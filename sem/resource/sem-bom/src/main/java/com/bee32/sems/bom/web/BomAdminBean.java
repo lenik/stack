@@ -13,7 +13,6 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.GreaterThan;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
@@ -218,8 +217,6 @@ public class BomAdminBean
             }
 
             serviceFor(Component.class).deleteById(selectedProduct.getId());
-
-            refreshProductCount();
 
             uiLogger.info("删除产品成功");
         } catch (Exception e) {

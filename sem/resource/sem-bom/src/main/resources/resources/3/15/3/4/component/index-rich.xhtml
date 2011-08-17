@@ -45,10 +45,6 @@
                             actionListener="#{bomAdminBean.new_}"
                             disabled="#{bomAdminBean.editable}"
                             update="bomForm" async="true" />
-                        <p:commandButton value="删除"
-                            actionListener="#{bomAdminBean.delete_}"
-                            disabled="#{bomAdminBean.editable}"
-                            update="bomForm" async="true" />
                         <p:divider />
                         <p:commandButton value="保存"
                             actionListener="#{bomAdminBean.save_}"
@@ -58,14 +54,6 @@
                             actionListener="#{bomAdminBean.cancel_}"
                             disabled="#{!bomAdminBean.editable}"
                             update="bomForm" async="true" />
-                        <p:divider />
-                        <p:commandButton value="明细"
-                            actionListener="#{bomAdminBean.detail_}"
-                            disabled="#{bomAdminBean.editable or (not bomAdminBean.productSelected)}"
-                            update="bomForm" async="true" />
-                        <p:commandButton value="价格"
-                            disabled="#{bomAdminBean.editable or (not bomAdminBean.productSelected)}"
-                            onclick="priceDlg.show();" />
                         <p:divider />
                         <p:commandButton value="刷新"
                             actionListener="#{bomAdminBean.refresh_}"
@@ -158,6 +146,33 @@
                                     value="#{product.parent.id==null? '产品' : '半成品'}" />
                             </p:column>
 
+                            <p:column>
+                                <f:facet name="header">操作</f:facet>
+                                <t:panelGroup>
+                                    <p:commandLink value="删除"
+                                        oncomplete="deleteProductConfirmDialog.show();">
+                                        <f:setPropertyActionListener
+                                            value="#{product}"
+                                            target="#{bomAdminBean.selectedProduct}" />
+                                    </p:commandLink>
+                                    <p:spacer width="10" />
+                                    <p:commandLink value="明细"
+                                        actionListener="#{bomAdminBean.detail_}"
+                                        update="bomForm">
+                                        <f:setPropertyActionListener
+                                            value="#{product}"
+                                            target="#{bomAdminBean.selectedProduct}" />
+                                    </p:commandLink>
+                                    <p:spacer width="10" />
+                                    <p:commandLink value="价格"
+                                        onclick="priceDlg.show();">
+                                        <f:setPropertyActionListener
+                                            value="#{product}"
+                                            target="#{bomAdminBean.selectedProduct}" />
+                                    </p:commandLink>
+                                </t:panelGroup>
+                            </p:column>
+
                         </p:dataTable>
                     </p:tab>
                     <p:tab id="productDetail" title="BOM详细">
@@ -224,30 +239,21 @@
                                     <p:commandButton value="新增"
                                         actionListener="#{bomAdminBean.newComp_}"
                                         disabled="#{bomAdminBean.editableComp}"
-                                        update="bomForm:detailPanel bomForm:growl" async="true" />
-                                    <p:commandButton value="删除"
-                                        actionListener="#{bomAdminBean.deleteComp_}"
-                                        disabled="#{bomAdminBean.editableComp}"
-                                        update="bomForm:detailPanel bomForm:growl" async="true" />
+                                        update="bomForm bomForm:growl" async="true" />
                                     <p:divider />
                                     <p:commandButton value="保存"
                                         actionListener="#{bomAdminBean.saveComp_}"
                                         disabled="#{!bomAdminBean.editableComp}"
-                                        update="bomForm:detailPanel bomForm:growl" async="true" />
+                                        update="bomForm" async="true" />
                                     <p:commandButton value="取消"
                                         actionListener="#{bomAdminBean.cancelComp_}"
                                         disabled="#{!bomAdminBean.editableComp}"
-                                        update="bomForm:detailPanel bomForm:growl" async="true" />
-                                    <p:divider />
-                                    <p:commandButton value="明细"
-                                        actionListener="#{bomAdminBean.detailComp_}"
-                                        disabled="#{bomAdminBean.editableComp}"
-                                        update="bomForm:detailPanel bomForm:growl" async="true" />
+                                        update="bomForm bomForm:growl" async="true" />
                                     <p:divider />
                                     <p:commandButton value="刷新"
                                         actionListener="#{bomAdminBean.refreshComp_}"
                                         disabled="#{bomAdminBean.editableComp}"
-                                        update="bomForm:detailPanel bomForm:growl" async="true" />
+                                        update="bomForm" async="true" />
                                 </p:toolbarGroup>
                             </p:toolbar>
 
@@ -321,6 +327,28 @@
                                                     pattern="yyyy-MM-dd"
                                                     timeZone="Asia/Shanghai" />
                                             </h:outputText>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">操作</f:facet>
+                                            <t:panelGroup>
+                                                <p:commandLink
+                                                    value="删除"
+                                                    oncomplete="deleteComponentConfirmDialog.show();">
+                                                    <f:setPropertyActionListener
+                                                        value="#{comp}"
+                                                        target="#{bomAdminBean.selectedComponent}" />
+                                                </p:commandLink>
+                                                <p:spacer width="10" />
+                                                <p:commandLink
+                                                    value="明细"
+                                                    actionListener="#{bomAdminBean.detailComp_}"
+                                                    update="bomForm">
+                                                    <f:setPropertyActionListener
+                                                        value="#{comp}"
+                                                        target="#{bomAdminBean.selectedComponent}" />
+                                                </p:commandLink>
+                                            </t:panelGroup>
                                         </p:column>
 
                                     </p:dataTable>
@@ -482,6 +510,26 @@
                     <h:outputText id="productPrice" value="#{bomAdmin.price}"/>
                 </h:panelGrid>
             </p:dialog>
+        </h:form>
+
+        <h:form id="deleteProductConfirmForm">
+            <p:confirmDialog message="确定要删除BOM产品吗?" width="200"
+                    header="删除产品确认" severity="alert" widgetVar="deleteProductConfirmDialog" modal="true">
+
+                <p:commandButton value="确定" update="bomForm" actionListener="#{bomAdminBean.delete_}" oncomplete="deleteProductConfirmDialog.hide()"/>
+                <p:commandButton value="取消" onclick="deleteProductConfirmDialog.hide()" type="button" />
+
+            </p:confirmDialog>
+        </h:form>
+
+        <h:form id="deleteComponentConfirmForm">
+            <p:confirmDialog message="确定要删除BOM组件吗?" width="200"
+                    header="删除组件确认" severity="alert" widgetVar="deleteComponentConfirmDialog" modal="true">
+
+                <p:commandButton value="确定" update="bomForm" actionListener="#{bomAdminBean.deleteComp_}" oncomplete="deleteComponentConfirmDialog.hide()"/>
+                <p:commandButton value="取消" onclick="deleteComponentConfirmDialog.hide()" type="button" />
+
+            </p:confirmDialog>
         </h:form>
 
     </ui:define>
