@@ -11,15 +11,12 @@ public class TrueColor
     static final int scale = 0x10000;
     static final int k256 = scale / 0x100;
 
-    String name;
-
     int red;
     int green;
     int blue;
     int alpha = scale;
 
-    public TrueColor(String name) {
-        setName(name);
+    public TrueColor() {
     }
 
     public TrueColor(int rgb24) {
@@ -33,6 +30,13 @@ public class TrueColor
             setRGB24(rgba32);
     }
 
+    public TrueColor(int alpha, int red, int green, int blue) {
+        this.alpha = alpha;
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+    }
+
     public TrueColor(int red, int green, int blue) {
         this.red = red;
         this.green = green;
@@ -43,17 +47,19 @@ public class TrueColor
         setAwtColor(awtColor);
     }
 
-    public String getName() {
-        return name;
+    public long getLong() {
+        long lval = (alpha << 48) | (red << 32) | (green << 16) | (blue);
+        return lval;
     }
 
-    public void setName(String name) {
-        if (name.startsWith("#"))
-            setHtmlColor(name);
-        else {
-            throw new IllegalArgumentException("Bad color name: " + name);
-        }
-        this.name = name;
+    public void setLong(long lval) {
+        blue = (int) (lval & 0xffff);
+        lval >>>= 16;
+        green = (int) (lval & 0xffff);
+        lval >>>= 16;
+        red = (int) (lval & 0xffff);
+        lval >>>= 16;
+        alpha = (int) (lval & 0xffff);
     }
 
     public int getRed() {
