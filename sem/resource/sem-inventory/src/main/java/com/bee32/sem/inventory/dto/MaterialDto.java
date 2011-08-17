@@ -11,6 +11,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialXP;
+import com.bee32.sem.world.color.NaturalColor;
 import com.bee32.sem.world.thing.ThingDto;
 
 public class MaterialDto
@@ -28,7 +29,7 @@ public class MaterialDto
     String barCode;
     String modelSpec;
 
-    String color;
+    NaturalColor color;
 
     int packageWidth;
     int packageHeight;
@@ -49,7 +50,7 @@ public class MaterialDto
         barCode = source.getBarCode();
         modelSpec = source.getModelSpec();
 
-        // color=source.getColor();
+        color = source.getColor();
         packageWidth = source.getPackageWidth();
         packageHeight = source.getPackageHeight();
         packageLength = source.getPackageLength();
@@ -81,7 +82,7 @@ public class MaterialDto
         target.setSerial(serial);
         target.setBarCode(barCode);
         target.setModelSpec(modelSpec);
-        // target.setColor(color);
+        target.setColor(color);
         target.setPackageWidth(packageWidth);
         target.setPackageHeight(packageHeight);
         target.setPackageLength(packageLength);
@@ -167,11 +168,11 @@ public class MaterialDto
         this.modelSpec = modelSpec;
     }
 
-    public String getColor() {
+    public NaturalColor getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(NaturalColor color) {
         this.color = color;
     }
 

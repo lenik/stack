@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -24,7 +25,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.sem.file.entity.UserFile;
-import com.bee32.sem.world.color.TrueColor;
+import com.bee32.sem.world.color.NaturalColor;
 import com.bee32.sem.world.thing.Thing;
 
 /**
@@ -54,7 +55,7 @@ public class Material
     // ------------------------------------------------------------------------
     // 需要索引的常用的物料属性（这些属性和单位还算无关）。
     //
-    TrueColor color;
+    NaturalColor color = new NaturalColor();
 
     int packageWidth;
     int packageHeight;
@@ -140,27 +141,15 @@ public class Material
     /**
      * 颜色
      */
-    @Transient
-    public TrueColor getColor() {
+    @Embedded
+    public NaturalColor getColor() {
         return color;
     }
 
-    public void setColor(TrueColor color) {
-        this.color = color;
-    }
-
-    @Column(length = 12)
-    public String getColorName() {
+    public void setColor(NaturalColor color) {
         if (color == null)
-            return null;
-        return color.getName();
-    }
-
-    public void setColorName(String colorName) {
-        if (colorName == null)
-            color = null;
-        else
-            color = new TrueColor(colorName);
+            throw new NullPointerException("color");
+        this.color = color;
     }
 
     /**
