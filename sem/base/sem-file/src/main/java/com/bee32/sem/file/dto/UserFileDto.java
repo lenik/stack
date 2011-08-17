@@ -1,6 +1,7 @@
 package com.bee32.sem.file.dto;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,20 +26,16 @@ public class UserFileDto
     private static final long serialVersionUID = 1L;
 
     public static final int TAGS = 1;
-    public static final int ACTIVETAG = 2;
-
     FileBlobDto fileBlob;
 
     String origPath;
     String fileName;
     String subject;
-    String imageHref;
-    String tags_string;
+    String tags_string = "";
 
     Set<UserFileTagnameDto> tags;
-// UserFileTagnameDto activeTag;
     List<UserFileTagnameDto> tagList;
-    List<SelectItem> tagItems;
+    List<SelectItem> tagItems = new ArrayList<SelectItem>();
 
     public UserFileDto() {
         super();
@@ -54,11 +51,14 @@ public class UserFileDto
         origPath = source.getOrigPath();
         fileName = source.getFileName();
         subject = source.getSubject();
-        imageHref = getHref();
-        if (!source.getTags().isEmpty())
-            for (UserFileTagname ut : source.getTags())
-                tags_string += ut.getTag() + "";
-        else
+        if (!source.getTags().isEmpty()) {
+            List<UserFileTagname> tagnames = new ArrayList<UserFileTagname>(source.getTags());
+            for (int i = 0; i < tagnames.size(); i++) {
+                UserFileTagname ut = tagnames.get(i);
+                String temp = i == tagnames.size() - 1 ? ut.getTag() : ut.getTag() + ", ";
+                tags_string += temp;
+            }
+        } else
             tags_string = "没有标签";
 
         if (selection.contains(TAGS)) {
@@ -68,14 +68,6 @@ public class UserFileDto
             }
 
         }
-// if (selection.contains(ACTIVETAG)) {
-// List<UserFileTagname> tempTags = new ArrayList<UserFileTagname>(source.getTags());
-// if (tempTags.size() > 0)
-// activeTag = marshal(UserFileTagnameDto.class, 0, tempTags.get(0));
-// else
-// activeTag = new UserFileTagnameDto().create();
-// }
-
     }
 
     @Override
@@ -84,11 +76,6 @@ public class UserFileDto
         target.setOrigPath(origPath);
         target.setFileName(fileName);
         target.setSubject(subject);
-
-        if (selection.contains(TAGS)) {
-            tags = new HashSet<UserFileTagnameDto>(tagList);
-            mergeSet(target, "tags", tags);
-        }
     }
 
     @Override
@@ -110,6 +97,14 @@ public class UserFileDto
             }
             tagList = new ArrayList<UserFileTagnameDto>(tags);
         }
+    }
+
+    public void addTagItems(Collection<SelectItem> items) {
+        tagItems.addAll(items);
+    }
+
+    public void removeTagItem(int index) {
+        tagItems.remove(index);
     }
 
     public FileBlobDto getFileBlob() {
@@ -181,20 +176,11 @@ public class UserFileDto
     }
 
     public String getImageHref() {
-        return imageHref;
+        return getHref();
     }
 
     public void setImageHref(String imageHref) {
-        this.imageHref = imageHref;
     }
-
-// public UserFileTagnameDto getActiveTag() {
-// return activeTag;
-// }
-//
-// public void setActiveTag(UserFileTagnameDto activeTag) {
-// this.activeTag = activeTag;
-// }
 
     public String getTags_string() {
         return tags_string;

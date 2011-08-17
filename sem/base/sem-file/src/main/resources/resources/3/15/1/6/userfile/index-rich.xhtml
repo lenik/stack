@@ -25,7 +25,6 @@
         <h:form id="main">
             <p:growl id="message" showDetail="true" />
             <p:selectManyCheckbox id="tagIds" value="#{userFileAdmin.selectedTags}">
-                <f:selectItem itemLabel="无标签" itemValue="0" />
                 <f:selectItems value="#{userFileAdmin.userFileTags}" />
                 <p:ajax update="main:message,main:fileList" listener="#{userFileAdmin.addMessage}" />
             </p:selectManyCheckbox>
@@ -33,7 +32,7 @@
             <p:separator />
 
 
-            <p:dataTable value="#{userFileAdmin.userFileList}" var="item" id="fileList">
+            <p:dataTable id="fileList" value="#{userFileAdmin.userFileList}" var="item" selectionMode="single">
                 <p:column>
                     <img src="#{item.imageHref}" width="36" height="36" />
                 </p:column>
@@ -50,19 +49,27 @@
                 </p:column>
 
                 <p:column headerText="操作">
-                    <p:commandLink title="编辑" oncomplete="fileDialog.show();" update="dialogForm:fileDialogPanel">
-                        <f:setPropertyActionListener value="#{item}" target="#{userFileAdmin.activeFile}" />
+                    <p:commandLink title="编辑" actionListener="#{userFileAdmin.doEdit}" oncomplete="fileDialog.show();" update="dialogForm:fileDialogPanel">
                         <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" />
                     </p:commandLink>
 
                     <p:commandLink title="删除" oncomplete="confirmation.show()" process="@this">
                         <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
-                        <f:setPropertyActionListener value="#{item}" target="#{userFileAdmin.activeFile}" />
                     </p:commandLink>
                 </p:column>
             </p:dataTable>
+            <t:panelGrid columns="2" columnClasses="ftd,std">
+                <p:commandButton value="标签管理" onclick="tagAdminDialog.show();" />
 
-            <p:commandButton value="标签管理" onclick="tagAdminDialog.show();" />
+                <h:form enctype="multipart/form-data">
+                    <p:growl id="message" showDetail="true" />
+                    <p:fileUpload fileUploadListener="#{userFileAdmin.handleFileUpload}" mode="advanced"
+                        update="message,main:fileList" multiple="true" allowTypes="png,gif,jpg,doc,docx,xsl,xslx"
+                        label="上传附件" />
+
+                </h:form>
+            </t:panelGrid>
+
 
             <p:dialog widgetVar="tagAdminDialog" height="400" width="600" header="标签管理" modal="true">
                 <t:panelGrid columns="2" columnClasses="ftd,std" style="width:100%;" id="tagAdmin">
@@ -80,13 +87,13 @@
                 </t:panelGrid>
             </p:dialog>
 
-            <p:dialog widgetVar="newTagDialog" height="300" width="400">
+            <p:dialog widgetVar="newTagDialog" height="300" width="400" header="新建标签">
                 <t:panelGrid columns="2" id="newTag">
                     <h:outputText value="标签名称:" />
                     <p:inputText value="#{userFileAdmin.newTag.tag}" />
                 </t:panelGrid>
                 <p:commandButton value="保存" actionListener="#{userFileAdmin.saveOrUpdateTag}"
-                    oncomplete="newTagDialog.hide()" update="main:tagAdmin,dialogForm:message" />
+                    oncomplete="newTagDialog.hide()" update="main:tagAdmin,dialogForm:message,main:tagIds" />
                 <p:commandButton value="取消" onclick="newTagDialog.hide();" />
             </p:dialog>
 
@@ -101,16 +108,16 @@
                 widgetVar="confirmation">
 
                 <p:commandButton value="删除" actionListener="#{userFileAdmin.removeFile}"
-                    oncomplete="confirmation.hide();" update="main:fileList" />
-                <p:commandButton value="取消" />
+                    oncomplete="confirmation.hide();" update="main:fileList,message" />
+                <p:commandButton value="取消" onclick="confirmation.hide();" />
 
             </p:confirmDialog>
 
-            <p:confirmDialog message="确定要删除此标签吗?" hideEffect="explode" header="提示" severity="alert"
-                widgetVar="deleteTagConfirmation" modal="true">
+            <p:confirmDialog message="确定要删除此标签吗?" header="提示" severity="alert" widgetVar="deleteTagConfirmation"
+                modal="true">
 
                 <p:commandButton value="删除" actionListener="#{userFileAdmin.deleteTag}"
-                    oncomplete="deleteTagConfirmation.hide();" update="main:tagAdmin,dialogForm:message" />
+                    oncomplete="deleteTagConfirmation.hide();" update="main:tagAdmin,dialogForm:message,main:tagIds" />
                 <p:commandButton value="取消" onclick="deleteTagConfirmation.hide()" />
             </p:confirmDialog>
 
@@ -123,12 +130,13 @@
                 <p:commandButton value="取消" onclick="selectTagsDialog.hide();" />
             </p:dialog>
 
-            <p:dialog widgetVar="fileDialog" height="500" width="700">
+            <p:dialog id="fileDialog" widgetVar="fileDialog" height="500" width="700" header="编辑附件">
                 <p:panel id="fileDialogPanel">
                     <t:panelGrid columns="2" style="width:100%;">
 
                         <t:panelGroup colspan="2">
                             <div align="center">
+                            #{userFileAdmin.dialogVar}
                                 <img src="#{userFileAdmin.activeFile.imageHref}" border="1" />
                             </div>
                         </t:panelGroup>
@@ -143,7 +151,7 @@
 
                         <t:panelGrid columns="2">
                             <p:selectOneListbox value="#{userFileAdmin.activeTagId}" height="100" width="80">
-                                <f:selectItems value="#{userFileAdmin.activeFile.tagList}" />
+                                <f:selectItems value="#{userFileAdmin.activeFile.tagItems}" />
                             </p:selectOneListbox>
 
                             <t:panelGroup>
@@ -156,19 +164,11 @@
                     </t:panelGrid>
 
                     <p:commandButton value="确定" actionListener="#{userFileAdmin.editUserFile}"
-                        oncomplete="fileDialog.hide();" update="main:fileGrid,main:message" />
+                        oncomplete="fileDialog.hide();" update="main:fileList,message" />
                     <p:commandButton value="取消" onclick="fileDialog.hide();" />
-
 
                 </p:panel>
             </p:dialog>
-        </h:form>
-
-        <h:form enctype="multipart/form-data">
-            <p:growl id="message" showDetail="true" />
-            <p:fileUpload fileUploadListener="#{userFileAdmin.handleFileUpload}" mode="advanced"
-                update="message,main:fileList" multiple="true" allowTypes="png,gif,jpg,doc,docx,xsl,xslx" label="上传附件" />
-
         </h:form>
 
     </ui:define>

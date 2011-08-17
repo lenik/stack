@@ -4,19 +4,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import javax.faces.model.SelectItem;
 import javax.free.TempFile;
 
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.zkoss.lang.Strings;
 
-import com.bee32.icsf.login.SessionLoginInfo;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.file.dto.UserFileDto;
@@ -39,7 +40,7 @@ public class UserFileAdmin
     List<String> selectedTags;
     List<SelectItem> selectedTagItems = new ArrayList<SelectItem>();
     List<UserFileDto> userFileList;
-    UserFileDto activeFile = new UserFileDto().create();
+    UserFileDto activeFile;
     String fileSubject;
     String fileName;
     int activeIndex;
@@ -53,8 +54,20 @@ public class UserFileAdmin
         refreshTags();
     }
 
-    public void setActiveFile() {
-        // XXX
+    protected DataTable getFileList() {
+        DataTable table = (DataTable) findComponent("main:fileList");
+        return table;
+    }
+
+    protected UserFileDto getFileSelection() {
+         DataTable dt = getFileList();
+        UserFileDto selection = (UserFileDto) dt.getSelection();
+        Object ls = getFileList().getLocalSelection();
+        Object val = getFileList().getValue();
+        System.err.println("-- sel = "+selection);
+        System.err.println("-- ls = "+ls);
+        System.err.println("-- val = "+val);
+        return selection;
     }
 
     public void refreshTags() {
@@ -66,29 +79,39 @@ public class UserFileAdmin
     }
 
     public void doSelectTags() {
-
-        List<SelectItem> temp = activeFile.getTagItems();
-        for(SelectItem item : temp){
-            item.getValue();
+        Iterator<SelectItem> iterator = activeFile.getTagItems().iterator();
+        while (iterator.hasNext()) {
+            SelectItem item = iterator.next();
+            String tempTagId = Long.toString((Long) item.getValue());
+            if (selectedTagsToAdd.contains(tempTagId)) {
+                selectedTagsToAdd.remove(tempTagId);
+            }
         }
+
         List<SelectItem> itemList = new ArrayList<SelectItem>();
         for (String tagId : selectedTagsToAdd) {
             UserFileTagname tagename = serviceFor(UserFileTagname.class).getOrFail(Long.parseLong(tagId));
             UserFileTagnameDto dto = DTOs.marshal(UserFileTagnameDto.class, tagename);
             itemList.add(new SelectItem(dto.getId(), dto.getTag()));
         }
-        activeFile.setTagItems(itemList);
+        activeFile.addTagItems(itemList);
     }
 
     public void removeActiveTag() {
-        int tempIndex = 0;
-        for (SelectItem item : selectedTagItems) {
-            long tagId = (Long) item.getValue();
-            long tempId = Long.parseLong(activeTagId);
-            if (tagId == tempId)
-                tempIndex = selectedTagItems.indexOf(item);
+        if (!Strings.isEmpty(activeTagId)) {
+            int tempIndex = 0;
+            List<SelectItem> items = activeFile.getTagItems();
+            for (SelectItem item : items) {
+                long tagId = (Long) item.getValue();
+                long tempId = Long.parseLong(activeTagId);
+                if (tagId == tempId) {
+                    tempIndex = items.indexOf(item);
+                    activeFile.removeTagItem(tempIndex);
+                    break;
+                }
+            }
+            activeTagId = null;
         }
-        selectedTagItems.remove(tempIndex);
     }
 
     public void createNewTag() {
@@ -96,6 +119,10 @@ public class UserFileAdmin
     }
 
     public void deleteTag() {
+        if (activeTag.getId() == null) {
+            uiLogger.warn("请选择要删除的标签!");
+            return;
+        }
         try {
             serviceFor(UserFileTagname.class).deleteById(activeTag.getId());
             refreshTags();
@@ -121,6 +148,7 @@ public class UserFileAdmin
         List<Long> idList = new ArrayList<Long>();
         for (String tagId : selectedTags)
             idList.add(Long.parseLong(tagId));
+
         List<UserFile> files = serviceFor(UserFile.class).list(UserFileCriteria.withAnyTagIn(idList));
         userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, files);
     }
@@ -131,34 +159,51 @@ public class UserFileAdmin
     }
 
     public void editUserFile() {
-
         Set<UserFileTagname> set = new HashSet<UserFileTagname>();
-        for (SelectItem item : selectedTagItems)
+        List<SelectItem> items = activeFile.getTagItems();
+        for (SelectItem item : items)
             set.add(serviceFor(UserFileTagname.class).getOrFail((Long) item.getValue()));
 
         UserFile file = activeFile.unmarshal();
         file.setTags(set);
+
         try {
             serviceFor(UserFile.class).saveOrUpdate(file);
             uiLogger.info("编辑附件" + activeFile.getFileName() + "成功");
         } catch (Exception e) {
             uiLogger.error("编辑附件失败:" + e.getMessage(), e);
         }
+        activeFile = DTOs.marshal(UserFileDto.class, file);
         userFileList.set(activeIndex, activeFile);
     }
 
+    public void doEdit() {
+        UserFileDto fileSelection = getFileSelection();
+        if (fileSelection  == null) {
+            uiLogger.error("没有选中文件");
+            activeFile = new UserFileDto().create();
+            return;
+        }
+        activeFile = fileSelection;
+    }
+
     public void removeFile() {
+        UserFileDto fileSelection = getFileSelection();
+        if (fileSelection == null) {
+            uiLogger.error("没有选中文件.");
+            return;
+        }
+
         try {
-            serviceFor(UserFile.class).deleteById(activeFile.getId());
-            uiLogger.info("删除附件:" + activeFile.getFileName() + "成功");
-            userFileList.remove(activeFile);
+            serviceFor(UserFile.class).deleteById(fileSelection.getId());
+            uiLogger.info("删除附件:" + fileSelection.getFileName() + "成功");
+            userFileList.remove(fileSelection);
         } catch (Exception e) {
             uiLogger.error("删除附件失败:" + e.getMessage(), e);
         }
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-
         String fileName = event.getFile().getFileName();
         UploadedFile upFile = event.getFile();
 
@@ -176,9 +221,6 @@ public class UserFileAdmin
         UserFile userFile = new UserFile();
         userFile.setOrigPath(upFile.getFileName());
 
-        User currUser = (User) SessionLoginInfo.getUser();
-        userFile.setOwnerId(currUser.getId());
-
         try {
             FileBlob fileBlob = FileBlob.commit(tempFile, true);
 
@@ -194,7 +236,8 @@ public class UserFileAdmin
             return;
         }
 
-        userFileList.add(DTOs.marshal(UserFileDto.class, userFile));
+        UserFileDto uf = DTOs.marshal(UserFileDto.class, userFile);
+        userFileList.add(uf);
 
         uiLogger.info("上传成功:" + fileName);
     }
@@ -236,8 +279,18 @@ public class UserFileAdmin
     }
 
     public void setActiveFile(UserFileDto activeFile) {
+        System.err.println("WWE set active file: " + activeFile);
+
         activeIndex = userFileList.indexOf(activeFile);
         this.activeFile = reload(activeFile);
+    }
+
+    public String getDialogVar() {
+
+        DataTable table = (DataTable) findComponent("main:fileList");
+
+        System.err.println("WWE get dialog var");
+        return "";
     }
 
     public UserFileTagnameDto getActiveTag() {
@@ -253,7 +306,7 @@ public class UserFileAdmin
     }
 
     public void setSelectedTagsToAdd(List<String> selectedTagsToAdd) {
-        this.selectedTagsToAdd = selectedTagsToAdd;
+        this.selectedTagsToAdd = new ArrayList<String>(selectedTagsToAdd);
     }
 
     public List<SelectItem> getUserFileTags() {

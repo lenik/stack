@@ -13,9 +13,6 @@ public class SEMFileSamples
 
     static {
 
-        defaultTag = new UserFileTagname();
-        defaultTag.setTag("默认标签");
-
         tag1 = new UserFileTagname();
         tag1.setTag("自然系");
 
@@ -28,7 +25,6 @@ public class SEMFileSamples
 
     @Override
     protected void preamble() {
-        add(defaultTag);
         add(tag1);
         add(tag2);
         add(tag3);
