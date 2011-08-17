@@ -92,7 +92,7 @@
                         <h:outputText value="#{material.modelSpec}" />
                     </p:column>
                     <p:column headerText="主单位">
-                        <h:outputText value="#{material.unit.name}" />
+                        <h:outputText value="#{material.unit.label}(#{material.unit.name})" />
                     </p:column>
                     <p:column headerText="当前基价">
                         <h:outputText value="#{material.currentPrice}" />
@@ -419,16 +419,12 @@
                         <p:dataTable id="attachList" value="#{materialViewBean.activeMaterial.attachments}"
                             var="attachment">
                             <p:column headerText="">
+                                <a href="#{location.WEB_APP}/3/15/1/6/file/view.do?id=#{attachment.id}"> <h:graphicImage
+                                        value="/3/15/1/6/file/view.do?id=#{attachment.id}" width="24" height="24" /> </a>
+                            </p:column>
 
-                                <!--                                 <p:lightBox> -->
-                                <!--                                     <h:outputLink value="#{attachment.imageHref}" -->
-                                <!--                                         title="#{attachment.fileName} - #{attachment.subject}"> -->
-                                <h:graphicImage value="/3/15/1/6/file/view.do?id=#{attachment.id}" width="24"
-                                    height="24" />
-                                <h:outputText value="#{attachment.origPath}" />
-                                <!--                                     </h:outputLink> -->
-                                <!--                                 </p:lightBox> -->
-
+                            <p:column headerText="test-column">
+                                <h:outputText value="#{attachment.imageHref}" />
                             </p:column>
                             <p:column headerText="操作" style="width:80px;">
                                 <p:commandLink title="删除" disabled="#{materialViewBean.editable}"
