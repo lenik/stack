@@ -46,7 +46,7 @@ public class Part
 
     List<PartItem> children = new ArrayList<PartItem>();
 
-    boolean valid;
+    boolean valid = true;
     Date validDateFrom;
     Date validDateTo;
 
