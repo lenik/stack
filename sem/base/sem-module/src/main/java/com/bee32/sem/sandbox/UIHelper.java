@@ -79,7 +79,7 @@ public class UIHelper
                 Limit limit = new Limit(first, pageSize);
                 List<E> entities = serviceFor(entityClass).list(limit, composition);
 
-                List<D> dtos = DTOs.marshalList(dtoClass, selection, entities);
+                List<D> dtos = DTOs.marshalList(dtoClass, selection, entities, true);
 
                 return dtos;
             }
