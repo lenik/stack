@@ -34,6 +34,8 @@ public class SEMInventoryMenu
             static MenuNode stocktaking = entry(BUSINESS, 4, "stocktaking", INVENTORY_.join("stocktaking/"));
             static MenuNode transferOut = entry(BUSINESS, 5, "transferOut", INVENTORY_.join("transferOut/"));
             static MenuNode transferIn = entry(BUSINESS, 6, "transferIn", INVENTORY_.join("transferIn/"));
+            static MenuNode outsourcingOut = entry(BUSINESS, 5, "outsourcingOut", INVENTORY_.join("outsourcingOut/"));
+            static MenuNode outsourcingIn = entry(BUSINESS, 5, "outsourcingIn", INVENTORY_.join("outsourcingIn/"));
 
 
     @Override
