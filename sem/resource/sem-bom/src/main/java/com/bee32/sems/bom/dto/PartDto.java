@@ -11,6 +11,7 @@ import javax.free.ParseException;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.ext.color.UIEntityDto;
+import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sems.bom.entity.Part;
 
 public class PartDto
@@ -21,6 +22,8 @@ public class PartDto
     public static final int CHILDREN = 1;
 
     PartDto obsolete;
+
+    MaterialDto target;
 
     List<PartItemDto> children;
 
@@ -70,6 +73,8 @@ public class PartDto
     protected void _unmarshalTo(Part target) {
         merge(target, "obsolete", obsolete);
 
+        merge(target, "target", this.target);
+
         if (selection.contains(CHILDREN))
             mergeList(target, "children", children);
 
@@ -97,6 +102,14 @@ public class PartDto
 
     public void setObsolete(PartDto obsolete) {
         this.obsolete = obsolete;
+    }
+
+    public MaterialDto getTarget() {
+        return target;
+    }
+
+    public void setTarget(MaterialDto target) {
+        this.target = target;
     }
 
     public List<PartItemDto> getChildren() {
