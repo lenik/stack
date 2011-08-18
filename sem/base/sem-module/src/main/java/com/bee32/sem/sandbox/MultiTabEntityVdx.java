@@ -4,8 +4,11 @@ import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.orm.util.EntityViewBean;
 
+/**
+ * View data exchange
+ */
 @Scope("view")
-public class MultiTabEntityViewBean
+public class MultiTabEntityVdx
         extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;

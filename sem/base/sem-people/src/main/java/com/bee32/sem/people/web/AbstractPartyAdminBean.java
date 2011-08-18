@@ -19,12 +19,12 @@ import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.util.PeopleCriteria;
-import com.bee32.sem.sandbox.MultiTabEntityViewBean;
+import com.bee32.sem.sandbox.MultiTabEntityVdx;
 import com.bee32.sem.sandbox.UIHelper;
 
 @Scope("view")
 public abstract class AbstractPartyAdminBean
-        extends MultiTabEntityViewBean {
+        extends MultiTabEntityVdx {
 
     private static final long serialVersionUID = 1L;
 

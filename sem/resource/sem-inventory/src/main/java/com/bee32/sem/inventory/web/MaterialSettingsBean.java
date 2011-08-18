@@ -25,7 +25,7 @@ import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.misc.i18n.CurrencyConfig;
-import com.bee32.sem.sandbox.MultiTabEntityViewBean;
+import com.bee32.sem.sandbox.MultiTabEntityVdx;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.thing.ScaleItem;
@@ -38,7 +38,7 @@ import com.bee32.sem.world.thing.UnitDto;
 @Component
 @Scope("view")
 public class MaterialSettingsBean
-        extends MultiTabEntityViewBean {
+        extends MultiTabEntityVdx {
 
     private static final long serialVersionUID = 1L;
     static final String BUTTON_CATEGORY_EDIT = "main:editCategory";

@@ -33,13 +33,13 @@ import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
-import com.bee32.sem.sandbox.MultiTabEntityViewBean;
+import com.bee32.sem.sandbox.MultiTabEntityVdx;
 import com.bee32.sem.sandbox.UIHelper;
 
 @Component
 @Scope("view")
 public class ChanceActionBean
-        extends MultiTabEntityViewBean {
+        extends MultiTabEntityVdx {
 
     private static final long serialVersionUID = 1L;
 

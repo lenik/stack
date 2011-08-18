@@ -47,6 +47,8 @@ public class PartDto
     protected void _marshal(Part source) {
         obsolete = new PartDto().ref(source.getObsolete());
 
+        target = mref(MaterialDto.class, source.getTarget());
+
         if (selection.contains(CHILDREN))
             children = marshalList(PartItemDto.class, 0, source.getChildren());
         else
