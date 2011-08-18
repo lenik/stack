@@ -17,14 +17,14 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 import com.bee32.plover.orm.ext.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "part_material_seq", allocationSize = 1)
 public class PartItem
-        extends EntityAuto<Long>
+        extends UIEntityAuto<Long>
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;

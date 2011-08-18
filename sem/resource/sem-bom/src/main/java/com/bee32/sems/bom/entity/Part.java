@@ -20,6 +20,7 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.User;
+import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
 import com.bee32.plover.orm.ext.config.DecimalConfig;
@@ -42,9 +43,12 @@ public class Part
 
     Part obsolete;
 
-    Material target;
-
     List<PartItem> children = new ArrayList<PartItem>();
+
+    List<PartItem> xrefs = new ArrayList<PartItem>();
+    int xrefCount;
+
+    Material target;
 
     boolean valid = true;
     Date validDateFrom;
@@ -115,6 +119,33 @@ public class Part
         if (child == null)
             throw new NullPointerException("child");
         return children.remove(child);
+    }
+
+    /**
+     * 引用本部件的 PartItem。
+     */
+    @OneToMany(mappedBy = "part")
+    public List<PartItem> getXrefs() {
+        return xrefs;
+    }
+
+    public void setXrefs(List<PartItem> xrefs) {
+        if (xrefs == null)
+            throw new NullPointerException("xrefs");
+        this.xrefs = xrefs;
+    }
+
+    /**
+     *
+     */
+    @Redundant
+    @Column(nullable = false)
+    public int getXrefCount() {
+        return xrefs.size();
+    }
+
+    public void setXrefCount(int xrefCount) {
+        this.xrefCount = xrefCount;
     }
 
     /**

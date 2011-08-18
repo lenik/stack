@@ -5,52 +5,41 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 
-import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Order;
-import com.bee32.plover.orm.ext.tree.TreeCriteria;
-import com.bee32.plover.orm.ext.tree.TreeEntityDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.misc.DummyDto;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
-import com.bee32.sem.sandbox.MultiTabEntityViewBean;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sems.bom.dto.PartDto;
+import com.bee32.sems.bom.dto.PartItemDto;
 import com.bee32.sems.bom.entity.Part;
+import com.bee32.sems.bom.entity.PartItem;
 import com.bee32.sems.bom.service.MaterialPriceNotFoundException;
 
 @Scope("view")
 public class BomAdminBean
-        extends MultiTabEntityViewBean {
+        extends BomAdminVdx {
 
     private static final long serialVersionUID = 1L;
 
-    protected static final int TAB_INDEX = 0;
-    protected static final int TAB_FORM = 1;
+    private PartDto part = DummyDto.create(PartDto.class);
+    private PartItemDto item = DummyDto.create(PartItemDto.class);
 
-    private boolean editable;
-    private boolean editableComp;
-
-    private int currTabComp;
-
-    private PartDto product;
-    private PartDto part;
-
-    private PartDto selectedProduct;
     private PartDto selectedPart;
+    private PartItemDto selectedItem;
 
-    private LazyDataModel<PartDto> products;
+    private LazyDataModel<PartDto> parts;
 
-    private int flag;
+    private boolean partOrComponent;
 
     private String materialPattern;
     private List<MaterialDto> materials;
@@ -58,72 +47,42 @@ public class BomAdminBean
 
     private BigDecimal price;
 
-    @PostConstruct
-    public void init() {
-       EntityDataModelOptions<Part, PartDto> options = new EntityDataModelOptions<Part, PartDto>(//
-                Part.class, PartDto.class, TreeEntityDto.PARENT, //
+    public BomAdminBean() {
+        EntityDataModelOptions<Part, PartDto> options = new EntityDataModelOptions<Part, PartDto>(//
+                Part.class, PartDto.class, 0, //
                 Order.desc("id"));
-        products = UIHelper.<Part, PartDto> buildLazyDataModel(options);
+        parts = UIHelper.<Part, PartDto> buildLazyDataModel(options);
 
-        refreshProductCount();
-
-        editable = false;
-
-        currTabComp = 0;
-        editableComp = false;
+        refreshPartCount();
     }
 
-    void refreshProductCount() {
+    void refreshPartCount() {
         int count = serviceFor(Part.class).count();
-        products.setRowCount(count);
+        parts.setRowCount(count);
     }
 
-    public boolean isEditable() {
-        return editable;
+    public PartItemDto getItem() {
+        return item;
     }
 
-    public void setEditable(boolean editable) {
-        this.editable = editable;
-    }
-
-    public boolean isEditableComp() {
-        return editableComp;
-    }
-
-    public void setEditableComp(boolean editableComp) {
-        this.editableComp = editableComp;
+    public void setPart(PartItemDto item) {
+        this.item = item;
     }
 
     public PartDto getPart() {
-        if (part == null) {
-            newPart();
-        }
         return part;
-    }
-
-    private void newPart() {
-        part = new PartDto().create();
-
-        part.setValid(true);
     }
 
     public void setPart(PartDto part) {
         this.part = part;
     }
 
-    public PartDto getProduct() {
-        if (product == null) {
-            newProduct();
-        }
-        return product;
+    public PartItemDto getSelectedItem() {
+        return selectedItem;
     }
 
-    private void newProduct() {
-        product = new PartDto().create();
-    }
-
-    public void setProduct(PartDto product) {
-        this.product = product;
+    public void setSelectedItem(PartItemDto selectedItem) {
+        this.selectedItem = selectedItem;
     }
 
     public PartDto getSelectedPart() {
@@ -134,28 +93,12 @@ public class BomAdminBean
         this.selectedPart = selectedPart;
     }
 
-    public PartDto getSelectedProduct() {
-        return selectedProduct;
+    public LazyDataModel<PartDto> getParts() {
+        return parts;
     }
 
-    public void setSelectedProduct(PartDto selectedProduct) {
-        this.selectedProduct = selectedProduct;
-    }
-
-    public int getCurrTabComp() {
-        return currTabComp;
-    }
-
-    public void setCurrTabComp(int currTabComp) {
-        this.currTabComp = currTabComp;
-    }
-
-    public LazyDataModel<PartDto> getProducts() {
-        return products;
-    }
-
-    public void setProducts(LazyDataModel<PartDto> products) {
-        this.products = products;
+    public void setParts(LazyDataModel<PartDto> parts) {
+        this.parts = parts;
     }
 
     public String getMaterialPattern() {
@@ -186,49 +129,46 @@ public class BomAdminBean
         return price;
     }
 
-    public boolean isProductSelected() {
-        if (selectedProduct != null)
+    public boolean isPartSelected() {
+        if (selectedPart != null)
             return true;
         return false;
     }
 
-    public void new_() {
+    public void newPart() {
         setActiveTab(TAB_FORM);
         editable = true;
-
-        newProduct();
+        part = new PartDto().create();
     }
 
-    public void delete_() {
-        if (selectedProduct == null) {
+    public void deletePart() {
+        if (selectedPart == null) {
             uiLogger.info("请以单击选择需要删除的产品!");
             return;
         }
 
         try {
-            int childrenCount = serviceFor(Part.class).count(new Equals("parent.id", selectedProduct.getId()));
-            if (childrenCount != 0) {
+            if (selectedPart.getXrefCount() != 0) {
                 uiLogger.error("此产品已经包含组件，必须先删除相应组件，才能删除本产品!");
                 return;
             }
 
-            serviceFor(Part.class).deleteById(selectedProduct.getId());
+            serviceFor(Part.class).deleteById(selectedPart.getId());
 
             uiLogger.info("删除产品成功");
         } catch (Exception e) {
             uiLogger.error("删除产品失败;", e);
         }
-
     }
 
-    public void save_() {
+    public void savePart() {
         try {
-            product.setLastModified(new Date());
+            part.setLastModified(new Date());
 
-            Part _product = product.unmarshal(this);
-            serviceFor(Part.class).saveOrUpdate(_product);
+            Part _part = part.unmarshal(this);
+            serviceFor(Part.class).saveOrUpdate(_part);
 
-            refreshProductCount();
+            refreshPartCount();
 
             setActiveTab(TAB_INDEX);
             editable = false;
@@ -238,38 +178,30 @@ public class BomAdminBean
         }
     }
 
-    public void cancel_() {
+    public void listParts() {
         setActiveTab(TAB_INDEX);
         editable = false;
-        newProduct();
+        part = DummyDto.create(PartDto.class);
     }
 
-    public void detail_() {
-        if (selectedProduct == null) {
+    public void showPartDetail() {
+        if (selectedPart == null) {
             uiLogger.info("请以单击选择需要查看详细内容的产品");
             return;
         }
 
         setActiveTab(TAB_FORM);
-        product = selectedProduct;
+        part = selectedPart;
     }
 
-    public void refresh_() {
+    public void refreshPart() {
         setActiveTab(TAB_INDEX);
-        selectedProduct = null;
-        refreshProductCount();
+        selectedPart = null;
+        refreshPartCount();
     }
 
-    public void onRowSelect(SelectEvent event) {
-
-    }
-
-    public void onRowUnselect(UnselectEvent event) {
-
-    }
-
-    public void newComp_() {
-        if (product == null || product.getId() == null) {
+    public void newItem() {
+        if (part == null || part.getId() == null) {
             uiLogger.error("请选择相应的产品!");
             return;
         }
@@ -277,17 +209,17 @@ public class BomAdminBean
         currTabComp = 1;
         editableComp = true;
 
-        newPart();
+        item = new PartItemDto().create();
     }
 
-    public void deleteComp_() {
-        if (selectedPart == null) {
+    public void deleteItem() {
+        if (selectedItem == null) {
             uiLogger.error("请以单击选择需要删除的BOM组件!");
             return;
         }
 
         try {
-            serviceFor(Part.class).deleteById(selectedPart.getId());
+            serviceFor(PartItem.class).deleteById(selectedItem.getId());
 
             uiLogger.info("删除BOM组件成功");
         } catch (Exception e) {
@@ -295,18 +227,18 @@ public class BomAdminBean
         }
     }
 
-    public void saveComp_() {
-        if (product == null || product.getId() == null) {
+    public void saveItem() {
+        if (part == null || part.getId() == null) {
             uiLogger.error("请选择相应的产品!");
             return;
         }
 
         try {
-            PartDto parentRef = new PartDto().ref(product);
-            part.setParent(parentRef);
+            PartDto parentRef = new PartDto().ref(part);
+            item.setParent(parentRef);
 
-            Part _part = part.unmarshal(this);
-            serviceFor(Part.class).saveOrUpdate(_part);
+            PartItem _item = item.unmarshal(this);
+            serviceFor(PartItem.class).saveOrUpdate(_item);
 
             currTabComp = 0;
             editableComp = false;
@@ -316,57 +248,56 @@ public class BomAdminBean
         }
     }
 
-    public void cancelComp_() {
+    public void listItems() {
         currTabComp = 0;
         editableComp = false;
-
-        newPart();
+        item = DummyDto.create(PartItemDto.class);
     }
 
-    public void detailComp_() {
-        if (selectedPart == null) {
+    public void showItemDetail() {
+        if (selectedItem == null) {
             uiLogger.error("请以单击选择需要查看详细内容的BOM组件!");
             return;
         }
 
         currTabComp = 1;
-        part = selectedPart;
+        item = selectedItem;
     }
 
-    public void refreshComp_() {
+    public void refreshItem() {
         currTabComp = 0;
-        selectedPart = null;
+        selectedItem = null;
     }
 
-    public List<PartDto> getParts() {
-        List<Part> _children;
+    public void onRowSelect(SelectEvent event) {
+    }
 
-        if (product != null && product.getId() != null)
-            _children = serviceFor(Part.class).list(//
-                    TreeCriteria.childOf(product.getId()));
+    public void onRowUnselect(UnselectEvent event) {
+    }
+
+    public List<PartItemDto> getItems() {
+        if (part != null && part.getId() != null)
+            return part.getChildren();
         else
-            _children = new ArrayList<Part>();
-
-        List<PartDto> children = DTOs.marshalList(PartDto.class, 0, _children, true);
-        return children;
+            return new ArrayList<PartItemDto>();
     }
 
     public void setMaterialChoose() {
-        this.flag = 0;
+        this.partOrComponent = true;
     }
 
     public void setMaterialChooseComp() {
-        this.flag = 1;
+        this.partOrComponent = false;
     }
 
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {
 
-//            String[] keyword = materialPattern.split(" ");
-//
-//            for (int i = 0; i < keyword.length; i++) {
-//                keyword[i] = keyword[i].trim();
-//            }
+            // String[] keyword = materialPattern.split(" ");
+            //
+            // for (int i = 0; i < keyword.length; i++) {
+            // keyword[i] = keyword[i].trim();
+            // }
 
             List<Material> _materials = serviceFor(Material.class).list(new Like("name", "%" + materialPattern + "%"));
 
@@ -375,23 +306,23 @@ public class BomAdminBean
     }
 
     public void chooseMaterial() {
-        if (flag == 0)
-            product.setMaterial(selectedMaterial);
-        if (flag == 1)
-            part.setMaterial(selectedMaterial);
+        if (partOrComponent)
+            part.setTarget(selectedMaterial);
+        else
+            item.setMaterial(selectedMaterial);
     }
 
     public void calcPrice()
             throws FxrQueryException {
 
-        if (selectedProduct == null) {
+        if (selectedPart == null) {
             uiLogger.error("请以单击选择需要计算价格的产品!");
             return;
         }
 
         try {
-            Part _product = selectedProduct.unmarshal(this);
-            price = _product.calcPrice();
+            Part _part = selectedPart.unmarshal(this);
+            price = _part.calcPrice();
         } catch (MaterialPriceNotFoundException e) {
             uiLogger.error("没有找到此产品的原材料原价格!", e);
         }

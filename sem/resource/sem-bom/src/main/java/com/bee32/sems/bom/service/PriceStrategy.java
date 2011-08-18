@@ -61,12 +61,12 @@ public abstract class PriceStrategy
     /**
      * 计算零件的价格
      */
-    public BigDecimal getPrice(Part product)
+    public BigDecimal getPrice(Part part)
             throws MaterialPriceNotFoundException, FxrQueryException {
 
-        BigDecimal total = product.getExtraCost();
+        BigDecimal total = part.getExtraCost();
 
-        for (PartItem child : product.getChildren()) {
+        for (PartItem child : part.getChildren()) {
             Part _part = child.getPart();
             Material _material = child.getMaterial();
 

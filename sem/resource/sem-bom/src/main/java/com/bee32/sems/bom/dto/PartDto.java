@@ -20,12 +20,15 @@ public class PartDto
     private static final long serialVersionUID = 1L;
 
     public static final int CHILDREN = 1;
+    public static final int XREFS = 2;
 
     PartDto obsolete;
 
-    MaterialDto target;
-
     List<PartItemDto> children;
+    List<PartItemDto> xrefs;
+    int xrefCount;
+
+    MaterialDto target;
 
     boolean valid;
     Date validDateFrom;
@@ -57,6 +60,13 @@ public class PartDto
         else
             children = new ArrayList<PartItemDto>();
 
+        if (selection.contains(XREFS))
+            xrefs = marshalList(PartItemDto.class, 0, source.getXrefs());
+        else
+            xrefs = new ArrayList<PartItemDto>();
+
+        xrefCount = source.getXrefCount();
+
         valid = source.isValid();
         validDateFrom = source.getValidDateFrom();
         validDateTo = source.getValidDateTo();
@@ -77,6 +87,9 @@ public class PartDto
 
         if (selection.contains(CHILDREN))
             mergeList(target, "children", children);
+
+        if (selection.contains(XREFS))
+            mergeList(target, "xrefs", xrefs);
 
         target.setValid(valid);
         target.setValidDateFrom(validDateFrom);
@@ -104,14 +117,6 @@ public class PartDto
         this.obsolete = obsolete;
     }
 
-    public MaterialDto getTarget() {
-        return target;
-    }
-
-    public void setTarget(MaterialDto target) {
-        this.target = target;
-    }
-
     public List<PartItemDto> getChildren() {
         return children;
     }
@@ -135,6 +140,30 @@ public class PartDto
         if (child == null)
             throw new NullPointerException("child");
         return children.remove(child);
+    }
+
+    public List<PartItemDto> getXrefs() {
+        return xrefs;
+    }
+
+    public void setXrefs(List<PartItemDto> xrefs) {
+        this.xrefs = xrefs;
+    }
+
+    public int getXrefCount() {
+        return xrefs.size();
+    }
+
+    public void setXrefCount(int xrefCount) {
+        this.xrefCount = xrefCount;
+    }
+
+    public MaterialDto getTarget() {
+        return target;
+    }
+
+    public void setTarget(MaterialDto target) {
+        this.target = target;
     }
 
     public boolean isValid() {

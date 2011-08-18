@@ -17,22 +17,22 @@ import com.bee32.sems.bom.entity.PartItem;
 public class SEMBomSamples
         extends SampleContribution {
 
-    public static Part product = new Part();
+    public static Part part = new Part();
 
     static {
-        product.setTarget(SEMInventorySamples.gundam);
-        product.setValidDateFrom(parseDate("2010-03-05"));
-        product.setValidDateTo(parseDate("2020-03-04"));
-        product.setCreator(SEMPeopleSamples.jack);
+        part.setTarget(SEMInventorySamples.gundam);
+        part.setValidDateFrom(parseDate("2010-03-05"));
+        part.setValidDateTo(parseDate("2020-03-04"));
+        part.setCreator(SEMPeopleSamples.jack);
 
         PartItem item = new PartItem();
-        item.setParent(product);
+        item.setParent(part);
         item.setMaterial(SEMInventorySamples.cskdp);
         item.setQuantity(20L);
         item.setValid(true);
         item.setValidDateFrom(parseDate("2010-03-05"));
         item.setValidDateTo(parseDate("2503-03-04"));
-        product.addChild(item);
+        part.addChild(item);
     }
 
     static Date parseDate(String str) {
@@ -45,7 +45,7 @@ public class SEMBomSamples
 
     @Override
     protected void preamble() {
-        add(product);
+        add(part);
     }
 
 }
