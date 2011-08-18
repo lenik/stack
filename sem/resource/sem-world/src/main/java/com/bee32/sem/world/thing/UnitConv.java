@@ -46,18 +46,6 @@ public class UnitConv
     }
 
     /**
-     * 是否为自然换算表。
-     */
-    @Column(nullable = false)
-    public boolean isNatural() {
-        return natural;
-    }
-
-    public void setNatural(boolean natural) {
-        this.natural = natural;
-    }
-
-    /**
      * 单元单位，数量为1的一方。 如：1m -> 1.5kg，换算率=1.5，单元单位为m，换算单位为kg。
      */
     @ManyToOne
