@@ -157,7 +157,7 @@
                                     </p:commandLink>
                                     <p:spacer width="10" />
                                     <p:commandLink value="明细"
-                                        actionListener="#{bomAdminBean.detail_}"
+                                        action="#{bomAdminBean.detail_}"
                                         update="bomForm">
                                         <f:setPropertyActionListener
                                             value="#{product}"
@@ -342,7 +342,7 @@
                                                 <p:spacer width="10" />
                                                 <p:commandLink
                                                     value="明细"
-                                                    actionListener="#{bomAdminBean.detailComp_}"
+                                                    action="#{bomAdminBean.detailComp_}"
                                                     update="bomForm">
                                                     <f:setPropertyActionListener
                                                         value="#{comp}"
