@@ -11,7 +11,6 @@ import java.util.Set;
 import javax.faces.model.SelectItem;
 import javax.free.TempFile;
 
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.context.annotation.Scope;
@@ -40,9 +39,7 @@ public class UserFileAdmin
     List<String> selectedTags;
     List<SelectItem> selectedTagItems = new ArrayList<SelectItem>();
     List<UserFileDto> userFileList;
-    UserFileDto activeFile;
-    String fileSubject;
-    String fileName;
+    UserFileDto activeFile = new UserFileDto().create();
     int activeIndex;
     List<String> selectedTagsToAdd;
     String activeTagId;
@@ -52,22 +49,6 @@ public class UserFileAdmin
     public UserFileAdmin() {
         initUserFile();
         refreshTags();
-    }
-
-    protected DataTable getFileList() {
-        DataTable table = (DataTable) findComponent("main:fileList");
-        return table;
-    }
-
-    protected UserFileDto getFileSelection() {
-         DataTable dt = getFileList();
-        UserFileDto selection = (UserFileDto) dt.getSelection();
-        Object ls = getFileList().getLocalSelection();
-        Object val = getFileList().getValue();
-        System.err.println("-- sel = "+selection);
-        System.err.println("-- ls = "+ls);
-        System.err.println("-- val = "+val);
-        return selection;
     }
 
     public void refreshTags() {
@@ -132,6 +113,7 @@ public class UserFileAdmin
         }
     }
 
+    /** save UserFileTagname it's uneditable */
     public void saveOrUpdateTag() {
         UserFileTagname tag = newTag.unmarshal();
         try {
@@ -150,7 +132,9 @@ public class UserFileAdmin
             idList.add(Long.parseLong(tagId));
 
         List<UserFile> files = serviceFor(UserFile.class).list(UserFileCriteria.withAnyTagIn(idList));
-        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, files);
+        Set<UserFile> fileSet = new HashSet<UserFile>(files);
+        List<UserFile> fileList = new ArrayList<UserFile>(fileSet);
+        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, fileList);
     }
 
     public void initUserFile() {
@@ -177,27 +161,17 @@ public class UserFileAdmin
         userFileList.set(activeIndex, activeFile);
     }
 
-    public void doEdit() {
-        UserFileDto fileSelection = getFileSelection();
-        if (fileSelection  == null) {
-            uiLogger.error("没有选中文件");
-            activeFile = new UserFileDto().create();
-            return;
-        }
-        activeFile = fileSelection;
-    }
-
     public void removeFile() {
-        UserFileDto fileSelection = getFileSelection();
-        if (fileSelection == null) {
+
+        if (activeFile == null) {
             uiLogger.error("没有选中文件.");
             return;
         }
 
         try {
-            serviceFor(UserFile.class).deleteById(fileSelection.getId());
-            uiLogger.info("删除附件:" + fileSelection.getFileName() + "成功");
-            userFileList.remove(fileSelection);
+            serviceFor(UserFile.class).deleteById(activeFile.getId());
+            uiLogger.info("删除附件:" + activeFile.getFileName() + "成功");
+            initUserFile();
         } catch (Exception e) {
             uiLogger.error("删除附件失败:" + e.getMessage(), e);
         }
@@ -236,8 +210,7 @@ public class UserFileAdmin
             return;
         }
 
-        UserFileDto uf = DTOs.marshal(UserFileDto.class, userFile);
-        userFileList.add(uf);
+        initUserFile();
 
         uiLogger.info("上传成功:" + fileName);
     }
@@ -250,14 +223,6 @@ public class UserFileAdmin
         return userFileList;
     }
 
-    public String getFileSubject() {
-        return fileSubject;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
     public void setSelectedTags(List<String> selectedTags) {
         this.selectedTags = selectedTags;
     }
@@ -266,31 +231,14 @@ public class UserFileAdmin
         this.userFileList = userFileList;
     }
 
-    public void setFileSubject(String fileSubject) {
-        this.fileSubject = fileSubject;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
     public UserFileDto getActiveFile() {
         return activeFile;
     }
 
     public void setActiveFile(UserFileDto activeFile) {
-        System.err.println("WWE set active file: " + activeFile);
-
+// System.err.println("WWE set active file: " + activeFile);
         activeIndex = userFileList.indexOf(activeFile);
         this.activeFile = reload(activeFile);
-    }
-
-    public String getDialogVar() {
-
-        DataTable table = (DataTable) findComponent("main:fileList");
-
-        System.err.println("WWE get dialog var");
-        return "";
     }
 
     public UserFileTagnameDto getActiveTag() {

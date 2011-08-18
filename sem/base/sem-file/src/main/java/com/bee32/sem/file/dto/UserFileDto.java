@@ -32,6 +32,7 @@ public class UserFileDto
     String fileName;
     String subject;
     String tags_string = "";
+    String testhref = "";
 
     Set<UserFileTagnameDto> tags;
     List<UserFileTagnameDto> tagList;
