@@ -10,7 +10,8 @@ import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.arch.util.NoSuchEnumException;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.world.monetary.FxrQueryException;
-import com.bee32.sems.bom.entity.Component;
+import com.bee32.sems.bom.entity.Part;
+import com.bee32.sems.bom.entity.PartItem;
 
 public abstract class PriceStrategy
         extends EnumAlt<String, PriceStrategy> {
@@ -60,17 +61,28 @@ public abstract class PriceStrategy
     /**
      * 计算零件的价格
      */
-    public BigDecimal getPrice(Component product)
+    public BigDecimal getPrice(Part product)
             throws MaterialPriceNotFoundException, FxrQueryException {
 
         BigDecimal total = product.getExtraCost();
 
-        for (Component child : product.getChildren()) {
-            BigDecimal childExtra = child.getExtraCost();
-            BigDecimal childRaw = getPrice(child.getMaterial());
+        for (PartItem child : product.getChildren()) {
+            Part _part = child.getPart();
+            Material _material = child.getMaterial();
 
-            total = total.add(childExtra);
-            total = total.add(childRaw);
+            BigDecimal _quantity = child.getQuantity();
+            BigDecimal _total = new BigDecimal(0);
+
+            if (_part != null) {
+                BigDecimal _extra = _part.getExtraCost();
+                _total = _total.add(_extra);
+            } else if (_material != null) {
+                BigDecimal _raw = getPrice(_material);
+                _total = _total.add(_raw);
+            }
+
+            _total = _total.multiply(_quantity);
+            total = total.add(_total);
         }
 
         return total;

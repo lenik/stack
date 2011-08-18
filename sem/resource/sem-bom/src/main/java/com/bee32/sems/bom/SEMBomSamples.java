@@ -10,28 +10,29 @@ import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.people.SEMPeopleSamples;
-import com.bee32.sems.bom.entity.Component;
+import com.bee32.sems.bom.entity.Part;
+import com.bee32.sems.bom.entity.PartItem;
 
 @ImportSamples({ SEMInventorySamples.class })
 public class SEMBomSamples
         extends SampleContribution {
 
-    public static Component product = new Component();
-    public static Component component = new Component();
+    public static Part product = new Part();
 
     static {
-        product.setMaterial(SEMInventorySamples.gundam);
+        product.setTarget(SEMInventorySamples.gundam);
         product.setValidDateFrom(parseDate("2010-03-05"));
-        product.setValidDateTo(parseDate("2503-03-04"));
+        product.setValidDateTo(parseDate("2020-03-04"));
         product.setCreator(SEMPeopleSamples.jack);
 
-        component.setDescription("组成组成组成组成");
-        component.setParent(product);
-        component.setMaterial(SEMInventorySamples.cskdp);
-        component.setQuantity(20L);
-        component.setValid(true);
-        component.setValidDateFrom(parseDate("2010-03-05"));
-        component.setValidDateTo(parseDate("2503-03-04"));
+        PartItem item = new PartItem();
+        item.setParent(product);
+        item.setMaterial(SEMInventorySamples.cskdp);
+        item.setQuantity(20L);
+        item.setValid(true);
+        item.setValidDateFrom(parseDate("2010-03-05"));
+        item.setValidDateTo(parseDate("2503-03-04"));
+        product.addChild(item);
     }
 
     static Date parseDate(String str) {
@@ -45,7 +46,6 @@ public class SEMBomSamples
     @Override
     protected void preamble() {
         add(product);
-        add(component);
     }
 
 }

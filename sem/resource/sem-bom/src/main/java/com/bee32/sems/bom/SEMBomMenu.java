@@ -12,7 +12,7 @@ public class SEMBomMenu
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
     static Location BOM_ = WEB_APP.join(SEMBomModule.PREFIX_);
 
-    static MenuNode bomadmin = entry(SEMInventoryMenu.MATERIAL, "bomadmin", BOM_.join("component/"));
+    static MenuNode bomadmin = entry(SEMInventoryMenu.MATERIAL, "bomadmin", BOM_.join("part/"));
 
     @Override
     protected void preamble() {

@@ -257,15 +257,15 @@
                                 </p:toolbarGroup>
                             </p:toolbar>
 
-                            <p:tabView id="componentTab"
+                            <p:tabView id="partTab"
                                 activeIndex="#{bomAdminBean.currTabComp}">
-                                <p:tab id="componentList"
+                                <p:tab id="partList"
                                     title="BOM组件列表">
-                                    <p:dataTable id="components"
+                                    <p:dataTable id="parts"
                                         var="comp"
-                                        value="#{bomAdminBean.components}"
+                                        value="#{bomAdminBean.parts}"
                                         resizableColumns="true"
-                                        selection="#{bomAdminBean.selectedComponent}"
+                                        selection="#{bomAdminBean.selectedPart}"
                                         selectionMode="single"
                                         rowIndexVar="rowIndex">
 
@@ -353,7 +353,7 @@
 
                                     </p:dataTable>
                                 </p:tab>
-                                <p:tab id="componentDetail"
+                                <p:tab id="partDetail"
                                     title="BOM组件详细">
                                     <t:panelGrid columns="4"
                                         columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
@@ -364,10 +364,10 @@
                                         <t:panelGroup>
                                             <h:inputHidden
                                                 id="materialIdComp"
-                                                value="#{bomAdminBean.component.material.id}" />
+                                                value="#{bomAdminBean.part.material.id}" />
                                             <h:outputText
                                                 id="materialNameComp"
-                                                value="#{bomAdminBean.component.material.name}" />
+                                                value="#{bomAdminBean.part.material.name}" />
                                             <p:commandButton
                                                 title="挑选物料" value="..."
                                                 onclick="chooseMaterialDlg.show();"
@@ -377,7 +377,7 @@
                                             value="是否有效" />
                                         <p:selectBooleanCheckbox
                                             id="compValid"
-                                            value="#{bomAdminBean.component.valid}" />
+                                            value="#{bomAdminBean.part.valid}" />
 
                                         <h:outputLabel
                                             for="compValidDateFrom"
@@ -385,7 +385,7 @@
                                         <p:calendar
                                             id="compValidDateFrom"
                                             pattern="yyyy-MM-dd"
-                                            value="#{bomAdminBean.component.validDateFrom}"
+                                            value="#{bomAdminBean.part.validDateFrom}"
                                             navigator="true"
                                             locale="zh_CN"
                                             showOn="button" />
@@ -394,7 +394,7 @@
                                             value="失效日期" />
                                         <p:calendar id="compValidDateTo"
                                             pattern="yyyy-MM-dd"
-                                            value="#{bomAdminBean.component.validDateTo}"
+                                            value="#{bomAdminBean.part.validDateTo}"
                                             navigator="true"
                                             locale="zh_CN"
                                             showOn="button" />
@@ -405,7 +405,7 @@
                                         <t:panelGroup colspan="3">
                                             <p:inputText
                                                 id="compQuantity"
-                                                value="#{bomAdminBean.component.quantity}" />
+                                                value="#{bomAdminBean.part.quantity}" />
                                         </t:panelGroup>
 
                                         <h:outputLabel for="compDesc"
@@ -414,7 +414,7 @@
                                             <p:inputTextarea
                                                 id="compDesc" rows="5"
                                                 style="width:480px;"
-                                                value="#{bomAdminBean.component.description}" />
+                                                value="#{bomAdminBean.part.description}" />
                                         </t:panelGroup>
                                     </t:panelGrid>
                                 </p:tab>

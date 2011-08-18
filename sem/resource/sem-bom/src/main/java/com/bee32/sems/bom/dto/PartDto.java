@@ -1,28 +1,28 @@
 package com.bee32.sems.bom.dto;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.icsf.principal.dto.UserDto;
-import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.tree.TreeEntityDto;
-import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sems.bom.entity.Component;
+import com.bee32.plover.orm.ext.color.UIEntityDto;
+import com.bee32.sems.bom.entity.Part;
 
-public class ComponentDto
-        extends TreeEntityDto<Component, Long, ComponentDto> {
+public class PartDto
+        extends UIEntityDto<Part, Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    ComponentDto obsolete;
+    public static final int CHILDREN = 1;
 
-    MaterialDto material;
-    BigDecimal quantity;
+    PartDto obsolete;
+
+    List<PartItemDto> children;
 
     boolean valid;
     Date validDateFrom;
@@ -35,20 +35,22 @@ public class ComponentDto
 
     UserDto creator;
 
-    public ComponentDto() {
+    public PartDto() {
         super();
     }
 
-    public ComponentDto(int selection) {
+    public PartDto(int selection) {
         super(selection);
     }
 
     @Override
-    protected void _marshal(Component source) {
-        obsolete = new ComponentDto().ref(source.getObsolete());
+    protected void _marshal(Part source) {
+        obsolete = new PartDto().ref(source.getObsolete());
 
-        material = mref(MaterialDto.class, source.getMaterial());
-        quantity = source.getQuantity();
+        if (selection.contains(CHILDREN))
+            children = marshalList(PartItemDto.class, 0, source.getChildren());
+        else
+            children = new ArrayList<PartItemDto>();
 
         valid = source.isValid();
         validDateFrom = source.getValidDateFrom();
@@ -63,10 +65,11 @@ public class ComponentDto
     }
 
     @Override
-    protected void _unmarshalTo(Component target) {
+    protected void _unmarshalTo(Part target) {
         merge(target, "obsolete", obsolete);
-        merge(target, "material", material);
-        target.setQuantity(quantity);
+
+        if (selection.contains(CHILDREN))
+            mergeList(target, "children", children);
 
         target.setValid(valid);
         target.setValidDateFrom(validDateFrom);
@@ -86,32 +89,37 @@ public class ComponentDto
         throw new NotImplementedException();
     }
 
-    public ComponentDto getObsolete() {
+    public PartDto getObsolete() {
         return obsolete;
     }
 
-    public void setObsolete(ComponentDto obsolete) {
+    public void setObsolete(PartDto obsolete) {
         this.obsolete = obsolete;
     }
 
-    public MaterialDto getMaterial() {
-        return material;
+    public List<PartItemDto> getChildren() {
+        return children;
     }
 
-    public void setMaterial(MaterialDto material) {
-        if (material == null)
-            throw new NullPointerException("material");
-        this.material = material;
+    public void setChildren(List<PartItemDto> children) {
+        if (children == null)
+            throw new NullPointerException("children");
+        this.children = children;
     }
 
-    public BigDecimal getQuantity() {
-        return quantity;
+    public boolean addChild(PartItemDto child) {
+        if (child == null)
+            throw new NullPointerException("child");
+        if (children.contains(child))
+            return false;
+        children.add(child);
+        return true;
     }
 
-    public void setQuantity(BigDecimal quantity) {
-        if (quantity == null)
-            throw new NullPointerException("quantity");
-        this.quantity = quantity;
+    public boolean removeChild(PartItemDto child) {
+        if (child == null)
+            throw new NullPointerException("child");
+        return children.remove(child);
     }
 
     public boolean isValid() {
@@ -193,13 +201,6 @@ public class ComponentDto
 
     public void setCreator(UserDto creator) {
         this.creator = creator;
-    }
-
-    @Override
-    protected Serializable naturalId() {
-        return new IdComposite(//
-                naturalId(getParent()), //
-                naturalId(material));
     }
 
 }

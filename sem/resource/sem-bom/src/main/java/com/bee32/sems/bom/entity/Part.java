@@ -1,45 +1,50 @@
 package com.bee32.sems.bom.entity;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.icsf.login.SessionLoginInfo;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.CriteriaComposite;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.orm.ext.color.Green;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 import com.bee32.plover.orm.ext.config.DecimalConfig;
-import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sems.bom.service.MaterialPriceNotFoundException;
 import com.bee32.sems.bom.service.PriceStrategy;
 
 /**
- * 零件 （包括成品和半成品）
+ * 部件（包括成品和半成品）
  */
 @Entity
-@SequenceGenerator(name = "idgen", sequenceName = "component_seq", allocationSize = 1)
-public class Component
-        extends TreeEntityAuto<Long, Component>
+@Green
+@SequenceGenerator(name = "idgen", sequenceName = "part_seq", allocationSize = 1)
+public class Part
+        extends UIEntityAuto<Integer>
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
 
-    Component obsolete;
+    Part obsolete;
 
-    Material material;
-    BigDecimal quantity = new BigDecimal(1);
+    Material target;
+
+    List<PartItem> children = new ArrayList<PartItem>();
 
     boolean valid;
     Date validDateFrom;
@@ -54,7 +59,7 @@ public class Component
 
     User creator;
 
-    public Component() {
+    public Part() {
         creator = (User) SessionLoginInfo.getUserOpt();
     }
 
@@ -62,49 +67,54 @@ public class Component
      * 上一个版本。
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    public Component getObsolete() {
+    public Part getObsolete() {
         return obsolete;
     }
 
-    public void setObsolete(Component obsolete) {
+    public void setObsolete(Part obsolete) {
         this.obsolete = obsolete;
     }
 
     /**
-     * 对应物料
+     * 目标物料
      */
-    // @NaturalId
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    public Material getMaterial() {
-        return material;
+    @ManyToOne
+    public Material getTarget() {
+        return target;
     }
 
-    public void setMaterial(Material material) {
-        if (material == null)
-            throw new NullPointerException("material");
-        this.material = material;
+    public void setTarget(Material target) {
+        this.target = target;
     }
 
     /**
-     * 数量
+     * 子部件（半成品或原材料）
      */
-    @Column(precision = QTY_ITEM_PRECISION, scale = QTY_ITEM_SCALE, nullable = false)
-    public BigDecimal getQuantity() {
-        return quantity;
+    @OneToMany(mappedBy = "parent")
+    @Cascade(CascadeType.ALL)
+    public List<PartItem> getChildren() {
+        return children;
     }
 
-    public void setQuantity(BigDecimal quantity) {
-        if (quantity == null)
-            throw new NullPointerException("quantity");
-        this.quantity = quantity;
+    public void setChildren(List<PartItem> children) {
+        if (children == null)
+            throw new NullPointerException("children");
+        this.children = children;
     }
 
-    public void setQuantity(long quantity) {
-        this.quantity = new BigDecimal(quantity);
+    public boolean addChild(PartItem child) {
+        if (child == null)
+            throw new NullPointerException("child");
+        if (children.contains(child))
+            return false;
+        children.add(child);
+        return true;
     }
 
-    public void setQuantity(double quantity) {
-        this.quantity = new BigDecimal(quantity);
+    public boolean removeChild(PartItem child) {
+        if (child == null)
+            throw new NullPointerException("child");
+        return children.remove(child);
     }
 
     /**
@@ -157,11 +167,11 @@ public class Component
     }
 
     @Column(name = "priceStrategy", length = 3)
-    String getPriceStrategy_() {
+    String get_priceStrategy() {
         return priceStrategy.getValue();
     }
 
-    void setPriceStrategy_(String strategy) {
+    void set_priceStrategy(String strategy) {
         if (strategy == null)
             throw new NullPointerException("strategy");
         priceStrategy = PriceStrategy.valueOf(strategy);
@@ -249,20 +259,6 @@ public class Component
 
     public void setCreator(User creator) {
         this.creator = creator;
-    }
-
-    @Override
-    protected Serializable naturalId() {
-        return new IdComposite(//
-                naturalId(getParent()), //
-                naturalId(material));
-    }
-
-    @Override
-    protected ICriteriaElement selector(String prefix) {
-        return new CriteriaComposite( //
-                selector(prefix + "parent", getParent()), //
-                selector(prefix + "material", material));
     }
 
 }

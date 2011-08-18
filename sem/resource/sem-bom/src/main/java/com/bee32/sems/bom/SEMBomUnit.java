@@ -3,7 +3,7 @@ package com.bee32.sems.bom;
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.sem.inventory.SEMInventoryUnit;
-import com.bee32.sems.bom.entity.Component;
+import com.bee32.sems.bom.entity.Part;
 
 @ImportUnit({ SEMInventoryUnit.class })
 public class SEMBomUnit
@@ -11,7 +11,7 @@ public class SEMBomUnit
 
     @Override
     protected void preamble() {
-        add(Component.class);
+        add(Part.class);
     }
 
 }
