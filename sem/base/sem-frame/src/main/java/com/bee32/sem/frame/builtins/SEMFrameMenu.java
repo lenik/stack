@@ -9,6 +9,7 @@ public class SEMFrameMenu
     public static final MenuNode MAIN = menu("main");
 
     public static final MenuNode BASE = menu(MAIN, "base");
+    public static final MenuNode DATA = menu(MAIN, "data");
     public static final MenuNode RESOURCE = menu(MAIN, "resource");
     public static final MenuNode PROCESS = menu(MAIN, "process");
     public static final MenuNode SUPPORT = menu(MAIN, "support");
