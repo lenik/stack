@@ -49,7 +49,7 @@ public class TxEntity
     }
 
     @Override
-    protected ICriteriaElement selector(String prefix) {
+    protected final ICriteriaElement selector(String prefix) {
         return new Equals(prefix + "serial", serial);
     }
 
