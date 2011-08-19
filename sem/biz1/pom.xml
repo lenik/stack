@@ -17,8 +17,8 @@
         <module>sem-contract</module>
         <module>sem-order</module>
         <module>sem-pricing</module>
+        <module>sem-purchase</module>
         <module>sem-salary</module>
-		<module>sem-purchase</module>
     </modules>
     <name>SEM :: Biz1</name>
 </project>

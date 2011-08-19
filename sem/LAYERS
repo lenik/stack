@@ -32,6 +32,7 @@ biz1/                日常业务
     sem-chain
     sem-order
     sem-salary
+    sem-purchase
 
 demo/               示例
     sem-samples

@@ -40,6 +40,7 @@ public interface SEMOids {
 
     interface biz1 {
         int Chance = 1;
+        int Purchase = 2;
     }
 
     interface support {
