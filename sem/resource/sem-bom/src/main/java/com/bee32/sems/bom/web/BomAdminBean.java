@@ -228,7 +228,7 @@ public class BomAdminBean
         }
 
         setActiveTab(TAB_FORM);
-        part = selectedPart;
+        part = reload(selectedPart, PartDto.CHILDREN);
     }
 
     public void refreshPart() {
@@ -247,6 +247,7 @@ public class BomAdminBean
         editableComp = true;
 
         item = new PartItemDto().create();
+        item.setValid(true);
     }
 
     public void deleteItem() {
@@ -257,6 +258,7 @@ public class BomAdminBean
 
         try {
             serviceFor(PartItem.class).deleteById(selectedItem.getId());
+            part.removeChild(selectedItem);
 
             uiLogger.info("删除BOM组件成功");
         } catch (Exception e) {
@@ -276,6 +278,8 @@ public class BomAdminBean
 
             PartItem _item = item.unmarshal(this);
             serviceFor(PartItem.class).saveOrUpdate(_item);
+
+            part = reload(part);
 
             currTabComp = 0;
             editableComp = false;
