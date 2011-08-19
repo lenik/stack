@@ -10,9 +10,12 @@ public class SEMBomMenu
         extends MenuContribution {
 
     static Location DICT = WEB_APP.join(CommonDictController.PREFIX_);
-    static Location BOM_ = WEB_APP.join(SEMBomModule.PREFIX_);
 
-    static MenuNode bomadmin = entry(SEMInventoryMenu.MATERIAL, "bomadmin", BOM_.join("part/"));
+    static Location _(String path) {
+        return WEB_APP.join(SEMBomModule.PREFIX_).join(path);
+    }
+
+    static MenuNode bomadmin = entry(SEMInventoryMenu.MATERIAL, "bomadmin", _("part/"));
 
     @Override
     protected void preamble() {
