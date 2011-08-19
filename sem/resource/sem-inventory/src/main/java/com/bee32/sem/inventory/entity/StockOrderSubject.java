@@ -75,48 +75,57 @@ public final class StockOrderSubject
     }
 
     /** （冗余）结算【物料】，外币已换算 */
-    public static final StockOrderSubject PACK_M = new StockOrderSubject("PK1", "packM", false, true);
+    public static final StockOrderSubject PACK_M = new StockOrderSubject("PK_1", "packM", false, true);
 
     /** （冗余）结算【物料，合成批号】，外币已换算 */
-    public static final StockOrderSubject PACK_MB = new StockOrderSubject("PK2", "packMB", false, true);
+    public static final StockOrderSubject PACK_MB = new StockOrderSubject("PK_2", "packMB", false, true);
 
     /** （冗余）结算【物料，合成批号，库位】，外币已换算 */
-    public static final StockOrderSubject PACK_MBL = new StockOrderSubject("PK3", "packMBL", false, true);
+    public static final StockOrderSubject PACK_MBL = new StockOrderSubject("PK_3", "packMBL", false, true);
 
     /** （冗余）结算【物料】，外币分列 */
-    public static final StockOrderSubject PACK_MC = new StockOrderSubject("PX1", "packMC", false, true);
+    public static final StockOrderSubject PACK_MC = new StockOrderSubject("PKX1", "packMC", false, true);
 
     /** （冗余）结算【物料，合成批号】，外币分列 */
-    public static final StockOrderSubject PACK_MBC = new StockOrderSubject("PX2", "packMBC", false, true);
+    public static final StockOrderSubject PACK_MBC = new StockOrderSubject("PKX2", "packMBC", false, true);
 
     /** （冗余）结算【物料，合成批号，库位】，外币分列 */
-    public static final StockOrderSubject PACK_MBLC = new StockOrderSubject("PX3", "packMBLC", false, true);
+    public static final StockOrderSubject PACK_MBLC = new StockOrderSubject("PKX3", "packMBLC", false, true);
 
     /** 初始化 */
     public static final StockOrderSubject INIT = new StockOrderSubject("INIT", "init", false);
 
-    /** 入库 */
-    public static final StockOrderSubject TAKE_IN = new StockOrderSubject("TKI", "takeIn", false);
+    /** 销售入库 */
+    public static final StockOrderSubject TAKE_IN = new StockOrderSubject("TK_I", "takeIn", false);
 
-    /** 出库 */
-    public static final StockOrderSubject TAKE_OUT = new StockOrderSubject("TKO", "takeOut", true);
+    /** 销售出库 */
+    public static final StockOrderSubject TAKE_OUT = new StockOrderSubject("TK_O", "takeOut", true);
 
     /** 调拨出库 */
-    public static final StockOrderSubject XFER_OUT = new StockOrderSubject("TXO", "xferOut", true);
+    public static final StockOrderSubject XFER_OUT = new StockOrderSubject("XFRO", "xferOut", true);
 
     /** 调拨入库 */
-    public static final StockOrderSubject XFER_IN = new StockOrderSubject("TXI", "xferIn", false);
+    public static final StockOrderSubject XFER_IN = new StockOrderSubject("XFRI", "xferIn", false);
 
     /** 委外出库 */
-    public static final StockOrderSubject OSP_OUT = new StockOrderSubject("OPO", "ospOut", true);
+    public static final StockOrderSubject OSP_OUT = new StockOrderSubject("OSPO", "ospOut", true);
 
     /** 委外入库 */
-    public static final StockOrderSubject OSP_IN = new StockOrderSubject("OPI", "ospIn", false);
+    public static final StockOrderSubject OSP_IN = new StockOrderSubject("OSPI", "ospIn", false);
 
     /** 盘盈 */
-    public static final StockOrderSubject STK_PROFIT = new StockOrderSubject("STP", "stkProfit", false);
+    public static final StockOrderSubject STK_PROFIT = new StockOrderSubject("STKP", "stkProfit", false);
 
     /** 盘亏 */
-    public static final StockOrderSubject STK_SHORTAGE = new StockOrderSubject("STS", "stkShortage", true);
+    public static final StockOrderSubject STK_SHORTAGE = new StockOrderSubject("STKS", "stkShortage", true);
+
+    /** 计划出库 */
+    public static final StockOrderSubject PLAN = new StockOrderSubject("PLAN", "plan", true);
+
+    /** 生产入库 */
+    public static final StockOrderSubject PROD_TAKE_IN = new StockOrderSubject("TKIP", "produceTakeIn", false);
+
+    /** 生产出库 */
+    public static final StockOrderSubject PROD_TAKE_OUT = new StockOrderSubject("TKOP", "produceTakeOut", true);
 
 }
