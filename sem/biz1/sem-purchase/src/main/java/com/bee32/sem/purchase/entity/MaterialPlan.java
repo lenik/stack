@@ -25,8 +25,6 @@ public class MaterialPlan
 
     private static final long serialVersionUID = 1L;
 
-    String serial;
-
     MakeTask task;
     StockOrder planOrder;
     Party preferredSupplier;
