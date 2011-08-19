@@ -1,5 +1,6 @@
 package com.bee32.sem.purchase.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class MakeTask
     MakeOrder order;
 
     Date deadline;
-    List<MakeTaskItem> items;
+    List<MakeTaskItem> items = new ArrayList<MakeTaskItem>();
 
     @ManyToOne(optional = false)
     public MakeOrder getOrder() {
