@@ -24,6 +24,7 @@ import com.bee32.sems.bom.dto.PartItemDto;
 import com.bee32.sems.bom.entity.Part;
 import com.bee32.sems.bom.entity.PartItem;
 import com.bee32.sems.bom.service.MaterialPriceNotFoundException;
+import com.bee32.sems.bom.util.BomCriteria;
 
 @Scope("view")
 public class BomAdminBean
@@ -44,6 +45,10 @@ public class BomAdminBean
     private String materialPattern;
     private List<MaterialDto> materials;
     private MaterialDto selectedMaterial;
+
+    private String partPattern;
+    private List<PartDto> findedParts;
+    private PartDto selectedFindedPart;
 
     private BigDecimal price;
 
@@ -125,6 +130,30 @@ public class BomAdminBean
         this.selectedMaterial = selectedMaterial;
     }
 
+    public String getPartPattern() {
+        return partPattern;
+    }
+
+    public void setPartPattern(String partPattern) {
+        this.partPattern = partPattern;
+    }
+
+    public List<PartDto> getFindedParts() {
+        return findedParts;
+    }
+
+    public void setFindedParts(List<PartDto> findedParts) {
+        this.findedParts = findedParts;
+    }
+
+    public PartDto getSelectedFindedPart() {
+        return selectedFindedPart;
+    }
+
+    public void setSelectedFindedPart(PartDto selectedFindedPart) {
+        this.selectedFindedPart = selectedFindedPart;
+    }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -134,6 +163,14 @@ public class BomAdminBean
             return true;
         return false;
     }
+
+
+
+
+
+
+
+
 
     public void newPart() {
         setActiveTab(TAB_FORM);
@@ -172,7 +209,7 @@ public class BomAdminBean
 
             setActiveTab(TAB_INDEX);
             editable = false;
-            uiLogger.info("产品保存成功");
+            uiLogger.info("保存产品成功");
         } catch (Exception e) {
             uiLogger.error("保存产品失败", e);
         }
@@ -282,10 +319,16 @@ public class BomAdminBean
             return new ArrayList<PartItemDto>();
     }
 
+    /**
+     * 设置当前是为bom产品选择物料
+     */
     public void setMaterialChoose() {
         this.partOrComponent = true;
     }
 
+    /**
+     * 设置当前是为bom组件选择物料
+     */
     public void setMaterialChooseComp() {
         this.partOrComponent = false;
     }
@@ -308,8 +351,10 @@ public class BomAdminBean
     public void chooseMaterial() {
         if (partOrComponent)
             part.setTarget(selectedMaterial);
-        else
+        else {
             item.setMaterial(selectedMaterial);
+            item.setPart(null);
+        }
     }
 
     public void calcPrice()
@@ -326,6 +371,27 @@ public class BomAdminBean
         } catch (MaterialPriceNotFoundException e) {
             uiLogger.error("没有找到此产品的原材料原价格!", e);
         }
+    }
+
+
+    public void findPart() {
+        if (partPattern != null && !partPattern.isEmpty()) {
+
+            // String[] keyword = partPattern.split(" ");
+            //
+            // for (int i = 0; i < keyword.length; i++) {
+            // keyword[i] = keyword[i].trim();
+            // }
+
+            List<Part> _parts = serviceFor(Part.class).list(BomCriteria.findPartUseMaterialName(partPattern));
+
+            findedParts = DTOs.marshalList(PartDto.class, _parts);
+        }
+    }
+
+    public void choosePart() {
+        item.setMaterial(null);
+        item.setPart(selectedFindedPart);
     }
 
 }

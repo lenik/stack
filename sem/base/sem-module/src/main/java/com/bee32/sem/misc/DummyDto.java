@@ -19,7 +19,7 @@ public class DummyDto {
             throw new RuntimeException(e.getMessage(), e);
         }
 
-        // dto.create();
+        dto.create();
 
         return dto;
     }

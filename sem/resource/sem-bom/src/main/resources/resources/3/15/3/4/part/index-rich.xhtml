@@ -71,8 +71,6 @@
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                             rowsPerPageTemplate="5,10,15"
                             resizableColumns="true"
-                            selection="#{bomAdminBean.selectedPart}"
-                            selectionMode="single"
                             rowIndexVar="rowIndex">
 
                             <p:ajax event="rowSelect"
@@ -264,8 +262,6 @@
                                         var="comp"
                                         value="#{bomAdminBean.items}"
                                         resizableColumns="true"
-                                        selection="#{bomAdminBean.selectedItem}"
-                                        selectionMode="single"
                                         rowIndexVar="rowIndex">
 
                                         <p:column>
@@ -329,6 +325,14 @@
                                         </p:column>
 
                                         <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="类型" />
+                                            </f:facet>
+                                            <h:outputText
+                                                value="#{comp.part==null ? '原材料' : '半成品'}" />
+                                        </p:column>
+
+                                        <p:column>
                                             <f:facet name="header">操作</f:facet>
                                             <t:panelGroup>
                                                 <p:commandLink
@@ -361,15 +365,12 @@
                                             for="materialNameComp"
                                             value="物料" />
                                         <t:panelGroup>
-                                            <h:inputHidden
-                                                id="materialIdComp"
-                                                value="#{bomAdminBean.item.material.id}" />
                                             <h:outputText
                                                 id="materialNameComp"
-                                                value="#{bomAdminBean.item.material.name}" />
+                                                value="#{bomAdminBean.item.material==null? bomAdminBean.item.part.target.name : bomAdminBean.item.material.name}" />
                                             <p:commandButton
-                                                title="挑选物料" value="..."
-                                                onclick="chooseMaterialDlg.show();"
+                                                title="挑选组件" value="..."
+                                                onclick="choosePartItemDlg.show();"
                                                 actionListener="#{bomAdminBean.setMaterialChooseComp}" />
                                         </t:panelGroup>
                                         <h:outputLabel for="compValid"
@@ -490,6 +491,157 @@
                         <p:commandButton value="取消" oncomplete="chooseMaterialDlg.hide();"/>
                     </h:panelGrid>
                 </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
+        <h:form id="partItemForm">
+            <p:dialog header="挑选组件" widgetVar="choosePartItemDlg" modal="true" height="500" width="640">
+                <p:panel header="组件是物料">
+
+                    <h:panelGrid columns="2">
+                        <p:inputText value="#{bomAdminBean.materialPattern}"/>
+                        <p:commandButton value="查找" actionListener="#{bomAdminBean.findMaterial}" update="materials" async="true"/>
+                    </h:panelGrid>
+
+                    <p:dataTable
+                            id="materials"
+                            var="material"
+                            value="#{bomAdminBean.materials}"
+                            resizableColumns="true"
+                            selection="#{bomAdminBean.selectedMaterial}"
+                            selectionMode="single"
+                            rowIndexVar="rowIndex">
+
+                        <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="序号" />
+                            </f:facet>
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="物料名称" />
+                            </f:facet>
+                            <h:outputText value="#{material.name}" />
+                        </p:column>
+
+                        <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="物料编码" />
+                            </f:facet>
+                            <h:outputText value="#{material.serial}" />
+                        </p:column>
+
+                         <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="规格型号" />
+                            </f:facet>
+                            <h:outputText value="#{material.modelSpec}" />
+                        </p:column>
+
+                        <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="计量单位" />
+                            </f:facet>
+                            <h:outputText value="#{material.unit.name}" />
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton
+                                value="确定"
+                                actionListener="#{bomAdminBean.chooseMaterial}"
+                                oncomplete="choosePartItemDlg.hide();"
+                                update="bomForm:materialName, bomForm:materialIdComp, bomForm:materialNameComp"
+                                async="true"/>
+                        <p:commandButton value="取消" oncomplete="choosePartItemDlg.hide();"/>
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:panel header="组件是半成品">
+                    <h:panelGrid columns="2">
+                        <p:inputText value="#{bomAdminBean.partPattern}"/>
+                        <p:commandButton value="查找" actionListener="#{bomAdminBean.findPart}" update="findedParts" async="true"/>
+                    </h:panelGrid>
+
+                    <p:dataTable
+                            id="findedParts"
+                            var="part"
+                            value="#{bomAdminBean.findedParts}"
+                            resizableColumns="true"
+                            selection="#{bomAdminBean.selectedFindedPart}"
+                            selectionMode="single"
+                            rowIndexVar="rowIndex">
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="序号" />
+                            </f:facet>
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="物料" />
+                            </f:facet>
+                            <h:outputText value="#{part.target.name}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="创建人" />
+                            </f:facet>
+                            <h:outputText value="#{part.creator.name}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="建立日期" />
+                            </f:facet>
+                            <h:outputText value="#{part.createdDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="生效日期" />
+                            </f:facet>
+                            <h:outputText value="#{part.validDateFrom}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="失效日期" />
+                            </f:facet>
+                            <h:outputText value="#{part.validDateTo}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="类型" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{part.xrefCount == 0 ? '产品' : '半成品'}" />
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton
+                                value="确定"
+                                actionListener="#{bomAdminBean.choosePart}"
+                                oncomplete="choosePartItemDlg.hide();"
+                                update="bomForm:materialName, bomForm:materialIdComp, bomForm:materialNameComp"
+                                async="true"/>
+                        <p:commandButton value="取消" oncomplete="choosePartItemDlg.hide();"/>
+                    </h:panelGrid>
+                </p:panel>
             </p:dialog>
         </h:form>
 
