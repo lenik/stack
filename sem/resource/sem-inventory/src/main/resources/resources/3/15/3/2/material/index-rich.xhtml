@@ -260,13 +260,13 @@
                         <h:outputText value="长" />
                         <p:inputText value="#{materialViewBean.activeMaterial.packageLength}" style="width:50px;"
                             readonly="#{materialViewBean.editable}" />
-                        <h:outputText value="cm X 宽" />
+                        <h:outputText value=" X 宽" />
                         <p:inputText value="#{materialViewBean.activeMaterial.packageWidth}" style="width:50px;"
                             readonly="#{materialViewBean.editable}" />
-                        <h:outputText value="cm X 高" />
+                        <h:outputText value=" X 高" />
                         <p:inputText value="#{materialViewBean.activeMaterial.packageHeight}" style="width:50px;"
                             readonly="#{materialViewBean.editable}" />
-                        <h:outputText value="cm" />
+                        <h:outputText value=" (厘米)" />
                     </t:panelGroup>
 
                     <h:outputText value="当前价格:" />
@@ -439,17 +439,16 @@
 
                     <t:panelGroup colspan="5">
                         <h:form enctype="multipart/form-data">
-                            <p:growl id="message" />
                             <p:fileUpload fileUploadListener="#{materialViewBean.handleFileUpload}" mode="advanced"
-                                update="message,dialogForm:attachList" multiple="true" label="上传附件"
+                                update="__status,dialogForm:attachList" multiple="true" label="上传附件"
                                 allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
                         </h:form>
                     </t:panelGroup>
 
-                    <t:panelGroup colspan="5">
+                    <t:panelGroup id="btn1" colspan="5">
                         <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}"
-                            update="main:materialList,note" disabled="#{materialViewBean.editable}"
-                            oncomplete="materialDialog.hide();" />
+                            update="main:materialList, dialogForm:btn1, __status" disabled="#{materialViewBean.editable}"
+                            oncomplete="${materialViewBean.post} "/>
                         <p:commandButton value="取消" disabled="#{materialViewBean.editable}"
                             onclick="materialDialog.hide();" />
                     </t:panelGroup>

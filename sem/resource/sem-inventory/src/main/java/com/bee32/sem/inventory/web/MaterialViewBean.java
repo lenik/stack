@@ -12,6 +12,7 @@ import javax.faces.model.SelectItem;
 import javax.free.TempFile;
 
 import org.apache.commons.lang.StringUtils;
+import org.primefaces.component.dialog.Dialog;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.UploadedFile;
@@ -24,7 +25,6 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
@@ -59,15 +59,10 @@ import com.bee32.sem.world.thing.UnitDto;
 @Component
 @Scope("view")
 public class MaterialViewBean
-        extends EntityViewBean {
+        extends MaterialVdx {
 
     private static final long serialVersionUID = 1L;
 
-    static final String CATEGORY_TREE = "main:categoryTree";
-    static final String PANEL_INFO = "main:searchInfo";
-    static final String BUTTON_PRESEARCH = "main:preSearchBtn";
-
-    boolean editable;
     String materialPattern;
     List<MaterialDto> materialList = new ArrayList<MaterialDto>();
     MaterialDto selectedMaterial;
@@ -88,7 +83,7 @@ public class MaterialViewBean
     MaterialCategoryTreeModel materialCategoryTree;
     MaterialCategoryTreeModel selectCategoryTree;
 
-    private List<UnitConvDto> unitConvDtoList;
+    List<UnitConvDto> unitConvDtoList;
 
     public void doSelectedUnit() {
         String unitId = activeMaterial.getUnit().getId();
@@ -338,7 +333,27 @@ public class MaterialViewBean
         activeMaterial.addPreferredLocation(mpld);
     }
 
+    boolean visible=true;
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public String getPost() {
+        if (visible)
+            return "";
+        else
+            return "materialDialog.hide();";
+    }
+
     public void doAddMaterial() {
+        Dialog dialog = getMaterialDialog();
+        visible = true;
+
         String name = activeMaterial.getName();
         MaterialCategoryDto category = activeMaterial.getCategory();
         UnitDto unit = activeMaterial.getUnit();
@@ -351,8 +366,8 @@ public class MaterialViewBean
             uiLogger.error("请选择物料分类!");
             return;
         }
-        if (unit.isNullRef()) {
-            uiLogger.error("请选择物料的基础单位!");
+        if (unit.getId() == null || unit.getId().isEmpty()) {
+            uiLogger.error("请选择物料的主单位!");
             return;
         }
 
@@ -366,6 +381,12 @@ public class MaterialViewBean
             serviceFor(Material.class).saveOrUpdate(materialEntity);
 
             uiLogger.info("保存物料成功!");
+
+            visible = false;
+// getMaterialDialog().setVisible(false);
+// getMaterialDialog().setInView(false);
+// getMaterialDialog().setRendered(false);
+
         } catch (Exception e) {
             uiLogger.error("保存物料失败" + e.getMessage(), e);
         }
@@ -537,22 +558,6 @@ public class MaterialViewBean
         this.activeMaterial = reload(selectedMaterial);
     }
 
-    public StockLocationTreeDialogModel getStockLocationTreeDialog() {
-        return stockLocationTreeDialog;
-    }
-
-    public MaterialCategoryTreeModel getMaterialCategoryTree() {
-        return materialCategoryTree;
-    }
-
-    public boolean isEditable() {
-        return editable;
-    }
-
-    public void setEditable(boolean editable) {
-        this.editable = editable;
-    }
-
     public String getMaterialPattern() {
         return materialPattern;
     }
@@ -563,6 +568,14 @@ public class MaterialViewBean
 
     public MaterialCategoryTreeModel getSelectCategoryTree() {
         return selectCategoryTree;
+    }
+
+    public StockLocationTreeDialogModel getStockLocationTreeDialog() {
+        return stockLocationTreeDialog;
+    }
+
+    public MaterialCategoryTreeModel getMaterialCategoryTree() {
+        return materialCategoryTree;
     }
 
     public String getSelectedUnit() {
