@@ -77,6 +77,14 @@ public abstract class AbstractOrderDto< //
         invalidateTotal();
     }
 
+    public void editItem(ItemDto item) {
+        if (item == null)
+            throw new NullPointerException("item");
+        int index = items.indexOf(item);
+        items.set(index, item);
+        invalidateTotal();
+    }
+
     public void removeItem(ItemDto item) {
         if (item == null)
             throw new NullPointerException("item");
@@ -108,8 +116,14 @@ public abstract class AbstractOrderDto< //
                 if (nativeTotal == null) {
                     BigDecimal sum = new BigDecimal(0L, MONEY_TOTAL_CONTEXT);
                     for (ItemDto item : items) {
+
                         BigDecimal itemNativeTotal = item.getNativePrice();
-                        sum = sum.add(itemNativeTotal);
+                        double d = itemNativeTotal.doubleValue();
+                        double q = item.getQuantity().doubleValue();
+                        double itemTotal = d * q;
+                        BigDecimal bit = new BigDecimal(itemTotal);
+                        sum = sum.add(bit);
+// sum = sum.add(itemNativeTotal);
                     }
                     nativeTotal = sum;
                 }
