@@ -36,8 +36,8 @@ public class SEMInventoryMenu
     /*    */static MenuNode stocktaking = entry(BUSINESS, 4, "stocktaking", _("stocktaking/"));
     /*    */static MenuNode transferOut = entry(BUSINESS, 5, "transferOut", _("transferOut/"));
     /*    */static MenuNode transferIn = entry(BUSINESS, 6, "transferIn", _("transferIn/"));
-    /*    */static MenuNode outsourcingOut = entry(BUSINESS, 5, "outsourcingOut", _("outsourcingOut/"));
-    /*    */static MenuNode outsourcingIn = entry(BUSINESS, 5, "outsourcingIn", _("outsourcingIn/"));
+    /*    */static MenuNode outsourcingOut = entry(BUSINESS, 7, "outsourcingOut", _("outsourcingOut/"));
+    /*    */static MenuNode outsourcingIn = entry(BUSINESS, 8, "outsourcingIn", _("outsourcingIn/"));
 
     @Override
     protected void preamble() {

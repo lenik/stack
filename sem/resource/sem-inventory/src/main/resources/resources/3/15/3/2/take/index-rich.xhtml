@@ -138,7 +138,7 @@
                 <t:panelGrid columns="2">
                     <h:outputText value="明细"/>
 					<p:commandButton value="新增明细" onclick="itemDialog.show();"
-						actionListener="#{takeAdminBean.newItem}"
+						action="#{takeAdminBean.newItem}"
 						update="itemForm:itemPanel"
 						disabled="#{!takeAdminBean.editable}" />
 				</t:panelGrid>

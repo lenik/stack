@@ -40,7 +40,7 @@ public abstract class StockOrderBaseBean extends LocationAboutBean {
     private BigDecimal orderItemPrice = new BigDecimal(0);
     private Currency orderItemPriceCurrency = CurrencyConfig.getNative();
 
-    private boolean newItemStatus;
+    private boolean newItemStatus = false;
 
     private String materialPattern;
     private List<MaterialDto> materials;
