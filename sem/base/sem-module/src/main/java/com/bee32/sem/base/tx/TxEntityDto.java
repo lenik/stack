@@ -55,6 +55,8 @@ public abstract class TxEntityDto<E extends TxEntity>
     }
 
     public void setSerial(String serial) {
+        if (serial != null && serial.isEmpty())
+            serial = null;
         this.serial = serial;
     }
 

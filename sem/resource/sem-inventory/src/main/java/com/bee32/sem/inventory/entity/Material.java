@@ -96,8 +96,6 @@ public class Material
 
     /**
      * 物品编码、物品序列号
-     *
-     * XXX - 必填/自然键？
      */
     @NaturalId(mutable = true)
     @Column(length = 32)
@@ -106,8 +104,6 @@ public class Material
     }
 
     public void setSerial(String serial) {
-        if (serial == null)
-            throw new NullPointerException("serial");
         this.serial = serial;
     }
 

@@ -149,6 +149,8 @@ public class MaterialDto
     }
 
     public void setSerial(String serial) {
+        if (serial != null && serial.isEmpty())
+            serial = null;
         this.serial = serial;
     }
 
