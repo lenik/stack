@@ -17,10 +17,6 @@
 
     <ui:define name="content">
 
-        <h:form id="note">
-            <p:growl id="growl" showDetail="true" />
-        </h:form>
-
         <h:outputStylesheet>
             .ftd{
                 vertical-align:top;
@@ -179,7 +175,7 @@
                     <p:separator />
                     <p:commandButton value="保存" actionListener="#{materialViewBean.doSaveUnitConv}"
                         oncomplete="unitConvDialog.hide();"
-                        update="dialogForm:selectUnitConv,note,dialogForm:unitConvForm" />
+                        update="dialogForm:selectUnitConv,__status,dialogForm:unitConvForm" />
                     <p:commandButton value="取消" onclick="unitConvDialog.hide();" />
                     <br />
                     <h:outputText value="例如:" />
@@ -214,12 +210,12 @@
                             <h:outputText value="#{item.price.currency.currencyCode}" />
                         </p:column>
                     </p:dataTable>
-                    <p:commandButton value="确定" update="note,dialogForm:currentPrice" oncomplete="materialPrice.hide();" />
+                    <p:commandButton value="确定" update="__status,dialogForm:currentPrice" oncomplete="materialPrice.hide();" />
                     <p:commandButton value="取消" onclick="materialPrice.hide();" />
                 </p:panel>
             </p:dialog>
 
-            <p:dialog header="物料" widgetVar="materialDialog" height="600" width="800">
+            <p:dialog id="materialDialog" header="物料" widgetVar="materialDialog" height="600" width="800">
                 <t:panelGrid columns="5" id="material"
                     columnClasses="material_dialog_label, material_dialog_txt,material_dialog_label, material_dialog_txt">
 
@@ -472,7 +468,7 @@
                     <p:inputText value="#{materialViewBean.activeAttr.value}" />
 
                     <p:commandButton value="确定" actionListener="#{materialViewBean.doAddAttr}"
-                        update="dialogForm:attributeTable,note" oncomplete="attributeDialog.hide();" />
+                        update="dialogForm:attributeTable,__status" oncomplete="attributeDialog.hide();" />
                     <p:commandButton value="取消" onclick="attributeDialog.hide();" />
                 </t:panelGrid>
             </p:dialog>
@@ -572,7 +568,7 @@
             <p:confirmDialog message="您确定要删除此物料吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="confirmation">
 
-                <p:commandButton value="删除" update="note,main:materialList" oncomplete="confirmation.hide()"
+                <p:commandButton value="删除" update="__status,main:materialList" oncomplete="confirmation.hide()"
                     actionListener="#{materialViewBean.destroyMaterial}" />
                 <p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
 

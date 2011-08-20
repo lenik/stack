@@ -29,7 +29,7 @@
         </h:outputStylesheet>
 
         <h:form id="mainForm">
-            <p:growl id="growl" showDetail="true" />
+            <p:growl id="__status" showDetail="true" />
 
             <p:tabView>
                 <p:tab title="物料分类设置">
@@ -44,7 +44,7 @@
                                 update="dialogForm:categoryForm" oncomplete="categoryWizardDialog.show();"
                                 disabled="#{!materialSettingsBean.categoryOptionable}" />
                             <p:commandButton id="deleteCategory" value="删除" title="删除分类"
-                                actionListener="#{materialSettingsBean.destroyCategory}" update="mainForm:mainTree mainForm:growl"
+                                actionListener="#{materialSettingsBean.destroyCategory}" update="mainForm:mainTree mainForm:__status"
                                 disabled="#{!materialSettingsBean.categoryOptionable}" />
                         </p:toolbarGroup>
                     </p:toolbar>
@@ -255,7 +255,7 @@
             <p:confirmDialog message="确定要删除此单位吗?" showEffect="bounce" hideEffect="explode" header="提示" severity="alert"
                 widgetVar="unitConfirmation">
 
-                <p:commandButton value="确定" update="mainForm:growl,mainForm:unitList" oncomplete="unitConfirmation.hide()"
+                <p:commandButton value="确定" update="mainForm:__status,mainForm:unitList" oncomplete="unitConfirmation.hide()"
                     actionListener="#{materialSettingsBean.destroyUnit}" />
                 <p:commandButton value="取消" onclick="unitConfirmation.hide()" type="button" />
 
@@ -264,7 +264,7 @@
             <p:confirmDialog message="确定要删除此单位还算表吗?" showEffect="bounce" hideEffect="explode" header="提示"
                 severity="alert" widgetVar="unitConvConfirmation">
 
-                <p:commandButton value="确定" update="mainForm:growl,mainForm:unitConvList"
+                <p:commandButton value="确定" update="mainForm:__status,mainForm:unitConvList"
                     oncomplete="unitConvConfirmation.hide()" actionListener="#{materialSettingsBean.destroyUnitConv}" />
                 <p:commandButton value="取消" onclick="unitConvConfirmation.hide()" type="button" />
 
@@ -291,7 +291,7 @@
                         <p:inputText value="#{materialSettingsBean.activeUnit.scale}" />
                     </t:panelGrid>
                     <p:commandButton value="保存" actionListener="#{materialSettingsBean.doSaveUnit}"
-                        oncomplete="unitDialog.hide();" update="mainForm:unitList,mainForm:growl" />
+                        oncomplete="unitDialog.hide();" update="mainForm:unitList,mainForm:__status" />
                     <p:commandButton value="取消" onclick="unitDialog.hide();" />
                 </p:panel>
             </p:dialog>
@@ -342,7 +342,7 @@
                         disabled="#{materialSettingsBean.unitConvEditable}" />
                     <p:separator />
                     <p:commandButton value="保存" actionListener="#{materialSettingsBean.doSaveUnitConv}"
-                        oncomplete="unitConvDialog.hide();" update="mainForm:unitConvList,mainForm:growl"
+                        oncomplete="unitConvDialog.hide();" update="mainForm:unitConvList,mainForm:__status"
                         disabled="#{materialSettingsBean.unitConvEditable}" />
                     <p:commandButton value="取消" onclick="unitConvDialog.hide();" />
                 </p:panel>
@@ -382,7 +382,7 @@
                         <p:inputText value="#{materialSettingsBean.activeCategory.name}" />
 
                         <p:commandButton value="确认" actionListener="#{materialSettingsBean.doSaveCategory}"
-                            oncomplete="categoryWizardDialog.hide();" update="mainForm:mainTree,mainForm:growl" />
+                            oncomplete="categoryWizardDialog.hide();" update="mainForm:mainTree,mainForm:__status" />
                         <p:commandButton value="取消" onclick="categoryWizardDialog.hide();" />
 
                     </t:panelGrid>

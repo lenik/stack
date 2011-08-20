@@ -25,7 +25,7 @@
 
 
 		<h:form id="groupAdminForm">
-			<p:growl id="growl" showDetail="true" />
+			<p:growl id="__status" showDetail="true" />
 
             <p:commandButton value="新增组" actionListener="#{groupAdminBean.doNewGroup}" onclick="editGroupDialog.show();" async="true" update="editGroupForm:editGroupPanel"/>
 			<p:treeTable id="groupTable" value="#{groupAdminBean.groupRoot}" var="group">
