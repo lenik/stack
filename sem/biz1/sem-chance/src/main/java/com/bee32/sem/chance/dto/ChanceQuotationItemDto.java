@@ -22,7 +22,7 @@ public class ChanceQuotationItemDto
 
     @Override
     protected void _marshal(ChanceQuotationItem source) {
-        this.parent = new ChanceQuotationDto().ref(source.getParent());
+        this.parent = mref(ChanceQuotationDto.class, source.getParent());
         this.material = mref(MaterialDto.class, MaterialDto.PRICES, source.getMaterial());
         this.discount = source.getDiscount();
         this.viewPrice = getPrice().getValue().doubleValue();
