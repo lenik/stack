@@ -1,13 +1,21 @@
 package com.bee32.sem.chance.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.plover.orm.ext.config.DecimalConfig;
+import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.world.monetary.FxrQueryException;
+import com.bee32.sem.world.monetary.MCValue;
 
 /**
  * 竞争对手
@@ -20,9 +28,9 @@ public class ChanceCompetitor
 
     private static final long serialVersionUID = 1L;
 
-    String name;
     Chance chance;
-    double price;
+    Party party;
+    MCValue price = new MCValue();
     String capability;
     String solution;
     String advantage;
@@ -31,18 +39,6 @@ public class ChanceCompetitor
     String comment;
 
     public ChanceCompetitor() {
-    }
-
-    /**
-     * 公司名称
-     */
-    @Column(length = 50, nullable = false)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -61,15 +57,39 @@ public class ChanceCompetitor
     }
 
     /**
+     * 公司名称
+     */
+    @Column(length = 50, nullable = false)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * 竞争对手报价
      */
-    @Column(length = 20, nullable = false)
-    public double getPrice() {
+    @Embedded
+    public MCValue getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(MCValue price) {
+        if (price == null)
+            throw new NullPointerException("price");
         this.price = price;
+    }
+
+    @Redundant
+    @Column(precision = DecimalConfig.MONEY_ITEM_PRECISION, scale = DecimalConfig.MONEY_ITEM_SCALE)
+    public BigDecimal getNativePrice()
+            throws FxrQueryException {
+        return price.getNativeValue(getCreatedDate());
+    }
+
+    void setNativePrice(BigDecimal nativePrice) {
     }
 
     /**

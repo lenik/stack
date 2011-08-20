@@ -20,6 +20,7 @@ import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.people.SEMPeopleSamples;
 import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.world.monetary.MCValue;
 
 @ImportSamples({ SEMInventorySamples.class })
 public class SEMChanceSamples
@@ -62,7 +63,7 @@ public class SEMChanceSamples
         competitor.setAdvantage("产品线95%齐全；产品质量高，市场认可度高");
         competitor.setDisvantage(//
                 "管理人员缺少经验、能力; 团队精神差，缺少沟通；职责不清楚");
-        competitor.setPrice(5000.0);
+        competitor.setPrice(new MCValue(null, 5000.0));
         competitor.setCapability("核心竞争力");
         competitor.setSolution("目前没有好的解决方案");
 
