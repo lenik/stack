@@ -57,7 +57,7 @@ public class MCValue
 
     public MCValue(Currency currency, BigDecimal value) {
         if (currency == null)
-            throw new NullPointerException("currency");
+            currency = CurrencyConfig.getNative();
         if (value == null)
             throw new NullPointerException("value");
         this.currency = currency;
