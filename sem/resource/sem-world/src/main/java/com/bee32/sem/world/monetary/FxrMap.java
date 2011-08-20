@@ -14,7 +14,8 @@ import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.misc.LocalDateUtil;
 import com.bee32.sem.world.math.InterpolatedMap;
 
-public class FxrMap {
+public class FxrMap
+        implements IFxrMap {
 
     static Logger logger = LoggerFactory.getLogger(FxrMap.class);
 
@@ -33,10 +34,12 @@ public class FxrMap {
         this.usage = usage;
     }
 
+    @Override
     public Currency getUnit() {
         return unit;
     }
 
+    @Override
     public FxrUsage getUsage() {
         return usage;
     }
@@ -74,6 +77,7 @@ public class FxrMap {
         }
     }
 
+    @Override
     public void plot(Date date, float rate) {
         if (date == null)
             throw new NullPointerException("date");
@@ -86,6 +90,7 @@ public class FxrMap {
      *
      * @return {@link Double#NaN} if not defined.
      */
+    @Override
     public double eval(Date date) {
 
         // Load the month cover this specific date point.

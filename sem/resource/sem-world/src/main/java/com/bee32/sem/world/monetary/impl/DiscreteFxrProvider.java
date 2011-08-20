@@ -23,6 +23,7 @@ import com.bee32.sem.world.monetary.FxrMapKey;
 import com.bee32.sem.world.monetary.FxrRecord;
 import com.bee32.sem.world.monetary.FxrTable;
 import com.bee32.sem.world.monetary.FxrUsage;
+import com.bee32.sem.world.monetary.IFxrMap;
 
 /**
  * 离散量外汇查询
@@ -51,7 +52,7 @@ public class DiscreteFxrProvider
 
     static Date lastUpdatedDate;
 
-    Map<FxrMapKey, FxrMap> fxrMaps = new HashMap<FxrMapKey, FxrMap>();
+    Map<FxrMapKey, IFxrMap> fxrMaps = new HashMap<FxrMapKey, IFxrMap>();
 
     @Override
     public synchronized List<FxrTable> getFxrTableSeries(Date queryDate, int nprev) {
@@ -111,13 +112,22 @@ public class DiscreteFxrProvider
     }
 
     @Override
-    public synchronized FxrMap getFxrMap(Currency unitCurrency, FxrUsage usage) {
+    public synchronized IFxrMap getFxrMap(Currency unitCurrency, FxrUsage usage) {
+        if (unitCurrency == null)
+            throw new NullPointerException("unitCurrency");
+        if (usage == null)
+            throw new NullPointerException("usage");
+
+        if (unitCurrency.equals(getQuoteCurrency()))
+            return IFxrMap.IDENT;
+
         FxrMapKey key = new FxrMapKey(unitCurrency, usage);
-        FxrMap fxrMap = fxrMaps.get(key);
+
+        IFxrMap fxrMap = fxrMaps.get(key);
         if (fxrMap == null) {
-            fxrMap = new FxrMap(unitCurrency, usage);
-            fxrMap.setDataManager(dataManager); // OPT
-            fxrMaps.put(key, fxrMap);
+            FxrMap _fxrMap = new FxrMap(unitCurrency, usage);
+            _fxrMap.setDataManager(dataManager); // OPT
+            fxrMaps.put(key, fxrMap = _fxrMap);
         }
         return fxrMap;
     }
@@ -163,7 +173,7 @@ public class DiscreteFxrProvider
                     continue;
 
                 Currency _unit = newRecord.getUnitCurrency();
-                FxrMap fxrMap = getFxrMap(_unit, _usage);
+                IFxrMap fxrMap = getFxrMap(_unit, _usage);
 
                 Date _date = newRecord.getDate();
                 fxrMap.plot(_date, _rate);

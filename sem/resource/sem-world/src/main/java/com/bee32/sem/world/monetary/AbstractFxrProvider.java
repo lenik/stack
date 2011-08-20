@@ -56,7 +56,7 @@ public abstract class AbstractFxrProvider
         if (usage == null)
             throw new NullPointerException("usage");
 
-        FxrMap fxrMap = getFxrMap(unitCurrency, usage);
+        IFxrMap fxrMap = getFxrMap(unitCurrency, usage);
 
         double rate = fxrMap.eval(queryDate);
         if (Double.isNaN(rate))

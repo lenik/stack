@@ -52,7 +52,7 @@ public interface IFxrProvider {
     /**
      * @return Non-<code>null</code> self-managed FXR map.
      */
-    FxrMap getFxrMap(Currency unitCurrency, FxrUsage usage);
+    IFxrMap getFxrMap(Currency unitCurrency, FxrUsage usage);
 
     /**
      * Get the FXR of a specific unit currency towards the floor of a specific date.
