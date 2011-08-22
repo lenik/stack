@@ -5,6 +5,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
+import org.primefaces.context.PrimePartialViewContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,12 @@ public class AutoUpdatePhaseListener
     public void beforePhase(PhaseEvent event) {
         logger.info("Adding __status to be rendered");
         PartialViewContext pvc = event.getFacesContext().getPartialViewContext();
+
+        if (pvc instanceof PrimePartialViewContext) {
+            PrimePartialViewContext ppvc = (PrimePartialViewContext) pvc;
+            pvc = ppvc.getWrapped();
+        }
+
         pvc.getRenderIds().add("__status");
     }
 
