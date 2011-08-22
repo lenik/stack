@@ -7,13 +7,17 @@
         <exception-handler-factory>com.bee32.plover.web.faces.PloverExceptionHandlerFactory</exception-handler-factory>
     </factory>
 
-    <component>
-        <component-type>plover.logo</component-type>
-        <component-class>com.bee32.plover.web.faces.controls.UILogo</component-class>
-    </component>
+    <lifecycle>
+        <phase-listener>com.bee32.plover.web.faces.AutoUpdatePhaseListener</phase-listener>
+    </lifecycle>
 
     <application>
         <variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
     </application>
+
+    <component>
+        <component-type>plover.logo</component-type>
+        <component-class>com.bee32.plover.web.faces.controls.UILogo</component-class>
+    </component>
 
 </faces-config>
