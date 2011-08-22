@@ -1,5 +1,7 @@
 package com.bee32.plover.web.faces.view;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import javax.faces.component.UIComponent;
@@ -15,6 +17,7 @@ import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.web.faces.utils.ComponentHelper;
 import com.bee32.plover.web.faces.utils.FacesContextSupport;
+import com.bee32.plover.web.faces.utils.FacesUILogger;
 
 @ComponentTemplate
 @Lazy
@@ -25,8 +28,16 @@ public abstract class ViewBean
 
     private static final long serialVersionUID = 1L;
 
+    protected transient FacesUILogger uiLogger = new FacesUILogger();
+
     public ViewBean() {
-        wire();
+        // wire();
+    }
+
+    private void readObject(ObjectInputStream in)
+            throws ClassNotFoundException, IOException {
+        in.defaultReadObject();
+        uiLogger = new FacesUILogger();
     }
 
     /**

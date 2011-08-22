@@ -1,4 +1,4 @@
-package com.bee32.sem.sandbox;
+package com.bee32.plover.web.faces.utils;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
