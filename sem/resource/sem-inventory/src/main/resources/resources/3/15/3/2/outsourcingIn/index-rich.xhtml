@@ -117,7 +117,9 @@
                     <t:panelGroup colspan="3">
                         <t:panelGrid columns="2">
                             <h:outputText/>
-                            <p:commandButton value="..."/>
+                            <p:commandButton value="..."
+                                onclick="chooseOutsourcingOutDialog.show()"
+                                disabled="#{!outsourcingInAdminBean.editable}" />
                         </t:panelGrid>
                     </t:panelGroup>
 
@@ -464,15 +466,153 @@
             <p:dialog header="选择委外出库单" widgetVar="chooseOutsourcingOutDialog"
                 modal="true" height="500" width="640">
                 <h:panelGroup id="chooseOutsourcingOutPanel">
+                    <t:panelGroup>
+                        <t:panelGrid columns="6">
+                            <h:outputText value="时间范围:"/>
+                            <h:outputText value="从"/>
+                            <p:calendar navigator="true" locale="zh_CN"
+                                pattern="yyyy-MM-dd"
+                                value="#{outsourcingInAdminBean.findDateFrom}"
+                                showOn="button" />
+                            <h:outputText value="至"/>
+                            <p:calendar navigator="true" locale="zh_CN"
+                                pattern="yyyy-MM-dd"
+                                value="#{outsourcingInAdminBean.findDateTo}"
+                                showOn="button" />
+                            <p:commandButton
+                                value="查找"
+                                actionListener="#{outsourcingInAdminBean.findOut}"
+                                update="findedOuts"
+                                async="true"/>
+                        </t:panelGrid>
+
+                        <p:dataTable id="findedOuts" var="stockOutsourcing"
+                            value="#{outsourcingInAdminBean.findedOuts}"
+                            resizableColumns="true"
+                            rowIndexVar="rowIndex">
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="序号" />
+                                </f:facet>
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="时间" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{stockOutsourcing.output.createdDate}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="标签" />
+                                </f:facet>
+                                <h:outputText value="#{stockOutsourcing.output.label}" />
+                            </p:column>
+
+                            <p:column headerText="仓库">
+                                <h:outputText value="#{stockOutsourcing.output.warehouse.name}" />
+                            </p:column>
 
 
+                            <p:column>
+                                <f:facet name="header">操作</f:facet>
+                                <t:panelGroup>
+                                    <p:commandLink
+                                        oncomplete="viewOutDialog.show()"
+                                        update="viewOutFrom:viewOutPanel"
+                                        value="详细">
+                                        <f:setPropertyActionListener value="#{stockOutsourcing.output}"
+                                            target="#{outsourcingInAdminBean.selectedOutsourcingOut}" />
+                                    </p:commandLink>
+                                </t:panelGroup>
+                            </p:column>
+                        </p:dataTable>
 
+                    </t:panelGroup>
                 </h:panelGroup>
             </p:dialog>
         </h:form>
 
+        <h:form id="viewOutForm">
+            <p:dialog header="查看委外出库单明细"
+                widgetVar="viewOutDialog" modal="true"
+                height="500" width="640">
 
-		<h:outputScript>
+                <p:panel id="viewOutPanel">
+                    <p:dataTable value="#{outsourcingInAdminBean.selectedOutsourcingOut.items}" var="item">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="序号" />
+                            </f:facet>
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="物料" />
+                            </f:facet>
+                            <h:outputText value="#{item.material.name}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="批号" />
+                            </f:facet>
+                            <h:outputText value="#{item.batch}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="有效期" />
+                            </f:facet>
+                            <h:outputText value="#{item.expirationDate}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="库位" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{item.location.nodeText}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="单价" />
+                            </f:facet>
+                            <h:outputText value="#{item.price.value}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="币种" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{item.price.currencyText}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="数量" />
+                            </f:facet>
+                            <h:outputText value="#{item.quantity}" />
+                        </p:column>
+                    </p:dataTable>
+
+                    <t:panelGroup>
+                        <p:commandButton value="关闭" onclick="viewOutDialog.hide();"/>
+                    </t:panelGroup>
+                </p:panel>
+
+            </p:dialog>
+        </h:form>
+
+
+        <h:outputScript>
             document.title = $("#mainForm\\:pageTitle").val();
         </h:outputScript>
 

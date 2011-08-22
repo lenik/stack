@@ -50,7 +50,7 @@ public class StockOutsourcing
      * 委外入库单
      */
     @NaturalId
-    @OneToOne(optional = false)
+    @OneToOne
     @Cascade(CascadeType.ALL)
     @JoinColumn(name = "s2")
     public StockOrder getInput() {

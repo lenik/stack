@@ -2,6 +2,7 @@ package com.bee32.sem.inventory.web.business;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.event.AjaxBehaviorEvent;
 
@@ -16,8 +17,10 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
+import com.bee32.sem.inventory.dto.tx.StockOutsourcingDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 
@@ -27,6 +30,8 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
 
     private static final long serialVersionUID = 1L;
 
+    private StockOutsourcingDto stockOutsourcing = new StockOutsourcingDto().create();
+
     private Date limitDateFrom;
     private Date limitDateTo;
 
@@ -34,16 +39,26 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
     private int goNumber;
     private int count;
 
+    private Date findDateFrom;
+    private Date findDateTo;
+
+    private List<StockOutsourcingDto> findedOuts;
+
+    private StockOrderDto selectedOutsourcingOut;
+
+
     public OutsourcingInAdminBean() {
         Calendar c = Calendar.getInstance();
         // 取这个月的第一天
         c.set(Calendar.DAY_OF_MONTH, 1);
         limitDateFrom = c.getTime();
+        findDateFrom = c.getTime();
 
         // 最这个月的最后一天
         c.add(Calendar.MONTH, 1);
         c.add(Calendar.DAY_OF_MONTH, -1);
         limitDateTo = c.getTime();
+        findDateTo = c.getTime();
 
         goNumber = 1;
 
@@ -83,6 +98,49 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
         return count;
     }
 
+    public Date getFindDateFrom() {
+        return findDateFrom;
+    }
+
+    public void setFindDateFrom(Date findDateFrom) {
+        this.findDateFrom = findDateFrom;
+    }
+
+    public Date getFindDateTo() {
+        return findDateTo;
+    }
+
+    public void setFindDateTo(Date findDateTo) {
+        this.findDateTo = findDateTo;
+    }
+
+    public List<StockOutsourcingDto> getFindedOuts() {
+        return findedOuts;
+    }
+
+    public void setFindedOuts(List<StockOutsourcingDto> findedOuts) {
+        this.findedOuts = findedOuts;
+    }
+
+    public StockOutsourcingDto getStockOutsourcing() {
+        return stockOutsourcing;
+    }
+
+    public void setStockOutsourcing(StockOutsourcingDto stockOutsourcing) {
+        this.stockOutsourcing = stockOutsourcing;
+    }
+
+    public StockOrderDto getSelectedOutsourcingOut() {
+        return selectedOutsourcingOut;
+    }
+
+    public void setSelectedOutsourcingOut(StockOrderDto selectedOutsourcingOut) {
+        this.selectedOutsourcingOut = selectedOutsourcingOut;
+    }
+
+
+
+
 
 
     public void onSwChange(AjaxBehaviorEvent e) {
@@ -107,6 +165,7 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
 
 
         stockOrder = new StockOrderDto().create();
+        stockOutsourcing = new StockOutsourcingDto().create();
         if (selectedWarehouse != null) {
             StockOrder firstOrder = serviceFor(StockOrder.class)
                     .getFirst(
@@ -118,8 +177,15 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
                             new Equals("warehouse.id", selectedWarehouse
                                     .getId()), Order.desc("id"));
 
-            if (firstOrder != null)
+            if (firstOrder != null) {
                 stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
+
+                StockOutsourcing o = serviceFor(StockOutsourcing.class)
+                        .getUnique(new Equals("input.id", stockOrder.getId()));
+                if(o != null) {
+                    stockOutsourcing = DTOs.marshal(StockOutsourcingDto.class, o);
+                }
+            }
         }
     }
 
@@ -133,6 +199,7 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
             return;
         }
 
+        stockOutsourcing = new StockOutsourcingDto().create();
         stockOrder = new StockOrderDto().create();
         //stockOrder.setCreatedDate(new Date());
         editable = true;
@@ -149,7 +216,14 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
         editable = true;
     }
 
+    @Transactional
     public void delete() {
+        StockOutsourcing o = serviceFor(StockOutsourcing.class).getUnique(
+                new Equals("input.id", stockOrder.getId()));
+        if (o != null) {
+            o.setInput(null);
+            serviceFor(StockOutsourcing.class).saveOrUpdate(o);
+        }
         serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
         uiLogger.info("删除成功!");
         loadStockOrder(goNumber);
@@ -167,7 +241,15 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
         for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
             serviceFor(StockOrder.class).delete(item.unmarshal());
         }
-        serviceFor(StockOrder.class).save(stockOrder.unmarshal());
+
+        //serviceFor(StockOrder.class).save(stockOrder.unmarshal());
+
+        stockOutsourcing.setOutput(stockOrder);
+        StockOutsourcing _stockOutsourcing = stockOutsourcing.unmarshal();
+        //保存stockOutsourcing
+        serviceFor(StockOutsourcing.class).saveOrUpdate(_stockOutsourcing);
+
+
         uiLogger.info("保存成功");
         loadStockOrder(goNumber);
         editable = false;
@@ -222,5 +304,12 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
     @Override
     public StockWarehouseDto getSelectedWarehouse_() {
         return selectedWarehouse;
+    }
+
+    public void findOut() {
+        List<StockOutsourcing> os = serviceFor(StockOutsourcing.class).list(
+                StockCriteria.outsourcingOutHaveNoCorrespondingIn(findDateFrom, findDateTo));
+
+        findedOuts = DTOs.marshalList(StockOutsourcingDto.class, StockOutsourcingDto.ORDER_ITEMS, os, true);
     }
 }

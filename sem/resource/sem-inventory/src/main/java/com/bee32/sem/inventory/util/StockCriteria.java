@@ -1,17 +1,22 @@
 package com.bee32.sem.inventory.util;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import org.hibernate.criterion.Criterion;
 
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockPeriod;
+import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
+import com.bee32.sem.misc.EntityCriteria;
 
 public class StockCriteria
         extends CriteriaSpec {
@@ -55,5 +60,15 @@ public class StockCriteria
     public static Criterion peerOf(StockOrderItem item) {
         return null;
     }
+
+    @LeftHand(StockOutsourcing.class)
+    public static ICriteriaElement outsourcingOutHaveNoCorrespondingIn(
+            Date from, Date to) {
+        return compose(
+                alias("output", "outsourcingOut"),
+                new IsNull("input"),
+                EntityCriteria.betweenEx("outsourcingOut.createdDate", from, to));
+    }
+
 
 }

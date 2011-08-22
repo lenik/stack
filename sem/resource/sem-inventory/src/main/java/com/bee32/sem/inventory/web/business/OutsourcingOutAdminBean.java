@@ -16,8 +16,10 @@ import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
+import com.bee32.sem.inventory.dto.tx.StockOutsourcingDto;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 
@@ -26,6 +28,8 @@ import com.bee32.sem.misc.EntityCriteria;
 public class OutsourcingOutAdminBean extends StockOrderBaseBean {
 
     private static final long serialVersionUID = 1L;
+
+    private StockOutsourcingDto stockOutsourcing = new StockOutsourcingDto().create();
 
     private Date limitDateFrom;
     private Date limitDateTo;
@@ -83,6 +87,14 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
         return count;
     }
 
+    public StockOutsourcingDto getStockOutsourcing() {
+        return stockOutsourcing;
+    }
+
+    public void setStockOutsourcing(StockOutsourcingDto stockOutsourcing) {
+        this.stockOutsourcing = stockOutsourcing;
+    }
+
 
 
     public void onSwChange(AjaxBehaviorEvent e) {
@@ -107,6 +119,7 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
 
 
         stockOrder = new StockOrderDto().create();
+        stockOutsourcing = new StockOutsourcingDto().create();
         if (selectedWarehouse != null) {
             StockOrder firstOrder = serviceFor(StockOrder.class)
                     .getFirst(
@@ -118,8 +131,15 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
                             new Equals("warehouse.id", selectedWarehouse
                                     .getId()), Order.desc("id"));
 
-            if (firstOrder != null)
+            if (firstOrder != null) {
                 stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
+
+                StockOutsourcing o = serviceFor(StockOutsourcing.class)
+                        .getUnique(new Equals("output.id", stockOrder.getId()));
+                if(o != null) {
+                    stockOutsourcing = DTOs.marshal(StockOutsourcingDto.class, o);
+                }
+            }
         }
     }
 
@@ -133,6 +153,7 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
             return;
         }
 
+        stockOutsourcing = new StockOutsourcingDto().create();
         stockOrder = new StockOrderDto().create();
         //stockOrder.setCreatedDate(new Date());
         editable = true;
@@ -150,7 +171,9 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
     }
 
     public void delete() {
-        serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
+        serviceFor(StockOutsourcing.class).deleteAll(
+                new  Equals("output.id", stockOrder.getId()));
+        //serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
         uiLogger.info("删除成功!");
         loadStockOrder(goNumber);
     }
@@ -167,7 +190,14 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
         for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
             serviceFor(StockOrder.class).delete(item.unmarshal());
         }
-        serviceFor(StockOrder.class).save(stockOrder.unmarshal());
+
+        //serviceFor(StockOrder.class).save(stockOrder.unmarshal());
+
+        stockOutsourcing.setOutput(stockOrder);
+        StockOutsourcing _stockOutsourcing = stockOutsourcing.unmarshal();
+        //保存stockOutsourcing
+        serviceFor(StockOutsourcing.class).saveOrUpdate(_stockOutsourcing);
+
         uiLogger.info("保存成功");
         loadStockOrder(goNumber);
         editable = false;
