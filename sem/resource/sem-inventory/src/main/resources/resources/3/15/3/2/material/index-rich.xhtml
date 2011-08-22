@@ -448,7 +448,7 @@
                     <t:panelGroup id="btn1" colspan="5">
                         <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}"
                             update="main:materialList, dialogForm:btn1, " disabled="#{materialViewBean.editable}"
-                            oncomplete="${materialViewBean.post} "/>
+                            oncomplete="materialDialog.hide(); "/>
                         <p:commandButton value="取消" disabled="#{materialViewBean.editable}"
                             onclick="materialDialog.hide();" />
                     </t:panelGroup>
