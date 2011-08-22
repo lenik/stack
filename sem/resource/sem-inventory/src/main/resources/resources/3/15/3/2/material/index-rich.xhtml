@@ -175,7 +175,7 @@
                     <p:separator />
                     <p:commandButton value="保存" actionListener="#{materialViewBean.doSaveUnitConv}"
                         oncomplete="unitConvDialog.hide();"
-                        update="dialogForm:selectUnitConv,__status,dialogForm:unitConvForm" />
+                        update="dialogForm:selectUnitConv,dialogForm:unitConvForm" />
                     <p:commandButton value="取消" onclick="unitConvDialog.hide();" />
                     <br />
                     <h:outputText value="例如:" />
@@ -210,7 +210,7 @@
                             <h:outputText value="#{item.price.currency.currencyCode}" />
                         </p:column>
                     </p:dataTable>
-                    <p:commandButton value="确定" update="__status,dialogForm:currentPrice" oncomplete="materialPrice.hide();" />
+                    <p:commandButton value="确定" update="dialogForm:currentPrice" oncomplete="materialPrice.hide();" />
                     <p:commandButton value="取消" onclick="materialPrice.hide();" />
                 </p:panel>
             </p:dialog>
@@ -440,14 +440,14 @@
                     <t:panelGroup colspan="5">
                         <h:form enctype="multipart/form-data">
                             <p:fileUpload fileUploadListener="#{materialViewBean.handleFileUpload}" mode="advanced"
-                                update="__status,dialogForm:attachList" multiple="true" label="上传附件"
+                                update="dialogForm:attachList" multiple="true" label="上传附件"
                                 allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
                         </h:form>
                     </t:panelGroup>
 
                     <t:panelGroup id="btn1" colspan="5">
                         <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}"
-                            update="main:materialList, dialogForm:btn1, __status" disabled="#{materialViewBean.editable}"
+                            update="main:materialList, dialogForm:btn1, " disabled="#{materialViewBean.editable}"
                             oncomplete="${materialViewBean.post} "/>
                         <p:commandButton value="取消" disabled="#{materialViewBean.editable}"
                             onclick="materialDialog.hide();" />
@@ -467,7 +467,7 @@
                     <p:inputText value="#{materialViewBean.activeAttr.value}" />
 
                     <p:commandButton value="确定" actionListener="#{materialViewBean.doAddAttr}"
-                        update="dialogForm:attributeTable,__status" oncomplete="attributeDialog.hide();" />
+                        update="dialogForm:attributeTable" oncomplete="attributeDialog.hide();" />
                     <p:commandButton value="取消" onclick="attributeDialog.hide();" />
                 </t:panelGrid>
             </p:dialog>
@@ -567,7 +567,7 @@
             <p:confirmDialog message="您确定要删除此物料吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="confirmation">
 
-                <p:commandButton value="删除" update="__status,main:materialList" oncomplete="confirmation.hide()"
+                <p:commandButton value="删除" update="main:materialList" oncomplete="confirmation.hide()"
                     actionListener="#{materialViewBean.destroyMaterial}" />
                 <p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
 

@@ -16,11 +16,6 @@
     <ui:define name="title">销售机会管里</ui:define>
 
     <ui:define name="content">
-
-        <h:form id="prompting">
-            <p:growl id="__status" showDetail="true" />
-        </h:form>
-
         <h:outputStylesheet>
             .ftd{
                 vertical-align:top;
@@ -41,12 +36,12 @@
                             update="chanceForm" async="true" />
                         <p:divider />
                         <p:commandButton id="chanceEditButton" value="编辑" actionListener="#{chanceBean.editForm}"
-                            update="chanceForm:toolbar,chanceForm:mainTab,prompting" async="true" />
+                            update="chanceForm:toolbar,chanceForm:mainTab" async="true" />
                         <p:commandButton id="chanceDeleteButton" value="删除" actionListener="#{chanceBean.drop}"
-                            update="chanceForm,prompting" />
+                            update="chanceForm" />
                         <p:divider />
                         <p:commandButton id="chanceAddButton" value="保存" actionListener="#{chanceBean.saveChance}"
-                            update="chanceForm:toolbar,chanceForm:mainTab,prompting" async="true" disabled="true" />
+                            update="chanceForm:toolbar,chanceForm:mainTab" async="true" disabled="true" />
                         <p:divider />
                         <p:commandButton id="chanceResetButton" value="取消" actionListener="#{chanceBean.cancel}"
                             update="chanceForm" async="true" disabled="true" />
@@ -189,7 +184,7 @@
                                         onclick="deleteActionConfirm.show();" />
                                     <p:commandButton id="viewActionDetailButton" value="详细"
                                         actionListener="#{chanceBean.viewActionDetail}"
-                                        update="dialogFrom:actionDetail,prompting"
+                                        update="dialogFrom:actionDetail"
                                         oncomplete="actioDetailDialog.show();" />
                                 </p:toolbarGroup>
                             </p:toolbar>
@@ -283,7 +278,7 @@
             <p:confirmDialog message="确定要删除记录吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="confirmation">
 
-                <p:commandButton value="删除" update="chanceForm:chanceList,prompting" oncomplete="confirmation.hide()"
+                <p:commandButton value="删除" update="chanceForm:chanceList" oncomplete="confirmation.hide()"
                     actionListener="#{chanceBean.drop}" />
                 <p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
 
@@ -298,7 +293,7 @@
 
             <p:confirmDialog message="确定要删除此报价单吗?" showEffect="bounce" hideEffect="explode" header="note"
                 severity="alert" widgetVar="quotationConfirmation">
-                <p:commandButton value="删除" update="chanceForm:quotationToolbar,chanceForm:quotationList,prompting"
+                <p:commandButton value="删除" update="chanceForm:quotationToolbar,chanceForm:quotationList"
                     oncomplete="quotationConfirmation.hide()" actionListener="#{chanceBean.dropQuotation}" async="true" />
                 <p:commandButton value="取消" onclick="quotationConfirmation.hide()" type="button" />
             </p:confirmDialog>
@@ -313,7 +308,7 @@
             <p:confirmDialog message="确定要取消此行动记录的关联?" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="deleteActionConfirm">
                 <p:commandButton value="确定" actionListener="#{chanceBean.unRelating}"
-                    update="chanceForm:actionHistories,chanceForm:actionToolbar,prompting"
+                    update="chanceForm:actionHistories,chanceForm:actionToolbar"
                     oncomplete="deleteActionConfirm.hide();" />
                 <p:commandButton value="取消" onclick="deleteActionConfirm.hide();" />
             </p:confirmDialog>
@@ -406,7 +401,7 @@
 
                     <h:panelGrid columns="2">
                         <p:commandButton value="选择" actionListener="#{chanceBean.doAttachActions}"
-                            oncomplete="chooseChanceActionDialog.hide();" update="chanceForm:actionHistories,prompting"
+                            oncomplete="chooseChanceActionDialog.hide();" update="chanceForm:actionHistories"
                             async="true" />
                         <p:commandButton value="取消" oncomplete="chooseChanceActionDialog.hide();" />
                     </h:panelGrid>
@@ -605,7 +600,7 @@
 
                     <t:panelGroup colspan="3">
                         <p:commandButton value="保存" actionListener="#{chanceBean.saveQuotation}"
-                            oncomplete="quotationDialog.hide();" update="chanceForm:quotationList, prompting"
+                            oncomplete="quotationDialog.hide();" update="chanceForm:quotationList"
                             disabled="#{chanceBean.quotationEdit}" />
                         <p:commandButton value="取消" onclick="quotationDialog.hide();" />
                     </t:panelGroup>
@@ -630,7 +625,7 @@
                             <h:outputText id="outputDiscount" value="#{chanceBean.selectedQuotationItem.discount}" />
                             <p:inputText id="inputDiscount" value="#{chanceBean.selectedQuotationItem.discount}" />
                             <p:commandLink id="editDiscount" title="修改" actionListener="#{chanceBean.editDiscount}"
-                                update="quotationForm:discount, prompting">
+                                update="quotationForm:discount">
                                 <span class="ui-icon ui-icon-pencil"></span>
                             </p:commandLink>
                             <p:commandLink id="sureDiscount" title="确定" actionListener="#{chanceBean.sureDiscount}"
@@ -646,7 +641,7 @@
                             <h:outputText id="outputPrice" value="#{chanceBean.selectedQuotationItem.viewPrice}" />
                             <p:inputText id="inputPrice" value="#{chanceBean.selectedQuotationItem.viewPrice}" />
                             <p:commandLink id="editPrice" title="修改" actionListener="#{chanceBean.editPrice}"
-                                update="quotationForm:unitPrice, prompting">
+                                update="quotationForm:unitPrice">
                                 <span class="ui-icon ui-icon-pencil"></span>
                             </p:commandLink>
                             <p:commandLink id="surePrice" title="确定" actionListener="#{chanceBean.calculatePriceChange}"

@@ -25,8 +25,6 @@
 
 
 		<h:form id="roleAdminForm">
-			<p:growl id="__status" showDetail="true" />
-
             <p:commandButton value="新增角色" actionListener="#{roleAdminBean.doNewRole}" onclick="editRoleDialog.show();" async="true" update="editRoleForm:editRolePanel"/>
 			<p:treeTable id="roleTable" value="#{roleAdminBean.roleRoot}" var="role">
 				<p:column>

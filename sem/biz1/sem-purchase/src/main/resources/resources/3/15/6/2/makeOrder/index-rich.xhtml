@@ -37,8 +37,6 @@
 
 			<t:saveState value="#{personAdminBean.editable}" />
 
-			<p:growl id="growl" showDetail="true" />
-
 			<p:panel header="联系人管理">
 				<p:toolbar id="personToolbar">
 					<p:toolbarGroup align="left">
@@ -432,9 +430,6 @@
         <h:form id="tagForm">
             <p:dialog header="标签添加" widgetVar="tagDlg" modal="true" height="500" width="640">
                 <h:panelGroup id="tagHolder">
-
-                    <p:growl id="growl1" showDetail="true" />
-
                     <p:selectManyMenu value="#{personAdminBean.selectedTagsToAdd}" style="height:300px">
                         <f:selectItems value="#{personAdminBean.tags}" />
                     </p:selectManyMenu>
@@ -456,9 +451,6 @@
 		<h:form id="contactForm">
 			<p:dialog header="联系方式编辑" widgetVar="contactHolderDlg" modal="true" height="500" width="640">
                 <h:panelGroup id="contactHolder">
-
-                    <p:growl id="growl1" showDetail="true" />
-
 					<h:inputHidden id="contactId" value="#{personAdminBean.contact.id}"/>
 					<t:panelGrid columns="4"
 					    columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">

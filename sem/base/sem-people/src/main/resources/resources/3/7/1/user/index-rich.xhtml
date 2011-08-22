@@ -40,8 +40,6 @@
 
 
 		<h:form id="userAdminForm">
-			<p:growl id="__status" showDetail="true" />
-
             <p:commandButton value="新增用户" actionListener="#{userAdminBean.doNewUser}" onclick="editUserDialog.show();" async="true" update="editUserForm:editUserPanel"/>
 			<p:dataTable id="userTable" value="#{userAdminBean.allUser}" var="user">
 				<p:column>

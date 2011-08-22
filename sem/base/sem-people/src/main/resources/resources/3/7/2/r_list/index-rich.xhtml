@@ -41,15 +41,13 @@
 
 		<h:form id="permissionForm">
 
-			<p:growl id="__status" showDetail="true" />
-
 			<p:panel header="权限管理">
 				<p:toolbar id="permissionToolbar">
 					<p:toolbarGroup align="left">
 
 						<p:commandButton value="保存"
 							actionListener="#{permissionAdminBean.doSave}"
-							update="permissionForm:rpEntries permissionForm:__status"
+							update="permissionForm:rpEntries"
 							async="true" />
 						<p:divider />
 
@@ -69,10 +67,10 @@
 
 								<p:ajax event="rowSelect"
 									listener="#{permissionAdminBean.onRowSelectGroup}"
-									update="permissionForm:rpEntries permissionForm:__status" />
+									update="permissionForm:rpEntries" />
 								<p:ajax event="rowUnselect"
 									listener="#{personAdminBean.onRowUnselectGroup}"
-									update="permissionForm:rpEntries permissionForm:__status" />
+									update="permissionForm:rpEntries" />
 
 
 								<p:column>
@@ -107,10 +105,10 @@
 
 								<p:ajax event="rowSelect"
 									listener="#{permissionAdminBean.onRowSelectRole}"
-									update="permissionForm:rpEntries permissionForm:__status" />
+									update="permissionForm:rpEntries" />
 								<p:ajax event="rowUnselect"
 									listener="#{personAdminBean.onRowUnselectRole}"
-									update="permissionForm:rpEntries permissionForm:__status" />
+									update="permissionForm:rpEntries" />
 
 
 								<p:column>
@@ -146,10 +144,10 @@
 
 								<p:ajax event="rowSelect"
 									listener="#{permissionAdminBean.onRowSelectUser}"
-									update="permissionForm:rpEntries permissionForm:__status" />
+									update="permissionForm:rpEntries" />
 								<p:ajax event="rowUnselect"
 									listener="#{personAdminBean.onRowUnselectUser}"
-									update="permissionForm:rpEntries permissionForm:__status" />
+									update="permissionForm:rpEntries" />
 
 
 								<p:column>
@@ -197,105 +195,105 @@
 							<t:panelGrid columns="3">
 								<p:commandButton value="全"
 									actionListener="#{permissionAdminBean.onSelectAllAdmin}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 								<p:commandButton value="反"
 									actionListener="#{permissionAdminBean.onSelectInvertAdmin}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 								<p:commandButton value="不"
 									actionListener="#{permissionAdminBean.onSelectNoneAdmin}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 							</t:panelGrid>
 
 							<t:panelGrid columns="3">
 								<p:commandButton value="全"
 									actionListener="#{permissionAdminBean.onSelectAllReadable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 								<p:commandButton value="反"
 									actionListener="#{permissionAdminBean.onSelectInvertReadable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 								<p:commandButton value="不"
 									actionListener="#{permissionAdminBean.onSelectNoneReadable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 							</t:panelGrid>
 
 							<t:panelGrid columns="3">
 								<p:commandButton value="全"
 									actionListener="#{permissionAdminBean.onSelectAllWritable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 								<p:commandButton value="反"
 									actionListener="#{permissionAdminBean.onSelectInvertWritable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 								<p:commandButton value="不"
 									actionListener="#{permissionAdminBean.onSelectNoneWritable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 							</t:panelGrid>
 
 							<t:panelGrid columns="3">
 								<p:commandButton value="全"
 									actionListener="#{permissionAdminBean.onSelectAllExecutable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 								<p:commandButton value="反"
 									actionListener="#{permissionAdminBean.onSelectInvertExecutable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 								<p:commandButton value="不"
 									actionListener="#{permissionAdminBean.onSelectNoneExecutable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 							</t:panelGrid>
 
 							<t:panelGrid columns="3">
 								<p:commandButton value="全"
 									actionListener="#{permissionAdminBean.onSelectAllListable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 								<p:commandButton value="反"
 									actionListener="#{permissionAdminBean.onSelectInvertListable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 								<p:commandButton value="不"
 									actionListener="#{permissionAdminBean.onSelectNoneListable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 							</t:panelGrid>
 
 							<t:panelGrid columns="3">
 								<p:commandButton value="全"
 									actionListener="#{permissionAdminBean.onSelectAllCreatable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 								<p:commandButton value="反"
 									actionListener="#{permissionAdminBean.onSelectInvertCreatable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 								<p:commandButton value="不"
 									actionListener="#{permissionAdminBean.onSelectNoneCreatable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
 							</t:panelGrid>
 
 							<t:panelGrid columns="3">
 								<p:commandButton value="全"
 									actionListener="#{permissionAdminBean.onSelectAllDeletable}"
-									update="permissionForm:rpEntries permissionForm:__status"
+									update="permissionForm:rpEntries"
 									async="true" />
                                 <p:commandButton value="反"
                                     actionListener="#{permissionAdminBean.onSelectInvertDeletable}"
-                                    update="permissionForm:rpEntries permissionForm:__status"
+                                    update="permissionForm:rpEntries"
                                     async="true" />
                                 <p:commandButton value="不"
                                     actionListener="#{permissionAdminBean.onSelectNoneDeletable}"
-                                    update="permissionForm:rpEntries permissionForm:__status"
+                                    update="permissionForm:rpEntries"
                                     async="true" />
 							</t:panelGrid>
 						</t:panelGrid>

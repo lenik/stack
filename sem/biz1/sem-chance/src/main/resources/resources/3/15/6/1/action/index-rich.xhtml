@@ -16,11 +16,6 @@
     <ui:define name="title">机会行动日程管理</ui:define>
 
     <ui:define name="content">
-
-        <h:form id="prompting">
-            <p:growl id="__status" showDetail="true" />
-        </h:form>
-
         <h:form id="confirm">
             <p:confirmDialog message="确定删除记录?" width="200" showEffect="explode" hideEffect="explode" header="提示"
                 widgetVar="confirmation">
@@ -29,7 +24,7 @@
             <p:confirmDialog message="确定要删除记录吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="confirmation">
 
-                <p:commandButton value="确定" update="chanceActionForm:actionList,prompting"
+                <p:commandButton value="确定" update="chanceActionForm:actionList"
                     oncomplete="confirmation.hide()" actionListener="#{chanceActionBean.drop}" />
                 <p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
 
@@ -46,12 +41,12 @@
                             update="chanceActionForm" async="false" />
                         <p:divider />
                         <p:commandButton id="editActionButton" value="编辑" actionListener="#{chanceActionBean.editForm}"
-                            update="chanceActionForm,prompting" />
+                            update="chanceActionForm" />
                         <p:commandButton id="deleteActionButton" value="删除" actionListener="#{chanceActionBean.drop}"
-                            update="chanceActionForm:actions,prompting,chanceActionForm:productToolbar" />
+                            update="chanceActionForm:actions,chanceActionForm:productToolbar" />
                         <p:divider />
                         <p:commandButton id="saveActionButton" value="保存"
-                            actionListener="#{chanceActionBean.saveAction}" update="chanceActionForm,prompting"
+                            actionListener="#{chanceActionBean.saveAction}" update="chanceActionForm"
                             disabled="true" />
                         <p:divider />
                         <p:commandButton id="resetButton" value="取消" actionListener="#{chanceActionBean.cancel}"
@@ -68,7 +63,7 @@
                         <p:calendar id="etime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
                             value="#{chanceActionBean.searchEndTime}" showOn="button" />
                         <p:commandButton value="查找" actionListener="#{chanceActionBean.search}"
-                            update="chanceActionForm,prompting" async="true" />
+                            update="chanceActionForm" async="true" />
 
                     </p:toolbarGroup>
                 </p:toolbar>

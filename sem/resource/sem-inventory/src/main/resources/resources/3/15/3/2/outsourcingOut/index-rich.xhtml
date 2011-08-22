@@ -37,8 +37,6 @@
 
 
 		<h:form id="mainForm">
-			<p:growl id="__status" showDetail="true" />
-
 			<h:inputHidden id="pageTitle" readonly="true"
 				value="#{outsourcingOutAdminBean.subject.displayName}管理" />
 
@@ -248,9 +246,6 @@
 			<p:dialog header="#{outsourcingOutAdminBean.subject.displayName}项目编辑" widgetVar="itemDialog" modal="true"
 				height="500" width="640">
 				<h:panelGroup id="itemPanel">
-
-					<p:growl id="__status1" showDetail="true" />
-
 					<t:panelGrid columns="4"
 						columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 

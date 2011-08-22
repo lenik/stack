@@ -37,8 +37,6 @@
 
 			<t:saveState value="#{personAdminBean.editable}" />
 
-			<p:growl id="__status" showDetail="true" />
-
 			<p:panel header="联系人管理">
 				<p:toolbar id="personToolbar">
 					<p:toolbarGroup align="left">
@@ -87,10 +85,10 @@
 
 							<p:ajax event="rowSelect"
 								listener="#{personAdminBean.onRowSelect}"
-								update="personForm:personToolbar __status" />
+								update="personForm:personToolbar" />
 							<p:ajax event="rowUnselect"
 								listener="#{personAdminBean.onRowUnselect}"
-								update="personForm:personToolbar __status" />
+								update="personForm:personToolbar" />
 
 							<p:column>
 								<f:facet name="header">
@@ -259,7 +257,7 @@
 									<p:commandButton value="删除"
 										actionListener="#{personAdminBean.doDeleteContact}"
 										disabled="#{not personAdminBean.contactSelected}"
-										update="contacts __status"
+										update="contacts"
 										async="true" />
 									<p:divider />
 								</p:toolbarGroup>
@@ -432,19 +430,15 @@
         <h:form id="tagForm">
             <p:dialog header="标签添加" widgetVar="tagDlg" modal="true" height="500" width="640">
                 <h:panelGroup id="tagHolder">
-
-                    <p:growl id="__status1" showDetail="true" />
-
                     <p:selectManyMenu value="#{personAdminBean.selectedTagsToAdd}" style="height:300px">
                         <f:selectItems value="#{personAdminBean.tags}" />
                     </p:selectManyMenu>
-
                 </h:panelGroup>
                 <t:panelGrid columns="2">
                     <p:commandButton value="添加"
                         actionListener="#{personAdminBean.addTags}"
                         oncomplete="tagDlg.hide();" async="true"
-                        update="personForm:personTags personForm:__status" />
+                        update="personForm:personTags" />
                     <p:commandButton value="取消"
                         oncomplete="tagDlg.hide();" />
                 </t:panelGrid>
@@ -456,9 +450,6 @@
 		<h:form id="contactForm">
 			<p:dialog header="联系方式编辑" widgetVar="contactHolderDlg" modal="true" height="500" width="640">
                 <h:panelGroup id="contactHolder">
-
-                    <p:growl id="__status1" showDetail="true" />
-
 					<h:inputHidden id="contactId" value="#{personAdminBean.contact.id}"/>
 					<t:panelGrid columns="4"
 					    columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
@@ -499,7 +490,7 @@
 								<p:commandButton value="保存"
 									actionListener="#{personAdminBean.doSaveContact}"
 									oncomplete="contactHolderDlg.hide();" async="true"
-									update="personForm:contacts personForm:__status" />
+									update="personForm:contacts" />
 								<p:commandButton value="取消"
 									oncomplete="contactHolderDlg.hide();" />
 							</t:panelGrid>

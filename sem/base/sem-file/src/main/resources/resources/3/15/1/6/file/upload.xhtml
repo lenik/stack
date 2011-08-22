@@ -5,11 +5,9 @@
     xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.prime.com.tr/ui"
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
-    <p:growl id="messages" showDetail="true" />
-
     <p:panel header="文件上传">
 
-        <p:fileUpload fileUploadListener="#{fileUploadBean.handleFileUpload}" mode="advanced" update="messages"
+        <p:fileUpload fileUploadListener="#{fileUploadBean.handleFileUpload}" mode="advanced"
             multiple="true" allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
 
     </p:panel>

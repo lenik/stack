@@ -42,8 +42,6 @@
         </h:outputStylesheet>
 
         <h:form id="orgForm">
-            <p:growl id="__status" showDetail="true" />
-
             <p:panel header="客户/供应商管理">
                 <p:toolbar id="orgToolbar">
                     <p:toolbarGroup align="left">
@@ -241,7 +239,7 @@
                                     <p:commandButton value="删除"
                                         actionListener="#{orgAdminBean.doDeleteContact}"
                                         disabled="#{not orgAdminBean.contactSelected}"
-                                        update="contacts __status"
+                                        update="contacts"
                                         async="true" />
                                     <p:divider />
                                 </p:toolbarGroup>
@@ -338,7 +336,7 @@
 												<p:commandButton value="删除"
 													actionListener="#{orgAdminBean.doDeleteOrgUnit}"
 													disabled="#{not orgAdminBean.orgUnitSelected}"
-													update="orgUnitTreeGrid __status" async="true" />
+													update="orgUnitTreeGrid" async="true" />
 												<p:divider />
 											</p:toolbarGroup>
 										</p:toolbar>
@@ -412,7 +410,7 @@
 													value="#{orgAdminBean.orgUnitContact.qq}" />
 
 											</t:panelGrid>
-											<p:commandButton value="保存部门联系方式" actionListener="#{orgAdminBean.doSaveOrgUnitContact}" update="__status"/>
+											<p:commandButton value="保存部门联系方式" actionListener="#{orgAdminBean.doSaveOrgUnitContact}" />
 
 										</h:panelGroup>
 									</p:panel>
@@ -434,7 +432,7 @@
 												<p:commandButton value="删除"
 													actionListener="#{orgAdminBean.doDeleteRole}"
 													disabled="#{not orgAdminBean.roleSelected}"
-													update="roles __status" async="true" />
+													update="roles" async="true" />
 												<p:divider />
 											</p:toolbarGroup>
 										</p:toolbar>
@@ -535,9 +533,6 @@
         <h:form id="contactForm">
             <p:dialog header="联系方式编辑" widgetVar="contactHolderDlg" modal="true" height="500" width="640">
                 <h:panelGroup id="contactHolder">
-
-                    <p:growl id="__status1" showDetail="true" />
-
                     <h:inputHidden id="contactId" value="#{orgAdminBean.contact.id}"/>
                     <t:panelGrid columns="4"
                         columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
@@ -578,7 +573,7 @@
                                 <p:commandButton value="保存"
                                     actionListener="#{orgAdminBean.doSaveContact}"
                                     oncomplete="contactHolderDlg.hide();" async="true"
-                                    update="orgForm:contacts orgForm:__status" />
+                                    update="orgForm:contacts" />
                                 <p:commandButton value="取消"
                                     oncomplete="contactHolderDlg.hide();" />
                             </t:panelGrid>
@@ -594,19 +589,15 @@
         <h:form id="tagForm">
             <p:dialog header="标签添加" widgetVar="tagDlg" modal="true" height="500" width="640">
                 <h:panelGroup id="tagHolder">
-
-                    <p:growl id="__status1" showDetail="true" />
-
                     <p:selectManyMenu value="#{orgAdminBean.selectedTagsToAdd}" style="height:300px">
 			            <f:selectItems value="#{orgAdminBean.tags}" />
 			        </p:selectManyMenu>
-
                 </h:panelGroup>
                 <t:panelGrid columns="2">
                     <p:commandButton value="添加"
                         actionListener="#{orgAdminBean.addTags}"
                         oncomplete="tagDlg.hide();" async="true"
-                        update="orgForm:orgTags orgForm:__status" />
+                        update="orgForm:orgTags" />
                     <p:commandButton value="取消"
                         oncomplete="tagDlg.hide();" />
                 </t:panelGrid>
@@ -617,9 +608,6 @@
         <h:form id="roleForm">
             <p:dialog header="相关人员设置" widgetVar="roleHolderDlg" modal="true" height="500" width="640">
                 <h:panelGroup id="roleHolder">
-
-                    <p:growl id="__status2" showDetail="true" />
-
                     <h:inputHidden id="roldId" value="#{orgAdminBean.role.id}"/>
                     <h:inputHidden id="roldOrgId" value="#{orgAdminBean.role.org.id}" />
                     <h:inputHidden id="roldPersonId" value="#{orgAdminBean.role.person.id}" />
@@ -659,7 +647,7 @@
                                 <p:commandButton value="保存"
                                     actionListener="#{orgAdminBean.doSaveRole}"
                                     oncomplete="roleHolderDlg.hide();" async="true"
-                                    update="orgForm:roles orgForm:__status" />
+                                    update="orgForm:roles" />
                                 <p:commandButton value="取消"
                                     oncomplete="roleHolderDlg.hide();" />
                             </t:panelGrid>
@@ -772,7 +760,7 @@
                             <t:panelGrid columns="2">
                                 <p:commandButton value="保存"
                                                  actionListener="#{orgAdminBean.doSaveOrgUnit}"
-                                                 update="orgForm:__status orgForm:orgUnitTreeGrid chooseParentOrgUnitForm:chooseParentOrgUnitPanel"
+                                                 update="orgForm:orgUnitTreeGrid chooseParentOrgUnitForm:chooseParentOrgUnitPanel"
                                                  oncomplete="orgUnitDialog.hide();"/>
                                 <p:commandButton value="取消" oncomplete="orgUnitDialog.hide();"/>
                             </t:panelGrid>

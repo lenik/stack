@@ -37,8 +37,6 @@
 
 
 		<h:form id="mainForm">
-			<p:growl id="__status" showDetail="true" />
-
             <h:panelGrid columns="2">
                 <h:outputText value="仓库:" />
                 <p:selectOneMenu id="stockWarehouseId" value="#{initAdminBean.selectedWarehouse.id}" style="width:200px;">
@@ -203,9 +201,6 @@
 			<p:dialog header="#{initAdminBean.subject.displayName}项目编辑" widgetVar="itemDialog" modal="true"
 				height="500" width="640">
 				<h:panelGroup id="itemPanel">
-
-					<p:growl id="__status1" showDetail="true" />
-
 					<t:panelGrid columns="4"
 						columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 

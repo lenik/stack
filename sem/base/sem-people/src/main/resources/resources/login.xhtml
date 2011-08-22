@@ -49,9 +49,6 @@
     <div style="margin-top:50px;margin-bottom:50px;">
 
 		<h:form id="loginForm">
-
-			<p:growl id="__status" showDetail="true" />
-
 	        <h:inputHidden id="challenge" value="#{loginBean.challenge}"/>
 			<h:panelGrid columns="2">
 
@@ -66,7 +63,7 @@
 				</t:panelGroup>
 
 				<t:panelGroup colspan="2">
-					<p:commandButton value="登录" update="__status" actionListener="#{loginBean.login}" oncomplete="handleLoginRequest(xhr, status, args)"/>
+					<p:commandButton value="登录" actionListener="#{loginBean.login}" oncomplete="handleLoginRequest(xhr, status, args)"/>
 				</t:panelGroup>
 			</h:panelGrid>
 		</h:form>
