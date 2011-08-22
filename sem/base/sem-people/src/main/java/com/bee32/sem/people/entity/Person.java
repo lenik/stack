@@ -2,7 +2,9 @@ package com.bee32.sem.people.entity;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -24,6 +26,9 @@ public class Person
     private static final long serialVersionUID = 1L;
 
     Gender sex = Gender.OTHER;
+    Locale locale;
+    TimeZone timeZone;
+    String theme;
 
     String censusRegister;
 
