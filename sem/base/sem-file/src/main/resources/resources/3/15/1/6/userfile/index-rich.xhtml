@@ -147,13 +147,15 @@
                         </t:panelGroup>
 
                         <h:outputText value="文件名:" />
-                        <p:inputText value="#{userFileAdmin.activeFile.name}" />
+                        <p:inputText value="#{userFileAdmin.activeFile.name}" style="width:270px;"/>
 
                         <h:outputText value="文件标题:" />
-                        <p:inputText value="#{userFileAdmin.activeFile.label}" />
+                        <p:inputText value="#{userFileAdmin.activeFile.label}" style="width:270px;" />
+
+                        <h:outputText value="文件描述:" />
+                        <p:inputTextarea value="#{userFileAdmin.activeFile.description}" style="width:270px;height:50px;" />
 
                         <h:outputText value="选择标签:" />
-
                         <t:panelGrid columns="2">
                             <p:selectOneListbox value="#{userFileAdmin.activeTagId}" height="100" width="80">
                                 <f:selectItems value="#{userFileAdmin.activeFile.tagItems}" />
