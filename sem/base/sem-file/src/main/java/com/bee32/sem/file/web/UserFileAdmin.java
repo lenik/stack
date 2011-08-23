@@ -235,7 +235,6 @@ public class UserFileAdmin
     }
 
     public void setActiveFile(UserFileDto activeFile) {
-// System.err.println("WWE set active file: " + activeFile);
         activeIndex = userFileList.indexOf(activeFile);
         this.activeFile = reload(activeFile);
     }
