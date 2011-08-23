@@ -34,7 +34,6 @@ public class StockOutsourcing
     /**
      * 委外出库单
      */
-    @NaturalId
     @OneToOne(optional = false)
     @Cascade(CascadeType.ALL)
     @JoinColumn(name = "s1")
@@ -49,7 +48,6 @@ public class StockOutsourcing
     /**
      * 委外入库单
      */
-    @NaturalId
     @OneToOne
     @Cascade(CascadeType.ALL)
     @JoinColumn(name = "s2")

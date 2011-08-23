@@ -43,27 +43,38 @@
 
             <h:panelGrid columns="2">
                 <h:outputText value="仓库:" />
-                <p:selectOneMenu id="stockWarehouseId" value="#{takeAdminBean.selectedWarehouse.id}" style="width:200px;">
+                <p:selectOneMenu id="stockWarehouseId"
+                    disabled="#{takeAdminBean.editable}"
+                    value="#{takeAdminBean.selectedWarehouse.id}"
+                    style="width:200px;">
                     <f:selectItem itemValue="" itemLabel="--选择仓库--" />
-                    <f:selectItems value="#{takeAdminBean.stockWarehouses}" />
-                    <p:ajax listener="#{takeAdminBean.onSwChange}" update="mainForm chooseStockLocationForm:chooseStockLocationPanel" event="change"/>
+                    <f:selectItems
+                        value="#{takeAdminBean.stockWarehouses}" />
+                    <p:ajax listener="#{takeAdminBean.onSwChange}"
+                        update="mainForm chooseStockLocationForm:chooseStockLocationPanel"
+                        event="change" />
                 </p:selectOneMenu>
             </h:panelGrid>
 
             <h:panelGrid columns="6">
-				<h:outputText value="时间段:" />
-				<h:outputText value="从" />
-				<p:calendar id="limitDateFrom" navigator="true" locale="zh_CN"
-					pattern="yyyy-MM-dd" value="#{takeAdminBean.limitDateFrom}"
-					showOn="button" />
-				<h:outputText value="到" />
-				<p:calendar id="limitDateTo" navigator="true" locale="zh_CN"
-					pattern="yyyy-MM-dd" value="#{takeAdminBean.limitDateTo}"
-					showOn="button" />
-				<p:commandButton value="限定" actionListener="#{takeAdminBean.limit}" async="true" update="mainForm"/>
-			</h:panelGrid>
+                <h:outputText value="时间段:" />
+                <h:outputText value="从" />
+                <p:calendar id="limitDateFrom" navigator="true"
+                    locale="zh_CN" pattern="yyyy-MM-dd"
+                    value="#{takeAdminBean.limitDateFrom}"
+                    showOn="button" disabled="#{takeAdminBean.editable}" />
+                <h:outputText value="到" />
+                <p:calendar id="limitDateTo" navigator="true"
+                    locale="zh_CN" pattern="yyyy-MM-dd"
+                    value="#{takeAdminBean.limitDateTo}" showOn="button"
+                    disabled="#{takeAdminBean.editable}" />
+                <p:commandButton value="限定"
+                    actionListener="#{takeAdminBean.limit}" async="true"
+                    update="mainForm"
+                    disabled="#{takeAdminBean.editable}" />
+            </h:panelGrid>
 
-			<p:toolbar id="toolbar">
+            <p:toolbar id="toolbar">
 				<p:toolbarGroup align="left">
 					<p:commandButton value="新增" actionListener="#{takeAdminBean.new_}"
 						disabled="#{takeAdminBean.editable}" update="mainForm" async="true" />

@@ -44,7 +44,9 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
 
     private List<StockOutsourcingDto> findedOuts;
 
-    private StockOrderDto selectedOutsourcingOut;
+    private StockOutsourcingDto selectedOutsourcing;
+
+    private boolean newStatus = false;
 
 
     public OutsourcingInAdminBean() {
@@ -130,13 +132,30 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
         this.stockOutsourcing = stockOutsourcing;
     }
 
-    public StockOrderDto getSelectedOutsourcingOut() {
-        return selectedOutsourcingOut;
+    public StockOutsourcingDto getSelectedOutsourcing() {
+        return selectedOutsourcing;
     }
 
-    public void setSelectedOutsourcingOut(StockOrderDto selectedOutsourcingOut) {
-        this.selectedOutsourcingOut = selectedOutsourcingOut;
+    public void setSelectedOutsourcing(StockOutsourcingDto selectedOutsourcing) {
+        this.selectedOutsourcing = selectedOutsourcing;
     }
+
+    public List<StockOrderItemDto> getFindedOutItems() {
+        if(selectedOutsourcing != null)
+            return selectedOutsourcing.getOutput().getItems();
+        return null;
+    }
+
+    public boolean isNewStatus() {
+        return newStatus;
+    }
+
+    public void setNewStatus(boolean newStatus) {
+        this.newStatus = newStatus;
+    }
+
+
+
 
 
 
@@ -203,6 +222,7 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
         stockOrder = new StockOrderDto().create();
         //stockOrder.setCreatedDate(new Date());
         editable = true;
+        newStatus = true;
     }
 
     public void modify() {
@@ -214,6 +234,7 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
         itemsNeedToRemoveWhenModify.clear();
 
         editable = true;
+        newStatus = false;
     }
 
     @Transactional
@@ -244,7 +265,7 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
 
         //serviceFor(StockOrder.class).save(stockOrder.unmarshal());
 
-        stockOutsourcing.setOutput(stockOrder);
+        stockOutsourcing.setInput(stockOrder);
         StockOutsourcing _stockOutsourcing = stockOutsourcing.unmarshal();
         //保存stockOutsourcing
         serviceFor(StockOutsourcing.class).saveOrUpdate(_stockOutsourcing);
@@ -253,12 +274,14 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
         uiLogger.info("保存成功");
         loadStockOrder(goNumber);
         editable = false;
+        newStatus = false;
     }
 
     public void cancel() {
 
         loadStockOrder(goNumber);
         editable = false;
+        newStatus = false;
     }
 
     public void first() {
@@ -311,5 +334,14 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
                 StockCriteria.outsourcingOutHaveNoCorrespondingIn(findDateFrom, findDateTo));
 
         findedOuts = DTOs.marshalList(StockOutsourcingDto.class, StockOutsourcingDto.ORDER_ITEMS, os, true);
+    }
+
+    public void chooseFindedOut() {
+        stockOutsourcing = reload(selectedOutsourcing);
+        findedOuts = null;
+    }
+
+    public void clearFindedOuts() {
+        findedOuts = null;
     }
 }

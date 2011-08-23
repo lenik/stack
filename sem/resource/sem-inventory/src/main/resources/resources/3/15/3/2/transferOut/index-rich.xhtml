@@ -39,27 +39,41 @@
 		<h:form id="mainForm">
             <h:panelGrid columns="2">
                 <h:outputText value="仓库:" />
-                <p:selectOneMenu id="stockWarehouseId" value="#{transferOutAdminBean.selectedWarehouse.id}" style="width:200px;">
+                <p:selectOneMenu id="stockWarehouseId"
+                    disabled="#{transferOutAdminBean.editable}"
+                    value="#{transferOutAdminBean.selectedWarehouse.id}"
+                    style="width:200px;">
                     <f:selectItem itemValue="" itemLabel="--选择仓库--" />
-                    <f:selectItems value="#{transferOutAdminBean.stockWarehouses}" />
-                    <p:ajax listener="#{transferOutAdminBean.onSwChange}" update="mainForm chooseStockLocationForm:chooseStockLocationPanel" event="change"/>
+                    <f:selectItems
+                        value="#{transferOutAdminBean.stockWarehouses}" />
+                    <p:ajax
+                        listener="#{transferOutAdminBean.onSwChange}"
+                        update="mainForm chooseStockLocationForm:chooseStockLocationPanel"
+                        event="change" />
                 </p:selectOneMenu>
             </h:panelGrid>
 
             <h:panelGrid columns="6">
-				<h:outputText value="时间段:" />
-				<h:outputText value="从" />
-				<p:calendar id="limitDateFrom" navigator="true" locale="zh_CN"
-					pattern="yyyy-MM-dd" value="#{transferOutAdminBean.limitDateFrom}"
-					showOn="button" />
-				<h:outputText value="到" />
-				<p:calendar id="limitDateTo" navigator="true" locale="zh_CN"
-					pattern="yyyy-MM-dd" value="#{transferOutAdminBean.limitDateTo}"
-					showOn="button" />
-				<p:commandButton value="限定" actionListener="#{transferOutAdminBean.limit}" async="true" update="mainForm"/>
-			</h:panelGrid>
+                <h:outputText value="时间段:" />
+                <h:outputText value="从" />
+                <p:calendar id="limitDateFrom" navigator="true"
+                    locale="zh_CN" pattern="yyyy-MM-dd"
+                    value="#{transferOutAdminBean.limitDateFrom}"
+                    showOn="button"
+                    disabled="#{transferOutAdminBean.editable}" />
+                <h:outputText value="到" />
+                <p:calendar id="limitDateTo" navigator="true"
+                    locale="zh_CN" pattern="yyyy-MM-dd"
+                    value="#{transferOutAdminBean.limitDateTo}"
+                    showOn="button"
+                    disabled="#{transferOutAdminBean.editable}" />
+                <p:commandButton value="限定"
+                    actionListener="#{transferOutAdminBean.limit}"
+                    async="true" update="mainForm"
+                    disabled="#{transferOutAdminBean.editable}" />
+            </h:panelGrid>
 
-			<p:toolbar id="toolbar">
+            <p:toolbar id="toolbar">
 				<p:toolbarGroup align="left">
 					<p:commandButton value="新增" actionListener="#{transferOutAdminBean.new_}"
 						disabled="#{transferOutAdminBean.editable}" update="mainForm" async="true" />

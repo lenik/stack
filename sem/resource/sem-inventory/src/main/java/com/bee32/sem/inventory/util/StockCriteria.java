@@ -67,6 +67,7 @@ public class StockCriteria
         return compose(
                 alias("output", "outsourcingOut"),
                 new IsNull("input"),
+                new Equals("outsourcingOut._subject", StockOrderSubject.OSP_OUT.getValue()),
                 EntityCriteria.betweenEx("outsourcingOut.createdDate", from, to));
     }
 
