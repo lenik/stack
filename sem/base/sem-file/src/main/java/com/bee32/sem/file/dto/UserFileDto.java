@@ -145,7 +145,7 @@ public class UserFileDto
         if (path == null)
             throw new NullPointerException("path");
         path = path.trim();
-        path = path.substring('\\', '/');
+        path = path.replace('\\', '/');
         int slash = path.lastIndexOf('/');
         if (slash == -1) {
             dir = "";

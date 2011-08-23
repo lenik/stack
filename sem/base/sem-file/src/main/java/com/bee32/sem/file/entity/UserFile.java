@@ -31,7 +31,7 @@ public class UserFile
     FileBlob fileBlob;
 
     String dir = "";
-    String name;
+    String name = "";
 
     Set<UserFileTagname> tags = new HashSet<UserFileTagname>();
 
@@ -81,7 +81,7 @@ public class UserFile
         if (path == null)
             throw new NullPointerException("path");
         path = path.trim();
-        path = path.substring('\\', '/');
+        path = path.replace('\\', '/');
         int slash = path.lastIndexOf('/');
         if (slash == -1) {
             dir = "";
