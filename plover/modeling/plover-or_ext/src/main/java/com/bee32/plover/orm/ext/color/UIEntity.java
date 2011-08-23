@@ -28,7 +28,7 @@ abstract class UIEntity<K extends Serializable>
         super(name);
     }
 
-    @Column(length = 30)
+    @Column(length = 40)
     @Override
     public String getLabel() {
         return label;
