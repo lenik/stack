@@ -41,7 +41,7 @@ public class FileUploadBean
         }
 
         UserFile userFile = new UserFile();
-        userFile.setOrigPath(upFile.getFileName());
+        userFile.setPath(upFile.getFileName());
 
         User currUser = (User) SessionLoginInfo.getUser();
         userFile.setOwnerId(currUser.getId());

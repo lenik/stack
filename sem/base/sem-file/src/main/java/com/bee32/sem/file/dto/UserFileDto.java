@@ -9,9 +9,10 @@ import java.util.Set;
 import javax.faces.model.SelectItem;
 import javax.free.FilePath;
 import javax.free.ParseException;
+import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -20,7 +21,7 @@ import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.entity.UserFileTagname;
 
 public class UserFileDto
-        extends EntityDto<UserFile, Long>
+        extends UIEntityDto<UserFile, Long>
         implements ILocationConstants {
 
     private static final long serialVersionUID = 1L;
@@ -28,9 +29,8 @@ public class UserFileDto
     public static final int TAGS = 1;
     FileBlobDto fileBlob;
 
-    String origPath;
-    String fileName;
-    String subject;
+    String dir;
+    String name;
     String tags_string = "";
     String testhref = "";
 
@@ -49,9 +49,9 @@ public class UserFileDto
     @Override
     protected void _marshal(UserFile source) {
         fileBlob = mref(FileBlobDto.class, source.getFileBlob());
-        origPath = source.getOrigPath();
-        fileName = source.getFileName();
-        subject = source.getSubject();
+        dir = source.getDir();
+        name = source.getName();
+
         if (!source.getTags().isEmpty()) {
             List<UserFileTagname> tagnames = new ArrayList<UserFileTagname>(source.getTags());
             for (int i = 0; i < tagnames.size(); i++) {
@@ -74,18 +74,16 @@ public class UserFileDto
     @Override
     protected void _unmarshalTo(UserFile target) {
         merge(target, "fileBlob", fileBlob);
-        target.setOrigPath(origPath);
-        target.setFileName(fileName);
-        target.setSubject(subject);
+        target.setDir(dir);
+        target.setName(name);
     }
 
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
         fileBlob = new FileBlobDto().ref(map.getString("fileBlob"));
-        origPath = map.getString("origPath");
-        fileName = map.getString("filename");
-        subject = map.getString("subject");
+        dir = map.getString("dir");
+        name = map.getString("name");
 
         if (selection.contains(TAGS)) {
             String[] _tags = map.getStringArray("tags");
@@ -118,30 +116,44 @@ public class UserFileDto
         this.fileBlob = fileBlob;
     }
 
-    public String getOrigPath() {
-        return origPath;
+    public String getDir() {
+        return dir;
     }
 
-    public void setOrigPath(String origPath) {
-        this.origPath = origPath;
+    public void setDir(String dir) {
+        if (dir == null)
+            throw new NullPointerException("dir");
+        this.dir = dir;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getName() {
+        return name;
     }
 
-    public void setFileName(String fileName) {
-        if (fileName == null)
-            throw new NullPointerException("fileName");
-        this.fileName = fileName;
+    public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        this.name = name;
     }
 
-    public String getSubject() {
-        return subject;
+    @Transient
+    public String getPath() {
+        return dir + "/" + name;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setPath(String path) {
+        if (path == null)
+            throw new NullPointerException("path");
+        path = path.trim();
+        path = path.substring('\\', '/');
+        int slash = path.lastIndexOf('/');
+        if (slash == -1) {
+            dir = "";
+            name = path;
+        } else {
+            dir = path.substring(0, slash);
+            name = path.substring(slash + 1);
+        }
     }
 
     public Set<UserFileTagnameDto> getTags() {
@@ -159,12 +171,10 @@ public class UserFileDto
 
         String contentType = "file";
 
-        if (origPath != null) {
-            String extension = FilePath.getExtension(origPath, false);
-            Mime mime = Mime.getInstanceByExtension(extension);
-            if (mime != null)
-                contentType = mime.getContentType();
-        }
+        String extension = FilePath.getExtension(name, false);
+        Mime mime = Mime.getInstanceByExtension(extension);
+        if (mime != null)
+            contentType = mime.getContentType();
 
         if (contentType.startsWith("image/")) {
             iconLoc = WEB_APP.join("/3/15/1/6/file/view.do?id=" + id);

@@ -3,7 +3,6 @@ package com.bee32.sem.file.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.free.FilePath;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -13,25 +12,26 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Green;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 /**
  * 用户文件。
+ *
+ * label = 用户填写的文件标题（用于显示）。
  */
 @Entity
 @Green
 @SequenceGenerator(name = "idgen", sequenceName = "user_file_seq", allocationSize = 1)
 public class UserFile
-        extends EntityAuto<Long> {
+        extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
     FileBlob fileBlob;
 
-    String origPath;
-    String fileName;
-    String subject = "";
+    String dir = "";
+    String name;
 
     Set<UserFileTagname> tags = new HashSet<UserFileTagname>();
 
@@ -47,61 +47,54 @@ public class UserFile
         this.fileBlob = fileBlob;
     }
 
-    /**
-     * 用户上传文件时的原始路径。
-     *
-     * Generally, the original path is not used.
-     *
-     * It's just existed for reference purpose, or for reconstruct the original fs-tree.
-     */
-    @Column(length = 120)
-    public String getOrigPath() {
-        return origPath;
+    @Column(length = 100, nullable = false)
+    public String getDir() {
+        return dir;
     }
 
-    public void setOrigPath(String origPath) {
-        this.origPath = origPath;
+    public void setDir(String dir) {
+        if (dir == null)
+            throw new NullPointerException("dir");
+        this.dir = dir;
     }
 
     /**
      * 用户对上传的文件重命名。
      */
     @Column(length = 50)
-    public String getFileName() {
-        return fileName;
+    public String getName() {
+        return name;
     }
 
-    public void setFileName(String fileName) {
-        if (fileName != null) {
-            fileName = fileName.trim();
-            if (fileName.isEmpty())
-                fileName = null;
+    public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        this.name = name.trim();
+    }
+
+    @Transient
+    public String getPath() {
+        return dir + "/" + name;
+    }
+
+    public void setPath(String path) {
+        if (path == null)
+            throw new NullPointerException("path");
+        path = path.trim();
+        path = path.substring('\\', '/');
+        int slash = path.lastIndexOf('/');
+        if (slash == -1) {
+            dir = "";
+            name = path;
+        } else {
+            dir = path.substring(0, slash);
+            name = path.substring(slash + 1);
         }
-        this.fileName = fileName;
     }
 
     @Transient
     public String getDownloadName() {
-        if (fileName != null)
-            return fileName;
-        String path = getOrigPath();
-        String ext = FilePath.getExtension(path, true);
-        String name = "Noname" + ext;
         return name;
-    }
-
-    /**
-     * 用户填写的文件标题（用语显示）。
-     */
-    @Column(length = 200)
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        if (subject == null)
-            throw new NullPointerException("subject");
-        this.subject = subject;
     }
 
     /**

@@ -30,8 +30,8 @@ public class UserFileController
 
     @Override
     protected void fillDataRow(DataTableDxo tab, UserFileDto dto) {
-        tab.push(dto.getFileName());
-        tab.push(dto.getSubject());
+        tab.push(dto.getName());
+        tab.push(dto.getLabel());
         tab.push(dto.getCreatedDate());
         tab.push(dto.getLastModified());
     }

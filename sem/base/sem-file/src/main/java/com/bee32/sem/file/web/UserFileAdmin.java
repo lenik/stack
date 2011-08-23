@@ -153,7 +153,7 @@ public class UserFileAdmin
 
         try {
             serviceFor(UserFile.class).saveOrUpdate(file);
-            uiLogger.info("编辑附件" + activeFile.getFileName() + "成功");
+            uiLogger.info("编辑附件" + activeFile.getName() + "成功");
         } catch (Exception e) {
             uiLogger.error("编辑附件失败:" + e.getMessage(), e);
         }
@@ -170,7 +170,7 @@ public class UserFileAdmin
 
         try {
             serviceFor(UserFile.class).deleteById(activeFile.getId());
-            uiLogger.info("删除附件:" + activeFile.getFileName() + "成功");
+            uiLogger.info("删除附件:" + activeFile.getName() + "成功");
             initUserFile();
         } catch (Exception e) {
             uiLogger.error("删除附件失败:" + e.getMessage(), e);
@@ -193,14 +193,13 @@ public class UserFileAdmin
         }
 
         UserFile userFile = new UserFile();
-        userFile.setOrigPath(upFile.getFileName());
+        userFile.setPath(upFile.getFileName());
 
         try {
             FileBlob fileBlob = FileBlob.commit(tempFile, true);
 
             userFile.setFileBlob(fileBlob);
-            userFile.setFileName("未命名");
-            userFile.setSubject("无标题");
+            userFile.setLabel("无标题");
 
             serviceFor(FileBlob.class).saveOrUpdate(fileBlob);
             serviceFor(UserFile.class).save(userFile);

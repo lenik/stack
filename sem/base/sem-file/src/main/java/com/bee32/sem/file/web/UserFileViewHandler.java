@@ -32,7 +32,7 @@ public class UserFileViewHandler
 
         FileBlob blob = userFile.getFileBlob();
         String filename = userFile.getDownloadName();
-        String description = userFile.getSubject();
+        String description = userFile.getLabel();
 
         req.setAttribute(HttpBlobDumper.ATTR_BLOB, blob);
         req.setAttribute(HttpBlobDumper.ATTR_FILENAME, filename);
