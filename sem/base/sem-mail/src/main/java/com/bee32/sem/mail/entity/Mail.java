@@ -10,7 +10,6 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -56,6 +55,9 @@ public class Mail
 
     String subject;
     String body;
+
+    int theme;
+    int footer;
 
     Mail referrer;
 
@@ -233,7 +235,7 @@ public class Mail
     /**
      * 正文。
      */
-    @Lob
+    @Column(length = 100000, nullable = false)
     public String getBody() {
         return body;
     }
