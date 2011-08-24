@@ -45,7 +45,7 @@ public class MailFolderDto
     protected void _unmarshalTo(MailFolder target) {
         target.setPriority(priority);
         target.setOrder(order);
-        target.setName(name);
+        target.setLabel(name);
         target.setColor(color);
 
         if (selection.contains(MAILS))

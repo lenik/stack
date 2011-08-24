@@ -9,7 +9,7 @@ import com.bee32.sem.mail.entity.Mail;
 import com.bee32.sem.mail.entity.MailDelivery;
 import com.bee32.sem.mail.entity.MailFilter;
 import com.bee32.sem.mail.entity.MailFolder;
-import com.bee32.sem.mail.entity.MailParty;
+import com.bee32.sem.mail.entity.MailOrientation;
 
 @ImportSamples(IcsfPrincipalSamples.class)
 public class SEMMailSamples
@@ -24,14 +24,6 @@ public class SEMMailSamples
     public static Mail helloEcho = new Mail();
 
     static {
-        favBox.setName("fav");
-        favBox.setLabel("收藏夹");
-        favBox.setPriority(MailFolder.PRIORITY_HIGH);
-
-        spamBox.setName("spam");
-        spamBox.setLabel("垃圾箱");
-        spamBox.setColor(MailFolder.PRIORITY_LOW);
-
         spamFilter.setLabel("spam-filter");
         spamFilter.setDescription("将标记为'垃圾'的邮件移动到'垃圾箱'");
         spamFilter.setExpr("a.is-spam...");
@@ -39,25 +31,25 @@ public class SEMMailSamples
         spamFilter.setTarget(spamBox);
 
         hello.setFromUser(IcsfPrincipalSamples.wallE);
-        hello.setToUser(IcsfPrincipalSamples.eva);
+        hello.addRecipientUser(IcsfPrincipalSamples.eva);
         hello.setSubject("Hello!");
         hello.setBody("Hello, world!\n\n这句话的意思是：朋友、再见！");
 
-        MailDelivery helloSend = new MailDelivery(hello, MailParty.FROM);
+        MailDelivery helloSend = new MailDelivery(hello, MailOrientation.FROM);
         // helloSend.setSentDate();
-        MailDelivery helloRecv = new MailDelivery(hello, MailParty.TO);
+        MailDelivery helloRecv = new MailDelivery(hello, MailOrientation.RECIPIENT);
         hello.setDeliveries(Arrays.asList(helloSend, helloRecv));
 
         helloEcho.setFromUser(IcsfPrincipalSamples.eva);
-        helloEcho.setToUser(IcsfPrincipalSamples.wallE);
+        helloEcho.addRecipientUser(IcsfPrincipalSamples.wallE);
         helloEcho.setReferrer(hello);
         helloEcho.setSubject("Hi, 我收到了你的 Hello！");
         helloEcho.setBody("谢谢你告诉我 Hello, world 的真正含义！\n" + //
                 "在此之前，我一直以为它是\"你好、世界\"，现在我才知道自己的愚蠢。");
         // helloEcho.setCc("");
 
-        MailDelivery helloEchoSend = new MailDelivery(helloEcho, MailParty.FROM);
-        MailDelivery helloEchoRecv = new MailDelivery(helloEcho, MailParty.TO);
+        MailDelivery helloEchoSend = new MailDelivery(helloEcho, MailOrientation.FROM);
+        MailDelivery helloEchoRecv = new MailDelivery(helloEcho, MailOrientation.RECIPIENT);
         helloEcho.setDeliveries(Arrays.asList(helloEchoSend, helloEchoRecv));
     }
 

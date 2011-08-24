@@ -2,7 +2,6 @@ package com.bee32.sem.mail.entity;
 
 import java.util.List;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -28,13 +27,21 @@ public class MailFolder
 
     protected byte priority = PRIORITY_NORMAL;
 
+    boolean shared;
     int order = 100;
-
-    String name;
 
     int color;
 
     List<MailDelivery> mails;
+
+    public MailFolder() {
+    }
+
+    public MailFolder(int order, String label) {
+        this.shared = true;
+        this.order = order;
+        setLabel(label);
+    }
 
     @Column(nullable = false)
     public byte getPriority() {
@@ -54,16 +61,6 @@ public class MailFolder
         this.order = order;
     }
 
-    @Basic(optional = false)
-    @Column(length = 10, nullable = false)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getColor() {
         return color;
     }
@@ -81,5 +78,12 @@ public class MailFolder
     public void setMails(List<MailDelivery> mails) {
         this.mails = mails;
     }
+
+    public static MailFolder INBOX = new MailFolder(0, "收件箱");
+    public static MailFolder OUTBOX = new MailFolder(1, "发件箱");
+    public static MailFolder DRAFT = new MailFolder(2, "草稿");
+    public static MailFolder FAVORITES = new MailFolder(3, "收藏夹");
+    public static MailFolder SPAMBOX = new MailFolder(4, "垃圾邮件");
+    public static MailFolder TRASH = new MailFolder(5, "回收站");
 
 }

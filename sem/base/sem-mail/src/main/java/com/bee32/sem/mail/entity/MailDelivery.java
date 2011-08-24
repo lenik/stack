@@ -1,7 +1,5 @@
 package com.bee32.sem.mail.entity;
 
-import java.util.Date;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,39 +8,34 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
-import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Pink;
+import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.mail.MailFlags;
 
 @Entity
 @Pink
 @SequenceGenerator(name = "idgen", sequenceName = "mail_delivery_seq", allocationSize = 1)
 public class MailDelivery
-        extends EntityAuto<Long> {
+        extends TxEntity {
 
     private static final long serialVersionUID = 1L;
 
     Mail mail;
-    MailFolder folder;
-    MailParty party;
+    MailOrientation orientation = MailOrientation.FROM;
 
-    Date sentDate;
+    MailFolder folder;
+
     String sendError;
-    Date receivedDate;
-    Date receiptDate;
 
     public final MailFlags flags = new MailFlags();
 
     public MailDelivery() {
     }
 
-    public MailDelivery(Mail mail, MailParty party) {
+    public MailDelivery(Mail mail, MailOrientation party) {
         this.mail = mail;
-        this.party = party;
+        this.orientation = party;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -57,14 +50,14 @@ public class MailDelivery
     @Basic(optional = false)
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    public MailParty getParty() {
-        return party;
+    public MailOrientation getOrientation() {
+        return orientation;
     }
 
-    public void setParty(MailParty party) {
-        if (party == null)
-            throw new NullPointerException("party");
-        this.party = party;
+    public void setParty(MailOrientation orientation) {
+        if (orientation == null)
+            throw new NullPointerException("orientation");
+        this.orientation = orientation;
     }
 
     @ManyToOne
@@ -85,20 +78,6 @@ public class MailDelivery
         this.flags.bits = flags;
     }
 
-    @Transient
-    public boolean isSent() {
-        return sentDate != null;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getSentDate() {
-        return sentDate;
-    }
-
-    public void setSentDate(Date sentDate) {
-        this.sentDate = sentDate;
-    }
-
     @Column(length = 200)
     public String getSendError() {
         return sendError;
@@ -106,24 +85,6 @@ public class MailDelivery
 
     public void setSendError(String sendError) {
         this.sendError = sendError;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getReceivedDate() {
-        return receivedDate;
-    }
-
-    public void setReceivedDate(Date receivedDate) {
-        this.receivedDate = receivedDate;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getReceiptDate() {
-        return receiptDate;
-    }
-
-    public void setReceiptDate(Date receiptDate) {
-        this.receiptDate = receiptDate;
     }
 
 }

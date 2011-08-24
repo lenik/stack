@@ -1,11 +1,14 @@
 package com.bee32.sem.mail.dto;
 
+import java.util.List;
+
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.sem.mail.MailPriority;
 import com.bee32.sem.mail.MailType;
 import com.bee32.sem.mail.entity.Mail;
 
@@ -18,15 +21,14 @@ public class MailDto
     public static final int COPIES = 1 << 16;
 
     MailType type;
-    byte priority;
-    // String priorityName;
+    MailPriority priority;
 
     String from;
-    String to;
+    String recipient;
     String replyTo;
 
     UserDto fromUser;
-    UserDto toUser;
+    List<UserDto> recipientUsers;
     UserDto replyToUser;
 
     String cc;
@@ -52,8 +54,12 @@ public class MailDto
         priority = source.getPriority();
 
         from = source.getFrom();
-        to = source.getTo();
+        recipient = source.getRecipient();
         replyTo = source.getReplyTo();
+
+        fromUser = mref(UserDto.class, source.getFromUser());
+        recipientUsers = marshalList(UserDto.class, source.getRecipientUsers(), true);
+        replyToUser = mref(UserDto.class, source.getReplyToUser());
 
         cc = source.getCc();
         bcc = source.getBcc();
@@ -75,8 +81,13 @@ public class MailDto
         target.setPriority(priority);
 
         target.setFrom(from);
-        target.setTo(to);
+        target.setRecipient(recipient);
         target.setReplyTo(replyTo);
+
+        merge(target, "fromUser", fromUser);
+        mergeList(target, "recipientUsers", recipientUsers);
+        merge(target, "replyToUser", replyToUser);
+
         target.setCc(cc);
         target.setBcc(bcc);
 
@@ -93,16 +104,18 @@ public class MailDto
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
 
-        String _type = map.getString("type");
+        int _type = map.getInt("type");
         type = MailType.valueOf(_type);
 
         // String _mailbox = map.getString("mailbox");
 
-        priority = map.getByte("priority");
+        int _priority = map.getInt("priority");
+        priority = MailPriority.valueOf(_priority);
 
         from = map.getString("from");
-        to = map.getString("to");
+        recipient = map.getString("to");
         replyTo = map.getString("replyTo");
+
         cc = map.getString("cc");
         bcc = map.getString("bcc");
 
@@ -117,14 +130,18 @@ public class MailDto
     }
 
     public void setType(MailType type) {
+        if (type == null)
+            throw new NullPointerException("type");
         this.type = type;
     }
 
-    public byte getPriority() {
+    public MailPriority getPriority() {
         return priority;
     }
 
-    public void setPriority(byte priority) {
+    public void setPriority(MailPriority priority) {
+        if (priority == null)
+            throw new NullPointerException("priority");
         this.priority = priority;
     }
 
@@ -136,12 +153,12 @@ public class MailDto
         this.from = from;
     }
 
-    public String getTo() {
-        return to;
+    public String getRecipient() {
+        return recipient;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
     }
 
     public String getReplyTo() {
@@ -160,12 +177,29 @@ public class MailDto
         this.fromUser = fromUser;
     }
 
-    public UserDto getToUser() {
-        return toUser;
+    public List<UserDto> getRecipientUsers() {
+        return recipientUsers;
     }
 
-    public void setToUser(UserDto toUser) {
-        this.toUser = toUser;
+    public void setRecipientUser(List<UserDto> recipientUsers) {
+        this.recipientUsers = recipientUsers;
+    }
+
+    public boolean addRecipientUser(UserDto recipientUser) {
+        if (recipientUser == null)
+            throw new NullPointerException("recipientUser");
+        if (!recipientUsers.contains(recipientUser)) {
+            recipientUsers.add(recipientUser);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean removeRecipientUser(UserDto recipientUser) {
+        if (recipientUser == null)
+            throw new NullPointerException("recipientUser");
+        return recipientUsers.remove(recipientUser);
     }
 
     public UserDto getReplyToUser() {

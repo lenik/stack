@@ -1,71 +1,77 @@
 package com.bee32.sem.mail;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-public enum MailType {
+import com.bee32.plover.arch.util.EnumAlt;
+import com.bee32.plover.arch.util.NoSuchEnumException;
 
-    __system__,
+public class MailType
+        extends EnumAlt<Integer, MailType> {
 
-    BCAST(__system__),
+    private static final long serialVersionUID = 1L;
 
-    NOTICE(__system__),
+    static final Map<String, MailType> nameMap = new HashMap<String, MailType>();
+    static final Map<Integer, MailType> valueMap = new HashMap<Integer, MailType>();
 
-    __issue__,
+    MailType baseType;
 
-    ISSUE(__issue__),
-
-    __converted__,
-
-    EMAIL(__converted__),
-
-    FAX(__converted__),
-
-    __social__,
-
-    USER(__social__),
-
-    QUESTION(__social__),
-
-    POST(__social__),
-
-    COMMENT(__social__),
-
-    ;
-
-    private final MailType baseType;
-
-    static ResourceBundle rb;
-    static {
-        rb = ResourceBundle.getBundle(MailType.class.getName());
+    public MailType(int value, String name) {
+        super(value, name);
     }
 
-    MailType() {
-        this(null);
-    }
-
-    MailType(MailType baseType) {
+    public MailType(int value, String name, MailType baseType) {
+        super(baseType == null ? value : baseType.value + value, name);
         this.baseType = baseType;
     }
 
-    public MailType getBaseType() {
-        return baseType;
+    @Override
+    protected Map<String, MailType> getNameMap() {
+        return nameMap;
     }
 
-    public String getDisplayName() {
-        return getDisplayName(null);
+    @Override
+    protected Map<Integer, MailType> getValueMap() {
+        return valueMap;
     }
 
-    public String getDisplayName(Locale locale) {
-        return rb.getString(name() + ".label");
+    public static Collection<MailType> values() {
+        Collection<MailType> values = valueMap.values();
+        return Collections.unmodifiableCollection(values);
     }
 
-    public String getDescription() {
-        return getDescription(null);
+    public static MailType forName(String altName) {
+        MailType mailType = nameMap.get(altName);
+        if (mailType == null)
+            throw new NoSuchEnumException(MailType.class, altName);
+        return mailType;
     }
 
-    public String getDescription(Locale locale) {
-        return rb.getString(name() + ".description");
+    public static MailType valueOf(int value) {
+        MailType mailType = valueMap.get(value);
+        if (mailType == null)
+            throw new NoSuchEnumException(MailType.class, value);
+
+        return mailType;
     }
+
+    public static final MailType __system__ /**/= new MailType(0x00000, "__system__");
+    public static final MailType BCAST /*     */= new MailType(1, "bcast", __system__);
+    public static final MailType NOTICE /*    */= new MailType(2, "notice", __system__);
+
+    public static final MailType __issue__ /* */= new MailType(0x10000, "__issue__");
+    public static final MailType ISSUE /*     */= new MailType(1, "issue", __issue__);
+
+    public static final MailType __convertion__ = new MailType(0x20000, "__converted__");
+    public static final MailType EMAIL /*     */= new MailType(1, "email", __convertion__);
+    public static final MailType FAX /*       */= new MailType(2, "fax", __convertion__);
+
+    public static final MailType __social__ /**/= new MailType(0x30000, "__social__");
+    public static final MailType USER /*      */= new MailType(1, "user", __social__);
+    public static final MailType QUESTION /*  */= new MailType(2, "question", __social__);
+    public static final MailType POST /*      */= new MailType(3, "post", __social__);
+    public static final MailType COMMENT/*    */= new MailType(4, "comment", __social__);
 
 }
