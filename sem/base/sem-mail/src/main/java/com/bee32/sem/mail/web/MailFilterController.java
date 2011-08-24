@@ -32,7 +32,7 @@ public class MailFilterController
 
     @Override
     protected void fillDataRow(DataTableDxo tab, MailFilterDto filter) {
-        tab.push(filter.getName());
+        tab.push(filter.getLabel());
         tab.push(filter.getExpr());
         tab.push(filter.getSource() == null ? null : filter.getSource().getName());
         tab.push(filter.getTarget() == null ? null : filter.getTarget().getName());

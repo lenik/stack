@@ -4,16 +4,13 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.sem.mail.entity.MailFilter;
 
 public class MailFilterDto
-        extends EntityDto<MailFilter, Integer> {
+        extends UIEntityDto<MailFilter, Integer> {
 
     private static final long serialVersionUID = 1L;
-
-    String name;
-    String description;
 
     boolean enabled;
     int order;
@@ -37,9 +34,6 @@ public class MailFilterDto
 
     @Override
     protected void _marshal(MailFilter source) {
-        name = source.getName();
-        description = source.getDescription();
-
         enabled = source.isEnabled();
         order = source.getOrder();
         expr = source.getExpr();
@@ -54,9 +48,6 @@ public class MailFilterDto
 
     @Override
     protected void _unmarshalTo(MailFilter target) {
-        target.setName(name);
-        target.setDescription(description);
-
         target.setEnabled(enabled);
         target.setOrder(order);
         target.setExpr(expr);
@@ -73,9 +64,6 @@ public class MailFilterDto
     public void _parse(TextMap map)
             throws ParseException, TypeConvertException {
 
-        name = map.getString("name");
-        description = map.getString("description");
-
         enabled = map.getBoolean("enabled");
         order = map.getInt("order");
         expr = map.getString("expr");
@@ -85,22 +73,6 @@ public class MailFilterDto
         transferTo = map.getString("transferTo");
         chMask = map.getInt("chMask");
         chBits = map.getInt("chBits");
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public boolean isEnabled() {

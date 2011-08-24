@@ -6,11 +6,11 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.ext.color.UIEntityDto;
 import com.bee32.sem.mail.entity.MailFolder;
 
 public class MailFolderDto
-        extends EntityDto<MailFolder, Integer> {
+        extends UIEntityDto<MailFolder, Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,7 +19,6 @@ public class MailFolderDto
     byte priority;
     int order;
     String name;
-    String label;
     int color;
     List<MailDeliveryDto> mails;
 
@@ -36,7 +35,6 @@ public class MailFolderDto
         priority = source.getPriority();
         order = source.getOrder();
         name = source.getName();
-        label = source.getLabel();
         color = source.getColor();
 
         if (selection.contains(MAILS))
@@ -48,7 +46,6 @@ public class MailFolderDto
         target.setPriority(priority);
         target.setOrder(order);
         target.setName(name);
-        target.setLabel(label);
         target.setColor(color);
 
         if (selection.contains(MAILS))
@@ -62,7 +59,6 @@ public class MailFolderDto
         priority = map.getByte("priority");
         order = map.getInt("order");
         name = map.getString("name");
-        label = map.getString("label");
         color = map.getInt("color");
 
         // skip ITEMS.
@@ -90,14 +86,6 @@ public class MailFolderDto
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 
     public int getColor() {

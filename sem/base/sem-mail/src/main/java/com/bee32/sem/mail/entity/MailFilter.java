@@ -5,19 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Green;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
 @Green
 @SequenceGenerator(name = "idgen", sequenceName = "mail_filter_seq", allocationSize = 1)
 public class MailFilter
-        extends EntityAuto<Integer> {
+        extends UIEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
-
-    String name;
-    String description;
 
     boolean enabled;
     int order;
@@ -30,24 +27,6 @@ public class MailFilter
 
     int chMask;
     int chBits;
-
-    @Column(length = 30)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Column(length = 200)
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     @Column(nullable = false)
     public boolean isEnabled() {

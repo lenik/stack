@@ -11,14 +11,14 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.ext.color.Green;
+import com.bee32.plover.orm.ext.color.UIEntityAuto;
 
 @Entity
 @Green
 @SequenceGenerator(name = "idgen", sequenceName = "mail_folder_seq", allocationSize = 1)
 public class MailFolder
-        extends EntityAuto<Integer> {
+        extends UIEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,6 @@ public class MailFolder
     int order = 100;
 
     String name;
-    String label;
 
     int color;
 
@@ -63,16 +62,6 @@ public class MailFolder
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Basic(optional = false)
-    @Column(length = 50, nullable = false)
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 
     public int getColor() {

@@ -3,8 +3,8 @@ package com.bee32.sem.mail;
 import java.util.Arrays;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.plover.orm.util.ImportSamples;
+import com.bee32.plover.orm.util.SampleContribution;
 import com.bee32.sem.mail.entity.Mail;
 import com.bee32.sem.mail.entity.MailDelivery;
 import com.bee32.sem.mail.entity.MailFilter;
@@ -32,7 +32,7 @@ public class SEMMailSamples
         spamBox.setLabel("垃圾箱");
         spamBox.setColor(MailFolder.PRIORITY_LOW);
 
-        spamFilter.setName("spam-filter");
+        spamFilter.setLabel("spam-filter");
         spamFilter.setDescription("将标记为'垃圾'的邮件移动到'垃圾箱'");
         spamFilter.setExpr("a.is-spam...");
         spamFilter.setSource(null); // in-box only
