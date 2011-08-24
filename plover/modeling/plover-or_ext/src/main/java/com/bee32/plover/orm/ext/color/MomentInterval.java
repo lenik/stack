@@ -20,7 +20,6 @@ public abstract class MomentInterval
 
     public MomentInterval() {
         super();
-
     }
 
     public MomentInterval(String name) {
