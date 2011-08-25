@@ -2,6 +2,8 @@ package com.bee32.plover.web.faces.test;
 
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.context.annotation.Scope;
 
@@ -15,6 +17,8 @@ public class AutoUpdateBean
 
     String message;
 
+    @NotNull
+    @Size(min = 10)
     public String getMessage() {
         return message;
     }
@@ -29,7 +33,7 @@ public class AutoUpdateBean
 
     public void update() {
         UIViewRoot root = FacesContext.getCurrentInstance().getViewRoot();
-        uiLogger.info("Info: " + message + ", cc=" + root.getChildCount());
+        uiLogger.info("Info," + message + ", cc=" + root.getChildCount());
     }
 
 }
