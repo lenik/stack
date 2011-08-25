@@ -5,6 +5,8 @@ import javax.free.ParseException;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.people.dto.OrgDto;
+import com.bee32.sem.people.dto.OrgUnitDto;
 
 public class StockOrderDto
         extends StockItemListDto<StockOrder> {
@@ -16,6 +18,9 @@ public class StockOrderDto
     StockOrderSubject subject;
     Long jobId;
 
+    OrgDto org;
+    OrgUnitDto orgUnit;
+
     StockWarehouseDto warehouse;
 
     @Override
@@ -24,6 +29,8 @@ public class StockOrderDto
         spec = mref(StockPeriodDto.class, source.getSpec());
         subject = source.getSubject();
         jobId = source.getJobId();
+        org = mref(OrgDto.class, source.getOrg());
+        orgUnit = mref(OrgUnitDto.class, source.getOrgUnit());
         warehouse = mref(StockWarehouseDto.class, source.getWarehouse());
     }
 
@@ -33,6 +40,8 @@ public class StockOrderDto
         merge(target, "spec", spec);
         target.setSubject(subject);
         target.setJobId(jobId);
+        merge(target, "org", org);
+        merge(target, "orgUnit", orgUnit);
         merge(target, "warehouse", warehouse);
     }
 
@@ -75,6 +84,22 @@ public class StockOrderDto
 
     public void setJobId(Long jobId) {
         this.jobId = jobId;
+    }
+
+    public OrgDto getOrg() {
+        return org;
+    }
+
+    public void setOrg(OrgDto org) {
+        this.org = org;
+    }
+
+    public OrgUnitDto getOrgUnit() {
+        return orgUnit;
+    }
+
+    public void setOrgUnit(OrgUnitDto orgUnit) {
+        this.orgUnit = orgUnit;
     }
 
     public StockWarehouseDto getWarehouse() {

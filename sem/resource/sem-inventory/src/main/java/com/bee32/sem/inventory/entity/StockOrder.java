@@ -13,6 +13,8 @@ import javax.persistence.Transient;
 
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
+import com.bee32.sem.people.entity.Org;
+import com.bee32.sem.people.entity.OrgUnit;
 
 /**
  * 库存通用订单
@@ -31,6 +33,9 @@ public class StockOrder
     StockPeriod spec;
     StockOrderSubject subject;
     Long jobId;
+
+    Org org;
+    OrgUnit orgUnit;
 
     StockWarehouse warehouse; // Redundant.
 
@@ -140,6 +145,31 @@ public class StockOrder
      */
     public void setJobId(Long jobId) {
         this.jobId = jobId;
+    }
+
+
+    /**
+     * 出库单对应的客户或入库单对应的供应商
+     */
+    @ManyToOne
+    public Org getOrg() {
+        return org;
+    }
+
+    public void setOrg(Org org) {
+        this.org = org;
+    }
+
+    /**
+     * 对应的部门
+     */
+    @ManyToOne
+    public OrgUnit getOrgUnit() {
+        return orgUnit;
+    }
+
+    public void setOrgUnit(OrgUnit orgUnit) {
+        this.orgUnit = orgUnit;
     }
 
     /**

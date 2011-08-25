@@ -95,7 +95,7 @@ public final class StockOrderSubject
     /** 初始化 */
     public static final StockOrderSubject INIT = new StockOrderSubject("INIT", "init", false);
 
-    /** 销售入库 */
+    /** 采购入库 */
     public static final StockOrderSubject TAKE_IN = new StockOrderSubject("TK_I", "takeIn", false);
 
     /** 销售出库 */

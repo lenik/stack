@@ -177,7 +177,9 @@ public class TakeAdminBean extends StockOrderBaseBean {
         for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
             serviceFor(StockOrder.class).delete(item.unmarshal());
         }
-        serviceFor(StockOrder.class).save(stockOrder.unmarshal());
+
+        StockOrder _order = stockOrder.unmarshal();
+        serviceFor(StockOrder.class).save(_order);
         uiLogger.info("保存成功");
         loadStockOrder(goNumber);
         editable = false;

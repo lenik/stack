@@ -141,6 +141,17 @@
                         <p:inputText value="#{outsourcingOutAdminBean.stockOrder.description}" disabled="#{!outsourcingOutAdminBean.editable}"/>
 					</t:panelGroup>
 
+                    <h:outputText value="对应公司" />
+                    <t:panelGroup>
+                        <p:inputText id="org" value="#{outsourcingOutAdminBean.stockOrder.org.name}" readonly="true"/>
+                        <p:commandButton value="..." onclick="orgDialog.show()" disabled="#{!outsourcingOutAdminBean.editable}"/>
+                    </t:panelGroup>
+                    <h:outputText value="对应部门" />
+                    <t:panelGroup>
+                        <p:inputText id="orgUnit" value="#{outsourcingOutAdminBean.stockOrder.orgUnit.name}" readonly="true"/>
+                        <p:commandButton value="..." onclick="orgUnitDialog.show()" disabled="#{!outsourcingOutAdminBean.editable}"/>
+                    </t:panelGroup>
+
 					<h:outputText value="制单人" />
                     <p:inputText value="#{outsourcingOutAdminBean.creator}" disabled="true"/>
                     <h:outputText value="单据状态" />
@@ -466,8 +477,122 @@
             </p:confirmDialog>
         </h:form>
 
+        <h:form id="orgForm">
+            <p:dialog header="选择公司" widgetVar="orgDialog" modal="true"
+                height="400" width="800">
+                <h:panelGroup>
 
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="公司名称全部或部份:" />
+                        <p:inputText value="#{outsourcingOutAdminBean.orgPattern}" />
+                        <p:commandButton value="查找"
+                            actionListener="#{outsourcingOutAdminBean.findOrg}" update="orgs"
+                            async="true" />
+                    </h:panelGrid>
+                    <p:dataTable id="orgs" var="org"
+                        value="#{outsourcingOutAdminBean.orgs}" resizableColumns="true"
+                        rowIndexVar="rowIndex">
 
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column headerText="客户/供应商名称">
+                            <h:outputText value="#{org.name}" />
+                        </p:column>
+
+                        <p:column headerText="标签">
+                            <p:dataList value="#{org.tags}" var="tag" type="definition">
+                                <f:facet name="description">
+                                    <h:outputText value="#{tag.label}"/>
+                                </f:facet>
+                            </p:dataList>
+                        </p:column>
+
+                        <p:column headerText="成立日期">
+                            <h:outputText value="#{org.birthday}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="公司类型">
+                            <h:outputText value="#{org.type.label}" />
+                        </p:column>
+
+                        <p:column headerText="税务登记号">
+                            <h:outputText value="#{org.sid}" />
+                        </p:column>
+
+                        <p:column headerText="公司规模">
+                            <h:outputText value="#{org.size}" />
+                        </p:column>
+
+                        <p:column headerText="创建日期">
+                            <h:outputText value="#{org.createdDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="动作">
+                            <p:commandLink
+                                oncomplete="orgDialog.hide()"
+                                action="#{outsourcingOutAdminBean.chooseOrg}"
+                                update="mainForm:org" value="挑选">
+                                <f:setPropertyActionListener
+                                    value="#{org}"
+                                    target="#{outsourcingOutAdminBean.selectedOrg}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="取消" oncomplete="orgDialog.hide();" />
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
+        <h:form id="orgUnitForm">
+            <p:dialog header="选择部门" widgetVar="orgUnitDialog" modal="true"
+                height="400" width="640">
+                <h:panelGroup>
+
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="部门名称全部或部份:" />
+                        <p:inputText value="#{outsourcingOutAdminBean.orgUnitPattern}" />
+                        <p:commandButton value="查找"
+                            actionListener="#{outsourcingOutAdminBean.findOrgUnit}" update="orgUnits"
+                            async="true" />
+                    </h:panelGrid>
+                    <p:dataTable id="orgUnits" var="orgUnit"
+                        value="#{outsourcingOutAdminBean.orgUnits}" resizableColumns="true"
+                        rowIndexVar="rowIndex">
+
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column headerText="部门名称">
+                            <h:outputText value="#{orgUnit.name}" />
+                        </p:column>
+
+                        <p:column headerText="所属公司">
+                            <h:outputText value="#{orgUnit.org.name}" />
+                        </p:column>
+
+                        <p:column headerText="动作">
+                            <p:commandLink
+                                oncomplete="orgUnitDialog.hide()"
+                                action="#{outsourcingOutAdminBean.chooseOrgUnit}"
+                                update="mainForm:orgUnit" value="挑选">
+                                <f:setPropertyActionListener
+                                    value="#{orgUnit}"
+                                    target="#{outsourcingOutAdminBean.selectedOrgUnit}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="取消" oncomplete="orgUnitDialog.hide();" />
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
 		<h:outputScript>
             document.title = $("#mainForm\\:pageTitle").val();
         </h:outputScript>

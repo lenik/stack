@@ -70,6 +70,4 @@ public class StockCriteria
                 new Equals("outsourcingOut._subject", StockOrderSubject.OSP_OUT.getValue()),
                 EntityCriteria.betweenEx("outsourcingOut.createdDate", from, to));
     }
-
-
 }

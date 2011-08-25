@@ -4,6 +4,8 @@ import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
+import com.bee32.plover.criteria.hibernate.Like;
+import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyTagname;
 
@@ -27,5 +29,15 @@ public class PeopleCriteria
         return compose(alias("tags", "tag"), //
                 in("tag.id", PartyTagname.INTERNAL.getId()));
     }
+
+    @LeftHand(OrgUnit.class)
+    public static ICriteriaElement internalOrgUnitWithName(String namePattern) {
+        return compose(
+                alias("org", "org1"),
+                alias("org1.tags", "tag"),
+                new Like("name", "%" + namePattern + "%"),
+                in("tag.id", PartyTagname.INTERNAL.getId()));
+    }
+
 
 }

@@ -3,6 +3,8 @@ package com.bee32.sem.people;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.free.Dates;
 
@@ -37,6 +39,7 @@ public class SEMPeopleSamples
     public static Person jackPerson = new Person("贾雨村");
     public static Person tangPerson = new Person("唐玄奘");
 
+    public static Org moonOrg = new Org("火星探索公司");
     public static Org abcOrg = new Org("abc");
     public static Person bugatti = new Person("Bugatti");
     public static Person bentley = new Person("Bentley");
@@ -115,6 +118,15 @@ public class SEMPeopleSamples
 
     /** 相当于原来的 ebo-templatetypes */
     static void series2() {
+        moonOrg.setFullName("海宁市火星探索公司");
+        moonOrg.setType(OrgType.MILITARY);
+        moonOrg.setSize(1000);
+        Set<PartyTagname> tags = new HashSet<PartyTagname>();
+        tags.add(PartyTagname.CUSTOMER);
+        tags.add(PartyTagname.OTHER);
+        moonOrg.setTags(tags);
+
+
         abcOrg.setFullName("ABC 有限责任公司");
         abcOrg.setType(OrgType.LTD_CORP);
         abcOrg.setSize(20);
@@ -193,6 +205,8 @@ public class SEMPeopleSamples
 
         addBulk(jack, tang);
         addBulk(jackPerson, tangPerson);
+
+        add(moonOrg);
 
         add(abcOrg);
         addBulk(bugatti, bentley, weiXiaoBao);
