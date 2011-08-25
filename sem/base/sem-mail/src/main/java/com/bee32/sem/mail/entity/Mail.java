@@ -134,7 +134,7 @@ public class Mail
     /**
      * 发送方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
      */
-    @Column(length = 40, nullable = false)
+    @Column(length = 40)
     public String getFrom() {
         return from;
     }
@@ -149,7 +149,7 @@ public class Mail
     /**
      * 接收方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
      */
-    @Column(length = 150, nullable = false)
+    @Column(length = 150)
     public String getRecipient() {
         return recipient;
     }
