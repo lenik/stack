@@ -4,7 +4,7 @@
     xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
     xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.prime.com.tr/ui"
     xmlns:sem="http://bee32.com/sem/ui">
-<h:head>
+<h:head volatile="__tips, __status">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <title>
@@ -60,21 +60,25 @@
         </div>
     </ui:insert>
 
+    <ui:insert name="pageHeader" />
+
     <ui:insert name="login">
         <div style="display: none">
             <sem:login />
         </div>
     </ui:insert>
 
-    <ui:insert name="initials" />
-
     <ui:insert name="content">正在构建中……</ui:insert>
 
-    <div style="display: inline;">当前公司: #{loginInfo.currentCorp.name}</div>
-    <div style="display: inline; margin-left: 100px;">当前用户: #{loginInfo.currentUser.name}</div>
-    <div style="display: inline; margin-left: 100px;">
-        <a id="aQuit" name="aQuit" href="#">退出</a>
-    </div>
+    <ui:insert name="pageFooter" />
+
+    <ui:insert name="banner">
+        <div style="display: inline;">当前公司: #{loginInfo.currentCorp.name}</div>
+        <div style="display: inline; margin-left: 100px;">当前用户: #{loginInfo.currentUser.name}</div>
+        <div style="display: inline; margin-left: 100px;">
+            <a id="aQuit" name="aQuit" href="#">退出</a>
+        </div>
+    </ui:insert>
 
     <div style="clear: both;" />
     <div style="height: 5px; background-image: url(${location.STYLE}/split.gif); background-repeat: repeat-y"></div>
