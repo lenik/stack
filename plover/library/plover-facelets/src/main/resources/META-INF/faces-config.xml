@@ -8,6 +8,7 @@
     </factory>
 
     <lifecycle>
+        <!-- <phase-listener>com.bee32.plover.web.faces.AnotherPhaseListener</phase-listener> -->
         <phase-listener>com.bee32.plover.web.faces.AutoUpdatePhaseListener</phase-listener>
     </lifecycle>
 
