@@ -182,6 +182,8 @@ public class MailDto
     }
 
     public void setRecipientUser(List<UserDto> recipientUsers) {
+        if (recipientUsers == null)
+            throw new NullPointerException("recipientUsers");
         this.recipientUsers = recipientUsers;
     }
 

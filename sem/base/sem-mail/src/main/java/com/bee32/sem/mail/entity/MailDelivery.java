@@ -9,6 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.plover.orm.ext.color.Pink;
 import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.mail.MailFlags;
@@ -33,9 +36,9 @@ public class MailDelivery
     public MailDelivery() {
     }
 
-    public MailDelivery(Mail mail, MailOrientation party) {
+    public MailDelivery(Mail mail, MailOrientation orientation) {
         this.mail = mail;
-        this.orientation = party;
+        this.orientation = orientation;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -54,13 +57,14 @@ public class MailDelivery
         return orientation;
     }
 
-    public void setParty(MailOrientation orientation) {
+    public void setOrientation(MailOrientation orientation) {
         if (orientation == null)
             throw new NullPointerException("orientation");
         this.orientation = orientation;
     }
 
     @ManyToOne
+    @Cascade(CascadeType.SAVE_UPDATE)
     public MailFolder getFolder() {
         return folder;
     }

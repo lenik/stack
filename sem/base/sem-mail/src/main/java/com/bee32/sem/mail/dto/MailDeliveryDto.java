@@ -37,7 +37,7 @@ public class MailDeliveryDto
     @Override
     protected void _unmarshalTo(MailDelivery target) {
         merge(target, "mail", mail);
-        target.setParty(orientation);
+        target.setOrientation(orientation);
 
         merge(target, "folder", folder);
         target.setFlags(flags.bits);
