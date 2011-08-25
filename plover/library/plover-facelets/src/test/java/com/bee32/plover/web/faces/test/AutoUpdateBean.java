@@ -1,5 +1,8 @@
 package com.bee32.plover.web.faces.test;
 
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+
 import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.web.faces.view.ViewBean;
@@ -25,6 +28,8 @@ public class AutoUpdateBean
     }
 
     public void update() {
+        UIViewRoot root = FacesContext.getCurrentInstance().getViewRoot();
+        uiLogger.info("Info: " + message + ", cc=" + root.getChildCount());
     }
 
 }
