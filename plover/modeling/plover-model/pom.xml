@@ -9,6 +9,11 @@
     <version>0.3.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+        </dependency>
+        <dependency>
             <groupId>com.bee32.plover</groupId>
             <artifactId>plover-arch</artifactId>
             <version>0.3.2-SNAPSHOT</version>
