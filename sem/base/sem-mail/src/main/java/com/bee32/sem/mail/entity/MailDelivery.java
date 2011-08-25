@@ -3,11 +3,10 @@ package com.bee32.sem.mail.entity;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -50,9 +49,7 @@ public class MailDelivery
         this.mail = mail;
     }
 
-    @Basic(optional = false)
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Transient
     public MailOrientation getOrientation() {
         return orientation;
     }
@@ -61,6 +58,16 @@ public class MailDelivery
         if (orientation == null)
             throw new NullPointerException("orientation");
         this.orientation = orientation;
+    }
+
+    @Basic(optional = false)
+    @Column(name = "orientation", nullable = false)
+    int get_orientation() {
+        return orientation.getValue();
+    }
+
+    void set_orientation(int _orientation) {
+        orientation = MailOrientation.valueOf(_orientation);
     }
 
     @ManyToOne

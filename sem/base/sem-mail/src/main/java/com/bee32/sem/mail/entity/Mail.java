@@ -96,7 +96,7 @@ public class Mail
     }
 
     @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(name = "type", nullable = false)
     int get_type() {
         return type.getValue();
     }
@@ -122,7 +122,7 @@ public class Mail
         this.priority = priority;
     }
 
-    @Column(nullable = false)
+    @Column(name = "priority", nullable = false)
     int get_priority() {
         return priority.getValue();
     }
