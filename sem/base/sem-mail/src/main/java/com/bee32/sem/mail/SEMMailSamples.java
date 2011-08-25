@@ -15,9 +15,6 @@ import com.bee32.sem.mail.entity.MailOrientation;
 public class SEMMailSamples
         extends SampleContribution {
 
-    public static MailFolder favBox = new MailFolder();
-    public static MailFolder spamBox = new MailFolder();
-
     public static MailFilter spamFilter = new MailFilter();
 
     public static Mail hello = new Mail();
@@ -28,7 +25,7 @@ public class SEMMailSamples
         spamFilter.setDescription("将标记为'垃圾'的邮件移动到'垃圾箱'");
         spamFilter.setExpr("a.is-spam...");
         spamFilter.setSource(null); // in-box only
-        spamFilter.setTarget(spamBox);
+        spamFilter.setTarget(MailFolder.SPAMBOX);
 
         hello.setFromUser(IcsfPrincipalSamples.wallE);
         hello.addRecipientUser(IcsfPrincipalSamples.eva);
@@ -36,8 +33,11 @@ public class SEMMailSamples
         hello.setBody("Hello, world!\n\n这句话的意思是：朋友、再见！");
 
         MailDelivery helloSend = new MailDelivery(hello, MailOrientation.FROM);
+        helloSend.setFolder(MailFolder.OUTBOX);
         // helloSend.setSentDate();
         MailDelivery helloRecv = new MailDelivery(hello, MailOrientation.RECIPIENT);
+        helloRecv.setFolder(MailFolder.INBOX);
+
         hello.setDeliveries(Arrays.asList(helloSend, helloRecv));
 
         helloEcho.setFromUser(IcsfPrincipalSamples.eva);
@@ -55,8 +55,7 @@ public class SEMMailSamples
 
     @Override
     protected void preamble() {
-        add(favBox);
-        add(spamBox);
+
         add(spamFilter);
         add(hello);
         add(helloEcho);
