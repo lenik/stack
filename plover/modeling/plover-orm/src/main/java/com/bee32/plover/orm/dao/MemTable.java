@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import javax.free.IllegalUsageError;
+import javax.free.NotImplementedException;
 import javax.free.UnexpectedException;
 
 import org.hibernate.LockMode;
@@ -288,6 +289,11 @@ public class MemTable
         }
 
         return selection;
+    }
+
+    @Override
+    public <T> List<T> listMisc(ICriteriaElement... criteriaElements) {
+        throw new NotImplementedException("MemTable.listMisc");
     }
 
     // ER.

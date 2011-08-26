@@ -172,6 +172,13 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         return (List<E>) getDao().list(criteria);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public <T> List<T> listMisc(ICriteriaElement... criteria) {
+        checkList();
+        return getDao().listMisc(criteria);
+    }
+
     @Transactional(readOnly = false)
     @Override
     public void saveOrUpdateAll(Collection<? extends E> entities) {

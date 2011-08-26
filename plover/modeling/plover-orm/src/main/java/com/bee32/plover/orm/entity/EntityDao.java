@@ -388,6 +388,13 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
     }
 
     @Override
+    public <T> List<T> listMisc(ICriteriaElement... criteriaElements) {
+        Criteria criteria = createCriteria(criteriaElements);
+        List<T> list = criteria.list();
+        return list;
+    }
+
+    @Override
     public int count(ICriteriaElement... criteriaElements) {
         Criteria criteria = createCriteria(criteriaElements);
         criteria.setProjection(Projections.rowCount());

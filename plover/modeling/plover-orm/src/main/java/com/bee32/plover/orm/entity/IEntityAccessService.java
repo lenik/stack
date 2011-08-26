@@ -49,6 +49,15 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
     List<E> list(ICriteriaElement... criteriaElements);
 
     /**
+     * List entities with restrictions.
+     *
+     * @param restrictions
+     *            Restrictions to the selection. (AND).
+     * @return Non-<code>null</code> result list.
+     */
+    <T> List<T> listMisc(ICriteriaElement... criteriaElements);
+
+    /**
      * Count of entities with restrictions.
      *
      * @param restrictions
