@@ -23,11 +23,18 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
 
+    protected boolean isNegated() {
+        return false;
+    }
+
     @Override
     protected void __marshal(E source) {
         super.__marshal(source);
 
         quantity = source.getQuantity();
+        if (isNegated())
+            quantity = quantity.negate();
+
         price = source.getPrice();
     }
 
@@ -35,7 +42,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
 
-        target.setQuantity(quantity);
+        target.setQuantity(isNegated() ? quantity.negate() : quantity);
         target.setPrice(price);
     }
 
