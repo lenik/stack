@@ -2,6 +2,7 @@ package com.bee32.sem.inventory.util;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.criterion.Criterion;
 
@@ -9,8 +10,8 @@ import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.criteria.hibernate.LeftHand;
+import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -62,12 +63,23 @@ public class StockCriteria
     }
 
     @LeftHand(StockOutsourcing.class)
-    public static ICriteriaElement outsourcingOutHaveNoCorrespondingIn(
-            Date from, Date to) {
-        return compose(
-                alias("output", "outsourcingOut"),
-                new IsNull("input"),
-                new Equals("outsourcingOut._subject", StockOrderSubject.OSP_OUT.getValue()),
-                EntityCriteria.betweenEx("outsourcingOut.createdDate", from, to));
+    public static ICriteriaElement outsourcingOutHaveNoCorrespondingIn(Date from, Date to) {
+        return compose(alias("output", "out"), //
+                isNull("input"), //
+                equals("out._subject", StockOrderSubject.OSP_OUT.getValue()), //
+                EntityCriteria.betweenEx("out.createdDate", from, to));
     }
+
+    @LeftHand(StockOrderItem.class)
+    public static ICriteriaElement actualsNoCache(Date date, List<Material> materials, String cbatch) {
+        ICriteriaElement _cbatch = null;
+        if (cbatch != null)
+            _cbatch = equals("cbatch", cbatch);
+        return compose(//
+                lessOrEquals("beginDate", date), //
+                not(in("_subject", StockOrderSubject.getVirtualSet())), //
+                in("material", materials), //
+                _cbatch);
+    }
+
 }

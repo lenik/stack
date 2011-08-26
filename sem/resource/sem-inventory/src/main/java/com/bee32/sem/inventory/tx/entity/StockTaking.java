@@ -8,7 +8,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.sem.inventory.entity.StockOrder;
-import com.bee32.sem.inventory.service.IStockLedgerService;
+import com.bee32.sem.inventory.service.IStockQuery;
 
 /**
  * 盘点期间为 [beginTime, endTime]
@@ -24,17 +24,17 @@ public class StockTaking
     StockOrder actual;
     StockOrder adjustment = new StockOrder();
 
-    IStockLedgerService stockLedgerService;
+    IStockQuery stockLedgerService;
 
     public StockTaking() {
     }
 
     @Transient
-    public IStockLedgerService getStockLedgerService() {
+    public IStockQuery getStockLedgerService() {
         return stockLedgerService;
     }
 
-    public void setStockLedgerService(IStockLedgerService stockLedgerService) {
+    public void setStockLedgerService(IStockQuery stockLedgerService) {
         this.stockLedgerService = stockLedgerService;
     }
 
