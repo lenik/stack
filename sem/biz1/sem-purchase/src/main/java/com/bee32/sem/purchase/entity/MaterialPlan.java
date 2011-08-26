@@ -35,7 +35,7 @@ public class MaterialPlan
 
     public MaterialPlan() {
         planOrder = new StockOrder();
-        planOrder.setSubject(StockOrderSubject.PLAN);
+        planOrder.setSubject(StockOrderSubject.PLAN_OUT);
     }
 
     @ManyToOne(optional = false)

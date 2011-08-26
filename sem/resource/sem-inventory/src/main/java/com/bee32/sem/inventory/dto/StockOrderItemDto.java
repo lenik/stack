@@ -9,6 +9,7 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.inventory.entity.StockItemState;
 import com.bee32.sem.inventory.entity.StockOrderItem;
+import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.world.thing.AbstractOrderItemDto;
 
 public class StockOrderItemDto
@@ -22,6 +23,16 @@ public class StockOrderItemDto
     Date expirationDate;
     StockLocationDto location;
     StockItemState state;
+
+    @Override
+    protected boolean isNegated() {
+        StockOrderDto parent = getParent();
+        if (parent == null)
+            return false;
+
+        StockOrderSubject subject = parent.getSubject();
+        return subject.isNegative();
+    }
 
     @Override
     protected void _marshal(StockOrderItem source) {

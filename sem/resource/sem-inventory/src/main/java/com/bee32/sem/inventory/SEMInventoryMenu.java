@@ -33,8 +33,8 @@ public class SEMInventoryMenu
     /*    */static MenuNode init = entry(BUSINESS, 1, "init", _("init/"));
     /*    */static MenuNode takeIn = entry(BUSINESS, 2, "takeIn", _take(StockOrderSubject.TAKE_IN));
     /*    */static MenuNode takeOut = entry(BUSINESS, 3, "takeOut", _take(StockOrderSubject.TAKE_OUT));
-    /*    */static MenuNode prodTakeIn = entry(BUSINESS, 4, "prodTakeIn", _take(StockOrderSubject.PROD_TAKE_IN));
-    /*    */static MenuNode prodTakeOut = entry(BUSINESS, 5, "prodTakeOut", _take(StockOrderSubject.PROD_TAKE_OUT));
+    /*    */static MenuNode prodTakeIn = entry(BUSINESS, 4, "prodTakeIn", _take(StockOrderSubject.FACTORY_IN));
+    /*    */static MenuNode prodTakeOut = entry(BUSINESS, 5, "prodTakeOut", _take(StockOrderSubject.FACTORY_OUT));
     /*    */static MenuNode stocktaking = entry(BUSINESS, 6, "stocktaking", _("stocktaking/"));
     /*    */static MenuNode transferOut = entry(BUSINESS, 7, "transferOut", _("transferOut/"));
     /*    */static MenuNode transferIn = entry(BUSINESS, 8, "transferIn", _("transferIn/"));
