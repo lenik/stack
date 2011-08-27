@@ -29,7 +29,8 @@ public abstract class Principal
 
     private static final long serialVersionUID = 1L;
 
-    public static final int NAME_MAXLEN = 16;
+    public static final int NAME_LENGTH = 16;
+    public static final int FULLNAME_LENGTH = 50;
 
     String name;
     String fullName;
@@ -48,7 +49,7 @@ public abstract class Principal
     }
 
     @NaturalId
-    @Column(length = NAME_MAXLEN, nullable = false)
+    @Column(length = NAME_LENGTH, nullable = false)
     @Override
     public String getName() {
         return name;
@@ -61,7 +62,7 @@ public abstract class Principal
      *
      * @param name
      *            Non-<code>null</code> name to set.
-     * @see #NAME_MAXLEN
+     * @see #NAME_LENGTH
      */
     public void setName(String name) {
         if (name == null)
@@ -75,7 +76,7 @@ public abstract class Principal
         this.name = name;
     }
 
-    @Column(length = 50)
+    @Column(length = FULLNAME_LENGTH)
     public String getFullName() {
         return fullName;
     }
