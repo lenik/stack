@@ -22,7 +22,7 @@ public class LoginInfo
     User user;
 
     public static LoginInfo getInstance() {
-        HttpSession session = ThreadHttpContext.getSession();
+        HttpSession session = ThreadHttpContext.getSessionOpt();
 
         if (session == null)
             return NullLoginInfo.INSTANCE;
