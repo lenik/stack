@@ -12,10 +12,10 @@ import org.primefaces.model.SortOrder;
 import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Limit;
-import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.ext.CEntity;
 import com.bee32.plover.orm.ext.dict.NameDictDto;
+import com.bee32.plover.orm.util.CEntityDto;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.util.FacesContextSupport2;
 
 public class UIHelper
@@ -56,7 +56,7 @@ public class UIHelper
         return items;
     }
 
-    public static <E extends Entity<?>, D extends EntityDto<E, ?>> //
+    public static <E extends CEntity<?>, D extends CEntityDto<E, ?>> //
     LazyDataModel<D> buildLazyDataModel(final EntityDataModelOptions<E, D> options) {
         if (options == null)
             throw new NullPointerException("options");

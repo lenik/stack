@@ -13,7 +13,7 @@ import com.bee32.plover.arch.util.dto.IPropertyAccessor;
 import com.bee32.plover.orm.entity.Entity;
 
 /**
- * EntityDto* utilities.
+ * Entity1Dto* utilities.
  */
 public abstract class DTOs {
 

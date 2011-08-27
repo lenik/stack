@@ -5,11 +5,11 @@ import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.CEntityDto;
 import com.bee32.sem.process.verify.builtin.PassStep;
 
 public class PassStepDto
-        extends EntityDto<PassStep, Integer> {
+        extends CEntityDto<PassStep, Integer> {
 
     private static final long serialVersionUID = 1L;
 

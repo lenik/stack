@@ -6,7 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.orm.entity._EntityAccessor;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.web.EntityHandler;
 import com.bee32.plover.servlet.mvc.ActionRequest;
@@ -34,7 +34,7 @@ public class DeleteHandler<E extends Entity<K>, K extends Serializable>
         if (entity == null)
             return Javascripts.alertAndBack("对象不存在: " + idString).dump(result);
 
-        EntityFlags ef = EntityAccessor.getFlags(entity);
+        EntityFlags ef = _EntityAccessor.getFlags(entity);
         if (ef.isLocked())
             return Javascripts.alertAndBack("对象被锁定: " + idString).dump(result);
         // if (ef.isDeleted())

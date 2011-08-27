@@ -34,8 +34,8 @@ public class EntityFormatterTest
         String catNoid = cat.toString(FormatStyle.SIMPLE);
         assertEquals("kitty@Cat", catNoid);
 
-        EntityAccessor.setId(cat, 10L);
-        EntityAccessor.setVersion(cat, 3);
+        _EntityAccessor.setId(cat, 10L);
+        _EntityAccessor.setVersion(cat, 3);
 
         String cat10 = cat.toString(FormatStyle.SIMPLE);
         assertEquals("kitty@Cat:10.3", cat10);

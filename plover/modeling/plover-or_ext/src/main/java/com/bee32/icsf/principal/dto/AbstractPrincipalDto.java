@@ -8,10 +8,10 @@ import javax.free.TypeConvertException;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.util.Mask32;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.CEntityDto;
 
 public abstract class AbstractPrincipalDto<E extends Principal>
-        extends EntityDto<E, Integer> {
+        extends CEntityDto<E, Integer> {
 
     private static final long serialVersionUID = 1L;
 

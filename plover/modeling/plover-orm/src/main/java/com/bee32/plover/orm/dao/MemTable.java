@@ -26,7 +26,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.orm.entity._EntityAccessor;
 import com.bee32.plover.orm.entity.EntityRepository;
 import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.plover.orm.entity.IEntityAccessService;
@@ -186,7 +186,7 @@ public class MemTable
         Serializable id = _o.getId();
         if (id == null) {
             id = SimpleIdGenerator.generate(entity);
-            EntityAccessor.setId(_o, id);
+            _EntityAccessor.setId(_o, id);
         }
 
         _put(id, _o);
@@ -314,7 +314,7 @@ public class MemTable
 
         if (id == null) {
             id = SimpleIdGenerator.generate(entity);
-            EntityAccessor.setId(entity, id);
+            _EntityAccessor.setId(entity, id);
         }
 
         Entity<Serializable> _o = dup(entity);

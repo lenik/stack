@@ -2,7 +2,7 @@ package com.bee32.sem.process.verify.util;
 
 import java.util.Date;
 
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.CEntityDto;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.dto.TaskDto;
 import com.bee32.sem.process.verify.IVerifyContext;
@@ -10,7 +10,7 @@ import com.bee32.sem.process.verify.VerifyState;
 import com.bee32.sem.process.verify.builtin.dto.VerifyPolicyDto;
 
 public abstract class VerifiableEntityDto<E extends VerifiableEntity<K, ? extends IVerifyContext>, K extends Number>
-        extends EntityDto<E, K> {
+        extends CEntityDto<E, K> {
 
     private static final long serialVersionUID = 1L;
 

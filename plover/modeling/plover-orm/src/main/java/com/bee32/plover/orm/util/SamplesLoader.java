@@ -25,7 +25,7 @@ import com.bee32.plover.orm.config.CustomizedSessionFactoryBean;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.orm.entity._EntityAccessor;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.PersistenceUnit;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
@@ -144,7 +144,7 @@ public class SamplesLoader
                 continue;
             }
 
-            boolean isAutoId = EntityAccessor.isAutoId(sample);
+            boolean isAutoId = _EntityAccessor.isAutoId(sample);
             if (isAutoId)
                 autoList.add(sample);
             else {
@@ -246,7 +246,7 @@ public class SamplesLoader
                             continue;
                         }
 
-                        EntityAccessor.setId(item, (Serializable) existing.getId());
+                        _EntityAccessor.setId(item, (Serializable) existing.getId());
                         asFor(itemType).evict(existing);
                     }
                 }

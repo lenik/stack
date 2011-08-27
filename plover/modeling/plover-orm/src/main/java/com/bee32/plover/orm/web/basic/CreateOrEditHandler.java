@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.orm.entity._EntityAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.web.EntityHandler;
 import com.bee32.plover.orm.web.IEntityForming;
@@ -102,7 +102,7 @@ public class CreateOrEditHandler<E extends Entity<K>, K extends Serializable>
             entity = eh.newEntity();
 
             if (id != null)
-                EntityAccessor.setId(entity, id);
+                _EntityAccessor.setId(entity, id);
         }
 
         forming.saveForm(entity, dto);

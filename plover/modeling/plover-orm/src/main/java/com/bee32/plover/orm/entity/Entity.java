@@ -10,8 +10,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Index;
-
 import overlay.Overlay;
 
 import com.bee32.plover.arch.Component;
@@ -33,22 +31,12 @@ public abstract class Entity<K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
-    static final int KEYWORD_MAXLEN = 16;
-
     int version;
 
     Date createdDate = new Date();
     Date lastModified = createdDate;
 
     final EntityFlags entityFlags = new EntityFlags();
-
-    String keyword;
-    boolean keywordUpdated;
-
-    Integer aclId;
-    Integer ownerId;
-
-    transient Entity<Integer> _owner;
 
     public Entity() {
         super(null);
@@ -107,67 +95,6 @@ public abstract class Entity<K extends Serializable>
     @Transient
     protected EntityFlags getEntityFlags() {
         return entityFlags;
-    }
-
-    @Index(name = "keyword")
-    @Column(length = KEYWORD_MAXLEN)
-    protected String getKeyword() {
-        if (!keywordUpdated) {
-            keyword = buildKeyword();
-            keywordUpdated = true;
-        }
-        return keyword;
-    }
-
-    protected void setKeyword(String keyword) {
-        this.keyword = keyword;
-        this.keywordUpdated = true;
-    }
-
-    protected void invalidate() {
-        invalidateKeyword();
-    }
-
-    protected final void invalidateKeyword() {
-        this.keywordUpdated = false;
-    }
-
-    /**
-     * @see ZhUtil#getPinyinAbbreviation(String).
-     */
-    @Transient
-    protected String buildKeyword() {
-        return null;
-    }
-
-    @Column(name = "acl")
-    public Integer getAclId() {
-        return aclId;
-    }
-
-    void setAclId(Integer aclId) {
-        this.aclId = aclId;
-    }
-
-    @Column(name = "owner")
-    public synchronized Integer getOwnerId() {
-        if (_owner != null) {
-            Integer _id = _owner.getId();
-            ownerId = _id;
-            _owner = null;
-        }
-        return ownerId;
-    }
-
-    public synchronized void setOwnerId(Integer owner) {
-        this.ownerId = owner;
-        _owner = null;
-    }
-
-    void setOwner(Entity<Integer> owner) {
-        if (owner == null)
-            throw new NullPointerException("owner");
-        this._owner = owner;
     }
 
     @Override
@@ -505,7 +432,7 @@ public abstract class Entity<K extends Serializable>
     @Transient
     @Override
     protected boolean isLocked() {
-        EntityFlags ef = EntityAccessor.getFlags(this);
+        EntityFlags ef = _EntityAccessor.getFlags(this);
         int x = ef.bits & lockMask;
         return x != 0;
     }

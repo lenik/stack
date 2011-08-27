@@ -16,7 +16,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.arch.util.dto.MarshalType;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.EntityAccessor;
+import com.bee32.plover.orm.entity._EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.entity.EntityUtil;
@@ -37,9 +37,6 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     boolean lastModifiedSet;
 
     EntityFlags entityFlags;
-
-    Integer aclId;
-    Integer ownerId;
 
     public EntityDto() {
         super();
@@ -244,22 +241,6 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
      * </pre>
      */
 
-    public Integer getAclId() {
-        return aclId;
-    }
-
-    public void setAclId(Integer aclId) {
-        this.aclId = aclId;
-    }
-
-    public Integer getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
-    }
-
     /**
      * Marshal the common entity fields from the source entity.
      */
@@ -269,10 +250,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         version = source.getVersion();
         createdDate = source.getCreatedDate();
         lastModified = source.getLastModified();
-        setEntityFlags(EntityAccessor.getFlags(source).bits);
-
-        aclId = source.getAclId();
-        ownerId = source.getOwnerId();
+        setEntityFlags(_EntityAccessor.getFlags(source).bits);
     }
 
     /**
@@ -281,25 +259,20 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     @Override
     protected void __unmarshalTo(E target) {
         if (id != null)
-            EntityAccessor.setId(target, id);
+            _EntityAccessor.setId(target, id);
 
         if (version != null)
-            EntityAccessor.setVersion(target, version);
+            _EntityAccessor.setVersion(target, version);
 
         if (createdDateSet)
-            EntityAccessor.setCreatedDate(target, createdDate);
+            _EntityAccessor.setCreatedDate(target, createdDate);
 
         if (lastModifiedSet)
-            EntityAccessor.setLastModified(target, lastModified);
+            _EntityAccessor.setLastModified(target, lastModified);
 
         if (entityFlags != null)
-            EntityAccessor.getFlags(target).set(entityFlags.bits);
+            _EntityAccessor.getFlags(target).set(entityFlags.bits);
 
-        if (aclId != null)
-            EntityAccessor.setAclId(target, aclId);
-
-        if (ownerId != null)
-            EntityAccessor.setOwnerId(target, ownerId);
     }
 
     @Override
@@ -337,14 +310,6 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         Integer _entityFlags = map.getNInt("entityFlags");
         if (_entityFlags != null)
             setEntityFlags(_entityFlags);
-
-        Integer aclId = map.getNInt("aclId");
-        if (aclId != null)
-            setAclId(aclId);
-
-        Integer ownerId = map.getNInt("ownerId");
-        if (ownerId != null)
-            setOwnerId(ownerId);
     }
 
     @Override
@@ -363,12 +328,6 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
 
         if (entityFlags != null)
             map.put("entityFlags", entityFlags);
-
-        if (aclId != null)
-            map.put("aclId", aclId);
-
-        if (ownerId != null)
-            map.put("ownerId", ownerId);
     }
 
     /**

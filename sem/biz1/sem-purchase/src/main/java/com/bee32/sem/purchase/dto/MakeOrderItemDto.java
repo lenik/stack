@@ -7,12 +7,12 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.CEntityDto;
 import com.bee32.sem.purchase.entity.MakeOrderItem;
 import com.bee32.sems.bom.dto.PartDto;
 
 public class MakeOrderItemDto
-        extends EntityDto<MakeOrderItem, Long> {
+        extends CEntityDto<MakeOrderItem, Long> {
 
     private static final long serialVersionUID = 1L;
 

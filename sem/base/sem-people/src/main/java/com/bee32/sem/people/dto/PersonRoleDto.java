@@ -3,11 +3,11 @@ package com.bee32.sem.people.dto;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.CEntityDto;
 import com.bee32.sem.people.entity.PersonRole;
 
 public class PersonRoleDto
-        extends EntityDto<PersonRole, Integer> {
+        extends CEntityDto<PersonRole, Integer> {
 
     private static final long serialVersionUID = 1L;
 

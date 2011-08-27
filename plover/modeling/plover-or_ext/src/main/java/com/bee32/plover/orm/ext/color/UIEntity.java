@@ -5,12 +5,12 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import com.bee32.plover.orm.entity.Entity;
+import com.bee32.plover.orm.ext.CEntity;
 
 @MappedSuperclass
 @Green
 abstract class UIEntity<K extends Serializable>
-        extends Entity<K>
+        extends CEntity<K>
         implements IUserFriendly {
 
     private static final long serialVersionUID = 1L;

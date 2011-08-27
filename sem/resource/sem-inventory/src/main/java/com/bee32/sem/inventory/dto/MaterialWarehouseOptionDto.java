@@ -7,11 +7,11 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.CEntityDto;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 
 public class MaterialWarehouseOptionDto
-        extends EntityDto<MaterialWarehouseOption, Long> {
+        extends CEntityDto<MaterialWarehouseOption, Long> {
 
     private static final long serialVersionUID = 1L;
     public static final int MATERIAL = 1;

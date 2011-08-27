@@ -3,11 +3,11 @@ package com.bee32.sem.process.verify.builtin.dto;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.CEntityDto;
 import com.bee32.sem.process.verify.builtin.MultiLevel;
 
 public class LevelDto
-        extends EntityDto<MultiLevel, Integer> {
+        extends CEntityDto<MultiLevel, Integer> {
 
     private static final long serialVersionUID = 1L;
 

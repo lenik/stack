@@ -3,7 +3,7 @@ package com.bee32.plover.orm.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class EntityAccessor {
+public class _EntityAccessor {
 
     public static <K extends Serializable> void setId(Entity<K> entity, K id) {
         entity.setId(id);
@@ -31,18 +31,6 @@ public class EntityAccessor {
 
     public static EntityFlags getFlags(Entity<?> entity) {
         return entity.getEntityFlags();
-    }
-
-    public static void setOwner(Entity<?> entity, Entity<Integer> owner) {
-        entity.setOwner(owner);
-    }
-
-    public static void setOwnerId(Entity<?> entity, Integer ownerId) {
-        entity.setOwnerId(ownerId);
-    }
-
-    public static void setAclId(Entity<?> entity, Integer aclId) {
-        entity.setAclId(aclId);
     }
 
     static final boolean useAutoIdAnnotation = false;

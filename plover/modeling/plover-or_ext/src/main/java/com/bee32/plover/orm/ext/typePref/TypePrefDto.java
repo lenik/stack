@@ -3,11 +3,11 @@ package com.bee32.plover.orm.ext.typePref;
 import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.CEntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 
 public abstract class TypePrefDto<E extends TypePrefEntity>
-        extends EntityDto<E, String>
+        extends CEntityDto<E, String>
         implements ITypeAbbrAware {
 
     private static final long serialVersionUID = 1L;

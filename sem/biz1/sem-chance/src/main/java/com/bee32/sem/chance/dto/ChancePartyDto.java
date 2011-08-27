@@ -6,12 +6,12 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.orm.util.CEntityDto;
 import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.people.dto.PartyDto;
 
 public class ChancePartyDto
-        extends EntityDto<ChanceParty, Long> {
+        extends CEntityDto<ChanceParty, Long> {
 
     private static final long serialVersionUID = 1L;
 
