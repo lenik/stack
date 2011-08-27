@@ -23,7 +23,7 @@ public class SEMBomSamples
         part.setTarget(SEMInventorySamples.gundam);
         part.setValidDateFrom(parseDate("2010-03-05"));
         part.setValidDateTo(parseDate("2020-03-04"));
-        part.setCreator(SEMPeopleSamples.jack);
+        part.setOwner(SEMPeopleSamples.jack);
 
         PartItem item = new PartItem();
         item.setParent(part);

@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.free.ParseException;
 
-import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
@@ -55,15 +54,6 @@ public class AbstractPartyDto<E extends Party>
      */
     @Override
     protected void _marshal(E source) {
-        User owner;
-        Integer ownerId = source.getOwnerId();
-        if (ownerId == null)
-            owner = null;
-        else
-            owner = getMarshalContext().loadEntity(User.class, ownerId);
-        this.owner = mref(UserDto.class, owner);
-
-        tags = marshalList(PartyTagnameDto.class, source.getTags(), true);
 
         name = source.getName();
         fullName = source.getFullName();
@@ -77,6 +67,8 @@ public class AbstractPartyDto<E extends Party>
 
         memo = source.getMemo();
 
+        tags = marshalList(PartyTagnameDto.class, source.getTags(), true);
+
         if (selection.contains(CONTACTS))
             contacts = marshalList(ContactDto.class, source.getContacts(), true);
 
@@ -86,9 +78,6 @@ public class AbstractPartyDto<E extends Party>
 
     @Override
     protected void _unmarshalTo(E target) {
-        if (owner != null)
-            target.setOwnerId(owner.getId());
-
         target.setName(name);
         target.setFullName(fullName);
         target.setNickName(nickName);

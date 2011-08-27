@@ -55,8 +55,8 @@ public class IcsfPrincipalSamples
 
     @Override
     protected void more(IEntityMarshalContext context) {
-        solaRobots.setOwnerId(eva.getId());
-        sunCorp.setOwnerId(tom.getId());
+        solaRobots.setOwner(eva);
+        sunCorp.setOwner(tom);
         context.asFor(Group.class).saveOrUpdateAll(solaRobots, sunCorp);
     }
 
