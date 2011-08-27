@@ -30,13 +30,15 @@ public class LoginInfo
         return getInstance(session);
     }
 
-    public static LoginInfo getInstance(HttpSession session) {
+    public static synchronized LoginInfo getInstance(HttpSession session) {
         if (session == null)
             throw new NullPointerException("session");
 
         LoginInfo loginInfo = (LoginInfo) session.getAttribute(SESSION_KEY);
-        if (loginInfo == null)
-            return NullLoginInfo.INSTANCE;
+        if (loginInfo == null) {
+            loginInfo = new LoginInfo();
+            session.setAttribute(SESSION_KEY, loginInfo);
+        }
 
         return loginInfo;
     }
