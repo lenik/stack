@@ -10,6 +10,7 @@
     <lifecycle>
         <!-- <phase-listener>com.bee32.plover.web.faces.AnotherPhaseListener</phase-listener> -->
         <phase-listener>com.bee32.plover.web.faces.AutoUpdatePhaseListener</phase-listener>
+        <phase-listener>com.bee32.plover.web.faces.FaceletsDiagnosticPhaseListener</phase-listener>
     </lifecycle>
 
     <application>
