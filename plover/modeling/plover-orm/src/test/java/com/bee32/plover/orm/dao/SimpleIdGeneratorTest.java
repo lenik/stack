@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bee32.plover.orm.builtin.PloverConf;
-import com.bee32.plover.orm.entity.Eauto;
+import com.bee32.plover.orm.entity.EntityAuto;
 
 public class SimpleIdGeneratorTest
         extends Assert {
@@ -40,21 +40,21 @@ public class SimpleIdGeneratorTest
 }
 
 class IntCase
-        extends Eauto<Integer> {
+        extends EntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 
 }
 
 class LongCase
-        extends Eauto<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
 }
 
 class DoubleCase
-        extends Eauto<Double> {
+        extends EntityAuto<Double> {
 
     private static final long serialVersionUID = 1L;
 

@@ -7,14 +7,14 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.color.Yellow;
 
 @Entity
 @Yellow
 @SequenceGenerator(name = "idgen", sequenceName = "diary_observer_seq", allocationSize = 1)
 public class DiaryObserver
-        extends EntityAuto<Long> {
+        extends CEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

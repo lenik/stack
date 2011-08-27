@@ -9,14 +9,14 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "user_email_seq", allocationSize = 1)
 public class UserEmail
-        extends EntityAuto<Long> {
+        extends CEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

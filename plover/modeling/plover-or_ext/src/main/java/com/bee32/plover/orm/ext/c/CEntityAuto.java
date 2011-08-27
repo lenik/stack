@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.entity;
+package com.bee32.plover.orm.ext.c;
 
 import java.io.Serializable;
 
@@ -8,23 +8,22 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import com.bee32.plover.orm.entity._AutoId;
-import com.bee32.plover.orm.ext.CEntity;
 
 @MappedSuperclass
 @_AutoId
 // @SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "xxx_seq")
-public abstract class EntityAuto<K extends Serializable>
+public abstract class CEntityAuto<K extends Serializable>
         extends CEntity<K> {
 
     private static final long serialVersionUID = 1L;
 
     K id;
 
-    public EntityAuto() {
+    public CEntityAuto() {
         super();
     }
 
-    public EntityAuto(String name) {
+    public CEntityAuto(String name) {
         super(name);
     }
 

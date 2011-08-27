@@ -13,7 +13,7 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 
 /**
@@ -23,7 +23,7 @@ import com.bee32.plover.orm.ext.color.Blue;
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "file_attribute_seq", allocationSize = 1)
 public class FileAttribute
-        extends EntityAuto<Long> {
+        extends CEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

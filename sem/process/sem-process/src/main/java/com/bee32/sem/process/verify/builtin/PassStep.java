@@ -6,7 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -18,7 +18,7 @@ import com.bee32.plover.util.PrettyPrintStream;
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "pass_step_seq", allocationSize = 1)
 public class PassStep
-        extends EntityAuto<Integer> {
+        extends CEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 

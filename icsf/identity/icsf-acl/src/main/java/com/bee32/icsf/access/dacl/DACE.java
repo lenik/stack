@@ -17,12 +17,12 @@ import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "dace_seq", allocationSize = 1)
 public class DACE
-        extends EntityAuto<Long> {
+        extends CEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

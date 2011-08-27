@@ -27,7 +27,7 @@ import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.sem.mail.MailPriority;
 import com.bee32.sem.mail.MailType;
@@ -40,7 +40,7 @@ import com.bee32.sem.mail.util.EmailUtil;
 @DiscriminatorValue("MAIL")
 @SequenceGenerator(name = "idgen", sequenceName = "mail_seq", allocationSize = 1)
 public class Mail
-        extends EntityAuto<Long> {
+        extends CEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

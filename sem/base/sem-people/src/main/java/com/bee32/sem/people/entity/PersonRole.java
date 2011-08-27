@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.color.Yellow;
 
 /**
@@ -16,7 +16,7 @@ import com.bee32.plover.orm.ext.color.Yellow;
 @Yellow
 @SequenceGenerator(name = "idgen", sequenceName = "person_role_seq", allocationSize = 1)
 public class PersonRole
-        extends EntityAuto<Integer> {
+        extends CEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 

@@ -16,7 +16,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 
 /**
@@ -35,7 +35,7 @@ import com.bee32.plover.orm.ext.color.Blue;
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "fxr_record_seq", allocationSize = 1)
 public class FxrRecord
-        extends EntityAuto<Long> {
+        extends CEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

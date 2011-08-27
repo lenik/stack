@@ -25,8 +25,8 @@ import org.hibernate.annotations.Index;
 
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.orm.entity.IEntity;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.color.Pink;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.sem.event.EventFlags;
@@ -39,7 +39,7 @@ import com.bee32.sem.event.EventState;
 @DiscriminatorValue("EVT")
 @SequenceGenerator(name = "idgen", sequenceName = "event_seq", allocationSize = 1)
 public class Event
-        extends EntityAuto<Long>
+        extends CEntityAuto<Long>
         implements IEvent, ITypeAbbrAware {
 
     private static final long serialVersionUID = 1L;

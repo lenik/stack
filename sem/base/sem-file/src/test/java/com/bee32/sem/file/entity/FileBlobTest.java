@@ -9,7 +9,7 @@ import javax.free.TempFile;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.orm.ext.EntityAccessor;
+import com.bee32.plover.orm.ext.c.CEntityAccessor;
 
 public class FileBlobTest
         extends Assert {
@@ -24,7 +24,7 @@ public class FileBlobTest
         assertEquals("d41d8cd98f00b204e9800998ecf8427e", digest);
 
         FileBlob q = new FileBlob();
-        EntityAccessor.setId(q, digest);
+        CEntityAccessor.setId(q, digest);
         String contents = q.resolve().forRead().readTextContents();
         assertEquals("", contents);
     }
@@ -39,7 +39,7 @@ public class FileBlobTest
         assertEquals("6cd3556deb0da54bca060b4c39479839", digest);
 
         FileBlob q = new FileBlob();
-        EntityAccessor.setId(q, digest);
+        CEntityAccessor.setId(q, digest);
         String contents = q.resolve().forRead().readTextContents();
         assertEquals("Hello, world!", contents);
     }

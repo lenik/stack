@@ -8,11 +8,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity.EntitySpec;
+import com.bee32.plover.orm.ext.c.CEntitySpec;
 
 @MappedSuperclass
 public abstract class XPool<Es extends Entity<?>>
-        extends EntitySpec<Long> {
+        extends CEntitySpec<Long> {
 
     private static final long serialVersionUID = 1L;
 

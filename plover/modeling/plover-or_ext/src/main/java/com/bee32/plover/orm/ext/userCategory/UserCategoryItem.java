@@ -9,14 +9,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "user_category_item_seq", allocationSize = 1)
 public class UserCategoryItem
-        extends EntityAuto<Long> {
+        extends CEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

@@ -10,14 +10,14 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "entity_column_seq", allocationSize = 1)
 public class EntityColumn
-        extends EntityAuto<Integer> {
+        extends CEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 

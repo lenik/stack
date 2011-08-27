@@ -13,7 +13,7 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.config.DecimalConfig;
 import com.bee32.sems.bom.entity.Part;
 
@@ -23,7 +23,7 @@ import com.bee32.sems.bom.entity.Part;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_order_item_seq", allocationSize = 1)
 public class MakeOrderItem
-        extends EntityAuto<Long>
+        extends CEntityAuto<Long>
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;

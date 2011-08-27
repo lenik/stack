@@ -5,10 +5,12 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.BatchSize;
 
+import com.bee32.plover.orm.entity.EntitySpec;
+
 @Entity
 @BatchSize(size = 100)
 public class PloverConf
-        extends com.bee32.plover.orm.entity.Entity<String> {
+        extends EntitySpec<String> {
 
     private static final long serialVersionUID = 1L;
 

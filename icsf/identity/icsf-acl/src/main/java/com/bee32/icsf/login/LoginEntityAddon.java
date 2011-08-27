@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.entity.AbstractEntityLifecycleAddon;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.ext.CEntity;
-import com.bee32.plover.orm.ext.EntityAccessor;
+import com.bee32.plover.orm.ext.c.CEntity;
+import com.bee32.plover.orm.ext.c.CEntityAccessor;
 
 public class LoginEntityAddon
         extends AbstractEntityLifecycleAddon {
@@ -47,7 +47,7 @@ public class LoginEntityAddon
         if (logger.isTraceEnabled())
             logger.trace("Set owner of new entity: " + owner.getName());
 
-        EntityAccessor.setOwner(entity, owner);
+        CEntityAccessor.setOwner(entity, owner);
     }
 
 }

@@ -6,8 +6,8 @@ import java.util.Map;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.CEntity;
-import com.bee32.plover.orm.ext.EntityAccessor;
+import com.bee32.plover.orm.ext.c.CEntity;
+import com.bee32.plover.orm.ext.c.CEntityAccessor;
 
 public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
         extends EntityDto<E, K> {
@@ -37,10 +37,10 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
         super.__unmarshalTo(target);
 
         if (aclId != null)
-            EntityAccessor.setAclId(target, aclId);
+            CEntityAccessor.setAclId(target, aclId);
 
         if (ownerId != null)
-            EntityAccessor.setOwnerId(target, ownerId);
+            CEntityAccessor.setOwnerId(target, ownerId);
     }
 
     @Override

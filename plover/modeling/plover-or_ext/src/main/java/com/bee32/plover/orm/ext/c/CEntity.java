@@ -1,4 +1,4 @@
-package com.bee32.plover.orm.ext;
+package com.bee32.plover.orm.ext.c;
 
 import java.io.Serializable;
 

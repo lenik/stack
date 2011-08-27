@@ -7,7 +7,7 @@ interface IFoo
 }
 
 class Foo
-        extends Eauto<Integer>
+        extends EntityAuto<Integer>
         implements IFoo {
 
     private static final long serialVersionUID = 1L;
@@ -23,7 +23,7 @@ interface Bar
 }
 
 class BarImpl
-        extends Eauto<Integer>
+        extends EntityAuto<Integer>
         implements Bar {
 
     private static final long serialVersionUID = 1L;

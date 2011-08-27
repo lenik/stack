@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import com.bee32.plover.orm.ext.CEntity;
+import com.bee32.plover.orm.ext.c.CEntity;
 
 @MappedSuperclass
 @Green

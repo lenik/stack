@@ -13,7 +13,7 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.color.Yellow;
 import com.bee32.sem.people.entity.Party;
 
@@ -24,7 +24,7 @@ import com.bee32.sem.people.entity.Party;
 @Yellow
 @SequenceGenerator(name = "idgen", sequenceName = "chance_party_seq", allocationSize = 1)
 public class ChanceParty
-        extends EntityAuto<Long> {
+        extends CEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

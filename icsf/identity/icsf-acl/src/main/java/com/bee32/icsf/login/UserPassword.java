@@ -16,14 +16,14 @@ import javax.persistence.Transient;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.ext.c.CEntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "user_password_seq", allocationSize = 1)
 public class UserPassword
-        extends EntityAuto<Long> {
+        extends CEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
