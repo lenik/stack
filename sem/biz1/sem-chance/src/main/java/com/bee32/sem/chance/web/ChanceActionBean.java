@@ -14,7 +14,7 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.bee32.icsf.login.SessionLoginInfo;
+import com.bee32.icsf.login.LoginInfo;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.criteria.hibernate.Order;
@@ -364,7 +364,7 @@ public class ChanceActionBean
         ChanceActionStyleDto style = new ChanceActionStyleDto().ref(styleId);
         action.setStyle(style);
 
-        UserDto actor = new UserDto().ref(SessionLoginInfo.getUser().getId());
+        UserDto actor = new UserDto().ref(LoginInfo.getInstance().getUser().getId());
         action.setActor(actor);
 
         try {

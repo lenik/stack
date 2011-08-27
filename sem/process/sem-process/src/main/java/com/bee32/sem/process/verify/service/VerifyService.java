@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.icsf.login.SessionLoginInfo;
+import com.bee32.icsf.login.LoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.DataService;
@@ -148,7 +148,7 @@ public class VerifyService
         if (entity == null)
             throw new NullPointerException("entity");
 
-        IUserPrincipal __currentUser = SessionLoginInfo.getUser();
+        IUserPrincipal __currentUser = LoginInfo.getInstance().getUser();
 
         // XXX
         // userService.get(0, __currentUser.getId());

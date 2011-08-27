@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.LoginCriteria;
-import com.bee32.icsf.login.SessionLoginInfo;
+import com.bee32.icsf.login.LoginInfo;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.EntityViewBean;
@@ -54,7 +54,8 @@ public class LoginBean
     public void login(ActionEvent even) {
         boolean loggedIn = false;
 
-        SessionLoginInfo.setUser(null);
+        LoginInfo loginInfo = LoginInfo.getInstance();
+        loginInfo.setUser(null);
 
         User user = serviceFor(User.class).getByName(username);
         if (user == null) {
@@ -77,7 +78,7 @@ public class LoginBean
             return;
         }
 
-        SessionLoginInfo.setUser(user);
+        loginInfo.setUser(user);
         loggedIn = true;
         uiLogger.info("登录成功");
 

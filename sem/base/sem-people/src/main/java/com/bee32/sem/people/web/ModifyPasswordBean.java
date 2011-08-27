@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.LoginCriteria;
-import com.bee32.icsf.login.SessionLoginInfo;
+import com.bee32.icsf.login.LoginInfo;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dto.UserDto;
@@ -58,7 +58,7 @@ public class ModifyPasswordBean extends EntityViewBean {
 
 
 	public UserDto getCurrentUser() {
-		User u = (User) SessionLoginInfo.getUser();
+		User u = (User) LoginInfo.getInstance().getUser();
 		User user = serviceFor(User.class).getOrFail(u.getId());
 		UserDto cu = DTOs.marshal(UserDto.class, user);
 
@@ -75,7 +75,7 @@ public class ModifyPasswordBean extends EntityViewBean {
 			return;
 		}
 
-		User u = (User) SessionLoginInfo.getUser();
+		User u = (User) LoginInfo.getInstance().getUser();
 		List<UserPassword> plist = serviceFor(UserPassword.class).list(
 				LoginCriteria.forUser(u));
 		if(plist.isEmpty()) {

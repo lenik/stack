@@ -1,6 +1,6 @@
 package com.bee32.sem.session;
 
-import com.bee32.icsf.login.SessionLoginInfo;
+import com.bee32.icsf.login.LoginInfo;
 import com.bee32.plover.web.faces.view.ViewBean;
 
 public class UILoginBean
@@ -9,7 +9,7 @@ public class UILoginBean
     private static final long serialVersionUID = 1L;
 
     public String getUserName() {
-        String name = SessionLoginInfo.getUser().getName();
+        String name = LoginInfo.getInstance().getUser().getName();
         return name;
     }
 

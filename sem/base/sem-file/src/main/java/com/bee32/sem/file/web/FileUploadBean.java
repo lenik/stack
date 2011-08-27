@@ -11,8 +11,6 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.context.annotation.Scope;
 
-import com.bee32.icsf.login.SessionLoginInfo;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.entity.UserFile;
@@ -42,9 +40,6 @@ public class FileUploadBean
 
         UserFile userFile = new UserFile();
         userFile.setPath(upFile.getFileName());
-
-        User currUser = (User) SessionLoginInfo.getUser();
-        userFile.setOwnerId(currUser.getId());
 
         try {
             FileBlob fileBlob = FileBlob.commit(tempFile, true);

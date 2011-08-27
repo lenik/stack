@@ -2,7 +2,7 @@ package com.bee32.sem.misc;
 
 import java.util.Date;
 
-import com.bee32.icsf.login.SessionLoginInfo;
+import com.bee32.icsf.login.LoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.plover.criteria.hibernate.Between;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
@@ -18,7 +18,7 @@ public class EntityCriteria
     }
 
     public static CriteriaElement ownedByCurrentUser() {
-        IUserPrincipal currentUser = SessionLoginInfo.getUser();
+        IUserPrincipal currentUser = LoginInfo.getInstance().getUser();
         if (currentUser.getName().equals("admin"))
             return null;
         else

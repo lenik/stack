@@ -5,7 +5,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 
-import com.bee32.icsf.login.SessionLoginInfo;
+import com.bee32.icsf.login.LoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.icsf.principal.User;
@@ -38,7 +38,7 @@ public class VerifyHandler<E extends VerifiableEntity<K, C>, //
 
         final String _id = req.getParameter("id");
 
-        final IUserPrincipal __currentUser = SessionLoginInfo.getUser();
+        final IUserPrincipal __currentUser = LoginInfo.getInstance().getUser();
 
         SuccessOrFailMessage sof = new SuccessOrFailMessage("审核完成。") {
 

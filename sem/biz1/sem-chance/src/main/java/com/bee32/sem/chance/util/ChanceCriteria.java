@@ -2,7 +2,7 @@ package com.bee32.sem.chance.util;
 
 import java.util.Date;
 
-import com.bee32.icsf.login.SessionLoginInfo;
+import com.bee32.icsf.login.LoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
@@ -21,7 +21,7 @@ public class ChanceCriteria
     }
 
     public static CriteriaElement actedByCurrentUser() {
-        IUserPrincipal currentUser = SessionLoginInfo.getUser();
+        IUserPrincipal currentUser = LoginInfo.getInstance().getUser();
         return actedBy(currentUser);
     }
 

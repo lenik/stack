@@ -20,8 +20,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.zkoss.lang.Strings;
 
-import com.bee32.icsf.login.SessionLoginInfo;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
@@ -113,9 +111,6 @@ public class MaterialViewBean
 
         UserFile userFile = new UserFile();
         userFile.setPath(upFile.getFileName());
-
-        User currUser = (User) SessionLoginInfo.getUser();
-        userFile.setOwnerId(currUser.getId());
 
         try {
             FileBlob fileBlob = FileBlob.commit(tempFile, true);
