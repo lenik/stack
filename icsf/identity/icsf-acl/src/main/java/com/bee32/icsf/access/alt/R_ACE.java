@@ -14,6 +14,7 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
 import com.bee32.icsf.principal.Principal;
+import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
@@ -151,5 +152,8 @@ public class R_ACE
         out.print(" +");
         out.print(mode);
     }
+
+    public static R_ACE adminApAll = new R_ACE("ap:", User.admin, "Srwxlcd");
+    public static R_ACE adminEntityAll = new R_ACE("entity:", User.admin, "Srwxlcd");
 
 }
