@@ -18,8 +18,9 @@ public class ChanceQuotation
 
     private static final long serialVersionUID = 1L;
 
-    private static final int SUBJECT_LENGTH = 50;
-    private static final int RECOMMEND_PAYMENT_LENGTH = 150;
+    public static final int SUBJECT_LENGTH = 50;
+    public static final int RECOMMEND_LENGTH = 150;
+    public static final int PAYMENT_LENGTH = 150;
 
     Chance chance;
     String subject;
@@ -58,7 +59,7 @@ public class ChanceQuotation
     /**
      * 交付说明
      */
-    @Column(length = RECOMMEND_PAYMENT_LENGTH)
+    @Column(length = RECOMMEND_LENGTH)
     public String getRecommend() {
         return recommend;
     }
@@ -70,7 +71,7 @@ public class ChanceQuotation
     /**
      * 付款说明
      */
-    @Column(length = RECOMMEND_PAYMENT_LENGTH)
+    @Column(length = PAYMENT_LENGTH)
     public String getPayment() {
         return payment;
     }

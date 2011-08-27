@@ -18,7 +18,7 @@ public class PartyRecord
 
     private static final long serialVersionUID = 1L;
 
-    private static final int TEXT_LENGTH = 10000;
+    public static final int TEXT_LENGTH = 10000;
 
     PartyRecordCategory category = PartyRecordCategory.INFO;
     Party party;

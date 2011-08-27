@@ -28,6 +28,9 @@ public class UserFile
 
     private static final long serialVersionUID = 1L;
 
+    public static final int DIR_LENGTH = 100;
+    public static final int NAME_LENGTH = 50;
+
     FileBlob fileBlob;
 
     String dir = "";
@@ -47,7 +50,7 @@ public class UserFile
         this.fileBlob = fileBlob;
     }
 
-    @Column(length = 100, nullable = false)
+    @Column(length = DIR_LENGTH, nullable = false)
     public String getDir() {
         return dir;
     }
@@ -61,7 +64,7 @@ public class UserFile
     /**
      * 用户对上传的文件重命名。
      */
-    @Column(length = 50)
+    @Column(length = NAME_LENGTH)
     public String getName() {
         return name;
     }

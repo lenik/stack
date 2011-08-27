@@ -28,6 +28,9 @@ public class StockLocation
 
     private static final long serialVersionUID = 1L;
 
+    public static final int ADDRESS_LENGTH = 30;
+    public static final int CAPACITY_UNIT_HINT_LENGTH = 30;
+
     StockWarehouse warehouse;
     String address;
     double x;
@@ -59,7 +62,7 @@ public class StockLocation
     /**
      * 局部地址
      */
-    @Column(length = 30)
+    @Column(length = ADDRESS_LENGTH)
     public String getAddress() {
         return address;
     }
@@ -146,7 +149,7 @@ public class StockLocation
     /**
      * 容量单位提示（如“长度”、“容积”等）
      */
-    @Column(length = 30)
+    @Column(length = CAPACITY_UNIT_HINT_LENGTH)
     public String getCapacityUnitHint() {
         return capacityUnitHint;
     }

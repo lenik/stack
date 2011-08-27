@@ -31,7 +31,7 @@ public class MakeTaskItem
 
     private static final long serialVersionUID = 1L;
 
-    private static final int STATUS_LENGTH = 40;
+    public static final int STATUS_LENGTH = 40;
 
     MakeTask task;
     Part part;

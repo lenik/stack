@@ -1,5 +1,6 @@
 package com.bee32.plover.orm.builtin;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -14,6 +15,10 @@ public class PloverConf
 
     private static final long serialVersionUID = 1L;
 
+    public static final int ID_LENGTH = 40;
+    public static final int VALUE_LENGTH = 200;
+    public static final int DESCRIPTION_LENGTH = 200;
+
     private String id;
     private String value;
     private String description;
@@ -27,6 +32,7 @@ public class PloverConf
     }
 
     @Id
+    @Column(length = ID_LENGTH)
     @Override
     public String getId() {
         return id;
@@ -37,6 +43,7 @@ public class PloverConf
         this.id = id;
     }
 
+    @Column(length = VALUE_LENGTH)
     public String getValue() {
         return value;
     }
@@ -45,6 +52,7 @@ public class PloverConf
         this.value = value;
     }
 
+    @Column(length = DESCRIPTION_LENGTH)
     public String getDescription() {
         return description;
     }

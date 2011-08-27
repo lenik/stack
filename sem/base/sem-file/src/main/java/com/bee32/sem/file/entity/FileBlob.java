@@ -41,6 +41,9 @@ public class FileBlob
 
     static Logger logger = LoggerFactory.getLogger(FileBlob.class);
 
+    public static final int ENCODING_LENGTH = 16;
+    public static final int CONTENT_TYPE_LENGTH = 40;
+
     public static final int HEADER_SIZE = 4000;
 
     long length;
@@ -177,7 +180,7 @@ public class FileBlob
     /**
      * 文本编码。
      */
-    @Column(length = 16)
+    @Column(length = ENCODING_LENGTH)
     public String getEncoding() {
         return encoding;
     }
@@ -196,7 +199,7 @@ public class FileBlob
     /**
      * 原始内容类型。
      */
-    @Column(length = 40)
+    @Column(length = CONTENT_TYPE_LENGTH)
     public String getContentType() {
         return contentType;
     }

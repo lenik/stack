@@ -13,6 +13,9 @@ public abstract class DictEntity<K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
+    public static final int LABEL_LENGTH = 30;
+    public static final int DESCRIPTION_LENGTH = 200;
+
     protected String label;
     protected String description;
 
@@ -31,7 +34,7 @@ public abstract class DictEntity<K extends Serializable>
     /**
      * 别名：一般用本地语言表示，不能用于搜索。（如果要用显示名称搜索，建议通过全文索引）
      */
-    @Column(length = 30)
+    @Column(length = LABEL_LENGTH)
     public String getLabel() {
         return label;
     }
@@ -40,7 +43,7 @@ public abstract class DictEntity<K extends Serializable>
         this.label = label;
     }
 
-    @Column(length = 200)
+    @Column(length = DESCRIPTION_LENGTH)
     public String getDescription() {
         return description;
     }

@@ -29,6 +29,9 @@ public class MaterialAttribute
 
     private static final long serialVersionUID = 1L;
 
+    public static final int NAME_LENGTH = 30;
+    public static final int VALUE_LENGTH = 100;
+
     Material material;
     String name;
     String value;
@@ -57,7 +60,7 @@ public class MaterialAttribute
     }
 
     @NaturalId
-    @Column(length = 30, nullable = false)
+    @Column(length = NAME_LENGTH, nullable = false)
     public String getName() {
         return name;
     }
@@ -69,7 +72,7 @@ public class MaterialAttribute
     /**
      * 额外的属性必须不能是大段文字。大段文字应该存放到附件。
      */
-    @Column(length = 100)
+    @Column(length = VALUE_LENGTH)
     public String getValue() {
         return value;
     }

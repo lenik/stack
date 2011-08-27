@@ -5,8 +5,6 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.ox1.tree.TreeEntityAuto;
-
 public class TreeEntityTest
         extends Assert {
 
@@ -29,6 +27,7 @@ public class TreeEntityTest
 
     }
 
+    @SuppressWarnings("unused")
     @Test
     public void testGraphTree()
             throws IOException {

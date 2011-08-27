@@ -32,6 +32,9 @@ public class ChanceAction
     private static final int MOREINFO_LENGTH = 10000;
     private static final int SPENDING_LENGTH = 1000;
 
+    public static final int MORE_INFO_LENGTH = 10000;
+    public static final int SPENDING_LENGTH = 1000;
+
     boolean plan = false;
     List<Party> parties = new ArrayList<Party>();
     List<User> partners = new ArrayList<User>();
@@ -121,7 +124,7 @@ public class ChanceAction
         this.style = style;
     }
 
-    @Column(length = MOREINFO_LENGTH)
+    @Column(length = MORE_INFO_LENGTH)
     public String getMoreInfo() {
         return moreInfo;
     }

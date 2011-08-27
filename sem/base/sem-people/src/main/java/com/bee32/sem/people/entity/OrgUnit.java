@@ -17,6 +17,8 @@ public class OrgUnit
 
     private static final long serialVersionUID = 1L;
 
+    public static final int NAME_LENGTH = 30;
+
     Org org;
     String name;
     Contact contact;
@@ -38,7 +40,7 @@ public class OrgUnit
     }
 
     // @NaturalId
-    @Column(length = 30, nullable = false)
+    @Column(length = NAME_LENGTH, nullable = false)
     public String getName() {
         return name;
     }

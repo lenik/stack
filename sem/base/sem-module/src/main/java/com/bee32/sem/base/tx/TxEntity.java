@@ -25,7 +25,7 @@ public class TxEntity
 
     private static final long serialVersionUID = 1L;
 
-    private static final int SERIAL_LENGTH = 30;
+    public static final int SERIAL_LENGTH = 30;
 
     String serial;
 

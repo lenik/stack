@@ -23,13 +23,15 @@ public class UserFileTagname
 
     private static final long serialVersionUID = 1L;
 
+    public static final int TAG_LENGTH = 30;
+
     String tag;
 
     /**
      * 标签名字
      */
     @NaturalId
-    @Column(length = 30, nullable = false)
+    @Column(length = TAG_LENGTH, nullable = false)
     public String getTag() {
         return tag;
     }

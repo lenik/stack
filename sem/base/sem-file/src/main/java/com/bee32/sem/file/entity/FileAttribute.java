@@ -27,6 +27,9 @@ public class FileAttribute
 
     private static final long serialVersionUID = 1L;
 
+    public static final int KEY_LENGTH = 30;
+    public static final int STR_VAL_LENGTH = 120;
+
     FileBlob blob;
 
     String key;
@@ -45,7 +48,7 @@ public class FileAttribute
     }
 
     @NaturalId
-    @Column(length = 30, nullable = false)
+    @Column(length = KEY_LENGTH, nullable = false)
     public String getKey() {
         return key;
     }
@@ -72,7 +75,7 @@ public class FileAttribute
         this.floatVal = floatVal;
     }
 
-    @Column(length = 120)
+    @Column(length = STR_VAL_LENGTH)
     public String getStrVal() {
         return strVal;
     }

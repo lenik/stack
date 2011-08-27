@@ -16,8 +16,8 @@ public class MailFilter
 
     private static final long serialVersionUID = 1L;
 
-    private static final int EXPR_LENGTH = 1000;
-    private static final int TRANSFERTO_LENGTH = 50;
+    public static final int EXPR_LENGTH = 1000;
+    public static final int TRANSFER_TO_LENGTH = 50;
 
     boolean enabled;
     int order;
@@ -75,7 +75,7 @@ public class MailFilter
         this.target = target;
     }
 
-    @Column(length = TRANSFERTO_LENGTH)
+    @Column(length = TRANSFER_TO_LENGTH)
     public String getTransferTo() {
         return transferTo;
     }

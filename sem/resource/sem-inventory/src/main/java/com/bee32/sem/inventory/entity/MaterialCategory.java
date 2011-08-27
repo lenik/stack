@@ -22,6 +22,8 @@ public class MaterialCategory
 
     private static final long serialVersionUID = 1L;
 
+    public static final int NAME_LENGTH = 40;
+
     CodeGenerator codeGenerator = CodeGenerator.NONE;
     List<Material> materials = new ArrayList<Material>();
 
@@ -41,6 +43,7 @@ public class MaterialCategory
     /**
      * 分类名称
      */
+    @Column(length = NAME_LENGTH)
     public String getName() {
         return name;
     }

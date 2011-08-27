@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
@@ -18,10 +19,13 @@ public abstract class DigestEntity
 
     private static final long serialVersionUID = 1L;
 
+    public static final int ID_LENGTH = 40;
+
     String digestEncoded;
     Boolean digestValidated;
 
     @Id
+    @Column(length = ID_LENGTH)
     @Override
     public String getId() {
         try {
