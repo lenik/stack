@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.icsf.principal.IPrincipalVisitor;
-import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.ox1.principal.IPrincipal;
+import com.bee32.plover.ox1.principal.IPrincipalVisitor;
+import com.bee32.plover.ox1.principal.Principal;
 
 public class MultiPrincipal
         extends Principal

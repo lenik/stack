@@ -33,8 +33,8 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.ext.color.Green;
-import com.bee32.plover.orm.ext.xp.EntityExt;
+import com.bee32.plover.ox1.color.Green;
+import com.bee32.plover.ox1.xp.EntityExt;
 
 /**
  * 自然人或法人。

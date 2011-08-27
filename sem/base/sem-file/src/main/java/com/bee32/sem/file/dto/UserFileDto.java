@@ -12,7 +12,7 @@ import javax.free.ParseException;
 import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.color.UIEntityDto;
+import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;

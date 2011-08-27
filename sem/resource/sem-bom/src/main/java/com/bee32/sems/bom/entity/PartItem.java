@@ -17,8 +17,8 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
-import com.bee32.plover.orm.ext.config.DecimalConfig;
+import com.bee32.plover.ox1.color.UIEntityAuto;
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.inventory.entity.Material;
 
 @Entity

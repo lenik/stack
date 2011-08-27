@@ -5,6 +5,9 @@ import static com.bee32.icsf.login.UserPassword.digest;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.orm.util.IEntityMarshalContext;
 import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.plover.ox1.principal.Group;
+import com.bee32.plover.ox1.principal.Role;
+import com.bee32.plover.ox1.principal.User;
 
 /**
  * Sample principals:

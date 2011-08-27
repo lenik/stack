@@ -3,7 +3,7 @@ package com.bee32.sem.world.thing;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.dict.SimpleNameDictDto;
+import com.bee32.plover.ox1.dict.SimpleNameDictDto;
 
 public class UnitDto
         extends SimpleNameDictDto<Unit> {

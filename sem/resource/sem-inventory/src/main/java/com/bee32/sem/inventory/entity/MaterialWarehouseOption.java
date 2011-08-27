@@ -1,7 +1,7 @@
 package com.bee32.sem.inventory.entity;
 
-import static com.bee32.plover.orm.ext.config.DecimalConfig.QTY_ITEM_PRECISION;
-import static com.bee32.plover.orm.ext.config.DecimalConfig.QTY_ITEM_SCALE;
+import static com.bee32.plover.ox1.config.DecimalConfig.QTY_ITEM_PRECISION;
+import static com.bee32.plover.ox1.config.DecimalConfig.QTY_ITEM_SCALE;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -16,8 +16,8 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
-import com.bee32.plover.orm.ext.c.CEntityAuto;
-import com.bee32.plover.orm.ext.color.Blue;
+import com.bee32.plover.ox1.c.CEntityAuto;
+import com.bee32.plover.ox1.color.Blue;
 
 /**
  * 物料的仓库选项

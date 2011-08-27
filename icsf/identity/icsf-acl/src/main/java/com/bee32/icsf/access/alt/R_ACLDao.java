@@ -12,9 +12,9 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.ResourcePermission;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
-import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.orm.dao.GenericDao;
+import com.bee32.plover.ox1.principal.IPrincipal;
+import com.bee32.plover.ox1.principal.Principal;
 
 public class R_ACLDao
         extends GenericDao {

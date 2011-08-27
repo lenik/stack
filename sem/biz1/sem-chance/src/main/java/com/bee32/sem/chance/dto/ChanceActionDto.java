@@ -5,10 +5,10 @@ import java.util.List;
 import javax.free.ParseException;
 import javax.free.Strings;
 
-import com.bee32.icsf.principal.User;
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.color.MomentIntervalDto;
+import com.bee32.plover.ox1.color.MomentIntervalDto;
+import com.bee32.plover.ox1.principal.User;
+import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.util.DateToRange;
 import com.bee32.sem.people.dto.PartyDto;

@@ -3,7 +3,7 @@ package com.bee32.sem.world.thing;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import com.bee32.plover.orm.ext.dict.NameDict;
+import com.bee32.plover.ox1.dict.NameDict;
 
 /**
  * [字典] 单位

@@ -9,7 +9,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
+import com.bee32.plover.ox1.tree.TreeEntityAuto;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "dacl_seq", allocationSize = 1)

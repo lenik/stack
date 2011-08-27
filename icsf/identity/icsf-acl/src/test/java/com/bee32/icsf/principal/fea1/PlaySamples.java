@@ -14,14 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.IcsfIdentityUnit;
-import com.bee32.icsf.principal.Group;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.User;
-import com.bee32.icsf.principal.dao.AbstractPrincipalDao;
-import com.bee32.icsf.principal.dao.GroupDao;
-import com.bee32.icsf.principal.dao.RoleDao;
-import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.context.TestDataConfig;
 import com.bee32.plover.orm.dao.CommonDataManager;
@@ -30,6 +23,13 @@ import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.SamplesLoader;
+import com.bee32.plover.ox1.principal.AbstractPrincipalDao;
+import com.bee32.plover.ox1.principal.Group;
+import com.bee32.plover.ox1.principal.GroupDao;
+import com.bee32.plover.ox1.principal.Principal;
+import com.bee32.plover.ox1.principal.RoleDao;
+import com.bee32.plover.ox1.principal.User;
+import com.bee32.plover.ox1.principal.UserDao;
 import com.bee32.plover.test.FeaturePlayer;
 
 @Using(IcsfIdentityUnit.class)

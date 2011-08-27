@@ -5,8 +5,8 @@ import java.util.Date;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.process.verify.IAllowedByContext;
 
 public abstract class AllowedBySupportDto<E extends AllowedBySupport<K, ? extends IAllowedByContext>, K extends Number>

@@ -20,10 +20,10 @@ import com.bee32.icsf.access.alt.R_Authority;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
 import com.bee32.icsf.login.LoginInfo;
-import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.icsf.principal.User;
-import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.plover.javascript.JavascriptChunk;
+import com.bee32.plover.ox1.principal.IUserPrincipal;
+import com.bee32.plover.ox1.principal.User;
+import com.bee32.plover.ox1.principal.UserDao;
 import com.bee32.plover.rtx.location.ILocationConstants;
 import com.bee32.plover.servlet.util.ThreadServletContext;
 

@@ -2,7 +2,7 @@ package com.bee32.sem.process.verify;
 
 import java.util.Set;
 
-import com.bee32.icsf.principal.Principal;
+import com.bee32.plover.ox1.principal.Principal;
 
 /**
  * 审核策略用于检验业务实体是否被审核，但不对业务的具体审核行为作出规定。

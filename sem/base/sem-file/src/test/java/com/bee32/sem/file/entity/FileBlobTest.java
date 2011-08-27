@@ -9,7 +9,7 @@ import javax.free.TempFile;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.orm.ext.c.CEntityAccessor;
+import com.bee32.plover.ox1.c.CEntityAccessor;
 
 public class FileBlobTest
         extends Assert {

@@ -9,8 +9,8 @@ import javax.persistence.SequenceGenerator;
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.orm.ext.color.Green;
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.plover.ox1.color.Green;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 @Entity
 @Green

@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.orm.cache.Redundant;
-import com.bee32.plover.orm.ext.digest.MD5Entity;
+import com.bee32.plover.ox1.digest.MD5Entity;
 import com.bee32.sem.file.io.LocalStorage;
 import com.bee32.sem.file.util.ImageBlob;
 

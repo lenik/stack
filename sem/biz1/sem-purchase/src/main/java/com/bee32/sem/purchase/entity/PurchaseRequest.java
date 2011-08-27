@@ -9,7 +9,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.ext.color.MomentInterval;
+import com.bee32.plover.ox1.color.MomentInterval;
 
 /**
  * 采购请求/采购申请/采购计划

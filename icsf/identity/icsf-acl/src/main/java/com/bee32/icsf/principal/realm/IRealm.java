@@ -2,12 +2,12 @@ package com.bee32.icsf.principal.realm;
 
 import java.util.Set;
 
-import com.bee32.icsf.principal.IGroupPrincipal;
-import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.icsf.principal.IRolePrincipal;
-import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.plover.arch.IComponent;
 import com.bee32.plover.orm.entity.IEntity;
+import com.bee32.plover.ox1.principal.IGroupPrincipal;
+import com.bee32.plover.ox1.principal.IPrincipal;
+import com.bee32.plover.ox1.principal.IRolePrincipal;
+import com.bee32.plover.ox1.principal.IUserPrincipal;
 
 public interface IRealm
         extends IComponent, IEntity<Integer> {

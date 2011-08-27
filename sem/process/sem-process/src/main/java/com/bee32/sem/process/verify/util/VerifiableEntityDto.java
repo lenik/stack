@@ -2,7 +2,7 @@ package com.bee32.sem.process.verify.util;
 
 import java.util.Date;
 
-import com.bee32.plover.orm.ext.c.CEntityDto;
+import com.bee32.plover.ox1.c.CEntityDto;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.dto.TaskDto;
 import com.bee32.sem.process.verify.IVerifyContext;

@@ -1,11 +1,10 @@
 package com.bee32.icsf.principal;
 
 import com.bee32.icsf.IcsfOids;
-import com.bee32.icsf.principal.dao.GroupDao;
-import com.bee32.icsf.principal.dao.RealmDao;
-import com.bee32.icsf.principal.dao.RoleDao;
-import com.bee32.icsf.principal.dao.UserDao;
 import com.bee32.plover.orm.util.ERModule;
+import com.bee32.plover.ox1.principal.GroupDao;
+import com.bee32.plover.ox1.principal.RoleDao;
+import com.bee32.plover.ox1.principal.UserDao;
 import com.bee32.plover.pub.oid.Oid;
 
 @Oid({ 3, 7, IcsfOids.Principal })
@@ -20,7 +19,7 @@ public class IcsfPrincipalModule
         export(UserDao.class, "user");
         export(GroupDao.class, "group");
         export(RoleDao.class, "role");
-        export(RealmDao.class, "realm");
+        // export(RealmDao.class, "realm");
     }
 
 }

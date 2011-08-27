@@ -11,8 +11,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
 
-import com.bee32.plover.orm.ext.config.BatchConfig;
-import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
+import com.bee32.plover.ox1.config.BatchConfig;
+import com.bee32.plover.ox1.tree.TreeEntityAuto;
 
 @Entity
 @BatchSize(size = BatchConfig.TREE)

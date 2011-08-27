@@ -13,11 +13,11 @@ import org.hibernate.annotations.Index;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
-import com.bee32.plover.orm.ext.c.CEntityAuto;
+import com.bee32.plover.ox1.c.CEntityAuto;
+import com.bee32.plover.ox1.principal.Principal;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "dace_seq", allocationSize = 1)

@@ -10,7 +10,7 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.dict.NameDictDto;
+import com.bee32.plover.ox1.dict.NameDictDto;
 
 public class UnitConvDto
         extends NameDictDto<UnitConv> {

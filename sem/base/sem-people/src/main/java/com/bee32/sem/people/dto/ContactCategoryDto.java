@@ -1,6 +1,6 @@
 package com.bee32.sem.people.dto;
 
-import com.bee32.plover.orm.ext.dict.SimpleNameDictDto;
+import com.bee32.plover.ox1.dict.SimpleNameDictDto;
 import com.bee32.sem.people.entity.ContactCategory;
 
 public class ContactCategoryDto

@@ -3,7 +3,7 @@ package com.bee32.sem.file.dto;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.digest.DigestEntityDto;
+import com.bee32.plover.ox1.digest.DigestEntityDto;
 import com.bee32.sem.file.entity.FileBlob;
 import com.bee32.sem.file.util.ImageBlob;
 

@@ -11,7 +11,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.ext.color.Pink;
+import com.bee32.plover.ox1.color.Pink;
 import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.mail.MailFlags;
 

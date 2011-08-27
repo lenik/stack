@@ -15,9 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.ext.color.MomentInterval;
-import com.bee32.plover.orm.ext.color.Pink;
+import com.bee32.plover.ox1.color.MomentInterval;
+import com.bee32.plover.ox1.color.Pink;
+import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.calendar.ICalendarEvent;
 import com.bee32.sem.people.entity.Party;
 

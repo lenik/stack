@@ -16,8 +16,8 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.ext.color.MomentInterval;
-import com.bee32.plover.orm.ext.config.DecimalConfig;
+import com.bee32.plover.ox1.color.MomentInterval;
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sems.bom.entity.Part;
 
 /**

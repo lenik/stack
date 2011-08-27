@@ -7,7 +7,7 @@ import java.util.Date;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.color.UIEntityDto;
+import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 

@@ -13,14 +13,14 @@ import org.hibernate.annotations.BatchSize;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
-import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.orm.ext.c.CEntityAuto;
-import com.bee32.plover.orm.ext.color.Blue;
+import com.bee32.plover.ox1.c.CEntityAuto;
+import com.bee32.plover.ox1.color.Blue;
+import com.bee32.plover.ox1.principal.Principal;
+import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 

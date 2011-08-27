@@ -8,7 +8,7 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.color.MomentIntervalDto;
+import com.bee32.plover.ox1.color.MomentIntervalDto;
 
 public abstract class TxEntityDto<E extends TxEntity>
         extends MomentIntervalDto<E> {

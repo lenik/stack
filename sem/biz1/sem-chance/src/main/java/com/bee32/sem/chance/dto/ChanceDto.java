@@ -6,7 +6,7 @@ import javax.free.ParseException;
 import javax.free.Strings;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.color.UIEntityDto;
+import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.chance.util.DateToRange;

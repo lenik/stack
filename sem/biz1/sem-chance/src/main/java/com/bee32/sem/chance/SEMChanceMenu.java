@@ -1,7 +1,7 @@
 package com.bee32.sem.chance;
 
-import com.bee32.plover.orm.ext.dict.CommonDictController;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
+import com.bee32.plover.ox1.dict.CommonDictController;
 import com.bee32.plover.rtx.location.Location;
 import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceCategory;

@@ -4,7 +4,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.dict.DictEntityDto;
+import com.bee32.plover.ox1.dict.DictEntityDto;
 import com.bee32.sem.event.entity.EventPriority;
 
 public class EventPriorityDto

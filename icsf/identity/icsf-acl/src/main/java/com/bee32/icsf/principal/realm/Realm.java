@@ -16,16 +16,16 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.icsf.principal.Group;
-import com.bee32.icsf.principal.IGroupPrincipal;
-import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.icsf.principal.IRolePrincipal;
-import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.Role;
-import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.ext.color.Green;
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.plover.ox1.color.Green;
+import com.bee32.plover.ox1.color.UIEntityAuto;
+import com.bee32.plover.ox1.principal.Group;
+import com.bee32.plover.ox1.principal.IGroupPrincipal;
+import com.bee32.plover.ox1.principal.IPrincipal;
+import com.bee32.plover.ox1.principal.IRolePrincipal;
+import com.bee32.plover.ox1.principal.IUserPrincipal;
+import com.bee32.plover.ox1.principal.Principal;
+import com.bee32.plover.ox1.principal.Role;
+import com.bee32.plover.ox1.principal.User;
 
 @Entity
 @Green

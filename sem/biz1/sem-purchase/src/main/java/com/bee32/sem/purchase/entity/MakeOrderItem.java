@@ -13,8 +13,8 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.orm.ext.c.CEntityAuto;
-import com.bee32.plover.orm.ext.config.DecimalConfig;
+import com.bee32.plover.ox1.c.CEntityAuto;
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sems.bom.entity.Part;
 
 /**

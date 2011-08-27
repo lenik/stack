@@ -4,8 +4,8 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.xp.EntityExtDto;
-import com.bee32.plover.orm.ext.xp.XPool;
+import com.bee32.plover.ox1.xp.EntityExtDto;
+import com.bee32.plover.ox1.xp.XPool;
 
 public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         extends EntityExtDto<E, Long, X> {

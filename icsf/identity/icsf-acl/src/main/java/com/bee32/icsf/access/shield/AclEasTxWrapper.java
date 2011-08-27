@@ -24,10 +24,10 @@ import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
 import com.bee32.icsf.login.SessionLoginInfo;
-import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityResource;
 import com.bee32.plover.orm.entity.EntityResourceNS;
+import com.bee32.plover.ox1.principal.IUserPrincipal;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 @Service

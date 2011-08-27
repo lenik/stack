@@ -6,7 +6,7 @@ import javax.persistence.InheritanceType;
 
 import org.hibernate.annotations.BatchSize;
 
-import com.bee32.plover.orm.ext.dict.ShortNameDict;
+import com.bee32.plover.ox1.dict.ShortNameDict;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

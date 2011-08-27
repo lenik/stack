@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.MapKeyManyToMany;
 
-import com.bee32.plover.orm.ext.dict.NameDict;
+import com.bee32.plover.ox1.dict.NameDict;
 
 /**
  * 单位换算表

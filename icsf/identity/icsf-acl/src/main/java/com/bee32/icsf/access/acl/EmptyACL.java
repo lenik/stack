@@ -8,7 +8,7 @@ import java.util.Set;
 import javax.free.ReadOnlyException;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.plover.ox1.principal.IPrincipal;
 
 public class EmptyACL
         implements IACL {

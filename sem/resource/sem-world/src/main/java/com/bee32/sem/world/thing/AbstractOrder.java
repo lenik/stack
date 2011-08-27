@@ -14,7 +14,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.cache.Redundant;
-import com.bee32.plover.orm.ext.config.DecimalConfig;
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.misc.i18n.ICurrencyAware;
 import com.bee32.sem.world.monetary.FxrQueryException;

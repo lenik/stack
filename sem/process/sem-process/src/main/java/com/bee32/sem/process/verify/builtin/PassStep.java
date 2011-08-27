@@ -5,9 +5,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.icsf.principal.Principal;
-import com.bee32.plover.orm.ext.c.CEntityAuto;
-import com.bee32.plover.orm.ext.color.Blue;
+import com.bee32.plover.ox1.c.CEntityAuto;
+import com.bee32.plover.ox1.color.Blue;
+import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 

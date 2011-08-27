@@ -6,10 +6,10 @@ import java.util.List;
 
 import javax.free.ParseException;
 
-import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.xp.EntityExtDto;
+import com.bee32.plover.ox1.principal.UserDto;
+import com.bee32.plover.ox1.xp.EntityExtDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyXP;
 

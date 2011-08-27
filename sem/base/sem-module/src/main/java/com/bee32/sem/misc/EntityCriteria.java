@@ -3,10 +3,10 @@ package com.bee32.sem.misc;
 import java.util.Date;
 
 import com.bee32.icsf.login.LoginInfo;
-import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.plover.criteria.hibernate.Between;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
+import com.bee32.plover.ox1.principal.IUserPrincipal;
 
 public class EntityCriteria
         extends CriteriaSpec {

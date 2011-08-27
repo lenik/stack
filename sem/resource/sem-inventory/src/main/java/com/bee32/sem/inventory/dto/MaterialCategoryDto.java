@@ -5,7 +5,7 @@ import java.util.List;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.tree.TreeEntityDto;
+import com.bee32.plover.ox1.tree.TreeEntityDto;
 import com.bee32.sem.inventory.entity.CodeGenerator;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 

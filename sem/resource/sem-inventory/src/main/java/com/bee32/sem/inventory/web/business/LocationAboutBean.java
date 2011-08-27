@@ -8,9 +8,9 @@ import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.sem.inventory.dto.MaterialPreferredLocationDto;
 import com.bee32.sem.inventory.dto.StockLocationDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;

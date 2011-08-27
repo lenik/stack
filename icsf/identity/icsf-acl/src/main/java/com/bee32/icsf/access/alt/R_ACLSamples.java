@@ -1,9 +1,9 @@
 package com.bee32.icsf.access.alt;
 
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.icsf.principal.Role;
 import com.bee32.plover.orm.util.ImportSamples;
 import com.bee32.plover.orm.util.SampleContribution;
+import com.bee32.plover.ox1.principal.Role;
 
 @ImportSamples(IcsfPrincipalSamples.class)
 public class R_ACLSamples

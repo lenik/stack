@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.plover.orm.ext.c.CEntityAuto;
+import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Task;
 import com.bee32.sem.process.verify.IVerifiable;

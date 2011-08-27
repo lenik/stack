@@ -6,11 +6,11 @@ import org.mortbay.resource.Resource;
 import org.springframework.context.ApplicationContext;
 
 import com.bee32.icsf.login.LoginInfo;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.util.SamplesLoaderActivator;
 import com.bee32.plover.orm.util.WiredDaoTestCase;
+import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.restful.RESTfulConfig;
 import com.bee32.plover.zk.test.ZkTestCase;
 

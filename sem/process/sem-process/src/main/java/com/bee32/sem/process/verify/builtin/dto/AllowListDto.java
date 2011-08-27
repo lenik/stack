@@ -6,9 +6,9 @@ import java.util.List;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
-import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHelper;
+import com.bee32.plover.ox1.principal.PrincipalDto;
 import com.bee32.sem.process.verify.builtin.AllowListPolicy;
 
 public class AllowListDto

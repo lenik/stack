@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.orm.ext.color.Blue;
-import com.bee32.plover.orm.ext.xp.EntityExt;
+import com.bee32.plover.ox1.color.Blue;
+import com.bee32.plover.ox1.xp.EntityExt;
 
 /**
  * 联系人。为“客户联系人”和“供应商联系人”的基类， 因为有共同的地方，所以提取本类

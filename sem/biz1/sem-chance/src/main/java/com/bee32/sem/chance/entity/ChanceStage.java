@@ -6,8 +6,8 @@ import java.util.TreeMap;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.ext.color.Blue;
-import com.bee32.plover.orm.ext.dict.ShortNameDict;
+import com.bee32.plover.ox1.color.Blue;
+import com.bee32.plover.ox1.dict.ShortNameDict;
 
 /**
  * 机会阶段推进

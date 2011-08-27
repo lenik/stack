@@ -7,7 +7,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.config.DecimalConfig;
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.misc.i18n.ICurrencyAware;
 import com.bee32.sem.world.monetary.FxrQueryException;

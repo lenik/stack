@@ -4,7 +4,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.color.UIEntityDto;
+import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.mail.entity.MailFilter;
 
 public class MailFilterDto

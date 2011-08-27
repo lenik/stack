@@ -10,8 +10,8 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.ResourcePermission;
 import com.bee32.icsf.access.annotation.AccessCheck;
 import com.bee32.icsf.access.resource.Resource;
-import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.plover.arch.DataService;
+import com.bee32.plover.ox1.principal.IPrincipal;
 
 public class R_ACLService
         extends DataService {

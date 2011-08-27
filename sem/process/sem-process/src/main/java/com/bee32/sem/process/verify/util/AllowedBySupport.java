@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.bee32.icsf.principal.User;
+import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.process.verify.IAllowedByContext;
 
 /**

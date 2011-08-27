@@ -12,7 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import com.bee32.icsf.login.LoginInfo;
-import com.bee32.icsf.principal.IUserPrincipal;
+import com.bee32.plover.ox1.principal.IUserPrincipal;
 
 /**
  * See also:

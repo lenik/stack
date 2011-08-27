@@ -1,7 +1,7 @@
 package com.bee32.sem.world.monetary;
 
-import static com.bee32.plover.orm.ext.config.DecimalConfig.MONEY_ITEM_PRECISION;
-import static com.bee32.plover.orm.ext.config.DecimalConfig.MONEY_ITEM_SCALE;
+import static com.bee32.plover.ox1.config.DecimalConfig.MONEY_ITEM_PRECISION;
+import static com.bee32.plover.ox1.config.DecimalConfig.MONEY_ITEM_SCALE;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -13,7 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.ext.config.DecimalConfig;
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.misc.i18n.CurrencyConfig;
 
 /**

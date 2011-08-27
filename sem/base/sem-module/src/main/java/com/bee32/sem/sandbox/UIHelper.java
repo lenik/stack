@@ -12,11 +12,11 @@ import org.primefaces.model.SortOrder;
 import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Limit;
-import com.bee32.plover.orm.ext.c.CEntity;
-import com.bee32.plover.orm.ext.c.CEntityDto;
-import com.bee32.plover.orm.ext.dict.NameDictDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.FacesContextSupport2;
+import com.bee32.plover.ox1.c.CEntity;
+import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.plover.ox1.dict.NameDictDto;
 
 public class UIHelper
         extends FacesContextSupport2 {

@@ -3,10 +3,10 @@ package com.bee32.sem.chance.util;
 import java.util.Date;
 
 import com.bee32.icsf.login.LoginInfo;
-import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.LeftHand;
+import com.bee32.plover.ox1.principal.IUserPrincipal;
 import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.chance.entity.ChanceAction;
 

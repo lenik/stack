@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.icsf.principal.Group;
+import com.bee32.plover.ox1.principal.Group;
 
 @Entity
 @DiscriminatorValue("ORG")

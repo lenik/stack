@@ -6,8 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.orm.ext.c.CEntityAuto;
-import com.bee32.plover.orm.ext.color.Yellow;
+import com.bee32.plover.ox1.c.CEntityAuto;
+import com.bee32.plover.ox1.color.Yellow;
 
 /**
  * 某人在某个公司中的具体职务

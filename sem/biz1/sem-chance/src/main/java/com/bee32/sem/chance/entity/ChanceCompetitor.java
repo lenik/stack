@@ -10,9 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.bee32.plover.orm.cache.Redundant;
-import com.bee32.plover.orm.ext.color.Green;
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
-import com.bee32.plover.orm.ext.config.DecimalConfig;
+import com.bee32.plover.ox1.color.Green;
+import com.bee32.plover.ox1.color.UIEntityAuto;
+import com.bee32.plover.ox1.config.DecimalConfig;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;

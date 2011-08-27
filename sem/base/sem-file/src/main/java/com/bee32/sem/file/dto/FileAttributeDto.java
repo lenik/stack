@@ -6,7 +6,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.c.CEntityDto;
+import com.bee32.plover.ox1.c.CEntityDto;
 import com.bee32.sem.file.entity.FileAttribute;
 
 public class FileAttributeDto

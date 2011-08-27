@@ -16,8 +16,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.ext.c.CEntityAuto;
-import com.bee32.plover.orm.ext.color.Blue;
+import com.bee32.plover.ox1.c.CEntityAuto;
+import com.bee32.plover.ox1.color.Blue;
 
 /**
  * 外汇的相关术语。

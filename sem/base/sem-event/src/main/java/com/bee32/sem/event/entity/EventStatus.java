@@ -3,7 +3,7 @@ package com.bee32.sem.event.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import com.bee32.plover.orm.ext.dict.NumberDict;
+import com.bee32.plover.ox1.dict.NumberDict;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.GenericState;
 

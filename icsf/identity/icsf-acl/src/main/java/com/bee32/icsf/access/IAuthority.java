@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import com.bee32.icsf.access.acl.IACL;
 import com.bee32.icsf.access.resource.Resource;
-import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.plover.arch.IComponent;
+import com.bee32.plover.ox1.principal.IPrincipal;
 
 public interface IAuthority
         extends IComponent {

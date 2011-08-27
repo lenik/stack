@@ -6,15 +6,15 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.springframework.context.annotation.Scope;
 
-import com.bee32.icsf.principal.Group;
-import com.bee32.icsf.principal.Role;
-import com.bee32.icsf.principal.User;
-import com.bee32.icsf.principal.dto.GroupDto;
-import com.bee32.icsf.principal.dto.RoleDto;
-import com.bee32.icsf.principal.dto.UserDto;
-import com.bee32.plover.orm.ext.tree.TreeCriteria;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.ox1.principal.Group;
+import com.bee32.plover.ox1.principal.GroupDto;
+import com.bee32.plover.ox1.principal.Role;
+import com.bee32.plover.ox1.principal.RoleDto;
+import com.bee32.plover.ox1.principal.User;
+import com.bee32.plover.ox1.principal.UserDto;
+import com.bee32.plover.ox1.tree.TreeCriteria;
 
 @Scope("view")
 public class PrincipalAdminBean

@@ -2,7 +2,7 @@ package com.bee32.icsf.login;
 
 import javax.persistence.Entity;
 
-import com.bee32.plover.orm.ext.dict.LongNameDict;
+import com.bee32.plover.ox1.dict.LongNameDict;
 
 @Entity
 public class PrivateQuestion

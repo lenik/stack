@@ -2,7 +2,7 @@ package com.bee32.icsf.login;
 
 import javax.servlet.http.HttpSession;
 
-import com.bee32.icsf.principal.User;
+import com.bee32.plover.ox1.principal.User;
 
 public abstract class SessionLoginInfo {
 

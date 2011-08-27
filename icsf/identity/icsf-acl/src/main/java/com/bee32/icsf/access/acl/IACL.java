@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.principal.IPrincipal;
+import com.bee32.plover.ox1.principal.IPrincipal;
 
 public interface IACL {
 

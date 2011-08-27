@@ -21,8 +21,8 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.cache.Redundant;
-import com.bee32.plover.orm.ext.color.Green;
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.plover.ox1.color.Green;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
  * 销售机会

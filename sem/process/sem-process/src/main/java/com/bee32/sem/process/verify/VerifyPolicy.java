@@ -9,7 +9,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

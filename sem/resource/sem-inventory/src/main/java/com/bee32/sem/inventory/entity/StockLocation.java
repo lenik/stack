@@ -1,7 +1,7 @@
 package com.bee32.sem.inventory.entity;
 
-import static com.bee32.plover.orm.ext.config.DecimalConfig.QTY_ITEM_PRECISION;
-import static com.bee32.plover.orm.ext.config.DecimalConfig.QTY_ITEM_SCALE;
+import static com.bee32.plover.ox1.config.DecimalConfig.QTY_ITEM_PRECISION;
+import static com.bee32.plover.ox1.config.DecimalConfig.QTY_ITEM_SCALE;
 
 import java.math.BigDecimal;
 
@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.orm.ext.tree.TreeEntityAuto;
+import com.bee32.plover.ox1.tree.TreeEntityAuto;
 import com.bee32.sem.world.thing.Unit;
 
 /**

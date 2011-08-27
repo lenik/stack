@@ -12,8 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
-import com.bee32.plover.orm.ext.color.Green;
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.plover.ox1.color.Green;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
  * 用户文件。

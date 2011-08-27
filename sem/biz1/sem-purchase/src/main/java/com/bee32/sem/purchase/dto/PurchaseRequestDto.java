@@ -6,7 +6,7 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.color.MomentIntervalDto;
+import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 
 public class PurchaseRequestDto

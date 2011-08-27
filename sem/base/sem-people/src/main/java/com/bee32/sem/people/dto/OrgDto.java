@@ -5,8 +5,8 @@ import java.util.Set;
 
 import javax.free.ParseException;
 
-import com.bee32.icsf.principal.dto.GroupDto;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.ox1.principal.GroupDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.PersonRole;
 

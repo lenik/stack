@@ -3,8 +3,8 @@ package com.bee32.sem.event.entity;
 import java.util.Date;
 import java.util.Set;
 
-import com.bee32.icsf.principal.IPrincipal;
-import com.bee32.icsf.principal.IUserPrincipal;
+import com.bee32.plover.ox1.principal.IPrincipal;
+import com.bee32.plover.ox1.principal.IUserPrincipal;
 import com.bee32.sem.event.EventFlags;
 
 /**

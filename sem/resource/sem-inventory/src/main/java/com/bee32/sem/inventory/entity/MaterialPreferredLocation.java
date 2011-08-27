@@ -12,8 +12,8 @@ import org.hibernate.annotations.NaturalId;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
-import com.bee32.plover.orm.ext.color.Blue;
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.plover.ox1.color.Blue;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 @Entity
 @Blue

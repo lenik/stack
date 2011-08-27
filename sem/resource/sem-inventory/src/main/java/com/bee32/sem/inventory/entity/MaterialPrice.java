@@ -14,8 +14,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.ext.color.Blue;
-import com.bee32.plover.orm.ext.color.UIEntityAuto;
+import com.bee32.plover.ox1.color.Blue;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.sem.misc.i18n.CurrencyConfig;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;

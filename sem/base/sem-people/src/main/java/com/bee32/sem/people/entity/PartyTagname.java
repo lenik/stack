@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
-import com.bee32.plover.orm.ext.dict.NameDict;
+import com.bee32.plover.ox1.dict.NameDict;
 
 @Entity
 public class PartyTagname

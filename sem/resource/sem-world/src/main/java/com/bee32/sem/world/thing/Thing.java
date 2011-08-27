@@ -5,9 +5,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
-import com.bee32.plover.orm.ext.color.Green;
-import com.bee32.plover.orm.ext.xp.EntityExt;
-import com.bee32.plover.orm.ext.xp.XPool;
+import com.bee32.plover.ox1.color.Green;
+import com.bee32.plover.ox1.xp.EntityExt;
+import com.bee32.plover.ox1.xp.XPool;
 
 @MappedSuperclass
 @Green

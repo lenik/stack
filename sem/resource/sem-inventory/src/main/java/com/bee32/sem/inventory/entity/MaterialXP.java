@@ -3,7 +3,7 @@ package com.bee32.sem.inventory.entity;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 
-import com.bee32.plover.orm.ext.xp.XPool30;
+import com.bee32.plover.ox1.xp.XPool30;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "materialxp_seq", allocationSize = 1)

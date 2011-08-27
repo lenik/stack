@@ -1,12 +1,12 @@
 package com.bee32.icsf.access.dacl;
 
 import com.bee32.icsf.access.Permission;
-import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.util.PrincipalCriteria;
 import com.bee32.plover.criteria.hibernate.Conjunction;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Disjunction;
+import com.bee32.plover.ox1.principal.Principal;
+import com.bee32.plover.ox1.principal.PrincipalCriteria;
 
 public class DACLCriteria
         extends CriteriaSpec {

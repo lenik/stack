@@ -6,12 +6,12 @@ import javax.inject.Inject;
 import javax.servlet.ServletException;
 
 import com.bee32.icsf.login.LoginInfo;
-import com.bee32.icsf.principal.IUserPrincipal;
-import com.bee32.icsf.principal.Principal;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.ajax.SuccessOrFailMessage;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHandler;
+import com.bee32.plover.ox1.principal.IUserPrincipal;
+import com.bee32.plover.ox1.principal.Principal;
+import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.servlet.mvc.ActionRequest;
 import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.sem.process.verify.IVerifyContext;
