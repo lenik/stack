@@ -1,12 +1,10 @@
-package com.bee32.plover.ox1.userCategory;
+package com.bee32.plover.ox1.userMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
@@ -15,13 +13,16 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.ox1.dict.NameDict;
 
+/**
+ * General purpose category.
+ */
 @Entity
 public class UserCategory
         extends NameDict {
 
     private static final long serialVersionUID = 1L;
 
-    UserCategoryTypeEnum type = UserCategoryTypeEnum.TEXT;
+    UserDataType type = UserDataType.TEXT;
     int precision;
     int scale;
 
@@ -31,24 +32,32 @@ public class UserCategory
         super();
     }
 
-    public UserCategory(UserCategoryTypeEnum type, String name, String label) {
+    public UserCategory(UserDataType type, String name, String label) {
         super(name, label);
         setType(type);
     }
 
-    public UserCategory(UserCategoryTypeEnum type, String name, String label, String description) {
+    public UserCategory(UserDataType type, String name, String label, String description) {
         super(name, label, description);
         setType(type);
     }
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    public UserCategoryTypeEnum getType() {
+    @Transient
+    public UserDataType getType() {
         return type;
     }
 
-    public void setType(UserCategoryTypeEnum type) {
+    public void setType(UserDataType type) {
         this.type = type;
+    }
+
+    @Column(nullable = false)
+    char get_type() {
+        return type.getValue();
+    }
+
+    void set_type(char _type) {
+        this.type = UserDataType.valueOf(_type);
     }
 
     @Column(nullable = false)

@@ -1,4 +1,4 @@
-package com.bee32.plover.ox1.userCategory;
+package com.bee32.plover.ox1.userMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class UserCategoryDto
 
     public static final int ITEMS = 1;
 
-    UserCategoryTypeEnum type;
+    UserDataType type;
     int precision;
     int scale;
 
@@ -49,8 +49,8 @@ public class UserCategoryDto
     protected void _parse(TextMap map)
             throws ParseException {
 
-        String _type = map.getString("type");
-        type = UserCategoryTypeEnum.valueOf(_type);
+        char _type = map.getChar("type");
+        type = UserDataType.valueOf(_type);
 
         precision = map.getInt("precision");
         scale = map.getInt("scale");
@@ -66,11 +66,11 @@ public class UserCategoryDto
         }
     }
 
-    public UserCategoryTypeEnum getType() {
+    public UserDataType getType() {
         return type;
     }
 
-    public void setType(UserCategoryTypeEnum type) {
+    public void setType(UserDataType type) {
         this.type = type;
     }
 

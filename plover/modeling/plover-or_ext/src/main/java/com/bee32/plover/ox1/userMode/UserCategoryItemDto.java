@@ -1,4 +1,4 @@
-package com.bee32.plover.ox1.userCategory;
+package com.bee32.plover.ox1.userMode;
 
 import javax.free.ParseException;
 
@@ -13,14 +13,14 @@ public class UserCategoryItemDto
     UserCategoryDto category;
 
     Long intVal;
-    Double floatVal;
+    Double doubleVal;
     String textVal;
 
     @Override
     protected void _marshal(UserCategoryItem source) {
         category = mref(UserCategoryDto.class, source.getCategory());
         intVal = source.intVal;
-        floatVal = source.floatVal;
+        doubleVal = source.doubleVal;
         textVal = source.textVal;
     }
 
@@ -28,7 +28,7 @@ public class UserCategoryItemDto
     protected void _unmarshalTo(UserCategoryItem target) {
         merge(target, "category", category);
         target.intVal = intVal;
-        target.floatVal = floatVal;
+        target.doubleVal = doubleVal;
         target.textVal = textVal;
     }
 
@@ -38,23 +38,23 @@ public class UserCategoryItemDto
         String categoryId = map.getString("category");
         category = new UserCategoryDto().ref(categoryId);
 
-        String _categoryType = map.getString("category.type");
-        UserCategoryTypeEnum categoryType = UserCategoryTypeEnum.valueOf(_categoryType);
-        switch (categoryType) {
-        case INTEGER:
+        char _categoryType = map.getChar("category.type");
+
+        switch (_categoryType) {
+        case UserDataType.T_INT:
             intVal = map.getLong("value");
             break;
 
-        case DECIMAL:
-            floatVal = map.getDouble("value");
+        case UserDataType.T_DOUBLE:
+            doubleVal = map.getDouble("value");
             break;
 
-        case TEXT:
+        case UserDataType.T_TEXT:
             textVal = map.getString("value");
             break;
 
         default:
-            throw new ParseException("Bad category type: " + categoryType);
+            throw new ParseException("Bad category type: " + _categoryType);
         }
     }
 

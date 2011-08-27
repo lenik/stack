@@ -1,4 +1,4 @@
-package com.bee32.plover.ox1.userCategory;
+package com.bee32.plover.ox1.userMode;
 
 import javax.free.IllegalUsageException;
 import javax.free.UnexpectedException;
@@ -23,7 +23,7 @@ public class UserCategoryItem
     UserCategory category;
 
     Long intVal;
-    Double floatVal;
+    Double doubleVal;
     String textVal;
 
     String description;
@@ -47,11 +47,11 @@ public class UserCategoryItem
     }
 
     public Double getFloatVal() {
-        return floatVal;
+        return doubleVal;
     }
 
-    public void setFloatVal(Double floatVal) {
-        this.floatVal = floatVal;
+    public void setFloatVal(Double doubleVal) {
+        this.doubleVal = doubleVal;
     }
 
     @Column(length = 100)
@@ -68,17 +68,17 @@ public class UserCategoryItem
         if (category == null)
             throw new NullPointerException("category");
 
-        switch (category.type) {
-        case INTEGER:
+        if (category.type == UserDataType.INTEGER)
             return intVal;
 
-        case DECIMAL:
-            return floatVal;
+        else if (category.type == UserDataType.DOUBLE)
+            return doubleVal;
 
-        case TEXT:
+        else if (category.type == UserDataType.TEXT)
             return textVal;
-        }
-        throw new UnexpectedException();
+
+        else
+            throw new UnexpectedException();
     }
 
     public void setValue(int value) {
@@ -89,31 +89,27 @@ public class UserCategoryItem
         if (category == null)
             throw new NullPointerException("category");
 
-        if (category.type != UserCategoryTypeEnum.INTEGER)
+        if (category.type != UserDataType.INTEGER)
             throw new IllegalUsageException("Category is not of INTEGER type.");
 
         intVal = value;
-    }
-
-    public void setValue(float value) {
-        setValue((double) value);
     }
 
     public void setValue(double value) {
         if (category == null)
             throw new NullPointerException("category");
 
-        if (category.type != UserCategoryTypeEnum.DECIMAL)
+        if (category.type != UserDataType.DOUBLE)
             throw new IllegalUsageException("Category is not of DECIMAL type.");
 
-        floatVal = value;
+        doubleVal = value;
     }
 
     public void setValue(String value) {
         if (category == null)
             throw new NullPointerException("category");
 
-        if (category.type != UserCategoryTypeEnum.TEXT)
+        if (category.type != UserDataType.TEXT)
             throw new IllegalUsageException("Category is not of TEXT type.");
 
         textVal = value;
