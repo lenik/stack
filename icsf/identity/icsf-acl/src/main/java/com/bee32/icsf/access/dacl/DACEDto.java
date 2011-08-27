@@ -6,7 +6,7 @@ import javax.free.ParseException;
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.principal.dto.AbstractPrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.CEntityDto;
+import com.bee32.plover.orm.ext.c.CEntityDto;
 
 public class DACEDto
         extends CEntityDto<DACE, Long> {

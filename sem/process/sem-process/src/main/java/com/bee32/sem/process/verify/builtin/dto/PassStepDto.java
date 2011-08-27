@@ -5,7 +5,7 @@ import javax.free.TypeConvertException;
 
 import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.CEntityDto;
+import com.bee32.plover.orm.ext.c.CEntityDto;
 import com.bee32.sem.process.verify.builtin.PassStep;
 
 public class PassStepDto

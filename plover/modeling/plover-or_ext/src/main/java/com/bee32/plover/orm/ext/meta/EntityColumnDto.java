@@ -3,7 +3,7 @@ package com.bee32.plover.orm.ext.meta;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.CEntityDto;
+import com.bee32.plover.orm.ext.c.CEntityDto;
 
 public class EntityColumnDto
         extends CEntityDto<EntityColumn, Integer> {

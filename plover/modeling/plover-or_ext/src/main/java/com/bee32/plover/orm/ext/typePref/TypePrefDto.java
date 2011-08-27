@@ -3,7 +3,7 @@ package com.bee32.plover.orm.ext.typePref;
 import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.ClassUtil;
-import com.bee32.plover.orm.util.CEntityDto;
+import com.bee32.plover.orm.ext.c.CEntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 
 public abstract class TypePrefDto<E extends TypePrefEntity>

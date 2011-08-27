@@ -6,7 +6,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.CEntityDto;
+import com.bee32.plover.orm.ext.c.CEntityDto;
 import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.people.dto.PartyDto;
 

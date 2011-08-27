@@ -11,7 +11,7 @@ import com.bee32.icsf.principal.dto.PrincipalDto;
 import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.CEntityDto;
+import com.bee32.plover.orm.ext.c.CEntityDto;
 import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.sem.event.EventState;
 import com.bee32.sem.event.entity.Event;

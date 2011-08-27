@@ -8,7 +8,7 @@ import javax.free.TypeConvertException;
 import com.bee32.icsf.principal.Principal;
 import com.bee32.plover.arch.util.Mask32;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.CEntityDto;
+import com.bee32.plover.orm.ext.c.CEntityDto;
 
 public abstract class AbstractPrincipalDto<E extends Principal>
         extends CEntityDto<E, Integer> {

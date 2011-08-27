@@ -13,8 +13,8 @@ import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.orm.ext.c.CEntity;
+import com.bee32.plover.orm.ext.c.CEntityDto;
 import com.bee32.plover.orm.ext.dict.NameDictDto;
-import com.bee32.plover.orm.util.CEntityDto;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.FacesContextSupport2;
 

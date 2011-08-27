@@ -1,21 +1,23 @@
-package com.bee32.plover.orm.util;
+package com.bee32.plover.orm.ext.c;
 
 import java.io.Serializable;
 import java.util.Map;
 
 import javax.free.ParseException;
 
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.ext.c.CEntity;
-import com.bee32.plover.orm.ext.c.CEntityAccessor;
+import com.bee32.plover.orm.util.EntityDto;
 
 public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
         extends EntityDto<E, K> {
 
     private static final long serialVersionUID = 1L;
 
+    public static final int NO_OWNER = 1;
+
+    UserDto owner;
     Integer aclId;
-    Integer ownerId;
 
     public CEntityDto() {
         super();
@@ -28,19 +30,22 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
     @Override
     protected void __marshal(E source) {
         super.__marshal(source);
+
+        if (!selection.contains(NO_OWNER))
+            owner = mref(UserDto.class, 0, source.getOwner());
+
         aclId = source.getAclId();
-        ownerId = source.getOwnerId();
     }
 
     @Override
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
 
+        if (!selection.contains(NO_OWNER))
+            merge(target, "owner", owner);
+
         if (aclId != null)
             CEntityAccessor.setAclId(target, aclId);
-
-        if (ownerId != null)
-            CEntityAccessor.setOwnerId(target, ownerId);
     }
 
     @Override
@@ -52,9 +57,9 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
         if (aclId != null)
             setAclId(aclId);
 
-        Integer ownerId = map.getNInt("ownerId");
+        Integer ownerId = map.getNInt("owner.id");
         if (ownerId != null)
-            setOwnerId(ownerId);
+            owner = new UserDto().ref(ownerId);
     }
 
     @Override
@@ -64,8 +69,7 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
         if (aclId != null)
             map.put("aclId", aclId);
 
-        if (ownerId != null)
-            map.put("ownerId", ownerId);
+        // export owner.*
     }
 
     public Integer getAclId() {
@@ -76,12 +80,19 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
         this.aclId = aclId;
     }
 
-    public Integer getOwnerId() {
-        return ownerId;
+    public UserDto getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(UserDto owner) {
+        this.owner = owner;
+    }
+
+    public String getOwnerDisplayName() {
+        if (owner == null)
+            return "";
+        else
+            return owner.getDisplayName();
     }
 
 }

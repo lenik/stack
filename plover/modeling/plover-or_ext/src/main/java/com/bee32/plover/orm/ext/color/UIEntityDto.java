@@ -6,7 +6,7 @@ import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.CEntityDto;
+import com.bee32.plover.orm.ext.c.CEntityDto;
 
 public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
         extends CEntityDto<E, K> {
