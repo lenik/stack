@@ -9,7 +9,6 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.context.annotation.Scope;
 
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Or;
@@ -31,7 +30,8 @@ import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.monetary.MCValue;
 
 @Scope("view")
-public abstract class StockOrderBaseBean extends LocationAboutBean {
+public abstract class StockOrderBaseBean
+        extends LocationAboutBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -60,7 +60,6 @@ public abstract class StockOrderBaseBean extends LocationAboutBean {
     private String orgUnitPattern;
     private List<OrgUnitDto> orgUnits;
     private OrgUnitDto selectedOrgUnit;
-
 
     protected List<StockOrderItemDto> itemsNeedToRemoveWhenModify = new ArrayList<StockOrderItemDto>();
 
@@ -110,13 +109,8 @@ public abstract class StockOrderBaseBean extends LocationAboutBean {
     public String getCreator() {
         if (stockOrder == null)
             return "";
-
-        Integer ownerId = stockOrder.getOwnerId();
-        if (ownerId == null)
-            return "";
-
-        User u = serviceFor(User.class).getOrFail(ownerId);
-        return u.getDisplayName();
+        else
+            return stockOrder.getOwnerDisplayName();
     }
 
     public List<StockOrderItemDto> getItems() {
@@ -180,8 +174,6 @@ public abstract class StockOrderBaseBean extends LocationAboutBean {
         this.orderItemPriceCurrency = Currency.getInstance(currencyCode);
     }
 
-
-
     public boolean isNewItemStatus() {
         return newItemStatus;
     }
@@ -238,13 +230,6 @@ public abstract class StockOrderBaseBean extends LocationAboutBean {
         this.selectedOrgUnit = selectedOrgUnit;
     }
 
-
-
-
-
-
-
-
     public void newItem() {
         orderItem = new StockOrderItemDto().create();
         orderItemPrice = new BigDecimal(0);
@@ -287,14 +272,11 @@ public abstract class StockOrderBaseBean extends LocationAboutBean {
         }
     }
 
-
     public void findOrg() {
         if (orgPattern != null && !orgPattern.isEmpty()) {
 
             List<Org> _orgs = serviceFor(Org.class).list(
-                    new Or(
-                            new Like("name", "%" + orgPattern + "%"),
-                            new Like("fullName", "%" + orgPattern + "%")));
+                    new Or(new Like("name", "%" + orgPattern + "%"), new Like("fullName", "%" + orgPattern + "%")));
 
             orgs = DTOs.marshalList(OrgDto.class, _orgs);
         }
@@ -304,19 +286,17 @@ public abstract class StockOrderBaseBean extends LocationAboutBean {
         stockOrder.setOrg(selectedOrg);
     }
 
-
     public void findOrgUnit() {
         if (orgUnitPattern != null && !orgUnitPattern.isEmpty()) {
 
             List<OrgUnit> _orgUnits = null;
 
-            if(stockOrder.getOrg().getId() != null) {
-                //如果前面选中了某个公司，则查找该公司中的部门
-                _orgUnits = serviceFor(OrgUnit.class).list(
-                        new Like("name", "%" + orgUnitPattern + "%"),
+            if (stockOrder.getOrg().getId() != null) {
+                // 如果前面选中了某个公司，则查找该公司中的部门
+                _orgUnits = serviceFor(OrgUnit.class).list(new Like("name", "%" + orgUnitPattern + "%"),
                         new Equals("org.id", selectedOrg.getId()));
             } else {
-                //如果没有选择公司，则表示查找tag为内部的公司中的部门(即为本公司内部的部门)
+                // 如果没有选择公司，则表示查找tag为内部的公司中的部门(即为本公司内部的部门)
                 _orgUnits = serviceFor(OrgUnit.class).list(PeopleCriteria.internalOrgUnitWithName(orgUnitPattern));
             }
 

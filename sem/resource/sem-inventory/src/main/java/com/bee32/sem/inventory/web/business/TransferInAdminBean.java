@@ -9,7 +9,6 @@ import javax.faces.event.AjaxBehaviorEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.criteria.hibernate.Offset;
@@ -29,7 +28,8 @@ import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.util.PeopleCriteria;
 
 @Scope("view")
-public class TransferInAdminBean extends StockOrderBaseBean {
+public class TransferInAdminBean
+        extends StockOrderBaseBean {
 
     private static final long serialVersionUID = 1L;
 
@@ -53,13 +53,11 @@ public class TransferInAdminBean extends StockOrderBaseBean {
     private int goNumberOut;
     private int countOut;
 
-
     private String personPattern;
     private List<PersonDto> persons;
     private PersonDto selectedPerson;
 
-    private boolean transferring;   //是否在拨入状态
-
+    private boolean transferring; // 是否在拨入状态
 
     public TransferInAdminBean() {
         Calendar c = Calendar.getInstance();
@@ -81,9 +79,6 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
         transferring = false;
     }
-
-
-
 
     public StockOrderSubject getSubjectOut() {
         return subjectOut;
@@ -143,11 +138,9 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
     public int getCountOut() {
         countOut = serviceFor(StockTransfer.class).count(//
-                new Equals("destWarehouse.id", selectedWarehouse.getId()),
-                new IsNull("dest.id"));
+                new Equals("destWarehouse.id", selectedWarehouse.getId()), new IsNull("dest.id"));
         return countOut;
     }
-
 
     public StockTransferDto getStockTransfer() {
         return stockTransfer;
@@ -192,13 +185,8 @@ public class TransferInAdminBean extends StockOrderBaseBean {
     public String getCreatorOut() {
         if (stockOrderOut == null)
             return "";
-
-        Integer ownerId = stockOrderOut.getOwnerId();
-        if (ownerId == null)
-            return "";
-
-        User u = serviceFor(User.class).getOrFail(ownerId);
-        return u.getDisplayName();
+        else
+            return stockOrderOut.getOwnerDisplayName();
     }
 
     public List<StockOrderItemDto> getItemsOut() {
@@ -239,12 +227,6 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         this.selectedItemIn = selectedItemIn;
     }
 
-
-
-
-
-
-
     public void onSwChange(AjaxBehaviorEvent e) {
         loadStockOrder(goNumber);
         loadStockOrderOut(goNumberOut);
@@ -252,37 +234,34 @@ public class TransferInAdminBean extends StockOrderBaseBean {
     }
 
     private void loadStockOrder(int position) {
-        //刷新总记录数
+        // 刷新总记录数
         getCount();
 
         goNumber = position;
 
-        if(position < 1) {
+        if (position < 1) {
             goNumber = 1;
             position = 1;
         }
-        if(goNumber > count) {
+        if (goNumber > count) {
             goNumber = count;
             position = count;
         }
 
-
         stockOrder = new StockOrderDto().create();
         stockTransfer = new StockTransferDto().create();
         if (selectedWarehouse != null) {
-            StockOrder firstOrder = serviceFor(StockOrder.class)
-                    .getFirst( //
-                            new Offset(position - 1), //
-                            EntityCriteria.createdBetweenEx(limitDateFrom,limitDateTo), //
-                            StockCriteria.subjectOf(getSubject()), //
-                            new Equals("warehouse.id", selectedWarehouse.getId()), Order.desc("id"));
+            StockOrder firstOrder = serviceFor(StockOrder.class).getFirst( //
+                    new Offset(position - 1), //
+                    EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                    StockCriteria.subjectOf(getSubject()), //
+                    new Equals("warehouse.id", selectedWarehouse.getId()), Order.desc("id"));
 
             if (firstOrder != null) {
                 stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
 
-                StockTransfer t = serviceFor(StockTransfer.class)
-                        .getUnique(new Equals("dest.id", stockOrder.getId()));
-                if(t != null) {
+                StockTransfer t = serviceFor(StockTransfer.class).getUnique(new Equals("dest.id", stockOrder.getId()));
+                if (t != null) {
                     stockTransfer = DTOs.marshal(StockTransferDto.class, t);
                 }
             }
@@ -290,43 +269,38 @@ public class TransferInAdminBean extends StockOrderBaseBean {
     }
 
     private void loadStockOrderOut(int position) {
-        //刷新总记录数
+        // 刷新总记录数
         getCountOut();
 
         goNumberOut = position;
 
-        if(position < 1) {
+        if (position < 1) {
             goNumberOut = 1;
             position = 1;
         }
-        if(goNumberOut > countOut) {
+        if (goNumberOut > countOut) {
             goNumberOut = countOut;
             position = countOut;
         }
-
 
         stockOrderOut = new StockOrderDto().create();
         stockTransferOut = new StockTransferDto().create();
         if (selectedWarehouse != null) {
 
-            StockTransfer firstTransfer = serviceFor(StockTransfer.class).getFirst(
-                    new Offset(position - 1),
-                    new Equals("destWarehouse.id", selectedWarehouse.getId()),
-                    new IsNull("dest.id"));
+            StockTransfer firstTransfer = serviceFor(StockTransfer.class).getFirst(new Offset(position - 1),
+                    new Equals("destWarehouse.id", selectedWarehouse.getId()), new IsNull("dest.id"));
 
-            if(firstTransfer != null) {
+            if (firstTransfer != null) {
                 stockTransferOut = DTOs.marshal(StockTransferDto.class, firstTransfer);
 
                 StockOrder o = serviceFor(StockOrder.class).getUnique(
-                        new Equals("id", stockTransferOut.getSource().getId())
-                        );
-                if(o != null) {
+                        new Equals("id", stockTransferOut.getSource().getId()));
+                if (o != null) {
                     stockOrderOut = DTOs.marshal(StockOrderDto.class, o);
                 }
             }
         }
     }
-
 
     public void limit() {
         loadStockOrder(goNumber);
@@ -334,10 +308,9 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
     @Transactional
     public void delete() {
-        //若加入事务标记后，清空StockTransfer.dest后，不会马上反应到数据库中，
-        //导致StockOrder被引用，不能删除，会出错
-        StockTransfer t = serviceFor(StockTransfer.class).getUnique(
-                new Equals("dest.id", stockOrder.getId()));
+        // 若加入事务标记后，清空StockTransfer.dest后，不会马上反应到数据库中，
+        // 导致StockOrder被引用，不能删除，会出错
+        StockTransfer t = serviceFor(StockTransfer.class).getUnique(new Equals("dest.id", stockOrder.getId()));
         if (t != null) {
             t.setDest(null);
             serviceFor(StockTransfer.class).saveOrUpdate(t);
@@ -347,8 +320,6 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         uiLogger.info("删除成功!");
         loadStockOrder(goNumber);
     }
-
-
 
     public void first() {
         goNumber = 1;
@@ -384,11 +355,6 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         loadStockOrder(goNumber);
     }
 
-
-
-
-
-
     public void firstOut() {
         goNumberOut = 1;
         loadStockOrderOut(goNumberOut);
@@ -423,12 +389,8 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         loadStockOrderOut(goNumberOut);
     }
 
-
-
-
-
     public void transferInStart() {
-        if(countOut <= 0) {
+        if (countOut <= 0) {
             uiLogger.warn("没有可以拨入的单据");
             return;
         }
@@ -442,11 +404,10 @@ public class TransferInAdminBean extends StockOrderBaseBean {
 
     @Transactional
     public void transferInDone() {
-//        if(stockOrder.getItems() != null && stockOrder.getItems().size() <= 0) {
-//            uiLogger.warn("单据上至少应该有一条明细");
-//            return;
-//        }
-
+// if(stockOrder.getItems() != null && stockOrder.getItems().size() <= 0) {
+// uiLogger.warn("单据上至少应该有一条明细");
+// return;
+// }
 
         stockOrder.setSubject(subject);
         stockOrder.setWarehouse(selectedWarehouse);
@@ -454,9 +415,8 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         stockTransferOut.setDestWarehouse(selectedWarehouse);
         stockTransferOut.setDest(stockOrder);
         StockTransfer _stockTransferOut = stockTransferOut.unmarshal();
-        //保存stockTransferOut
+        // 保存stockTransferOut
         serviceFor(StockTransfer.class).saveOrUpdate(_stockTransferOut);
-
 
         uiLogger.info("拨入成功");
 
@@ -467,7 +427,6 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         transferring = false;
     }
 
-
     public void cancelTransferIn() {
         loadStockOrder(goNumber);
         loadStockOrderOut(goNumberOut);
@@ -475,10 +434,6 @@ public class TransferInAdminBean extends StockOrderBaseBean {
         editable = false;
         transferring = false;
     }
-
-
-
-
 
     public void findPerson() {
         if (personPattern != null && !personPattern.isEmpty()) {
@@ -505,7 +460,7 @@ public class TransferInAdminBean extends StockOrderBaseBean {
     }
 
     public void deleteItemIn() {
-        if(selectedItemIn == null) {
+        if (selectedItemIn == null) {
             uiLogger.warn("请选择要删除的拨入项目");
             return;
         }
@@ -522,7 +477,6 @@ public class TransferInAdminBean extends StockOrderBaseBean {
     public StockOrderItemDto getOrderItem_() {
         return orderItemIn;
     }
-
 
     @Override
     public StockWarehouseDto getSelectedWarehouse_() {
