@@ -8,7 +8,6 @@ import javax.free.JavaioFile;
 import javax.free.Order;
 import javax.free.SystemProperties;
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +22,11 @@ import com.bee32.icsf.access.alt.R_ACLService;
 import com.bee32.icsf.access.resource.IResourceNamespace;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ScannedResourceRegistry;
-import com.bee32.icsf.login.SessionLoginInfo;
+import com.bee32.icsf.login.LoginInfo;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.EntityResource;
 import com.bee32.plover.orm.entity.EntityResourceNS;
 import com.bee32.plover.ox1.principal.IUserPrincipal;
-import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 @Service
 @Primary
@@ -79,16 +77,9 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
 
         Permission requiredPermission = new Permission(bits);
 
-        IUserPrincipal currentUser = null;
-
-        HttpSession session = ThreadHttpContext.getSessionOpt();
-        if (session != null) {
-            currentUser = SessionLoginInfo.getUserOpt(session);
-            // if (currentUser ==null)
-            // currentUser = User.ANONYMOUS;
-        }
-
+        IUserPrincipal currentUser = LoginInfo.getInstance().getUserOpt();
         if (currentUser == null)
+            // currentUser = User.ANONYMOUS;
             return;
 
         Class<? extends E> entityType = getEntityType();
@@ -113,5 +104,4 @@ public class AclEasTxWrapper<E extends Entity<? extends K>, K extends Serializab
             throw new AccessControlException(message);
         }
     }
-
 }
