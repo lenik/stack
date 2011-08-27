@@ -23,32 +23,45 @@
         </h:outputStylesheet>
         <h:form id="mainForm">
             <t:panelGrid columns="2" style="width:100%" columnClasses="ftd,std">
-                <t:panelGroup colspan="2">
-                    <p:toolbar>
-                        <p:toolbarGroup align="left">
-                            <p:commandButton value="test" />
-                        </p:toolbarGroup>
-                    </p:toolbar>
-                </t:panelGroup>
+
                 <t:panelGroup>
-                    <t:panelGrid columns="2" style="width:100%;">
-                        <p:commandButton value="收信" style="width:100%;" actionListener="#{mailManageBean.gotoInbox}"
-                            update=":mainForm:mainTab" />
-                        <p:commandButton value="写信" style="width:100%;" actionListener="#{mailManageBean.gotoWritebox}" />
-                    </t:panelGrid>
+                    <p:panel style="border:2px red solid;padding:0px;">
+                        <t:panelGrid columns="2">
+                            <p:commandButton value="收信" style="width:100%;" actionListener="#{mailManageBean.gotoInbox}"
+                                update=":mainForm:mainTabView" />
+                            <p:commandButton value="写信" style="width:100%;"
+                                actionListener="#{mailManageBean.gotoWritebox}" />
+                        </t:panelGrid>
+                    </p:panel>
                     <p:selectOneListbox value="#{mailManageBean.selectedItemId}" style="width:150px;height:300px;">
                         <f:selectItems value="#{mailManageBean.folderItems}" />
                         <f:selectItem itemLabel="管理文件夹" itemValue="-100" />
-                        <p:ajax listener="#{mailManageBean.listMails}" update="mailList" />
+                        <p:ajax listener="#{mailManageBean.listMails}" update="mainTabView gridList" />
                     </p:selectOneListbox>
                 </t:panelGroup>
-                <p:tabView id="mainTab">
-                    <p:tab title="test" id="fistTab">
-                        <p:dataTable id="mailList" var="item" value="#{mailManageBean.mails}" itemType="disc">
-                            <p:column headerText="id">
-                                <h:outputText value="#{item.id}" />
+                <p:tabView id="mainTabView">
+                    <p:tab id="boxTab">
+                        <p:dataGrid id="gridList" var="item" value="#{mailManageBean.mails}" columns="1" rows="10"
+                            paginator="true">
+                            <p:column style="width:100%;">
+                                <p:panel style="width:100%;">
+                                    <t:panelGrid columns="3" style="width:100%;">
+                                        <h:selectBooleanCheckbox value="true" title="test" />
+                                        <h:outputText value="#{item.tee}" />
+                                        <p:selectOneListbox style="border:0px;width:100%;"
+                                            value="#{mailManageBean.selectedDeliveryId}">
+                                            <f:selectItem itemValue="#{item.id}" itemLabel="#{item.mail.subject}" />
+                                            <p:ajax listener="#{mailManageBean.getDeliveryContent}"
+                                                update=":mainForm:mainTabView" />
+                                        </p:selectOneListbox>
+                                    </t:panelGrid>
+                                </p:panel>
                             </p:column>
-                        </p:dataTable>
+                        </p:dataGrid>
+                    </p:tab>
+                    <p:tab id="detailTab">
+                        <h:outputText value="#{mailManageBean.activeMail.mail.subject}" />
+                        <h:outputText value="#{mailManageBean.activeMail.mail.body}" />
                     </p:tab>
                 </p:tabView>
             </t:panelGrid>

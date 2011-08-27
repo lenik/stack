@@ -3,6 +3,7 @@ package com.bee32.sem.mail.dto;
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.icsf.principal.dto.UserDto;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.base.tx.TxEntityDto;
 import com.bee32.sem.mail.MailFlags;
@@ -23,15 +24,18 @@ public class MailDeliveryDto
 
     final MailFlags flags = new MailFlags();
 
+    String tee;
+
     @Override
     protected void _marshal(MailDelivery source) {
+
         mail = mref(MailDto.class, source.getMail());
         folder = mref(MailFolderDto.class, source.getFolder());
         orientation = source.getOrientation();
-
         flags.bits = source.getFlags();
-
         sendError = source.getSendError();
+
+        assemblerProperties();
     }
 
     @Override
@@ -53,6 +57,27 @@ public class MailDeliveryDto
         orientation = MailOrientation.valueOf(_orientation);
 
         flags.bits = map.getInt("flags");
+    }
+
+    public void assemblerProperties() {
+        if (orientation.equals(MailOrientation.FROM)) {
+            if (mail.getFromUser() != null)
+                tee = mail.getFromUser().getName();
+            else
+                tee = mail.getFrom();
+        } else if (orientation.equals(MailOrientation.RECIPIENT)) {
+            if (mail.getRecipientUsers() != null) {
+                for (UserDto user : mail.getRecipientUsers()) {
+                    if (tee == null)
+                        tee = user.getName();
+                    else
+                        tee += "," + user.getName();
+                }
+            } else {
+                tee = mail.getRecipient();
+            }
+        }
+
     }
 
     public MailDto getMail() {
@@ -91,6 +116,10 @@ public class MailDeliveryDto
 
     public MailFlags getFlags() {
         return flags;
+    }
+
+    public String getTee() {
+        return tee;
     }
 
 }
