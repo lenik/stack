@@ -19,7 +19,7 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.alt.R_Authority;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
-import com.bee32.icsf.login.SessionLoginInfo;
+import com.bee32.icsf.login.LoginInfo;
 import com.bee32.icsf.principal.IUserPrincipal;
 import com.bee32.icsf.principal.User;
 import com.bee32.icsf.principal.dao.UserDao;
@@ -65,7 +65,7 @@ public class AccessCheckAdvice
         if (apResource == null)
             return;
 
-        IUserPrincipal currentUser = SessionLoginInfo.getUserOpt();
+        IUserPrincipal currentUser = LoginInfo.getInstance().getUserOpt();
 
         String errMessage = null;
         if (currentUser == null) {
