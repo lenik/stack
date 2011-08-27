@@ -13,7 +13,7 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.ox1.c.CEntityAuto;
+import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
 /**
@@ -25,7 +25,7 @@ import com.bee32.plover.ox1.color.Blue;
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "material_attribute_seq", allocationSize = 1)
 public class MaterialAttribute
-        extends CEntityAuto<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 

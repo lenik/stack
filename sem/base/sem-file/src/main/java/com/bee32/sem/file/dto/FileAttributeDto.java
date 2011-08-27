@@ -6,11 +6,11 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.sem.file.entity.FileAttribute;
 
 public class FileAttributeDto
-        extends CEntityDto<FileAttribute, Long> {
+        extends EntityDto<FileAttribute, Long> {
 
     private static final long serialVersionUID = 1L;
 
