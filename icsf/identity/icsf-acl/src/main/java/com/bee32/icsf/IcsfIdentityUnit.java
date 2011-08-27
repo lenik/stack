@@ -5,11 +5,11 @@ import com.bee32.icsf.access.dacl.DACE;
 import com.bee32.icsf.access.dacl.DACL;
 import com.bee32.icsf.login.PrivateQuestion;
 import com.bee32.icsf.login.UserPassword;
-import com.bee32.plover.orm.PloverORMUnit;
 import com.bee32.plover.orm.unit.ImportUnit;
 import com.bee32.plover.orm.unit.PersistenceUnit;
+import com.bee32.plover.ox1.PloverOx1Unit;
 
-@ImportUnit(PloverORMUnit.class)
+@ImportUnit(PloverOx1Unit.class)
 public class IcsfIdentityUnit
         extends PersistenceUnit {
 
