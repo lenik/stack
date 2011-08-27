@@ -16,4 +16,6 @@ import org.springframework.stereotype.Component;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ServiceTemplate {
 
+    boolean prototype() default false;
+
 }

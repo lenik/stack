@@ -74,8 +74,17 @@ public abstract class ServiceCollector<T>
     protected void publish(Class<?> prototype, Class<?> serviceType) {
         System.out.println("    Service: " + serviceType);
 
+        ServiceTemplate st = serviceType.getAnnotation(ServiceTemplate.class);
+        assert st != null;
+        boolean isPrototype = st.prototype();
+
         File resdir = MavenPath.getResourceDir(serviceType);
-        File sfile = new File(resdir, "META-INF/services/" + prototype.getName());
+        File sfile;
+
+        if (isPrototype)
+            sfile = new File(resdir, "META-INF/prototypes/" + prototype.getName());
+        else
+            sfile = new File(resdir, "META-INF/services/" + prototype.getName());
 
         StringBuilder buf = files.get(sfile);
         if (buf == null) {
