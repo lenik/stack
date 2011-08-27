@@ -18,8 +18,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.icsf.login.SessionLoginInfo;
-import com.bee32.icsf.principal.User;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.orm.ext.color.Green;
 import com.bee32.plover.orm.ext.color.UIEntityAuto;
@@ -60,12 +58,6 @@ public class Part
     BigDecimal otherFee = new BigDecimal(0);
     BigDecimal electricityFee = new BigDecimal(0);
     BigDecimal equipmentCost = new BigDecimal(0);
-
-    User creator;
-
-    public Part() {
-        creator = (User) SessionLoginInfo.getUserOpt();
-    }
 
     /**
      * 上一个版本。
@@ -281,15 +273,6 @@ public class Part
             throws MaterialPriceNotFoundException, FxrQueryException {
         BigDecimal price = priceStrategy.getPrice(this);
         return price;
-    }
-
-    @ManyToOne
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
     }
 
 }
