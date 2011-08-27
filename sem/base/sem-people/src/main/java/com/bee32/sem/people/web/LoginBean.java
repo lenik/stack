@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.LoginCriteria;
-import com.bee32.icsf.login.LoginInfo;
+import com.bee32.icsf.login.LoginManager;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.principal.User;
@@ -52,11 +52,6 @@ public class LoginBean
     }
 
     public void login(ActionEvent even) {
-        boolean loggedIn = false;
-
-        LoginInfo loginInfo = LoginInfo.getInstance();
-        loginInfo.setUser(null);
-
         User user = serviceFor(User.class).getByName(username);
         if (user == null) {
             uiLogger.error("用户不存在");
@@ -78,12 +73,18 @@ public class LoginBean
             return;
         }
 
-        loginInfo.setUser(user);
-        loggedIn = true;
-        uiLogger.info("登录成功");
+        LoginManager loginManager = getBean(LoginManager.class);
+        try {
+            loginManager.logIn(user);
+        } catch (Exception e) {
+            uiLogger.error("登陆失败", e);
+            return;
+        }
 
         RequestContext requestContext = RequestContext.getCurrentInstance();
-        requestContext.addCallbackParam("loggedIn", loggedIn);
+        requestContext.addCallbackParam("loggedIn", true);
+
+        uiLogger.info("登录成功");
     }
 
 }
