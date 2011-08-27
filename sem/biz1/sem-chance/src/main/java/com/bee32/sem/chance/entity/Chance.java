@@ -35,6 +35,10 @@ public class Chance
 
     private static final long serialVersionUID = 1L;
 
+    private static final int SERIAL_LENGTH = 30;
+    private static final int SUBJECT_LENGTH = 100;
+    private static final int CONTENT_LENGTH = 500;
+
     String serial;
 
     ChanceCategory category = ChanceCategory.NORMAL;
@@ -48,7 +52,7 @@ public class Chance
     ChanceStage stage = ChanceStage.INIT;
 
     @NaturalId
-    @Column(length = 30)
+    @Column(length = SERIAL_LENGTH)
     public String getSerial() {
         return serial;
     }
@@ -72,7 +76,7 @@ public class Chance
     /**
      * 机会主题
      */
-    @Column(length = 100, nullable = false)
+    @Column(length = SUBJECT_LENGTH, nullable = false)
     public String getSubject() {
         return subject;
     }
@@ -100,7 +104,7 @@ public class Chance
     /**
      * 机会内容
      */
-    @Column(length = 500, nullable = false)
+    @Column(length = CONTENT_LENGTH, nullable = false)
     public String getContent() {
         return content;
     }

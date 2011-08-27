@@ -25,13 +25,15 @@ public class TxEntity
 
     private static final long serialVersionUID = 1L;
 
+    private static final int SERIAL_LENGTH = 30;
+
     String serial;
 
     /**
      * 单据序列号。Serial ID, or Second ID.
      */
     @NaturalId
-    @Column(length = 30)
+    @Column(length = SERIAL_LENGTH)
     public String getSerial() {
         return serial;
     }

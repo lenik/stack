@@ -16,6 +16,9 @@ public abstract class Thing<X extends XPool<?>>
 
     private static final long serialVersionUID = 1L;
 
+    private static final int NAME_LENGTH = 40;
+    private static final int UNITHINT_LENGTH = 20;
+
     Unit unit;
     String unitHint;
     UnitConv unitConv;
@@ -31,7 +34,7 @@ public abstract class Thing<X extends XPool<?>>
     /**
      * 物品名称（必填）
      */
-    @Column(length = 40, nullable = false)
+    @Column(length = NAME_LENGTH, nullable = false)
     public String getName() {
         return name;
     }
@@ -59,7 +62,7 @@ public abstract class Thing<X extends XPool<?>>
         this.unit = unit;
     }
 
-    @Column(length = 20, nullable = false)
+    @Column(length = UNITHINT_LENGTH, nullable = false)
     public String getUnitHint() {
         return unitHint;
     }

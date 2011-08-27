@@ -38,6 +38,9 @@ public class Material
 
     private static final long serialVersionUID = 1L;
 
+    private static final int SERIAL_LENGTH = 32;
+    private static final int BARCODE_MODELSPEC_LENGTH = 30;
+
     MaterialCategory category;
 
     String serial;
@@ -98,7 +101,7 @@ public class Material
      * 物品编码、物品序列号
      */
     @NaturalId(mutable = true)
-    @Column(length = 32)
+    @Column(length = SERIAL_LENGTH)
     public String getSerial() {
         return serial;
     }
@@ -110,7 +113,7 @@ public class Material
     /**
      * 物品条码
      */
-    @Column(length = 30)
+    @Column(length = BARCODE_MODELSPEC_LENGTH)
     public String getBarCode() {
         return barCode;
     }
@@ -125,7 +128,7 @@ public class Material
     /**
      * 规格型号
      */
-    @Column(length = 30)
+    @Column(length = BARCODE_MODELSPEC_LENGTH)
     public String getModelSpec() {
         return modelSpec;
     }

@@ -49,6 +49,12 @@ public abstract class Party
         extends EntityExt<Integer, PartyXP> {
 
     private static final long serialVersionUID = 1L;
+    private static final int NAME_LENGTH = 30;
+    private static final int FULLNAME_LENGTH =50;
+    private static final int NICKNAME_LENGTH = 20;
+    private static final int SID_LENGTH = 30;
+    private static final int XID_LENGTH = 40;
+    private static final int INTERESTS_LENGTH = 200;
 
     Set<PartyTagname> tags;
 
@@ -98,7 +104,7 @@ public abstract class Party
      * 显示名称
      */
     @Basic(optional = false)
-    @Column(length = 30, nullable = false)
+    @Column(length = NAME_LENGTH, nullable = false)
     public String getName() {
         return name;
     }
@@ -113,7 +119,7 @@ public abstract class Party
     /**
      * 全名
      */
-    @Column(length = 50)
+    @Column(length = FULLNAME_LENGTH)
     public String getFullName() {
         return fullName;
     }
@@ -128,7 +134,7 @@ public abstract class Party
     /**
      * 昵称
      */
-    @Column(length = 20)
+    @Column(length = NICKNAME_LENGTH)
     public String getNickName() {
         return nickName;
     }
@@ -167,7 +173,7 @@ public abstract class Party
     /**
      * 证件号码 (SID = Social ID)
      */
-    @Column(length = 30)
+    @Column(length = SID_LENGTH)
     public String getSid() {
         return sid;
     }
@@ -180,7 +186,7 @@ public abstract class Party
     }
 
     @NaturalId
-    @Column(length = 40)
+    @Column(length = XID_LENGTH)
     String getXid() {
         if (sidType == null || sid == null || sid.isEmpty())
             return null;
@@ -209,7 +215,7 @@ public abstract class Party
     /**
      * Person:兴趣爱好 Org:主营业务
      */
-    @Column(length = 200)
+    @Column(length = INTERESTS_LENGTH)
     public String getInterests() {
         return interests;
     }

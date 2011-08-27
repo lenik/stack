@@ -18,6 +18,8 @@ public class PartyRecord
 
     private static final long serialVersionUID = 1L;
 
+    private static final int TEXT_LENGTH = 10000;
+
     PartyRecordCategory category = PartyRecordCategory.INFO;
     Party party;
     String text = "";
@@ -45,7 +47,7 @@ public class PartyRecord
     }
 
     @Basic(optional = false)
-    @Column(length = 10000, nullable = false)
+    @Column(length = TEXT_LENGTH, nullable = false)
     public String getText() {
         return text;
     }

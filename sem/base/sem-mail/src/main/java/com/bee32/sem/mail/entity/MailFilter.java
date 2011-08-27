@@ -16,6 +16,9 @@ public class MailFilter
 
     private static final long serialVersionUID = 1L;
 
+    private static final int EXPR_LENGTH = 1000;
+    private static final int TRANSFERTO_LENGTH = 50;
+
     boolean enabled;
     int order;
 
@@ -45,7 +48,7 @@ public class MailFilter
         this.order = order;
     }
 
-    @Column(length = 1000, nullable = false)
+    @Column(length = EXPR_LENGTH, nullable = false)
     public String getExpr() {
         return expr;
     }
@@ -72,7 +75,7 @@ public class MailFilter
         this.target = target;
     }
 
-    @Column(length = 50)
+    @Column(length = TRANSFERTO_LENGTH)
     public String getTransferTo() {
         return transferTo;
     }

@@ -22,6 +22,13 @@ public class Contact
 
     private static final long serialVersionUID = 1L;
 
+    private static final int ADDRESS_LENGTH = 100;
+    private static final int POSTCODE_LENGTH = 10;
+    private static final int TEL_MOBILE_FAX_LENGTH = 30;
+    private static final int EMAIL_LENGTH = 40;
+    private static final int WEBSITE_LENGTH = 80;
+    private static final int QQ_LENGTH = 15;
+
     Party party;
     ContactCategory category = ContactCategory.NORMAL;
 
@@ -75,7 +82,7 @@ public class Contact
     /**
      * 联系人地址
      */
-    @Column(length = 100)
+    @Column(length = ADDRESS_LENGTH)
     public String getAddress() {
         return address;
     }
@@ -87,7 +94,7 @@ public class Contact
     /**
      * 邮编
      */
-    @Column(length = 10)
+    @Column(length = POSTCODE_LENGTH)
     public String getPostCode() {
         return postCode;
     }
@@ -99,7 +106,7 @@ public class Contact
     /**
      * 电话
      */
-    @Column(length = 30)
+    @Column(length = TEL_MOBILE_FAX_LENGTH)
     public String getTel() {
         return tel;
     }
@@ -111,7 +118,7 @@ public class Contact
     /**
      * 移动电话
      */
-    @Column(length = 30)
+    @Column(length = TEL_MOBILE_FAX_LENGTH)
     public String getMobile() {
         return mobile;
     }
@@ -123,7 +130,7 @@ public class Contact
     /**
      * 传真
      */
-    @Column(length = 30)
+    @Column(length = TEL_MOBILE_FAX_LENGTH)
     public String getFax() {
         return fax;
     }
@@ -135,7 +142,7 @@ public class Contact
     /**
      * 电子邮箱
      */
-    @Column(length = 40)
+    @Column(length = EMAIL_LENGTH)
     public String getEmail() {
         return email;
     }
@@ -147,7 +154,7 @@ public class Contact
     /**
      * 网址
      */
-    @Column(length = 80)
+    @Column(length = WEBSITE_LENGTH)
     public String getWebsite() {
         return website;
     }
@@ -156,7 +163,7 @@ public class Contact
         this.website = website;
     }
 
-    @Column(length = 15)
+    @Column(length = QQ_LENGTH)
     public String getQq() {
         return qq;
     }

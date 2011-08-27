@@ -29,6 +29,8 @@ public class ChanceAction
         implements ICalendarEvent, Comparable<ChanceAction> {
 
     private static final long serialVersionUID = 1L;
+    private static final int MOREINFO_LENGTH = 10000;
+    private static final int SPENDING_LENGTH = 1000;
 
     boolean plan = false;
     List<Party> parties = new ArrayList<Party>();
@@ -119,7 +121,7 @@ public class ChanceAction
         this.style = style;
     }
 
-    @Column(length = 10000)
+    @Column(length = MOREINFO_LENGTH)
     public String getMoreInfo() {
         return moreInfo;
     }
@@ -131,7 +133,7 @@ public class ChanceAction
     /**
      * 产生费用明细
      */
-    @Column(length = 1000, nullable = false)
+    @Column(length = SPENDING_LENGTH, nullable = false)
     public String getSpending() {
         return spending;
     }

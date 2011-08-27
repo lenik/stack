@@ -23,6 +23,8 @@ public class MailDelivery
 
     private static final long serialVersionUID = 1L;
 
+    private static final int SENDERROR_LENGTH = 200;
+
     Mail mail;
     MailOrientation orientation = MailOrientation.FROM;
 
@@ -89,7 +91,7 @@ public class MailDelivery
         this.flags.bits = flags;
     }
 
-    @Column(length = 200)
+    @Column(length = SENDERROR_LENGTH)
     public String getSendError() {
         return sendError;
     }

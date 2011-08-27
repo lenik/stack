@@ -28,6 +28,8 @@ public class MakeOrder
 
     private static final long serialVersionUID = 1L;
 
+    private static final int STATUS_LENGTH = 30;
+
     Party customer;
     Date deadline;
     String status;
@@ -56,7 +58,7 @@ public class MakeOrder
         this.deadline = deadline;
     }
 
-    @Column(length = 30)
+    @Column(length = STATUS_LENGTH)
     public String getStatus() {
         return status;
     }

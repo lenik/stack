@@ -26,6 +26,8 @@ public class StockInventory
 
     private static final long serialVersionUID = 1L;
 
+    private static final int NAME_LENGTH = 30;
+
     List<StockPeriod> snapshots = new ArrayList<StockPeriod>();
     StockPeriod workingBase;
 
@@ -39,7 +41,7 @@ public class StockInventory
     /**
      * 逻辑库存名称
      */
-    @Column(length = 30)
+    @Column(length = NAME_LENGTH)
     public String getName() {
         return name;
     }

@@ -25,6 +25,8 @@ public class Person
 
     private static final long serialVersionUID = 1L;
 
+    private static final int CENSUSREGISTER_LENGTH = 15;
+
     Gender sex = Gender.OTHER;
     Locale locale;
     TimeZone timeZone;
@@ -73,7 +75,7 @@ public class Person
     /**
      * 户籍
      */
-    @Column(length = 15)
+    @Column(length = CENSUSREGISTER_LENGTH)
     public String getCensusRegister() {
         return censusRegister;
     }

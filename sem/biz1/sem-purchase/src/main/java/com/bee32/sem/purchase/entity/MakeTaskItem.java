@@ -31,6 +31,8 @@ public class MakeTaskItem
 
     private static final long serialVersionUID = 1L;
 
+    private static final int STATUS_LENGTH = 40;
+
     MakeTask task;
     Part part;
     BigDecimal quantity = new BigDecimal(1);
@@ -69,7 +71,7 @@ public class MakeTaskItem
         this.quantity = quantity;
     }
 
-    @Column(length = 40)
+    @Column(length = STATUS_LENGTH)
     public String getStatus() {
         return status;
     }
