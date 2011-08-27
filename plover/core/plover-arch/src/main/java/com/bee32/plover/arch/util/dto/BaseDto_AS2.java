@@ -190,7 +190,7 @@ public abstract class BaseDto_AS2<S, C>
      * {@link BaseDto#parse(HttpServletRequest) from an HttpServletRequest}.</li>
      *
      * You can always clear the filled state by reference the DTO to a specific id, by calling the
-     * {@link EntityDto#ref(Entity) ref} method.
+     * EntityDto.ref(Entity).
      *
      * @param property
      *            The property accessor which is used to get the old property value, and set the

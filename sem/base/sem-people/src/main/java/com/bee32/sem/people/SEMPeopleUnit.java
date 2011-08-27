@@ -11,12 +11,12 @@ import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.entity.PartyRecord;
 import com.bee32.sem.people.entity.PartyRecordCategory;
+import com.bee32.sem.people.entity.PartySidType;
 import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.entity.PartyXP;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonLogin;
 import com.bee32.sem.people.entity.PersonRole;
-import com.bee32.sem.people.entity.PartySidType;
 
 @ImportUnit(SEMBaseUnit.class)
 public class SEMPeopleUnit

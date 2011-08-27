@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.bee32.plover.ajax.xpc.HMAC;
-
 public class HMACTest {
 
     @Test

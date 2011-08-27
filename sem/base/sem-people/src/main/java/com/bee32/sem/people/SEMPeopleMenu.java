@@ -9,8 +9,8 @@ import com.bee32.sem.frame.menu.MenuNode;
 import com.bee32.sem.people.entity.ContactCategory;
 import com.bee32.sem.people.entity.OrgType;
 import com.bee32.sem.people.entity.PartyRecordCategory;
-import com.bee32.sem.people.entity.PartyTagname;
 import com.bee32.sem.people.entity.PartySidType;
+import com.bee32.sem.people.entity.PartyTagname;
 
 public class SEMPeopleMenu
         extends MenuContribution

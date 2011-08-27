@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServlet;
+
 import com.bee32.plover.arch.operation.ClassOperationDiscoverer;
 import com.bee32.plover.arch.operation.IOperation;
 import com.bee32.plover.arch.operation.OperationContext;
