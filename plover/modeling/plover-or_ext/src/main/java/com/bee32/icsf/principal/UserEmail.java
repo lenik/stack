@@ -9,7 +9,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.entity.EntityAuto;
+import com.bee32.plover.orm.EntityAuto;
 import com.bee32.plover.orm.ext.color.Blue;
 
 @Entity

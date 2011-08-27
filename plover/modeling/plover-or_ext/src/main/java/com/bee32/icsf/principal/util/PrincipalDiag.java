@@ -5,17 +5,6 @@ import java.util.IdentityHashMap;
 import com.bee32.icsf.principal.IPrincipal;
 import com.bee32.icsf.principal.IPrincipalVisitor;
 
-class PrincipalDiagException
-        extends RuntimeException {
-
-    private static final long serialVersionUID = 1L;
-
-    public PrincipalDiagException(String message) {
-        super(message);
-    }
-
-}
-
 /**
  * @test {@link com.bee32.icsf.principal.util.PrincipalDiagTest}
  */

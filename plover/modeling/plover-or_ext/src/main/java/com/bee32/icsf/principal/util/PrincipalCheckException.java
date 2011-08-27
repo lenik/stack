@@ -1,9 +1,7 @@
 package com.bee32.icsf.principal.util;
 
-import com.bee32.icsf.InternalSecurityException;
-
 public class PrincipalCheckException
-        extends InternalSecurityException {
+        extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
