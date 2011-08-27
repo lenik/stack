@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.bee32.plover.javascript.util.Javascripts;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity._EntityAccessor;
+import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.orm.web.EntityHandler;
 import com.bee32.plover.orm.web.IEntityForming;
@@ -72,7 +72,7 @@ public class CreateOrEditFormHandler<E extends Entity<K>, K extends Serializable
             E newEntity = eh.newEntity();
 
             if (id != null)
-                _EntityAccessor.setId(newEntity, id);
+                EntityAccessor.setId(newEntity, id);
 
             dto = eh.newDto(dtoSelection);
 

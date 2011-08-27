@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity._EntityAccessor;
+import com.bee32.plover.orm.entity.EntityAccessor;
 
 /**
  * Lifecycle:
@@ -114,7 +114,7 @@ public abstract class SampleContribution
         E prev = head;
         for (int i = 1; i < samples.length; i++) {
             E node = samples[i];
-            _EntityAccessor.setNextOfMicroLoop(prev, node);
+            EntityAccessor.setNextOfMicroLoop(prev, node);
         }
 
         add(head);

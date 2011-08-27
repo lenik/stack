@@ -432,7 +432,7 @@ public abstract class Entity<K extends Serializable>
     @Transient
     @Override
     protected boolean isLocked() {
-        EntityFlags ef = _EntityAccessor.getFlags(this);
+        EntityFlags ef = EntityAccessor.getFlags(this);
         int x = ef.bits & lockMask;
         return x != 0;
     }

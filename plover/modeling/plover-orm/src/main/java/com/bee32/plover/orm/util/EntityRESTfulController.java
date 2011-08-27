@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity._EntityAccessor;
+import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityRepository;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.restful.IRESTfulRequest;
@@ -68,12 +68,12 @@ public class EntityRESTfulController<E extends Entity<K>, K extends Serializable
         K key = repo.convertRefNameToKey(refName);
 
         E entity = repo.populate(req);
-        _EntityAccessor.setId(entity, key);
+        EntityAccessor.setId(entity, key);
 
         String _version = req.getParameter("version");
         if (_version != null) {
             int version = Integer.parseInt(_version);
-            _EntityAccessor.setVersion(entity, version);
+            EntityAccessor.setVersion(entity, version);
         }
 
         asFor(repo.getEntityType()).update(entity);

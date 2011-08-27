@@ -16,7 +16,7 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.dto.BaseDto;
 import com.bee32.plover.arch.util.dto.MarshalType;
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity._EntityAccessor;
+import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityBase;
 import com.bee32.plover.orm.entity.EntityFlags;
 import com.bee32.plover.orm.entity.EntityUtil;
@@ -250,7 +250,7 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         version = source.getVersion();
         createdDate = source.getCreatedDate();
         lastModified = source.getLastModified();
-        setEntityFlags(_EntityAccessor.getFlags(source).bits);
+        setEntityFlags(EntityAccessor.getFlags(source).bits);
     }
 
     /**
@@ -259,19 +259,19 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
     @Override
     protected void __unmarshalTo(E target) {
         if (id != null)
-            _EntityAccessor.setId(target, id);
+            EntityAccessor.setId(target, id);
 
         if (version != null)
-            _EntityAccessor.setVersion(target, version);
+            EntityAccessor.setVersion(target, version);
 
         if (createdDateSet)
-            _EntityAccessor.setCreatedDate(target, createdDate);
+            EntityAccessor.setCreatedDate(target, createdDate);
 
         if (lastModifiedSet)
-            _EntityAccessor.setLastModified(target, lastModified);
+            EntityAccessor.setLastModified(target, lastModified);
 
         if (entityFlags != null)
-            _EntityAccessor.getFlags(target).set(entityFlags.bits);
+            EntityAccessor.getFlags(target).set(entityFlags.bits);
 
     }
 

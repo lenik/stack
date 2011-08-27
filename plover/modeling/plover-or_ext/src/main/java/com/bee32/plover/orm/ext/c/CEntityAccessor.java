@@ -1,10 +1,10 @@
 package com.bee32.plover.orm.ext.c;
 
 import com.bee32.icsf.principal.User;
-import com.bee32.plover.orm.entity._EntityAccessor;
+import com.bee32.plover.orm.entity.EntityAccessor;
 
 public class CEntityAccessor
-        extends _EntityAccessor {
+        extends EntityAccessor {
 
     public static void setOwner(CEntity<?> entity, User owner) {
         entity.setOwner(owner);

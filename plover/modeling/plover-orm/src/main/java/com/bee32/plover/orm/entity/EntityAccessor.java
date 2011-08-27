@@ -3,7 +3,7 @@ package com.bee32.plover.orm.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class _EntityAccessor {
+public class EntityAccessor {
 
     public static <K extends Serializable> void setId(Entity<K> entity, K id) {
         entity.setId(id);

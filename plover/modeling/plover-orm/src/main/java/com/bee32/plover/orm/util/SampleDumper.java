@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import javax.free.IdentityHashSet;
 
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity._EntityAccessor;
+import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.util.FormatStyle;
 import com.bee32.plover.util.PrettyPrintStream;
 
@@ -48,7 +48,7 @@ public class SampleDumper {
             out.println(title);
 
             // Dump auto entity in more detail.
-            if (verboseForAutoEntities && _EntityAccessor.isAutoId(entity)) {
+            if (verboseForAutoEntities && EntityAccessor.isAutoId(entity)) {
                 entity.toString(out, FormatStyle.NORMAL);
             }
 

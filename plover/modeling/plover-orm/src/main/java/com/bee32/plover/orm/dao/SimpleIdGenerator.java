@@ -11,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 import com.bee32.plover.orm.entity.Entity;
-import com.bee32.plover.orm.entity._EntityAccessor;
+import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.plover.orm.entity.EntityUtil;
 
 public class SimpleIdGenerator {
@@ -86,7 +86,7 @@ public class SimpleIdGenerator {
                     + entityType);
         }
 
-        _EntityAccessor.setId(entity, id);
+        EntityAccessor.setId(entity, id);
         return id;
     }
 
