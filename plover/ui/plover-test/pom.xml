@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>com.bee32.plover</groupId>
-            <artifactId>plover-or_ext</artifactId>
+            <artifactId>plover-ox1</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
         <dependency>

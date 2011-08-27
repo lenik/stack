@@ -32,7 +32,7 @@ modeling/
     plover-orm          对象关系映射辅助工具
     plover-criteria     组合检索模型
     plover-indexing     索引框架
-    plover-or_ext       ORM 扩展实体类
+    plover-ox1          ORM 扩展实体类
     plover-view         公共视图模型
     plover-velocity     Velocity 模版工具
 
