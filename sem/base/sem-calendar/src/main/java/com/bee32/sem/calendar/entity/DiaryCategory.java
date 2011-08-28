@@ -15,15 +15,6 @@ public class DiaryCategory
 
     DiaryVisibility visibility = DiaryVisibility.PRIVATE;
 
-    @Column(name = "visibility", nullable = false)
-    char getVisibility_() {
-        return visibility.getValue();
-    }
-
-    void setVisibility_(char visibility) {
-        this.visibility = DiaryVisibility.valueOf(visibility);
-    }
-
     @Transient
     public DiaryVisibility getVisibility() {
         return visibility;
@@ -33,6 +24,15 @@ public class DiaryCategory
         if (visibility == null)
             throw new NullPointerException("visibility");
         this.visibility = visibility;
+    }
+
+    @Column(name = "visibility", nullable = false)
+    char getVisibility_() {
+        return visibility.getValue();
+    }
+
+    void setVisibility_(char visibility) {
+        this.visibility = DiaryVisibility.valueOf(visibility);
     }
 
 }
