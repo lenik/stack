@@ -2,7 +2,6 @@ package com.bee32.sem.people.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -13,11 +12,11 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -79,27 +78,8 @@ public abstract class Party
         this.name = name;
     }
 
-    @ManyToMany
-    @JoinTable(name = "PartyTags", //
-    /*            */joinColumns = @JoinColumn(name = "party"), //
-    /*            */inverseJoinColumns = @JoinColumn(name = "tag"))
-    public Set<PartyTagname> getTags() {
-        if (tags == null) {
-            synchronized (this) {
-                if (tags == null) {
-                    tags = new HashSet<PartyTagname>();
-                }
-            }
-        }
-        return tags;
-    }
-
-    public void setTags(Set<PartyTagname> tags) {
-        this.tags = tags;
-    }
-
     /**
-     * 显示名称
+     * 名称
      */
     @Basic(optional = false)
     @Column(length = NAME_LENGTH, nullable = false)
@@ -107,9 +87,6 @@ public abstract class Party
         return name;
     }
 
-    /**
-     * 显示名称
-     */
     public void setName(String name) {
         this.name = name;
     }
@@ -122,9 +99,6 @@ public abstract class Party
         return fullName;
     }
 
-    /**
-     * 全名
-     */
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
@@ -137,19 +111,19 @@ public abstract class Party
         return nickName;
     }
 
-    /**
-     * 昵称
-     */
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
 
+    /**
+     * 显示名称
+     */
     @Transient
     public String getDisplayName() {
-        if (fullName != null && !fullName.isEmpty())
-            return fullName;
         if (nickName != null && !nickName.isEmpty())
             return nickName;
+        if (fullName != null && !fullName.isEmpty())
+            return fullName;
         return name;
     }
 
@@ -161,9 +135,6 @@ public abstract class Party
         return sidType;
     }
 
-    /**
-     * 证件类型 (SID = Social ID)
-     */
     public void setSidType(PartySidType sidType) {
         this.sidType = sidType;
     }
@@ -176,9 +147,6 @@ public abstract class Party
         return sid;
     }
 
-    /**
-     * 证件号码 (SID = Social ID)
-     */
     public void setSid(String sid) {
         this.sid = sid;
     }
@@ -203,9 +171,6 @@ public abstract class Party
         return birthday;
     }
 
-    /**
-     * 出生日期
-     */
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
@@ -231,37 +196,18 @@ public abstract class Party
         this.memo = memo;
     }
 
-    @Transient
-    public Integer getAge() {
-        if (birthday == null)
-            return null;
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(this.birthday);
-        int birthYear = cal.get(Calendar.YEAR);
-
-        cal.setTimeInMillis(System.currentTimeMillis());
-        int currentYear = cal.get(Calendar.YEAR);
-
-        return currentYear - birthYear;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "PartyTags", //
+    /*            */joinColumns = @JoinColumn(name = "party"), //
+    /*            */inverseJoinColumns = @JoinColumn(name = "tag"))
+    public Set<PartyTagname> getTags() {
+        return tags;
     }
 
-    @Transient
-    public Integer getBirthdayRemains() {
-        if (birthday == null)
-            return null;
-
-        Calendar cal = Calendar.getInstance();
-        int birthDOY = cal.get(Calendar.DAY_OF_YEAR);
-
-        cal.setTimeInMillis(System.currentTimeMillis());
-        int currentDOY = cal.get(Calendar.DAY_OF_YEAR);
-
-        int diff = currentDOY - birthDOY;
-        if (diff < 0)
-            diff += 365;
-
-        return diff;
+    public void setTags(Set<PartyTagname> tags) {
+        if (tags == null)
+            throw new NullPointerException("tags");
+        this.tags = tags;
     }
 
     @OneToMany(mappedBy = "party")
@@ -300,4 +246,5 @@ public abstract class Party
         String xid = getXid();
         return new Equals(prefix + "xid", xid);
     }
+
 }

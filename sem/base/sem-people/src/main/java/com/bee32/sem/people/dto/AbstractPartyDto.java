@@ -1,6 +1,7 @@
 package com.bee32.sem.people.dto;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -181,6 +182,37 @@ public class AbstractPartyDto<E extends Party>
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public Integer getAge() {
+        if (birthday == null)
+            return null;
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(this.birthday);
+        int birthYear = cal.get(Calendar.YEAR);
+
+        cal.setTimeInMillis(System.currentTimeMillis());
+        int currentYear = cal.get(Calendar.YEAR);
+
+        return currentYear - birthYear;
+    }
+
+    public Integer getBirthdayRemains() {
+        if (birthday == null)
+            return null;
+
+        Calendar cal = Calendar.getInstance();
+        int birthDOY = cal.get(Calendar.DAY_OF_YEAR);
+
+        cal.setTimeInMillis(System.currentTimeMillis());
+        int currentDOY = cal.get(Calendar.DAY_OF_YEAR);
+
+        int diff = currentDOY - birthDOY;
+        if (diff < 0)
+            diff += 365;
+
+        return diff;
     }
 
     public String getInterests() {
