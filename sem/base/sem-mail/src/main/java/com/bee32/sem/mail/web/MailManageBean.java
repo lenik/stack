@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.mail.MailFlags;
 import com.bee32.sem.mail.dto.MailDeliveryDto;
 import com.bee32.sem.mail.dto.MailFolderDto;
@@ -22,13 +21,9 @@ import com.bee32.sem.mail.entity.MailFolder;
 
 @Scope("view")
 public class MailManageBean
-        extends EntityViewBean {
+        extends MailManageVdx {
 
     private static final long serialVersionUID = 1L;
-
-    public static final String TABVIEW = "mainForm:mainTabView";
-    public static final String TAB_BOX = "mainForm:boxTab";
-    public static final String TAB_DETAIL = "mainForm:detailTab";
 
     String selectedItemId;
     String selectedDeliveryId;
@@ -37,7 +32,7 @@ public class MailManageBean
     MailDeliveryDto activeMail;
 
     MailManageBean() {
-        findComponent(TAB_DETAIL).setRendered(false);
+        getDetailTab().setRendered(false);
         initFolderItems();
         listMails();
     }
@@ -50,7 +45,7 @@ public class MailManageBean
             MailFolder folder = serviceFor(MailFolder.class).getOrFail(folderId);
             MailFolderDto folderDto = DTOs.marshal(MailFolderDto.class, MailFolderDto.MAILS, folder);
             mails = folderDto.getMails();
-            Tab tab = (Tab) findComponent(TAB_BOX);
+            Tab tab = (Tab) getBoxTab();
             tab.setTitle(folderDto.getLabel());
         }
     }
@@ -77,7 +72,7 @@ public class MailManageBean
     }
 
     public void gotoInbox() {
-        TabView mainTabView = (TabView) findComponent(TABVIEW);
+        TabView mainTabView = (TabView) getMainTabView();
         mainTabView.setActiveIndex(0);
         selectedItemId = "1";
         listMails();
@@ -87,7 +82,7 @@ public class MailManageBean
         long deliveryId = Long.parseLong(selectedDeliveryId);
         MailDelivery delivery = serviceFor(MailDelivery.class).getOrFail(deliveryId);
         MailDeliveryDto deliveryDto = DTOs.marshal(MailDeliveryDto.class, delivery);
-        TabView mainTabView = (TabView) findComponent(TABVIEW);
+        TabView mainTabView = getMainTabView();
         Tab tab = new Tab();
         tab.setTitle(Strings.ellipse(deliveryDto.getMail().getSubject(), 7));
         // XXX set tab closable
