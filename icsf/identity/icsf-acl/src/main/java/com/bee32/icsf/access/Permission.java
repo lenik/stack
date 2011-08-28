@@ -8,7 +8,8 @@ public final class Permission
 
     private static final long serialVersionUID = 1L;
 
-    private int bits;
+    private int allowBits;
+    private int denyBits;
 
     public static final int READ = 1 << 2;
     public static final int WRITE = 1 << 1;
@@ -27,55 +28,134 @@ public final class Permission
     public static final int ADMIN = 1 << 31;
     static final char C_ADMIN = 'S';
 
-    public Permission(int bits) {
-        this.bits = bits;
+    public Permission(int allowBits) {
+        this.allowBits = allowBits;
+    }
+
+    public Permission(int allowBits, int denyBits) {
+        this.allowBits = allowBits;
+        this.denyBits = denyBits;
     }
 
     public Permission(String mode) {
-        this.bits = parseBits(mode);
+        String allow;
+        String deny;
+
+        int excl = mode.indexOf('!');
+        if (excl == -1) {
+            allow = mode;
+            deny = null;
+        } else {
+            allow = mode.substring(0, excl);
+            deny = mode.substring(excl + 1);
+        }
+
+        this.allowBits = parseBits(allow);
+        if (deny != null)
+            this.denyBits = parseBits(deny);
     }
 
-    public int getBits() {
-        return bits;
+    @Override
+    public Permission clone() {
+        return new Permission(allowBits, denyBits);
     }
 
-    public void setBits(int bits) {
-        this.bits = bits;
+    public int getAllowBits() {
+        return allowBits;
     }
 
-    public void addBits(int bits) {
-        this.bits |= bits;
+    public void setAllowBits(int allowBits) {
+        this.allowBits = allowBits;
     }
 
-    public void removeBits(int bits) {
-        this.bits &= ~bits;
+    public int getDenyBits() {
+        return denyBits;
     }
 
-    public void setBits(boolean f, int bits) {
+    public void setDenyBits(int denyBits) {
+        this.denyBits = denyBits;
+    }
+
+    public void clear(int bits) {
+        this.allowBits &= ~bits;
+        this.denyBits &= ~bits;
+    }
+
+    public void set(Boolean f, int bits) {
+        clear(bits);
+        if (f == null)
+            return;
         if (f)
-            this.bits |= bits;
+            this.allowBits |= bits;
         else
-            this.bits &= ~bits;
+            this.denyBits |= bits;
+    }
+
+    public boolean test(int bits) {
+        if ((denyBits & bits) != 0)
+            return false;
+        if ((allowBits & bits) == bits)
+            return true;
+        // deny by default.
+        return false;
+    }
+
+    public Boolean test3(int bits) {
+        if ((denyBits & bits) != 0)
+            return false;
+        if ((allowBits & bits) == bits)
+            return true;
+        return null;
+    }
+
+    public void allow(int bits) {
+        clear(bits);
+        this.allowBits |= bits;
+    }
+
+    public void allow(boolean f, int bits) {
+        clear(bits);
+        if (f)
+            this.allowBits |= bits;
+    }
+
+    public void deny(int bits) {
+        clear(bits);
+        this.denyBits |= bits;
+    }
+
+    public void deny(boolean f, int bits) {
+        clear(bits);
+        if (f)
+            this.denyBits |= bits;
     }
 
     public boolean implies(int bits) {
+        int anyDenied = denyBits & bits;
+        if (anyDenied != 0)
+            return false;
+
         if (isAdmin())
             return true;
-        int and = this.bits & bits;
-        return and == bits;
+
+        int allAllowed = this.allowBits & bits;
+        if (allAllowed == bits)
+            return true;
+
+        return false;
     }
 
     public boolean implies(String mode) {
         if (mode == null)
             throw new NullPointerException("mode");
-        int modeBits = parseBits(mode);
-        return implies(modeBits);
+        Permission o = new Permission(mode);
+        return implies(o);
     }
 
     public boolean implies(Permission permission) {
         if (permission == null)
             throw new NullPointerException("permission");
-        return implies(permission.bits);
+        return implies(permission.allowBits, permission.denyBits);
     }
 
     /**
@@ -87,111 +167,111 @@ public final class Permission
      */
     public void merge(Permission permission) {
         if (permission != null)
-            this.bits |= permission.bits;
+            this.allowBits |= permission.allowBits;
+    }
+
+    public Boolean isAdmin() {
+        return test3(ADMIN);
+    }
+
+    public void setAdmin(Boolean f) {
+        set(f, ADMIN);
+    }
+
+    public Boolean isReadable() {
+        return test3(READ);
+    }
+
+    public Boolean isWritable() {
+        return test3(WRITE);
+    }
+
+    public Boolean isExecutable() {
+        return test3(EXECUTE);
+    }
+
+    public Boolean isListable() {
+        return test3(LIST);
+    }
+
+    public Boolean isCreatable() {
+        return test3(CREATE);
+    }
+
+    public Boolean isDeletable() {
+        return test3(DELETE);
+    }
+
+    public void setReadable(Boolean f) {
+        set(f, READ);
+    }
+
+    public void setWritable(Boolean f) {
+        set(f, WRITE);
+    }
+
+    public void setExecutable(Boolean f) {
+        set(f, EXECUTE);
+    }
+
+    public void setListable(Boolean f) {
+        set(f, LIST);
+    }
+
+    public void setCreatable(Boolean f) {
+        set(f, CREATE);
+    }
+
+    public void setDeletable(Boolean f) {
+        set(f, DELETE);
     }
 
     public boolean canRead() {
-        return (bits & READ) != 0;
+        return test(READ);
     }
 
     public boolean canWrite() {
-        return (bits & WRITE) != 0;
+        return test(WRITE);
     }
 
     public boolean canExecute() {
-        return (bits & EXECUTE) != 0;
+        return test(EXECUTE);
     }
 
     public boolean canList() {
-        return (bits & LIST) != 0;
+        return test(LIST);
     }
 
     public boolean canCreate() {
-        return (bits & CREATE) != 0;
+        return test(CREATE);
     }
 
     public boolean canDelete() {
-        return (bits & DELETE) != 0;
+        return test(DELETE);
     }
 
     public void canRead(boolean f) {
-        setBits(f, READ);
+        allow(f, READ);
     }
 
     public void canWrite(boolean f) {
-        setBits(f, WRITE);
+        allow(f, WRITE);
     }
 
     public void canExecute(boolean f) {
-        setBits(f, EXECUTE);
+        allow(f, EXECUTE);
     }
 
     public void canList(boolean f) {
-        setBits(f, LIST);
+        allow(f, LIST);
     }
 
     public void canCreate(boolean f) {
-        setBits(f, CREATE);
+        allow(f, CREATE);
     }
 
     public void canDelete(boolean f) {
-        setBits(f, DELETE);
-    }
-
-    public boolean isReadable() {
-        return (bits & READ) != 0;
-    }
-
-    public boolean isWritable() {
-        return (bits & WRITE) != 0;
-    }
-
-    public boolean isExecutable() {
-        return (bits & EXECUTE) != 0;
-    }
-
-    public boolean isListable() {
-        return (bits & LIST) != 0;
-    }
-
-    public boolean isCreatable() {
-        return (bits & CREATE) != 0;
-    }
-
-    public boolean isDeletable() {
-        return (bits & DELETE) != 0;
-    }
-
-    public boolean isAdmin() {
-        return (bits & ADMIN) != 0;
-    }
-
-    public void setReadable(boolean f) {
-        setBits(f, READ);
-    }
-
-    public void setWritable(boolean f) {
-        setBits(f, WRITE);
-    }
-
-    public void setExecutable(boolean f) {
-        setBits(f, EXECUTE);
-    }
-
-    public void setListable(boolean f) {
-        setBits(f, LIST);
-    }
-
-    public void setCreatable(boolean f) {
-        setBits(f, CREATE);
-    }
-
-    public void setDeletable(boolean f) {
-        setBits(f, DELETE);
-    }
-
-    public void setAdmin(boolean f) {
-        setBits(f, ADMIN);
+        allow(f, DELETE);
     }
 
     static final char[] i2c;
@@ -244,25 +324,37 @@ public final class Permission
         return bits;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(32);
-        int bits = this.bits;
+    static void formatBits(StringBuilder sb, int bits) {
         for (int index = 31; index >= 0; index--) {
             if (bits < 0) {
                 char ch = i2c[index];
                 if (ch != '\0')
                     sb.append(ch);
             }
-
             bits <<= 1;
         }
+    }
+
+    public String getModeString() {
+        StringBuilder sb = new StringBuilder(32);
+        formatBits(sb, allowBits);
+
+        if (denyBits != 0) {
+            sb.append('!');
+            formatBits(sb, denyBits);
+        }
+
         return sb.toString();
     }
 
     @Override
+    public String toString() {
+        return getModeString();
+    }
+
+    @Override
     public int hashCode() {
-        return bits;
+        return allowBits * 17 + denyBits;
     }
 
     @Override
@@ -270,7 +362,11 @@ public final class Permission
         if (!(obj instanceof Permission))
             return false;
         Permission o = (Permission) obj;
-        return bits == o.bits;
+        if (allowBits != o.allowBits)
+            return false;
+        if (denyBits != o.denyBits)
+            return false;
+        return true;
     }
 
 }
