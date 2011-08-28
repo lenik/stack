@@ -22,6 +22,8 @@ public abstract class NameDict
 
     private static final long serialVersionUID = 1L;
 
+    public static final int ID_LENGTH = 20;
+
     protected int order;
 
     public NameDict() {
@@ -50,7 +52,7 @@ public abstract class NameDict
     }
 
     @Id
-    @Column(length = 20, unique = true)
+    @Column(length = ID_LENGTH, unique = true)
     @Override
     public String getId() {
         return getName();

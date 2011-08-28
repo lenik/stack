@@ -19,6 +19,9 @@ public abstract class DigestEntity
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The default length of ID, this could be overrided by MD5/SHA1 entities.
+     */
     public static final int ID_LENGTH = 40;
 
     String digestEncoded;

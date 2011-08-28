@@ -13,11 +13,13 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 @AttributeOverrides({//
-/*    */@AttributeOverride(name = "id", column = @Column(length = 40)) })
+/*    */@AttributeOverride(name = "id", column = @Column(length = SHA1Entity.ID_LENGTH)) })
 public abstract class SHA1Entity
         extends DigestEntity {
 
     private static final long serialVersionUID = 1L;
+
+    public static final int ID_LENGTH = 40;
 
     @Override
     protected MessageDigest newDigest() {

@@ -13,11 +13,13 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 @AttributeOverrides({//
-/*    */@AttributeOverride(name = "id", column = @Column(length = 32)) })
+/*    */@AttributeOverride(name = "id", column = @Column(length = MD5Entity.ID_LENGTH)) })
 public abstract class MD5Entity
         extends DigestEntity {
 
     private static final long serialVersionUID = 1L;
+
+    public static final int ID_LENGTH = 32;
 
     @Override
     protected MessageDigest newDigest() {

@@ -7,12 +7,15 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 @AttributeOverrides({//
-/*    */@AttributeOverride(name = "id", column = @Column(length = 32)),
-/*    */@AttributeOverride(name = "label", column = @Column(length = 50)) })
+/*    */@AttributeOverride(name = "id", column = @Column(length = GUIDNameDict.ID_LENGTH)),
+/*    */@AttributeOverride(name = "label", column = @Column(length = GUIDNameDict.LABEL_LENGTH)) })
 public abstract class GUIDNameDict
         extends NameDict {
 
     private static final long serialVersionUID = 1L;
+
+    public static final int ID_LENGTH = 32;
+    public static final int LABEL_LENGTH = 50;
 
     public GUIDNameDict() {
         super();
