@@ -25,7 +25,7 @@ public class Person
 
     private static final long serialVersionUID = 1L;
 
-    private static final int CENSUSREGISTER_LENGTH = 15;
+    public static final int CENSUS_REGISTER_LENGTH = 15;
 
     Gender sex = Gender.OTHER;
     Locale locale;
@@ -75,7 +75,7 @@ public class Person
     /**
      * 户籍
      */
-    @Column(length = CENSUSREGISTER_LENGTH)
+    @Column(length = CENSUS_REGISTER_LENGTH)
     public String getCensusRegister() {
         return censusRegister;
     }

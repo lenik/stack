@@ -28,8 +28,12 @@ public class ChanceCompetitor
 
     private static final long serialVersionUID = 1L;
 
-    private static final int CAPABILITY_LENGTH = 50;
-    private static final int COMMON_LENGTH = 200;
+    public static final int CAPABILITY_LENGTH = 50;
+    public static final int SOLUTION_LENGTH = 200;
+    public static final int ADVANTAGE_LENGTH = 200;
+    public static final int DISVANTAGE_LENGTH = 200;
+    public static final int TACTIC_LENGTH = 200;
+    public static final int COMMENT_LENGTH = 200;
 
     Chance chance;
     Party party;
@@ -112,7 +116,7 @@ public class ChanceCompetitor
     /**
      * 对手的解决方案
      */
-    @Column(length = COMMON_LENGTH, nullable = false)
+    @Column(length = SOLUTION_LENGTH, nullable = false)
     public String getSolution() {
         return solution;
     }
@@ -126,7 +130,7 @@ public class ChanceCompetitor
     /**
      * 对手的优势
      */
-    @Column(length = COMMON_LENGTH, nullable = false)
+    @Column(length = ADVANTAGE_LENGTH, nullable = false)
     public String getAdvantage() {
         return advantage;
     }
@@ -140,7 +144,7 @@ public class ChanceCompetitor
     /**
      * 对手的劣势
      */
-    @Column(length = COMMON_LENGTH, nullable = false)
+    @Column(length = DISVANTAGE_LENGTH, nullable = false)
     public String getDisvantage() {
         return disvantage;
     }
@@ -154,7 +158,7 @@ public class ChanceCompetitor
     /**
      * 我们的应对策略
      */
-    @Column(length = COMMON_LENGTH, nullable = false)
+    @Column(length = TACTIC_LENGTH, nullable = false)
     public String getTactic() {
         return tactic;
     }
@@ -168,7 +172,7 @@ public class ChanceCompetitor
     /**
      * 备注
      */
-    @Column(length = COMMON_LENGTH, nullable = false)
+    @Column(length = COMMENT_LENGTH, nullable = false)
     public String getComment() {
         return comment;
     }

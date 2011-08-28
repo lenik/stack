@@ -35,9 +35,9 @@ public class Chance
 
     private static final long serialVersionUID = 1L;
 
-    private static final int SERIAL_LENGTH = 30;
-    private static final int SUBJECT_LENGTH = 100;
-    private static final int CONTENT_LENGTH = 500;
+    public static final int SERIAL_LENGTH = 30;
+    public static final int SUBJECT_LENGTH = 100;
+    public static final int CONTENT_LENGTH = 500;
 
     String serial;
 

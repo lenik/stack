@@ -49,28 +49,26 @@ public abstract class Party
         extends EntityExt<Integer, PartyXP> {
 
     private static final long serialVersionUID = 1L;
-    private static final int NAME_LENGTH = 30;
-    private static final int FULLNAME_LENGTH =50;
-    private static final int NICKNAME_LENGTH = 20;
-    private static final int SID_LENGTH = 30;
-    private static final int XID_LENGTH = 40;
-    private static final int INTERESTS_LENGTH = 200;
 
-    Set<PartyTagname> tags;
+    public static final int NAME_LENGTH = 30;
+    public static final int FULLNAME_LENGTH = 50;
+    public static final int NICKNAME_LENGTH = 20;
+    public static final int SID_LENGTH = 30;
+    public static final int XID_LENGTH = 40;
+    public static final int INTERESTS_LENGTH = 200;
+    public static final int MEMO_LENGTH = 1000;
 
     String name;
     String fullName;
     String nickName;
-
     PartySidType sidType = PartySidType.IDENTITYCARD;
     String sid;
 
     Date birthday;
-
     String interests;
-
     String memo;
 
+    Set<PartyTagname> tags = new HashSet<PartyTagname>();
     List<Contact> contacts = new ArrayList<Contact>();
     List<PartyRecord> records = new ArrayList<PartyRecord>();
 
@@ -224,7 +222,7 @@ public abstract class Party
         this.interests = interests;
     }
 
-    @Lob
+    @Column(length = MEMO_LENGTH)
     public String getMemo() {
         return memo;
     }

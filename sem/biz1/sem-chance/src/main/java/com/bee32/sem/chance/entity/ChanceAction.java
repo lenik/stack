@@ -29,8 +29,6 @@ public class ChanceAction
         implements ICalendarEvent, Comparable<ChanceAction> {
 
     private static final long serialVersionUID = 1L;
-    private static final int MOREINFO_LENGTH = 10000;
-    private static final int SPENDING_LENGTH = 1000;
 
     public static final int MORE_INFO_LENGTH = 10000;
     public static final int SPENDING_LENGTH = 1000;

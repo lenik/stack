@@ -25,8 +25,8 @@ public class MaterialPlan
 
     private static final long serialVersionUID = 1L;
 
-    private static final int ADDITIONALREQUIREMENT = 200;
-    private static final int MEMO_LENGTH = 3000;
+    public static final int ADDITIONAL_REQUIREMENT_LENGTH = 200;
+    public static final int MEMO_LENGTH = 3000;
 
     MakeTask task;
     StockOrder planOrder;
@@ -73,7 +73,7 @@ public class MaterialPlan
     /**
      * 如客户指定产品需要哪种原材料
      */
-    @Column(length = ADDITIONALREQUIREMENT)
+    @Column(length = ADDITIONAL_REQUIREMENT_LENGTH)
     public String getAdditionalRequirement() {
         return additionalRequirement;
     }

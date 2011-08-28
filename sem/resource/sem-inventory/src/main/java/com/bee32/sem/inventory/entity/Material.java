@@ -38,12 +38,11 @@ public class Material
 
     private static final long serialVersionUID = 1L;
 
-    private static final int SERIAL_LENGTH = 32;
-    private static final int BARCODE_MODELSPEC_LENGTH = 30;
+    public static final int BARCODE_LENGTH = 30;
+    public static final int MODELSPEC_LENGTH = 30;
 
     MaterialCategory category;
 
-    String serial;
     String barCode;
     String modelSpec;
 
@@ -128,7 +127,7 @@ public class Material
     /**
      * 规格型号
      */
-    @Column(length = BARCODE_MODELSPEC_LENGTH)
+    @Column(length = MODELSPEC_LENGTH)
     public String getModelSpec() {
         return modelSpec;
     }

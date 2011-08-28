@@ -22,12 +22,12 @@ public class Contact
 
     private static final long serialVersionUID = 1L;
 
-    private static final int ADDRESS_LENGTH = 100;
-    private static final int POSTCODE_LENGTH = 10;
-    private static final int TEL_MOBILE_FAX_LENGTH = 30;
-    private static final int EMAIL_LENGTH = 40;
-    private static final int WEBSITE_LENGTH = 80;
-    private static final int QQ_LENGTH = 15;
+    public static final int ADDRESS_LENGTH = 100;
+    public static final int POSTCODE_LENGTH = 10;
+    public static final int TEL_MOBILE_FAX_LENGTH = 30;
+    public static final int EMAIL_LENGTH = 40;
+    public static final int WEBSITE_LENGTH = 80;
+    public static final int QQ_LENGTH = 15;
 
     Party party;
     ContactCategory category = ContactCategory.NORMAL;

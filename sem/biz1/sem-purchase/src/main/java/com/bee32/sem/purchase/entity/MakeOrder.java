@@ -19,7 +19,7 @@ import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.people.entity.Party;
 
 /**
- * 定单
+ * 生产定单
  */
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "make_order_seq", allocationSize = 1)
@@ -28,7 +28,7 @@ public class MakeOrder
 
     private static final long serialVersionUID = 1L;
 
-    private static final int STATUS_LENGTH = 30;
+    public static final int STATUS_LENGTH = 30;
 
     Party customer;
     Date deadline;

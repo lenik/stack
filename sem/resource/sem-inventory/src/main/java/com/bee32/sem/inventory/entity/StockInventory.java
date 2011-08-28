@@ -26,7 +26,7 @@ public class StockInventory
 
     private static final long serialVersionUID = 1L;
 
-    private static final int NAME_LENGTH = 30;
+    public static final int NAME_LENGTH = 30;
 
     List<StockPeriod> snapshots = new ArrayList<StockPeriod>();
     StockPeriod workingBase;
