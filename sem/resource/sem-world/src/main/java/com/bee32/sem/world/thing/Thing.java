@@ -1,10 +1,17 @@
 package com.bee32.sem.world.thing;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.NaturalId;
+
+import com.bee32.plover.arch.util.DummyId;
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.xp.EntityExt;
 import com.bee32.plover.ox1.xp.XPool;
@@ -32,6 +39,26 @@ public abstract class Thing<X extends XPool<?>>
 
     public Thing(String name) {
         super(name);
+    }
+
+    public Thing(String name, String serial) {
+        super(name);
+        if (serial == null)
+            throw new NullPointerException("serial");
+        this.serial = serial;
+    }
+
+    /**
+     * 物品编码、物品序列号
+     */
+    @NaturalId(mutable = true)
+    @Column(length = SERIAL_LENGTH)
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
     }
 
     /**
@@ -89,6 +116,19 @@ public abstract class Thing<X extends XPool<?>>
      */
     public void setUnitConv(UnitConv unitConv) {
         this.unitConv = unitConv;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        if (serial == null)
+            return new DummyId(this);
+        else
+            return serial;
+    }
+
+    @Override
+    protected ICriteriaElement selector(String prefix) {
+        return new Equals(prefix + "serial", serial);
     }
 
 }

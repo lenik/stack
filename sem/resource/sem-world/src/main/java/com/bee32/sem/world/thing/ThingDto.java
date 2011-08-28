@@ -1,8 +1,11 @@
 package com.bee32.sem.world.thing;
 
+import java.io.Serializable;
+
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
 
+import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.xp.EntityExtDto;
 import com.bee32.plover.ox1.xp.XPool;
@@ -14,6 +17,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
 
     public static final int CONV_MAP = 1;
 
+    String serial;
     String name;
 
     UnitDto unit;
@@ -33,6 +37,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
     protected void __marshal(E source) {
         super.__marshal(source);
 
+        serial = source.getSerial();
         name = source.getName();
         unitHint = source.getUnitHint();
         unit = mref(UnitDto.class, source.getUnit());
@@ -47,6 +52,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
 
+        target.setSerial(serial);
         target.setName(name);
         target.setUnitHint(unitHint);
         merge(target, "unit", unit);
@@ -58,10 +64,21 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
             throws ParseException, TypeConvertException {
         super.__parse(map);
 
+        serial = map.getString("serial");
         name = map.getString("name");
 
         unit = new UnitDto().ref(map.getString("unit"));
         unitConv = new UnitConvDto().ref(map.getString("unitConv"));
+    }
+
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        if (serial != null && serial.isEmpty())
+            serial = null;
+        this.serial = serial;
     }
 
     public String getName() {
@@ -98,6 +115,14 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
 
     public void setUnitConv(UnitConvDto unitConv) {
         this.unitConv = unitConv;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        if (serial == null)
+            return new DummyId(this);
+        else
+            return serial;
     }
 
 }

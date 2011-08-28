@@ -1,12 +1,11 @@
 package com.bee32.sem.inventory.dto;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
-import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.entity.Material;
@@ -25,7 +24,6 @@ public class MaterialDto
     public static final int PRICES = 8;
 
     MaterialCategoryDto category;
-    String serial;
     String barCode;
     String modelSpec;
 
@@ -46,7 +44,6 @@ public class MaterialDto
     @Override
     protected void _marshal(Material source) {
         category = mref(MaterialCategoryDto.class, ~MaterialCategoryDto.MATERIALS, source.getCategory());
-        serial = source.getSerial();
         barCode = source.getBarCode();
         modelSpec = source.getModelSpec();
 
@@ -79,7 +76,6 @@ public class MaterialDto
     protected void _unmarshalTo(Material target) {
         merge(target, "category", category);
 
-        target.setSerial(serial);
         target.setBarCode(barCode);
         target.setModelSpec(modelSpec);
         target.setColor(color);
@@ -99,6 +95,7 @@ public class MaterialDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+        throw new NotImplementedException();
     }
 
     public void addAttribute(MaterialAttributeDto attr) {
@@ -142,16 +139,6 @@ public class MaterialDto
         if (category == null)
             throw new NullPointerException("category");
         this.category = category;
-    }
-
-    public String getSerial() {
-        return serial;
-    }
-
-    public void setSerial(String serial) {
-        if (serial != null && serial.isEmpty())
-            serial = null;
-        this.serial = serial;
     }
 
     public String getBarCode() {
@@ -280,16 +267,7 @@ public class MaterialDto
         if (materialPriceDto == null)
             return "(尚无价格)";
         else
-            return materialPriceDto.getPrice().getValue().toString() + "("
-                    + materialPriceDto.getPrice().getCurrencyCode() + ")";
-    }
-
-    @Override
-    protected Serializable naturalId() {
-        if (serial == null)
-            return new DummyId(this);
-        else
-            return serial;
+            return materialPriceDto.getPrice().toString();
     }
 
 }

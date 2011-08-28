@@ -1,6 +1,5 @@
 package com.bee32.sem.inventory.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +17,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.arch.util.DummyId;
-import com.bee32.plover.criteria.hibernate.Equals;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.world.color.NaturalColor;
@@ -76,10 +71,7 @@ public class Material
     }
 
     public Material(String name, String serial) {
-        super(name);
-        if (serial == null)
-            throw new NullPointerException("serial");
-        this.serial = serial;
+        super(name, serial);
     }
 
     /**
@@ -97,22 +89,9 @@ public class Material
     }
 
     /**
-     * 物品编码、物品序列号
-     */
-    @NaturalId(mutable = true)
-    @Column(length = SERIAL_LENGTH)
-    public String getSerial() {
-        return serial;
-    }
-
-    public void setSerial(String serial) {
-        this.serial = serial;
-    }
-
-    /**
      * 物品条码
      */
-    @Column(length = BARCODE_MODELSPEC_LENGTH)
+    @Column(length = BARCODE_LENGTH)
     public String getBarCode() {
         return barCode;
     }
@@ -307,19 +286,6 @@ public class Material
         if (price == null)
             throw new NullPointerException("price");
         prices.add(0, price);
-    }
-
-    @Override
-    protected Serializable naturalId() {
-        if (serial == null)
-            return new DummyId(this);
-        else
-            return serial;
-    }
-
-    @Override
-    protected ICriteriaElement selector(String prefix) {
-        return new Equals(prefix + "serial", serial);
     }
 
 }
