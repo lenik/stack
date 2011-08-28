@@ -27,6 +27,8 @@ public class MaterialDto
     String barCode;
     String modelSpec;
 
+    int alarmAhead;
+
     NaturalColor color;
 
     int packageWidth;
@@ -46,6 +48,8 @@ public class MaterialDto
         category = mref(MaterialCategoryDto.class, ~MaterialCategoryDto.MATERIALS, source.getCategory());
         barCode = source.getBarCode();
         modelSpec = source.getModelSpec();
+
+        alarmAhead = source.getAlarmAhead();
 
         color = source.getColor();
         packageWidth = source.getPackageWidth();
@@ -155,6 +159,14 @@ public class MaterialDto
 
     public void setModelSpec(String modelSpec) {
         this.modelSpec = modelSpec;
+    }
+
+    public int getAlarmAhead() {
+        return alarmAhead;
+    }
+
+    public void setAlarmAhead(int alarmAhead) {
+        this.alarmAhead = alarmAhead;
     }
 
     public NaturalColor getColor() {

@@ -41,6 +41,8 @@ public class Material
     String barCode;
     String modelSpec;
 
+    int alarmAhead;
+
     List<MaterialAttribute> attributes = new ArrayList<MaterialAttribute>();
     List<UserFile> attachments = new ArrayList<UserFile>();
 
@@ -113,6 +115,18 @@ public class Material
 
     public void setModelSpec(String modelSpec) {
         this.modelSpec = modelSpec;
+    }
+
+    /**
+     * 提前报警天数
+     */
+    @Column(nullable = false)
+    public int getAlarmAhead() {
+        return alarmAhead;
+    }
+
+    public void setAlarmAhead(int alarmAhead) {
+        this.alarmAhead = alarmAhead;
     }
 
     /**
