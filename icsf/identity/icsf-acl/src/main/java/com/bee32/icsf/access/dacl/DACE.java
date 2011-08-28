@@ -16,13 +16,13 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
-import com.bee32.plover.ox1.c.CEntityAuto;
+import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.principal.Principal;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "dace_seq", allocationSize = 1)
 public class DACE
-        extends CEntityAuto<Long> {
+        extends EntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -81,85 +81,87 @@ public class DACE
         return permission;
     }
 
-    public void setPermission(Permission permission) {
-        if (permission == null)
-            throw new NullPointerException("permission");
-        this.permission = permission;
+    public void setPermission(Permission allow) {
+        if (allow == null)
+            throw new NullPointerException("allow");
+        this.permission = allow;
     }
 
-    @Column(nullable = false)
-    @Index(name = "dace_readable")
-    public boolean isReadable() {
-        return permission.isReadable();
-    }
-
-    @Column(nullable = false)
-    @Index(name = "dace_writable")
-    public boolean isWritable() {
-        return permission.isWritable();
-    }
-
-    @Column(nullable = false)
-    @Index(name = "dace_executable")
-    public boolean isExecutable() {
-        return permission.isExecutable();
-    }
-
-    @Column(nullable = false)
-    @Index(name = "dace_listable")
-    public boolean isListable() {
-        return permission.isListable();
-    }
-
-    @Column(nullable = false)
-    @Index(name = "dace_creatable")
-    public boolean isCreatable() {
-        return permission.isCreatable();
-    }
-
-    @Column(nullable = false)
-    @Index(name = "dace_deletable")
-    public boolean isDeletable() {
-        return permission.isDeletable();
-    }
-
-    @Column(nullable = false)
+    @Column
     @Index(name = "dace_admin")
-    public boolean isAdmin() {
+    public Boolean isAdmin() {
         return permission.isAdmin();
     }
 
-    public void setReadable(boolean f) {
+    public void setAdmin(Boolean f) {
+        permission.setAdmin(f);
+    }
+
+    @Column
+    @Index(name = "dace_readable")
+    public Boolean isReadable() {
+        return permission.isReadable();
+    }
+
+    public void setReadable(Boolean f) {
         permission.setReadable(f);
     }
 
-    public void setWritable(boolean f) {
+    @Column
+    @Index(name = "dace_writable")
+    public Boolean isWritable() {
+        return permission.isWritable();
+    }
+
+    public void setWritable(Boolean f) {
         permission.setWritable(f);
     }
 
-    public void setExecutable(boolean f) {
+    @Column
+    @Index(name = "dace_executable")
+    public Boolean isExecutable() {
+        return permission.isExecutable();
+    }
+
+    public void setExecutable(Boolean f) {
         permission.setExecutable(f);
     }
 
-    public void setListable(boolean f) {
+    @Column
+    @Index(name = "dace_listable")
+    public Boolean isListable() {
+        return permission.isListable();
+    }
+
+    public void setListable(Boolean f) {
         permission.setListable(f);
     }
 
-    public void setCreatable(boolean f) {
+    @Column
+    @Index(name = "dace_creatable")
+    public Boolean isCreatable() {
+        return permission.isCreatable();
+    }
+
+    public void setCreatable(Boolean f) {
         permission.setCreatable(f);
     }
 
-    public void setDeletable(boolean f) {
-        permission.setDeletable(f);
+    @Column
+    @Index(name = "dace_deletable")
+    public Boolean isDeletable() {
+        return permission.isDeletable();
     }
 
-    public void setAdmin(boolean f) {
-        permission.setAdmin(f);
+    public void setDeletable(Boolean f) {
+        permission.setDeletable(f);
     }
 
     @Override
     protected Serializable naturalId() {
-        return new IdComposite(naturalId(dacl), naturalId(principal));
+        return new IdComposite(//
+                naturalId(dacl), //
+                naturalId(principal));
     }
 
     @Override
