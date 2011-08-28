@@ -52,4 +52,19 @@ public class DACLDto
         this.entries = entries;
     }
 
+    public boolean addEntry(DACEDto entry) {
+        if (entry == null)
+            throw new NullPointerException("entry");
+        if (entries.contains(entry))
+            return false;
+        entries.add(entry);
+        return true;
+    }
+
+    public boolean removeEntry(DACEDto entry) {
+        if (entry == null)
+            throw new NullPointerException("entry");
+        return entries.remove(entry);
+    }
+
 }
