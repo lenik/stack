@@ -30,7 +30,7 @@
                             <p:commandButton value="收信" style="width:100%;" actionListener="#{mailManageBean.gotoInbox}"
                                 update=":mainForm:mainTabView" />
                             <p:commandButton value="写信" style="width:100%;"
-                                actionListener="#{mailManageBean.gotoWritebox}" />
+                                actionListener="#{mailManageBean.gotoWritebox}" update=":mainForm:mainTabView" />
                         </t:panelGrid>
                     </p:panel>
                     <p:selectOneListbox value="#{mailManageBean.selectedItemId}" style="width:150px;height:300px;">
@@ -59,9 +59,45 @@
                             </p:column>
                         </p:dataGrid>
                     </p:tab>
-                    <p:tab id="detailTab">
-                        <h:outputText value="#{mailManageBean.activeMail.mail.subject}" />
-                        <h:outputText value="#{mailManageBean.activeMail.mail.body}" />
+                    <p:tab id="contentTab">
+                        <t:panelGrid columns="2">
+                            <h:outputText value="邮件标题:" />
+                            <h:outputText value="#{mailManageBean.activeMail.mail.subject}" />
+
+                            <h:outputText value="发件人:" />
+                            <h:outputText value="#{mailManageBean.activeMail.mail.fromUser.displayName}" />
+
+                            <h:outputText value="时间:" />
+                            <h:outputText value="#{mailManageBean.activeMail.lastModified}" />
+
+                            <h:outputText value="收件人:" />
+                            <h:outputText value="#{mailManageBean.activeMail.recipients}" />
+
+                            <t:panelGroup colspan="2">
+                                <h:outputText value="#{mailManageBean.activeMail.mail.body}" />
+                                <p:editor value="#{mailManageBean.activeMail.mail.body}" />
+                            </t:panelGroup>
+                        </t:panelGrid>
+                    </p:tab>
+                    <p:tab id="writeTab" title="写信">
+                        <t:panelGrid columns="2">
+                            <h:outputText value="邮件标题:" />
+                            <p:inputText value="#{mailManageBean.activeMail.mail.subject}" />
+
+                            <h:outputText value="发件人:" />
+                            <h:outputText value="#{mailManageBean.activeMail.mail.fromUser.displayName}" />
+
+                            <h:outputText value="时间:" />
+                            <h:outputText value="#{mailManageBean.activeMail.lastModified}" />
+
+                            <h:outputText value="收件人:" />
+                            <h:outputText value="#{mailManageBean.activeMail.recipients}" />
+
+                            <t:panelGroup colspan="2">
+                                <h:outputText value="#{mailManageBean.activeMail.mail.body}" />
+                                <p:editor value="#{mailManageBean.activeMail.mail.body}" />
+                            </t:panelGroup>
+                        </t:panelGrid>
                     </p:tab>
                 </p:tabView>
             </t:panelGrid>

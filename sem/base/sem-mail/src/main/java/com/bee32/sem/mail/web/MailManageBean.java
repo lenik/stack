@@ -3,9 +3,7 @@ package com.bee32.sem.mail.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.html.HtmlOutputText;
 import javax.faces.model.SelectItem;
-import javax.free.Strings;
 
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.component.tabview.TabView;
@@ -32,7 +30,8 @@ public class MailManageBean
     MailDeliveryDto activeMail;
 
     MailManageBean() {
-        getDetailTab().setRendered(false);
+        getContentTab().setRendered(false);
+        getWriteTab().setRendered(false);
         initFolderItems();
         listMails();
     }
@@ -48,6 +47,8 @@ public class MailManageBean
             Tab tab = (Tab) getBoxTab();
             tab.setTitle(folderDto.getLabel());
         }
+        TabView mainTabView = (TabView) getMainTabView();
+        mainTabView.setActiveIndex(0);
     }
 
     public void initFolderItems() {
@@ -78,28 +79,31 @@ public class MailManageBean
         listMails();
     }
 
+    public void gotoWritebox() {
+        Tab tab = (Tab) getWriteTab();
+        tab.setTitle("写信");
+        tab.setRendered(true);
+
+        TabView mainTabView = (TabView) getMainTabView();
+        mainTabView.setActiveIndex(2);
+    }
+
     public void getDeliveryContent() {
         long deliveryId = Long.parseLong(selectedDeliveryId);
         MailDelivery delivery = serviceFor(MailDelivery.class).getOrFail(deliveryId);
         MailDeliveryDto deliveryDto = DTOs.marshal(MailDeliveryDto.class, delivery);
-        TabView mainTabView = getMainTabView();
-        Tab tab = new Tab();
-        tab.setTitle(Strings.ellipse(deliveryDto.getMail().getSubject(), 7));
-        // XXX set tab closable
-        mainTabView.getChildren().add(tab);
+        Tab contentTab = (Tab) getContentTab();
+        contentTab.setTitle(deliveryDto.getMail().getSubject());
+        contentTab.setRendered(true);
 
-        HtmlOutputText outputMailSubject = new HtmlOutputText();
-        outputMailSubject.setValue(deliveryDto.getMail().getSubject());
-        tab.getChildren().add(outputMailSubject);
+        TabView mainTabView = getMainTabView();
+        activeMail = deliveryDto;
+        mainTabView.setActiveIndex(1);
     }
 
     public void onMailItemSelect() {
         // XXX
         System.err.print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    }
-
-    public void gotoWritebox() {
-        // XXX
     }
 
     public String getSelectedItemId() {
