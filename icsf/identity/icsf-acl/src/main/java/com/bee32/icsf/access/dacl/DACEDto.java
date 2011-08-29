@@ -7,7 +7,6 @@ import javax.free.ParseException;
 import com.bee32.icsf.access.Permission;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.util.EntityDto;
-import com.bee32.plover.ox1.principal.AbstractPrincipalDto;
 import com.bee32.plover.ox1.principal.PrincipalDto;
 
 public class DACEDto
@@ -27,11 +26,10 @@ public class DACEDto
         super(selection);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected void _marshal(DACE source) {
         dacl = new DACLDto().ref(source.getDacl());
-        principal = mref(AbstractPrincipalDto.class, source.getPrincipal());
+        principal = mref(PrincipalDto.class, source.getPrincipal());
         permission = source.getPermission().clone();
     }
 
