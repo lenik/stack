@@ -12,7 +12,6 @@ import javax.faces.model.SelectItem;
 import javax.free.TempFile;
 
 import org.apache.commons.lang.StringUtils;
-import org.primefaces.component.dialog.Dialog;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.UploadedFile;
@@ -346,7 +345,7 @@ public class MaterialViewBean
     }
 
     public void doAddMaterial() {
-        Dialog dialog = getMaterialDialog();
+//        Dialog dialog = getMaterialDialog();
         visible = true;
 
         String name = activeMaterial.getName();
