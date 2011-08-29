@@ -96,12 +96,12 @@ public class MailDeliveryDto
     }
 
     public String getTee() {
-        if (orientation == MailOrientation.FROM) {
+        if (orientation.getLabel().equals(MailOrientation.FROM.getLabel())) {
             UserDto fromUser = mail.getFromUser();
             return fromUser == null ? mail.getFrom() : fromUser.getDisplayName();
         }
 
-        else if (orientation == MailOrientation.RECIPIENT) {
+        else if (orientation.getLabel().equals(MailOrientation.RECIPIENT.getLabel())) {
             List<UserDto> recipientUsers = mail.getRecipientUsers();
             if (recipientUsers.isEmpty())
                 return mail.getRecipient();
@@ -111,14 +111,27 @@ public class MailDeliveryDto
             return first;
         }
 
-        else if (orientation == MailOrientation.CC)
+        else if (orientation.getLabel().equals(MailOrientation.CC.getLabel()))
             return mail.getCc();
 
-        else if (orientation == MailOrientation.BCC)
+        else if (orientation.getLabel().equals(MailOrientation.BCC.getLabel()))
             return mail.getBcc();
 
         else
             throw new UnexpectedException();
     }
 
+    public String getRecipients() {
+        String temp = null;
+        if (mail.getRecipientUsers().size() > 0) {
+            for (UserDto recipient : mail.getRecipientUsers()) {
+                if (temp == null)
+                    temp = recipient.getDisplayName();
+                else
+                    temp += "," + recipient.getDisplayName();
+            }
+        } else
+            temp = mail.getRecipient();
+        return temp;
+    }
 }
