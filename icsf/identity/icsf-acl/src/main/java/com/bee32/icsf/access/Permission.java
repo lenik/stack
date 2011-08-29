@@ -11,12 +11,8 @@ public final class Permission
     private int allowBits;
     private int denyBits;
 
-    public static final int READ = 1 << 2;
-    public static final int WRITE = 1 << 1;
-    public static final int EXECUTE = 1 << 0;
-    static final char C_READ = 'r';
-    static final char C_WRITE = 'w';
-    static final char C_EXECUTE = 'x';
+    public static final int ADMIN = 1 << 31;
+    static final char C_ADMIN = 'S';
 
     public static final int LIST = 1 << 5;
     public static final int CREATE = 1 << 4; // CREATE-USER on user repository
@@ -25,8 +21,12 @@ public final class Permission
     static final char C_CREATE = 'c';
     static final char C_DELETE = 'd';
 
-    public static final int ADMIN = 1 << 31;
-    static final char C_ADMIN = 'S';
+    public static final int READ = 1 << 2;
+    public static final int WRITE = 1 << 1;
+    public static final int EXECUTE = 1 << 0;
+    static final char C_READ = 'r';
+    static final char C_WRITE = 'w';
+    static final char C_EXECUTE = 'x';
 
     public Permission(int allowBits) {
         this.allowBits = allowBits;
@@ -131,18 +131,8 @@ public final class Permission
     }
 
     public boolean implies(int bits) {
-        int anyDenied = denyBits & bits;
-        if (anyDenied != 0)
-            return false;
-
-        if (isAdmin())
-            return true;
-
-        int allAllowed = this.allowBits & bits;
-        if (allAllowed == bits)
-            return true;
-
-        return false;
+        int m = bits & ~denyBits & allowBits;
+        return m == bits;
     }
 
     public boolean implies(String mode) {
@@ -152,10 +142,11 @@ public final class Permission
         return implies(o);
     }
 
-    public boolean implies(Permission permission) {
-        if (permission == null)
-            throw new NullPointerException("permission");
-        return implies(permission.allowBits, permission.denyBits);
+    public boolean implies(Permission other) {
+        if (other == null)
+            throw new NullPointerException("other");
+        int effectiveBits = other.allowBits & ~other.denyBits;
+        return implies(effectiveBits);
     }
 
     /**

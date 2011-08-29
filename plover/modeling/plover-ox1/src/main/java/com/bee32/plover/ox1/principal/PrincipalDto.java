@@ -1,6 +1,5 @@
 package com.bee32.plover.ox1.principal;
 
-
 public class PrincipalDto
         extends AbstractPrincipalDto<Principal> {
 
