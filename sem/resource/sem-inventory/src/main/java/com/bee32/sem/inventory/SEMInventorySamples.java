@@ -13,8 +13,12 @@ import com.bee32.sem.inventory.entity.MaterialPreferredLocation;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.entity.MaterialWarehouseOption;
 import com.bee32.sem.inventory.entity.StockLocation;
+import com.bee32.sem.inventory.entity.StockOrder;
+import com.bee32.sem.inventory.entity.StockOrderItem;
+import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.people.SEMPeopleSamples;
+import com.bee32.sem.test.DateSamples;
 import com.bee32.sem.world.SEMWorldSamples;
 import com.bee32.sem.world.thing.Unit;
 
@@ -22,12 +26,12 @@ import com.bee32.sem.world.thing.Unit;
 public class SEMInventorySamples
         extends SampleContribution {
 
-    public static StockWarehouse stockWarehouse = new StockWarehouse();
+    public static StockWarehouse tokyoWarehouse = new StockWarehouse();
     public static StockLocation area1 = new StockLocation();
     public static StockLocation area2 = new StockLocation();
     public static StockLocation hokaidou = new StockLocation();
 
-    public static StockWarehouse stockWarehouseRawMaterialOne = new StockWarehouse();
+    public static StockWarehouse rawWarehouse = new StockWarehouse();
     public static StockLocation loc1 = new StockLocation();
     public static StockLocation loc11 = new StockLocation();
 
@@ -43,30 +47,30 @@ public class SEMInventorySamples
     public static MaterialCategory emotBlue = new MaterialCategory(cardEmotion, "绝望至死卡");
 
     static {
-        stockWarehouse.setName("TK-01");
-        stockWarehouse.setLabel("东京一号仓库");
-        stockWarehouse.setAddress("東京都中央区八重洲一丁目5番3-103号");
-        stockWarehouse.setPhone("911");
-        stockWarehouse.setManager(SEMPeopleSamples.jackPerson);
+        tokyoWarehouse.setName("TK-01");
+        tokyoWarehouse.setLabel("东京一号仓库");
+        tokyoWarehouse.setAddress("東京都中央区八重洲一丁目5番3-103号");
+        tokyoWarehouse.setPhone("911");
+        tokyoWarehouse.setManager(SEMPeopleSamples.jackPerson);
 
         area1.setAddress("5番-11区");
-        area1.setWarehouse(stockWarehouse);
+        area1.setWarehouse(tokyoWarehouse);
 
         area2.setAddress("5番-3区");
-        area2.setWarehouse(stockWarehouse);
+        area2.setWarehouse(tokyoWarehouse);
 
         hokaidou.setAddress("5番3号");
-        hokaidou.setWarehouse(stockWarehouse);
+        hokaidou.setWarehouse(tokyoWarehouse);
         hokaidou.setParent(area1);
 
-        stockWarehouseRawMaterialOne.setName("1#原材料仓库");
-        stockWarehouseRawMaterialOne.setLabel("1#原材料仓库");
+        rawWarehouse.setName("1#原材料仓库");
+        rawWarehouse.setLabel("1#原材料仓库");
 
         loc1.setAddress("第一排");
-        loc1.setWarehouse(stockWarehouseRawMaterialOne);
+        loc1.setWarehouse(rawWarehouse);
 
         loc11.setAddress("第一号");
-        loc11.setWarehouse(stockWarehouseRawMaterialOne);
+        loc11.setWarehouse(rawWarehouse);
         loc11.setParent(loc1);
 
         MaterialPreferredLocation cskdpPL1 = new MaterialPreferredLocation();
@@ -82,7 +86,7 @@ public class SEMInventorySamples
         MaterialWarehouseOption cskdpOption = new MaterialWarehouseOption();
         cskdpOption.setMaterial(cskdp);
         cskdpOption.setSafetyStock(new BigDecimal(6));
-        cskdpOption.setWarehouse(stockWarehouse);
+        cskdpOption.setWarehouse(tokyoWarehouse);
 
         cskdp.setName("超时空大炮");
         cskdp.setUnitHint("体积");
@@ -130,22 +134,60 @@ public class SEMInventorySamples
         cskdpRefmaAttr.setMaterial(cskdp);
         cskdpRefmaAttr.setName("其他材料");
         cskdpRefmaAttr.setValue("凝气胶,巴基球等");
-
     }
 
     @Override
     protected void preamble() {
-        add(stockWarehouse);
+        add(tokyoWarehouse);
+        addBulk(area1, area2, hokaidou);
 
-        addBulk(area1, area2);
-        add(hokaidou);
-
-        add(stockWarehouseRawMaterialOne);
+        add(rawWarehouse);
         addBulk(loc1, loc11);
 
         addBulk(catCard, cardNature, cardBeast, cardEmotion, emotSad, emotLone, emotBlue);
-
         addBulk(cskdp, gundam);
+
+        StockOrder order1 = new StockOrder();
+        {
+            order1.setSubject(StockOrderSubject.TAKE_IN);
+            order1.setSerial("__TEST:0001");
+            order1.setWarehouse(rawWarehouse);
+            order1.setBeginTime(DateSamples.D_2010_07_20);
+
+            StockOrderItem item1 = new StockOrderItem(order1);
+            item1.setMaterial(gundam);
+            item1.setBatch("C01");
+            item1.setQuantity(8);
+            item1.setPrice(1200.0);
+            order1.addItem(item1);
+
+            StockOrderItem item2 = new StockOrderItem(order1);
+            item2.setMaterial(cskdp);
+            item2.setQuantity(85);
+            item2.setPrice(755.0);
+            order1.addItem(item2);
+        }
+        add(order1);
+
+        StockOrder order2 = new StockOrder();
+        {
+            order2.setSubject(StockOrderSubject.PLAN_OUT);
+            order2.setSerial("__TEST:0002");
+            order2.setWarehouse(rawWarehouse);
+            order1.setBeginTime(DateSamples.D_2010_07_30);
+
+            StockOrderItem item1 = new StockOrderItem(order2);
+            item1.setMaterial(gundam);
+            item1.setBatch("C01");
+            item1.setQuantity(-3);
+            order2.addItem(item1);
+
+            StockOrderItem item2 = new StockOrderItem(order2);
+            item2.setMaterial(cskdp);
+            item2.setQuantity(-15);
+            order2.addItem(item2);
+        }
+        add(order2);
     }
 
 }

@@ -33,6 +33,7 @@ public final class StockOrderSubject
     static final List<StockOrderSubject> commons = new ArrayList<StockOrderSubject>();
     static final Set<String> packingSet = new HashSet<String>();
     static final Set<String> virtualSet = new HashSet<String>();
+    static final Set<String> commonSet = new HashSet<String>();
 
     StockOrderSubject(String value, String name, int flags) {
         super(value, name);
@@ -48,8 +49,10 @@ public final class StockOrderSubject
             packingSet.add(value);
 
         boolean _special = virtual || packing || special;
-        if (!_special)
+        if (!_special) {
             commons.add(this);
+            commonSet.add(value);
+        }
     }
 
     public boolean isNegative() {
@@ -81,6 +84,10 @@ public final class StockOrderSubject
 
     public static List<StockOrderSubject> getCommons() {
         return commons;
+    }
+
+    public static Set<String> getCommonSet() {
+        return commonSet;
     }
 
     public static Set<String> getPackingSet() {

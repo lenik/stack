@@ -147,7 +147,6 @@ public class StockOrder
         this.jobId = jobId;
     }
 
-
     /**
      * 出库单对应的客户或入库单对应的供应商
      */

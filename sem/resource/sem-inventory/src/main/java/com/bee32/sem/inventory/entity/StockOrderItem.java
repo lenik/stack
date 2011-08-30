@@ -50,6 +50,12 @@ public class StockOrderItem
         state = item.state;
     }
 
+    public StockOrderItem(StockOrder parent) {
+        if (parent == null)
+            throw new NullPointerException("parent");
+        this.parent = parent;
+    }
+
     /**
      * 所属订单
      */
