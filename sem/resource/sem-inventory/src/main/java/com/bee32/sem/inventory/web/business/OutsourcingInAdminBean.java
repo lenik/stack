@@ -331,7 +331,7 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
 
     public void findOut() {
         List<StockOutsourcing> os = serviceFor(StockOutsourcing.class).list(
-                StockCriteria.outsourcingOutHaveNoCorrespondingIn(findDateFrom, findDateTo));
+                StockCriteria.danglingOutsourcing(findDateFrom, findDateTo));
 
         findedOuts = DTOs.marshalList(StockOutsourcingDto.class, StockOutsourcingDto.ORDER_ITEMS, os, true);
     }
