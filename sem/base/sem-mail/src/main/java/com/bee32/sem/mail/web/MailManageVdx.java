@@ -1,5 +1,6 @@
 package com.bee32.sem.mail.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
@@ -35,15 +36,21 @@ public abstract class MailManageVdx
         return findComponent(WRITE_TAB);
     }
 
-    protected int getWriteboxIndex(String tabTitle) {
+    protected int getActiveBoxIndex(String tabTitle) {
         int index = 0;
         TabView mainTabView = (TabView) findComponent(MAIN_TAB_VIEW);
         List<UIComponent> subTabs = mainTabView.getChildren();
-        for (UIComponent component : subTabs) {
-            Tab tab = (Tab) component;
+        List<Tab> renderedTabs = new ArrayList<Tab>();
+        for (UIComponent uicomponent : subTabs) {
+            Tab tab = (Tab) uicomponent;
+            if (tab.isRendered())
+                renderedTabs.add(tab);
+        }
+
+        for (Tab tab : renderedTabs) {
             String title = tab.getTitle();
             if (title.equals(tabTitle))
-                index = subTabs.indexOf(component);
+                index = subTabs.indexOf(tab);
         }
         return index;
     }
