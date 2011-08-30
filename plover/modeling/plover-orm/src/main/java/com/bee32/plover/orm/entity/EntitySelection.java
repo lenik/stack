@@ -66,19 +66,9 @@ public final class EntitySelection {
             e.getEntityFlags().setLocked(locked);
     }
 
-    public void setUserLock1(boolean userLock1) {
+    public void setUserLock(boolean userLock) {
         for (Entity<?> e : selection)
-            e.getEntityFlags().setUserLock1(userLock1);
-    }
-
-    public void setUserLock2(boolean userLock2) {
-        for (Entity<?> e : selection)
-            e.getEntityFlags().setUserLock2(userLock2);
-    }
-
-    public void setUserLock3(boolean userLock3) {
-        for (Entity<?> e : selection)
-            e.getEntityFlags().setUserLock3(userLock3);
+            e.getEntityFlags().setUserLock(userLock);
     }
 
     public void setExtra(boolean extra) {

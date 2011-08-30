@@ -425,9 +425,7 @@ public abstract class Entity<K extends Serializable>
     }
 
     static final int lockMask = EntityFlags.LOCKED //
-            | EntityFlags.USER_LOCK1 //
-            | EntityFlags.USER_LOCK2 //
-            | EntityFlags.USER_LOCK3;
+            | EntityFlags.USER_LOCK;
 
     @Transient
     @Override

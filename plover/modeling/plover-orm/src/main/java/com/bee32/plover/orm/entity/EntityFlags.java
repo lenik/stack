@@ -7,28 +7,32 @@ public class EntityFlags
 
     private static final long serialVersionUID = 1L;
 
+    // Basic Area [0..7]
     public static final int MARKED = 1 << 0;
     public static final int DELETED = 1 << 1;
-    public static final int LOCKED = 1 << 2;
+    public static final int HIDDEN = 1 << 2;
+    public static final int LOCKED = 1 << 3;
+    public static final int USER_LOCK = 1 << 4;
 
-    public static final int USER_LOCK1 = 1 << 3;
-    public static final int USER_LOCK2 = 1 << 4;
-    public static final int USER_LOCK3 = 1 << 5;
+    // Private Area [8..15]
+    public static final int EXTRA = 1 << 8;
+    public static final int EXTRA2 = 1 << 9;
+    public static final int USER_SEL1 = 1 << 10;
+    public static final int USER_SEL2 = 1 << 11;
+    public static final int USER_SEL3 = 1 << 12;
 
-    public static final int EXTRA = 1 << 6;
-    public static final int EXTRA2 = 1 << 7;
-
-    public static final int USER_SEL1 = 1 << 8;
-    public static final int USER_SEL2 = 1 << 9;
-    public static final int USER_SEL3 = 1 << 10;
-
-    public static final int WARN = 1 << 11;
-    public static final int ERROR = 1 << 12;
-
+    // Style Area [16..23]
     public static final int BOLD = 1 << 16;
     public static final int ITALIC = 1 << 17;
     public static final int UNDERLINE = 1 << 18;
     public static final int STRIKELINE = 1 << 19;
+    public static final int GRAY = 1 << 20;
+    public static final int BLINK = 1 << 21;
+
+    // Severity Area [24..31]
+    public static final int WARN = 1 << 30;
+    public static final int ERROR = 1 << 31;
+    public static final int FATAL = WARN | ERROR;
 
     public EntityFlags() {
         super();
@@ -54,6 +58,14 @@ public class EntityFlags
         set(DELETED, deleted);
     }
 
+    public boolean isHidden() {
+        return test(HIDDEN);
+    }
+
+    public void setHidden(boolean hidden) {
+        set(HIDDEN, hidden);
+    }
+
     public boolean isLocked() {
         return test(LOCKED);
     }
@@ -62,28 +74,12 @@ public class EntityFlags
         set(LOCKED, locked);
     }
 
-    public boolean isUserLock1() {
-        return test(USER_LOCK1);
+    public boolean isUserLock() {
+        return test(USER_LOCK);
     }
 
-    public void setUserLock1(boolean userLock1) {
-        set(USER_LOCK1, userLock1);
-    }
-
-    public boolean isUserLock2() {
-        return test(USER_LOCK2);
-    }
-
-    public void setUserLock2(boolean userLock2) {
-        set(USER_LOCK2, userLock2);
-    }
-
-    public boolean isUserLock3() {
-        return test(USER_LOCK3);
-    }
-
-    public void setUserLock3(boolean userLock3) {
-        set(USER_LOCK3, userLock3);
+    public void setUserLock(boolean userLock) {
+        set(USER_LOCK, userLock);
     }
 
     public boolean isExtra() {
@@ -126,22 +122,6 @@ public class EntityFlags
         set(USER_SEL3, userSel3);
     }
 
-    public boolean isWarn() {
-        return test(WARN);
-    }
-
-    public void setWarn(boolean warn) {
-        set(WARN, warn);
-    }
-
-    public boolean isError() {
-        return test(ERROR);
-    }
-
-    public void setError(boolean error) {
-        set(ERROR, error);
-    }
-
     public boolean isBold() {
         return test(BOLD);
     }
@@ -172,6 +152,38 @@ public class EntityFlags
 
     public void setStrikeline(boolean strikeline) {
         set(STRIKELINE, strikeline);
+    }
+
+    public boolean isGray() {
+        return test(GRAY);
+    }
+
+    public void setGray(boolean gray) {
+        set(GRAY, gray);
+    }
+
+    public boolean isBlink() {
+        return test(BLINK);
+    }
+
+    public void setBlink(boolean blink) {
+        set(BLINK, blink);
+    }
+
+    public boolean isWarn() {
+        return test(WARN);
+    }
+
+    public void setWarn(boolean warn) {
+        set(WARN, warn);
+    }
+
+    public boolean isError() {
+        return test(ERROR);
+    }
+
+    public void setError(boolean error) {
+        set(ERROR, error);
     }
 
 }
