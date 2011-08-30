@@ -123,15 +123,19 @@ public class MailDeliveryDto
 
     public String getRecipients() {
         String temp = null;
-        if (mail.getRecipientUsers().size() > 0) {
-            for (UserDto recipient : mail.getRecipientUsers()) {
-                if (temp == null)
-                    temp = recipient.getDisplayName();
-                else
-                    temp += "," + recipient.getDisplayName();
-            }
-        } else
-            temp = mail.getRecipient();
+        if (mail.isNull())
+            temp = "";
+        else {
+            if (mail.getRecipientUsers().size() > 0) {
+                for (UserDto recipient : mail.getRecipientUsers()) {
+                    if (temp == null)
+                        temp = recipient.getDisplayName();
+                    else
+                        temp += "," + recipient.getDisplayName();
+                }
+            } else
+                temp = mail.getRecipient();
+        }
         return temp;
     }
 }

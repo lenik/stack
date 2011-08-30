@@ -39,6 +39,8 @@ public class MailDto
 
     MailDto referrer;
 
+    String recipients;
+
     public MailDto() {
         super();
     }
@@ -71,6 +73,8 @@ public class MailDto
         int refs = selection.bits & REFERRER_MASK;
         if (refs > 0)
             referrer = new MailDto(otherbits | --refs).marshal(source.getReferrer());
+
+        recipients = assemblerRecipients();
 
     }
 
@@ -250,6 +254,28 @@ public class MailDto
 
     public void setReferrer(MailDto referrer) {
         this.referrer = referrer;
+    }
+
+    public String getRecipients() {
+        return recipients;
+    }
+
+    public void setRecipients(String recipients) {
+        this.recipients = recipients;
+    }
+
+    public String assemblerRecipients() {
+        String temp = null;
+        if (recipientUsers.size() > 0) {
+            for (UserDto recipient : recipientUsers) {
+                if (temp == null)
+                    temp = recipient.getDisplayName();
+                else
+                    temp += "," + recipient.getDisplayName();
+            }
+        } else
+            temp = recipient == null ? "" : recipient;
+        return temp;
     }
 
 }
