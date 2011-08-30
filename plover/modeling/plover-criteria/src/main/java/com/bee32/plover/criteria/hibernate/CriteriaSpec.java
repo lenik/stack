@@ -251,12 +251,12 @@ public abstract class CriteriaSpec {
         return new SQLProjection(sql, groupBy, columnAliases, types);
     }
 
-    protected static ProjectionElement groupProperty(String propertyName) {
-        return new PropertyProjection(propertyName, true);
-    }
-
     protected static ProjectionElement property(String propertyName) {
         return new PropertyProjection(propertyName);
+    }
+
+    protected static ProjectionElement group(String propertyName) {
+        return new GroupPropertyProjection(propertyName);
     }
 
     protected static ProjectionElement id() {
