@@ -12,7 +12,7 @@ public class SEMPurchaseMenu
 
     public static MenuNode PURCHASE = menu(SEMFrameMenu.BIZ1, "purchase");
 
-    static MenuNode orderAdmin = entry(PURCHASE, 1, "orderAdmin", PURCHASE_.join("purchase/index-rich.jsf"));
+    static MenuNode makeOrderAdmin = entry(PURCHASE, 1, "makeOrderAdmin", PURCHASE_.join("makeOrder/index-rich.jsf"));
 
     @Override
     protected void preamble() {
