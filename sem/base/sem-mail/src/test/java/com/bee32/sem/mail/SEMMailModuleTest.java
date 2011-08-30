@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Locale;
 
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.sem.mail.web.MailFilterController;
 import com.bee32.sem.test.SEMTestCase;
 
 @Using(SEMMailUnit.class)
@@ -30,7 +29,8 @@ public class SEMMailModuleTest
             throws IOException {
 
         new SEMMailModuleTest().browseAndWait(//
-                MailFilterController.PREFIX + "index.do"//
+// MailFilterController.PREFIX + "index.do"//
+                SEMMailModule.PREFIX + "/mailbox/index-rich.jsf"//
                 );
     }
 
