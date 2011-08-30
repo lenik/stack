@@ -3,6 +3,7 @@ package com.bee32.sem.inventory.util;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.criterion.Criterion;
 
@@ -12,6 +13,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
@@ -63,23 +65,45 @@ public class StockCriteria
     }
 
     @LeftHand(StockOutsourcing.class)
-    public static ICriteriaElement outsourcingOutHaveNoCorrespondingIn(Date from, Date to) {
+    public static ICriteriaElement danglingOutsourcing(Date from, Date to) {
         return compose(alias("output", "out"), //
                 isNull("input"), //
                 equals("out._subject", StockOrderSubject.OSP_OUT.getValue()), //
                 EntityCriteria.betweenEx("out.createdDate", from, to));
     }
 
-    @LeftHand(StockOrderItem.class)
-    public static ICriteriaElement actualsNoCache(Date date, List<Material> materials, String cbatch) {
+    @LeftHand(Object.class)
+    public static ICriteriaElement sum(Set<String> subjects, Date date, List<Material> materials, String cbatch,
+            StockLocation location) {
+        if (subjects == null)
+            throw new NullPointerException("subjects");
+        if (date == null)
+            throw new NullPointerException("date");
+        if (materials == null)
+            throw new NullPointerException("materials");
+
         ICriteriaElement _cbatch = null;
+        ICriteriaElement _location = null;
         if (cbatch != null)
             _cbatch = equals("cbatch", cbatch);
+        if (location != null)
+            _location = equals("location", location);
         return compose(//
                 lessOrEquals("beginDate", date), //
-                not(in("_subject", StockOrderSubject.getVirtualSet())), //
+                not(in("_subject", subjects)), //
                 in("material", materials), //
-                _cbatch);
+                _cbatch, //
+                _location);
+    }
+
+    public static ICriteriaElement sumOfCommons(Date date, List<Material> materials, String cbatch,
+            StockLocation location) {
+        return sum(StockOrderSubject.getCommonSet(), date, materials, cbatch, location);
+    }
+
+    public static ICriteriaElement sumOfVirtuals(Date date, List<Material> materials, String cbatch,
+            StockLocation location) {
+        return sum(StockOrderSubject.getVirtualSet(), date, materials, cbatch, location);
     }
 
 }
