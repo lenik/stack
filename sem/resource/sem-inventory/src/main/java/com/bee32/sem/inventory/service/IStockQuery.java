@@ -67,7 +67,7 @@ public interface IStockQuery {
      *            指定库位，<code>null</code> 表示所有库位。
      * @return 对应物料的余量。
      */
-    Map<Material, BigDecimal> getAvailableQuantity(Date date, List<Material> materials, String cbatch,
+    Map<Material, BigDecimal> getVirtualQuantity(Date date, List<Material> materials, String cbatch,
             StockLocation location);
 
     /**

@@ -7,8 +7,7 @@ import java.util.Map;
 
 import javax.free.NotImplementedException;
 
-import com.bee32.plover.criteria.hibernate.ProjectionElement;
-import com.bee32.plover.criteria.hibernate.PropertyProjection;
+import com.bee32.plover.criteria.hibernate.GroupPropertyProjection;
 import com.bee32.plover.criteria.hibernate.SumProjection;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
@@ -35,22 +34,26 @@ public class StockQuery
         // getLatestPack.. then, non-virtual
         // or, >date, non-packing, non-virtual
 
-        ProjectionElement cbatchGrouping = null;
-        if (cbatch != null)
-            cbatchGrouping = new PropertyProjection("cbatch", true);
-
-        List<BigDecimal> quantities = asFor(StockOrderItem.class).listMisc(//
+        List<?> list = asFor(StockOrderItem.class).listMisc(//
+                new GroupPropertyProjection("material"), //
                 new SumProjection("quantity"), //
-                new PropertyProjection("material", true), //
-                cbatchGrouping, //
-                StockCriteria.actualsNoCache(date, materials, cbatch));
+                GroupPropertyProjection.optional("cbatch", cbatch), //
+                GroupPropertyProjection.optional("location", location), //
+                StockCriteria.sumOfCommons(date, materials, cbatch, location));
 
         return null;
     }
 
     @Override
-    public Map<Material, BigDecimal> getAvailableQuantity(Date date, List<Material> materials, String cbatch,
+    public Map<Material, BigDecimal> getVirtualQuantity(Date date, List<Material> materials, String cbatch,
             StockLocation location) {
+        List<?> list = asFor(StockOrderItem.class).listMisc(//
+                new GroupPropertyProjection("material"), //
+                new SumProjection("quantity"), //
+                GroupPropertyProjection.optional("cbatch", cbatch), //
+                GroupPropertyProjection.optional("location", location), //
+                StockCriteria.sumOfVirtuals(date, materials, cbatch, location));
+
         return null;
     }
 

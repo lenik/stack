@@ -44,7 +44,7 @@ public abstract class AbstractStockQuery
         List<Material> _materials = new ArrayList<Material>(1);
         _materials.add(material);
 
-        Map<Material, BigDecimal> map = getAvailableQuantity(date, _materials, null, null);
+        Map<Material, BigDecimal> map = getVirtualQuantity(date, _materials, null, null);
         BigDecimal quantity = map.get(material);
         return quantity;
     }
