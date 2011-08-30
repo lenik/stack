@@ -18,6 +18,11 @@ public class PloverOx1Unit
         extends PersistenceUnit {
 
     @Override
+    public int getPriority() {
+        return -1;
+    }
+
+    @Override
     protected void preamble() {
         add(Principal.class);
         add(User.class);
