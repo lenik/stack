@@ -18,8 +18,9 @@
 
     <ui:define name="content">
         <h:outputStylesheet>
-            .ftd{width:150px;}
+            .ftd{width:150px;vertical-align:top;}
             .std{vertical-align:top;}
+            .wbf{width:80px;}
         </h:outputStylesheet>
         <h:form id="mainForm">
             <t:panelGrid columns="2" style="width:100%" columnClasses="ftd,std">
@@ -75,32 +76,51 @@
 
                             <t:panelGroup colspan="2">
                                 <h:outputText value="#{mailManageBean.activeMail.mail.body}" />
-                                <p:editor value="#{mailManageBean.activeMail.mail.body}" />
                             </t:panelGroup>
                         </t:panelGrid>
                     </p:tab>
                     <p:tab id="writeTab" title="写信">
-                        <t:panelGrid columns="2">
+                        <p:toolbar>
+                            <p:toolbarGroup>
+                                <p:commandButton value="发送" actionListener="#{mailManageBean.sendMail}" />
+                                <p:commandButton value="存草稿" />
+                                <p:commandButton value="取消" />
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <t:panelGrid columns="2" columnClasses="wbf,wbs" style="width:100%;">
                             <h:outputText value="邮件标题:" />
-                            <p:inputText value="#{mailManageBean.activeMail.mail.subject}" />
+                            <p:inputText value="#{mailManageBean.draft.subject}" />
 
                             <h:outputText value="发件人:" />
-                            <h:outputText value="#{mailManageBean.activeMail.mail.fromUser.displayName}" />
+                            <p:inputText value="#{mailManageBean.draft.fromUser.displayName}" readonly="true" />
 
                             <h:outputText value="时间:" />
-                            <h:outputText value="#{mailManageBean.activeMail.lastModified}" />
+                            <h:outputText value="#{mailManageBean.draft.lastModified}" />
 
                             <h:outputText value="收件人:" />
-                            <h:outputText value="#{mailManageBean.activeMail.recipients}" />
+                            <t:panelGroup>
+                                <p:inputText value="#{mailManageBean.draft.recipients}" />
+                                <p:commanButton value="..." actionListener="" />
+                            </t:panelGroup>
 
                             <t:panelGroup colspan="2">
-                                <h:outputText value="#{mailManageBean.activeMail.mail.body}" />
-                                <p:editor value="#{mailManageBean.activeMail.mail.body}" />
+                                <p:editor value="#{mailManageBean.activeMail.mail.body}" style="width:100%;" />
                             </t:panelGroup>
                         </t:panelGrid>
                     </p:tab>
                 </p:tabView>
             </t:panelGrid>
+        </h:form>
+
+        <h:form id="dialogForm">
+            <p:dialog header="选择收件人" widgetVar="recipientDialog" height="400" width="500">
+                <p:dataTable var="item" value="#{mailManageBean.allUserList}">
+                    <p:column selectionMode="multiple" />
+                    <p:column headerText="姓名">
+                        <h:outputText value="#{item.displayName}" />
+                    </p:column>
+                </p:dataTable>
+            </p:dialog>
         </h:form>
 
     </ui:define>

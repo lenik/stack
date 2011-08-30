@@ -9,10 +9,15 @@ import org.primefaces.component.tabview.Tab;
 import org.primefaces.component.tabview.TabView;
 import org.springframework.context.annotation.Scope;
 
+import com.bee32.icsf.login.LoginInfo;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.ox1.principal.IUserPrincipal;
+import com.bee32.plover.ox1.principal.User;
+import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.mail.MailFlags;
 import com.bee32.sem.mail.dto.MailDeliveryDto;
+import com.bee32.sem.mail.dto.MailDto;
 import com.bee32.sem.mail.dto.MailFolderDto;
 import com.bee32.sem.mail.entity.MailDelivery;
 import com.bee32.sem.mail.entity.MailFolder;
@@ -28,12 +33,20 @@ public class MailManageBean
     List<SelectItem> folderItems;
     List<MailDeliveryDto> mails;
     MailDeliveryDto activeMail;
+    MailDto draft;
+    List<UserDto> allUserList;
 
     MailManageBean() {
         getContentTab().setRendered(false);
         getWriteTab().setRendered(false);
         initFolderItems();
         listMails();
+        initUserList();
+    }
+
+    public void initUserList() {
+        List<User> users = serviceFor(User.class).list();
+        allUserList = DTOs.marshalList(UserDto.class, users);
     }
 
     public void listMails() {
@@ -80,12 +93,18 @@ public class MailManageBean
     }
 
     public void gotoWritebox() {
+        MailDto mail = new MailDto().create();
+        IUserPrincipal currentUser = LoginInfo.getInstance().getUser();
+        User user = serviceFor(User.class).getOrFail(currentUser.getId());
+        UserDto userDto = DTOs.marshal(UserDto.class, user, true);
+        mail.setFromUser(userDto);
+        draft = mail;
         Tab tab = (Tab) getWriteTab();
-        tab.setTitle("写信");
         tab.setRendered(true);
+        int index = getActiveBoxIndex("写信");
 
         TabView mainTabView = (TabView) getMainTabView();
-        mainTabView.setActiveIndex(2);
+        mainTabView.setActiveIndex(index);
     }
 
     public void getDeliveryContent() {
@@ -99,6 +118,10 @@ public class MailManageBean
         TabView mainTabView = getMainTabView();
         activeMail = deliveryDto;
         mainTabView.setActiveIndex(1);
+    }
+
+    public void sendMail() {
+        // xxx
     }
 
     public void onMailItemSelect() {
@@ -138,4 +161,15 @@ public class MailManageBean
         this.activeMail = activeMail;
     }
 
+    public MailDto getDraft() {
+        return draft;
+    }
+
+    public void setDraft(MailDto draft) {
+        this.draft = draft;
+    }
+
+    public List<UserDto> getAllUserList() {
+        return allUserList;
+    }
 }
