@@ -2,6 +2,7 @@ package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.arch.util.PriorityComparator;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.builtin.IPloverConfManager;
 import com.bee32.plover.orm.builtin.StaticPloverConfManager;
@@ -71,29 +73,41 @@ public class SamplesLoader
         NO_PROGRESS = NOPClosure.getInstance();
     }
 
+    int preLoadIndex = 0;
     int loadIndex = 0;
-    int simLoadIndex = 0;
 
-    /**
-     * Static: the samples-loader maybe instantiated twice cuz WebAppCtx & AppCtx. So here just make
-     * the map static to avoid of duplicates.
-     */
-    static IdentityHashSet scannedPackages = new IdentityHashSet();
+    public synchronized void loadSamples(final SamplePackage rootPackage, final Closure<SampleContribution> progress) {
 
-    public synchronized void loadSamples(final SamplePackage pack, final Closure<SampleContribution> progress) {
+        final List<SamplePackage> queue = new ArrayList<SamplePackage>();
 
-        if (logger.isDebugEnabled()) {
-            _simLoadSamples(pack, new IdentityHashSet());
+        /**
+         * Static: the samples-loader maybe instantiated twice cuz WebAppCtx & AppCtx. So here just
+         * make the map static to avoid of duplicates.
+         */
+        IdentityHashSet scannedPackages = new IdentityHashSet();
 
-            logger.debug("Normal samples structure: ");
-            SampleDumper.dump(DiamondPackage.NORMAL);
+        _preLoad(rootPackage, scannedPackages, queue);
+
+        int index = 0;
+        for (SamplePackage p : queue) {
+            int priority = p.getPriority();
+            if (priority == 0) {
+                priority = ++index;
+                p.setPriority(priority);
+            }
         }
+        Collections.sort(queue, PriorityComparator.INSTANCE);
+
+        logger.debug("Normal samples structure: ");
+        SampleDumper.dump(DiamondPackage.NORMAL);
 
         class LoadingProcess
                 implements Runnable {
             @Override
             public void run() {
-                _loadSamples(pack, progress);
+                for (SamplePackage pack : queue) {
+                    _actualLoad(pack, progress);
+                }
             }
         }
 
@@ -103,27 +117,23 @@ public class SamplesLoader
         ThreadHttpContext.escape(process);
     }
 
-    void _simLoadSamples(SamplePackage pack, IdentityHashSet set) {
+    void _preLoad(SamplePackage pack, IdentityHashSet set, List<SamplePackage> queue) {
         if (!set.add(pack))
             return;
 
         for (SamplePackage dependency : pack.getDependencies())
-            _simLoadSamples(dependency, set);
+            _preLoad(dependency, set, queue);
 
         int objId = ObjectPool.id(pack);
-        logger.info("Pre-Load: " + (++simLoadIndex) + ", " + pack.getName() + " @" + objId);
+        logger.info("Pre-Load: " + (++preLoadIndex) + ", " + pack.getName() + " @" + objId + " :" + pack.getPriority());
+
+        queue.add(pack);
     }
 
     @SuppressWarnings("unchecked")
-    void _loadSamples(SamplePackage pack, Closure<SampleContribution> progress) {
+    void _actualLoad(SamplePackage pack, Closure<SampleContribution> progress) {
         if (pack == null)
             throw new NullPointerException("pack");
-
-        if (!scannedPackages.add(pack))
-            return;
-
-        for (SamplePackage dependency : pack.getDependencies())
-            _loadSamples(dependency, progress);
 
         pack.beginLoad();
 

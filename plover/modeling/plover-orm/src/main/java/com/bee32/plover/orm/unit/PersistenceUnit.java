@@ -11,17 +11,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.arch.util.ClassCatalog;
+import com.bee32.plover.arch.util.IPriority;
+import com.bee32.plover.orm.util.SamplePackage;
 
 /**
  * ImportUnit is merged by PersistenceUnit implementation.
  */
 public abstract class PersistenceUnit
-        extends ClassCatalog {
+        extends ClassCatalog
+        implements IPriority {
 
     static Logger logger = LoggerFactory.getLogger(PersistenceUnit.class);
 
     static Map<Class<?>, PersistenceUnit> instances = new HashMap<Class<?>, PersistenceUnit>();
 
+    private int priority;
     private boolean postProcessed;
 
     public PersistenceUnit(ClassCatalog... imports) {
@@ -49,6 +53,14 @@ public abstract class PersistenceUnit
             instances.put(unitClass, instance);
         }
         return instance;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     @Override
@@ -121,6 +133,12 @@ public abstract class PersistenceUnit
 
     public static PersistenceUnit getDefault() {
         return defaultUnit;
+    }
+
+    public void beginLoadSamples(SamplePackage samplePackage) {
+    }
+
+    public void endLoadSamples(SamplePackage samplePackage) {
     }
 
 }

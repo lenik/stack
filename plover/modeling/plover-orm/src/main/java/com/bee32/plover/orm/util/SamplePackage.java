@@ -2,18 +2,23 @@ package com.bee32.plover.orm.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.free.LinkedSet;
+
 import com.bee32.plover.arch.Component;
+import com.bee32.plover.arch.util.IPriority;
 import com.bee32.plover.orm.entity.Entity;
 
 public class SamplePackage
-        extends Component {
+        extends Component
+        implements IPriority {
 
     final List<Entity<?>> instances = new ArrayList<Entity<?>>();
-    final Set<SamplePackage> dependencies = new HashSet<SamplePackage>();
+    final Set<SamplePackage> dependencies = new LinkedSet<SamplePackage>();
+
+    private int priority;
 
     public SamplePackage() {
         super();
@@ -21,6 +26,15 @@ public class SamplePackage
 
     public SamplePackage(String name) {
         super(name);
+    }
+
+    @Override
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     public boolean isVirtual() {

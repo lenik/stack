@@ -38,6 +38,7 @@ public class StandardSamples
         if (pkg == null) {
             pkg = new StdUnitPackage(node);
             convertedMap.put(node, pkg);
+
             for (ClassCatalog dependency : node.getDependencies()) {
                 PersistenceUnit depUnit = (PersistenceUnit) dependency;
                 StdUnitPackage depPkg = convert(depUnit);
@@ -54,8 +55,16 @@ public class StandardSamples
     static class StdUnitPackage
             extends SamplePackage {
 
+        PersistenceUnit unit;
+
         public StdUnitPackage(PersistenceUnit unit) {
             super(unit.getName());
+
+            this.unit = unit;
+
+            int priority = unit.getPriority();
+            setPriority(priority);
+
             for (Class<?> localClass : unit.getLocalClasses()) {
                 scan(localClass);
             }
@@ -85,6 +94,16 @@ public class StandardSamples
 
                 addInstance(entity);
             }
+        }
+
+        @Override
+        public void beginLoad() {
+            unit.beginLoadSamples(this);
+        }
+
+        @Override
+        public void endLoad() {
+            unit.endLoadSamples(this);
         }
 
     }
