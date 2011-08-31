@@ -73,10 +73,12 @@ public class SamplesLoader
         NO_PROGRESS = NOPClosure.getInstance();
     }
 
-    int preLoadIndex = 0;
     int loadIndex = 0;
 
     public synchronized void loadSamples(final SamplePackage rootPackage, final Closure<SampleContribution> progress) {
+
+        logger.debug("Normal samples structure: ");
+        SampleDumper.dump(DiamondPackage.NORMAL);
 
         final List<SamplePackage> queue = new ArrayList<SamplePackage>();
 
@@ -98,8 +100,11 @@ public class SamplesLoader
         }
         Collections.sort(queue, PriorityComparator.INSTANCE);
 
-        logger.debug("Normal samples structure: ");
-        SampleDumper.dump(DiamondPackage.NORMAL);
+        for (int i = 0; i < queue.size(); i++) {
+            SamplePackage pack = queue.get(i);
+            int objId = ObjectPool.id(pack);
+            logger.info("Load-Queue: " + (i + 1) + ", " + pack.getName() + " @" + objId + " :" + pack.getPriority());
+        }
 
         class LoadingProcess
                 implements Runnable {
@@ -123,9 +128,6 @@ public class SamplesLoader
 
         for (SamplePackage dependency : pack.getDependencies())
             _preLoad(dependency, set, queue);
-
-        int objId = ObjectPool.id(pack);
-        logger.info("Pre-Load: " + (++preLoadIndex) + ", " + pack.getName() + " @" + objId + " :" + pack.getPriority());
 
         queue.add(pack);
     }
