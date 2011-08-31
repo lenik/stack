@@ -3,7 +3,6 @@ package com.bee32.sem.inventory.service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
@@ -50,13 +49,18 @@ public interface IStockQuery {
      *            指定库位，<code>null</code> 表示所有库位。
      * @return 对应物料的余量。
      */
-    Map<Material, BigDecimal> getActualQuantity(Date date, List<Material> materials, String cbatch,
-            StockLocation location);
+    StockItemList getActualSummary(Date date, List<Material> materials, String cbatch, StockLocation location);
 
     /**
      * 获取给定时间的某单一物料的实际库存余量，不考虑批号和库位。
+     *
+     * @param cbatch
+     *            指定批号， <code>null</code> 表示不限批号。
+     * @param location
+     *            指定库位，<code>null</code> 表示所有库位。
+     * @return 对应物料的余量。
      */
-    BigDecimal getActualQuantity(Date date, Material material);
+    BigDecimal getActualQuantity(Date date, Material material, String cbatch, StockLocation location);
 
     /**
      * 获取给定时间的某单一物料的实际库存余量（或曰逻辑库存余量），不考虑批号和库位。
@@ -67,12 +71,17 @@ public interface IStockQuery {
      *            指定库位，<code>null</code> 表示所有库位。
      * @return 对应物料的余量。
      */
-    Map<Material, BigDecimal> getVirtualQuantity(Date date, List<Material> materials, String cbatch,
-            StockLocation location);
+    StockItemList getVirtualSummary(Date date, List<Material> materials, String cbatch, StockLocation location);
 
     /**
      * 获取给定时间的某单一物料的可用库存余量（或曰逻辑库存余量），不考虑批号和库位。
+     *
+     * @param cbatch
+     *            指定批号， <code>null</code> 表示不限批号。
+     * @param location
+     *            指定库位，<code>null</code> 表示所有库位。
+     * @return 对应物料的余量。
      */
-    BigDecimal getAvailableQuantity(Date date, Material material);
+    BigDecimal getAvailableQuantity(Date date, Material material, String cbatch, StockLocation location);
 
 }

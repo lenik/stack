@@ -82,28 +82,25 @@ public class StockCriteria
         if (materials == null)
             throw new NullPointerException("materials");
 
-        ICriteriaElement _cbatch = null;
-        ICriteriaElement _location = null;
-        if (cbatch != null)
-            _cbatch = equals("cbatch", cbatch);
-        if (location != null)
-            _location = equals("location", location);
         return compose(//
-                lessOrEquals("beginDate", date), //
-                not(in("_subject", subjects)), //
+                alias("parent", "parent"), //
+                lessOrEquals("parent.beginTime", date), //
+                in("parent._subject", subjects), //
                 in("material", materials), //
-                _cbatch, //
-                _location);
+                _equals("cbatch", cbatch), //
+                _equals("location", location));
     }
 
     public static ICriteriaElement sumOfCommons(Date date, List<Material> materials, String cbatch,
             StockLocation location) {
-        return sum(StockOrderSubject.getCommonSet(), date, materials, cbatch, location);
+        Set<String> subjects = StockOrderSubject.getCommonSet();
+        return sum(subjects, date, materials, cbatch, location);
     }
 
     public static ICriteriaElement sumOfVirtuals(Date date, List<Material> materials, String cbatch,
             StockLocation location) {
-        return sum(StockOrderSubject.getVirtualSet(), date, materials, cbatch, location);
+        Set<String> subjects = StockOrderSubject.getVirtualSet();
+        return sum(subjects, date, materials, cbatch, location);
     }
 
 }
