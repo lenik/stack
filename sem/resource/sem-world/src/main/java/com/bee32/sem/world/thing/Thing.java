@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
@@ -24,7 +25,6 @@ public abstract class Thing<X extends XPool<?>>
     private static final long serialVersionUID = 1L;
 
     public static final int SERIAL_LENGTH = 32;
-    public static final int NAME_LENGTH = 40;
     public static final int UNIT_HINT_LENGTH = 20;
 
     String serial;
@@ -64,16 +64,9 @@ public abstract class Thing<X extends XPool<?>>
     /**
      * 物品名称（必填）
      */
-    @Column(length = NAME_LENGTH, nullable = false)
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * 物品名称（必填）
-     */
-    public void setName(String name) {
-        this.name = name;
+    @Transient
+    public String getDisplayName() {
+        return label;
     }
 
     /**

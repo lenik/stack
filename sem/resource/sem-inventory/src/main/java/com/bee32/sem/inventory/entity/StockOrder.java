@@ -187,6 +187,20 @@ public class StockOrder
         this.warehouse = warehouse;
     }
 
+    @Transient
+    @Override
+    public String getDisplayName() {
+        StringBuilder sb = new StringBuilder();
+        sb.append('[');
+        sb.append(subject.getDisplayName());
+        sb.append(']');
+        if (label != null) {
+            sb.append(' ');
+            sb.append(label);
+        }
+        return sb.toString();
+    }
+
     /**
      * 建立对等单
      *

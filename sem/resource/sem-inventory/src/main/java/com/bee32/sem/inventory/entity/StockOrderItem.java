@@ -75,6 +75,15 @@ public class StockOrderItem
         return parent.getBeginTime();
     }
 
+    @Transient
+    @Override
+    public String getDisplayName() {
+        if (label != null)
+            return label;
+        else
+            return material.getDisplayName();
+    }
+
     /**
      * 物料
      */

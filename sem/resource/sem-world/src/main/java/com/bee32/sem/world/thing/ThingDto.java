@@ -18,7 +18,6 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
     public static final int CONV_MAP = 1;
 
     String serial;
-    String name;
 
     UnitDto unit;
     String unitHint;
@@ -38,7 +37,6 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         super.__marshal(source);
 
         serial = source.getSerial();
-        name = source.getName();
         unitHint = source.getUnitHint();
         unit = mref(UnitDto.class, source.getUnit());
 
@@ -53,7 +51,6 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         super.__unmarshalTo(target);
 
         target.setSerial(serial);
-        target.setName(name);
         target.setUnitHint(unitHint);
         merge(target, "unit", unit);
         merge(target, "unitConv", unitConv);
@@ -65,7 +62,6 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         super.__parse(map);
 
         serial = map.getString("serial");
-        name = map.getString("name");
 
         unit = new UnitDto().ref(map.getString("unit"));
         unitConv = new UnitConvDto().ref(map.getString("unitConv"));
@@ -79,16 +75,6 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         if (serial != null && serial.isEmpty())
             serial = null;
         this.serial = serial;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-        this.name = name;
     }
 
     public UnitDto getUnit() {

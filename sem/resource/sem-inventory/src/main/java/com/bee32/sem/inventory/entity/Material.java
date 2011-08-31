@@ -76,6 +76,11 @@ public class Material
         super(name, serial);
     }
 
+    @Transient
+    public String getDisplayName() {
+        return label;
+    }
+
     /**
      * 物料类别
      */

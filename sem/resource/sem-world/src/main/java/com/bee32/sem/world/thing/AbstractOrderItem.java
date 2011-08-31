@@ -42,6 +42,11 @@ public abstract class AbstractOrderItem
     }
 
     @Transient
+    public String getDisplayName() {
+        return getLabel();
+    }
+
+    @Transient
     protected abstract Date getFxrDate();
 
     /**
