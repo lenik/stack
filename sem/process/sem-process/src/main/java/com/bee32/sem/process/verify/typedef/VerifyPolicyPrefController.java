@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.orm.web.EntityHandler;
 import com.bee32.plover.orm.web.EntityHelper;
 import com.bee32.plover.orm.web.basic.BasicEntityController;
@@ -29,7 +30,8 @@ import com.bee32.sem.process.verify.util.VerifiableEntity;
 
 @RequestMapping(VerifyPolicyPrefController.PREFIX + "/*")
 public class VerifyPolicyPrefController
-        extends BasicEntityController<VerifyPolicyPref, String, VerifyPolicyPrefDto> {
+        extends BasicEntityController<VerifyPolicyPref, String, VerifyPolicyPrefDto>
+        implements ITypeAbbrAware {
 
     public static final String PREFIX = SEMProcessModule.PREFIX + "/pref";
 
@@ -56,7 +58,7 @@ public class VerifyPolicyPrefController
         List<VerifyPolicyPref> prefs = new ArrayList<VerifyPolicyPref>();
 
         for (Class<?> verifiableType : VerifyPolicyManager.getVerifiableTypes()) {
-            String typeId = VerifyPolicyPref.typeId(verifiableType);
+            String typeId = ABBR.abbr(verifiableType);
             // prefDao.get(typeId);
 
             VerifyPolicyPref pref = asFor(VerifyPolicyPref.class).get(typeId);
