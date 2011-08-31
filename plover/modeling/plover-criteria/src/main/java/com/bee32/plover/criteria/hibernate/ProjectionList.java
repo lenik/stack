@@ -11,15 +11,17 @@ public class ProjectionList
 
     private static final long serialVersionUID = 1L;
 
-    List<ProjectionElement> elements;
+    List<ProjectionElement> elements = new ArrayList<ProjectionElement>();
 
     public ProjectionList() {
-        elements = new ArrayList<ProjectionElement>();
     }
 
     public ProjectionList(ProjectionElement... elements) {
-        for (ProjectionElement element : elements)
+        for (ProjectionElement element : elements) {
+            if (element == null)
+                continue;
             this.elements.add(element);
+        }
     }
 
     @Override
@@ -30,8 +32,10 @@ public class ProjectionList
         return projectionList;
     }
 
-    public ProjectionList add(ProjectionElement proj) {
-        elements.add(proj);
+    public ProjectionList add(ProjectionElement projectionElement) {
+        if (projectionElement == null)
+            throw new NullPointerException("projectionElement");
+        elements.add(projectionElement);
         return this;
     }
 
