@@ -46,6 +46,10 @@ public class SEMInventorySamples
     public static MaterialCategory emotLone = new MaterialCategory(cardEmotion, "孤独至死卡");
     public static MaterialCategory emotBlue = new MaterialCategory(cardEmotion, "绝望至死卡");
 
+    public static StockOrder takeInOrder1;
+    public static StockOrder takeOutOrder1;
+    public static StockOrder planOrder1;
+
     static {
         tokyoWarehouse.setName("TK-01");
         tokyoWarehouse.setLabel("东京一号仓库");
@@ -88,7 +92,7 @@ public class SEMInventorySamples
         cskdpOption.setSafetyStock(new BigDecimal(6));
         cskdpOption.setWarehouse(tokyoWarehouse);
 
-        cskdp.setName("超时空大炮");
+        cskdp.setLabel("超时空大炮");
         cskdp.setUnitHint("体积");
         cskdp.setUnit(Unit.CUBIC_METER);
         cskdp.setBarCode("1693612370098");
@@ -97,7 +101,7 @@ public class SEMInventorySamples
         cskdp.setPreferredLocations(Arrays.asList(cskdpPL1, cskdpPL2));
         cskdp.setOptions(Arrays.asList(cskdpOption));
 
-        gundam.setName("机动战士高达");
+        gundam.setLabel("机动战士高达");
         gundam.setUnit(Unit.CUBIC_METER);
         gundam.setBarCode("LSLT-02");
         gundam.setSerial("TeST-SHAKANA-11");
@@ -134,6 +138,59 @@ public class SEMInventorySamples
         cskdpRefmaAttr.setMaterial(cskdp);
         cskdpRefmaAttr.setName("其他材料");
         cskdpRefmaAttr.setValue("凝气胶,巴基球等");
+
+        takeInOrder1 = new StockOrder();
+        {
+            takeInOrder1.setSubject(StockOrderSubject.TAKE_IN);
+            takeInOrder1.setSerial("..TK_I:1");
+            takeInOrder1.setWarehouse(rawWarehouse);
+            takeInOrder1.setBeginTime(DateSamples.D_2010_07_20);
+
+            StockOrderItem item1 = new StockOrderItem(takeInOrder1);
+            item1.setMaterial(gundam);
+            item1.setBatch("C01");
+            item1.setQuantity(8);
+            item1.setPrice(1200.0);
+            takeInOrder1.addItem(item1);
+
+            StockOrderItem item2 = new StockOrderItem(takeInOrder1);
+            item2.setMaterial(cskdp);
+            item2.setQuantity(85);
+            item2.setPrice(755.0);
+            takeInOrder1.addItem(item2);
+        }
+
+        takeOutOrder1 = new StockOrder();
+        {
+            takeOutOrder1.setSubject(StockOrderSubject.TAKE_OUT);
+            takeOutOrder1.setSerial("..TK_O:1");
+            takeOutOrder1.setWarehouse(rawWarehouse);
+            takeOutOrder1.setBeginTime(DateSamples.D_2010_07_20);
+
+            StockOrderItem item1 = new StockOrderItem(takeOutOrder1);
+            item1.setMaterial(cskdp);
+            item1.setQuantity(-30);
+            takeOutOrder1.addItem(item1);
+        }
+
+        planOrder1 = new StockOrder();
+        {
+            planOrder1.setSubject(StockOrderSubject.PLAN_OUT);
+            planOrder1.setSerial("..PLAN:1");
+            planOrder1.setWarehouse(rawWarehouse);
+            takeOutOrder1.setBeginTime(DateSamples.D_2010_07_30);
+
+            StockOrderItem item1 = new StockOrderItem(planOrder1);
+            item1.setMaterial(gundam);
+            item1.setBatch("C01");
+            item1.setQuantity(-3);
+            planOrder1.addItem(item1);
+
+            StockOrderItem item2 = new StockOrderItem(planOrder1);
+            item2.setMaterial(cskdp);
+            item2.setQuantity(-15);
+            planOrder1.addItem(item2);
+        }
     }
 
     @Override
@@ -147,47 +204,9 @@ public class SEMInventorySamples
         addBulk(catCard, cardNature, cardBeast, cardEmotion, emotSad, emotLone, emotBlue);
         addBulk(cskdp, gundam);
 
-        StockOrder order1 = new StockOrder();
-        {
-            order1.setSubject(StockOrderSubject.TAKE_IN);
-            order1.setSerial("__TEST:0001");
-            order1.setWarehouse(rawWarehouse);
-            order1.setBeginTime(DateSamples.D_2010_07_20);
-
-            StockOrderItem item1 = new StockOrderItem(order1);
-            item1.setMaterial(gundam);
-            item1.setBatch("C01");
-            item1.setQuantity(8);
-            item1.setPrice(1200.0);
-            order1.addItem(item1);
-
-            StockOrderItem item2 = new StockOrderItem(order1);
-            item2.setMaterial(cskdp);
-            item2.setQuantity(85);
-            item2.setPrice(755.0);
-            order1.addItem(item2);
-        }
-        add(order1);
-
-        StockOrder order2 = new StockOrder();
-        {
-            order2.setSubject(StockOrderSubject.PLAN_OUT);
-            order2.setSerial("__TEST:0002");
-            order2.setWarehouse(rawWarehouse);
-            order1.setBeginTime(DateSamples.D_2010_07_30);
-
-            StockOrderItem item1 = new StockOrderItem(order2);
-            item1.setMaterial(gundam);
-            item1.setBatch("C01");
-            item1.setQuantity(-3);
-            order2.addItem(item1);
-
-            StockOrderItem item2 = new StockOrderItem(order2);
-            item2.setMaterial(cskdp);
-            item2.setQuantity(-15);
-            order2.addItem(item2);
-        }
-        add(order2);
+        add(takeInOrder1);
+        add(takeOutOrder1);
+        add(planOrder1);
     }
 
 }

@@ -63,7 +63,7 @@ public interface IStockQuery {
     BigDecimal getActualQuantity(Date date, Material material, String cbatch, StockLocation location);
 
     /**
-     * 获取给定时间的某单一物料的实际库存余量（或曰逻辑库存余量），不考虑批号和库位。
+     * 获取给定时间的某单一物料的可用库存余量（或曰逻辑库存余量），不考虑批号和库位。
      *
      * @param cbatch
      *            指定批号， <code>null</code> 表示不限批号。
@@ -82,6 +82,28 @@ public interface IStockQuery {
      *            指定库位，<code>null</code> 表示所有库位。
      * @return 对应物料的余量。
      */
-    BigDecimal getAvailableQuantity(Date date, Material material, String cbatch, StockLocation location);
+    BigDecimal getVirtualQuantity(Date date, Material material, String cbatch, StockLocation location);
+
+    /**
+     * 获取给定时间的某单一物料的“锁定”的库存数量（或曰计划数量），不考虑批号和库位。
+     *
+     * @param cbatch
+     *            指定批号， <code>null</code> 表示不限批号。
+     * @param location
+     *            指定库位，<code>null</code> 表示所有库位。
+     * @return 对应物料的数量。
+     */
+    StockItemList getPlanSummary(Date date, List<Material> materials, String cbatch, StockLocation location);
+
+    /**
+     * 获取给定时间的某单一物料的"锁定“的库存数量（或曰计划数量），不考虑批号和库位。
+     *
+     * @param cbatch
+     *            指定批号， <code>null</code> 表示不限批号。
+     * @param location
+     *            指定库位，<code>null</code> 表示所有库位。
+     * @return 对应物料的数量。
+     */
+    BigDecimal getPlanQuantity(Date date, Material material, String cbatch, StockLocation location);
 
 }

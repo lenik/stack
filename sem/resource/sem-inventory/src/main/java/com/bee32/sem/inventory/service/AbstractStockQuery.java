@@ -28,13 +28,25 @@ public abstract class AbstractStockQuery
     @Override
     public StockItemList getActualSummary(Date date, List<Material> materials, String cbatch, StockLocation location) {
         ICriteriaElement selection = StockCriteria.sumOfCommons(date, materials, cbatch, location);
-        return getSummary(selection, date, materials, cbatch, location);
+        StockItemList summary = getSummary(selection, date, materials, cbatch, location);
+        summary.setLabel("【汇总】实有库存余量清单");
+        return summary;
     }
 
     @Override
     public StockItemList getVirtualSummary(Date date, List<Material> materials, String cbatch, StockLocation location) {
         ICriteriaElement selection = StockCriteria.sumOfVirtuals(date, materials, cbatch, location);
-        return getSummary(selection, date, materials, cbatch, location);
+        StockItemList summary = getSummary(selection, date, materials, cbatch, location);
+        summary.setLabel("【汇总】可用库存余量清单");
+        return summary;
+    }
+
+    @Override
+    public StockItemList getPlanSummary(Date date, List<Material> materials, String cbatch, StockLocation location) {
+        ICriteriaElement selection = StockCriteria.sumOfVirtualOnly(date, materials, cbatch, location);
+        StockItemList summary = getSummary(selection, date, materials, cbatch, location);
+        summary.setLabel("【汇总】计划/锁定库存数量清单");
+        return summary;
     }
 
     @Override
@@ -53,7 +65,7 @@ public abstract class AbstractStockQuery
     }
 
     @Override
-    public BigDecimal getAvailableQuantity(Date date, Material material, String cbatch, StockLocation location) {
+    public BigDecimal getVirtualQuantity(Date date, Material material, String cbatch, StockLocation location) {
         if (date == null)
             throw new NullPointerException("date");
         if (material == null)
@@ -63,6 +75,21 @@ public abstract class AbstractStockQuery
         _materials.add(material);
 
         StockItemList list = getVirtualSummary(date, _materials, cbatch, location);
+        StockOrderItem first = list.getItems().get(0);
+        return first.getQuantity();
+    }
+
+    @Override
+    public BigDecimal getPlanQuantity(Date date, Material material, String cbatch, StockLocation location) {
+        if (date == null)
+            throw new NullPointerException("date");
+        if (material == null)
+            throw new NullPointerException("material");
+
+        List<Material> _materials = new ArrayList<Material>(1);
+        _materials.add(material);
+
+        StockItemList list = getPlanSummary(date, _materials, cbatch, location);
         StockOrderItem first = list.getItems().get(0);
         return first.getQuantity();
     }

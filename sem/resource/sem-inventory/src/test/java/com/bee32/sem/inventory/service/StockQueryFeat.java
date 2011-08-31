@@ -1,6 +1,7 @@
 package com.bee32.sem.inventory.service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,7 @@ import com.bee32.sem.inventory.SEMInventorySamples;
 import com.bee32.sem.inventory.SEMInventoryUnit;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
+import com.bee32.sem.world.monetary.FxrQueryException;
 
 @Scope("prototype")
 @Using(SEMInventoryUnit.class)
@@ -29,7 +31,8 @@ public class StockQueryFeat
     @Inject
     SamplesLoaderActivator samplesLoaderActivator;
 
-    void list() {
+    void list()
+            throws FxrQueryException {
         System.out.println("----------- LIST BEGIN -----------");
         List<Material> materials = Arrays.asList( //
                 SEMInventorySamples.gundam, //
@@ -40,8 +43,17 @@ public class StockQueryFeat
         StockItemList actual = stockQuery.getActualSummary(date, materials, null, null);
         StockItemList virtual = stockQuery.getVirtualSummary(date, materials, null, null);
 
-        System.out.println(actual);
-        System.out.println(virtual);
+        System.out.println(actual.dump());
+        System.out.println(virtual.dump());
+
+        BigDecimal actualTotal = actual.getNativeTotal();
+        BigDecimal virtualTotal = virtual.getNativeTotal();
+        System.out.println(actualTotal);
+        System.out.println(virtualTotal);
+
+        BigDecimal gunAq = stockQuery.getActualQuantity(date, SEMInventorySamples.gundam, null, null);
+        BigDecimal gunVq = stockQuery.getVirtualQuantity(date, SEMInventorySamples.gundam, null, null);
+
         System.out.println("----------- LIST END -----------");
     }
 

@@ -103,4 +103,10 @@ public class StockCriteria
         return sum(subjects, date, materials, cbatch, location);
     }
 
+    public static ICriteriaElement sumOfVirtualOnly(Date date, List<Material> materials, String cbatch,
+            StockLocation location) {
+        Set<String> subjects = StockOrderSubject.getVirtualOnlySet();
+        return sum(subjects, date, materials, cbatch, location);
+    }
+
 }
