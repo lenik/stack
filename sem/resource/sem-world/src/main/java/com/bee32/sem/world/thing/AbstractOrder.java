@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.free.IIndentedOut;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
@@ -15,6 +16,7 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.misc.i18n.ICurrencyAware;
 import com.bee32.sem.world.monetary.FxrQueryException;
@@ -32,6 +34,11 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
     transient MCVector total;
 
     BigDecimal nativeTotal; // Redundant.
+
+    @Transient
+    public String getDisplayName() {
+        return label;
+    }
 
     /**
      * 单据明细，只读。
@@ -127,6 +134,33 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
     protected void invalidateTotal() {
         total = null;
         nativeTotal = null;
+    }
+
+    public void dump(IIndentedOut out) {
+        String orderType = getClass().getSimpleName();
+
+        String serialPart = "";
+        if (getSerial() != null) {
+            serialPart = " [" + getSerial() + "]";
+        }
+
+        out.println(orderType + ": " + getDisplayName() + serialPart + " ON " + getBeginTime());
+        out.enter();
+        for (Item item : this) {
+            out.printf("%10d | %-30s | %12s | %12s | %12s", //
+                    item.getDisplayName(), //
+                    item.getQuantity(), //
+                    item.getPrice(), //
+                    item.getTotal());
+            out.println();
+        }
+        out.leave();
+    }
+
+    public String dump() {
+        PrettyPrintStream buf = new PrettyPrintStream();
+        dump(buf);
+        return buf.toString();
     }
 
 }
