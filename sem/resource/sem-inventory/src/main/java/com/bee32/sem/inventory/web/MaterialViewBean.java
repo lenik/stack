@@ -110,6 +110,8 @@ public class MaterialViewBean
 
         UserFile userFile = new UserFile();
         userFile.setPath(upFile.getFileName());
+        userFile.setRefType(Material.class);
+        userFile.setRefId(activeMaterial.getId());
 
         try {
             FileBlob fileBlob = FileBlob.commit(tempFile, true);
@@ -327,7 +329,7 @@ public class MaterialViewBean
         activeMaterial.addPreferredLocation(mpld);
     }
 
-    boolean visible=true;
+    boolean visible = true;
 
     public boolean isVisible() {
         return visible;
@@ -345,14 +347,14 @@ public class MaterialViewBean
     }
 
     public void doAddMaterial() {
-//        Dialog dialog = getMaterialDialog();
+        // Dialog dialog = getMaterialDialog();
         visible = true;
 
-        String name = activeMaterial.getName();
+        String label = activeMaterial.getLabel();
         MaterialCategoryDto category = activeMaterial.getCategory();
         UnitDto unit = activeMaterial.getUnit();
         UnitConvDto unitConv = activeMaterial.getUnitConv();
-        if (name == null || name.isEmpty()) {
+        if (label == null || label.isEmpty()) {
             uiLogger.error("物料名称不能为空!");
             return;
         }
@@ -377,9 +379,9 @@ public class MaterialViewBean
             uiLogger.info("保存物料成功!");
 
             visible = false;
-// getMaterialDialog().setVisible(false);
-// getMaterialDialog().setInView(false);
-// getMaterialDialog().setRendered(false);
+            // getMaterialDialog().setVisible(false);
+            // getMaterialDialog().setInView(false);
+            // getMaterialDialog().setRendered(false);
 
         } catch (Exception e) {
             uiLogger.error("保存物料失败" + e.getMessage(), e);
