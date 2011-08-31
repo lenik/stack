@@ -1,5 +1,7 @@
 package com.bee32.plover.orm.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.inject.ActivatorBean;
@@ -11,7 +13,9 @@ import com.bee32.plover.inject.ActivatorBean;
 public class SamplesLoaderActivator
         extends ActivatorBean {
 
-    private static boolean loadNormalSamples;
+    static Logger logger = LoggerFactory.getLogger(SamplesLoaderActivator.class);
+
+    private static boolean loadNormalSamples = true;
     private static boolean loadWorseSamples;
 
     public static boolean isLoadNormalSamples() {
@@ -32,6 +36,8 @@ public class SamplesLoaderActivator
 
     @Override
     public void activate() {
+        logger.info("Activate samples loader");
+
         if (loadNormalSamples) {
             SamplesLoader samplesLoader = appctx.getBean(SamplesLoader.class);
             samplesLoader.loadNormalSamples();

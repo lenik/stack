@@ -1,5 +1,6 @@
 package com.bee32.sem.test;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.mortbay.resource.Resource;
@@ -37,6 +38,9 @@ public class SEMTestCase
 
     protected ApplicationContext appctx;
 
+    @Inject
+    SamplesLoaderActivator samplesLoaderActivator;
+
     static {
         // XXX zip-closed fix. could be a bug of jetty.
         Resource.setDefaultUseCaches(false);
@@ -49,9 +53,6 @@ public class SEMTestCase
     @Override
     protected void applicationInitialized(ApplicationContext context) {
         this.appctx = context;
-
-        SamplesLoaderActivator.setLoadNormalSamples(true);
-        context.getBean(SamplesLoaderActivator.class);
     }
 
     protected String getLoggedInUser() {
