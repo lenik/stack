@@ -35,6 +35,7 @@ public class MailManageBean
     MailDeliveryDto activeMail;
     MailDto draft;
     List<UserDto> allUserList;
+    UserDto[] selectedUsers;
 
     MailManageBean() {
         getContentTab().setRendered(false);
@@ -93,12 +94,11 @@ public class MailManageBean
     }
 
     public void gotoWritebox() {
-        MailDto mail = new MailDto().create();
+        draft = new MailDto().create();
         IUserPrincipal currentUser = LoginInfo.getInstance().getUser();
         User user = serviceFor(User.class).getOrFail(currentUser.getId());
         UserDto userDto = DTOs.marshal(UserDto.class, user, true);
-        mail.setFromUser(userDto);
-        draft = mail;
+        draft.setFromUser(userDto);
         Tab tab = (Tab) getWriteTab();
         tab.setRendered(true);
         int index = getActiveBoxIndex("写信");
@@ -120,12 +120,26 @@ public class MailManageBean
         mainTabView.setActiveIndex(1);
     }
 
-    public void sendMail() {
-        // xxx
+    public void doSelectUsers() {
+        String temp = null;
+        List<UserDto> recipientUsers = new ArrayList<UserDto>();
+        for (UserDto userDto : selectedUsers) {
+            recipientUsers.add(userDto);
+            if (temp == null)
+                temp = userDto.getDisplayName();
+            else
+                temp += ";" + userDto.getDisplayName();
+        }
+        draft.setRecipients(temp);
+        draft.setRecipientUser(recipientUsers);
+    }
+
+    public void doSendMail() {
+// String recipients = activeMail.getRecipients();
+// Integer[] recipientIdArray = mail.getRecipientIds().split(";");
     }
 
     public void onMailItemSelect() {
-        // XXX
         System.err.print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     }
 
@@ -172,4 +186,13 @@ public class MailManageBean
     public List<UserDto> getAllUserList() {
         return allUserList;
     }
+
+    public UserDto[] getSelectedUsers() {
+        return selectedUsers;
+    }
+
+    public void setSelectedUsers(UserDto[] selectedUsers) {
+        this.selectedUsers = selectedUsers;
+    }
+
 }

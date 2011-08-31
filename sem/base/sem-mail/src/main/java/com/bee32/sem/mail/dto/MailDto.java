@@ -40,6 +40,7 @@ public class MailDto
     MailDto referrer;
 
     String recipients;
+    List<Integer> recipientIds;
 
     public MailDto() {
         super();
@@ -262,6 +263,14 @@ public class MailDto
 
     public void setRecipients(String recipients) {
         this.recipients = recipients;
+    }
+
+    public List<Integer> getRecipientIds() {
+        return recipientIds;
+    }
+
+    public void setRecipientIds(List<Integer> recipientIds) {
+        this.recipientIds = recipientIds;
     }
 
     public String assemblerRecipients() {

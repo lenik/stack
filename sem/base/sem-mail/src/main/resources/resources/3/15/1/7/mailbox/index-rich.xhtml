@@ -82,7 +82,7 @@
                     <p:tab id="writeTab" title="写信">
                         <p:toolbar>
                             <p:toolbarGroup>
-                                <p:commandButton value="发送" actionListener="#{mailManageBean.sendMail}" />
+                                <p:commandButton value="发送" actionListener="#{mailManageBean.doSendMail}" />
                                 <p:commandButton value="存草稿" />
                                 <p:commandButton value="取消" />
                             </p:toolbarGroup>
@@ -91,20 +91,21 @@
                             <h:outputText value="邮件标题:" />
                             <p:inputText value="#{mailManageBean.draft.subject}" />
 
-                            <h:outputText value="发件人:" />
+                            <h:outputText value="发件人:" style="width:500px;" />
                             <p:inputText value="#{mailManageBean.draft.fromUser.displayName}" readonly="true" />
 
                             <h:outputText value="时间:" />
                             <h:outputText value="#{mailManageBean.draft.lastModified}" />
 
-                            <h:outputText value="收件人:" />
+                            <h:outputText value="收件人:" style="width:500px;" />
                             <t:panelGroup>
                                 <p:inputText value="#{mailManageBean.draft.recipients}" />
-                                <p:commanButton value="..." actionListener="" />
+                                <h:inputHidden value="#{mailManageBean.draft.recipientIds}" />
+                                <p:commandButton value="..." title="选择收件人" onclick="recipientDialog.show();" />
                             </t:panelGroup>
 
                             <t:panelGroup colspan="2">
-                                <p:editor value="#{mailManageBean.activeMail.mail.body}" style="width:100%;" />
+                                <p:editor value="#{mailManageBean.activeMail.mail.body}" width="600" />
                             </t:panelGroup>
                         </t:panelGrid>
                     </p:tab>
@@ -114,12 +115,16 @@
 
         <h:form id="dialogForm">
             <p:dialog header="选择收件人" widgetVar="recipientDialog" height="400" width="500">
-                <p:dataTable var="item" value="#{mailManageBean.allUserList}">
-                    <p:column selectionMode="multiple" />
+                <p:dataTable var="item" value="#{mailManageBean.allUserList}"
+                    selection="#{mailManageBean.selectedUsers}">
+                    <p:column selectionMode="multiple" style="width:40px;" />
                     <p:column headerText="姓名">
                         <h:outputText value="#{item.displayName}" />
                     </p:column>
                 </p:dataTable>
+                <p:commandButton value="确定" actionListener="#{mailManageBean.doSelectUsers}"
+                    oncomplete="recipientDialog.hide();" update=":mainForm:writeTab" />
+                <p:commandButton value="取消" onclick="recipientDialog.hide();" />
             </p:dialog>
         </h:form>
 
