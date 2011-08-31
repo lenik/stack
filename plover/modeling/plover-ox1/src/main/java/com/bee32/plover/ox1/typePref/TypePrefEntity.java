@@ -18,8 +18,8 @@ public class TypePrefEntity
 
     private boolean earlyResolve;
 
-    private String typeId;
     private Class<?> type;
+    private String typeId;
 
     @Transient
     public boolean isEarlyResolve() {
@@ -41,21 +41,6 @@ public class TypePrefEntity
         setTypeId(id);
     }
 
-    @Id
-    @Column(length = ABBR_LEN, nullable = false)
-    protected String getTypeId() {
-        return typeId;
-    }
-
-    protected void setTypeId(String typeId) {
-        this.typeId = typeId;
-
-        if (earlyResolve)
-            type = resolveType(typeId);
-        else
-            type = null;
-    }
-
     /**
      * Get the type which as the primary key.
      *
@@ -70,11 +55,22 @@ public class TypePrefEntity
 
     public void setType(Class<?> type) {
         this.type = type;
-        this.typeId = typeId(type);
+        this.typeId = ABBR.abbr(type);
     }
 
-    public static String typeId(Class<?> type) {
-        return ABBR.abbr(type);
+    @Id
+    @Column(length = ABBR_LEN, nullable = false)
+    protected String getTypeId() {
+        return typeId;
+    }
+
+    protected void setTypeId(String typeId) {
+        this.typeId = typeId;
+
+        if (earlyResolve)
+            type = resolveType(typeId);
+        else
+            type = null;
     }
 
     protected Class<?> resolveType(String typeId) {

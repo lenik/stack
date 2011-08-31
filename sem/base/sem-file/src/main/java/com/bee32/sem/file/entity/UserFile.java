@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import com.bee32.plover.orm.util.ITypeAbbrAware;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
@@ -24,12 +25,14 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 @Green
 @SequenceGenerator(name = "idgen", sequenceName = "user_file_seq", allocationSize = 1)
 public class UserFile
-        extends UIEntityAuto<Long> {
+        extends UIEntityAuto<Long>
+        implements ITypeAbbrAware {
 
     private static final long serialVersionUID = 1L;
 
     public static final int DIR_LENGTH = 100;
     public static final int NAME_LENGTH = 50;
+    public static final int REF_ID_LENGTH = 30;
 
     FileBlob fileBlob;
 
@@ -37,6 +40,9 @@ public class UserFile
     String name = "";
 
     Set<UserFileTagname> tags = new HashSet<UserFileTagname>();
+
+    Class<?> refType;
+    String refId;
 
     /**
      * 文件数据。
@@ -115,6 +121,66 @@ public class UserFile
         if (tags == null)
             throw new NullPointerException("tags");
         this.tags = tags;
+    }
+
+    /**
+     * Get the type which as the primary key.
+     *
+     * @return Non-<code>null</code> expanded type.
+     */
+    @Transient
+    public Class<?> getRefType() {
+        return refType;
+    }
+
+    public void setRefType(Class<?> refType) {
+        this.refType = refType;
+        getEntityFlags().setHidden(refType == null);
+    }
+
+    @Column(length = ABBR_LEN)
+    String getRefTypeId() {
+        return ABBR.abbr(refType);
+    }
+
+    void setRefTypeId(String typeId) {
+        Class<?> type;
+        if (typeId == null) {
+            type = null;
+        } else {
+            try {
+                type = ABBR.expand(typeId);
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException("Bad type id: " + typeId, e);
+            }
+        }
+        setRefType(type);
+    }
+
+    /**
+     * 关联的对象 ID
+     */
+    @Column(length = REF_ID_LENGTH)
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
+    }
+
+    public void setRefId(Integer refId) {
+        if (refId == null)
+            this.refId = null;
+        else
+            this.refId = String.valueOf(refId);
+    }
+
+    public void setRefId(Long refId) {
+        if (refId == null)
+            this.refId = null;
+        else
+            this.refId = String.valueOf(refId);
     }
 
 }
