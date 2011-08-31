@@ -10,14 +10,19 @@ import java.util.Set;
 import org.junit.Assert;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.arch.util.ClassUtil;
+import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.cref.ScanTestxContext;
 import com.bee32.plover.inject.spring.ApplicationContextBuilder;
 
+@ComponentTemplate
+@Lazy
+//@Scope("prototype")
 @Import(ScanTestxContext.class)
-public abstract class FeaturePlayer<T>
+public abstract class FeaturePlayer<T extends FeaturePlayer<T>>
         extends Assert {
 
     static Set<IFeaturePlayerSupport> supports;
@@ -54,7 +59,7 @@ public abstract class FeaturePlayer<T>
         stdin = new BufferedReader(new InputStreamReader(System.in));
     }
 
-    protected void mainLoop()
+    protected void mainLoop(ICoordinator<T> coordinator)
             throws IOException {
 
         Class<T> playerClass = ClassUtil.infer1(getClass(), FeaturePlayer.class, 0);
@@ -70,7 +75,7 @@ public abstract class FeaturePlayer<T>
 
                 fireBegin(player);
                 {
-                    main(player);
+                    coordinator.main(player);
                 }
                 fireEnd(player);
             } catch (Exception e) {
@@ -87,8 +92,5 @@ public abstract class FeaturePlayer<T>
 
         fireTeardown(playerClass);
     }
-
-    protected abstract void main(T player)
-            throws Exception;
 
 }
