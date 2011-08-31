@@ -56,6 +56,24 @@ public abstract class CriteriaSpec {
         return new NotEquals(propertyName, value);
     }
 
+    protected static CriteriaElement _idEquals(Object value) {
+        if (value == null)
+            return null;
+        return new IdEquals(value);
+    }
+
+    protected static CriteriaElement _equals(String propertyName, Object value) {
+        if (value == null)
+            return null;
+        return new Equals(propertyName, value);
+    }
+
+    protected static CriteriaElement _notEquals(String propertyName, Object value) {
+        if (value == null)
+            return null;
+        return new NotEquals(propertyName, value);
+    }
+
     protected static CriteriaElement like(String propertyName, String value) {
         return new Like(propertyName, value);
     }
@@ -72,8 +90,24 @@ public abstract class CriteriaSpec {
         return new Like(true, propertyName, value, matchMode);
     }
 
+    protected static CriteriaElement _like(String propertyName, String value) {
+        if (value == null)
+            return null;
+        return new Like(propertyName, value);
+    }
+
+    protected static CriteriaElement _likeIgnoreCase(String propertyName, String value) {
+        if (value == null)
+            return null;
+        return new Like(true, propertyName, value);
+    }
+
     protected static CriteriaElement greaterThan(String propertyName, Object value) {
         return new GreaterThan(propertyName, value);
+    }
+
+    protected static CriteriaElement greaterOrEquals(String propertyName, Object value) {
+        return new GreaterOrEquals(propertyName, value);
     }
 
     protected static CriteriaElement lessThan(String propertyName, Object value) {
@@ -84,11 +118,41 @@ public abstract class CriteriaSpec {
         return new LessOrEquals(propertyName, value);
     }
 
-    protected static CriteriaElement greaterOrEquals(String propertyName, Object value) {
+    protected static CriteriaElement between(String propertyName, Object lo, Object hi) {
+        return new Between(propertyName, lo, hi);
+    }
+
+    protected static CriteriaElement _greaterThan(String propertyName, Object value) {
+        if (value == null)
+            return null;
+        return new GreaterThan(propertyName, value);
+    }
+
+    protected static CriteriaElement _greaterOrEquals(String propertyName, Object value) {
+        if (value == null)
+            return null;
         return new GreaterOrEquals(propertyName, value);
     }
 
-    protected static CriteriaElement between(String propertyName, Object lo, Object hi) {
+    protected static CriteriaElement _lessThan(String propertyName, Object value) {
+        if (value == null)
+            return null;
+        return new LessThan(propertyName, value);
+    }
+
+    protected static CriteriaElement _lessOrEquals(String propertyName, Object value) {
+        if (value == null)
+            return null;
+        return new LessOrEquals(propertyName, value);
+    }
+
+    protected static CriteriaElement _between(String propertyName, Object lo, Object hi) {
+        if (lo == null && hi == null)
+            return null;
+        if (lo == null)
+            return lessOrEquals(propertyName, hi);
+        if (hi == null)
+            return greaterOrEquals(propertyName, lo);
         return new Between(propertyName, lo, hi);
     }
 
@@ -256,6 +320,18 @@ public abstract class CriteriaSpec {
     }
 
     protected static ProjectionElement group(String propertyName) {
+        return new GroupPropertyProjection(propertyName);
+    }
+
+    protected static ProjectionElement _property(String propertyName, Object val) {
+        if (val == null)
+            return null;
+        return new PropertyProjection(propertyName);
+    }
+
+    protected static ProjectionElement _group(String propertyName, Object val) {
+        if (val == null)
+            return null;
         return new GroupPropertyProjection(propertyName);
     }
 
