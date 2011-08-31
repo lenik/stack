@@ -60,9 +60,9 @@
                 <p:tabView id="mainTab" activeIndex="#{chanceBean.activeTab}">
                     <p:tab id="chanceList" title="机会列表" disabled="#{false}">
                         <p:dataTable id="chanceTable" var="chance" value="#{chanceBean.chances}" paginator="true"
-                            rows="10" lazy="true"
+                            rows="#{viewConfig.pageSize}" lazy="true"
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                            rowsPerPageTemplate="5,10,15" selection="#{chanceBean.selectedChance}"
+                            rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}" selection="#{chanceBean.selectedChance}"
                             selectionMode="single" rowIndexVar="rowIndex">
 
                             <p:ajax event="rowSelect" listener="#{chanceBean.onRowSelect}" update="chanceForm:toolbar" />

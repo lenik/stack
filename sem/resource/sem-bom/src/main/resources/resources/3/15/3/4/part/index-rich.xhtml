@@ -65,9 +65,9 @@
                     <p:tab id="partList" title="BOM列表">
                         <p:dataTable id="parts" var="part"
                             value="#{bomAdminBean.parts}"
-                            paginator="true" rows="10" lazy="true"
+                            paginator="true" rows="#{viewConfig.pageSize}" lazy="true"
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                            rowsPerPageTemplate="5,10,15"
+                            rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
                             resizableColumns="true"
                             rowIndexVar="rowIndex">
 

@@ -42,7 +42,7 @@
                 </t:panelGroup>
                 <p:tabView id="mainTabView">
                     <p:tab id="boxTab">
-                        <p:dataGrid id="gridList" var="item" value="#{mailManageBean.mails}" columns="1" rows="10"
+                        <p:dataGrid id="gridList" var="item" value="#{mailManageBean.mails}" columns="1" rows="#{viewConfig.pageSize}"
                             paginator="true">
                             <p:column style="width:100%;">
                                 <p:panel style="width:100%;">

@@ -33,7 +33,7 @@
 
             <p:dataTable id="fileList" value="#{userFileAdmin.userFileList}" var="item" paginator="true"
                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                rows="10" rowsPerPageTemplate="5,10,15">
+                rows="#{viewConfig.pageSize}" rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}">
                 <p:column>
                     <a href="#{location.WEB_APP}/3/15/1/6/file/view.do?id=#{item.id}"> <h:graphicImage
                             value="/3/15/1/6/file/view.do?id=#{item.id}" width="36" height="36" /> </a>
