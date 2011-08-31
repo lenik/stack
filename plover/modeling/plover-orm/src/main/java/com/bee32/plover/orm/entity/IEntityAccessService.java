@@ -57,6 +57,16 @@ public interface IEntityAccessService<E extends Entity<? extends K>, K extends S
      */
     <T> List<T> listMisc(ICriteriaElement... criteriaElements);
 
+    <T> T getMisc(ICriteriaElement... criteriaElements);
+
+    <T extends Number> T sum(String propertyName, ICriteriaElement... criteriaElements);
+
+    <T extends Number> T average(String propertyName, ICriteriaElement... criteriaElements);
+
+    <T extends Number> T min(String propertyName, ICriteriaElement... criteriaElements);
+
+    <T extends Number> T max(String propertyName, ICriteriaElement... criteriaElements);
+
     /**
      * Count of entities with restrictions.
      *

@@ -22,8 +22,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
+import com.bee32.plover.criteria.hibernate.AvgProjection;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.MaxProjection;
+import com.bee32.plover.criteria.hibernate.MinProjection;
+import com.bee32.plover.criteria.hibernate.ProjectionElement;
+import com.bee32.plover.criteria.hibernate.SumProjection;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.orm.dao.HibernateDaoSupportUtil;
 import com.bee32.plover.orm.dao.HibernateTemplate;
@@ -392,6 +397,43 @@ public abstract class EntityDao<E extends Entity<? extends K>, K extends Seriali
         Criteria criteria = createCriteria(criteriaElements);
         List<T> list = criteria.list();
         return list;
+    }
+
+    @Override
+    public <T> T getMisc(ICriteriaElement... criteriaElements) {
+        Criteria criteria = createCriteria(criteriaElements);
+        List<T> list = criteria.list();
+        if (list.isEmpty())
+            return null;
+        else
+            return list.get(0);
+    }
+
+    <T> T getMisc(ProjectionElement projectionElement, ICriteriaElement... criteriaElements) {
+        ICriteriaElement[] cat = new ICriteriaElement[criteriaElements.length + 1];
+        cat[0] = projectionElement;
+        System.arraycopy(criteriaElements, 0, cat, 1, criteriaElements.length);
+        return getMisc(cat);
+    }
+
+    @Override
+    public <T extends Number> T sum(String propertyName, ICriteriaElement... criteriaElements) {
+        return getMisc(new SumProjection(propertyName), criteriaElements);
+    }
+
+    @Override
+    public <T extends Number> T average(String propertyName, ICriteriaElement... criteriaElements) {
+        return getMisc(new AvgProjection(propertyName), criteriaElements);
+    }
+
+    @Override
+    public <T extends Number> T min(String propertyName, ICriteriaElement... criteriaElements) {
+        return getMisc(new MinProjection(propertyName), criteriaElements);
+    }
+
+    @Override
+    public <T extends Number> T max(String propertyName, ICriteriaElement... criteriaElements) {
+        return getMisc(new MaxProjection(propertyName), criteriaElements);
     }
 
     @Override

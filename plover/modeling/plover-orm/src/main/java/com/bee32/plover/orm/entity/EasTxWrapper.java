@@ -174,9 +174,39 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
 
     @Transactional(readOnly = true)
     @Override
-    public <T> List<T> listMisc(ICriteriaElement... criteria) {
+    public <T> List<T> listMisc(ICriteriaElement... criteriaElements) {
         checkList();
-        return getDao().listMisc(criteria);
+        return getDao().listMisc(criteriaElements);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public <T> T getMisc(ICriteriaElement... criteriaElements) {
+        return getDao().getMisc(criteriaElements);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public <T extends Number> T sum(String propertyName, ICriteriaElement... criteriaElements) {
+        return getDao().sum(propertyName, criteriaElements);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public <T extends Number> T average(String propertyName, ICriteriaElement... criteriaElements) {
+        return getDao().average(propertyName, criteriaElements);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public <T extends Number> T min(String propertyName, ICriteriaElement... criteriaElements) {
+        return getDao().min(propertyName, criteriaElements);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public <T extends Number> T max(String propertyName, ICriteriaElement... criteriaElements) {
+        return getDao().max(propertyName, criteriaElements);
     }
 
     @Transactional(readOnly = false)
