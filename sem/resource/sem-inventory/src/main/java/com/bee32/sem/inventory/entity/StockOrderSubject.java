@@ -33,6 +33,7 @@ public final class StockOrderSubject
     static final List<StockOrderSubject> commons = new ArrayList<StockOrderSubject>();
     static final Set<String> packingSet = new HashSet<String>();
     static final Set<String> virtualSet = new HashSet<String>();
+    static final Set<String> virtualOnlySet = new HashSet<String>();
     static final Set<String> commonSet = new HashSet<String>();
 
     StockOrderSubject(String value, String name, int flags) {
@@ -42,17 +43,20 @@ public final class StockOrderSubject
         this.packing = (flags & PACKING) != 0;
         this.special = (flags & SPECIAL) != 0;
 
-        if (virtual)
-            virtualSet.add(value);
-
-        if (packing)
-            packingSet.add(value);
-
         boolean _special = virtual || packing || special;
         if (!_special) {
             commons.add(this);
             commonSet.add(value);
+            virtualOnlySet.add(value);
         }
+
+        if (virtual) {
+            virtualSet.add(value);
+            virtualOnlySet.add(value);
+        }
+
+        if (packing)
+            packingSet.add(value);
     }
 
     public boolean isNegative() {
@@ -83,19 +87,23 @@ public final class StockOrderSubject
     }
 
     public static List<StockOrderSubject> getCommons() {
-        return commons;
+        return Collections.unmodifiableList(commons);
     }
 
     public static Set<String> getCommonSet() {
-        return commonSet;
+        return Collections.unmodifiableSet(commonSet);
     }
 
     public static Set<String> getPackingSet() {
-        return packingSet;
+        return Collections.unmodifiableSet(packingSet);
     }
 
     public static Set<String> getVirtualSet() {
-        return virtualSet;
+        return Collections.unmodifiableSet(virtualSet);
+    }
+
+    public static Set<String> getVirtualOnlySet() {
+        return Collections.unmodifiableSet(virtualOnlySet);
     }
 
     /**
