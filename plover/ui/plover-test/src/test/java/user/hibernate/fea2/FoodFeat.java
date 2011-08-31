@@ -3,7 +3,6 @@ package user.hibernate.fea2;
 import javax.inject.Inject;
 
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import user.hibernate.fea2.ext.Banana;
@@ -11,18 +10,14 @@ import user.hibernate.fea2.ext.BananaDao;
 import user.hibernate.fea2.ext.Food;
 import user.hibernate.fea2.ext.FoodDao;
 
-import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.plover.orm.util.WiredDaoTestCase;
-import com.bee32.plover.test.FeaturePlayer;
+import com.bee32.plover.orm.util.WiredDaoFeat;
+import com.bee32.plover.test.ICoordinator;
 
-@Import(WiredDaoTestCase.class)
-@Using(Fea2Unit.class)
 @Scope("prototype")
-@Transactional
-@Service
-public class PlayFood
-        extends FeaturePlayer<PlayFood> {
+@Using(Fea2Unit.class)
+public class FoodFeat
+        extends WiredDaoFeat<FoodFeat> {
 
     @Inject
     FoodDao foodDao;
@@ -62,16 +57,16 @@ public class PlayFood
             System.out.println("Food: " + fruit);
     }
 
-    @Override
-    protected void main(PlayFood player)
-            throws Exception {
-        player.prepare();
-        player.listFood();
-    }
-
     public static void main(String[] args)
             throws Exception {
-        new PlayFood().mainLoop();
+        new FoodFeat().mainLoop(new ICoordinator<FoodFeat>() {
+            @Override
+            public void main(FoodFeat feat)
+                    throws Exception {
+                feat.prepare();
+                feat.listFood();
+            }
+        });
     }
 
 }

@@ -10,19 +10,17 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.IcsfIdentityUnit;
 import com.bee32.icsf.principal.IcsfPrincipalSamples;
-import com.bee32.plover.inject.cref.Import;
-import com.bee32.plover.orm.context.TestDataConfig;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.SamplesLoader;
+import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.ox1.principal.AbstractPrincipalDao;
 import com.bee32.plover.ox1.principal.Group;
 import com.bee32.plover.ox1.principal.GroupDao;
@@ -30,17 +28,14 @@ import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.RoleDao;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserDao;
-import com.bee32.plover.test.FeaturePlayer;
+import com.bee32.plover.test.ICoordinator;
 
-@Using(IcsfIdentityUnit.class)
-@Service
 @Scope("prototype")
-@Import(TestDataConfig.class)
-@Transactional(readOnly = true)
-public class PlaySamples
-        extends FeaturePlayer<PlaySamples> {
+@Using(IcsfIdentityUnit.class)
+public class UsersFeat
+        extends WiredDaoFeat<UsersFeat> {
 
-    static Logger logger = LoggerFactory.getLogger(PlaySamples.class);
+    static Logger logger = LoggerFactory.getLogger(UsersFeat.class);
 
     /**
      * To inject the sample beans.
@@ -131,34 +126,34 @@ public class PlaySamples
         }
     }
 
-    @Override
-    protected void main(PlaySamples player)
-            throws Exception {
-        // player.listSamples();
-
-        try {
-            player.run0();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        try {
-            player.run1();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        try {
-            player.run2();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public static void main(String[] args)
             throws IOException {
-        new PlaySamples().mainLoop();
+        new UsersFeat().mainLoop(new ICoordinator<UsersFeat>() {
+            @Override
+            public void main(UsersFeat feat)
+                    throws Exception {
+
+                // feat.listSamples();
+
+                try {
+                    feat.run0();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    feat.run1();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    feat.run2();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }

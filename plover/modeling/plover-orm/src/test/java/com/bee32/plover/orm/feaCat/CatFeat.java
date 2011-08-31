@@ -8,29 +8,23 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.plover.orm.util.WiredDaoTestCase;
-import com.bee32.plover.test.FeaturePlayer;
+import com.bee32.plover.orm.util.WiredDaoFeat;
+import com.bee32.plover.test.ICoordinator;
 
-@Service
 @Scope("prototype")
-@Lazy
 @Using(AnimalUnit.class)
-@Import(WiredDaoTestCase.class)
-public class CatPlayer
-        extends FeaturePlayer<CatPlayer> {
+public class CatFeat
+        extends WiredDaoFeat<CatFeat> {
 
-    static Logger logger = LoggerFactory.getLogger(CatPlayer.class);
+    static Logger logger = LoggerFactory.getLogger(CatFeat.class);
 
     @Inject
     CommonDataManager dataManager;
@@ -43,6 +37,7 @@ public class CatPlayer
 
     @Transactional(readOnly = false)
     public void doFill() {
+        System.out.println("---------------- FILL BEGIN ----------------");
         Tiger lucy = new Tiger("Lucy", "black");
         lucy.setBirthday(new Date());
         lucy.setAddr(new CaveAddr("ZJ", "11 X Rd."));
@@ -67,27 +62,33 @@ public class CatPlayer
         long time = birthday.getTime();
         Date d2 = new Date(time);
         System.out.println(d2);
+        System.out.println("---------------- FILL END ----------------");
     }
 
     @Transactional(readOnly = true)
     public void doList() {
+        System.out.println("---------------- LIST BEGIN ----------------");
         System.out.println("List tigers");
         List<Tiger> tigers = asFor(Tiger.class).list();
 
         for (Tiger t : tigers)
             System.out.println("Tiger: " + t);
+        System.out.println("---------------- LIST END ----------------");
     }
 
     public static void main(String[] args)
             throws Exception {
-        new CatPlayer().mainLoop();
-    }
-
-    @Override
-    protected void main(CatPlayer player)
-            throws Exception {
-        player.doFill();
-        player.doList();
+        new CatFeat().mainLoop(new ICoordinator<CatFeat>() {
+            @Override
+            public void main(CatFeat feat)
+                    throws Exception {
+                System.out.println(">>>> doFill() ");
+                feat.doFill();
+                System.out.println(">>>> doList() ");
+                feat.doList();
+                System.out.println(">>>> end() ");
+            }
+        });
     }
 
 }

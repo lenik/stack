@@ -8,27 +8,21 @@ import javax.inject.Inject;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.dao.CatDao;
 import com.bee32.plover.orm.unit.Using;
-import com.bee32.plover.orm.util.WiredDaoTestCase;
-import com.bee32.plover.test.FeaturePlayer;
+import com.bee32.plover.orm.util.WiredDaoFeat;
+import com.bee32.plover.test.ICoordinator;
 
-@Service
 @Scope("prototype")
-@Lazy
 @Using(AnimalUnit.class)
-@Import(WiredDaoTestCase.class)
-public class SessionCachePlayer
-        extends FeaturePlayer<SessionCachePlayer> {
+public class SessionCacheFeat
+        extends WiredDaoFeat<SessionCacheFeat> {
 
-    static Logger logger = LoggerFactory.getLogger(SessionCachePlayer.class);
+    static Logger logger = LoggerFactory.getLogger(SessionCacheFeat.class);
 
     @Inject
     SessionFactory sessionFactory;
@@ -102,14 +96,14 @@ public class SessionCachePlayer
 
     public static void main(String[] args)
             throws Exception {
-        new SessionCachePlayer().mainLoop();
-    }
-
-    @Override
-    protected void main(SessionCachePlayer player)
-            throws Exception {
-        player.tcPrepare();
-        player.tcList();
+        new SessionCacheFeat().mainLoop(new ICoordinator<SessionCacheFeat>() {
+            @Override
+            public void main(SessionCacheFeat feat)
+                    throws Exception {
+                feat.tcPrepare();
+                feat.tcList();
+            }
+        });
     }
 
 }
