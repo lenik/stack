@@ -12,7 +12,7 @@ public class PlayByDaoTestCase
         extends WiredDaoTestCase {
 
     @Inject
-    PlayFood player;
+    FoodFeat player;
 
     @Test
     public void testMain() {
