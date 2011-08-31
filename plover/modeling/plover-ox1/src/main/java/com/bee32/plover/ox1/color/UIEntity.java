@@ -15,8 +15,11 @@ abstract class UIEntity<K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
-    String label;
-    String description;
+    public static final int LABEL_LENGTH = 40;
+    public static final int DESCRIPTION_LENGTH = 200;
+
+    protected String label;
+    protected String description;
 
     // IconRef
 
@@ -28,7 +31,7 @@ abstract class UIEntity<K extends Serializable>
         super(name);
     }
 
-    @Column(length = 40)
+    @Column(length = LABEL_LENGTH)
     @Override
     public String getLabel() {
         return label;
@@ -36,10 +39,15 @@ abstract class UIEntity<K extends Serializable>
 
     @Override
     public void setLabel(String label) {
+        if (label != null) {
+            label = label.trim();
+            if (label.isEmpty())
+                label = null;
+        }
         this.label = label;
     }
 
-    @Column(length = 200)
+    @Column(length = DESCRIPTION_LENGTH)
     @Override
     public String getDescription() {
         return description;
@@ -47,6 +55,11 @@ abstract class UIEntity<K extends Serializable>
 
     @Override
     public void setDescription(String description) {
+        if (description != null) {
+            description = description.trim();
+            if (description.isEmpty())
+                description = null;
+        }
         this.description = description;
     }
 
