@@ -7,6 +7,11 @@ public class PloverORMUnit
         extends PersistenceUnit {
 
     @Override
+    public int getPriority() {
+        return SYSTEM_PRIORITY + 1;
+    }
+
+    @Override
     protected void preamble() {
         add(PloverConf.class);
     }

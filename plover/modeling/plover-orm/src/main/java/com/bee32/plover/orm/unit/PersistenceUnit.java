@@ -23,6 +23,8 @@ public abstract class PersistenceUnit
 
     static Logger logger = LoggerFactory.getLogger(PersistenceUnit.class);
 
+    protected static final int SYSTEM_PRIORITY = -1000;
+
     static Map<Class<?>, PersistenceUnit> instances = new HashMap<Class<?>, PersistenceUnit>();
 
     private int priority;

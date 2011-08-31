@@ -19,7 +19,7 @@ public class PloverOx1Unit
 
     @Override
     public int getPriority() {
-        return -1;
+        return SYSTEM_PRIORITY + 10;
     }
 
     @Override
