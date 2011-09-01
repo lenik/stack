@@ -121,7 +121,7 @@
 
                     <p:panel>
                         <h:outputText value="单位换算表:" />
-                        <p:dataTable var="unitConv" value="#{materialSettingsBean.unitConvList}" id="unitConvList">
+                        <p:dataTable id="unitConvList" var="unitConv" value="#{materialSettingsBean.unitConvList}">
                             <p:column headerText="换算表代码">
                                 <h:outputText value="#{unitConv.name}" />
                             </p:column>
@@ -170,7 +170,7 @@
 
                         <p:dataTable id="materialList" value="#{materialSettingsBean.materialList}" var="item">
                             <p:column headerText="物料名称">
-                                <h:outputText value="#{item.name}" />
+                                <h:outputText value="#{item.label}" />
                             </p:column>
                             <p:column headerText="当前价格">
                                 <h:outputText value="#{item.currentPrice}" />
@@ -211,7 +211,7 @@
             <p:dialog header="materialPrice" widgetVar="priceDialog" height="400" width="600">
                 <t:panelGrid columns="2" id="activePrice">
                     <h:outputText value="物料名称:" />
-                    <h:outputText value="#{materialSettingsBean.activeMaterial.name}" />
+                    <h:outputText value="#{materialSettingsBean.activeMaterial.label}" />
                     <h:outputText value="批号:" />
                     <h:outputText value="#{materialSettingsBean.activeMaterial.serial}" />
                 </t:panelGrid>
@@ -366,8 +366,8 @@
             </p:dialog>
 
             <p:dialog header="物料分类" widgetVar="categoryWizardDialog" height="250" width="450" modal="true">
-                <p:panel>
-                    <t:panelGrid columns="2" id="categoryForm">
+                <p:panel id="categoryForm">
+                    <t:panelGrid columns="2">
                         <h:outputText value="上级分类:" />
                         <t:panelGroup colspan="1">
                             <p:inputText value="#{materialSettingsBean.activeCategory.parent.name}" readonly="true" />
