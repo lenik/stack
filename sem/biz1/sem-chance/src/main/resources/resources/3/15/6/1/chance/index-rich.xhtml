@@ -547,7 +547,7 @@
                         style="width:100%;">
 
                         <p:column headerText="产品" style="width:70px;">
-                            <h:outputText value="#{item.material.name}" />
+                            <h:outputText value="#{item.material.label}" />
                         </p:column>
 
                         <p:column headerText="折扣" style="width:80px;">
@@ -611,7 +611,7 @@
                 <t:panelGrid columns="3" id="quotationItemDetail">
                     <h:outputText value="物料:" />
                     <t:panelGroup colspan="2">
-                        <h:outputText value="#{chanceBean.selectedQuotationItem.material.name}" />
+                        <h:outputText value="#{chanceBean.selectedQuotationItem.material.label}" />
                     </t:panelGroup>
 
                     <h:outputText value="基础价格:" />

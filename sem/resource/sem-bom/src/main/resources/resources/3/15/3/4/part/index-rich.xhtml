@@ -275,7 +275,7 @@
                                                 <h:outputText value="物料" />
                                             </f:facet>
                                             <h:outputText
-                                                value="#{comp.material.id==null? comp.part.target.name : comp.material.name}" />
+                                                value="#{comp.material.id==null? comp.part.target.name : comp.material.label}" />
                                         </p:column>
 
                                         <p:column>
@@ -365,7 +365,7 @@
                                         <t:panelGroup>
                                             <h:outputText
                                                 id="materialNameComp"
-                                                value="#{bomAdminBean.item.material.id==null? bomAdminBean.item.part.target.name : bomAdminBean.item.material.name}" />
+                                                value="#{bomAdminBean.item.material.id==null? bomAdminBean.item.part.target.name : bomAdminBean.item.material.label}" />
                                             <p:commandButton
                                                 title="挑选组件" value="..."
                                                 onclick="choosePartItemDlg.show();"
@@ -454,7 +454,7 @@
                             <f:facet name="header">
                                 <h:outputText value="物料名称" />
                             </f:facet>
-                            <h:outputText value="#{material.name}" />
+                            <h:outputText value="#{material.label}" />
                         </p:column>
 
                         <p:column >
@@ -521,7 +521,7 @@
                             <f:facet name="header">
                                 <h:outputText value="物料名称" />
                             </f:facet>
-                            <h:outputText value="#{material.name}" />
+                            <h:outputText value="#{material.label}" />
                         </p:column>
 
                         <p:column >
@@ -647,7 +647,7 @@
             <p:dialog header="计算价格" widgetVar="priceDlg" modal="true" height="500" width="640">
                 <h:panelGrid columns="2">
                     <h:outputLabel value="产品"/>
-                    <h:outputText id="partName" value="#{bomAdminBean.selectedPart.material.name}"/>
+                    <h:outputText id="partName" value="#{bomAdminBean.selectedPart.material.label}"/>
 
 
                     <p:commandButton value="计算" actionListener="#{bomAdminBean.calcPrice}" update="partPrice"/>

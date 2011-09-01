@@ -172,7 +172,7 @@
                         <f:facet name="header">
                             <h:outputText value="物料"/>
                         </f:facet>
-                        <h:outputText value="#{item.material.name}" />
+                        <h:outputText value="#{item.material.label}" />
                     </p:column>
 
                     <p:column>
@@ -334,7 +334,7 @@
                             <f:facet name="header">
                                 <h:outputText value="物料" />
                             </f:facet>
-                            <h:outputText value="#{item.material.name}" />
+                            <h:outputText value="#{item.material.label}" />
                         </p:column>
 
                         <p:column>
@@ -423,7 +423,7 @@
 
 						<h:outputLabel value="物料" />
 						<t:panelGroup colspan="3">
-							<h:outputText value="#{transferInAdminBean.orderItemOut.material.name}"/>
+							<h:outputText value="#{transferInAdminBean.orderItemOut.material.label}"/>
 						</t:panelGroup>
 
 						<h:outputLabel value="批号" />

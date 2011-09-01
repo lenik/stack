@@ -178,7 +178,7 @@
                         <f:facet name="header">
                             <h:outputText value="物料"/>
                         </f:facet>
-                        <h:outputText value="#{item.material.name}" />
+                        <h:outputText value="#{item.material.label}" />
                     </p:column>
 
                     <p:column>
@@ -272,7 +272,7 @@
 
 						<h:outputLabel value="物料" />
 						<t:panelGroup colspan="3">
-							<p:inputText value="#{takeAdminBean.orderItem.material.name}" readonly="true"/>
+							<p:inputText value="#{takeAdminBean.orderItem.material.label}" readonly="true"/>
 							<p:commandButton value="..." onclick="materialDialog.show();"/>
 						</t:panelGroup>
 
@@ -353,7 +353,7 @@
 						</p:column>
 
 						<p:column headerText="物料名称">
-							<h:outputText value="#{material.name}" />
+							<h:outputText value="#{material.label}" />
 						</p:column>
 
 						<p:column headerText="序列号">

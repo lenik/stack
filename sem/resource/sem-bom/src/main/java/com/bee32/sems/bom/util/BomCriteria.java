@@ -12,7 +12,7 @@ public class BomCriteria
     @LeftHand(Part.class)
     public static ICriteriaElement findPartUseMaterialName(String pattern) {
         return compose(alias("target", "material"), //
-                new Like("material.name", "%" + pattern + "%"));
+                new Like("material.label", "%" + pattern + "%"));
     }
 
 }
