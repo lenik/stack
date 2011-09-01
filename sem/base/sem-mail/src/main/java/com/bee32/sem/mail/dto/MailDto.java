@@ -40,7 +40,6 @@ public class MailDto
     MailDto referrer;
 
     String recipients;
-    List<Integer> recipientIds;
 
     public MailDto() {
         super();
@@ -61,7 +60,7 @@ public class MailDto
         replyTo = source.getReplyTo();
 
         fromUser = mref(UserDto.class, source.getFromUser());
-        recipientUsers = marshalList(UserDto.class, source.getRecipientUsers(), true);
+        recipientUsers = marshalList(UserDto.class, 0, source.getRecipientUsers(), true);
         replyToUser = mref(UserDto.class, source.getReplyToUser());
 
         cc = source.getCc();
@@ -73,7 +72,7 @@ public class MailDto
         int otherbits = selection.bits & ~REFERRER_MASK;
         int refs = selection.bits & REFERRER_MASK;
         if (refs > 0)
-            referrer = new MailDto(otherbits | --refs).marshal(source.getReferrer());
+            referrer = mref(MailDto.class, otherbits | --refs, source.getReferrer());
 
         recipients = assemblerRecipients();
 
@@ -263,14 +262,6 @@ public class MailDto
 
     public void setRecipients(String recipients) {
         this.recipients = recipients;
-    }
-
-    public List<Integer> getRecipientIds() {
-        return recipientIds;
-    }
-
-    public void setRecipientIds(List<Integer> recipientIds) {
-        this.recipientIds = recipientIds;
     }
 
     public String assemblerRecipients() {
