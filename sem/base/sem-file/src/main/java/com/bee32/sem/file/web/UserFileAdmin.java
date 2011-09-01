@@ -131,7 +131,8 @@ public class UserFileAdmin
         for (String tagId : selectedTags)
             idList.add(Long.parseLong(tagId));
 
-        List<UserFile> files = serviceFor(UserFile.class).list(UserFileCriteria.withAnyTagIn(idList));
+        List<UserFile> files = serviceFor(UserFile.class).list(UserFileCriteria.withAnyTagIn(idList),
+                EntityCriteria.ownedByCurrentUser());
         Set<UserFile> fileSet = new HashSet<UserFile>(files);
         List<UserFile> fileList = new ArrayList<UserFile>(fileSet);
         userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, fileList);
@@ -151,6 +152,8 @@ public class UserFileAdmin
         UserFile file = activeFile.unmarshal();
         file.setTags(set);
 
+        String fileName = activeFile.getPrefixName() + activeFile.getExtensionName();
+        file.setName(fileName);
         try {
             serviceFor(UserFile.class).saveOrUpdate(file);
             uiLogger.info("编辑附件" + activeFile.getName() + "成功");
