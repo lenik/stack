@@ -19,8 +19,12 @@ import com.bee32.sem.mail.MailFlags;
 import com.bee32.sem.mail.dto.MailDeliveryDto;
 import com.bee32.sem.mail.dto.MailDto;
 import com.bee32.sem.mail.dto.MailFolderDto;
+import com.bee32.sem.mail.entity.Mail;
 import com.bee32.sem.mail.entity.MailDelivery;
 import com.bee32.sem.mail.entity.MailFolder;
+import com.bee32.sem.mail.entity.MailOrientation;
+import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.util.LoginPersonInfo;
 
 @Scope("view")
 public class MailManageBean
@@ -95,10 +99,16 @@ public class MailManageBean
 
     public void gotoWritebox() {
         draft = new MailDto().create();
-        IUserPrincipal currentUser = LoginInfo.getInstance().getUser();
-        User user = serviceFor(User.class).getOrFail(currentUser.getId());
-        UserDto userDto = DTOs.marshal(UserDto.class, user, true);
-        draft.setFromUser(userDto);
+
+        UserDto currentUser = new UserDto().ref(LoginInfo.getInstance().getUser());
+        draft.setFromUser(currentUser);
+
+        Person personOpt = LoginPersonInfo.getInstance().getPersonOpt();
+        if (personOpt != null) {
+            String personName = personOpt.getDisplayName();
+            draft.setFrom(personName);
+        }
+
         Tab tab = (Tab) getWriteTab();
         tab.setRendered(true);
         int index = getActiveBoxIndex("写信");
@@ -135,8 +145,27 @@ public class MailManageBean
     }
 
     public void doSendMail() {
-// String recipients = activeMail.getRecipients();
-// Integer[] recipientIdArray = mail.getRecipientIds().split(";");
+        Mail mail = draft.unmarshal();
+        MailDelivery mailDelivery = new MailDelivery(mail, MailOrientation.FROM);
+        mailDelivery.setFolder(MailFolder.OUTBOX);
+        try {
+            serviceFor(Mail.class).saveOrUpdate(mail);
+            serviceFor(MailDelivery.class).saveOrUpdate(mailDelivery);
+        } catch (Exception e) {
+            mailDelivery.setSendError(e.getMessage());
+            uiLogger.error("error occured while sending mail" + e.getMessage(), e);
+        }
+        List<UserDto> recipientUsers = draft.getRecipientUsers();
+        for (UserDto userDto : recipientUsers) {
+            IUserPrincipal currentUser = LoginInfo.getInstance().getUser();
+            User user = serviceFor(User.class).getOrFail(currentUser.getId());
+            mail.setFromUser(user);
+            MailDelivery recieveDelivery = new MailDelivery(mail, MailOrientation.RECIPIENT);
+            recieveDelivery.setFolder(MailFolder.INBOX);
+            recieveDelivery.setOwner(userDto.unmarshal());
+            serviceFor(MailDelivery.class).save(recieveDelivery);
+        }
+
     }
 
     public void onMailItemSelect() {

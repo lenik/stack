@@ -42,8 +42,8 @@
                 </t:panelGroup>
                 <p:tabView id="mainTabView">
                     <p:tab id="boxTab">
-                        <p:dataGrid id="gridList" var="item" value="#{mailManageBean.mails}" columns="1" rows="#{viewConfig.pageSize}"
-                            paginator="true">
+                        <p:dataGrid id="gridList" var="item" value="#{mailManageBean.mails}" columns="1"
+                            rows="#{viewConfig.pageSize}" paginator="true">
                             <p:column style="width:100%;">
                                 <p:panel style="width:100%;">
                                     <t:panelGrid columns="3" style="width:100%;">
@@ -75,7 +75,9 @@
                             <h:outputText value="#{mailManageBean.activeMail.recipients}" />
 
                             <t:panelGroup colspan="2">
-                                <h:outputText value="#{mailManageBean.activeMail.mail.body}" />
+                                <iframe src="">
+                                    <h:outputText value="#{mailManageBean.activeMail.mail.body}" />
+                                </iframe>
                             </t:panelGroup>
                         </t:panelGrid>
                     </p:tab>
@@ -99,13 +101,12 @@
 
                             <h:outputText value="收件人:" style="width:500px;" />
                             <t:panelGroup>
-                                <p:inputText value="#{mailManageBean.draft.recipients}" />
-                                <h:inputHidden value="#{mailManageBean.draft.recipientIds}" />
+                                <p:inputText id="recipients" value="#{mailManageBean.draft.recipients}" readonly="true" />
                                 <p:commandButton value="..." title="选择收件人" onclick="recipientDialog.show();" />
                             </t:panelGroup>
 
                             <t:panelGroup colspan="2">
-                                <p:editor value="#{mailManageBean.activeMail.mail.body}" width="600" />
+                                <p:editor value="#{mailManageBean.draft.body}" width="600" />
                             </t:panelGroup>
                         </t:panelGrid>
                     </p:tab>
@@ -123,7 +124,7 @@
                     </p:column>
                 </p:dataTable>
                 <p:commandButton value="确定" actionListener="#{mailManageBean.doSelectUsers}"
-                    oncomplete="recipientDialog.hide();" update=":mainForm:writeTab" />
+                    oncomplete="recipientDialog.hide();" update=":mainForm:recipients" />
                 <p:commandButton value="取消" onclick="recipientDialog.hide();" />
             </p:dialog>
         </h:form>
