@@ -43,6 +43,12 @@ public abstract class DigestEntity
         if (id == null)
             throw new NullPointerException("id");
 
+        // Trust the id.
+        if (digestEncoded == null) {
+            digestEncoded = id;
+            digestValidated = true;
+        }
+
         if (id != digestEncoded) {
             digestEncoded = id;
             digestValidated = null;
