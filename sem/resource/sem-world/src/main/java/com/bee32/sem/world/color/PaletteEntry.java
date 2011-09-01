@@ -18,10 +18,13 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 
+/**
+ * 调色板条目
+ */
 @Entity
 @Blue
-@SequenceGenerator(name = "idgen", sequenceName = "palette_color_seq", allocationSize = 1)
-public class PaletteColor
+@SequenceGenerator(name = "idgen", sequenceName = "palette_entry_seq", allocationSize = 1)
+public class PaletteEntry
         extends UIEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
@@ -32,11 +35,11 @@ public class PaletteColor
     String name;
     final TrueColor trueColor;
 
-    public PaletteColor() {
+    public PaletteEntry() {
         trueColor = new TrueColor();
     }
 
-    public PaletteColor(Palette palette, String name, TrueColor color) {
+    public PaletteEntry(Palette palette, String name, TrueColor color) {
         if (palette == null)
             throw new NullPointerException("palette");
         if (name == null)
@@ -59,11 +62,13 @@ public class PaletteColor
     }
 
     public void setPalette(Palette palette) {
+        if (palette == null)
+            throw new NullPointerException("palette");
         this.palette = palette;
     }
 
     /**
-     * 颜色代码
+     * 颜色代码/色号
      */
     @NaturalId
     @Column(length = NAME_LENGTH, nullable = false)
@@ -72,6 +77,8 @@ public class PaletteColor
     }
 
     public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
         this.name = name;
     }
 

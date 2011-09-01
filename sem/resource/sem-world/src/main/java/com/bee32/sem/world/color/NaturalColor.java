@@ -14,13 +14,13 @@ public class NaturalColor
     private static final long serialVersionUID = 1L;
 
     Palette palette;
-    String sampleName;
+    String entryName;
     final TrueColor trueColor = new TrueColor();
 
     /**
      * 调色板。
      *
-     * 当使用调色板时，trueColor 为色样的冗余，应该和 palette.getColor(sampleName).trueColor 相同。
+     * 当使用调色板时，trueColor 为色样的冗余，应该和 palette.getEntry(entryName).trueColor 相同。
      *
      * 当不使用调色板时（palette == null)，则忽略色样，仅读取 trueColor。
      */
@@ -33,13 +33,13 @@ public class NaturalColor
         this.palette = palette;
     }
 
-    @Column(length = PaletteColor.NAME_LENGTH)
-    public String getSampleName() {
-        return sampleName;
+    @Column(length = PaletteEntry.NAME_LENGTH)
+    public String getEntryName() {
+        return entryName;
     }
 
-    public void setSampleName(String sampleName) {
-        this.sampleName = sampleName;
+    public void setEntryName(String entryName) {
+        this.entryName = entryName;
     }
 
     @Transient
@@ -47,10 +47,10 @@ public class NaturalColor
         if (palette == null)
             return trueColor;
 
-        if (sampleName == null)
+        if (entryName == null)
             throw new IllegalStateException("Palette sample has not been set.");
 
-        PaletteColor _color = palette.getColor(sampleName);
+        PaletteEntry _color = palette.getEntry(entryName);
         return _color.getTrueColor();
     }
 
@@ -66,7 +66,7 @@ public class NaturalColor
     @Transient
     public String getName() {
         if (palette != null)
-            return palette.getName() + ":" + sampleName;
+            return palette.getName() + ":" + entryName;
         else
             return trueColor.toString();
     }

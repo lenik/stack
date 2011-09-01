@@ -8,7 +8,7 @@ public class ColorUnit
     @Override
     protected void preamble() {
         add(Palette.class);
-        add(PaletteColor.class);
+        add(PaletteEntry.class);
     }
 
 }

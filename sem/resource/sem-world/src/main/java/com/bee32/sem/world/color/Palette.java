@@ -16,7 +16,7 @@ public class Palette
 
     private static final long serialVersionUID = 1L;
 
-    List<PaletteColor> colors = new ArrayList<PaletteColor>();
+    List<PaletteEntry> entries = new ArrayList<PaletteEntry>();
 
     public Palette() {
         super();
@@ -39,21 +39,21 @@ public class Palette
     }
 
     @OneToMany(mappedBy = "palette")
-    public List<PaletteColor> getColors() {
-        return colors;
+    public List<PaletteEntry> getEntries() {
+        return entries;
     }
 
-    public void setColors(List<PaletteColor> colors) {
-        if (colors == null)
-            throw new NullPointerException("colors");
-        this.colors = colors;
+    public void setEntries(List<PaletteEntry> entries) {
+        if (entries == null)
+            throw new NullPointerException("entries");
+        this.entries = entries;
     }
 
-    public PaletteColor getColor(String name) {
+    public PaletteEntry getEntry(String name) {
         if (name == null)
             throw new NullPointerException("name");
 
-        for (PaletteColor _color : colors) {
+        for (PaletteEntry _color : entries) {
             String _name = _color.getName();
             if (name.equals(_name))
                 return _color;
@@ -62,25 +62,25 @@ public class Palette
         return null;
     }
 
-    public void setColor(String name, PaletteColor color) {
+    public void setEntry(String name, PaletteEntry entry) {
         if (name == null)
             throw new NullPointerException("name");
-        if (color == null)
-            throw new NullPointerException("color");
+        if (entry == null)
+            throw new NullPointerException("entry");
 
         // Replace existing color
-        for (int i = 0; i < colors.size(); i++) {
-            PaletteColor _color = colors.get(i);
-            String _name = _color.getName();
+        for (int i = 0; i < entries.size(); i++) {
+            PaletteEntry _entry = entries.get(i);
+            String _name = _entry.getName();
 
             if (_name.equals(name)) {
-                colors.set(i, color);
+                entries.set(i, entry);
                 return;
             }
         }
 
         // Or add new color.
-        colors.add(color);
+        entries.add(entry);
     }
 
 }
