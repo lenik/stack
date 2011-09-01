@@ -25,6 +25,7 @@
         <h:form id="main">
             <p:selectManyCheckbox id="tagIds" value="#{userFileAdmin.selectedTags}">
                 <f:selectItems value="#{userFileAdmin.userFileTags}" />
+                <f:selectItem itemLabel="附件" itemValue="-200" />
                 <p:ajax update="fileList" listener="#{userFileAdmin.addMessage}" />
             </p:selectManyCheckbox>
 
@@ -127,8 +128,8 @@
                 <p:commandButton value="取消" onclick="newTagDialog.hide();" />
             </p:dialog>
 
-            <p:dialog widgetVar="selectTagsDialog" width="300" height="400" head="选择标签">
-                <p:selectManyMenu value="#{userFileAdmin.selectedTagsToAdd}">
+            <p:dialog widgetVar="selectTagsDialog" width="300" height="400" header="选择标签" modal="true">
+                <p:selectManyMenu value="#{userFileAdmin.selectedTagsToAdd}" style="width:100px;height:300px;">
                     <f:selectItems value="#{userFileAdmin.userFileTags}" />
                 </p:selectManyMenu>
                 <p:commandButton value="确定" actionListener="#{userFileAdmin.doSelectTags}"
@@ -147,17 +148,21 @@
                         </t:panelGroup>
 
                         <h:outputText value="文件名:" />
-                        <p:inputText value="#{userFileAdmin.activeFile.name}" style="width:270px;"/>
+                        <t:panelGroup>
+                            <p:inputText value="#{userFileAdmin.activeFile.prefixName}" style="width:270px;" />
+                            <h:outputText value="#{userFileAdmin.activeFile.extensionName}" />
+                        </t:panelGroup>
 
                         <h:outputText value="文件标题:" />
                         <p:inputText value="#{userFileAdmin.activeFile.label}" style="width:270px;" />
 
                         <h:outputText value="文件描述:" />
-                        <p:inputTextarea value="#{userFileAdmin.activeFile.description}" style="width:270px;height:50px;" />
+                        <p:inputTextarea value="#{userFileAdmin.activeFile.description}"
+                            style="width:270px;height:50px;" />
 
                         <h:outputText value="选择标签:" />
                         <t:panelGrid columns="2">
-                            <p:selectOneListbox value="#{userFileAdmin.activeTagId}" height="100" width="80">
+                            <p:selectOneListbox value="#{userFileAdmin.activeTagId}" style="width:100px;height:100px;">
                                 <f:selectItems value="#{userFileAdmin.activeFile.tagItems}" />
                             </p:selectOneListbox>
 

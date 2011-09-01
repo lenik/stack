@@ -33,6 +33,8 @@ public class UserFileDto
     String name;
     String tags_string = "";
     String testhref = "";
+    String prefixName;
+    String extensionName;
 
     Set<UserFileTagnameDto> tags;
     List<UserFileTagnameDto> tagList;
@@ -51,6 +53,14 @@ public class UserFileDto
         fileBlob = mref(FileBlobDto.class, source.getFileBlob());
         dir = source.getDir();
         name = source.getName();
+        if (name.contains(".")) {
+            int index = name.lastIndexOf(".");
+            prefixName = name.substring(0, index);
+            extensionName = name.substring(index);
+        } else {
+            prefixName = name;
+            extensionName = "";
+        }
 
         if (!source.getTags().isEmpty()) {
             List<UserFileTagname> tagnames = new ArrayList<UserFileTagname>(source.getTags());
@@ -154,6 +164,22 @@ public class UserFileDto
             dir = path.substring(0, slash);
             name = path.substring(slash + 1);
         }
+    }
+
+    public String getPrefixName() {
+        return prefixName;
+    }
+
+    public String getExtensionName() {
+        return extensionName;
+    }
+
+    public void setPrefixName(String prefixName) {
+        this.prefixName = prefixName;
+    }
+
+    public void setExtensionName(String extensionName) {
+        this.extensionName = extensionName;
     }
 
     public Set<UserFileTagnameDto> getTags() {
