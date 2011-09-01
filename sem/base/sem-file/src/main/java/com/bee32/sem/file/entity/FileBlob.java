@@ -1,5 +1,6 @@
 package com.bee32.sem.file.entity;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -156,7 +157,13 @@ public class FileBlob
     public InputStream newInputStream()
             throws IOException {
         IFile file = resolve();
-        return file.toSource().newInputStream();
+        try {
+            return file.toSource().newInputStream();
+        } catch (IOException e) {
+            String errorMessage = "Failed to open " + file.getPath() + ": " + e.getMessage();
+            byte[] error = errorMessage.getBytes();
+            return new ByteArrayInputStream(error);
+        }
     }
 
     public Reader newReader()
