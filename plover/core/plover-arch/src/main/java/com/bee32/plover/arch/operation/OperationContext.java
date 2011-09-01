@@ -12,8 +12,6 @@ public class OperationContext
         extends AbstractContainer
         implements IOperationContext {
 
-    private static final long serialVersionUID = 1L;
-
     private String path;
 
     private Map<String, Object> map;

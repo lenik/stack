@@ -133,6 +133,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         autoFlush();
     }
 
+    @SuppressWarnings("unchecked")
     @Transactional(readOnly = false)
     @Override
     public void saveAll(E... entities) {
@@ -158,6 +159,7 @@ public abstract class EasTxWrapper<E extends Entity<? extends K>, K extends Seri
         autoBulkFlush();
     }
 
+    @SuppressWarnings("unchecked")
     @Transactional(readOnly = false)
     @Override
     public void saveOrUpdateAll(E... entities) {

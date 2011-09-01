@@ -101,11 +101,13 @@ public abstract class SampleContribution
         addInstance(sample);
     }
 
+    @SafeVarargs
     protected final <E extends Entity<?>> void addBulk(E... samples) {
         for (Entity<?> sample : samples)
             add(sample);
     }
 
+    @SafeVarargs
     protected final <E extends Entity<?>> void addMicroGroup(E... samples) {
         if (samples.length == 0)
             return;

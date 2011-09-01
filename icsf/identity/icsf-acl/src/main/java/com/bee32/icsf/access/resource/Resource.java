@@ -8,8 +8,6 @@ import com.bee32.plover.arch.Component;
 public abstract class Resource
         extends Component {
 
-    private static final long serialVersionUID = 1L;
-
     public Resource(String name) {
         super(name);
     }

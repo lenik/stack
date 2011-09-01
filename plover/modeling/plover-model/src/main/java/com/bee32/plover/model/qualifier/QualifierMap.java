@@ -9,8 +9,6 @@ import java.util.TreeSet;
 public class QualifierMap
         implements IQualified {
 
-    private static final long serialVersionUID = 1L;
-
     private Map<Class<? extends Qualifier<?>>, TreeSet<Qualifier<?>>> map;
 
     public QualifierMap() {

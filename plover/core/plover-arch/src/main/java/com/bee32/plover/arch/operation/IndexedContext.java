@@ -3,8 +3,6 @@ package com.bee32.plover.arch.operation;
 public class IndexedContext
         extends OperationContext {
 
-    private static final long serialVersionUID = 1L;
-
     private final Object[] parameters;
 
     public IndexedContext(Object... parameters) {

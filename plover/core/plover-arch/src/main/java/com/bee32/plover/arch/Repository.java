@@ -96,6 +96,7 @@ public abstract class Repository<K, T>
         return value;
     }
 
+    @SafeVarargs
     public final void saveAll(T... objects) {
         List<T> list = Arrays.asList(objects);
         saveAll(list);
@@ -110,6 +111,7 @@ public abstract class Repository<K, T>
             save(obj);
     }
 
+    @SafeVarargs
     @Override
     public final void saveOrUpdateAll(T... objects) {
         List<T> list = Arrays.asList(objects);

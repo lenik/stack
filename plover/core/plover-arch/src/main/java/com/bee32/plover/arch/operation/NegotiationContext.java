@@ -6,8 +6,6 @@ import javax.free.NegotiationParameter;
 public class NegotiationContext
         extends OperationContext {
 
-    private static final long serialVersionUID = 1L;
-
     private final INegotiation negotiation;
 
     public NegotiationContext(INegotiation negotiation) {

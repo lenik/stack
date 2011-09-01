@@ -12,8 +12,6 @@ import javax.free.NullLogSink;
 public class FacesUILogger
         extends AbstractLogger {
 
-    private static final long serialVersionUID = 1L;
-
     protected FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
     }

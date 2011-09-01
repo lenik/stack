@@ -1,12 +1,14 @@
 package com.bee32.plover.ajax;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.servlet.http.HttpServletResponse;
 
 import com.bee32.plover.servlet.mvc.ActionResult;
 
-public abstract class SuccessOrFailure {
+public abstract class SuccessOrFailure
+        implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

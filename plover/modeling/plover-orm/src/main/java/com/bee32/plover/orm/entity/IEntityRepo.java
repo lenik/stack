@@ -31,12 +31,14 @@ public interface IEntityRepo<E extends IEntity<? extends K>, K extends Serializa
     @Override
     void saveOrUpdate(E entity);
 
+    @SuppressWarnings("unchecked")
     @Override
     void saveAll(E... entities);
 
     @Override
     void saveAll(Collection<? extends E> entities);
 
+    @SuppressWarnings("unchecked")
     @Override
     void saveOrUpdateAll(E... entities);
 

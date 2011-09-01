@@ -18,12 +18,12 @@ public class PloverVelocityContext
         init();
     }
 
-    public PloverVelocityContext(Map context, Context innerContext) {
+    public PloverVelocityContext(Map<String, Object> context, Context innerContext) {
         super(context, innerContext);
         init();
     }
 
-    public PloverVelocityContext(Map context) {
+    public PloverVelocityContext(Map<String, Object> context) {
         super(context);
         init();
     }

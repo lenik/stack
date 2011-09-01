@@ -10,8 +10,6 @@ import com.bee32.plover.arch.util.ClassUtil;
 public final class AccessPoint
         extends Resource {
 
-    private static final long serialVersionUID = 1L;
-
     AccessPoint(String name) {
         super(name);
     }

@@ -10,6 +10,7 @@ public class Sets {
      *
      * @return Non-<code>null</code> {@link Set}.
      */
+    @SafeVarargs
     public static <T> Set<T> newSet(T... elements) {
         Set<T> set = new HashSet<T>();
         for (T element : elements)

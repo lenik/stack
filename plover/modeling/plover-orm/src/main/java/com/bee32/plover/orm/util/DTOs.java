@@ -17,8 +17,6 @@ import com.bee32.plover.orm.entity.Entity;
  */
 public abstract class DTOs {
 
-    private static final long serialVersionUID = 1L;
-
     static class Dummy
             extends EntityDto<Entity<Serializable>, Serializable> {
 

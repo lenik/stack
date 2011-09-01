@@ -103,6 +103,7 @@ public interface IRepository<K, T>
      */
     K save(T obj);
 
+    @SuppressWarnings("unchecked")
     void saveAll(T... objects);
 
     void saveAll(Collection<? extends T> objects);
@@ -130,6 +131,7 @@ public interface IRepository<K, T>
      */
     void saveOrUpdate(T obj);
 
+    @SuppressWarnings("unchecked")
     void saveOrUpdateAll(T... objects);
 
     void saveOrUpdateAll(Collection<? extends T> objects);

@@ -11,8 +11,6 @@ public class PassEvents
         extends VerifyContext
         implements IPassEvents {
 
-    private static final long serialVersionUID = 1L;
-
     private PassToNextPolicy policy;
     private List<VerifyEvent> events;
     private int position;
