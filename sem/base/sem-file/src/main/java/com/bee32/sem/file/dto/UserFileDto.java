@@ -19,6 +19,7 @@ import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.util.Mime;
 import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.entity.UserFileTagname;
+import com.bee32.sem.file.web.UserFileController;
 
 public class UserFileDto
         extends UIEntityDto<UserFile, Long>
@@ -203,7 +204,7 @@ public class UserFileDto
             contentType = mime.getContentType();
 
         if (contentType.startsWith("image/")) {
-            iconLoc = WEB_APP.join("/3/15/1/6/file/view.do?id=" + id);
+            iconLoc = WEB_APP.join(UserFileController.PREFIX + "/view.do?id=" + id);
         } else {
             iconLoc = ICON.join("obj16/elements_obj.gif");
         }
