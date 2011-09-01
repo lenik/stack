@@ -289,7 +289,7 @@ public class ChanceBean
             listQuotationByChance(activeChance);
 
             DataTable quotationItemTable = (DataTable) findComponent(DATATABLE_QUOTATIONS);
-            quotationItemTable.clearSelectedRowIndexes();
+         // XXX quotationItemTable.clearSelectedRowIndexes();
 
             findComponentEx(BUTTON_QUOTATION_EDIT).setEnabled(false);
             findComponentEx(BUTTON_QUOTATION_DELETE).setEnabled(false);
@@ -664,7 +664,7 @@ public class ChanceBean
 
             setActiveTab(TAB_INDEX);
             DataTable table = (DataTable) findComponent(DATATABLE_CHANCES);
-            table.clearSelectedRowIndexes();
+         // XXX table.clearSelectedRowIndexes();
             initList();
             initToolbar();
             editable = true;
@@ -690,7 +690,7 @@ public class ChanceBean
             }
             serviceFor(Chance.class).delete(chanceToDelete);
             DataTable table = (DataTable) findComponent(DATATABLE_CHANCES);
-            table.clearSelectedRowIndexes();
+         // XXX table.clearSelectedRowIndexes();
             initList();
             initToolbar();
             uiLogger.info("成功删除行动记录");
