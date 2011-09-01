@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>3.0.M2</version>
+            <version>3.0.M3</version>
         </dependency>
     </dependencies>
     <name>Plover :: Library :: Facelets</name>
