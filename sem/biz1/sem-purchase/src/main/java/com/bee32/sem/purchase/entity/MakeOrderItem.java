@@ -32,6 +32,9 @@ public class MakeOrderItem
     Part part;
     BigDecimal quantity = new BigDecimal(1);
 
+    String externalProductName;
+    String externalSpecification;
+
     @NaturalId
     @ManyToOne(optional = false)
     public MakeOrder getOrder() {
@@ -80,5 +83,35 @@ public class MakeOrderItem
                 selector(prefix + "order", order), //
                 selector(prefix + "part", part));
     }
+
+    /**
+     * 产品外部名称
+     * <p>和某个客户对应，具体对应客户在MakeOrder中</p>
+     * <p>某个产品对于不同客户的不同叫法，对内为同一种产品(同一个物料)</p>
+     * @return
+     */
+    public String getExternalProductName() {
+        return externalProductName;
+    }
+
+    public void setExternalProductName(String externalProductName) {
+        this.externalProductName = externalProductName;
+    }
+
+    /**
+     * 产品的外部技术参数要求
+     * <p>和某个客户对应，具体对应客户在MakeOrder中</p>
+     * <p>不同的客户对某个产品有不同的技术要求，但对内为同一个产品，所以技术要求相同</p>
+     * @return
+     */
+    public String getExternalSpecification() {
+        return externalSpecification;
+    }
+
+    public void setExternalSpecification(String externalSpecification) {
+        this.externalSpecification = externalSpecification;
+    }
+
+
 
 }
