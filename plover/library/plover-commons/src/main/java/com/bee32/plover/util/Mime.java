@@ -77,6 +77,9 @@ public class Mime
     }
 
     public static Mime getInstanceByExtension(String extension) {
+        if (extension == null)
+            throw new NullPointerException("extension");
+        extension = extension.toLowerCase();
         return Mimes.extensionMap.get(extension);
     }
 
