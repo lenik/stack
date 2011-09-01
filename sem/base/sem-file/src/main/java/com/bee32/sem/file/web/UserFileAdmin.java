@@ -131,16 +131,18 @@ public class UserFileAdmin
         for (String tagId : selectedTags)
             idList.add(Long.parseLong(tagId));
 
-        List<UserFile> files = serviceFor(UserFile.class).list(UserFileCriteria.withAnyTagIn(idList),
-                EntityCriteria.ownedByCurrentUser());
+        List<UserFile> files = serviceFor(UserFile.class).list(//
+                EntityCriteria.ownedByCurrentUser(), //
+                UserFileCriteria.withAnyTagIn(idList));
         Set<UserFile> fileSet = new HashSet<UserFile>(files);
         List<UserFile> fileList = new ArrayList<UserFile>(fileSet);
-        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, fileList);
+        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, fileList, true);
     }
 
     public void initUserFile() {
-        List<UserFile> userFiles = serviceFor(UserFile.class).list(EntityCriteria.ownedByCurrentUser());
-        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, userFiles);
+        List<UserFile> userFiles = serviceFor(UserFile.class).list(//
+                EntityCriteria.ownedByCurrentUser());
+        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, userFiles, true);
     }
 
     public void editUserFile() {
