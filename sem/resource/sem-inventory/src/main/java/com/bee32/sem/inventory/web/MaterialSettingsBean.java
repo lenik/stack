@@ -262,7 +262,7 @@ public class MaterialSettingsBean
             serviceFor(MaterialCategory.class).saveOrUpdate(category);
             initMainTree();
 // initSelectCategoryTree();
-            uiLogger.info("保存物料分类:" + activeCategory.getName() + "成功!");
+            uiLogger.info("保存物料分类成功!");
         } catch (Exception e) {
             uiLogger.error("保存物料失败", e);
         }

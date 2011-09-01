@@ -212,8 +212,7 @@ public class MaterialViewBean
 
     public void destroyMaterial() {
         try {
-            long id = activeMaterial.getId();
-            Material toDestroy = serviceFor(Material.class).getOrFail(id);
+            Material toDestroy = serviceFor(Material.class).getOrFail(activeMaterial.getId());
             serviceFor(Material.class).delete(toDestroy);
             materialList.remove(activeMaterial);
             uiLogger.info("删除物料成功");
