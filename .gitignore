@@ -15,6 +15,9 @@ target
 *.releaseBackup
 .m2*
 
+# Scala
+.scala_dependencies
+
 # Eclipse
 .project
 .classpath

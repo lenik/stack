@@ -17,8 +17,8 @@
         <module>plover-form</module>
         <module>plover-indexing</module>
         <module>plover-model</module>
-        <module>plover-ox1</module>
         <module>plover-orm</module>
+        <module>plover-ox1</module>
         <module>plover-velocity</module>
         <module>plover-view</module>
     </modules>

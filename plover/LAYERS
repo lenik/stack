@@ -10,6 +10,7 @@ core/
     plover-expr         一般函数表达式
     plover-expr-sql     SQL 表达式
     plover-route        事件路由
+    plover-scala        Scala Support
 
 library/
     plover-commons      公共库
