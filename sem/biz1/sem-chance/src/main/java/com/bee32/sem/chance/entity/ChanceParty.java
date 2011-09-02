@@ -11,8 +11,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.And;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Yellow;
 import com.bee32.sem.people.entity.Party;
@@ -75,8 +74,8 @@ public class ChanceParty
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
-        return new And(//
+    protected ICriteriaElement selector(String prefix) {
+        return selectors(//
                 selector(prefix + "chance", chance), //
                 selector(prefix + "party", party));
     }

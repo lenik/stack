@@ -54,6 +54,8 @@ public class PersonLogin
 
     @Override
     protected ICriteriaElement selector(String prefix) {
+        if (user == null)
+            throw new NullPointerException("user");
         return selector(prefix + "user", user);
     }
 

@@ -203,6 +203,8 @@ public class Chance
 
     @Override
     protected ICriteriaElement selector(String prefix) {
+        if (serial == null)
+            return null;
         return new Equals(prefix + "serial", serial);
     }
 

@@ -40,6 +40,7 @@ public class StockOrder
     StockWarehouse warehouse; // Redundant.
 
     public StockOrder() {
+        this.subject = StockOrderSubject.INIT;
     }
 
     public StockOrder(StockPeriod base, StockOrderSubject subject) {
@@ -97,7 +98,7 @@ public class StockOrder
         this.subject = subject;
     }
 
-    @Column(length = 4, nullable = false)
+    @Column(name = "subject", length = 4, nullable = false)
     String get_subject() {
         return subject.getValue();
     }

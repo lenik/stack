@@ -14,8 +14,7 @@ import org.hibernate.annotations.NaturalId;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.And;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.principal.Principal;
 
@@ -165,8 +164,12 @@ public class DACE
     }
 
     @Override
-    public CriteriaElement selector(String prefix) {
-        return new And(//
+    public ICriteriaElement selector(String prefix) {
+        if (dacl == null)
+            throw new NullPointerException("dacl");
+        if (principal == null)
+            throw new NullPointerException("principal");
+        return selectors(//
                 selector(prefix + "dacl", dacl), //
                 selector(prefix + "principal", principal));
     }

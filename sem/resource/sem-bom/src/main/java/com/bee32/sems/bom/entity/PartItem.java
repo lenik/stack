@@ -15,7 +15,6 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
@@ -154,10 +153,15 @@ public class PartItem
 
     @Override
     protected ICriteriaElement selector(String prefix) {
-        return new CriteriaComposite( //
+        if (parent == null)
+            throw new NullPointerException("parent");
+        if (part == null && material == null)
+            throw new NullPointerException("part | material");
+
+        return selectors( //
                 selector(prefix + "parent", parent), //
-                selector(prefix + "part", part), //
-                selector(prefix + "material", material));
+                selector(prefix + "part", part, true), //
+                selector(prefix + "material", material, true));
     }
 
 }

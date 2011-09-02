@@ -14,8 +14,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.And;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
@@ -97,8 +96,8 @@ public class MaterialWarehouseOption
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
-        return new And(//
+    protected ICriteriaElement selector(String prefix) {
+        return selectors(//
                 selector(prefix + "material", material), //
                 selector(prefix + "warehouse", warehouse));
     }

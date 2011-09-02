@@ -121,6 +121,8 @@ public abstract class Thing<X extends XPool<?>>
 
     @Override
     protected ICriteriaElement selector(String prefix) {
+        if (serial == null)
+            return null;
         return new Equals(prefix + "serial", serial);
     }
 

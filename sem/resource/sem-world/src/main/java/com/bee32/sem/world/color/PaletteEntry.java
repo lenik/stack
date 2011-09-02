@@ -12,7 +12,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.Blue;
@@ -106,7 +105,11 @@ public class PaletteEntry
 
     @Override
     protected ICriteriaElement selector(String prefix) {
-        return new And(//
+        if (palette == null)
+            throw new NullPointerException("palette");
+        if (name == null)
+            throw new NullPointerException("name");
+        return selectors(//
                 selector(prefix + "palette", palette), //
                 new Equals(prefix + "name", name));
     }

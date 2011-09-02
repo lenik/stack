@@ -9,7 +9,6 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.UIEntityAuto;
@@ -57,7 +56,11 @@ public class BankAccount
 
     @Override
     protected ICriteriaElement selector(String prefix) {
-        return new And(//
+        if (bank == null)
+            throw new NullPointerException("bank");
+        if (accountId == null)
+            throw new NullPointerException("accountId");
+        return selectors(//
                 selector(prefix + "bank", bank), //
                 new Equals(prefix + "accountId", accountId));
     }

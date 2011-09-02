@@ -15,9 +15,12 @@ import overlay.Overlay;
 import com.bee32.plover.arch.Component;
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.Alias;
+import com.bee32.plover.criteria.hibernate.And;
+import com.bee32.plover.criteria.hibernate.Conjunction;
 import com.bee32.plover.criteria.hibernate.CriteriaComposite;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.orm.util.EntityFormatter;
 import com.bee32.plover.orm.util.ErrorResult;
 import com.bee32.plover.util.FormatStyle;
@@ -261,16 +264,48 @@ public abstract class Entity<K extends Serializable>
      *
      * @param prefix
      *            Non-null property name prefix.
+     * @return <code>null</code> for transient object (its natural-id is undetermined).
      */
     protected ICriteriaElement selector(String prefix) {
-        return new Equals(prefix + "id", getId());
+        K id = getId();
+        if (id == null)
+            return null;
+        return new Equals(prefix + "id", id);
+    }
+
+    protected static ICriteriaElement selectors(ICriteriaElement... selectors) {
+        if (selectors.length == 0)
+            throw new IllegalArgumentException("selectors is empty");
+
+        for (ICriteriaElement s : selectors)
+            if (s == null)
+                return null;
+
+        switch (selectors.length) {
+        case 1:
+            return selectors[0];
+        case 2:
+            return new And(selectors[0], selectors[1]);
+        }
+        return new Conjunction(selectors);
     }
 
     protected static ICriteriaElement selector(String property, Entity<?> entity) {
+        return selector(property, entity, false);
+    }
+
+    protected static ICriteriaElement selector(String property, Entity<?> entity, boolean nullable) {
         if (property == null)
-            return entity.selector("");
+            throw new NullPointerException("property");
+
+        if (entity == null)
+            if (nullable)
+                return new IsNull(property);
+            else
+                return null;
 
         String prefix = property + ".";
+
         ICriteriaElement selector = entity.selector(prefix);
 
         Serializable nid = entity.getNaturalId();

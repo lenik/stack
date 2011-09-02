@@ -14,7 +14,6 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
@@ -98,7 +97,11 @@ public class MakeTaskItem
 
     @Override
     protected ICriteriaElement selector(String prefix) {
-        return new And(//
+        if (task == null)
+            throw new NullPointerException("task");
+        if (part == null)
+            throw new NullPointerException("part");
+        return selectors(//
                 selector(prefix + "task", task), //
                 selector(prefix + "part", part));
     }

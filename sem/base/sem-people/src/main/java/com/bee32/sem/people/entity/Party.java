@@ -244,6 +244,8 @@ public abstract class Party
     @Override
     protected ICriteriaElement selector(String prefix) {
         String xid = getXid();
+        if (xid == null)
+            return null;
         return new Equals(prefix + "xid", xid);
     }
 

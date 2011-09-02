@@ -14,9 +14,8 @@ import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.resource.Resource;
 import com.bee32.icsf.access.resource.ResourceRegistry;
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.And;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.c.CEntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 import com.bee32.plover.ox1.principal.Principal;
@@ -135,8 +134,12 @@ public class R_ACE
     }
 
     @Override
-    public CriteriaElement selector(String prefix) {
-        return new And(//
+    public ICriteriaElement selector(String prefix) {
+        if (qualifiedName == null)
+            throw new NullPointerException("qualifiedName");
+        if (principal == null)
+            throw new NullPointerException("principal");
+        return selectors(//
                 new Equals(prefix + "qualifiedName", qualifiedName), //
                 selector(prefix + "principal", principal));
     }

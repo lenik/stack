@@ -10,9 +10,8 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.And;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
@@ -87,10 +86,12 @@ public class MaterialAttribute
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
+    protected ICriteriaElement selector(String prefix) {
+        if (material == null)
+            throw new NullPointerException("material");
         if (name == null)
             throw new NullPointerException("name");
-        return new And(//
+        return selectors(//
                 selector(prefix + "material", material), //
                 new Equals(prefix + "name", name));
     }

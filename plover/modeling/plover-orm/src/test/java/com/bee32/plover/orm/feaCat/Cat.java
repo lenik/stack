@@ -17,8 +17,8 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.DummyId;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "cat_seq", allocationSize = 1)
@@ -108,7 +108,7 @@ public class Cat
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
+    protected ICriteriaElement selector(String prefix) {
         if (name == null)
             throw new NullPointerException("name");
         return new Equals(prefix + "name", name);

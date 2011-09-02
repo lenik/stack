@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
 
+import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.config.BatchConfig;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
 
@@ -98,6 +102,26 @@ public class MaterialCategory
         if (materials == null)
             throw new NullPointerException("materials");
         this.materials = materials;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        Integer parentId;
+        if (getParent() == null)
+            parentId = null;
+        else
+            parentId = getParent().getId();
+
+        return new IdComposite(//
+                parentId, //
+                name);
+    }
+
+    @Override
+    protected ICriteriaElement localSelector(String prefix) {
+        if (name == null)
+            throw new NullPointerException("name");
+        return new Equals(prefix + "name", name);
     }
 
 }

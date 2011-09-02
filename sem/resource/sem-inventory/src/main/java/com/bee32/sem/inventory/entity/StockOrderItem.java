@@ -15,9 +15,8 @@ import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.Conjunction;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.sem.inventory.config.BatchingConfig;
 import com.bee32.sem.world.thing.AbstractOrderItem;
@@ -206,9 +205,9 @@ public class StockOrderItem
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
+    protected ICriteriaElement selector(String prefix) {
         String cBatch = getCBatch();
-        return new Conjunction(//
+        return selectors(//
                 selector(prefix + "parent", parent), //
                 selector(prefix + "material", material), //
                 new Equals(prefix + "cBatch", cBatch));

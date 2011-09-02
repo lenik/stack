@@ -10,9 +10,8 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.And;
-import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
@@ -90,8 +89,12 @@ public class FileAttribute
     }
 
     @Override
-    protected CriteriaElement selector(String prefix) {
-        return new And(//
+    protected ICriteriaElement selector(String prefix) {
+        if (blob == null)
+            throw new NullPointerException("blob");
+        if (key == null)
+            throw new NullPointerException("key");
+        return selectors(//
                 selector(prefix + "blob", blob), //
                 new Equals(prefix + "key", key));
     }

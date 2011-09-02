@@ -11,7 +11,6 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
-import com.bee32.plover.criteria.hibernate.And;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.orm.entity.EntityAuto;
@@ -73,7 +72,11 @@ public class UserPreference
 
     @Override
     protected ICriteriaElement selector(String prefix) {
-        return new And(//
+        if (user == null)
+            throw new NullPointerException("user");
+        if (key == null)
+            throw new NullPointerException("key");
+        return selectors(//
                 selector(prefix + "user", user), //
                 new Equals(prefix + "key", key));
     }
