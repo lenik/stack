@@ -96,7 +96,7 @@ public class SEMInventorySamples
         cskdp.setUnitHint("体积");
         cskdp.setUnit(Unit.CUBIC_METER);
         cskdp.setBarCode("1693612370098");
-        cskdp.setSerial("TeST-CSKDP-01");
+        cskdp.setSerial("..M1");
         cskdp.setCategory(catCard);
         cskdp.setPreferredLocations(Arrays.asList(cskdpPL1, cskdpPL2));
         cskdp.setOptions(Arrays.asList(cskdpOption));
@@ -104,7 +104,7 @@ public class SEMInventorySamples
         gundam.setLabel("机动战士高达");
         gundam.setUnit(Unit.CUBIC_METER);
         gundam.setBarCode("LSLT-02");
-        gundam.setSerial("TeST-SHAKANA-11");
+        gundam.setSerial("..M2");
         gundam.setCategory(cardNature);
         gundam.setUnitHint("体积");
 
