@@ -77,18 +77,18 @@ public abstract class AbstractOrderDto< //
         invalidateTotal();
     }
 
-    public void editItem(ItemDto item) {
-        if (item == null)
-            throw new NullPointerException("item");
-        int index = items.indexOf(item);
-        items.set(index, item);
-        invalidateTotal();
-    }
-
     public void removeItem(ItemDto item) {
         if (item == null)
             throw new NullPointerException("item");
         items.remove(item);
+        invalidateTotal();
+    }
+
+    public void applyItem(ItemDto item) {
+        if (item == null)
+            throw new NullPointerException("item");
+        int index = items.indexOf(item);
+        items.set(index, item);
         invalidateTotal();
     }
 
