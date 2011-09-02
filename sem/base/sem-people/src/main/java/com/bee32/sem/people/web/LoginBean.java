@@ -7,6 +7,8 @@ import javax.faces.event.ActionEvent;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.primefaces.context.RequestContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,8 @@ public class LoginBean
         extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
+
+    static Logger logger = LoggerFactory.getLogger(LoginBean.class);
 
     private String username;
     private String password;
@@ -70,6 +74,7 @@ public class LoginBean
 
         if (!p2.equals(password)) {
             uiLogger.error("密码输入错误");
+            logger.debug("Login: p1=" + p1 + ", _p2=" + _p2 + ", p2=" + p2 + ", expected=" + password);
             return;
         }
 
