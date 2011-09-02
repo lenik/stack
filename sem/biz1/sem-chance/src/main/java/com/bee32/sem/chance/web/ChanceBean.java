@@ -1,6 +1,5 @@
 package com.bee32.sem.chance.web;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,9 +7,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
-import org.primefaces.component.commandbutton.CommandButton;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.fieldset.Fieldset;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -83,47 +79,18 @@ public class ChanceBean
     ChanceQuotationDto activeQuotation;
     String materialPattern;
     ChanceQuotationItemDto selectedQuotationItem;
-    MCValue temPrice = new MCValue();
-    BigDecimal temQuantity = new BigDecimal(0);
 
     MaterialCategoryTreeModel materialTree;
     List<MaterialDto> materialList;
     MaterialDto selectedMaterial;
 
     ChanceBean() {
-        findComponentEx(BUTTON_CHANCE_NEW).setEnabled(true);
-        findComponentEx(BUTTON_CHANCE_EDIT).setEnabled(true);
-        findComponentEx(BUTTON_CHANCE_DELETE).setEnabled(true);
-        findComponentEx(BUTTON_CHANCE_ADD).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_RESET).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_DETAIL).setEnabled(false);
-
-        findComponentEx(BUTTON_CHANCE_RELATEACTION).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_UNRELATEACTION).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_VIEWACTION).setEnabled(false);
-
-        findComponent(OUTPUT_DISCOUNT).setRendered(true);
-        findComponent(INPUT_DISCOUNT).setRendered(false);
-        findComponent(COMMANDLINK_EDITDISCOUNT).setRendered(true);
-        findComponent(COMMANDLINK_SUREDISCOUNT).setRendered(false);
-
-        findComponent(OUTPUT_PRICE).setRendered(true);
-        findComponent(INPUT_PRICE).setRendered(false);
-        findComponent(COMMANDLINK_EDITPRICE).setRendered(true);
-        findComponent(COMMANDLINK_SUREPIRCE).setRendered(false);
-
-        findComponent(OUTPUT_QUANTITY).setRendered(true);
-        findComponent(INPUT_QUANTITY).setRendered(false);
-        findComponent(COMMANDLINK_EDITQUANTITY).setRendered(true);
-        findComponent(COMMANDLINK_SUREQUANTITY).setRendered(false);
-
         initMaterialCategoryTree();
     }
 
     @PostConstruct
     public void initialization() {
         initList();
-        editable = false;
         quotations = new ArrayList<ChanceQuotationDto>();
     }
 
@@ -132,24 +99,23 @@ public class ChanceBean
         materialList = DTOs.marshalList(MaterialDto.class, _materials);
     }
 
-    public void viewQuotationDetail() {
-        if (selectedQuotation != null)
-            activeQuotation = selectedQuotation;
-        quotationEdit = true;
-    }
-
     public void viewActionDetail() {
         if (selectedAction == null) {
             uiLogger.error("提示:", "请选择行动记录");
             return;
         }
         activeAction = selectedAction;
+        state = State.VIEW_ACTION;
+    }
+
+    public void viewQuotationDetail() {
+        activeQuotation = selectedQuotation;
+        state = State.VIEW_Q;
     }
 
     public void editQuotation() {
-        if (selectedQuotation != null)
-            activeQuotation = selectedQuotation;
-        quotationEdit = false;
+        activeQuotation = selectedQuotation;
+        state = State.EDIT_Q;
     }
 
     public void chooseMaterial() {
@@ -172,44 +138,6 @@ public class ChanceBean
     public void calculatePriceChange() {
         MCValue _price = new MCValue(selectedQuotationItem.getPriceCurrency(), selectedQuotationItem.getViewPrice());
         selectedQuotationItem.setPrice(_price);
-        findComponent(OUTPUT_PRICE).setRendered(true);
-        findComponent(INPUT_PRICE).setRendered(false);
-        findComponent(COMMANDLINK_EDITPRICE).setRendered(true);
-        findComponent(COMMANDLINK_SUREPIRCE).setRendered(false);
-        isPriceEditing = false;
-    }
-
-    public void calculateNumberChange() {
-        findComponent(OUTPUT_QUANTITY).setRendered(true);
-        findComponent(INPUT_QUANTITY).setRendered(false);
-        findComponent(COMMANDLINK_EDITQUANTITY).setRendered(true);
-        findComponent(COMMANDLINK_SUREQUANTITY).setRendered(false);
-        isQuantityEditing = false;
-    }
-
-    public void editPrice() {
-        findComponent(OUTPUT_PRICE).setRendered(false);
-        findComponent(INPUT_PRICE).setRendered(true);
-        findComponent(COMMANDLINK_EDITPRICE).setRendered(false);
-        findComponent(COMMANDLINK_SUREPIRCE).setRendered(true);
-        temPrice = selectedQuotationItem.getPrice();
-        isPriceEditing = true;
-    }
-
-    public void editDiscount() {
-        findComponent(OUTPUT_DISCOUNT).setRendered(false);
-        findComponent(INPUT_DISCOUNT).setRendered(true);
-        findComponent(COMMANDLINK_EDITDISCOUNT).setRendered(false);
-        findComponent(COMMANDLINK_SUREDISCOUNT).setRendered(true);
-        isDiscountEdting = true;
-    }
-
-    public void sureDiscount() {
-        findComponent(OUTPUT_DISCOUNT).setRendered(true);
-        findComponent(INPUT_DISCOUNT).setRendered(false);
-        findComponent(COMMANDLINK_EDITDISCOUNT).setRendered(true);
-        findComponent(COMMANDLINK_SUREDISCOUNT).setRendered(false);
-        isDiscountEdting = false;
     }
 
     public List<SelectItem> getChanceActionStyles() {
@@ -229,47 +157,15 @@ public class ChanceBean
 // selectedQuotationItem.setNumber(temQuantity);
 // }
 
-    public void editQuantity() {
-        findComponent(OUTPUT_QUANTITY).setRendered(false);
-        findComponent(INPUT_QUANTITY).setRendered(true);
-        findComponent(COMMANDLINK_EDITQUANTITY).setRendered(false);
-        findComponent(COMMANDLINK_SUREQUANTITY).setRendered(true);
-        temQuantity = selectedQuotationItem.getQuantity();
-        isQuantityEditing = true;
-    }
-
     public void editQuotationItem() {
-        BigDecimal itemQuantity = isQuantityEditing == true ? temQuantity : selectedQuotationItem.getQuantity();
-        MCValue itemPrice = isPriceEditing == true ? temPrice : selectedQuotationItem.getPrice();
-        if (isPriceEditing)
-            selectedQuotationItem.setPrice(itemPrice);
-        if (isQuantityEditing)
-            selectedQuotationItem.setQuantity(itemQuantity);
-        activeQuotation.editItem(selectedQuotationItem);
+        // activeQuotation.applyItem(selectedQuotationItem);
     }
 
     public void uneditQuotationItem() {
-        selectedQuotationItem.setQuantity(temQuantity);
-        selectedQuotationItem.setPrice(temPrice);
-        findComponent(OUTPUT_DISCOUNT).setRendered(true);
-        findComponent(OUTPUT_PRICE).setRendered(true);
-        findComponent(OUTPUT_QUANTITY).setRendered(true);
-
-        findComponent(INPUT_DISCOUNT).setRendered(false);
-        findComponent(INPUT_PRICE).setRendered(false);
-        findComponent(INPUT_QUANTITY).setRendered(false);
-
-        findComponent(COMMANDLINK_EDITDISCOUNT).setRendered(true);
-        findComponent(COMMANDLINK_EDITPRICE).setRendered(true);
-        findComponent(COMMANDLINK_EDITQUANTITY).setRendered(true);
-
-        findComponent(COMMANDLINK_SUREDISCOUNT).setRendered(false);
-        findComponent(COMMANDLINK_SUREPIRCE).setRendered(false);
-        findComponent(COMMANDLINK_EDITQUANTITY).setRendered(false);
+        state = State.EDIT;
     }
 
     public void saveQuotation() {
-
         if (activeQuotation.getItems() == null || activeQuotation.getItems().size() == 0) {
             uiLogger.error("错误提示:", "请添加明细");
             return;
@@ -284,18 +180,13 @@ public class ChanceBean
         try {
             serviceFor(ChanceQuotation.class).saveOrUpdate(quotationEntity);
 
-// if (activeQuotation.getId() == null)
-// quotations.add(DTOs.marshal(ChanceQuotationDto.class, quotationEntity));
+            // if (activeQuotation.getId() == null)
+            // quotations.add(DTOs.marshal(ChanceQuotationDto.class, quotationEntity));
             listQuotationByChance(activeChance);
 
-            DataTable quotationItemTable = (DataTable) findComponent(DATATABLE_QUOTATIONS);
-            quotationItemTable.clearSelectedRowIndexes();
-
-            findComponentEx(BUTTON_QUOTATION_EDIT).setEnabled(false);
-            findComponentEx(BUTTON_QUOTATION_DELETE).setEnabled(false);
-            findComponentEx(BUTTON_QUOTATION_VIEW).setEnabled(false);
-
             uiLogger.info("提示", "保存报价单成功");
+
+            state = State.EDIT;
         } catch (Exception e) {
             uiLogger.error("保存报价单错误:" + e.getMessage(), e);
         }
@@ -306,12 +197,7 @@ public class ChanceBean
         try {
             serviceFor(ChanceQuotation.class).delete(quo);
             quotations.remove(selectedQuotation);
-            CommandButton button_quotation_edit = (CommandButton) findComponent(BUTTON_QUOTATION_EDIT);
-            button_quotation_edit.setDisabled(true);
-            CommandButton button_quotation_delete = (CommandButton) findComponent(BUTTON_QUOTATION_DELETE);
-            button_quotation_delete.setDisabled(true);
-            CommandButton button_quotation_viwe = (CommandButton) findComponent(BUTTON_QUOTATION_VIEW);
-            button_quotation_viwe.setDisabled(true);
+            selectedQuotation = null;
             uiLogger.info("提示:", "成功删除报价单");
         } catch (Exception e) {
             uiLogger.error("删除报价单失败" + e.getMessage(), e);
@@ -328,19 +214,9 @@ public class ChanceBean
     }
 
     public void onQuotationRowSelect() {
-        if (editable != true) {
-            findComponentEx(BUTTON_QUOTATION_EDIT).setEnabled(true);
-            findComponentEx(BUTTON_QUOTATION_DELETE).setEnabled(true);
-        }
-        findComponentEx(BUTTON_QUOTATION_VIEW).setEnabled(true);
     }
 
     public void onQuotationRowUnselect() {
-        if (editable != true) {
-            findComponentEx(BUTTON_QUOTATION_EDIT).setEnabled(false);
-            findComponentEx(BUTTON_QUOTATION_DELETE).setEnabled(false);
-        }
-        findComponentEx(BUTTON_QUOTATION_VIEW).setEnabled(false);
     }
 
     /** 生成物料树 */
@@ -383,48 +259,28 @@ public class ChanceBean
             chances = UIHelper.buildLazyDataModel(edmo);
         }
         refreshChanceCount(isSearching);
-        findComponentEx(BUTTON_QUOTATION_EDIT).setEnabled(false);
-        findComponentEx(BUTTON_QUOTATION_DELETE).setEnabled(false);
     }
 
     public void initToolbar() {
-        findComponentEx(BUTTON_CHANCE_NEW).setEnabled(true);
-        findComponentEx(BUTTON_CHANCE_EDIT).setEnabled(true);
-        findComponentEx(BUTTON_CHANCE_DELETE).setEnabled(true);
-        findComponentEx(BUTTON_CHANCE_ADD).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_RESET).setEnabled(false);
-        boolean temp = selectedChance == null ? false : true;
-        findComponentEx(BUTTON_CHANCE_DETAIL).setEnabled(temp);
     }
 
     void refreshChanceCount(boolean forSearch) {
-        int count = serviceFor(Chance.class).count(EntityCriteria.ownedByCurrentUser(),//
+        int count = serviceFor(Chance.class).count(//
+                EntityCriteria.ownedByCurrentUser(),//
                 forSearch ? ChanceCriteria.subjectLike(subjectPattern) : null);
         chances.setRowCount(count);
     }
 
     public void onRowSelect() {
-        findComponentEx(BUTTON_CHANCE_DETAIL).setEnabled(true);
     }
 
     public void onRowUnselect() {
-        findComponentEx(BUTTON_CHANCE_DETAIL).setEnabled(false);
     }
 
     public void onActionRowSelect() {
-        if (editable != true) {
-            findComponentEx(BUTTON_CHANCE_UNRELATEACTION).setEnabled(true);
-        }
-
-        findComponentEx(BUTTON_CHANCE_VIEWACTION).setEnabled(true);
     }
 
     public void onActionRowUnselect() {
-        if (editable != true) {
-            findComponentEx(BUTTON_CHANCE_UNRELATEACTION).setEnabled(false);
-        }
-
-        findComponentEx(BUTTON_CHANCE_VIEWACTION).setEnabled(false);
     }
 
     public List<SelectItem> getCategory() {
@@ -446,15 +302,14 @@ public class ChanceBean
     }
 
     public void findParty() {
-        if (!partyPattern.isEmpty()) {
-            List<Party> _parties = serviceFor(Party.class).list(//
+        List<Party> _parties;
+        if (!partyPattern.isEmpty())
+            _parties = serviceFor(Party.class).list(//
                     EntityCriteria.ownedByCurrentUser(), //
                     PeopleCriteria.namedLike(partyPattern));
-            parties = DTOs.marshalList(PartyDto.class, _parties);
-        } else {
-            List<Party> lp = serviceFor(Party.class).list(EntityCriteria.ownedByCurrentUser());
-            parties = DTOs.marshalList(PartyDto.class, lp);
-        }
+        else
+            _parties = serviceFor(Party.class).list(EntityCriteria.ownedByCurrentUser());
+        parties = DTOs.marshalList(PartyDto.class, 0, _parties, true);
     }
 
     public void searchAction() {
@@ -521,23 +376,11 @@ public class ChanceBean
     }
 
     public void createForm() {
-        editable = false;
         activeChance = new ChanceDto().create();
         quotations = new ArrayList<ChanceQuotationDto>();
         setActiveTab(TAB_FORM);
 
-        findComponentEx(BUTTON_QUOTATION_NEW).setEnabled(true);
-        findComponentEx(BUTTON_QUOTATION_VIEW).setEnabled(false);
-
-        findComponentEx(BUTTON_CHANCE_NEW).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_EDIT).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_DELETE).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_ADD).setEnabled(true);
-        findComponentEx(BUTTON_CHANCE_RESET).setEnabled(true);
-        findComponentEx(BUTTON_CHANCE_DETAIL).setEnabled(false);
-        findComponent(FIELD_ACTIONHISTORY).setRendered(false);
-        findComponent(FIELD_QUOTATION).setRendered(false);
-
+        state = State.EDIT;
     }
 
     public void editForm() {
@@ -549,24 +392,7 @@ public class ChanceBean
         listQuotationByChance(activeChance);
         setActiveTab(TAB_FORM);
 
-        findComponentEx(BUTTON_CHANCE_NEW).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_EDIT).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_DELETE).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_ADD).setEnabled(true);
-        findComponentEx(BUTTON_CHANCE_RESET).setEnabled(true);
-
-        findComponentEx(BUTTON_CHANCE_DETAIL).setEnabled(false);
-
-        findComponentEx(BUTTON_CHANCE_RELATEACTION).setEnabled(true);
-        findComponentEx(BUTTON_CHANCE_UNRELATEACTION).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_VIEWACTION).setEnabled(false);
-
-        editable = false;
-        findComponent(FIELD_ACTIONHISTORY).setRendered(true);
-        findComponent(FIELD_QUOTATION).setRendered(true);
-
-        findComponentEx(BUTTON_QUOTATION_NEW).setEnabled(true);
-        findComponentEx(BUTTON_QUOTATION_VIEW).setEnabled(false);
+        state = State.EDIT;
     }
 
     public void detailForm() {
@@ -574,38 +400,14 @@ public class ChanceBean
         listQuotationByChance(activeChance);
         setActiveTab(TAB_FORM);
 
-        findComponentEx(BUTTON_CHANCE_NEW).setEnabled(true);
-        findComponentEx(BUTTON_CHANCE_EDIT).setEnabled(true);
-        ;
-        findComponentEx(BUTTON_CHANCE_DELETE).setEnabled(true);
-        findComponentEx(BUTTON_CHANCE_ADD).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_RESET).setEnabled(false);
-
-        boolean tempBoolean = selectedChance == null ? false : true;
-        findComponentEx(BUTTON_CHANCE_DETAIL).setEnabled(tempBoolean);
-
-        Fieldset actionHistoryField = (Fieldset) findComponent(FIELD_ACTIONHISTORY);
-        actionHistoryField.setCollapsed(false);
-        actionHistoryField.setRendered(true);
-        Fieldset quotationField = (Fieldset) findComponent(FIELD_QUOTATION);
-        quotationField.setRendered(true);
-        quotationField.setCollapsed(false);
-
-        findComponentEx(BUTTON_CHANCE_RELATEACTION).setEnabled(false);
-        findComponentEx(BUTTON_CHANCE_UNRELATEACTION).setEnabled(false);
-
-        findComponentEx(BUTTON_QUOTATION_VIEW).setEnabled(false);
-        findComponentEx(BUTTON_QUOTATION_NEW).setEnabled(false);
-        editable = true;
+        state = State.VIEW;
     }
 
     public void cancel() {
         initToolbar();
         setActiveTab(TAB_INDEX);
-        editable = false;
-        findComponent(FIELD_ACTIONHISTORY).setRendered(false);
-        findComponent(FIELD_QUOTATION).setRendered(false);
-        findComponentEx(BUTTON_QUOTATION_NEW).setEnabled(true);
+
+        state = State.INDEX;
     }
 
     public void editCustomerRole() {
@@ -663,14 +465,12 @@ public class ChanceBean
             serviceFor(Chance.class).saveOrUpdate(_chance);
 
             setActiveTab(TAB_INDEX);
-            DataTable table = (DataTable) findComponent(DATATABLE_CHANCES);
-            table.clearSelectedRowIndexes();
             initList();
             initToolbar();
-            editable = true;
-            findComponent(FIELD_ACTIONHISTORY).setRendered(false);
-            findComponent(FIELD_QUOTATION).setRendered(false);
+
             uiLogger.info("提示", "保存销售机会成功");
+
+            state = State.INDEX;
         } catch (Exception e) {
             uiLogger.error("保存销售机会失败: " + e.getMessage(), e);
         }
@@ -689,8 +489,6 @@ public class ChanceBean
                 serviceFor(ChanceAction.class).save(_action);
             }
             serviceFor(Chance.class).delete(chanceToDelete);
-            DataTable table = (DataTable) findComponent(DATATABLE_CHANCES);
-            table.clearSelectedRowIndexes();
             initList();
             initToolbar();
             uiLogger.info("成功删除行动记录");
@@ -710,8 +508,7 @@ public class ChanceBean
         try {
             serviceFor(ChanceAction.class).save(chanceAction);
             activeChance.deleteAction(selectedAction);
-            findComponentEx(BUTTON_CHANCE_UNRELATEACTION).setEnabled(false);
-            findComponentEx(BUTTON_CHANCE_VIEWACTION).setEnabled(false);
+            selectedAction = null;
             uiLogger.info("反关联成功");
         } catch (Exception e) {
             uiLogger.error("反关联失败:" + e.getMessage(), e);
@@ -792,14 +589,6 @@ public class ChanceBean
 
     public ChanceQuotationItemDto getSelectedQuotationItem() {
         return selectedQuotationItem;
-    }
-
-    public MCValue getTemPrice() {
-        return temPrice;
-    }
-
-    public BigDecimal getTemQuantity() {
-        return temQuantity;
     }
 
     public MaterialCategoryTreeModel getMaterialTree() {
@@ -888,14 +677,6 @@ public class ChanceBean
 
     public void setSelectedQuotationItem(ChanceQuotationItemDto selectedQuotationItem) {
         this.selectedQuotationItem = selectedQuotationItem;
-    }
-
-    public void setTemPrice(MCValue temPrice) {
-        this.temPrice = temPrice;
-    }
-
-    public void setTemQuantity(BigDecimal temQuantity) {
-        this.temQuantity = temQuantity;
     }
 
     public void setMaterialTree(MaterialCategoryTreeModel materialTree) {
