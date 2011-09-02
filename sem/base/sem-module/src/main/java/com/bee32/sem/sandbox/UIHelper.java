@@ -83,6 +83,17 @@ public class UIHelper
 
                 return dtos;
             }
+
+            public Object getRowKey(D dto) {
+                System.out.println(dto);
+                return dto.getId();
+            }
+
+            public D getRowData(String rowKey) {
+                System.out.println(rowKey);
+                return null;
+            }
+
         }
 
         return new LDM();
