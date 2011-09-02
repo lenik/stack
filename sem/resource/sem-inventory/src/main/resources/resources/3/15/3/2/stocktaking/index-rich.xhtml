@@ -332,6 +332,7 @@
 					<p:dataTable id="materials" var="material"
 						value="#{stocktakingAdminBean.materials}" resizableColumns="true"
 						selection="#{stocktakingAdminBean.selectedMaterial}" selectionMode="single"
+                        rowKey="#{material.id}"
 						rowIndexVar="rowIndex">
 
 						<p:column>

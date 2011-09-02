@@ -81,7 +81,9 @@
 							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}" resizableColumns="true"
 							selection="#{personAdminBean.selectedPerson}"
-							selectionMode="single" rowIndexVar="rowIndex"
+							selectionMode="single"
+                            rowKey="#{person.id}"
+                            rowIndexVar="rowIndex"
                             rowKey="#{person.id}">
 
 							<p:ajax event="rowSelect"
@@ -266,7 +268,9 @@
 							<p:dataTable id="contacts" var="contact"
 								value="#{personAdminBean.contacts}" resizableColumns="true"
 								selection="#{personAdminBean.selectedContact}"
-								selectionMode="single" rowIndexVar="rowIndex">
+								selectionMode="single"
+                                rowKey="#{contact.id}"
+                                rowIndexVar="rowIndex">
 
 
 								<p:ajax event="rowSelect"
@@ -346,7 +350,9 @@
                             <p:dataTable id="roles" var="role"
                                 value="#{personAdminBean.roles}" resizableColumns="true"
                                 selection="#{personAdminBean.selectedRole}"
-                                selectionMode="single" rowIndexVar="rowIndex">
+                                selectionMode="single"
+                                rowKey="#{role.id}"
+                                rowIndexVar="rowIndex">
 
 								<!-- *****************************************
                                 <p:ajax event="rowSelect"

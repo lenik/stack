@@ -63,7 +63,8 @@
 							<p:dataTable id="groups" var="group"
 								value="#{permissionAdminBean.groups}" resizableColumns="true"
 								selection="#{permissionAdminBean.selectedGroup}"
-								selectionMode="single" rowIndexVar="rowIndex">
+								selectionMode="single"
+                                rowKey="#{group.id}" rowIndexVar="rowIndex">
 
 								<p:ajax event="rowSelect"
 									listener="#{permissionAdminBean.onRowSelectGroup}"
@@ -101,7 +102,8 @@
 							<p:dataTable id="roles" var="role"
 								value="#{permissionAdminBean.roles}" resizableColumns="true"
 								selection="#{permissionAdminBean.selectedRole}"
-								selectionMode="single" rowIndexVar="rowIndex">
+								selectionMode="single"
+                                rowKey="#{role.id}" rowIndexVar="rowIndex">
 
 								<p:ajax event="rowSelect"
 									listener="#{permissionAdminBean.onRowSelectRole}"
@@ -140,7 +142,8 @@
 							<p:dataTable id="users" var="user"
 								value="#{permissionAdminBean.users}" resizableColumns="true"
 								selection="#{permissionAdminBean.selectedUser}"
-								selectionMode="single" rowIndexVar="rowIndex">
+								selectionMode="single"
+                                rowKey="#{user.id}" rowIndexVar="rowIndex">
 
 								<p:ajax event="rowSelect"
 									listener="#{permissionAdminBean.onRowSelectUser}"
@@ -303,7 +306,8 @@
 						<p:dataTable id="rpEntries" var="rpEntry"
 							value="#{permissionAdminBean.rpEntries}" resizableColumns="true"
 							selection="#{permissionAdminBean.selectedRpEntry}"
-							selectionMode="single" rowIndexVar="rowIndex">
+							selectionMode="single"
+                            rowKey="#{rpEntry.identity}" rowIndexVar="rowIndex">
 
 							<p:columnGroup type="header">
 								<p:row>

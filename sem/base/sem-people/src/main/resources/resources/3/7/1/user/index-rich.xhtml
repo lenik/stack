@@ -151,7 +151,8 @@
 
 						<p:dataTable var="role" value="#{userAdminBean.roles}"
 							rowIndexVar="rowIndex" selection="#{userAdminBean.selectedRole}"
-							selectionMode="single">
+							selectionMode="single"
+                            rowKey="#{role.id}">
 
 							<f:facet name="header">对应角色</f:facet>
 
@@ -216,7 +217,8 @@
 
                         <p:dataTable var="group" value="#{userAdminBean.groups}"
                             rowIndexVar="rowIndex" selection="#{userAdminBean.selectedGroup}"
-                            selectionMode="single">
+                            selectionMode="single"
+                            rowKey="#{group.id}">
 
                             <f:facet name="header">对应组</f:facet>
 
@@ -397,6 +399,7 @@
                             resizableColumns="true"
                             selection="#{userAdminBean.selectedPerson}"
                             selectionMode="single"
+                            rowKey="#{person.id}"
                             rowIndexVar="rowIndex">
 
                         <p:column>

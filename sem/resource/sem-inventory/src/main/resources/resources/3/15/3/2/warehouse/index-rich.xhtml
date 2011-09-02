@@ -167,6 +167,7 @@
 					<p:dataTable id="persons" var="person"
 						value="#{stockWarehouseAdminBean.persons}" resizableColumns="true"
 						selection="#{stockWarehouseAdminBean.selectedPerson}" selectionMode="single"
+                        rowKey="#{person.id}"
 						rowIndexVar="rowIndex">
 
 						<p:column>

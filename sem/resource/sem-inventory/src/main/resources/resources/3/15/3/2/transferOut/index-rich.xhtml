@@ -372,6 +372,7 @@
 					<p:dataTable id="materials" var="material"
 						value="#{transferOutAdminBean.materials}" resizableColumns="true"
 						selection="#{transferOutAdminBean.selectedMaterial}" selectionMode="single"
+                        rowKey="#{material.id}"
 						rowIndexVar="rowIndex">
 
 						<p:column>
@@ -421,7 +422,8 @@
 						<p:dataTable id="preferredLocations" var="stockLocation"
 							value="#{transferOutAdminBean.preferredLocations}" resizableColumns="true"
 							selection="#{transferOutAdminBean.selectedPreferredStockLocation}"
-							selectionMode="single" rowIndexVar="rowIndex">
+							selectionMode="single"
+                            rowKey="#{stockLocation.id}" rowIndexVar="rowIndex">
 
 							<p:column>
 								<f:facet name="header">
@@ -518,7 +520,8 @@
                         value="#{transferOutAdminBean.persons}"
                         resizableColumns="true"
                         selection="#{transferOutAdminBean.selectedPerson}"
-                        selectionMode="single" rowIndexVar="rowIndex">
+                        selectionMode="single"
+                        rowKey="#{person.id}" rowIndexVar="rowIndex">
 
                         <p:column>
                             <f:facet name="header">

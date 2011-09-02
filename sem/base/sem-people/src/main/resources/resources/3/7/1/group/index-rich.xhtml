@@ -147,7 +147,9 @@
 
 						<p:dataTable var="role" value="#{groupAdminBean.roles}"
 							rowIndexVar="rowIndex" selection="#{groupAdminBean.selectedRole}"
-							selectionMode="single">
+							selectionMode="single"
+                            rowKey="#{role.id}"
+                            >
 
 							<f:facet name="header">对应角色</f:facet>
 
@@ -212,7 +214,8 @@
 
 						<p:dataTable var="user" value="#{groupAdminBean.users}"
 							rowIndexVar="rowIndex" selection="#{groupAdminBean.selectedUser}"
-							selectionMode="single">
+							selectionMode="single"
+                            rowKey="#{user.id}">
 
 							<f:facet name="header">对应用户</f:facet>
 
@@ -249,7 +252,8 @@
 
                         <p:dataTable var="user" value="#{groupAdminBean.allUser}"
                             rowIndexVar="rowIndex" selection="#{groupAdminBean.selectedUserToAdd}"
-                            selectionMode="single">
+                            selectionMode="single"
+                            rowKey="#{user.id}">
 
                             <f:facet name="header">所有用户</f:facet>
 

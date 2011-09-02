@@ -325,6 +325,7 @@
 					<p:dataTable id="materials" var="material"
 						value="#{makeOrderAdminBean.materials}" resizableColumns="true"
 						selection="#{makeOrderAdminBean.selectedMaterial}" selectionMode="single"
+                        rowKey="#{material.id}"
 						rowIndexVar="rowIndex">
 
 						<p:column>
@@ -372,7 +373,9 @@
 						<p:dataTable id="preferredLocations" var="stockLocation"
 							value="#{makeOrderAdminBean.preferredLocations}" resizableColumns="true"
 							selection="#{makeOrderAdminBean.selectedPreferredStockLocation}"
-							selectionMode="single" rowIndexVar="rowIndex">
+							selectionMode="single"
+                            rowKey="#{stockLocation.id}"
+                             rowIndexVar="rowIndex">
 
 							<p:column>
 								<f:facet name="header">

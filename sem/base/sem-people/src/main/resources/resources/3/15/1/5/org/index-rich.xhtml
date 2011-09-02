@@ -86,7 +86,9 @@
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                             rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}" resizableColumns="true"
                             selection="#{orgAdminBean.selectedOrg}"
-                            selectionMode="single" rowIndexVar="rowIndex">
+                            selectionMode="single"
+                            rowKey="#{org.id}"
+                            rowIndexVar="rowIndex">
 
                             <p:ajax event="rowSelect"
                                 listener="#{orgAdminBean.onRowSelect}"
@@ -247,7 +249,9 @@
                             <p:dataTable id="contacts" var="contact"
                                 value="#{orgAdminBean.contacts}" resizableColumns="true"
                                 selection="#{orgAdminBean.selectedContact}"
-                                selectionMode="single" rowIndexVar="rowIndex">
+                                selectionMode="single"
+                                rowKey="#{contact.id}"
+                                 rowIndexVar="rowIndex">
 
                                 <p:ajax event="rowSelect"
                                     listener="#{orgAdminBean.onRowSelectContact}"
@@ -439,7 +443,9 @@
 										<p:dataTable id="roles" var="role"
 											value="#{orgAdminBean.roles}" resizableColumns="true"
 											selection="#{orgAdminBean.selectedRole}"
-											selectionMode="single" rowIndexVar="rowIndex">
+											selectionMode="single"
+                                            rowKey="#{role.id}"
+                                             rowIndexVar="rowIndex">
 
 											<p:ajax event="rowSelect"
 												listener="#{orgAdminBean.onRowSelectRole}"
@@ -673,6 +679,7 @@
                             resizableColumns="true"
                             selection="#{orgAdminBean.selectedPerson}"
                             selectionMode="single"
+                            rowKey="#{person.id}"
                             rowIndexVar="rowIndex">
 
                         <p:column>

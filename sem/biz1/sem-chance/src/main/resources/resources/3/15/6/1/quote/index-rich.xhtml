@@ -28,7 +28,8 @@
                     </p:toolbarGroup>
                 </p:toolbar>
                 <p:dataTable id="invoiceList" var="item" value="#{quotationBean.quotations}"
-                    selection="#{quotationBean.selectedQuotation}" selectionMode="single" rowIndexVar="rowIndex">
+                    selection="#{quotationBean.selectedQuotation}" selectionMode="single"
+                    rowKey="#{item.id}" rowIndexVar="rowIndex">
 
                     <p:ajax event="rowSelect" listener="#{quotationBean.onRowSelect}" update="main:toolbar" />
                     <p:ajax event="rowUnselect" listener="#{quotationBean.onRowUnselect}" update="main:toolbar" />

@@ -467,7 +467,8 @@
                             <p:dataTable
                                 value="#{transferInAdminBean.items}"
                                 var="item" rowIndexVar="rowIndex"
-                                selection="#{transferInAdminBean.selectedItemIn}" selectionMode="single">
+                                selection="#{transferInAdminBean.selectedItemIn}" selectionMode="single"
+                                rowKey="#{item.id}">
 
                                 <p:column headerText="序号">
                                     <h:outputText
@@ -547,7 +548,8 @@
                         value="#{transferInAdminBean.persons}"
                         resizableColumns="true"
                         selection="#{transferInAdminBean.selectedPerson}"
-                        selectionMode="single" rowIndexVar="rowIndex">
+                        selectionMode="single"
+                        rowKey="#{person.id}" rowIndexVar="rowIndex">
 
                         <p:column>
                             <f:facet name="header">
@@ -658,7 +660,8 @@
                         <p:dataTable id="preferredLocations" var="stockLocation"
                             value="#{transferInAdminBean.preferredLocations}" resizableColumns="true"
                             selection="#{transferInAdminBean.selectedPreferredStockLocation}"
-                            selectionMode="single" rowIndexVar="rowIndex">
+                            selectionMode="single"
+                            rowKey="#{stockLocation.id}" rowIndexVar="rowIndex">
 
                             <p:column>
                                 <f:facet name="header">

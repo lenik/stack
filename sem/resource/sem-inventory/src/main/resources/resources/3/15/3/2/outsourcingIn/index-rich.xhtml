@@ -356,6 +356,7 @@
 					<p:dataTable id="materials" var="material"
 						value="#{outsourcingInAdminBean.materials}" resizableColumns="true"
 						selection="#{outsourcingInAdminBean.selectedMaterial}" selectionMode="single"
+                        rowKey="#{material.id}"
 						rowIndexVar="rowIndex">
 
 						<p:column>
@@ -405,7 +406,8 @@
 						<p:dataTable id="preferredLocations" var="stockLocation"
 							value="#{outsourcingInAdminBean.preferredLocations}" resizableColumns="true"
 							selection="#{outsourcingInAdminBean.selectedPreferredStockLocation}"
-							selectionMode="single" rowIndexVar="rowIndex">
+							selectionMode="single"
+                            rowKey="#{stockLocation.id}" rowIndexVar="rowIndex">
 
 							<p:column>
 								<f:facet name="header">
@@ -435,6 +437,7 @@
 					<p:panel header="所有库位" toggleable="true">
 						<p:tree value="#{outsourcingInAdminBean.locationRoot}"
 							var="stockLocation" selectionMode="single"
+                            rowKey="#{stockLocation.id}"
 							selection="#{outsourcingInAdminBean.selectedStockLocationNode}">
 							<p:treeNode>
 								<h:outputText value="#{stockLocation.nodeText}" />

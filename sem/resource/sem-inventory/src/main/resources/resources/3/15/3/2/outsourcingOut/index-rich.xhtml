@@ -348,6 +348,7 @@
 					<p:dataTable id="materials" var="material"
 						value="#{outsourcingOutAdminBean.materials}" resizableColumns="true"
 						selection="#{outsourcingOutAdminBean.selectedMaterial}" selectionMode="single"
+                        rowKey="#{material.id}"
 						rowIndexVar="rowIndex">
 
 						<p:column>
@@ -397,7 +398,8 @@
 						<p:dataTable id="preferredLocations" var="stockLocation"
 							value="#{outsourcingOutAdminBean.preferredLocations}" resizableColumns="true"
 							selection="#{outsourcingOutAdminBean.selectedPreferredStockLocation}"
-							selectionMode="single" rowIndexVar="rowIndex">
+							selectionMode="single"
+                            rowKey="#{stockLocation.id}" rowIndexVar="rowIndex">
 
 							<p:column>
 								<f:facet name="header">

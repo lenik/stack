@@ -66,7 +66,8 @@
                             rows="#{viewConfig.pageSize}" lazy="true"
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                             rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}" resizableColumns="true"
-                            selection="#{chanceActionBean.selectedAction}" selectionMode="single" rowIndexVar="rowIndex">
+                            selection="#{chanceActionBean.selectedAction}" selectionMode="single"
+                            rowKey="#{action.id}" rowIndexVar="rowIndex">
 
                             <p:ajax event="rowSelect" listener="#{chanceActionBean.onRowSelect}"
                                 update="chanceActionForm:productToolbar" />
@@ -227,7 +228,8 @@
                             update="chanceForm:chances" async="true" />
                     </h:panelGrid>
                     <p:dataTable id="chances" var="chance" value="#{chanceActionBean.chances}" resizableColumns="true"
-                        selection="#{chanceActionBean.selectedChance}" selectionMode="single" rowIndexVar="rowIndex">
+                        selection="#{chanceActionBean.selectedChance}" selectionMode="single"
+                        rowKey="#{chance.id}" rowIndexVar="rowIndex">
 
                         <p:column headerText="序号" style="width:45px;">
                             <h:outputText value="#{rowIndex + 1}" />
