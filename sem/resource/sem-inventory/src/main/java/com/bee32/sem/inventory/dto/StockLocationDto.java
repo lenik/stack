@@ -140,8 +140,6 @@ public class StockLocationDto
 
     public String getNodeText() {
         StringBuilder sb = new StringBuilder();
-        if (id == null)
-            sb.append("(New) ");
         if (getLabel() != null && !getLabel().isEmpty())
             sb.append(getLabel());
         if (getLabel() != null && !getLabel().isEmpty() && address != null && !address.isEmpty())

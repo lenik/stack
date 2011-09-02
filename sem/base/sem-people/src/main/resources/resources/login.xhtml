@@ -16,7 +16,6 @@
 	<title>登录</title>
 
 	<link rel="stylesheet" type="text/css" href="${location.WEB_APP}/site/frame.css" />
-	<script language="javascript" src="${location.LIB_JS}/jquery.sha1.js"></script>
 
 	<script language="javascript">
 	   function calcDigest() {
@@ -75,6 +74,22 @@
 
 	</div>
 
+    <h:form id="dummy" style="display: none;">
+        A Dummy Form.
+        <p:dataTable />
+        <p:column />
+        <p:commandLink />
+        <p:commandButton />
+        <p:dialog />
+        <p:fileUpload />
+        <p:tabView rendered="false">
+            <p:tab title="" />
+        </p:tabView>
+        <p:message for="dummy" />
+        <f:ajax event="click" />
+    </h:form>
+
+    <script language="javascript" src="${location.LIB_JS}/jquery.sha1.js"></script>
 
     <div style="clear: both;" />
     <div style="height: 5px; background-image: url(${location.STYLE}/split.gif); background-repeat: repeat-y"></div>

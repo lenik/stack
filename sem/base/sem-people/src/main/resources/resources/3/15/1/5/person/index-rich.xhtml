@@ -81,7 +81,8 @@
 							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}" resizableColumns="true"
 							selection="#{personAdminBean.selectedPerson}"
-							selectionMode="single" rowIndexVar="rowIndex">
+							selectionMode="single" rowIndexVar="rowIndex"
+                            rowKey="#{person.id}">
 
 							<p:ajax event="rowSelect"
 								listener="#{personAdminBean.onRowSelect}"
