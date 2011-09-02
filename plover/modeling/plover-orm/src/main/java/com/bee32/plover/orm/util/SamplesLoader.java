@@ -240,9 +240,15 @@ public class SamplesLoader
 
                     Serializable nid = item.getNaturalId();
                     if (nid != null) {
-                        logger.info("      Reload " + itemType.getSimpleName() + " : " + nid);
+                        String itemHint = itemType.getSimpleName() + " : " + nid;
+                        logger.info("      Reload " + itemHint);
 
                         ICriteriaElement selector = item.getSelector();
+                        if (selector == null) {
+                            logger.warn("    Append (dependant-) transient sample: " + itemHint);
+                            fixq.add(item);
+                            continue;
+                        }
 
                         Entity<?> existing;
                         try {
@@ -254,6 +260,7 @@ public class SamplesLoader
                         }
 
                         if (existing == null) {
+                            logger.warn("    Append to fix queue: " + itemHint);
                             fixq.add(item);
                             continue;
                         }
@@ -266,8 +273,8 @@ public class SamplesLoader
                 if (!fixq.isEmpty()) {
                     for (Entity<Serializable> item : fixq) {
                         Serializable nid = item.getNaturalId();
-                        logger.warn("    Auto fix: readd missing entity " + item.getClass().getSimpleName() + " : "
-                                + nid);
+                        String itemHint = item.getClass().getSimpleName() + " : " + nid;
+                        logger.warn("    Auto fix: readd missing entity " + itemHint);
                     }
                     try {
                         asFor(Entity.class).saveAll(fixq);
