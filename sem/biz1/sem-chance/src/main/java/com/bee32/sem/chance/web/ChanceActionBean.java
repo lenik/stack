@@ -166,7 +166,7 @@ public class ChanceActionBean
 
     public void chooseCustomerForm() {
         DataTable table = (DataTable) findComponent(DATATABLE_PARTIES);
-        // XXX table.clearSelectedRowIndexes();
+        table.clearSelectedRowIndexes();
     }
 
     public void findCustomer() {
@@ -179,7 +179,7 @@ public class ChanceActionBean
 
     public void choosePartnerForm() {
         DataTable table = (DataTable) findComponent(DATATABLE_PARTNERS);
-     // XXX table.clearSelectedRowIndexes();
+        table.clearSelectedRowIndexes();
     }
 
     public void findPartner() {
@@ -254,7 +254,7 @@ public class ChanceActionBean
             findComponentEx(BUTTON_RESET).setEnabled(false);
 
             DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
-         // XXX table.clearSelectedRowIndexes();
+            table.clearSelectedRowIndexes();
 
             editable = false;
             uiLogger.info("提示", "成功删除行动记录!");
@@ -268,7 +268,7 @@ public class ChanceActionBean
     public void cancel() {
         setActiveTab(TAB_INDEX);
         DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
-        // XXX table.clearSelectedRowIndexes();
+        table.clearSelectedRowIndexes();
         findComponent(DETAIL_TAB).setRendered(false);
         findComponentEx(BUTTON_EDITACTION).setEnabled(true);
         findComponentEx(BUTTON_NEWACTION).setEnabled(true);
@@ -380,7 +380,7 @@ public class ChanceActionBean
             setActiveTab(TAB_INDEX);
             findComponent(DETAIL_TAB).setRendered(false);
             DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
-            // XXX table.clearSelectedRowIndexes();
+            table.clearSelectedRowIndexes();
 
             findComponentEx(BUTTON_NEWACTION).setEnabled(true);
             findComponentEx(BUTTON_EDITACTION).setEnabled(true);
