@@ -84,14 +84,12 @@ public class UIHelper
                 return dtos;
             }
 
-            public Object getRowKey(D dto) {
-                System.out.println(dto);
-                return dto.getId();
+            public Object getRowKey(D object) {
+                return super.getRowKey(object);
             }
 
             public D getRowData(String rowKey) {
-                System.out.println(rowKey);
-                return null;
+                return super.getRowData(rowKey);
             }
 
         }
