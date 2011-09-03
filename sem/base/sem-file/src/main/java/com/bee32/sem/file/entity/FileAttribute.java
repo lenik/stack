@@ -26,12 +26,12 @@ public class FileAttribute
 
     private static final long serialVersionUID = 1L;
 
-    public static final int KEY_LENGTH = 30;
+    public static final int NAME_LENGTH = 30;
     public static final int STR_VAL_LENGTH = 120;
 
     FileBlob blob;
 
-    String key;
+    String name;
     int intVal;
     double floatVal;
     String strVal;
@@ -47,13 +47,15 @@ public class FileAttribute
     }
 
     @NaturalId
-    @Column(length = KEY_LENGTH, nullable = false)
-    public String getKey() {
-        return key;
+    @Column(length = NAME_LENGTH, nullable = false)
+    public String getName() {
+        return name;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        this.name = name;
     }
 
     @Column(nullable = false)
@@ -85,18 +87,18 @@ public class FileAttribute
 
     @Override
     protected Serializable naturalId() {
-        return new IdComposite(naturalId(blob), key);
+        return new IdComposite(naturalId(blob), name);
     }
 
     @Override
     protected ICriteriaElement selector(String prefix) {
         if (blob == null)
             throw new NullPointerException("blob");
-        if (key == null)
+        if (name == null)
             throw new NullPointerException("key");
         return selectors(//
                 selector(prefix + "blob", blob), //
-                new Equals(prefix + "key", key));
+                new Equals(prefix + "name", name));
     }
 
 }

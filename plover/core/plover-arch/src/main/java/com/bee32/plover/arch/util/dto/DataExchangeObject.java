@@ -1,5 +1,6 @@
 package com.bee32.plover.arch.util.dto;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import javax.free.NotImplementedException;
@@ -20,6 +21,11 @@ public abstract class DataExchangeObject<T>
     @Override
     protected void _unmarshalTo(T target) {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public Serializable getKey() {
+        throw new UnsupportedOperationException("DXO.key is undefined.");
     }
 
     @Override

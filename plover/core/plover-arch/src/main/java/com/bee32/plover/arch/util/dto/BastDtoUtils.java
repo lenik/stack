@@ -1,5 +1,7 @@
 package com.bee32.plover.arch.util.dto;
 
+import java.io.Serializable;
+
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.type.FriendTypes;
@@ -14,22 +16,7 @@ public class BastDtoUtils {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public <D extends BaseDto<? extends Object, Object>> D ref(Object source) {
-                return null;
-            }
-
-            @Override
-            public boolean isNullRef() {
-                return false;
-            }
-
-            @Override
             protected void _marshal(Object source) {
-            }
-
-            @Override
-            protected Object mergeDeref(Object given) {
-                return null;
             }
 
             @Override
@@ -39,6 +26,26 @@ public class BastDtoUtils {
             @Override
             protected void _parse(TextMap map)
                     throws ParseException {
+            }
+
+            @Override
+            public boolean isNullRef() {
+                return false;
+            }
+
+            @Override
+            public <D extends BaseDto<? extends Object, Object>> D ref(Object source) {
+                return null;
+            }
+
+            @Override
+            protected Object mergeDeref(Object given) {
+                return null;
+            }
+
+            @Override
+            public Serializable getKey() {
+                return null;
             }
 
             @Override

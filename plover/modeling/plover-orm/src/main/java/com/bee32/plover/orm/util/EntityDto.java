@@ -116,6 +116,11 @@ public abstract class EntityDto<E extends Entity<K>, K extends Serializable>
         return self;
     }
 
+    @Override
+    public final Serializable getKey() {
+        return getId();
+    }
+
     /**
      * Get ID.
      *

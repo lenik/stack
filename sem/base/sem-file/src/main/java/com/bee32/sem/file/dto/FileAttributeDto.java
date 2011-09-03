@@ -16,7 +16,7 @@ public class FileAttributeDto
 
     FileBlobDto blob;
 
-    String key;
+    String name;
     int intVal;
     double floatVal;
     String strVal;
@@ -32,6 +32,7 @@ public class FileAttributeDto
     @Override
     protected void _marshal(FileAttribute source) {
         blob = mref(FileBlobDto.class, source.getBlob());
+        name = source.getName();
         intVal = source.getIntVal();
         floatVal = source.getFloatVal();
         strVal = source.getStrVal();
@@ -40,6 +41,7 @@ public class FileAttributeDto
     @Override
     protected void _unmarshalTo(FileAttribute target) {
         merge(target, "blob", blob);
+        target.setName(name);
         target.setIntVal(intVal);
         target.setFloatVal(floatVal);
         target.setStrVal(strVal);
@@ -49,6 +51,7 @@ public class FileAttributeDto
     protected void _parse(TextMap map)
             throws ParseException {
         blob = new FileBlobDto().ref(map.getString("blob"));
+        name = map.getString("name");
         intVal = map.getInt("intVal");
         floatVal = map.getDouble("floatVal");
         strVal = map.getString("strVal");
@@ -56,7 +59,7 @@ public class FileAttributeDto
 
     @Override
     protected Serializable naturalId() {
-        return new IdComposite(naturalId(blob), key);
+        return new IdComposite(naturalId(blob), name);
     }
 
     public FileBlobDto getBlob() {
@@ -69,14 +72,14 @@ public class FileAttributeDto
         this.blob = blob;
     }
 
-    public String getKey() {
-        return key;
+    public String getName() {
+        return name;
     }
 
-    public void setKey(String key) {
-        if (key == null)
-            throw new NullPointerException("key");
-        this.key = key;
+    public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        this.name = name;
     }
 
     public int getIntVal() {

@@ -3,6 +3,7 @@ package com.bee32.plover.arch.util.dto;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -60,6 +61,8 @@ abstract class BaseDto_Skel<S, C>
     public boolean isStereotyped() {
         return stereotyped;
     }
+
+    public abstract Serializable getKey();
 
     public boolean isNull() {
         return _null;
