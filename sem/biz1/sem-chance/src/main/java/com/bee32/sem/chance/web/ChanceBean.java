@@ -65,11 +65,11 @@ public class ChanceBean
     Date searchEndTime;
 
     ZLazyDataModel<Chance, ChanceDto> chances;
-    ChanceDto activeChance = new ChanceDto().create();
+    ChanceDto chanceCopy = new ChanceDto().create();
 
     SelectableList<ChanceActionDto> actions;
     ChanceActionDto[] selectedActions;
-    ChanceActionDto activeAction = new ChanceActionDto().create();
+    ChanceActionDto actionCopy = new ChanceActionDto().create();
 
     ChancePartyDto selectedChanceParty;
     SelectableList<PartyDto> parties;
@@ -77,7 +77,7 @@ public class ChanceBean
     // quotation fields
 
     SelectableList<ChanceQuotationDto> quotations;
-    ChanceQuotationDto activeQuotation;
+    ChanceQuotationDto quotationCopy;
 
     String materialPattern;
     ChanceQuotationItemDto selectedQuotationItem;
@@ -106,17 +106,17 @@ public class ChanceBean
             uiLogger.error("提示:", "请选择行动记录");
             return;
         }
-        activeAction = actions.getSelection();
+        actionCopy = actions.getSelection();
         state = State.VIEW_ACTION;
     }
 
     public void viewQuotationDetail() {
-        activeQuotation = quotations.getSelection();
+        quotationCopy = quotations.getSelection();
         state = State.VIEW_Q;
     }
 
     public void editQuotation() {
-        activeQuotation = quotations.getSelection();
+        quotationCopy = quotations.getSelection();
         state = State.EDIT_Q;
     }
 
@@ -125,15 +125,15 @@ public class ChanceBean
         if (materialList.getSelection() != null)
             mdto = materialList.getSelection();
         ChanceQuotationItemDto item = new ChanceQuotationItemDto().create();
-        item.setParent(activeQuotation);
+        item.setParent(quotationCopy);
         item.setMaterial(mdto);
         item.setDiscount(1f);
-        activeQuotation.addItem(item);
+        quotationCopy.addItem(item);
     }
 
     void listQuotationByChance(ChanceDto chance) {
         List<ChanceQuotation> quotationList = serviceFor(ChanceQuotation.class).list(
-                ChanceCriteria.chanceEquals(activeChance));
+                ChanceCriteria.chanceEquals(chanceCopy));
         quotations = UIHelper.selectable(DTOs.marshalList(ChanceQuotationDto.class, 0, quotationList, true));
     }
 
@@ -153,23 +153,23 @@ public class ChanceBean
     }
 
     public void saveQuotation() {
-        if (activeQuotation.getItems() == null || activeQuotation.getItems().size() == 0) {
+        if (quotationCopy.getItems() == null || quotationCopy.getItems().size() == 0) {
             uiLogger.error("错误提示:", "请添加明细");
             return;
         }
 
-        if (Strings.isEmpty(activeQuotation.getSubject())) {
+        if (Strings.isEmpty(quotationCopy.getSubject())) {
             uiLogger.error("错误提示:", "请添加报价单标题!");
             return;
         }
-        ChanceQuotation quotationEntity = activeQuotation.unmarshal();
+        ChanceQuotation quotationEntity = quotationCopy.unmarshal();
 
         try {
             serviceFor(ChanceQuotation.class).saveOrUpdate(quotationEntity);
 
-            // if (activeQuotation.getId() == null)
+            // if (quotationCopy.getId() == null)
             // quotations.add(DTOs.marshal(ChanceQuotationDto.class, quotationEntity));
-            listQuotationByChance(activeChance);
+            listQuotationByChance(chanceCopy);
 
             uiLogger.info("提示", "保存报价单成功");
 
@@ -192,12 +192,12 @@ public class ChanceBean
     }
 
     public void dropQuotationItem() {
-        activeQuotation.removeItem(selectedQuotationItem);
+        quotationCopy.removeItem(selectedQuotationItem);
     }
 
     public void createQuotationForm() {
-        activeQuotation = new ChanceQuotationDto().create();
-        activeQuotation.setChance(activeChance);
+        quotationCopy = new ChanceQuotationDto().create();
+        quotationCopy.setChance(chanceCopy);
     }
 
     public void onQuotationRowSelect() {
@@ -334,9 +334,9 @@ public class ChanceBean
             return;
 
         for (ChanceActionDto action : selectedActions)
-            activeChance.addAction(action);
+            chanceCopy.addAction(action);
 
-        Chance _chance = activeChance.unmarshal();
+        Chance _chance = chanceCopy.unmarshal();
         try {
             for (ChanceAction _action : _chance.getActions()) {
                 if (_action.getChance() == null)
@@ -356,14 +356,14 @@ public class ChanceBean
         if (parties.isSelected())
             return;
         ChancePartyDto chancePartyDto = new ChancePartyDto().create();
-        chancePartyDto.setChance(activeChance);
+        chancePartyDto.setChance(chanceCopy);
         chancePartyDto.setParty(parties.getSelection());
         chancePartyDto.setRole("普通客户");
-        activeChance.addParty(chancePartyDto);
+        chanceCopy.addParty(chancePartyDto);
     }
 
     public void createForm() {
-        activeChance = new ChanceDto().create();
+        chanceCopy = new ChanceDto().create();
         quotations = UIHelper.selectable(new ArrayList<ChanceQuotationDto>());
         setActiveTab(TAB_FORM);
 
@@ -375,16 +375,16 @@ public class ChanceBean
             uiLogger.error("请选择需要修改的销售机会!");
             return;
         }
-        setActiveChance(chances.getSelection());
-        listQuotationByChance(activeChance);
+        setChanceCopy(chances.getSelection());
+        listQuotationByChance(chanceCopy);
         setActiveTab(TAB_FORM);
 
         state = State.EDIT;
     }
 
     public void detailForm() {
-        setActiveChance(chances.getSelection());
-        listQuotationByChance(activeChance);
+        setChanceCopy(chances.getSelection());
+        listQuotationByChance(chanceCopy);
         setActiveTab(TAB_FORM);
 
         state = State.VIEW;
@@ -402,50 +402,50 @@ public class ChanceBean
     }
 
     public void dropCustomer() {
-        activeChance.removeParty(selectedChanceParty);
+        chanceCopy.removeParty(selectedChanceParty);
     }
 
-    public void initActiveActions() {
+    public void initActions() {
         actions = UIHelper.selectable(new ArrayList<ChanceActionDto>());
     }
 
     public void saveChance() {
-        String subject = activeChance.getSubject();
+        String subject = chanceCopy.getSubject();
         if (subject.isEmpty()) {
             uiLogger.error("错误提示", "机会标题不能为空!");
             return;
         }
 
-        if (activeChance.getParties().isEmpty()) {
+        if (chanceCopy.getParties().isEmpty()) {
             uiLogger.error("错误提示", "请选择机会对应的客户!");
             return;
         }
-        String content = activeChance.getContent();
+        String content = chanceCopy.getContent();
         if (content.isEmpty())
-            activeChance.setContent("");
+            chanceCopy.setContent("");
 
-        String categoryId = activeChance.getCategory().getId();
+        String categoryId = chanceCopy.getCategory().getId();
         ChanceCategoryDto ccd = null;
         if (!categoryId.isEmpty())
             ccd = new ChanceCategoryDto().ref(categoryId);
-        activeChance.setCategory(ccd);
+        chanceCopy.setCategory(ccd);
 
-        String sourceId = activeChance.getSource().getId();
+        String sourceId = chanceCopy.getSource().getId();
         ChanceSourceDto csd = null;
         if (!sourceId.isEmpty())
             csd = new ChanceSourceDto().ref(sourceId);
-        activeChance.setSource(csd);
+        chanceCopy.setSource(csd);
 
         ChanceStageDto tempStage = null;
-        String chanceStageId = activeChance.getStage().getId();
+        String chanceStageId = chanceCopy.getStage().getId();
         if (chanceStageId.isEmpty())
             tempStage = new ChanceStageDto().ref(ChanceStage.INIT.getId());
         else
             tempStage = new ChanceStageDto().ref(chanceStageId);
 
-        activeChance.setStage(tempStage);
+        chanceCopy.setStage(tempStage);
 
-        Chance _chance = activeChance.unmarshal();
+        Chance _chance = chanceCopy.unmarshal();
 
         try {
 
@@ -494,7 +494,7 @@ public class ChanceBean
         chanceAction.setStage(null);
         try {
             serviceFor(ChanceAction.class).save(chanceAction);
-            activeChance.deleteAction(actions.getSelection());
+            chanceCopy.deleteAction(actions.getSelection());
             actions.deselect();
             uiLogger.info("反关联成功");
         } catch (Exception e) {
@@ -522,11 +522,11 @@ public class ChanceBean
         return chances;
     }
 
-    public ChanceDto getActiveChance() {
-        return activeChance;
+    public ChanceDto getChanceCopy() {
+        return chanceCopy;
     }
 
-    public List<ChanceActionDto> getActiveActions() {
+    public List<ChanceActionDto> getActions() {
         return actions;
     }
 
@@ -534,8 +534,8 @@ public class ChanceBean
         return selectedActions;
     }
 
-    public ChanceActionDto getActiveAction() {
-        return activeAction;
+    public ChanceActionDto getActionCopy() {
+        return actionCopy;
     }
 
     public ChancePartyDto getSelectedChanceParty() {
@@ -550,8 +550,8 @@ public class ChanceBean
         return quotations;
     }
 
-    public ChanceQuotationDto getActiveQuotation() {
-        return activeQuotation;
+    public ChanceQuotationDto getQuotationCopy() {
+        return quotationCopy;
     }
 
     public String getMaterialPattern() {
@@ -586,24 +586,24 @@ public class ChanceBean
         this.searchEndTime = searchEndTime;
     }
 
-    public void setActiveChance(ChanceDto activeChance) {
-        this.activeChance = activeChance;
+    public void setChanceCopy(ChanceDto chanceCopy) {
+        this.chanceCopy = chanceCopy;
     }
 
     public void setSelectActions(ChanceActionDto[] selectedActions) {
         this.selectedActions = selectedActions;
     }
 
-    public void setActiveAction(ChanceActionDto activeAction) {
-        this.activeAction = activeAction;
+    public void setActionCopy(ChanceActionDto actionCopy) {
+        this.actionCopy = actionCopy;
     }
 
     public void setSelectedChanceParty(ChancePartyDto selectedChanceParty) {
         this.selectedChanceParty = selectedChanceParty;
     }
 
-    public void setActiveQuotation(ChanceQuotationDto activeQuotation) {
-        this.activeQuotation = activeQuotation;
+    public void setQuotationCopy(ChanceQuotationDto quotationCopy) {
+        this.quotationCopy = quotationCopy;
     }
 
     public void setMaterialPattern(String materialPattern) {
