@@ -16,9 +16,9 @@ public abstract class MailManageVdx
     private static final long serialVersionUID = 1L;
 
     static final String MAIN_TAB_VIEW = "mainForm:mainTabView";
-    static final String BOX_TAB = "mainForm:boxTab";
-    static final String CONTENT_TAB = "mainForm:contentTab";
-    static final String WRITE_TAB = "mainForm:writeTab";
+    static final String BOX_TAB = "mainForm:mainTabView:boxTab";
+    static final String CONTENT_TAB = "mainForm:mainTabView:contentTab";
+    static final String WRITE_TAB = "mainForm:mainTabView:writeTab";
 
     protected TabView getMainTabView() {
         return (TabView) findComponent(MAIN_TAB_VIEW);
