@@ -11,6 +11,7 @@ public class TestBean
     private static final long serialVersionUID = 1L;
 
     MonthEnum month = MonthEnum.FEB;
+    int activePart = 0;
 
     public MonthEnum getMonth() {
         return month;
@@ -18,6 +19,22 @@ public class TestBean
 
     public void setMonth(MonthEnum month) {
         this.month = month;
+    }
+
+    public int getActivePart() {
+        return activePart;
+    }
+
+    public void setActivePart(int activePart) {
+        this.activePart = activePart;
+    }
+
+    public void jump1() {
+        activePart = 1;
+    }
+
+    public void jump2() {
+        activePart = 2;
     }
 
 }

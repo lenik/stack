@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core" xmlns:sem="http://bee32.com/sem/functions"
+    xmlns:p="http://primefaces.prime.com.tr/ui" xmlns:t="http://myfaces.apache.org/tomahawk">
+    <body>
+        Dynamic Render Test
+
+        Active: #{test.activePart}
+
+        <h:form id="tools">
+            <p:commandButton id="button1" value="Part 1" actionListener="#{testBean.jump1}" async="true"
+                disabled="#{testBean.activePart == 1}" />
+            <p:commandButton id="button2" value="Part 2" actionListener="#{testBean.jump2}" async="true"
+                disabled="#{testBean.activePart == 2}" />
+        </h:form>
+
+        <h:outputText value="Now=${testBean.activePart}" />
+
+        <div>
+            <h:form id="part1" rendered="${testBean.activePart == 1}">
+                Part 1
+            </h:form>
+        </div>
+        <div id="part2">
+            <h:form rendered="${testBean.activePart == 2}">
+                Part 2
+            </h:form>
+        </div>
+
+    </body>
+</html>
