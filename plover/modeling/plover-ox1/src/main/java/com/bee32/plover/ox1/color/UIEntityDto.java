@@ -13,8 +13,8 @@ public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
-    String label;
-    String description;
+    protected String label;
+    protected String description;
 
     public UIEntityDto() {
         super();

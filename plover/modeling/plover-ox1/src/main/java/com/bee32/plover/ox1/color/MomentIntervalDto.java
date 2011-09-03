@@ -12,8 +12,8 @@ public abstract class MomentIntervalDto<E extends MomentInterval>
 
     private static final long serialVersionUID = 1L;
 
-    Date beginTime;
-    Date endTime;
+    protected Date beginTime;
+    protected Date endTime;
 
     public MomentIntervalDto() {
         super();
