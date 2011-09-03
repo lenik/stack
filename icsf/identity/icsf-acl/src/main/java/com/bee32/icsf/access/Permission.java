@@ -161,7 +161,7 @@ public final class Permission
             this.allowBits |= permission.allowBits;
     }
 
-    public Boolean isAdmin() {
+    public Boolean getAdmin() {
         return test3(ADMIN);
     }
 
@@ -169,27 +169,27 @@ public final class Permission
         set(f, ADMIN);
     }
 
-    public Boolean isReadable() {
+    public Boolean getReadable() {
         return test3(READ);
     }
 
-    public Boolean isWritable() {
+    public Boolean getWritable() {
         return test3(WRITE);
     }
 
-    public Boolean isExecutable() {
+    public Boolean getExecutable() {
         return test3(EXECUTE);
     }
 
-    public Boolean isListable() {
+    public Boolean getListable() {
         return test3(LIST);
     }
 
-    public Boolean isCreatable() {
+    public Boolean getCreatable() {
         return test3(CREATE);
     }
 
-    public Boolean isDeletable() {
+    public Boolean getDeletable() {
         return test3(DELETE);
     }
 

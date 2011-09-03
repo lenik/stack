@@ -88,8 +88,8 @@ public class DACE
 
     @Column
     @Index(name = "dace_admin")
-    public Boolean isAdmin() {
-        return permission.isAdmin();
+    public Boolean getAdmin() {
+        return permission.getAdmin();
     }
 
     public void setAdmin(Boolean f) {
@@ -98,8 +98,8 @@ public class DACE
 
     @Column
     @Index(name = "dace_readable")
-    public Boolean isReadable() {
-        return permission.isReadable();
+    public Boolean getReadable() {
+        return permission.getReadable();
     }
 
     public void setReadable(Boolean f) {
@@ -108,8 +108,8 @@ public class DACE
 
     @Column
     @Index(name = "dace_writable")
-    public Boolean isWritable() {
-        return permission.isWritable();
+    public Boolean getWritable() {
+        return permission.getWritable();
     }
 
     public void setWritable(Boolean f) {
@@ -118,8 +118,8 @@ public class DACE
 
     @Column
     @Index(name = "dace_executable")
-    public Boolean isExecutable() {
-        return permission.isExecutable();
+    public Boolean getExecutable() {
+        return permission.getExecutable();
     }
 
     public void setExecutable(Boolean f) {
@@ -128,8 +128,8 @@ public class DACE
 
     @Column
     @Index(name = "dace_listable")
-    public Boolean isListable() {
-        return permission.isListable();
+    public Boolean getListable() {
+        return permission.getListable();
     }
 
     public void setListable(Boolean f) {
@@ -138,8 +138,8 @@ public class DACE
 
     @Column
     @Index(name = "dace_creatable")
-    public Boolean isCreatable() {
-        return permission.isCreatable();
+    public Boolean getCreatable() {
+        return permission.getCreatable();
     }
 
     public void setCreatable(Boolean f) {
@@ -148,8 +148,8 @@ public class DACE
 
     @Column
     @Index(name = "dace_deletable")
-    public Boolean isDeletable() {
-        return permission.isDeletable();
+    public Boolean getDeletable() {
+        return permission.getDeletable();
     }
 
     public void setDeletable(Boolean f) {

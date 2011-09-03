@@ -60,56 +60,56 @@ public class DACEDto
         map.put("permission", permission.getModeString());
     }
 
-    public Boolean isAdmin() {
-        return permission.isAdmin();
+    public Boolean getAdmin() {
+        return permission.getAdmin();
     }
 
     public void setAdmin(Boolean f) {
         permission.setAdmin(f);
     }
 
-    public Boolean isReadable() {
-        return permission.isReadable();
+    public Boolean getReadable() {
+        return permission.getReadable();
     }
 
     public void setReadable(Boolean f) {
         permission.setReadable(f);
     }
 
-    public Boolean isWritable() {
-        return permission.isWritable();
+    public Boolean getWritable() {
+        return permission.getWritable();
     }
 
     public void setWritable(Boolean f) {
         permission.setWritable(f);
     }
 
-    public Boolean isExecutable() {
-        return permission.isExecutable();
+    public Boolean getExecutable() {
+        return permission.getExecutable();
     }
 
     public void setExecutable(Boolean f) {
         permission.setExecutable(f);
     }
 
-    public Boolean isListable() {
-        return permission.isListable();
+    public Boolean getListable() {
+        return permission.getListable();
     }
 
     public void setListable(Boolean f) {
         permission.setListable(f);
     }
 
-    public Boolean isCreatable() {
-        return permission.isCreatable();
+    public Boolean getCreatable() {
+        return permission.getCreatable();
     }
 
     public void setCreatable(Boolean f) {
         permission.setCreatable(f);
     }
 
-    public Boolean isDeletable() {
-        return permission.isDeletable();
+    public Boolean getDeletable() {
+        return permission.getDeletable();
     }
 
     public void setDeletable(Boolean f) {

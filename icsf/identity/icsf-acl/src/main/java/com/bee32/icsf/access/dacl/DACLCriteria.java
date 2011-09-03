@@ -22,28 +22,30 @@ public class DACLCriteria
         if (permission == null)
             throw new NullPointerException("permission");
 
+        // XXX 3-state booleans.
+
         Disjunction disj = disjunction();
         disj.add(equals("admin", true));
 
-        if (!permission.isAdmin()) {
+        if (!permission.getAdmin()) {
             Conjunction conj = conjunction();
 
-            if (permission.isReadable())
+            if (permission.getReadable())
                 conj.add(equals("readable", true));
 
-            if (permission.isWritable())
+            if (permission.getWritable())
                 conj.add(equals("writable", true));
 
-            if (permission.isExecutable())
+            if (permission.getExecutable())
                 conj.add(equals("executable", true));
 
-            if (permission.isListable())
+            if (permission.getListable())
                 conj.add(equals("listable", true));
 
-            if (permission.isCreatable())
+            if (permission.getCreatable())
                 conj.add(equals("creatable", true));
 
-            if (permission.isDeletable())
+            if (permission.getDeletable())
                 conj.add(equals("deletable", true));
 
             disj.add(disj);

@@ -245,7 +245,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertAdmin() {
         for (RPEntry e : rpEntries) {
-            e.permission.setAdmin(!e.permission.isAdmin());
+            e.permission.setAdmin(invert(e.permission.getAdmin()));
         }
     }
 
@@ -263,7 +263,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertReadable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setReadable(!e.permission.isReadable());
+            e.permission.setReadable(invert(e.permission.getReadable()));
         }
     }
 
@@ -281,7 +281,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertWritable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setWritable(!e.permission.isWritable());
+            e.permission.setWritable(invert(e.permission.getWritable()));
         }
     }
 
@@ -299,7 +299,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertExecutable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setExecutable(!e.permission.isExecutable());
+            e.permission.setExecutable(invert(e.permission.getExecutable()));
         }
     }
 
@@ -317,7 +317,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertListable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setListable(!e.permission.isListable());
+            e.permission.setListable(invert(e.permission.getListable()));
         }
     }
 
@@ -335,7 +335,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertCreatable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setCreatable(!e.permission.isCreatable());
+            e.permission.setCreatable(invert(e.permission.getCreatable()));
         }
     }
 
@@ -353,7 +353,7 @@ public class PermissionAdminBean
 
     public void onSelectInvertDeletable() {
         for (RPEntry e : rpEntries) {
-            e.permission.setDeletable(!e.permission.isDeletable());
+            e.permission.setDeletable(invert(e.permission.getDeletable()));
         }
     }
 
@@ -362,4 +362,11 @@ public class PermissionAdminBean
             e.permission.setDeletable(false);
         }
     }
+
+    static Boolean invert(Boolean val) {
+        if (val == null)
+            return null;
+        return !val;
+    }
+
 }
