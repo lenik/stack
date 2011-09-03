@@ -57,7 +57,7 @@
                     dynamic="true" selectionMode="single"
                     selection="#{materialViewBean.materialCategoryTree.selectedNode}" style="width:90%;">
                     <p:ajax event="select" listener="#{materialViewBean.materialCategoryTree.onNodeSelect}"
-                        update="main:materialList" />
+                        update=":main:materialList" />
                     <p:treeNode>
                         <h:outputText value="#{node.name}" />
                     </p:treeNode>
@@ -94,7 +94,7 @@
                         <h:outputText value="#{material.currentPrice}" />
                     </p:column>
                     <p:column headerText="操作" style="width:80px;">
-                        <p:commandLink title="详细" update="dialogForm:material"
+                        <p:commandLink title="详细" update=":dialogForm:material"
                             actionListener="#{materialViewBean.setMaterialDialogDisable}"
                             oncomplete="materialDialog.show();">
                             <f:setPropertyActionListener value="#{material}" target="#{materialViewBean.activeMaterial}" />
@@ -420,7 +420,7 @@
 
                             <p:column headerText="操作" style="width:80px;">
                                 <p:commandLink title="删除" disabled="#{materialViewBean.editable}"
-                                    update="dialogForm:attachList">
+                                    update=":dialogForm:attachList">
                                     <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                                     <p:collector value="#{attachment}"
                                         removeFrom="#{materialViewBean.activeMaterial.attachments}" />
@@ -437,14 +437,14 @@
                     <t:panelGroup colspan="5">
                         <h:form enctype="multipart/form-data">
                             <p:fileUpload fileUploadListener="#{materialViewBean.handleFileUpload}" mode="advanced"
-                                update="dialogForm:attachList" multiple="true" label="上传附件"
+                                update=":dialogForm:attachList" multiple="true" label="上传附件"
                                 allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
                         </h:form>
                     </t:panelGroup>
 
                     <t:panelGroup id="btn1" colspan="5">
                         <p:commandButton value="保存" actionListener="#{materialViewBean.doAddMaterial}"
-                            update="main:materialList, dialogForm:btn1, " disabled="#{materialViewBean.editable}"
+                            update=":main:materialList, dialogForm:btn1, " disabled="#{materialViewBean.editable}"
                             oncomplete="materialDialog.hide(); " />
                         <p:commandButton value="取消" disabled="#{materialViewBean.editable}"
                             onclick="materialDialog.hide();" />
@@ -564,7 +564,7 @@
             <p:confirmDialog message="您确定要删除此物料吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="confirmation">
 
-                <p:commandButton value="删除" update="main:materialList" oncomplete="confirmation.hide()"
+                <p:commandButton value="删除" update=":main:materialList" oncomplete="confirmation.hide()"
                     actionListener="#{materialViewBean.destroyMaterial}" />
                 <p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
 
