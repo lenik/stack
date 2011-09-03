@@ -47,7 +47,7 @@
 					<t:panelGroup>
 						<p:commandLink value="修改" update="editStockLocationForm:editStockLocationPanel"
 							oncomplete="editStockLocationDialog.show();"
-							actionListener="#{stockLocationAdminBean.doModifyStockLocation}">
+							action="#{stockLocationAdminBean.doModifyStockLocation}">
 							<f:setPropertyActionListener value="#{stockLocation}"
 								target="#{stockLocationAdminBean.stockLocation}" />
 						</p:commandLink>

@@ -140,6 +140,7 @@ public class StockLocationAdminBean
     }
 
     public void doModifyStockLocation() {
+        stockLocation = reload(stockLocation);
         editNewStatus = false;
     }
 

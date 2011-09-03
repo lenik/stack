@@ -35,7 +35,7 @@ public class StockWarehouse
     /**
      * 仓库名称
      */
-    @NaturalId
+    @NaturalId(mutable = true)
     @Column(length = 50, nullable = false)
     public String getName() {
         return name;
