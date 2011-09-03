@@ -19,7 +19,7 @@
         <module>plover-expr-sql</module>
         <module>plover-inject</module>
         <module>plover-route</module>
-        <module>plover-scala</module>
+        <!--<module>plover-scala</module>-->
     </modules>
     <name>Plover :: Core</name>
 </project>
