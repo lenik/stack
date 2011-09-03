@@ -137,11 +137,14 @@ public class ChanceActionDto
     }
 
     public String getPartiesHint() {
+        if (parties == null)
+            return "(n/a)";
         StringBuilder sb = null;
         for (PartyDto party : parties) {
             if (sb == null)
                 sb = new StringBuilder();
-            sb.append(", ");
+            else
+                sb.append(", ");
             sb.append(party.getDisplayName());
         }
         return sb.toString();
@@ -168,11 +171,14 @@ public class ChanceActionDto
     }
 
     public String getPartnersHint() {
+        if (partners == null)
+            return "(n/a)";
         StringBuilder sb = null;
         for (UserDto partner : partners) {
             if (sb == null)
                 sb = new StringBuilder();
-            sb.append(", ");
+            else
+                sb.append(", ");
             sb.append(partner.getDisplayName());
         }
         return sb.toString();

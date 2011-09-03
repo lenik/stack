@@ -201,7 +201,8 @@ public class ChanceDto
         for (ChancePartyDto chparty : parties) {
             if (sb == null)
                 sb = new StringBuilder();
-            sb.append(", ");
+            else
+                sb.append(", ");
             sb.append(chparty.getParty().getDisplayName());
         }
         return sb.toString();

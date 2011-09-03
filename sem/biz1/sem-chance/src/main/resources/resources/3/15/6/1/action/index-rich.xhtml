@@ -16,7 +16,7 @@
             <p:confirmDialog message="确定要删除记录吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="confirmation">
 
-                <p:commandButton value="确定" update="chanceActionForm:actionList"
+                <p:commandButton value="确定" update="chanceActionForm:mainTab:actionList"
                     oncomplete="confirmation.hide()" actionListener="#{chanceActionBean.drop}" />
                 <p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
 
@@ -35,7 +35,7 @@
                         <p:commandButton id="editActionButton" value="编辑" actionListener="#{chanceActionBean.editForm}"
                             update="chanceActionForm" />
                         <p:commandButton id="deleteActionButton" value="删除" actionListener="#{chanceActionBean.drop}"
-                            update="chanceActionForm:actions,chanceActionForm:productToolbar" />
+                            update="chanceActionForm:mainTab:actions,chanceActionForm:productToolbar" />
                         <p:divider />
                         <p:commandButton id="saveActionButton" value="保存"
                             actionListener="#{chanceActionBean.saveAction}" update="chanceActionForm"
@@ -90,10 +90,10 @@
                                 <h:outputText value="#{action.style.label}" />
                             </p:column>
                             <p:column headerText="客户">
-                                <h:outputText value="#{action.party}" />
+                                <h:outputText value="#{action.partiesHint}" />
                             </p:column>
                             <p:column headerText="工作伙伴">
-                                <h:outputText value="#{action.partner}" />
+                                <h:outputText value="#{action.partnersHint}" />
                             </p:column>
                             <p:column headerText="行动简略">
                                 <h:outputText value="#{action.subject}" />
@@ -140,7 +140,7 @@
                                         effectSpeed="fast">
                                         <p:column>
                                             <h:outputText value="#{party.displayName}" />
-                                            <p:commandLink update="chanceActionForm:parties"
+                                            <p:commandLink update="chanceActionForm:mainTab:parties"
                                                 actionListener="#{chanceActionBean.deleteCustomer}" title="删除客户"
                                                 disabled="#{chanceActionBean.editable}">
                                                 <p:collector value="#{party}"
@@ -250,7 +250,7 @@
                     </p:dataTable>
                     <h:panelGrid columns="2">
                         <p:commandButton value="确定" actionListener="#{chanceActionBean.chooseChance}"
-                            oncomplete="chooseChanceDialog.hide();" update="chanceActionForm:correChance" async="true" />
+                            oncomplete="chooseChanceDialog.hide();" update="chanceActionForm:mainTab:correChance" async="true" />
                         <p:commandButton value="取消" oncomplete="chooseChanceDialog.hide();" />
                     </h:panelGrid>
                 </h:panelGroup>
@@ -297,7 +297,7 @@
                 </p:dataTable>
                 <h:panelGrid columns="2">
                     <p:commandButton value="确定" actionListener="#{chanceActionBean.addCustomer}"
-                        oncomplete="chooseCustomerDialog.hide();" update="chanceActionForm:parties" async="true" />
+                        oncomplete="chooseCustomerDialog.hide();" update="chanceActionForm:mainTab:parties" async="true" />
                     <p:commandButton value="取消" oncomplete="chooseCustomerDialog.hide();" />
                 </h:panelGrid>
             </p:dialog>
@@ -330,7 +330,7 @@
                 </p:dataTable>
                 <h:panelGrid columns="2">
                     <p:commandButton value="确定" actionListener="#{chanceActionBean.addPartner}"
-                        oncomplete="choosePartnerDialog.hide();" update="chanceActionForm:partners" async="true" />
+                        oncomplete="choosePartnerDialog.hide();" update="chanceActionForm:mainTab:partners" async="true" />
                     <p:commandButton value="取消" oncomplete="choosePartnerDialog.hide();" />
                 </h:panelGrid>
             </p:dialog>

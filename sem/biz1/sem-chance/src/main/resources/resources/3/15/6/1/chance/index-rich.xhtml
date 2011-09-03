@@ -197,9 +197,9 @@
                             <p:dataTable id="actionHistories" var="action" value="#{_c.actions}"
                                 selection="#{_c.selectedAction}" selectionMode="single" rowKey="#{action.id}" rowIndexVar="rowIndex">
                                 <p:ajax event="rowSelect" listener="#{chanceBean.onActionRowSelect}"
-                                    update="chanceForm:actionToolbar" />
+                                    update="chanceForm:mainTab:actionToolbar" />
                                 <p:ajax event="rowUnselect" listener="#{chanceBean.onActionRowUnselect}"
-                                    update="chanceForm:actionToolbar" />
+                                    update="chanceForm:mainTab:actionToolbar" />
                                 <p:column headerText="序号" style="width:45px;">
                                     <h:outputText value="#{rowIndex + 1}" />
                                 </p:column>
@@ -253,9 +253,9 @@
                                 rowKey="#{item.id}" rowIndexVar="rowIndex">
 
                                 <p:ajax event="rowSelect" listener="#{chanceBean.onQuotationRowSelect}"
-                                    update="chanceForm:quotationToolbar" />
+                                    update="chanceForm:mainTab:quotationToolbar" />
                                 <p:ajax event="rowUnselect" listener="#{chanceBean.onQuotationRowUnselect}"
-                                    update="chanceForm:quotationToolbar" />
+                                    update="chanceForm:mainTab:quotationToolbar" />
 
                                 <p:column headerText="序号" style="width:45px;">
                                     <h:outputText value="#{rowIndex + 1}" />
@@ -299,7 +299,7 @@
 
             <p:confirmDialog message="确定要删除此报价单吗?" showEffect="bounce" hideEffect="explode" header="note"
                 severity="alert" widgetVar="quotationConfirmation">
-                <p:commandButton value="删除" update="chanceForm:quotationToolbar, chanceForm:quotationList"
+                <p:commandButton value="删除" update="chanceForm:mainTab:quotationToolbar, chanceForm:mainTab:quotationList"
                     oncomplete="quotationConfirmation.hide()" actionListener="#{chanceBean.dropQuotation}" async="true" />
                 <p:commandButton value="取消" onclick="quotationConfirmation.hide()" type="button" />
             </p:confirmDialog>
@@ -314,7 +314,7 @@
             <p:confirmDialog message="确定要取消此行动记录的关联?" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="deleteActionConfirm">
                 <p:commandButton value="确定" actionListener="#{chanceBean.doDetachAction}"
-                    update="chanceForm:mainTab:actionHistories, chanceForm:actionToolbar"
+                    update="chanceForm:mainTab:actionHistories, chanceForm:mainTab:actionToolbar"
                     oncomplete="deleteActionConfirm.hide();" />
                 <p:commandButton value="取消" onclick="deleteActionConfirm.hide();" />
             </p:confirmDialog>
@@ -382,7 +382,7 @@
                         <p:calendar id="set" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
                             value="#{chanceBean.searchEndTime}" showOn="button" />
                         <p:commandButton value="查找" actionListener="#{chanceBean.searchAction}"
-                            update=":dialogForm:actionCopyList" async="true" />
+                            update="dialogForm:actionCopyList" async="true" />
 
                     </h:panelGrid>
                     <p:outputPanel id="actionCopyList" >
@@ -623,7 +623,7 @@
 
                     <t:panelGroup colspan="3">
                         <p:commandButton value="保存" actionListener="#{chanceBean.saveQuotation}"
-                            oncomplete="quotationDialog.hide();" update="chanceForm:quotationList" />
+                            oncomplete="quotationDialog.hide();" update="chanceForm:mainTab:quotationList" />
                         <p:commandButton value="取消" onclick="quotationDialog.hide();" />
                     </t:panelGroup>
                 </t:panelGrid>
@@ -690,7 +690,7 @@
                                 rendered="#{chanceBean.roleRendered}">
                             </p:inputText>
                             <p:commandLink title="修改" actionListener="#{chanceBean.editCustomerRole}"
-                                rendered="#{!chanceBean.roleRendered}" update=":chancePartyEditForm:chancePartyItem">
+                                rendered="#{!chanceBean.roleRendered}" update="chancePartyEditForm:chancePartyItem">
                                 <span class="ui-icon ui-icon-pencil"></span>
                             </p:commandLink>
                             <p:commandLink title="确定" actionListener="#{chanceBean.editCustomerRole}"
