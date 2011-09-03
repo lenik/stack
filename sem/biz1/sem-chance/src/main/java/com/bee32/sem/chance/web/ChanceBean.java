@@ -93,7 +93,7 @@ public class ChanceBean
     }
 
     public void findMaterial() {
-        List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.namedLike(materialPattern));
+        List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.labelLike(materialPattern));
         materialList = UIHelper.selectable(DTOs.marshalList(MaterialDto.class, 0, _materials, true));
     }
 

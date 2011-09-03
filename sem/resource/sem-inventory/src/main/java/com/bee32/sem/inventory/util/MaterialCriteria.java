@@ -12,10 +12,10 @@ public class MaterialCriteria
         return equals("category.id", categoryId);
     }
 
-    public static CriteriaElement namedLike(String name) {
+    public static CriteriaElement labelLike(String name) {
         if (Strings.isEmpty(name))
             return null;
-        return like("name", "%" + name + "%");
+        return like("label", "%" + name + "%");
     }
 
 }
