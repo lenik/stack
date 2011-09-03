@@ -18,8 +18,21 @@ public class LoginInfo
 
     static Logger logger = Logger.getLogger(LoginInfo.class);
 
-    HttpSession session;
+    final HttpSession session;
     User user;
+
+    /**
+     * For {@link NullLoginInfo} only.
+     */
+    LoginInfo() {
+        this.session = null;
+    }
+
+    public LoginInfo(HttpSession session) {
+        if (session == null)
+            throw new NullPointerException("session");
+        this.session = session;
+    }
 
     public static LoginInfo getInstance() {
         HttpSession session = ThreadHttpContext.getSessionOpt();
@@ -36,7 +49,7 @@ public class LoginInfo
 
         LoginInfo loginInfo = (LoginInfo) session.getAttribute(SESSION_KEY);
         if (loginInfo == null) {
-            loginInfo = new LoginInfo();
+            loginInfo = new LoginInfo(session);
             session.setAttribute(SESSION_KEY, loginInfo);
         }
 

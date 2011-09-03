@@ -19,8 +19,18 @@ public class LoginPersonInfo
 
     static Logger logger = Logger.getLogger(LoginPersonInfo.class);
 
-    HttpSession session;
+    final HttpSession session;
     Person person;
+
+    LoginPersonInfo() {
+        this.session = null;
+    }
+
+    public LoginPersonInfo(HttpSession session) {
+        if (session == null)
+            throw new NullPointerException("session");
+        this.session = session;
+    }
 
     public static LoginPersonInfo getInstance() {
         HttpSession session = ThreadHttpContext.getSessionOpt();
@@ -35,13 +45,13 @@ public class LoginPersonInfo
         if (session == null)
             throw new NullPointerException("session");
 
-        LoginPersonInfo loginInfo = (LoginPersonInfo) session.getAttribute(SESSION_KEY);
-        if (loginInfo == null) {
-            loginInfo = new LoginPersonInfo();
-            session.setAttribute(SESSION_KEY, loginInfo);
+        LoginPersonInfo loginPersonInfo = (LoginPersonInfo) session.getAttribute(SESSION_KEY);
+        if (loginPersonInfo == null) {
+            loginPersonInfo = new LoginPersonInfo(session);
+            session.setAttribute(SESSION_KEY, loginPersonInfo);
         }
 
-        return loginInfo;
+        return loginPersonInfo;
     }
 
     public Person getPersonOpt() {
