@@ -8,7 +8,7 @@
     <p:panel header="文件上传">
 
         <p:fileUpload fileUploadListener="#{fileUploadBean.handleFileUpload}" mode="advanced"
-            multiple="true" allowTypes="png,gif,jpg,doc,docx,xsl,xslx" />
+            multiple="true" allowTypes="${viewConfig.allowTypes}" />
 
     </p:panel>
 </h:form>

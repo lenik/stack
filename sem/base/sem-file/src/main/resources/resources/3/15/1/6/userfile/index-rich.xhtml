@@ -78,7 +78,7 @@
 
                 <h:form enctype="multipart/form-data">
                     <p:fileUpload fileUploadListener="#{userFileAdmin.handleFileUpload}" mode="advanced"
-                        update=":main:fileList" multiple="true" allowTypes="png,gif,jpg,doc,docx,xsl,xslx" label="上传附件" />
+                        update=":main:fileList" multiple="true" allowTypes="${viewConfig.allowTypes}" label="上传附件" />
 
                 </h:form>
             </t:panelGrid>

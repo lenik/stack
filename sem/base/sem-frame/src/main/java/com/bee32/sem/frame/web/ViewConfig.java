@@ -12,6 +12,7 @@ public class ViewConfig
 
     int pageSize = 10;
     String pageSizeTemplate = "5,10,15";
+    String allowTypes = "'png,gif,jpg,doc,docx,xsl,xslx'";
 
     public int getPageSize() {
         return pageSize;
@@ -27,6 +28,14 @@ public class ViewConfig
 
     public void setPageSizeTemplate(String pageSizeTemplate) {
         this.pageSizeTemplate = pageSizeTemplate;
+    }
+
+    public String getAllowTypes() {
+        return allowTypes;
+    }
+
+    public void setAllowTypes(String allowTypes) {
+        this.allowTypes = allowTypes;
     }
 
 }
