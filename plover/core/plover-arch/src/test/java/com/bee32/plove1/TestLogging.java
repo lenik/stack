@@ -5,7 +5,10 @@ import org.slf4j.LoggerFactory;
 
 public class TestLogging {
 
-    static Logger logger = LoggerFactory.getLogger(TestLogging.class);
+    static Logger logger;
+    static {
+        logger = LoggerFactory.getLogger(TestLogging.class);
+    }
 
     public static void main(String[] args) {
         System.out.println("BEGIN");
