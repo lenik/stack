@@ -51,13 +51,13 @@ public class UIHelper
 
     public static <E extends CEntity<?>, D extends CEntityDto<E, ?>> //
     ZLazyDataModel<E, D> buildLazyDataModel(EntityDataModelOptions<E, D> options) {
-        return new ZLazyDataModel<E, D>(getDataManager(), options);
+        return new ZLazyDataModel<E, D>(options);
     }
 
-    public static <T> SelectableList<T> selectable(List<T> list) {
+    public static <T> ListHolder<T> selectable(List<T> list) {
         if (list == null)
             throw new NullPointerException("list");
-        return new SelectableListWrapper<>(list);
+        return new ListHolder<T>(list);
     }
 
 }
