@@ -34,7 +34,7 @@ public class ChanceService
     PartyDao<Party> partyDao;
 
     @Transactional(readOnly = false)
-    public boolean unRelatingChance(Chance chance) {
+    public boolean doDetachActionChance(Chance chance) {
         List<ChanceAction> actions = asFor(ChanceAction.class).list(EntityCriteria.ownedByCurrentUser());
 
         // XXX - ???
