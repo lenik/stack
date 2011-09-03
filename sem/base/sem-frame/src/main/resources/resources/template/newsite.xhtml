@@ -32,12 +32,6 @@
                 </script>
 
     <link rel="stylesheet" type="text/css" href="${location.WEB_APP}/site/frame.css" />
-    <script language="javascript" src="${location.WEB_APP}/site/frame.js"></script>
-
-    <ui:insert name="pre-scripts">
-        <ui:insert name="pre-scripts.1" />
-        <ui:insert name="pre-scripts.user" />
-    </ui:insert>
 </h:head>
 
 <h:body>
@@ -139,6 +133,13 @@
         <script language="javascript" src="${JQUERY_UI}/ui/jquery.ui.resizable.js"></script>
         <script language="javascript" src="${JQUERY_UI}/ui/jquery.effects.core.js"></script>
         <script language="javascript" src="${JQUERY_UI}/ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
+
+        <ui:insert name="pre-scripts">
+            <ui:insert name="pre-scripts.1" />
+            <ui:insert name="pre-scripts.user" />
+        </ui:insert>
+
+        <script language="javascript" src="${location.WEB_APP}/site/frame.js"></script>
 
         <ui:insert name="scripts.jquery.ui.user" />
     </ui:insert>
