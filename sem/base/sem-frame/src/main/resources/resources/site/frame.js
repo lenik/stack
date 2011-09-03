@@ -1,4 +1,4 @@
-$(function() {
+(function ($) {
     $("#aQuit").click(function() {
         $.ajax({
             "dataType" : "json",
@@ -18,11 +18,11 @@ $(function() {
         });
         return false;
     });
-});
 
-$(document).ready(function() {
-    $.ajaxSetup({
-        cache : false
+    $(document).ready(function() {
+        $.ajaxSetup({
+            cache : false
+        });
+        $("ul.sf-menu").superfish();
     });
-    $("ul.sf-menu").superfish();
-});
+})(jQuery);
