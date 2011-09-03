@@ -96,7 +96,7 @@ public class ChanceBean
 
     public void findMaterial() {
         List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.namedLike(materialPattern));
-        materialList = DTOs.marshalList(MaterialDto.class, _materials);
+        materialList = DTOs.marshalList(MaterialDto.class, 0, _materials, true);
     }
 
     public void viewActionDetail() {
@@ -132,7 +132,7 @@ public class ChanceBean
     void listQuotationByChance(ChanceDto chance) {
         List<ChanceQuotation> quotationList = serviceFor(ChanceQuotation.class).list(
                 ChanceCriteria.chanceEquals(activeChance));
-        quotations = DTOs.marshalList(ChanceQuotationDto.class, quotationList);
+        quotations = DTOs.marshalList(ChanceQuotationDto.class, 0, quotationList, true);
     }
 
     public void calculatePriceChange() {
@@ -141,24 +141,9 @@ public class ChanceBean
     }
 
     public List<SelectItem> getChanceActionStyles() {
-        List<ChanceActionStyle> chanceActionStyleList = serviceFor(ChanceActionStyle.class).list();
-        List<ChanceActionStyleDto> chanceActionStyleDtoList = DTOs.marshalList(ChanceActionStyleDto.class,
-                chanceActionStyleList);
-        return UIHelper.selectItemsFromDict(chanceActionStyleDtoList);
-    }
-
-// public void uneditPrice() {
-// quotationItemPriceRendered = !quotationItemPriceRendered;
-// selectedQuotationItem.setPrice(temPrice);
-// }
-
-// public void uneditQuantity() {
-// quotationItemNumberRendered = !quotationItemNumberRendered;
-// selectedQuotationItem.setNumber(temQuantity);
-// }
-
-    public void editQuotationItem() {
-        // activeQuotation.applyItem(selectedQuotationItem);
+        List<ChanceActionStyle> styleList = serviceFor(ChanceActionStyle.class).list();
+        List<ChanceActionStyleDto> styleDtoList = DTOs.marshalList(ChanceActionStyleDto.class, styleList, true);
+        return UIHelper.selectItemsFromDict(styleDtoList);
     }
 
     public void uneditQuotationItem() {
@@ -223,7 +208,7 @@ public class ChanceBean
     public void initMaterialCategoryTree() {
         List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories);
+                ~MaterialCategoryDto.MATERIALS, rootCategories, true);
 
         materialTree = new MaterialCategoryTreeModel(rootCategoryDtos);
         materialTree.addListener(new SelectionAdapter() {
@@ -285,19 +270,19 @@ public class ChanceBean
 
     public List<SelectItem> getCategory() {
         List<ChanceCategory> chanceCategoryList = serviceFor(ChanceCategory.class).list();
-        List<ChanceCategoryDto> categoryDtoList = DTOs.marshalList(ChanceCategoryDto.class, chanceCategoryList);
+        List<ChanceCategoryDto> categoryDtoList = DTOs.marshalList(ChanceCategoryDto.class, chanceCategoryList, true);
         return UIHelper.selectItemsFromDict(categoryDtoList);
     }
 
     public List<SelectItem> getSource() {
         List<ChanceSourceType> sourceTypeList = serviceFor(ChanceSourceType.class).list();
-        List<ChanceSourceDto> chanceSourceDtoList = DTOs.marshalList(ChanceSourceDto.class, sourceTypeList);
+        List<ChanceSourceDto> chanceSourceDtoList = DTOs.marshalList(ChanceSourceDto.class, sourceTypeList, true);
         return UIHelper.selectItemsFromDict(chanceSourceDtoList);
     }
 
     public List<SelectItem> getStage() {
         List<ChanceStage> chanceStageList = serviceFor(ChanceStage.class).list();
-        List<ChanceStageDto> chanceStageDtoList = DTOs.marshalList(ChanceStageDto.class, chanceStageList);
+        List<ChanceStageDto> chanceStageDtoList = DTOs.marshalList(ChanceStageDto.class, chanceStageList, true);
         return UIHelper.selectItemsFromDict(chanceStageDtoList);
     }
 
