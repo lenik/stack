@@ -217,7 +217,7 @@ public class MaterialViewBean
             materialList.remove(activeMaterial);
             uiLogger.info("删除物料成功");
         } catch (Exception e) {
-            uiLogger.error("删除物料失败" + e.getMessage(), e);
+            uiLogger.error("删除物料失败" , e);
         }
     }
 
@@ -266,7 +266,7 @@ public class MaterialViewBean
             uiLogger.info("保存单位还算表" + activeUnitConv.getLabel() + "成功");
             activeUnitConv = new UnitConvDto().create();
         } catch (Exception e) {
-            uiLogger.error("保存单位还算表" + activeUnitConv.getLabel() + "失败:" + e.getMessage(), e);
+            uiLogger.error("保存单位还算表" + activeUnitConv.getLabel() + "失败", e);
         }
     }
 

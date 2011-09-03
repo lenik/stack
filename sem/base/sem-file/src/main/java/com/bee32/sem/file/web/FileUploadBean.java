@@ -34,7 +34,7 @@ public class FileUploadBean
             fileOutputStream.write(upFile.getContents());
             fileOutputStream.close();
         } catch (Exception e) {
-            uiLogger.error("传送失败:" + fileName, e);
+            uiLogger.error("传送文件 " + fileName + " 失败", e);
             return;
         }
 
@@ -50,13 +50,13 @@ public class FileUploadBean
             serviceFor(UserFile.class).save(userFile);
 
         } catch (Exception e) {
-            uiLogger.error("远程文件保存失败:" + fileName, e);
+            uiLogger.error("存储文件 " + fileName + " 失败", e);
             return;
         }
 
         uploadedFiles.add(userFile);
 
-        uiLogger.info("上传成功:" + fileName);
+        uiLogger.info("上传文件 " + fileName + " 成功");
     }
 
     public List<UserFile> getUploadedFiles() {

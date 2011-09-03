@@ -290,7 +290,7 @@ public class OrgAdminBean
 
     public void doModify() {
         if (selectedOrg == null) {
-            uiLogger.error("提示:请选择需要修改的客户/供应商!");
+            uiLogger.error("请选择需要修改的客户/供应商!");
             return;
         }
 
@@ -302,7 +302,7 @@ public class OrgAdminBean
 
     public void doDelete() {
         if (selectedOrg == null) {
-            uiLogger.error("提示:请选择需要删除的客户/供应商!");
+            uiLogger.error("请选择需要删除的客户/供应商!");
             return;
         }
 
@@ -314,7 +314,7 @@ public class OrgAdminBean
             refreshOrgCount();
 
         } catch (Exception e) {
-            uiLogger.error("提示:删除客户/供应商失败", e);
+            uiLogger.error("删除客户/供应商失败", e);
         }
     }
 
@@ -325,9 +325,9 @@ public class OrgAdminBean
 
             setActiveTab(TAB_INDEX);
             editable = false;
-            uiLogger.info("提示:客户/供应商保存成功");
+            uiLogger.info("客户/供应商保存成功");
         } catch (Exception e) {
-            uiLogger.error("提示:客户/供应商保存失败", e);
+            uiLogger.error("客户/供应商保存失败", e);
         }
     }
 
@@ -340,7 +340,7 @@ public class OrgAdminBean
 
     public void doDetail() {
         if (selectedOrg == null) {
-            uiLogger.error("提示:请选择需要查看详细信息的客户/供应商!");
+            uiLogger.error("请选择需要查看详细信息的客户/供应商!");
             return;
         }
 
@@ -361,7 +361,7 @@ public class OrgAdminBean
 
     public void doNewRole() {
         if (org == null || org.getId() == null) {
-            uiLogger.error("提示:请选择需要新增联系方式的客户/供应商!");
+            uiLogger.error("请选择需要新增联系方式的客户/供应商!");
             return;
         }
         _newRole();
@@ -373,7 +373,7 @@ public class OrgAdminBean
 
     public void doDeleteRole() {
         if (selectedRole == null) {
-            uiLogger.error("提示:请选择需要去除关联的相关人员!");
+            uiLogger.error("请选择需要去除关联的相关人员!");
             return;
         }
 
@@ -383,13 +383,13 @@ public class OrgAdminBean
             selectedRole = null;
 
         } catch (Exception e) {
-            uiLogger.error("提示:去除相关人员关联失败", e);
+            uiLogger.error("去除相关人员关联失败", e);
         }
     }
 
     public void doSaveRole() {
         if (org == null || org.getId() == null) {
-            uiLogger.error("提示:请选择所操作的相关人员对应的客户/供应商!");
+            uiLogger.error("请选择所操作的相关人员对应的客户/供应商!");
             return;
         }
 
@@ -399,9 +399,9 @@ public class OrgAdminBean
             serviceFor(Org.class).saveOrUpdate(_org);
             org = DTOs.marshal(OrgDto.class, _org);
 
-            uiLogger.info("提示:相关人员设置关联成功");
+            uiLogger.info("相关人员设置关联成功");
         } catch (Exception e) {
-            uiLogger.info("提示:相关人员设置关联失败", e);
+            uiLogger.info("相关人员设置关联失败", e);
         }
     }
 
@@ -454,7 +454,7 @@ public class OrgAdminBean
 
     public void doSaveOrgUnit() {
         if (org == null || org.getId() == null) {
-            uiLogger.error("提示:请选择所操作的部门对应的客户/供应商!");
+            uiLogger.error("请选择所操作的部门对应的客户/供应商!");
             return;
         }
 

@@ -261,7 +261,7 @@ public class ChanceActionBean
             uiLogger.info("提示", "成功删除行动记录!");
 
         } catch (Exception e) {
-            uiLogger.error("删除行动记录错误:" + e.getMessage(), e);
+            uiLogger.error("删除行动记录错误", e);
         }
 
     }
@@ -386,9 +386,8 @@ public class ChanceActionBean
 
             uiLogger.info("保存销售机会行动记录成功!");
         } catch (Exception e) {
-            uiLogger.error("保存行动记录失败:" + e.getMessage(), e);
+            uiLogger.error("保存行动记录失败", e);
         }
-
     }
 
     public void onRowSelect(SelectEvent event) {

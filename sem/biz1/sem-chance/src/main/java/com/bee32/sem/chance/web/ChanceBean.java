@@ -169,7 +169,7 @@ public class ChanceBean
 
             state = State.EDIT;
         } catch (Exception e) {
-            uiLogger.error("保存报价单错误:" + e.getMessage(), e);
+            uiLogger.error("保存报价单错误", e);
         }
     }
 
@@ -181,7 +181,7 @@ public class ChanceBean
             quotations.deselect();
             uiLogger.info("提示:", "成功删除报价单");
         } catch (Exception e) {
-            uiLogger.error("删除报价单失败" + e.getMessage(), e);
+            uiLogger.error("删除报价单失败", e);
         }
     }
 
@@ -290,7 +290,7 @@ public class ChanceBean
                     PeopleCriteria.namedLike(partyPattern));
         else
             _parties = serviceFor(Party.class).list(EntityCriteria.ownedByCurrentUser());
-        parties = UIHelper.selectable(DTOs.marshalList(PartyDto.class, 0, _parties, true));
+        parties = UIHelper.selectable(DTOs.marshalList(PartyDto.class, PartyDto.CONTACTS, _parties, true));
     }
 
     public void searchAction() {
@@ -341,7 +341,7 @@ public class ChanceBean
             serviceFor(ChanceAction.class).saveOrUpdateAll(_chance.getActions());
             uiLogger.info("提示", "关联成功");
         } catch (Exception e) {
-            uiLogger.error("错误提示", "关联失败:" + e.getMessage(), e);
+            uiLogger.error("错误提示", "关联失败", e);
         }
     }
 
@@ -359,7 +359,7 @@ public class ChanceBean
             actions.deselect();
             uiLogger.info("反关联成功");
         } catch (Exception e) {
-            uiLogger.error("反关联失败:" + e.getMessage(), e);
+            uiLogger.error("反关联失败", e);
         }
     }
 
@@ -470,7 +470,7 @@ public class ChanceBean
 
             state = State.INDEX;
         } catch (Exception e) {
-            uiLogger.error("保存销售机会失败: " + e.getMessage(), e);
+            uiLogger.error("保存销售机会失败", e);
         }
     }
 
@@ -491,7 +491,7 @@ public class ChanceBean
             initToolbar();
             uiLogger.info("成功删除行动记录");
         } catch (Exception e) {
-            uiLogger.error("删除销售机会失败:" + e.getMessage(), e);
+            uiLogger.error("删除销售机会失败", e);
         }
     }
 

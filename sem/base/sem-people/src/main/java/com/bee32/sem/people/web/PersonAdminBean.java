@@ -152,7 +152,7 @@ public class PersonAdminBean
 
     public void doModify() {
         if (selectedPerson == null) {
-            uiLogger.info("提示:请选择需要修改的联系人!");
+            uiLogger.error("请选择需要修改的联系人!");
             return;
         }
 
@@ -164,7 +164,7 @@ public class PersonAdminBean
 
     public void doDelete() {
         if (selectedPerson == null) {
-            uiLogger.info("提示:请选择需要删除的联系人!");
+            uiLogger.error("请选择需要删除的联系人!");
             return;
         }
 
@@ -176,7 +176,7 @@ public class PersonAdminBean
             refreshPersonCount();
 
         } catch (Exception e) {
-            uiLogger.error("提示:删除联系人失败", e);
+            uiLogger.error("删除联系人失败", e);
         }
     }
 
@@ -187,9 +187,9 @@ public class PersonAdminBean
 
             setActiveTab(TAB_INDEX);
             editable = false;
-            uiLogger.info("提示:联系人保存成功");
+            uiLogger.info("联系人保存成功");
         } catch (Exception e) {
-            uiLogger.error("错误:联系人保存失败", e);
+            uiLogger.error("联系人保存失败", e);
         }
     }
 
@@ -202,7 +202,7 @@ public class PersonAdminBean
 
     public void doDetail() {
         if (selectedPerson == null) {
-            uiLogger.info("提示:请选择需要查看详细信息的联系人!");
+            uiLogger.error("请选择需要查看详细信息的联系人!");
             return;
         }
 
