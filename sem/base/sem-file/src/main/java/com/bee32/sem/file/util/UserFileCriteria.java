@@ -22,9 +22,9 @@ public class UserFileCriteria
 
     public static ICriteriaElement isAttachment(boolean isAttachment) {
         if (isAttachment)
-            return isNull("refType");
+            return isNotNull("refTypeId");
         else
-            return isNotNull("refType");
+            return isNull("refTypeId");
     }
 
 }

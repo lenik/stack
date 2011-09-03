@@ -128,15 +128,19 @@ public class UserFileAdmin
 
     public void addMessage() {
         List<Long> idList = new ArrayList<Long>();
+        boolean attachment = false;
         for (String tagId : selectedTags) {
             long id = Long.parseLong(tagId);
             if (id > 0)
                 idList.add(id);
+            else
+                attachment = true;
         }
 
         List<UserFile> files = serviceFor(UserFile.class).list(//
                 EntityCriteria.ownedByCurrentUser(), //
-                UserFileCriteria.withAnyTagIn(idList));
+                UserFileCriteria.withAnyTagIn(idList),//
+                UserFileCriteria.isAttachment(attachment));
         Set<UserFile> fileSet = new HashSet<UserFile>(files);
         List<UserFile> fileList = new ArrayList<UserFile>(fileSet);
         userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, fileList, true);
