@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.bee32.plover.arch.DataService;
+import com.bee32.plover.ox1.color.MomentIntervalCriteria;
 import com.bee32.sem.calendar.ICalendarSource;
-import com.bee32.sem.chance.util.ChanceCriteria;
 
 @Component
 @Lazy
@@ -18,7 +18,7 @@ public class ChanceCalendarSource
 
     @Override
     public List<ChanceAction> getEvents(Date begin, Date end) {
-        return asFor(ChanceAction.class).list(ChanceCriteria.beganWithin(begin, end));
+        return asFor(ChanceAction.class).list(MomentIntervalCriteria.timeBetween(begin, end));
     }
 
 }

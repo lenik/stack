@@ -13,6 +13,7 @@ import org.zkoss.lang.Strings;
 
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.ox1.color.MomentIntervalCriteria;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceActionStyleDto;
@@ -299,7 +300,7 @@ public class ChanceBean
             _actions = serviceFor(ChanceAction.class).list(//
                     Order.desc("createdDate"), //
                     ChanceCriteria.actedByCurrentUser(), //
-                    ChanceCriteria.beganWithin(searchBeginTime, searchEndTime), //
+                    MomentIntervalCriteria.timeBetween(searchBeginTime, searchEndTime), //
                     ChanceCriteria.danglingChance());
         } else {
             _actions = serviceFor(ChanceAction.class).list(//
