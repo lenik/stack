@@ -43,7 +43,7 @@
                 <p:tabView id="mainTabView">
                     <p:tab id="boxTab">
                         <p:dataGrid id="gridList" var="item" value="#{mailManageBean.mails}" columns="1"
-                            rows="#{viewConfig.pageSize}" paginator="true">
+                            rows="#{viewConfig.pageSize}" paginator="true" rowKey="#{item.id}">
                             <p:column style="width:100%;">
                                 <p:panel style="width:100%;">
                                     <t:panelGrid columns="3" style="width:100%;">
@@ -85,7 +85,7 @@
                         <p:toolbar>
                             <p:toolbarGroup>
                                 <p:commandButton value="发送" actionListener="#{mailManageBean.doSendMail}" />
-                                <p:commandButton value="存草稿" />
+                                <p:commandButton value="存草稿" actionListener="#{mailManageBean.doSaveDraft}" />
                                 <p:commandButton value="取消" />
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -117,8 +117,7 @@
         <h:form id="dialogForm">
             <p:dialog header="选择收件人" widgetVar="recipientDialog" height="400" width="500">
                 <p:dataTable var="item" value="#{mailManageBean.allUserList}"
-                    selection="#{mailManageBean.selectedUsers}">
-                    <p:column selectionMode="multiple" style="width:40px;" />
+                    selection="#{mailManageBean.selectedUsers}" rowKey="#{item.id}">
                     <p:column headerText="姓名">
                         <h:outputText value="#{item.displayName}" />
                     </p:column>
