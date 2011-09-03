@@ -74,7 +74,7 @@
                         <p:commandButton value="详细"
                             actionListener="#{orgAdminBean.doDetail}"
                             disabled="#{orgAdminBean.editable or (not orgAdminBean.orgSelected)}"
-                            update="orgForm" async="true" />
+                            update="orgForm chooseParentOrgUnitForm:chooseParentOrgUnitPanel" async="true" />
                     </p:toolbarGroup>
                 </p:toolbar>
                 <p:tabView id="orgTab" style="width:100%;"
@@ -251,7 +251,7 @@
                                 selection="#{orgAdminBean.selectedContact}"
                                 selectionMode="single"
                                 rowKey="#{contact.id}"
-                                 rowIndexVar="rowIndex">
+                                rowIndexVar="rowIndex">
 
                                 <p:ajax event="rowSelect"
                                     listener="#{orgAdminBean.onRowSelectContact}"
@@ -444,9 +444,9 @@
 										<p:dataTable id="roles" var="role"
 											value="#{orgAdminBean.roles}" resizableColumns="true"
 											selection="#{orgAdminBean.selectedRole}"
-											selectionMode="single"
                                             rowKey="#{role.id}"
-                                             rowIndexVar="rowIndex">
+											selectionMode="single"
+                                            rowIndexVar="rowIndex">
 
 											<p:ajax event="rowSelect"
 												listener="#{orgAdminBean.onRowSelectRole}"
@@ -615,7 +615,6 @@
         <h:form id="roleForm">
             <p:dialog header="相关人员设置" widgetVar="roleHolderDlg" modal="true" height="500" width="640">
                 <h:panelGroup id="roleHolder">
-                    <h:inputHidden id="roldId" value="#{orgAdminBean.role.id}"/>
                     <h:inputHidden id="roldOrgId" value="#{orgAdminBean.role.org.id}" />
                     <h:inputHidden id="roldPersonId" value="#{orgAdminBean.role.person.id}" />
                     <t:panelGrid columns="2"

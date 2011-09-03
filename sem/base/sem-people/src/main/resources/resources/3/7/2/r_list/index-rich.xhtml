@@ -56,15 +56,15 @@
 
 
 				<t:panelGrid columns="2" rowClasses="align_top" columnClasses="col_left">
-					<p:tabView header="权限主体列表" activeIndex="#{permissionAdminBean.activeTab}" style="width:100%;">
-
+                    <p:panel header="权限主体列表">
+					<p:tabView activeIndex="#{permissionAdminBean.activeTab}" style="width:100%;">
 
 						<p:tab title="组列表">
 							<p:dataTable id="groups" var="group"
 								value="#{permissionAdminBean.groups}" resizableColumns="true"
 								selection="#{permissionAdminBean.selectedGroup}"
 								selectionMode="single"
-                                rowKey="#{group.id}" rowIndexVar="rowIndex">
+                                    rowKey="#{group.id}" rowIndexVar="rowIndex">
 
 								<p:ajax event="rowSelect"
 									listener="#{permissionAdminBean.onRowSelectGroup}"
@@ -89,11 +89,11 @@
 								</p:column>
 
 								<p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="全名" />
-                                    </f:facet>
-                                    <h:outputText value="#{group.fullName}" />
-                                </p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="全名" />
+                                        </f:facet>
+                                        <h:outputText value="#{group.fullName}" />
+                                    </p:column>
 
 							</p:dataTable>
 						</p:tab>
@@ -103,7 +103,7 @@
 								value="#{permissionAdminBean.roles}" resizableColumns="true"
 								selection="#{permissionAdminBean.selectedRole}"
 								selectionMode="single"
-                                rowKey="#{role.id}" rowIndexVar="rowIndex">
+                                    rowKey="#{role.id}" rowIndexVar="rowIndex">
 
 								<p:ajax event="rowSelect"
 									listener="#{permissionAdminBean.onRowSelectRole}"
@@ -128,11 +128,11 @@
 								</p:column>
 
 								<p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="全名" />
-                                    </f:facet>
-                                    <h:outputText value="#{role.fullName}" />
-                                </p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="全名" />
+                                        </f:facet>
+                                        <h:outputText value="#{role.fullName}" />
+                                    </p:column>
 
 							</p:dataTable>
 
@@ -143,7 +143,7 @@
 								value="#{permissionAdminBean.users}" resizableColumns="true"
 								selection="#{permissionAdminBean.selectedUser}"
 								selectionMode="single"
-                                rowKey="#{user.id}" rowIndexVar="rowIndex">
+                                    rowKey="#{user.id}" rowIndexVar="rowIndex">
 
 								<p:ajax event="rowSelect"
 									listener="#{permissionAdminBean.onRowSelectUser}"
@@ -168,17 +168,17 @@
 								</p:column>
 
 								<p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="全名" />
-                                    </f:facet>
-                                    <h:outputText value="#{user.fullName}" />
-                                </p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="全名" />
+                                        </f:facet>
+                                        <h:outputText value="#{user.fullName}" />
+                                    </p:column>
 
 							</p:dataTable>
 						</p:tab>
 
 					</p:tabView>
-
+                    </p:panel>
 
 					<p:panel header="权限列表" style="width:100%; margin-left:10px;">
 

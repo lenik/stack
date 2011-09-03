@@ -380,6 +380,7 @@ public class OrgAdminBean
         try {
             org.getRoles().remove(selectedRole);
             serviceFor(Org.class).saveOrUpdate(org.unmarshal());
+            selectedRole = null;
 
         } catch (Exception e) {
             uiLogger.error("提示:去除相关人员关联失败", e);
@@ -394,7 +395,9 @@ public class OrgAdminBean
 
         try {
             org.getRoles().add(role);
-            serviceFor(Org.class).saveOrUpdate(org.unmarshal());
+            Org _org = org.unmarshal();
+            serviceFor(Org.class).saveOrUpdate(_org);
+            org = DTOs.marshal(OrgDto.class, _org);
 
             uiLogger.info("提示:相关人员设置关联成功");
         } catch (Exception e) {
@@ -421,7 +424,9 @@ public class OrgAdminBean
     }
 
     public void choosePerson() {
-        role.setPerson(selectedPerson);
+        if(selectedPerson != null) {
+            role.setPerson(selectedPerson);
+        }
     }
 
     public void doNewOrgUnit() {

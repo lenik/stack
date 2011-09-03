@@ -53,7 +53,7 @@ public class PersonRole
     /**
      * 所在部门
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     public OrgUnit getOrgUnit() {
         return orgUnit;
     }
