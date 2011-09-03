@@ -3,6 +3,8 @@ package com.bee32.sem.mail.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.component.html.HtmlOutputText;
+import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.component.tabview.Tab;
@@ -92,9 +94,30 @@ public class MailManageBean
 
     public void gotoInbox() {
         TabView mainTabView = (TabView) getMainTabView();
-        mainTabView.setActiveIndex(0);
-        selectedItemId = "1";
-        listMails();
+
+
+        HtmlPanelGrid panelGrid = new HtmlPanelGrid();
+        panelGrid.setColumns(2);
+        panelGrid.setTitle("test panel grid");
+        HtmlOutputText text1 = new HtmlOutputText();
+        text1.setValue("text1");
+        HtmlOutputText text2 = new HtmlOutputText();
+        text2.setValue("text2");
+        HtmlOutputText text3 = new HtmlOutputText();
+        text1.setValue("text3");
+        panelGrid.getChildren().add(text1);
+        panelGrid.getChildren().add(text2);
+        panelGrid.getChildren().add(text3);
+        panelGrid.getChildren().add(new HtmlOutputText());
+
+        Tab tab = new Tab();
+        tab.setTitle("test");
+        tab.setClosable(true);
+        tab.getChildren().add(panelGrid);
+
+        mainTabView.getChildren().add(tab);
+
+// listMails();
     }
 
     public void gotoWritebox() {
@@ -166,6 +189,18 @@ public class MailManageBean
             serviceFor(MailDelivery.class).save(recieveDelivery);
         }
 
+    }
+
+    public void doSaveDraft() {
+        Mail mail = draft.unmarshal();
+        MailDelivery draftDelivery = new MailDelivery(mail, MailOrientation.FROM);
+        draftDelivery.setFolder(MailFolder.DRAFT);
+        try {
+            serviceFor(Mail.class).saveOrUpdate(mail);
+            serviceFor(MailDelivery.class).saveOrUpdate(draftDelivery);
+        } catch (Exception e) {
+            uiLogger.error("保存草稿错误:" + e.getMessage(), e);
+        }
     }
 
     public void onMailItemSelect() {
