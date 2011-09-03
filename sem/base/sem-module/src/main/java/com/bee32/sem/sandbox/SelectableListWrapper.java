@@ -40,9 +40,6 @@ public class SelectableListWrapper<T>
         }
     }
 
-    /**
-     * Only meaningful if the list does not contain <code>null</code> element.
-     */
     @Override
     public boolean isSelected() {
         return selection != null;
@@ -51,6 +48,7 @@ public class SelectableListWrapper<T>
     @Override
     public void deselect() {
         selection = null;
+        selectionIndex = -1;
     }
 
     @Override

@@ -6,8 +6,14 @@ public interface Selectable<T> {
 
     void setSelection(T selection);
 
+    /**
+     * Only meaningful if the list does not contain <code>null</code> element.
+     */
     boolean isSelected();
 
+    /**
+     * Only meaningful if the list does not contain <code>null</code> element.
+     */
     void deselect();
 
 }

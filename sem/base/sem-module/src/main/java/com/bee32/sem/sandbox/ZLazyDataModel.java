@@ -60,4 +60,14 @@ public class ZLazyDataModel<E extends CEntity<?>, D extends CEntityDto<E, ?>>
         this.selection = selection;
     }
 
+    @Override
+    public boolean isSelected() {
+        return selection != null;
+    }
+
+    @Override
+    public void deselect() {
+        selection = null;
+    }
+
 }
