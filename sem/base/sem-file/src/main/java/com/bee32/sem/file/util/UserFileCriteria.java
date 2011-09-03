@@ -20,4 +20,11 @@ public class UserFileCriteria
                 in("tag.id", tags));
     }
 
+    public static ICriteriaElement isAttachment(boolean isAttachment) {
+        if (isAttachment)
+            return isNull("refType");
+        else
+            return isNotNull("refType");
+    }
+
 }

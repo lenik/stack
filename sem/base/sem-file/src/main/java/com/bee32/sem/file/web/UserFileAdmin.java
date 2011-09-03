@@ -128,8 +128,11 @@ public class UserFileAdmin
 
     public void addMessage() {
         List<Long> idList = new ArrayList<Long>();
-        for (String tagId : selectedTags)
-            idList.add(Long.parseLong(tagId));
+        for (String tagId : selectedTags) {
+            long id = Long.parseLong(tagId);
+            if (id > 0)
+                idList.add(id);
+        }
 
         List<UserFile> files = serviceFor(UserFile.class).list(//
                 EntityCriteria.ownedByCurrentUser(), //
