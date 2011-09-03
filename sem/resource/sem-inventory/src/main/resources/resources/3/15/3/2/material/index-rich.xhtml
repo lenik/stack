@@ -38,7 +38,7 @@
                     <p:toolbar>
                         <p:toolbarGroup align="left">
                             <p:commandButton value="新增物料" oncomplete="materialDialog.show();"
-                                actionListener="#{materialViewBean.createMaterialForm}" update="dialogForm:material" />
+                                actionListener="#{materialViewBean.createMaterialForm}" update=":dialogForm:material" />
                             <p:divider />
                             <p:commandButton value="查找物料" id="preSearchBtn"
                                 actionListener="#{materialViewBean.searchForm}" update="main" />
@@ -413,7 +413,7 @@
 
                             <p:column headerText="操作" style="width:80px;">
                                 <p:commandLink title="删除" disabled="#{materialViewBean.editable}"
-                                    update=":dialogForm:attachList">
+                                    update="attachList">
                                     <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                                     <p:collector value="#{attachment}"
                                         removeFrom="#{materialViewBean.activeMaterial.attachments}" />
@@ -430,7 +430,7 @@
                     <t:panelGroup colspan="5">
                         <h:form enctype="multipart/form-data">
                             <p:fileUpload fileUploadListener="#{materialViewBean.handleFileUpload}" mode="advanced"
-                                update="dialogForm:attachList" multiple="true" label="上传附件"
+                                update=":dialogForm:attachList" multiple="true" label="上传附件"
                                 allowTypes="${viewConfig.allowTypes}" />
                         </h:form>
                     </t:panelGroup>
