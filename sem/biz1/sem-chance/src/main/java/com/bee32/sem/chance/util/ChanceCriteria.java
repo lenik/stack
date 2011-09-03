@@ -1,7 +1,5 @@
 package com.bee32.sem.chance.util;
 
-import java.util.Date;
-
 import com.bee32.icsf.login.LoginInfo;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
@@ -30,14 +28,6 @@ public class ChanceCriteria
             return null;
         else
             return equals("actor.id", user.getId());
-    }
-
-    public static CriteriaElement beganWithin(Date start, Date end) {
-        if (start == null)
-            throw new NullPointerException("start");
-        if (end == null)
-            throw new NullPointerException("end");
-        return between("beginTime", start, end);
     }
 
     public static CriteriaElement chanceEquals(ChanceDto chance) {

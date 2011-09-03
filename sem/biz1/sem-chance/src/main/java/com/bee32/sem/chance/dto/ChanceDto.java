@@ -1,6 +1,5 @@
 package com.bee32.sem.chance.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.free.ParseException;
@@ -58,13 +57,9 @@ public class ChanceDto
 
         if (selection.contains(PARTIES))
             parties = marshalList(ChancePartyDto.class, source.getParties());
-        else
-            parties = new ArrayList<ChancePartyDto>();
 
         if (selection.contains(ACTIONS))
             actions = marshalList(ChanceActionDto.class, source.getActions(), true);
-        else
-            actions = new ArrayList<ChanceActionDto>();
 
         stage = mref(ChanceStageDto.class, source.getStage());
     }
@@ -87,49 +82,6 @@ public class ChanceDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-    }
-
-    public void addParty(ChancePartyDto chanceParty) {
-        if (chanceParty == null)
-            throw new NullPointerException("chanceParty");
-        if (!parties.contains(chanceParty))
-            parties.add(chanceParty);
-    }
-
-    public void removeParty(ChancePartyDto chanceParty) {
-        if (parties.contains(chanceParty))
-            parties.remove(chanceParty);
-    }
-
-    public void addAction(ChanceActionDto action) {
-        if (action == null)
-            throw new NullPointerException("action");
-        actions.add(action);
-        refreshStage();
-    }
-
-    public void deleteAction(ChanceActionDto action) {
-        if (actions.contains(action))
-            actions.remove(action);
-        refreshStage();
-    }
-
-    void refreshStage() {
-        int cachedOrder = getStage().getOrder();
-
-        int maxOrder = 0;
-        ChanceStageDto maxStage = null;
-        for (ChanceActionDto action : getActions()) {
-            int order = action.getStage().getOrder();
-            if (order > maxOrder) {
-                maxOrder = order;
-                maxStage = action.getStage();
-            }
-        }
-
-        if (maxStage != null)
-            if (maxOrder > cachedOrder)
-                this.stage = maxStage;
     }
 
     public String getSerial() {
@@ -196,7 +148,21 @@ public class ChanceDto
         this.parties = parties;
     }
 
+    public void addParty(ChancePartyDto chanceParty) {
+        if (chanceParty == null)
+            throw new NullPointerException("chanceParty");
+        if (!parties.contains(chanceParty))
+            parties.add(chanceParty);
+    }
+
+    public void removeParty(ChancePartyDto chanceParty) {
+        if (parties.contains(chanceParty))
+            parties.remove(chanceParty);
+    }
+
     public String getPartiesHint() {
+        if (parties == null)
+            return "(n/a)";
         StringBuilder sb = null;
         for (ChancePartyDto chparty : parties) {
             if (sb == null)
@@ -216,6 +182,19 @@ public class ChanceDto
         if (actions == null)
             throw new NullPointerException("actions");
         this.actions = actions;
+    }
+
+    public void addAction(ChanceActionDto action) {
+        if (action == null)
+            throw new NullPointerException("action");
+        actions.add(action);
+        refreshStage();
+    }
+
+    public void deleteAction(ChanceActionDto action) {
+        if (actions.contains(action))
+            actions.remove(action);
+        refreshStage();
     }
 
     public ChanceStageDto getStage() {
@@ -240,6 +219,24 @@ public class ChanceDto
 
     public void setSelectedAction(ChanceActionDto selectedAction) {
         this.selectedAction = selectedAction;
+    }
+
+    void refreshStage() {
+        int cachedOrder = getStage().getOrder();
+
+        int maxOrder = 0;
+        ChanceStageDto maxStage = null;
+        for (ChanceActionDto action : getActions()) {
+            int order = action.getStage().getOrder();
+            if (order > maxOrder) {
+                maxOrder = order;
+                maxStage = action.getStage();
+            }
+        }
+
+        if (maxStage != null)
+            if (maxOrder > cachedOrder)
+                this.stage = maxStage;
     }
 
 }

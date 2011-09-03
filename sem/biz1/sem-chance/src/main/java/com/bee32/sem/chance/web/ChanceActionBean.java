@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import com.bee32.icsf.login.LoginInfo;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.ox1.color.MomentIntervalCriteria;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.chance.dto.ChanceActionDto;
@@ -58,8 +59,6 @@ public class ChanceActionBean
 
     static final String DATATABLE_PARTIES = "customerForm:customers";
     static final String DATATABLE_PARTNERS = "partnerForm:partners";
-
-    private boolean isSearching;
 
     // 查找日志
     private Date searchBeginTime;
@@ -105,27 +104,16 @@ public class ChanceActionBean
     }
 
     public void search() {
-
-        if (searchBeginTime != null && searchEndTime != null) {
-            isSearching = true;
-            EntityDataModelOptions<ChanceAction, ChanceActionDto> edmo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
-                    ChanceAction.class, ChanceActionDto.class);
-            edmo.setCriteriaElements(//
-                    Order.desc("createdDate"), //
-                    ChanceCriteria.actedByCurrentUser(), //
-                    ChanceCriteria.beganWithin(searchBeginTime, searchEndTime));
-            actions = UIHelper.buildLazyDataModel(edmo);
-            refreshActionCount(isSearching);
-        }
-        if (searchBeginTime == null) {
-            uiLogger.error("开始时间为空");
-        }
-        if (searchEndTime == null) {
-            uiLogger.error("结束时间为空");
-        }
-
+        EntityDataModelOptions<ChanceAction, ChanceActionDto> edmo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
+                ChanceAction.class, ChanceActionDto.class, //
+                ChanceActionDto.PARTIES | ChanceActionDto.PARTNERS);
+        edmo.setCriteriaElements(//
+                Order.desc("createdDate"), //
+                ChanceCriteria.actedByCurrentUser(), //
+                MomentIntervalCriteria.timeBetween(searchBeginTime, searchEndTime));
+        actions = UIHelper.buildLazyDataModel(edmo);
+        refreshActionCount();
         initToolbar();
-        setActiveTab(TAB_INDEX);
     }
 
     void initToolbar() {
@@ -140,19 +128,18 @@ public class ChanceActionBean
     }
 
     public void initList() {
-        isSearching = false;
         EntityDataModelOptions<ChanceAction, ChanceActionDto> emdo = new EntityDataModelOptions<ChanceAction, ChanceActionDto>(
                 ChanceAction.class, ChanceActionDto.class, 0, //
                 Order.desc("createdDate"), ChanceCriteria.actedByCurrentUser());
         actions = UIHelper.buildLazyDataModel(emdo);
-        refreshActionCount(isSearching);
+        refreshActionCount();
         initToolbar();
     }
 
-    void refreshActionCount(boolean forSearch) {
+    void refreshActionCount() {
         int count = serviceFor(ChanceAction.class).count(//
                 ChanceCriteria.actedByCurrentUser(), //
-                forSearch ? ChanceCriteria.beganWithin(searchBeginTime, searchEndTime) : null);
+                MomentIntervalCriteria.timeBetween(searchBeginTime, searchEndTime));
 
         actions.setRowCount(count);
     }
@@ -247,7 +234,7 @@ public class ChanceActionBean
         }
         try {
             serviceFor(ChanceAction.class).delete(selectedAction.unmarshal());
-            refreshActionCount(isSearching);
+            refreshActionCount();
 
             findComponentEx(BUTTON_NEWACTION).setEnabled(true);
             findComponentEx(BUTTON_VIEWACTION).setEnabled(false);
@@ -396,14 +383,6 @@ public class ChanceActionBean
 
     public void onRowUnselect(UnselectEvent event) {
         findComponentEx(BUTTON_VIEWACTION).setEnabled(false);
-    }
-
-    public boolean isSearching() {
-        return isSearching;
-    }
-
-    public void setSearching(boolean isSearching) {
-        this.isSearching = isSearching;
     }
 
     public Date getSearchBeginTime() {
