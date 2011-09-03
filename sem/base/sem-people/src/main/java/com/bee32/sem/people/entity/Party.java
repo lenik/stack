@@ -148,6 +148,11 @@ public abstract class Party
     }
 
     public void setSid(String sid) {
+        if (sid != null) {
+            sid = sid.trim();
+            if (sid.isEmpty())
+                sid = null;
+        }
         this.sid = sid;
     }
 
