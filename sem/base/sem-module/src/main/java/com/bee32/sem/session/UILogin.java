@@ -26,7 +26,8 @@ public class UILogin
 
     @Override
     public String getFamily() {
-        return "custom"; // ???
+        // TODO ... what the hell..
+        return UIInput.COMPONENT_FAMILY;
     }
 
     static boolean _1;

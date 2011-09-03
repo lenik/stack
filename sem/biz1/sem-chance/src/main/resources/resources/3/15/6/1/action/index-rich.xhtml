@@ -35,14 +35,14 @@
                         <p:commandButton id="editActionButton" value="编辑" actionListener="#{chanceActionBean.editForm}"
                             update="chanceActionForm" />
                         <p:commandButton id="deleteActionButton" value="删除" actionListener="#{chanceActionBean.drop}"
-                            update="chanceActionForm:mainTab:actions,chanceActionForm:productToolbar" />
+                            update="mainTab:actions, productToolbar" />
                         <p:divider />
                         <p:commandButton id="saveActionButton" value="保存"
                             actionListener="#{chanceActionBean.saveAction}" update="chanceActionForm"
                             disabled="true" />
                         <p:divider />
                         <p:commandButton id="resetButton" value="取消" actionListener="#{chanceActionBean.cancel}"
-                            update="chanceActionForm:productToolbar chanceActionForm:mainTab" disabled="true" />
+                            update="productToolbar, mainTab" disabled="true" />
                         <p:divider />
                         <p:commandButton id="viewActionButton" value="详细"
                             actionListener="#{chanceActionBean.doDetailForm}" update="chanceActionForm" disabled="true" />
@@ -70,9 +70,9 @@
                             rowKey="#{action.id}" rowIndexVar="rowIndex">
 
                             <p:ajax event="rowSelect" listener="#{chanceActionBean.onRowSelect}"
-                                update="chanceActionForm:productToolbar" />
+                                update=":chanceActionForm:productToolbar" />
                             <p:ajax event="rowUnselect" listener="#{chanceActionBean.onRowUnselect}"
-                                update="chanceActionForm:productToolbar" />
+                                update=":chanceActionForm:productToolbar" />
 
                             <p:column headerText="日期" style="width:100px;">
                                 <h:outputText value="#{action.date}" />
@@ -136,12 +136,11 @@
                             <h:outputLabel for="pgroup" value="拜访客户:" />
                             <t:panelGroup colspan="3" id="pgroup">
                                 <h:panelGrid columns="2" style="width:300px">
-                                    <p:dataList id="parties" var="party" value="#{chanceActionBean.action.parties}"
+                                    <p:dataList id="partiesList" var="party" value="#{chanceActionBean.action.parties}"
                                         effectSpeed="fast">
                                         <p:column>
                                             <h:outputText value="#{party.displayName}" />
-                                            <p:commandLink update="chanceActionForm:mainTab:parties"
-                                                actionListener="#{chanceActionBean.deleteCustomer}" title="删除客户"
+                                            <p:commandLink title="删除客户" update="partiesList"
                                                 disabled="#{chanceActionBean.editable}">
                                                 <p:collector value="#{party}"
                                                     removeFrom="#{chanceActionBean.action.parties}" />
@@ -160,12 +159,11 @@
                             <h:outputLabel for="partnerGroup" value="工作伙伴" />
                             <t:panelGroup colspan="3" id="partnerGroup">
                                 <h:panelGrid columns="2" style="width:300px">
-                                    <p:dataList id="partners" var="partner" value="#{chanceActionBean.action.partners}"
+                                    <p:dataList id="partnersList" var="partner" value="#{chanceActionBean.action.partners}"
                                         effectSpeed="fast">
                                         <p:column>
                                             <h:outputText value="#{partner.displayName}" />
-                                            <p:commandLink update="chanceActionForm:partners"
-                                                actionListener="#{chanceActionBean.deletePartner}" title="删除伙伴"
+                                            <p:commandLink title="删除伙伴" update="partnersList"
                                                 disabled="#{chanceActionBean.editable}">
                                                 <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                                                 <p:collector value="#{partner}"
@@ -173,11 +171,10 @@
                                             </p:commandLink>
                                         </p:column>
                                     </p:dataList>
-                                    <p:commandButton title="挑选工作伙伴" value="..." update="partnerForm:partners"
+                                    <p:commandButton title="挑选工作伙伴" value="..." update="partnerForm:partnersTable"
                                         actionListener="#{chanceActionBean.choosePartnerForm}"
                                         oncomplete="choosePartnerDialog.show();" disabled="#{chanceActionBean.editable}" />
                                 </h:panelGrid>
-
                             </t:panelGroup>
 
                             <h:outputLabel for="moreInfo" value="内容描述:" />
@@ -240,7 +237,7 @@
                         </p:column>
 
                         <p:column headerText="客户">
-                            <h:outputText value="#{chance.party}" />
+                            <h:outputText value="#{chance.partiesHint}" />
                         </p:column>
 
                         <p:column headerText="来源" style="width:100px;">
@@ -266,6 +263,7 @@
                         update="customerForm:customers" async="true" />
                 </h:panelGrid>
                 <p:dataTable id="customers" var="customer" value="#{chanceActionBean.customers}" resizableColumns="true"
+                    rowKey="#{customer.id}"
                     selection="#{chanceActionBean.selectedCustomers}" rowIndexVar="rowIndex">
 
                     <p:column selectionMode="multiple" style="width:40px;" />
@@ -297,7 +295,7 @@
                 </p:dataTable>
                 <h:panelGrid columns="2">
                     <p:commandButton value="确定" actionListener="#{chanceActionBean.addCustomer}"
-                        oncomplete="chooseCustomerDialog.hide();" update="chanceActionForm:mainTab:parties" async="true" />
+                        oncomplete="chooseCustomerDialog.hide();" update="chanceActionForm:mainTab:partiesList" async="true" />
                     <p:commandButton value="取消" oncomplete="chooseCustomerDialog.hide();" />
                 </h:panelGrid>
             </p:dialog>
@@ -308,10 +306,11 @@
                 <h:panelGrid columns="2">
                     <p:inputText value="#{chanceActionBean.partnerPattern}" />
                     <p:commandButton value="查找" actionListener="#{chanceActionBean.findPartner}"
-                        update="partnerForm:partners" async="true" />
+                        update="partnersTable" async="true" />
                 </h:panelGrid>
-                <p:dataTable id="partners" var="partner" value="#{chanceActionBean.partners}" resizableColumns="true"
-                    selection="#{chanceActionBean.selectedPartners}" rowIndexVar="rowIndex">
+                <p:dataTable id="partnersTable" var="partner" value="#{chanceActionBean.partners}" resizableColumns="true"
+                    rowKey="#{partner.id}"
+                    selection="#{chanceActionBean.choosedPartners}" rowIndexVar="rowIndex">
 
                     <p:column selectionMode="multiple" style="width:40px;" />
 
@@ -319,8 +318,8 @@
                         <h:outputText value="#{rowIndex + 1}" />
                     </p:column>
 
-                    <p:column headerText="用户名" style="width:200px;">
-                        <h:outputText value="#{partner.id}" />
+                    <p:column headerText="用户名">
+                        <h:outputText value="#{partner.name}" />
                     </p:column>
 
                     <p:column headerText="姓名">
@@ -330,7 +329,7 @@
                 </p:dataTable>
                 <h:panelGrid columns="2">
                     <p:commandButton value="确定" actionListener="#{chanceActionBean.addPartner}"
-                        oncomplete="choosePartnerDialog.hide();" update="chanceActionForm:mainTab:partners" async="true" />
+                        oncomplete="choosePartnerDialog.hide();" update="chanceActionForm:mainTab:partnersList" async="true" />
                     <p:commandButton value="取消" oncomplete="choosePartnerDialog.hide();" />
                 </h:panelGrid>
             </p:dialog>

@@ -12,7 +12,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -156,7 +155,7 @@ public abstract class Party
         this.sid = sid;
     }
 
-    @NaturalId(mutable=true)
+    @NaturalId(mutable = true)
     @Column(length = XID_LENGTH)
     String getXid() {
         if (sidType == null || sid == null || sid.isEmpty())
@@ -201,7 +200,8 @@ public abstract class Party
         this.memo = memo;
     }
 
-    @ManyToMany //(fetch = FetchType.EAGER)
+    @ManyToMany
+    // (fetch = FetchType.EAGER)
     @JoinTable(name = "PartyTags", //
     /*            */joinColumns = @JoinColumn(name = "party"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "tag"))

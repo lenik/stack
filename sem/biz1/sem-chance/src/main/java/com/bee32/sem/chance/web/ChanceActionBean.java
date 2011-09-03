@@ -52,8 +52,10 @@ public class ChanceActionBean
     static final String BUTTON_SAVEACTION = "chanceActionForm:saveActionButton";
     static final String BUTTON_RESET = "chanceActionForm:resetButton";
     static final String BUTTON_VIEWACTION = "chanceActionForm:viewActionButton";
-    static final String DETAIL_TAB = "chanceActionForm:newAction";
-    static final String DATATABLE_ACTIONS = "chanceActionForm:actions";
+
+    static final String DETAIL_TAB = "chanceActionForm:mainTab:newAction";
+    static final String DATATABLE_ACTIONS = "chanceActionForm:mainTab:actions";
+
     static final String DATATABLE_PARTIES = "customerForm:customers";
     static final String DATATABLE_PARTNERS = "partnerForm:partners";
 
@@ -93,7 +95,6 @@ public class ChanceActionBean
     // 选中的客户
     private PartyDto[] selectedCustomers;
     private PartyDto selectedCustomer;
-    private UserDto selectedPartner;
     private UserDto[] choosedPartners;
 
     @PostConstruct
@@ -174,7 +175,7 @@ public class ChanceActionBean
                 EntityCriteria.ownedByCurrentUser(), //
                 PeopleCriteria.namedLike(customerPattern));
 
-        customers = DTOs.marshalList(PartyDto.class, 0, parties, true);
+        customers = DTOs.marshalList(PartyDto.class, PartyDto.CONTACTS, parties, true);
     }
 
     public void choosePartnerForm() {
@@ -290,17 +291,9 @@ public class ChanceActionBean
             action.addParty(party);
     }
 
-    public void deleteCustomer() {
-        action.deleteParty(selectedCustomer);
-    }
-
     public void addPartner() {
         for (UserDto partner : choosedPartners)
             action.addPartner(partner);
-    }
-
-    public void deletePartner() {
-        action.deletePartner(selectedPartner);
     }
 
     public List<SelectItem> getChanceStages() {
@@ -536,20 +529,12 @@ public class ChanceActionBean
         this.selectedCustomer = selectedCustomer;
     }
 
-    public UserDto getSelectedPartner() {
-        return selectedPartner;
-    }
-
-    public void setSelectedPartner(UserDto selectedPartner) {
-        this.selectedPartner = selectedPartner;
-    }
-
-    public UserDto[] getSelectedPartners() {
+    public UserDto[] getChoosedPartners() {
         return choosedPartners;
     }
 
-    public void setSelectedPartners(UserDto[] selectedPartners) {
-        this.choosedPartners = selectedPartners;
+    public void setChoosedPartners(UserDto[] choosedPartners) {
+        this.choosedPartners = choosedPartners;
     }
 
 }
