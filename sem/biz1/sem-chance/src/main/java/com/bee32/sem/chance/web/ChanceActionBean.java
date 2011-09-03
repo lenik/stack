@@ -94,7 +94,7 @@ public class ChanceActionBean
     private PartyDto[] selectedCustomers;
     private PartyDto selectedCustomer;
     private UserDto selectedPartner;
-    private UserDto[] selectedPartners;
+    private UserDto[] choosedPartners;
 
     @PostConstruct
     public void init() {
@@ -286,7 +286,8 @@ public class ChanceActionBean
     }
 
     public void addCustomer() {
-        action.addParty(selectedCustomers);
+        for (PartyDto party : selectedCustomers)
+            action.addParty(party);
     }
 
     public void deleteCustomer() {
@@ -294,7 +295,8 @@ public class ChanceActionBean
     }
 
     public void addPartner() {
-        action.addPartners(selectedPartners);
+        for (UserDto partner : choosedPartners)
+            action.addPartner(partner);
     }
 
     public void deletePartner() {
@@ -543,11 +545,11 @@ public class ChanceActionBean
     }
 
     public UserDto[] getSelectedPartners() {
-        return selectedPartners;
+        return choosedPartners;
     }
 
     public void setSelectedPartners(UserDto[] selectedPartners) {
-        this.selectedPartners = selectedPartners;
+        this.choosedPartners = selectedPartners;
     }
 
 }
