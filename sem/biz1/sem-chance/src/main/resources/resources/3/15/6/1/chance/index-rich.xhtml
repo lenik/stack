@@ -314,7 +314,7 @@
             <p:confirmDialog message="确定要取消此行动记录的关联?" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="deleteActionConfirm">
                 <p:commandButton value="确定" actionListener="#{chanceBean.doDetachAction}"
-                    update="chanceForm:actionHistories, chanceForm:actionToolbar"
+                    update="chanceForm:mainTab:actionHistories, chanceForm:actionToolbar"
                     oncomplete="deleteActionConfirm.hide();" />
                 <p:commandButton value="取消" onclick="deleteActionConfirm.hide();" />
             </p:confirmDialog>
@@ -330,7 +330,8 @@
                             async="true" />
                     </h:panelGrid>
 
-                    <p:panel id="parties" rendered="#{chanceBean.parties != null}">
+                    <p:outputPanel id="parties">
+                    <p:outputPanel rendered="#{chanceBean.parties != null}">
                     <p:dataTable var="party" value="#{chanceBean.parties.list}" resizableColumns="true"
                         selection="#{chanceBean.parties.selection}" selectionMode="single" rowKey="#{party.id}" rowIndexVar="rowIndex">
 
@@ -359,7 +360,8 @@
                         </p:column>
 
                     </p:dataTable>
-                    </p:panel>
+                    </p:outputPanel>
+                    </p:outputPanel>
 
                     <p:separator />
                     <h:panelGrid columns="2">
@@ -383,7 +385,8 @@
                             update=":dialogForm:actionCopyList" async="true" />
 
                     </h:panelGrid>
-                    <p:panel id="actionCopyList" rendered="#{chanceBean.actions != null}">
+                    <p:outputPanel id="actionCopyList" >
+                    <p:outputPanel rendered="#{chanceBean.actions != null}">
                     <p:dataTable var="action" value="#{chanceBean.actions.list}"
                         resizableColumns="true"
                         selectionMode="single"
@@ -407,25 +410,26 @@
 
 
                     </p:dataTable>
-                    </p:panel>
+                    </p:outputPanel>
+                    </p:outputPanel>
 
                     <p:separator />
 
                     <h:panelGrid columns="2">
                         <p:commandButton value="选择" actionListener="#{chanceBean.doAttachActions}"
-                            oncomplete="chooseChanceActionDialog.hide();" update="chanceForm:actionHistories"
+                            oncomplete="chooseChanceActionDialog.hide();" update="chanceForm:mainTab:actionHistories"
                             async="true" />
                         <p:commandButton value="取消" oncomplete="chooseChanceActionDialog.hide();" />
                     </h:panelGrid>
                 </h:panelGroup>
             </p:dialog>
 
-            <p:dialog header="行动记录详细" widgetVar="actionDetailDialog" modal="true" width="600" height="400"
-                    rendered="#{chanceBean.chances.selected}">
+            <p:dialog header="行动记录详细" widgetVar="actionDetailDialog" modal="true" width="600" height="400">
+                <p:outputPanel id="actionDetail">
+                <p:outputPanel rendered="#{chanceBean.chances.selected}">
                 <c:set var="_a" value="#{chanceBean.chances.selection.selectedAction}" />
                 <t:panelGrid columns="4"
-                    columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value"
-                    id="actionDetail">
+                    columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 
                     <h:outputLabel for="beginTime" value="开始时间:" />
                     <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
@@ -491,6 +495,8 @@
                     </t:panelGroup>
 
                 </t:panelGrid>
+                </p:outputPanel>
+                </p:outputPanel>
             </p:dialog>
 
             <p:dialog header="选择产品" widgetVar="materialDlg" height="400" width="600">
@@ -510,7 +516,8 @@
                         </p:treeNode>
                     </p:tree>
 
-                    <p:panel id="materialList" rendered="#{chanceBean.materialList != null}">
+                    <p:outputPanel id="materialList">
+                    <p:outputPanel rendered="#{chanceBean.materialList != null}">
                     <p:dataTable var="item" value="#{chanceBean.materialList.list}" resizableColumns="true"
                         selection="#{chanceBean.materialList.selection}" selectionMode="single" rowKey="#{item.id}" rowIndexVar="rowIndex">
 
@@ -528,7 +535,8 @@
                         </p:column>
 
                     </p:dataTable>
-                    </p:panel>
+                    </p:outputPanel>
+                    </p:outputPanel>
 
                     <t:panelGroup colspan="2">
                         <p:commandButton value="选择" actionListener="${chanceBean.chooseMaterial}"
