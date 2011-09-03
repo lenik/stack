@@ -46,7 +46,7 @@ public class MaterialSettingsBean
     static final String TREE_MAIN = "main:mainTree";
 
     boolean unitConvEditable;
-    boolean categoryOptionable;
+// boolean categoryOptionable;
     boolean cantEdit;
 
     MaterialCategoryDto activeCategory = new MaterialCategoryDto().create();
@@ -90,15 +90,8 @@ public class MaterialSettingsBean
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
                 ~MaterialCategoryDto.MATERIALS, rootCategories);
         materialCategoryMainTree = new MaterialCategoryTreeModel(rootCategoryDtos);
-// materialCategoryMainTree.addListener(new SelectionAdapter() {
-//
-// private static final long serialVersionUID = 1L;
-//
-// @Override
-// public void itemSelected(SelectionEvent event) {
-// }
-//
-// });
+        materialCategoryMainTree.setSelectedNode(null);
+        // XXX to add lintener if necessary
     }
 
     public void initSelectCategoryTree() {
@@ -178,9 +171,9 @@ public class MaterialSettingsBean
             UnitConv ucv = activeUnitConv.unmarshal();
             serviceFor(UnitConv.class).saveOrUpdate(ucv);
             initUnitConvList();
-            uiLogger.info("保存单位还算表" + activeUnitConv.getLabel() + "成功");
+            uiLogger.info("保存单位还算表成功");
         } catch (Exception e) {
-            uiLogger.error("保存单位还算表" + activeUnitConv.getLabel() + "失败", e);
+            uiLogger.error("保存单位还算表失败", e);
         }
     }
 
@@ -190,9 +183,9 @@ public class MaterialSettingsBean
             UnitConv uc = serviceFor(UnitConv.class).getOrFail(convId);
             serviceFor(UnitConv.class).delete(uc);
             initUnitConvList();
-            uiLogger.info("删除单位还算表" + selectedUnitConv.getLabel() + "成功");
+            uiLogger.info("删除单位还算表成功");
         } catch (Exception e) {
-            uiLogger.error("删除单位还算表" + selectedUnitConv.getLabel() + "失败", e);
+            uiLogger.error("删除单位还算表失败", e);
         }
     }
 
@@ -217,9 +210,9 @@ public class MaterialSettingsBean
             Unit enity = activeUnit.unmarshal();
             serviceFor(Unit.class).saveOrUpdate(enity);
             initUnitList();
-            uiLogger.info("保存单位" + activeUnit.getLabel() + "成功!");
+            uiLogger.info("保存单位成功!");
         } catch (Exception e) {
-            uiLogger.error("保存单位" + activeUnit.getLabel() + "错误", e);
+            uiLogger.error("保存单位错误", e);
         }
     }
 
@@ -228,10 +221,11 @@ public class MaterialSettingsBean
             String unitId = selectedUnit.getId();
             Unit unitl = serviceFor(Unit.class).getOrFail(unitId);
             serviceFor(Unit.class).delete(unitl);
-            initUnitList();
-            uiLogger.info("删除单位" + selectedUnit.getLabel() + "成功");
+            unitList.remove(selectedUnit);
+// initUnitList();
+            uiLogger.info("删除单位成功");
         } catch (Exception e) {
-            uiLogger.error("删除单位" + selectedUnit.getLabel() + "失败", e);
+            uiLogger.error("删除单位失败", e);
         }
     }
 
@@ -261,7 +255,7 @@ public class MaterialSettingsBean
             MaterialCategory category = activeCategory.unmarshal();
             serviceFor(MaterialCategory.class).saveOrUpdate(category);
             initMainTree();
-// initSelectCategoryTree();
+            initSelectCategoryTree();
             uiLogger.info("保存物料分类成功!");
         } catch (Exception e) {
             uiLogger.error("保存物料失败", e);
@@ -283,13 +277,13 @@ public class MaterialSettingsBean
         }
     }
 
-    public void onCategoryNodeSelect() {
-        categoryOptionable = true;
-    }
+// public void onCategoryNodeSelect() {
+// categoryOptionable = true;
+// }
 
-    public void onCategoryNodeUnselect() {
-        categoryOptionable = false;
-    }
+// public void onCategoryNodeUnselect() {
+// categoryOptionable = false;
+// }
 
     public void setDictNameCantEdit() {
         cantEdit = true;
@@ -431,13 +425,13 @@ public class MaterialSettingsBean
         this.unitConvEditable = unitConvEditable;
     }
 
-    public boolean isCategoryOptionable() {
-        return categoryOptionable;
-    }
-
-    public void setCategoryOptionable(boolean categoryOptionable) {
-        this.categoryOptionable = categoryOptionable;
-    }
+// public boolean isCategoryOptionable() {
+// return categoryOptionable;
+// }
+//
+// public void setCategoryOptionable(boolean categoryOptionable) {
+// this.categoryOptionable = categoryOptionable;
+// }
 
     public boolean isCantEdit() {
         return cantEdit;
