@@ -124,7 +124,7 @@ public abstract class AbstractPartyAdminBean
     }
 
     public void doModifyContact() {
-        contact = selectedContact;
+        contact = reload(selectedContact);
     }
 
     public void doDeleteContact() {

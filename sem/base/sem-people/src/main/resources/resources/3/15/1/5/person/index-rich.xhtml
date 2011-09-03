@@ -181,7 +181,7 @@
 											<p:commandButton value="删除标签"
 												disabled="#{personAdminBean.person == null}"
 												actionListener="#{personAdminBean.deleteTag}"
-												update="personForm:personTags" />
+												update="personForm:personTab:personTags" />
 										</h:panelGrid>
 									</h:panelGrid>
 								</t:panelGroup>
@@ -253,7 +253,7 @@
 									<p:commandButton value="删除"
 										actionListener="#{personAdminBean.doDeleteContact}"
 										disabled="#{not personAdminBean.contactSelected}"
-										update="contacts"
+										update="personForm:personTab:contacts"
 										async="true" />
 									<p:divider />
 								</p:toolbarGroup>
@@ -268,10 +268,10 @@
 
 								<p:ajax event="rowSelect"
 									listener="#{personAdminBean.onRowSelectContact}"
-									update="personForm:contactToolbar" />
+									update="personForm:personTab:contactToolbar" />
 								<p:ajax event="rowUnselect"
 									listener="#{personAdminBean.onRowUnselectContact}"
-									update="personForm:contactToolbar" />
+									update="personForm:personTab:contactToolbar" />
 
 
 								<p:column>
@@ -347,14 +347,6 @@
                                 rowKey="#{role.id}"
                                 rowIndexVar="rowIndex">
 
-								<!-- *****************************************
-                                <p:ajax event="rowSelect"
-                                    listener="#{personAdminBean.onRowSelectRole}"
-                                    update="personForm:roleToolbar" />
-                                <p:ajax event="rowUnselect"
-                                    listener="#{personAdminBean.onRowUnselectRole}"
-                                    update="personForm:roleToolbar" />
-                                ****************************************** -->
 
 								<p:column>
                                     <f:facet name="header">
@@ -438,7 +430,7 @@
                     <p:commandButton value="添加"
                         actionListener="#{personAdminBean.addTags}"
                         oncomplete="tagDlg.hide();" async="true"
-                        update="personForm:personTags" />
+                        update="personForm:personTab:personTags" />
                     <p:commandButton value="取消"
                         oncomplete="tagDlg.hide();" />
                 </t:panelGrid>

@@ -461,8 +461,15 @@ public class OrgAdminBean
     }
 
     public void doSelectParentOrgUnit() {
-        orgUnit.setParent((OrgUnitDto) selectedParentOrgUnitNode.getData());
-        role.setOrgUnit((OrgUnitDto) selectedParentOrgUnitNode.getData());
+        if(orgUnit != null) {
+            //在增加或修改部门时
+            orgUnit.setParent((OrgUnitDto) selectedParentOrgUnitNode.getData());
+        }
+        if(role != null) {
+            //在新建role时（即orgUnit和Person的关系时）
+            role.setOrgUnit((OrgUnitDto) selectedParentOrgUnitNode.getData());
+        }
+
     }
 
     public void onOrgUnitNodeSelect(NodeSelectEvent event) {

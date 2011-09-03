@@ -156,7 +156,7 @@ public abstract class Party
         this.sid = sid;
     }
 
-    @NaturalId
+    @NaturalId(mutable=true)
     @Column(length = XID_LENGTH)
     String getXid() {
         if (sidType == null || sid == null || sid.isEmpty())
@@ -201,7 +201,7 @@ public abstract class Party
         this.memo = memo;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany //(fetch = FetchType.EAGER)
     @JoinTable(name = "PartyTags", //
     /*            */joinColumns = @JoinColumn(name = "party"), //
     /*            */inverseJoinColumns = @JoinColumn(name = "tag"))
@@ -216,7 +216,7 @@ public abstract class Party
     }
 
     @OneToMany(mappedBy = "party")
-    @Cascade({ CascadeType.ALL })
+    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<Contact> getContacts() {
         return contacts;
     }

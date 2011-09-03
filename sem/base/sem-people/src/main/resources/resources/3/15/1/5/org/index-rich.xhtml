@@ -184,7 +184,7 @@
 											<p:commandButton value="删除标签"
 												disabled="#{orgAdminBean.org == null}"
 												actionListener="#{orgAdminBean.deleteTag}"
-												update="orgForm:orgTags" />
+												update="orgForm:orgTab:orgTags" />
 										</h:panelGrid>
 									</h:panelGrid>
 								</t:panelGroup>
@@ -241,7 +241,7 @@
                                     <p:commandButton value="删除"
                                         actionListener="#{orgAdminBean.doDeleteContact}"
                                         disabled="#{not orgAdminBean.contactSelected}"
-                                        update="contacts"
+                                        update="orgForm:orgTab:contacts"
                                         async="true" />
                                     <p:divider />
                                 </p:toolbarGroup>
@@ -255,10 +255,10 @@
 
                                 <p:ajax event="rowSelect"
                                     listener="#{orgAdminBean.onRowSelectContact}"
-                                    update="orgForm:contactToolbar" />
+                                    update="orgForm:orgTab:contactToolbar" />
                                 <p:ajax event="rowUnselect"
                                     listener="#{orgAdminBean.onRowUnselectContact}"
-                                    update="orgForm:contactToolbar" />
+                                    update="orgForm:orgTab:contactToolbar" />
 
                                 <p:column>
                                     <f:facet name="header">
@@ -340,7 +340,7 @@
 												<p:commandButton value="删除"
 													actionListener="#{orgAdminBean.doDeleteOrgUnit}"
 													disabled="#{not orgAdminBean.orgUnitSelected}"
-													update="orgUnitTreeGrid" async="true" />
+													update="orgForm:orgTab:orgUnitTreeGrid chooseParentOrgUnitForm:chooseParentOrgUnitPanel" async="true" />
 												<p:divider />
 											</p:toolbarGroup>
 										</p:toolbar>
@@ -349,10 +349,11 @@
 											selectionMode="single"
 											selection="#{orgAdminBean.selectedOrgUnitNode}">
 
-											<p:ajax event="select" update="orgUnitToolbar orgUnitContactAndPersonRoles"
+											<p:ajax event="select"
+                                                update="orgForm:orgTab:orgUnitToolbar orgForm:orgTab:orgUnitContactAndPersonRoles"
 												listener="#{orgAdminBean.onOrgUnitNodeSelect}" />
 											<p:ajax event="unselect"
-												update="orgUnitToolbar orgUnitContactAndPersonRoles"
+												update="orgForm:orgTab:orgUnitToolbar orgForm:orgTab:orgUnitContactAndPersonRoles"
 												listener="#{orgAdminBean.onOrgUnitNodeUnselect}" />
 
 											<p:treeNode>
@@ -436,7 +437,7 @@
 												<p:commandButton value="删除"
 													actionListener="#{orgAdminBean.doDeleteRole}"
 													disabled="#{not orgAdminBean.roleSelected}"
-													update="roles" async="true" />
+													update="orgForm:orgTab:roles" async="true" />
 												<p:divider />
 											</p:toolbarGroup>
 										</p:toolbar>
@@ -449,10 +450,10 @@
 
 											<p:ajax event="rowSelect"
 												listener="#{orgAdminBean.onRowSelectRole}"
-												update="orgForm:roleToolbar" />
+												update="orgForm:orgTab:roleToolbar" />
 											<p:ajax event="rowUnselect"
 												listener="#{orgAdminBean.onRowUnselectRole}"
-												update="orgForm:roleToolbar" />
+												update="orgForm:orgTab:roleToolbar" />
 
 											<p:column>
 												<f:facet name="header">
@@ -579,7 +580,7 @@
                                 <p:commandButton value="保存"
                                     actionListener="#{orgAdminBean.doSaveContact}"
                                     oncomplete="contactHolderDlg.hide();" async="true"
-                                    update="orgForm:contacts" />
+                                    update="orgForm:orgTab:contacts" />
                                 <p:commandButton value="取消"
                                     oncomplete="contactHolderDlg.hide();" />
                             </t:panelGrid>
@@ -603,7 +604,7 @@
                     <p:commandButton value="添加"
                         actionListener="#{orgAdminBean.addTags}"
                         oncomplete="tagDlg.hide();" async="true"
-                        update="orgForm:orgTags" />
+                        update="orgForm:orgTab:orgTags" />
                     <p:commandButton value="取消"
                         oncomplete="tagDlg.hide();" />
                 </t:panelGrid>
@@ -653,7 +654,7 @@
                                 <p:commandButton value="保存"
                                     actionListener="#{orgAdminBean.doSaveRole}"
                                     oncomplete="roleHolderDlg.hide();" async="true"
-                                    update="orgForm:roles" />
+                                    update="orgForm:orgTab:roles" />
                                 <p:commandButton value="取消"
                                     oncomplete="roleHolderDlg.hide();" />
                             </t:panelGrid>
@@ -767,7 +768,7 @@
                             <t:panelGrid columns="2">
                                 <p:commandButton value="保存"
                                                  actionListener="#{orgAdminBean.doSaveOrgUnit}"
-                                                 update="orgForm:orgUnitTreeGrid chooseParentOrgUnitForm:chooseParentOrgUnitPanel"
+                                                 update="orgForm:orgTab:orgUnitTreeGrid chooseParentOrgUnitForm:chooseParentOrgUnitPanel"
                                                  oncomplete="orgUnitDialog.hide();"/>
                                 <p:commandButton value="取消" oncomplete="orgUnitDialog.hide();"/>
                             </t:panelGrid>
