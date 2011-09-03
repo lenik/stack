@@ -237,6 +237,7 @@ public class UserAdminBean
         user = reload(user);
         user.removeAssignedRole(selectedRole);
         serviceFor(User.class).saveOrUpdate(user.unmarshal());
+        selectedRole = null;
     }
 
     public void doAddGroup() {
@@ -253,6 +254,7 @@ public class UserAdminBean
         selectedGroup.removeMemberUser(user);
         serviceFor(Group.class).saveOrUpdate(selectedGroup.unmarshal());
         user.removeAssignedGroup(selectedGroup);
+        selectedGroup = null;
     }
 
     public void findPerson() {

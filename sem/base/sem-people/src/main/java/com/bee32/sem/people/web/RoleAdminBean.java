@@ -175,6 +175,7 @@ public class RoleAdminBean extends PrincipalAdminBean {
         selectedGroup.removeAssignedRole(role);
         serviceFor(Group.class).saveOrUpdate(selectedGroup.unmarshal());
         role.removeResponsibleGroup(selectedGroup);
+        selectedGroup = null;
     }
 
 
@@ -190,5 +191,6 @@ public class RoleAdminBean extends PrincipalAdminBean {
         selectedUser.removeAssignedRole(role);
         serviceFor(User.class).saveOrUpdate(selectedUser.unmarshal());
         role.removeResponsibleUser(selectedUser);
+        selectedUser = null;
     }
 }
