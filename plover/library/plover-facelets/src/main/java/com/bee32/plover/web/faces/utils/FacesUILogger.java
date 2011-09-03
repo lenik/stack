@@ -9,6 +9,8 @@ import javax.free.ILogSink;
 import javax.free.LogLevel;
 import javax.free.NullLogSink;
 
+import com.bee32.plover.web.faces.ErrorMessageTranslator;
+
 public class FacesUILogger
         extends AbstractLogger {
 
@@ -78,6 +80,8 @@ public class FacesUILogger
 
             if (e != null) {
                 String err = e.getMessage();
+
+                err = ErrorMessageTranslator.translateMessage(err);
 
                 message += "（错误消息：" + err + "）";
 
