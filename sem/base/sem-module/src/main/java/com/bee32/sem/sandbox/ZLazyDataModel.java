@@ -12,6 +12,7 @@ import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.plover.web.faces.utils.FacesContextSupport;
 
 public class ZLazyDataModel<E extends CEntity<?>, D extends CEntityDto<E, ?>>
         extends LazyDataModel<D>
@@ -19,32 +20,33 @@ public class ZLazyDataModel<E extends CEntity<?>, D extends CEntityDto<E, ?>>
 
     private static final long serialVersionUID = 1L;
 
-    final CommonDataManager dataManager;
-    final EntityDataModelOptions<E, D> options;
     final Class<E> entityClass;
+    final Class<D> dtoClass;
+    final ICriteriaElement composition;
+    final int dtoSelection;
 
     D selection;
 
-    public ZLazyDataModel(CommonDataManager dataManager, EntityDataModelOptions<E, D> options) {
-        if (dataManager == null)
-            throw new NullPointerException("dataManager");
+    public ZLazyDataModel(EntityDataModelOptions<E, D> options) {
         if (options == null)
             throw new NullPointerException("options");
-        this.dataManager = dataManager;
-        this.options = options;
-        this.entityClass = options.getEntityClass();
+        entityClass = options.getEntityClass();
+        dtoClass = options.getDtoClass();
+        composition = options.compose();
+        dtoSelection = options.getSelection();
     }
 
     @Override
     public List<D> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
 
+        CommonDataManager dataManager = FacesContextSupport.getBean(CommonDataManager.class);
+
         Limit limit = new Limit(first, pageSize);
-        ICriteriaElement composition = options.compose();
         List<E> entities = dataManager.asFor(entityClass).list(limit, composition);
 
         List<D> dtos = DTOs.marshalList(//
-                options.getDtoClass(), //
-                options.getSelection(), //
+                dtoClass, //
+                dtoSelection, //
                 entities, true);
 
         return dtos;

@@ -36,7 +36,7 @@ public abstract class FacesContextSupport {
      *            Type of the bean to get, should not be <code>null</code>.
      * @return The bean of the given type.
      */
-    protected static <T> T getBean(Class<T> beanType) {
+    public static <T> T getBean(Class<T> beanType) {
         if (beanType == null)
             throw new NullPointerException("beanType");
 
