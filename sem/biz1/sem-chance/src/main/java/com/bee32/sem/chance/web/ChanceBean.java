@@ -7,7 +7,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
-import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.zkoss.lang.Strings;
@@ -45,7 +44,7 @@ import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
-import com.bee32.sem.sandbox.SelectableList;
+import com.bee32.sem.sandbox.ListHolder;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.sandbox.ZLazyDataModel;
 import com.bee32.sem.world.monetary.MCValue;
@@ -67,16 +66,12 @@ public class ChanceBean
     ZLazyDataModel<Chance, ChanceDto> chances;
     ChanceDto chanceCopy = new ChanceDto().create();
 
-    SelectableList<ChanceActionDto> actions;
-    ChanceActionDto[] selectedActions;
-    ChanceActionDto actionCopy = new ChanceActionDto().create();
-
-    ChancePartyDto selectedChanceParty;
-    SelectableList<PartyDto> parties;
+    ListHolder<ChanceActionDto> actions;
+    ListHolder<PartyDto> parties;
 
     // quotation fields
 
-    SelectableList<ChanceQuotationDto> quotations;
+    ListHolder<ChanceQuotationDto> quotations;
     ChanceQuotationDto quotationCopy;
 
     String materialPattern;
@@ -84,7 +79,7 @@ public class ChanceBean
 
     MaterialCategoryTreeModel materialTree;
 
-    SelectableList<MaterialDto> materialList;
+    ListHolder<MaterialDto> materialList;
 
     ChanceBean() {
         initMaterialCategoryTree();
@@ -102,11 +97,10 @@ public class ChanceBean
     }
 
     public void viewActionDetail() {
-        if (actions.isSelected()) {
+        if (!actions.isSelected()) {
             uiLogger.error("提示:", "请选择行动记录");
             return;
         }
-        actionCopy = actions.getSelection();
         state = State.VIEW_ACTION;
     }
 
@@ -313,7 +307,7 @@ public class ChanceBean
                     ChanceCriteria.actedByCurrentUser(), //
                     ChanceCriteria.danglingChance());
         }
-        actions = UIHelper.selectable(DTOs.marshalList(ChanceActionDto.class, _actions));
+        actions = UIHelper.selectable(DTOs.marshalList(ChanceActionDto.class, 0, _actions, true));
     }
 
     public void searchChance() {
@@ -330,11 +324,10 @@ public class ChanceBean
     }
 
     public void doAttachActions() {
-        if (selectedActions.length == 0)
+        if (!actions.isSelected())
             return;
 
-        for (ChanceActionDto action : selectedActions)
-            chanceCopy.addAction(action);
+        chanceCopy.addAction(actions.getSelection());
 
         Chance _chance = chanceCopy.unmarshal();
         try {
@@ -352,8 +345,26 @@ public class ChanceBean
         }
     }
 
+    public void doDetachAction() {
+        if (!actions.isSelected()) {
+            uiLogger.error("错误提示:", "请选择行动记录!");
+            return;
+        }
+        ChanceAction chanceAction = actions.getSelection().unmarshal();
+        chanceAction.setChance(null);
+        chanceAction.setStage(null);
+        try {
+            serviceFor(ChanceAction.class).save(chanceAction);
+            chanceCopy.deleteAction(actions.getSelection());
+            actions.deselect();
+            uiLogger.info("反关联成功");
+        } catch (Exception e) {
+            uiLogger.error("反关联失败:" + e.getMessage(), e);
+        }
+    }
+
     public void addChanceParty() {
-        if (parties.isSelected())
+        if (!parties.isSelected())
             return;
         ChancePartyDto chancePartyDto = new ChancePartyDto().create();
         chancePartyDto.setChance(chanceCopy);
@@ -363,7 +374,7 @@ public class ChanceBean
     }
 
     public void createForm() {
-        chanceCopy = new ChanceDto().create();
+        chanceCopy = new ChanceDto(-1).create();
         quotations = UIHelper.selectable(new ArrayList<ChanceQuotationDto>());
         setActiveTab(TAB_FORM);
 
@@ -371,11 +382,11 @@ public class ChanceBean
     }
 
     public void editForm() {
-        if (chances.isSelected()) {
+        if (!chances.isSelected()) {
             uiLogger.error("请选择需要修改的销售机会!");
             return;
         }
-        setChanceCopy(chances.getSelection());
+        chanceCopy = reload(chances.getSelection(), -1);
         listQuotationByChance(chanceCopy);
         setActiveTab(TAB_FORM);
 
@@ -383,7 +394,7 @@ public class ChanceBean
     }
 
     public void detailForm() {
-        setChanceCopy(chances.getSelection());
+        chanceCopy = reload(chances.getSelection(), -1);
         listQuotationByChance(chanceCopy);
         setActiveTab(TAB_FORM);
 
@@ -402,7 +413,8 @@ public class ChanceBean
     }
 
     public void dropCustomer() {
-        chanceCopy.removeParty(selectedChanceParty);
+        ChancePartyDto selectedParty = chanceCopy.getSelectedParty();
+        chanceCopy.removeParty(selectedParty);
     }
 
     public void initActions() {
@@ -448,7 +460,6 @@ public class ChanceBean
         Chance _chance = chanceCopy.unmarshal();
 
         try {
-
             serviceFor(Chance.class).saveOrUpdate(_chance);
 
             setActiveTab(TAB_INDEX);
@@ -464,7 +475,7 @@ public class ChanceBean
     }
 
     public void drop() {
-        if (chances.isSelected()) {
+        if (!chances.isSelected()) {
             uiLogger.error("请选择需要删除的销售机会!");
             return;
         }
@@ -484,41 +495,39 @@ public class ChanceBean
         }
     }
 
-    public void unRelating() {
-        if (actions.isSelected()) {
-            uiLogger.error("错误提示:", "请选择行动记录!");
-            return;
-        }
-        ChanceAction chanceAction = actions.getSelection().unmarshal();
-        chanceAction.setChance(null);
-        chanceAction.setStage(null);
-        try {
-            serviceFor(ChanceAction.class).save(chanceAction);
-            chanceCopy.deleteAction(actions.getSelection());
-            actions.deselect();
-            uiLogger.info("反关联成功");
-        } catch (Exception e) {
-            uiLogger.error("反关联失败:" + e.getMessage(), e);
-        }
-    }
-
     public String getSubjectPattern() {
         return subjectPattern;
+    }
+
+    public void setSubjectPattern(String subjectPattern) {
+        this.subjectPattern = subjectPattern;
     }
 
     public String getPartyPattern() {
         return partyPattern;
     }
 
+    public void setPartyPattern(String partyPattern) {
+        this.partyPattern = partyPattern;
+    }
+
     public Date getSearchBeginTime() {
         return searchBeginTime;
+    }
+
+    public void setSearchBeginTime(Date searchBeginTime) {
+        this.searchBeginTime = searchBeginTime;
     }
 
     public Date getSearchEndTime() {
         return searchEndTime;
     }
 
-    public LazyDataModel<ChanceDto> getChances() {
+    public void setSearchEndTime(Date searchEndTime) {
+        this.searchEndTime = searchEndTime;
+    }
+
+    public ZLazyDataModel<Chance, ChanceDto> getChances() {
         return chances;
     }
 
@@ -526,27 +535,15 @@ public class ChanceBean
         return chanceCopy;
     }
 
-    public List<ChanceActionDto> getActions() {
+    public ListHolder<ChanceActionDto> getActions() {
         return actions;
     }
 
-    public ChanceActionDto[] getselectedActions() {
-        return selectedActions;
-    }
-
-    public ChanceActionDto getActionCopy() {
-        return actionCopy;
-    }
-
-    public ChancePartyDto getSelectedChanceParty() {
-        return selectedChanceParty;
-    }
-
-    public List<PartyDto> getParties() {
+    public ListHolder<PartyDto> getParties() {
         return parties;
     }
 
-    public List<ChanceQuotationDto> getQuotations() {
+    public ListHolder<ChanceQuotationDto> getQuotations() {
         return quotations;
     }
 
@@ -558,64 +555,28 @@ public class ChanceBean
         return materialPattern;
     }
 
-    public ChanceQuotationItemDto getSelectedQuotationItem() {
-        return selectedQuotationItem;
-    }
-
-    public MaterialCategoryTreeModel getMaterialTree() {
-        return materialTree;
-    }
-
-    public List<MaterialDto> getMaterialList() {
-        return materialList;
-    }
-
-    public void setSubjectPattern(String subjectPattern) {
-        this.subjectPattern = subjectPattern;
-    }
-
-    public void setPartyPattern(String partyPattern) {
-        this.partyPattern = partyPattern;
-    }
-
-    public void setSearchBeginTime(Date searchBeginTime) {
-        this.searchBeginTime = searchBeginTime;
-    }
-
-    public void setSearchEndTime(Date searchEndTime) {
-        this.searchEndTime = searchEndTime;
-    }
-
-    public void setChanceCopy(ChanceDto chanceCopy) {
-        this.chanceCopy = chanceCopy;
-    }
-
-    public void setSelectActions(ChanceActionDto[] selectedActions) {
-        this.selectedActions = selectedActions;
-    }
-
-    public void setActionCopy(ChanceActionDto actionCopy) {
-        this.actionCopy = actionCopy;
-    }
-
-    public void setSelectedChanceParty(ChancePartyDto selectedChanceParty) {
-        this.selectedChanceParty = selectedChanceParty;
-    }
-
-    public void setQuotationCopy(ChanceQuotationDto quotationCopy) {
-        this.quotationCopy = quotationCopy;
-    }
-
     public void setMaterialPattern(String materialPattern) {
         this.materialPattern = materialPattern;
+    }
+
+    public ChanceQuotationItemDto getSelectedQuotationItem() {
+        return selectedQuotationItem;
     }
 
     public void setSelectedQuotationItem(ChanceQuotationItemDto selectedQuotationItem) {
         this.selectedQuotationItem = selectedQuotationItem;
     }
 
+    public MaterialCategoryTreeModel getMaterialTree() {
+        return materialTree;
+    }
+
     public void setMaterialTree(MaterialCategoryTreeModel materialTree) {
         this.materialTree = materialTree;
+    }
+
+    public ListHolder<MaterialDto> getMaterialList() {
+        return materialList;
     }
 
 }

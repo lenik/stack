@@ -1,6 +1,7 @@
 package com.bee32.sem.world.thing;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.free.ParseException;
@@ -45,6 +46,8 @@ public abstract class AbstractOrderDto< //
         super.__marshal(source);
         if (selection.contains(ITEMS))
             items = marshalList(itemDtoClass, source.getItems()); // cascade..
+        else
+            items = new ArrayList<ItemDto>();
     }
 
     @Override

@@ -88,7 +88,7 @@
                             </p:column>5
 
                             <p:column headerText="客户">
-                                <h:outputText value="#{chance.party}" />
+                                <h:outputText value="#{chance.partiesHint}" />
                             </p:column>
 
                             <p:column headerText="机会内容">
@@ -101,22 +101,23 @@
                         </p:dataTable>
                     </p:tab>
                     <p:tab id="chance" title="销售机会明细" disabled="false">
+                        <c:set var="_c" value="#{chanceBean.chanceCopy}" />
                         <p:fieldset legend="机会基本信息" toggleable="true" toggleSpeed="300">
                             <t:panelGrid columns="4"
                                 columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
                                 <h:outputLabel for="subject" value="机会标题:" />
                                 <t:panelGroup colspan="3">
-                                    <p:inputText id="subject" value="#{chanceBean.chanceCopy.subject}"
+                                    <p:inputText id="subject" value="#{_c.subject}"
                                         style="width:100%;" readonly="#{chanceBean.state == 'VIEW'}" />
                                 </t:panelGroup>
 
                                 <h:outputLabel for="category" value="机会分类:" />
-                                <p:selectOneMenu id="category" value="#{chanceBean.chanceCopy.category.displayId}"
+                                <p:selectOneMenu id="category" value="#{_c.category.displayId}"
                                     style="width:100px;" disabled="#{chanceBean.state == 'VIEW'}">
                                     <f:selectItems value="#{chanceBean.category}" />
                                 </p:selectOneMenu>
                                 <h:outputLabel for="source" value="机会来源:" />
-                                <p:selectOneMenu id="source" value="#{chanceBean.chanceCopy.source.displayId}"
+                                <p:selectOneMenu id="source" value="#{_c.source.displayId}"
                                     style="width:100px;" disabled="#{chanceBean.state == 'VIEW'}">
                                     <f:selectItems value="#{chanceBean.source}" />
                                 </p:selectOneMenu>
@@ -124,14 +125,14 @@
                                 <h:outputLabel value="客户:" />
                                 <t:panelGroup colspan="3">
                                     <t:panelGrid columns="2">
-                                        <p:dataTable id="chanceParties" var="car" value="#{chanceBean.chanceCopy.parties}"
+                                        <p:dataTable id="chanceParties" var="_party" value="#{_c.parties}"
                                             disabled="#{chanceBean.state == 'VIEW'}">
                                             <p:column headerText="客户名称" style="width:150px">
-                                                <h:outputText value="#{car.party.displayName}" />
+                                                <h:outputText value="#{_party.party.displayName}" />
                                             </p:column>
 
                                             <p:column headerText="角色" style="width:150px">
-                                                <h:outputText value="#{car.role}" />
+                                                <h:outputText value="#{_party.role}" />
                                             </p:column>
 
                                             <p:column headerText="操作" style="width:70px">
@@ -139,7 +140,7 @@
                                                     process="@this" oncomplete="chanceParty.show();"
                                                     disabled="#{chanceBean.state == 'VIEW'}" style="padding: 4px;">
                                                     <p:graphicImage value="#{location.ICON}/etool16/validate.gif" />
-                                                    <f:setPropertyActionListener value="#{car}"
+                                                    <f:setPropertyActionListener value="#{_party}"
                                                         target="#{chanceBean.selectedChanceParty}" />
                                                 </p:commandLink>
                                                 <p:commandLink title="删除" process="@this"
@@ -147,8 +148,8 @@
                                                     disabled="#{chanceBean.state == 'VIEW' and chanceBean.chances.selected}"
                                                     style="padding: 4px;">
                                                     <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
-                                                    <f:setPropertyActionListener value="#{car}"
-                                                        target="#{chanceBean.selectedChanceParty}" />
+                                                    <f:setPropertyActionListener value="#{_party}"
+                                                        target="#{_c.selectedParty}" />
                                                 </p:commandLink>
                                             </p:column>
 
@@ -160,14 +161,14 @@
 
                                 <h:outputLabel for="content" value="机会内容:" />
                                 <t:panelGroup colspan="3">
-                                    <p:inputTextarea id="content" value="#{chanceBean.chanceCopy.content}"
+                                    <p:inputTextarea id="content" value="#{_c.content}"
                                         style="width:100%;height:60px;" readonly="#{chanceBean.state == 'VIEW'}" />
                                 </t:panelGroup>
 
                                 <h:outputLabel for="stage" value="机会阶段:" />
                                 <t:panelGroup colspan="3">
                                     <!--                                     <h:outputText id="stage" value="stage" /> -->
-                                    <p:selectOneMenu id="stage" value="#{chanceBean.chanceCopy.stage.displayId}"
+                                    <p:selectOneMenu id="stage" value="#{_c.stage.displayId}"
                                         style="width:120px;" disabled="true">
                                         <f:selectItems value="#{chanceBean.stage}" />
                                     </p:selectOneMenu>
@@ -189,12 +190,12 @@
                                     <p:commandButton id="viewActionDetailButton" value="详细"
                                         actionListener="#{chanceBean.viewActionDetail}"
                                         update="dialogFrom:actionDetail"
-                                        oncomplete="actioDetailDialog.show();"
+                                        oncomplete="actionDetailDialog.show();"
                                         disabled="#{!(chanceBean.state == 'EDIT')}" />
                                 </p:toolbarGroup>
                             </p:toolbar>
-                            <p:dataTable id="actionHistories" var="action" value="#{chanceBean.chanceCopy.actions}"
-                                selection="#{chanceBean.actions.selection}" selectionMode="single" rowKey="#{action.id}" rowIndexVar="rowIndex">
+                            <p:dataTable id="actionHistories" var="action" value="#{_c.actions}"
+                                selection="#{_c.selectedAction}" selectionMode="single" rowKey="#{action.id}" rowIndexVar="rowIndex">
                                 <p:ajax event="rowSelect" listener="#{chanceBean.onActionRowSelect}"
                                     update="chanceForm:actionToolbar" />
                                 <p:ajax event="rowUnselect" listener="#{chanceBean.onActionRowUnselect}"
@@ -247,7 +248,7 @@
                                         oncomplete="quotationDialog.show();" update="quotationForm:quotationGrid" />
                                 </p:toolbarGroup>
                             </p:toolbar>
-                            <p:dataTable id="quotationList" var="item" value="#{chanceBean.quotations}"
+                            <p:dataTable id="quotationList" var="item" value="#{chanceBean.quotations.list}"
                                 selection="#{chanceBean.quotations.selection}" selectionMode="single"
                                 rowKey="#{item.id}" rowIndexVar="rowIndex">
 
@@ -312,7 +313,7 @@
 
             <p:confirmDialog message="确定要取消此行动记录的关联?" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="deleteActionConfirm">
-                <p:commandButton value="确定" actionListener="#{chanceBean.unRelating}"
+                <p:commandButton value="确定" actionListener="#{chanceBean.doDetachAction}"
                     update="chanceForm:actionHistories, chanceForm:actionToolbar"
                     oncomplete="deleteActionConfirm.hide();" />
                 <p:commandButton value="取消" onclick="deleteActionConfirm.hide();" />
@@ -328,7 +329,9 @@
                         <p:commandButton value="查找" actionListener="#{chanceBean.findParty}" update="dialogForm:parties"
                             async="true" />
                     </h:panelGrid>
-                    <p:dataTable id="parties" var="party" value="#{chanceBean.parties}" resizableColumns="true"
+
+                    <p:panel id="parties" rendered="#{chanceBean.parties != null}">
+                    <p:dataTable var="party" value="#{chanceBean.parties.list}" resizableColumns="true"
                         selection="#{chanceBean.parties.selection}" selectionMode="single" rowKey="#{party.id}" rowIndexVar="rowIndex">
 
                         <p:column headerText="序号" style="width:45px;">
@@ -356,6 +359,7 @@
                         </p:column>
 
                     </p:dataTable>
+                    </p:panel>
 
                     <p:separator />
                     <h:panelGrid columns="2">
@@ -376,13 +380,15 @@
                         <p:calendar id="set" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
                             value="#{chanceBean.searchEndTime}" showOn="button" />
                         <p:commandButton value="查找" actionListener="#{chanceBean.searchAction}"
-                            update="dialogForm:actionCopyList" async="true" />
+                            update=":dialogForm:actionCopyList" async="true" />
 
                     </h:panelGrid>
-                    <p:dataTable id="actionCopyList" var="action" value="#{chanceBean.actions}"
-                        resizableColumns="true" selection="#{chanceBean.actions.selection}" rowKey="#{action.id}" rowIndexVar="rowIndex">
+                    <p:panel id="actionCopyList" rendered="#{chanceBean.actions != null}">
+                    <p:dataTable var="action" value="#{chanceBean.actions.list}"
+                        resizableColumns="true"
+                        selectionMode="single"
+                        selection="#{chanceBean.actions.selection}" rowKey="#{action.id}" rowIndexVar="rowIndex">
 
-                        <p:column selectionMode="multiple" style="width:40px;" />
                         <p:column headerText="序号" style="width:45px;">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
@@ -401,6 +407,7 @@
 
 
                     </p:dataTable>
+                    </p:panel>
 
                     <p:separator />
 
@@ -413,39 +420,41 @@
                 </h:panelGroup>
             </p:dialog>
 
-            <p:dialog header="行动记录详细" widgetVar="actioDetailDialog" modal="true" width="600" height="400">
+            <p:dialog header="行动记录详细" widgetVar="actionDetailDialog" modal="true" width="600" height="400"
+                    rendered="#{chanceBean.chances.selected}">
+                <c:set var="_a" value="#{chanceBean.chances.selection.selectedAction}" />
                 <t:panelGrid columns="4"
                     columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value"
                     id="actionDetail">
 
                     <h:outputLabel for="beginTime" value="开始时间:" />
                     <p:calendar id="beginTime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
-                        value="#{chanceBean.actionCopy.beginTime}" showOn="button" disabled="#{true}" />
+                        value="#{_a.beginTime}" showOn="button" disabled="#{true}" />
                     <h:outputLabel for="endTime" value="结束时间:" />
                     <p:calendar id="endTime" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
-                        value="#{chanceBean.actionCopy.endTime}" showOn="button" disabled="#{true}" />
+                        value="#{_a.endTime}" showOn="button" disabled="#{true}" />
 
                     <h:outputLabel for="actionStyle" value="机会行动类型:" />
-                    <p:selectOneMenu id="actionStyle" value="#{chanceBean.actionCopy.plan}" style="width:100px;"
+                    <p:selectOneMenu id="actionStyle" value="#{_a.plan}" style="width:100px;"
                         disabled="#{true}">
                         <f:selectItem itemLabel="计划" itemValue="#{true}" />
                         <f:selectItem itemLabel="日志" itemValue="#{false}" />
                     </p:selectOneMenu>
 
                     <h:outputLabel for="style" value="洽谈方式:" />
-                    <p:selectOneMenu id="style" value="#{chanceBean.actionCopy.style.displayId}" style="width: 100px;"
+                    <p:selectOneMenu id="style" value="#{_a.style.displayId}" style="width: 100px;"
                         disabled="#{true}">
                         <f:selectItems value="#{chanceBean.chanceActionStyles}" />
                     </p:selectOneMenu>
 
-                    <h:outputLabel for="pgroup" value="拜访客户:" />
-                    <p:dataList var="party" value="#{chanceBean.actionCopy.parties}" effectSpeed="fast">
+                    <h:outputLabel value="拜访客户:" />
+                    <p:dataList var="party" value="#{_a.parties}" effectSpeed="fast">
                         <p:column>
                             <h:outputText value="#{party.displayName}" />
                         </p:column>
                     </p:dataList>
-                    <h:outputLabel for="partnerGroup" value="工作伙伴:" />
-                    <p:dataList id="partners" var="partner" value="#{chanceBean.actionCopy.partners}"
+                    <h:outputLabel value="工作伙伴:" />
+                    <p:dataList id="partners" var="partner" value="#{_a.partners}"
                         effectSpeed="fast">
                         <p:column>
                             <h:outputText value="#{partner.displayName}" />
@@ -455,26 +464,26 @@
 
                     <h:outputLabel for="description" value="内容描述:" />
                     <t:panelGroup colspan="3">
-                        <p:inputTextarea id="description" value="#{chanceBean.actionCopy.description}"
+                        <p:inputTextarea id="description" value="#{_a.description}"
                             style="width:400px;height:50px;" readonly="#{true}" />
                     </t:panelGroup>
 
                     <h:outputLabel for="spending" value="花费详细:" />
                     <t:panelGroup colspan="3">
-                        <p:inputTextarea id="spending" value="#{chanceBean.actionCopy.spending}"
+                        <p:inputTextarea id="spending" value="#{_a.spending}"
                             style="width:400px;height:50px;" readonly="#{true}" />
                     </t:panelGroup>
 
                     <h:outputLabel for="chanceSubject" value="机会标题:" />
                     <t:panelGroup colspan="3">
                         <p:inputText id="chanceSubject" readonly="true"
-                            value="#{chanceBean.actionCopy.chance.subject}" style="width:300px" />
+                            value="#{_a.chance.subject}" style="width:300px" />
                     </t:panelGroup>
 
                     <h:outputLabel for="stage" value="机会阶段:" />
                     <t:panelGroup colspan="3">
                         <!--                         <h:outputText id="stage" value="TODO:stage" /> -->
-                        <p:selectOneMenu id="stage" value="#{chanceBean.actionCopy.stage.displayId}"
+                        <p:selectOneMenu id="stage" value="#{_a.stage.displayId}"
                             disabled="#{true}" style="width:200px;">
                             <f:selectItem itemLabel="请选择机会阶段" itemValue="" />
                             <f:selectItems value="#{chanceBean.stage}" />
@@ -501,7 +510,8 @@
                         </p:treeNode>
                     </p:tree>
 
-                    <p:dataTable id="materialList" var="item" value="#{chanceBean.materialList}" resizableColumns="true"
+                    <p:panel id="materialList" rendered="#{chanceBean.materialList != null}">
+                    <p:dataTable var="item" value="#{chanceBean.materialList.list}" resizableColumns="true"
                         selection="#{chanceBean.materialList.selection}" selectionMode="single" rowKey="#{item.id}" rowIndexVar="rowIndex">
 
                         <p:column headerText="产品名称">
@@ -518,6 +528,7 @@
                         </p:column>
 
                     </p:dataTable>
+                    </p:panel>
 
                     <t:panelGroup colspan="2">
                         <p:commandButton value="选择" actionListener="${chanceBean.chooseMaterial}"
@@ -654,23 +665,24 @@
         </h:form>
 
         <h:form id="chancePartyEditForm">
+            <c:set var="_sp" value="#{chanceBean.chances.selection.selectedParty}" />
             <p:dialog header="编辑客户角色" modal="true" widgetVar="chanceParty" height="300" width="350">
                 <t:panelGrid columns="3" id="chancePartyItem">
                     <h:outputText value="客户名称:" />
                     <t:panelGroup colspan="2">
-                        <h:outputText value="#{chanceBean.selectedChanceParty.party.displayName}" />
+                        <h:outputText value="#{_sp.party.displayName}" />
                     </t:panelGroup>
 
                     <h:outputText value="角色:" />
                     <t:panelGroup colspan="2" id="role">
                         <t:panelGrid columns="5">
-                            <h:outputText value="#{chanceBean.selectedChanceParty.role}"
+                            <h:outputText value="#{_sp.role}"
                                 rendered="#{!chanceBean.roleRendered}" />
-                            <p:inputText value="#{chanceBean.selectedChanceParty.role}"
+                            <p:inputText value="#{_sp.role}"
                                 rendered="#{chanceBean.roleRendered}">
                             </p:inputText>
                             <p:commandLink title="修改" actionListener="#{chanceBean.editCustomerRole}"
-                                rendered="#{!chanceBean.roleRendered}" update="chancePartyEditForm:chancePartyItem">
+                                rendered="#{!chanceBean.roleRendered}" update=":chancePartyEditForm:chancePartyItem">
                                 <span class="ui-icon ui-icon-pencil"></span>
                             </p:commandLink>
                             <p:commandLink title="确定" actionListener="#{chanceBean.editCustomerRole}"
