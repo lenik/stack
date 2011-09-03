@@ -2,17 +2,10 @@ package com.bee32.sem.sandbox;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
-
 import com.bee32.plover.arch.util.EnumAlt;
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
-import com.bee32.plover.criteria.hibernate.Limit;
-import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.FacesContextSupport2;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.c.CEntityDto;
@@ -57,44 +50,14 @@ public class UIHelper
     }
 
     public static <E extends CEntity<?>, D extends CEntityDto<E, ?>> //
-    LazyDataModel<D> buildLazyDataModel(final EntityDataModelOptions<E, D> options) {
-        if (options == null)
-            throw new NullPointerException("options");
+    ZLazyDataModel<E, D> buildLazyDataModel(EntityDataModelOptions<E, D> options) {
+        return new ZLazyDataModel<E, D>(getDataManager(), options);
+    }
 
-        final Class<E> entityClass = options.getEntityClass();
-        final Class<D> dtoClass = options.getDtoClass();
-
-        final int selection = options.getSelection();
-        final ICriteriaElement composition = options.compose();
-
-        class LDM
-                extends LazyDataModel<D> {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public List<D> load(int first, int pageSize, String sortField, SortOrder sortOrder,
-                    Map<String, String> filters) {
-
-                Limit limit = new Limit(first, pageSize);
-                List<E> entities = serviceFor(entityClass).list(limit, composition);
-
-                List<D> dtos = DTOs.marshalList(dtoClass, selection, entities, true);
-
-                return dtos;
-            }
-
-            public Object getRowKey(D object) {
-                return super.getRowKey(object);
-            }
-
-            public D getRowData(String rowKey) {
-                return super.getRowData(rowKey);
-            }
-
-        }
-
-        return new LDM();
+    public static <T> SelectableList<T> selectable(List<T> list) {
+        if (list == null)
+            throw new NullPointerException("list");
+        return new SelectableListWrapper<>(list);
     }
 
 }
