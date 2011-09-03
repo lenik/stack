@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.free.ParseException;
@@ -8,7 +9,6 @@ import javax.free.Strings;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.chance.entity.Chance;
-import com.bee32.sem.chance.entity.ChanceParty;
 import com.bee32.sem.chance.util.DateToRange;
 
 public class ChanceDto
@@ -26,13 +26,17 @@ public class ChanceDto
     String content;
     String date;
 
-    String party;
     ChanceSourceDto source;
 
     List<ChancePartyDto> parties;
     List<ChanceActionDto> actions;
 
     ChanceStageDto stage;
+
+    // View-Related
+
+    ChancePartyDto selectedParty;
+    ChanceActionDto selectedAction;
 
     public ChanceDto() {
         super();
@@ -44,30 +48,25 @@ public class ChanceDto
 
     @Override
     protected void _marshal(Chance source) {
-        this.serial = source.getSerial();
+        serial = source.getSerial();
 
-        String partyString = null;
-        for (ChanceParty party : source.getParties()) {
-            if (partyString == null)
-                partyString = party.getParty().getName();
-            else
-                partyString += "," + party.getParty().getName();
-        }
-        this.party = partyString;
-
-        this.date = DateToRange.fullFormat.format(source.getCreatedDate()).substring(0, 16);
-        this.category = mref(ChanceCategoryDto.class, source.getCategory());
+        date = DateToRange.fullFormat.format(source.getCreatedDate()).substring(0, 16);
+        category = mref(ChanceCategoryDto.class, source.getCategory());
         this.source = mref(ChanceSourceDto.class, source.getSource());
-        this.subject = source.getSubject();
-        this.content = source.getContent();
+        subject = source.getSubject();
+        content = source.getContent();
 
         if (selection.contains(PARTIES))
-            this.parties = marshalList(ChancePartyDto.class, source.getParties());
+            parties = marshalList(ChancePartyDto.class, source.getParties());
+        else
+            parties = new ArrayList<ChancePartyDto>();
 
         if (selection.contains(ACTIONS))
-            this.actions = marshalList(ChanceActionDto.class, source.getActions(), true);
+            actions = marshalList(ChanceActionDto.class, source.getActions(), true);
+        else
+            actions = new ArrayList<ChanceActionDto>();
 
-        this.stage = mref(ChanceStageDto.class, source.getStage());
+        stage = mref(ChanceStageDto.class, source.getStage());
     }
 
     @Override
@@ -94,7 +93,7 @@ public class ChanceDto
         if (chanceParty == null)
             throw new NullPointerException("chanceParty");
         if (!parties.contains(chanceParty))
-            this.parties.add(chanceParty);
+            parties.add(chanceParty);
     }
 
     public void removeParty(ChancePartyDto chanceParty) {
@@ -111,7 +110,7 @@ public class ChanceDto
 
     public void deleteAction(ChanceActionDto action) {
         if (actions.contains(action))
-            this.actions.remove(action);
+            actions.remove(action);
         refreshStage();
     }
 
@@ -133,12 +132,12 @@ public class ChanceDto
                 this.stage = maxStage;
     }
 
-    public String getParty() {
-        return party;
+    public String getSerial() {
+        return serial;
     }
 
-    public void setParty(String party) {
-        this.party = party;
+    public void setSerial(String serial) {
+        this.serial = serial;
     }
 
     public String getDate() {
@@ -197,6 +196,17 @@ public class ChanceDto
         this.parties = parties;
     }
 
+    public String getPartiesHint() {
+        StringBuilder sb = null;
+        for (ChancePartyDto chparty : parties) {
+            if (sb == null)
+                sb = new StringBuilder();
+            sb.append(", ");
+            sb.append(chparty.getParty().getDisplayName());
+        }
+        return sb.toString();
+    }
+
     public List<ChanceActionDto> getActions() {
         return actions;
     }
@@ -213,6 +223,22 @@ public class ChanceDto
 
     public void setStage(ChanceStageDto stage) {
         this.stage = stage;
+    }
+
+    public ChancePartyDto getSelectedParty() {
+        return selectedParty;
+    }
+
+    public void setSelectedParty(ChancePartyDto selectedParty) {
+        this.selectedParty = selectedParty;
+    }
+
+    public ChanceActionDto getSelectedAction() {
+        return selectedAction;
+    }
+
+    public void setSelectedAction(ChanceActionDto selectedAction) {
+        this.selectedAction = selectedAction;
     }
 
 }
