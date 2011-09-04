@@ -8,10 +8,15 @@ import java.util.ServiceLoader;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bee32.plover.arch.util.PriorityComparator;
 
 public class PloverSclMultiplexer
         implements ServletContextListener {
+
+    static Logger logger = LoggerFactory.getLogger(PloverSclMultiplexer.class);
 
     static List<IServletContextListener> sclv;
     static {
@@ -24,15 +29,26 @@ public class PloverSclMultiplexer
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        for (IServletContextListener scl : sclv)
-            scl.contextInitialized(sce);
+        for (IServletContextListener scl : sclv) {
+            logger.debug("SCL-init: " + scl.getClass().getName());
+            try {
+                scl.contextInitialized(sce);
+            } catch (Exception e) {
+                logger.error("SCL-Init error: " + scl.getClass().getName(), e);
+            }
+        }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         for (int i = sclv.size() - 1; i >= 0; i--) {
             IServletContextListener scl = sclv.get(i);
-            scl.contextDestroyed(sce);
+            logger.debug("SCL-Terminate: " + scl.getClass().getName());
+            try {
+                scl.contextDestroyed(sce);
+            } catch (Exception e) {
+                logger.error("SCL-Terminate error: " + scl.getClass().getName(), e);
+            }
         }
     }
 
