@@ -12,6 +12,7 @@ public class TestBean
 
     MonthEnum month = MonthEnum.FEB;
     int activePart = 0;
+    Boolean triState;
 
     public MonthEnum getMonth() {
         return month;
@@ -35,6 +36,14 @@ public class TestBean
 
     public void jump2() {
         activePart = 2;
+    }
+
+    public Boolean getTriState() {
+        return triState;
+    }
+
+    public void setTriState(Boolean triState) {
+        this.triState = triState;
     }
 
 }
