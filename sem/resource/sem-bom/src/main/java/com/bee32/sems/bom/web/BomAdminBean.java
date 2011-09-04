@@ -346,7 +346,7 @@ public class BomAdminBean
             // keyword[i] = keyword[i].trim();
             // }
 
-            List<Material> _materials = serviceFor(Material.class).list(new Like("name", "%" + materialPattern + "%"));
+            List<Material> _materials = serviceFor(Material.class).list(new Like("label", "%" + materialPattern + "%"));
 
             materials = DTOs.marshalList(MaterialDto.class, _materials);
         }

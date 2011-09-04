@@ -253,7 +253,7 @@ public abstract class StockOrderBaseBean
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {
 
-            List<Material> _materials = serviceFor(Material.class).list(new Like("name", "%" + materialPattern + "%"));
+            List<Material> _materials = serviceFor(Material.class).list(new Like("label", "%" + materialPattern + "%"));
 
             materials = DTOs.marshalList(MaterialDto.class, _materials);
         }
