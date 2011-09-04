@@ -21,6 +21,7 @@ public class FaceletsTestCase
 
     public FaceletsTestCase() {
         OverlappedBases.add("resources/");
+        // OverlappedBases.add("META-INF/");
         stl.welcomeList.add("index-ftc." + FaceletsConfig.extension);
         stl.welcomeList.add("index." + FaceletsConfig.extension);
     }

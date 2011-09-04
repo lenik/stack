@@ -15,6 +15,7 @@
 
     <application>
         <variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
+        <!-- <resource-handler>org.openfaces.application.OpenFacesResourceHandler</resource-handler> -->
     </application>
 
     <component>
