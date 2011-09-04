@@ -4,10 +4,14 @@ import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.EventListener;
 
+import javax.servlet.ServletContext;
+
 import org.mortbay.io.ByteArrayBuffer;
 import org.mortbay.jetty.LocalConnector;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.handler.ContextHandler;
 import org.mortbay.jetty.nio.SelectChannelConnector;
+import org.mortbay.jetty.servlet.Context.SContext;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.util.Attributes;
@@ -26,8 +30,22 @@ public class RabbitServer {
         localConnector.setPort(getPort());
         server.addConnector(localConnector);
 
-        servletContext = new RabbitServletContext();
+        servletContext = new RabbitServletContext(this);
         server.addHandler(servletContext);
+    }
+
+    public static RabbitServer getInstanceFromContext(ServletContext servletContext) {
+        if (!(servletContext instanceof SContext))
+            return null;
+
+        SContext sContext = (SContext) servletContext;
+        ContextHandler contextHandler = sContext.getContextHandler();
+        if (!(contextHandler instanceof RabbitServletContext))
+            return null;
+
+        RabbitServletContext rsc = (RabbitServletContext) contextHandler;
+        RabbitServer rs = rsc.getRabbitServer();
+        return rs;
     }
 
     public void start()

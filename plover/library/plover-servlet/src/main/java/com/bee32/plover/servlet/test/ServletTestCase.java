@@ -6,8 +6,6 @@ import java.util.Random;
 
 import javax.free.Strings;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSession;
 
 import org.mortbay.jetty.testing.HttpTester;
@@ -15,11 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bee32.plover.servlet.rabbits.OverlappedBases;
+import com.bee32.plover.servlet.rabbits.RabbitServer;
 import com.bee32.plover.test.AssembledTestCase;
 
 public abstract class ServletTestCase
         extends AssembledTestCase<ServletTestCase>
-        implements ServletContextListener, ISessionMonitor {
+        implements ISessionMonitor {
 
     public static final boolean searchClassLocalResources = true;
 
@@ -58,6 +57,24 @@ public abstract class ServletTestCase
 
         int rand = new Random().nextInt(10000);
         contextPath = "/app" + rand;
+    }
+
+    public static ServletTestCase getInstanceFromContext(ServletContext servletContext) {
+        return getInstanceFromContext(servletContext, ServletTestCase.class);
+    }
+
+    public static <T extends ServletTestCase> T getInstanceFromContext(ServletContext servletContext, Class<T> stcClass) {
+        RabbitServer rabbitServer = RabbitServer.getInstanceFromContext(servletContext);
+        if (!(rabbitServer instanceof LocalSTL))
+            return null;
+        LocalSTL localSTL = (LocalSTL) rabbitServer;
+
+        ServletTestCase outer = localSTL.getOuter();
+        if (!stcClass.isInstance(outer))
+            return null;
+
+        T instance = stcClass.cast(outer);
+        return instance;
     }
 
     final class LocalSTL
@@ -102,22 +119,9 @@ public abstract class ServletTestCase
 
     protected void configureContext() {
         stl.setContextPath(getContextPath());
-        stl.addEventListener(this);
     }
 
     protected void configureServlets() {
-    }
-
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        servletContext = sce.getServletContext();
-        logger.info("Test servlet context is initialized.");
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        logger.info("Test servlet context is destroyed.");
-        servletContext = null;
     }
 
     protected void onServerStartup() {

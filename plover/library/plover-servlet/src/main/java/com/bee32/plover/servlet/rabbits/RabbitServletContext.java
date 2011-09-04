@@ -11,8 +11,17 @@ import org.mortbay.jetty.servlet.ServletHolder;
 public class RabbitServletContext
         extends OverlappedContext {
 
-    public RabbitServletContext() {
+    final RabbitServer rabbitServer;
+
+    public RabbitServletContext(RabbitServer rabbitServer) {
         super(Context.SESSIONS | Context.SECURITY);
+        if (rabbitServer == null)
+            throw new NullPointerException("rabbitServer");
+        this.rabbitServer = rabbitServer;
+    }
+
+    public RabbitServer getRabbitServer() {
+        return rabbitServer;
     }
 
     public synchronized void addInitParam(String name, String value) {

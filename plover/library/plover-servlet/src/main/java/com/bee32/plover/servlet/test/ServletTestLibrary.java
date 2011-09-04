@@ -345,7 +345,7 @@ public class ServletTestLibrary
     public URL browse(String location)
             throws IOException {
         URL url = getURL(location);
-        logger.warn("Browse " + url);
+        logger.info("Browse " + url);
 
         URI uri;
         try {
