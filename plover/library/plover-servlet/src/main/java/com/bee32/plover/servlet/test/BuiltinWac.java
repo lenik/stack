@@ -1,5 +1,6 @@
 package com.bee32.plover.servlet.test;
 
+import com.bee32.plover.servlet.peripheral.PloverSclMultiplexer;
 import com.bee32.plover.servlet.rabbits.Favicon;
 import com.bee32.plover.servlet.rabbits.Logo;
 import com.bee32.plover.servlet.util.ThreadServletContextFilter;
@@ -16,6 +17,9 @@ public class BuiltinWac
     public void configureContext(ServletTestLibrary stl) {
         String[] welcomeFiles = stl.welcomeList.toArray(new String[0]);
         stl.getServletContext().setWelcomeFiles(welcomeFiles);
+
+        // Plover SCL dispatcher.
+        stl.addEventListener(new PloverSclMultiplexer());
     }
 
     @Override

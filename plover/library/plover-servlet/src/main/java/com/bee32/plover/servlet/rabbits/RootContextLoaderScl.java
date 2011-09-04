@@ -4,11 +4,18 @@ import javax.servlet.ServletContextEvent;
 
 import org.springframework.web.context.ContextLoaderListener;
 
-public class RootContextLoaderListener
-        extends ContextLoaderListener {
+import com.bee32.plover.servlet.peripheral.DecoratedScl;
 
-    public RootContextLoaderListener() {
-        super();
+public class RootContextLoaderScl
+        extends DecoratedScl {
+
+    @Override
+    public int getPriority() {
+        return -10;
+    }
+
+    public RootContextLoaderScl() {
+        super(ContextLoaderListener.class);
     }
 
     @Override

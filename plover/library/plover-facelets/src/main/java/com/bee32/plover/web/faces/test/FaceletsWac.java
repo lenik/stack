@@ -5,7 +5,6 @@ import java.util.List;
 import javax.faces.webapp.FacesServlet;
 import javax.free.StringArray;
 
-import org.apache.myfaces.webapp.StartupServletContextListener;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.primefaces.webapp.filter.FileUploadFilter;
 
@@ -58,17 +57,7 @@ public class FaceletsWac
             }
         }
 
-        switch (FaceletsTestCase.faceletsProvider) {
-        case JSF_RI:
-            // For jsf-ri only:
-            // stl.addEventListener(new ConfigureListener());
-            // stl.addEventListener(new FaceletsWebappLifecycleListener());
-            throw new UnsupportedOperationException("JSF-RI isn't supported anymore");
-
-        case APACHE_MYFACES:
-            stl.addEventListener(new StartupServletContextListener());
-            break;
-        }
+        /** @see FaceletsStartupScl */
 
         // Faces Servlet, must be load-on-startup, but STL seems not support.
         ServletHolder facesServlet = stl.addServlet(FacesServlet.class, "*." + FaceletsConfig.extension);

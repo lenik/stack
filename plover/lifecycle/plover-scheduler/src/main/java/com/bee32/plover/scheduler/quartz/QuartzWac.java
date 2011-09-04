@@ -14,8 +14,7 @@ public class QuartzWac
 
     @Override
     public void configureContext(ServletTestLibrary stl) {
-        // stl.addServlet(QuartzInitializerServlet.class);
-        stl.addEventListener(new QuartzInitializerListener());
+        /** @see InitQuartzAndQjcListener */
     }
 
     @Override

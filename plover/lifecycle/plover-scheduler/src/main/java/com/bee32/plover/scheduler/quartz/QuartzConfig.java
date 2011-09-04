@@ -8,6 +8,7 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerContext;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
+import org.quartz.ee.servlet.QuartzInitializerListener;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -22,7 +23,7 @@ public class QuartzConfig {
     /**
      * This is a fixed constant defined in Quartz system.
      *
-     * @see QuartzInitializerListener
+     * @see InitQuartzAndQjcScl
      */
     public static final String SCHED_SC_KEY_NAME = "scheduler-context-servlet-context-key";
 

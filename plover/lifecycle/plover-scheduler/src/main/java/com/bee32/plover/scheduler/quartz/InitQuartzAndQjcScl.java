@@ -7,14 +7,21 @@ import javax.servlet.ServletContextEvent;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
+import org.quartz.ee.servlet.QuartzInitializerListener;
 import org.quartz.spi.JobFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class QuartzInitializerListener
-        extends org.quartz.ee.servlet.QuartzInitializerListener {
+import com.bee32.plover.servlet.peripheral.DecoratedScl;
 
-    static Logger logger = LoggerFactory.getLogger(QuartzInitializerListener.class);
+public class InitQuartzAndQjcScl
+        extends DecoratedScl {
+
+    static Logger logger = LoggerFactory.getLogger(InitQuartzAndQjcScl.class);
+
+    public InitQuartzAndQjcScl() {
+        super(QuartzInitializerListener.class);
+    }
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
@@ -44,8 +51,6 @@ public class QuartzInitializerListener
 
     @Override
     public void contextDestroyed(ServletContextEvent event) {
-        super.contextDestroyed(event);
-
         SchedulerFactory factory = QuartzConfig.getSchedulerFactory(event.getServletContext());
 
         for (IQuartzJobConfigurer configurer : ServiceLoader.load(IQuartzJobConfigurer.class)) {
@@ -56,6 +61,8 @@ public class QuartzInitializerListener
                 logger.error("Failed to unload " + configurer, e);
             }
         }
+
+        super.contextDestroyed(event);
     }
 
 }

@@ -18,6 +18,11 @@ public class ZkWac
 
     @Override
     public void configureServlets(ServletTestLibrary stl) {
+        /**
+         * This is a session-listener, not a context-listener, so won't go into *Scl.
+         *
+         * @see javax.servlet.http.HttpSessionListener
+         */
         HttpSessionListener httpSessionListener = new HttpSessionListener();
         stl.addEventListener(httpSessionListener);
 
