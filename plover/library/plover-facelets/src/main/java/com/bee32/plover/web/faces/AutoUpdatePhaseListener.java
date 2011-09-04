@@ -9,11 +9,11 @@ import java.util.TreeSet;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
+import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
-import org.primefaces.context.PrimePartialViewContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,9 +53,9 @@ public class AutoUpdatePhaseListener
         FacesContext facesContext = event.getFacesContext();
         PartialViewContext pvc = facesContext.getPartialViewContext();
 
-        if (pvc instanceof PrimePartialViewContext) {
-            PrimePartialViewContext ppvc = (PrimePartialViewContext) pvc;
-            pvc = ppvc.getWrapped();
+        while (pvc instanceof PartialViewContextWrapper) {
+            PartialViewContextWrapper wrapper = (PartialViewContextWrapper) pvc;
+            pvc = wrapper.getWrapped();
         }
 
         Collection<String> renderIds = pvc.getRenderIds();
