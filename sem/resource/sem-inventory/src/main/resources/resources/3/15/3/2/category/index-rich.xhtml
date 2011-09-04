@@ -29,7 +29,7 @@
         </h:outputStylesheet>
 
         <h:form id="mainForm">
-            <p:tabView id="mainTabview">
+            <p:tabView id="mainTab">
                 <p:tab title="物料分类设置">
 
                     <p:toolbar>
@@ -42,7 +42,7 @@
                                 update=":dialogForm:categoryForm" oncomplete="categoryWizardDialog.show();"
                                 disabled="#{materialSettingsBean.materialCategoryMainTree.selectedNode == null}" />
                             <p:commandButton id="deleteCategory" value="删除" title="删除分类"
-                                actionListener="#{materialSettingsBean.destroyCategory}" update=":mainForm:mainTabview"
+                                actionListener="#{materialSettingsBean.destroyCategory}" update=":mainForm:mainTab"
                                 disabled="#{materialSettingsBean.materialCategoryMainTree.selectedNode == null}" />
                         </p:toolbarGroup>
                     </p:toolbar>
@@ -52,8 +52,8 @@
                             var="node" dynamic="true" selectionMode="single"
                             selection="#{materialSettingsBean.materialCategoryMainTree.selectedNode}">
 
-                            <p:ajax event="select" update=":mainForm:mainTabview" />
-                            <p:ajax event="unselect" update=":mainForm:mainTabview" />
+                            <p:ajax event="select" update=":mainForm:mainTab" />
+                            <p:ajax event="unselect" update=":mainForm:mainTab" />
 
                             <p:treeNode>
                                 <h:outputText value="#{node.name}" />
@@ -161,7 +161,7 @@
                             var="node" dynamic="true" selectionMode="single"
                             selection="#{materialSettingsBean.materialPriceTree.selectedNode}">
                             <p:ajax event="select" listener="#{materialSettingsBean.materialPriceTree.onNodeSelect}"
-                                update=":mainForm:mainTabview:materialList" />
+                                update=":mainForm:mainTab:materialList" />
                             <p:treeNode>
                                 <h:outputText value="#{node.name}" />
                             </p:treeNode>
@@ -244,7 +244,7 @@
                     </p:column>
                 </p:dataTable>
                 <p:commandButton value="确定" actionListener="#{materialSettingsBean.updatePrice}"
-                    oncomplete="priceDialog.hide();" update=":mainForm:mainTabview:materialList" />
+                    oncomplete="priceDialog.hide();" update=":mainForm:mainTab:materialList" />
                 <p:commandButton value="取消" onclick="priceDialog.hide();" />
             </p:dialog>
 
@@ -252,7 +252,7 @@
             <p:confirmDialog message="确定要删除此单位吗?" showEffect="bounce" hideEffect="explode" header="提示" severity="alert"
                 widgetVar="unitConfirmation">
 
-                <p:commandButton value="确定" update=":mainForm:mainTabview:unitList" oncomplete="unitConfirmation.hide()"
+                <p:commandButton value="确定" update=":mainForm:mainTab:unitList" oncomplete="unitConfirmation.hide()"
                     actionListener="#{materialSettingsBean.destroyUnit}" />
                 <p:commandButton value="取消" onclick="unitConfirmation.hide()" type="button" />
 
@@ -261,7 +261,7 @@
             <p:confirmDialog message="确定要删除此单位还算表吗?" showEffect="bounce" hideEffect="explode" header="提示"
                 severity="alert" widgetVar="unitConvConfirmation">
 
-                <p:commandButton value="确定" update=":mainForm:mainTabview:unitConvList"
+                <p:commandButton value="确定" update=":mainForm:mainTab:unitConvList"
                     oncomplete="unitConvConfirmation.hide()" actionListener="#{materialSettingsBean.destroyUnitConv}" />
                 <p:commandButton value="取消" onclick="unitConvConfirmation.hide()" type="button" />
 
@@ -288,7 +288,7 @@
                         <p:inputText value="#{materialSettingsBean.activeUnit.scale}" />
                     </t:panelGrid>
                     <p:commandButton value="保存" actionListener="#{materialSettingsBean.doSaveUnit}"
-                        oncomplete="unitDialog.hide();" update=":mainForm:mainTabview:unitList" />
+                        oncomplete="unitDialog.hide();" update=":mainForm:mainTab:unitList" />
                     <p:commandButton value="取消" onclick="unitDialog.hide();" />
                 </p:panel>
             </p:dialog>
@@ -339,7 +339,7 @@
                         disabled="#{materialSettingsBean.unitConvEditable}" />
                     <p:separator />
                     <p:commandButton value="保存" actionListener="#{materialSettingsBean.doSaveUnitConv}"
-                        oncomplete="unitConvDialog.hide();" update=":mainForm:mainTabview:unitConvList"
+                        oncomplete="unitConvDialog.hide();" update=":mainForm:mainTab:unitConvList"
                         disabled="#{materialSettingsBean.unitConvEditable}" />
                     <p:commandButton value="取消" onclick="unitConvDialog.hide();" />
                 </p:panel>
@@ -380,7 +380,7 @@
 
                         <p:commandButton value="确认" actionListener="#{materialSettingsBean.doSaveCategory}"
                             oncomplete="categoryWizardDialog.hide();"
-                            update=":mainForm:mainTabview:mainTree, mainForm:mainTabview:selectCategoryTree" />
+                            update=":mainForm:mainTab:mainTree, :mainForm:mainTab:selectCategoryTree" />
                         <p:commandButton value="取消" onclick="categoryWizardDialog.hide();" />
 
                     </t:panelGrid>
