@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.bee32.plover.inject.AbstractContainer;
+import com.bee32.plover.inject.ServiceTemplate;
 
+@ServiceTemplate
 public class ServletContainer
         extends AbstractContainer
         implements ServletContextListener {

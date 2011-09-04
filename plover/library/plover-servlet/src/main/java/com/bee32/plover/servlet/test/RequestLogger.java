@@ -28,7 +28,7 @@ public class RequestLogger
             throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
-        logger.info("Request-URL: " + req.getRequestURL());
+        logger.debug("Request-URL: " + req.getRequestURL());
 
         chain.doFilter(request, response);
     }
