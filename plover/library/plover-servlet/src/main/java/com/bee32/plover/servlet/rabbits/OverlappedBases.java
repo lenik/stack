@@ -2,8 +2,10 @@ package com.bee32.plover.servlet.rabbits;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class OverlappedBases {
 
@@ -61,6 +63,8 @@ public class OverlappedBases {
         return searchBases.iterator();
     }
 
+    static Set<String> notFound = new HashSet<String>();
+
     /**
      * Search resource.
      *
@@ -74,11 +78,16 @@ public class OverlappedBases {
         if (path.startsWith("/"))
             path = path.substring(1);
 
+        if (notFound.contains(path))
+            return null;
+
         for (IResourceBase base : searchBases) {
             URL resource = base.getResource(path);
             if (resource != null)
                 return resource;
         }
+
+        notFound.add(path);
         return null;
     }
 
