@@ -87,8 +87,8 @@ public class Person
         this.censusRegister = censusRegister;
     }
 
-    @OneToMany(mappedBy = "person")
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "person", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public Set<PersonRole> getRoles() {
         return roles;
     }

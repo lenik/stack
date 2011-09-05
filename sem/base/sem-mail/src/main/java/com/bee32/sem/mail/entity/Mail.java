@@ -323,8 +323,8 @@ public class Mail
     /**
      * 邮件递送副本列表。
      */
-    @OneToMany(mappedBy = "mail")
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "mail", orphanRemoval = true)
+    @Cascade({ CascadeType.ALL })
     public List<MailDelivery> getDeliveries() {
         return deliveries;
     }

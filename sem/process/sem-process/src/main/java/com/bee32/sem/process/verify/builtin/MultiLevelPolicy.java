@@ -42,9 +42,9 @@ public class MultiLevelPolicy
     /**
      * @return Non-null range set.
      */
-    @OneToMany(mappedBy = "multiLevel")
+    @OneToMany(mappedBy = "multiLevel", orphanRemoval = true)
     @OrderBy("limit_ asc")
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade({ CascadeType.ALL })
     public synchronized List<MultiLevel> getLevels() {
         if (levels == null) {
             if (levelMap == null) {

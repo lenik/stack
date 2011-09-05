@@ -115,8 +115,8 @@ public class Chance
         this.content = content;
     }
 
-    @OneToMany(mappedBy = "chance")
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "chance", orphanRemoval = true)
+    @Cascade({ CascadeType.ALL })
     public List<ChanceParty> getParties() {
         return parties;
     }

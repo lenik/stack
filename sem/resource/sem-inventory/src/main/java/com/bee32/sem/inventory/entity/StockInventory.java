@@ -66,8 +66,8 @@ public class StockInventory
     /**
      * 当前工作拷贝
      */
-    @OneToOne
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToOne(orphanRemoval = true)
+    @Cascade({ CascadeType.ALL })
     public StockPeriod getWorkingBase() {
         return workingBase;
     }

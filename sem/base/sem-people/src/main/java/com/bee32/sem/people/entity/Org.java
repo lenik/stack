@@ -64,8 +64,8 @@ public class Org
         this.size = size;
     }
 
-    @OneToMany(mappedBy = "org")
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "org", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public Set<PersonRole> getRoles() {
         return roles;
     }

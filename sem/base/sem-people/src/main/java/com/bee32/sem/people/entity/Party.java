@@ -215,8 +215,8 @@ public abstract class Party
         this.tags = tags;
     }
 
-    @OneToMany(mappedBy = "party")
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "party", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public List<Contact> getContacts() {
         return contacts;
     }
@@ -227,8 +227,8 @@ public abstract class Party
         this.contacts = contacts;
     }
 
-    @OneToMany(mappedBy = "party")
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "party", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public List<PartyRecord> getRecords() {
         return records;
     }

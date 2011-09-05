@@ -92,8 +92,8 @@ public abstract class VerifiableEntity<K extends Serializable, C extends IVerify
         this.verifyError = error;
     }
 
-    @OneToOne
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToOne(orphanRemoval = true)
+    @Cascade({ CascadeType.ALL })
     public Task getVerifyTask() {
         return verifyTask;
     }

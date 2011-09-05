@@ -149,8 +149,8 @@ public class User
         return true;
     }
 
-    @OneToMany(mappedBy = "user")
-    @Cascade({ CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @Cascade({ CascadeType.ALL })
     public List<UserEmail> getEmails() {
         return emails;
     }
