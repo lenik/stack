@@ -62,8 +62,7 @@ public class MaterialViewBean
 
     String materialPattern;
     List<MaterialDto> materialList = new ArrayList<MaterialDto>();
-    MaterialDto selectedMaterial;
-    MaterialDto activeMaterial = new MaterialDto().create();
+    MaterialDto activeMaterial;
     UnitDto newUnit = new UnitDto().create();
     MaterialAttributeDto activeAttr;
     MaterialPreferredLocationDto activePreferredLocation;
@@ -132,8 +131,9 @@ public class MaterialViewBean
     }
 
     public MaterialViewBean() {
+        activeMaterial = new MaterialDto().create();
         activeAttr = new MaterialAttributeDto().create();
-        activeAttr.setMaterial(activeMaterial);
+// activeAttr.setMaterial(activeMaterial);
 
         currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
         activeOption = new MaterialWarehouseOptionDto().create();
@@ -174,20 +174,6 @@ public class MaterialViewBean
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
                 ~MaterialCategoryDto.MATERIALS, rootCategories);
         selectCategoryTree = new MaterialCategoryTreeModel(rootCategoryDtos);
-        selectCategoryTree.addListener(new SelectionAdapter() {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void itemSelected(SelectionEvent event) {
-                MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) event.getSelection();
-                if (materialCategoryDto != null) {
-                    activeMaterial.setCategory(materialCategoryDto);
-                }
-            }
-
-        });
-
     }
 
     public void initMaterialCategoryTree() {
@@ -210,10 +196,19 @@ public class MaterialViewBean
         });
     }
 
+    public void doSelectMaterialCategory() {
+        MaterialCategoryDto category = (MaterialCategoryDto) selectCategoryTree.getSelectedNode().getData();
+        activeMaterial.setCategory(category);
+    }
+
+    public void doSelectStockLocation() {
+        StockLocationDto selectedLocation = (StockLocationDto) stockLocationTreeDialog.getSelectedNode().getData();
+        activePreferredLocation.setLocation(selectedLocation);
+    }
+
     public void destroyMaterial() {
         try {
-            Material toDestroy = serviceFor(Material.class).getOrFail(activeMaterial.getId());
-            serviceFor(Material.class).delete(toDestroy);
+            serviceFor(Material.class).deleteById(activeMaterial.getId());
             materialList.remove(activeMaterial);
             uiLogger.info("删除物料成功");
         } catch (Exception e) {
@@ -346,7 +341,6 @@ public class MaterialViewBean
     }
 
     public void doAddMaterial() {
-        // Dialog dialog = getMaterialDialog();
         visible = true;
 
         String label = activeMaterial.getLabel();
@@ -370,22 +364,21 @@ public class MaterialViewBean
             unitConv = new UnitConvDto().ref();
         activeMaterial.setUnitConv(unitConv);
 
+        Material materialEntity = null;
         try {
-            Material materialEntity = activeMaterial.unmarshal();
+            materialEntity = activeMaterial.unmarshal();
 
             serviceFor(Material.class).saveOrUpdate(materialEntity);
 
             uiLogger.info("保存物料成功!");
 
             visible = false;
-            // getMaterialDialog().setVisible(false);
-            // getMaterialDialog().setInView(false);
-            // getMaterialDialog().setRendered(false);
 
         } catch (Exception e) {
             uiLogger.error("保存物料失败", e);
         }
 
+        activeMaterial = DTOs.marshal(MaterialDto.class, materialEntity, true);
         if (materialList.contains(activeMaterial)) {
             int index = materialList.indexOf(activeMaterial);
             materialList.set(index, activeMaterial);
@@ -493,7 +486,7 @@ public class MaterialViewBean
     }
 
     public void setActiveMaterial(MaterialDto activeMaterial) {
-        this.activeMaterial = activeMaterial;
+        this.activeMaterial = reload(activeMaterial);
     }
 
     public String getActiveMaterialPrice() {
@@ -542,15 +535,6 @@ public class MaterialViewBean
 
     public void setTempUnitConv(UnitConvDto tempUnitConv) {
         this.tempUnitConv = tempUnitConv;
-    }
-
-    public MaterialDto getSelectedMaterial() {
-        return selectedMaterial;
-    }
-
-    public void setSelectedMaterial(MaterialDto selectedMaterial) {
-        this.selectedMaterial = selectedMaterial;
-        this.activeMaterial = reload(selectedMaterial);
     }
 
     public String getMaterialPattern() {
