@@ -8,6 +8,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Index;
+
 @MappedSuperclass
 @Pink
 public abstract class MomentInterval
@@ -29,6 +31,7 @@ public abstract class MomentInterval
     @Temporal(TemporalType.TIMESTAMP)
     @Basic(optional = false)
     @Column(nullable = false)
+    @Index(name = "##_beginTime")
     public Date getBeginTime() {
         return beginTime;
     }
@@ -38,6 +41,7 @@ public abstract class MomentInterval
     }
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Index(name = "##_endTime")
     public Date getEndTime() {
         return endTime;
     }

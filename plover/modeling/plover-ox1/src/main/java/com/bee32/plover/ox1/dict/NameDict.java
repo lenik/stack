@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Index;
+
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -63,8 +65,8 @@ public abstract class NameDict
         setName(id);
     }
 
-    // TODO @Index
     @Column(nullable = false)
+    @Index(name = "##_order")
     public int getOrder() {
         return order;
     }

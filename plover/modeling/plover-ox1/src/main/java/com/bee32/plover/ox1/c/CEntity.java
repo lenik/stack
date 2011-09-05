@@ -35,8 +35,8 @@ public abstract class CEntity<K extends Serializable>
         super(name);
     }
 
-    @Index(name = "keyword")
     @Column(length = KEYWORD_MAXLEN)
+    @Index(name = "##_keyword")
     protected String getKeyword() {
         if (!keywordUpdated) {
             keyword = buildKeyword();
@@ -76,6 +76,7 @@ public abstract class CEntity<K extends Serializable>
     }
 
     @Column(name = "acl")
+    @Index(name = "##_acl")
     public Integer getAclId() {
         return aclId;
     }

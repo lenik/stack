@@ -10,6 +10,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Index;
+
 import overlay.Overlay;
 
 import com.bee32.plover.arch.Component;
@@ -76,6 +78,7 @@ public abstract class Entity<K extends Serializable>
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
+    @Index(name = "##_lastModified")
     public Date getLastModified() {
         return lastModified;
     }
