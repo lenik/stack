@@ -14,7 +14,7 @@ public class EntityCriteria
     public static CriteriaElement ownedBy(IUserPrincipal user) {
         if (user == null)
             throw new NullPointerException("user");
-        return equals("ownerId", user.getId());
+        return equals("owner", user);
     }
 
     public static CriteriaElement ownedByCurrentUser() {
