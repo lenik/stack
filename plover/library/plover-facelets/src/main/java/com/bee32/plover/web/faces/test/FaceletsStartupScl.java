@@ -26,7 +26,7 @@ public class FaceletsStartupScl
              * Normally, servlet containers will automatically load and process .tld files at
              * startup time, and therefore register and run this class automatically.
              */
-            // myfacesScl.contextInitialized(sce);
+            myfacesScl.contextInitialized(sce);
             break;
         }
     }
