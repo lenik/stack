@@ -12,7 +12,7 @@ public class ViewConfig
 
     int pageSize = 10;
     String pageSizeTemplate = "5,10,15";
-    String allowTypes = "/(\\.|\\/)(gif|jpe|g|png|doc|docx|xsl|xslx)$/";
+    String allowTypes = "/(\\.|\\/)(gif|jpe?g|png|doc|docx|xsl|xslx|xls|xlsx)$/";
 
     public int getPageSize() {
         return pageSize;
