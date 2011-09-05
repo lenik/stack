@@ -32,6 +32,7 @@
         </h:outputStylesheet>
 
         <h:form id="main">
+            <div id="test">#{materialViewBean.activeMaterial}</div>
 
             <t:panelGrid columns="2" width="100%" columnClasses="ftd,std">
                 <t:panelGroup colspan="2">
@@ -66,8 +67,8 @@
                         update="main" />
                 </p:panel>
                 <p:dataTable var="material" value="#{materialViewBean.materialList}" id="materialList" paginator="true"
-                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                    rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}" rows="#{viewConfig.pageSize}" style="width:100%;">
+                    rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}" rows="#{viewConfig.pageSize}"
+                    style="width:100%;">
                     <p:column headerText="物料名称">
                         <h:outputText value="#{material.label}" />
                     </p:column>
@@ -93,14 +94,13 @@
                             <f:setPropertyActionListener value="#{material}" target="#{materialViewBean.activeMaterial}" />
                             <p:graphicImage value="#{location.ICON}/etool16/validate.gif" />
                         </p:commandLink>
-                        <p:commandLink title="编辑" update="dialogForm:material"
+                        <p:commandLink title="编辑" update=":dialogForm:material, :main:test"
                             actionListener="#{materialViewBean.setMaterialDialogEnable}"
                             oncomplete="materialDialog.show();">
                             <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" />
-                            <f:setPropertyActionListener value="#{material}"
-                                target="#{materialViewBean.selectedMaterial}" />
+                            <f:setPropertyActionListener value="#{material}" target="#{materialViewBean.activeMaterial}" />
                         </p:commandLink>
-                        <p:commandLink title="删除" oncomplete="confirmation.show()" process="@this">
+                        <p:commandLink title="删除" oncomplete="deleteMaterialConfirm.show()" update=":main:test">
                             <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                             <f:setPropertyActionListener value="#{material}" target="#{materialViewBean.activeMaterial}" />
                         </p:commandLink>
@@ -412,8 +412,7 @@
                             </p:column>
 
                             <p:column headerText="操作" style="width:80px;">
-                                <p:commandLink title="删除" disabled="#{materialViewBean.editable}"
-                                    update="attachList">
+                                <p:commandLink title="删除" disabled="#{materialViewBean.editable}" update="attachList">
                                     <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
                                     <p:collector value="#{attachment}"
                                         removeFrom="#{materialViewBean.activeMaterial.attachments}" />
@@ -476,7 +475,7 @@
                     <t:panelGroup colspan="2">
                         <p:selectOneMenu value="#{materialViewBean.newUnit.stdUnit.id}" style="width:100px;">
                             <f:selectItems value="#{materialViewBean.standardUnits}" />
-                            <f:selectItem itemLabel="无" itemValue="none" />
+                            <f:selectItem itemLabel="" itemValue="" />
                         </p:selectOneMenu>
                     </t:panelGroup>
                     <h:outputText value="倍率:" />
@@ -537,7 +536,7 @@
                     </p:treeNode>
                 </p:tree>
                 <p:commandButton value="选择" actionListener="#{materialViewBean.selectCategoryTree.onNodeSelect}"
-                    update="dialogForm:materialCategory" oncomplete="categoryTreeDialog.hide();" />
+                    update=":dialogForm:materialCategory" oncomplete="categoryTreeDialog.hide();" />
                 <p:commandButton value="取消" onclick="categoryTreeDialog.hide();" />
             </p:dialog>
 
@@ -554,14 +553,13 @@
                 <p:commandButton value="取消" onclick="stockLocationTreeDialog.hide()" />
             </p:dialog>
 
-            <p:confirmDialog message="您确定要删除此物料吗?" showEffect="bounce" hideEffect="explode" header="注意" severity="alert"
-                widgetVar="confirmation">
+            <p:dialog message="您确定要删除此物料吗?" header="注意" severity="alert" widgetVar="deleteMaterialConfirm">
 
-                <p:commandButton value="删除" update=":main:materialList" oncomplete="confirmation.hide()"
+                <p:commandButton value="删除" update=":main:materialList" oncomplete="deleteMaterialConfirm.hide()"
                     actionListener="#{materialViewBean.destroyMaterial}" />
-                <p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
+                <p:commandButton value="取消" onclick="deleteMaterialConfirm.hide()" type="button" />
 
-            </p:confirmDialog>
+            </p:dialog>
 
             <p:dialog header="提示" severity="alert" widgetVar="addPriceConfirm" modal="true">
 
