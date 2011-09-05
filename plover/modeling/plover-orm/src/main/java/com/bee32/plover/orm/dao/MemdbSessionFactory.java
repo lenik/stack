@@ -8,10 +8,12 @@ import java.util.Set;
 import javax.naming.NamingException;
 import javax.naming.Reference;
 
+import org.hibernate.Cache;
 import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
+import org.hibernate.TypeHelper;
 import org.hibernate.classic.Session;
 import org.hibernate.engine.FilterDefinition;
 import org.hibernate.metadata.ClassMetadata;
@@ -85,7 +87,7 @@ public class MemdbSessionFactory
     }
 
     @Override
-    public Map getAllClassMetadata()
+    public Map<String, ClassMetadata> getAllClassMetadata()
             throws HibernateException {
         return null;
     }
@@ -111,41 +113,49 @@ public class MemdbSessionFactory
         return false;
     }
 
+    @Deprecated
     @Override
     public void evict(Class persistentClass)
             throws HibernateException {
     }
 
+    @Deprecated
     @Override
     public void evict(Class persistentClass, Serializable id)
             throws HibernateException {
     }
 
+    @Deprecated
     @Override
     public void evictEntity(String entityName)
             throws HibernateException {
     }
 
+    @Deprecated
     @Override
     public void evictEntity(String entityName, Serializable id)
             throws HibernateException {
     }
 
+    @Deprecated
     @Override
     public void evictCollection(String roleName)
             throws HibernateException {
     }
 
+    @Deprecated
     @Override
     public void evictCollection(String roleName, Serializable id)
             throws HibernateException {
     }
 
+    @Deprecated
     @Override
     public void evictQueries()
             throws HibernateException {
     }
 
+    @Deprecated
     @Override
     public void evictQueries(String cacheRegion)
             throws HibernateException {
@@ -169,6 +179,21 @@ public class MemdbSessionFactory
     @Override
     public FilterDefinition getFilterDefinition(String filterName)
             throws HibernateException {
+        return null;
+    }
+
+    @Override
+    public Cache getCache() {
+        return null;
+    }
+
+    @Override
+    public boolean containsFetchProfileDefinition(String name) {
+        return false;
+    }
+
+    @Override
+    public TypeHelper getTypeHelper() {
         return null;
     }
 

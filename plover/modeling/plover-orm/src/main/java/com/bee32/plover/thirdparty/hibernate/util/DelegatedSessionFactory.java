@@ -8,10 +8,12 @@ import java.util.Set;
 import javax.naming.NamingException;
 import javax.naming.Reference;
 
+import org.hibernate.Cache;
 import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
+import org.hibernate.TypeHelper;
 import org.hibernate.classic.Session;
 import org.hibernate.engine.FilterDefinition;
 import org.hibernate.metadata.ClassMetadata;
@@ -78,7 +80,7 @@ public abstract class DelegatedSessionFactory
     }
 
     @Override
-    public Map getAllClassMetadata()
+    public Map<String, ClassMetadata> getAllClassMetadata()
             throws HibernateException {
         return getDelegate().getAllClassMetadata();
     }
@@ -105,48 +107,56 @@ public abstract class DelegatedSessionFactory
         return getDelegate().isClosed();
     }
 
+    @Deprecated
     @Override
     public void evict(Class persistentClass)
             throws HibernateException {
         getDelegate().evict(persistentClass);
     }
 
+    @Deprecated
     @Override
     public void evict(Class persistentClass, Serializable id)
             throws HibernateException {
         getDelegate().evict(persistentClass, id);
     }
 
+    @Deprecated
     @Override
     public void evictEntity(String entityName)
             throws HibernateException {
         getDelegate().evictEntity(entityName);
     }
 
+    @Deprecated
     @Override
     public void evictEntity(String entityName, Serializable id)
             throws HibernateException {
         getDelegate().evictEntity(entityName, id);
     }
 
+    @Deprecated
     @Override
     public void evictCollection(String roleName)
             throws HibernateException {
         getDelegate().evictCollection(roleName);
     }
 
+    @Deprecated
     @Override
     public void evictCollection(String roleName, Serializable id)
             throws HibernateException {
         getDelegate().evictCollection(roleName, id);
     }
 
+    @Deprecated
     @Override
     public void evictQueries()
             throws HibernateException {
         getDelegate().evictQueries();
     }
 
+    @Deprecated
     @Override
     public void evictQueries(String cacheRegion)
             throws HibernateException {
@@ -172,6 +182,21 @@ public abstract class DelegatedSessionFactory
     public FilterDefinition getFilterDefinition(String filterName)
             throws HibernateException {
         return getDelegate().getFilterDefinition(filterName);
+    }
+
+    @Override
+    public Cache getCache() {
+        return getDelegate().getCache();
+    }
+
+    @Override
+    public boolean containsFetchProfileDefinition(String name) {
+        return getDelegate().containsFetchProfileDefinition(name);
+    }
+
+    @Override
+    public TypeHelper getTypeHelper() {
+        return getDelegate().getTypeHelper();
     }
 
 }
