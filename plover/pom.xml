@@ -44,7 +44,7 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
-                <version>3.3.2.GA</version>
+                <version>3.6.7-bee32-1</version>
                 <exclusions>
                     <exclusion>
                         <groupId>asm</groupId>
@@ -63,18 +63,13 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
-                <version>3.4.0.GA</version>
+                <version>3.6.7.Final</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.hibernate</groupId>
                         <artifactId>ejb3-persistence</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-annotations</artifactId>
-                <version>3.4.0.GA</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
