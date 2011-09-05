@@ -2,9 +2,22 @@
     xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
     xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <ui:composition template="template.xhtml">
-        <ui:define name="title">Class Resources</ui:define>
+        <ui:define name="title">Class Resources Dump</ui:define>
 
         <ui:define name="body">
+
+            <h:form id="selectLoader">
+                <h:selectOneMenu value="#{classLoaderChain.start}" onchange="submit()">
+                    <f:selectItem itemValue="SYSTEM" itemLabel="System Class Loader" />
+                    <f:selectItem itemValue="THREAD" itemLabel="Thread Context Class Loader" />
+                    <f:selectItem itemValue="C0" itemLabel="Caller(0) Class Loader" />
+                    <f:selectItem itemValue="C1" itemLabel="Caller(1) Class Loader" />
+                    <f:selectItem itemValue="C2" itemLabel="Caller(2) Class Loader" />
+                    <f:selectItem itemValue="C3" itemLabel="Caller(3) Class Loader" />
+                    <f:selectItem itemValue="C4" itemLabel="Caller(4) Class Loader" />
+                    <f:selectItem itemValue="C5" itemLabel="Caller(5) Class Loader" />
+                </h:selectOneMenu>
+            </h:form>
 
             <h1>Resource Search</h1>
 
@@ -27,25 +40,29 @@
                 </div>
             </h:form>
 
-            <h1>Class Loader Chain</h1>
+            <h1>Class Loaders for Kind = #{classLoaderChain.start}</h1>
 
-            <ul>
-                <ui:repeat value="#{classLoaderChain.list}" var="loader">
+            <fieldset>
+                <legend>Summary</legend>
+                Caller Class: #{classLoaderChain.callerClass}
+                <ol>
+                    <ui:repeat value="#{classLoaderChain.list}" var="loader">
+                        <li>#{loader.type}</li>
+                    </ui:repeat>
+                </ol>
+            </fieldset>
 
-                    <li>
-                        <b>
-                            #{loader.type}
-                        </b>
+            <ui:repeat value="#{classLoaderChain.list}" var="loader">
+                <fieldset>
+                    <legend>#{loader.type}</legend>
+                    <ol>
+                        <ui:repeat value="#{loader.URLs}" var="url">
+                            <li>#{url}</li>
+                        </ui:repeat>
+                    </ol>
+                </fieldset>
+            </ui:repeat>
 
-                        <ol>
-                            <ui:repeat value="#{loader.URLs}" var="url">
-                                <li>#{url}</li>
-                            </ui:repeat>
-                        </ol>
-                    </li>
-
-                </ui:repeat>
-            </ul>
         </ui:define>
     </ui:composition>
 </html>
