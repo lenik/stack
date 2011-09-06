@@ -20,7 +20,7 @@ public class DACL
 
     List<DACE> entries;
 
-    @OneToMany(mappedBy = "dacl")
+    @OneToMany(mappedBy = "dacl", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<DACE> getEntries() {
         return entries;

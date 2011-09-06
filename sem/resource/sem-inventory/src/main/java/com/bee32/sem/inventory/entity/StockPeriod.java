@@ -89,7 +89,7 @@ public class StockPeriod
      * 期结余单
      */
     @Redundant
-    @OneToMany(mappedBy = "spec")
+    @OneToMany(mappedBy = "spec", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<StockOrder> getPackOrders() {
         return packOrders;

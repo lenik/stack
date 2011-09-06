@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,8 +50,9 @@ public class PassToNextPolicy
         this.sequences = sequence;
     }
 
-    @OneToMany(mappedBy = "policy")
+    @OneToMany(mappedBy = "policy", orphanRemoval = true)
     @OrderBy("order")
+    @Cascade(CascadeType.ALL)
     public List<PassStep> getSequences() {
         return sequences;
     }

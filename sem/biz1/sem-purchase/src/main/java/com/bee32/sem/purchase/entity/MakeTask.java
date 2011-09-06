@@ -49,7 +49,7 @@ public class MakeTask
         this.deadline = deadline;
     }
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<MakeTaskItem> getItems() {
         return items;

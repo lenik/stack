@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.plover.ox1.dict.ShortNameDict;
 
 @Entity
@@ -38,7 +41,8 @@ public class Palette
         super(name, label);
     }
 
-    @OneToMany(mappedBy = "palette")
+    @OneToMany(mappedBy = "palette", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public List<PaletteEntry> getEntries() {
         return entries;
     }

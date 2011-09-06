@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Index;
 import org.hibernate.annotations.NaturalId;
 
 import com.bee32.plover.arch.util.IdComposite;
@@ -72,6 +73,7 @@ public class MaterialAttribute
      * 额外的属性必须不能是大段文字。大段文字应该存放到附件。
      */
     @Column(length = VALUE_LENGTH)
+    @Index(name = "MaterialAttributeValue")
     public String getValue() {
         return value;
     }

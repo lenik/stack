@@ -69,7 +69,7 @@ public class MailFolder
         this.color = color;
     }
 
-    @OneToMany(mappedBy = "folder")
+    @OneToMany(mappedBy = "folder", orphanRemoval = true)
     @Cascade({ CascadeType.ALL })
     public List<MailDelivery> getMails() {
         return mails;

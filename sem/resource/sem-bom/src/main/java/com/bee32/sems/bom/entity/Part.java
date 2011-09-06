@@ -86,7 +86,7 @@ public class Part
     /**
      * 子部件（半成品或原材料）
      */
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<PartItem> getChildren() {
         return children;

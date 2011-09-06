@@ -7,6 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bee32.plover.ox1.typePref.TypePrefEntity;
 
 @Entity
@@ -51,7 +54,8 @@ public class EntityInfo
         this.description = description;
     }
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
     public List<EntityColumn> getColumns() {
         if (columns == null) {
             synchronized (this) {

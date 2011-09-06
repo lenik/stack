@@ -46,7 +46,7 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
      * @see #addItem(Item)
      * @see #removeItem(Item)
      */
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<Item> getItems() {
         // TODO Collections.unmodifiableList(items);

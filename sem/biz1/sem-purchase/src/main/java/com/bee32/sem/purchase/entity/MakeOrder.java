@@ -67,7 +67,7 @@ public class MakeOrder
         this.status = status;
     }
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<MakeOrderItem> getItems() {
         return items;

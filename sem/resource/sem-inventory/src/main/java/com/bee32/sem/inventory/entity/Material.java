@@ -17,6 +17,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.Index;
 
 import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.sem.file.entity.UserFile;
@@ -99,6 +100,7 @@ public class Material
      * 物品条码
      */
     @Column(length = BARCODE_LENGTH)
+    @Index(name = "material_bar_code")
     public String getBarCode() {
         return barCode;
     }
@@ -114,6 +116,7 @@ public class Material
      * 规格型号
      */
     @Column(length = MODELSPEC_LENGTH)
+    @Index(name = "material_model_spec")
     public String getModelSpec() {
         return modelSpec;
     }
@@ -208,7 +211,7 @@ public class Material
      *
      * （此属性不可索引）
      */
-    @OneToMany(mappedBy = "material")
+    @OneToMany(mappedBy = "material", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<MaterialAttribute> getAttributes() {
         return attributes;
@@ -237,7 +240,7 @@ public class Material
         this.attachments = attachments;
     }
 
-    @OneToMany(mappedBy = "material")
+    @OneToMany(mappedBy = "material", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<MaterialWarehouseOption> getOptions() {
         return options;
@@ -247,7 +250,7 @@ public class Material
         this.options = options;
     }
 
-    @OneToMany(mappedBy = "material")
+    @OneToMany(mappedBy = "material", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<MaterialPreferredLocation> getPreferredLocations() {
         return preferredLocations;
@@ -262,7 +265,7 @@ public class Material
      *
      * @return Non-<code>null</code> price list.
      */
-    @OneToMany(mappedBy = "material")
+    @OneToMany(mappedBy = "material", orphanRemoval = true)
     @OrderBy("date DESC")
     @Cascade(CascadeType.ALL)
     public List<MaterialPrice> getPrices() {

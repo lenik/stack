@@ -53,7 +53,7 @@ public class StockInventory
     /**
      * 库存快照列表
      */
-    @OneToMany(mappedBy = "inventory")
+    @OneToMany(mappedBy = "inventory", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
     public List<StockPeriod> getSnapshots() {
         return snapshots;

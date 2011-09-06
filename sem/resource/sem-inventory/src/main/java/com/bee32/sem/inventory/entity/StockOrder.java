@@ -11,6 +11,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Index;
+
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.tx.entity.StockTransfer;
 import com.bee32.sem.people.entity.Org;
@@ -99,6 +101,7 @@ public class StockOrder
     }
 
     @Column(name = "subject", length = 4, nullable = false)
+    @Index(name = "##_subject")
     String get_subject() {
         return subject.getValue();
     }
@@ -124,6 +127,7 @@ public class StockOrder
      *
      * @return 作业ID （根据用途对应具体的作业类型），如果没有对应作业则返回 <code>null</code>。
      */
+    @Index(name = "##_jobId")
     public Long getJobId() {
         return jobId;
     }
