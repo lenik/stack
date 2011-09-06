@@ -67,8 +67,6 @@
                             rowIndexVar="rowIndex">
 
                             <p:ajax event="rowSelect" listener="#{chanceBean.onRowSelect}" update="chanceForm:toolbar" />
-                            <p:ajax event="rowUnselect" listener="#{chanceBean.onRowUnselect}"
-                                update="chanceForm:toolbar" />
 
                             <p:column headerText="创建日期" style="width:140px;">
                                 <h:outputText value="#{chance.date}" />
@@ -166,7 +164,6 @@
 
                                 <h:outputLabel for="stage" value="机会阶段:" />
                                 <t:panelGroup colspan="3">
-                                    <!--                                     <h:outputText id="stage" value="stage" /> -->
                                     <p:selectOneMenu id="stage" value="#{_c.stage.displayId}" style="width:120px;"
                                         disabled="true">
                                         <f:selectItems value="#{chanceBean.stage}" />
@@ -179,25 +176,23 @@
                             <p:toolbar id="actionToolbar">
                                 <p:toolbarGroup align="left" disabled="#{chanceBean.state == 'VIEW'}">
                                     <p:commandButton id="relateActionButton" value="增加关联"
-                                        actionListener="#{chanceBean.initActions}" update="dialogForm:actionCopyList"
+                                        actionListener="#{chanceBean.initActions}" update=":dialogForm:actionCopyList"
                                         oncomplete="chooseChanceActionDialog.show();"
                                         disabled="#{!(chanceBean.state == 'EDIT')}" />
                                     <p:commandButton id="unrelateActionButton" value="取消关联"
                                         onclick="deleteActionConfirm.show();"
-                                        disabled="#{!(chanceBean.state == 'EDIT' and chanceBean.actions.selected)}" />
+                                        disabled="#{!(chanceBean.state == 'EDIT' and _c.selectedAction != null)}" />
                                     <p:commandButton id="viewActionDetailButton" value="详细"
-                                        actionListener="#{chanceBean.viewActionDetail}" update="dialogFrom:actionDetail"
-                                        oncomplete="actionDetailDialog.show();"
-                                        disabled="#{!(chanceBean.state == 'EDIT') and chanceBean.actions.selected}" />
+                                        actionListener="#{chanceBean.viewActionDetail}"
+                                        update=":dialogForm:actionDetail" oncomplete="actionDetailDialog.show();"
+                                        disabled="#{!((chanceBean.state == 'EDIT' or chanceBean.state=='VIEW') and _c.selectedAction != null)}" />
                                 </p:toolbarGroup>
                             </p:toolbar>
                             <p:dataTable id="actionHistories" var="action" value="#{_c.actions}"
                                 selection="#{_c.selectedAction}" selectionMode="single" rowKey="#{action.id}"
                                 rowIndexVar="rowIndex">
                                 <p:ajax event="rowSelect" listener="#{chanceBean.onActionRowSelect}"
-                                    update="chanceForm:mainTab:actionToolbar" />
-                                <p:ajax event="rowUnselect" listener="#{chanceBean.onActionRowUnselect}"
-                                    update="chanceForm:mainTab:actionToolbar" />
+                                    update=":chanceForm:mainTab:actionToolbar" />
                                 <p:column headerText="序号" style="width:45px;">
                                     <h:outputText value="#{rowIndex + 1}" />
                                 </p:column>
@@ -240,14 +235,14 @@
                                     <p:commandButton id="chanceEditQuotationButton" value="编辑"
                                         actionListener="#{chanceBean.editQuotation}"
                                         oncomplete="quotationDialog.show();" update="quotationForm:quotationGrid"
-                                        disabled="#{!(chanceBean.state == 'EDIT') and chanceBean.quotations.selected}" />
+                                        disabled="#{!(chanceBean.state == 'EDIT' and chanceBean.quotations.selected)}" />
                                     <p:commandButton id="chanceDeleteQuotationButton" value="删除"
                                         onclick="quotationConfirmation.show();"
-                                        disabled="#{!(chanceBean.state == 'EDIT') and chanceBean.quotations.selected}" />
+                                        disabled="#{!(chanceBean.state == 'EDIT' and chanceBean.quotations.selected)}" />
                                     <p:commandButton id="chanceViewQuotationButton" value="详细"
                                         actionListener="#{chanceBean.viewQuotationDetail}"
                                         oncomplete="quotationDialog.show();" update="quotationForm:quotationGrid"
-                                        disabled="#{!(chanceBean.state == 'EDIT') and chanceBean.quotations.selected}" />
+                                        disabled="#{!(chanceBean.state == 'EDIT' and chanceBean.quotations.selected)}" />
                                 </p:toolbarGroup>
                             </p:toolbar>
                             <p:dataTable id="quotationList" var="item" value="#{chanceBean.quotations.list}"
@@ -255,8 +250,6 @@
                                 rowKey="#{item.id}" rowIndexVar="rowIndex">
 
                                 <p:ajax event="rowSelect" listener="#{chanceBean.onQuotationRowSelect}"
-                                    update="chanceForm:mainTab:quotationToolbar" />
-                                <p:ajax event="rowUnselect" listener="#{chanceBean.onQuotationRowUnselect}"
                                     update="chanceForm:mainTab:quotationToolbar" />
 
                                 <p:column headerText="序号" style="width:45px;">
@@ -317,7 +310,7 @@
             <p:confirmDialog message="确定要取消此行动记录的关联?" hideEffect="explode" header="注意" severity="alert"
                 widgetVar="deleteActionConfirm">
                 <p:commandButton value="确定" actionListener="#{chanceBean.doDetachAction}"
-                    update="chanceForm:mainTab:actionHistories, chanceForm:mainTab:actionToolbar"
+                    update="chanceForm:mainTab:actionHistories, :chanceForm:mainTab:actionToolbar"
                     oncomplete="deleteActionConfirm.hide();" />
                 <p:commandButton value="取消" onclick="deleteActionConfirm.hide();" />
             </p:confirmDialog>
@@ -386,8 +379,8 @@
                         <h:outputLabel for="set" value="到:" />
                         <p:calendar id="set" pattern="yyyy-MM-dd HH:mm" navigator="#{true}"
                             value="#{chanceBean.searchEndTime}" showOn="button" />
-                        <p:commandButton value="查找" actionListener="#{chanceBean.searchAction}"
-                            update="dialogForm:actionCopyList" async="true" />
+                        <p:commandButton value="查找" actionListener="#{chanceBean.searchAction}" update="actionCopyList"
+                            async="true" />
 
                     </h:panelGrid>
                     <p:outputPanel id="actionCopyList">
@@ -431,7 +424,7 @@
             <p:dialog header="行动记录详细" widgetVar="actionDetailDialog" modal="true" width="600" height="400">
                 <p:outputPanel id="actionDetail">
                     <p:outputPanel rendered="#{chanceBean.chances.selected}">
-                        <c:set var="_a" value="#{chanceBean.chances.selection.selectedAction}" />
+                        <c:set var="_a" value="#{chanceBean.chanceCopy.selectedAction}" />
                         <t:panelGrid columns="4"
                             columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
 

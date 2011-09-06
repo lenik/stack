@@ -76,7 +76,7 @@ public class ChanceBean
     ChanceQuotationDto quotationCopy;
 
     String materialPattern;
-    ChanceQuotationItemDto selectedQuotationItem;
+    ChanceQuotationItemDto selectedQuotationItem = new ChanceQuotationItemDto().create();
 
     MaterialCategoryTreeModel materialTree;
 
@@ -88,7 +88,7 @@ public class ChanceBean
 
     @PostConstruct
     public void initialization() {
-        initList();
+        initChances();
         quotations = UIHelper.selectable(new ArrayList<ChanceQuotationDto>());
     }
 
@@ -222,7 +222,7 @@ public class ChanceBean
         });
     }
 
-    public void initList() {
+    public void initChances() {
         if (isSearching) {
             EntityDataModelOptions<Chance, ChanceDto> edmo = new EntityDataModelOptions<Chance, ChanceDto>(
                     Chance.class, ChanceDto.class);
@@ -314,10 +314,10 @@ public class ChanceBean
     public void searchChance() {
         if (subjectPattern != null) {
             isSearching = true;
-            initList();
+            initChances();
         } else {
             isSearching = false;
-            initList();
+            initChances();
         }
         initToolbar();
         chances.deselect();
@@ -347,17 +347,18 @@ public class ChanceBean
     }
 
     public void doDetachAction() {
-        if (!actions.isSelected()) {
+        if (chanceCopy.getSelectedAction().isNull()) {
             uiLogger.error("错误提示:", "请选择行动记录!");
             return;
         }
-        ChanceAction chanceAction = actions.getSelection().unmarshal();
+        ChanceAction chanceAction = chanceCopy.getSelectedAction().unmarshal();
         chanceAction.setChance(null);
         chanceAction.setStage(null);
         try {
             serviceFor(ChanceAction.class).save(chanceAction);
-            chanceCopy.deleteAction(actions.getSelection());
-            actions.deselect();
+            chanceCopy.deleteAction(chanceCopy.getSelectedAction());
+            chanceCopy.setSelectedAction(null);
+// actions.deselect();
             uiLogger.info("反关联成功");
         } catch (Exception e) {
             uiLogger.error("反关联失败", e);
@@ -464,7 +465,7 @@ public class ChanceBean
             serviceFor(Chance.class).saveOrUpdate(_chance);
 
             setActiveTab(TAB_INDEX);
-            initList();
+            initChances();
             initToolbar();
 
             uiLogger.info("提示", "保存销售机会成功");
@@ -488,7 +489,7 @@ public class ChanceBean
                 serviceFor(ChanceAction.class).save(_action);
             }
             serviceFor(Chance.class).delete(chanceToDelete);
-            initList();
+            initChances();
             initToolbar();
             uiLogger.info("成功删除行动记录");
         } catch (Exception e) {
