@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bee32.plover.util.i18n.ITimeZoneAware;
 import com.p6spy.engine.logging.appender.FormattedLogger;
 import com.p6spy.engine.logging.appender.P6Logger;
 
@@ -20,6 +21,7 @@ public class PloverP6spySlf4jLogger
     static DateFormat timeFormat;
     static {
         timeFormat = new SimpleDateFormat("HH:mm:ss.MM");
+        timeFormat.setTimeZone(ITimeZoneAware.TZ_GMT);
     }
 
     /**
