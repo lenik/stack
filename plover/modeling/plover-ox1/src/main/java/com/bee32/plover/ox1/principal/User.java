@@ -149,6 +149,26 @@ public class User
         return true;
     }
 
+    @Transient
+    public Group getFirstGroup() {
+        if (primaryGroup != null)
+            return primaryGroup;
+        if (assignedGroups.isEmpty())
+            return null;
+        Group firstAssignedGroup = assignedGroups.get(0);
+        return firstAssignedGroup;
+    }
+
+    @Transient
+    public Role getFirstRole() {
+        if (primaryRole != null)
+            return primaryRole;
+        if (assignedRoles.isEmpty())
+            return null;
+        Role firstAssignedRole = assignedRoles.get(0);
+        return firstAssignedRole;
+    }
+
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @Cascade({ CascadeType.ALL })
     public List<UserEmail> getEmails() {

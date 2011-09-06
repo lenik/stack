@@ -3,6 +3,7 @@ package com.bee32.plover.ox1.tree;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.free.ICharOut;
@@ -158,6 +159,18 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
             return true;
         else
             return getIndex() == parent.size() - 1;
+    }
+
+    @Transient
+    public List<T> getChain() {
+        List<T> chain = new ArrayList<T>();
+        T node = self();
+        while (node != null) {
+            chain.add(node);
+            node = node.parent;
+        }
+        Collections.reverse(chain);
+        return chain;
     }
 
     @Transient

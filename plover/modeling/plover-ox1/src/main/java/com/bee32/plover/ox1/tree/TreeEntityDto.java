@@ -3,12 +3,14 @@ package com.bee32.plover.ox1.tree;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.free.ICharOut;
 import javax.free.ParseException;
 import javax.free.Stdio;
 import javax.free.TypeConvertException;
+import javax.persistence.Transient;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
@@ -142,6 +144,18 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
 
     public boolean isLast() {
         return getIndex() == parent.size() - 1;
+    }
+
+    @Transient
+    public List<T> getChain() {
+        List<T> chain = new ArrayList<T>();
+        T node = self();
+        while (node != null) {
+            chain.add(node);
+            node = node.parent;
+        }
+        Collections.reverse(chain);
+        return chain;
     }
 
     public String getGraphPrefix() {
