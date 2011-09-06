@@ -67,9 +67,13 @@
     <ui:insert name="pageFooter" />
 
     <ui:insert name="banner">
-        <div style="display: inline;">当前公司: #{loginInfo.currentCorp.name}</div>
-        <div style="display: inline; margin-left: 100px;">当前用户: #{loginInfo.currentUser.name}</div>
-        <div style="display: inline; margin-left: 100px;">
+        <div style="display: inline;">
+            当前用户：
+            <ui:repeat var="node" value="#{loginPersonInfo.chain}">
+                <span style="display">#{node}</span>
+            </ui:repeat>
+        </div>
+        <div style="display: inline; margin-left: 200px;">
             <a id="aQuit" name="aQuit" href="#">退出</a>
         </div>
     </ui:insert>
