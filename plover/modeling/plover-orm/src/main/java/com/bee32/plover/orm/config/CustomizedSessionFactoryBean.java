@@ -132,7 +132,6 @@ public abstract class CustomizedSessionFactoryBean
         properties.setProperty("hibernate.id.new_generator_mappings", "true");
 
         properties.setProperty("org.hibernate.flushMode", "COMMIT");
-        properties.setProperty(generateStatistics, "true");
 
         // Misc
         properties.setProperty(currentSessionContextClass, "thread");

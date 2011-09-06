@@ -42,6 +42,7 @@ public abstract class TestPurposeSessionFactoryBean
         properties.setProperty(showSql, "false"); // true
         properties.setProperty(formatSql, "true");
         properties.setProperty(useSqlComments, "true");
+        // properties.setProperty(generateStatistics, "true");
 
         // Performance
         properties.setProperty(connectionPoolSize, "1");
