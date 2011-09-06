@@ -7,10 +7,6 @@ class NullLoginPersonInfo
 
     private static final long serialVersionUID = 1L;
 
-    public NullLoginPersonInfo() {
-        super(null);
-    }
-
     @Override
     public PersonDto getPersonOpt() {
         return null;

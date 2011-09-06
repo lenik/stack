@@ -8,8 +8,6 @@ import java.util.Set;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.LoginException;
 import com.bee32.icsf.login.LoginInfo;
@@ -20,8 +18,6 @@ import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.dto.PersonRoleDto;
 
-@Component
-@Scope("session")
 public class LoginPersonInfo
         implements Serializable {
 
@@ -31,17 +27,9 @@ public class LoginPersonInfo
 
     static Logger logger = Logger.getLogger(LoginPersonInfo.class);
 
-    final HttpSession session;
     PersonDto person;
 
     public LoginPersonInfo() {
-        LoginPersonInfo current = getInstance();
-        this.session = current.session;
-        this.person = current.person;
-    }
-
-    public LoginPersonInfo(HttpSession session) {
-        this.session = session;
     }
 
     public static LoginPersonInfo getInstance() {
@@ -59,7 +47,7 @@ public class LoginPersonInfo
 
         LoginPersonInfo loginPersonInfo = (LoginPersonInfo) session.getAttribute(SESSION_KEY);
         if (loginPersonInfo == null) {
-            loginPersonInfo = new LoginPersonInfo(session);
+            loginPersonInfo = new LoginPersonInfo();
             session.setAttribute(SESSION_KEY, loginPersonInfo);
         }
 
@@ -83,6 +71,7 @@ public class LoginPersonInfo
     }
 
     public void destroy() {
+        HttpSession session = ThreadHttpContext.getSession();
         session.removeAttribute(SESSION_KEY);
     }
 
@@ -101,7 +90,10 @@ public class LoginPersonInfo
                     chain.add(name);
                 }
             }
-            chain.add(person.getDisplayName());
+
+            // True Name (login)
+            String loginName = LoginInfo.getInstance().getUser().getName();
+            chain.add(person.getDisplayName() + " (" + loginName + ")");
         }
         return chain;
     }

@@ -8,8 +8,6 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.bee32.plover.ox1.principal.AbstractPrincipalDto;
 import com.bee32.plover.ox1.principal.GroupDto;
@@ -18,8 +16,6 @@ import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
-@Component
-@Scope("session")
 public class LoginInfo
         implements Serializable {
 
@@ -29,23 +25,10 @@ public class LoginInfo
 
     static Logger logger = Logger.getLogger(LoginInfo.class);
 
-    final HttpSession session;
     User internalUser;
     UserDto user;
 
-    /**
-     * For {@link NullLoginInfo} only.
-     */
     public LoginInfo() {
-        // Copy from instance for current session.
-        LoginInfo current = getInstance();
-        this.session = current.session;
-        this.internalUser = current.internalUser;
-        this.user = current.user;
-    }
-
-    public LoginInfo(HttpSession session) {
-        this.session = session;
     }
 
     public static LoginInfo getInstance() {
@@ -63,7 +46,7 @@ public class LoginInfo
 
         LoginInfo loginInfo = (LoginInfo) session.getAttribute(SESSION_KEY);
         if (loginInfo == null) {
-            loginInfo = new LoginInfo(session);
+            loginInfo = new LoginInfo();
             session.setAttribute(SESSION_KEY, loginInfo);
         }
 
@@ -114,6 +97,7 @@ public class LoginInfo
     }
 
     public void destroy() {
+        HttpSession session = ThreadHttpContext.getSession();
         session.removeAttribute(SESSION_KEY);
     }
 

@@ -37,12 +37,13 @@ public class UILogin
     public void encodeEnd(FacesContext context)
             throws IOException, LoginException {
 
+        User currentUser = LoginInfo.getInstance().getInternalUser();
+
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", null);
         writer.writeAttribute("id", getClientId(context), "id");
         writer.writeAttribute("name", getClientId(context), "clientId"); // ???
 
-        User currentUser = LoginInfo.getInstance().getInternalUser();
         writer.write("Logged in as " + currentUser.getName());
 
         if (_1) {

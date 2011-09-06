@@ -8,10 +8,6 @@ public class NullLoginInfo
 
     private static final long serialVersionUID = 1L;
 
-    public NullLoginInfo() {
-        super(null);
-    }
-
     @Override
     public User getInternalUserOpt() {
         return null;
