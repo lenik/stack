@@ -136,11 +136,11 @@
 
                                             <p:column headerText="操作" style="width:70px">
                                                 <p:commandLink update="chancePartyEditForm:chancePartyItem" title="编辑"
-                                                    process="@this" oncomplete="chanceParty.show();"
-                                                    disabled="#{chanceBean.state == 'VIEW'}" style="padding: 4px;">
+                                                    oncomplete="chanceParty.show();" style="padding: 4px;"
+                                                    disabled="#{chanceBean.state == 'VIEW'}">
                                                     <p:graphicImage value="#{location.ICON}/etool16/validate.gif" />
                                                     <f:setPropertyActionListener value="#{_party}"
-                                                        target="#{chanceBean.selectedChanceParty}" />
+                                                        target="#{_c.selectedParty}" />
                                                 </p:commandLink>
                                                 <p:commandLink title="删除" process="@this"
                                                     oncomplete="chancePartyConfirmation.show();"
@@ -370,7 +370,7 @@
                     <p:separator />
                     <h:panelGrid columns="2">
                         <p:commandButton value="确定" actionListener="#{chanceBean.addChanceParty}"
-                            oncomplete="chooseChancePartyDialog.hide();" update="chanceForm:mainTab:chanceParties"
+                            oncomplete="chooseChancePartyDialog.hide();" update=":chanceForm:mainTab:chanceParties"
                             async="true" />
                         <p:commandButton value="取消" oncomplete="chooseChancePartyDialog.hide();" />
                     </h:panelGrid>
@@ -676,7 +676,7 @@
         </h:form>
 
         <h:form id="chancePartyEditForm">
-            <c:set var="_sp" value="#{chanceBean.chances.selection.selectedParty}" />
+            <c:set var="_sp" value="#{chanceBean.chanceCopy.selectedParty}" />
             <p:dialog header="编辑客户角色" modal="true" widgetVar="chanceParty" height="300" width="350">
                 <t:panelGrid columns="3" id="chancePartyItem">
                     <h:outputText value="客户名称:" />
@@ -691,7 +691,7 @@
                             <p:inputText value="#{_sp.role}" rendered="#{chanceBean.roleRendered}">
                             </p:inputText>
                             <p:commandLink title="修改" actionListener="#{chanceBean.editCustomerRole}"
-                                rendered="#{!chanceBean.roleRendered}" update="chancePartyEditForm:chancePartyItem">
+                                rendered="#{!chanceBean.roleRendered}" update="chancePartyItem">
                                 <span class="ui-icon ui-icon-pencil"></span>
                             </p:commandLink>
                             <p:commandLink title="确定" actionListener="#{chanceBean.editCustomerRole}"
@@ -703,7 +703,7 @@
 
                     <t:panelGroup colspan="3">
                         <p:commandButton value="确定" oncomplete="chanceParty.hide();"
-                            update="chanceForm:mainTab:chanceParties" />
+                            update=":chanceForm:mainTab:chanceParties" />
                         <p:commandButton value="取消" onclick="chanceParty.hide();" />
                     </t:panelGroup>
                 </t:panelGrid>
