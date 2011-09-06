@@ -11,6 +11,7 @@ import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import com.bee32.icsf.login.LoginException;
 import com.bee32.icsf.login.LoginInfo;
 import com.bee32.plover.ox1.principal.User;
 
@@ -34,7 +35,7 @@ public class UILogin
 
     @Override
     public void encodeEnd(FacesContext context)
-            throws IOException {
+            throws IOException, LoginException {
 
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", null);

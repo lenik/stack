@@ -10,7 +10,7 @@ public class ViewConfig
 
     private static final long serialVersionUID = 1L;
 
-    int pageSize = 10;
+    int pageSize = 50;
     String pageSizeTemplate = "5,10,15";
     String allowTypes = "/(\\.|\\/)(gif|jpe?g|png|doc|docx|xsl|xslx|xls)$/";
 

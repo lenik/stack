@@ -74,7 +74,8 @@ public class LoginInfo
         return internalUser;
     }
 
-    public final User getInternalUser() {
+    public final User getInternalUser()
+            throws LoginException {
         User user = getInternalUserOpt();
         if (user == null)
             throw new LoginException("Not login yet.");
@@ -89,7 +90,8 @@ public class LoginInfo
         return user;
     }
 
-    public final UserDto getUser() {
+    public final UserDto getUser()
+            throws LoginException {
         UserDto user = getUserOpt();
         if (user == null)
             throw new LoginException("Not login yet.");
@@ -117,6 +119,13 @@ public class LoginInfo
 
     public List<AbstractPrincipalDto<? extends Principal>> getChain() {
         List<AbstractPrincipalDto<? extends Principal>> chain = new ArrayList<AbstractPrincipalDto<? extends Principal>>();
+        if (user == null) {
+            UserDto dummy = new UserDto();
+            dummy.setName("(n/a)");
+            chain.add(dummy);
+            return chain;
+        }
+
         chain.add(user);
 
         GroupDto group = user.getFirstGroup();

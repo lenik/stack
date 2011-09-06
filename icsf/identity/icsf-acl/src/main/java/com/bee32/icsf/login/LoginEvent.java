@@ -21,8 +21,6 @@ public class LoginEvent
     }
 
     public void setUser(User user) {
-        if (user == null)
-            throw new NullPointerException("user");
         this.user = user;
     }
 

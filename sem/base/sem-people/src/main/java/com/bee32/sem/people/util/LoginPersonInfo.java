@@ -70,7 +70,8 @@ public class LoginPersonInfo
         return person;
     }
 
-    public final PersonDto getPerson() {
+    public final PersonDto getPerson()
+            throws LoginException {
         PersonDto person = getPersonOpt();
         if (person == null)
             throw new LoginException("Not login yet.");
