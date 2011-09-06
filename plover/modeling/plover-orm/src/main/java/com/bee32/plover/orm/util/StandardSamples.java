@@ -97,6 +97,11 @@ public class StandardSamples
         }
 
         @Override
+        public int getLevel() {
+            return STANDARD;
+        }
+
+        @Override
         public void beginLoad() {
             unit.beginLoadSamples(this);
         }
