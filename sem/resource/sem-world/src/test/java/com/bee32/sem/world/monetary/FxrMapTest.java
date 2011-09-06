@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.junit.Assert;
 
-import com.bee32.sem.misc.i18n.ICurrencyAware;
+import com.bee32.plover.util.i18n.ICurrencyAware;
 
 public class FxrMapTest
         extends Assert

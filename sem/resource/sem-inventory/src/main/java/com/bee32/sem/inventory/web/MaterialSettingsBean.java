@@ -14,6 +14,7 @@ import org.zkoss.lang.Strings;
 
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.tree.TreeCriteria;
+import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.frame.ui.SelectionAdapter;
 import com.bee32.sem.frame.ui.SelectionEvent;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
@@ -24,7 +25,6 @@ import com.bee32.sem.inventory.entity.MaterialCategory;
 import com.bee32.sem.inventory.entity.MaterialPrice;
 import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
-import com.bee32.sem.misc.i18n.CurrencyConfig;
 import com.bee32.sem.sandbox.MultiTabEntityVdx;
 import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.MCValue;

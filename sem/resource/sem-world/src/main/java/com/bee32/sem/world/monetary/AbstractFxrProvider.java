@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.bee32.plover.arch.DataService;
-import com.bee32.sem.misc.i18n.CurrencyConfig;
-import com.bee32.sem.misc.i18n.ICurrencyAware;
+import com.bee32.plover.util.i18n.CurrencyConfig;
+import com.bee32.plover.util.i18n.ICurrencyAware;
 
 public abstract class AbstractFxrProvider
         extends DataService

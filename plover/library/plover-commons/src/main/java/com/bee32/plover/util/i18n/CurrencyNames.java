@@ -1,4 +1,4 @@
-package com.bee32.sem.misc.i18n;
+package com.bee32.plover.util.i18n;
 
 import java.util.Currency;
 import java.util.HashMap;

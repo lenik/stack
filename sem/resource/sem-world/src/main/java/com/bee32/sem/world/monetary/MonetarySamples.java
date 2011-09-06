@@ -6,7 +6,7 @@ import java.util.Date;
 import javax.free.Dates;
 
 import com.bee32.plover.orm.util.SampleContribution;
-import com.bee32.sem.misc.i18n.ICurrencyAware;
+import com.bee32.plover.util.i18n.ICurrencyAware;
 
 public class MonetarySamples
         extends SampleContribution

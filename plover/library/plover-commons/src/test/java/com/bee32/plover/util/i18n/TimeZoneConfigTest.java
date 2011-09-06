@@ -1,8 +1,12 @@
-package com.bee32.sem.misc.i18n;
+package com.bee32.plover.util.i18n;
 
 import java.util.TimeZone;
 
 import org.junit.Assert;
+
+import com.bee32.plover.util.i18n.ILocaleAware;
+import com.bee32.plover.util.i18n.TimeZoneConfig;
+import com.bee32.plover.util.i18n.TimeZoneOrder;
 
 public class TimeZoneConfigTest
         extends Assert

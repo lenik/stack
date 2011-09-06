@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import com.bee32.sem.misc.i18n.CurrencyConfig;
-import com.bee32.sem.misc.i18n.CurrencyOrder;
+import com.bee32.plover.util.i18n.CurrencyConfig;
+import com.bee32.plover.util.i18n.CurrencyOrder;
 
 public class MCVector
         implements Serializable, Iterable<MCValue> {

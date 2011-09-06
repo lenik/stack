@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Limit;
 import com.bee32.plover.criteria.hibernate.Order;
-import com.bee32.sem.misc.i18n.CurrencyConfig;
+import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.world.monetary.AbstractFxrProvider;
 import com.bee32.sem.world.monetary.FxrCriteria;
 import com.bee32.sem.world.monetary.FxrMap;

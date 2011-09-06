@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import com.bee32.sem.misc.i18n.CurrencyConfig;
+import com.bee32.plover.util.i18n.CurrencyConfig;
 
 public class CurrencyUtil {
 

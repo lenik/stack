@@ -15,9 +15,9 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bee32.sem.misc.i18n.CurrencyNames;
-import com.bee32.sem.misc.i18n.ILocaleAware;
-import com.bee32.sem.misc.i18n.ITimeZoneAware;
+import com.bee32.plover.util.i18n.CurrencyNames;
+import com.bee32.plover.util.i18n.ILocaleAware;
+import com.bee32.plover.util.i18n.ITimeZoneAware;
 import com.bee32.sem.world.monetary.FxrRecord;
 import com.bee32.sem.world.monetary.FxrTable;
 

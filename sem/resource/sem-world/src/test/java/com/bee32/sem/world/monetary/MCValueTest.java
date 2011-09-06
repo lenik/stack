@@ -6,7 +6,7 @@ import java.util.Locale;
 import org.junit.Test;
 
 import com.bee32.plover.test.TestSupport;
-import com.bee32.sem.misc.i18n.ICurrencyAware;
+import com.bee32.plover.util.i18n.ICurrencyAware;
 
 public class MCValueTest
         extends TestSupport

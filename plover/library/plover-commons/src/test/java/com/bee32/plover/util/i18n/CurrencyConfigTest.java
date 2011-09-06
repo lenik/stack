@@ -1,8 +1,12 @@
-package com.bee32.sem.misc.i18n;
+package com.bee32.plover.util.i18n;
 
 import java.util.Currency;
 
 import org.junit.Assert;
+
+import com.bee32.plover.util.i18n.CurrencyConfig;
+import com.bee32.plover.util.i18n.ICurrencyAware;
+import com.bee32.plover.util.i18n.ILocaleAware;
 
 public class CurrencyConfigTest
         extends Assert

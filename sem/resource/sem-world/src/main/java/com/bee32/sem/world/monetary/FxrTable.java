@@ -9,10 +9,10 @@ import java.util.TreeMap;
 
 import javax.free.Dates;
 
-import com.bee32.sem.misc.i18n.CurrencyConfig;
-import com.bee32.sem.misc.i18n.CurrencyOrder;
-import com.bee32.sem.misc.i18n.ICurrencyAware;
-import com.bee32.sem.misc.i18n.ILocaleAware;
+import com.bee32.plover.util.i18n.CurrencyConfig;
+import com.bee32.plover.util.i18n.CurrencyOrder;
+import com.bee32.plover.util.i18n.ICurrencyAware;
+import com.bee32.plover.util.i18n.ILocaleAware;
 
 public class FxrTable
         implements ICurrencyAware, ILocaleAware {
