@@ -8,19 +8,18 @@ import java.util.TreeMap;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.annotations.MapKey;
-import org.hibernate.annotations.MapKeyManyToMany;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
@@ -66,8 +65,8 @@ public class Food
         this.rank = rank;
     }
 
-    @CollectionOfElements
-    @MapKeyManyToMany(joinColumns = @JoinColumn(name = "ingr"))
+    @ElementCollection
+    @MapKeyJoinColumn(name = "ingr")
     @Column(name = "percent")
     @Cascade(CascadeType.ALL)
     public Map<Food, Double> getIngredients() {
@@ -89,9 +88,9 @@ public class Food
     }
 
     @OneToMany
-    @MapKey(columns = @Column(name = "relname"))
-    @Sort(type = SortType.NATURAL)
+    @MapKeyColumn(name = "relname")
     @Column(name = "relfood")
+    @Sort(type = SortType.NATURAL)
     @Cascade(CascadeType.ALL)
     public SortedMap<String, Food> getRelatedFoods() {
         if (relatedFoods == null)

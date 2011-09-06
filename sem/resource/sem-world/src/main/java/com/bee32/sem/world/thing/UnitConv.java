@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.annotations.MapKeyManyToMany;
 
 import com.bee32.plover.ox1.dict.NameDict;
 
@@ -58,9 +57,9 @@ public class UnitConv
         this.unit = unit;
     }
 
-    @CollectionOfElements
+    @ElementCollection
     @JoinTable(name = "UnitConvEntry")
-    @MapKeyManyToMany
+    @MapKeyJoinColumn
     @Column(name = "scale", nullable = false)
     public Map<Unit, Double> getScaleMap() {
         return scaleMap;

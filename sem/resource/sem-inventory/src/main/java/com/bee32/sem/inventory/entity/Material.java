@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -16,7 +17,6 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.Index;
 
 import com.bee32.plover.orm.cache.Redundant;
@@ -226,8 +226,7 @@ public class Material
     /**
      * 附件文件。
      */
-    @CollectionOfElements
-    @Cascade(CascadeType.ALL)
+    @ElementCollection
     @JoinTable(name = "MaterialAttachment", //
     /*        */inverseJoinColumns = @JoinColumn(name = "userFile"))
     public List<UserFile> getAttachments() {
