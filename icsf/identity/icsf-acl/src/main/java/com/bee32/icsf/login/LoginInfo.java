@@ -1,14 +1,23 @@
 package com.bee32.icsf.login;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import com.bee32.plover.ox1.principal.Group;
+import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
+@Component
+@Scope("session")
 public class LoginInfo
         implements Serializable {
 
@@ -24,13 +33,14 @@ public class LoginInfo
     /**
      * For {@link NullLoginInfo} only.
      */
-    LoginInfo() {
-        this.session = null;
+    public LoginInfo() {
+        // Copy from instance for current session.
+        LoginInfo current = getInstance();
+        this.session = current.session;
+        this.user = current.user;
     }
 
     public LoginInfo(HttpSession session) {
-        if (session == null)
-            throw new NullPointerException("session");
         this.session = session;
     }
 
@@ -60,7 +70,8 @@ public class LoginInfo
         return user;
     }
 
-    public User getUser() {
+    public final User getUser() {
+        User user = getUserOpt();
         if (user == null)
             throw new LoginException("Not login yet.");
         return user;
@@ -82,6 +93,20 @@ public class LoginInfo
 
     public void destroy() {
         session.removeAttribute(SESSION_KEY);
+    }
+
+    public List<Principal> getChain() {
+        List<Principal> chain = new ArrayList<Principal>();
+        chain.add(user);
+
+        Group group = user.getFirstGroup();
+        while (group != null) {
+            chain.add(group);
+            group = group.getInheritedGroup();
+        }
+
+        Collections.reverse(chain);
+        return chain;
     }
 
 }
