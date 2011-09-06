@@ -1,0 +1,15 @@
+<VirtualHost *:80>
+    ServerName reloc.bee32.com
+    ServerAlias bugs.bee32.com
+    ServerAdmin admin@bee32.com
+
+    LogLevel warn
+    ErrorLog  /var/log/apache2/alias_error.log
+    CustomLog /var/log/apache2/alias_access.log combined
+
+    RewriteEngine On
+
+    RewriteCond %{HTTP_HOST} ^bugs.bee32.com$
+    RewriteRule ^(.*)$ http://code.google.com/p/secca/issues$1 [R=301,L]
+
+</VirtualHost>

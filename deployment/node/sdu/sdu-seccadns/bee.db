@@ -31,6 +31,7 @@ app-0                   CNAME   node-us1        ; 应用辅助结点
 app-1                   CNAME   node-us1        ; 应用结点-1
 
 *.1                     CNAME   app-1           ; 应用结点-1映射
+*.2                     CNAME   c617.dyndns.org.
 ;;1.1                   CNAME   *.1             ; 【应用】三元机电
 ;;2.1                   CNAME   *.1             ; 【应用】秀之莎
 
@@ -64,5 +65,6 @@ repo                    CNAME   s-dev           ; SDU仓库/预编译部署单�
 static                  CNAME   app-1           ; 静态资源
 svn                     CNAME   dev             ; SVN仓库/版本控制
 track                   CNAME   s-dev           ; Trac 项目管理支持
+bugs                    CNAME   s-dev           ; 缺陷跟踪系统
 www                     CNAME   node-us1        ; SECCA 工程开发网
 

@@ -15,7 +15,8 @@ dist_seccadb_DATA = \
 	bia.db
 
 dist_sites_DATA = \
-	bee-aliases.site
+	bee-aliases.site \
+	bee-reloc.site
 
 setup_SCRIPTS = \
 	post-install.sh \

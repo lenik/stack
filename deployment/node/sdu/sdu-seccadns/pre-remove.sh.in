@@ -17,6 +17,7 @@ echo "Reload bind9"
 
 echo "Unload aliases site"
     a2dissite bee-aliases.site
+    a2dissite bee-reloc.site
     a2reload
 
 exit 0

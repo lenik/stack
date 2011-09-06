@@ -24,6 +24,7 @@ echo "Load aliases site"
     a2enmod ssl
     a2enmod rewrite
     a2ensite bee-aliases.site
+    a2ensite bee-reloc.site
     a2reload
 
 exit 0

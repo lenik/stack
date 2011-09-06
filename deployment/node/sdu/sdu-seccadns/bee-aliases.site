@@ -2,7 +2,6 @@
     ServerName bee32.com
     ServerAlias *.bee64.com
     ServerAlias *.seccaproject.com
-    ServerAlias *.bee32.com
     ServerAlias *.s.com.rad.vapeak.com
     ServerAlias *.s.com
     ServerAdmin admin@bee32.com
@@ -34,7 +33,6 @@
     ServerName bee32.com
     ServerAlias *.bee64.com
     ServerAlias *.seccaproject.com
-    ServerAlias *.bee32.com
     ServerAlias *.s.com.rad.vapeak.com
     ServerAlias *.s.com
     ServerAdmin admin@bee32.com
