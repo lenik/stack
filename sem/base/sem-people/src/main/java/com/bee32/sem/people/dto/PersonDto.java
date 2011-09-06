@@ -35,9 +35,13 @@ public class PersonDto
         censusRegister = source.getCensusRegister();
 
         if (selection.contains(ROLES)) {
+            int personRoleSelection = 0;
+            if (selection.contains(ROLES_CHAIN))
+                personRoleSelection = PersonRoleDto.ORG_UNIT_FULL;
+
             roles = new HashSet<PersonRoleDto>();
             for (PersonRole role : source.getRoles()) {
-                PersonRoleDto roleDto = marshal(PersonRoleDto.class, role);
+                PersonRoleDto roleDto = marshal(PersonRoleDto.class, personRoleSelection, role);
                 roles.add(roleDto);
             }
         }

@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Scope;
 import com.bee32.icsf.login.LoginInfo;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.ox1.principal.IUserPrincipal;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.mail.MailFlags;
@@ -25,7 +24,7 @@ import com.bee32.sem.mail.entity.Mail;
 import com.bee32.sem.mail.entity.MailDelivery;
 import com.bee32.sem.mail.entity.MailFolder;
 import com.bee32.sem.mail.entity.MailOrientation;
-import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.util.LoginPersonInfo;
 
 @Scope("view")
@@ -95,7 +94,6 @@ public class MailManageBean
     public void gotoInbox() {
         TabView mainTabView = (TabView) getMainTabView();
 
-
         HtmlPanelGrid panelGrid = new HtmlPanelGrid();
         panelGrid.setColumns(2);
         panelGrid.setTitle("test panel grid");
@@ -126,7 +124,7 @@ public class MailManageBean
         UserDto currentUser = new UserDto().ref(LoginInfo.getInstance().getUser());
         draft.setFromUser(currentUser);
 
-        Person personOpt = LoginPersonInfo.getInstance().getPersonOpt();
+        PersonDto personOpt = LoginPersonInfo.getInstance().getPersonOpt();
         if (personOpt != null) {
             String personName = personOpt.getDisplayName();
             draft.setFrom(personName);
@@ -180,9 +178,8 @@ public class MailManageBean
         }
         List<UserDto> recipientUsers = draft.getRecipientUsers();
         for (UserDto userDto : recipientUsers) {
-            IUserPrincipal currentUser = LoginInfo.getInstance().getUser();
-            User user = serviceFor(User.class).getOrFail(currentUser.getId());
-            mail.setFromUser(user);
+            User currentUser = LoginInfo.getInstance().getInternalUser();
+            mail.setFromUser(currentUser);
             MailDelivery recieveDelivery = new MailDelivery(mail, MailOrientation.RECIPIENT);
             recieveDelivery.setFolder(MailFolder.INBOX);
             recieveDelivery.setOwner(userDto.unmarshal());

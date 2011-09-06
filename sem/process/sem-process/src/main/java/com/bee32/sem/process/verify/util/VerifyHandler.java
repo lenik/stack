@@ -9,7 +9,6 @@ import com.bee32.icsf.login.LoginInfo;
 import com.bee32.plover.ajax.SuccessOrFailMessage;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.orm.web.EntityHandler;
-import com.bee32.plover.ox1.principal.IUserPrincipal;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.servlet.mvc.ActionRequest;
@@ -38,7 +37,7 @@ public class VerifyHandler<E extends VerifiableEntity<K, C>, //
 
         final String _id = req.getParameter("id");
 
-        final IUserPrincipal __currentUser = LoginInfo.getInstance().getUser();
+        final User __currentUser = LoginInfo.getInstance().getInternalUser();
 
         SuccessOrFailMessage sof = new SuccessOrFailMessage("审核完成。") {
 

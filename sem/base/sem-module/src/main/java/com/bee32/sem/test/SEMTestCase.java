@@ -5,7 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.mortbay.resource.Resource;
 import org.springframework.context.ApplicationContext;
 
-import com.bee32.icsf.login.LoginInfo;
+import com.bee32.icsf.login.LoginManager;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.util.SamplesLoaderActivator;
@@ -67,7 +67,8 @@ public class SEMTestCase
             CommonDataManager dataManager = appctx.getBean(CommonDataManager.class);
             User user = dataManager.asFor(User.class).getByName(userName);
 
-            LoginInfo.getInstance().setUser(user);
+            LoginManager loginManager = appctx.getBean(LoginManager.class);
+            loginManager.logIn(user);
         }
     }
 

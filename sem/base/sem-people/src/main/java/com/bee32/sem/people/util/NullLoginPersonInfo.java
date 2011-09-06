@@ -1,6 +1,6 @@
 package com.bee32.sem.people.util;
 
-import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.dto.PersonDto;
 
 class NullLoginPersonInfo
         extends LoginPersonInfo {
@@ -12,7 +12,7 @@ class NullLoginPersonInfo
     }
 
     @Override
-    public Person getPersonOpt() {
+    public PersonDto getPersonOpt() {
         return null;
     }
 

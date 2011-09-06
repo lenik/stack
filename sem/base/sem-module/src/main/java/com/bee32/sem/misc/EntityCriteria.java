@@ -7,6 +7,7 @@ import com.bee32.plover.criteria.hibernate.Between;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.ox1.principal.IUserPrincipal;
+import com.bee32.plover.ox1.principal.User;
 
 public class EntityCriteria
         extends CriteriaSpec {
@@ -18,7 +19,7 @@ public class EntityCriteria
     }
 
     public static CriteriaElement ownedByCurrentUser() {
-        IUserPrincipal currentUser = LoginInfo.getInstance().getUser();
+        User currentUser = LoginInfo.getInstance().getInternalUser();
         if (currentUser.getName().equals("admin"))
             return null;
         else

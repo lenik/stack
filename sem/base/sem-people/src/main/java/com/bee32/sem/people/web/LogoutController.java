@@ -33,7 +33,7 @@ public class LogoutController
             @Override
             protected String eval()
                     throws Exception {
-                User userOpt = LoginInfo.getInstance().getUserOpt();
+                User userOpt = LoginInfo.getInstance().getInternalUserOpt();
 
                 try {
                     loginManager.logOut(userOpt);

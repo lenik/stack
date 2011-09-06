@@ -12,8 +12,8 @@ import com.bee32.icsf.login.LoginInfo;
 import com.bee32.plover.arch.DataService;
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.plover.ox1.principal.IUserPrincipal;
 import com.bee32.plover.ox1.principal.Principal;
+import com.bee32.plover.ox1.principal.User;
 import com.bee32.sem.event.entity.EventPriority;
 import com.bee32.sem.event.entity.Task;
 import com.bee32.sem.process.verify.IVerifyContext;
@@ -148,7 +148,7 @@ public class VerifyService
         if (entity == null)
             throw new NullPointerException("entity");
 
-        IUserPrincipal __currentUser = LoginInfo.getInstance().getUser();
+        User __currentUser = LoginInfo.getInstance().getInternalUser();
 
         // XXX
         // userService.get(0, __currentUser.getId());

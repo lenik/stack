@@ -11,9 +11,11 @@ import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.ox1.principal.Group;
+import com.bee32.plover.ox1.principal.AbstractPrincipalDto;
+import com.bee32.plover.ox1.principal.GroupDto;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.ox1.principal.User;
+import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 
 @Component
@@ -28,7 +30,8 @@ public class LoginInfo
     static Logger logger = Logger.getLogger(LoginInfo.class);
 
     final HttpSession session;
-    User user;
+    User internalUser;
+    UserDto user;
 
     /**
      * For {@link NullLoginInfo} only.
@@ -37,6 +40,7 @@ public class LoginInfo
         // Copy from instance for current session.
         LoginInfo current = getInstance();
         this.session = current.session;
+        this.internalUser = current.internalUser;
         this.user = current.user;
     }
 
@@ -66,28 +70,44 @@ public class LoginInfo
         return loginInfo;
     }
 
-    public User getUserOpt() {
-        return user;
+    public User getInternalUserOpt() {
+        return internalUser;
     }
 
-    public final User getUser() {
-        User user = getUserOpt();
+    public final User getInternalUser() {
+        User user = getInternalUserOpt();
         if (user == null)
             throw new LoginException("Not login yet.");
         return user;
     }
 
-    public void setUser(User user) {
+    public void setInternalUser(User user) {
+        this.internalUser = user;
+    }
+
+    public UserDto getUserOpt() {
+        return user;
+    }
+
+    public final UserDto getUser() {
+        UserDto user = getUserOpt();
+        if (user == null)
+            throw new LoginException("Not login yet.");
+        return user;
+    }
+
+    public void setUser(UserDto user) {
         this.user = user;
     }
 
     public synchronized void runAs(User user, Runnable runnable) {
-        User _saved = this.user;
-        this.user = user;
+        User savedInternalUser = this.internalUser;
+        // UserDto savedUser = this.user;
+        this.internalUser = user;
         try {
             runnable.run();
         } finally {
-            this.user = _saved;
+            this.internalUser = savedInternalUser;
         }
     }
 
@@ -95,11 +115,11 @@ public class LoginInfo
         session.removeAttribute(SESSION_KEY);
     }
 
-    public List<Principal> getChain() {
-        List<Principal> chain = new ArrayList<Principal>();
+    public List<AbstractPrincipalDto<? extends Principal>> getChain() {
+        List<AbstractPrincipalDto<? extends Principal>> chain = new ArrayList<AbstractPrincipalDto<? extends Principal>>();
         chain.add(user);
 
-        Group group = user.getFirstGroup();
+        GroupDto group = user.getFirstGroup();
         while (group != null) {
             chain.add(group);
             group = group.getInheritedGroup();

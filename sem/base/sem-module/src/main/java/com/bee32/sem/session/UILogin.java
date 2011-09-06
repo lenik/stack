@@ -12,7 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import com.bee32.icsf.login.LoginInfo;
-import com.bee32.plover.ox1.principal.IUserPrincipal;
+import com.bee32.plover.ox1.principal.User;
 
 /**
  * See also:
@@ -41,7 +41,7 @@ public class UILogin
         writer.writeAttribute("id", getClientId(context), "id");
         writer.writeAttribute("name", getClientId(context), "clientId"); // ???
 
-        IUserPrincipal currentUser = LoginInfo.getInstance().getUser();
+        User currentUser = LoginInfo.getInstance().getInternalUser();
         writer.write("Logged in as " + currentUser.getName());
 
         if (_1) {

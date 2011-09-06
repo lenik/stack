@@ -13,11 +13,12 @@ import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.LoginException;
 import com.bee32.icsf.login.LoginInfo;
+import com.bee32.plover.ox1.principal.AbstractPrincipalDto;
 import com.bee32.plover.ox1.principal.Principal;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
-import com.bee32.sem.people.entity.OrgUnit;
-import com.bee32.sem.people.entity.Person;
-import com.bee32.sem.people.entity.PersonRole;
+import com.bee32.sem.people.dto.OrgUnitDto;
+import com.bee32.sem.people.dto.PersonDto;
+import com.bee32.sem.people.dto.PersonRoleDto;
 
 @Component
 @Scope("session")
@@ -31,7 +32,7 @@ public class LoginPersonInfo
     static Logger logger = Logger.getLogger(LoginPersonInfo.class);
 
     final HttpSession session;
-    Person person;
+    PersonDto person;
 
     public LoginPersonInfo() {
         LoginPersonInfo current = getInstance();
@@ -65,18 +66,18 @@ public class LoginPersonInfo
         return loginPersonInfo;
     }
 
-    public Person getPersonOpt() {
+    public PersonDto getPersonOpt() {
         return person;
     }
 
-    public final Person getPerson() {
-        Person person = getPersonOpt();
+    public final PersonDto getPerson() {
+        PersonDto person = getPersonOpt();
         if (person == null)
             throw new LoginException("Not login yet.");
         return person;
     }
 
-    public void setPerson(Person person) {
+    public void setPerson(PersonDto person) {
         this.person = person;
     }
 
@@ -87,14 +88,14 @@ public class LoginPersonInfo
     public List<String> getChain() {
         List<String> chain = new ArrayList<String>();
         if (person == null) {
-            for (Principal pnode : LoginInfo.getInstance().getChain())
+            for (AbstractPrincipalDto<? extends Principal> pnode : LoginInfo.getInstance().getChain())
                 chain.add(pnode.getDisplayName());
         } else {
-            Set<PersonRole> roles = person.getRoles();
+            Set<PersonRoleDto> roles = person.getRoles();
             if (!roles.isEmpty()) {
-                PersonRole firstRole = roles.iterator().next();
-                OrgUnit orgUnit = firstRole.getOrgUnit();
-                for (OrgUnit node : orgUnit.getChain()) {
+                PersonRoleDto firstRole = roles.iterator().next();
+                OrgUnitDto orgUnit = firstRole.getOrgUnit();
+                for (OrgUnitDto node : orgUnit.getChain()) {
                     String name = node.getName();
                     chain.add(name);
                 }

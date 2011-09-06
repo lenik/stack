@@ -9,13 +9,16 @@ import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.c.CEntityAccessor;
 import com.bee32.plover.ox1.principal.User;
 
+/**
+ * Inject current logon user to entity.owner.
+ */
 public class LoginEntityAddon
         extends AbstractEntityLifecycleAddon {
 
     static Logger logger = LoggerFactory.getLogger(LoginEntityAddon.class);
 
     public static User getContextUser() {
-        User user = LoginInfo.getInstance().getUserOpt();
+        User user = LoginInfo.getInstance().getInternalUserOpt();
         if (user != null)
             return user;
         else

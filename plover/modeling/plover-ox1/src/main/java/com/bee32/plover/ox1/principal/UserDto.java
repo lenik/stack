@@ -2,7 +2,6 @@ package com.bee32.plover.ox1.principal;
 
 import java.util.List;
 
-
 public class UserDto
         extends AbstractPrincipalDto<User> {
 
@@ -123,6 +122,24 @@ public class UserDto
 
     public boolean removeAssignedRole(RoleDto assignedRole) {
         return assignedRoles.remove(assignedRole);
+    }
+
+    public GroupDto getFirstGroup() {
+        if (primaryGroup != null)
+            return primaryGroup;
+        if (assignedGroups.isEmpty())
+            return null;
+        GroupDto firstAssignedGroup = assignedGroups.get(0);
+        return firstAssignedGroup;
+    }
+
+    public RoleDto getFirstRole() {
+        if (primaryRole != null)
+            return primaryRole;
+        if (assignedRoles.isEmpty())
+            return null;
+        RoleDto firstAssignedRole = assignedRoles.get(0);
+        return firstAssignedRole;
     }
 
 }
