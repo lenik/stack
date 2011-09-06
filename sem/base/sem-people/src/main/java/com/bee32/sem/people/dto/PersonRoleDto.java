@@ -11,6 +11,8 @@ public class PersonRoleDto
 
     private static final long serialVersionUID = 1L;
 
+    public static final int ORG_UNIT_FULL = 1;
+
     PersonDto person;
     OrgDto org;
     OrgUnitDto orgUnit;
@@ -32,7 +34,12 @@ public class PersonRoleDto
         person = mref(PersonDto.class, source.getPerson());
         org = mref(OrgDto.class, source.getOrg());
         altOrgUnit = source.getAltOrgUnit();
-        orgUnit = mref(OrgUnitDto.class, source.getOrgUnit());
+
+        int orgUnitSelection = 0;
+        if (selection.contains(ORG_UNIT_FULL))
+            orgUnitSelection |= OrgUnitDto.PARENT;
+        orgUnit = mref(OrgUnitDto.class, orgUnitSelection, source.getOrgUnit());
+
         role = source.getRole();
         roleDetail = source.getRoleDetail();
         description = source.getDescription();
