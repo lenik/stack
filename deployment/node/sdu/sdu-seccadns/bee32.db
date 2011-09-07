@@ -58,13 +58,15 @@ my                      CNAME   sql             ; MySQL 数据库管理
 blog                    CNAME   s-dev           ; 开发者日志
 *.blog                  CNAME   blog
 
+cdn                     CNAME   app-1           ; 内容分发网络
+*.cdn                   CNAME   cdn             ; 静态资源
+
 ci                      CNAME   aut-dev         ; 连续集成系统
 forum                   CNAME   s-dev           ; 工程论坛
 git                     CNAME   dev             ; Git仓库/版本控制
 list                    CNAME   s-dev           ; 邮件列表
 m2                      CNAME   aut-dev         ; M2仓库/模快依赖项
 repo                    CNAME   s-dev           ; SDU仓库/预编译部署单元
-static                  CNAME   app-1           ; 静态资源
 svn                     CNAME   dev             ; SVN仓库/版本控制
 track                   CNAME   s-dev           ; Trac 项目管理支持
 bugs                    CNAME   s-dev           ; 缺陷跟踪系统
