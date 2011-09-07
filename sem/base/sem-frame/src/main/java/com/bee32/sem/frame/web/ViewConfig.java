@@ -11,7 +11,7 @@ public class ViewConfig
     private static final long serialVersionUID = 1L;
 
     int pageSize = 50;
-    final String pageSizeTemplate = "10, 50, 100, 200";
+    final String pageSizeTemplate = "10, 50, 100, 200, 1000";
     final String paginatorTemplate = "" //
             + "{CurrentPageReport}"//
             + " {FirstPageLink}" //
