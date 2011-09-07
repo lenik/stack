@@ -17,16 +17,16 @@ public interface ILocationConstants {
     Location LIB_JS = new ServletContextLocation("lib/js/");
 
     Location STYLE_ROOT = new PredefinedContextLocation("STYLE-ROOT", //
-            "http://static.secca-project.com/style/");
+            "http://st1.cdn.bee32.com/style/");
 
     Location STYLE = new PredefinedContextLocation("STYLE", //
-            "http://static.secca-project.com/style/default/");
+            "http://st1.cdn.bee32.com/style/default/");
 
     Location ICON = new PredefinedContextLocation("STYLE-ICON", //
-            "http://static.secca-project.com/style/default/icons/");
+            "http://st1.cdn.bee32.com/style/default/icons/");
 
     Location LIB_3RDPARTY = new PredefinedContextLocation("LIB-3RDPARTY", //
-            "http://static.secca-project.com/lib2/");
+            "http://st1.cdn.bee32.com/lib2/");
 
 }
 

@@ -1,4 +1,4 @@
-var ICON_PREFIX = "http://static.secca-project.com/style/default/icons/";
+var ICON_PREFIX = "http://st1.cdn.bee32.com/style/default/icons/";
 var SEM = {};
 
 (function($) {
