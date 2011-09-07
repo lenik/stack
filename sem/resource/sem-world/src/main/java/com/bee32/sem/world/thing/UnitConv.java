@@ -59,7 +59,7 @@ public class UnitConv
 
     @ElementCollection
     @JoinTable(name = "UnitConvEntry")
-    @MapKeyJoinColumn
+    @MapKeyJoinColumn(name = "stdUnit")
     @Column(name = "scale", nullable = false)
     public Map<Unit, Double> getScaleMap() {
         return scaleMap;
