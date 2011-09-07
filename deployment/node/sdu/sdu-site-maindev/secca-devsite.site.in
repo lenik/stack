@@ -1,6 +1,8 @@
+# vim: set ft=apache :
+
 <VirtualHost *:80>
-    ServerName  www.secca-project.com
-    ServerAdmin admin@secca-project.com
+    ServerName  www.bee32.com
+    ServerAdmin admin@bee32.com
 
     ErrorLog  /var/log/apache2/secca_maindev_error.log
     CustomLog /var/log/apache2/secca_maindev_access.log combined
@@ -9,14 +11,15 @@
     <Directory "@pkgdatadir@/html">
         Options Indexes MultiViews FollowSymLinks
         # You need to patch 100_autoindex_preview on apache2.
-        IndexOptions FancyIndexing Preview AltContentType
+        # Index Options FancyIndexing Preview AltContentType
+        IndexOptions FancyIndexing
         AllowOverride None
         Order allow,deny
         Allow from all
     </Directory>
 
-    UserDir public_html
-    AliasMatch ^/home/([^/]+)/public_html/(.*) /home/$1/public_html/$2
+    UserDir public/html
+    AliasMatch ^/home/([^/]+)/public/html/(.*) /home/$1/public/html/$2
     <Directory "/home/">
         Options Indexes MultiViews FollowSymLinks
         AllowOverride None

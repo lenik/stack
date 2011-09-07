@@ -12,38 +12,9 @@
 #
 #    Switch between either is easy cuz the UUID is always the same.
 
-local_repo=/mnt/devdata/svnrepo
-if [ -d $local_repo ]; then
-    echo "Found vol:devdata/svnrepo, use it. "
-    url=file://$local_repo/public/trunk/www
-else
-    echo "Not an main-dev instance, checkout site from svn remote"
-    # url=http://svn.secca-project.com/public/trunk/www
-    # url=svn://svn.secca-project.com:1030/public/trunk/www
-    url=svn+ssh://svn.secca-project.com/repos/svn/public/trunk/www
-fi
-
 devsite_dir=@pkgdatadir@/html
 
-    if [ -d $devsite_dir ]; then
-        echo "Already checked out: $devsite_dir"
-        # svn up $devsite_dir
-    else
-        echo "Initialize $devsite_dir"
-        if ! install -d -m 2775 -o root -g dev $devsite_dir; then
-            echo "    failed"
-            exit 1
-        fi
-
-        echo "Checkout $url to $devsite_dir"
-
-        # IGNORE_EXTERNALS=--ignore-externals
-        IGNORE_EXTERNALS=
-        if ! svn-002 co --trust-server-cert --non-interactive $IGNORE_EXTERNALS $url $devsite_dir; then
-            echo "checkout failed. "
-            exit 1
-        fi
-    fi
+    mkdir -p "$devsite_dir"
 
 echo "Config apache2"
 

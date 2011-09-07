@@ -7,17 +7,6 @@ echo "Unconfig apache2"
     a2dissite secca-devsite.site
     a2reload
 
-
 devsite_dir=@pkgdatadir@/html
-if [ -d $devsite_dir ]; then
-
-    dirty=`svn st $devsite_dir | wc -l`
-    if [ $dirty != 0 ]; then
-        echo "Something uncommit in $devsite_dir, no remove"
-    else
-        echo "Remove $devsite_dir"
-        rm -fR "$devsite_dir"
-    fi
-fi
 
 exit 0
