@@ -1,17 +1,18 @@
 <VirtualHost *:80>
-    ServerName  static.secca-project.com
-    ServerAdmin admin@secca-project.com
+    ServerName  static.bee32.com
+    ServerAlias st*.cdn.bee32.com
+    ServerAdmin admin@bee32.com
 
     LogLevel  error
     ErrorLog  /var/log/apache2/static_error.log
     CustomLog /var/log/apache2/static_access.log combined
 
-    Alias /lib     /usr/share/sdu-site-maindev/html/lib
-    Alias /lib2    /usr/share/sdu-site-maindev/html/lib2
-    Alias /style   /usr/share/sdu-site-maindev/html/style
-    Alias /symbols /usr/share/sdu-site-maindev/html/symbols
+    Alias /lib     /mnt/istore/projects/public/www/lib
+    Alias /lib2    /mnt/istore/projects/public/www/lib2
+    Alias /style   /mnt/istore/projects/public/www/style
+    Alias /symbols /mnt/istore/projects/public/www/symbols
 
-    <Directory /usr/share/sdu-site-maindev/html/>
+    <Directory /mnt/istore/projects/html/>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Order allow,deny
