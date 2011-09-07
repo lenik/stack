@@ -14,7 +14,7 @@ public class UserFileTagnameDto
 
     private static final long serialVersionUID = 1L;
 
-    String tag;
+    String name;
 
     public UserFileTagnameDto() {
         super();
@@ -26,35 +26,35 @@ public class UserFileTagnameDto
 
     @Override
     protected void _marshal(UserFileTagname source) {
-        tag = source.getTag();
+        name = source.getName();
     }
 
     @Override
     protected void _unmarshalTo(UserFileTagname target) {
-        target.setTag(tag);
+        target.setName(name);
     }
 
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
-        tag = map.getString(tag);
+        name = map.getString("name");
     }
 
-    public String getTag() {
-        return tag;
+    public String getName() {
+        return name;
     }
 
-    public void setTag(String tag) {
-        if (tag == null)
-            throw new NullPointerException("tag");
-        this.tag = tag;
+    public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
+        this.name = name;
     }
 
     @Override
     protected Serializable naturalId() {
-        if (tag == null)
+        if (name == null)
             return new DummyId(this);
-        return tag;
+        return name;
     }
 
 }

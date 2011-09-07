@@ -18,7 +18,6 @@ import com.bee32.plover.rtx.location.Location;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
 import com.bee32.plover.util.Mime;
 import com.bee32.sem.file.entity.UserFile;
-import com.bee32.sem.file.entity.UserFileTagname;
 import com.bee32.sem.file.web.UserFileController;
 
 public class UserFileDto
@@ -32,8 +31,6 @@ public class UserFileDto
 
     String dir;
     String name;
-    String tags_string = "";
-    String testhref = "";
     String prefixName;
     String extensionName;
 
@@ -63,22 +60,11 @@ public class UserFileDto
             extensionName = "";
         }
 
-        if (!source.getTags().isEmpty()) {
-            List<UserFileTagname> tagnames = new ArrayList<UserFileTagname>(source.getTags());
-            for (int i = 0; i < tagnames.size(); i++) {
-                UserFileTagname ut = tagnames.get(i);
-                String temp = i == tagnames.size() - 1 ? ut.getTag() : ut.getTag() + ", ";
-                tags_string += temp;
-            }
-        } else
-            tags_string = "没有标签";
-
         if (selection.contains(TAGS)) {
             tags = marshalSet(UserFileTagnameDto.class, 0, source.getTags(), true);
             for (UserFileTagnameDto tag : tags) {
-                tagItems.add(new SelectItem(tag.getId(), tag.getTag()));
+                tagItems.add(new SelectItem(tag.getId(), tag.getName()));
             }
-
         }
     }
 
@@ -220,12 +206,22 @@ public class UserFileDto
     public void setImageHref(String imageHref) {
     }
 
-    public String getTags_string() {
-        return tags_string;
-    }
+    public String getFormatTags() {
+        if (!selection.contains(TAGS))
+            return "(N/A)";
 
-    public void setTags_string(String tags_string) {
-        this.tags_string = tags_string;
+        if (tags.isEmpty())
+            return "没有标签";
+
+        StringBuilder sb = null;
+        for (UserFileTagnameDto tag : tags) {
+            if (sb == null)
+                sb = new StringBuilder(tags.size() * 20);
+            else
+                sb.append(", ");
+            sb.append(tag.getName());
+        }
+        return sb.toString();
     }
 
     public List<UserFileTagnameDto> getTagList() {

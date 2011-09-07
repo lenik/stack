@@ -23,37 +23,42 @@ public class UserFileTagname
 
     private static final long serialVersionUID = 1L;
 
-    public static final int TAG_LENGTH = 30;
+    public static final int NAME_LENGTH = 30;
 
-    String tag;
+    public UserFileTagname() {
+    }
+
+    public UserFileTagname(String name) {
+        super(name);
+    }
 
     /**
      * 标签名字
      */
     @NaturalId
-    @Column(length = TAG_LENGTH, nullable = false)
-    public String getTag() {
-        return tag;
+    @Column(length = NAME_LENGTH, nullable = false)
+    public String getName() {
+        return name;
     }
 
-    public void setTag(String tag) {
-        if (tag == null)
+    public void setName(String name) {
+        if (name == null)
             throw new NullPointerException("tag");
-        this.tag = tag;
+        this.name = name;
     }
 
     @Override
     protected Serializable naturalId() {
-        if (tag == null)
+        if (name == null)
             return new DummyId(this);
-        return tag;
+        return name;
     }
 
     @Override
     protected CriteriaElement selector(String prefix) {
-        if (tag == null)
-            throw new NullPointerException("tag");
-        return new Equals(prefix + "tag", tag);
+        if (name == null)
+            throw new NullPointerException("name");
+        return new Equals(prefix + "name", name);
     }
 
 }

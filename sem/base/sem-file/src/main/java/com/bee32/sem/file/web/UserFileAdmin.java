@@ -55,7 +55,7 @@ public class UserFileAdmin
         List<UserFileTagname> tags = serviceFor(UserFileTagname.class).list(EntityCriteria.ownedByCurrentUser());
         List<SelectItem> items = new ArrayList<SelectItem>();
         for (UserFileTagname tag : tags)
-            items.add(new SelectItem(tag.getId(), tag.getTag()));
+            items.add(new SelectItem(tag.getId(), tag.getName()));
         userFileTags = items;
     }
 
@@ -73,7 +73,7 @@ public class UserFileAdmin
         for (String tagId : selectedTagsToAdd) {
             UserFileTagname tagename = serviceFor(UserFileTagname.class).getOrFail(Long.parseLong(tagId));
             UserFileTagnameDto dto = DTOs.marshal(UserFileTagnameDto.class, tagename);
-            itemList.add(new SelectItem(dto.getId(), dto.getTag()));
+            itemList.add(new SelectItem(dto.getId(), dto.getName()));
         }
         activeFile.addTagItems(itemList);
     }
@@ -118,7 +118,7 @@ public class UserFileAdmin
         UserFileTagname tag = newTag.unmarshal();
         try {
             serviceFor(UserFileTagname.class).saveOrUpdate(tag);
-            SelectItem item = new SelectItem(tag.getId(), newTag.getTag());
+            SelectItem item = new SelectItem(tag.getId(), newTag.getName());
             userFileTags.add(item);
             uiLogger.info("保存标签成功!");
         } catch (Exception e) {
