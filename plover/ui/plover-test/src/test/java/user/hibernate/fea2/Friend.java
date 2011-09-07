@@ -4,19 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Green;
-import com.bee32.plover.ox1.color.UIEntityAuto;
 
 @Entity
 @Green
 @SequenceGenerator(name = "idgen", sequenceName = "friend_seq", allocationSize = 1)
 public class Friend
-        extends UIEntityAuto<Integer> {
+        extends EntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,9 +33,9 @@ public class Friend
         super(name);
     }
 
-    @Override
+    @Column(length = 100)
     public String getName() {
-        return super.getName();
+        return name;
     }
 
     public void setName(String name) {

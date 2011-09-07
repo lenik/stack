@@ -17,7 +17,6 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.AccessType;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Sort;
@@ -26,8 +25,8 @@ import org.hibernate.annotations.SortType;
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Green;
-import com.bee32.plover.ox1.color.UIEntityAuto;
 
 @Entity
 @Green
@@ -35,13 +34,13 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
 @DiscriminatorColumn(name = "stereo")
 @SequenceGenerator(name = "idgen", sequenceName = "food_seq", allocationSize = 1)
 public class Food
-        extends UIEntityAuto<Integer> {
+        extends EntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 
-    private int rank;
-    private Map<Food, Double> ingredients;
-    private SortedMap<String, Food> relatedFoods;
+    int rank;
+    Map<Food, Double> ingredients;
+    SortedMap<String, Food> relatedFoods;
 
     public Food() {
         super();
@@ -51,10 +50,14 @@ public class Food
         super(name);
     }
 
-    @AccessType("field")
+    @Column(length = 100)
     @Override
     public String getName() {
-        return super.getName();
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     int getRank() {
