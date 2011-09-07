@@ -1,5 +1,6 @@
 package com.bee32.sem.chance.web;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.MomentIntervalCriteria;
 import com.bee32.plover.ox1.tree.TreeCriteria;
+import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.chance.dto.ChanceActionDto;
 import com.bee32.sem.chance.dto.ChanceActionStyleDto;
 import com.bee32.sem.chance.dto.ChanceCategoryDto;
@@ -29,6 +31,7 @@ import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceQuotation;
+import com.bee32.sem.chance.entity.ChanceQuotationItem;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.util.ChanceCriteria;
@@ -72,10 +75,11 @@ public class ChanceBean
 
     // quotation fields
 
-    ListHolder<ChanceQuotationDto> quotations;
+    List<ChanceQuotationDto> quotations = new ArrayList<ChanceQuotationDto>();
+    ChanceQuotationDto quotationCopy = new ChanceQuotationDto().create();
+    ChanceQuotationItemDto selectedQuotationItem = new ChanceQuotationItemDto().create();
 
     String materialPattern;
-    ChanceQuotationItemDto selectedQuotationItem = new ChanceQuotationItemDto().create();
 
     MaterialCategoryTreeModel materialTree;
 
@@ -83,12 +87,11 @@ public class ChanceBean
 
     ChanceBean() {
         initMaterialCategoryTree();
+        initChances();
     }
 
     @PostConstruct
     public void initialization() {
-        initChances();
-        quotations = UIHelper.selectable(new ArrayList<ChanceQuotationDto>());
     }
 
     public void findMaterial() {
@@ -105,12 +108,12 @@ public class ChanceBean
     }
 
     public void viewQuotationDetail() {
-//        quotationCopy = quotations.getSelection();
+// quotationCopy = quotations.getSelection();
         state = State.VIEW_Q;
     }
 
     public void editQuotation() {
-//        quotationCopy = quotations.getSelection();
+// quotationCopy = quotations.getSelection();
         state = State.EDIT_Q;
     }
 
@@ -119,16 +122,16 @@ public class ChanceBean
         if (materialList.getSelection() != null)
             materialDto = materialList.getSelection();
         ChanceQuotationItemDto item = new ChanceQuotationItemDto().create();
-        item.setParent(quotations.getSelection());
+        item.setParent(quotationCopy);
         item.setMaterial(materialDto);
         item.setDiscount(1f);
-        quotations.getSelection().addItem(item);
+        quotationCopy.addItem(item);
     }
 
     void listQuotationByChance(ChanceDto chance) {
         List<ChanceQuotation> quotationList = serviceFor(ChanceQuotation.class).list(
                 ChanceCriteria.chanceEquals(chanceCopy));
-        quotations = UIHelper.selectable(DTOs.marshalList(ChanceQuotationDto.class, 0, quotationList, true));
+        quotations = DTOs.marshalList(ChanceQuotationDto.class, ChanceQuotationDto.ITEMS, quotationList, true);
     }
 
     public void calculatePriceChange() {
@@ -143,7 +146,10 @@ public class ChanceBean
     }
 
     public void editQuotationItem() {
-        // XXX
+        BigDecimal value = new BigDecimal(selectedQuotationItem.getViewPrice());
+        MCValue price = new MCValue(CurrencyConfig.getNative(), value);
+        selectedQuotationItem.setPrice(price);
+        quotationCopy.applyItem(selectedQuotationItem);
     }
 
     public void uneditQuotationItem() {
@@ -151,18 +157,20 @@ public class ChanceBean
     }
 
     public void saveQuotation() {
-        if (quotations.getSelection().getItems() == null || quotations.getSelection().getItems().size() == 0) {
+        if (quotationCopy.getItems() == null || quotationCopy.getItems().size() == 0) {
             uiLogger.error("错误提示:", "请添加明细");
             return;
         }
 
-        if (Strings.isEmpty(quotations.getSelection().getSubject())) {
+        if (Strings.isEmpty(quotationCopy.getSubject())) {
             uiLogger.error("错误提示:", "请添加报价单标题!");
             return;
         }
-        ChanceQuotation quotationEntity = quotations.getSelection().unmarshal();
 
         try {
+            ChanceQuotation quotationEntity = quotationCopy.unmarshal();
+            List<ChanceQuotationItem> items = quotationEntity.getItems();
+            serviceFor(ChanceQuotationItem.class).saveOrUpdateAll(items);
             serviceFor(ChanceQuotation.class).saveOrUpdate(quotationEntity);
 
             // if (quotationCopy.getId() == null)
@@ -180,9 +188,9 @@ public class ChanceBean
     public void dropQuotation() {
 // ChanceQuotation quo = quotations.getSelection().unmarshal();
         try {
-            serviceFor(ChanceQuotation.class).deleteById(quotations.getSelection().getId());
-            quotations.remove(quotations.getSelection());
-            quotations.deselect();
+            serviceFor(ChanceQuotation.class).deleteById(quotationCopy.getId());
+            quotations.remove(quotationCopy);
+// quotations.deselect();
             uiLogger.info("提示:", "成功删除报价单");
         } catch (Exception e) {
             uiLogger.error("删除报价单失败", e);
@@ -190,19 +198,13 @@ public class ChanceBean
     }
 
     public void dropQuotationItem() {
-        quotations.getSelection().removeItem(selectedQuotationItem);
+        quotationCopy.removeItem(selectedQuotationItem);
     }
 
     public void createQuotationForm() {
-        ChanceQuotationDto activeQuotation = new ChanceQuotationDto().create();
-        activeQuotation.setChance(chanceCopy);
-        quotations.setSelection(activeQuotation);
-    }
-
-    public void onQuotationRowSelect() {
-    }
-
-    public void onQuotationRowUnselect() {
+        quotationCopy = new ChanceQuotationDto().create();
+        quotationCopy.setChance(chanceCopy);
+// quotations.setSelection(activeQuotation);
     }
 
     /** 生成物料树 */
@@ -255,18 +257,6 @@ public class ChanceBean
                 EntityCriteria.ownedByCurrentUser(),//
                 forSearch ? ChanceCriteria.subjectLike(subjectPattern) : null);
         chances.setRowCount(count);
-    }
-
-    public void onRowSelect() {
-    }
-
-    public void onRowUnselect() {
-    }
-
-    public void onActionRowSelect() {
-    }
-
-    public void onActionRowUnselect() {
     }
 
     public List<SelectItem> getCategory() {
@@ -381,7 +371,7 @@ public class ChanceBean
 
     public void createForm() {
         chanceCopy = new ChanceDto(-1).create();
-        quotations = UIHelper.selectable(new ArrayList<ChanceQuotationDto>());
+        quotations = new ArrayList<ChanceQuotationDto>();
         setActiveTab(TAB_FORM);
 
         state = State.EDIT;
@@ -549,16 +539,16 @@ public class ChanceBean
         return parties;
     }
 
-    public ListHolder<ChanceQuotationDto> getQuotations() {
+    public List<ChanceQuotationDto> getQuotations() {
         return quotations;
     }
 
-    public String getMaterialPattern() {
-        return materialPattern;
+    public ChanceQuotationDto getQuotationCopy() {
+        return quotationCopy;
     }
 
-    public void setMaterialPattern(String materialPattern) {
-        this.materialPattern = materialPattern;
+    public void setQuotationCopy(ChanceQuotationDto quotationCopy) {
+        this.quotationCopy = quotationCopy;
     }
 
     public ChanceQuotationItemDto getSelectedQuotationItem() {
@@ -567,6 +557,14 @@ public class ChanceBean
 
     public void setSelectedQuotationItem(ChanceQuotationItemDto selectedQuotationItem) {
         this.selectedQuotationItem = selectedQuotationItem;
+    }
+
+    public String getMaterialPattern() {
+        return materialPattern;
+    }
+
+    public void setMaterialPattern(String materialPattern) {
+        this.materialPattern = materialPattern;
     }
 
     public MaterialCategoryTreeModel getMaterialTree() {

@@ -66,7 +66,7 @@
                             selection="#{chanceBean.chances.selection}" selectionMode="single" rowKey="#{chance.id}"
                             rowIndexVar="rowIndex">
 
-                            <p:ajax event="rowSelect" listener="#{chanceBean.onRowSelect}" update=":chanceForm:toolbar" />
+                            <p:ajax event="rowSelect" update=":chanceForm:toolbar" />
 
                             <p:column headerText="创建日期" style="width:140px;">
                                 <h:outputText value="#{chance.date}" />
@@ -190,8 +190,7 @@
                             <p:dataTable id="actionHistories" var="action" value="#{_c.actions}"
                                 selection="#{_c.selectedAction}" selectionMode="single" rowKey="#{action.id}"
                                 rowIndexVar="rowIndex">
-                                <p:ajax event="rowSelect" listener="#{chanceBean.onActionRowSelect}"
-                                    update=":chanceForm:mainTab:actionToolbar" />
+                                <p:ajax event="rowSelect" update=":chanceForm:mainTab:actionToolbar" />
                                 <p:column headerText="序号" style="width:45px;">
                                     <h:outputText value="#{rowIndex + 1}" />
                                 </p:column>
@@ -233,19 +232,19 @@
                                     <p:commandButton id="chanceEditQuotationButton" value="编辑"
                                         actionListener="#{chanceBean.editQuotation}"
                                         oncomplete="quotationDialog.show();" update=":quotationForm:quotationGrid"
-                                        disabled="#{!(chanceBean.state == 'EDIT' and chanceBean.quotations.selected)}" />
+                                        disabled="#{!(chanceBean.state == 'EDIT' and chanceBean.quotationCopy != null)}" />
                                     <p:commandButton id="chanceDeleteQuotationButton" value="删除"
                                         onclick="quotationConfirmation.show();"
-                                        disabled="#{!(chanceBean.state == 'EDIT' and chanceBean.quotations.selected)}" />
+                                        disabled="#{!(chanceBean.state == 'EDIT' and chanceBean.quotationCopy != null)}" />
                                     <p:commandButton id="chanceViewQuotationButton" value="详细"
                                         actionListener="#{chanceBean.viewQuotationDetail}"
                                         oncomplete="quotationDialog.show();" update=":quotationForm:quotationGrid"
-                                        disabled="#{!((chanceBean.state == 'EDIT' or chanceBean.state=='VIEW') and chanceBean.quotations.selected)}" />
+                                        disabled="#{!((chanceBean.state == 'EDIT' or chanceBean.state=='VIEW') and chanceBean.quotationCopy != null)}" />
                                 </p:toolbarGroup>
                             </p:toolbar>
-                            <p:dataTable id="quotationList" var="item" value="#{chanceBean.quotations.list}"
-                                selection="#{chanceBean.quotations.selection}" selectionMode="single"
-                                rowKey="#{item.id}" rowIndexVar="rowIndex">
+                            <p:dataTable id="quotationList" rowIndexVar="rowIndex" value="#{chanceBean.quotations}"
+                                selection="#{chanceBean.quotationCopy}" selectionMode="single" rowKey="#{item.id}"
+                                var="item">
 
                                 <p:ajax event="rowSelect" update=":chanceForm:mainTab:quotationToolbar" />
 
@@ -547,19 +546,19 @@
                 <t:panelGrid columns="3" id="quotationGrid" style="width:100%;">
                     <h:outputText value="标题:" />
                     <t:panelGroup colspan="2">
-                        <p:inputText id="quotationSubject" value="#{chanceBean.quotations.selection.subject}"
+                        <p:inputText id="quotationSubject" value="#{chanceBean.quotationCopy.subject}"
                             style="width:300px;" />
                     </t:panelGroup>
 
                     <h:outputText value="机会:" />
                     <t:panelGroup colspan="2">
-                        <p:inputText id="quotationChance" value="#{chanceBean.quotations.selection.chance.subject}"
+                        <p:inputText id="quotationChance" value="#{chanceBean.quotationCopy.chance.subject}"
                             style="width:300px;" readonly="true" />
                     </t:panelGroup>
 
                     <h:outputText value="明细:" />
 
-                    <p:dataTable id="quotationItem" var="item" value="#{chanceBean.quotations.selection.items}"
+                    <p:dataTable id="quotationItem" var="item" value="#{chanceBean.quotationCopy.items}"
                         style="width:100%;">
 
                         <p:column headerText="产品" style="width:70px;">
@@ -602,13 +601,13 @@
 
                     <h:outputText value="交付说明:" />
                     <t:panelGroup colspan="2">
-                        <p:inputTextarea id="quotationRecommend" value="#{chanceBean.quotations.selection.recommend}"
+                        <p:inputTextarea id="quotationRecommend" value="#{chanceBean.quotationCopy.recommend}"
                             style="width:300px;height:60px;" />
                     </t:panelGroup>
 
                     <h:outputText value="付款说明:" />
                     <t:panelGroup colspan="2">
-                        <p:inputTextarea id="quotationPayment" value="#{chanceBean.quotations.selection.payment}"
+                        <p:inputTextarea id="quotationPayment" value="#{chanceBean.quotationCopy.payment}"
                             style="width:300px;height:60px;" />
                     </t:panelGroup>
 
