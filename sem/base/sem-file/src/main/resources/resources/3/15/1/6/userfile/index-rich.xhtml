@@ -13,21 +13,32 @@
         <h:outputStylesheet>
             .ftd{vertical-align:top;}
             .std{vertical-align:top;}
+            .class{float:right}
         </h:outputStylesheet>
 
         <h:form id="main">
-            <p:selectManyCheckbox id="tagIds" value="#{userFileAdmin.selectedTags}">
-                <f:selectItems value="#{userFileAdmin.userFileTags}" />
-                <f:selectItem itemLabel="附件" itemValue="-200" />
-                <p:ajax update="fileList" listener="#{userFileAdmin.addMessage}" />
-            </p:selectManyCheckbox>
 
-            <p:separator />
+            <t:panelGrid columns="2" style="width:100%;" columnClasses="class1,class2">
+                <p:selectManyCheckbox id="tagIds" value="#{userFileAdmin.selectedTags}">
+                    <f:selectItems value="#{userFileAdmin.userFileTags}" />
+                    <f:selectItem itemLabel="附件" itemValue="-200" />
+                    <p:ajax update="fileList" listener="#{userFileAdmin.refreshList}" />
+                </p:selectManyCheckbox>
 
+                <t:panelGroup>
+                    <p:selectOneMenu value="#{userFileAdmin.selectedUserId}">
+                        <f:selectItem itemLabel="(不限)" itemValue="0" />
+                        <f:selectItems value="#{userFileAdmin.usersWithFile}" />
+                        <p:ajax update="fileList" listener="#{userFileAdmin.refreshList}" />
+                    </p:selectOneMenu>
+                    <p:inputText value="#{userFileAdmin.filePattern}" />
+                    <p:commandButton value="查找" actionListener="#{userFileAdmin.refreshList}" update="fileList" />
+                </t:panelGroup>
+            </t:panelGrid>
 
             <p:dataTable id="fileList" value="#{userFileAdmin.userFileList}" var="item" paginator="true"
-                paginatorTemplate="#{viewConfig.paginatorTemplate}"
-                rows="#{viewConfig.pageSize}" rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}">
+                paginatorTemplate="#{viewConfig.paginatorTemplate}" rows="#{viewConfig.pageSize}"
+                rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}">
                 <p:column>
                     <a href="#{location.WEB_APP}/3/15/1/6/file/view.do?id=#{item.id}"> <h:graphicImage
                             value="/3/15/1/6/file/view.do?id=#{item.id}" width="36" height="36" /> </a>
@@ -42,7 +53,10 @@
                     <h:outputText value="#{item.label}" />
                 </p:column>
                 <p:column headerText="附件标签">
-                    <h:outputText value="#{item.tags_string}" />
+                    <h:outputText value="#{item.formatTags}" />
+                </p:column>
+                <p:column headerText="所属人员">
+                    <h:outputText value="#{item.owner.displayName}" />
                 </p:column>
 
                 <p:column headerText="操作">
@@ -114,7 +128,7 @@
             <p:dialog widgetVar="newTagDialog" height="300" width="400" header="新建标签">
                 <t:panelGrid columns="2" id="newTag">
                     <h:outputText value="标签名称:" />
-                    <p:inputText value="#{userFileAdmin.newTag.tag}" />
+                    <p:inputText value="#{userFileAdmin.newTag.name}" />
                 </t:panelGrid>
                 <p:commandButton value="保存" actionListener="#{userFileAdmin.saveOrUpdateTag}"
                     oncomplete="newTagDialog.hide()" update="dialogForm:tagAdmin,main:tagIds" />
