@@ -10,29 +10,28 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.ox1.c.CEntityAuto;
+import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
 
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "entity_column_seq", allocationSize = 1)
 public class EntityColumn
-        extends CEntityAuto<Integer> {
+        extends EntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
 
     EntityInfo entity;
 
     String name;
+    String description;
     String alias;
     String type;
     int precision;
     int scale;
-
-    String description;
-    // HelpDoc helpdoc;
     boolean indexed;
 
+    String helpDoc;
     // String cssStyle;
 
     BackedCandidateMap1 candidates = new BackedCandidateMap1("");
@@ -60,6 +59,15 @@ public class EntityColumn
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Column(length = 200)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Column(length = 50)
@@ -96,15 +104,6 @@ public class EntityColumn
 
     public void setScale(int scale) {
         this.scale = scale;
-    }
-
-    @Column(length = 200)
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     @Column(nullable = false)
