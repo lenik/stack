@@ -2,6 +2,8 @@ package com.bee32.sem.file.util;
 
 import java.util.Collection;
 
+import org.zkoss.lang.Strings;
+
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
@@ -27,4 +29,18 @@ public class UserFileCriteria
             return isNull("refTypeId");
     }
 
+    public static ICriteriaElement switchOwner(int ownerId) {
+        if (ownerId == 0)
+            return null;
+        else
+            return equals("owner.id", ownerId);
+    }
+
+    public static ICriteriaElement patternMatch(String pattern) {
+        if (Strings.isEmpty(pattern))
+            return null;
+        else {
+            return or(likeIgnoreCase("name", "%" + pattern + "%"), likeIgnoreCase("label", "%" + pattern + "%"));
+        }
+    }
 }

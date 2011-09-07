@@ -17,8 +17,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.zkoss.lang.Strings;
 
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.plover.ox1.principal.User;
+import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.file.dto.UserFileTagnameDto;
 import com.bee32.sem.file.entity.FileBlob;
@@ -46,9 +49,33 @@ public class UserFileAdmin
     UserFileTagnameDto activeTag = new UserFileTagnameDto().create();
     UserFileTagnameDto newTag = new UserFileTagnameDto().create();
 
+    String filePattern;
+    int selectedUserId = 0;
+
     public UserFileAdmin() {
-        initUserFile();
+        refreshList();
         refreshTags();
+    }
+
+    public void refreshList() {
+        List<Long> idList = new ArrayList<Long>();
+        boolean attachment = false;
+        if (selectedTags != null)
+            for (String tagId : selectedTags) {
+                long id = Long.parseLong(tagId);
+                if (id > 0)
+                    idList.add(id);
+                else
+                    attachment = true;
+            }
+
+        List<UserFile> searchedFiles = serviceFor(UserFile.class).list(//
+                UserFileCriteria.patternMatch(filePattern), UserFileCriteria.switchOwner(selectedUserId),//
+                EntityCriteria.ownedByCurrentUser(), Order.desc("lastModified"), UserFileCriteria.withAnyTagIn(idList),//
+                UserFileCriteria.isAttachment(attachment));
+        Set<UserFile> fileSet = new HashSet<UserFile>(searchedFiles);
+        List<UserFile> filted = new ArrayList<UserFile>(fileSet);
+        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, filted);
     }
 
     public void refreshTags() {
@@ -127,29 +154,7 @@ public class UserFileAdmin
     }
 
     public void addMessage() {
-        List<Long> idList = new ArrayList<Long>();
-        boolean attachment = false;
-        for (String tagId : selectedTags) {
-            long id = Long.parseLong(tagId);
-            if (id > 0)
-                idList.add(id);
-            else
-                attachment = true;
-        }
 
-        List<UserFile> files = serviceFor(UserFile.class).list(//
-                EntityCriteria.ownedByCurrentUser(), //
-                UserFileCriteria.withAnyTagIn(idList),//
-                UserFileCriteria.isAttachment(attachment));
-        Set<UserFile> fileSet = new HashSet<UserFile>(files);
-        List<UserFile> fileList = new ArrayList<UserFile>(fileSet);
-        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, fileList, true);
-    }
-
-    public void initUserFile() {
-        List<UserFile> userFiles = serviceFor(UserFile.class).list(//
-                EntityCriteria.ownedByCurrentUser());
-        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, userFiles, true);
     }
 
     public void editUserFile() {
@@ -183,10 +188,13 @@ public class UserFileAdmin
         try {
             serviceFor(UserFile.class).deleteById(activeFile.getId());
             uiLogger.info("删除附件:" + activeFile.getName() + "成功");
-            initUserFile();
+            userFileList.remove(activeFile);
         } catch (Exception e) {
             uiLogger.error("删除附件失败:" + e.getMessage(), e);
         }
+
+        // XXX
+        refreshList();
     }
 
     public void handleFileUpload(FileUploadEvent event) {
@@ -221,9 +229,24 @@ public class UserFileAdmin
             return;
         }
 
-        initUserFile();
+        UserFileDto userFileDto = DTOs.marshal(UserFileDto.class, userFile);
+        userFileList.add(0, userFileDto);
 
         uiLogger.info("上传成功:" + fileName);
+
+        // XXX
+        refreshList();
+    }
+
+    public List<SelectItem> getUsersWithFile() {
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        List<User> users = serviceFor(User.class).list();
+        List<UserDto> userDtos = DTOs.marshalList(UserDto.class, users);
+        for (UserDto dto : userDtos) {
+            SelectItem item = new SelectItem(dto.getId(), dto.getDisplayName());
+            selectItemList.add(item);
+        }
+        return selectItemList;
     }
 
     public List<String> getSelectedTags() {
@@ -236,10 +259,6 @@ public class UserFileAdmin
 
     public void setSelectedTags(List<String> selectedTags) {
         this.selectedTags = selectedTags;
-    }
-
-    public void setUserFileList(List<UserFileDto> userFileList) {
-        this.userFileList = userFileList;
     }
 
     public UserFileDto getActiveFile() {
@@ -293,6 +312,22 @@ public class UserFileAdmin
 
     public void setActiveTagId(String acitveTagId) {
         this.activeTagId = acitveTagId;
+    }
+
+    public String getFilePattern() {
+        return filePattern;
+    }
+
+    public void setFilePattern(String filePattern) {
+        this.filePattern = filePattern.trim();
+    }
+
+    public int getSelectedUserId() {
+        return selectedUserId;
+    }
+
+    public void setSelectedUserId(int selectedUserId) {
+        this.selectedUserId = selectedUserId;
     }
 
 }
