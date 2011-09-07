@@ -45,7 +45,7 @@
 				<p:column>
 					<f:facet name="header">操作</f:facet>
 					<t:panelGroup>
-						<p:commandLink value="修改" update="editStockLocationForm:editStockLocationPanel"
+						<p:commandLink value="修改"
 							oncomplete="editStockLocationDialog.show();"
 							action="#{stockLocationAdminBean.doModifyStockLocation}">
 							<f:setPropertyActionListener value="#{stockLocation}"
@@ -53,6 +53,7 @@
 						</p:commandLink>
 						<p:spacer width="10" />
 						<p:commandLink value="删除"
+                            update="editStockLocationForm:editStockLocationPanel"
 							disabled="#{fn:length(stockLocation.children) > 0? true : false}"
 							oncomplete="deleteConfirmDialog.show();">
 							<f:setPropertyActionListener value="#{stockLocation}"
