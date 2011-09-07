@@ -13,8 +13,8 @@ echo "Config bind9"
         echo "    skipped"
     fi
 
-echo "Update substs on bee.db"
-    @setupdir@/substs-db   @seccadbdir@/bee.db
+echo "Update substs on bee32.db"
+    @setupdir@/substs-db   @seccadbdir@/bee32.db
     @setupdir@/substs-host @sysconfdir@/hosts
 
 echo "Reload bind9"
@@ -23,8 +23,8 @@ echo "Reload bind9"
 echo "Load aliases site"
     a2enmod ssl
     a2enmod rewrite
-    a2ensite bee-aliases.site
-    a2ensite bee-reloc.site
+    a2ensite bee32-copy.site
+    a2ensite bee32-reloc.site
     a2reload
 
 exit 0

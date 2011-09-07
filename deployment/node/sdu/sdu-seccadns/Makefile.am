@@ -10,13 +10,13 @@ sitesdir	= ${sysconfdir}/apache2/sites-available
 
 dist_seccadb_DATA = \
 	named.conf \
-	bee.db \
+	bee32.db \
 	rad.db \
 	bia.db
 
 dist_sites_DATA = \
-	bee-aliases.site \
-	bee-reloc.site
+	bee32-copy.site \
+	bee32-reloc.site
 
 setup_SCRIPTS = \
 	post-install.sh \

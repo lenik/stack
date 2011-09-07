@@ -4,22 +4,22 @@ $TTL            12H
 ; source of information for the data within this DNS domain.
 
 @               IN      SOA     (
-                                    main-dev.secca-project.com.; db creator host
-                                    admin.secca-project.com.; contact e-mail
+                                    main.bee32.com.; db creator host
+                                    admin.bee32.com.; contact e-mail
                                     1       ; serial
                                     1H      ; sync refresh interval
                                     10M     ; sync retry interval
                                     12H     ; sync expire
                                     1H      ; minimum TTL
                                 )
-                        NS      ns1.secca-project.com.
-                        NS      ns2.secca-project.com.
+                        NS      ns1.bee32.com.
+                        NS      ns2.bee32.com.
 
-@                       MX 10   main-dev.secca-project.com.
+@                       MX 10   main.bee32.com.
 
                         TXT     "t=spf1 A MX include:authsmtp.com ~all"
 
-www                     CNAME   main-dev.secca-project.com.
+www                     CNAME   main.bee32.com.
 
 www.zjhf                CNAME   www
 

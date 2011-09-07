@@ -4,7 +4,7 @@ $TTL            1H
 ; source of information for the data within this DNS domain.
 
 @               IN      SOA     (
-                                    main-dev.bee32.com.; db creator host
+                                    main.bee32.com.; db creator host
                                     admin.bee32.com.; contact e-mail
                                     4       ; serial
                                     1H      ; sync refresh interval
