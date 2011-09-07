@@ -61,7 +61,7 @@
                     <p:tab id="chanceList" title="机会列表" disabled="#{false}">
                         <p:dataTable id="chanceTable" var="chance" value="#{chanceBean.chances}" paginator="true"
                             rows="#{viewConfig.pageSize}" lazy="true"
-                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            paginatorTemplate="#{viewConfig.paginatorTemplate}"
                             rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
                             selection="#{chanceBean.chances.selection}" selectionMode="single" rowKey="#{chance.id}"
                             rowIndexVar="rowIndex">

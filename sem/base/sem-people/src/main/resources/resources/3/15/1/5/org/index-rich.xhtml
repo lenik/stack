@@ -83,7 +83,7 @@
                         <p:dataTable id="orgs" var="org"
                             value="#{orgAdminBean.orgs}" paginator="true"
                             rows="#{viewConfig.pageSize}" lazy="true"
-                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            paginatorTemplate="#{viewConfig.paginatorTemplate}"
                             rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}" resizableColumns="true"
                             selection="#{orgAdminBean.selectedOrg}"
                             selectionMode="single"

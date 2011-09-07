@@ -72,7 +72,7 @@
 						<p:dataTable id="persons" var="person"
 							value="#{personAdminBean.persons}" paginator="true"
 							rows="#{viewConfig.pageSize}" lazy="true"
-							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							paginatorTemplate="#{viewConfig.paginatorTemplate}"
 							rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}" resizableColumns="true"
 							selection="#{personAdminBean.selectedPerson}"
 							selectionMode="single"

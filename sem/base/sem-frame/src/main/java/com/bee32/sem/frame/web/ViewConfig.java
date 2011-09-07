@@ -11,8 +11,20 @@ public class ViewConfig
     private static final long serialVersionUID = 1L;
 
     int pageSize = 50;
-    String pageSizeTemplate = "5,10,15";
-    String allowTypes = "/(\\.|\\/)(gif|jpe?g|png|doc|docx|xsl|xslx|xls)$/";
+    final String pageSizeTemplate = "10, 50, 100, 200";
+    final String paginatorTemplate = "" //
+            + "{CurrentPageReport}"//
+            + " {FirstPageLink}" //
+            + " {PreviousPageLink}" //
+            + " {PageLinks}" //
+            + " {NextPageLink}" //
+            + " {LastPageLink}" //
+            + " {RowsPerPageDropdown}";
+
+    final String allowTypes = "/(\\.|\\/)(gif|jpe?g|png|docx?|xlsx?|pdf|zip|rar)$/";
+
+    public ViewConfig() {
+    }
 
     public int getPageSize() {
         return pageSize;
@@ -26,16 +38,12 @@ public class ViewConfig
         return pageSizeTemplate;
     }
 
-    public void setPageSizeTemplate(String pageSizeTemplate) {
-        this.pageSizeTemplate = pageSizeTemplate;
+    public String getPaginatorTemplate() {
+        return paginatorTemplate;
     }
 
     public String getAllowTypes() {
         return allowTypes;
-    }
-
-    public void setAllowTypes(String allowTypes) {
-        this.allowTypes = allowTypes;
     }
 
 }
