@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.model.SelectItem;
+
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.springframework.context.annotation.Scope;
@@ -112,6 +114,30 @@ public class PermissionAdminBean
     public void setActiveTab(int activeTab) {
         this.activeTab = activeTab;
     }
+
+
+    public List<SelectItem> getPermissionStatus() {
+        List<SelectItem> items = new ArrayList<SelectItem>();
+        SelectItem item = new SelectItem();
+        item.setValue(null);
+        item.setLabel("未知");
+        items.add(item);
+
+        item = new SelectItem();
+        item.setValue(false);
+        item.setLabel("拒绝");
+        items.add(item);
+
+        item = new SelectItem();
+        item.setValue(true);
+        item.setLabel("允许");
+        items.add(item);
+
+        return items;
+    }
+
+
+
 
     private void loadEntries(AbstractPrincipalDto<? extends Principal> principalDto) {
         ScannedResourceRegistry srr = getBean(ScannedResourceRegistry.class);

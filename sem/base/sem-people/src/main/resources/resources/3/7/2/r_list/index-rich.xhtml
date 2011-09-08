@@ -342,34 +342,45 @@
 							</p:column>
 
 							<p:column>
-								<p:selectBooleanCheckbox value="#{rpEntry.permission.admin}" />
+                                <p:selectOneMenu value="#{rpEntry.permission.admin}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
 							</p:column>
 
 							<p:column>
-								<p:selectBooleanCheckbox value="#{rpEntry.permission.readable}" />
+                                <p:selectOneMenu value="#{rpEntry.permission.readable}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
 							</p:column>
 
 							<p:column>
-								<p:selectBooleanCheckbox value="#{rpEntry.permission.writable}" />
+                                <p:selectOneMenu value="#{rpEntry.permission.writable}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
 							</p:column>
 
 							<p:column>
-								<p:selectBooleanCheckbox
-									value="#{rpEntry.permission.executable}" />
+                                <p:selectOneMenu value="#{rpEntry.permission.executable}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
 							</p:column>
 
 							<p:column>
-								<p:selectBooleanCheckbox value="#{rpEntry.permission.listable}" />
+                                <p:selectOneMenu value="#{rpEntry.permission.listable}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
 							</p:column>
 
 							<p:column>
-								<p:selectBooleanCheckbox
-									value="#{rpEntry.permission.creatable}" />
+                                <p:selectOneMenu value="#{rpEntry.permission.creatable}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
 							</p:column>
 
 							<p:column>
-								<p:selectBooleanCheckbox
-									value="#{rpEntry.permission.deletable}" />
+                                <p:selectOneMenu value="#{rpEntry.permission.deletable}">
+                                    <f:selectItems value="#{permissionAdminBean.permissionStatus}" />
+                                </p:selectOneMenu>
 							</p:column>
 
 
