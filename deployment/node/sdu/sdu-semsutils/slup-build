@@ -1,0 +1,129 @@
+#!/bin/bash
+    . shlib-import cliboot
+
+    RCSID='$Id: - @VERSION@ @DATE@ @TIME@ - $'
+    short_opts="hqv"
+    long_opts="help,quiet,verbose,version"
+
+    srcdir=`readlink -f "${0%/*}"`
+    stackdir=
+    MAVEN=coolmvn
+
+function version() {
+    parse_id "$RCSID"
+    echo "[$BASENAME] Update stack sources and rebuild changed ones"
+    echo "Written by Lenik, Version $rcs_rev, Last updated at $rcs_date"
+}
+
+function help() {
+    version
+    echo
+    echo "Syntax: "
+    echo "    $0 [OPTION] [--] ..."
+    echo
+    echo "Options: "
+    echo "    -q, --quiet             Repeat to get less info"
+    echo "    -v, --verbose           Repeat to get more info"
+    echo "    -h, --help              Show this help page"
+    echo "        --version           Print the version info"
+}
+
+function setopt() {
+    case "$1" in
+        -h|--help)
+            help; exit;;
+        -q|--quiet)
+            LOGLEVEL=$((LOGLEVEL - 1));;
+        -v|--verbose)
+            LOGLEVEL=$((LOGLEVEL + 1));;
+        --version)
+            version; exit;;
+        *)
+            quit "invalid option: $1";;
+    esac
+}
+
+function do_update() {
+    # cat "$srcdir/sldiff.test"
+    vcscmd slupdate
+}
+
+function invalidate_m2() {
+    local dir="$1"
+    local modname="$2"
+
+    _log1 "Invalidate local m2 repository for $modname"
+    if ! cd "$HOME/.m2/repository/$dir"; then
+        _warn "skipped non-existing directory $dir/$modname"
+        return
+    fi
+
+    rm -fr "$modname"
+}
+
+function main() {
+    # stackdir=/mnt/istore/projects/stack
+    stackdir=`vcscmd rootpath .`
+    if [ -n "$1" ]; then
+        if ! stackdir=`vcscmd rootpath "$1"`; then
+            _error "Failed to get the vcs-root of $1"
+            exit 1
+        fi
+    fi
+
+    cd "$stackdir"
+
+    builds=()
+    nbuild=0
+
+    while IFS=/ read project group module; do
+        case "$project" in
+        plover)
+            invalidate_m2 com/bee32/plover "$module"
+            ;;
+
+        icsf)
+            invalidate_m2 com/bee32/icsf "$module"
+            ;;
+
+        sem)
+            _log1 "Add SEM module $module to the re-build queue."
+            builds[nbuild++]="$module"
+            ;;
+
+        *)
+            _log2 "Project ignored: $project"
+            ;;
+        esac
+    done < <(do_update | cut -d/ -f1-3 | uniq)
+
+    errors=0
+
+    for sem_module in "${builds[@]}"; do
+    echo "Q> $sem_module"
+        cd "$stackdir/sem"
+        if ! m2dir=`m2which -l $sem_module | head -1`; then
+            _error "Can't find SEM module: $sem_module"
+            ((errors++))
+            continue
+        fi
+
+        _log1 "Rebuild SEM module: $sem_module (at $m2dir)"
+        cd "$m2dir"
+        if ! $MAVEN clean; then
+            _error "Failed to clean SEM module: $sem_module"
+            ((errors++))
+            continue
+        fi
+        if ! $MAVEN install -fn -Dmaven.test.skip=true; then
+            _error "Failed to build (install) SEM module: $sem_module"
+            ((errors++))
+            continue
+        fi
+        _log1 "Succeeded to rebuild $sem_module."
+    done
+
+    return $errors
+}
+
+boot "$@"
