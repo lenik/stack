@@ -31,7 +31,6 @@ import com.bee32.sem.chance.entity.ChanceAction;
 import com.bee32.sem.chance.entity.ChanceActionStyle;
 import com.bee32.sem.chance.entity.ChanceCategory;
 import com.bee32.sem.chance.entity.ChanceQuotation;
-import com.bee32.sem.chance.entity.ChanceQuotationItem;
 import com.bee32.sem.chance.entity.ChanceSourceType;
 import com.bee32.sem.chance.entity.ChanceStage;
 import com.bee32.sem.chance.util.ChanceCriteria;
@@ -132,7 +131,8 @@ public class ChanceBean
     void listQuotationByChance(ChanceDto chance) {
         List<ChanceQuotation> quotationList = serviceFor(ChanceQuotation.class).list(
                 ChanceCriteria.chanceEquals(chanceCopy));
-        quotations = UIHelper.selectable(DTOs.marshalList(ChanceQuotationDto.class, 0, quotationList, true));
+        quotations = UIHelper.selectable(DTOs.marshalList(ChanceQuotationDto.class, ChanceQuotationDto.ITEMS,
+                quotationList, true));
     }
 
     public void calculatePriceChange() {
@@ -170,13 +170,12 @@ public class ChanceBean
 
         try {
             ChanceQuotation quotationEntity = quotationCopy.unmarshal();
-            List<ChanceQuotationItem> items = quotationEntity.getItems();
-            serviceFor(ChanceQuotationItem.class).saveOrUpdateAll(items);
             serviceFor(ChanceQuotation.class).saveOrUpdate(quotationEntity);
 
             // if (quotationCopy.getId() == null)
             // quotations.add(DTOs.marshal(ChanceQuotationDto.class, quotationEntity));
             listQuotationByChance(chanceCopy);
+            quotations.setSelection(null);
 
             uiLogger.info("提示", "保存报价单成功");
 
@@ -375,7 +374,7 @@ public class ChanceBean
         quotations = UIHelper.selectable(new ArrayList<ChanceQuotationDto>());
         setActiveTab(TAB_FORM);
 
-        state = State.EDIT;
+        state = State.CREATE;
     }
 
     public void editForm() {

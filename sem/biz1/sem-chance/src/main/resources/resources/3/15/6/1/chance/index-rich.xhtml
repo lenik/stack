@@ -37,7 +37,7 @@
 
                         <p:commandButton id="chanceAddButton" value="保存" actionListener="#{chanceBean.saveChance}"
                             update="chanceForm:toolbar, chanceForm:mainTab" async="true"
-                            disabled="#{!(chanceBean.state == 'EDIT')}" />
+                            disabled="#{!(chanceBean.state == 'EDIT' or chanceBean.state == 'CREATE')}" />
                         <p:divider />
 
                         <p:commandButton id="chanceResetButton" value="取消" actionListener="#{chanceBean.cancel}"
@@ -613,7 +613,8 @@
 
                     <t:panelGroup colspan="3">
                         <p:commandButton value="保存" actionListener="#{chanceBean.saveQuotation}"
-                            oncomplete="quotationDialog.hide();" update=":chanceForm:mainTab:quotationList" />
+                            oncomplete="quotationDialog.hide();"
+                            update=":chanceForm:mainTab:quotationList, :chanceForm:mainTab:quotationToolbar" />
                         <p:commandButton value="取消" onclick="quotationDialog.hide();" />
                     </t:panelGroup>
                 </t:panelGrid>
