@@ -232,19 +232,19 @@
                                     <p:commandButton id="chanceEditQuotationButton" value="编辑"
                                         actionListener="#{chanceBean.editQuotation}"
                                         oncomplete="quotationDialog.show();" update=":quotationForm:quotationGrid"
-                                        disabled="#{!(chanceBean.state == 'EDIT' and chanceBean.quotationCopy != null)}" />
+                                        disabled="#{!(chanceBean.state == 'EDIT' and chanceBean.quotations.selection != null)}" />
                                     <p:commandButton id="chanceDeleteQuotationButton" value="删除"
                                         onclick="quotationConfirmation.show();"
-                                        disabled="#{!(chanceBean.state == 'EDIT' and chanceBean.quotationCopy != null)}" />
+                                        disabled="#{!(chanceBean.state == 'EDIT' and chanceBean.quotations.selection != null)}" />
                                     <p:commandButton id="chanceViewQuotationButton" value="详细"
                                         actionListener="#{chanceBean.viewQuotationDetail}"
                                         oncomplete="quotationDialog.show();" update=":quotationForm:quotationGrid"
-                                        disabled="#{!((chanceBean.state == 'EDIT' or chanceBean.state=='VIEW') and chanceBean.quotationCopy != null)}" />
+                                        disabled="#{!((chanceBean.state == 'EDIT' or chanceBean.state=='VIEW') and chanceBean.quotations.selection != null)}" />
                                 </p:toolbarGroup>
                             </p:toolbar>
-                            <p:dataTable id="quotationList" rowIndexVar="rowIndex" value="#{chanceBean.quotations}"
-                                selection="#{chanceBean.quotationCopy}" selectionMode="single" rowKey="#{item.id}"
-                                var="item">
+                            <p:dataTable id="quotationList" rowIndexVar="rowIndex" value="#{chanceBean.quotations.list}"
+                                selection="#{chanceBean.quotations.selection}" selectionMode="single"
+                                rowKey="#{item.id}" var="item">
 
                                 <p:ajax event="rowSelect" update=":chanceForm:mainTab:quotationToolbar" />
 

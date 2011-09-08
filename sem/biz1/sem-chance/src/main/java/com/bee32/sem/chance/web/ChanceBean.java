@@ -75,7 +75,7 @@ public class ChanceBean
 
     // quotation fields
 
-    List<ChanceQuotationDto> quotations = new ArrayList<ChanceQuotationDto>();
+    ListHolder<ChanceQuotationDto> quotations;
     ChanceQuotationDto quotationCopy = new ChanceQuotationDto().create();
     ChanceQuotationItemDto selectedQuotationItem = new ChanceQuotationItemDto().create();
 
@@ -88,6 +88,7 @@ public class ChanceBean
     ChanceBean() {
         initMaterialCategoryTree();
         initChances();
+        quotations = UIHelper.selectable(new ArrayList<ChanceQuotationDto>());
     }
 
     @PostConstruct
@@ -108,12 +109,12 @@ public class ChanceBean
     }
 
     public void viewQuotationDetail() {
-// quotationCopy = quotations.getSelection();
+        quotationCopy = reload(quotations.getSelection(), ChanceQuotationDto.ITEMS);
         state = State.VIEW_Q;
     }
 
     public void editQuotation() {
-// quotationCopy = quotations.getSelection();
+        quotationCopy = reload(quotations.getSelection(), ChanceQuotationDto.ITEMS);
         state = State.EDIT_Q;
     }
 
@@ -131,7 +132,7 @@ public class ChanceBean
     void listQuotationByChance(ChanceDto chance) {
         List<ChanceQuotation> quotationList = serviceFor(ChanceQuotation.class).list(
                 ChanceCriteria.chanceEquals(chanceCopy));
-        quotations = DTOs.marshalList(ChanceQuotationDto.class, ChanceQuotationDto.ITEMS, quotationList, true);
+        quotations = UIHelper.selectable(DTOs.marshalList(ChanceQuotationDto.class, 0, quotationList, true));
     }
 
     public void calculatePriceChange() {
@@ -371,7 +372,7 @@ public class ChanceBean
 
     public void createForm() {
         chanceCopy = new ChanceDto(-1).create();
-        quotations = new ArrayList<ChanceQuotationDto>();
+        quotations = UIHelper.selectable(new ArrayList<ChanceQuotationDto>());
         setActiveTab(TAB_FORM);
 
         state = State.EDIT;
@@ -539,7 +540,7 @@ public class ChanceBean
         return parties;
     }
 
-    public List<ChanceQuotationDto> getQuotations() {
+    public ListHolder<ChanceQuotationDto> getQuotations() {
         return quotations;
     }
 
