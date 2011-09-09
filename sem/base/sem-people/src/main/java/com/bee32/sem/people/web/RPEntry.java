@@ -14,10 +14,6 @@ public class RPEntry
     String displayName;
     Permission permission;
 
-    public String getKey() {
-        return resourceType + qualifiedName;
-    }
-
     public String getResourceType() {
         return resourceType;
     }
