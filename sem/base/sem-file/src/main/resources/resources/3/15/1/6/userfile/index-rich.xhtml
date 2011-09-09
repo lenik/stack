@@ -18,14 +18,16 @@
 
         <h:form id="main">
 
-            <t:panelGrid columns="2" style="width:100%;" columnClasses="class1,class2">
+            <t:panelGrid columns="3" style="width:100%;" columnClasses="class1,class2">
+                <p:commandButton value="标签管理" onclick="tagAdminDialog.show();" />
                 <p:selectManyCheckbox id="tagIds" value="#{userFileAdmin.selectedTags}">
                     <f:selectItems value="#{userFileAdmin.userFileTags}" />
                     <f:selectItem itemLabel="附件" itemValue="-200" />
                     <p:ajax update="fileList" listener="#{userFileAdmin.refreshList}" />
                 </p:selectManyCheckbox>
 
-                <t:panelGroup>
+                <t:panelGrid columns="4">
+                    <h:outputText value="所有者"/>
                     <p:selectOneMenu value="#{userFileAdmin.selectedUserId}">
                         <f:selectItem itemLabel="(不限)" itemValue="0" />
                         <f:selectItems value="#{userFileAdmin.usersWithFile}" />
@@ -33,7 +35,7 @@
                     </p:selectOneMenu>
                     <p:inputText value="#{userFileAdmin.filePattern}" />
                     <p:commandButton value="查找" actionListener="#{userFileAdmin.refreshList}" update="fileList" />
-                </t:panelGroup>
+                </t:panelGrid>
             </t:panelGrid>
 
             <p:dataTable id="fileList" value="#{userFileAdmin.userFileList}" var="item" paginator="true"
@@ -80,14 +82,13 @@
         </h:form>
 
         <h:form id="updateForm">
-            <t:panelGrid columns="2" columnClasses="ftd,std">
-                <p:commandButton value="标签管理" onclick="tagAdminDialog.show();" />
-
-                <h:form enctype="multipart/form-data">
-                    <p:fileUpload fileUploadListener="#{userFileAdmin.handleFileUpload}" mode="advanced"
-                        update=":main:fileList" multiple="true" allowTypes="${viewConfig.allowTypes}" label="上传附件" />
-
-                </h:form>
+            <t:panelGrid columns="1" columnClasses="ftd,std">
+                    <p:fileUpload
+                        fileUploadListener="#{userFileAdmin.handleFileUpload}"
+                        mode="advanced" update=":main:fileList"
+                        multiple="true"
+                        allowTypes="${viewConfig.allowTypes}"
+                        label="选择文件" />
             </t:panelGrid>
         </h:form>
 

@@ -69,10 +69,14 @@ public class UserFileAdmin
                     attachment = true;
             }
 
-        List<UserFile> searchedFiles = serviceFor(UserFile.class).list(//
-                UserFileCriteria.patternMatch(filePattern), UserFileCriteria.switchOwner(selectedUserId),//
-                EntityCriteria.ownedByCurrentUser(), Order.desc("lastModified"), UserFileCriteria.withAnyTagIn(idList),//
-                UserFileCriteria.isAttachment(attachment));
+        List<UserFile> searchedFiles =
+                serviceFor(UserFile.class).list(//
+                        UserFileCriteria.patternMatch(filePattern),
+                        UserFileCriteria.switchOwner(selectedUserId),//
+                        UserFileCriteria.withAnyTagIn(idList),//
+                        UserFileCriteria.isAttachment(attachment),
+                        EntityCriteria.ownedByCurrentUser(),
+                        Order.desc("lastModified"));
         Set<UserFile> fileSet = new HashSet<UserFile>(searchedFiles);
         List<UserFile> filted = new ArrayList<UserFile>(fileSet);
         userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, filted);
