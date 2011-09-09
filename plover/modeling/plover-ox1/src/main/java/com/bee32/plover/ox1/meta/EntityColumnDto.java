@@ -22,7 +22,7 @@ public class EntityColumnDto
 
     // String cssStyle;
 
-    BackedCandidateMap1 candidates = new BackedCandidateMap1("");
+    CandidateMap<String> candidates = new CandidateMap<String>();
 
     @Override
     protected void _marshal(EntityColumn source) {
@@ -31,7 +31,7 @@ public class EntityColumnDto
         precision = source.getPrecision();
         scale = source.getScale();
         indexed = source.isIndexed();
-        candidates = source.getBackedCandidates();
+        candidates = source.getCandidates();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class EntityColumnDto
         target.setPrecision(precision);
         target.setScale(scale);
         target.setIndexed(indexed);
-        target.setBackedCandidates(candidates);
+        target.setCandidates(candidates);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class EntityColumnDto
         scale = map.getInt("scale");
         indexed = map.getBoolean("indexed");
 
-        candidates.setDef(map.getString("candidateDef"));
+        // candidates.setDef(map.getString("candidateDef"));
     }
 
     public EntityInfo getEntity() {
@@ -112,31 +112,13 @@ public class EntityColumnDto
         this.indexed = indexed;
     }
 
-    public String getCandidateDef() {
-        return candidates.toString();
-    }
-
-    public void setCandidateDef(String candidateDef) {
-        candidates.setDef(candidateDef);
-    }
-
     public CandidateMap<String> getCandidates() {
-        try {
-            return candidates.getForm();
-        } catch (ParseException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-
-    public void setCandidates(CandidateMap<String> candidates) {
-        this.candidates.setForm(candidates);
-    }
-
-    public BackedCandidateMap1 getBackedCandidates() {
         return candidates;
     }
 
-    public void setBackedCandidates(BackedCandidateMap1 candidates) {
+    public void setCandidates(CandidateMap<String> candidates) {
+        if (candidates == null)
+            throw new NullPointerException("candidates");
         this.candidates = candidates;
     }
 
