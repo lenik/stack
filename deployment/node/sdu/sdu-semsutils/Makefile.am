@@ -4,7 +4,8 @@ shsrcdir = ${bindir}
 
 dist_bin_SCRIPTS = \
     svnrootofcwd \
-    run-server
+    run-server \
+    slup-build
 
 dist_shsrc_SCRIPTS = \
     cd-sems
@@ -23,7 +24,8 @@ setup_SCRIPTS = \
     pre-remove.sh
 
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in
-CLEANFILES = post-install.sh    pre-remove.sh
+CLEANFILES = post-install.sh    pre-remove.sh \
+    slup-build
 
 post-install.sh: post-install.sh.in Makefile
 	$(do_subst) <$(srcdir)/post-install.sh.in >$@
