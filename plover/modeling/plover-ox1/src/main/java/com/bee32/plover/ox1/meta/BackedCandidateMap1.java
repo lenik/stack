@@ -2,6 +2,9 @@ package com.bee32.plover.ox1.meta;
 
 import javax.free.ParseException;
 
+/**
+ * def/form the same.
+ */
 public class BackedCandidateMap1
         extends BackedCandidateMap<String> {
 

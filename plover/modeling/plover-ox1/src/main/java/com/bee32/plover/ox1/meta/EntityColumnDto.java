@@ -3,22 +3,20 @@ package com.bee32.plover.ox1.meta;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.orm.util.EntityDto;
+import com.bee32.plover.ox1.color.UIEntityDto;
 
 public class EntityColumnDto
-        extends EntityDto<EntityColumn, Integer> {
+        extends UIEntityDto<EntityColumn, Integer> {
 
     private static final long serialVersionUID = 1L;
 
     EntityInfo entity;
 
     String name;
-    String alias;
     String type;
     int precision;
     int scale;
 
-    String description;
     // HelpDoc helpdoc;
     boolean indexed;
 
@@ -29,28 +27,20 @@ public class EntityColumnDto
     @Override
     protected void _marshal(EntityColumn source) {
         name = source.getName();
-        alias = source.getAlias();
         type = source.getType();
         precision = source.getPrecision();
         scale = source.getScale();
-
-        description = source.getDescription();
         indexed = source.isIndexed();
-
         candidates = source.getBackedCandidates();
     }
 
     @Override
     protected void _unmarshalTo(EntityColumn target) {
         target.setName(name);
-        target.setAlias(alias);
         target.setType(type);
         target.setPrecision(precision);
         target.setScale(scale);
-
-        target.setDescription(description);
         target.setIndexed(indexed);
-
         target.setBackedCandidates(candidates);
     }
 
@@ -58,12 +48,9 @@ public class EntityColumnDto
     protected void _parse(TextMap map)
             throws ParseException {
         name = map.getString("name");
-        alias = map.getString("alias");
         type = map.getString("type");
         precision = map.getInt("precision");
         scale = map.getInt("scale");
-
-        description = map.getString("description");
         indexed = map.getBoolean("indexed");
 
         candidates.setDef(map.getString("candidateDef"));
@@ -83,14 +70,6 @@ public class EntityColumnDto
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 
     public String getType() {

@@ -6,6 +6,9 @@ import javax.free.ParseException;
 
 import com.bee32.plover.util.StringBacked;
 
+/**
+ * StringBacked.type = CandidateMap.
+ */
 public abstract class BackedCandidateMap<T>
         extends StringBacked<CandidateMap<T>> {
 

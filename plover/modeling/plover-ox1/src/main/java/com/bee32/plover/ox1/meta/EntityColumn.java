@@ -3,6 +3,7 @@ package com.bee32.plover.ox1.meta;
 import javax.free.ParseException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
@@ -10,22 +11,23 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.NaturalId;
 
-import com.bee32.plover.orm.entity.EntityAuto;
 import com.bee32.plover.ox1.color.Blue;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 @Entity
 @Blue
 @SequenceGenerator(name = "idgen", sequenceName = "entity_column_seq", allocationSize = 1)
 public class EntityColumn
-        extends EntityAuto<Integer> {
+        extends UIEntityAuto<Integer> {
 
     private static final long serialVersionUID = 1L;
+
+    public static final int NAME_LENGTH = 20;
+    public static final int TYPE_LENGTH = 10;
 
     EntityInfo entity;
 
     String name;
-    String description;
-    String alias;
     String type;
     int precision;
     int scale;
@@ -50,41 +52,27 @@ public class EntityColumn
     }
 
     @NaturalId
-    @Column(length = 20, nullable = false)
+    @Column(length = NAME_LENGTH, nullable = false)
     @Index(name = "name")
     @Override
     public String getName() {
-        return super.getName();
+        return name;
     }
 
     public void setName(String name) {
+        if (name == null)
+            throw new NullPointerException("name");
         this.name = name;
     }
 
-    @Column(length = 200)
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Column(length = 50)
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
-    @Column(length = 10)
+    @Column(length = TYPE_LENGTH, nullable = false)
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
+        if (type == null)
+            throw new NullPointerException("type");
         this.type = type;
     }
 
@@ -115,15 +103,6 @@ public class EntityColumn
         this.indexed = indexed;
     }
 
-    @Column(length = 30000)
-    public String getCandidateDef() {
-        return candidates.toString();
-    }
-
-    public void setCandidateDef(String candidateDef) {
-        candidates.setDef(candidateDef);
-    }
-
     @Transient
     public CandidateMap<String> getCandidates() {
         try {
@@ -137,13 +116,13 @@ public class EntityColumn
         this.candidates.setForm(candidates);
     }
 
-    @Transient
-    public BackedCandidateMap1 getBackedCandidates() {
-        return candidates;
+    @Lob
+    String getCandidateDef() {
+        return candidates.toString();
     }
 
-    public void setBackedCandidates(BackedCandidateMap1 _candidates) {
-        this.candidates = _candidates;
+    void setCandidateDef(String candidateDef) {
+        candidates.setDef(candidateDef);
     }
 
 }
