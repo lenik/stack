@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <ui:composition template="../ftc/template.xhtml">
+        <ui:define name="title">Thread Stack Trace</ui:define>
+
+        <ui:define name="body">
+
+            <ui:repeat value="${threadDiagBean.stackTraces}" var="st">
+                <h2>Thread ${st.key.name}</h2>
+                <blockquote>
+                    <ui:repeat value="${st.value}" var="frame">
+                        <div>
+                            <h:outputText value="${frame.html}" escape="false" />
+                        </div>
+                    </ui:repeat>
+                </blockquote>
+            </ui:repeat>
+
+        </ui:define>
+    </ui:composition>
+</html>

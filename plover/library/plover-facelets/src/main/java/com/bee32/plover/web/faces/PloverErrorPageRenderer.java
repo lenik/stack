@@ -32,7 +32,7 @@ public class PloverErrorPageRenderer
         writer.write(html);
     }
 
-    static String highlight(String s) {
+    public static String highlight(String s) {
         PatternProcessor proc = new PatternProcessor(pattern) {
 
             @Override
@@ -74,4 +74,5 @@ public class PloverErrorPageRenderer
         s = proc.process(s);
         return s;
     }
+
 }
