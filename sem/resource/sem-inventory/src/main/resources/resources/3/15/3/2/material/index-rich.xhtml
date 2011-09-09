@@ -115,7 +115,7 @@
 
         <h:form id="dialogForm">
 
-            <p:dialog widgetVar="scaleDialog" height="300" width="400">
+            <p:dialog widgetVar="scaleDialog" height="300" width="400" modal="true">
                 <p:panel id="scaleForm">
                     <t:panelGrid columns="2">
                         <h:outputText value="换算单位" />
@@ -222,7 +222,7 @@
                 </t:panelGrid>
             </p:dialog>
 
-            <p:dialog widgetVar="unitDialog" header="添加单位" height="300" width="270">
+            <p:dialog widgetVar="unitDialog" header="添加单位" height="300" width="270" modal="true">
                 <t:panelGrid columns="3">
                     <h:outputText value="国际单位代码:" />
                     <t:panelGroup colspan="2">
@@ -497,16 +497,25 @@
             </p:dialog>
 
             <p:dialog header="选择物料分类" widgetVar="categoryTreeDialog" height="400" width="700" modal="true">
-                <p:tree value="#{materialViewBean.selectCategoryTree.rootNode}" var="node" dynamic="true"
-                    selectionMode="single" selection="#{materialViewBean.selectCategoryTree.selectedNode}"
-                    style="width:100%">
-                    <p:treeNode>
-                        <h:outputText value="#{node.name}" />
-                    </p:treeNode>
-                </p:tree>
-                <p:commandButton value="选择" actionListener="#{materialViewBean.doSelectMaterialCategory}"
-                    update=":dialogForm:materialCategory" oncomplete="categoryTreeDialog.hide();" />
-                <p:commandButton value="取消" onclick="categoryTreeDialog.hide();" />
+                <h:panelGrid columns="1">
+                    <p:tree
+                        value="#{materialViewBean.selectCategoryTree.rootNode}"
+                        var="node" dynamic="true" selectionMode="single"
+                        selection="#{materialViewBean.selectCategoryTree.selectedNode}">
+                        <p:treeNode>
+                            <h:outputText value="#{node.name}" />
+                        </p:treeNode>
+                    </p:tree>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="选择"
+                            actionListener="#{materialViewBean.doSelectMaterialCategory}"
+                            update=":dialogForm:materialCategory"
+                            oncomplete="categoryTreeDialog.hide();" />
+                        <p:commandButton value="取消"
+                            onclick="categoryTreeDialog.hide();" />
+                    </h:panelGrid>
+                </h:panelGrid>
             </p:dialog>
 
             <p:dialog widgetVar="stockLocationTreeDialog" header="选择库位" height="500" width="700" modal="true">
@@ -548,7 +557,7 @@
         </h:form>
         <h:form id="attachForm" enctype="multipart/form-data">
 
-            <p:dialog widgetVar="attachementsDialog" header="物料附件管理" width="600" height="400" modal="trues">
+            <p:dialog widgetVar="attachementsDialog" header="物料附件管理" width="600" height="400" modal="true">
                 <t:panelGrid id="attachments" columns="2" columnClasses="material_dialog_label, material_dialog_txt"
                     style="width:100%">
                     <h:outputText value="附件列表:" />

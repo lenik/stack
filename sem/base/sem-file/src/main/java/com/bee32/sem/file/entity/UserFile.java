@@ -31,7 +31,7 @@ public class UserFile
     private static final long serialVersionUID = 1L;
 
     public static final int DIR_LENGTH = 100;
-    public static final int NAME_LENGTH = 50;
+    public static final int NAME_LENGTH = 100;
     public static final int REF_ID_LENGTH = 30;
 
     FileBlob fileBlob;

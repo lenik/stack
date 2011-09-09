@@ -172,14 +172,14 @@ public class MaterialViewBean
     public void initSelectCategoryTree() {
         List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories);
+                ~MaterialCategoryDto.MATERIALS, rootCategories, true);
         selectCategoryTree = new MaterialCategoryTreeModel(rootCategoryDtos);
     }
 
     public void initMaterialCategoryTree() {
         List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories);
+                ~MaterialCategoryDto.MATERIALS, rootCategories, true);
 
         materialCategoryTree = new MaterialCategoryTreeModel(rootCategoryDtos);
         materialCategoryTree.addListener(new SelectionAdapter() {
@@ -424,7 +424,7 @@ public class MaterialViewBean
 
     public List<SelectItem> getCategories() {
         List<MaterialCategory> categoryList = serviceFor(MaterialCategory.class).list();
-        List<MaterialCategoryDto> categoryDtoList = DTOs.marshalList(MaterialCategoryDto.class, 0, categoryList);
+        List<MaterialCategoryDto> categoryDtoList = DTOs.marshalList(MaterialCategoryDto.class, 0, categoryList, true);
         List<SelectItem> itemList = new ArrayList<SelectItem>();
         for (MaterialCategoryDto materialCategoryDto : categoryDtoList)
             itemList.add(new SelectItem(materialCategoryDto.getId(), materialCategoryDto.getName()));
