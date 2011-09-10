@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.free.ICharOut;
+import javax.free.IllegalUsageException;
 import javax.free.Stdio;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
@@ -133,16 +134,28 @@ public abstract class TreeEntity<K extends Serializable, T extends TreeEntity<K,
     @Redundant
     @Column(nullable = false)
     public int getDepth() {
+        int safeDepth = getSafeDepth();
         int depth = 0;
         T node = self();
         while (node != null) {
             node = node.getParent();
             depth++;
+            if (depth >= safeDepth)
+                throw new IllegalUsageException(
+                        "Exceeds the max depth of a tree, maybe there's dead loop? Last node = " + node);
         }
         return depth;
     }
 
     void setDepth(int depth) {
+    }
+
+    /**
+     * In most cases, 1000 is really enough.
+     */
+    @Transient
+    protected int getSafeDepth() {
+        return 1000;
     }
 
     @Transient
