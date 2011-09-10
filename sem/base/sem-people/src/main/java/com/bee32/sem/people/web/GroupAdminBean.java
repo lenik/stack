@@ -25,6 +25,7 @@ public class GroupAdminBean extends PrincipalAdminBean {
 
 
     private GroupDto group;
+    private TreeNode selectedNode;
     private TreeNode selectedInheritedGroupNode;
 
     private RoleDto selectedRole;
@@ -93,6 +94,16 @@ public class GroupAdminBean extends PrincipalAdminBean {
         this.selectedUserToAdd = selectedUserToAdd;
     }
 
+    public TreeNode getSelectedNode() {
+        return selectedNode;
+    }
+
+    public void setSelectedNode(TreeNode selectedNode) {
+        this.selectedNode = selectedNode;
+    }
+
+
+
 
 
 
@@ -111,8 +122,13 @@ public class GroupAdminBean extends PrincipalAdminBean {
 		_newGroup();
 	}
 
+	public void chooseGroup() {
+	    group = reload((GroupDto) selectedNode.getData());
+	}
+
 	public void doModifyGroup() {
-		editNewStatus = false;
+		chooseGroup();
+	    editNewStatus = false;
 	}
 
 
@@ -145,6 +161,11 @@ public class GroupAdminBean extends PrincipalAdminBean {
     }
 
     public void doDelete() {
+        if(group.getDerivedGroups().size() > 0) {
+            uiLogger.info("本组有下属组，请先删除下属组!");
+            return;
+        }
+
 		try {
 			serviceFor(Group.class).delete(group.unmarshal());
 			loadGroupTree();

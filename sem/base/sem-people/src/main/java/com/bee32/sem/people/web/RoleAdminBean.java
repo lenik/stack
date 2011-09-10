@@ -27,6 +27,7 @@ public class RoleAdminBean extends PrincipalAdminBean {
 
 
     private RoleDto role;
+    private TreeNode selectedNode;
     private TreeNode selectedInheritedRoleNode;
 
     private GroupDto selectedGroup;
@@ -97,6 +98,15 @@ public class RoleAdminBean extends PrincipalAdminBean {
         this.selectedUserToAdd = selectedUserToAdd;
     }
 
+    public TreeNode getSelectedNode() {
+        return selectedNode;
+    }
+
+    public void setSelectedNode(TreeNode selectedNode) {
+        this.selectedNode = selectedNode;
+    }
+
+
 
 
 
@@ -115,7 +125,12 @@ public class RoleAdminBean extends PrincipalAdminBean {
 		_newRole();
 	}
 
+    public void chooseRole() {
+        role = reload((RoleDto) selectedNode.getData());
+    }
+
 	public void doModifyRole() {
+	    chooseRole();
 		editNewStatus = false;
 	}
 
@@ -149,6 +164,11 @@ public class RoleAdminBean extends PrincipalAdminBean {
     }
 
     public void doDelete() {
+        if(role.getDerivedRoles().size() > 0) {
+            uiLogger.info("本角色有下属角色，请先删除下属角色!");
+            return;
+        }
+
 		try {
 			serviceFor(Role.class).delete(role.unmarshal());
 			loadRoleTree();

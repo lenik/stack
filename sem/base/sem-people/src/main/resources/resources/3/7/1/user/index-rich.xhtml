@@ -88,7 +88,7 @@
 
 
 		<h:form id="editUserForm">
-            <p:dialog header="新增用户" widgetVar="editUserDialog" modal="true" height="500" width="640">
+            <p:dialog header="新增/修改用户" widgetVar="editUserDialog" modal="true" height="500" width="640">
                 <p:outputPanel id="editUserPanel">
                     <h:panelGrid columns="2">
 
@@ -118,7 +118,7 @@
 								<p:commandButton value="保存"
 									actionListener="#{userAdminBean.doSave}" update="userAdminForm"
 									oncomplete="editUserDialog.hide();" />
-								<p:commandButton value="取消" oncomplete="editGroupDialog.hide();" />
+								<p:commandButton value="取消" oncomplete="editUserDialog.hide();" />
 							</t:panelGrid>
 						</t:panelGroup>
 					</h:panelGrid>

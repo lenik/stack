@@ -25,9 +25,36 @@
 
 
 		<h:form id="groupAdminForm">
+
+            <p:contextMenu for="groupTable">
+                <p:menuitem value="修改" update="editGroupForm:editGroupPanel"
+                    oncomplete="editGroupDialog.show()"
+                    actionListener="#{groupAdminBean.doModifyGroup}" />
+                <p:menuitem value="删除"
+                    oncomplete="deleteConfirmDialog.show()"
+                    actionListener="#{groupAdminBean.chooseGroup}" />
+                <p:menuitem value="对应角色"
+                    oncomplete="roleDialog.show()"
+                    update="roleForm:rolePanel"
+                    actionListener="#{groupAdminBean.chooseGroup}" />
+                <p:menuitem value="对应用户"
+                    oncomplete="userDialog.show()"
+                    update="userForm:userPanel"
+                    actionListener="#{groupAdminBean.chooseGroup}" />
+            </p:contextMenu>
+
             <p:commandButton value="新增组" actionListener="#{groupAdminBean.doNewGroup}" onclick="editGroupDialog.show();" async="true" update="editGroupForm:editGroupPanel"/>
-			<p:treeTable id="groupTable" value="#{groupAdminBean.groupRoot}" var="group">
-				<p:column>
+			<p:treeTable id="groupTable"
+                value="#{groupAdminBean.groupRoot}"
+                var="group"
+                selectionMode="single"
+                selection="#{groupAdminBean.selectedNode}">
+
+                <f:facet name="header">
+                    <h:outputText value="右击表格查看更多操作"/>
+                </f:facet>
+
+                <p:column>
 					<f:facet name="header">名称</f:facet>
 					<h:outputText value="#{group.name}" />
 				</p:column>
@@ -35,41 +62,13 @@
 					<f:facet name="header">全名</f:facet>
 					<h:outputText value="#{group.fullName}" />
 				</p:column>
-
-				<p:column>
-					<f:facet name="header">操作</f:facet>
-					<t:panelGroup>
-						<p:commandLink value="修改" update="editGroupForm:editGroupPanel"
-							oncomplete="editGroupDialog.show();" actionListener="#{groupAdminBean.doModifyGroup}">
-							<f:setPropertyActionListener value="#{group}"
-								target="#{groupAdminBean.group}" />
-						</p:commandLink>
-						<p:spacer width="10" />
-						<p:commandLink value="删除"
-							disabled="#{fn:length(group.derivedGroups) > 0? true : false}"
-							oncomplete="deleteConfirmDialog.show();">
-							<f:setPropertyActionListener value="#{group}"
-								target="#{groupAdminBean.group}" />
-						</p:commandLink>
-						<p:spacer width="10" />
-						<p:commandLink value="对应角色" oncomplete="roleDialog.show()" update="roleForm:rolePanel">
-                            <f:setPropertyActionListener value="#{group}"
-                                target="#{groupAdminBean.group}" />
-                        </p:commandLink>
-                        <p:spacer width="10" />
-                        <p:commandLink value="对应用户" oncomplete="userDialog.show()" update="userForm:userPanel">
-                            <f:setPropertyActionListener value="#{group}"
-                                target="#{groupAdminBean.group}" />
-                        </p:commandLink>
-					</t:panelGroup>
-				</p:column>
 			</p:treeTable>
 
 		</h:form>
 
 
 		<h:form id="editGroupForm">
-            <p:dialog header="新增组" widgetVar="editGroupDialog" modal="true" height="500" width="640">
+            <p:dialog header="新增/修改组" widgetVar="editGroupDialog" modal="true" height="500" width="640">
                 <p:outputPanel id="editGroupPanel">
                     <h:panelGrid columns="2">
 

@@ -25,8 +25,35 @@
 
 
 		<h:form id="roleAdminForm">
+
+            <p:contextMenu for="roleTable">
+                <p:menuitem value="修改" update="editRoleForm:editRolePanel"
+                    oncomplete="editRoleDialog.show()"
+                    actionListener="#{roleAdminBean.doModifyRole}" />
+                <p:menuitem value="删除"
+                    oncomplete="deleteConfirmDialog.show()"
+                    actionListener="#{roleAdminBean.chooseRole}" />
+                <p:menuitem value="对应组"
+                    oncomplete="groupDialog.show()"
+                    update="groupForm:groupPanel"
+                    actionListener="#{roleAdminBean.chooseRole}" />
+                <p:menuitem value="对应用户"
+                    oncomplete="userDialog.show()"
+                    update="userForm:userPanel"
+                    actionListener="#{roleAdminBean.chooseRole}" />
+            </p:contextMenu>
+
             <p:commandButton value="新增角色" actionListener="#{roleAdminBean.doNewRole}" onclick="editRoleDialog.show();" async="true" update="editRoleForm:editRolePanel"/>
-			<p:treeTable id="roleTable" value="#{roleAdminBean.roleRoot}" var="role">
+			<p:treeTable id="roleTable"
+                value="#{roleAdminBean.roleRoot}"
+                var="role"
+                selectionMode="single"
+                selection="#{roleAdminBean.selectedNode}">
+
+                <f:facet name="header">
+                    <h:outputText value="右击表格查看更多操作"/>
+                </f:facet>
+
 				<p:column>
 					<f:facet name="header">名称</f:facet>
 					<h:outputText value="#{role.name}" />
@@ -35,41 +62,13 @@
 					<f:facet name="header">全名</f:facet>
 					<h:outputText value="#{role.fullName}" />
 				</p:column>
-
-				<p:column>
-					<f:facet name="header">操作</f:facet>
-					<t:panelGroup>
-						<p:commandLink value="修改" update="editRoleForm:editRolePanel"
-							oncomplete="editRoleDialog.show();" actionListener="#{roleAdminBean.doModifyRole}">
-							<f:setPropertyActionListener value="#{role}"
-								target="#{roleAdminBean.role}" />
-						</p:commandLink>
-						<p:spacer width="10" />
-						<p:commandLink value="删除"
-							disabled="#{fn:length(role.derivedRoles) > 0? true : false}"
-							oncomplete="deleteConfirmDialog.show();">
-							<f:setPropertyActionListener value="#{role}"
-								target="#{roleAdminBean.role}" />
-						</p:commandLink>
-						<p:spacer width="10" />
-						<p:commandLink value="对应组" oncomplete="groupDialog.show()" update="groupForm:groupPanel">
-                            <f:setPropertyActionListener value="#{role}"
-                                target="#{roleAdminBean.role}" />
-                        </p:commandLink>
-                        <p:spacer width="10" />
-                        <p:commandLink value="对应用户" oncomplete="userDialog.show()" update="userForm:userPanel">
-                            <f:setPropertyActionListener value="#{role}"
-                                target="#{roleAdminBean.role}" />
-                        </p:commandLink>
-					</t:panelGroup>
-				</p:column>
 			</p:treeTable>
 
 		</h:form>
 
 
 		<h:form id="editRoleForm">
-            <p:dialog header="新增角色" widgetVar="editRoleDialog" modal="true" height="500" width="640">
+            <p:dialog header="新增/修改角色" widgetVar="editRoleDialog" modal="true" height="500" width="640">
                 <p:outputPanel id="editRolePanel">
                     <h:panelGrid columns="2">
 
