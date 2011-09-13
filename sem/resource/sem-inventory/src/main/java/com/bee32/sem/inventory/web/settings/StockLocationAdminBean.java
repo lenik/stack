@@ -37,6 +37,7 @@ public class StockLocationAdminBean
     private StockLocationDto stockLocation;
 
     private TreeNode root;
+    private TreeNode selectedNode;
     private TreeNode selectedParentStockLocationNode;
 
     public boolean isEditNewStatus() {
@@ -94,6 +95,14 @@ public class StockLocationAdminBean
         return UIHelper.selectItemsFromDict(unitDtos);
     }
 
+    public TreeNode getSelectedNode() {
+        return selectedNode;
+    }
+
+    public void setSelectedNode(TreeNode selectedNode) {
+        this.selectedNode = selectedNode;
+    }
+
     public TreeNode getSelectedParentStockLocationNode() {
         return selectedParentStockLocationNode;
     }
@@ -139,8 +148,12 @@ public class StockLocationAdminBean
         _newStockLocation();
     }
 
+    public void chooseStockLocation() {
+        stockLocation = reload((StockLocationDto)selectedNode.getData());
+    }
+
     public void doModifyStockLocation() {
-        stockLocation = reload(stockLocation);
+        chooseStockLocation();
         editNewStatus = false;
     }
 
@@ -169,6 +182,11 @@ public class StockLocationAdminBean
     }
 
     public void doDelete() {
+        if(stockLocation.getChildren().size() > 0) {
+            uiLogger.info("本库位有下属库位，请先删除下属库位!");
+            return;
+        }
+
         try {
             serviceFor(StockLocation.class).delete(stockLocation.unmarshal());
             loadStockLocationTree();

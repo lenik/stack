@@ -73,6 +73,9 @@ public class UserFileDto
         merge(target, "fileBlob", fileBlob);
         target.setDir(dir);
         target.setName(name);
+
+        if (selection.contains(TAGS))
+            mergeSet(target, "tags", tags);
     }
 
     @Override

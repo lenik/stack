@@ -12,6 +12,7 @@ import javax.faces.model.SelectItem;
 import javax.free.TempFile;
 
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.UploadedFile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,8 @@ import com.bee32.sem.file.entity.UserFile;
 import com.bee32.sem.file.entity.UserFileTagname;
 import com.bee32.sem.file.util.UserFileCriteria;
 import com.bee32.sem.misc.EntityCriteria;
+import com.bee32.sem.sandbox.EntityDataModelOptions;
+import com.bee32.sem.sandbox.UIHelper;
 
 @Component
 @Scope("view")
@@ -41,7 +44,8 @@ public class UserFileAdmin
     /* checkbox ids */
     List<String> selectedTags;
     List<SelectItem> selectedTagItems = new ArrayList<SelectItem>();
-    List<UserFileDto> userFileList;
+    LazyDataModel<UserFileDto> userFiles;
+
     UserFileDto activeFile = new UserFileDto().create();
     int activeIndex;
     List<String> selectedTagsToAdd;
@@ -54,13 +58,15 @@ public class UserFileAdmin
 
     public UserFileAdmin() {
         refreshList();
+        refreshCount();
         refreshTags();
     }
+
 
     public void refreshList() {
         List<Long> idList = new ArrayList<Long>();
         boolean attachment = false;
-        if (selectedTags != null)
+        if (selectedTags != null) {
             for (String tagId : selectedTags) {
                 long id = Long.parseLong(tagId);
                 if (id > 0)
@@ -68,18 +74,40 @@ public class UserFileAdmin
                 else
                     attachment = true;
             }
+        }
 
-        List<UserFile> searchedFiles =
-                serviceFor(UserFile.class).list(//
-                        UserFileCriteria.patternMatch(filePattern),
-                        UserFileCriteria.switchOwner(selectedUserId),//
-                        UserFileCriteria.withAnyTagIn(idList),//
-                        UserFileCriteria.isAttachment(attachment),
-                        EntityCriteria.ownedByCurrentUser(),
-                        Order.desc("lastModified"));
-        Set<UserFile> fileSet = new HashSet<UserFile>(searchedFiles);
-        List<UserFile> filted = new ArrayList<UserFile>(fileSet);
-        userFileList = DTOs.marshalList(UserFileDto.class, UserFileDto.TAGS, filted);
+        EntityDataModelOptions<UserFile, UserFileDto> options = new EntityDataModelOptions<UserFile, UserFileDto>(//
+                UserFile.class, UserFileDto.class, UserFileDto.TAGS, //
+                UserFileCriteria.patternMatch(filePattern),
+                UserFileCriteria.switchOwner(selectedUserId),//
+                UserFileCriteria.withAnyTagIn(idList),//
+                UserFileCriteria.isAttachment(attachment),
+                EntityCriteria.ownedByCurrentUser(),
+                Order.desc("lastModified"));
+        userFiles = UIHelper.<UserFile, UserFileDto> buildLazyDataModel(options);
+
+        refreshCount();
+    }
+
+    void refreshCount() {
+        List<Long> idList = new ArrayList<Long>();
+        boolean attachment = false;
+        if (selectedTags != null) {
+            for (String tagId : selectedTags) {
+                long id = Long.parseLong(tagId);
+                if (id > 0)
+                    idList.add(id);
+                else
+                    attachment = true;
+            }
+        }
+
+        int count = serviceFor(UserFile.class).count(UserFileCriteria.patternMatch(filePattern),
+                UserFileCriteria.switchOwner(selectedUserId),//
+                UserFileCriteria.withAnyTagIn(idList),//
+                UserFileCriteria.isAttachment(attachment),
+                EntityCriteria.ownedByCurrentUser());
+        userFiles.setRowCount(count);
     }
 
     public void refreshTags() {
@@ -178,8 +206,6 @@ public class UserFileAdmin
         } catch (Exception e) {
             uiLogger.error("编辑附件失败:" + e.getMessage(), e);
         }
-        activeFile = DTOs.marshal(UserFileDto.class, file);
-        userFileList.set(activeIndex, activeFile);
     }
 
     public void removeFile() {
@@ -192,13 +218,10 @@ public class UserFileAdmin
         try {
             serviceFor(UserFile.class).deleteById(activeFile.getId());
             uiLogger.info("删除附件:" + activeFile.getName() + "成功");
-            userFileList.remove(activeFile);
+            refreshCount();
         } catch (Exception e) {
             uiLogger.error("删除附件失败:" + e.getMessage(), e);
         }
-
-        // XXX
-        refreshList();
     }
 
     public void handleFileUpload(FileUploadEvent event) {
@@ -228,18 +251,13 @@ public class UserFileAdmin
             serviceFor(FileBlob.class).saveOrUpdate(fileBlob);
             serviceFor(UserFile.class).save(userFile);
 
+            uiLogger.info("上传成功:" + fileName);
+            refreshCount();
+
         } catch (Exception e) {
             uiLogger.error("远程文件保存失败:" + fileName, e);
             return;
         }
-
-        UserFileDto userFileDto = DTOs.marshal(UserFileDto.class, userFile);
-        userFileList.add(0, userFileDto);
-
-        uiLogger.info("上传成功:" + fileName);
-
-        // XXX
-        refreshList();
     }
 
     public List<SelectItem> getUsersWithFile() {
@@ -257,10 +275,6 @@ public class UserFileAdmin
         return selectedTags;
     }
 
-    public List<UserFileDto> getUserFileList() {
-        return userFileList;
-    }
-
     public void setSelectedTags(List<String> selectedTags) {
         this.selectedTags = selectedTags;
     }
@@ -270,7 +284,6 @@ public class UserFileAdmin
     }
 
     public void setActiveFile(UserFileDto activeFile) {
-        activeIndex = userFileList.indexOf(activeFile);
         this.activeFile = reload(activeFile);
     }
 
@@ -334,4 +347,11 @@ public class UserFileAdmin
         this.selectedUserId = selectedUserId;
     }
 
+    public LazyDataModel<UserFileDto> getUserFiles() {
+        return userFiles;
+    }
+
+    public void setUserFiles(LazyDataModel<UserFileDto> userFiles) {
+        this.userFiles = userFiles;
+    }
 }

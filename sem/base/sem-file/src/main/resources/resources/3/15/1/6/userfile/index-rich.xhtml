@@ -18,67 +18,100 @@
 
         <h:form id="main">
 
-            <t:panelGrid columns="3" style="width:100%;" columnClasses="class1,class2">
-                <p:commandButton value="标签管理" onclick="tagAdminDialog.show();" />
-                <p:selectManyCheckbox id="tagIds" value="#{userFileAdmin.selectedTags}">
-                    <f:selectItems value="#{userFileAdmin.userFileTags}" />
-                    <f:selectItem itemLabel="附件" itemValue="-200" />
-                    <p:ajax update="fileList" listener="#{userFileAdmin.refreshList}" />
-                </p:selectManyCheckbox>
+            <t:panelGrid columns="2">
+                <t:panelGroup>
+                    <p:commandButton value="标签管理" onclick="tagAdminDialog.show();" />
+                    <p:selectManyCheckbox id="tagIds"
+                        value="#{userFileAdmin.selectedTags}"
+                        layout="pageDirection">
+                        <f:selectItems
+                            value="#{userFileAdmin.userFileTags}" />
+                        <f:selectItem itemLabel="附件" itemValue="-200" />
+                        <p:ajax update="fileList"
+                            listener="#{userFileAdmin.refreshList}" />
+                    </p:selectManyCheckbox>
+                </t:panelGroup>
 
-                <t:panelGrid columns="4">
-                    <h:outputText value="所有者"/>
-                    <p:selectOneMenu value="#{userFileAdmin.selectedUserId}">
-                        <f:selectItem itemLabel="(不限)" itemValue="0" />
-                        <f:selectItems value="#{userFileAdmin.usersWithFile}" />
-                        <p:ajax update="fileList" listener="#{userFileAdmin.refreshList}" />
-                    </p:selectOneMenu>
-                    <p:inputText value="#{userFileAdmin.filePattern}" />
-                    <p:commandButton value="查找" actionListener="#{userFileAdmin.refreshList}" update="fileList" />
-                </t:panelGrid>
+                <t:panelGroup>
+                    <t:panelGrid columns="4">
+                        <h:outputText value="所有者" />
+                        <p:selectOneMenu
+                            value="#{userFileAdmin.selectedUserId}">
+                            <f:selectItem itemLabel="(不限)" itemValue="0" />
+                            <f:selectItems
+                                value="#{userFileAdmin.usersWithFile}" />
+                            <p:ajax update="fileList"
+                                listener="#{userFileAdmin.refreshList}" />
+                        </p:selectOneMenu>
+                        <p:inputText
+                            value="#{userFileAdmin.filePattern}" />
+                        <p:commandButton value="查找"
+                            actionListener="#{userFileAdmin.refreshList}"
+                            update="fileList" />
+                    </t:panelGrid>
+
+                    <p:dataTable id="fileList"
+                        value="#{userFileAdmin.userFiles}" var="item"
+                        paginator="true"
+                        paginatorTemplate="#{viewConfig.paginatorTemplate}"
+                        rows="#{viewConfig.pageSize}"
+                        rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
+                        lazy="true">
+                        <p:column>
+                            <a
+                                href="#{location.WEB_APP}/3/15/1/6/file/view.do?id=#{item.id}">
+                                <h:graphicImage
+                                    value="/3/15/1/6/file/view.do?id=#{item.id}"
+                                    width="36" height="36" /> </a>
+                        </p:column>
+
+                        <p:column headerText="附件名称">
+                            <h:outputText value="#{item.name}" />
+                        </p:column>
+
+                        <p:column headerText="文件标题">
+                            <h:outputText value="#{item.label}" />
+                        </p:column>
+                        <p:column headerText="附件标签">
+                            <h:outputText value="#{item.formatTags}" />
+                        </p:column>
+                        <p:column headerText="所属人员">
+                            <h:outputText
+                                value="#{item.owner.displayName}" />
+                        </p:column>
+
+                        <p:column headerText="操作">
+                            <p:commandLink title="编辑"
+                                oncomplete="fileDialog.show();"
+                                update="dialogForm:fileDialogPanel"
+                                process="@this">
+                                <f:setPropertyActionListener
+                                    value="#{item}"
+                                    target="#{userFileAdmin.activeFile}" />
+                                <p:graphicImage
+                                    value="#{location.ICON}/etool16/editor_area.gif" />
+                            </p:commandLink>
+
+                            <p:commandLink title="删除"
+                                oncomplete="confirmation.show()"
+                                process="@this">
+                                <f:setPropertyActionListener
+                                    value="#{item}"
+                                    target="#{userFileAdmin.activeFile}" />
+                                <p:graphicImage
+                                    value="#{location.ICON}/etool16/delete_edit.gif" />
+                            </p:commandLink>
+
+                            <a
+                                href="#{location.WEB_APP}/3/15/1/6/file/download.do?id=#{item.id}"
+                                title="下载"> <p:graphicImage
+                                    value="#{location.ICON}/etool16/group_by_file.gif" />
+                            </a>
+
+                        </p:column>
+                    </p:dataTable>
+                </t:panelGroup>
             </t:panelGrid>
-
-            <p:dataTable id="fileList" value="#{userFileAdmin.userFileList}" var="item" paginator="true"
-                paginatorTemplate="#{viewConfig.paginatorTemplate}" rows="#{viewConfig.pageSize}"
-                rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}">
-                <p:column>
-                    <a href="#{location.WEB_APP}/3/15/1/6/file/view.do?id=#{item.id}"> <h:graphicImage
-                            value="/3/15/1/6/file/view.do?id=#{item.id}" width="36" height="36" /> </a>
-                    <!--                     <img src="#{item.imageHref}" width="36" height="36" /> -->
-                </p:column>
-
-                <p:column headerText="附件名称">
-                    <h:outputText value="#{item.name}" />
-                </p:column>
-
-                <p:column headerText="文件标题">
-                    <h:outputText value="#{item.label}" />
-                </p:column>
-                <p:column headerText="附件标签">
-                    <h:outputText value="#{item.formatTags}" />
-                </p:column>
-                <p:column headerText="所属人员">
-                    <h:outputText value="#{item.owner.displayName}" />
-                </p:column>
-
-                <p:column headerText="操作">
-                    <p:commandLink title="编辑" oncomplete="fileDialog.show();" update="dialogForm:fileDialogPanel"
-                        process="@this">
-                        <f:setPropertyActionListener value="#{item}" target="#{userFileAdmin.activeFile}" />
-                        <p:graphicImage value="#{location.ICON}/etool16/editor_area.gif" />
-                    </p:commandLink>
-
-                    <p:commandLink title="删除" oncomplete="confirmation.show()" process="@this">
-                        <f:setPropertyActionListener value="#{item}" target="#{userFileAdmin.activeFile}" />
-                        <p:graphicImage value="#{location.ICON}/etool16/delete_edit.gif" />
-                    </p:commandLink>
-
-                    <a href="#{location.WEB_APP}/3/15/1/6/file/download.do?id=#{item.id}" title="下载"> <p:graphicImage
-                            value="#{location.ICON}/etool16/group_by_file.gif" /> </a>
-
-                </p:column>
-            </p:dataTable>
-
         </h:form>
 
         <h:form id="updateForm">
@@ -145,13 +178,13 @@
                 <p:commandButton value="取消" onclick="selectTagsDialog.hide();" />
             </p:dialog>
 
-            <p:dialog id="fileDialog" widgetVar="fileDialog" height="500" width="700" header="编辑附件">
-                <p:panel id="fileDialogPanel">
-                    <t:panelGrid columns="2" style="width:100%;">
+            <p:dialog id="fileDialog" widgetVar="fileDialog" width="600" height="650" header="编辑附件">
+                <h:panelGroup id="fileDialogPanel">
+                    <t:panelGrid columns="2">
 
                         <t:panelGroup colspan="2">
                             <div align="center">
-                                <img src="#{userFileAdmin.activeFile.imageHref}" border="1" />
+                                <img width="480" src="#{userFileAdmin.activeFile.imageHref}" border="1" />
                             </div>
                         </t:panelGroup>
 
@@ -181,13 +214,15 @@
                             </t:panelGroup>
                         </t:panelGrid>
 
+                        <p:commandButton value="确定"
+                            actionListener="#{userFileAdmin.editUserFile}"
+                            oncomplete="fileDialog.hide();"
+                            update="main:fileList" />
+                        <p:commandButton value="取消"
+                            onclick="fileDialog.hide();" />
+
                     </t:panelGrid>
-
-                    <p:commandButton value="确定" actionListener="#{userFileAdmin.editUserFile}"
-                        oncomplete="fileDialog.hide();" update="main:fileList" />
-                    <p:commandButton value="取消" onclick="fileDialog.hide();" />
-
-                </p:panel>
+                </h:panelGroup>
             </p:dialog>
         </h:form>
 
