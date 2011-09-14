@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:pc="http://bee32.com/plover/core"
+    xmlns:sem="http://bee32.com/sem/functions" xmlns:p="http://primefaces.prime.com.tr/ui"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+<!-- InstanceBegin template="/Templates/seccaJsf.dwt.jsp" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<ui:composition template="/template/primefaces.xhtml">
+
+    <ui:define name="title">库存查询</ui:define>
+
+    <ui:define name="content">
+
+        <h:form id="mainForm">
+            <p:panel header="库存查询">
+                <t:panelGrid columns="3">
+                    <t:panelGrid columns="2">
+                        <h:outputText value="仓库" />
+                        <p:selectOneMenu id="stockWarehouse"
+                            value="#{stockQueryBean.selectedWarehouse.id}"
+                            style="width:200px;">
+                            <f:selectItem itemValue="" itemLabel="--选择仓库--" />
+                            <f:selectItems value="#{stockQueryBean.stockWarehouses}" />
+                            <p:ajax listener="#{stockQueryAdminBean.onSwChange}"
+                                update="mainForm"
+                                event="change" />
+                        </p:selectOneMenu>
+                        <h:outputText value="时间" />
+                        <h:inputText />
+                    </t:panelGrid>
+
+                    <t:panelGrid columns="2">
+                        <h:outputText value="物料" />
+                        <t:panelGrid columns="2">
+                            <h:inputText />
+                            <p:commandButton value="..." />
+                        </t:panelGrid>
+                    </t:panelGrid>
+
+                    <p:commandButton value="查询"/>
+                </t:panelGrid>
+
+                <p:dataTable
+                    value="#{stockQueryBean.items}" >
+                </p:dataTable>
+            </p:panel>
+
+        </h:form>
+
+
+	</ui:define>
+</ui:composition>
+</html>
