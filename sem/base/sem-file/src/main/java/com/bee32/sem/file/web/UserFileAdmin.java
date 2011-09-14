@@ -111,10 +111,14 @@ public class UserFileAdmin
     }
 
     public void refreshTags() {
-        List<UserFileTagname> tags = serviceFor(UserFileTagname.class).list(EntityCriteria.ownedByCurrentUser());
+        List<UserFileTagname> tags = serviceFor(UserFileTagname.class).list(
+                EntityCriteria.ownedByCurrentUser(),
+                Order.asc("name")
+        );
         List<SelectItem> items = new ArrayList<SelectItem>();
-        for (UserFileTagname tag : tags)
+        for (UserFileTagname tag : tags) {
             items.add(new SelectItem(tag.getId(), tag.getName()));
+        }
         userFileTags = items;
     }
 
