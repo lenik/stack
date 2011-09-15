@@ -18,9 +18,11 @@
 
         <h:form id="main">
 
-            <t:panelGrid columns="2">
-                <t:panelGroup>
-                    <p:commandButton value="标签管理" onclick="tagAdminDialog.show();" />
+            <t:panelGrid columns="2" columnClasses="ftd">
+                <t:div>
+                    <p:commandButton value="标签管理"
+                        onclick="tagAdminDialog.show();" />
+
                     <p:selectManyCheckbox id="tagIds"
                         value="#{userFileAdmin.selectedTags}"
                         layout="pageDirection">
@@ -30,7 +32,7 @@
                         <p:ajax update="fileList"
                             listener="#{userFileAdmin.refreshList}" />
                     </p:selectManyCheckbox>
-                </t:panelGroup>
+                </t:div>
 
                 <t:panelGroup>
                     <t:panelGrid columns="4">
@@ -159,7 +161,7 @@
                 </t:panelGrid>
             </p:dialog>
 
-            <p:dialog widgetVar="newTagDialog" height="300" width="400" header="新建标签">
+            <p:dialog widgetVar="newTagDialog" height="300" width="400" header="新建标签" modal="true">
                 <t:panelGrid columns="2" id="newTag">
                     <h:outputText value="标签名称:" />
                     <p:inputText value="#{userFileAdmin.newTag.name}" />
@@ -178,13 +180,13 @@
                 <p:commandButton value="取消" onclick="selectTagsDialog.hide();" />
             </p:dialog>
 
-            <p:dialog id="fileDialog" widgetVar="fileDialog" width="600" height="650" header="编辑附件">
+            <p:dialog id="fileDialog" widgetVar="fileDialog" width="600" height="650" header="编辑附件" modal="true">
                 <h:panelGroup id="fileDialogPanel">
                     <t:panelGrid columns="2">
 
                         <t:panelGroup colspan="2">
                             <div align="center">
-                                <img width="480" src="#{userFileAdmin.activeFile.imageHref}" border="1" />
+                                <img src="#{userFileAdmin.activeFile.imageHref}" border="1" />
                             </div>
                         </t:panelGroup>
 
