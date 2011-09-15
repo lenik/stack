@@ -183,6 +183,13 @@
 
                     <p:column>
                         <f:facet name="header">
+                            <h:outputText value="规格型号"/>
+                        </f:facet>
+                        <h:outputText value="#{item.material.modelSpec}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
                             <h:outputText value="批号"/>
                         </f:facet>
                         <h:outputText value="#{item.batch}" />
