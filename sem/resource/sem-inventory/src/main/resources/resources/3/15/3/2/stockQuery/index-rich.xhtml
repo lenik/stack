@@ -27,31 +27,117 @@
                             style="width:200px;">
                             <f:selectItem itemValue="" itemLabel="--选择仓库--" />
                             <f:selectItems value="#{stockQueryBean.stockWarehouses}" />
-                            <p:ajax listener="#{stockQueryAdminBean.onSwChange}"
+                            <p:ajax listener="#{stockQueryBean.onSwChange}"
                                 update="mainForm"
                                 event="change" />
                         </p:selectOneMenu>
                         <h:outputText value="时间" />
-                        <h:inputText />
+                        <p:calendar id="limitDateFrom" navigator="true"
+                            locale="zh_CN" pattern="yyyy-MM-dd"
+                            value="#{stockQueryBean.queryDate}"
+                            showOn="button"/>
                     </t:panelGrid>
 
-                    <t:panelGrid columns="2">
-                        <h:outputText value="物料" />
+                    <p:panel header="物料" toggleable="true" collapsed="true">
                         <t:panelGrid columns="2">
-                            <h:inputText />
-                            <p:commandButton value="..." />
+                            <h:outputText value="物料" />
+                            <t:panelGrid columns="2">
+                                <p:selectManyMenu
+                                    id="materialsToQuery"
+                                    value="#{stockQueryBean.selectedMaterialsToQuery}"
+                                    style="height:200px">
+                                    <f:selectItems value="#{stockQueryBean.materialsToQuery}"/>
+                                </p:selectManyMenu>
+                                <t:panelGrid columns="1">
+                                    <p:commandButton value="增加" onclick="materialDialog.show();"/>
+                                    <p:commandButton value="删除"
+                                        actionListener="#{stockQueryBean.removeMaterialsToQuery}"
+                                        update="mainForm:materialsToQuery"/>
+                                </t:panelGrid>
+                            </t:panelGrid>
                         </t:panelGrid>
-                    </t:panelGrid>
+                    </p:panel>
 
                     <p:commandButton value="查询"/>
                 </t:panelGrid>
 
                 <p:dataTable
-                    value="#{stockQueryBean.items}" >
+                    id="result"
+                    value="#{stockQueryBean.items}" var="item"
+                    resizableColumns="true"
+                    rowIndexVar="rowIndex">
+
+                    <p:column headerText="序号">
+                        <h:outputText value="#{rowIndex + 1}" />
+                    </p:column>
+
+                    <p:column headerText="物料">
+                        <h:outputText value="#{item.material.label}"/>
+                    </p:column>
+
                 </p:dataTable>
             </p:panel>
 
         </h:form>
+
+        <h:form id="materialForm">
+            <p:dialog header="选择物料" widgetVar="materialDialog" modal="true"
+                height="400" width="640">
+                <h:panelGroup>
+
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="物料名字全部或部份:" />
+                        <p:inputText value="#{stockQueryBean.materialPattern}" />
+                        <p:commandButton value="查找"
+                            actionListener="#{stockQueryBean.findMaterial}" update="materials"
+                            async="true" />
+                    </h:panelGrid>
+                    <p:dataTable id="materials" var="material"
+                        value="#{stockQueryBean.materials}" resizableColumns="true"
+                        selection="#{stockQueryBean.selectedMaterial}" selectionMode="single"
+                        rowKey="#{material.id}"
+                        rowIndexVar="rowIndex">
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="序号" />
+                            </f:facet>
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column headerText="物料名称">
+                            <h:outputText value="#{material.label}" />
+                        </p:column>
+
+                        <p:column headerText="序列号">
+                            <h:outputText value="#{material.serial}" />
+                        </p:column>
+
+                        <p:column headerText="条形码">
+                            <h:outputText value="#{material.barCode}" />
+                        </p:column>
+
+                        <p:column headerText="主单位">
+                            <h:outputText value="#{material.unit.name}" />
+                        </p:column>
+
+                        <p:column headerText="规格型号">
+                            <h:outputText value="#{material.modelSpec}" />
+                        </p:column>
+
+                    </p:dataTable>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="添加"
+                            actionListener="#{stockQueryBean.addMaterial}"
+                            oncomplete="materialDialog.hide()" update="mainForm:materialsToQuery"
+                            async="true" />
+                        <p:commandButton value="取消" oncomplete="materialDialog.hide();" />
+                    </h:panelGrid>
+                </h:panelGroup>
+            </p:dialog>
+
+        </h:form>
+
 
 
 	</ui:define>
