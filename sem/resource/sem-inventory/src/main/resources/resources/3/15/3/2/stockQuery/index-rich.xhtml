@@ -27,9 +27,6 @@
                             style="width:200px;">
                             <f:selectItem itemValue="" itemLabel="--选择仓库--" />
                             <f:selectItems value="#{stockQueryBean.stockWarehouses}" />
-                            <p:ajax listener="#{stockQueryBean.onSwChange}"
-                                update="mainForm"
-                                event="change" />
                         </p:selectOneMenu>
                         <h:outputText value="时间" />
                         <p:calendar id="limitDateFrom" navigator="true"
@@ -58,7 +55,8 @@
                         </t:panelGrid>
                     </p:panel>
 
-                    <p:commandButton value="查询"/>
+                    <p:commandButton value="查询" update="mainForm:result"
+                        actionListener="#{stockQueryBean.query}" />
                 </t:panelGrid>
 
                 <p:dataTable
@@ -75,6 +73,33 @@
                         <h:outputText value="#{item.material.label}"/>
                     </p:column>
 
+                    <p:column headerText="规格型号">
+                        <h:outputText value="#{item.material.modelSpec}"/>
+                    </p:column>
+
+                    <p:column headerText="批号">
+                        <h:outputText value="#{item.batch}" />
+                    </p:column>
+
+                    <p:column headerText="有效期">
+                        <h:outputText value="#{item.expirationDate}" />
+                    </p:column>
+
+                    <p:column headerText="库位">
+                        <h:outputText value="#{item.location.nodeText}" />
+                    </p:column>
+
+                    <p:column headerText="单价">
+                        <h:outputText value="#{item.price.value}" />
+                    </p:column>
+
+                    <p:column headerText="币种">
+                        <h:outputText value="#{item.price.currencyText}" />
+                    </p:column>
+
+                    <p:column headerText="数量">
+                        <h:outputText value="#{item.quantity}" />
+                    </p:column>
                 </p:dataTable>
             </p:panel>
 

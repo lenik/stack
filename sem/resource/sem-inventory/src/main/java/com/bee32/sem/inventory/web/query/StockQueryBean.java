@@ -1,6 +1,7 @@
 package com.bee32.sem.inventory.web.query;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,9 @@ import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.inventory.service.IStockQuery;
 
 @Component
 @Scope("view")
@@ -25,13 +28,15 @@ public class StockQueryBean extends EntityViewBean {
     private static final long serialVersionUID = 1L;
 
     private StockWarehouseDto selectedWarehouse = new StockWarehouseDto().ref();
-    private Date queryDate;
+    private Date queryDate = new Date();
     private List<MaterialDto> materialsToQuery = new ArrayList<MaterialDto>();
-    private List<SelectItem> selectedMaterialsToQuery;
+    private List<String> selectedMaterialsToQuery;
 
     private String materialPattern;
     private List<MaterialDto> materials;
     private MaterialDto selectedMaterial;
+
+    private List<StockOrderItemDto> items;
 
     public StockWarehouseDto getSelectedWarehouse() {
         return selectedWarehouse;
@@ -50,7 +55,7 @@ public class StockQueryBean extends EntityViewBean {
     }
 
     public List<StockOrderItemDto> getItems() {
-        return new ArrayList<StockOrderItemDto>();
+        return items;
     }
 
     public List<SelectItem> getStockWarehouses() {
@@ -82,12 +87,12 @@ public class StockQueryBean extends EntityViewBean {
 
 
 
-    public List<SelectItem> getSelectedMaterialsToQuery() {
+    public List<String> getSelectedMaterialsToQuery() {
         return selectedMaterialsToQuery;
     }
 
     public void setSelectedMaterialsToQuery(
-            List<SelectItem> selectedMaterialsToQuery) {
+            List<String> selectedMaterialsToQuery) {
         this.selectedMaterialsToQuery = selectedMaterialsToQuery;
     }
 
@@ -147,10 +152,30 @@ public class StockQueryBean extends EntityViewBean {
 
     public void removeMaterialsToQuery() {
         if(selectedMaterialsToQuery != null) {
-            for(SelectItem item : selectedMaterialsToQuery) {
-                removeMaterialDtoWithIdFromList(materialsToQuery, (Long) item.getValue());
+            for(String materialId : selectedMaterialsToQuery) {
+                removeMaterialDtoWithIdFromList(materialsToQuery, Long.parseLong(materialId));
             }
         }
+    }
+
+    public void query() {
+        IStockQuery q = getBean(IStockQuery.class);
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(queryDate);
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        c.set(Calendar.MILLISECOND, 999);
+
+        StockWarehouse w = selectedWarehouse.unmarshal();
+        List<Material> ms = new ArrayList<Material>();
+        for(MaterialDto m : materialsToQuery) {
+            ms.add(m.unmarshal());
+        }
+
+        StockItemList list = q.getActualSummary(c.getTime(), ms, null, null, w);
+        items = DTOs.marshalList(StockOrderItemDto.class, list.getItems());
     }
 
 }

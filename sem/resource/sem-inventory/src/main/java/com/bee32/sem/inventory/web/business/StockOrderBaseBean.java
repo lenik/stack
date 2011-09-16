@@ -21,6 +21,7 @@ import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.entity.Org;
@@ -306,6 +307,15 @@ public abstract class StockOrderBaseBean
 
     public void chooseOrgUnit() {
         stockOrder.setOrgUnit(selectedOrgUnit);
+    }
+
+
+    public List<StockOrderItemDto> getStockQueryItems() {
+        selectedWarehouse;
+        MaterialDto m = orderItem.getMaterial();
+
+        IStockQuery q = getBean(IStockQuery.class);
+
     }
 
 }
