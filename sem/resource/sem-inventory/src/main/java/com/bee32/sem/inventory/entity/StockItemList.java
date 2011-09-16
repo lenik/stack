@@ -100,4 +100,16 @@ public class StockItemList
         _merge(map, list);
     }
 
+    public StockItemList subList(Material material) {
+        if (material == null)
+            throw new NullPointerException("material");
+        StockItemList subList = new StockItemList();
+        for (StockOrderItem item : items) {
+            Material m = item.getMaterial();
+            if (material.equals(m))
+                subList.addItem(item);
+        }
+        return subList;
+    }
+
 }
