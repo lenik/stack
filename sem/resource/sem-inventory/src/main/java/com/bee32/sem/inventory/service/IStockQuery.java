@@ -1,6 +1,5 @@
 package com.bee32.sem.inventory.service;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -63,7 +62,7 @@ public interface IStockQuery {
      *            指定库位，<code>null</code> 表示所有仓库。
      * @return 对应物料的余量。
      */
-    BigDecimal getActualQuantity(Material material, StockQueryOptions options);
+    StockItemList getActualQuantity(Material material, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的可用库存余量（或曰逻辑库存余量），不考虑批号和库位。
@@ -89,7 +88,7 @@ public interface IStockQuery {
      *            指定库位，<code>null</code> 表示所有仓库。
      * @return 对应物料的余量。
      */
-    BigDecimal getVirtualQuantity(Material material, StockQueryOptions options);
+    StockItemList getVirtualQuantity(Material material, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的“锁定”的库存数量（或曰计划数量），不考虑批号和库位。
@@ -115,6 +114,6 @@ public interface IStockQuery {
      *            指定库位，<code>null</code> 表示所有仓库。
      * @return 对应物料的数量。
      */
-    BigDecimal getPlanQuantity(Material material, StockQueryOptions options);
+    StockItemList getPlanQuantity(Material material, StockQueryOptions options);
 
 }

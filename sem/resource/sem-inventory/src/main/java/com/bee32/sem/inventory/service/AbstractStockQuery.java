@@ -1,6 +1,5 @@
 package com.bee32.sem.inventory.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +8,6 @@ import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
-import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.util.StockCriteria;
 
 public abstract class AbstractStockQuery
@@ -48,7 +46,7 @@ public abstract class AbstractStockQuery
     }
 
     @Override
-    public BigDecimal getActualQuantity(Material material, StockQueryOptions options) {
+    public StockItemList getActualQuantity(Material material, StockQueryOptions options) {
         if (material == null)
             throw new NullPointerException("material");
         if (options == null)
@@ -58,12 +56,11 @@ public abstract class AbstractStockQuery
         _materials.add(material);
 
         StockItemList list = getActualSummary(_materials, options);
-        StockOrderItem first = list.getItems().get(0);
-        return first.getQuantity();
+        return list;
     }
 
     @Override
-    public BigDecimal getVirtualQuantity(Material material, StockQueryOptions options) {
+    public StockItemList getVirtualQuantity(Material material, StockQueryOptions options) {
         if (material == null)
             throw new NullPointerException("material");
         if (options == null)
@@ -73,12 +70,11 @@ public abstract class AbstractStockQuery
         _materials.add(material);
 
         StockItemList list = getVirtualSummary(_materials, options);
-        StockOrderItem first = list.getItems().get(0);
-        return first.getQuantity();
+        return list;
     }
 
     @Override
-    public BigDecimal getPlanQuantity(Material material, StockQueryOptions options) {
+    public StockItemList getPlanQuantity(Material material, StockQueryOptions options) {
         if (material == null)
             throw new NullPointerException("material");
         if (options == null)
@@ -88,8 +84,7 @@ public abstract class AbstractStockQuery
         _materials.add(material);
 
         StockItemList list = getPlanSummary(_materials, options);
-        StockOrderItem first = list.getItems().get(0);
-        return first.getQuantity();
+        return list;
     }
 
 }

@@ -50,8 +50,8 @@ public class StockQueryFeat
         System.out.println(actualTotal);
         System.out.println(virtualTotal);
 
-        BigDecimal gunAq = stockQuery.getActualQuantity(SEMInventorySamples.gundam, sqopts);
-        BigDecimal gunVq = stockQuery.getVirtualQuantity(SEMInventorySamples.gundam, sqopts);
+        StockItemList gunAq = stockQuery.getActualQuantity(SEMInventorySamples.gundam, sqopts);
+        StockItemList gunVq = stockQuery.getVirtualQuantity(SEMInventorySamples.gundam, sqopts);
 
         System.out.println("----------- LIST END -----------");
     }
