@@ -7,6 +7,7 @@ import java.util.List;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockLocation;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 
 public interface IStockQuery {
 
@@ -47,9 +48,12 @@ public interface IStockQuery {
      *            指定批号， <code>null</code> 表示不限批号。
      * @param location
      *            指定库位，<code>null</code> 表示所有库位。
+     * @param warehouse
+     *            指定库位，<code>null</code> 表示所有仓库。
      * @return 对应物料的余量。
      */
-    StockItemList getActualSummary(Date date, List<Material> materials, String cbatch, StockLocation location);
+    StockItemList getActualSummary(Date date, List<Material> materials, String cbatch, StockLocation location,
+            StockWarehouse warehouse);
 
     /**
      * 获取给定时间的某单一物料的实际库存余量，不考虑批号和库位。
@@ -58,9 +62,12 @@ public interface IStockQuery {
      *            指定批号， <code>null</code> 表示不限批号。
      * @param location
      *            指定库位，<code>null</code> 表示所有库位。
+     * @param warehouse
+     *            指定库位，<code>null</code> 表示所有仓库。
      * @return 对应物料的余量。
      */
-    BigDecimal getActualQuantity(Date date, Material material, String cbatch, StockLocation location);
+    BigDecimal getActualQuantity(Date date, Material material, String cbatch, StockLocation location,
+            StockWarehouse warehouse);
 
     /**
      * 获取给定时间的某单一物料的可用库存余量（或曰逻辑库存余量），不考虑批号和库位。
@@ -69,9 +76,12 @@ public interface IStockQuery {
      *            指定批号， <code>null</code> 表示不限批号。
      * @param location
      *            指定库位，<code>null</code> 表示所有库位。
+     * @param warehouse
+     *            指定库位，<code>null</code> 表示所有仓库。
      * @return 对应物料的余量。
      */
-    StockItemList getVirtualSummary(Date date, List<Material> materials, String cbatch, StockLocation location);
+    StockItemList getVirtualSummary(Date date, List<Material> materials, String cbatch, StockLocation location,
+            StockWarehouse warehouse);
 
     /**
      * 获取给定时间的某单一物料的可用库存余量（或曰逻辑库存余量），不考虑批号和库位。
@@ -80,9 +90,12 @@ public interface IStockQuery {
      *            指定批号， <code>null</code> 表示不限批号。
      * @param location
      *            指定库位，<code>null</code> 表示所有库位。
+     * @param warehouse
+     *            指定库位，<code>null</code> 表示所有仓库。
      * @return 对应物料的余量。
      */
-    BigDecimal getVirtualQuantity(Date date, Material material, String cbatch, StockLocation location);
+    BigDecimal getVirtualQuantity(Date date, Material material, String cbatch, StockLocation location,
+            StockWarehouse warehouse);
 
     /**
      * 获取给定时间的某单一物料的“锁定”的库存数量（或曰计划数量），不考虑批号和库位。
@@ -91,9 +104,12 @@ public interface IStockQuery {
      *            指定批号， <code>null</code> 表示不限批号。
      * @param location
      *            指定库位，<code>null</code> 表示所有库位。
+     * @param warehouse
+     *            指定库位，<code>null</code> 表示所有仓库。
      * @return 对应物料的数量。
      */
-    StockItemList getPlanSummary(Date date, List<Material> materials, String cbatch, StockLocation location);
+    StockItemList getPlanSummary(Date date, List<Material> materials, String cbatch, StockLocation location,
+            StockWarehouse warehouse);
 
     /**
      * 获取给定时间的某单一物料的"锁定“的库存数量（或曰计划数量），不考虑批号和库位。
@@ -102,8 +118,11 @@ public interface IStockQuery {
      *            指定批号， <code>null</code> 表示不限批号。
      * @param location
      *            指定库位，<code>null</code> 表示所有库位。
+     * @param warehouse
+     *            指定库位，<code>null</code> 表示所有仓库。
      * @return 对应物料的数量。
      */
-    BigDecimal getPlanQuantity(Date date, Material material, String cbatch, StockLocation location);
+    BigDecimal getPlanQuantity(Date date, Material material, String cbatch, StockLocation location,
+            StockWarehouse warehouse);
 
 }

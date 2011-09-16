@@ -16,6 +16,7 @@ import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 
 public class StockQuery
         extends AbstractStockQuery {
@@ -31,8 +32,8 @@ public class StockQuery
     }
 
     @Override
-    public StockOrder getSummary(ICriteriaElement selection, Date date, List<Material> materials, String cbatch,
-            StockLocation location) {
+    public StockOrder getSummary(ICriteriaElement selection, String cbatch, StockLocation location,
+            StockWarehouse warehouse) {
         // getLatestPack.. then, non-virtual
         // or, >date, non-packing, non-virtual
 
@@ -40,7 +41,8 @@ public class StockQuery
                 new GroupPropertyProjection("material"), //
                 new SumProjection("quantity"), //
                 GroupPropertyProjection.optional("cbatch", cbatch), //
-                GroupPropertyProjection.optional("location", location));
+                GroupPropertyProjection.optional("location", location), //
+                GroupPropertyProjection.optional("warehouse", warehouse));
 
         List<Object[]> list = asFor(StockOrderItem.class).listMisc(projection, selection);
 
@@ -54,6 +56,7 @@ public class StockQuery
         }
         // XXX How about: batch == null, location != null ?
         all.setSubject(subject);
+        all.setWarehouse(warehouse);
 
         for (Object[] line : list) {
             int _column = 0;
@@ -72,6 +75,7 @@ public class StockQuery
             item.setQuantity(_quantity);
             // item.setCBatch(_cbatch); // XXX
             item.setLocation(_location);
+
             all.addItem(item);
         }
 

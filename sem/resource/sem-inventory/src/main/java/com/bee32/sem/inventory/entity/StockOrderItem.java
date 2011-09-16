@@ -169,7 +169,7 @@ public class StockOrderItem
     @ManyToOne
     public StockWarehouse getWarehouse() {
         if (location == null)
-            return null;
+            return parent.getWarehouse();
         else
             return location.getWarehouse();
     }

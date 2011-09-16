@@ -40,8 +40,8 @@ public class StockQueryFeat
 
         Date date = new Date();
 
-        StockItemList actual = stockQuery.getActualSummary(date, materials, null, null);
-        StockItemList virtual = stockQuery.getVirtualSummary(date, materials, null, null);
+        StockItemList actual = stockQuery.getActualSummary(date, materials, null, null, null);
+        StockItemList virtual = stockQuery.getVirtualSummary(date, materials, null, null, null);
 
         System.out.println(actual.dump());
         System.out.println(virtual.dump());
@@ -51,8 +51,8 @@ public class StockQueryFeat
         System.out.println(actualTotal);
         System.out.println(virtualTotal);
 
-        BigDecimal gunAq = stockQuery.getActualQuantity(date, SEMInventorySamples.gundam, null, null);
-        BigDecimal gunVq = stockQuery.getVirtualQuantity(date, SEMInventorySamples.gundam, null, null);
+        BigDecimal gunAq = stockQuery.getActualQuantity(date, SEMInventorySamples.gundam, null, null, null);
+        BigDecimal gunVq = stockQuery.getVirtualQuantity(date, SEMInventorySamples.gundam, null, null, null);
 
         System.out.println("----------- LIST END -----------");
     }

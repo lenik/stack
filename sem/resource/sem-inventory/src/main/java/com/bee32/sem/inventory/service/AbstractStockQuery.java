@@ -11,6 +11,7 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrderItem;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.util.StockCriteria;
 
 public abstract class AbstractStockQuery
@@ -22,35 +23,39 @@ public abstract class AbstractStockQuery
         return getHistoryStockState(new Date());
     }
 
-    public abstract StockItemList getSummary(ICriteriaElement selection, Date date, List<Material> materials,
-            String cbatch, StockLocation location);
+    public abstract StockItemList getSummary(ICriteriaElement selection, String cbatch, StockLocation location,
+            StockWarehouse warehouse);
 
     @Override
-    public StockItemList getActualSummary(Date date, List<Material> materials, String cbatch, StockLocation location) {
-        ICriteriaElement selection = StockCriteria.sumOfCommons(date, materials, cbatch, location);
-        StockItemList summary = getSummary(selection, date, materials, cbatch, location);
+    public StockItemList getActualSummary(Date date, List<Material> materials, String cbatch, StockLocation location,
+            StockWarehouse warehouse) {
+        ICriteriaElement selection = StockCriteria.sumOfCommons(date, materials, cbatch, location, warehouse);
+        StockItemList summary = getSummary(selection, cbatch, location, warehouse);
         summary.setLabel("【汇总】实有库存余量清单");
         return summary;
     }
 
     @Override
-    public StockItemList getVirtualSummary(Date date, List<Material> materials, String cbatch, StockLocation location) {
-        ICriteriaElement selection = StockCriteria.sumOfVirtuals(date, materials, cbatch, location);
-        StockItemList summary = getSummary(selection, date, materials, cbatch, location);
+    public StockItemList getVirtualSummary(Date date, List<Material> materials, String cbatch, StockLocation location,
+            StockWarehouse warehouse) {
+        ICriteriaElement selection = StockCriteria.sumOfVirtuals(date, materials, cbatch, location, warehouse);
+        StockItemList summary = getSummary(selection, cbatch, location, warehouse);
         summary.setLabel("【汇总】可用库存余量清单");
         return summary;
     }
 
     @Override
-    public StockItemList getPlanSummary(Date date, List<Material> materials, String cbatch, StockLocation location) {
-        ICriteriaElement selection = StockCriteria.sumOfVirtualOnly(date, materials, cbatch, location);
-        StockItemList summary = getSummary(selection, date, materials, cbatch, location);
+    public StockItemList getPlanSummary(Date date, List<Material> materials, String cbatch, StockLocation location,
+            StockWarehouse warehouse) {
+        ICriteriaElement selection = StockCriteria.sumOfVirtualOnly(date, materials, cbatch, location, warehouse);
+        StockItemList summary = getSummary(selection, cbatch, location, warehouse);
         summary.setLabel("【汇总】计划/锁定库存数量清单");
         return summary;
     }
 
     @Override
-    public BigDecimal getActualQuantity(Date date, Material material, String cbatch, StockLocation location) {
+    public BigDecimal getActualQuantity(Date date, Material material, String cbatch, StockLocation location,
+            StockWarehouse warehouse) {
         if (date == null)
             throw new NullPointerException("date");
         if (material == null)
@@ -59,13 +64,14 @@ public abstract class AbstractStockQuery
         List<Material> _materials = new ArrayList<Material>(1);
         _materials.add(material);
 
-        StockItemList list = getActualSummary(date, _materials, cbatch, location);
+        StockItemList list = getActualSummary(date, _materials, cbatch, location, warehouse);
         StockOrderItem first = list.getItems().get(0);
         return first.getQuantity();
     }
 
     @Override
-    public BigDecimal getVirtualQuantity(Date date, Material material, String cbatch, StockLocation location) {
+    public BigDecimal getVirtualQuantity(Date date, Material material, String cbatch, StockLocation location,
+            StockWarehouse warehouse) {
         if (date == null)
             throw new NullPointerException("date");
         if (material == null)
@@ -74,13 +80,14 @@ public abstract class AbstractStockQuery
         List<Material> _materials = new ArrayList<Material>(1);
         _materials.add(material);
 
-        StockItemList list = getVirtualSummary(date, _materials, cbatch, location);
+        StockItemList list = getVirtualSummary(date, _materials, cbatch, location, warehouse);
         StockOrderItem first = list.getItems().get(0);
         return first.getQuantity();
     }
 
     @Override
-    public BigDecimal getPlanQuantity(Date date, Material material, String cbatch, StockLocation location) {
+    public BigDecimal getPlanQuantity(Date date, Material material, String cbatch, StockLocation location,
+            StockWarehouse warehouse) {
         if (date == null)
             throw new NullPointerException("date");
         if (material == null)
@@ -89,7 +96,7 @@ public abstract class AbstractStockQuery
         List<Material> _materials = new ArrayList<Material>(1);
         _materials.add(material);
 
-        StockItemList list = getPlanSummary(date, _materials, cbatch, location);
+        StockItemList list = getPlanSummary(date, _materials, cbatch, location, warehouse);
         StockOrderItem first = list.getItems().get(0);
         return first.getQuantity();
     }

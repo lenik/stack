@@ -18,6 +18,7 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockPeriod;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.misc.EntityCriteria;
 
@@ -74,7 +75,7 @@ public class StockCriteria
 
     @LeftHand(Object.class)
     public static ICriteriaElement sum(Set<String> subjects, Date date, List<Material> materials, String cbatch,
-            StockLocation location) {
+            StockLocation location, StockWarehouse warehouse) {
         if (subjects == null)
             throw new NullPointerException("subjects");
         if (date == null)
@@ -88,25 +89,26 @@ public class StockCriteria
                 in("parent._subject", subjects), //
                 in("material", materials), //
                 _equals("cbatch", cbatch), //
-                _equals("location", location));
+                _equals("location", location), //
+                _equals("warehouse", warehouse));
     }
 
     public static ICriteriaElement sumOfCommons(Date date, List<Material> materials, String cbatch,
-            StockLocation location) {
+            StockLocation location, StockWarehouse warehouse) {
         Set<String> subjects = StockOrderSubject.getCommonSet();
-        return sum(subjects, date, materials, cbatch, location);
+        return sum(subjects, date, materials, cbatch, location, warehouse);
     }
 
     public static ICriteriaElement sumOfVirtuals(Date date, List<Material> materials, String cbatch,
-            StockLocation location) {
+            StockLocation location, StockWarehouse warehouse) {
         Set<String> subjects = StockOrderSubject.getVirtualSet();
-        return sum(subjects, date, materials, cbatch, location);
+        return sum(subjects, date, materials, cbatch, location, warehouse);
     }
 
     public static ICriteriaElement sumOfVirtualOnly(Date date, List<Material> materials, String cbatch,
-            StockLocation location) {
+            StockLocation location, StockWarehouse warehouse) {
         Set<String> subjects = StockOrderSubject.getVirtualOnlySet();
-        return sum(subjects, date, materials, cbatch, location);
+        return sum(subjects, date, materials, cbatch, location, warehouse);
     }
 
 }
