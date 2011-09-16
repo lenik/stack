@@ -20,6 +20,7 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.service.IStockQuery;
+import com.bee32.sem.inventory.service.StockQueryOptions;
 
 @Component
 @Scope("view")
@@ -159,8 +160,6 @@ public class StockQueryBean extends EntityViewBean {
     }
 
     public void query() {
-        IStockQuery q = getBean(IStockQuery.class);
-
         Calendar c = Calendar.getInstance();
         c.setTime(queryDate);
         c.set(Calendar.HOUR_OF_DAY, 23);
@@ -174,7 +173,14 @@ public class StockQueryBean extends EntityViewBean {
             ms.add(m.unmarshal());
         }
 
-        StockItemList list = q.getActualSummary(c.getTime(), ms, null, null, w);
+
+        StockQueryOptions opts = new StockQueryOptions(c.getTime());
+        opts.setWarehouse(w);
+        opts.setCbatch(null, false);
+        opts.setLocation(null, false);
+
+        IStockQuery q = getBean(IStockQuery.class);
+        StockItemList list = q.getActualSummary(ms, opts);
         items = DTOs.marshalList(StockOrderItemDto.class, list.getItems());
     }
 

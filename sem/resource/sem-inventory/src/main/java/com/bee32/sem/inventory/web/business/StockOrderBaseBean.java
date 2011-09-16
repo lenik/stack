@@ -2,6 +2,7 @@ package com.bee32.sem.inventory.web.business;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Currency;
 import java.util.List;
 
@@ -19,9 +20,11 @@ import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.service.IStockQuery;
+import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.people.dto.OrgDto;
 import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.entity.Org;
@@ -311,11 +314,22 @@ public abstract class StockOrderBaseBean
 
 
     public List<StockOrderItemDto> getStockQueryItems() {
-        selectedWarehouse;
-        MaterialDto m = orderItem.getMaterial();
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        c.set(Calendar.MILLISECOND, 999);
+
+        StockWarehouse w = selectedWarehouse.unmarshal();
+        Material m = orderItem.getMaterial().unmarshal();
+
+        StockQueryOptions opts = new StockQueryOptions(c.getTime());
+        opts.setWarehouse(w);
+        opts.setCbatch(null, false);
+        opts.setLocation(null, false);
 
         IStockQuery q = getBean(IStockQuery.class);
-
+        StockItemList list = q.getActualQuantity(m, opts);
+        return DTOs.marshalList(StockOrderItemDto.class, list.getItems());
     }
-
 }
