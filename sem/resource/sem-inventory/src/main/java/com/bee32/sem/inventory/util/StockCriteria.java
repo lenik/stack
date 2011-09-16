@@ -13,12 +13,11 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.LeftHand;
 import com.bee32.sem.inventory.entity.Material;
-import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockPeriod;
-import com.bee32.sem.inventory.entity.StockWarehouse;
+import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.misc.EntityCriteria;
 
@@ -74,41 +73,35 @@ public class StockCriteria
     }
 
     @LeftHand(Object.class)
-    public static ICriteriaElement sum(Set<String> subjects, Date date, List<Material> materials, String cbatch,
-            StockLocation location, StockWarehouse warehouse) {
+    public static ICriteriaElement sum(Set<String> subjects, List<Material> materials, StockQueryOptions options) {
         if (subjects == null)
             throw new NullPointerException("subjects");
-        if (date == null)
-            throw new NullPointerException("date");
         if (materials == null)
             throw new NullPointerException("materials");
 
         return compose(//
                 alias("parent", "parent"), //
-                lessOrEquals("parent.beginTime", date), //
+                lessOrEquals("parent.beginTime", options.getTimestamp()), //
                 in("parent._subject", subjects), //
                 in("material", materials), //
-                _equals("cbatch", cbatch), //
-                _equals("location", location), //
-                _equals("warehouse", warehouse));
+                _equals("cbatch", options.getCbatch()), //
+                _equals("location", options.getLocation()), //
+                _equals("warehouse", options.getWarehouse()));
     }
 
-    public static ICriteriaElement sumOfCommons(Date date, List<Material> materials, String cbatch,
-            StockLocation location, StockWarehouse warehouse) {
+    public static ICriteriaElement sumOfCommons(List<Material> materials, StockQueryOptions options) {
         Set<String> subjects = StockOrderSubject.getCommonSet();
-        return sum(subjects, date, materials, cbatch, location, warehouse);
+        return sum(subjects, materials, options);
     }
 
-    public static ICriteriaElement sumOfVirtuals(Date date, List<Material> materials, String cbatch,
-            StockLocation location, StockWarehouse warehouse) {
+    public static ICriteriaElement sumOfVirtuals(List<Material> materials, StockQueryOptions options) {
         Set<String> subjects = StockOrderSubject.getVirtualSet();
-        return sum(subjects, date, materials, cbatch, location, warehouse);
+        return sum(subjects, materials, options);
     }
 
-    public static ICriteriaElement sumOfVirtualOnly(Date date, List<Material> materials, String cbatch,
-            StockLocation location, StockWarehouse warehouse) {
+    public static ICriteriaElement sumOfVirtualOnly(List<Material> materials, StockQueryOptions options) {
         Set<String> subjects = StockOrderSubject.getVirtualOnlySet();
-        return sum(subjects, date, materials, cbatch, location, warehouse);
+        return sum(subjects, materials, options);
     }
 
 }

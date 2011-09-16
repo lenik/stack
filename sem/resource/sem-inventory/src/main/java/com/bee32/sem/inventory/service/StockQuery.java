@@ -16,7 +16,6 @@ import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
-import com.bee32.sem.inventory.entity.StockWarehouse;
 
 public class StockQuery
         extends AbstractStockQuery {
@@ -32,48 +31,53 @@ public class StockQuery
     }
 
     @Override
-    public StockOrder getSummary(ICriteriaElement selection, String cbatch, StockLocation location,
-            StockWarehouse warehouse) {
+    public StockOrder getSummary(ICriteriaElement selection, StockQueryOptions options) {
         // getLatestPack.. then, non-virtual
         // or, >date, non-packing, non-virtual
 
         ProjectionList projection = new ProjectionList(//
                 new GroupPropertyProjection("material"), //
                 new SumProjection("quantity"), //
-                GroupPropertyProjection.optional("cbatch", cbatch), //
-                GroupPropertyProjection.optional("location", location), //
-                GroupPropertyProjection.optional("warehouse", warehouse));
+                options.getCbatchProjection(), //
+                options.getExpirationProjection(), //
+                options.getLocationProjection(), //
+                options.getWarehouseProjection());
 
         List<Object[]> list = asFor(StockOrderItem.class).listMisc(projection, selection);
 
         StockOrder all = new StockOrder();
 
         StockOrderSubject subject = StockOrderSubject.PACK_M;
-        if (cbatch != null) {
+        if (options.getCbatch() != null) {
             subject = StockOrderSubject.PACK_MB;
-            if (location != null)
+            if (options.getLocation() != null)
                 subject = StockOrderSubject.PACK_MBL;
         }
         // XXX How about: batch == null, location != null ?
         all.setSubject(subject);
-        all.setWarehouse(warehouse);
+        all.setWarehouse(options.getWarehouse());
 
         for (Object[] line : list) {
             int _column = 0;
             Material _material = (Material) line[_column++];
             BigDecimal _quantity = (BigDecimal) line[_column++];
             String _cbatch = null;
+            Date _expire = null;
             StockLocation _location = null;
 
-            if (cbatch != null)
+            if (!options.isCbatchMerged()) {
                 _cbatch = (String) line[_column++];
-            if (location != null)
+                _expire = (Date) line[_column++];
+            }
+            if (!options.isLocationMerged()) {
                 _location = (StockLocation) line[_column++];
+            }
 
             StockOrderItem item = new StockOrderItem(all);
             item.setMaterial(_material);
             item.setQuantity(_quantity);
-            // item.setCBatch(_cbatch); // XXX
+            // item.setCBatch(_cbatch); // TODO parse c-batch?
+            item.setExpirationDate(_expire);
             item.setLocation(_location);
 
             all.addItem(item);
