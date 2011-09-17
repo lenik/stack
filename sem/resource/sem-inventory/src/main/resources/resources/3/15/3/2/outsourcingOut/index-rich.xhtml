@@ -287,6 +287,14 @@
 							<p:commandButton value="..." onclick="materialDialog.show();"/>
 						</t:panelGroup>
 
+                        <t:panelGroup colspan="2">
+                            <p:commandButton
+                                value="查询库存"
+                                onclick="stockQueryDialog.show()"
+                                update="stockQueryForm:stockQueryPanel"/>
+                        </t:panelGroup>
+                        <t:panelGroup colspan="2"/>
+
 						<h:outputLabel value="批号" />
 						<p:inputText value="#{outsourcingOutAdminBean.orderItem.batch}" />
 						<h:outputLabel value="有效期" />
@@ -606,6 +614,74 @@
                 </h:panelGroup>
             </p:dialog>
         </h:form>
+
+        <h:form id="stockQueryForm">
+            <p:dialog header="库存查询" widgetVar="stockQueryDialog"
+                modal="true" height="400" width="640">
+                <h:panelGroup id="stockQueryPanel">
+                    <t:panelGrid columns="2">
+                        <h:outputText value="当前仓库:" />
+                        <h:outputText value="#{outsourcingOutAdminBean.selectedWarehouse.name}" />
+                    </t:panelGrid>
+
+                    <p:dataTable id="stockQuery" var="item"
+                        value="#{outsourcingOutAdminBean.stockQueryItems}"
+                        resizableColumns="true"
+                        selectionMode="single"
+                        selection="#{outsourcingOutAdminBean.selectedStockQueryItem}"
+                        rowKey="#{item.id}"
+                        rowIndexVar="rowIndex">
+
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column headerText="物料">
+                            <h:outputText value="#{item.material.label}" />
+                        </p:column>
+
+                        <p:column headerText="规格型号">
+                            <h:outputText value="#{item.material.modelSpec}" />
+                        </p:column>
+
+                        <p:column headerText="批号">
+                            <h:outputText value="#{item.batch}" />
+                        </p:column>
+
+                        <p:column headerText="有效期">
+                            <h:outputText value="#{item.expirationDate}" />
+                        </p:column>
+
+                        <p:column headerText="库位">
+                            <h:outputText
+                                value="#{item.location.nodeText}" />
+                        </p:column>
+
+                        <p:column headerText="单价">
+                            <h:outputText value="#{item.price.value}" />
+                        </p:column>
+
+                        <p:column headerText="币种">
+                            <h:outputText
+                                value="#{item.price.currencyText}" />
+                        </p:column>
+
+                        <p:column headerText="数量">
+                            <h:outputText value="#{item.quantity}" />
+                        </p:column>
+                    </p:dataTable>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="确定"
+                            actionListener="#{outsourcingOutAdminBean.chooseStockQueryItem}"
+                            oncomplete="stockQueryDialog.hide();"
+                            update="itemForm:itemPanel" async="true" />
+                        <p:commandButton value="取消"
+                            oncomplete="stockQueryDialog.hide();" />
+                    </h:panelGrid>
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
 		<h:outputScript>
             document.title = $("#mainForm\\:pageTitle").val();
         </h:outputScript>
