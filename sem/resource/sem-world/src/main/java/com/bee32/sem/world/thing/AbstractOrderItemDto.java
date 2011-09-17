@@ -32,8 +32,6 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         super.__marshal(source);
 
         quantity = source.getQuantity();
-        if (isNegated())
-            quantity = quantity.negate();
 
         price = source.getPrice();
     }
@@ -42,7 +40,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
 
-        target.setQuantity(isNegated() ? quantity.negate() : quantity);
+        target.setQuantity(quantity);
         target.setPrice(price);
     }
 
@@ -51,24 +49,30 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
             throws ParseException {
         super.__parse(map);
 
-        quantity = map.getBigDecimal("quantity");
+        setQuantity(map.getBigDecimal("quantity"));
 
         String currencyCode = map.getString("currencyCode");
         Currency currency = Currency.getInstance(currencyCode);
         BigDecimal _price = map.getBigDecimal("price");
-        price = new MCValue(currency, _price);
+        setPrice(new MCValue(currency, _price));
     }
 
     protected abstract Date getFxrDate();
 
     public BigDecimal getQuantity() {
-        return quantity;
+        if (isNegated())
+            return quantity.negate();
+        else
+            return quantity;
     }
 
     public void setQuantity(BigDecimal quantity) {
         if (quantity == null)
             throw new NullPointerException("quantity");
-        this.quantity = quantity;
+        if (isNegated())
+            this.quantity = quantity.negate();
+        else
+            this.quantity = quantity;
         nativeTotal = null;
     }
 
@@ -113,7 +117,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
      * 总价=单价*数量。
      */
     public MCValue getTotal() {
-        MCValue total = price.multiply(quantity);
+        MCValue total = price.multiply(getQuantity());
         return total;
     }
 
@@ -130,7 +134,7 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         if (nativeTotal == null) {
             BigDecimal price = getNativePrice();
             if (price != null)
-                nativeTotal = price.multiply(quantity);
+                nativeTotal = price.multiply(getQuantity());
         }
         return nativeTotal;
     }

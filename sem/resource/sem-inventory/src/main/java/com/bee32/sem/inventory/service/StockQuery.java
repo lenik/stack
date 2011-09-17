@@ -76,7 +76,7 @@ public class StockQuery
             StockOrderItem item = new StockOrderItem(all);
             item.setMaterial(_material);
             item.setQuantity(_quantity);
-            // item.setCBatch(_cbatch); // TODO parse c-batch?
+            item.setCBatch(_cbatch);
             item.setExpirationDate(_expire);
             item.setLocation(_location);
 

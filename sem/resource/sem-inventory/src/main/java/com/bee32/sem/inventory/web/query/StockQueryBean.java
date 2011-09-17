@@ -39,6 +39,8 @@ public class StockQueryBean extends EntityViewBean {
 
     private List<StockOrderItemDto> items;
 
+    private boolean allMaterial;
+
     public StockWarehouseDto getSelectedWarehouse() {
         return selectedWarehouse;
     }
@@ -121,6 +123,16 @@ public class StockQueryBean extends EntityViewBean {
         this.selectedMaterial = selectedMaterial;
     }
 
+    public boolean isAllMaterial() {
+        return allMaterial;
+    }
+
+    public void setAllMaterial(boolean allMaterial) {
+        this.allMaterial = allMaterial;
+    }
+
+
+
 
 
 
@@ -160,6 +172,11 @@ public class StockQueryBean extends EntityViewBean {
     }
 
     public void query() {
+        if(selectedWarehouse.getId() == null) {
+            uiLogger.warn("请选择仓库!");
+            return;
+        }
+
         Calendar c = Calendar.getInstance();
         c.setTime(queryDate);
         c.set(Calendar.HOUR_OF_DAY, 23);
@@ -168,11 +185,18 @@ public class StockQueryBean extends EntityViewBean {
         c.set(Calendar.MILLISECOND, 999);
 
         StockWarehouse w = selectedWarehouse.unmarshal();
-        List<Material> ms = new ArrayList<Material>();
-        for(MaterialDto m : materialsToQuery) {
-            ms.add(m.unmarshal());
-        }
+        List<Material> ms = null;
+        if(!allMaterial) {
+            if(materialsToQuery.size() <= 0) {
+                uiLogger.warn("请选择需要查询是物料!");
+                return;
+            }
 
+            ms = new ArrayList<Material>();
+            for(MaterialDto m : materialsToQuery) {
+                ms.add(m.unmarshal());
+            }
+        }
 
         StockQueryOptions opts = new StockQueryOptions(c.getTime());
         opts.setWarehouse(w);

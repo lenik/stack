@@ -1,5 +1,9 @@
 package com.bee32.sem.inventory.entity;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,6 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.velocity.util.introspection.IntrospectionCacheData;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.NaturalId;
 
@@ -106,8 +111,8 @@ public class StockOrderItem
         return computeCanonicalBatch();
     }
 
-    void setCBatch(String cBatch) {
-        // Always compute c-batch on the fly.
+    public void setCBatch(String cBatch) {
+        parseCanonicalBatch(cBatch);
     }
 
     protected String computeCanonicalBatch() {
@@ -115,6 +120,14 @@ public class StockOrderItem
         if (batch == null)
             batch = "";
         return batch;
+    }
+
+    protected void parseCanonicalBatch(String cBatch) {
+        if (cBatch == null || cBatch.isEmpty()) {
+            batch = null;
+            return;
+        }
+        batch = cBatch;
     }
 
     @Transient
@@ -210,7 +223,7 @@ public class StockOrderItem
         return selectors(//
                 selector(prefix + "parent", parent), //
                 selector(prefix + "material", material), //
-                new Equals(prefix + "cBatch", cBatch));
+                new Equals(prefix + "CBatch", cBatch));
     }
 
 }

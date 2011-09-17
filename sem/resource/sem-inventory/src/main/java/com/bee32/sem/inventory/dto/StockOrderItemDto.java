@@ -27,7 +27,7 @@ public class StockOrderItemDto
     @Override
     protected boolean isNegated() {
         StockOrderDto parent = getParent();
-        if (parent == null)
+        if (parent == null || parent.isNull())
             return false;
 
         StockOrderSubject subject = parent.getSubject();

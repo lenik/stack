@@ -98,7 +98,7 @@ public final class StockQueryOptions
         if (cbatchMerged)
             return null;
         else
-            return new GroupPropertyProjection("cbatch");
+            return new GroupPropertyProjection("CBatch");
     }
 
     public GroupPropertyProjection getLocationProjection() {

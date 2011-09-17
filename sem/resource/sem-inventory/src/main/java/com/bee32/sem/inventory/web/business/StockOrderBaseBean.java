@@ -314,6 +314,9 @@ public abstract class StockOrderBaseBean
 
 
     public List<StockOrderItemDto> getStockQueryItems() {
+        if(selectedWarehouse.getId() == null) {
+            return new ArrayList<StockOrderItemDto>();
+        }
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, 23);
         c.set(Calendar.MINUTE, 59);
@@ -323,13 +326,16 @@ public abstract class StockOrderBaseBean
         StockWarehouse w = selectedWarehouse.unmarshal();
         Material m = orderItem.getMaterial().unmarshal();
 
+        List<Material> ms = new ArrayList<Material>();
+        ms.add(m);
+
         StockQueryOptions opts = new StockQueryOptions(c.getTime());
         opts.setWarehouse(w);
         opts.setCbatch(null, false);
         opts.setLocation(null, false);
 
         IStockQuery q = getBean(IStockQuery.class);
-        StockItemList list = q.getActualQuantity(m, opts);
+        StockItemList list = q.getActualSummary(ms, opts);
         return DTOs.marshalList(StockOrderItemDto.class, list.getItems());
     }
 }
