@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -41,79 +42,61 @@ public interface IStockQuery {
     /**
      * 获取给定时间的某些物料的实际库存余量。
      *
-     * @param cbatch
-     *            指定批号， <code>null</code> 表示不限批号。
-     * @param location
-     *            指定库位，<code>null</code> 表示所有库位。
-     * @param warehouse
-     *            指定库位，<code>null</code> 表示所有仓库。
+     * @param options
+     *            查询选项。
      * @return 对应物料的余量。
+     * @see StockQueryOptions
      */
     StockItemList getActualSummary(List<Material> materials, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的实际库存余量，不考虑批号和库位。
      *
-     * @param cbatch
-     *            指定批号， <code>null</code> 表示不限批号。
-     * @param location
-     *            指定库位，<code>null</code> 表示所有库位。
-     * @param warehouse
-     *            指定库位，<code>null</code> 表示所有仓库。
+     * @param options
+     *            查询选项。
      * @return 对应物料的余量。
+     * @see StockQueryOptions
      */
-    StockItemList getActualQuantity(Material material, StockQueryOptions options);
+    BigDecimal getActualQuantity(Material material, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的可用库存余量（或曰逻辑库存余量），不考虑批号和库位。
      *
-     * @param cbatch
-     *            指定批号， <code>null</code> 表示不限批号。
-     * @param location
-     *            指定库位，<code>null</code> 表示所有库位。
-     * @param warehouse
-     *            指定库位，<code>null</code> 表示所有仓库。
+     * @param options
+     *            查询选项。
      * @return 对应物料的余量。
+     * @see StockQueryOptions
      */
     StockItemList getVirtualSummary(List<Material> materials, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的可用库存余量（或曰逻辑库存余量），不考虑批号和库位。
      *
-     * @param cbatch
-     *            指定批号， <code>null</code> 表示不限批号。
-     * @param location
-     *            指定库位，<code>null</code> 表示所有库位。
-     * @param warehouse
-     *            指定库位，<code>null</code> 表示所有仓库。
+     * @param options
+     *            查询选项。
      * @return 对应物料的余量。
+     * @see StockQueryOptions
      */
-    StockItemList getVirtualQuantity(Material material, StockQueryOptions options);
+    BigDecimal getVirtualQuantity(Material material, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的“锁定”的库存数量（或曰计划数量），不考虑批号和库位。
      *
-     * @param cbatch
-     *            指定批号， <code>null</code> 表示不限批号。
-     * @param location
-     *            指定库位，<code>null</code> 表示所有库位。
-     * @param warehouse
-     *            指定库位，<code>null</code> 表示所有仓库。
+     * @param options
+     *            查询选项。
      * @return 对应物料的数量。
+     * @see StockQueryOptions
      */
     StockItemList getPlanSummary(List<Material> materials, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的"锁定“的库存数量（或曰计划数量），不考虑批号和库位。
      *
-     * @param cbatch
-     *            指定批号， <code>null</code> 表示不限批号。
-     * @param location
-     *            指定库位，<code>null</code> 表示所有库位。
-     * @param warehouse
-     *            指定库位，<code>null</code> 表示所有仓库。
+     * @param options
+     *            查询选项。
      * @return 对应物料的数量。
+     * @see StockQueryOptions
      */
-    StockItemList getPlanQuantity(Material material, StockQueryOptions options);
+    BigDecimal getPlanQuantity(Material material, StockQueryOptions options);
 
 }

@@ -72,18 +72,22 @@ public class StockCriteria
                 EntityCriteria.betweenEx("out.createdDate", from, to));
     }
 
+    /**
+     * @param subjects
+     *            Limit to these subjects.
+     * @param materials
+     *            Specify <code>null</code> to select all materials.
+     */
     @LeftHand(Object.class)
     public static ICriteriaElement sum(Set<String> subjects, List<Material> materials, StockQueryOptions options) {
         if (subjects == null)
             throw new NullPointerException("subjects");
-        if (materials == null)
-            throw new NullPointerException("materials");
 
         return compose(//
                 alias("parent", "parent"), //
                 lessOrEquals("parent.beginTime", options.getTimestamp()), //
                 in("parent._subject", subjects), //
-                in("material", materials), //
+                materials == null ? null : in("material", materials), // _in
                 _equals("cbatch", options.getCbatch()), //
                 _equals("location", options.getLocation()), //
                 _equals("warehouse", options.getWarehouse()));

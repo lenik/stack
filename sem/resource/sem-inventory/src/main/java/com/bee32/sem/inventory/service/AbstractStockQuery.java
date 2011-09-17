@@ -1,5 +1,6 @@
 package com.bee32.sem.inventory.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +10,7 @@ import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.util.StockCriteria;
+import com.bee32.sem.world.thing.AbstractOrderItem;
 
 public abstract class AbstractStockQuery
         extends DataService
@@ -46,7 +48,7 @@ public abstract class AbstractStockQuery
     }
 
     @Override
-    public StockItemList getActualQuantity(Material material, StockQueryOptions options) {
+    public BigDecimal getActualQuantity(Material material, StockQueryOptions options) {
         if (material == null)
             throw new NullPointerException("material");
         if (options == null)
@@ -56,11 +58,12 @@ public abstract class AbstractStockQuery
         _materials.add(material);
 
         StockItemList list = getActualSummary(_materials, options);
-        return list;
+        BigDecimal quantity = sumOfQuantity(list);
+        return quantity;
     }
 
     @Override
-    public StockItemList getVirtualQuantity(Material material, StockQueryOptions options) {
+    public BigDecimal getVirtualQuantity(Material material, StockQueryOptions options) {
         if (material == null)
             throw new NullPointerException("material");
         if (options == null)
@@ -70,11 +73,12 @@ public abstract class AbstractStockQuery
         _materials.add(material);
 
         StockItemList list = getVirtualSummary(_materials, options);
-        return list;
+        BigDecimal quantity = sumOfQuantity(list);
+        return quantity;
     }
 
     @Override
-    public StockItemList getPlanQuantity(Material material, StockQueryOptions options) {
+    public BigDecimal getPlanQuantity(Material material, StockQueryOptions options) {
         if (material == null)
             throw new NullPointerException("material");
         if (options == null)
@@ -84,7 +88,17 @@ public abstract class AbstractStockQuery
         _materials.add(material);
 
         StockItemList list = getPlanSummary(_materials, options);
-        return list;
+        BigDecimal quantity = sumOfQuantity(list);
+        return quantity;
+    }
+
+    static BigDecimal sumOfQuantity(StockItemList list) {
+        BigDecimal sum = new BigDecimal(0);
+        for (AbstractOrderItem item : list) {
+            BigDecimal quantity = item.getQuantity();
+            sum = sum.add(quantity);
+        }
+        return sum;
     }
 
 }
