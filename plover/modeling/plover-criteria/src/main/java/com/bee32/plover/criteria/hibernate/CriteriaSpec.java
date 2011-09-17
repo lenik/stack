@@ -59,19 +59,19 @@ public abstract class CriteriaSpec {
     protected static CriteriaElement _idEquals(Object value) {
         if (value == null)
             return null;
-        return new IdEquals(value);
+        return idEquals(value);
     }
 
     protected static CriteriaElement _equals(String propertyName, Object value) {
         if (value == null)
             return null;
-        return new Equals(propertyName, value);
+        return equals(propertyName, value);
     }
 
     protected static CriteriaElement _notEquals(String propertyName, Object value) {
         if (value == null)
             return null;
-        return new NotEquals(propertyName, value);
+        return notEquals(propertyName, value);
     }
 
     protected static CriteriaElement like(String propertyName, String value) {
@@ -93,57 +93,69 @@ public abstract class CriteriaSpec {
     protected static CriteriaElement _like(String propertyName, String value) {
         if (value == null)
             return null;
-        return new Like(propertyName, value);
+        return like(propertyName, value);
     }
 
     protected static CriteriaElement _likeIgnoreCase(String propertyName, String value) {
         if (value == null)
             return null;
-        return new Like(true, propertyName, value);
+        return likeIgnoreCase(propertyName, value);
     }
 
     protected static CriteriaElement greaterThan(String propertyName, Object value) {
+        if (value == null)
+            throw new NullPointerException("value");
         return new GreaterThan(propertyName, value);
     }
 
     protected static CriteriaElement greaterOrEquals(String propertyName, Object value) {
+        if (value == null)
+            throw new NullPointerException("value");
         return new GreaterOrEquals(propertyName, value);
     }
 
     protected static CriteriaElement lessThan(String propertyName, Object value) {
+        if (value == null)
+            throw new NullPointerException("value");
         return new LessThan(propertyName, value);
     }
 
     protected static CriteriaElement lessOrEquals(String propertyName, Object value) {
+        if (value == null)
+            throw new NullPointerException("value");
         return new LessOrEquals(propertyName, value);
     }
 
     protected static CriteriaElement between(String propertyName, Object lo, Object hi) {
+        if (lo == null)
+            throw new NullPointerException("lo");
+        if (hi == null)
+            throw new NullPointerException("hi");
         return new Between(propertyName, lo, hi);
     }
 
     protected static CriteriaElement _greaterThan(String propertyName, Object value) {
         if (value == null)
             return null;
-        return new GreaterThan(propertyName, value);
+        return greaterThan(propertyName, value);
     }
 
     protected static CriteriaElement _greaterOrEquals(String propertyName, Object value) {
         if (value == null)
             return null;
-        return new GreaterOrEquals(propertyName, value);
+        return greaterOrEquals(propertyName, value);
     }
 
     protected static CriteriaElement _lessThan(String propertyName, Object value) {
         if (value == null)
             return null;
-        return new LessThan(propertyName, value);
+        return lessThan(propertyName, value);
     }
 
     protected static CriteriaElement _lessOrEquals(String propertyName, Object value) {
         if (value == null)
             return null;
-        return new LessOrEquals(propertyName, value);
+        return lessOrEquals(propertyName, value);
     }
 
     protected static CriteriaElement _between(String propertyName, Object lo, Object hi) {
@@ -153,7 +165,7 @@ public abstract class CriteriaSpec {
             return lessOrEquals(propertyName, hi);
         if (hi == null)
             return greaterOrEquals(propertyName, lo);
-        return new Between(propertyName, lo, hi);
+        return between(propertyName, lo, hi);
     }
 
     protected static CriteriaElement in(String propertyName, Object... values) {
@@ -162,6 +174,18 @@ public abstract class CriteriaSpec {
 
     protected static CriteriaElement in(String propertyName, Collection<?> values) {
         return new InCollection(propertyName, values);
+    }
+
+    protected static CriteriaElement _in(String propertyName, Object... values) {
+        if (values == null)
+            return null;
+        return in(propertyName, values);
+    }
+
+    protected static CriteriaElement _in(String propertyName, Collection<?> values) {
+        if (values == null)
+            return null;
+        return in(propertyName, values);
     }
 
     protected static CriteriaElement isNull(String propertyName) {
