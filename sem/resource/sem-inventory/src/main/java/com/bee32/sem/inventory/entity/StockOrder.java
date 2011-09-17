@@ -46,14 +46,17 @@ public class StockOrder
     }
 
     public StockOrder(StockPeriod base, StockOrderSubject subject) {
-        if (base == null)
-            throw new NullPointerException("base");
+        this(base, subject, null);
+    }
+
+    public StockOrder(StockPeriod base, StockOrderSubject subject, StockWarehouse warehouse) {
         if (subject == null)
             throw new NullPointerException("subject");
         this.base = base;
         this.subject = subject;
         if (subject.isPacking())
             this.spec = base;
+        this.warehouse = warehouse;
     }
 
     /**
@@ -186,6 +189,10 @@ public class StockOrder
         return warehouse;
     }
 
+    /**
+     * @param warehouse
+     *            should be non-<code>null</code>, however, maybe <code>null</code> in stock query.
+     */
     public void setWarehouse(StockWarehouse warehouse) {
         if (warehouse == null)
             throw new NullPointerException("warehouse");

@@ -170,6 +170,7 @@ public class SEMInventorySamples
             StockOrderItem item1 = new StockOrderItem(takeOutOrder1);
             item1.setMaterial(cskdp);
             item1.setQuantity(-30);
+            item1.setPrice(755.0);
             takeOutOrder1.addItem(item1);
         }
 
@@ -184,11 +185,13 @@ public class SEMInventorySamples
             item1.setMaterial(gundam);
             item1.setBatch("C01");
             item1.setQuantity(-3);
+            item1.setPrice(1200.0);
             planOrder1.addItem(item1);
 
             StockOrderItem item2 = new StockOrderItem(planOrder1);
             item2.setMaterial(cskdp);
             item2.setQuantity(-15);
+            item2.setPrice(755.0);
             planOrder1.addItem(item2);
         }
     }

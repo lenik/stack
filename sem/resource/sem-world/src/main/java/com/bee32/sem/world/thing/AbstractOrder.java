@@ -147,7 +147,7 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
         out.println(orderType + ": " + getDisplayName() + serialPart + " ON " + getBeginTime());
         out.enter();
         for (Item item : this) {
-            out.printf("%10d | %-30s | %12s | %12s | %12s", //
+            out.printf("%-30s | %10.2f | %12s | %12s", //
                     item.getDisplayName(), //
                     item.getQuantity(), //
                     item.getPrice(), //

@@ -48,17 +48,16 @@ public class StockQuery
 
         List<Object[]> list = asFor(StockOrderItem.class).listMisc(projection, selection);
 
-        StockOrder all = new StockOrder();
-
         StockOrderSubject subject = StockOrderSubject.PACK_M;
         if (options.getCBatch() != null) {
             subject = StockOrderSubject.PACK_MB;
             if (options.getLocation() != null)
                 subject = StockOrderSubject.PACK_MBL;
         }
+
+        StockOrder all = new StockOrder(null, subject, options.getWarehouse());
+
         // XXX How about: batch == null, location != null ?
-        all.setSubject(subject);
-        all.setWarehouse(options.getWarehouse());
 
         long index = 0;
         for (Object[] line : list) {
