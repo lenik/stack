@@ -362,6 +362,7 @@ public abstract class StockOrderBaseBean
         orderItem.setBatch(selectedStockQueryItem.getBatch());
         orderItem.setExpirationDate(selectedStockQueryItem.getExpirationDate());
         orderItem.setLocation(selectedStockQueryItem.getLocation());
-        orderItem.setPrice(selectedStockQueryItem.getPrice());
+        orderItemPrice = selectedStockQueryItem.getPrice().getValue();
+        orderItemPriceCurrency = selectedStockQueryItem.getPrice().getCurrency();
     }
 }
