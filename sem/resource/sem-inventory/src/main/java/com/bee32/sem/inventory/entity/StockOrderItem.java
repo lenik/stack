@@ -1,9 +1,5 @@
 package com.bee32.sem.inventory.entity;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,7 +11,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.apache.velocity.util.introspection.IntrospectionCacheData;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.NaturalId;
 

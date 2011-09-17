@@ -65,6 +65,8 @@ public abstract class StockOrderBaseBean
     private List<OrgUnitDto> orgUnits;
     private OrgUnitDto selectedOrgUnit;
 
+    private StockOrderItemDto selectedStockQueryItem;
+
     protected List<StockOrderItemDto> itemsNeedToRemoveWhenModify = new ArrayList<StockOrderItemDto>();
 
     public StockWarehouseDto getSelectedWarehouse() {
@@ -234,6 +236,18 @@ public abstract class StockOrderBaseBean
         this.selectedOrgUnit = selectedOrgUnit;
     }
 
+    public StockOrderItemDto getSelectedStockQueryItem() {
+        return selectedStockQueryItem;
+    }
+
+    public void setSelectedStockQueryItem(StockOrderItemDto selectedStockQueryItem) {
+        this.selectedStockQueryItem = selectedStockQueryItem;
+    }
+
+
+
+
+
     public void newItem() {
         orderItem = new StockOrderItemDto().create();
         orderItemPrice = new BigDecimal(0);
@@ -317,6 +331,11 @@ public abstract class StockOrderBaseBean
         if(selectedWarehouse.getId() == null) {
             return new ArrayList<StockOrderItemDto>();
         }
+
+        if(orderItem.getMaterial() == null || orderItem.getMaterial().getId() == null) {
+            return new ArrayList<StockOrderItemDto>();
+        }
+
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, 23);
         c.set(Calendar.MINUTE, 59);
@@ -337,5 +356,12 @@ public abstract class StockOrderBaseBean
         IStockQuery q = getBean(IStockQuery.class);
         StockItemList list = q.getActualSummary(ms, opts);
         return DTOs.marshalList(StockOrderItemDto.class, list.getItems());
+    }
+
+    public void chooseStockQueryItem() {
+        orderItem.setBatch(selectedStockQueryItem.getBatch());
+        orderItem.setExpirationDate(selectedStockQueryItem.getExpirationDate());
+        orderItem.setLocation(selectedStockQueryItem.getLocation());
+        orderItem.setPrice(selectedStockQueryItem.getPrice());
     }
 }
