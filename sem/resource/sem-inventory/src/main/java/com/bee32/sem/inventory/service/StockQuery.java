@@ -17,6 +17,7 @@ import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.world.monetary.MCValue;
 
 public class StockQuery
         extends AbstractStockQuery {
@@ -33,13 +34,14 @@ public class StockQuery
 
     @Override
     public StockOrder getSummary(ICriteriaElement selection, StockQueryOptions options) {
-        // getLatestPack.. then, non-virtual
-        // or, >date, non-packing, non-virtual
+        // TODO getLatestPack.. then, non-virtual
+        // TODO or, >date, non-packing, non-virtual
 
         ProjectionList projection = new ProjectionList(//
                 new GroupPropertyProjection("material"), //
                 new SumProjection("quantity"), //
-                options.getCbatchProjection(), //
+                options.getCBatchProjection(), //
+                options.getPriceProjection(), //
                 options.getExpirationProjection(), //
                 options.getLocationProjection(), //
                 options.getWarehouseProjection());
@@ -49,7 +51,7 @@ public class StockQuery
         StockOrder all = new StockOrder();
 
         StockOrderSubject subject = StockOrderSubject.PACK_M;
-        if (options.getCbatch() != null) {
+        if (options.getCBatch() != null) {
             subject = StockOrderSubject.PACK_MB;
             if (options.getLocation() != null)
                 subject = StockOrderSubject.PACK_MBL;
@@ -63,12 +65,14 @@ public class StockQuery
             int _column = 0;
             Material _material = (Material) line[_column++];
             BigDecimal _quantity = (BigDecimal) line[_column++];
-            String _cbatch = null;
+            String _cBatch = null;
             Date _expire = null;
+            MCValue _price = null;
             StockLocation _location = null;
 
-            if (!options.isCbatchMerged()) {
-                _cbatch = (String) line[_column++];
+            if (!options.isCBatchMerged()) {
+                _cBatch = (String) line[_column++];
+                _price = (MCValue) line[_column++];
                 _expire = (Date) line[_column++];
             }
             if (!options.isLocationMerged()) {
@@ -79,7 +83,8 @@ public class StockQuery
             EntityAccessor.setId(item, index++);
             item.setMaterial(_material);
             item.setQuantity(_quantity);
-            item.setCBatch(_cbatch);
+            item.setCBatch(_cBatch);
+            item.setPrice(_price);
             item.setExpirationDate(_expire);
             item.setLocation(_location);
 

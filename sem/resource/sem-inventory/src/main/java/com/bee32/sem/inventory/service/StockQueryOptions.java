@@ -14,7 +14,7 @@ public final class StockQueryOptions
 
     Date timestamp = new Date();
 
-    String cbatch;
+    String cBatch;
     StockLocation location;
     StockWarehouse warehouse;
 
@@ -28,7 +28,7 @@ public final class StockQueryOptions
 
     public StockQueryOptions(Date timestamp, String cbatch, StockLocation location, StockWarehouse warehouse) {
         setTimestamp(timestamp);
-        setCbatch(cbatch);
+        setCBatch(cbatch);
         setLocation(location);
         setWarehouse(warehouse);
     }
@@ -43,20 +43,20 @@ public final class StockQueryOptions
         this.timestamp = timestamp;
     }
 
-    public String getCbatch() {
-        return cbatch;
+    public String getCBatch() {
+        return cBatch;
     }
 
-    public void setCbatch(String cbatch) {
-        setCbatch(cbatch, cbatch == null);
+    public void setCBatch(String cbatch) {
+        setCBatch(cbatch, cbatch == null);
     }
 
-    public void setCbatch(String cbatch, boolean merge) {
-        this.cbatch = cbatch;
+    public void setCBatch(String cbatch, boolean merge) {
+        this.cBatch = cbatch;
         this.cbatchMerged = cbatch == null && merge;
     }
 
-    public boolean isCbatchMerged() {
+    public boolean isCBatchMerged() {
         return cbatchMerged;
     }
 
@@ -94,7 +94,7 @@ public final class StockQueryOptions
         return warehouseMerged;
     }
 
-    public GroupPropertyProjection getCbatchProjection() {
+    public GroupPropertyProjection getCBatchProjection() {
         if (cbatchMerged)
             return null;
         else
@@ -120,6 +120,13 @@ public final class StockQueryOptions
             return null;
         else
             return new GroupPropertyProjection("expirationDate");
+    }
+
+    public GroupPropertyProjection getPriceProjection() {
+        if (cbatchMerged)
+            return null;
+        else
+            return new GroupPropertyProjection("price");
     }
 
 }

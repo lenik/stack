@@ -88,7 +88,7 @@ public class StockCriteria
                 lessOrEquals("parent.beginTime", options.getTimestamp()), //
                 in("parent._subject", subjects), //
                 materials == null ? null : in("material", materials), // _in
-                _equals("CBatch", options.getCbatch()), //
+                _equals("CBatch", options.getCBatch()), //
                 _equals("location", options.getLocation()), //
                 _equals("warehouse", options.getWarehouse()));
     }

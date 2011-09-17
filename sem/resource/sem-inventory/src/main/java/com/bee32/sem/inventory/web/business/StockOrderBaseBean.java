@@ -350,7 +350,7 @@ public abstract class StockOrderBaseBean
 
         StockQueryOptions opts = new StockQueryOptions(c.getTime());
         opts.setWarehouse(w);
-        opts.setCbatch(null, false);
+        opts.setCBatch(null, false);
         opts.setLocation(null, false);
 
         IStockQuery q = getBean(IStockQuery.class);
