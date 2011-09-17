@@ -78,6 +78,10 @@ public class AssetRecord
     }
 
     @Embedded
+    // @AttributeOverrides({
+    // // { price_c, price }
+    // @AttributeOverride(name = "currency", column = @Column(name = "priceC")), //
+    // @AttributeOverride(name = "value", column = @Column(name = "price")) })
     public MCValue getValue() {
         return value;
     }

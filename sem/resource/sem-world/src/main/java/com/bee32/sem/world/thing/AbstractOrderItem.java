@@ -3,6 +3,8 @@ package com.bee32.sem.world.thing;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
@@ -91,6 +93,10 @@ public abstract class AbstractOrderItem
      * 对于合并项，如果有外币冲突，将转换为本地货币再进行汇总。
      */
     @Embedded
+    @AttributeOverrides({
+            // { price_c, price }
+            @AttributeOverride(name = "currency", column = @Column(name = "price_cc")), //
+            @AttributeOverride(name = "value", column = @Column(name = "price")) })
     public MCValue getPrice() {
         return price;
     }

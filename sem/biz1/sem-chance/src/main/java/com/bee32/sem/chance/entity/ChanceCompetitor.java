@@ -2,6 +2,8 @@ package com.bee32.sem.chance.entity;
 
 import java.math.BigDecimal;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -79,6 +81,10 @@ public class ChanceCompetitor
      * 竞争对手报价
      */
     @Embedded
+    @AttributeOverrides({
+            // { price_c, price }
+            @AttributeOverride(name = "currency", column = @Column(name = "price_cc")), //
+            @AttributeOverride(name = "value", column = @Column(name = "price")) })
     public MCValue getPrice() {
         return price;
     }
