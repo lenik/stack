@@ -3,6 +3,7 @@ package com.bee32.sem.inventory.tx.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.free.NotImplementedException;
 import javax.free.Nullables;
 import javax.free.ParseException;
 
@@ -58,10 +59,15 @@ public class StockTakingDto
     @Override
     protected void _unmarshalTo(StockTaking target) {
         if (selection.contains(ORDERS)) {
+
             StockOrderDto[] extracted = extract(joined);
-            StockOrderDto expectedOrder = extracted[0];
+
+            // Never update: merge the expectedOrder for initialization only.
+            // StockOrderDto expectedOrder = extracted[0];
+            if (expectedOrder != null)
+                merge(target, "expected", expectedOrder);
+
             StockOrderDto diffOrder = extracted[1];
-            merge(target, "expected", expectedOrder);
             merge(target, "diff", diffOrder);
         }
     }
@@ -69,6 +75,7 @@ public class StockTakingDto
     @Override
     protected void _parse(TextMap map)
             throws ParseException {
+        throw new NotImplementedException();
     }
 
     /**
@@ -79,17 +86,27 @@ public class StockTakingDto
     }
 
     /**
-     * 只需初始化时设置一次。
+     * 初始化帐面数量。
      *
-     * 后面编辑的时候不必再调用本方法。
+     * 只需初始化一次，后面编辑的时候不必再调用本方法。
+     *
+     * @see #getJoined()
      */
-    public void setExpectedOrder(StockOrderDto expectedOrder) {
+    public void initialize(StockOrderDto expectedOrder) {
         this.expectedOrder = expectedOrder;
         if (expectedOrder != null)
             join(expectedOrder, null);
     }
 
+    /**
+     * 获取联合表。
+     *
+     * @throws IllegalStateException
+     *             当尚未初始化时。
+     */
     public StockOrderDto getJoined() {
+        if (joined == null)
+            throw new IllegalStateException("No joined order: not initialized, yet.");
         return joined;
     }
 
