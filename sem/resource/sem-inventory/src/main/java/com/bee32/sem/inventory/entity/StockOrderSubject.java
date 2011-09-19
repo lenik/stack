@@ -171,11 +171,8 @@ public final class StockOrderSubject
     /** 委外入库 */
     public static final StockOrderSubject OSP_IN /*      */= new StockOrderSubject("OSPI", "ospIn", 0);
 
-    /** 盘盈 */
-    public static final StockOrderSubject STK_PROFIT /*  */= new StockOrderSubject("STKP", "stkProfit", 0);
-
-    /** 盘亏 */
-    public static final StockOrderSubject STK_SHORTAGE /**/= new StockOrderSubject("STKS", "stkShortage", NEGATIVE);
+    /** 盘盈/盘亏 */
+    public static final StockOrderSubject STKD /*  */= new StockOrderSubject("STKD", "stkDiff", 0);
 
     /** 物料报损 */
     public static final StockOrderSubject DAMAGED /*     */= new StockOrderSubject("DAMG", "damaged", NEGATIVE);
