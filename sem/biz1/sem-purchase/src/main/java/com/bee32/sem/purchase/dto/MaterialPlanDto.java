@@ -5,7 +5,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.inventory.dto.StockOrderDto;
-import com.bee32.sem.inventory.dto.tx.StockJobDto;
+import com.bee32.sem.inventory.tx.dto.StockJobDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.purchase.entity.MaterialPlan;
 
