@@ -29,6 +29,19 @@ public class TxEntity
 
     String serial;
 
+    @Override
+    public void populate(Object source) {
+        if (source instanceof TxEntity)
+            _populate((TxEntity) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(TxEntity o) {
+        super._populate(o);
+        serial = o.serial;
+    }
+
     /**
      * 单据序列号。Serial ID, or Second ID.
      */

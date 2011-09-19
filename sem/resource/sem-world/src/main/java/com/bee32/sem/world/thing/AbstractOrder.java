@@ -35,6 +35,22 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
 
     BigDecimal nativeTotal; // Redundant.
 
+    @Override
+    public void populate(Object source) {
+        if (source instanceof AbstractOrder<?>)
+            _populate((AbstractOrder<?>) source);
+        else
+            super.populate(source);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void _populate(AbstractOrder<?> o) {
+        super._populate(o);
+        items = (List<Item>) o.items;
+        total = o.total;
+        nativeTotal = o.nativeTotal;
+    }
+
     @Transient
     public String getDisplayName() {
         return label;

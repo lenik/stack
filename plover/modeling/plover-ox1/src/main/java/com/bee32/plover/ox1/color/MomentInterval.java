@@ -28,6 +28,20 @@ public abstract class MomentInterval
         super(name);
     }
 
+    @Override
+    public void populate(Object source) {
+        if (source instanceof MomentInterval)
+            _populate((MomentInterval) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(MomentInterval o) {
+        super._populate(o);
+        beginTime = o.beginTime;
+        endTime = o.endTime;
+    }
+
     @Temporal(TemporalType.TIMESTAMP)
     @Basic(optional = false)
     @Column(nullable = false)

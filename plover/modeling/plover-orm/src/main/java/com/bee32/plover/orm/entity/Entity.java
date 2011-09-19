@@ -53,6 +53,25 @@ public abstract class Entity<K extends Serializable>
         entityCreate();
     }
 
+    @Override
+    public void populate(Object source) {
+        if (source instanceof Entity<?>) {
+            @SuppressWarnings("unchecked")
+            Entity<K> o = (Entity<K>) source;
+            _populate(o);
+        } else {
+            // super.populate(source);
+            throw new IllegalArgumentException("Unsupport populate source: " + source);
+        }
+    }
+
+    protected void _populate(Entity<?> o) {
+        version = o.version;
+        createdDate = o.createdDate;
+        lastModified = o.lastModified;
+        entityFlags.bits = o.entityFlags.bits;
+    }
+
     protected abstract void setId(K id);
 
     // @Version
@@ -101,10 +120,6 @@ public abstract class Entity<K extends Serializable>
     @Transient
     protected EntityFlags getEntityFlags() {
         return entityFlags;
-    }
-
-    @Override
-    public void populate(Object source) {
     }
 
     @Override

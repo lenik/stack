@@ -59,6 +59,25 @@ public class StockOrder
         this.warehouse = warehouse;
     }
 
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockOrder)
+            _populate((StockOrder) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockOrder o) {
+        super._populate(o);
+        base = o.base;
+        subject = o.subject;
+        spec = o.spec;
+        jobId = o.jobId;
+        org = o.org;
+        orgUnit = o.orgUnit;
+        warehouse = o.warehouse;
+    }
+
     /**
      * 基准库存期结。
      */

@@ -29,6 +29,19 @@ public class StockItemList
 
     IStockMergeStrategy mergeStrategy = SMS_MBLC.INSTANCE;
 
+    @Override
+    public void populate(Object source) {
+        if (source instanceof StockItemList)
+            _populate((StockItemList) source);
+        else
+            super.populate(source);
+    }
+
+    protected void _populate(StockItemList o) {
+        super._populate(o);
+        mergeStrategy = o.mergeStrategy;
+    }
+
     @Transient
     public IStockMergeStrategy getMergeStrategy() {
         return mergeStrategy;

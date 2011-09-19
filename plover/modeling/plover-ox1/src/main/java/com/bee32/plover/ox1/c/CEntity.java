@@ -35,6 +35,24 @@ public abstract class CEntity<K extends Serializable>
         super(name);
     }
 
+    @Override
+    public void populate(Object source) {
+        if (source instanceof CEntity<?>) {
+            CEntity<?> o = (CEntity<?>) source;
+            _populate(o);
+        } else {
+            super.populate(source);
+        }
+    }
+
+    protected void _populate(CEntity<?> o) {
+        super._populate(o);
+        keyword = o.keyword;
+        keywordUpdated = o.keywordUpdated;
+        owner = o.owner;
+        aclId = o.aclId;
+    }
+
     @Column(length = KEYWORD_MAXLEN)
     @Index(name = "##_keyword")
     protected String getKeyword() {

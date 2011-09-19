@@ -31,6 +31,22 @@ abstract class UIEntity<K extends Serializable>
         super(name);
     }
 
+    @Override
+    public void populate(Object source) {
+        if (source instanceof UIEntity<?>) {
+            UIEntity<?> o = (UIEntity<?>) source;
+            _populate(o);
+        } else
+            super.populate(source);
+    }
+
+    protected void _populate(UIEntity<?> o) {
+        super._populate(o);
+        // name=o.name;
+        label = o.label;
+        description = o.description;
+    }
+
     @Column(length = LABEL_LENGTH)
     @Override
     public String getLabel() {
