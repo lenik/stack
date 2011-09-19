@@ -24,6 +24,11 @@ public abstract class StockItemListDto<E extends StockItemList>
         super(selection);
     }
 
+    public StockItemListDto(StockItemListDto<E> o) {
+        super(o);
+        mergeStrategy = o.mergeStrategy;
+    }
+
     @Override
     protected void __marshal(E source) {
         super.__marshal(source);

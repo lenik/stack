@@ -7,6 +7,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.service.IStockQuery;
 
@@ -22,22 +23,26 @@ public class StockTaking
 
     StockOrder expected;
     StockOrder actual;
-    StockOrder adjustment = new StockOrder();
+    StockOrder diff = new StockOrder();
 
-    IStockQuery stockLedgerService;
+    IStockQuery stockQuery;
 
     public StockTaking() {
     }
 
     @Transient
-    public IStockQuery getStockLedgerService() {
-        return stockLedgerService;
+    public IStockQuery getStockQuery() {
+        return stockQuery;
     }
 
-    public void setStockLedgerService(IStockQuery stockLedgerService) {
-        this.stockLedgerService = stockLedgerService;
+    public void setStockQuery(IStockQuery stockQuery) {
+        this.stockQuery = stockQuery;
     }
 
+    /**
+     * 账面数量
+     */
+    @Redundant
     @OneToOne
     @JoinColumn(name = "s1", nullable = false)
     @Cascade(CascadeType.ALL)
@@ -46,29 +51,46 @@ public class StockTaking
     }
 
     public void setExpected(StockOrder expected) {
+        if (expected == null)
+            throw new NullPointerException("expected");
         this.expected = expected;
     }
 
+    /**
+     * 盈亏数量
+     */
     @OneToOne
     @JoinColumn(name = "s2", nullable = false)
     @Cascade(CascadeType.ALL)
-    public StockOrder getAdjustment() {
-        return adjustment;
+    public StockOrder getDiff() {
+        return diff;
     }
 
-    public void setAdjustment(StockOrder adjustment) {
-        if (adjustment == null)
-            throw new NullPointerException("adjustment");
-        this.adjustment = adjustment;
+    public void setDiff(StockOrder diff) {
+        if (diff == null)
+            throw new NullPointerException("diff");
+        this.diff = diff;
     }
 
+    /**
+     * 盘点数量/实际数量
+     */
     @Transient
     public StockOrder getActual() {
+        if (actual == null)
+            actual = computeActual();
         return actual;
     }
 
     public void setActual(StockOrder actual) {
         this.actual = actual;
+    }
+
+    StockOrder computeActual() {
+        StockOrder actual = new StockOrder();
+        actual.populate(expected);
+        // actual.
+        return actual;
     }
 
 }

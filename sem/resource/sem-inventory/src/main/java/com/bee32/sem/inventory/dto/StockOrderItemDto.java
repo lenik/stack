@@ -24,6 +24,24 @@ public class StockOrderItemDto
     StockLocationDto location;
     StockItemState state;
 
+    public StockOrderItemDto() {
+        super();
+    }
+
+    public StockOrderItemDto(StockOrderItemDto o) {
+        super(o);
+        parent = o.parent;
+        material = o.material;
+        batch = o.batch;
+        expirationDate = o.expirationDate;
+        location = o.location;
+        state = o.state;
+    }
+
+    public StockOrderItemDto(int selection) {
+        super(selection);
+    }
+
     @Override
     protected boolean isNegated() {
         StockOrderDto parent = getParent();

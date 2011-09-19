@@ -23,6 +23,25 @@ public class StockOrderDto
 
     StockWarehouseDto warehouse;
 
+    public StockOrderDto() {
+        super();
+    }
+
+    public StockOrderDto(int selection) {
+        super(selection);
+    }
+
+    public StockOrderDto(StockOrderDto o) {
+        super(o);
+        base = o.base;
+        spec = o.spec;
+        subject = o.subject;
+        jobId = o.jobId;
+        org = o.org;
+        orgUnit = o.orgUnit;
+        warehouse = o.warehouse;
+    }
+
     @Override
     protected void _marshal(StockOrder source) {
         base = mref(StockPeriodDto.class, source.getBase());

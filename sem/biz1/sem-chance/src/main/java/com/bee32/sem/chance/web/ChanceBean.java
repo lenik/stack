@@ -150,7 +150,7 @@ public class ChanceBean
         BigDecimal value = new BigDecimal(selectedQuotationItem.getViewPrice());
         MCValue price = new MCValue(CurrencyConfig.getNative(), value);
         selectedQuotationItem.setPrice(price);
-        quotationCopy.applyItem(selectedQuotationItem);
+        quotationCopy.updateItem(selectedQuotationItem);
     }
 
     public void uneditQuotationItem() {

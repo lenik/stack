@@ -87,8 +87,8 @@ public class StockOrder
     }
 
     public void setBase(StockPeriod base) {
-// if (base == null)
-// throw new NullPointerException("base");
+        // if (base == null)
+        // throw new NullPointerException("base");
         this.base = base;
     }
 

@@ -36,6 +36,12 @@ public class MCValue
         value = new BigDecimal(0);
     }
 
+    /**
+     * Copy ctor is not necessary.
+     *
+     * @see #clone()
+     */
+    @Deprecated
     public MCValue(MCValue mcv) {
         if (mcv == null)
             throw new NullPointerException("mcv");
@@ -62,6 +68,15 @@ public class MCValue
             throw new NullPointerException("value");
         this.currency = currency;
         this.value = value;
+    }
+
+    /**
+     * Clone of value object is not necessary.
+     */
+    // TODO @Deprecated
+    @Override
+    public MCValue clone() {
+        return new MCValue(currency, value);
     }
 
     /**

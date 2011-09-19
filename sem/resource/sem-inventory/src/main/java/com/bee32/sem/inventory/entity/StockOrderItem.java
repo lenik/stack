@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -21,8 +25,11 @@ import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.sem.inventory.config.BatchingConfig;
 import com.bee32.sem.world.thing.AbstractOrderItem;
 
-@Entity
 @BatchSize(size = 100)
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "stereo", length = 3)
+@DiscriminatorValue("-")
 @SequenceGenerator(name = "idgen", sequenceName = "stock_order_item_seq", allocationSize = 1)
 public class StockOrderItem
         extends AbstractOrderItem {

@@ -18,23 +18,19 @@ public class MaterialPriceDto
     MaterialDto material;
     Date date;
     MCValue price;
-    double viewPrice;
 
     @Override
     protected void _marshal(MaterialPrice source) {
         this.material = marshal(MaterialDto.class, 0, source.getMaterial());
         this.date = source.getDate();
         this.price = source.getPrice();
-        this.viewPrice = price.getValue().doubleValue();
     }
 
     @Override
     protected void _unmarshalTo(MaterialPrice target) {
         merge(target, "material", material);
         target.setDate(date);
-        MCValue _mprice = new MCValue(price);
-        _mprice.value(viewPrice);
-        target.setPrice(new MCValue(_mprice));
+        target.setPrice(price.clone());
     }
 
     @Override
@@ -73,19 +69,19 @@ public class MaterialPriceDto
         this.price = price;
     }
 
-    public double getViewPrice() {
-        return viewPrice;
-    }
-
-    public void setViewPrice(double viewPrice) {
-        this.viewPrice = viewPrice;
-    }
-
     /**
      * Set price in native currency.
      */
-    public final void setPrice(double price) {
+    public final void setPrice(double price) { // FIXME
         setPrice(new MCValue(CurrencyConfig.getNative(), price));
+    }
+
+    public double getViewPrice() {
+        return price.getValue().doubleValue();
+    }
+
+    public void setViewPrice(double viewPrice) { // FIXME
+        price = price.value(viewPrice);
     }
 
 }

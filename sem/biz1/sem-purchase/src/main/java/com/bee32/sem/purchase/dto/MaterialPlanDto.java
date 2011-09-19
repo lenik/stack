@@ -14,9 +14,7 @@ public class MaterialPlanDto
 
     private static final long serialVersionUID = 1L;
 
-    public static final int ORDER = 1;
-    public static final int ORDER_ITEMS = ORDER | 2;
-    public static final int PURCHASE_REQUEST = 4;
+    public static final int PURCHASE_REQUEST = 1;
 
     MakeTaskDto task;
     StockOrderDto planOrder;
@@ -31,10 +29,8 @@ public class MaterialPlanDto
     protected void _marshal(MaterialPlan source) {
         task = mref(MakeTaskDto.class, source.getTask());
 
-        if (selection.contains(ORDER)) {
-            int orderSelection = 0;
-            if (selection.contains(ORDER_ITEMS))
-                orderSelection |= StockOrderDto.ITEMS;
+        if (selection.contains(ORDERS)) {
+            int orderSelection = selection.translate(ITEMS, StockOrderDto.ITEMS);
             planOrder = mref(StockOrderDto.class, orderSelection, source.getPlanOrder());
         }
 
@@ -50,7 +46,7 @@ public class MaterialPlanDto
     protected void _unmarshalTo(MaterialPlan target) {
         merge(target, "task", task);
 
-        if (selection.contains(ORDER))
+        if (selection.contains(ORDERS))
             merge(target, "planOrder", planOrder);
 
         merge(target, "preferredSupplier", preferredSupplier);
