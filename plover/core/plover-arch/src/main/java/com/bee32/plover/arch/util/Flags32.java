@@ -80,6 +80,18 @@ public class Flags32
         return true;
     }
 
+    public final int translate(int... testAndSet) {
+        int bits = 0;
+        int i = 0;
+        while (i < testAndSet.length) {
+            int test = testAndSet[i++];
+            int set = testAndSet[i++];
+            if (contains(test))
+                bits |= set;
+        }
+        return bits;
+    }
+
     public String getBitsString() {
         if (bits == 0)
             return "0";
