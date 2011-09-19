@@ -16,12 +16,28 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
 
     private static final long serialVersionUID = 1L;
 
-    BigDecimal quantity;
+    int index = -1;
 
+    BigDecimal quantity;
     MCValue price;
 
     BigDecimal nativePrice;
     BigDecimal nativeTotal;
+
+    public AbstractOrderItemDto() {
+        super();
+    }
+
+    public AbstractOrderItemDto(int selection) {
+        super(selection);
+    }
+
+    public AbstractOrderItemDto(AbstractOrderItemDto<E> o) {
+        quantity = o.quantity;
+        price = o.price.clone();
+        nativePrice = o.nativePrice;
+        nativeTotal = o.nativeTotal;
+    }
 
     protected boolean isNegated() {
         return false;
@@ -58,6 +74,17 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
     }
 
     protected abstract Date getFxrDate();
+
+    /**
+     * 单据内部的序号
+     */
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
     public BigDecimal getQuantity() {
         if (isNegated())

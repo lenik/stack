@@ -9,6 +9,7 @@ import javax.free.IIndentedOut;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
@@ -64,6 +65,7 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
      */
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
+    @OrderBy("index")
     public List<Item> getItems() {
         // TODO Collections.unmodifiableList(items);
         return items;
@@ -81,6 +83,10 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
     public synchronized void addItem(Item item) {
         if (item == null)
             throw new NullPointerException("item");
+
+        if (item.getIndex() == -1)
+            item.setIndex(items.size());
+
         items.add(item);
         invalidateTotal();
     }
@@ -88,8 +94,23 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
     public synchronized void removeItem(Item item) {
         if (item == null)
             throw new NullPointerException("item");
-        items.remove(item);
+
+        int index = items.indexOf(item);
+        if (index == -1)
+            return /* false */;
+
+        items.remove(index);
+
+        // Renum [index, ..)
+        for (int i = index; i < items.size(); i++)
+            items.get(i).setIndex(i);
+
         invalidateTotal();
+    }
+
+    public synchronized void reindex() {
+        for (int index = items.size() - 1; index >= 0; index--)
+            items.get(index).setIndex(index);
     }
 
     @Override

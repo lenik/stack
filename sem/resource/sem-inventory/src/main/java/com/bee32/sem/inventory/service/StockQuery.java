@@ -10,7 +10,6 @@ import com.bee32.plover.criteria.hibernate.GroupPropertyProjection;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.ProjectionList;
 import com.bee32.plover.criteria.hibernate.SumProjection;
-import com.bee32.plover.orm.entity.EntityAccessor;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockLocation;
@@ -59,7 +58,7 @@ public class StockQuery
 
         // XXX How about: batch == null, location != null ?
 
-        long index = 0;
+        int index = 0;
         for (Object[] line : list) {
             int _column = 0;
             Material _material = (Material) line[_column++];
@@ -79,7 +78,7 @@ public class StockQuery
             }
 
             StockOrderItem item = new StockOrderItem(all);
-            EntityAccessor.setId(item, index++);
+            item.setIndex(index++);
             item.setMaterial(_material);
             item.setQuantity(_quantity);
             item.setCBatch(_cBatch);

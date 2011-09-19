@@ -16,9 +16,9 @@ import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
 
 public abstract class AbstractOrderDto< //
-/*        */E extends AbstractOrder<Item>, //
-/*        */Item extends AbstractOrderItem, //
-/*        */ItemDto extends AbstractOrderItemDto<Item>>
+/*        */E extends AbstractOrder<_et>, //
+/*        */_et extends AbstractOrderItem, //
+/*        */_dt extends AbstractOrderItemDto<_et>>
         extends TxEntityDto<E>
         implements ICurrencyAware, DecimalConfig {
 
@@ -26,9 +26,9 @@ public abstract class AbstractOrderDto< //
 
     public static final int ITEMS = 0x10000;
 
-    final Class<ItemDto> itemDtoClass = ClassUtil.infer1(getClass(), AbstractOrderDto.class, 2);
+    final Class<_dt> itemDtoClass = ClassUtil.infer1(getClass(), AbstractOrderDto.class, 2);
 
-    List<ItemDto> items;
+    List<_dt> items;
     MCVector total;
 
     BigDecimal nativeTotal;
@@ -41,13 +41,20 @@ public abstract class AbstractOrderDto< //
         super(selection);
     }
 
+    public AbstractOrderDto(AbstractOrderDto<E, _et, _dt> o) {
+        super(o.getSelection());
+        items = o.items;
+        total = o.total;
+        nativeTotal = o.nativeTotal;
+    }
+
     @Override
     protected void __marshal(E source) {
         super.__marshal(source);
         if (selection.contains(ITEMS))
             items = marshalList(itemDtoClass, source.getItems()); // cascade..
         else
-            items = new ArrayList<ItemDto>();
+            items = new ArrayList<_dt>();
     }
 
     @Override
@@ -63,42 +70,63 @@ public abstract class AbstractOrderDto< //
         super.__parse(map);
     }
 
-    public List<ItemDto> getItems() {
+    public List<_dt> getItems() {
         return items;
     }
 
-    public void setItems(List<ItemDto> items) {
+    public void setItems(List<_dt> items) {
         if (items == null)
             throw new NullPointerException("items");
         this.items = items;
     }
 
-    public void addItem(ItemDto item) {
+    public void addItem(_dt item) {
         if (item == null)
             throw new NullPointerException("item");
+
+        if (item.getIndex() == -1)
+            item.setIndex(items.size());
+
         items.add(item);
         invalidateTotal();
     }
 
-    public void removeItem(ItemDto item) {
+    public void removeItem(_dt item) {
         if (item == null)
             throw new NullPointerException("item");
-        items.remove(item);
+
+        int index = items.indexOf(item);
+        if (index == -1)
+            return /* false */;
+
+        items.remove(index);
+
+        // Renum [index, ..)
+        for (int i = index; i < items.size(); i++)
+            items.get(i).setIndex(i);
+
         invalidateTotal();
     }
 
-    public void applyItem(ItemDto item) {
+    public void updateItem(_dt item) {
         if (item == null)
             throw new NullPointerException("item");
         int index = items.indexOf(item);
+        if (item.getIndex() == -1)
+            item.setIndex(index);
         items.set(index, item);
         invalidateTotal();
+    }
+
+    public void reindex() {
+        for (int index = items.size() - 1; index >= 0; index--)
+            items.get(index).setIndex(index);
     }
 
     public MCVector getTotal() {
         if (total == null) {
             total = new MCVector();
-            for (ItemDto item : items) {
+            for (_dt item : items) {
                 MCValue itemTotal = item.getTotal();
                 total.add(itemTotal);
             }
@@ -118,7 +146,7 @@ public abstract class AbstractOrderDto< //
             synchronized (this) {
                 if (nativeTotal == null) {
                     BigDecimal sum = new BigDecimal(0L, MONEY_TOTAL_CONTEXT);
-                    for (ItemDto item : items) {
+                    for (_dt item : items) {
 
                         BigDecimal itemNativeTotal = item.getNativePrice();
                         double d = itemNativeTotal.doubleValue();
@@ -126,7 +154,7 @@ public abstract class AbstractOrderDto< //
                         double itemTotal = d * q;
                         BigDecimal bit = new BigDecimal(itemTotal);
                         sum = sum.add(bit);
-// sum = sum.add(itemNativeTotal);
+                        // sum = sum.add(itemNativeTotal);
                     }
                     nativeTotal = sum;
                 }

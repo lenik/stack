@@ -26,8 +26,9 @@ public abstract class AbstractOrderItem
 
     private static final long serialVersionUID = 1L;
 
-    BigDecimal quantity = new BigDecimal(0);
+    int index;
 
+    BigDecimal quantity = new BigDecimal(0);
     MCValue price = new MCValue();
 
     BigDecimal nativePrice;
@@ -38,7 +39,7 @@ public abstract class AbstractOrderItem
 
     public AbstractOrderItem(AbstractOrderItem item) {
         quantity = item.quantity;
-        price = new MCValue(item.price);
+        price = item.price.clone();
         nativePrice = item.nativePrice;
         nativeTotal = item.nativeTotal;
     }
@@ -50,6 +51,18 @@ public abstract class AbstractOrderItem
 
     @Transient
     protected abstract Date getFxrDate();
+
+    /**
+     * 单据内部的序号
+     */
+    @Transient
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
     /**
      * 数量
