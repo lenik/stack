@@ -5,4 +5,39 @@
 
 . ec2-init-cred
 
-$RSEXEC ec2-cmd-orig "$@"
+opts=()
+nopt=0
+if [ $# != 0 ]; then
+    opts[nopt++]="$1"
+    shift
+fi
+
+inst_key=
+c_private_key=
+c_cert=
+c_url=
+c_region=
+
+for a in "$@"; do
+    case "$a" in
+        inst:*)
+            inst_key="${a#inst:}";;
+        -K|--private-key)
+            c_private_key=1;;
+        -C|--cert)
+            c_cert=1;;
+        -U|--url)
+            c_url=1;;
+        --region)
+            c_region=1;;
+    esac
+done
+
+if [ -n "$inst_key" ]; then
+    if [ -z "$c_region" ]; then
+        opts[nopt++]="--region"
+        opts[nopt++]="inst:$inst_key[.rg]"
+    fi
+fi
+
+$RSEXEC ec2-cmd-orig "${opts[@]}" "$@"
