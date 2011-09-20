@@ -1,6 +1,6 @@
 package com.bee32.sem.inventory.tx.dto;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.free.NotImplementedException;
@@ -8,6 +8,7 @@ import javax.free.Nullables;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.arch.util.dto.MarshalType;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.tx.entity.StockTaking;
@@ -60,7 +61,9 @@ public class StockTakingDto
     protected void _unmarshalTo(StockTaking target) {
         if (selection.contains(ORDERS)) {
 
-            StockOrderDto[] extracted = extract(joined);
+            StockOrderDto[] extracted = extract(joined, //
+                    false, // extract-expects?
+                    true); // extract-diffs?
 
             // Never update: merge the expectedOrder for initialization only.
             // StockOrderDto expectedOrder = extracted[0];
@@ -111,7 +114,7 @@ public class StockTakingDto
     }
 
     StockOrderDto join(StockOrderDto expectedOrder, StockOrderDto diffOrder) {
-        StockOrderDto joinedOrder = new StockOrderDto(expectedOrder);
+        StockOrderDto joinedOrder = new StockOrderDto().populate(expectedOrder);
         for (StockOrderItemDto expected : expectedOrder.getItems()) {
             StockOrderItemDto matchedDiff = null;
 
@@ -132,26 +135,38 @@ public class StockTakingDto
         return joinedOrder;
     }
 
-    StockOrderDto[] extract(StockOrderDto joinedOrder) {
-        StockOrderDto expectedOrder = new StockOrderDto(joinedOrder);
-        StockOrderDto diffOrder = new StockOrderDto(joinedOrder);
+    StockOrderDto[] extract(StockOrderDto joinedOrder, boolean extractExpects, boolean extractDiffs) {
+        List<StockOrderItemDto> jv = joinedOrder.getItems();
 
-        List<StockOrderItemDto> joinedItems = joined.getItems();
+        StockOrderDto expectedOrder = null;
+        StockOrderDto diffOrder = null;
 
-        if (expectedOrder != null) {
+        if (extractExpects) {
+            expectedOrder = new StockOrderDto().populate(joinedOrder);
+            expectedOrder.marshalAs(MarshalType.SELECTION); // But should avoid to use it.
+        }
+        if (extractDiffs) {
+            diffOrder = new StockOrderDto().populate(joinedOrder);
+            diffOrder.marshalAs(MarshalType.SELECTION);
         }
 
-        StockOrderDto expected = new StockOrderDto(joined);
-        List<StockOrderItemDto> expectedItems = new ArrayList<StockOrderItemDto>(joinedItems.size());
-        for (StockOrderItemDto _item : joinedItems) {
-            StockTakingItem joinedItem = (StockTakingItem) _item;
+        for (StockOrderItemDto j : jv) {
+            StockTakingItem joinedItem = (StockTakingItem) j;
 
-            StockOrderItemDto expectedItem = new StockOrderItemDto(joinedItem);
-            expectedItem.setQuantity(joinedItem.getExpected());
-            expectedItems.add(expectedItem);
-
+            if (extractExpects) {
+                StockOrderItemDto expected = new StockOrderItemDto(joinedItem);
+                expected.setQuantity(joinedItem.getExpected());
+                expectedOrder.addItem(expected);
+            }
+            if (extractDiffs) {
+                BigDecimal diffQuantity = joinedItem.getDiff();
+                if (!BigDecimal.ZERO.equals(diffQuantity)) { // Ignore diff==0 entries.
+                    StockOrderItemDto diff = new StockOrderItemDto(joinedItem);
+                    diff.setQuantity(diffQuantity);
+                    diffOrder.addItem(diff);
+                }
+            }
         }
-        expected.setItems(expectedItems);
 
         return new StockOrderDto[] { expectedOrder, diffOrder };
     }
