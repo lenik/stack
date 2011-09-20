@@ -264,7 +264,7 @@
 
 						<h:outputLabel value="批号" />
                         <t:panelGroup>
-                            <p:outputText readonly="true"
+                            <h:outputText readonly="true"
                                 value="#{stocktakingAdminBean.orderItem.batch}" />
                             <p:commandButton value="..."
                                 onclick="chooseStockLedgerDialog.show();" />
@@ -277,30 +277,30 @@
                         </h:outputText>
 
                         <h:outputLabel value="库位" />
-                        <p:outputText
+                        <h:outputText
                             value="#{stocktakingAdminBean.orderItem.location.nodeText}"
                             readonly="true" />
 
 
                         <h:outputLabel value="单价" />
-                        <p:outputText value="#{stocktakingAdminBean.orderItemPrice}" />
+                        <h:outputText value="#{stocktakingAdminBean.orderItemPrice}" />
                         <h:outputLabel value="币种" />
                         <h:outputText value="#{stocktakingAdminBean.orderItemPriceCurrency}" />
 
 
                         <h:outputLabel value="帐面数量" />
                         <t:panelGroup colspan="3">
-                            <p:outputText value="#{stocktakingAdminBean.orderItem.quantity}"/>
+                            <h:outputText value="#{stocktakingAdminBean.orderItem.quantity}"/>
                         </t:panelGroup>
 
                         <h:outputLabel value="盘点数量" />
                         <t:panelGroup colspan="3">
-                            <p:outputText value="#{stocktakingAdminBean.orderItem.quantity}"/>
+                            <h:outputText value="#{stocktakingAdminBean.orderItem.quantity}"/>
                         </t:panelGroup>
 
                         <h:outputLabel value="盈亏数量" />
                         <t:panelGroup colspan="3">
-                            <p:outputText value="#{stocktakingAdminBean.orderItem.quantity}"/>
+                            <h:outputText value="#{stocktakingAdminBean.orderItem.quantity}"/>
                         </t:panelGroup>
 
 

@@ -3,9 +3,7 @@ package com.bee32.sem.inventory.web.business;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -48,15 +46,7 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
 
         goNumber = 1;
 
-        try {
-            HttpServletRequest req = (HttpServletRequest) FacesContext
-                    .getCurrentInstance().getExternalContext().getRequest();
-            String s = req.getParameter("subject").toString();
-            subject = StockOrderSubject.valueOf(s);
-
-        } catch (Exception e) {
-            uiLogger.warn("非正常方式进入库存业务功能!");
-        }
+        subject = StockOrderSubject.STKD;
     }
 
 

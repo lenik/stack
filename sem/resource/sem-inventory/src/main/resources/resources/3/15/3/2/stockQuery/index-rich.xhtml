@@ -111,7 +111,7 @@
 
         <h:form id="materialForm">
             <p:dialog header="选择物料" widgetVar="materialDialog" modal="true"
-                height="400" width="640">
+                height="480" width="640">
                 <h:panelGroup>
 
                     <h:panelGrid columns="3">
@@ -122,10 +122,12 @@
                             async="true" />
                     </h:panelGrid>
                     <p:dataTable id="materials" var="material"
-                        value="#{stockQueryBean.materials}" resizableColumns="true"
-                        selection="#{stockQueryBean.selectedMaterial}" selectionMode="single"
-                        rowKey="#{material.id}"
-                        rowIndexVar="rowIndex">
+                        value="#{stockQueryBean.materials}"
+                        resizableColumns="true"
+                        selection="#{stockQueryBean.selectedMaterial}"
+                        selectionMode="single" rowKey="#{material.id}"
+                        rowIndexVar="rowIndex"
+                        scrollable="true" scrollWidth="600" scrollHeight="300">
 
                         <p:column>
                             <f:facet name="header">
@@ -153,7 +155,6 @@
                         <p:column headerText="规格型号">
                             <h:outputText value="#{material.modelSpec}" />
                         </p:column>
-
                     </p:dataTable>
                     <h:panelGrid columns="2">
                         <p:commandButton value="添加"

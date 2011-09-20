@@ -143,6 +143,8 @@ public class StockQueryBean extends EntityViewBean {
 
             materials = DTOs.marshalList(MaterialDto.class, _materials);
         }
+
+        selectedMaterial = null;
     }
 
     public void addMaterial() {

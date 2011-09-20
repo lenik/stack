@@ -55,7 +55,7 @@ public abstract class AbstractOrderItem
     /**
      * 单据内部的序号
      */
-    @Transient
+    @Column(nullable = false)
     public int getIndex() {
         return index;
     }

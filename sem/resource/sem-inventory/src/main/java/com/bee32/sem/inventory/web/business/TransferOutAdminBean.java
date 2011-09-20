@@ -179,7 +179,7 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
                 StockTransfer t = serviceFor(StockTransfer.class)
                         .getUnique(new Equals("source.id", stockOrder.getId()));
                 if(t != null) {
-                    stockTransfer = DTOs.marshal(StockTransferDto.class, t);
+                    stockTransfer = DTOs.marshal(StockTransferDto.class, -1, t);
                 }
             }
         }
