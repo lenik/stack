@@ -26,6 +26,21 @@ public abstract class TxEntityDto<E extends TxEntity>
     }
 
     @Override
+    public TxEntityDto<E> populate(Object source) {
+        if (source instanceof TxEntityDto) {
+            TxEntityDto<?> o = (TxEntityDto<?>) source;
+            _populate(o);
+        } else
+            super.populate(source);
+        return this;
+    }
+
+    protected void _populate(TxEntityDto<?> o) {
+        super._populate(o);
+        serial = o.serial;
+    }
+
+    @Override
     protected void __marshal(E source) {
         super.__marshal(source);
         serial = source.getSerial();

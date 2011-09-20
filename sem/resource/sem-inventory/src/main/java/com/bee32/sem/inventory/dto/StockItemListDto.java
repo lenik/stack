@@ -24,8 +24,18 @@ public abstract class StockItemListDto<E extends StockItemList>
         super(selection);
     }
 
-    public StockItemListDto(StockItemListDto<E> o) {
-        super(o);
+    @Override
+    public StockItemListDto<E> populate(Object source) {
+        if (source instanceof StockItemListDto<?>) {
+            StockItemListDto<?> o = (StockItemListDto<?>) source;
+            _populate(o);
+        } else
+            super.populate(source);
+        return this;
+    }
+
+    protected void _populate(StockItemListDto<?> o) {
+        super._populate(o);
         mergeStrategy = o.mergeStrategy;
     }
 

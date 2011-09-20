@@ -41,8 +41,19 @@ public abstract class AbstractOrderDto< //
         super(selection);
     }
 
-    public AbstractOrderDto(AbstractOrderDto<E, _et, _dt> o) {
-        super(o.getSelection());
+    @Override
+    public AbstractOrderDto<E, _et, _dt> populate(Object source) {
+        if (source instanceof AbstractOrderDto<?, ?, ?>) {
+            @SuppressWarnings("unchecked")
+            AbstractOrderDto<?, _et, _dt> o = (AbstractOrderDto<?, _et, _dt>) source;
+            _populate(o);
+        } else
+            super.populate(source);
+        return this;
+    }
+
+    protected void _populate(AbstractOrderDto<?, _et, _dt> o) {
+        super._populate(o);
         items = o.items;
         total = o.total;
         nativeTotal = o.nativeTotal;

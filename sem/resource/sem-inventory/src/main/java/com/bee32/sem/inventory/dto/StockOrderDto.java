@@ -31,8 +31,18 @@ public class StockOrderDto
         super(selection);
     }
 
-    public StockOrderDto(StockOrderDto o) {
-        super(o);
+    @Override
+    public StockOrderDto populate(Object source) {
+        if (source instanceof StockOrderDto) {
+            StockOrderDto o = (StockOrderDto) source;
+            _populate(o);
+        } else
+            super.populate(source);
+        return this;
+    }
+
+    protected void _populate(StockOrderDto o) {
+        super._populate(o);
         base = o.base;
         spec = o.spec;
         subject = o.subject;
