@@ -74,7 +74,7 @@ public class MaterialPrice
     @Embedded
     @AttributeOverrides({
             // { price_c, price }
-            @AttributeOverride(name = "currency", column = @Column(name = "price_cc")), //
+            @AttributeOverride(name = "currencyCode", column = @Column(name = "price_cc")), //
             @AttributeOverride(name = "value", column = @Column(name = "price")) })
     public MCValue getPrice() {
         return price;
