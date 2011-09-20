@@ -1,0 +1,15 @@
+Source: bee32-env
+Section: utils
+Priority: extra
+Maintainer: 谢继雷 (99计算机) <xjl@99jsj.com>
+Build-Depends: debhelper (>= 7.0.50~), autotools-dev
+Standards-Version: 3.8.4
+Homepage:
+#Vcs-Git: git://git.debian.org/collab-maint/bee32-env.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/bee32-env.git;a=summary
+
+Package: bee32-env
+Architecture: all
+Depends: jdk7-local, texlive-local, cools-terminal, cools-java
+Description: Bee32 base environment.
+    This is a package collection which provides the common utilities for Bee32 system.
