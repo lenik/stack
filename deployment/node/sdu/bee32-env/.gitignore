@@ -1,0 +1,7 @@
+*.tar.gz
+debian/bee32-env
+debian/*.log
+debian/*.ex
+debian/*.EX
+debian/*.substvars
+debian/files
