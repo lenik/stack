@@ -1,5 +1,9 @@
 include libauto/coolauto.am
 
+aptprefsdir = ${sysconfdir}/apt/preferences.d
+
+aptprefs_DATA = \
+    bee32_policy
 
 setup_SCRIPTS = \
     post-install.sh \

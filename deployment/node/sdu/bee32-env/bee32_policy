@@ -1,0 +1,3 @@
+Package:        *
+Pin:            origin "sdu.bee32.com"
+Pin-Priority:   1001
