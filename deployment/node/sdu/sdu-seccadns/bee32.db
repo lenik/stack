@@ -52,7 +52,7 @@ my                      CNAME   sql             ; MySQL 数据库管理
 blog                    CNAME   s-dev           ; 开发者日志
 *.blog                  CNAME   blog
 
-cdn                     CNAME   app-1           ; 内容分发网络
+cdn                     CNAME   main            ; 内容分发网络
 *.cdn                   CNAME   cdn             ; 静态资源
 
 ci                      CNAME   aut-dev         ; 连续集成系统
