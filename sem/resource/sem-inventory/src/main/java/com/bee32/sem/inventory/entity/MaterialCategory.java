@@ -124,4 +124,9 @@ public class MaterialCategory
         return new Equals(prefix + "name", name);
     }
 
+    @Override
+    public void addChild(MaterialCategory child) {
+        if(getChildren().contains(child)) return;
+        super.addChild(child);
+    }
 }

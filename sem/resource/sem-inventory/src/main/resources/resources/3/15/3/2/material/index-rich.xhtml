@@ -6,10 +6,9 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 <ui:composition template="/template/primefaces.xhtml">
 
-    <ui:define name="title">material</ui:define>
+    <ui:define name="title">物料管理</ui:define>
 
     <ui:define name="content">
-
         <h:outputStylesheet>
             .ftd{
                 vertical-align:top;
@@ -114,7 +113,6 @@
         </h:form>
 
         <h:form id="dialogForm">
-
             <p:dialog widgetVar="scaleDialog" height="300" width="400" modal="true">
                 <p:panel id="scaleForm">
                     <t:panelGrid columns="2">
@@ -496,25 +494,32 @@
 
             </p:dialog>
 
-            <p:dialog header="选择物料分类" widgetVar="categoryTreeDialog" height="400" width="700" modal="true">
+
+
+
+            <p:dialog header="选择物料分类(右击选择)" widgetVar="categoryTreeDialog" height="480" width="640" modal="true">
+
                 <h:panelGrid columns="1">
-                    <p:tree
+                    <p:treeTable id="categoryTree"
                         value="#{materialViewBean.selectCategoryTree.rootNode}"
                         var="node" dynamic="true" selectionMode="single"
-                        selection="#{materialViewBean.selectCategoryTree.selectedNode}">
-                        <p:treeNode>
-                            <h:outputText value="#{node.name}" />
-                        </p:treeNode>
-                    </p:tree>
+                        selection="#{materialViewBean.selectCategoryTree.selectedNode}"
+                        scrollable="true"
+                        scrollHeight="380" scrollWidth="400">
 
-                    <h:panelGrid columns="2">
+                        <p:column>
+                            <f:facet name="header">分类名称</f:facet>
+                            <h:outputText value="#{node.name}" />
+                        </p:column>
+                    </p:treeTable>
+                    <t:panelGrid columns="2">
                         <p:commandButton value="选择"
-                            actionListener="#{materialViewBean.doSelectMaterialCategory}"
                             update=":dialogForm:materialCategory"
+                            actionListener="#{materialViewBean.doSelectMaterialCategory}"
                             oncomplete="categoryTreeDialog.hide();" />
                         <p:commandButton value="取消"
                             onclick="categoryTreeDialog.hide();" />
-                    </h:panelGrid>
+                    </t:panelGrid>
                 </h:panelGrid>
             </p:dialog>
 

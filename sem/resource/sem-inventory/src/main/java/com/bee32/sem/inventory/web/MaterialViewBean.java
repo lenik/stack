@@ -605,5 +605,4 @@ public class MaterialViewBean
     public void setSelectedScale(ScaleItem selectedScale) {
         this.selectedScale = selectedScale;
     }
-
 }

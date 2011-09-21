@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.zkoss.lang.Strings;
 
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.plover.util.i18n.CurrencyConfig;
@@ -86,12 +87,15 @@ public class MaterialSettingsBean
     }
 
     public void initMainTree() {
-        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
+        List<MaterialCategory> rootCategories
+            = serviceFor(MaterialCategory.class).list(
+                    TreeCriteria.root(), //
+                    Order.asc("name"));
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories);
+                ~MaterialCategoryDto.MATERIALS, rootCategories, true);
         materialCategoryMainTree = new MaterialCategoryTreeModel(rootCategoryDtos);
         materialCategoryMainTree.setSelectedNode(null);
-        // XXX to add lintener if necessary
+        // XXX to add listener if necessary
     }
 
     public void initSelectCategoryTree() {
@@ -233,6 +237,11 @@ public class MaterialSettingsBean
         activeCategory = new MaterialCategoryDto().create();
     }
 
+    public void addSubCategory() {
+        activeCategory = new MaterialCategoryDto().create();
+        activeCategory.setParent((MaterialCategoryDto) materialCategoryMainTree.getSelectedNode().getData());
+    }
+
     public void editCategoryForm() {
         activeCategory = (MaterialCategoryDto) materialCategoryMainTree.getSelectedNode().getData();
         activeCategory = reload(activeCategory);
@@ -252,8 +261,13 @@ public class MaterialSettingsBean
 
     public void doSaveCategory() {
         try {
-            MaterialCategory category = activeCategory.unmarshal();
-            serviceFor(MaterialCategory.class).saveOrUpdate(category);
+            MaterialCategory subCategory = activeCategory.unmarshal();
+            serviceFor(MaterialCategory.class).saveOrUpdate(subCategory);
+
+            if(subCategory.getParent() != null) {
+                subCategory.getParent().addChild(subCategory);
+            }
+
             initMainTree();
             initSelectCategoryTree();
             uiLogger.info("保存物料分类成功!");

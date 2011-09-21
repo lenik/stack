@@ -13,7 +13,7 @@
 
 <ui:composition template="/template/primefaces.xhtml">
 
-    <ui:define name="title">material</ui:define>
+    <ui:define name="title">物料分类管理</ui:define>
 
     <ui:define name="content">
 
@@ -32,11 +32,15 @@
             <p:tabView id="mainTab">
                 <p:tab title="物料分类设置">
 
-                    <p:toolbar>
-                        <p:toolbarGroup id="categoryToolbar">
+                    <p:toolbar id="categoryToolbar">
+                        <p:toolbarGroup>
                             <p:commandButton value="新增" title="新增分类"
                                 actionListener="#{materialSettingsBean.createCategoryForm}"
                                 oncomplete="categoryWizardDialog.show();" update=":dialogForm:categoryForm" />
+                            <p:commandButton id="newSubCategory" value="新增子分类" title="新增子分类"
+                                actionListener="#{materialSettingsBean.addSubCategory}"
+                                update=":dialogForm:categoryForm" oncomplete="categoryWizardDialog.show();"
+                                disabled="#{materialSettingsBean.materialCategoryMainTree.selectedNode == null}" />
                             <p:commandButton id="editCategory" value="编辑" title="编辑分类"
                                 actionListener="#{materialSettingsBean.editCategoryForm}"
                                 update=":dialogForm:categoryForm" oncomplete="categoryWizardDialog.show();"
@@ -48,18 +52,23 @@
                     </p:toolbar>
 
                     <p:panel>
-                        <p:tree id="mainTree" value="#{materialSettingsBean.materialCategoryMainTree.rootNode}"
+                        <p:treeTable id="mainTree"
+                            value="#{materialSettingsBean.materialCategoryMainTree.rootNode}"
                             var="node" dynamic="true" selectionMode="single"
-                            selection="#{materialSettingsBean.materialCategoryMainTree.selectedNode}">
+                            selection="#{materialSettingsBean.materialCategoryMainTree.selectedNode}"
+                            scrollable="true"
+                            scrollHeight="380" scrollWidth="400">
 
-                            <p:ajax event="select" update=":mainForm:mainTab" />
-                            <p:ajax event="unselect" update=":mainForm:mainTab" />
+                            <p:ajax event="select" update=":mainForm:mainTab:categoryToolbar" />
+                            <p:ajax event="unselect" update=":mainForm:mainTab:categoryToolbar" />
 
-                            <p:treeNode>
+                            <p:column>
+                                <f:facet name="header">分类名称</f:facet>
                                 <h:outputText value="#{node.name}" />
-                            </p:treeNode>
+                            </p:column>
+                        </p:treeTable>
 
-                        </p:tree>
+
                     </p:panel>
 
                 </p:tab>
@@ -380,7 +389,7 @@
 
                         <p:commandButton value="确认" actionListener="#{materialSettingsBean.doSaveCategory}"
                             oncomplete="categoryWizardDialog.hide();"
-                            update=":mainForm:mainTab:mainTree, :mainForm:mainTab:selectCategoryTree" />
+                            update=":mainForm:mainTab:mainTree mainForm:mainTab:selectCategoryTree" />
                         <p:commandButton value="取消" onclick="categoryWizardDialog.hide();" />
 
                     </t:panelGrid>
@@ -388,13 +397,19 @@
             </p:dialog>
 
             <p:dialog header="选择上级分类" widgetVar="categorySelectDialog" height="500" width="700" modal="true">
-                <p:tree value="#{materialSettingsBean.materialCategorySelectTree.rootNode}" var="node" dynamic="true"
-                    selectionMode="single" selection="#{materialSettingsBean.materialCategorySelectTree.selectedNode}"
-                    style="width:100%;" id="upperCategorySelect">
-                    <p:treeNode>
+
+                <p:treeTable id="upperCategorySelect"
+                    value="#{materialSettingsBean.materialCategorySelectTree.rootNode}"
+                    var="node" dynamic="true" selectionMode="single"
+                    selection="#{materialSettingsBean.materialCategorySelectTree.selectedNode}"
+                    scrollable="true"
+                    scrollHeight="380" scrollWidth="400">
+
+                    <p:column>
+                        <f:facet name="header">分类名称</f:facet>
                         <h:outputText value="#{node.name}" />
-                    </p:treeNode>
-                </p:tree>
+                    </p:column>
+                </p:treeTable>
                 <p:commandButton value="选择"
                     actionListener="#{materialSettingsBean.materialCategorySelectTree.onNodeSelect}"
                     update="categoryForm" oncomplete="categorySelectDialog.hide();" />
