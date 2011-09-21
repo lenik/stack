@@ -12,8 +12,7 @@ $TTL            1H
                                     12H     ; sync expire
                                     1H      ; minimum TTL
                                 )
-                        NS      ns1.bee32.com.
-                        NS      ns2.bee32.com.
+                        NS      ns3.bee32.com.
 
 secca                   CNAME   bee32.com.
 s                       CNAME   bee32.com.
