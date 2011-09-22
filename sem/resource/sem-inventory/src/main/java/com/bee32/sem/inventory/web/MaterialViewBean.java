@@ -258,10 +258,10 @@ public class MaterialViewBean
             UnitConv ucv = activeUnitConv.unmarshal();
             activeMaterial.setUnitConv(activeUnitConv);
             serviceFor(UnitConv.class).saveOrUpdate(ucv);
-            uiLogger.info("保存单位还算表" + activeUnitConv.getLabel() + "成功");
+            uiLogger.info("保存单位换算表" + activeUnitConv.getLabel() + "成功");
             activeUnitConv = new UnitConvDto().create();
         } catch (Exception e) {
-            uiLogger.error("保存单位还算表失败:", e);
+            uiLogger.error("保存单位换算表失败:", e);
         }
     }
 

@@ -132,7 +132,7 @@
                             <p:column headerText="换算表代码">
                                 <h:outputText value="#{unitConv.name}" />
                             </p:column>
-                            <p:column headerText="还算表名称">
+                            <p:column headerText="换算表名称">
                                 <h:outputText value="#{unitConv.label}" />
                             </p:column>
                             <p:column headerText="源单位">
@@ -267,7 +267,7 @@
 
             </p:confirmDialog>
 
-            <p:confirmDialog message="确定要删除此单位还算表吗?" showEffect="bounce" hideEffect="explode" header="提示"
+            <p:confirmDialog message="确定要删除此单位换算表吗?" showEffect="bounce" hideEffect="explode" header="提示"
                 severity="alert" widgetVar="unitConvConfirmation">
 
                 <p:commandButton value="确定" update=":mainForm:mainTab:unitConvList"

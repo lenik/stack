@@ -101,7 +101,7 @@ public class MaterialSettingsBean
     public void initSelectCategoryTree() {
         List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories);
+                ~MaterialCategoryDto.MATERIALS, rootCategories, true);
         materialCategorySelectTree = new MaterialCategoryTreeModel(rootCategoryDtos);
         materialCategorySelectTree.addListener(new SelectionAdapter() {
 
@@ -121,7 +121,7 @@ public class MaterialSettingsBean
     public void initMaterialPriceTree() {
         List<MaterialCategory> roots = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
         List<MaterialCategoryDto> rootDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, roots);
+                ~MaterialCategoryDto.MATERIALS, roots, true);
         materialPriceTree = new MaterialCategoryTreeModel(rootDtos);
         materialPriceTree.addListener(new SelectionAdapter() {
 
@@ -175,9 +175,9 @@ public class MaterialSettingsBean
             UnitConv ucv = activeUnitConv.unmarshal();
             serviceFor(UnitConv.class).saveOrUpdate(ucv);
             initUnitConvList();
-            uiLogger.info("保存单位还算表成功");
+            uiLogger.info("保存单位换算表成功");
         } catch (Exception e) {
-            uiLogger.error("保存单位还算表失败", e);
+            uiLogger.error("保存单位换算表失败", e);
         }
     }
 
@@ -187,9 +187,9 @@ public class MaterialSettingsBean
             UnitConv uc = serviceFor(UnitConv.class).getOrFail(convId);
             serviceFor(UnitConv.class).delete(uc);
             initUnitConvList();
-            uiLogger.info("删除单位还算表成功");
+            uiLogger.info("删除单位换算表成功");
         } catch (Exception e) {
-            uiLogger.error("删除单位还算表失败", e);
+            uiLogger.error("删除单位换算表失败", e);
         }
     }
 

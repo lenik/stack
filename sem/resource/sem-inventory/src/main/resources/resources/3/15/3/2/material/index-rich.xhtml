@@ -117,8 +117,8 @@
                 <p:panel id="scaleForm">
                     <t:panelGrid columns="2">
                         <h:outputText value="换算单位" />
-                        <p:selectOneMenu value="#{materialViewBean.activeScaleItem.unit.displayId}" style="width:100px;">
-                            <f:selectItem itemLabel="" itemValue="" />
+                        <p:selectOneMenu value="#{materialViewBean.activeScaleItem.unit.displayId}" style="width:150px;">
+                            <f:selectItem itemValue="" itemLabel="--选择单位--"/>
                             <f:selectItems value="#{materialViewBean.units}" />
                         </p:selectOneMenu>
 

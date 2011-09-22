@@ -53,7 +53,7 @@ public class Material
     List<MaterialPrice> prices = new ArrayList<MaterialPrice>();
 
     // ------------------------------------------------------------------------
-    // 需要索引的常用的物料属性（这些属性和单位还算无关）。
+    // 需要索引的常用的物料属性（这些属性和单位换算无关）。
     //
     NaturalColor color = new NaturalColor();
 
