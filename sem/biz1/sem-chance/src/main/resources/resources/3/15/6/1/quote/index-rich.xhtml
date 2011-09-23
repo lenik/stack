@@ -116,14 +116,17 @@
 
         </h:form>
         <h:form id="materialForm">
-            <p:dialog header="选择物料" widgetVar="materialDlg" height="400" width="600">
+            <p:dialog header="选择物料" widgetVar="materialDlg" height="480" width="600">
                 <p:panel id="mp">
                     <t:panelGrid columns="2">
                         <p:inputText value="#{priceViewBean.materialPattern}" />
                         <p:commandButton value="查找" actionListener="#{basePriceBean.findMaterial}" update="matrialForm:mp" />
 
                         <t:panelGroup colspan="2">
-                            <p:dataTable var="item" value="#{basePriceBean.material}">
+                            <p:dataTable var="item"
+                                value="#{basePriceBean.material}"
+                                scrollable="true" scrollWidth="600"
+                                scrollHeight="350">
                                 <p:column>
                                     <f:facet name="header">
                                         <h:outputText value="物料名称" />

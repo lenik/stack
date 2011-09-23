@@ -374,7 +374,7 @@
 
 		<h:form id="materialForm">
 			<p:dialog header="选择物料" widgetVar="materialDialog" modal="true"
-				height="400" width="640">
+				height="480" width="640">
 				<h:panelGroup>
 
 					<h:panelGrid columns="3">
@@ -388,7 +388,8 @@
 						value="#{transferOutAdminBean.materials}" resizableColumns="true"
 						selection="#{transferOutAdminBean.selectedMaterial}" selectionMode="single"
                         rowKey="#{material.id}"
-						rowIndexVar="rowIndex">
+						rowIndexVar="rowIndex"
+                        scrollable="true" scrollWidth="600" scrollHeight="350">
 
 						<p:column>
 							<f:facet name="header">

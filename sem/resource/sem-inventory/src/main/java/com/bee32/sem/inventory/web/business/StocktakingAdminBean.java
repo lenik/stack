@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Offset;
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
@@ -89,21 +90,33 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
         loadStockLocationTree();
     }
 
-    private void loadStockOrder(int goNumber) {
+    private void loadStockOrder(int position) {
         //刷新总记录数
         getCount();
 
-        if(goNumber < 1) goNumber = 1;
-        if(goNumber > count) goNumber = count;
+        goNumber = position;
+
+        if(position < 1) {
+            goNumber = 1;
+            position = 1;
+        }
+        if(goNumber > count) {
+            goNumber = count;
+            position = count;
+        }
 
 
         stockOrder = new StockOrderDto().create();
         if (selectedWarehouse != null) {
-            StockOrder firstOrder = serviceFor(StockOrder.class).getFirst(//
-                    new Offset(goNumber - 1), //
-                    EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                    StockCriteria.subjectOf(getSubject()), //
-                    new Equals("warehouse.id", selectedWarehouse.getId()));
+            StockOrder firstOrder = serviceFor(StockOrder.class)
+                    .getFirst(
+                            //
+                            new Offset(position - 1), //
+                            EntityCriteria.createdBetweenEx(limitDateFrom,
+                                    limitDateTo), //
+                            StockCriteria.subjectOf(getSubject()), //
+                            new Equals("warehouse.id", selectedWarehouse
+                                    .getId()), Order.desc("id"));
 
             if (firstOrder != null)
                 stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
@@ -137,9 +150,15 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
     }
 
     public void delete() {
-        serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
-        uiLogger.info("删除成功!");
-        loadStockOrder(goNumber);
+        try {
+            serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
+            uiLogger.info("删除成功!");
+            loadStockOrder(goNumber);
+        } catch (Exception e) {
+            uiLogger.warn("删除失败,错误信息:" + e.getMessage());
+        }
+
+
     }
 
     @Transactional
@@ -151,13 +170,21 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
             //新增
             goNumber = 1;
         }
-        for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-            serviceFor(StockOrder.class).delete(item.unmarshal());
+
+
+        try {
+            for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
+                serviceFor(StockOrder.class).delete(item.unmarshal());
+            }
+
+            StockOrder _order = stockOrder.unmarshal();
+            serviceFor(StockOrder.class).save(_order);
+            uiLogger.info("保存成功");
+            loadStockOrder(goNumber);
+            editable = false;
+        } catch (Exception e) {
+            uiLogger.warn("保存失败,错误信息:" + e.getMessage());
         }
-        serviceFor(StockOrder.class).save(stockOrder.unmarshal());
-        uiLogger.info("保存成功");
-        loadStockOrder(goNumber);
-        editable = false;
     }
 
     public void cancel() {
