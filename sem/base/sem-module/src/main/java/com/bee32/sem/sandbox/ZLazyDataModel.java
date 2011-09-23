@@ -44,10 +44,10 @@ public class ZLazyDataModel<E extends CEntity<?>, D extends CEntityDto<E, ?>>
         Limit limit = new Limit(first, pageSize);
         List<E> entities = dataManager.asFor(entityClass).list(limit, composition);
 
-        List<D> dtos = DTOs.marshalList(//
+        List<D> dtos = DTOs.mrefList(//
                 dtoClass, //
                 dtoSelection, //
-                entities, true);
+                entities);
 
         return dtos;
     }

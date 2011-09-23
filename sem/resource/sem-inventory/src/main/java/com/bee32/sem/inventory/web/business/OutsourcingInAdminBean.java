@@ -342,7 +342,7 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
         List<StockOutsourcing> os = serviceFor(StockOutsourcing.class).list(
                 StockCriteria.danglingOutsourcing(findDateFrom, findDateTo));
 
-        findedOuts = DTOs.marshalList(StockOutsourcingDto.class, StockOutsourcingDto.ORDER_ITEMS, os, true);
+        findedOuts = DTOs.mrefList(StockOutsourcingDto.class, StockOutsourcingDto.ORDER_ITEMS, os);
     }
 
     public void chooseFindedOut() {

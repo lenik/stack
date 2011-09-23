@@ -149,7 +149,7 @@ public class ChanceActionBean
                 Order.desc("createdDate"), EntityCriteria.ownedByCurrentUser(), //
                 ChanceCriteria.subjectLike(chancePattern));
 
-        chances = DTOs.marshalList(ChanceDto.class, 0, _chances, true);
+        chances = DTOs.mrefList(ChanceDto.class, 0, _chances);
     }
 
     public void chooseCustomerForm() {
@@ -162,7 +162,7 @@ public class ChanceActionBean
                 EntityCriteria.ownedByCurrentUser(), //
                 PeopleCriteria.namedLike(customerPattern));
 
-        customers = DTOs.marshalList(PartyDto.class, PartyDto.CONTACTS, parties, true);
+        customers = DTOs.mrefList(PartyDto.class, PartyDto.CONTACTS, parties);
     }
 
     public void choosePartnerForm() {
@@ -172,7 +172,7 @@ public class ChanceActionBean
 
     public void findPartner() {
         List<User> _partners = serviceFor(User.class).list(ChanceCriteria.nameLike(partnerPattern));
-        partners = DTOs.marshalList(UserDto.class, 0, _partners, true);
+        partners = DTOs.mrefList(UserDto.class, 0, _partners);
     }
 
     public void createForm() {

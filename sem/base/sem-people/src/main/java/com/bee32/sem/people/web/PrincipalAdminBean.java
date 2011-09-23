@@ -48,7 +48,7 @@ public class PrincipalAdminBean
         roleRootNode = new DefaultTreeNode("root", null);
 
         List<Role> rootRoles = serviceFor(Role.class).list(TreeCriteria.root());
-        List<RoleDto> rootRoleDtos = DTOs.marshalList(RoleDto.class, -1, rootRoles, true);
+        List<RoleDto> rootRoleDtos = DTOs.mrefList(RoleDto.class, -1, rootRoles);
 
         for (RoleDto roleDto : rootRoleDtos) {
             loadRoleRecursive(roleDto, roleRootNode);
@@ -68,7 +68,7 @@ public class PrincipalAdminBean
         groupRootNode = new DefaultTreeNode("root", null);
 
         List<Group> rootGroups = serviceFor(Group.class).list(TreeCriteria.root());
-        List<GroupDto> rootGroupDtos = DTOs.marshalList(GroupDto.class, -1, rootGroups, true);
+        List<GroupDto> rootGroupDtos = DTOs.mrefList(GroupDto.class, -1, rootGroups);
 
         for (GroupDto groupDto : rootGroupDtos) {
             loadGroupRecursive(groupDto, groupRootNode);

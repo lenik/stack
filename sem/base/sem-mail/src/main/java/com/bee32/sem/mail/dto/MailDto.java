@@ -60,7 +60,7 @@ public class MailDto
         replyTo = source.getReplyTo();
 
         fromUser = mref(UserDto.class, source.getFromUser());
-        recipientUsers = marshalList(UserDto.class, 0, source.getRecipientUsers(), true);
+        recipientUsers = mrefList(UserDto.class, 0, source.getRecipientUsers());
         replyToUser = mref(UserDto.class, source.getReplyToUser());
 
         cc = source.getCc();

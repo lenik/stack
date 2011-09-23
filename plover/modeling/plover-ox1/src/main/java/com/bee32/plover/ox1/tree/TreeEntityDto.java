@@ -43,7 +43,7 @@ public abstract class TreeEntityDto<E extends TreeEntity<K, E>, K extends Serial
             parent = (T) mref(getClass(), selection.bits, source.getParent());
 
         if (selection.contains(CHILDREN))
-            children = marshalList(getClass(), selection.bits, source.getChildren(), true);
+            children = mrefList(getClass(), selection.bits, source.getChildren());
     }
 
     @Override

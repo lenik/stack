@@ -69,13 +69,13 @@ public class AbstractPartyDto<E extends Party>
 
         memo = source.getMemo();
 
-        tags = marshalList(PartyTagnameDto.class, source.getTags(), true);
+        tags = mrefList(PartyTagnameDto.class, source.getTags());
 
         if (selection.contains(CONTACTS))
-            contacts = marshalList(ContactDto.class, source.getContacts(), true);
+            contacts = mrefList(ContactDto.class, source.getContacts());
 
         if (selection.contains(RECORDS))
-            records = marshalList(PartyRecordDto.class, source.getRecords(), true);
+            records = mrefList(PartyRecordDto.class, source.getRecords());
     }
 
     @Override

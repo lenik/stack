@@ -72,8 +72,8 @@ public class MailManageBean
 
     public void initFolderItems() {
         List<MailFolder> mailFolderLiset = serviceFor(MailFolder.class).list(Order.asc("order"));
-        List<MailFolderDto> mailFolderDtoList = DTOs.marshalList(MailFolderDto.class, MailFolderDto.MAILS,
-                mailFolderLiset, true);
+        List<MailFolderDto> mailFolderDtoList = DTOs.mrefList(MailFolderDto.class, MailFolderDto.MAILS,
+                mailFolderLiset);
         List<SelectItem> folderItems = new ArrayList<SelectItem>();
         for (MailFolderDto folderDto : mailFolderDtoList) {
             String label = folderDto.getLabel();

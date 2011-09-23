@@ -87,7 +87,7 @@ public abstract class StockOrderBaseBean
 
     public List<SelectItem> getStockWarehouses() {
         List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class).list();
-        List<StockWarehouseDto> stockWarehouseDtos = DTOs.marshalList(StockWarehouseDto.class, stockWarehouses, true);
+        List<StockWarehouseDto> stockWarehouseDtos = DTOs.mrefList(StockWarehouseDto.class, stockWarehouses);
 
         List<SelectItem> items = new ArrayList<SelectItem>();
 
@@ -244,10 +244,6 @@ public abstract class StockOrderBaseBean
         this.selectedStockQueryItem = selectedStockQueryItem;
     }
 
-
-
-
-
     public void newItem() {
         orderItem = new StockOrderItemDto().create();
         orderItemPrice = new BigDecimal(0);
@@ -326,15 +322,12 @@ public abstract class StockOrderBaseBean
         stockOrder.setOrgUnit(selectedOrgUnit);
     }
 
-
     public List<StockOrderItemDto> getStockQueryItems() {
-        if(selectedWarehouse.getId() == null) {
+        if (selectedWarehouse.getId() == null)
             return new ArrayList<StockOrderItemDto>();
-        }
 
-        if(orderItem.getMaterial() == null || orderItem.getMaterial().getId() == null) {
+        if (orderItem.getMaterial() == null || orderItem.getMaterial().getId() == null)
             return new ArrayList<StockOrderItemDto>();
-        }
 
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, 23);

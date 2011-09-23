@@ -60,7 +60,7 @@ public abstract class BaseDto_AS1<S, C>
         return dto;
     }
 
-    public <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(//
+    public <_S, _D extends BaseDto<_S, _C>, _C> List<_D> _marshalList(//
             Class<_D> dtoClass, int selection, Iterable<? extends _S> sources, Boolean refButFilled) {
 
         List<_D> dtoList = new ArrayList<_D>();

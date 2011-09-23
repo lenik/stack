@@ -33,10 +33,10 @@ public class StockPeriodDto
         checkedOut = source.isCheckedOut();
 
         if (selection.contains(PACK_ORDERS))
-            packOrders = marshalList(StockOrderDto.class, source.getPackOrders(), true);
+            packOrders = mrefList(StockOrderDto.class, source.getPackOrders());
 
         if (selection.contains(ORDERS))
-            orders = marshalList(StockOrderDto.class, source.getOrders(), true);
+            orders = mrefList(StockOrderDto.class, source.getOrders());
     }
 
     @Override

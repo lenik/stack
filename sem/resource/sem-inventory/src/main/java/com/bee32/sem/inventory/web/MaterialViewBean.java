@@ -155,7 +155,7 @@ public class MaterialViewBean
 
     public void initLocationTree() {
         List<StockLocation> _rootLocations = serviceFor(StockLocation.class).list(TreeCriteria.root());
-        List<StockLocationDto> rootLocations = DTOs.marshalList(StockLocationDto.class, _rootLocations, true);
+        List<StockLocationDto> rootLocations = DTOs.mrefList(StockLocationDto.class, _rootLocations);
 
         stockLocationTreeDialog = new StockLocationTreeDialogModel(rootLocations);
         stockLocationTreeDialog.addSelectListener(new SelectionAdapter() {
@@ -171,15 +171,15 @@ public class MaterialViewBean
 
     public void initSelectCategoryTree() {
         List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
-        List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories, true);
+        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
+                ~MaterialCategoryDto.MATERIALS, rootCategories);
         selectCategoryTree = new MaterialCategoryTreeModel(rootCategoryDtos);
     }
 
     public void initMaterialCategoryTree() {
         List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
-        List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories, true);
+        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
+                ~MaterialCategoryDto.MATERIALS, rootCategories);
 
         materialCategoryTree = new MaterialCategoryTreeModel(rootCategoryDtos);
         materialCategoryTree.addListener(new SelectionAdapter() {
@@ -191,7 +191,7 @@ public class MaterialViewBean
                 List<Material> _materials = serviceFor(Material.class).list(//
                         // Order.asc("name"),
                         MaterialCriteria.categoryOf(materialCategoryDto.getId()));
-                materialList = DTOs.marshalList(MaterialDto.class, _materials, true);
+                materialList = DTOs.mrefList(MaterialDto.class, _materials);
             }
         });
     }
@@ -405,7 +405,7 @@ public class MaterialViewBean
     public void doSearch() {
         if (!materialPattern.isEmpty() && materialPattern != null) {
             List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.labelLike(materialPattern));
-            materialList = DTOs.marshalList(MaterialDto.class, _materials, true);
+            materialList = DTOs.mrefList(MaterialDto.class, _materials);
         }
     }
 
@@ -424,7 +424,7 @@ public class MaterialViewBean
 
     public List<SelectItem> getCategories() {
         List<MaterialCategory> categoryList = serviceFor(MaterialCategory.class).list();
-        List<MaterialCategoryDto> categoryDtoList = DTOs.marshalList(MaterialCategoryDto.class, 0, categoryList, true);
+        List<MaterialCategoryDto> categoryDtoList = DTOs.mrefList(MaterialCategoryDto.class, 0, categoryList);
         List<SelectItem> itemList = new ArrayList<SelectItem>();
         for (MaterialCategoryDto materialCategoryDto : categoryDtoList)
             itemList.add(new SelectItem(materialCategoryDto.getId(), materialCategoryDto.getName()));
@@ -443,7 +443,7 @@ public class MaterialViewBean
             unitConvDtoList = new ArrayList<UnitConvDto>();
         else {
             List<UnitConv> unitConvList = serviceFor(UnitConv.class).list(new Equals("unit.id", unitId));
-            unitConvDtoList = DTOs.marshalList(UnitConvDto.class, unitConvList, true);
+            unitConvDtoList = DTOs.mrefList(UnitConvDto.class, unitConvList);
         }
         return UIHelper.selectItemsFromDict(unitConvDtoList);
     }
@@ -605,4 +605,5 @@ public class MaterialViewBean
     public void setSelectedScale(ScaleItem selectedScale) {
         this.selectedScale = selectedScale;
     }
+
 }

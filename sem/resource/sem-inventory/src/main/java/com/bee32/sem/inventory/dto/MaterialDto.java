@@ -63,16 +63,16 @@ public class MaterialDto
         if (selection.contains(ATTRBUTES))
             attributes = marshalList(MaterialAttributeDto.class, ~MaterialAttributeDto.MATERIAL, source.getAttributes());
 
-        preferredLocations = marshalList(MaterialPreferredLocationDto.class, ~MaterialPreferredLocationDto.MATERIAL,
-                source.getPreferredLocations(), true);
+        preferredLocations = mrefList(MaterialPreferredLocationDto.class, ~MaterialPreferredLocationDto.MATERIAL,
+                source.getPreferredLocations());
         options = marshalList(MaterialWarehouseOptionDto.class, ~MaterialWarehouseOptionDto.MATERIAL,
                 source.getOptions());
 
         if (selection.contains(ATTACHMENTS))
-            attachments = marshalList(UserFileDto.class, source.getAttachments(), true);
+            attachments = mrefList(UserFileDto.class, source.getAttachments());
 
         if (selection.contains(PRICES))
-            prices = marshalList(MaterialPriceDto.class, source.getPrices(), true);
+            prices = mrefList(MaterialPriceDto.class, source.getPrices());
 
         if (selection.contains(ATTACHMENTS))
             attachments = marshalList(UserFileDto.class, source.getAttachments());

@@ -452,7 +452,7 @@ public class TransferInAdminBean
                     PeopleCriteria.internal(), //
                     PeopleCriteria.namedLike(personPattern));
 
-            persons = DTOs.marshalList(PersonDto.class, _persons, true);
+            persons = DTOs.mrefList(PersonDto.class, _persons);
         }
     }
 

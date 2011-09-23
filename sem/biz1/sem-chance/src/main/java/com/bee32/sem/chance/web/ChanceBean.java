@@ -96,7 +96,7 @@ public class ChanceBean
 
     public void findMaterial() {
         List<Material> _materials = serviceFor(Material.class).list(MaterialCriteria.labelLike(materialPattern));
-        materialList = UIHelper.selectable(DTOs.marshalList(MaterialDto.class, 0, _materials, true));
+        materialList = UIHelper.selectable(DTOs.mrefList(MaterialDto.class, 0, _materials));
     }
 
     public void viewActionDetail() {
@@ -131,8 +131,8 @@ public class ChanceBean
     void listQuotationByChance(ChanceDto chance) {
         List<ChanceQuotation> quotationList = serviceFor(ChanceQuotation.class).list(
                 ChanceCriteria.chanceEquals(chanceCopy));
-        quotations = UIHelper.selectable(DTOs.marshalList(ChanceQuotationDto.class, ChanceQuotationDto.ITEMS,
-                quotationList, true));
+        quotations = UIHelper.selectable(DTOs.mrefList(ChanceQuotationDto.class, ChanceQuotationDto.ITEMS,
+                quotationList));
     }
 
     public void calculatePriceChange() {
@@ -142,7 +142,7 @@ public class ChanceBean
 
     public List<SelectItem> getChanceActionStyles() {
         List<ChanceActionStyle> styleList = serviceFor(ChanceActionStyle.class).list();
-        List<ChanceActionStyleDto> styleDtoList = DTOs.marshalList(ChanceActionStyleDto.class, styleList, true);
+        List<ChanceActionStyleDto> styleDtoList = DTOs.mrefList(ChanceActionStyleDto.class, styleList);
         return UIHelper.selectItemsFromDict(styleDtoList);
     }
 
@@ -210,8 +210,8 @@ public class ChanceBean
     /** 生成物料树 */
     public void initMaterialCategoryTree() {
         List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
-        List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories, true);
+        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
+                ~MaterialCategoryDto.MATERIALS, rootCategories);
 
         materialTree = new MaterialCategoryTreeModel(rootCategoryDtos);
         materialTree.addListener(new SelectionAdapter() {
@@ -223,7 +223,7 @@ public class ChanceBean
                 List<Material> _materials = serviceFor(Material.class).list(//
                         // Order.asc("name"),
                         MaterialCriteria.categoryOf(materialCategoryDto.getId()));
-                materialList = UIHelper.selectable(DTOs.marshalList(MaterialDto.class, _materials, true));
+                materialList = UIHelper.selectable(DTOs.mrefList(MaterialDto.class, _materials));
             }
         });
     }
@@ -261,19 +261,19 @@ public class ChanceBean
 
     public List<SelectItem> getCategory() {
         List<ChanceCategory> chanceCategoryList = serviceFor(ChanceCategory.class).list();
-        List<ChanceCategoryDto> categoryDtoList = DTOs.marshalList(ChanceCategoryDto.class, chanceCategoryList, true);
+        List<ChanceCategoryDto> categoryDtoList = DTOs.mrefList(ChanceCategoryDto.class, chanceCategoryList);
         return UIHelper.selectItemsFromDict(categoryDtoList);
     }
 
     public List<SelectItem> getSource() {
         List<ChanceSourceType> sourceTypeList = serviceFor(ChanceSourceType.class).list();
-        List<ChanceSourceDto> chanceSourceDtoList = DTOs.marshalList(ChanceSourceDto.class, sourceTypeList, true);
+        List<ChanceSourceDto> chanceSourceDtoList = DTOs.mrefList(ChanceSourceDto.class, sourceTypeList);
         return UIHelper.selectItemsFromDict(chanceSourceDtoList);
     }
 
     public List<SelectItem> getStage() {
         List<ChanceStage> chanceStageList = serviceFor(ChanceStage.class).list();
-        List<ChanceStageDto> chanceStageDtoList = DTOs.marshalList(ChanceStageDto.class, chanceStageList, true);
+        List<ChanceStageDto> chanceStageDtoList = DTOs.mrefList(ChanceStageDto.class, chanceStageList);
         return UIHelper.selectItemsFromDict(chanceStageDtoList);
     }
 
@@ -285,7 +285,7 @@ public class ChanceBean
                     PeopleCriteria.namedLike(partyPattern));
         else
             _parties = serviceFor(Party.class).list(EntityCriteria.ownedByCurrentUser());
-        parties = UIHelper.selectable(DTOs.marshalList(PartyDto.class, PartyDto.CONTACTS, _parties, true));
+        parties = UIHelper.selectable(DTOs.mrefList(PartyDto.class, PartyDto.CONTACTS, _parties));
     }
 
     public void searchAction() {
@@ -302,7 +302,7 @@ public class ChanceBean
                     ChanceCriteria.actedByCurrentUser(), //
                     ChanceCriteria.danglingChance());
         }
-        actions = UIHelper.selectable(DTOs.marshalList(ChanceActionDto.class, 0, _actions, true));
+        actions = UIHelper.selectable(DTOs.mrefList(ChanceActionDto.class, 0, _actions));
     }
 
     public void searchChance() {

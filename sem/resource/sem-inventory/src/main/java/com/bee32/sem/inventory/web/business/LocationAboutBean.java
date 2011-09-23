@@ -73,7 +73,7 @@ public abstract class LocationAboutBean extends EntityViewBean {
             List<StockLocation> topLocations = serviceFor(StockLocation.class).list(//
                     TreeCriteria.root(), //
                     new Equals("warehouse.id", getSelectedWarehouse_().getId()));
-            List<StockLocationDto> topLocationDtos = DTOs.marshalList(StockLocationDto.class, -1, topLocations, true);
+            List<StockLocationDto> topLocationDtos = DTOs.mrefList(StockLocationDto.class, -1, topLocations);
 
             for (StockLocationDto stockLocationDto : topLocationDtos) {
                 loadStockLocationRecursive(stockLocationDto, locationRoot);

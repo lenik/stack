@@ -58,7 +58,7 @@ public class StockLocationAdminBean
 
     public List<SelectItem> getStockWarehouses() {
         List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class).list();
-        List<StockWarehouseDto> stockWarehouseDtos = DTOs.marshalList(StockWarehouseDto.class, stockWarehouses, true);
+        List<StockWarehouseDto> stockWarehouseDtos = DTOs.mrefList(StockWarehouseDto.class, stockWarehouses);
 
         List<SelectItem> items = new ArrayList<SelectItem>();
 
@@ -91,7 +91,7 @@ public class StockLocationAdminBean
 
     public List<SelectItem> getUnits() {
         List<Unit> units = serviceFor(Unit.class).list();
-        List<UnitDto> unitDtos = DTOs.marshalList(UnitDto.class, units, true);
+        List<UnitDto> unitDtos = DTOs.mrefList(UnitDto.class, units);
         return UIHelper.selectItemsFromDict(unitDtos);
     }
 
@@ -122,7 +122,7 @@ public class StockLocationAdminBean
             List<StockLocation> topLocations = serviceFor(StockLocation.class).list(//
                     TreeCriteria.root(), //
                     new Equals("warehouse.id", selectedWarehouse.getId()));
-            List<StockLocationDto> topLocationDtos = DTOs.marshalList(StockLocationDto.class, -1, topLocations, true);
+            List<StockLocationDto> topLocationDtos = DTOs.mrefList(StockLocationDto.class, -1, topLocations);
 
             for (StockLocationDto stockLocationDto : topLocationDtos) {
                 loadStockLocationRecursive(stockLocationDto, root);
@@ -149,7 +149,7 @@ public class StockLocationAdminBean
     }
 
     public void chooseStockLocation() {
-        stockLocation = reload((StockLocationDto)selectedNode.getData());
+        stockLocation = reload((StockLocationDto) selectedNode.getData());
     }
 
     public void doModifyStockLocation() {
@@ -182,7 +182,7 @@ public class StockLocationAdminBean
     }
 
     public void doDelete() {
-        if(stockLocation.getChildren().size() > 0) {
+        if (stockLocation.getChildren().size() > 0) {
             uiLogger.info("本库位有下属库位，请先删除下属库位!");
             return;
         }

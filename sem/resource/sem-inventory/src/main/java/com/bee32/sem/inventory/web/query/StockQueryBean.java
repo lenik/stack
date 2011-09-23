@@ -63,7 +63,7 @@ public class StockQueryBean extends EntityViewBean {
 
     public List<SelectItem> getStockWarehouses() {
         List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class).list();
-        List<StockWarehouseDto> stockWarehouseDtos = DTOs.marshalList(StockWarehouseDto.class, stockWarehouses, true);
+        List<StockWarehouseDto> stockWarehouseDtos = DTOs.mrefList(StockWarehouseDto.class, stockWarehouses);
 
         List<SelectItem> items = new ArrayList<SelectItem>();
 

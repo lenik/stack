@@ -87,12 +87,10 @@ public class MaterialSettingsBean
     }
 
     public void initMainTree() {
-        List<MaterialCategory> rootCategories
-            = serviceFor(MaterialCategory.class).list(
-                    TreeCriteria.root(), //
-                    Order.asc("name"));
-        List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories, true);
+        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root(), //
+                Order.asc("name"));
+        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
+                ~MaterialCategoryDto.MATERIALS, rootCategories);
         materialCategoryMainTree = new MaterialCategoryTreeModel(rootCategoryDtos);
         materialCategoryMainTree.setSelectedNode(null);
         // XXX to add listener if necessary
@@ -100,8 +98,8 @@ public class MaterialSettingsBean
 
     public void initSelectCategoryTree() {
         List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
-        List<MaterialCategoryDto> rootCategoryDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories, true);
+        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
+                ~MaterialCategoryDto.MATERIALS, rootCategories);
         materialCategorySelectTree = new MaterialCategoryTreeModel(rootCategoryDtos);
         materialCategorySelectTree.addListener(new SelectionAdapter() {
 
@@ -121,7 +119,7 @@ public class MaterialSettingsBean
     public void initMaterialPriceTree() {
         List<MaterialCategory> roots = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
         List<MaterialCategoryDto> rootDtos = DTOs.marshalList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, roots, true);
+                ~MaterialCategoryDto.MATERIALS, roots);
         materialPriceTree = new MaterialCategoryTreeModel(rootDtos);
         materialPriceTree.addListener(new SelectionAdapter() {
 
@@ -264,7 +262,7 @@ public class MaterialSettingsBean
             MaterialCategory subCategory = activeCategory.unmarshal();
             serviceFor(MaterialCategory.class).saveOrUpdate(subCategory);
 
-            if(subCategory.getParent() != null) {
+            if (subCategory.getParent() != null) {
                 subCategory.getParent().addChild(subCategory);
             }
 

@@ -75,9 +75,9 @@ public abstract class DTOs {
         return new Dummy().mref(dtoClass, source);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(Class<_D> dtoClass, int selection,
+    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> _marshalList(Class<_D> dtoClass, int selection,
             Iterable<? extends _S> sources, Boolean refButFilled) {
-        return new Dummy().marshalList(dtoClass, selection, sources, refButFilled);
+        return new Dummy()._marshalList(dtoClass, selection, sources, refButFilled);
     }
 
     public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(Class<_D> dtoClass, int selection,
@@ -90,19 +90,19 @@ public abstract class DTOs {
         return new Dummy().marshalList(dtoClass, sources);
     }
 
-    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(Class<_D> dtoClass, int selection,
-            Iterable<? extends _S> sources, boolean refButFilled) {
-        return new Dummy().marshalList(dtoClass, selection, sources, refButFilled);
+    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> mrefList(Class<_D> dtoClass, int selection,
+            Iterable<? extends _S> sources) {
+        return new Dummy().mrefList(dtoClass, selection, sources);
+    }
+
+    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> mrefList(Class<_D> dtoClass,
+            Iterable<? extends _S> sources) {
+        return new Dummy().mrefList(dtoClass, sources);
     }
 
     public static <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int selection,
             Iterable<? extends _S> sources, Boolean refButFilled) {
         return new Dummy().marshalSet(dtoClass, selection, sources, refButFilled);
-    }
-
-    public static <_S, _D extends BaseDto<_S, _C>, _C> List<_D> marshalList(Class<_D> dtoClass,
-            Iterable<? extends _S> sources, boolean refButFilled) {
-        return new Dummy().marshalList(dtoClass, sources, refButFilled);
     }
 
     public static <_S, _D extends BaseDto<_S, _C>, _C> Set<_D> marshalSet(Class<_D> dtoClass, int selection,
