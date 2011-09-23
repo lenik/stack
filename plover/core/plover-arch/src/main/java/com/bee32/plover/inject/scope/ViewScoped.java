@@ -10,6 +10,6 @@ import javax.inject.Scope;
 @Scope
 @Retention(RUNTIME)
 @Documented
-public @interface ViewLocal {
+public @interface ViewScoped {
 
 }
