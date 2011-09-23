@@ -9,6 +9,7 @@ import com.bee32.plover.arch.DataService;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
+import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.world.thing.AbstractOrderItem;
 
@@ -21,28 +22,28 @@ public abstract class AbstractStockQuery
         return getHistoryStockState(new Date());
     }
 
-    public abstract StockItemList getSummary(ICriteriaElement selection, StockQueryOptions options);
+    public abstract StockOrder getSummary(ICriteriaElement selection, StockQueryOptions options);
 
     @Override
-    public StockItemList getActualSummary(List<Material> materials, StockQueryOptions options) {
+    public StockOrder getActualSummary(List<Material> materials, StockQueryOptions options) {
         ICriteriaElement selection = StockCriteria.sumOfCommons(materials, options);
-        StockItemList summary = getSummary(selection, options);
+        StockOrder summary = getSummary(selection, options);
         summary.setLabel("【汇总】实有库存余量清单");
         return summary;
     }
 
     @Override
-    public StockItemList getVirtualSummary(List<Material> materials, StockQueryOptions options) {
+    public StockOrder getVirtualSummary(List<Material> materials, StockQueryOptions options) {
         ICriteriaElement selection = StockCriteria.sumOfVirtuals(materials, options);
-        StockItemList summary = getSummary(selection, options);
+        StockOrder summary = getSummary(selection, options);
         summary.setLabel("【汇总】可用库存余量清单");
         return summary;
     }
 
     @Override
-    public StockItemList getPlanSummary(List<Material> materials, StockQueryOptions options) {
+    public StockOrder getPlanSummary(List<Material> materials, StockQueryOptions options) {
         ICriteriaElement selection = StockCriteria.sumOfVirtualOnly(materials, options);
-        StockItemList summary = getSummary(selection, options);
+        StockOrder summary = getSummary(selection, options);
         summary.setLabel("【汇总】计划/锁定库存数量清单");
         return summary;
     }

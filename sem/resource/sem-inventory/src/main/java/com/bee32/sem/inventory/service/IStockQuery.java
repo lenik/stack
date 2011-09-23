@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
+import com.bee32.sem.inventory.entity.StockOrder;
 
 public interface IStockQuery {
 
@@ -47,7 +48,7 @@ public interface IStockQuery {
      * @return 对应物料的余量。
      * @see StockQueryOptions
      */
-    StockItemList getActualSummary(List<Material> materials, StockQueryOptions options);
+    StockOrder getActualSummary(List<Material> materials, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的实际库存余量，不考虑批号和库位。
@@ -67,7 +68,7 @@ public interface IStockQuery {
      * @return 对应物料的余量。
      * @see StockQueryOptions
      */
-    StockItemList getVirtualSummary(List<Material> materials, StockQueryOptions options);
+    StockOrder getVirtualSummary(List<Material> materials, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的可用库存余量（或曰逻辑库存余量），不考虑批号和库位。
@@ -87,7 +88,7 @@ public interface IStockQuery {
      * @return 对应物料的数量。
      * @see StockQueryOptions
      */
-    StockItemList getPlanSummary(List<Material> materials, StockQueryOptions options);
+    StockOrder getPlanSummary(List<Material> materials, StockQueryOptions options);
 
     /**
      * 获取给定时间的某单一物料的"锁定“的库存数量（或曰计划数量），不考虑批号和库位。
