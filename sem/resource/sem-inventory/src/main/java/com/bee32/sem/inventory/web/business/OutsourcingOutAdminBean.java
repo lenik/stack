@@ -171,11 +171,15 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
     }
 
     public void delete() {
-        serviceFor(StockOutsourcing.class).deleteAll(
-                new  Equals("output.id", stockOrder.getId()));
-        //serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
-        uiLogger.info("删除成功!");
-        loadStockOrder(goNumber);
+        try {
+            serviceFor(StockOutsourcing.class).deleteAll(
+                    new Equals("output.id", stockOrder.getId()));
+            // serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
+            uiLogger.info("删除成功!");
+            loadStockOrder(goNumber);
+        } catch (Exception e) {
+            uiLogger.warn("删除失败,错误信息:" + e.getMessage());
+        }
     }
 
     @Transactional
@@ -187,20 +191,24 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
             //新增
             goNumber = 1;
         }
-        for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-            serviceFor(StockOrder.class).delete(item.unmarshal());
+        try {
+            for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
+                serviceFor(StockOrder.class).delete(item.unmarshal());
+            }
+
+            // serviceFor(StockOrder.class).save(stockOrder.unmarshal());
+
+            stockOutsourcing.setOutput(stockOrder);
+            StockOutsourcing _stockOutsourcing = stockOutsourcing.unmarshal();
+            // 保存stockOutsourcing
+            serviceFor(StockOutsourcing.class).saveOrUpdate(_stockOutsourcing);
+
+            uiLogger.info("保存成功");
+            loadStockOrder(goNumber);
+            editable = false;
+        } catch (Exception e) {
+            uiLogger.warn("保存失败,错误信息:" + e.getMessage());
         }
-
-        //serviceFor(StockOrder.class).save(stockOrder.unmarshal());
-
-        stockOutsourcing.setOutput(stockOrder);
-        StockOutsourcing _stockOutsourcing = stockOutsourcing.unmarshal();
-        //保存stockOutsourcing
-        serviceFor(StockOutsourcing.class).saveOrUpdate(_stockOutsourcing);
-
-        uiLogger.info("保存成功");
-        loadStockOrder(goNumber);
-        editable = false;
     }
 
     public void cancel() {

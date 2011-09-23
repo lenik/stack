@@ -310,15 +310,20 @@ public class TransferInAdminBean
     public void delete() {
         // 若加入事务标记后，清空StockTransfer.dest后，不会马上反应到数据库中，
         // 导致StockOrder被引用，不能删除，会出错
-        StockTransfer t = serviceFor(StockTransfer.class).getUnique(new Equals("dest.id", stockOrder.getId()));
-        if (t != null) {
-            t.setDest(null);
-            serviceFor(StockTransfer.class).saveOrUpdate(t);
-        }
-        serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
+        try {
+            StockTransfer t = serviceFor(StockTransfer.class).getUnique(
+                    new Equals("dest.id", stockOrder.getId()));
+            if (t != null) {
+                t.setDest(null);
+                serviceFor(StockTransfer.class).saveOrUpdate(t);
+            }
+            serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
 
-        uiLogger.info("删除成功!");
-        loadStockOrder(goNumber);
+            uiLogger.info("删除成功!");
+            loadStockOrder(goNumber);
+        } catch (Exception e) {
+            uiLogger.warn("删除失败,错误信息:" + e.getMessage());
+        }
     }
 
     public void first() {
@@ -416,15 +421,19 @@ public class TransferInAdminBean
         stockTransferOut.setDest(stockOrder);
         StockTransfer _stockTransferOut = stockTransferOut.unmarshal();
         // 保存stockTransferOut
-        serviceFor(StockTransfer.class).saveOrUpdate(_stockTransferOut);
+        try {
+            serviceFor(StockTransfer.class).saveOrUpdate(_stockTransferOut);
 
-        uiLogger.info("拨入成功");
+            uiLogger.info("拨入成功");
 
-        loadStockOrder(1);
-        loadStockOrderOut(goNumberOut);
+            loadStockOrder(1);
+            loadStockOrderOut(goNumberOut);
 
-        editable = false;
-        transferring = false;
+            editable = false;
+            transferring = false;
+        } catch (Exception e) {
+            uiLogger.warn("拨入失败,错误信息:" + e.getMessage());
+        }
     }
 
     public void cancelTransferIn() {

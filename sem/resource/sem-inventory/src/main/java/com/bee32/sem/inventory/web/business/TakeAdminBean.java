@@ -160,9 +160,15 @@ public class TakeAdminBean extends StockOrderBaseBean {
     }
 
     public void delete() {
-        serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
-        uiLogger.info("删除成功!");
-        loadStockOrder(goNumber);
+        try {
+            serviceFor(StockOrder.class).delete(stockOrder.unmarshal());
+            uiLogger.info("删除成功!");
+            loadStockOrder(goNumber);
+        } catch (Exception e) {
+            uiLogger.warn("删除失败,错误信息:" + e.getMessage());
+        }
+
+
     }
 
     @Transactional
@@ -174,15 +180,21 @@ public class TakeAdminBean extends StockOrderBaseBean {
             //新增
             goNumber = 1;
         }
-        for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-            serviceFor(StockOrder.class).delete(item.unmarshal());
-        }
 
-        StockOrder _order = stockOrder.unmarshal();
-        serviceFor(StockOrder.class).save(_order);
-        uiLogger.info("保存成功");
-        loadStockOrder(goNumber);
-        editable = false;
+
+        try {
+            for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
+                serviceFor(StockOrder.class).delete(item.unmarshal());
+            }
+
+            StockOrder _order = stockOrder.unmarshal();
+            serviceFor(StockOrder.class).save(_order);
+            uiLogger.info("保存成功");
+            loadStockOrder(goNumber);
+            editable = false;
+        } catch (Exception e) {
+            uiLogger.warn("保存失败,错误信息:" + e.getMessage());
+        }
     }
 
     public void cancel() {

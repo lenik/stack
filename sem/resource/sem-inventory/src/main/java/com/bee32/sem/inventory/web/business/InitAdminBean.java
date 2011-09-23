@@ -67,13 +67,17 @@ public class InitAdminBean extends StockOrderBaseBean {
         stockOrder.setSubject(subject);
         stockOrder.setWarehouse(selectedWarehouse);
 
-        for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-            serviceFor(StockOrder.class).delete(item.unmarshal());
+        try {
+            for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
+                serviceFor(StockOrder.class).delete(item.unmarshal());
+            }
+            serviceFor(StockOrder.class).save(stockOrder.unmarshal());
+            uiLogger.info("保存成功");
+            loadStockOrder();
+            editable = false;
+        } catch (Exception e) {
+            uiLogger.warn("保存失败,错误信息:" + e.getMessage());
         }
-        serviceFor(StockOrder.class).save(stockOrder.unmarshal());
-        uiLogger.info("保存成功");
-        loadStockOrder();
-        editable = false;
     }
 
     public void cancel() {

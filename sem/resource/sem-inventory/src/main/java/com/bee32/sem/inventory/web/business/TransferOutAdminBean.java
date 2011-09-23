@@ -214,11 +214,15 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
 
     @Transactional
     public void delete() {
-        serviceFor(StockTransfer.class).deleteAll(
-                new Equals("source.id", stockOrder.getId()));
-        //serviceFor(StockOrder.class).deleteById(stockOrder.getId());
-        uiLogger.info("删除成功!");
-        loadStockOrder(goNumber);
+        try {
+            serviceFor(StockTransfer.class).deleteAll(
+                    new Equals("source.id", stockOrder.getId()));
+            // serviceFor(StockOrder.class).deleteById(stockOrder.getId());
+            uiLogger.info("删除成功!");
+            loadStockOrder(goNumber);
+        } catch (Exception e) {
+            uiLogger.warn("删除失败,错误信息:" + e.getMessage());
+        }
     }
 
     @Transactional
@@ -243,24 +247,27 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
             goNumber = 1;
         }
 
-        //删除需要删除的item
-        for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-            serviceFor(StockOrder.class).delete(item.unmarshal());
+        try {
+            // 删除需要删除的item
+            for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
+                serviceFor(StockOrder.class).delete(item.unmarshal());
+            }
+
+            // //保存新的stockOrder
+            // serviceFor(StockOrder.class).saveOrUpdate(stockOrder.unmarshal());
+
+            stockTransfer.setSourceWarehouse(selectedWarehouse);
+            stockTransfer.setSource(stockOrder);
+            StockTransfer _stockTransfer = stockTransfer.unmarshal();
+            // 保存stockTransfer
+            serviceFor(StockTransfer.class).saveOrUpdate(_stockTransfer);
+
+            uiLogger.info("保存成功");
+            loadStockOrder(goNumber);
+            editable = false;
+        } catch (Exception e) {
+            uiLogger.warn("保存失败,错误信息:" + e.getMessage());
         }
-
-//        //保存新的stockOrder
-//        serviceFor(StockOrder.class).saveOrUpdate(stockOrder.unmarshal());
-
-        stockTransfer.setSourceWarehouse(selectedWarehouse);
-        stockTransfer.setSource(stockOrder);
-        StockTransfer _stockTransfer = stockTransfer.unmarshal();
-        //保存stockTransfer
-        serviceFor(StockTransfer.class).saveOrUpdate(_stockTransfer);
-
-
-        uiLogger.info("保存成功");
-        loadStockOrder(goNumber);
-        editable = false;
     }
 
     public void cancel() {
