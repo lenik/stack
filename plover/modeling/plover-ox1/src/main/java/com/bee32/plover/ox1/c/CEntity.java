@@ -88,7 +88,12 @@ public abstract class CEntity<K extends Serializable>
         populateKeywords(keywords);
         String mixed = keywords.toString();
         String pinyin = ZhUtil.getPinyinAbbreviation(mixed).trim();
-        String truncated = pinyin.substring(0, KEYWORD_MAXLEN).trim();
+
+        String truncated = pinyin;
+        if (truncated.length() > KEYWORD_MAXLEN)
+            truncated = truncated.substring(0, KEYWORD_MAXLEN);
+
+        truncated = truncated.trim();
         if (truncated.isEmpty())
             truncated = null;
         return truncated;
