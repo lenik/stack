@@ -118,11 +118,11 @@ public class StockTakingDto
             if (diffOrder != null)
                 // search the corresponding diff item in diffOrder.
                 for (StockOrderItemDto diff : diffOrder.getItems()) {
-                    if (!Nullables.equals(diff.getMaterial(), expected.getMaterial()))
+                    if (!DTOs.equals(diff.getMaterial(), expected.getMaterial()))
                         continue;
                     if (!Nullables.equals(diff.getCBatch(), expected.getCBatch()))
                         continue;
-                    if (!Nullables.equals(diff.getLocation(), expected.getLocation()))
+                    if (!DTOs.equals(diff.getLocation(), expected.getLocation()))
                         continue;
                     matchedDiff = diff;
                     break;

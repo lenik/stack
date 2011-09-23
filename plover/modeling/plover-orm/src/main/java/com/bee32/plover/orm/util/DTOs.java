@@ -153,4 +153,16 @@ public abstract class DTOs {
         new Dummy().mergeSet(target, propertyName, dtoList);
     }
 
+    public static boolean equals(EntityDto<?, ?> a, EntityDto<?, ?> b) {
+        if (a == b)
+            return true;
+        if (a == null || b == null)
+            return false;
+
+        if (a.isNull() && b.isNull())
+            return true;
+
+        return a.equals(b);
+    }
+
 }
