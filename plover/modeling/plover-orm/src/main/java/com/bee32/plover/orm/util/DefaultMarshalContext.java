@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.inject.GlobalAppCtx;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
@@ -38,11 +39,14 @@ public class DefaultMarshalContext
     public static final IEntityMarshalContext INSTANCE;
     static {
         ApplicationContext applicationContext = ThreadHttpContext.getApplicationContext();
-        if (applicationContext != null) {
+
+        if (applicationContext == null)
+            applicationContext = GlobalAppCtx.getApplicationContext();
+
+        if (applicationContext != null)
             INSTANCE = applicationContext.getBean(DefaultMarshalContext.class);
-        } else {
+        else
             INSTANCE = new DefaultMarshalContext();
-        }
     }
 
 }
