@@ -9,6 +9,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.dto.MarshalType;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.tx.StockTakingFeat;
@@ -111,6 +112,7 @@ public class StockTakingDto
 
     StockOrderDto join(StockOrderDto expectedOrder, StockOrderDto diffOrder) {
         StockOrderDto joinedOrder = new StockOrderDto().populate(expectedOrder);
+        joinedOrder.setLabel("【汇总】实有库存盘点清单");
 
         for (StockOrderItemDto expected : expectedOrder.getItems()) {
             StockOrderItemDto matchedDiff = null;
@@ -147,6 +149,7 @@ public class StockTakingDto
         }
         if (extractDiffs) {
             diffOrder = new StockOrderDto().populate(joinedOrder);
+            diffOrder.setLabel("【自动】盘点盈亏差值");
             diffOrder.marshalAs(MarshalType.SELECTION);
         }
 
@@ -162,6 +165,7 @@ public class StockTakingDto
                 BigDecimal diffQuantity = joinedItem.getDiff();
                 if (!BigDecimal.ZERO.equals(diffQuantity)) { // Ignore diff==0 entries.
                     StockOrderItemDto diff = new StockOrderItemDto().populate(joinedItem);
+                    diff.setParent(diffOrder);
                     diff.setQuantity(diffQuantity);
                     diffOrder.addItem(diff);
                 }

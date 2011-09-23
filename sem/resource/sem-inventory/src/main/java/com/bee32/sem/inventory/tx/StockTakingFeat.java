@@ -1,6 +1,7 @@
 package com.bee32.sem.inventory.tx;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -67,6 +68,11 @@ public class StockTakingFeat
         stockTakingDto.setBeginTime(now);
         stockTakingDto.initialize(expectedOrderDto);
 
+        // 输入实际盘点数量
+        StockTakingItemDto item1 = (StockTakingItemDto) stockTakingDto.getJoined().getItems().get(0);
+        item1.setActual(new BigDecimal(20));
+
+        // 自动拆分保存
         StockTaking stockTaking = stockTakingDto.unmarshal();
         dataManager.asFor(StockTaking.class).save(stockTaking);
 
@@ -77,7 +83,7 @@ public class StockTakingFeat
     @Transactional(readOnly = true)
     public void dump() {
         StockTaking stockTaking = dataManager.asFor(StockTaking.class).get(stockTakingId);
-        StockTakingDto stockTakingDto = DTOs.marshal(StockTakingDto.class, stockTaking);
+        StockTakingDto stockTakingDto = DTOs.marshal(StockTakingDto.class, -1, stockTaking);
         StockOrderDto joined = stockTakingDto.getJoined();
         for (StockOrderItemDto item : joined.getItems()) {
             StockTakingItemDto joinedItem = (StockTakingItemDto) item;
