@@ -44,10 +44,9 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
             super.populate(source);
     }
 
-    @SuppressWarnings("unchecked")
     protected void _populate(AbstractOrder<?> o) {
         super._populate(o);
-        items = (List<Item>) o.items;
+        items = new ArrayList<Item>(); // Don't copy (List<Item>) o.items;
         total = o.total;
         nativeTotal = o.nativeTotal;
     }

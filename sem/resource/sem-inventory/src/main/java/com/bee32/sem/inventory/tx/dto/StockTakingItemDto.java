@@ -5,15 +5,26 @@ import java.math.BigDecimal;
 
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 
-public class StockTakingItem
+public class StockTakingItemDto
         extends StockOrderItemDto {
 
     private static final long serialVersionUID = 1L;
 
     BigDecimal expected;
 
-    public StockTakingItem(StockOrderItemDto expectedItem, StockOrderItemDto diffItem) {
-        super(expectedItem);
+    public StockTakingItemDto() {
+        super();
+    }
+
+    public StockTakingItemDto(int selection) {
+        super(selection);
+    }
+
+    // public StockTakingItem populate(StockOrderItemDto expectedItem, StockOrderItemDto diffItem) {
+    public StockTakingItemDto(StockOrderItemDto expectedItem, StockOrderItemDto diffItem) {
+        this();
+
+        super.populate(expectedItem);
 
         BigDecimal _expected = expectedItem.getQuantity();
         BigDecimal _diff = diffItem == null ? BigDecimal.ZERO : diffItem.getQuantity();

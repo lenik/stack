@@ -54,7 +54,7 @@ public abstract class AbstractOrderDto< //
 
     protected void _populate(AbstractOrderDto<?, _et, _dt> o) {
         super._populate(o);
-        items = o.items;
+        items = new ArrayList<_dt>(); // Never copy (o.items);
         total = o.total;
         nativeTotal = o.nativeTotal;
     }

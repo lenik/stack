@@ -32,7 +32,19 @@ public abstract class AbstractOrderItemDto<E extends AbstractOrderItem>
         super(selection);
     }
 
-    public AbstractOrderItemDto(AbstractOrderItemDto<E> o) {
+    @Override
+    public AbstractOrderItemDto<E> populate(Object source) {
+        if (source instanceof AbstractOrderItemDto) {
+            @SuppressWarnings("unchecked")
+            AbstractOrderItemDto<E> o = (AbstractOrderItemDto<E>) source;
+            _populate(o);
+        } else
+            super.populate(source);
+        return this;
+    }
+
+    protected void _populate(AbstractOrderItemDto<E> o) {
+        super._populate(o);
         quantity = o.quantity;
         price = o.price.clone();
         nativePrice = o.nativePrice;

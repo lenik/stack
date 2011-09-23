@@ -3,6 +3,7 @@ package com.bee32.sem.inventory.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.free.IllegalUsageException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
@@ -28,18 +29,28 @@ public class StockOrderItemDto
         super();
     }
 
-    public StockOrderItemDto(StockOrderItemDto o) {
-        super(o);
+    public StockOrderItemDto(int selection) {
+        super(selection);
+    }
+
+    @Override
+    public StockOrderItemDto populate(Object source) {
+        if (source instanceof StockOrderItemDto) {
+            StockOrderItemDto o = (StockOrderItemDto) source;
+            _populate(o);
+        } else
+            super.populate(source);
+        return this;
+    }
+
+    protected void _populate(StockOrderItemDto o) {
+        super._populate(o);
         parent = o.parent;
         material = o.material;
         batch = o.batch;
         expirationDate = o.expirationDate;
         location = o.location;
         state = o.state;
-    }
-
-    public StockOrderItemDto(int selection) {
-        super(selection);
     }
 
     @Override
@@ -64,6 +75,9 @@ public class StockOrderItemDto
 
     @Override
     protected void _unmarshalTo(StockOrderItem target) {
+        if (parent.isNull())
+            throw new IllegalUsageException("StockOrderItem.parent isn't set");
+
         merge(target, "parent", parent);
         merge(target, "material", material);
         target.setBatch(batch);

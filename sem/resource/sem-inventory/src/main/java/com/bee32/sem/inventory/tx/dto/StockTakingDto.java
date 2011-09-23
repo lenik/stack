@@ -11,17 +11,11 @@ import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.arch.util.dto.MarshalType;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
+import com.bee32.sem.inventory.tx.StockTakingFeat;
 import com.bee32.sem.inventory.tx.entity.StockTaking;
 
 /**
- * 初始化的时候：
- * <ul>
- * <li>setExpected(expectedOrder)
- * </ul>
- * <p>
- * 编辑的时候：
- * <ul>
- * </ul>
+ * @see StockTakingFeat
  */
 public class StockTakingDto
         extends StockJobDto<StockTaking> {
@@ -53,7 +47,8 @@ public class StockTakingDto
             _expectedOrderId = expectedOrder.getId();
             _diffOrderId = diffOrder.getId();
 
-            joined = join(expectedOrder, diffOrder);
+            if (!expectedOrder.isNull())
+                joined = join(expectedOrder, diffOrder);
         }
     }
 
@@ -61,7 +56,7 @@ public class StockTakingDto
     protected void _unmarshalTo(StockTaking target) {
         if (selection.contains(ORDERS)) {
 
-            StockOrderDto[] extracted = extract(joined, //
+            StockOrderDto[] extracted = extract(getJoined(), //
                     false, // extract-expects?
                     true); // extract-diffs?
 
@@ -96,9 +91,10 @@ public class StockTakingDto
      * @see #getJoined()
      */
     public void initialize(StockOrderDto expectedOrder) {
+        if (expectedOrder == null)
+            throw new NullPointerException("expectedOrder");
         this.expectedOrder = expectedOrder;
-        if (expectedOrder != null)
-            join(expectedOrder, null);
+        this.joined = join(expectedOrder, null);
     }
 
     /**
@@ -115,21 +111,25 @@ public class StockTakingDto
 
     StockOrderDto join(StockOrderDto expectedOrder, StockOrderDto diffOrder) {
         StockOrderDto joinedOrder = new StockOrderDto().populate(expectedOrder);
+
         for (StockOrderItemDto expected : expectedOrder.getItems()) {
             StockOrderItemDto matchedDiff = null;
 
-            // search the corresponding diff item in diffOrder.
-            for (StockOrderItemDto diff : diffOrder.getItems()) {
-                if (!Nullables.equals(diff.getMaterial(), expected.getMaterial()))
-                    continue;
-                if (!Nullables.equals(diff.getCBatch(), expected.getCBatch()))
-                    continue;
-                if (!Nullables.equals(diff.getLocation(), expected.getLocation()))
-                    continue;
-                matchedDiff = diff;
-                break;
-            }
-            StockTakingItem joined = new StockTakingItem(expected, matchedDiff);
+            if (diffOrder != null)
+                // search the corresponding diff item in diffOrder.
+                for (StockOrderItemDto diff : diffOrder.getItems()) {
+                    if (!Nullables.equals(diff.getMaterial(), expected.getMaterial()))
+                        continue;
+                    if (!Nullables.equals(diff.getCBatch(), expected.getCBatch()))
+                        continue;
+                    if (!Nullables.equals(diff.getLocation(), expected.getLocation()))
+                        continue;
+                    matchedDiff = diff;
+                    break;
+                }
+
+            StockTakingItemDto joined = new StockTakingItemDto(expected, matchedDiff);
+            joined.setParent(joinedOrder);
             joinedOrder.addItem(joined);
         }
         return joinedOrder;
@@ -151,17 +151,17 @@ public class StockTakingDto
         }
 
         for (StockOrderItemDto j : jv) {
-            StockTakingItem joinedItem = (StockTakingItem) j;
+            StockTakingItemDto joinedItem = (StockTakingItemDto) j;
 
             if (extractExpects) {
-                StockOrderItemDto expected = new StockOrderItemDto(joinedItem);
+                StockOrderItemDto expected = new StockOrderItemDto().populate(joinedItem);
                 expected.setQuantity(joinedItem.getExpected());
                 expectedOrder.addItem(expected);
             }
             if (extractDiffs) {
                 BigDecimal diffQuantity = joinedItem.getDiff();
                 if (!BigDecimal.ZERO.equals(diffQuantity)) { // Ignore diff==0 entries.
-                    StockOrderItemDto diff = new StockOrderItemDto(joinedItem);
+                    StockOrderItemDto diff = new StockOrderItemDto().populate(joinedItem);
                     diff.setQuantity(diffQuantity);
                     diffOrder.addItem(diff);
                 }

@@ -1,7 +1,9 @@
 package com.bee32.sem.inventory.tx.entity;
 
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
@@ -16,6 +18,8 @@ import com.bee32.sem.inventory.service.IStockQuery;
  *
  * 根据期间推算出帐面订单 (book)，操作员输入盘点单（input），程序自动更新盈亏订单(delta)。
  */
+@Entity
+@SequenceGenerator(name = "idgen", sequenceName = "stock_taking_seq", allocationSize = 1)
 public class StockTaking
         extends StockJob {
 
@@ -89,7 +93,7 @@ public class StockTaking
     StockOrder computeActual() {
         StockOrder actual = new StockOrder();
         actual.populate(expected);
-        // actual.
+        // TODO actual = expected + diff
         return actual;
     }
 
