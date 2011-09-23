@@ -28,16 +28,4 @@ class ViewScope
         return FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove(name);
     }
 
-    public String getConversationId() {
-        return null;
-    }
-
-    public void registerDestructionCallback(String name, Runnable callback) {
-        // Not supported
-    }
-
-    public Object resolveContextualObject(String key) {
-        return null;
-    }
-
 }
