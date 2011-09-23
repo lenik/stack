@@ -1,6 +1,7 @@
 package com.bee32.plover.ox1.c;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.Index;
 
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.ox1.principal.User;
+import com.bee32.plover.util.zh.ZhUtil;
 
 @MappedSuperclass
 public abstract class CEntity<K extends Serializable>
@@ -19,7 +21,7 @@ public abstract class CEntity<K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
-    static final int KEYWORD_MAXLEN = 16;
+    static final int KEYWORD_MAXLEN = 40;
 
     String keyword;
     boolean keywordUpdated;
@@ -81,7 +83,18 @@ public abstract class CEntity<K extends Serializable>
      */
     @Transient
     protected String buildKeyword() {
-        return null;
+        // List<String> keywords = new ArrayList<String>();
+        KeywordBuilder keywords = new KeywordBuilder();
+        populateKeywords(keywords);
+        String mixed = keywords.toString();
+        String pinyin = ZhUtil.getPinyinAbbreviation(mixed).trim();
+        String truncated = pinyin.substring(0, KEYWORD_MAXLEN).trim();
+        if (truncated.isEmpty())
+            truncated = null;
+        return truncated;
+    }
+
+    protected void populateKeywords(Collection<String> keywords) {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -2,6 +2,7 @@ package com.bee32.sem.people.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -252,6 +253,13 @@ public abstract class Party
         if (xid == null)
             return null;
         return new Equals(prefix + "xid", xid);
+    }
+
+    @Override
+    protected void populateKeywords(Collection<String> keywords) {
+        keywords.add(name);
+        keywords.add(fullName);
+        keywords.add(nickName);
     }
 
 }
