@@ -23,7 +23,7 @@ public class BaseDto_MKey {
         int hash = 0;
         hash += source.hashCode();
         hash += dtoType.hashCode();
-        hash += marshalType.hashCode();
+        // hash += marshalType.hashCode();
         return hash;
     }
 
@@ -34,8 +34,8 @@ public class BaseDto_MKey {
             return false;
         if (!dtoType.equals(o.dtoType))
             return false;
-        if (marshalType != o.marshalType)
-            return false;
+        // if (marshalType != o.marshalType)
+        // return false;
         return true;
     }
 

@@ -50,8 +50,21 @@ abstract class BaseDto_Skel<S, C>
             return;
 
         // prevent from change.
-        if (stereotyped)
-            throw new IllegalStateException("Can't change marshal-type after stereotyped");
+        if (stereotyped) {
+            /**
+             * 有一种情况是当新创建的 DTO 内存在引用时， marshal(P) 时，有
+             *
+             * P'.child'.parent' = P'.
+             *
+             * 此处，P' 为 selection 而 P'.child'.parent' 为 ref， 故应当允许 P'.child'.parent' 亦为 selection，当
+             * unmarshal 时才可以指向同一个 P.
+             *
+             * 故此处仅忽略。
+             */
+            // throw new IllegalStateException("Can't change marshal-type after stereotyped");
+            // logger.trace("stereo type changed.")
+            return;
+        }
 
         this.marshalType = marshalType;
 
@@ -133,6 +146,7 @@ abstract class BaseDto_Skel<S, C>
             D marshalled = session.getMarshalled(marshalKey);
             if (marshalled != null)
                 return (D) marshalled;
+
             session.addMarshalled(marshalKey, this);
 
             __marshal(source);
@@ -146,6 +160,10 @@ abstract class BaseDto_Skel<S, C>
 
     protected Object getMarshalKey(S source) {
         return new BaseDto_MKey(source, getClass(), marshalType);
+    }
+
+    protected Object getUnmarshalKey(S source) {
+        return new BaseDto_MKey(source, getClass(), MarshalType.ANY);
     }
 
     /**
