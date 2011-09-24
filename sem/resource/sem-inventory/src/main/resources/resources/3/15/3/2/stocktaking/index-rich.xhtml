@@ -70,6 +70,23 @@
                     disabled="#{stocktakingAdminBean.editable}" />
             </h:panelGrid>
 
+            <t:panelGrid columns="2">
+                <h:outputText value="盘点步骤:" />
+                <h:panelGroup style="font-weight:bold;">
+                    1.选择需要盘点的物料,查询库存，形成盘点表
+                    <p:spacer width="10" />
+                    2.打印盘点表
+                    <p:spacer width="10" />
+                    3.实际库存盘点
+                    <p:spacer width="10" />
+                    4.录入盘点数据
+                    <p:spacer width="10" />
+                    5.保存
+                    <p:spacer width="20" />
+                    (重复第4,5步,直到录入完成)
+                </h:panelGroup>
+            </t:panelGrid>
+
             <p:toolbar id="toolbar">
 				<p:toolbarGroup align="left">
 					<p:commandButton value="新增" actionListener="#{stocktakingAdminBean.new_}"
@@ -119,7 +136,43 @@
 
 			<p:panel header="#{stocktakingAdminBean.subject.displayName}">
 
-				<t:panelGrid columns="4">
+                <p:panel header="需要盘点的物料" toggleable="true" collapsed="true">
+                    <t:panelGrid columns="5">
+                        <t:panelGrid columns="2">
+                            <h:outputText value="盘点帐面数量查询日期" />
+                            <p:calendar id="limitDateTo"
+                                navigator="true" locale="zh_CN"
+                                pattern="yyyy-MM-dd"
+                                value="#{stocktakingAdminBean.queryDate}"
+                                showOn="button"/>
+                        </t:panelGrid>
+                        <h:outputText value="物料" />
+                        <t:panelGrid columns="1">
+                            <t:panelGrid columns="2">
+                                <p:selectBooleanCheckbox
+                                    value="#{stocktakingAdminBean.allMaterial}" />
+                                <h:outputText value="所有物料" />
+                            </t:panelGrid>
+                            <p:selectManyMenu id="materialsToQuery"
+                                value="#{stocktakingAdminBean.selectedMaterialsToQuery}"
+                                style="height:200px">
+                                <f:selectItems
+                                    value="#{stocktakingAdminBean.materialsToQuery}" />
+                            </p:selectManyMenu>
+                        </t:panelGrid>
+                        <t:panelGrid columns="1">
+                            <p:commandButton value="增加"
+                                onclick="materialDialog.show();" />
+                            <p:commandButton value="删除"
+                                actionListener="#{stocktakingAdminBean.removeMaterialsToQuery}"
+                                update="mainForm:materialsToQuery" />
+                        </t:panelGrid>
+                        <p:commandButton value="查询"/>
+                    </t:panelGrid>
+                </p:panel>
+
+
+                <t:panelGrid columns="4">
 
 					<h:outputText value="时间" />
                     <h:outputText value="#{stocktakingAdminBean.stockOrder.createdDate}">

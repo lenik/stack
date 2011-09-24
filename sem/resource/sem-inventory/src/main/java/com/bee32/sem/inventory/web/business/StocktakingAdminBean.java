@@ -1,9 +1,12 @@
 package com.bee32.sem.inventory.web.business;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.model.SelectItem;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -13,6 +16,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -30,9 +34,16 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
     private Date limitDateFrom;
     private Date limitDateTo;
 
+    private Date queryDate = new Date();
 
     private int goNumber;
     private int count;
+
+    private List<MaterialDto> materialsToQuery = new ArrayList<MaterialDto>();
+    private List<String> selectedMaterialsToQuery;
+
+    private boolean allMaterial;
+
 
     public StocktakingAdminBean() {
         Calendar c = Calendar.getInstance();
@@ -67,6 +78,16 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
         this.limitDateTo = limitDateTo;
     }
 
+    public Date getQueryDate() {
+        return queryDate;
+    }
+
+    public void setQueryDate(Date queryDate) {
+        this.queryDate = queryDate;
+    }
+
+
+
     public int getGoNumber() {
         return goNumber;
     }
@@ -82,6 +103,36 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
                 new Equals("warehouse.id", selectedWarehouse.getId()));
         return count;
     }
+
+    public List<SelectItem> getMaterialsToQuery() {
+        List<SelectItem> ms = new ArrayList<SelectItem>();
+        for(MaterialDto m : materialsToQuery) {
+            SelectItem i = new SelectItem();
+            i.setLabel(m.getLabel());
+            i.setValue(m.getId());
+
+            ms.add(i);
+        }
+        return ms;
+    }
+
+    public List<String> getSelectedMaterialsToQuery() {
+        return selectedMaterialsToQuery;
+    }
+
+    public void setSelectedMaterialsToQuery(List<String> selectedMaterialsToQuery) {
+        this.selectedMaterialsToQuery = selectedMaterialsToQuery;
+    }
+
+    public boolean isAllMaterial() {
+        return allMaterial;
+    }
+
+    public void setAllMaterial(boolean allMaterial) {
+        this.allMaterial = allMaterial;
+    }
+
+
 
 
 
@@ -236,5 +287,22 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
     @Override
     public StockWarehouseDto getSelectedWarehouse_() {
         return selectedWarehouse;
+    }
+
+    private void removeMaterialDtoWithIdFromList(List<MaterialDto> ms, Long id) {
+        for(MaterialDto m : ms) {
+            if(m.getId().equals(id)) {
+                ms.remove(m);
+                return;
+            }
+        }
+    }
+
+    public void removeMaterialsToQuery() {
+        if(selectedMaterialsToQuery != null) {
+            for(String materialId : selectedMaterialsToQuery) {
+                removeMaterialDtoWithIdFromList(materialsToQuery, Long.parseLong(materialId));
+            }
+        }
     }
 }
