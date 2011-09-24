@@ -5,17 +5,27 @@ import java.util.Map;
 
 public class SiteInstance {
 
-    String name;
+    SiteConfig config;
     Map<String, Object> attributes = new HashMap<String, Object>();
 
-    public SiteInstance(String name) {
-        if (name == null)
-            throw new NullPointerException("name");
-        this.name = name;
+    public SiteInstance(SiteConfig config) {
+        if (config == null)
+            throw new NullPointerException("config");
+        this.config = config;
     }
 
     public String getName() {
-        return name;
+        return config.getName();
+    }
+
+    public SiteConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(SiteConfig config) {
+        if (config == null)
+            throw new NullPointerException("config");
+        this.config = config;
     }
 
     public boolean containsAttribute(String attributeName) {
@@ -44,7 +54,7 @@ public class SiteInstance {
 
     @Override
     public String toString() {
-        return "Site: " + name;
+        return getName();
     }
 
 }
