@@ -144,6 +144,7 @@ public class TakeAdminBean extends StockOrderBaseBean {
         }
 
         stockOrder = new StockOrderDto().create();
+        stockOrder.setSubject(subject);
         //stockOrder.setCreatedDate(new Date());
         editable = true;
     }
@@ -173,7 +174,6 @@ public class TakeAdminBean extends StockOrderBaseBean {
 
     @Transactional
     public void save() {
-        stockOrder.setSubject(subject);
         stockOrder.setWarehouse(selectedWarehouse);
 
         if(stockOrder.getId() == null) {

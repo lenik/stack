@@ -36,6 +36,7 @@ public class InitAdminBean extends StockOrderBaseBean {
 
     private void loadStockOrder() {
         stockOrder = new StockOrderDto().create();
+        stockOrder.setSubject(subject);
         if (selectedWarehouse != null) {
             List<StockOrder> oneList = serviceFor(StockOrder.class).list(
                     StockCriteria.subjectOf(getSubject()),
@@ -64,7 +65,6 @@ public class InitAdminBean extends StockOrderBaseBean {
 
     @Transactional
     public void save() {
-        stockOrder.setSubject(subject);
         stockOrder.setWarehouse(selectedWarehouse);
 
         try {

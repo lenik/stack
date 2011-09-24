@@ -246,6 +246,7 @@ public abstract class StockOrderBaseBean
 
     public void newItem() {
         orderItem = new StockOrderItemDto().create();
+        orderItem.setParent(stockOrder);
         orderItemPrice = new BigDecimal(0);
         orderItemPriceCurrency = CurrencyConfig.getNative();
 

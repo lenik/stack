@@ -197,6 +197,7 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
 
         stockTransfer = new StockTransferDto().create();
         stockOrder = new StockOrderDto().create();
+        stockOrder.setSubject(subject);
         //stockOrder.setCreatedDate(new Date());
         editable = true;
     }
@@ -238,8 +239,6 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
 //            return;
 //        }
 
-
-        stockOrder.setSubject(subject);
         stockOrder.setWarehouse(selectedWarehouse);
 
         if(stockOrder.getId() == null) {

@@ -401,6 +401,7 @@ public class TransferInAdminBean
         }
 
         stockOrder = new StockOrderDto().create();
+        stockOrder.setSubject(subject);
         stockTransfer.setSourceWarehouse(stockTransferOut.getSourceWarehouse());
 
         editable = true;
@@ -409,12 +410,11 @@ public class TransferInAdminBean
 
     @Transactional
     public void transferInDone() {
-// if(stockOrder.getItems() != null && stockOrder.getItems().size() <= 0) {
-// uiLogger.warn("单据上至少应该有一条明细");
-// return;
-// }
+        // if(stockOrder.getItems() != null && stockOrder.getItems().size() <= 0) {
+        // uiLogger.warn("单据上至少应该有一条明细");
+        // return;
+        // }
 
-        stockOrder.setSubject(subject);
         stockOrder.setWarehouse(selectedWarehouse);
 
         stockTransferOut.setDestWarehouse(selectedWarehouse);

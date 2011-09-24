@@ -56,8 +56,10 @@ public class StockOrderItemDto
     @Override
     protected boolean isNegated() {
         StockOrderDto parent = getParent();
-        if (parent == null || parent.isNull())
+        if (parent == null || parent.isNull()) {
             return false;
+            //throw new IllegalStateException("Parent isn't set.");
+        }
 
         StockOrderSubject subject = parent.getSubject();
         return subject.isNegative();
