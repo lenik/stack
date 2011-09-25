@@ -1,11 +1,13 @@
 package com.bee32.plover.site;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
-import javax.free.IFile;
-import javax.free.JavaioFile;
+import javax.free.SystemProperties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,54 +16,90 @@ public class SiteManager {
 
     static Logger logger = LoggerFactory.getLogger(SiteManager.class);
 
-    Map<String, SiteInstance> sites = new TreeMap<String, SiteInstance>();
-
-    public SiteInstance getSiteOpt(String name) {
-        return sites.get(name);
+    static File SITE_HOME;
+    static {
+        String userHome = SystemProperties.getUserHome();
+        File home = new File(userHome);
+        SITE_HOME = new File(home, ".bee32/sites");
+        SITE_HOME.mkdirs();
     }
 
-    public synchronized SiteInstance getOrCreateSite(String name) {
-        SiteInstance site = getSiteOpt(name);
+    Map<String, SiteInstance> siteMap = new TreeMap<String, SiteInstance>();
+    Map<String, String> aliasMap = new HashMap<String, String>();
+
+    public Collection<SiteInstance> getSites() {
+        return siteMap.values();
+    }
+
+    public SiteInstance getSiteOpt(String nameOrAlias) {
+        String name = aliasMap.get(nameOrAlias);
+        if (name == null)
+            name = nameOrAlias;
+        return siteMap.get(name);
+    }
+
+    public synchronized SiteInstance getOrCreateSite(String nameOrAlias)
+            throws LoadSiteException {
+        SiteInstance site = getSiteOpt(nameOrAlias);
         if (site == null) {
-            site = createDefaultSite(name);
-            setSite(name, site);
+            site = loadSite(nameOrAlias);
+            String name = site.getName();
+            addSite(name, site);
         }
         return site;
     }
 
-    public void setSite(String name, SiteInstance site) {
-        sites.put(name, site);
+    public void addSite(String siteName, SiteInstance site) {
+        siteMap.put(siteName, site);
+        Set<String> aliases = site.getAliases();
+        for (String alias : aliases) {
+            // always overwrite existings.
+            aliasMap.put(alias, siteName);
+        }
     }
 
-    protected SiteInstance createDefaultSite(String siteName) {
-        new SiteConfig(properties, configFile);
-        SiteInstance site = new SiteInstance(config);
+    protected SiteInstance loadSite(String siteName)
+            throws LoadSiteException {
+        File configFile = new File(SITE_HOME, siteName + SiteInstance.CONFIG_EXTENSION);
+        SiteInstance site;
+        try {
+            site = new SiteInstance(configFile);
+        } catch (Exception e) {
+            throw new LoadSiteException("Failed to load site config " + configFile, e);
+        }
         return site;
     }
 
-    static final String SITE_EXTENSION = ".sif";
+    protected SiteInstance removeSite(String name) {
+        SiteInstance site = siteMap.get(name);
+        if (site != null)
+            removeSite(site);
+        return site;
+    }
 
-    public void scanSites(File siteHome) {
+    protected void removeSite(SiteInstance site) {
+        String name = site.getName();
+        Set<String> aliases = site.getAliases();
+        for (String alias : aliases)
+            aliasMap.remove(alias);
+        siteMap.remove(name);
+    }
+
+    public void scan(File siteHome) {
         for (File _file : siteHome.listFiles()) {
             if (!_file.isFile())
                 continue;
             String fileName = _file.getName();
-            if (!fileName.endsWith(SITE_EXTENSION))
+            if (!fileName.endsWith(SiteInstance.CONFIG_EXTENSION))
                 continue;
 
-            FormatProperties properties = new FormatProperties();
-            String defaultName = fileName.substring(0, fileName.length() - SITE_EXTENSION.length());
-            properties.setProperty("name", defaultName);
-
-            IFile file = new JavaioFile(_file);
+            String siteName = fileName.substring(0, fileName.length() - SiteInstance.CONFIG_EXTENSION.length());
             try {
-                properties.parse(file);
-            } catch (Exception e) {
-                logger.error("Failed to load site config " + _file, e);
+                SiteInstance site = getOrCreateSite(siteName);
+                logger.info("Loaded site: " + site);
+            } catch (LoadSiteException e) {
+                logger.error("Failed to load site: " + _file, e);
             }
-
-            SiteConfig siteConfig = new SiteConfig(properties, _file);
-            sites.put(siteConfig.getName(), siteConfig);
         }
     }
 
@@ -69,7 +107,7 @@ public class SiteManager {
 
     static {
         instance = new SiteManager();
-        // instance.scan();
+        instance.scan(SITE_HOME);
     }
 
     public static SiteManager getInstance() {

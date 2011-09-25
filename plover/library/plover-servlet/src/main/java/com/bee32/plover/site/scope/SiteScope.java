@@ -6,9 +6,9 @@ import org.springframework.beans.factory.ObjectFactory;
 
 import com.bee32.plover.inject.scope.AbstractScope;
 import com.bee32.plover.servlet.util.ThreadHttpContext;
+import com.bee32.plover.site.LoadSiteException;
 import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.SiteManager;
-import com.bee32.plover.site.SiteNaming;
 
 class SiteScope
         extends AbstractScope {
@@ -17,8 +17,13 @@ class SiteScope
 
     SiteInstance getSiteForRequest() {
         HttpServletRequest request = ThreadHttpContext.getRequest();
-        String siteName = SiteNaming.getSiteName(request);
-        SiteInstance site = siteManager.getOrCreateSite(siteName);
+        String alias = SiteNaming.getSiteAlias(request);
+        SiteInstance site;
+        try {
+            site = siteManager.getOrCreateSite(alias);
+        } catch (LoadSiteException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         return site;
     }
 
