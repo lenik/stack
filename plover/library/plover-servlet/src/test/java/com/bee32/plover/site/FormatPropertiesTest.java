@@ -13,7 +13,8 @@ public class FormatPropertiesTest
             throws Exception {
         String sample = " a=1\n b =OLD    # this is b  \n    c =    3\n";
         StringSource source = new StringSource(sample);
-        FormatProperties properties = FormatProperties.parse("sample", source);
+        FormatProperties properties = new FormatProperties();
+        properties.parse("sample", source);
 
         String rewrite = properties.toString();
         assertEquals(sample, rewrite);

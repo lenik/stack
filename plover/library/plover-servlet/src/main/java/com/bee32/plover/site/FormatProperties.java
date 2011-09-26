@@ -10,7 +10,7 @@ import javax.free.ParseException;
 
 public class FormatProperties {
 
-    Map<String, FormatPropertyLine> map;
+    private Map<String, FormatPropertyLine> map;
 
     public FormatProperties() {
         map = new LinkedHashMap<String, FormatPropertyLine>();
@@ -32,16 +32,6 @@ public class FormatProperties {
         } else {
             property.setValue(value);
         }
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (FormatPropertyLine property : map.values()) {
-            sb.append(property.toString());
-            sb.append('\n');
-        }
-        return sb.toString();
     }
 
     public void parse(IFile file)
@@ -81,6 +71,16 @@ public class FormatProperties {
             String key = property.getKey();
             map.put(key, property);
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (FormatPropertyLine property : map.values()) {
+            sb.append(property.toString());
+            sb.append('\n');
+        }
+        return sb.toString();
     }
 
 }

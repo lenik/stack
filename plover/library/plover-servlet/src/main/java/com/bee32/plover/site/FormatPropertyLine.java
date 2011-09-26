@@ -14,13 +14,13 @@ public class FormatPropertyLine
     // prefix KEY infix VAL suffix
     String _prefix;
     String key;
-    String _infix;
+    String _infix = " = ";
     String value;
     String _suffix;
 
     static final Pattern LINE_FORMAT;
     static {
-        LINE_FORMAT = Pattern.compile("^(\\s*)(\\w+)(\\s*=\\s*)(.*?)(\\s*(#.*)?)$");
+        LINE_FORMAT = Pattern.compile("^(\\s*)([a-zA-Z0-9_.]+)(\\s*=\\s*)(.*?)(\\s*(#.*)?)$");
     }
 
     public FormatPropertyLine(String key, String value) {

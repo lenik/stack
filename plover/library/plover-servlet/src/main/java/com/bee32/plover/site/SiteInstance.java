@@ -26,20 +26,22 @@ public class SiteInstance {
 
     File configFile;
     FormatProperties properties;
+    boolean dirty;
 
     Map<String, Object> attributes = new HashMap<String, Object>();
 
-    public SiteInstance(File configFile)
+    public SiteInstance(File file)
             throws IOException, ParseException {
+        configFile = file;
         properties = new FormatProperties();
 
-        String name = configFile.getName();
+        String name = file.getName();
         if (name.endsWith(CONFIG_EXTENSION))
             name = name.substring(0, name.length() - CONFIG_EXTENSION.length());
         properties.setProperty("name", name);
 
-        if (configFile.exists()) {
-            IFile _file = new JavaioFile(configFile);
+        if (file.exists()) {
+            IFile _file = new JavaioFile(file);
             properties.parse(_file);
         }
     }
@@ -59,19 +61,20 @@ public class SiteInstance {
 
     public void setProperty(String key, String value) {
         properties.setProperty(key, value);
+        dirty = true;
     }
 
     public String getName() {
-        return properties.getProperty(NAME_KEY);
+        return getProperty(NAME_KEY);
     }
 
     public void setName(String name) {
-        properties.setProperty(NAME_KEY, name);
+        setProperty(NAME_KEY, name);
     }
 
     public Set<String> getAliases() {
         Set<String> aliases = new LinkedHashSet<String>();
-        String _aliases = properties.getProperty(ALIASES_KEY);
+        String _aliases = getProperty(ALIASES_KEY);
         if (_aliases != null) {
             StringTokenizer tokens = new StringTokenizer(_aliases, ",");
             while (tokens.hasMoreTokens()) {
@@ -91,7 +94,7 @@ public class SiteInstance {
             sb.append(alias);
         }
         String _aliases = sb.toString();
-        properties.setProperty(ALIASES_KEY, _aliases);
+        setProperty(ALIASES_KEY, _aliases);
     }
 
     public boolean containsAttribute(String attributeName) {
@@ -116,6 +119,15 @@ public class SiteInstance {
 
     public Object removeAttribute(String attributeName) {
         return attributes.remove(attributeName);
+    }
+
+    public synchronized void save()
+            throws IOException {
+        if (dirty) {
+            JavaioFile _file = new JavaioFile(configFile);
+            _file.forWrite().write(properties.toString());
+            dirty = false;
+        }
     }
 
     @Override

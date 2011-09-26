@@ -1,12 +1,14 @@
 package com.bee32.plover.site;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.free.IllegalUsageException;
 import javax.free.SystemProperties;
 
 import org.slf4j.Logger;
@@ -25,14 +27,19 @@ public class SiteManager {
     }
 
     Map<String, SiteInstance> siteMap = new TreeMap<String, SiteInstance>();
-    Map<String, String> aliasMap = new HashMap<String, String>();
+    Map<String, String> wildHostAliasMap = new HashMap<String, String>();
+    Map<String, String> hostAliasMap = new HashMap<String, String>();
 
     public Collection<SiteInstance> getSites() {
         return siteMap.values();
     }
 
-    public SiteInstance getSiteOpt(String nameOrAlias) {
-        String name = aliasMap.get(nameOrAlias);
+    public SiteInstance getSite(String nameOrAlias) {
+        HostSpec hostSpec = HostSpec.parse(nameOrAlias);
+        String hostName = hostSpec.getHostName();
+        String name = wildHostAliasMap.get(hostName);
+        if (name == null)
+            name = hostAliasMap.get(nameOrAlias);
         if (name == null)
             name = nameOrAlias;
         return siteMap.get(name);
@@ -40,21 +47,39 @@ public class SiteManager {
 
     public synchronized SiteInstance getOrCreateSite(String nameOrAlias)
             throws LoadSiteException {
-        SiteInstance site = getSiteOpt(nameOrAlias);
+        SiteInstance site = getSite(nameOrAlias);
         if (site == null) {
             site = loadSite(nameOrAlias);
-            String name = site.getName();
-            addSite(name, site);
+            assert site.getName().equals(nameOrAlias);
+            addSite(nameOrAlias, site);
         }
         return site;
     }
 
     public void addSite(String siteName, SiteInstance site) {
+        if (siteMap.containsKey(siteName))
+            throw new IllegalUsageException("Site is already existed: " + siteName);
+
+        for (String alias : site.getAliases()) {
+            HostSpec spec = HostSpec.parse(alias);
+            if (spec.isWild())
+                if (wildHostAliasMap.containsKey(spec.getHostName())) {
+                    throw new IllegalUsageException(String.format("Wild alias %s:* for site %s is already used.", //
+                            spec.getHostName(), siteName));
+                } else if (hostAliasMap.containsKey(alias)) {
+                    throw new IllegalUsageException(String.format("Alias %s for site %s is already used.", //
+                            alias, siteName));
+                }
+        }
+
         siteMap.put(siteName, site);
-        Set<String> aliases = site.getAliases();
-        for (String alias : aliases) {
-            // always overwrite existings.
-            aliasMap.put(alias, siteName);
+
+        for (String alias : site.getAliases()) {
+            HostSpec spec = HostSpec.parse(alias);
+            if (spec.isWild())
+                wildHostAliasMap.put(spec.getHostName(), siteName);
+            else
+                hostAliasMap.put(alias, siteName);
         }
     }
 
@@ -81,7 +106,7 @@ public class SiteManager {
         String name = site.getName();
         Set<String> aliases = site.getAliases();
         for (String alias : aliases)
-            aliasMap.remove(alias);
+            hostAliasMap.remove(alias);
         siteMap.remove(name);
     }
 
@@ -101,6 +126,12 @@ public class SiteManager {
                 logger.error("Failed to load site: " + _file, e);
             }
         }
+    }
+
+    public void saveAll()
+            throws IOException {
+        for (SiteInstance site : getSites())
+            site.save();
     }
 
     private static final SiteManager instance;
