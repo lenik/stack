@@ -12,15 +12,10 @@ public class SiteManagerTest
             System.out.println(site.getName());
         }
 
-        SiteInstance d1 = manager.getSite("localhost");
-        SiteInstance d2 = manager.getSite("localhost:80");
-        SiteInstance d3 = manager.getSite("localhost:123");
+        SiteInstance newsite = manager.getOrCreateSite("new");
+        newsite.setProperty("hello", "world");
 
-        SiteInstance lenny1 = manager.getSite("lenny");
-        SiteInstance lenny2 = manager.getSite("lenny:234");
-lenny1.setProperty("new", "value");
         manager.saveAll();
-        System.out.println();
     }
 
 }
