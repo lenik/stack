@@ -64,7 +64,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         serial = map.getString("serial");
 
         unit = new UnitDto().ref(map.getString("unit"));
-        unitConv = new UnitConvDto().ref(map.getString("unitConv"));
+        unitConv = new UnitConvDto().ref(map.getLong("unitConv.id"));
     }
 
     public String getSerial() {

@@ -12,18 +12,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Transient;
 
-import com.bee32.plover.ox1.dict.NameDict;
+import com.bee32.plover.ox1.color.UIEntityAuto;
 
 /**
  * 单位换算表
  */
 @Entity
 public class UnitConv
-        extends NameDict {
+        extends UIEntityAuto<Long> {
 
     private static final long serialVersionUID = 1L;
 
-    boolean natural;
     Unit unit;
     Map<Unit, Double> scaleMap = new HashMap<Unit, Double>();
 
@@ -31,16 +30,11 @@ public class UnitConv
         super();
     }
 
-    UnitConv(Unit unit) {
-        super("nat:" + unit.getName(), "自然换算表（" + unit.getLabel() + "）");
-        this.natural = true;
-        this.unit = unit;
-    }
-
-    public UnitConv(String name, String label, Unit unit) {
-        super(name, label);
+    public UnitConv(String label, Unit unit) {
+        super(label);
         if (unit == null)
             throw new NullPointerException("unit");
+        this.label = label;
         this.unit = unit;
     }
 

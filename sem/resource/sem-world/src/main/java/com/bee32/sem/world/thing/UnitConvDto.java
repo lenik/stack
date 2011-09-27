@@ -10,10 +10,10 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.ox1.dict.NameDictDto;
+import com.bee32.plover.ox1.color.UIEntityDto;
 
 public class UnitConvDto
-        extends NameDictDto<UnitConv> {
+        extends UIEntityDto<UnitConv, Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -119,9 +119,4 @@ public class UnitConvDto
         this.scaleMap = scaleMap;
     }
 
-    public String getDisplayId() {
-        if (getId() != null)
-            return getId();
-        return "";
-    }
 }

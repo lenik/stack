@@ -180,8 +180,12 @@ public class MaterialSettingsBean
     }
 
     public void destroyUnitConv() {
+        Long convId = selectedUnitConv.getId();
+        if (convId == null) {
+            uiLogger.error("没有指定单位换算表");
+            return;
+        }
         try {
-            String convId = selectedUnitConv.getId();
             UnitConv uc = serviceFor(UnitConv.class).getOrFail(convId);
             serviceFor(UnitConv.class).delete(uc);
             initUnitConvList();

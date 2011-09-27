@@ -1,5 +1,6 @@
 package com.bee32.sem.sandbox;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import com.bee32.plover.arch.util.EnumAlt;
 import com.bee32.plover.orm.util.FacesContextSupport2;
 import com.bee32.plover.ox1.c.CEntity;
 import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.plover.ox1.color.UIEntityAuto;
+import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.plover.ox1.dict.NameDictDto;
 
 public class UIHelper
@@ -43,6 +46,18 @@ public class UIHelper
             Object value = entry.getValue();
             String label = entry.getLabel();
             SelectItem item = new SelectItem(value, label);
+            items.add(item);
+        }
+
+        return items;
+    }
+
+    public static <E extends UIEntityAuto<K>, K extends Serializable> //
+    List<SelectItem> selectItems(Iterable<? extends UIEntityDto<E, K>> entries) {
+        List<SelectItem> items = new ArrayList<SelectItem>();
+
+        for (UIEntityDto<E, K> entry : entries) {
+            SelectItem item = new SelectItem(entry.getId(), entry.getLabel());
             items.add(item);
         }
 

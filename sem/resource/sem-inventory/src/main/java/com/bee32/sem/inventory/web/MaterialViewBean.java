@@ -445,7 +445,7 @@ public class MaterialViewBean
             List<UnitConv> unitConvList = serviceFor(UnitConv.class).list(new Equals("unit.id", unitId));
             unitConvDtoList = DTOs.mrefList(UnitConvDto.class, unitConvList);
         }
-        return UIHelper.selectItemsFromDict(unitConvDtoList);
+        return UIHelper.selectItems(unitConvDtoList);
     }
 
     public List<SelectItem> getWarehouses() {
