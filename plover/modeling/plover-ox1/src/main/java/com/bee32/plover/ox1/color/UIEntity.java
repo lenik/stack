@@ -9,7 +9,7 @@ import com.bee32.plover.ox1.c.CEntity;
 
 @MappedSuperclass
 @Green
-abstract class UIEntity<K extends Serializable>
+public abstract class UIEntity<K extends Serializable>
         extends CEntity<K>
         implements IUserFriendly {
 
