@@ -108,4 +108,13 @@ public class StockCriteria
         return sum(subjects, materials, options);
     }
 
+    @LeftHand(StockOrderItem.class)
+    public static ICriteriaElement inOutDetail(Date beginDate, Material material, StockQueryOptions options) {
+        return compose(alias("parent", "parent"),
+                lessOrEquals("parent.beginTime", options.getTimestamp()), //
+                _equals("material.id", material.getId()), //
+                _equals("CBatch", options.getCBatch()), //
+                _equals("location", options.getLocation()), //
+                _equals("warehouse", options.getWarehouse()));
+    }
 }

@@ -10,7 +10,6 @@ import javax.faces.model.SelectItem;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
@@ -23,6 +22,7 @@ import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
+import com.bee32.sem.inventory.util.StockCriteria;
 
 @Component
 @Scope("view")
@@ -141,13 +141,15 @@ public class StockQueryBean extends EntityViewBean {
     }
 
     public List<StockOrderItemDto> getDetails() {
-        if (selectedItem != null && selectedItem.getId() != null) {
+        if (selectedItem != null) {
+            StockQueryOptions opts = new StockQueryOptions(queryDate);
+            opts.setWarehouse(selectedWarehouse.unmarshal());
+            opts.setCBatch(selectedItem.getCBatch(), false);
+            opts.setLocation(selectedItem.getLocation().unmarshal(), false);
+
             List<StockOrderItem> details = serviceFor(StockOrderItem.class)
-                    .list(new Equals("material.id", selectedItem.getMaterial()
-                            .getId()),
-                            new Equals("cbatch", selectedItem.getCBatch()),
-                            new Equals("location.id", selectedItem
-                                    .getLocation().getId()));
+                    .list(StockCriteria.inOutDetail(queryDate, selectedItem
+                            .getMaterial().unmarshal(), opts));
 
             return DTOs.marshalList(StockOrderItemDto.class, details);
         }

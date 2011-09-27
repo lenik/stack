@@ -81,13 +81,23 @@ public class StockWarehouseAdminBean
     }
 
     public void delete() {
-          serviceFor(StockWarehouse.class).delete(selectedStockWarehouse.unmarshal());
-          uiLogger.info("删除成功");
+        try {
+            serviceFor(StockWarehouse.class).delete(
+                    selectedStockWarehouse.unmarshal());
+            uiLogger.info("删除成功");
+        } catch (Exception e) {
+            uiLogger.warn("删除失败，错误信息:" + e.getMessage());
+        }
     }
 
     public void save() {
-        serviceFor(StockWarehouse.class).saveOrUpdate(selectedStockWarehouse.unmarshal());
-        uiLogger.info("保存成功");
+        try {
+            serviceFor(StockWarehouse.class).saveOrUpdate(
+                    selectedStockWarehouse.unmarshal());
+            uiLogger.info("保存成功");
+        } catch (Exception e) {
+            uiLogger.warn("保存失败，错误信息:" + e.getMessage());
+        }
     }
 
     public void findPerson() {

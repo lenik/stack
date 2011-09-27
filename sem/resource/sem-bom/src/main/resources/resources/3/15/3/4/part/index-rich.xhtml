@@ -425,7 +425,7 @@
 
 
         <h:form id="materialForm">
-            <p:dialog header="挑选物料" widgetVar="chooseMaterialDlg" modal="true" height="500" width="640">
+            <p:dialog header="挑选物料" widgetVar="chooseMaterialDlg" modal="true" height="480" width="640">
                 <h:panelGroup>
 
                     <h:panelGrid columns="2">
@@ -440,7 +440,8 @@
                             selection="#{bomAdminBean.selectedMaterial}"
                             selectionMode="single"
                             rowKey="#{material.id}"
-                            rowIndexVar="rowIndex">
+                            rowIndexVar="rowIndex"
+                            scrollable="true" scrollWidth="600" scrollHeight="350">
 
                         <p:column >
                             <f:facet name="header">
@@ -492,7 +493,7 @@
         </h:form>
 
         <h:form id="partItemForm">
-            <p:dialog header="挑选组件" widgetVar="choosePartItemDlg" modal="true" height="500" width="640">
+            <p:dialog header="挑选组件" widgetVar="choosePartItemDlg" modal="true" height="600" width="640">
                 <p:panel header="组件是物料">
 
                     <h:panelGrid columns="2">
@@ -508,7 +509,8 @@
                             selection="#{bomAdminBean.selectedMaterial}"
                             selectionMode="single"
                             rowKey="#{material.id}"
-                            rowIndexVar="rowIndex">
+                            rowIndexVar="rowIndex"
+                            scrollable="true" scrollWidth="600" scrollHeight="200">
 
                         <p:column >
                             <f:facet name="header">
@@ -572,7 +574,8 @@
                             selection="#{bomAdminBean.selectedFindedPart}"
                             selectionMode="single"
                             rowKey="#{part.id}"
-                            rowIndexVar="rowIndex">
+                            rowIndexVar="rowIndex"
+                            scrollable="true" scrollWidth="600" scrollHeight="200">
 
                         <p:column>
                             <f:facet name="header">
