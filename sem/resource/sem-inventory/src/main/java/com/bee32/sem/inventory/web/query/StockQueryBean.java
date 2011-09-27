@@ -10,6 +10,7 @@ import javax.faces.model.SelectItem;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
@@ -18,6 +19,7 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
+import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
@@ -38,6 +40,7 @@ public class StockQueryBean extends EntityViewBean {
     private MaterialDto selectedMaterial;
 
     private List<StockOrderItemDto> items;
+    private StockOrderItemDto selectedItem;
 
     private boolean allMaterial;
 
@@ -59,6 +62,14 @@ public class StockQueryBean extends EntityViewBean {
 
     public List<StockOrderItemDto> getItems() {
         return items;
+    }
+
+    public StockOrderItemDto getSelectedItem() {
+        return selectedItem;
+    }
+
+    public void setSelectedItem(StockOrderItemDto selectedItem) {
+        this.selectedItem = selectedItem;
     }
 
     public List<SelectItem> getStockWarehouses() {
@@ -87,8 +98,6 @@ public class StockQueryBean extends EntityViewBean {
         }
         return ms;
     }
-
-
 
     public List<String> getSelectedMaterialsToQuery() {
         return selectedMaterialsToQuery;
@@ -131,10 +140,20 @@ public class StockQueryBean extends EntityViewBean {
         this.allMaterial = allMaterial;
     }
 
+    public List<StockOrderItemDto> getDetails() {
+        if (selectedItem != null && selectedItem.getId() != null) {
+            List<StockOrderItem> details = serviceFor(StockOrderItem.class)
+                    .list(new Equals("material.id", selectedItem.getMaterial()
+                            .getId()),
+                            new Equals("cbatch", selectedItem.getCBatch()),
+                            new Equals("location.id", selectedItem
+                                    .getLocation().getId()));
 
+            return DTOs.marshalList(StockOrderItemDto.class, details);
+        }
 
-
-
+        return new ArrayList<StockOrderItemDto>();
+    }
 
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {

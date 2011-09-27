@@ -140,7 +140,7 @@
                     <t:panelGrid columns="5">
                         <t:panelGrid columns="2">
                             <h:outputText value="盘点帐面数量查询日期" />
-                            <p:calendar id="limitDateTo"
+                            <p:calendar id="queryDate"
                                 navigator="true" locale="zh_CN"
                                 pattern="yyyy-MM-dd"
                                 value="#{stocktakingAdminBean.queryDate}"
@@ -155,7 +155,7 @@
                             </t:panelGrid>
                             <p:selectManyMenu id="materialsToQuery"
                                 value="#{stocktakingAdminBean.selectedMaterialsToQuery}"
-                                style="height:200px">
+                                style="height:200px;width:300px">
                                 <f:selectItems
                                     value="#{stocktakingAdminBean.materialsToQuery}" />
                             </p:selectManyMenu>
@@ -167,7 +167,7 @@
                                 actionListener="#{stocktakingAdminBean.removeMaterialsToQuery}"
                                 update="mainForm:materialsToQuery" />
                         </t:panelGrid>
-                        <p:commandButton value="查询"/>
+                        <p:commandButton value="查询" disabled="#{!stocktakingAdminBean.editable}"/>
                     </t:panelGrid>
                 </p:panel>
 
@@ -187,30 +187,13 @@
                         <p:inputText value="#{stocktakingAdminBean.stockOrder.description}" disabled="#{!stocktakingAdminBean.editable}"/>
 					</t:panelGroup>
 
-                    <h:outputText value="对应公司" />
-                    <t:panelGroup>
-                        <p:inputText id="org" value="#{stocktakingAdminBean.stockOrder.org.name}" readonly="true"/>
-                        <p:commandButton value="..." onclick="orgDialog.show()" disabled="#{!stocktakingAdminBean.editable}"/>
-                    </t:panelGroup>
-                    <h:outputText value="对应部门" />
-                    <t:panelGroup>
-                        <p:inputText id="orgUnit" value="#{stocktakingAdminBean.stockOrder.orgUnit.name}" readonly="true"/>
-                        <p:commandButton value="..." onclick="orgUnitDialog.show()" disabled="#{!stocktakingAdminBean.editable}"/>
-                    </t:panelGroup>
-
 					<h:outputText value="制单人" />
                     <p:inputText value="#{stocktakingAdminBean.creator}" disabled="true"/>
                     <h:outputText value="单据状态" />
                     <p:inputText value="" disabled="true"/>
 				</t:panelGrid>
 
-                <t:panelGrid columns="2">
-                    <h:outputText value="明细"/>
-					<p:commandButton value="新增明细" onclick="itemDialog.show();"
-						action="#{stocktakingAdminBean.newItem}"
-						update="itemForm:itemPanel"
-						disabled="#{!stocktakingAdminBean.editable}" />
-				</t:panelGrid>
+                <h:outputText value="明细"/>
 
 				<p:dataTable id="items" var="item"
 					value="#{stocktakingAdminBean.items}" resizableColumns="true"
@@ -319,204 +302,6 @@
 			</p:panel>
 		</h:form>
 
-		<h:form id="itemForm">
-			<p:dialog header="#{stocktakingAdminBean.subject.displayName}项目编辑" widgetVar="itemDialog" modal="true"
-				height="500" width="640">
-				<h:panelGroup id="itemPanel">
-					<t:panelGrid columns="4"
-						columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
-
-						<h:outputLabel value="物料" />
-						<t:panelGroup colspan="3">
-							<p:inputText value="#{stocktakingAdminBean.orderItem.material.label}" readonly="true"/>
-							<p:commandButton value="..." onclick="materialDialog.show();"/>
-						</t:panelGroup>
-
-                        <t:panelGroup colspan="2">
-                            <p:commandButton
-                                value="查询库存"
-                                onclick="stockQueryDialog.show()"
-                                update="stockQueryForm:stockQueryPanel"/>
-                        </t:panelGroup>
-                        <t:panelGroup colspan="2"/>
-
-						<h:outputLabel value="批号" />
-						<p:inputText value="#{stocktakingAdminBean.orderItem.batch}" />
-						<h:outputLabel value="有效期" />
-						<p:calendar navigator="true" locale="zh_CN"
-                                    pattern="yyyy-MM-dd" value="#{stocktakingAdminBean.orderItem.expirationDate}"
-                                    showOn="button" />
-
-                        <h:outputLabel value="库位" />
-						<t:panelGroup colspan="3">
-							<p:inputText
-								value="#{stocktakingAdminBean.orderItem.location.nodeText}"
-								readonly="true" />
-							<p:commandButton value="..."
-								oncomplete="chooseStockLocationDialog.show();"
-								actionListener="#{stocktakingAdminBean.updateLocations}"
-								update="chooseStockLocationForm:chooseStockLocationPanel" />
-						</t:panelGroup>
-
-						<h:outputLabel value="单价" />
-                        <p:inputText value="#{stocktakingAdminBean.orderItemPrice}" />
-                        <h:outputLabel value="币种" />
-                        <p:selectOneMenu value="#{stocktakingAdminBean.orderItemPriceCurrency}" style="width:200px;">
-                            <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                            <f:selectItems value="#{stocktakingAdminBean.currencies}" />
-                        </p:selectOneMenu>
-
-                        <h:outputLabel value="盘点数量" />
-                        <p:inputText value="#{stocktakingAdminBean.orderItem.quantity}"/>
-                        <h:outputLabel value="帐面数量" />
-                        <p:inputText value="#{stocktakingAdminBean.orderItem.quantity}"/>
-
-                        <h:outputLabel value="数量" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText value="#{stocktakingAdminBean.orderItem.quantity}"/>
-                        </t:panelGroup>
-
-
-						<h:panelGroup />
-						<t:panelGroup colspan="2">
-							<t:panelGrid columns="2">
-								<p:commandButton value="保存"
-									actionListener="#{stocktakingAdminBean.doSaveItem}"
-									oncomplete="itemDialog.hide();" async="true"
-									update="mainForm" />
-								<p:commandButton value="取消"
-									oncomplete="itemDialog.hide();" />
-							</t:panelGrid>
-						</t:panelGroup>
-						<h:panelGroup />
-
-					</t:panelGrid>
-				</h:panelGroup>
-
-			</p:dialog>
-		</h:form>
-
-		<h:form id="materialForm">
-			<p:dialog header="选择物料" widgetVar="materialDialog" modal="true"
-				height="480" width="640">
-				<h:panelGroup>
-
-					<h:panelGrid columns="3">
-						<h:outputLabel value="物料名字全部或部份:" />
-						<p:inputText value="#{stocktakingAdminBean.materialPattern}" />
-						<p:commandButton value="查找"
-							actionListener="#{stocktakingAdminBean.findMaterial}" update="materials"
-							async="true" />
-					</h:panelGrid>
-					<p:dataTable id="materials" var="material"
-						value="#{stocktakingAdminBean.materials}" resizableColumns="true"
-						selection="#{stocktakingAdminBean.selectedMaterial}" selectionMode="single"
-                        rowKey="#{material.id}"
-						rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
-
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="序号" />
-							</f:facet>
-							<h:outputText value="#{rowIndex + 1}" />
-						</p:column>
-
-						<p:column headerText="物料名称">
-							<h:outputText value="#{material.label}" />
-						</p:column>
-
-						<p:column headerText="序列号">
-							<h:outputText value="#{material.serial}" />
-						</p:column>
-
-						<p:column headerText="条形码">
-							<h:outputText value="#{material.barCode}" />
-						</p:column>
-
-						<p:column headerText="主单位">
-							<h:outputText value="#{material.unit.name}" />
-						</p:column>
-
-                        <p:column headerText="规格型号">
-                            <h:outputText value="#{material.modelSpec}" />
-                        </p:column>
-
-					</p:dataTable>
-					<h:panelGrid columns="2">
-						<p:commandButton value="确定"
-							actionListener="#{stocktakingAdminBean.chooseMaterial}"
-							oncomplete="materialDialog.hide();" update="itemForm:itemPanel"
-							async="true" />
-						<p:commandButton value="取消" oncomplete="materialDialog.hide();" />
-					</h:panelGrid>
-				</h:panelGroup>
-			</p:dialog>
-
-		</h:form>
-
-		<h:form id="chooseStockLocationForm">
-			<p:dialog header="选择库位" widgetVar="chooseStockLocationDialog"
-				modal="true" height="500" width="640">
-				<h:panelGroup id="chooseStockLocationPanel">
-
-					<p:panel header="预设库位" toggleable="true">
-						<p:dataTable id="preferredLocations" var="stockLocation"
-							value="#{stocktakingAdminBean.preferredLocations}" resizableColumns="true"
-							selection="#{stocktakingAdminBean.selectedPreferredStockLocation}"
-							selectionMode="single"
-                            rowKey="#{stockLocation.id}" rowIndexVar="rowIndex">
-
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="序号" />
-								</f:facet>
-								<h:outputText value="#{rowIndex + 1}" />
-							</p:column>
-
-							<p:column>
-								<f:facet name="header">库位</f:facet>
-								<h:outputText value="#{stockLocation.nodeText}" />
-							</p:column>
-							<p:column>
-								<f:facet name="header">所属仓库</f:facet>
-								<h:outputText value="#{stockLocation.warehouse.name}" />
-							</p:column>
-						</p:dataTable>
-                        <h:panelGrid columns="2">
-                            <p:commandButton value="确定"
-                                actionListener="#{stocktakingAdminBean.doSelectPreferredStockLocation}"
-                                update="itemForm:itemPanel"
-                                oncomplete="chooseStockLocationDialog.hide();" />
-                            <p:commandButton value="取消"
-                                oncomplete="chooseStockLocationDialog.hide();" />
-                        </h:panelGrid>
-					</p:panel>
-					<p:panel header="所有库位" toggleable="true">
-						<p:tree value="#{stocktakingAdminBean.locationRoot}"
-							var="stockLocation" selectionMode="single"
-							selection="#{stocktakingAdminBean.selectedStockLocationNode}">
-							<p:treeNode>
-								<h:outputText value="#{stockLocation.nodeText}" />
-							</p:treeNode>
-						</p:tree>
-
-						<h:panelGrid columns="2">
-							<p:commandButton value="确定"
-								actionListener="#{stocktakingAdminBean.doSelectStockLocation}"
-								update="itemForm:itemPanel"
-								oncomplete="chooseStockLocationDialog.hide();" />
-							<p:commandButton value="取消"
-								oncomplete="chooseStockLocationDialog.hide();" />
-						</h:panelGrid>
-					</p:panel>
-
-
-
-				</h:panelGroup>
-			</p:dialog>
-		</h:form>
-
         <h:form id="deleteConfirmForm">
             <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认"
                 severity="alert" widgetVar="deleteConfirmDialog" modal="true">
@@ -531,202 +316,63 @@
             </p:confirmDialog>
         </h:form>
 
-        <h:form id="deleteItemConfirmForm">
-            <p:confirmDialog message="确定要删除吗?" width="200" header="删除明细条目确认"
-                severity="alert" widgetVar="deleteItemConfirmDialog" modal="true">
-
-                <p:commandButton value="确定"
-                    update="mainForm:items"
-                    actionListener="#{stocktakingAdminBean.deleteItem}"
-                    oncomplete="deleteItemConfirmDialog.hide()" />
-                <p:commandButton value="取消" onclick="deleteItemConfirmDialog.hide()"
-                    type="button" />
-
-            </p:confirmDialog>
-        </h:form>
-
-        <h:form id="orgForm">
-            <p:dialog header="选择公司" widgetVar="orgDialog" modal="true"
-                height="400" width="800">
+        <h:form id="materialForm">
+            <p:dialog header="选择物料" widgetVar="materialDialog" modal="true"
+                height="480" width="640">
                 <h:panelGroup>
 
                     <h:panelGrid columns="3">
-                        <h:outputLabel value="公司名称全部或部份:" />
-                        <p:inputText value="#{stocktakingAdminBean.orgPattern}" />
+                        <h:outputLabel value="物料名字全部或部份:" />
+                        <p:inputText value="#{stocktakingAdminBean.materialPattern}" />
                         <p:commandButton value="查找"
-                            actionListener="#{stocktakingAdminBean.findOrg}" update="orgs"
+                            actionListener="#{stocktakingAdminBean.findMaterial}" update="materials"
                             async="true" />
                     </h:panelGrid>
-                    <p:dataTable id="orgs" var="org"
-                        value="#{stocktakingAdminBean.orgs}" resizableColumns="true"
-                        rowIndexVar="rowIndex">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="客户/供应商名称">
-                            <h:outputText value="#{org.name}" />
-                        </p:column>
-
-                        <p:column headerText="标签">
-                            <p:dataList value="#{org.tags}" var="tag" type="definition">
-                                <f:facet name="description">
-                                    <h:outputText value="#{tag.label}"/>
-                                </f:facet>
-                            </p:dataList>
-                        </p:column>
-
-                        <p:column headerText="成立日期">
-                            <h:outputText value="#{org.birthday}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="公司类型">
-                            <h:outputText value="#{org.type.label}" />
-                        </p:column>
-
-                        <p:column headerText="税务登记号">
-                            <h:outputText value="#{org.sid}" />
-                        </p:column>
-
-                        <p:column headerText="公司规模">
-                            <h:outputText value="#{org.size}" />
-                        </p:column>
-
-                        <p:column headerText="创建日期">
-                            <h:outputText value="#{org.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="orgDialog.hide()"
-                                action="#{stocktakingAdminBean.chooseOrg}"
-                                update="mainForm:org" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{org}"
-                                    target="#{stocktakingAdminBean.selectedOrg}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="orgDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="orgUnitForm">
-            <p:dialog header="选择部门" widgetVar="orgUnitDialog" modal="true"
-                height="400" width="640">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="部门名称全部或部份:" />
-                        <p:inputText value="#{stocktakingAdminBean.orgUnitPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{stocktakingAdminBean.findOrgUnit}" update="orgUnits"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="orgUnits" var="orgUnit"
-                        value="#{stocktakingAdminBean.orgUnits}" resizableColumns="true"
-                        rowIndexVar="rowIndex">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="部门名称">
-                            <h:outputText value="#{orgUnit.name}" />
-                        </p:column>
-
-                        <p:column headerText="所属公司">
-                            <h:outputText value="#{orgUnit.org.name}" />
-                        </p:column>
-
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="orgUnitDialog.hide()"
-                                action="#{stocktakingAdminBean.chooseOrgUnit}"
-                                update="mainForm:orgUnit" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{orgUnit}"
-                                    target="#{stocktakingAdminBean.selectedOrgUnit}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="orgUnitDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="stockQueryForm">
-            <p:dialog header="库存查询" widgetVar="stockQueryDialog"
-                modal="true" height="400" width="640">
-                <h:panelGroup id="stockQueryPanel">
-                    <t:panelGrid columns="2">
-                        <h:outputText value="当前仓库:" />
-                        <h:outputText value="#{stocktakingAdminBean.selectedWarehouse.name}" />
-                    </t:panelGrid>
-
-                    <p:dataTable id="stockQuery" var="item"
-                        value="#{stocktakingAdminBean.stockQueryItems}"
+                    <p:dataTable id="materials" var="material"
+                        value="#{stocktakingAdminBean.materials}"
                         resizableColumns="true"
-                        selectionMode="single"
-                        selection="#{stocktakingAdminBean.selectedStockQueryItem}"
-                        rowKey="#{item.index}"
-                        rowIndexVar="rowIndex">
+                        selection="#{stocktakingAdminBean.selectedMaterial}"
+                        selectionMode="single" rowKey="#{material.id}"
+                        rowIndexVar="rowIndex"
+                        scrollable="true" scrollWidth="600" scrollHeight="350">
 
-                        <p:column headerText="序号">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="序号" />
+                            </f:facet>
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
-                        <p:column headerText="物料">
-                            <h:outputText value="#{item.material.label}" />
+                        <p:column headerText="物料名称">
+                            <h:outputText value="#{material.label}" />
+                        </p:column>
+
+                        <p:column headerText="序列号">
+                            <h:outputText value="#{material.serial}" />
+                        </p:column>
+
+                        <p:column headerText="条形码">
+                            <h:outputText value="#{material.barCode}" />
+                        </p:column>
+
+                        <p:column headerText="主单位">
+                            <h:outputText value="#{material.unit.name}" />
                         </p:column>
 
                         <p:column headerText="规格型号">
-                            <h:outputText value="#{item.material.modelSpec}" />
-                        </p:column>
-
-                        <p:column headerText="批号">
-                            <h:outputText value="#{item.batch}" />
-                        </p:column>
-
-                        <p:column headerText="有效期">
-                            <h:outputText value="#{item.expirationDate}" />
-                        </p:column>
-
-                        <p:column headerText="库位">
-                            <h:outputText
-                                value="#{item.location.nodeText}" />
-                        </p:column>
-
-                        <p:column headerText="单价">
-                            <h:outputText value="#{item.price.value}" />
-                        </p:column>
-
-                        <p:column headerText="币种">
-                            <h:outputText
-                                value="#{item.price.currencyText}" />
-                        </p:column>
-
-                        <p:column headerText="数量">
-                            <h:outputText value="#{item.quantity}" />
+                            <h:outputText value="#{material.modelSpec}" />
                         </p:column>
                     </p:dataTable>
                     <h:panelGrid columns="2">
-                        <p:commandButton value="确定"
-                            actionListener="#{stocktakingAdminBean.chooseStockQueryItem}"
-                            oncomplete="stockQueryDialog.hide();"
-                            update="itemForm:itemPanel" async="true" />
-                        <p:commandButton value="取消"
-                            oncomplete="stockQueryDialog.hide();" />
+                        <p:commandButton value="添加"
+                            actionListener="#{stocktakingAdminBean.addMaterial}"
+                            oncomplete="materialDialog.hide()" update="mainForm:materialsToQuery"
+                            async="true" />
+                        <p:commandButton value="取消" oncomplete="materialDialog.hide();" />
                     </h:panelGrid>
                 </h:panelGroup>
             </p:dialog>
+
         </h:form>
 
 	</ui:define>

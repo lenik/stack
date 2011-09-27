@@ -13,23 +13,36 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
+import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 
 @Component
 @Scope("view")
-public class StocktakingAdminBean extends StockOrderBaseBean {
+public class StocktakingAdminBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
+
+    protected StockOrderSubject subject = null;
+
+    protected StockWarehouseDto selectedWarehouse = new StockWarehouseDto().ref();
+
+    protected boolean editable = false;
+
+    protected StockOrderDto stockOrder = new StockOrderDto().create().ref();
+
 
     private Date limitDateFrom;
     private Date limitDateTo;
@@ -41,6 +54,10 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
 
     private List<MaterialDto> materialsToQuery = new ArrayList<MaterialDto>();
     private List<String> selectedMaterialsToQuery;
+
+    private String materialPattern;
+    private List<MaterialDto> materials;
+    private MaterialDto selectedMaterial;
 
     private boolean allMaterial;
 
@@ -61,6 +78,65 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
         subject = StockOrderSubject.STKD;
     }
 
+    public StockOrderSubject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(StockOrderSubject subject) {
+        this.subject = subject;
+    }
+
+    public List<SelectItem> getStockWarehouses() {
+        List<StockWarehouse> stockWarehouses = serviceFor(StockWarehouse.class).list();
+        List<StockWarehouseDto> stockWarehouseDtos = DTOs.mrefList(StockWarehouseDto.class, stockWarehouses);
+
+        List<SelectItem> items = new ArrayList<SelectItem>();
+
+        for (StockWarehouseDto stockWarehouseDto : stockWarehouseDtos) {
+            String label = stockWarehouseDto.getName();
+            SelectItem item = new SelectItem(stockWarehouseDto.getId(), label);
+            items.add(item);
+        }
+
+        return items;
+    }
+
+    public String getCreator() {
+        if (stockOrder == null)
+            return "";
+        else
+            return stockOrder.getOwnerDisplayName();
+    }
+
+    public List<StockOrderItemDto> getItems() {
+        if (stockOrder == null)
+            return null;
+        return stockOrder.getItems();
+    }
+
+    public StockWarehouseDto getSelectedWarehouse() {
+        return selectedWarehouse;
+    }
+
+    public void setSelectedWarehouse(StockWarehouseDto selectedWarehouse) {
+        this.selectedWarehouse = selectedWarehouse;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    public StockOrderDto getStockOrder() {
+        return stockOrder;
+    }
+
+    public void setStockOrder(StockOrderDto stockOrder) {
+        this.stockOrder = stockOrder;
+    }
 
     public Date getLimitDateFrom() {
         return limitDateFrom;
@@ -85,8 +161,6 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
     public void setQueryDate(Date queryDate) {
         this.queryDate = queryDate;
     }
-
-
 
     public int getGoNumber() {
         return goNumber;
@@ -132,13 +206,36 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
         this.allMaterial = allMaterial;
     }
 
+    public String getMaterialPattern() {
+        return materialPattern;
+    }
+
+    public void setMaterialPattern(String materialPattern) {
+        this.materialPattern = materialPattern;
+    }
+
+    public List<MaterialDto> getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(List<MaterialDto> materials) {
+        this.materials = materials;
+    }
+
+    public MaterialDto getSelectedMaterial() {
+        return selectedMaterial;
+    }
+
+    public void setSelectedMaterial(MaterialDto selectedMaterial) {
+        this.selectedMaterial = selectedMaterial;
+    }
+
 
 
 
 
     public void onSwChange(AjaxBehaviorEvent e) {
         loadStockOrder(goNumber);
-        loadStockLocationTree();
     }
 
     private void loadStockOrder(int position) {
@@ -196,8 +293,6 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
             return;
         }
 
-        itemsNeedToRemoveWhenModify.clear();
-
         editable = true;
     }
 
@@ -224,10 +319,6 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
 
 
         try {
-            for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-                serviceFor(StockOrder.class).delete(item.unmarshal());
-            }
-
             StockOrder _order = stockOrder.unmarshal();
             serviceFor(StockOrder.class).save(_order);
             uiLogger.info("保存成功");
@@ -278,15 +369,24 @@ public class StocktakingAdminBean extends StockOrderBaseBean {
         loadStockOrder(goNumber);
     }
 
-    @Override
-    public StockOrderItemDto getOrderItem_() {
-        return orderItem;
+    public void findMaterial() {
+        if (materialPattern != null && !materialPattern.isEmpty()) {
+
+            List<Material> _materials = serviceFor(Material.class).list(new Like("label", "%" + materialPattern + "%"));
+
+            materials = DTOs.marshalList(MaterialDto.class, _materials);
+        }
+
+        selectedMaterial = null;
     }
 
-
-    @Override
-    public StockWarehouseDto getSelectedWarehouse_() {
-        return selectedWarehouse;
+    public void addMaterial() {
+        for(MaterialDto m : materialsToQuery) {
+            if(selectedMaterial.getId().equals(m.getId())) {
+                return;
+            }
+        }
+        materialsToQuery.add(selectedMaterial);
     }
 
     private void removeMaterialDtoWithIdFromList(List<MaterialDto> ms, Long id) {
