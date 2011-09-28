@@ -1,0 +1,4 @@
+User_Alias  PG_ADMIN = semop, lenik
+Runas_Alias PG_ROLES = postgres
+
+PG_ADMIN ALL = (PG_ROLES) NOPASSWD: ALL

@@ -11,6 +11,9 @@ setup_SCRIPTS = \
     post-install.sh \
     pre-remove.sh
 
+sudoers_DATA = \
+    pg_sudo
+
 EXTRA_DIST = post-install.sh.in pre-remove.sh.in
 CLEANFILES = post-install.sh    pre-remove.sh
 
