@@ -2,9 +2,9 @@ package com.bee32.plover.site;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Method;
 import java.util.Map;
 
+import javax.free.DocUtil;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,27 +31,53 @@ public class SiteManagerServlet
         else
             cmdname = uri.substring(lastSlash + 1);
 
-        Map<String, ?> map = req.getParameterMap();
-        TextMap textMap = new TextMap(map);
+        Map<String, ?> _map = req.getParameterMap();
+        TextMap args = new TextMap(_map);
+
+        // obj
+
         PrintWriter out = resp.getWriter();
-
-        PrettyPrintStream buf = new PrettyPrintStream();
-        template(cmdname, textMap, buf); // ignore retval.
-
-        out.println(buf.toString());
+        out.println();
     }
 
-    Object template(String cmdname, TextMap args, PrettyPrintStream out)
-            throws ServletException {
-        // header..
-        try {
-            Method method = getClass().getMethod(cmdname, SiteInstance.class, TextMap.class, PrettyPrintStream.class);
-            Object retval = method.invoke(this, args, out);
-            return retval;
-        } catch (ReflectiveOperationException e) {
-            throw new ServletException(e.getMessage(), e);
+    class Template
+            extends HtmlBuilder {
+
+        public Template(TextMap args) {
+            parse(args);
         }
-        // footer...
+
+        {
+            html();
+            head().title().end();
+            body();
+            table().border("0");
+
+            tr().td().colspan("2");
+            $banner();
+            end().end();
+
+            endAll();
+        }
+
+        protected void $banner() {
+            String title = DocUtil.getDoc(getClass());
+            if (title == null)
+                title = getClass().getSimpleName();
+            h1().text(title).end();
+        }
+
+        protected void $menu() {
+
+        }
+
+        protected void $content() {
+
+        }
+
+        protected void parse(TextMap args) {
+        }
+
     }
 
     public void create(SiteInstance site, TextMap map, PrettyPrintStream out) {
