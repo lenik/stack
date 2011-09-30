@@ -4,13 +4,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 
-import javax.free.DocUtil;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.util.HtmlUtils;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.util.PrettyPrintStream;
@@ -34,54 +31,26 @@ public class SiteManagerServlet
         Map<String, ?> _map = req.getParameterMap();
         TextMap args = new TextMap(_map);
 
-        // obj
-
         PrintWriter out = resp.getWriter();
         out.println();
     }
 
-    class Template
-            extends HtmlBuilder {
+    static Map<String, Class<? extends SiteTemplate>> tmap;
+    static {
+        tmap.put("create", Create.class);
+    }
 
-        public Template(TextMap args) {
-            parse(args);
-        }
+    class Create
+            extends SiteTemplate {
 
-        {
-            html();
-            head().title().end();
-            body();
-            table().border("0");
-
-            tr().td().colspan("2");
-            $banner();
-            end().end();
-
-            endAll();
-        }
-
-        protected void $banner() {
-            String title = DocUtil.getDoc(getClass());
-            if (title == null)
-                title = getClass().getSimpleName();
-            h1().text(title).end();
-        }
-
-        protected void $menu() {
-
-        }
-
-        protected void $content() {
-
-        }
-
-        protected void parse(TextMap args) {
+        public Create(TextMap args) {
+            super(args);
         }
 
     }
 
-    public void create(SiteInstance site, TextMap map, PrettyPrintStream out) {
-
+    public void about() {
+        //
     }
 
     public void about(SiteInstance site, TextMap map, PrettyPrintStream out) {
@@ -95,36 +64,7 @@ public class SiteManagerServlet
     }
 
     protected void simpleForm(PrettyPrintStream out, Object... entries) {
-        out.println("<form>");
-        out.enter();
-        {
-            out.println("<table>");
-            out.enter();
-            {
-                for (int i = 0; i < entries.length; i += 3) {
-                    String name = (String) entries[i];
-                    String label = (String) entries[i + 1];
-                    Object value = entries[i + 2];
-                    out.println("<tr>");
-                    out.println("<th>" + label + "</th>");
-                    out.println("<td>");
-                    out.enter();
-                    {
-                        if (value instanceof String) {
-                            String strVal = (String) value;
-                            out.print("<input type='text' name='" + name + "' value='");
-                            out.print(HtmlUtils.htmlEscape(strVal));
-                            out.println("' />");
-                        }
-                    }
-                    out.leave();
-                    out.println("</td>");
-                }
-            }
-            out.println("</table>");
-        }
-        out.leave();
-        out.println("</form>");
+
     }
 
 }
