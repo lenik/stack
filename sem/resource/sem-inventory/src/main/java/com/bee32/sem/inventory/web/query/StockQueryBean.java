@@ -10,7 +10,9 @@ import javax.faces.model.SelectItem;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
@@ -18,11 +20,14 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
+import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
+import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.service.IStockQuery;
 import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.inventory.util.StockCriteria;
+import com.bee32.sem.misc.EntityCriteria;
 
 @Component
 @Scope("view")
@@ -42,7 +47,12 @@ public class StockQueryBean extends EntityViewBean {
     private List<StockOrderItemDto> items;
     private StockOrderItemDto selectedItem;
 
+    private StockOrderItemDto detailItem;
+
     private boolean allMaterial;
+
+    private int orderIndex = -1;
+    private int orderItemIndex = -1;
 
     public StockWarehouseDto getSelectedWarehouse() {
         return selectedWarehouse;
@@ -70,6 +80,14 @@ public class StockQueryBean extends EntityViewBean {
 
     public void setSelectedItem(StockOrderItemDto selectedItem) {
         this.selectedItem = selectedItem;
+    }
+
+    public StockOrderItemDto getDetailItem() {
+        return detailItem;
+    }
+
+    public void setDetailItem(StockOrderItemDto detailItem) {
+        this.detailItem = detailItem;
     }
 
     public List<SelectItem> getStockWarehouses() {
@@ -157,6 +175,15 @@ public class StockQueryBean extends EntityViewBean {
         return new ArrayList<StockOrderItemDto>();
     }
 
+    public int getOrderIndex() {
+        return orderIndex;
+    }
+
+    public int getOrderItemIndex() {
+        return orderItemIndex;
+    }
+
+
     public void findMaterial() {
         if (materialPattern != null && !materialPattern.isEmpty()) {
 
@@ -231,4 +258,48 @@ public class StockQueryBean extends EntityViewBean {
         items = DTOs.marshalList(StockOrderItemDto.class, list.getItems());
     }
 
+    public void findOrderSn() {
+        if(detailItem != null && detailItem.getId() != null) {
+            StockOrderSubject subject = detailItem.getParent().getSubject();
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(detailItem.getParent().getCreatedDate());
+            // 取这个月的第一天
+            c.set(Calendar.DAY_OF_MONTH, 1);
+            Date limitDateFrom = c.getTime();
+
+            // 最这个月的最后一天
+            c.add(Calendar.MONTH, 1);
+            c.add(Calendar.DAY_OF_MONTH, -1);
+            Date limitDateTo = c.getTime();
+
+            List<StockOrder> orders = serviceFor(StockOrder.class).list( //
+                    EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                    StockCriteria.subjectOf(subject), //
+                    new Equals("warehouse.id", detailItem.getParent().getWarehouse().getId()), //
+                    Order.asc("id"));
+            orderIndex = -1;
+            orderItemIndex = -1;
+
+
+            int index = 0;
+            for(StockOrder o : orders) {
+                index ++;
+
+                if(o.getId().equals(detailItem.getParent().getId())) {
+                    int itemIndex = 0;
+                    for(StockOrderItem i : o.getItems()) {
+                        itemIndex ++;
+                        if(i.getId().equals(detailItem.getId())) {
+                            orderItemIndex = itemIndex;
+                            break;
+                        }
+                    }
+
+                    orderIndex = index;
+                    break;
+                }
+            }
+        }
+    }
 }

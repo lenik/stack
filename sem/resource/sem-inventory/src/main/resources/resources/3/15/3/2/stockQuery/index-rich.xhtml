@@ -180,20 +180,20 @@
 
         <h:form id="detailForm">
             <p:dialog header="出入库明细" widgetVar="detailDialog" modal="true"
-                height="480" width="640">
+                height="480" width="680">
                 <h:panelGroup id="detailPanel">
 
                     <p:dataTable id="details" var="item"
                         value="#{stockQueryBean.details}"
                         resizableColumns="true"
                         rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
+                        scrollable="true" scrollWidth="650" scrollHeight="350">
 
                         <p:column headerText="序号">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
-                        <p:column headerText="数量">
+                        <p:column headerText="单据类型">
                             <h:outputText value="#{item.parent.subject.displayName}" />
                         </p:column>
 
@@ -235,13 +235,15 @@
                         <p:column headerText="操作">
                             <p:commandLink
                                 oncomplete="positionDialog.show()"
-                                update="detailForm:detailPanel"
-                                value="明细">
+                                update="positionForm:positionPanel"
+                                action="#{stockQueryBean.findOrderSn}"
+                                value="所在位置">
                                 <f:setPropertyActionListener
                                     value="#{item}"
-                                    target="#{stockQueryBean.selectedItem}" />
+                                    target="#{stockQueryBean.detailItem}" />
                             </p:commandLink>
                         </p:column>
+
                     </p:dataTable>
                 </h:panelGroup>
             </p:dialog>
@@ -254,19 +256,28 @@
                 <h:panelGroup id="positionPanel">
                     <t:panelGrid columns="2">
                         <h:outputText value="单据类型:"/>
-                        <h:outputText value=""/>
+                        <h:outputText value="#{stockQueryBean.detailItem.parent.subject.displayName}"/>
+
+                        <h:outputText value="物料名称:"/>
+                        <h:outputText value="#{stockQueryBean.detailItem.material.label}"/>
+
+                        <h:outputText value="规格型号:"/>
+                        <h:outputText value="#{stockQueryBean.detailItem.material.modelSpec}"/>
 
                         <h:outputText value="所在仓库:"/>
-                        <h:outputText value=""/>
+                        <h:outputText value="#{stockQueryBean.detailItem.parent.warehouse.name}"/>
 
                         <h:outputText value="所在年月:"/>
-                        <h:outputText value=""/>
+                        <h:outputText value="#{stockQueryBean.detailItem.parent.createdDate}">
+                            <f:convertDateTime pattern="yyyy-MM"
+                                timeZone="Asia/Shanghai" />
+                        </h:outputText>
 
                         <h:outputText value="单据序号:"/>
-                        <h:outputText value=""/>
+                        <h:outputText value="#{stockQueryBean.orderIndex}"/>
 
                         <h:outputText value="条目序号:"/>
-                        <h:outputText value=""/>
+                        <h:outputText value="#{stockQueryBean.orderItemIndex}"/>
                     </t:panelGrid>
                 </h:panelGroup>
             </p:dialog>
