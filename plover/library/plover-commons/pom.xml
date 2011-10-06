@@ -37,6 +37,11 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.kohsuke</groupId>
+            <artifactId>graphviz-api</artifactId>
+            <version>1.1</version>
+        </dependency>
     </dependencies>
     <name>Plover :: Library :: Commons</name>
 </project>
