@@ -231,13 +231,48 @@
                         <p:column headerText="数量">
                             <h:outputText value="#{item.quantity}" />
                         </p:column>
+
+                        <p:column headerText="操作">
+                            <p:commandLink
+                                oncomplete="positionDialog.show()"
+                                update="detailForm:detailPanel"
+                                value="明细">
+                                <f:setPropertyActionListener
+                                    value="#{item}"
+                                    target="#{stockQueryBean.selectedItem}" />
+                            </p:commandLink>
+                        </p:column>
                     </p:dataTable>
                 </h:panelGroup>
             </p:dialog>
 
         </h:form>
 
+        <h:form id="positionForm">
+            <p:dialog header="明细条目所在单据位置" widgetVar="positionDialog"
+                modal="true" height="480" width="640">
+                <h:panelGroup id="positionPanel">
+                    <t:panelGrid columns="2">
+                        <h:outputText value="单据类型:"/>
+                        <h:outputText value=""/>
 
-	</ui:define>
+                        <h:outputText value="所在仓库:"/>
+                        <h:outputText value=""/>
+
+                        <h:outputText value="所在年月:"/>
+                        <h:outputText value=""/>
+
+                        <h:outputText value="单据序号:"/>
+                        <h:outputText value=""/>
+
+                        <h:outputText value="条目序号:"/>
+                        <h:outputText value=""/>
+                    </t:panelGrid>
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
+
+    </ui:define>
 </ui:composition>
 </html>

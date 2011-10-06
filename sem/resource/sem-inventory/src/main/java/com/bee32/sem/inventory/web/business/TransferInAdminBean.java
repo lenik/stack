@@ -255,7 +255,8 @@ public class TransferInAdminBean
                     new Offset(position - 1), //
                     EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                     StockCriteria.subjectOf(getSubject()), //
-                    new Equals("warehouse.id", selectedWarehouse.getId()), Order.desc("id"));
+                    new Equals("warehouse.id", selectedWarehouse.getId()),
+                    Order.asc("id"));
 
             if (firstOrder != null) {
                 stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
@@ -426,7 +427,7 @@ public class TransferInAdminBean
 
             uiLogger.info("拨入成功");
 
-            loadStockOrder(1);
+            loadStockOrder(count + 1);
             loadStockOrderOut(goNumberOut);
 
             editable = false;

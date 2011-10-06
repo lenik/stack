@@ -121,15 +121,12 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
         stockOrder = new StockOrderDto().create();
         stockOutsourcing = new StockOutsourcingDto().create();
         if (selectedWarehouse != null) {
-            StockOrder firstOrder = serviceFor(StockOrder.class)
-                    .getFirst(
-                            //
-                            new Offset(position - 1), //
-                            EntityCriteria.createdBetweenEx(limitDateFrom,
-                                    limitDateTo), //
-                            StockCriteria.subjectOf(getSubject()), //
-                            new Equals("warehouse.id", selectedWarehouse
-                                    .getId()), Order.desc("id"));
+            StockOrder firstOrder = serviceFor(StockOrder.class).getFirst( //
+                    new Offset(position - 1), //
+                    EntityCriteria.createdBetweenEx(limitDateFrom,limitDateTo), //
+                    StockCriteria.subjectOf(getSubject()), //
+                    new Equals("warehouse.id", selectedWarehouse.getId()), //
+                    Order.asc("id"));
 
             if (firstOrder != null) {
                 stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
@@ -189,7 +186,7 @@ public class OutsourcingOutAdminBean extends StockOrderBaseBean {
 
         if(stockOrder.getId() == null) {
             //新增
-            goNumber = 1;
+            goNumber = count + 1;
         }
         try {
             for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
