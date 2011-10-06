@@ -129,9 +129,6 @@
                     <p:panel>
                         <h:outputText value="单位换算表:" />
                         <p:dataTable id="unitConvList" var="unitConv" value="#{materialSettingsBean.unitConvList}">
-                            <p:column headerText="换算表代码">
-                                <h:outputText value="#{unitConv.name}" />
-                            </p:column>
                             <p:column headerText="换算表名称">
                                 <h:outputText value="#{unitConv.label}" />
                             </p:column>
@@ -305,9 +302,6 @@
             <p:dialog header="单位换算表" widgetVar="unitConvDialog" height="500" width="700" modal="true">
                 <p:panel id="unitConvForm">
                     <t:panelGrid columns="2">
-                        <h:outputText value="代码:" />
-                        <p:inputText value="#{materialSettingsBean.activeUnitConv.name}"
-                            readonly="#{materialSettingsBean.unitConvEditable or materialSettingsBean.cantEdit}" />
 
                         <h:outputText value="名称:" />
                         <p:inputText value="#{materialSettingsBean.activeUnitConv.label}"

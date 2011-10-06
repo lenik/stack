@@ -12,6 +12,7 @@ import javax.faces.model.SelectItem;
 import javax.free.TempFile;
 
 import org.apache.commons.lang.StringUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.UploadedFile;
@@ -253,13 +254,33 @@ public class MaterialViewBean
         activeUnitConv.addScaleItem(activeScaleItem);
     }
 
+    public void newUnitConv() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        activeUnitConv = new UnitConvDto().create();
+        if (activeMaterial.getUnit() == null
+                || activeMaterial.getUnit().getId() == null
+                || activeMaterial.getUnit().getId().equals("")) {
+
+            context.addCallbackParam("mainUnitSelected", false);
+
+            uiLogger.warn("请先选择物料主单位!");
+            return;
+        }
+        if(activeMaterial.getUnitConv() != null && activeMaterial.getUnitConv().getId() != null) {
+            activeUnitConv = reload(activeMaterial.getUnitConv());
+        } else {
+            activeUnitConv.setUnit(reload(activeMaterial.getUnit()));
+        }
+
+        context.addCallbackParam("mainUnitSelected", true);
+    }
+
     public void doSaveUnitConv() {
         try {
             UnitConv ucv = activeUnitConv.unmarshal();
-            activeMaterial.setUnitConv(activeUnitConv);
             serviceFor(UnitConv.class).saveOrUpdate(ucv);
-            uiLogger.info("保存单位换算表" + activeUnitConv.getLabel() + "成功");
-            activeUnitConv = new UnitConvDto().create();
+            activeMaterial.setUnitConv(DTOs.marshal(UnitConvDto.class, ucv));
+            uiLogger.info("保存单位换算表成功");
         } catch (Exception e) {
             uiLogger.error("保存单位换算表失败:", e);
         }
@@ -360,7 +381,7 @@ public class MaterialViewBean
             return;
         }
 
-        if (unitConv.getId() == null || unitConv.getId().isEmpty())
+        if (unitConv.getId() == null)
             unitConv = new UnitConvDto().ref();
         activeMaterial.setUnitConv(unitConv);
 

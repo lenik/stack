@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.bee32.plover.ox1.color.UIEntityAuto;
@@ -18,6 +19,7 @@ import com.bee32.plover.ox1.color.UIEntityAuto;
  * 单位换算表
  */
 @Entity
+@SequenceGenerator(name = "idgen", sequenceName = "unit_conv_seq", allocationSize = 1)
 public class UnitConv
         extends UIEntityAuto<Long> {
 

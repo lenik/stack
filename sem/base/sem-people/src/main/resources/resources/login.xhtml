@@ -18,23 +18,23 @@
 	<link rel="stylesheet" type="text/css" href="${location.WEB_APP}/site/frame.css" />
 
 	<script language="javascript">
-	   function calcDigest() {
-		   var p = $.sha1($("#passPlain").val());
+        function calcDigest() {
+            var p = $.sha1($("#passPlain").val());
 
-		   var c = $("#loginForm\\:challenge").val();
-		   var p2 = $.sha1(c + p + c);
+            var c = $("#loginForm\\:challenge").val();
+            var p2 = $.sha1(c + p + c);
 
-		   $("#loginForm\\:password").val(p2);
-	   }
+            $("#loginForm\\:password").val(p2);
+        }
 
-	    function handleLoginRequest(xhr, status, args) {
-	        if(args.validationFailed || !args.loggedIn) {
+        function handleLoginRequest(xhr, status, args) {
+            if (args.validationFailed || !args.loggedIn) {
 
-	        } else {
-	            window.location.href = "index.jsf";
-	        }
-	    }
-	</script>
+            } else {
+                window.location.href = "index.jsf";
+            }
+        }
+    </script>
 
 </h:head>
 
