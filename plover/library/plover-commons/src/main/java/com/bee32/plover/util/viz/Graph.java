@@ -1,6 +1,7 @@
 package com.bee32.plover.util.viz;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class Graph
@@ -67,15 +68,23 @@ public class Graph
         addEdge(edge);
     }
 
-    public void addDiLink(Node src, Node dst) {
-        Edge edge = new Edge(src, dst, EdgeDirection.BOTH);
-        addEdge(edge);
-    }
-
     public void removeDanglingNodes() {
         Set<Node> linked = new HashSet<Node>(nodes.size());
         for (Edge edge : edges) {
+            linked.add(edge.getFrom());
+            linked.add(edge.getTo());
+        }
+        nodes.retainAll(linked);
+    }
 
+    public void removeDanglingEdges() {
+        Iterator<Edge> it = edges.iterator();
+        while (it.hasNext()) {
+            Edge edge = it.next();
+            boolean badFrom = !nodes.contains(edge.getFrom());
+            boolean badTo = !nodes.contains(edge.getTo());
+            if (badFrom || badTo)
+                it.remove();
         }
     }
 
