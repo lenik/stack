@@ -10,12 +10,16 @@ public enum EdgeDirection {
 
     ;
 
-    String symbol;
+    final String symbol;
 
     private EdgeDirection(String symbol) {
         if (symbol == null)
             throw new NullPointerException("symbol");
         this.symbol = symbol;
+    }
+
+    public String getSymbol() {
+        return symbol;
     }
 
 }
