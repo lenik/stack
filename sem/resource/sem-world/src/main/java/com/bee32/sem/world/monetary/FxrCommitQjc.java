@@ -25,7 +25,7 @@ public class FxrCommitQjc
 
     static Logger logger = LoggerFactory.getLogger(FxrCommitQjc.class);
 
-    static final int INITIAL_DELAY = 0; // Immediately.
+    static final int INITIAL_DELAY = 10000; // (ms) delay 10 seconds to avoid spin locks at bootstrap.
 
     @Override
     public void load(SchedulerFactory schedulerFactory)
