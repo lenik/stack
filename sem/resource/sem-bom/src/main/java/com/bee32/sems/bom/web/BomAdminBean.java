@@ -359,6 +359,8 @@ public class BomAdminBean
             item.setMaterial(selectedMaterial);
             item.setPart(null);
         }
+
+        selectedMaterial = null;
     }
 
     public void calcPrice()
@@ -396,6 +398,8 @@ public class BomAdminBean
     public void choosePart() {
         item.setMaterial(null);
         item.setPart(selectedFindedPart);
+
+        selectedFindedPart = null;
     }
 
 }

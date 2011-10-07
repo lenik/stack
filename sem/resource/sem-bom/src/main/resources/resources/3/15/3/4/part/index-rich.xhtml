@@ -94,6 +94,13 @@
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
+                                    <h:outputText value="规格型号" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{part.target.modelSpec}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
                                     <h:outputText value="创建人" />
                                 </f:facet>
                                 <h:outputText
@@ -274,6 +281,14 @@
                                             </f:facet>
                                             <h:outputText
                                                 value="#{comp.material.id==null? comp.part.target.label : comp.material.label}" />
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="规格型号" />
+                                            </f:facet>
+                                            <h:outputText
+                                                value="#{comp.material.id==null? comp.part.target.modelSpec : comp.material.modelSpec}" />
                                         </p:column>
 
                                         <p:column>
@@ -484,7 +499,7 @@
                                 value="确定"
                                 actionListener="#{bomAdminBean.chooseMaterial}"
                                 oncomplete="chooseMaterialDlg.hide();"
-                                update="bomForm:partTab:materialName"
+                                update="bomForm:partTab:materialName materialForm:materials"
                                 async="true"/>
                         <p:commandButton value="取消" oncomplete="chooseMaterialDlg.hide();"/>
                     </h:panelGrid>
@@ -493,157 +508,167 @@
         </h:form>
 
         <h:form id="partItemForm">
-            <p:dialog header="挑选组件" widgetVar="choosePartItemDlg" modal="true" height="600" width="640">
-                <p:panel header="组件是物料">
+            <p:dialog header="挑选组件" widgetVar="choosePartItemDlg" modal="true" height="660" width="700">
+                <p:tabView id="partItemTab">
+                    <p:tab title="组件是物料">
+                        <h:panelGrid columns="2">
+                            <p:inputText
+                                value="#{bomAdminBean.materialPattern}" />
+                            <p:commandButton value="查找"
+                                actionListener="#{bomAdminBean.findMaterial}"
+                                update="materials" async="true" />
+                        </h:panelGrid>
 
-                    <h:panelGrid columns="2">
-                        <p:inputText value="#{bomAdminBean.materialPattern}"/>
-                        <p:commandButton value="查找" actionListener="#{bomAdminBean.findMaterial}" update="materials" async="true"/>
-                    </h:panelGrid>
-
-                    <p:dataTable
-                            id="materials"
-                            var="material"
+                        <p:dataTable id="materials" var="material"
                             value="#{bomAdminBean.materials}"
                             resizableColumns="true"
                             selection="#{bomAdminBean.selectedMaterial}"
                             selectionMode="single"
                             rowKey="#{material.id}"
-                            rowIndexVar="rowIndex"
-                            scrollable="true" scrollWidth="600" scrollHeight="200">
+                            rowIndexVar="rowIndex" scrollable="true"
+                            scrollWidth="580" scrollHeight="400">
 
-                        <p:column >
-                            <f:facet name="header">
-                                <h:outputText value="序号" />
-                            </f:facet>
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="序号" />
+                                </f:facet>
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
 
-                        <p:column >
-                            <f:facet name="header">
-                                <h:outputText value="物料名称" />
-                            </f:facet>
-                            <h:outputText value="#{material.label}" />
-                        </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="物料名称" />
+                                </f:facet>
+                                <h:outputText value="#{material.label}" />
+                            </p:column>
 
-                        <p:column >
-                            <f:facet name="header">
-                                <h:outputText value="物料编码" />
-                            </f:facet>
-                            <h:outputText value="#{material.serial}" />
-                        </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="物料编码" />
+                                </f:facet>
+                                <h:outputText value="#{material.serial}" />
+                            </p:column>
 
-                         <p:column >
-                            <f:facet name="header">
-                                <h:outputText value="规格型号" />
-                            </f:facet>
-                            <h:outputText value="#{material.modelSpec}" />
-                        </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="规格型号" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{material.modelSpec}" />
+                            </p:column>
 
-                        <p:column >
-                            <f:facet name="header">
-                                <h:outputText value="计量单位" />
-                            </f:facet>
-                            <h:outputText value="#{material.unit.name}" />
-                        </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="计量单位" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{material.unit.name}" />
+                            </p:column>
 
-                    </p:dataTable>
+                        </p:dataTable>
 
-                    <h:panelGrid columns="2">
-                        <p:commandButton
-                                value="确定"
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="确定"
                                 actionListener="#{bomAdminBean.chooseMaterial}"
                                 oncomplete="choosePartItemDlg.hide();"
-                                update="bomForm:partTab:itemTab:materialNameComp"
-                                async="true"/>
-                        <p:commandButton value="取消" oncomplete="choosePartItemDlg.hide();"/>
-                    </h:panelGrid>
-                </p:panel>
+                                update="bomForm:partTab:itemTab:materialNameComp partItemForm:partItemTab:materials"
+                                async="true" />
+                            <p:commandButton value="取消"
+                                oncomplete="choosePartItemDlg.hide();" />
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab title="组件是半成品">
+                        <h:panelGrid columns="2">
+                            <p:inputText
+                                value="#{bomAdminBean.partPattern}" />
+                            <p:commandButton value="查找"
+                                actionListener="#{bomAdminBean.findPart}"
+                                update="findedParts" async="true" />
+                        </h:panelGrid>
 
-                <p:panel header="组件是半成品">
-                    <h:panelGrid columns="2">
-                        <p:inputText value="#{bomAdminBean.partPattern}"/>
-                        <p:commandButton value="查找" actionListener="#{bomAdminBean.findPart}" update="findedParts" async="true"/>
-                    </h:panelGrid>
-
-                    <p:dataTable
-                            id="findedParts"
-                            var="part"
+                        <p:dataTable id="findedParts" var="part"
                             value="#{bomAdminBean.findedParts}"
                             resizableColumns="true"
                             selection="#{bomAdminBean.selectedFindedPart}"
-                            selectionMode="single"
-                            rowKey="#{part.id}"
-                            rowIndexVar="rowIndex"
-                            scrollable="true" scrollWidth="600" scrollHeight="200">
+                            selectionMode="single" rowKey="#{part.id}"
+                            rowIndexVar="rowIndex" scrollable="true"
+                            scrollWidth="580" scrollHeight="400">
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="序号" />
-                            </f:facet>
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="序号" />
+                                </f:facet>
+                                <h:outputText value="#{rowIndex + 1}" />
+                            </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="物料" />
-                            </f:facet>
-                            <h:outputText value="#{part.target.label}" />
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="创建人" />
-                            </f:facet>
-                            <h:outputText value="#{part.owner.name}" />
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="建立日期" />
-                            </f:facet>
-                            <h:outputText value="#{part.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="生效日期" />
-                            </f:facet>
-                            <h:outputText value="#{part.validDateFrom}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="失效日期" />
-                            </f:facet>
-                            <h:outputText value="#{part.validDateTo}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="物料" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{part.target.label}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="创建人" />
+                                </f:facet>
+                                <h:outputText value="#{part.owner.name}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="建立日期" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{part.createdDate}">
+                                    <f:convertDateTime
+                                        pattern="yyyy-MM-dd"
+                                        timeZone="Asia/Shanghai" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="生效日期" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{part.validDateFrom}">
+                                    <f:convertDateTime
+                                        pattern="yyyy-MM-dd"
+                                        timeZone="Asia/Shanghai" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="失效日期" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{part.validDateTo}">
+                                    <f:convertDateTime
+                                        pattern="yyyy-MM-dd"
+                                        timeZone="Asia/Shanghai" />
+                                </h:outputText>
+                            </p:column>
 
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="类型" />
-                            </f:facet>
-                            <h:outputText
-                                value="#{part.xrefCount == 0 ? '产品' : '半成品'}" />
-                        </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="类型" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{part.xrefCount == 0 ? '产品' : '半成品'}" />
+                            </p:column>
 
-                    </p:dataTable>
+                        </p:dataTable>
 
-                    <h:panelGrid columns="2">
-                        <p:commandButton
-                                value="确定"
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="确定"
                                 actionListener="#{bomAdminBean.choosePart}"
                                 oncomplete="choosePartItemDlg.hide();"
-                                update="bomForm:partTab:itemTab:materialNameComp"
-                                async="true"/>
-                        <p:commandButton value="取消" oncomplete="choosePartItemDlg.hide();"/>
-                    </h:panelGrid>
-                </p:panel>
+                                update="bomForm:partTab:itemTab:materialNameComp partItemForm:partItemTab:findedParts"
+                                async="true" />
+                            <p:commandButton value="取消"
+                                oncomplete="choosePartItemDlg.hide();" />
+                        </h:panelGrid>
+                    </p:tab>
+                </p:tabView>
             </p:dialog>
         </h:form>
 
