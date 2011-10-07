@@ -371,7 +371,7 @@ public class StocktakingAdminBean extends EntityViewBean {
 
             List<Material> _materials = serviceFor(Material.class).list(new Like("label", "%" + materialPattern + "%"));
 
-            materials = DTOs.marshalList(MaterialDto.class, _materials);
+            materials = DTOs.mrefList(MaterialDto.class, _materials);
         }
 
         selectedMaterial = null;
