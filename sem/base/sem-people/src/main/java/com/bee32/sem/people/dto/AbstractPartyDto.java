@@ -111,14 +111,6 @@ public class AbstractPartyDto<E extends Party>
             throws ParseException {
     }
 
-    public UserDto getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserDto owner) {
-        this.owner = owner;
-    }
-
     public String getName() {
         return name;
     }
