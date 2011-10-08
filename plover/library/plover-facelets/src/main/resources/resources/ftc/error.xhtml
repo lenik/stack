@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:c0="http://java.sun.com/jstl/core"
-    xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:h="http://java.sun.com/jsf/html"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:c0="http://java.sun.com/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:h="http://java.sun.com/jsf/html"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" template="template.xhtml">
 
     <ui:define name="title">Error Test</ui:define>
 
     <ui:define name="body">
 
+        <hr />
+
         <div>Error bean id: ${errorTestBean.id}.</div>
 
+        <div>Error Trigger: ${errorTestBean.error}.</div>
+
+        <h2>
+            Error Messages:
+        </h2>
+        <h:messages id="errorMessages" />
 
     </ui:define>
 

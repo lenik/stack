@@ -5,6 +5,6 @@ package com.bee32.plover.web.faces;
  */
 public interface IFaceletExceptionHandler {
 
-    String handle(FaceletExceptionContext context, Throwable exception);
+    ExceptionHandleResult handle(FaceletExceptionContext context, Throwable exception);
 
 }

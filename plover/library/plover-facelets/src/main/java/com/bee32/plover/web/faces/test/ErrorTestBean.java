@@ -1,6 +1,7 @@
 package com.bee32.plover.web.faces.test;
 
 import javax.faces.bean.ViewScoped;
+import javax.free.IdentifiedException;
 
 import com.bee32.plover.web.faces.view.ViewBean;
 
@@ -16,7 +17,7 @@ public class ErrorTestBean
     }
 
     public String getError() {
-        throw new RuntimeException("A sample exception.");
+        throw new IdentifiedException("A sample exception.");
     }
 
 }

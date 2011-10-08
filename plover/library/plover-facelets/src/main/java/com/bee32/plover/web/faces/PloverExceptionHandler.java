@@ -1,8 +1,10 @@
 package com.bee32.plover.web.faces;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExceptionHandler;
@@ -11,6 +13,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
+import javax.free.IllegalUsageException;
 import javax.free.TypeHierMap;
 
 import org.slf4j.Logger;
@@ -37,46 +40,63 @@ public class PloverExceptionHandler
     @Override
     public void handle()
             throws FacesException {
-
         Iterator<ExceptionQueuedEvent> iter = getUnhandledExceptionQueuedEvents().iterator();
+
         while (iter.hasNext()) {
             ExceptionQueuedEvent event = iter.next();
             logger.debug("PEH iterating over " + event);
 
-            ExceptionQueuedEventContext context = event.getContext();
+            ExceptionQueuedEventContext eqeContext = event.getContext();
 
-            Throwable exception = context.getException();
+            Throwable exception = eqeContext.getException();
             Class<? extends Throwable> exceptionType = exception.getClass();
 
-            IFaceletExceptionHandler handler = handlerMap.floor(exceptionType);
+            Set<IFaceletExceptionHandler> handlers = handlerMap.floor(exceptionType);
 
-            if (handler == null)
+            if (handlers == null || handlers.isEmpty())
                 continue;
 
-            try {
+            for (IFaceletExceptionHandler handler : handlers) {
                 FacesContext facesContext = FacesContext.getCurrentInstance();
                 FaceletExceptionContext fec = new FaceletExceptionContext(facesContext);
 
-                String resultView = handler.handle(fec, exception);
-                System.err.println("resultView -> " + resultView);
+                ExceptionHandleResult result = handler.handle(fec, exception);
+                switch (result.getType()) {
+                case ExceptionHandleResult.TYPE_SKIP:
+                    continue;
 
-                ExternalContext extContext = facesContext.getExternalContext();
-                String url = extContext.encodeActionURL(extContext.getRequestContextPath() + "/login.jsf");
+                case ExceptionHandleResult.TYPE_HANDLED:
+                    iter.remove();
+                    continue;
 
-                extContext.redirect(url);
+                case ExceptionHandleResult.TYPE_REDIRECT:
+                    String resultView = (String) result.getValue();
+                    if (resultView == null)
+                        throw new NullPointerException("resultView");
 
-            } catch (IOException e) {
-                throw new FacesException(e.getMessage(), e);
-            } finally {
-                iter.remove();
+                    ExternalContext extContext = facesContext.getExternalContext();
+                    String href = extContext.getRequestContextPath() + resultView;
+                    String url = extContext.encodeActionURL(href);
+                    try {
+                        extContext.redirect(url);
+                    } catch (IOException e) {
+                        throw new FacesException(e.getMessage(), e);
+                    } finally {
+                        iter.remove();
+                    }
+                    continue;
+
+                default:
+                    throw new IllegalUsageException("Bad handler result: " + result.getType());
+                }
             }
         }
         super.handle();
     }
 
-    static final TypeHierMap<IFaceletExceptionHandler> handlerMap;
+    static final TypeHierMap<Set<IFaceletExceptionHandler>> handlerMap;
     static {
-        handlerMap = new TypeHierMap<IFaceletExceptionHandler>();
+        handlerMap = new TypeHierMap<Set<IFaceletExceptionHandler>>();
     }
 
     public static void register(Class<? extends Throwable> exceptionType, IFaceletExceptionHandler handler) {
@@ -84,24 +104,24 @@ public class PloverExceptionHandler
             throw new NullPointerException("exceptionType");
         if (handler == null)
             throw new NullPointerException("handler");
-        handlerMap.put(exceptionType, handler);
-    }
-
-    public static void unregister(Class<? extends Throwable> exceptionType) {
-        if (exceptionType == null)
-            throw new NullPointerException("exceptionType");
-        handlerMap.remove(exceptionType);
+        Set<IFaceletExceptionHandler> handlers = handlerMap.get(exceptionType);
+        if (handlers == null) {
+            handlers = new HashSet<IFaceletExceptionHandler>();
+            handlerMap.put(exceptionType, handlers);
+        }
+        handlers.add(handler);
     }
 
     public static void unregister(IFaceletExceptionHandler handler) {
         if (handler == null)
             throw new NullPointerException("handler");
-        Iterator<Entry<Class<?>, IFaceletExceptionHandler>> iter = handlerMap.entrySet().iterator();
+        Iterator<Entry<Class<?>, Set<IFaceletExceptionHandler>>> iter = handlerMap.entrySet().iterator();
         while (iter.hasNext()) {
-            Entry<Class<?>, IFaceletExceptionHandler> entry = iter.next();
-            IFaceletExceptionHandler _handler = entry.getValue();
-            if (_handler == handler)
-                iter.remove();
+            Entry<Class<?>, Set<IFaceletExceptionHandler>> entry = iter.next();
+            Set<IFaceletExceptionHandler> handlers = entry.getValue();
+            if (handlers != null)
+                handlers.remove(handlers);
+            // if (handlers.isEmpty()) iter.remove();
         }
     }
 
