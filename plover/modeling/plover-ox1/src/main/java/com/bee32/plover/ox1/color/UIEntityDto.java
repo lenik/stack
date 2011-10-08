@@ -4,9 +4,11 @@ import java.io.Serializable;
 
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
+import javax.validation.constraints.Size;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.plover.util.TextUtil;
 
 public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
         extends CEntityDto<E, K> {
@@ -62,14 +64,17 @@ public abstract class UIEntityDto<E extends UIEntity<K>, K extends Serializable>
         description = map.getString("description");
     }
 
+    @Size(max = UIEntity.LABEL_LENGTH)
     public String getLabel() {
         return label;
     }
 
     public void setLabel(String label) {
+        label = TextUtil.normalizeSpace(label);
         this.label = label;
     }
 
+    @Size(max = UIEntity.DESCRIPTION_LENGTH)
     public String getDescription() {
         return description;
     }

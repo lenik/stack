@@ -3,6 +3,7 @@ package com.bee32.plover.ox1.dict;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.util.TextUtil;
 
 public abstract class NameDictDto<E extends NameDict>
         extends DictEntityDto<E, String> {
@@ -41,6 +42,7 @@ public abstract class NameDictDto<E extends NameDict>
     }
 
     public void setName(String name) {
+        name = TextUtil.normalizeSpace(name);
         setId(name);
     }
 

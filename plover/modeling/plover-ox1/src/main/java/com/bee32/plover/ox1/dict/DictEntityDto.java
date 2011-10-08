@@ -7,6 +7,7 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.c.CEntityDto;
+import com.bee32.plover.util.TextUtil;
 
 public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializable>
         extends CEntityDto<E, K> {
@@ -51,6 +52,7 @@ public abstract class DictEntityDto<E extends DictEntity<K>, K extends Serializa
     }
 
     public void setLabel(String label) {
+        label = TextUtil.normalizeSpace(label);
         this.label = label;
     }
 

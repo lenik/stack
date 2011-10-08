@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.c.CEntityDto;
@@ -19,6 +21,8 @@ public class MailDto
 
     public static final int REFERRER_MASK = 0x0000000f;
     public static final int COPIES = 1 << 16;
+
+    String serial;
 
     MailType type;
     MailPriority priority;
@@ -51,8 +55,8 @@ public class MailDto
 
     @Override
     protected void _marshal(Mail source) {
+        serial = source.getSerial();
         type = source.getType();
-
         priority = source.getPriority();
 
         from = source.getFrom();
@@ -80,6 +84,7 @@ public class MailDto
 
     @Override
     protected void _unmarshalTo(Mail target) {
+        target.setSerial(serial);
         target.setType(type);
         // target.setMailbox(mailbox);
         target.setPriority(priority);
@@ -129,6 +134,16 @@ public class MailDto
         // dates...
     }
 
+    @Size(max = Mail.SERIAL_LENGTH)
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
+
+    @NotNull
     public MailType getType() {
         return type;
     }
@@ -139,6 +154,7 @@ public class MailDto
         this.type = type;
     }
 
+    @NotNull
     public MailPriority getPriority() {
         return priority;
     }
@@ -149,6 +165,7 @@ public class MailDto
         this.priority = priority;
     }
 
+    @Size(min = 1, max = Mail.FROM_LENGTH)
     public String getFrom() {
         return from;
     }
@@ -157,6 +174,7 @@ public class MailDto
         this.from = from;
     }
 
+    @Size(min = 1, max = Mail.RECIPIENT_LENGTH)
     public String getRecipient() {
         return recipient;
     }
@@ -165,6 +183,7 @@ public class MailDto
         this.recipient = recipient;
     }
 
+    @Size(max = Mail.REPLY_TO_LENGTH)
     public String getReplyTo() {
         return replyTo;
     }
@@ -216,6 +235,7 @@ public class MailDto
         this.replyToUser = replyToUser;
     }
 
+    @Size(max = Mail.CC_LENGTH)
     public String getCc() {
         return cc;
     }
@@ -224,6 +244,7 @@ public class MailDto
         this.cc = cc;
     }
 
+    @Size(max = Mail.BCC_LENGTH)
     public String getBcc() {
         return bcc;
     }
@@ -232,6 +253,7 @@ public class MailDto
         this.bcc = bcc;
     }
 
+    @Size(min = 1, max = Mail.SUBJECT_LENGTH)
     public String getSubject() {
         return subject;
     }
@@ -240,6 +262,7 @@ public class MailDto
         this.subject = subject;
     }
 
+    @Size(min = 1, max = Mail.BODY_LENGTH)
     public String getBody() {
         return body;
     }

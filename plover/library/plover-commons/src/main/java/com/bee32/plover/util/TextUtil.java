@@ -1,4 +1,4 @@
-package com.bee32.sem.misc;
+package com.bee32.plover.util;
 
 import java.util.regex.Pattern;
 
@@ -10,10 +10,19 @@ public class TextUtil {
     }
 
     public static String normalizeSpace(String s) {
+        return normalizeSpace(s, false);
+    }
+
+    public static String normalizeSpace(String s, boolean nullReduce) {
         if (s == null)
             return null;
         s = s.trim();
-        s = NORM_SPACE.matcher(s).replaceAll(" ");
+        if (s.isEmpty()) {
+            if (nullReduce)
+                s = null;
+        } else {
+            s = NORM_SPACE.matcher(s).replaceAll(" ");
+        }
         return s;
     }
 

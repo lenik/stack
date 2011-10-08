@@ -6,9 +6,11 @@ import java.util.List;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
+import javax.validation.constraints.Size;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialXP;
@@ -147,19 +149,23 @@ public class MaterialDto
         this.category = category;
     }
 
+    @Size(max = Material.BARCODE_LENGTH)
     public String getBarCode() {
         return barCode;
     }
 
     public void setBarCode(String barCode) {
+        barCode = TextUtil.normalizeSpace(barCode);
         this.barCode = barCode;
     }
 
+    @Size(max = Material.MODELSPEC_LENGTH)
     public String getModelSpec() {
         return modelSpec;
     }
 
     public void setModelSpec(String modelSpec) {
+        modelSpec = TextUtil.normalizeSpace(modelSpec);
         this.modelSpec = modelSpec;
     }
 

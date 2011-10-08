@@ -4,11 +4,13 @@ import java.io.Serializable;
 
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
+import javax.validation.constraints.Size;
 
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.xp.EntityExtDto;
 import com.bee32.plover.ox1.xp.XPool;
+import com.bee32.plover.util.TextUtil;
 
 public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         extends EntityExtDto<E, Long, X> {
@@ -67,13 +69,13 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         unitConv = new UnitConvDto().ref(map.getLong("unitConv.id"));
     }
 
+    @Size(max = Thing.SERIAL_LENGTH)
     public String getSerial() {
         return serial;
     }
 
     public void setSerial(String serial) {
-        if (serial != null && serial.isEmpty())
-            serial = null;
+        serial = TextUtil.normalizeSpace(serial, true);
         this.serial = serial;
     }
 
@@ -87,6 +89,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         this.unit = unit;
     }
 
+    @Size(max = Thing.UNIT_HINT_LENGTH)
     public String getUnitHint() {
         return unitHint;
     }

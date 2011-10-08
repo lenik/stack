@@ -3,6 +3,8 @@ package com.bee32.sem.misc;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.bee32.plover.util.TextUtil;
+
 public class TextUtilTest
         extends Assert {
 

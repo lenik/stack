@@ -44,6 +44,15 @@ public class Mail
 
     private static final long serialVersionUID = 1L;
 
+    public static final int SERIAL_LENGTH = 30;
+    public static final int FROM_LENGTH = 40;
+    public static final int RECIPIENT_LENGTH = 150;
+    public static final int REPLY_TO_LENGTH = 150;
+    public static final int CC_LENGTH = 200;
+    public static final int BCC_LENGTH = 200;
+    public static final int SUBJECT_LENGTH = 200;
+    public static final int BODY_LENGTH = 100000;
+
     String serial;
 
     MailType type = MailType.USER;
@@ -71,7 +80,7 @@ public class Mail
     List<MailDelivery> deliveries = new ArrayList<MailDelivery>();
 
     @NaturalId
-    @Column(length = 30)
+    @Column(length = SERIAL_LENGTH)
     public String getSerial() {
         return serial;
     }
@@ -81,16 +90,13 @@ public class Mail
     }
 
     /**
-     * 邮件类型，如：公文、帖子、系统广播等。
+     * 邮件类型，如：公文、帖子、系统广播、E-Mail等。
      */
     @Transient
     public MailType getType() {
         return type;
     }
 
-    /**
-     * 邮件类型，如：公文、帖子、系统广播、E-Mail等。
-     */
     public void setType(MailType type) {
         this.type = type;
     }
@@ -113,9 +119,6 @@ public class Mail
         return priority;
     }
 
-    /**
-     * 优先级。一般用于排序。E-mail中会形成相应的 Priority 域。
-     */
     public void setPriority(MailPriority priority) {
         if (priority == null)
             throw new NullPointerException("priority");
@@ -134,14 +137,11 @@ public class Mail
     /**
      * 发送方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
      */
-    @Column(length = 40)
+    @Column(length = FROM_LENGTH)
     public String getFrom() {
         return from;
     }
 
-    /**
-     * 发送方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
-     */
     public void setFrom(String from) {
         this.from = from;
     }
@@ -149,14 +149,11 @@ public class Mail
     /**
      * 接收方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
      */
-    @Column(length = 150)
+    @Column(length = RECIPIENT_LENGTH)
     public String getRecipient() {
         return recipient;
     }
 
-    /**
-     * 接收方。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
-     */
     public void setRecipient(String recipient) {
         this.recipient = recipient;
     }
@@ -164,14 +161,11 @@ public class Mail
     /**
      * 回复到方（可能不同于发送方）。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
      */
-    @Column(length = 150)
+    @Column(length = REPLY_TO_LENGTH)
     public String getReplyTo() {
         return replyTo;
     }
 
-    /**
-     * 回复到方（可能不同于发送方）。可能是 E-mail，用户名等，具体指涉对象由系统内部转换。
-     */
     public void setReplyTo(String replyTo) {
         this.replyTo = replyTo;
     }
@@ -184,9 +178,6 @@ public class Mail
         return fromUser;
     }
 
-    /**
-     * 发送方用户。
-     */
     public void setFromUser(User fromUser) {
         this.fromUser = fromUser;
         this.from = EmailUtil.getFriendlyEmail(fromUser);
@@ -203,9 +194,6 @@ public class Mail
         return recipientUsers;
     }
 
-    /**
-     * 接收方用户。
-     */
     public void setRecipientUsers(List<User> recipientUsers) {
         if (recipientUsers == null)
             throw new NullPointerException("recipientUsers");
@@ -237,9 +225,6 @@ public class Mail
         return replyToUser;
     }
 
-    /**
-     * 回复到方用户。
-     */
     public void setReplyToUser(User replyToUser) {
         this.replyToUser = replyToUser;
         this.replyTo = EmailUtil.getFriendlyEmail(replyToUser);
@@ -248,14 +233,11 @@ public class Mail
     /**
      * 抄送列表。
      */
-    @Column(length = 200)
+    @Column(length = CC_LENGTH)
     public String getCc() {
         return cc;
     }
 
-    /**
-     * 抄送列表。
-     */
     public void setCc(String cc) {
         this.cc = cc;
     }
@@ -263,14 +245,11 @@ public class Mail
     /**
      * 秘密抄送列表。
      */
-    @Column(length = 200)
+    @Column(length = BCC_LENGTH)
     public String getBcc() {
         return bcc;
     }
 
-    /**
-     * 秘密抄送列表。
-     */
     public void setBcc(String bcc) {
         this.bcc = bcc;
     }
@@ -278,14 +257,11 @@ public class Mail
     /**
      * 主题。
      */
-    @Column(length = 200)
+    @Column(length = SUBJECT_LENGTH)
     public String getSubject() {
         return subject;
     }
 
-    /**
-     * 主题。
-     */
     public void setSubject(String subject) {
         this.subject = subject;
     }
@@ -293,14 +269,11 @@ public class Mail
     /**
      * 正文。
      */
-    @Column(length = 100000, nullable = false)
+    @Column(length = BODY_LENGTH, nullable = false)
     public String getBody() {
         return body;
     }
 
-    /**
-     * 正文。
-     */
     public void setBody(String body) {
         this.body = body;
     }
@@ -313,9 +286,6 @@ public class Mail
         return referrer;
     }
 
-    /**
-     * 引用的邮件（如回复、转发的邮件）。
-     */
     public void setReferrer(Mail referrer) {
         this.referrer = referrer;
     }
@@ -329,9 +299,6 @@ public class Mail
         return deliveries;
     }
 
-    /**
-     * 邮件递送副本列表。
-     */
     public void setDeliveries(List<MailDelivery> deliveries) {
         if (deliveries == null)
             throw new NullPointerException("deliveries");
