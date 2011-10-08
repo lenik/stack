@@ -263,14 +263,14 @@ public class OutsourcingInAdminBean extends StockOrderBaseBean {
         }
 
         try {
-            for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-                serviceFor(StockOrder.class).delete(item.unmarshal());
-            }
-
-            // serviceFor(StockOrder.class).save(stockOrder.unmarshal());
-
             stockOutsourcing.setInput(stockOrder);
             StockOutsourcing _stockOutsourcing = stockOutsourcing.unmarshal();
+            StockOrder _order = _stockOutsourcing.getInput();
+
+            for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
+                _order.removeItem(item.unmarshal());
+            }
+
             // 保存stockOutsourcing
             serviceFor(StockOutsourcing.class).saveOrUpdate(_stockOutsourcing);
 

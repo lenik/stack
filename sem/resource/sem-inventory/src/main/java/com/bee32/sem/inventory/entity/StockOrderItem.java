@@ -228,4 +228,11 @@ public class StockOrderItem
                 new Equals(prefix + "CBatch", cBatch));
     }
 
+    @Override
+    public StockOrderItem detach() {
+        super.detach();
+        parent = null;
+        return this;
+    }
+
 }

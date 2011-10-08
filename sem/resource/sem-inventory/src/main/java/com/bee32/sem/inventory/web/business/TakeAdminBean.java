@@ -178,13 +178,12 @@ public class TakeAdminBean extends StockOrderBaseBean {
             goNumber = count + 1;
         }
 
-
         try {
+            StockOrder _order = stockOrder.unmarshal();
             for(StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-                serviceFor(StockOrder.class).delete(item.unmarshal());
+                _order.removeItem(item.unmarshal());
             }
 
-            StockOrder _order = stockOrder.unmarshal();
             serviceFor(StockOrder.class).save(_order);
             uiLogger.info("保存成功");
             loadStockOrder(goNumber);

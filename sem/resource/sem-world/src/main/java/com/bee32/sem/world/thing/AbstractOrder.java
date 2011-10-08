@@ -99,6 +99,7 @@ public abstract class AbstractOrder<Item extends AbstractOrderItem>
             return /* false */;
 
         items.remove(index);
+        item.detach();
 
         // Renum [index, ..)
         for (int i = index; i < items.size(); i++)

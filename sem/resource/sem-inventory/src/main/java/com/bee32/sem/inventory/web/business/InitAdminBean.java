@@ -68,10 +68,11 @@ public class InitAdminBean extends StockOrderBaseBean {
         stockOrder.setWarehouse(selectedWarehouse);
 
         try {
+            StockOrder _order = stockOrder.unmarshal();
             for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-                serviceFor(StockOrder.class).delete(item.unmarshal());
+                _order.removeItem(item.unmarshal());
             }
-            serviceFor(StockOrder.class).save(stockOrder.unmarshal());
+            serviceFor(StockOrder.class).save(_order);
             uiLogger.info("保存成功");
             loadStockOrder();
             editable = false;

@@ -239,17 +239,17 @@ public class TransferOutAdminBean extends StockOrderBaseBean {
         }
 
         try {
-            // 删除需要删除的item
-            for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-                serviceFor(StockOrder.class).delete(item.unmarshal());
-            }
-
-            // //保存新的stockOrder
-            // serviceFor(StockOrder.class).saveOrUpdate(stockOrder.unmarshal());
-
             stockTransfer.setSourceWarehouse(selectedWarehouse);
             stockTransfer.setSource(stockOrder);
             StockTransfer _stockTransfer = stockTransfer.unmarshal();
+
+            StockOrder _order = _stockTransfer.getSource();
+
+            // 删除需要删除的item
+            for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
+                _order.removeItem(item.unmarshal());
+            }
+
             // 保存stockTransfer
             serviceFor(StockTransfer.class).saveOrUpdate(_stockTransfer);
 
