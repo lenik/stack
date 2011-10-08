@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:test="http://java.sun.com/jsf/composite/test">
+
+    <h:head>
+    </h:head>
+
+    <body>
+
+        Validation Test
+
+        <h:form id="form1">
+            User name:
+            <h:inputText id="userName" value="#{validBean.userName}" />
+
+            //
+            <h:message for="userName1" />
+
+            <br />
+            <h:commandButton value="button1" />
+
+        </h:form>
+
+        <div>
+            Persisted user name: #{validBean.userName}
+        </div>
+
+        <h2>
+            Error Messages:
+        </h2>
+        <h:messages id="errorMessages" />
+
+    </body>
+</html>
