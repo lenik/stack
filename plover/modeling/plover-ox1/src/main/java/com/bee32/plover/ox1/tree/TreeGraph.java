@@ -2,7 +2,7 @@ package com.bee32.plover.ox1.tree;
 
 import java.io.Serializable;
 
-import com.bee32.plover.util.viz.Graph;
+import org.kohsuke.graphviz.Graph;
 
 public class TreeGraph {
 
