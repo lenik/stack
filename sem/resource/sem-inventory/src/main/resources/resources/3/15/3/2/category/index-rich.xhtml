@@ -129,9 +129,6 @@
                     <p:panel>
                         <h:outputText value="单位换算表:" />
                         <p:dataTable id="unitConvList" var="unitConv" value="#{materialSettingsBean.unitConvList}">
-                            <p:column headerText="换算表名称">
-                                <h:outputText value="#{unitConv.label}" />
-                            </p:column>
                             <p:column headerText="源单位">
                                 <h:outputText value="#{unitConv.unit.name}" />
                             </p:column>
@@ -162,20 +159,30 @@
 
                 <p:tab title="基础价格设置">
 
-                    <t:panelGrid columns="2" columnClasses="column1,column2" style="width:100%;">
-                        <p:tree id="selectCategoryTree" value="#{materialSettingsBean.materialPriceTree.rootNode}"
+                    <t:panelGrid columns="2" columnClasses="column1,column2">
+
+                        <p:treeTable id="selectCategoryTree"
+                            value="#{materialSettingsBean.materialPriceTree.rootNode}"
                             var="node" dynamic="true" selectionMode="single"
-                            selection="#{materialSettingsBean.materialPriceTree.selectedNode}">
+                            selection="#{materialSettingsBean.materialPriceTree.selectedNode}"
+                            scrollable="true"
+                            scrollHeight="380" scrollWidth="400">
+
                             <p:ajax event="select" listener="#{materialSettingsBean.materialPriceTree.onNodeSelect}"
                                 update=":mainForm:mainTab:materialList" />
-                            <p:treeNode>
+
+                            <p:column>
+                                <f:facet name="header">分类名称</f:facet>
                                 <h:outputText value="#{node.name}" />
-                            </p:treeNode>
-                        </p:tree>
+                            </p:column>
+                        </p:treeTable>
 
                         <p:dataTable id="materialList" value="#{materialSettingsBean.materialList}" var="item">
                             <p:column headerText="物料名称">
                                 <h:outputText value="#{item.label}" />
+                            </p:column>
+                            <p:column headerText="规格型号">
+                                <h:outputText value="#{item.modelSpec}" />
                             </p:column>
                             <p:column headerText="当前价格">
                                 <h:outputText value="#{item.currentPrice}" />
@@ -302,18 +309,14 @@
             <p:dialog header="单位换算表" widgetVar="unitConvDialog" height="500" width="700" modal="true">
                 <p:panel id="unitConvForm">
                     <t:panelGrid columns="2">
-
-                        <h:outputText value="名称:" />
-                        <p:inputText value="#{materialSettingsBean.activeUnitConv.label}"
-                            readonly="#{materialSettingsBean.unitConvEditable}" />
-
                         <h:outputText value="源单位:" />
                         <p:selectOneMenu value="#{materialSettingsBean.activeUnitConv.unit.displayId}"
                             style="width:100px;" disabled="#{materialSettingsBean.unitConvEditable}">
-                            <f:selectItem itemLabel="" itemValue="" />
+                            <f:selectItem itemLabel="--请选择--" itemValue="" />
                             <f:selectItems value="#{materialSettingsBean.units}" />
                         </p:selectOneMenu>
                     </t:panelGrid>
+                    <hr/>
                     <h:outputText value="换算表:" />
                     <p:dataTable var="item" value="#{materialSettingsBean.activeUnitConv.itemList}" id="scaleList">
                         <p:column headerText="换算单位">

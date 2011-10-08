@@ -2,12 +2,15 @@ package com.bee32.sem.inventory.dto;
 
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 import com.bee32.sem.inventory.entity.CodeGenerator;
 import com.bee32.sem.inventory.entity.MaterialCategory;
+import com.bee32.sem.misc.TextUtil;
 
 public class MaterialCategoryDto
         extends TreeEntityDto<MaterialCategory, Integer, MaterialCategoryDto> {
@@ -51,6 +54,21 @@ public class MaterialCategoryDto
     }
 
     public void setName(String name) {
+//        FacesContext ctx = FacesContext.getCurrentInstance();
+//        FacesMessage msg = null;
+//
+//        if(name == null) {
+//            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "错误", "物料分类名称为空指针!");
+//            ctx.addMessage(null, msg);
+//            throw new NullPointerException("物料分类名称为空指针!");
+//        }
+//        name = TextUtil.normalizeSpace(name);
+//
+//        if(name.isEmpty()) {
+//            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "错误", "物料分类名称为空!");
+//            ctx.addMessage(null, msg);
+//            throw new IllegalArgumentException("物料分类名称为空!");
+//        }
         this.name = name;
     }
 
