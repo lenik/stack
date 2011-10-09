@@ -29,7 +29,7 @@ public class ValidBean
     }
 
     @NotNull
-    @Size(min = 2, max = 20, message = "Please enter a valid username (2-20 characters)")
+    @Size(min = 2, max = 20, message = "用户名长度不符 (2-20 字符)")
     public String getUserName() {
         return super.getUserName();
     }

@@ -40,7 +40,11 @@ public class NormalizedSizeValidator
             s = TextUtil.normalizeSpace(s);
 
         int length = s.length();
-        return length >= min && length <= max;
+        if (length < min)
+            return false;
+        if (length > max)
+            return false;
+        return true;
     }
 
     private void validateParameters() {

@@ -1,7 +1,13 @@
 package com.bee32.plover.web.faces.test;
 
+import java.util.Locale;
+
 public class FaceletsTestCaseTest
         extends FaceletsTestCase {
+
+    static {
+        Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
+    }
 
     @Override
     protected int getRefreshPeriod() {
