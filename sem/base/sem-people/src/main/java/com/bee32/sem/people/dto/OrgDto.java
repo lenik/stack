@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.free.ParseException;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.principal.GroupDto;
@@ -72,6 +74,8 @@ public class OrgDto
         this.type = type;
     }
 
+    @Min(1)
+    @Max(10000)
     public int getSize() {
         return size;
     }

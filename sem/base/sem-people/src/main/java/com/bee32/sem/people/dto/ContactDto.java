@@ -1,6 +1,8 @@
 package com.bee32.sem.people.dto;
 
 import javax.free.ParseException;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.xp.EntityExtDto;
@@ -46,7 +48,7 @@ public class ContactDto
         email = source.getEmail();
         website = source.getWebsite();
         qq = source.getQq();
-        marshalled =true;
+        marshalled = true;
     }
 
     @Override
@@ -78,6 +80,7 @@ public class ContactDto
         this.party = party;
     }
 
+    @NotNull
     public ContactCategoryDto getCategory() {
         return category;
     }
@@ -86,6 +89,7 @@ public class ContactDto
         this.category = category;
     }
 
+    @Size(max = Contact.ADDRESS_LENGTH)
     public String getAddress() {
         return address;
     }
@@ -94,6 +98,7 @@ public class ContactDto
         this.address = address;
     }
 
+    @Size(max = Contact.POSTCODE_LENGTH)
     public String getPostCode() {
         return postCode;
     }
@@ -102,6 +107,7 @@ public class ContactDto
         this.postCode = postCode;
     }
 
+    @Size(max = Contact.TEL_MOBILE_FAX_LENGTH)
     public String getTel() {
         return tel;
     }
@@ -110,6 +116,7 @@ public class ContactDto
         this.tel = tel;
     }
 
+    @Size(max = Contact.TEL_MOBILE_FAX_LENGTH)
     public String getMobile() {
         return mobile;
     }
@@ -118,6 +125,7 @@ public class ContactDto
         this.mobile = mobile;
     }
 
+    @Size(max = Contact.TEL_MOBILE_FAX_LENGTH)
     public String getFax() {
         return fax;
     }
@@ -126,6 +134,7 @@ public class ContactDto
         this.fax = fax;
     }
 
+    @Size(max = Contact.EMAIL_LENGTH)
     public String getEmail() {
         return email;
     }
@@ -134,6 +143,7 @@ public class ContactDto
         this.email = email;
     }
 
+    @Size(max = Contact.WEBSITE_LENGTH)
     public String getWebsite() {
         return website;
     }
@@ -142,6 +152,7 @@ public class ContactDto
         this.website = website;
     }
 
+    @Size(max = Contact.QQ_LENGTH)
     public String getQq() {
         return qq;
     }
@@ -150,29 +161,29 @@ public class ContactDto
         this.qq = qq;
     }
 
-//    @Override
-//    protected Integer naturalHashCode() {
-//        int hash = 0;
-//
-//        hash += party.hashCode();
-//
-//        if (category != null)
-//            hash += category.hashCode();
-//
-//        return hash;
-//    }
-//
-//    @Override
-//    protected Boolean naturalEquals(EntityDto<Contact, Integer> other) {
-//        ContactDto o = (ContactDto) other;
-//
-//        if (!party.equals(o.party))
-//            return false;
-//
-//        if (!Nullables.equals(category, o.category))
-//            return false;
-//
-//        return super.idEquals(other);
-//    }
+    // @Override
+    // protected Integer naturalHashCode() {
+    // int hash = 0;
+    //
+    // hash += party.hashCode();
+    //
+    // if (category != null)
+    // hash += category.hashCode();
+    //
+    // return hash;
+    // }
+    //
+    // @Override
+    // protected Boolean naturalEquals(EntityDto<Contact, Integer> other) {
+    // ContactDto o = (ContactDto) other;
+    //
+    // if (!party.equals(o.party))
+    // return false;
+    //
+    // if (!Nullables.equals(category, o.category))
+    // return false;
+    //
+    // return super.idEquals(other);
+    // }
 
 }

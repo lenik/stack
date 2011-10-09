@@ -1,6 +1,8 @@
 package com.bee32.sem.people.dto;
 
 import javax.free.ParseException;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.principal.GroupDto;
@@ -50,6 +52,7 @@ public class OrgUnitDto
         forWhichGroup = new GroupDto().ref(map.getInt("forWhichGroup"));
     }
 
+    @Size(min = 2, max = OrgUnit.NAME_LENGTH)
     public String getName() {
         return name;
     }
@@ -60,6 +63,7 @@ public class OrgUnitDto
         this.name = name;
     }
 
+    @NotNull
     public OrgDto getOrg() {
         return org;
     }

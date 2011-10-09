@@ -24,7 +24,7 @@ public class PartyRecord
     Party party;
     String text = "";
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     public PartyRecordCategory getCategory() {
         return category;
     }

@@ -1,6 +1,8 @@
 package com.bee32.sem.people.dto;
 
 import javax.free.ParseException;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.c.CEntityDto;
@@ -65,14 +67,16 @@ public class PersonRoleDto
         description = map.getString("description");
     }
 
-    public String getDescription() {
-        return description;
+    @NotNull
+    public PersonDto getPerson() {
+        return person;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPerson(PersonDto person) {
+        this.person = person;
     }
 
+    @NotNull
     public OrgDto getOrg() {
         return org;
     }
@@ -89,14 +93,7 @@ public class PersonRoleDto
         this.altOrgUnit = altOrgUnit;
     }
 
-    public PersonDto getPerson() {
-        return person;
-    }
-
-    public void setPerson(PersonDto person) {
-        this.person = person;
-    }
-
+    @Size(max = PersonRole.ROLE_LENGTH)
     public String getRole() {
         return role;
     }
@@ -105,6 +102,7 @@ public class PersonRoleDto
         this.role = role;
     }
 
+    @Size(max = PersonRole.ROLE_DETAIL_LENGTH)
     public String getRoleDetail() {
         return roleDetail;
     }
@@ -119,6 +117,15 @@ public class PersonRoleDto
 
     public void setOrgUnit(OrgUnitDto orgUnit) {
         this.orgUnit = orgUnit;
+    }
+
+    @Size(max = PersonRole.DESCRIPTION_LENGTH)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

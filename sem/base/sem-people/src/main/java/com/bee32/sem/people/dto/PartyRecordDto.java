@@ -3,6 +3,8 @@ package com.bee32.sem.people.dto;
 import java.util.Date;
 
 import javax.free.ParseException;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
@@ -46,6 +48,42 @@ public class PartyRecordDto
         party = new PartyDto(0).ref(partyId);
 
         text = map.getString("text");
+    }
+
+    @NotNull
+    public PartyRecordCategoryDto getCategory() {
+        return category;
+    }
+
+    public void setCategory(PartyRecordCategoryDto category) {
+        this.category = category;
+    }
+
+    @NotNull
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @NotNull
+    public PartyDto getParty() {
+        return party;
+    }
+
+    public void setParty(PartyDto party) {
+        this.party = party;
+    }
+
+    @Size(min = 5, max = PartyRecord.TEXT_LENGTH)
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
 }

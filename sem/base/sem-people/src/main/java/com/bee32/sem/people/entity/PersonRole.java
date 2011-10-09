@@ -19,6 +19,10 @@ public class PersonRole
 
     private static final long serialVersionUID = 1L;
 
+    public static final int ROLE_LENGTH = 30;
+    public static final int ROLE_DETAIL_LENGTH = 50;
+    public static final int DESCRIPTION_LENGTH = 200;
+
     Person person;
     Org org;
     OrgUnit orgUnit;
@@ -81,7 +85,7 @@ public class PersonRole
     /**
      * 职务
      */
-    @Column(length = 30)
+    @Column(length = ROLE_LENGTH)
     public String getRole() {
         return role;
     }
@@ -97,7 +101,7 @@ public class PersonRole
      * 负责业务
      */
     // @Basic(optional = false)
-    @Column(length = 50)
+    @Column(length = ROLE_DETAIL_LENGTH)
     public String getRoleDetail() {
         return roleDetail;
     }
@@ -109,7 +113,7 @@ public class PersonRole
         this.roleDetail = roleDetail;
     }
 
-    @Column(length = 200)
+    @Column(length = DESCRIPTION_LENGTH)
     public String getDescription() {
         return description;
     }

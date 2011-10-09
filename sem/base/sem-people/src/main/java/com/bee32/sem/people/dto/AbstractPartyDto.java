@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.free.ParseException;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
@@ -111,6 +114,7 @@ public class AbstractPartyDto<E extends Party>
             throws ParseException {
     }
 
+    @Size(min = 2, max = Party.NAME_LENGTH)
     public String getName() {
         return name;
     }
@@ -119,6 +123,7 @@ public class AbstractPartyDto<E extends Party>
         this.name = name;
     }
 
+    @Size(max = Party.FULLNAME_LENGTH)
     public String getFullName() {
         return fullName;
     }
@@ -127,6 +132,7 @@ public class AbstractPartyDto<E extends Party>
         this.fullName = fullName;
     }
 
+    @Size(max = Party.NICKNAME_LENGTH)
     public String getNickName() {
         return nickName;
     }
@@ -153,6 +159,7 @@ public class AbstractPartyDto<E extends Party>
         this.sidType = sidType;
     }
 
+    @Size(max = Party.SID_LENGTH)
     public String getSid() {
         return sid;
     }
@@ -177,6 +184,8 @@ public class AbstractPartyDto<E extends Party>
         this.birthday = birthday;
     }
 
+    @Min(15)
+    @Max(120)
     public Integer getAge() {
         if (birthday == null)
             return null;
@@ -208,6 +217,7 @@ public class AbstractPartyDto<E extends Party>
         return diff;
     }
 
+    @Size(max = Party.INTERESTS_LENGTH)
     public String getInterests() {
         return interests;
     }
@@ -216,6 +226,7 @@ public class AbstractPartyDto<E extends Party>
         this.interests = interests;
     }
 
+    @Size(max = Party.MEMO_LENGTH)
     public String getMemo() {
         return memo;
     }

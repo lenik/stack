@@ -3,6 +3,8 @@ package com.bee32.sem.people.dto;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.Size;
+
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
@@ -71,6 +73,7 @@ public class PersonDto
         return Gender.valueOf(sex).getDisplayName();
     }
 
+    @Size(max = Person.CENSUS_REGISTER_LENGTH)
     public String getCensusRegister() {
         return censusRegister;
     }
