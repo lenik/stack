@@ -313,6 +313,11 @@
 								update="chooseStockLocationForm:chooseStockLocationPanel" />
 						</t:panelGroup>
 
+                        <h:outputLabel value="数量" />
+                        <t:panelGroup colspan="3">
+                            <p:inputText value="#{outsourcingInAdminBean.orderItem.quantity}"/>
+                        </t:panelGroup>
+
 						<h:outputLabel value="单价" />
                         <p:inputText value="#{outsourcingInAdminBean.orderItemPrice}" />
                         <h:outputLabel value="币种" />
@@ -320,12 +325,6 @@
                             <f:selectItem itemValue="" itemLabel="--选择币种--" />
                             <f:selectItems value="#{outsourcingInAdminBean.currencies}" />
                         </p:selectOneMenu>
-
-
-                        <h:outputLabel value="数量" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText value="#{outsourcingInAdminBean.orderItem.quantity}"/>
-                        </t:panelGroup>
 
 
 						<h:panelGroup />

@@ -447,6 +447,11 @@
 								value="#{transferInAdminBean.orderItemOut.location.nodeText}" />
 						</t:panelGroup>
 
+                        <h:outputLabel value="数量" />
+                        <t:panelGroup colspan="3">
+                            <h:outputText value="#{transferInAdminBean.orderItemOut.quantity}"/>
+                        </t:panelGroup>
+
 						<h:outputLabel value="单价" />
                         <h:outputText value="#{transferInAdminBean.orderItemPrice}" />
                         <h:outputLabel value="币种" />
@@ -454,12 +459,6 @@
                             <f:selectItem itemValue="" itemLabel="--选择币种--" />
                             <f:selectItems value="#{transferInAdminBean.currencies}" />
                         </p:selectOneMenu>
-
-
-                        <h:outputLabel value="数量" />
-                        <t:panelGroup colspan="3">
-                            <h:outputText value="#{transferInAdminBean.orderItemOut.quantity}"/>
-                        </t:panelGroup>
 
                         <t:panelGroup colspan="4">
                             <t:panelGrid columns="4">

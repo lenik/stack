@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.faces.model.SelectItem;
 
@@ -30,8 +32,10 @@ import com.bee32.sem.people.dto.OrgUnitDto;
 import com.bee32.sem.people.entity.Org;
 import com.bee32.sem.people.entity.OrgUnit;
 import com.bee32.sem.people.util.PeopleCriteria;
+import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.monetary.CurrencyUtil;
 import com.bee32.sem.world.monetary.MCValue;
+import com.bee32.sem.world.thing.UnitDto;
 
 @Scope("view")
 public abstract class StockOrderBaseBean
@@ -68,6 +72,12 @@ public abstract class StockOrderBaseBean
     private StockOrderItemDto selectedStockQueryItem;
 
     protected List<StockOrderItemDto> itemsNeedToRemoveWhenModify = new ArrayList<StockOrderItemDto>();
+
+
+    private String materialUnitId;
+    private BigDecimal materialQuantity;
+    private BigDecimal materialPrice;
+
 
     public StockWarehouseDto getSelectedWarehouse() {
         return selectedWarehouse;
@@ -244,6 +254,45 @@ public abstract class StockOrderBaseBean
         this.selectedStockQueryItem = selectedStockQueryItem;
     }
 
+    public String getMaterialUnitId() {
+        return materialUnitId;
+    }
+
+    public void setMaterialUnitId(String materialUnitId) {
+        this.materialUnitId = materialUnitId;
+    }
+
+    public List<SelectItem> getMaterialUnits() {
+        if(orderItem.getMaterial() == null) {
+            return new ArrayList<SelectItem>();
+        }
+
+        List<UnitDto> unitDtoList = new ArrayList<UnitDto>();
+        for(UnitDto u : orderItem.getMaterial().getUnitConv().getScaleMap().keySet()) {
+            unitDtoList.add(u);
+        }
+
+        return UIHelper.selectItemsFromDict2(unitDtoList);
+    }
+
+    public BigDecimal getMaterialQuantity() {
+        return materialQuantity;
+    }
+
+    public void setMaterialQuantity(BigDecimal materialQuantity) {
+        this.materialQuantity = materialQuantity;
+    }
+
+    public BigDecimal getMaterialPrice() {
+        return materialPrice;
+    }
+
+    public void setMaterialPrice(BigDecimal materialPrice) {
+        this.materialPrice = materialPrice;
+    }
+
+
+
     public void newItem() {
         orderItem = new StockOrderItemDto().create();
         orderItem.setParent(stockOrder);
@@ -358,5 +407,27 @@ public abstract class StockOrderBaseBean
         orderItem.setLocation(selectedStockQueryItem.getLocation());
         orderItemPrice = selectedStockQueryItem.getPrice().getValue();
         orderItemPriceCurrency = selectedStockQueryItem.getPrice().getCurrency();
+    }
+
+    public void listUnitConv() {
+
+    }
+
+    public void doUnitConv() {
+        Map<UnitDto, Double> scaleMap = orderItem.getMaterial().getUnitConv().getScaleMap();
+        Set<UnitDto> scaleSet = scaleMap.keySet();
+
+        Double scale = 1D;
+        for(UnitDto u : scaleSet) {
+            if(u.getId().equals(materialUnitId)) {
+                scale = scaleMap.get(u);
+                break;
+            }
+        }
+
+        orderItem.setQuantity(materialQuantity.multiply(BigDecimal.valueOf(scale)));
+        orderItemPrice =  materialPrice.multiply(BigDecimal.valueOf(scale));
+        MCValue price = new MCValue(orderItemPriceCurrency, orderItemPrice);
+        orderItem.setPrice(price);
     }
 }
