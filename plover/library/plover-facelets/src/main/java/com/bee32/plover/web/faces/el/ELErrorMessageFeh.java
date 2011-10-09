@@ -3,6 +3,7 @@ package com.bee32.plover.web.faces.el;
 import javax.el.ELException;
 import javax.free.IdentifiedException;
 
+import com.bee32.plover.inject.NotAComponent;
 import com.bee32.plover.web.faces.AnnotatedFaceletExceptionHandler;
 import com.bee32.plover.web.faces.ExceptionHandleResult;
 import com.bee32.plover.web.faces.FaceletExceptionContext;

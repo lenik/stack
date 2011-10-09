@@ -4,10 +4,6 @@ import java.util.TimeZone;
 
 import org.junit.Assert;
 
-import com.bee32.plover.util.i18n.ILocaleAware;
-import com.bee32.plover.util.i18n.TimeZoneConfig;
-import com.bee32.plover.util.i18n.TimeZoneOrder;
-
 public class TimeZoneConfigTest
         extends Assert
         implements ILocaleAware {

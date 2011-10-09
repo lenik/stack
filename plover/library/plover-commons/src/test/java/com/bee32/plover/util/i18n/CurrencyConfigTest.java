@@ -4,10 +4,6 @@ import java.util.Currency;
 
 import org.junit.Assert;
 
-import com.bee32.plover.util.i18n.CurrencyConfig;
-import com.bee32.plover.util.i18n.ICurrencyAware;
-import com.bee32.plover.util.i18n.ILocaleAware;
-
 public class CurrencyConfigTest
         extends Assert
         implements ICurrencyAware, ILocaleAware {

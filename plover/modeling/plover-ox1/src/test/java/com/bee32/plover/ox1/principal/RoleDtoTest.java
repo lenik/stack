@@ -3,8 +3,6 @@ package com.bee32.plover.ox1.principal;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.bee32.plover.ox1.principal.RoleDto;
-
 public class RoleDtoTest
         extends Assert {
 
