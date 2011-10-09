@@ -1,7 +1,6 @@
 package com.bee32.plover.web.faces.test;
 
-import javax.validation.constraints.Size;
-
+import com.bee32.plover.model.validation.Size;
 import com.bee32.plover.web.faces.view.ViewBean;
 
 public class ValidBase

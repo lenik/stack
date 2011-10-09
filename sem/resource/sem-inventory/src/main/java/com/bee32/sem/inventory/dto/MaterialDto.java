@@ -6,10 +6,10 @@ import java.util.List;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
-import javax.validation.constraints.Size;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.Size;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.entity.Material;

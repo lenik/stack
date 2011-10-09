@@ -2,10 +2,10 @@ package com.bee32.plover.web.faces.test;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import org.springframework.context.annotation.Scope;
 
+import com.bee32.plover.model.validation.Size;
 import com.bee32.plover.util.TextUtil;
 
 @Scope("view")

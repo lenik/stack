@@ -3,8 +3,7 @@ package com.bee32.sem.people.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.validation.constraints.Size;
-
+import com.bee32.plover.model.validation.Size;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;

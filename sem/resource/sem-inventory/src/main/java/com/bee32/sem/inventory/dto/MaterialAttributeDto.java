@@ -3,10 +3,10 @@ package com.bee32.sem.inventory.dto;
 import java.io.Serializable;
 
 import javax.free.ParseException;
-import javax.validation.constraints.Size;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.model.validation.Size;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.inventory.entity.MaterialAttribute;
