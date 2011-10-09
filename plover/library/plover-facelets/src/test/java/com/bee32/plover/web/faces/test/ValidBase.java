@@ -1,6 +1,5 @@
 package com.bee32.plover.web.faces.test;
 
-import com.bee32.plover.model.validation.Size;
 import com.bee32.plover.web.faces.view.ViewBean;
 
 public class ValidBase
@@ -10,7 +9,7 @@ public class ValidBase
 
     private String userName;
 
-    @Size(min = 5, max = 20, message = "Please enter a valid username (5-20 characters)")
+    //@Size(min = 5, max = 20, message = "Please enter a valid username (5-20 characters)")
     public String getUserName() {
         return userName;
     }

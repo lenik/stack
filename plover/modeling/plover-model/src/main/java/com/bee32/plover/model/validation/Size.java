@@ -36,6 +36,6 @@ public @interface Size {
 
     boolean normalize() default true;
 
-    String message() default "{javax.validation.constraints.Size.message}";
+    String message() default "{com.bee32.plover.model.validation.Size}";
 
 }
