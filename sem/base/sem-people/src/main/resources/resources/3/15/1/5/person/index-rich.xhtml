@@ -53,8 +53,8 @@
 							update="personForm" async="true" />
 						<p:commandButton value="取消"
 							actionListener="#{personAdminBean.doCancel}"
-							disabled="#{!personAdminBean.editable}"
-							update="personForm" async="true" />
+							disabled="#{personAdminBean.person == null}"
+							update="personForm" async="true" immediate="true" />
 						<p:divider />
 						<!--
 						<p:commandButton value="审核"
@@ -157,7 +157,7 @@
 
 						</p:dataTable>
 					</p:tab>
-					<p:tab title="联系人详细">
+					<p:tab title="联系人详细" rendered="#{personAdminBean.person != null}">
 
 						<p:panel header="详细信息" toggleable="true">
 							<h:inputHidden id="personId" value="#{personAdminBean.person.id}" />

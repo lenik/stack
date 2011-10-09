@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -91,8 +92,6 @@ public class PersonAdminBean
     }
 
     public PersonDto getPerson() {
-        if (person == null)
-            _newPerson();
         return person;
     }
 
@@ -144,7 +143,7 @@ public class PersonAdminBean
     }
 
     public void doNew() {
-        _newPerson();
+        person = new PersonDto().create();
 
         setActiveTab(TAB_FORM);
         editable = true;
@@ -195,9 +194,12 @@ public class PersonAdminBean
 
     public void doCancel() {
         setActiveTab(TAB_INDEX);
-        editable = false;
 
-        _newPerson();
+        TabView personTab = (TabView) findComponent("personForm:personTab");
+        personTab.setActiveIndex(TAB_INDEX);
+
+        editable = false;
+        person = null;
     }
 
     public void doDetail() {
