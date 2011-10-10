@@ -1,6 +1,7 @@
 package com.bee32.sem.inventory.web.business;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Currency;
@@ -267,6 +268,10 @@ public abstract class StockOrderBaseBean
             return new ArrayList<SelectItem>();
         }
 
+        if(orderItem.getMaterial().getUnitConv() == null) {
+            return new ArrayList<SelectItem>();
+        }
+
         List<UnitDto> unitDtoList = new ArrayList<UnitDto>();
         for(UnitDto u : orderItem.getMaterial().getUnitConv().getScaleMap().keySet()) {
             unitDtoList.add(u);
@@ -325,6 +330,8 @@ public abstract class StockOrderBaseBean
 
     public void chooseMaterial() {
         orderItem.setMaterial(selectedMaterial);
+
+        selectedMaterial = null;
     }
 
     public void doSaveItem() {
@@ -409,8 +416,19 @@ public abstract class StockOrderBaseBean
         orderItemPriceCurrency = selectedStockQueryItem.getPrice().getCurrency();
     }
 
-    public void listUnitConv() {
+    public void checkUnitConv() {
+        if(orderItem.getMaterial() == null) {
+            uiLogger.error("你没有选择物料!");
+            return;
+        }
 
+        if(orderItem.getMaterial().getUnitConv() == null) {
+            uiLogger.error("你选择的物料没有可转换的单位!");
+            return;
+        }
+
+        materialQuantity = null;
+        materialPrice = null;
     }
 
     public void doUnitConv() {
@@ -425,8 +443,8 @@ public abstract class StockOrderBaseBean
             }
         }
 
-        orderItem.setQuantity(materialQuantity.multiply(BigDecimal.valueOf(scale)));
-        orderItemPrice =  materialPrice.multiply(BigDecimal.valueOf(scale));
+        orderItem.setQuantity(materialQuantity.divide(BigDecimal.valueOf(scale), 3, RoundingMode.HALF_UP));   //主单位数量=换算单位数量/换算率
+        orderItemPrice =  (materialQuantity.multiply(materialPrice)).divide(orderItem.getQuantity(), 3, RoundingMode.HALF_UP);    //主单位单价=换算单位数量*换算单位单价/主单位数量
         MCValue price = new MCValue(orderItemPriceCurrency, orderItemPrice);
         orderItem.setPrice(price);
     }

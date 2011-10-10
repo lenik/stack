@@ -222,6 +222,13 @@
 
                     <p:column>
                         <f:facet name="header">
+                            <h:outputText value="单位"/>
+                        </f:facet>
+                        <h:outputText value="#{item.material.unit.name}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
                             <h:outputText value="批号"/>
                         </f:facet>
                         <h:outputText value="#{item.batch}" />
@@ -262,6 +269,12 @@
                         <h:outputText value="#{item.quantity}" />
                     </p:column>
 
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="备注"/>
+                        </f:facet>
+                        <h:outputText value="#{item.description}" />
+                    </p:column>
 
 					<p:column>
 						<f:facet name="header">操作</f:facet>
