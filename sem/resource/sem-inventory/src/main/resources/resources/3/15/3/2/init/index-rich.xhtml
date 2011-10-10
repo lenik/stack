@@ -249,9 +249,15 @@
 						</t:panelGroup>
 
                         <h:outputLabel value="数量" />
-                        <t:panelGroup colspan="3">
+                        <t:panelGroup colspan="2">
                             <p:inputText value="#{initAdminBean.orderItem.quantity}"/>
+                            <h:outputText value="#{initAdminBean.orderItem.material.unit.name}"/>
                         </t:panelGroup>
+                        <p:commandButton
+                            actionListener="#{initAdminBean.checkUnitConv}"
+                            update="unitConvForm:unitConvPanel"
+                            value="按换算单位输入数量"
+                            oncomplete="unitConvDialog.show()"/>
 
 						<h:outputLabel value="单价" />
                         <p:inputText value="#{initAdminBean.orderItemPrice}" />
@@ -424,7 +430,41 @@
             </p:confirmDialog>
         </h:form>
 
+        <h:form id="unitConvForm">
+            <p:dialog header="按换算单位输入数量" widgetVar="unitConvDialog" modal="true"
+                height="400" width="640">
+                <h:panelGroup id="unitConvPanel">
 
+                    <t:panelGrid columns="2">
+                        <h:outputText value="换算单位:"/>
+                        <p:selectOneMenu value="#{initAdminBean.materialUnitId}" style="width:200px;">
+                            <f:selectItems value="#{initAdminBean.materialUnits}" />
+                        </p:selectOneMenu>
+
+                        <h:outputText value="数量:"/>
+                        <p:inputText value="#{initAdminBean.materialQuantity}"/>
+
+                        <h:outputText value="单价:"/>
+                        <p:inputText value="#{initAdminBean.materialPrice}"/>
+
+                        <h:outputText value="币种:"/>
+                        <p:selectOneMenu value="#{initAdminBean.orderItemPriceCurrency}" style="width:200px;">
+                            <f:selectItem itemValue="" itemLabel="--选择币种--" />
+                            <f:selectItems value="#{initAdminBean.currencies}" />
+                        </p:selectOneMenu>
+                    </t:panelGrid>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="确定"
+                            actionListener="#{initAdminBean.doUnitConv}"
+                            oncomplete="unitConvDialog.hide();"
+                            update="itemForm:itemPanel" async="true" />
+                        <p:commandButton value="取消"
+                            oncomplete="unitConvDialog.hide();" />
+                    </h:panelGrid>
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
 
 	</ui:define>
 </ui:composition>
