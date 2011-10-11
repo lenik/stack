@@ -63,119 +63,141 @@
                 <p:tabView id="partTab"
                     activeIndex="#{bomAdminBean.activeTab}">
                     <p:tab id="partList" title="BOM列表">
-                        <p:dataTable id="parts" var="part"
-                            value="#{bomAdminBean.parts}"
-                            paginator="true" rows="#{viewConfig.pageSize}" lazy="true"
-                            paginatorTemplate="#{viewConfig.paginatorTemplate}"
-                            rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
-                            resizableColumns="true"
-                            rowIndexVar="rowIndex">
+                        <t:panelGrid columns="2">
+                            <p:treeTable id="categoryTree"
+                                value="#{bomAdminBean.materialCategoryTree.rootNode}"
+                                var="node" dynamic="true"
+                                selectionMode="single"
+                                selection="#{bomAdminBean.materialCategoryTree.selectedNode}"
+                                scrollable="true" scrollHeight="480"
+                                scrollWidth="300">
 
-                            <p:ajax event="rowSelect"
-                                listener="#{bomAdminBean.onRowSelect}"
-                                update="bomForm:partToolbar priceForm:partName" />
-                            <p:ajax event="rowUnselect"
-                                listener="#{bomAdminBean.onRowUnselect}"
-                                update="bomForm:partToolbar priceForm:partName" />
+                                <p:ajax event="select"
+                                    listener="#{bomAdminBean.materialCategoryTree.onNodeSelect}"
+                                    update="mainForm:partTab:parts" />
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="序号" />
-                                </f:facet>
-                                <h:outputText value="#{rowIndex + 1}" />
-                            </p:column>
+                                <p:column>
+                                    <f:facet name="header">分类名称</f:facet>
+                                    <h:outputText value="#{node.name}" />
+                                </p:column>
+                            </p:treeTable>
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="物料" />
-                                </f:facet>
-                                <h:outputText
-                                    value="#{part.target.label}" />
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="规格型号" />
-                                </f:facet>
-                                <h:outputText
-                                    value="#{part.target.modelSpec}" />
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="创建人" />
-                                </f:facet>
-                                <h:outputText
-                                    value="#{part.owner.name}" />
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="建立日期" />
-                                </f:facet>
-                                <h:outputText
-                                    value="#{part.createdDate}">
-                                    <f:convertDateTime
-                                        pattern="yyyy-MM-dd"
-                                        timeZone="Asia/Shanghai" />
-                                </h:outputText>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="生效日期" />
-                                </f:facet>
-                                <h:outputText
-                                    value="#{part.validDateFrom}">
-                                    <f:convertDateTime
-                                        pattern="yyyy-MM-dd"
-                                        timeZone="Asia/Shanghai" />
-                                </h:outputText>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="失效日期" />
-                                </f:facet>
-                                <h:outputText
-                                    value="#{part.validDateTo}">
-                                    <f:convertDateTime
-                                        pattern="yyyy-MM-dd"
-                                        timeZone="Asia/Shanghai" />
-                                </h:outputText>
-                            </p:column>
+                            <p:dataTable id="parts" var="part"
+                                value="#{bomAdminBean.parts}"
+                                paginator="true"
+                                rows="#{viewConfig.pageSize}"
+                                lazy="true"
+                                paginatorTemplate="#{viewConfig.paginatorTemplate}"
+                                rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}"
+                                resizableColumns="true"
+                                rowIndexVar="rowIndex">
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="类型" />
-                                </f:facet>
-                                <h:outputText
-                                    value="#{part.xrefCount == 0 ? '产品' : '半成品'}" />
-                            </p:column>
+                                <p:ajax event="rowSelect"
+                                    listener="#{bomAdminBean.onRowSelect}"
+                                    update="bomForm:partToolbar priceForm:partName" />
+                                <p:ajax event="rowUnselect"
+                                    listener="#{bomAdminBean.onRowUnselect}"
+                                    update="bomForm:partToolbar priceForm:partName" />
 
-                            <p:column>
-                                <f:facet name="header">操作</f:facet>
-                                <t:panelGroup>
-                                    <p:commandLink value="删除"
-                                        oncomplete="deletePartConfirmDialog.show();">
-                                        <f:setPropertyActionListener
-                                            value="#{part}"
-                                            target="#{bomAdminBean.selectedPart}" />
-                                    </p:commandLink>
-                                    <p:spacer width="10" />
-                                    <p:commandLink value="明细"
-                                        action="#{bomAdminBean.showPartDetail}"
-                                        update="bomForm">
-                                        <f:setPropertyActionListener
-                                            value="#{part}"
-                                            target="#{bomAdminBean.selectedPart}" />
-                                    </p:commandLink>
-                                    <p:spacer width="10" />
-                                    <p:commandLink value="价格"
-                                        onclick="priceDlg.show();">
-                                        <f:setPropertyActionListener
-                                            value="#{part}"
-                                            target="#{bomAdminBean.selectedPart}" />
-                                    </p:commandLink>
-                                </t:panelGroup>
-                            </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="序号" />
+                                    </f:facet>
+                                    <h:outputText
+                                        value="#{rowIndex + 1}" />
+                                </p:column>
 
-                        </p:dataTable>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="物料" />
+                                    </f:facet>
+                                    <h:outputText
+                                        value="#{part.target.label}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="规格型号" />
+                                    </f:facet>
+                                    <h:outputText
+                                        value="#{part.target.modelSpec}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="创建人" />
+                                    </f:facet>
+                                    <h:outputText
+                                        value="#{part.owner.name}" />
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="建立日期" />
+                                    </f:facet>
+                                    <h:outputText
+                                        value="#{part.createdDate}">
+                                        <f:convertDateTime
+                                            pattern="yyyy-MM-dd"
+                                            timeZone="Asia/Shanghai" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="生效日期" />
+                                    </f:facet>
+                                    <h:outputText
+                                        value="#{part.validDateFrom}">
+                                        <f:convertDateTime
+                                            pattern="yyyy-MM-dd"
+                                            timeZone="Asia/Shanghai" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="失效日期" />
+                                    </f:facet>
+                                    <h:outputText
+                                        value="#{part.validDateTo}">
+                                        <f:convertDateTime
+                                            pattern="yyyy-MM-dd"
+                                            timeZone="Asia/Shanghai" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="类型" />
+                                    </f:facet>
+                                    <h:outputText
+                                        value="#{part.xrefCount == 0 ? '产品' : '半成品'}" />
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">操作</f:facet>
+                                    <t:panelGroup>
+                                        <p:commandLink value="删除"
+                                            oncomplete="deletePartConfirmDialog.show();">
+                                            <f:setPropertyActionListener
+                                                value="#{part}"
+                                                target="#{bomAdminBean.selectedPart}" />
+                                        </p:commandLink>
+                                        <p:spacer width="10" />
+                                        <p:commandLink value="明细"
+                                            action="#{bomAdminBean.showPartDetail}"
+                                            update="bomForm">
+                                            <f:setPropertyActionListener
+                                                value="#{part}"
+                                                target="#{bomAdminBean.selectedPart}" />
+                                        </p:commandLink>
+                                        <p:spacer width="10" />
+                                        <p:commandLink value="价格"
+                                            onclick="priceDlg.show();">
+                                            <f:setPropertyActionListener
+                                                value="#{part}"
+                                                target="#{bomAdminBean.selectedPart}" />
+                                        </p:commandLink>
+                                    </t:panelGroup>
+                                </p:column>
+                            </p:dataTable>
+                        </t:panelGrid>
                     </p:tab>
                     <p:tab id="partDetail" title="BOM详细">
                         <p:panel header="BOM信息" toggleable="true">

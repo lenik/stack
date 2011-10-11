@@ -15,6 +15,7 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.misc.DummyDto;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
@@ -51,6 +52,8 @@ public class BomAdminBean
     private PartDto selectedFindedPart;
 
     private BigDecimal price;
+
+    private MaterialCategoryTreeModel materialCategoryTree;
 
     public BomAdminBean() {
         EntityDataModelOptions<Part, PartDto> options = new EntityDataModelOptions<Part, PartDto>(//
@@ -164,6 +167,9 @@ public class BomAdminBean
         return false;
     }
 
+    public MaterialCategoryTreeModel getMaterialCategoryTree() {
+        return materialCategoryTree;
+    }
 
 
 

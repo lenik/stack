@@ -98,6 +98,9 @@
                     <p:column headerText="当前基价">
                         <h:outputText value="#{material.currentPrice}" />
                     </p:column>
+                    <p:column headerText="附件数量">
+                        <h:outputText value="#{fn:length(material.attachments)}" />
+                    </p:column>
                     <p:column headerText="操作" style="width:80px;">
                         <p:commandLink title="详细" update=":dialogForm:material"
                             actionListener="#{materialViewBean.setMaterialDialogDisable}"
