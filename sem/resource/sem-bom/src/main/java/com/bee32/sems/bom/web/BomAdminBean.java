@@ -13,8 +13,14 @@ import org.springframework.context.annotation.Scope;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.ox1.tree.TreeCriteria;
+import com.bee32.sem.frame.ui.SelectionAdapter;
+import com.bee32.sem.frame.ui.SelectionEvent;
+import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.MaterialCategory;
+import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.misc.DummyDto;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
@@ -63,6 +69,29 @@ public class BomAdminBean
 
         refreshPartCount();
     }
+
+
+    public void initMaterialCategoryTree() {
+        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
+        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
+                ~MaterialCategoryDto.MATERIALS, rootCategories);
+
+        materialCategoryTree = new MaterialCategoryTreeModel(rootCategoryDtos);
+        materialCategoryTree.addListener(new SelectionAdapter() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void itemSelected(SelectionEvent event) {
+                MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) event.getSelection();
+                List<Material> _materials = serviceFor(Material.class).list(//
+                        // Order.asc("name"),
+                        MaterialCriteria.categoryOf(materialCategoryDto.getId()));
+                materialList = DTOs.mrefList(MaterialDto.class, _materials);
+            }
+        });
+    }
+
+
 
     void refreshPartCount() {
         int count = serviceFor(Part.class).count();
