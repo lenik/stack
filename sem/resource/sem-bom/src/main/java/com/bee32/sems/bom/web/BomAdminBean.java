@@ -71,25 +71,25 @@ public class BomAdminBean
     }
 
 
-    public void initMaterialCategoryTree() {
-        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
-        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
-                ~MaterialCategoryDto.MATERIALS, rootCategories);
-
-        materialCategoryTree = new MaterialCategoryTreeModel(rootCategoryDtos);
-        materialCategoryTree.addListener(new SelectionAdapter() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void itemSelected(SelectionEvent event) {
-                MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) event.getSelection();
-                List<Material> _materials = serviceFor(Material.class).list(//
-                        // Order.asc("name"),
-                        MaterialCriteria.categoryOf(materialCategoryDto.getId()));
-                materialList = DTOs.mrefList(MaterialDto.class, _materials);
-            }
-        });
-    }
+//    public void initMaterialCategoryTree() {
+//        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
+//        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
+//                ~MaterialCategoryDto.MATERIALS, rootCategories);
+//
+//        materialCategoryTree = new MaterialCategoryTreeModel(rootCategoryDtos);
+//        materialCategoryTree.addListener(new SelectionAdapter() {
+//            private static final long serialVersionUID = 1L;
+//
+//            @Override
+//            public void itemSelected(SelectionEvent event) {
+//                MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) event.getSelection();
+//                List<Material> _materials = serviceFor(Material.class).list(//
+//                        // Order.asc("name"),
+//                        MaterialCriteria.categoryOf(materialCategoryDto.getId()));
+//                materialList = DTOs.mrefList(MaterialDto.class, _materials);
+//            }
+//        });
+//    }
 
 
 
