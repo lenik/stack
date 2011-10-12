@@ -64,9 +64,6 @@
                     activeIndex="#{bomAdminBean.activeTab}">
                     <p:tab id="partList" title="BOM列表">
                         <t:panelGrid columns="2">
-                            <h:panelGroup/>
-
-                            <!--
                             <p:treeTable id="categoryTree"
                                 value="#{bomAdminBean.materialCategoryTree.rootNode}"
                                 var="node" dynamic="true"
@@ -77,14 +74,13 @@
 
                                 <p:ajax event="select"
                                     listener="#{bomAdminBean.materialCategoryTree.onNodeSelect}"
-                                    update="mainForm:partTab:parts" />
+                                    update="bomForm:partTab:parts" />
 
                                 <p:column>
                                     <f:facet name="header">分类名称</f:facet>
                                     <h:outputText value="#{node.name}" />
                                 </p:column>
                             </p:treeTable>
-                            -->
 
                             <p:dataTable id="parts" var="part"
                                 value="#{bomAdminBean.parts}"

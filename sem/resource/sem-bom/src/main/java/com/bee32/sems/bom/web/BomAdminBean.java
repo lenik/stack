@@ -20,7 +20,6 @@ import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.MaterialCategory;
-import com.bee32.sem.inventory.util.MaterialCriteria;
 import com.bee32.sem.inventory.web.dialogs.MaterialCategoryTreeModel;
 import com.bee32.sem.misc.DummyDto;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
@@ -62,39 +61,36 @@ public class BomAdminBean
     private MaterialCategoryTreeModel materialCategoryTree;
 
     public BomAdminBean() {
-        EntityDataModelOptions<Part, PartDto> options = new EntityDataModelOptions<Part, PartDto>(//
-                Part.class, PartDto.class, 0, //
-                Order.desc("id"));
-        parts = UIHelper.<Part, PartDto> buildLazyDataModel(options);
-
-        refreshPartCount();
+        initMaterialCategoryTree();
     }
 
+    public void initMaterialCategoryTree() {
+        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
+        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
+                ~MaterialCategoryDto.MATERIALS, rootCategories);
 
-//    public void initMaterialCategoryTree() {
-//        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
-//        List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
-//                ~MaterialCategoryDto.MATERIALS, rootCategories);
-//
-//        materialCategoryTree = new MaterialCategoryTreeModel(rootCategoryDtos);
-//        materialCategoryTree.addListener(new SelectionAdapter() {
-//            private static final long serialVersionUID = 1L;
-//
-//            @Override
-//            public void itemSelected(SelectionEvent event) {
-//                MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) event.getSelection();
-//                List<Material> _materials = serviceFor(Material.class).list(//
-//                        // Order.asc("name"),
-//                        MaterialCriteria.categoryOf(materialCategoryDto.getId()));
-//                materialList = DTOs.mrefList(MaterialDto.class, _materials);
-//            }
-//        });
-//    }
+        materialCategoryTree = new MaterialCategoryTreeModel(rootCategoryDtos);
+        materialCategoryTree.addListener(new SelectionAdapter() {
+            private static final long serialVersionUID = 1L;
 
+            @Override
+            public void itemSelected(SelectionEvent event) {
+                MaterialCategoryDto materialCategoryDto = (MaterialCategoryDto) event.getSelection();
 
+                EntityDataModelOptions<Part, PartDto> options = new EntityDataModelOptions<Part, PartDto>(//
+                        Part.class, PartDto.class, 0, //
+                        BomCriteria.listPartByCategory(materialCategoryDto.getId()),
+                        Order.desc("id"));
+                parts = UIHelper.<Part, PartDto> buildLazyDataModel(options);
 
-    void refreshPartCount() {
-        int count = serviceFor(Part.class).count();
+                refreshPartCount(materialCategoryDto.getId());
+
+            }
+        });
+    }
+
+    void refreshPartCount(int materialCategoryId) {
+        int count = serviceFor(Part.class).count(BomCriteria.listPartByCategory(materialCategoryId));
         parts.setRowCount(count);
     }
 
@@ -240,7 +236,8 @@ public class BomAdminBean
             Part _part = part.unmarshal(this);
             serviceFor(Part.class).saveOrUpdate(_part);
 
-            refreshPartCount();
+            MaterialCategoryDto c = (MaterialCategoryDto) materialCategoryTree.getSelectedNode().getData();
+            refreshPartCount(c.getId());
 
             setActiveTab(TAB_INDEX);
             editable = false;
@@ -269,7 +266,8 @@ public class BomAdminBean
     public void refreshPart() {
         setActiveTab(TAB_INDEX);
         selectedPart = null;
-        refreshPartCount();
+        MaterialCategoryDto c = (MaterialCategoryDto) materialCategoryTree.getSelectedNode().getData();
+        refreshPartCount(c.getId());
     }
 
     public void newItem() {
