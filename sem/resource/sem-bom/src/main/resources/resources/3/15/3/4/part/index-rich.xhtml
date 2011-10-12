@@ -30,6 +30,10 @@
 
             .partColumnValue {
             }
+
+            .alignTop {
+                vertical-align:top;
+            }
         </h:outputStylesheet>
 
         <h:form id="bomForm">
@@ -63,7 +67,7 @@
                 <p:tabView id="partTab"
                     activeIndex="#{bomAdminBean.activeTab}">
                     <p:tab id="partList" title="BOM列表">
-                        <t:panelGrid columns="2">
+                        <t:panelGrid columns="2" columnClasses="alignTop, alignTop">
                             <p:treeTable id="categoryTree"
                                 value="#{bomAdminBean.materialCategoryTree.rootNode}"
                                 var="node" dynamic="true"

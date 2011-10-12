@@ -10,6 +10,7 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 
+import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
@@ -386,9 +387,18 @@ public class BomAdminBean
     }
 
     public void chooseMaterial() {
-        if (partOrComponent)
+        if (partOrComponent) {
+            // 检查此物料(成品)是否已经有bom存在
+
+            List<Part> partList = serviceFor(Part.class).list(
+                    new Equals("target.id", selectedMaterial.getId()));
+
+            if(partList != null & partList.size() > 0) {
+                uiLogger.info("此物料已经存在BOM信息,继续新增的话,此物料将存在多个BOM信息");
+            }
+
             part.setTarget(selectedMaterial);
-        else {
+        } else {
             item.setMaterial(selectedMaterial);
             item.setPart(null);
         }
