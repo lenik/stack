@@ -58,7 +58,7 @@ public class ChanceActionBean
     static final String DATATABLE_ACTIONS = "chanceActionForm:mainTab:actions";
 
     static final String DATATABLE_PARTIES = "customerForm:customers";
-    static final String DATATABLE_PARTNERS = "partnerForm:partners";
+    static final String DATATABLE_PARTNERS = "partnerForm:partnersTable";
 
     // 查找日志
     private Date searchBeginTime;
@@ -153,7 +153,7 @@ public class ChanceActionBean
     }
 
     public void chooseCustomerForm() {
-        DataTable table = (DataTable) findComponent(DATATABLE_PARTIES);
+        //DataTable table = (DataTable) findComponent(DATATABLE_PARTIES);
         // XXX table.clearSelectedRowIndexes();
     }
 
@@ -166,7 +166,7 @@ public class ChanceActionBean
     }
 
     public void choosePartnerForm() {
-        DataTable table = (DataTable) findComponent(DATATABLE_PARTNERS);
+        //DataTable table = (DataTable) findComponent(DATATABLE_PARTNERS);
         // XXX table.clearSelectedRowIndexes();
     }
 
@@ -241,7 +241,7 @@ public class ChanceActionBean
             findComponentEx(BUTTON_SAVEACTION).setEnabled(false);
             findComponentEx(BUTTON_RESET).setEnabled(false);
 
-            DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
+            //DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
             // XXX table.clearSelectedRowIndexes();
 
             editable = false;
@@ -255,7 +255,7 @@ public class ChanceActionBean
 
     public void cancel() {
         setActiveTab(TAB_INDEX);
-        DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
+        //DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
         // XXX table.clearSelectedRowIndexes();
         findComponent(DETAIL_TAB).setRendered(false);
         findComponentEx(BUTTON_EDITACTION).setEnabled(true);
@@ -274,13 +274,19 @@ public class ChanceActionBean
     }
 
     public void addCustomer() {
-        for (PartyDto party : selectedCustomers)
+        for (PartyDto party : selectedCustomers) {
             action.addParty(party);
+        }
+
+        selectedCustomers = new PartyDto[0];
     }
 
     public void addPartner() {
-        for (UserDto partner : choosedPartners)
+        for (UserDto partner : choosedPartners) {
             action.addPartner(partner);
+        }
+
+        choosedPartners = new UserDto[0];
     }
 
     public List<SelectItem> getChanceStages() {
@@ -361,7 +367,7 @@ public class ChanceActionBean
             init();
             setActiveTab(TAB_INDEX);
             findComponent(DETAIL_TAB).setRendered(false);
-            DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
+            //DataTable table = (DataTable) findComponent(DATATABLE_ACTIONS);
             // XXX table.clearSelectedRowIndexes();
 
             findComponentEx(BUTTON_NEWACTION).setEnabled(true);

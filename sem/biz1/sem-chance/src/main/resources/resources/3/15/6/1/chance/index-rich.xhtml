@@ -326,7 +326,9 @@
                         <p:outputPanel rendered="#{chanceBean.parties != null}">
                             <p:dataTable var="party" value="#{chanceBean.parties.list}" resizableColumns="true"
                                 selection="#{chanceBean.parties.selection}" selectionMode="single" rowKey="#{party.id}"
-                                rowIndexVar="rowIndex">
+                                rowIndexVar="rowIndex"
+                                scrollable="true"
+                                scrollWidth="580" scrollHeight="380">
 
                                 <p:column headerText="序号" style="width:45px;">
                                     <h:outputText value="#{rowIndex + 1}" />

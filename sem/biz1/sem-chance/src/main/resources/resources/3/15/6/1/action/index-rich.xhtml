@@ -264,7 +264,9 @@
                 </h:panelGrid>
                 <p:dataTable id="customers" var="customer" value="#{chanceActionBean.customers}" resizableColumns="true"
                     rowKey="#{customer.id}"
-                    selection="#{chanceActionBean.selectedCustomers}" rowIndexVar="rowIndex">
+                    selection="#{chanceActionBean.selectedCustomers}" rowIndexVar="rowIndex"
+                    scrollable="true"
+                    scrollWidth="580" scrollHeight="380">
 
                     <p:column selectionMode="multiple" style="width:40px;" />
 
