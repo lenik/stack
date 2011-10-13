@@ -55,6 +55,9 @@ public class FaceletsWac
                 context.addInitParam(MF_VALIDATE_XML, "true");
                 context.addInitParam(MF_STRICT_XHTML_LINKS, "true");
             }
+
+            // By rewrite all validators for dynamic switching.
+            // context.addInitParam(DISABLE_VALIDATOR, "true");
         }
 
         /** @see FaceletsStartupScl */

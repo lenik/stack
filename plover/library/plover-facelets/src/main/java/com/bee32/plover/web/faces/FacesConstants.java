@@ -97,4 +97,6 @@ public interface FacesConstants {
     String MF_VALIDATE_XML = "org.apache.myfaces.VALIDATE_XML";
     String MF_STRICT_XHTML_LINKS = "org.apache.myfaces.STRICT_XHTML_LINKS";
 
+    String DISABLE_VALIDATOR = "javax.faces.validator.DISABLE_DEFAULT_BEAN_VALIDATOR";
+
 }
