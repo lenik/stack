@@ -19,6 +19,7 @@ import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.plover.util.i18n.CurrencyConfig;
 import com.bee32.sem.frame.ui.SelectionAdapter;
 import com.bee32.sem.frame.ui.SelectionEvent;
+import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.dto.MaterialPriceDto;
@@ -493,6 +494,13 @@ public class MaterialSettingsBean
 
     public void setCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
+    }
+
+    public List<SelectItem> getClassifications() {
+        List<SelectItem> classifications = new ArrayList<SelectItem>();
+        for (Classification c : Classification.values())
+            classifications.add(new SelectItem(c.getValue(), c.getDisplayName()));
+        return classifications;
     }
 
 }

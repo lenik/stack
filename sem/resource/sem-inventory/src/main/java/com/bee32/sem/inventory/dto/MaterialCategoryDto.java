@@ -2,15 +2,13 @@ package com.bee32.sem.inventory.dto;
 
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
+import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.entity.CodeGenerator;
 import com.bee32.sem.inventory.entity.MaterialCategory;
-import com.bee32.sem.misc.TextUtil;
 
 public class MaterialCategoryDto
         extends TreeEntityDto<MaterialCategory, Integer, MaterialCategoryDto> {
@@ -22,11 +20,14 @@ public class MaterialCategoryDto
     private String name;
     private List<MaterialDto> materials;
     private CodeGenerator codeGenerator;
+    char classification;
 
     @Override
     protected void _marshal(MaterialCategory source) {
         this.name = source.getName();
         this.codeGenerator = source.getCodeGenerator();
+        classification = source.getClassification() == null ? null : source.getClassification().getValue();
+
         if (selection.contains(MATERIALS))
             this.materials = marshalList(MaterialDto.class, source.getMaterials());
     }
@@ -35,6 +36,7 @@ public class MaterialCategoryDto
     protected void _unmarshalTo(MaterialCategory target) {
         target.setName(name);
         target.setCodeGenerator(codeGenerator);
+        target.setClassification(Classification.valueOf(classification));
 
         if (selection.contains(MATERIALS))
             mergeList(target, "materials", materials);
@@ -96,6 +98,19 @@ public class MaterialCategoryDto
         if (codeGenerator == null)
             throw new NullPointerException("codeGenerator");
         this.codeGenerator = codeGenerator;
+    }
+
+
+    public char getClassification() {
+        return classification;
+    }
+
+    public void setClassification(char classification) {
+        this.classification = classification;
+    }
+
+    public String getClassificationText() {
+        return Classification.valueOf(classification).getDisplayName();
     }
 
 }

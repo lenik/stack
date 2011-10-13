@@ -384,6 +384,12 @@
                         <h:outputText value="分类名称:" />
                         <p:inputText value="#{materialSettingsBean.activeCategory.name}" />
 
+                        <h:outputLabel for="classification" value="分类性质" />
+                        <p:selectOneMenu id="classification"
+                            value="#{materialSettingsBean.activeCategory.classification}" style="width:150px;">
+                            <f:selectItems value="#{materialSettingsBean.classifications}" />
+                        </p:selectOneMenu>
+
                         <p:commandButton value="确认" actionListener="#{materialSettingsBean.doSaveCategory}"
                             oncomplete="categoryWizardDialog.hide();"
                             update=":mainForm:mainTab:mainTree mainForm:mainTab:selectCategoryTree" />

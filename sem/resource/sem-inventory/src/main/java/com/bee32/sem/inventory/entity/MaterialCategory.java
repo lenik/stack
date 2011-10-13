@@ -17,6 +17,7 @@ import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.config.BatchConfig;
 import com.bee32.plover.ox1.tree.TreeEntityAuto;
+import com.bee32.sem.inventory.Classification;
 
 @Entity
 @BatchSize(size = BatchConfig.TREE)
@@ -30,6 +31,7 @@ public class MaterialCategory
 
     CodeGenerator codeGenerator = CodeGenerator.NONE;
     List<Material> materials = new ArrayList<Material>();
+    Classification classification = Classification.OTHER;
 
     public MaterialCategory() {
         super();
@@ -86,7 +88,7 @@ public class MaterialCategory
             throw new IllegalArgumentException("Code generator is empty.");
 
         char cgVal = _codeGenerator.charAt(0);
-        String cgParam = _codeGenerator.substring(1);
+        //String cgParam = _codeGenerator.substring(1);
         codeGenerator = CodeGenerator.valueOf(cgVal);
     }
 
@@ -102,6 +104,30 @@ public class MaterialCategory
         if (materials == null)
             throw new NullPointerException("materials");
         this.materials = materials;
+    }
+
+    @Column(name = "classification")
+    char get_classification() {
+        return classification.getValue();
+    }
+
+    void set_classification(char _classification) {
+        classification = Classification.valueOf(_classification);
+    }
+
+    /**
+     * 类型
+     */
+    @Transient
+    public Classification getClassification() {
+        return classification;
+    }
+
+    /**
+     * 类型
+     */
+    public void setClassification(Classification classification) {
+        this.classification = classification;
     }
 
     @Override
