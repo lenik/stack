@@ -372,6 +372,15 @@ public class BomAdminBean
     }
 
     public void findMaterial() {
+        if(partOrComponent) {
+            //选择成品
+        } else {
+            //选择非成品(原材料，半成品，其他)
+        }
+
+
+
+
         if (materialPattern != null && !materialPattern.isEmpty()) {
 
             // String[] keyword = materialPattern.split(" ");
