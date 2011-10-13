@@ -4,7 +4,7 @@ import javax.free.ParseException;
 import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.model.validation.Size;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.principal.GroupDto;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
 import com.bee32.sem.people.entity.OrgUnit;
@@ -52,7 +52,7 @@ public class OrgUnitDto
         forWhichGroup = new GroupDto().ref(map.getInt("forWhichGroup"));
     }
 
-    @Size(min = 2, max = OrgUnit.NAME_LENGTH)
+    @NLength(min = 2, max = OrgUnit.NAME_LENGTH)
     public String getName() {
         return name;
     }

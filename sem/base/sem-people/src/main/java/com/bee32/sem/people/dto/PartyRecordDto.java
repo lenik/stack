@@ -6,7 +6,7 @@ import javax.free.ParseException;
 import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.model.validation.Size;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.color.MomentIntervalDto;
 import com.bee32.sem.people.entity.PartyRecord;
 
@@ -77,7 +77,7 @@ public class PartyRecordDto
         this.party = party;
     }
 
-    @Size(min = 5, max = PartyRecord.TEXT_LENGTH)
+    @NLength(min = 5, max = PartyRecord.TEXT_LENGTH)
     public String getText() {
         return text;
     }

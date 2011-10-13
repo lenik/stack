@@ -4,7 +4,7 @@ import javax.free.ParseException;
 import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.model.validation.Size;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.xp.EntityExtDto;
 import com.bee32.sem.people.entity.Contact;
 import com.bee32.sem.people.entity.ContactXP;
@@ -89,7 +89,7 @@ public class ContactDto
         this.category = category;
     }
 
-    @Size(max = Contact.ADDRESS_LENGTH)
+    @NLength(max = Contact.ADDRESS_LENGTH)
     public String getAddress() {
         return address;
     }
@@ -98,7 +98,7 @@ public class ContactDto
         this.address = address;
     }
 
-    @Size(max = Contact.POSTCODE_LENGTH)
+    @NLength(max = Contact.POSTCODE_LENGTH)
     public String getPostCode() {
         return postCode;
     }
@@ -107,7 +107,7 @@ public class ContactDto
         this.postCode = postCode;
     }
 
-    @Size(max = Contact.TEL_MOBILE_FAX_LENGTH)
+    @NLength(max = Contact.TEL_MOBILE_FAX_LENGTH)
     public String getTel() {
         return tel;
     }
@@ -116,7 +116,7 @@ public class ContactDto
         this.tel = tel;
     }
 
-    @Size(max = Contact.TEL_MOBILE_FAX_LENGTH)
+    @NLength(max = Contact.TEL_MOBILE_FAX_LENGTH)
     public String getMobile() {
         return mobile;
     }
@@ -125,7 +125,7 @@ public class ContactDto
         this.mobile = mobile;
     }
 
-    @Size(max = Contact.TEL_MOBILE_FAX_LENGTH)
+    @NLength(max = Contact.TEL_MOBILE_FAX_LENGTH)
     public String getFax() {
         return fax;
     }
@@ -134,7 +134,7 @@ public class ContactDto
         this.fax = fax;
     }
 
-    @Size(max = Contact.EMAIL_LENGTH)
+    @NLength(max = Contact.EMAIL_LENGTH)
     public String getEmail() {
         return email;
     }
@@ -143,7 +143,7 @@ public class ContactDto
         this.email = email;
     }
 
-    @Size(max = Contact.WEBSITE_LENGTH)
+    @NLength(max = Contact.WEBSITE_LENGTH)
     public String getWebsite() {
         return website;
     }
@@ -152,7 +152,7 @@ public class ContactDto
         this.website = website;
     }
 
-    @Size(max = Contact.QQ_LENGTH)
+    @NLength(max = Contact.QQ_LENGTH)
     public String getQq() {
         return qq;
     }

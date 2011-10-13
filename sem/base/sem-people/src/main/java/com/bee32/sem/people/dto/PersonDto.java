@@ -3,7 +3,7 @@ package com.bee32.sem.people.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.bee32.plover.model.validation.Size;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.sem.people.Gender;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonRole;
@@ -72,7 +72,7 @@ public class PersonDto
         return Gender.valueOf(sex).getDisplayName();
     }
 
-    @Size(max = Person.CENSUS_REGISTER_LENGTH)
+    @NLength(max = Person.CENSUS_REGISTER_LENGTH)
     public String getCensusRegister() {
         return censusRegister;
     }

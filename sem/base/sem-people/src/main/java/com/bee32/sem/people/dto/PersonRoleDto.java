@@ -4,7 +4,7 @@ import javax.free.ParseException;
 import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.model.validation.Size;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.c.CEntityDto;
 import com.bee32.sem.people.entity.PersonRole;
 
@@ -93,7 +93,7 @@ public class PersonRoleDto
         this.altOrgUnit = altOrgUnit;
     }
 
-    @Size(max = PersonRole.ROLE_LENGTH)
+    @NLength(max = PersonRole.ROLE_LENGTH)
     public String getRole() {
         return role;
     }
@@ -102,7 +102,7 @@ public class PersonRoleDto
         this.role = role;
     }
 
-    @Size(max = PersonRole.ROLE_DETAIL_LENGTH)
+    @NLength(max = PersonRole.ROLE_DETAIL_LENGTH)
     public String getRoleDetail() {
         return roleDetail;
     }
@@ -119,7 +119,7 @@ public class PersonRoleDto
         this.orgUnit = orgUnit;
     }
 
-    @Size(max = PersonRole.DESCRIPTION_LENGTH)
+    @NLength(max = PersonRole.DESCRIPTION_LENGTH)
     public String getDescription() {
         return description;
     }

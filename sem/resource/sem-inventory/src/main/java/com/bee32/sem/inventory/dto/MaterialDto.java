@@ -9,7 +9,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.model.validation.Size;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.file.dto.UserFileDto;
 import com.bee32.sem.inventory.entity.Material;
@@ -149,7 +149,7 @@ public class MaterialDto
         this.category = category;
     }
 
-    @Size(max = Material.BARCODE_LENGTH)
+    @NLength(max = Material.BARCODE_LENGTH)
     public String getBarCode() {
         return barCode;
     }
@@ -159,7 +159,7 @@ public class MaterialDto
         this.barCode = barCode;
     }
 
-    @Size(max = Material.MODELSPEC_LENGTH)
+    @NLength(max = Material.MODELSPEC_LENGTH)
     public String getModelSpec() {
         return modelSpec;
     }

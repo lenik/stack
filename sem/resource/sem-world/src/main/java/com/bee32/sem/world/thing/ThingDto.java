@@ -7,7 +7,7 @@ import javax.free.TypeConvertException;
 
 import com.bee32.plover.arch.util.DummyId;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.model.validation.Size;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.xp.EntityExtDto;
 import com.bee32.plover.ox1.xp.XPool;
 import com.bee32.plover.util.TextUtil;
@@ -69,7 +69,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         unitConv = new UnitConvDto().ref(map.getLong("unitConv.id"));
     }
 
-    @Size(max = Thing.SERIAL_LENGTH)
+    @NLength(max = Thing.SERIAL_LENGTH)
     public String getSerial() {
         return serial;
     }
@@ -89,7 +89,7 @@ public abstract class ThingDto<E extends Thing<X>, X extends XPool<?>>
         this.unit = unit;
     }
 
-    @Size(max = Thing.UNIT_HINT_LENGTH)
+    @NLength(max = Thing.UNIT_HINT_LENGTH)
     public String getUnitHint() {
         return unitHint;
     }

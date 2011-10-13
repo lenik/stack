@@ -6,7 +6,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.model.validation.Size;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.orm.util.EntityDto;
 import com.bee32.plover.util.TextUtil;
 import com.bee32.sem.inventory.entity.MaterialAttribute;
@@ -52,7 +52,7 @@ public class MaterialAttributeDto
         this.material = material;
     }
 
-    @Size(min = 2, max = MaterialAttribute.NAME_LENGTH)
+    @NLength(min = 2, max = MaterialAttribute.NAME_LENGTH)
     public String getName() {
         return name;
     }
@@ -62,7 +62,7 @@ public class MaterialAttributeDto
         this.name = name;
     }
 
-    @Size(max = MaterialAttribute.VALUE_LENGTH)
+    @NLength(max = MaterialAttribute.VALUE_LENGTH)
     public String getValue() {
         return value;
     }

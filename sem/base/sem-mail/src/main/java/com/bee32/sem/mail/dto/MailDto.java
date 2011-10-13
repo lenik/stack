@@ -7,7 +7,7 @@ import javax.free.TypeConvertException;
 import javax.validation.constraints.NotNull;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.plover.model.validation.Size;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.c.CEntityDto;
 import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.sem.mail.MailPriority;
@@ -134,7 +134,7 @@ public class MailDto
         // dates...
     }
 
-    @Size(max = Mail.SERIAL_LENGTH)
+    @NLength(max = Mail.SERIAL_LENGTH)
     public String getSerial() {
         return serial;
     }
@@ -165,7 +165,7 @@ public class MailDto
         this.priority = priority;
     }
 
-    @Size(min = 1, max = Mail.FROM_LENGTH)
+    @NLength(min = 1, max = Mail.FROM_LENGTH)
     public String getFrom() {
         return from;
     }
@@ -174,7 +174,7 @@ public class MailDto
         this.from = from;
     }
 
-    @Size(min = 1, max = Mail.RECIPIENT_LENGTH)
+    @NLength(min = 1, max = Mail.RECIPIENT_LENGTH)
     public String getRecipient() {
         return recipient;
     }
@@ -183,7 +183,7 @@ public class MailDto
         this.recipient = recipient;
     }
 
-    @Size(max = Mail.REPLY_TO_LENGTH)
+    @NLength(max = Mail.REPLY_TO_LENGTH)
     public String getReplyTo() {
         return replyTo;
     }
@@ -235,7 +235,7 @@ public class MailDto
         this.replyToUser = replyToUser;
     }
 
-    @Size(max = Mail.CC_LENGTH)
+    @NLength(max = Mail.CC_LENGTH)
     public String getCc() {
         return cc;
     }
@@ -244,7 +244,7 @@ public class MailDto
         this.cc = cc;
     }
 
-    @Size(max = Mail.BCC_LENGTH)
+    @NLength(max = Mail.BCC_LENGTH)
     public String getBcc() {
         return bcc;
     }
@@ -253,7 +253,7 @@ public class MailDto
         this.bcc = bcc;
     }
 
-    @Size(min = 1, max = Mail.SUBJECT_LENGTH)
+    @NLength(min = 1, max = Mail.SUBJECT_LENGTH)
     public String getSubject() {
         return subject;
     }
@@ -262,7 +262,7 @@ public class MailDto
         this.subject = subject;
     }
 
-    @Size(min = 1, max = Mail.BODY_LENGTH)
+    @NLength(min = 1, max = Mail.BODY_LENGTH)
     public String getBody() {
         return body;
     }
