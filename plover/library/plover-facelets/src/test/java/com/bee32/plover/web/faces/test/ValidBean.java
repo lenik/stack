@@ -2,10 +2,11 @@ package com.bee32.plover.web.faces.test;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.springframework.context.annotation.Scope;
 
-import com.bee32.plover.model.validation.Size;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
 
 @Scope("view")
@@ -18,7 +19,7 @@ public class ValidBean
 
     private String password;
 
-    @Size(min = 1, message = "Please enter the Email")
+    @NLength(min = 1, message = "Please enter the Email")
     @Pattern(regexp = "[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+", message = "Email format is invalid.")
     public String getEmail() {
         return email;
@@ -29,7 +30,8 @@ public class ValidBean
     }
 
     @NotNull
-    @Size(min = 2, max = 20) //, message = "用户名长度不符 (2-20 字符)")
+    // @NLength(min = 2, max = 20) //, message = "用户名长度不符 (2-20 字符)")
+    @Size(min = 2, max = 20, message = "用户名长度不符 (2-20 字符)")
     public String getUserName() {
         return super.getUserName();
     }
@@ -40,7 +42,7 @@ public class ValidBean
         super.setUserName(userName);
     }
 
-    @Size(min = 5, max = 20, message = "Please enter a valid password (5-10 characters)")
+    @NLength(min = 5, max = 20, message = "Please enter a valid password (5-10 characters)")
     public String getPassword() {
         return password;
     }

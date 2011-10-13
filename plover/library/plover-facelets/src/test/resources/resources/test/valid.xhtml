@@ -8,18 +8,20 @@
 
         Validation Test
 
-        <h:form id="form1">
+        <h:form id="form1" title="表1">
             User name:
-            <h:inputText id="userName" value="#{validBean.userName}" />
+            <h:inputText title="用户名" id="userName" value="#{validBean.userName}" />
 
-            //
+            [
             <h:message for="userName" />
+            ]
 
             <br />
-            <h:commandButton value="button1" />
+            <h:commandButton id="save-validated" value="button1" />
 
         </h:form>
 
+        <hr />
         <div>
             Persisted user name: #{validBean.userName}
         </div>

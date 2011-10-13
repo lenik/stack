@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.context.annotation.Scope;
 
-import com.bee32.plover.model.validation.Size;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.web.faces.view.ViewBean;
 
 @Scope("view")
@@ -18,7 +18,7 @@ public class AutoUpdateBean
     String message;
 
     @NotNull
-    @Size(min = 10)
+    @NLength(min = 10)
     public String getMessage() {
         return message;
     }
