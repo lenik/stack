@@ -120,10 +120,11 @@
         $.ajax = function(__s) {
             var s = {};
             $.extend(s, __s, {
+                __complete: __s.complete,
                 complete : function(xhr, ts) {
                     xpcHandler(xhr);
-                    if (__s.complete != null)
-                        __s.complete(xhr, ts);
+                    if (this.__complete != null)
+                        this.__complete(xhr, ts);
                 }
             });
             return __ajax(s);
