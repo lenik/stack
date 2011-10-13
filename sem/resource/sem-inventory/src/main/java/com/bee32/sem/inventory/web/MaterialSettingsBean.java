@@ -7,7 +7,6 @@ import java.util.Locale;
 
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.lang.StringUtils;
 import org.primefaces.event.FlowEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -264,11 +263,6 @@ public class MaterialSettingsBean
     }
 
     public void doSaveCategory() {
-        if(StringUtils.isEmpty(activeCategory.getName())) {
-            uiLogger.error("物料分类名称不能为空");
-            return;
-        }
-
         try {
             MaterialCategory subCategory = activeCategory.unmarshal();
             serviceFor(MaterialCategory.class).saveOrUpdate(subCategory);
