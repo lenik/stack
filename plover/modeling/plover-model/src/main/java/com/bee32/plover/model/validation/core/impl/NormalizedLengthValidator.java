@@ -1,18 +1,19 @@
-package com.bee32.plover.model.validation;
+package com.bee32.plover.model.validation.core.impl;
 
-import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import com.bee32.plover.model.validation.PloverConstraintValidator;
+import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
 
-public class NormalizedSizeValidator
-        implements ConstraintValidator<Size, String> {
+public class NormalizedLengthValidator
+        extends PloverConstraintValidator<NLength, String> {
 
     private int min;
     private int max;
     private boolean normalize;
 
-    public void initialize(Size parameters) {
+    public void initialize(NLength parameters) {
         min = parameters.min();
         max = parameters.max();
         normalize = parameters.normalize();
@@ -32,7 +33,7 @@ public class NormalizedSizeValidator
      *         (inclusive), <code>false</code> otherwise.
      */
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+    protected boolean validate(String s, ConstraintValidatorContext constraintValidatorContext) {
         if (s == null)
             return true;
 
