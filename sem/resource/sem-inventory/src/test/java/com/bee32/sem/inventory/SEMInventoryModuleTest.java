@@ -1,6 +1,7 @@
 package com.bee32.sem.inventory;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.sem.test.SEMTestCase;
@@ -8,6 +9,10 @@ import com.bee32.sem.test.SEMTestCase;
 @Using(SEMInventoryUnit.class)
 public class SEMInventoryModuleTest
         extends SEMTestCase {
+
+    static {
+        Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
+    }
 
     @Override
     protected boolean isDebugMode() {
