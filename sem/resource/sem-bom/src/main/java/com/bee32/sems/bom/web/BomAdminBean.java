@@ -11,12 +11,15 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.InCollection;
 import com.bee32.plover.criteria.hibernate.Like;
-import com.bee32.plover.criteria.hibernate.Order;
+import com.bee32.plover.criteria.hibernate.Not;
+import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 import com.bee32.sem.frame.ui.SelectionAdapter;
 import com.bee32.sem.frame.ui.SelectionEvent;
+import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.dto.MaterialCategoryDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sem.inventory.entity.Material;
@@ -66,7 +69,14 @@ public class BomAdminBean
     }
 
     public void initMaterialCategoryTree() {
-        List<MaterialCategory> rootCategories = serviceFor(MaterialCategory.class).list(TreeCriteria.root());
+        List<MaterialCategory> rootCategories = //
+                serviceFor(MaterialCategory.class).list( //
+                        TreeCriteria.root(), //
+                        new Or( //
+                                new Equals("_classification", Classification.PRODUCT.getValue()), //
+                                new Equals("_classification", Classification.SEMI.getValue()) //
+                        ) //
+                );
         List<MaterialCategoryDto> rootCategoryDtos = DTOs.mrefList(MaterialCategoryDto.class,
                 ~MaterialCategoryDto.MATERIALS, rootCategories);
 
@@ -80,8 +90,7 @@ public class BomAdminBean
 
                 EntityDataModelOptions<Part, PartDto> options = new EntityDataModelOptions<Part, PartDto>(//
                         Part.class, PartDto.class, 0, //
-                        BomCriteria.listPartByCategory(materialCategoryDto.getId()),
-                        Order.desc("id"));
+                        BomCriteria.listPartByCategory(materialCategoryDto.getId()));
                 parts = UIHelper.<Part, PartDto> buildLazyDataModel(options);
 
                 refreshPartCount(materialCategoryDto.getId());
@@ -372,15 +381,6 @@ public class BomAdminBean
     }
 
     public void findMaterial() {
-        if(partOrComponent) {
-            //选择成品
-        } else {
-            //选择非成品(原材料，半成品，其他)
-        }
-
-
-
-
         if (materialPattern != null && !materialPattern.isEmpty()) {
 
             // String[] keyword = materialPattern.split(" ");
@@ -389,9 +389,32 @@ public class BomAdminBean
             // keyword[i] = keyword[i].trim();
             // }
 
-            List<Material> _materials = serviceFor(Material.class).list(new Like("label", "%" + materialPattern + "%"));
 
-            materials = DTOs.marshalList(MaterialDto.class, _materials);
+            List<MaterialCategory> productCategories = //
+                    serviceFor(MaterialCategory.class).list( //
+                            new Equals("classification", Classification.PRODUCT.getValue()));
+            List<Integer> ids = new ArrayList<Integer>();
+            for(MaterialCategory c : productCategories) {
+                ids.add(c.getId());
+            }
+
+            if(partOrComponent) {
+                //选择成品
+                List<Material> _materials = //
+                        serviceFor(Material.class).list( //
+                                new Like("label", "%" + materialPattern + "%"), //
+                                new InCollection("category.id", ids));
+
+                materials = DTOs.marshalList(MaterialDto.class, _materials);
+            } else {
+                //选择非成品(原材料，半成品，其他)
+                List<Material> _materials = //
+                        serviceFor(Material.class).list( //
+                                new Like("label", "%" + materialPattern + "%"), //
+                                new Not(new InCollection("category.id", ids)));
+
+                materials = DTOs.marshalList(MaterialDto.class, _materials);
+            }
         }
     }
 

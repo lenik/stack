@@ -8,6 +8,7 @@ import org.primefaces.model.SortOrder;
 
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.criteria.hibernate.Limit;
+import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.c.CEntity;
@@ -42,7 +43,20 @@ public class ZLazyDataModel<E extends CEntity<?>, D extends CEntityDto<E, ?>>
         CommonDataManager dataManager = FacesContextSupport.getBean(CommonDataManager.class);
 
         Limit limit = new Limit(first, pageSize);
-        List<E> entities = dataManager.asFor(entityClass).list(limit, composition);
+        Order order = null;
+        if(sortField != null) {
+            switch (sortOrder) {
+            case ASCENDING:
+                order = Order.asc(sortField);
+                break;
+            case DESCENDING:
+                order = Order.desc(sortField);
+                break;
+            default:
+                break;
+            }
+        }
+        List<E> entities = dataManager.asFor(entityClass).list(limit, composition, order);
 
         List<D> dtos = DTOs.mrefList(//
                 dtoClass, //

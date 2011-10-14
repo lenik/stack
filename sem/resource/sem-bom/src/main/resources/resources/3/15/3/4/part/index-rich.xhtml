@@ -111,14 +111,14 @@
                                         value="#{rowIndex + 1}" />
                                 </p:column>
 
-                                <p:column>
+                                <p:column sortBy="#{part.material.label}">
                                     <f:facet name="header">
                                         <h:outputText value="物料" />
                                     </f:facet>
                                     <h:outputText
                                         value="#{part.target.label}" />
                                 </p:column>
-                                <p:column>
+                                <p:column sortBy="#{part.material.modelSpec}">
                                     <f:facet name="header">
                                         <h:outputText value="规格型号" />
                                     </f:facet>
@@ -132,7 +132,7 @@
                                     <h:outputText
                                         value="#{part.owner.name}" />
                                 </p:column>
-                                <p:column>
+                                <p:column sortBy="#{part.createdDate}">
                                     <f:facet name="header">
                                         <h:outputText value="建立日期" />
                                     </f:facet>
