@@ -1,23 +1,45 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Plover Facelets Test Case</title>
-<style type="text/css">
-body {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: small;
-}
-</style>
-</head>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Plover Facelets Test Case</title>
+        <style type="text/css">
+            body {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: small;
+            }
+        </style>
+    </h:head>
 
-<body>
-    <h1>
-        <ui:insert name="title">Default Title</ui:insert>
-    </h1>
-    <p>
-        <ui:insert name="body">Default Body</ui:insert>
-    </p>
-</body>
+    <body>
+        Theme:
+        <p:themeSwitcher value="#{themeSwitcherBean.theme}" style="width:150px" effect="fade">
+            <f:selectItem itemLabel="选择风格" itemValue="" />
+            <f:selectItems value="#{themeSwitcherBean.themes}" />
+            <p:ajax listener="#{themeSwitcherBean.saveTheme}" />
+        </p:themeSwitcher>
+
+        <h1>
+            <ui:insert name="title">Default Title</ui:insert>
+        </h1>
+        <p>
+            <ui:insert name="body">Default Body</ui:insert>
+        </p>
+
+        <h:form id="dummy" style="display: none;">
+            A Dummy Form.
+            <p:dataTable />
+            <p:column />
+            <p:commandLink />
+            <p:commandButton />
+            <p:dialog />
+            <p:fileUpload />
+            <p:tabView rendered="false">
+                <p:tab title="" />
+            </p:tabView>
+            <p:message for="dummy" />
+            <f:ajax event="click" />
+        </h:form>
+    </body>
 
 </html>

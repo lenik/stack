@@ -66,7 +66,9 @@ public class FaceletsWac
         ServletHolder facesServlet = stl.addServlet(FacesServlet.class, "*." + FaceletsConfig.extension);
         facesServlet.setInitOrder(0);
 
+        // Primefaces configuration
         stl.addFilter(FileUploadFilter.class, "*." + FaceletsConfig.extension, 0);
+        context.addInitParam("primefaces.THEME", "#{guestPreferences.theme}");
     }
 
 }
