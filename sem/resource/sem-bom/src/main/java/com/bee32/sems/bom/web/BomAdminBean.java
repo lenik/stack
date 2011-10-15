@@ -390,16 +390,23 @@ public class BomAdminBean
             // }
 
 
-            List<MaterialCategory> productCategories = //
-                    serviceFor(MaterialCategory.class).list( //
-                            new Equals("classification", Classification.PRODUCT.getValue()));
-            List<Integer> ids = new ArrayList<Integer>();
-            for(MaterialCategory c : productCategories) {
-                ids.add(c.getId());
-            }
+
 
             if(partOrComponent) {
                 //选择成品
+                List<MaterialCategory> productCategories = //
+                serviceFor(MaterialCategory.class).list( //
+                        new Or( //
+                                new Equals("_classification",
+                                        Classification.PRODUCT.getValue()), //
+                                new Equals("_classification",
+                                        Classification.SEMI.getValue()) //
+                        ));
+                List<Integer> ids = new ArrayList<Integer>();
+                for (MaterialCategory c : productCategories) {
+                    ids.add(c.getId());
+                }
+
                 List<Material> _materials = //
                         serviceFor(Material.class).list( //
                                 new Like("label", "%" + materialPattern + "%"), //
@@ -408,10 +415,26 @@ public class BomAdminBean
                 materials = DTOs.marshalList(MaterialDto.class, _materials);
             } else {
                 //选择非成品(原材料，半成品，其他)
+                List<MaterialCategory> productCategories = //
+                serviceFor(MaterialCategory.class).list( //
+                        new Not( //
+                                new Or( //
+                                        new Equals("_classification",
+                                                Classification.PRODUCT
+                                                        .getValue()), //
+                                        new Equals("_classification",
+                                                Classification.SEMI.getValue()) //
+                                )));
+                List<Integer> ids = new ArrayList<Integer>();
+                for (MaterialCategory c : productCategories) {
+                    ids.add(c.getId());
+                }
+
+
                 List<Material> _materials = //
                         serviceFor(Material.class).list( //
                                 new Like("label", "%" + materialPattern + "%"), //
-                                new Not(new InCollection("category.id", ids)));
+                                new InCollection("category.id", ids));
 
                 materials = DTOs.marshalList(MaterialDto.class, _materials);
             }
