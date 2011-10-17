@@ -7,8 +7,14 @@ public interface IMenuNode
 
     int size();
 
+    /**
+     * Empty node has no child.
+     */
     boolean isEmpty();
 
+    /**
+     * Barren node has no solid-child.
+     */
     boolean isBarren();
 
     boolean contains(String childName);
