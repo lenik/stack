@@ -39,5 +39,11 @@ public class PeopleCriteria
                 in("tag.id", PartyTagname.INTERNAL.getId()));
     }
 
+    @LeftHand(Party.class)
+    public static ICriteriaElement customers() {
+        return compose(alias("tags", "tag"), //
+                in("tag.id", PartyTagname.CUSTOMER.getId()));
+    }
+
 
 }

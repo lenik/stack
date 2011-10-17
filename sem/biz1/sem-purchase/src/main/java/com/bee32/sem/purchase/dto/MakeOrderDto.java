@@ -9,6 +9,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.sem.base.tx.TxEntityDto;
+import com.bee32.sem.chance.dto.ChanceDto;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.purchase.entity.MakeOrder;
 
@@ -23,6 +24,7 @@ public class MakeOrderDto
     PartyDto customer;
     Date deadline;
     String status;
+    ChanceDto chance;
 
     List<MakeOrderItemDto> items;
 
@@ -33,6 +35,7 @@ public class MakeOrderDto
         customer = mref(PartyDto.class, source.getCustomer());
         deadline = source.getDeadline();
         status = source.getStatus();
+        chance = mref(ChanceDto.class, source.getChance());
 
         if (selection.contains(ITEMS))
             items = marshalList(MakeOrderItemDto.class, source.getItems());
@@ -50,6 +53,7 @@ public class MakeOrderDto
         merge(target, "customer", customer);
         target.setDeadline(deadline);
         target.setStatus(status);
+        merge(target, "chance", chance);
 
         if (selection.contains(ITEMS))
             mergeList(target, "items", items);
@@ -88,6 +92,14 @@ public class MakeOrderDto
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public ChanceDto getChance() {
+        return chance;
+    }
+
+    public void setChance(ChanceDto chance) {
+        this.chance = chance;
     }
 
     public List<MakeOrderItemDto> getItems() {

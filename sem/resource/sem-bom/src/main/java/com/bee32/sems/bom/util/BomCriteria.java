@@ -1,5 +1,6 @@
 package com.bee32.sems.bom.util;
 
+import com.bee32.plover.criteria.hibernate.CriteriaElement;
 import com.bee32.plover.criteria.hibernate.CriteriaSpec;
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
@@ -20,6 +21,11 @@ public class BomCriteria
     public static ICriteriaElement listPartByCategory(int materialCategoryId) {
         return compose(alias("target", "material"), //
                 new Equals("material.category.id", materialCategoryId));
+    }
+
+    @LeftHand(Part.class)
+    public static CriteriaElement active() {
+        return isNull("obsolete");
     }
 
 }

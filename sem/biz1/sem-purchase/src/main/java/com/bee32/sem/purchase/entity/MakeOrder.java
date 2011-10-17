@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,6 +17,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bee32.sem.base.tx.TxEntity;
+import com.bee32.sem.chance.entity.Chance;
 import com.bee32.sem.people.entity.Party;
 
 /**
@@ -33,6 +35,7 @@ public class MakeOrder
     Party customer;
     Date deadline;
     String status;
+    Chance chance;
 
     List<MakeOrderItem> items = new ArrayList<MakeOrderItem>();
 
@@ -91,4 +94,12 @@ public class MakeOrder
         this.tasks = tasks;
     }
 
+    @OneToOne
+    public Chance getChance() {
+        return chance;
+    }
+
+    public void setChance(Chance chance) {
+        this.chance = chance;
+    }
 }
