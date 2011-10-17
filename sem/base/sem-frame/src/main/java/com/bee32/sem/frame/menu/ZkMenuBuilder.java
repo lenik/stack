@@ -18,37 +18,42 @@ import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.rtx.location.ILocationContext;
 import com.bee32.sem.frame.action.IAction;
 
-public class ZkMenuBuilder {
+public class ZkMenuBuilder
+        extends AbstractMenuBuilder<Menubar> {
 
-    private final MenuNode menuModel;
+    private final MenuNode virtualRoot;
     private final Menubar menubar;
-    private final HttpServletRequest request;
 
     private boolean built;
 
-    public ZkMenuBuilder(MenuNode menuModel, Menubar menubar, HttpServletRequest request) {
-        if (menuModel == null)
-            throw new NullPointerException("menuModel");
+    public ZkMenuBuilder(MenuNode virtualRoot, Menubar menubar, HttpServletRequest request) {
+        super(request);
+        if (virtualRoot == null)
+            throw new NullPointerException("virtualRoot");
         if (menubar == null)
             throw new NullPointerException("menubar");
-        if (request == null)
-            throw new NullPointerException("request");
-
-        this.menuModel = menuModel;
+        this.virtualRoot = virtualRoot;
         this.menubar = menubar;
-        this.request = request;
     }
 
     /**
      * Build a Zk Menu from the top-level {@link MenuModel} model.
      */
-    public Menubar buildMenubar() {
+    public synchronized Menubar buildMenubar() {
         if (!built) {
-            for (IMenuNode topMenu : menuModel) {
-                Menu menu = buildMenu(topMenu);
-                menubar.appendChild(menu);
-            }
+            buildMenubar(virtualRoot);
             built = true;
+        }
+        return menubar;
+    }
+
+    @Override
+    public Menubar buildMenubar(IMenuNode virtualRoot) {
+        Menubar menubar = this.menubar;
+        // or create new one?
+        for (IMenuNode root : virtualRoot) {
+            Menu rootMenu = buildMenu(root);
+            menubar.appendChild(rootMenu);
         }
         return menubar;
     }

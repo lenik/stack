@@ -13,70 +13,47 @@ import org.springframework.web.util.UriUtils;
 
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.rtx.location.ILocationContext;
-import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.plover.util.PrettyPrintStream;
 import com.bee32.sem.frame.action.IAction;
 
-public class SuperfishMenuBuilder {
+public class SuperfishMenuBuilder
+        extends AbstractMenuBuilder<String> {
 
-    private final MenuNode toplevel;
-    private final HttpServletRequest request;
+    final MenuNode virtualRoot;
 
-    private String html;
-    private PrettyPrintStream out;
+    private String _cachedHtml;
 
-    public SuperfishMenuBuilder(MenuNode toplevel) {
-        this(toplevel, null);
+    public SuperfishMenuBuilder(MenuNode virtualRoot) {
+        this(virtualRoot, null);
     }
 
-    public SuperfishMenuBuilder(MenuNode toplevel, HttpServletRequest request) {
-        if (toplevel == null)
-            throw new NullPointerException("menuModel");
-        this.toplevel = toplevel;
-        this.request = request;
-    }
-
-    String resolve(ILocationContext location) {
-        HttpServletRequest request = this.request;
-        if (request == null)
-            request = ThreadServletContext.getRequestOpt();
-
-        if (request == null)
-            return location.toString();
-        else
-            return location.resolve(request);
-
+    public SuperfishMenuBuilder(MenuNode virtualRoot, HttpServletRequest request) {
+        super(request);
+        if (virtualRoot == null)
+            throw new NullPointerException("virtualRoot");
+        this.virtualRoot = virtualRoot;
     }
 
     @Override
-    public synchronized String toString() {
-        if (html == null) {
-            out = new PrettyPrintStream();
-            buildMenubar(toplevel);
-            html = out.toString();
-            out = null;
-        }
-        return html;
-    }
-
-    void buildMenubar(IMenuNode menuBarNode) {
-        this.out = new PrettyPrintStream();
+    public String buildMenubar(IMenuNode virtualRoot) {
+        PrettyPrintStream out = new PrettyPrintStream();
 
         out.println("<ul class='sf-menu'>");
         out.enter();
 
-        for (IMenuNode menuNode : menuBarNode)
-            buildMenu(menuNode);
+        for (IMenuNode root : virtualRoot)
+            buildMenu(out, root);
 
         out.leave();
         out.println("</ul>");
+
+        String html = out.toString();
+        return html;
     }
 
-    boolean showAll = false;
-
-    void buildMenu(IMenuNode menuNode) {
+    void buildMenu(PrettyPrintStream out, IMenuNode menuNode) {
         boolean skipped;
-        if (showAll)
+        if (isShowAll())
             skipped = menuNode.isEmpty();
         else
             skipped = menuNode.isBarren();
@@ -132,7 +109,7 @@ public class SuperfishMenuBuilder {
             }
 
             for (IMenuNode childNode : children) {
-                buildMenu(childNode);
+                buildMenu(out, childNode);
             }
 
             if (!flatten) {
@@ -143,6 +120,14 @@ public class SuperfishMenuBuilder {
 
         out.leave();
         out.println("</li>");
+    }
+
+    @Override
+    public synchronized String toString() {
+        if (_cachedHtml == null) {
+            _cachedHtml = buildMenubar(virtualRoot);
+        }
+        return _cachedHtml;
     }
 
 }
