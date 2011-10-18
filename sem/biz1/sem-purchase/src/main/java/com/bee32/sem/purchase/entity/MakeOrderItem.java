@@ -35,6 +35,10 @@ public class MakeOrderItem
 
     private static final long serialVersionUID = 1L;
 
+    public static final int EXT_PROD_NAME_LENGTH = 30;
+
+    public static final int EXT_SPEC_LENGTH = 30;
+
     MakeOrder order;
     int index;
     Part part;
@@ -232,6 +236,7 @@ public class MakeOrderItem
      *
      * @return
      */
+    @Column(length = EXT_PROD_NAME_LENGTH)
     public String getExternalProductName() {
         return externalProductName;
     }
@@ -251,6 +256,7 @@ public class MakeOrderItem
      *
      * @return
      */
+    @Column(length = EXT_SPEC_LENGTH)
     public String getExternalSpecification() {
         return externalSpecification;
     }

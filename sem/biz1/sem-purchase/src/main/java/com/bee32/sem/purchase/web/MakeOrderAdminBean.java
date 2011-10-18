@@ -328,7 +328,7 @@ public class MakeOrderAdminBean extends EntityViewBean {
         try {
             MakeOrder _order = makeOrder.unmarshal();
             for(MakeOrderItemDto item : itemsNeedToRemoveWhenModify) {
-                _order.getItems().remove(item.unmarshal());
+                _order.removeItem(item.unmarshal());
             }
 
             serviceFor(MakeOrder.class).save(_order);
@@ -400,7 +400,7 @@ public class MakeOrderAdminBean extends EntityViewBean {
         MCValue newPrice = new MCValue(makeOrderItemPriceCurrency, makeOrderItemPrice);
         makeOrderItem.setPrice(newPrice);
         if (newItemStatus) {
-            makeOrder.getItems().add(makeOrderItem);
+            makeOrder.addItem(makeOrderItem);
         }
     }
 
@@ -415,7 +415,7 @@ public class MakeOrderAdminBean extends EntityViewBean {
     }
 
     public void deleteItem() {
-        makeOrder.getItems().remove(makeOrderItem);
+        makeOrder.removeItem(makeOrderItem);
 
         if (makeOrderItem.getId() != null) {
             itemsNeedToRemoveWhenModify.add(makeOrderItem);
