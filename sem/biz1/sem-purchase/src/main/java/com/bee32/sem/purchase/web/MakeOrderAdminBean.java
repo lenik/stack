@@ -11,7 +11,6 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
@@ -318,7 +317,6 @@ public class MakeOrderAdminBean extends EntityViewBean {
         editable = true;
     }
 
-    @Transactional
     public void save() {
         if(makeOrder.getId() == null) {
             //新增

@@ -38,6 +38,8 @@ public class MakeOrderItemDto
         part = mref(PartDto.class, source.getPart());
         quantity = source.getQuantity();
         price = source.getPrice();
+        externalProductName = source.getExternalProductName();
+        externalSpecification = source.getExternalSpecification();
     }
 
     @Override
@@ -47,6 +49,8 @@ public class MakeOrderItemDto
         merge(target, "part", part);
         target.setQuantity(quantity);
         target.setPrice(price);
+        target.setExternalProductName(externalProductName);
+        target.setExternalSpecification(externalSpecification);
     }
 
     @Override
