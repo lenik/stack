@@ -14,7 +14,9 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
 
     private static final long serialVersionUID = 1L;
 
-    public static final int NO_OWNER = 1;
+    public static final int OWNER_MASK = 3 << 28;
+    public static final int OWNER_SKIP = 1 << 28;
+    public static final int OWNER_ALWAYS = 2 << 28;
 
     UserDto owner;
     Integer aclId;
@@ -47,7 +49,8 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
     protected void __marshal(E source) {
         super.__marshal(source);
 
-        if (!selection.contains(NO_OWNER))
+        int ownerSelection = selection.bits & OWNER_MASK;
+        if (ownerSelection != OWNER_SKIP)
             owner = mref(UserDto.class, 0, source.getOwner());
 
         aclId = source.getAclId();
@@ -57,7 +60,8 @@ public abstract class CEntityDto<E extends CEntity<K>, K extends Serializable>
     protected void __unmarshalTo(E target) {
         super.__unmarshalTo(target);
 
-        if (!selection.contains(NO_OWNER))
+        int ownerSelection = selection.bits & OWNER_MASK;
+        if (ownerSelection != OWNER_SKIP)
             merge(target, "owner", owner);
 
         if (aclId != null)
