@@ -20,6 +20,7 @@ public class MakeOrderItemDto
     private static final long serialVersionUID = 1L;
 
     MakeOrderDto order;
+    int index;
     PartDto part;
     BigDecimal quantity = new BigDecimal(1);
     MCValue price;
@@ -33,18 +34,18 @@ public class MakeOrderItemDto
     @Override
     protected void _marshal(MakeOrderItem source) {
         order = mref(MakeOrderDto.class, source.getOrder());
+        index = source.getIndex();
         part = mref(PartDto.class, source.getPart());
         quantity = source.getQuantity();
-
         price = source.getPrice();
     }
 
     @Override
     protected void _unmarshalTo(MakeOrderItem target) {
         merge(target, "order", order);
+        target.setIndex(index);
         merge(target, "part", part);
         target.setQuantity(quantity);
-
         target.setPrice(price);
     }
 
@@ -61,6 +62,14 @@ public class MakeOrderItemDto
         if (order == null)
             throw new NullPointerException("order");
         this.order = order;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public PartDto getPart() {
@@ -83,7 +92,6 @@ public class MakeOrderItemDto
         this.quantity = quantity;
         nativeTotal = null;
     }
-
 
     public MCValue getPrice() {
         return price;

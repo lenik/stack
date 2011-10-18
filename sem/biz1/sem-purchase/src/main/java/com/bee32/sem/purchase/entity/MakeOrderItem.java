@@ -36,6 +36,7 @@ public class MakeOrderItem
     private static final long serialVersionUID = 1L;
 
     MakeOrder order;
+    int index;
     Part part;
     BigDecimal quantity = new BigDecimal(1);
     MCValue price = new MCValue();
@@ -56,6 +57,18 @@ public class MakeOrderItem
         if (order == null)
             throw new NullPointerException("order");
         this.order = order;
+    }
+
+    /**
+     * 单据内部的序号
+     */
+    @Column(nullable = false)
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     @NaturalId
@@ -97,7 +110,6 @@ public class MakeOrderItem
         this.quantity = quantity;
         invalidateTotal();
     }
-
 
     public void setQuantity(long quantity) {
         setQuantity(new BigDecimal(quantity));
@@ -195,7 +207,6 @@ public class MakeOrderItem
         invalidateTotal();
     }
 
-
     @Override
     protected Serializable naturalId() {
         return new IdComposite(//
@@ -212,8 +223,13 @@ public class MakeOrderItem
 
     /**
      * 产品外部名称
-     * <p>和某个客户对应，具体对应客户在MakeOrder中</p>
-     * <p>某个产品对于不同客户的不同叫法，对内为同一种产品(同一个物料)</p>
+     * <p>
+     * 和某个客户对应，具体对应客户在MakeOrder中
+     * </p>
+     * <p>
+     * 某个产品对于不同客户的不同叫法，对内为同一种产品(同一个物料)
+     * </p>
+     *
      * @return
      */
     public String getExternalProductName() {
@@ -226,8 +242,13 @@ public class MakeOrderItem
 
     /**
      * 产品的外部技术参数要求
-     * <p>和某个客户对应，具体对应客户在MakeOrder中</p>
-     * <p>不同的客户对某个产品有不同的技术要求，但对内为同一个产品，所以技术要求相同</p>
+     * <p>
+     * 和某个客户对应，具体对应客户在MakeOrder中
+     * </p>
+     * <p>
+     * 不同的客户对某个产品有不同的技术要求，但对内为同一个产品，所以技术要求相同
+     * </p>
+     *
      * @return
      */
     public String getExternalSpecification() {
@@ -237,6 +258,5 @@ public class MakeOrderItem
     public void setExternalSpecification(String externalSpecification) {
         this.externalSpecification = externalSpecification;
     }
-
 
 }
