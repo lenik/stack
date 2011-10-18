@@ -38,8 +38,7 @@ public class ChanceCriteria
     public static CriteriaElement nameLike(String namePattern) {
         if (namePattern == null || namePattern.isEmpty())
             return null;
-        return or(like("id", "%" + namePattern + "%"), //
-                like("fullName", "%" + namePattern + "%"));
+        return like("subject", "%" + namePattern + "%");
     }
 
     @LeftHand(ChanceAction.class)

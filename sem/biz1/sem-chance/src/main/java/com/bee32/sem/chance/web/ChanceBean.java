@@ -235,7 +235,7 @@ public class ChanceBean
             edmo.setSelection(-1);
             edmo.setCriteriaElements(Order.desc("createdDate"),//
                     EntityCriteria.ownedByCurrentUser(),//
-                    ChanceCriteria.nameLike(materialPattern));
+                    ChanceCriteria.nameLike(subjectPattern));
             chances = UIHelper.buildLazyDataModel(edmo);
         } else {
             EntityDataModelOptions<Chance, ChanceDto> edmo = new EntityDataModelOptions<Chance, ChanceDto>(
