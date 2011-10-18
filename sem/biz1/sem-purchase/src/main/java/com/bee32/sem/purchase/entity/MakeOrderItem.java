@@ -259,4 +259,11 @@ public class MakeOrderItem
         this.externalSpecification = externalSpecification;
     }
 
+    @Override
+    public MakeOrderItem detach() {
+        super.detach();
+        order = null;
+        return this;
+    }
+
 }
