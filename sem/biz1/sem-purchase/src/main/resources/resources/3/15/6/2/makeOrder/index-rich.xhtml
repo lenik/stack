@@ -117,7 +117,7 @@
 
                     <h:outputText value="客户:" />
                     <t:panelGroup>
-                        <p:inputText id="org" value="#{makeOrderAdminBean.makeOrder.customer.name}" readonly="true"/>
+                        <p:inputText id="customer" value="#{makeOrderAdminBean.makeOrder.customer.name}" readonly="true"/>
                         <p:commandButton value="..." onclick="customerDialog.show()" disabled="#{!makeOrderAdminBean.editable}"/>
                     </t:panelGroup>
                     <h:outputText value="交货时间:" />
@@ -157,7 +157,7 @@
                         <f:facet name="header">
                             <h:outputText value="物料"/>
                         </f:facet>
-                        <h:outputText value="#{item.part.target.name}" />
+                        <h:outputText value="#{item.part.target.label}" />
                     </p:column>
 
                     <p:column>
@@ -376,7 +376,8 @@
                     </h:panelGrid>
                     <p:dataTable id="customers" var="customer"
                         value="#{makeOrderAdminBean.customers}" resizableColumns="true"
-                        rowIndexVar="rowIndex">
+                        rowIndexVar="rowIndex"
+                        scrollable="true" scrollWidth="600" scrollHeight="350">
 
                         <p:column headerText="序号">
                             <h:outputText value="#{rowIndex + 1}" />
@@ -401,16 +402,8 @@
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="类型">
-                            <h:outputText value="#{customer.type.label}" />
-                        </p:column>
-
-                        <p:column headerText="税务登记号">
+                        <p:column headerText="税务登记号/证件号">
                             <h:outputText value="#{customer.sid}" />
-                        </p:column>
-
-                        <p:column headerText="公司规模">
-                            <h:outputText value="#{customer.size}" />
                         </p:column>
 
                         <p:column headerText="创建日期">
@@ -448,7 +441,8 @@
                     </h:panelGrid>
                     <p:dataTable id="chances" var="chance" value="#{makeOrderAdminBean.chances}" resizableColumns="true"
                         selection="#{makeOrderAdminBean.selectedChance}" selectionMode="single"
-                        rowKey="#{chance.id}" rowIndexVar="rowIndex">
+                        rowKey="#{chance.id}" rowIndexVar="rowIndex"
+                        scrollable="true" scrollWidth="600" scrollHeight="350">
 
                         <p:column headerText="序号" style="width:45px;">
                             <h:outputText value="#{rowIndex + 1}" />

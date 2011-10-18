@@ -85,6 +85,7 @@ public class MakeOrderAdminBean extends EntityViewBean {
         limitDateTo = c.getTime();
 
         goNumber = 1;
+        loadMakeOrder(goNumber);
     }
 
     public Date getLimitDateFrom() {
@@ -231,6 +232,14 @@ public class MakeOrderAdminBean extends EntityViewBean {
         this.selectedCustomer = selectedCustomer;
     }
 
+    public String getChancePattern() {
+        return chancePattern;
+    }
+
+    public void setChancePattern(String chancePattern) {
+        this.chancePattern = chancePattern;
+    }
+
     public List<ChanceDto> getChances() {
         return chances;
     }
@@ -289,7 +298,7 @@ public class MakeOrderAdminBean extends EntityViewBean {
                     Order.asc("id"));
 
             if (firstOrder != null)
-                makeOrder = DTOs.marshal(MakeOrderDto.class, firstOrder);
+                makeOrder = DTOs.marshal(MakeOrderDto.class, MakeOrderDto.ITEMS|MakeOrderDto.TASKS, firstOrder);
 
     }
 

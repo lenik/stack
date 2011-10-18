@@ -33,7 +33,7 @@ public class SEMPurchaseModuleTest
 
     public static void main(String[] args)
             throws IOException {
-        new SEMPurchaseModuleTest().browseAndWait(SEMPurchaseModule.PREFIX + "/makeOrder/index-rich.jsf");
+        new SEMPurchaseModuleTest().browseAndWait(SEMPurchaseModule.PREFIX + "/makeOrder/");
     }
 
     static {
