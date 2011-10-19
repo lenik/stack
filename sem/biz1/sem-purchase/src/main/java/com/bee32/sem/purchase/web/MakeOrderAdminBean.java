@@ -291,13 +291,13 @@ public class MakeOrderAdminBean extends EntityViewBean {
 
         makeOrder = new MakeOrderDto().create();    //如果限定条件内没有找到makeOrder,则创建一个
 
-            MakeOrder firstOrder = serviceFor(MakeOrder.class).getFirst( //
-                    new Offset(position - 1), //
-                    EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                    Order.asc("id"));
+        MakeOrder firstOrder = serviceFor(MakeOrder.class).getFirst( //
+                new Offset(position - 1), //
+                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                Order.asc("id"));
 
-            if (firstOrder != null)
-                makeOrder = DTOs.marshal(MakeOrderDto.class, MakeOrderDto.ITEMS|MakeOrderDto.TASKS, firstOrder);
+        if (firstOrder != null)
+            makeOrder = DTOs.marshal(MakeOrderDto.class, MakeOrderDto.ITEMS|MakeOrderDto.TASKS, firstOrder);
 
     }
 

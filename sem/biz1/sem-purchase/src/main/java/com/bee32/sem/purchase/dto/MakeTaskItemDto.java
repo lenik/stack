@@ -19,6 +19,7 @@ public class MakeTaskItemDto
     private static final long serialVersionUID = 1L;
 
     MakeTaskDto task;
+    int index;
     PartDto part;
     BigDecimal quantity;
 
@@ -28,6 +29,7 @@ public class MakeTaskItemDto
     @Override
     protected void _marshal(MakeTaskItem source) {
         task = mref(MakeTaskDto.class, source.getTask());
+        index = source.getIndex();
         part = mref(PartDto.class, source.getPart());
         quantity = source.getQuantity();
 
@@ -38,6 +40,7 @@ public class MakeTaskItemDto
     @Override
     protected void _unmarshalTo(MakeTaskItem target) {
         merge(target, "task", task);
+        target.setIndex(index);
         merge(target, "part", part);
         target.setQuantity(quantity);
         target.setDeadline(deadline);
@@ -58,6 +61,14 @@ public class MakeTaskItemDto
         if (task == null)
             throw new NullPointerException("task");
         this.task = task;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public PartDto getPart() {

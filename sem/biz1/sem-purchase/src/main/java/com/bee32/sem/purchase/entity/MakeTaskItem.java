@@ -33,6 +33,7 @@ public class MakeTaskItem
     public static final int STATUS_LENGTH = 40;
 
     MakeTask task;
+    int index;
     Part part;
     BigDecimal quantity = new BigDecimal(1);
 
@@ -47,6 +48,18 @@ public class MakeTaskItem
 
     public void setTask(MakeTask task) {
         this.task = task;
+    }
+
+    /**
+     * 单据内部的序号
+     */
+    @Column(nullable = false)
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     @NaturalId
@@ -106,4 +119,10 @@ public class MakeTaskItem
                 selector(prefix + "part", part));
     }
 
+    @Override
+    public MakeTaskItem detach() {
+        super.detach();
+        task = null;
+        return this;
+    }
 }
