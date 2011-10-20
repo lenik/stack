@@ -65,4 +65,25 @@ public class ImportUtil {
         return true;
     }
 
+    public static Set<Class<?>> getImportClasses(Class<?> declaringClass) {
+        Set<Class<?>> importClasses = new HashSet<Class<?>>();
+        getImportClasses(declaringClass, importClasses);
+        return importClasses;
+    }
+
+    static void getImportClasses(Class<?> declaringClass, Set<Class<?>> importClasses) {
+        Import _import = declaringClass.getAnnotation(Import.class);
+        if (_import != null) {
+            Class<?>[] v = _import.value();
+            for (Class<?> imp : v) {
+                importClasses.add(imp);
+                getImportClasses(imp, importClasses);
+            }
+        }
+
+        Class<?> superclass = declaringClass.getSuperclass();
+        if (superclass != null)
+            getImportClasses(superclass, importClasses);
+    }
+
 }
