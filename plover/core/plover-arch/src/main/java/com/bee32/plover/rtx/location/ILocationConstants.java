@@ -25,6 +25,9 @@ public interface ILocationConstants {
     Location ICON = new PredefinedContextLocation("STYLE-ICON", //
             "http://st1.cdn.bee32.com/style/default/icons/");
 
+    Location SYMBOLS = new PredefinedContextLocation("SYMBOLS", //
+            "http://st1.cdn.bee32.com/symbols/");
+
     Location LIB_3RDPARTY = new PredefinedContextLocation("LIB-3RDPARTY", //
             "http://st1.cdn.bee32.com/lib2/");
 
