@@ -32,8 +32,9 @@ public abstract class AbstractMenuBuilder<T>
 
         if (request == null)
             return location.toString();
-        else
-            return location.resolve(request);
+
+        String cr = location.resolveAbsolute(request);
+        return cr;
     }
 
 }

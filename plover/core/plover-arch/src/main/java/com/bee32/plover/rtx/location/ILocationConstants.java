@@ -53,7 +53,7 @@ class JavascriptContextLocation
     }
 
     @Override
-    public String resolveAbsolute(HttpServletRequest request) {
+    public String resolveContextRelative(HttpServletRequest request) {
         if (base == null)
             throw new IllegalUsageException("No script spec for javascript location context");
         return "javascript:" + base;
@@ -113,7 +113,7 @@ class RequestContextLocation
     }
 
     @Override
-    public String resolveAbsolute(HttpServletRequest request) {
+    public String resolveContextRelative(HttpServletRequest request) {
         String context = request.getRequestURI();
         StringBuffer buffer = new StringBuffer(context);
         return join(buffer, base);

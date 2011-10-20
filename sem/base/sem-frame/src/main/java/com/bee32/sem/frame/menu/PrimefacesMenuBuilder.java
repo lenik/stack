@@ -12,6 +12,7 @@ import org.primefaces.model.MenuModel;
 
 import com.bee32.plover.arch.ui.IAppearance;
 import com.bee32.plover.rtx.location.ILocationContext;
+import com.bee32.plover.servlet.util.ThreadServletContext;
 import com.bee32.sem.frame.action.IAction;
 
 public class PrimefacesMenuBuilder
@@ -100,6 +101,19 @@ public class PrimefacesMenuBuilder
             }
             return submenu;
         }
+    }
+
+    @Override
+    protected String resolve(ILocationContext location) {
+        HttpServletRequest request = this.request;
+        if (request == null)
+            request = ThreadServletContext.getRequestOpt();
+
+        if (request == null)
+            return location.toString();
+
+        String cr = location.resolveContextRelative(request);
+        return cr;
     }
 
     public static PrimefacesMenuBuilder INSTANCE = new PrimefacesMenuBuilder();

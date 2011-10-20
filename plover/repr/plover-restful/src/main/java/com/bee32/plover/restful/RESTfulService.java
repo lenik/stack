@@ -156,7 +156,7 @@ public class RESTfulService {
 
             String location = ReverseLookupRegistry.getInstance().getLocation(target);
             if (location != null) {
-                location = ILocationConstants.WEB_APP.join(location).resolve(request);
+                location = ILocationConstants.WEB_APP.join(location).resolveAbsolute(request);
 
                 String additionMethod = resp.getMethod();
                 if (additionMethod != null) {

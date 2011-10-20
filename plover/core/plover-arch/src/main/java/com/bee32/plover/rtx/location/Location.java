@@ -171,15 +171,22 @@ public abstract class Location
     }
 
     @Override
+    @Deprecated
     public String resolve(HttpServletRequest request) {
-        return resolveAbsolute(request);
+        return resolveContextRelative(request);
     }
 
     @Override
     public String resolveAbsolute(HttpServletRequest request) {
         StringBuffer context = getContext(request);
-        String absolute = join(context, base);
+        String contextRelative = resolveContextRelative(request);
+        String absolute = join(context, contextRelative);
         return absolute;
+    }
+
+    @Override
+    public String resolveContextRelative(HttpServletRequest request) {
+        return base;
     }
 
     @Override

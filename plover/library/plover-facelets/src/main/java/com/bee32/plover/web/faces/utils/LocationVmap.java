@@ -25,8 +25,9 @@ public class LocationVmap
     private final ILocationContext location;
 
     static final int DEFAULT = 0;
-    static final int ABSOLUTE = 1;
-    static final int FULL_QUALIFIED = 2;
+    static final int CONTEXT_RELATIVE = 1;
+    static final int ABSOLUTE = 2;
+    static final int FULL_QUALIFIED = 3;
 
     private final int mode;
 
@@ -55,7 +56,9 @@ public class LocationVmap
         String locationSpec = String.valueOf(verb);
 
         if (locationSpec.startsWith("__")) {
-            if ("__abs__".equals(locationSpec))
+            if ("__ctx__".equals(locationSpec))
+                return create(location, CONTEXT_RELATIVE);
+            else if ("__abs__".equals(locationSpec))
                 return create(location, ABSOLUTE);
             else if ("__fqn__".equals(locationSpec))
                 return create(location, FULL_QUALIFIED);
@@ -72,6 +75,9 @@ public class LocationVmap
         switch (mode) {
         case ABSOLUTE:
             return location.resolveAbsolute(request);
+
+        case CONTEXT_RELATIVE:
+            return location.resolveContextRelative(request);
 
         case FULL_QUALIFIED:
             try {

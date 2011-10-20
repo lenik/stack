@@ -30,7 +30,7 @@ public class StyleLibrary
     protected void formatHeader(IIndentedOut out)
             throws IOException {
         HttpServletRequest req = ThreadServletContext.getRequest();
-        out.print("<style type='text/css' src='" + location.resolve(req) + "'>");
+        out.print("<style type='text/css' src='" + location.resolveAbsolute(req) + "'>");
     }
 
     @Override

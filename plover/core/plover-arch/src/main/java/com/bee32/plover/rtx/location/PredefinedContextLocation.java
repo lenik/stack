@@ -63,7 +63,7 @@ public class PredefinedContextLocation
     }
 
     @Override
-    public String resolveAbsolute(HttpServletRequest request) {
+    public String resolveContextRelative(HttpServletRequest request) {
         try {
             URL url = resolveURL(request);
             return url.toString();

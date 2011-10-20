@@ -198,7 +198,7 @@ public class UserFileDto
             iconLoc = ICON.join("obj16/elements_obj.gif");
         }
 
-        String href = iconLoc.resolve(ThreadHttpContext.getRequest());
+        String href = iconLoc.resolveAbsolute(ThreadHttpContext.getRequest());
         return href;
     }
 

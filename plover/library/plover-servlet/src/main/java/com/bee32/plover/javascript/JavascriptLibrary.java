@@ -30,7 +30,7 @@ public class JavascriptLibrary
     protected void formatHeader(IIndentedOut out)
             throws IOException {
         HttpServletRequest req = ThreadServletContext.getRequest();
-        out.print("<script language='javascript' src='" + location.resolve(req) + "'>");
+        out.print("<script language='javascript' src='" + location.resolveAbsolute(req) + "'>");
     }
 
     @Override

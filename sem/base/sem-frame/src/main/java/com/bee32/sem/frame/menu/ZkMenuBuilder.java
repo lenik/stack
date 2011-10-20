@@ -137,7 +137,7 @@ public class ZkMenuBuilder
 
             ILocationContext target = action.getTargetLocation();
             if (target != null) {
-                String href = target.resolve(request);
+                String href = target.resolveAbsolute(request);
                 menuitem.setHref(href);
             }
         }

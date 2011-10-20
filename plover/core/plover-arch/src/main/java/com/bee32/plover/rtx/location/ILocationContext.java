@@ -20,14 +20,14 @@ public interface ILocationContext
      * @return Non-<code>null</code> resolved location.
      */
     @Override
+    @Deprecated
     String resolve(HttpServletRequest request);
 
     /**
-     * Resolve to location relative to the servl et context.
-     * <p>
-     * In default implementation, {@link #resolveAbsolute(HttpServletRequest)} returns the same
-     * result as {@link #resolve(HttpServletRequest)}.
+     * Resolve to location relative to the servlet context.
      */
+    String resolveContextRelative(HttpServletRequest request);
+
     String resolveAbsolute(HttpServletRequest request);
 
     /**
