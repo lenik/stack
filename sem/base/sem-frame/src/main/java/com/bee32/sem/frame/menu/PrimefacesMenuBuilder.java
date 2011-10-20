@@ -1,6 +1,7 @@
 package com.bee32.sem.frame.menu;
 
 import javax.faces.component.UIComponent;
+import javax.faces.event.ActionListener;
 import javax.free.IllegalUsageException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -56,6 +57,9 @@ public class PrimefacesMenuBuilder
         IAppearance appearance = node.getAppearance();
 
         String label = appearance.getDisplayName();
+        if (label == null || label.isEmpty())
+            label = node.getName();
+
         String tooltips = appearance.getDescription();
 
         if (node.isEmpty()) { // menu-item
@@ -65,13 +69,22 @@ public class PrimefacesMenuBuilder
             item.setHelpText(tooltips);
 
             IAction action = node.getAction();
+            boolean actionUsed = false;
             if (action != null && action.isEnabled()) {
-
                 ILocationContext target = action.getTargetLocation();
-                String href = resolve(target);
-                item.setUrl(href);
+                if (target != null) {
+                    String href = resolve(target);
+                    item.setUrl(href);
+                    actionUsed = true;
+                }
+                ActionListener listener = action.getActionListener();
+                if (listener != null) {
+                    item.addActionListener(listener);
+                    item.setAjax(false);
+                    actionUsed = true;
+                }
             }
-
+            item.setDisabled(!actionUsed);
             return item;
         }
 
@@ -88,5 +101,7 @@ public class PrimefacesMenuBuilder
             return submenu;
         }
     }
+
+    public static PrimefacesMenuBuilder INSTANCE = new PrimefacesMenuBuilder();
 
 }
