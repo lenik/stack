@@ -88,7 +88,7 @@ public class LocationVmap
 
         case DEFAULT:
         default:
-            return location.resolve(request);
+            return location.resolveAbsolute(request);
         }
     }
 }
