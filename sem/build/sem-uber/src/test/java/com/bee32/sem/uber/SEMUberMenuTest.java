@@ -1,4 +1,4 @@
-package com.bee32.sem.process;
+package com.bee32.sem.uber;
 
 import javax.inject.Inject;
 
@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.bee32.plover.test.WiredTestCase;
 import com.bee32.sem.frame.builtins.MainMenu;
 
-public class SEMProcessMenuTest
+public class SEMUberMenuTest
         extends WiredTestCase {
 
     @Inject
