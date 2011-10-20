@@ -27,25 +27,44 @@
     </ui:remove>
 
     <script language="javascript">
-                    document.contextPath = "${location.WEB_APP}";
-                    document.WEB_APP = "${location.WEB_APP}";
-                </script>
+        document.contextPath = "${location.WEB_APP}";
+        document.WEB_APP = "${location.WEB_APP}";
+    </script>
+
+    <style type="text/css">
+        .logoBox {
+            border-left: solid #cc6600 5px;
+            border-right: solid #cc6600 5px;
+        }
+        .invert {
+            color: #eeeeee;
+            background: black;
+        }
+        .invert :link, .invert :visited {
+            color: #cccccc;
+        }
+    </style>
 
     <link rel="stylesheet" type="text/css" href="${location.WEB_APP}/site/frame.css" />
 
     <ui:insert name="scripts.head">
     </ui:insert>
-
 </h:head>
 
 <h:body>
 
-    <div style="margin: 0; width: 100%;">
-        <img src="${location.STYLE}/banner.gif" />
+    <div id="logoDiv" style="position: absolute; z-index: 100; top: 0px; right: 0px" >
+        <div style="width: 200px" align="center">
+            <a href="${location.WEB_APP}/site/about.html">
+                <img class="logoBox" src="${location.SYMBOLS}/logo-full.png" width="120" alt="LOGO" title="B-32 VER 0.3.18" />
+            </a>
+        </div>
     </div>
 
     <div>
-        <f:verbatim>#{mainMenu.superfishHtml}</f:verbatim>
+        <ui:insert name="menu">
+            <f:verbatim>#{mainMenu.superfishHtml}</f:verbatim>
+        </ui:insert>
         <div style="clear: both" />
     </div>
 
@@ -68,28 +87,25 @@
 
     <ui:insert name="content">正在构建中……</ui:insert>
 
-    <ui:insert name="pageFooter" />
-
-    <ui:insert name="banner">
-        <div style="display: inline;">
-            当前用户：
-            <ui:repeat var="node" value="#{loginPersonInfo.chain}">
-                <span style="display">#{node}</span>
-            </ui:repeat>
+    <ui:insert name="pageFooter">
+        <div style="clear: both; border-top: solid 1px #808080; border-bottom: solid 1px #eeeeee; background: #eeeeee;">
+            <div style=" padding: 0.5em;">
+                ■ 当前用户：
+                <ui:repeat var="node" value="#{loginPersonInfo.chain}">
+                    <span style="display">#{node}</span>
+                </ui:repeat>
+                （<a id="aQuit" name="aQuit" href="#">安全退出</a>）
+            </div>
+            <div style=" padding: 0.5em;">
+                <ui:insert name="pageStatus" />
+            </div>
         </div>
-        <div style="display: inline; margin-left: 200px;">
-            <a id="aQuit" name="aQuit" href="#">退出</a>
+        <div style="height: 5px; background: #aaaaaa; border-top: solid 1px #808080" />
+        <div class="invert" style="padding: 0.2em 0.5em">
+            <div style="display: inline">■ 版权所有©2010-2011 海宁市智恒软件有限公司</div>
+            | <a href="${location.WEB_APP}/site/contact.jsf">联系信息</a>
         </div>
     </ui:insert>
-
-    <div style="clear: both;" />
-    <div style="height: 5px; background-image: url(${location.STYLE}/split.gif); background-repeat: repeat-y"></div>
-    <div style="margin-top: 10px;">
-        <div style="display: inline">版权所有©2010-2011 海宁市智恒软件有限公司</div>
-        <div style="display: inline; margin-left: 50px;">
-            <a href="${location.WEB_APP}/site/contact.jsf">联系我们</a>
-        </div>
-    </div>
 
     <ui:insert name="scripts.frame">
         <script language="javascript" src="${location.LIB_JS}/jquery.sha1.js"></script>
