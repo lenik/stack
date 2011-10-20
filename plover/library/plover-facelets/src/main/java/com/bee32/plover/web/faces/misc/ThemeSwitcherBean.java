@@ -1,6 +1,5 @@
 package com.bee32.plover.web.faces.misc;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -21,7 +20,7 @@ public class ThemeSwitcherBean
     String theme;
 
     public Map<String, String> getThemes() {
-        return themes;
+        return ThemeData.getThemes();
     }
 
     public String getTheme() {
@@ -36,16 +35,32 @@ public class ThemeSwitcherBean
         preferences.setTheme(theme);
     }
 
-    static final Map<String, String> themes;
-    static {
-        themes = new LinkedHashMap<String, String>();
-        themes.put("标准（清爽）", "redmond");
-        themes.put("标准（舒适）", "humanity");
-        themes.put("商务黑", "black-tie");
-        themes.put("蓝色天空", "bluesky");
-        themes.put("浪漫紫色", "eggplant");
-        themes.put("苹果 X", "glass-x");
-        themes.put("皮都时尚", "swanky-purse");
+    public void switchToRedmond() {
+        preferences.setTheme("redmond");
+    }
+
+    public void switchToHumanity() {
+        preferences.setTheme("humanity");
+    }
+
+    public void switchToBlackTie() {
+        preferences.setTheme("black-tie");
+    }
+
+    public void switchToBluesky() {
+        preferences.setTheme("bluesky");
+    }
+
+    public void switchToEggplant() {
+        preferences.setTheme("eggplant");
+    }
+
+    public void switchToGlassX() {
+        preferences.setTheme("glass-x");
+    }
+
+    public void switchToSwankyPurse() {
+        preferences.setTheme("swanky-purse");
     }
 
 }
