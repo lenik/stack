@@ -1,5 +1,7 @@
 package com.bee32.sem.frame.action;
 
+import javax.faces.event.ActionListener;
+
 import org.apache.commons.collections15.Closure;
 import org.zkoss.zk.ui.event.Event;
 
@@ -13,9 +15,12 @@ public class Action
     private boolean enabled = true;
     private ILocationContext target;
     private Closure<Event> zkCallback;
+    private ActionListener actionListener;
+
+    public Action() {
+    }
 
     public Action(ILocationContext actionTarget) {
-        super();
         this.target = actionTarget;
     }
 
@@ -47,6 +52,15 @@ public class Action
 
     public void setZkCallback(Closure<Event> zkCallback) {
         this.zkCallback = zkCallback;
+    }
+
+    @Override
+    public ActionListener getActionListener() {
+        return actionListener;
+    }
+
+    public void setActionListener(ActionListener actionListener) {
+        this.actionListener = actionListener;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.bee32.sem.frame.action;
 
+import javax.faces.event.ActionListener;
+
 import org.apache.commons.collections15.Closure;
 import org.zkoss.zk.ui.event.Event;
 
@@ -14,5 +16,7 @@ public interface IAction
     ILocationContext getTargetLocation();
 
     Closure<Event> getZkCallback();
+
+    ActionListener getActionListener();
 
 }
