@@ -17,6 +17,9 @@ public class MainMenu {
 
     static Logger logger = LoggerFactory.getLogger(MainMenu.class);
 
+    /**
+     * Inject NLS.
+     */
     @Inject
     MenuLoader menuLoader;
 
