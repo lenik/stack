@@ -1,5 +1,6 @@
 package com.bee32.plover.servlet.test;
 
+import org.mortbay.jetty.servlet.ServletHolder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -49,7 +50,9 @@ public class SpringWac
     protected void configureServlets(ServletTestLibrary stl, WiredServletTestCase outer) {
         if (outer.isSpringMVCEnabled()) {
             // Add spring mvc support here.
-            stl.addServlet("spring-dispatcher", DispatcherServlet.class, "*" + MVCConfig.SUFFIX);
+            ServletHolder dispatcher = stl.addServlet("spring-dispatcher", DispatcherServlet.class, //
+                    "*" + MVCConfig.SUFFIX);
+            dispatcher.setInitParameter("", "");
         }
     }
 
