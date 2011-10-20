@@ -58,6 +58,11 @@ public class PredefinedContextLocation
     }
 
     @Override
+    protected StringBuffer getContext(HttpServletRequest request) {
+        return null;
+    }
+
+    @Override
     protected void getContext(StringBuffer sb, HttpServletRequest request) {
         throw new UnexpectedException("Not Used");
     }

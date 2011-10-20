@@ -130,7 +130,7 @@ public abstract class Location
         return create(join(base, directory, location));
     }
 
-    protected final StringBuffer getContext(HttpServletRequest request) {
+    protected StringBuffer getContext(HttpServletRequest request) {
         StringBuffer buffer = new StringBuffer();
         getContext(buffer, request);
         return buffer;
@@ -180,8 +180,12 @@ public abstract class Location
     public String resolveAbsolute(HttpServletRequest request) {
         StringBuffer context = getContext(request);
         String contextRelative = resolveContextRelative(request);
-        String absolute = join(context, contextRelative);
-        return absolute;
+        if (context == null) {
+            return contextRelative;
+        } else {
+            String absolute = join(context, contextRelative);
+            return absolute;
+        }
     }
 
     @Override
