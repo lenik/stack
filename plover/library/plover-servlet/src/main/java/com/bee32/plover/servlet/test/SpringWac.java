@@ -50,9 +50,9 @@ public class SpringWac
     protected void configureServlets(ServletTestLibrary stl, WiredServletTestCase outer) {
         if (outer.isSpringMVCEnabled()) {
             // Add spring mvc support here.
-            ServletHolder dispatcher = stl.addServlet("spring-dispatcher", DispatcherServlet.class, //
+            ServletHolder dispatcher = stl.addServlet("dispatcher", DispatcherServlet.class, //
                     "*" + MVCConfig.SUFFIX);
-            dispatcher.setInitParameter("", "");
+            dispatcher.setInitParameter("reserved:ctx-loc", "n/a");
         }
     }
 

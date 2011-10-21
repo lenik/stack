@@ -12,7 +12,7 @@ public class GuestPreferences
 
     private static final long serialVersionUID = 1L;
 
-    String theme = "humanity";
+    String theme = "bluesky";
 
     public String getTheme() {
         return theme;
