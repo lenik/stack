@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
 
-@Lazy
 @Controller
+@Lazy
 public class ObjectDumpView
         extends RESTfulView {
 

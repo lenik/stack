@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.View;
 
-import com.bee32.plover.inject.ComponentTemplate;
+import com.bee32.plover.inject.ControllerTemplate;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.entity.Entity;
 import com.bee32.plover.orm.entity.IEntityAccessService;
@@ -20,7 +20,7 @@ import com.bee32.plover.servlet.mvc.ActionResult;
 import com.bee32.plover.servlet.mvc.CompositeController;
 import com.bee32.plover.servlet.mvc.IActionHandler;
 
-@ComponentTemplate
+@ControllerTemplate
 @Lazy
 public abstract class EntityController<E extends Entity<K>, K extends Serializable, Dto extends EntityDto<E, K>>
         extends CompositeController

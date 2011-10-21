@@ -1,10 +1,11 @@
 package com.bee32.plover.web.faces.test;
 
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
+import com.bee32.plover.inject.ControllerTemplate;
+
+@ControllerTemplate
 @Lazy
 @RequestMapping("/test/*")
 public class LongViewController {

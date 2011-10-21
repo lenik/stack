@@ -13,8 +13,8 @@ import com.bee32.plover.restful.IRESTfulResponse;
 import com.bee32.plover.restful.RESTfulView;
 import com.bee32.plover.velocity.VelocityUtil;
 
-@Lazy
 @Controller
+@Lazy
 public class VelocityView
         extends RESTfulView {
 

@@ -6,12 +6,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.bee32.plover.inject.ControllerTemplate;
 import com.bee32.plover.servlet.util.ServletDiag;
 
-@Controller
+@ControllerTemplate
 @Lazy
 @RequestMapping("/test/*")
 public class FrameTestController {

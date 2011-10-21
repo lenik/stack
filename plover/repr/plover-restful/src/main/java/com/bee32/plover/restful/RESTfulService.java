@@ -38,8 +38,8 @@ import com.bee32.plover.disp.util.MethodPattern;
 import com.bee32.plover.restful.request.RESTfulRequestBuilder;
 import com.bee32.plover.rtx.location.ILocationConstants;
 
-@Lazy
 @Service
+@Lazy
 public class RESTfulService {
 
     static Logger logger = LoggerFactory.getLogger(RESTfulService.class);

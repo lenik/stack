@@ -18,8 +18,8 @@ import com.bee32.plover.pub.oid.OidUtil;
 import com.bee32.plover.pub.oid.OidVector;
 import com.bee32.plover.restful.util.IRESTfulController;
 
-@Lazy
 @Controller
+@Lazy
 public class ModuleManagerController
         implements IRESTfulController {
 
