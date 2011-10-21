@@ -332,7 +332,7 @@
                                 <p:spacer width="10"/>
                                 <p:commandLink
                                     oncomplete="orderDialog.hide();"
-                                    update="mainForm:order"
+                                    update="mainForm:order mainForm:items"
                                     action="#{makeTaskAdminBean.chooseOrder}"
                                     value="挑选">
                                     <f:setPropertyActionListener

@@ -431,26 +431,12 @@ public class MakeTaskAdminBean extends EntityViewBean {
                 new Equals("customer.id", customer.getId()), //
                 EntityCriteria.createdBetweenEx(limitDateFromForOrder, limitDateToForOrder));
 
-        orders = DTOs.mrefList(MakeOrderDto.class, _orders);
+        orders = DTOs.marshalList(MakeOrderDto.class, _orders);
     }
 
     public void chooseOrder() {
-
-        if(selectedOrder != null) {
-            for(MakeOrderItemDto item : selectedOrder.getItems()) {
-                MakeTaskItemDto i = new MakeTaskItemDto().create();
-
-                i.setTask(makeTask);
-                i.setPart(item.getPart());
-                i.setQuantity(item.getQuantity());
-
-                makeTask.addItem(i);
-            }
-        }
-
-
-
-
+        selectedOrder = reload(selectedOrder);
+        makeTask.setItems(selectedOrder.arrangeMakeTask(makeTask));
         makeTask.setOrder(selectedOrder);
     }
 

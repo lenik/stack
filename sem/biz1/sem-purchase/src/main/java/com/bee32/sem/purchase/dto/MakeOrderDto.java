@@ -42,6 +42,8 @@ public class MakeOrderDto
     MCVector total;
     BigDecimal nativeTotal; // Redundant.
 
+    List<MakeOrderItemDto> noCorrespondingTaskItems;
+
     @Override
     protected void _marshal(MakeOrder source) {
         customer = mref(PartyDto.class, source.getCustomer());
@@ -58,6 +60,9 @@ public class MakeOrderDto
             tasks = marshalList(MakeTaskDto.class, source.getTasks());
         else
             tasks = new ArrayList<MakeTaskDto>();
+
+        noCorrespondingTaskItems = //
+                marshalList(MakeOrderItemDto.class, source.getNoCorrespondingTaskItems());
     }
 
     @Override
@@ -215,6 +220,26 @@ public class MakeOrderDto
     protected void invalidateTotal() {
         total = null;
         nativeTotal = null;
+    }
+
+    public List<MakeTaskItemDto> arrangeMakeTask(MakeTaskDto makeTask) {
+        if(noCorrespondingTaskItems.size() > 0) {
+            List<MakeTaskItemDto> taskItems = new ArrayList<MakeTaskItemDto>();
+
+            for(MakeOrderItemDto orderItem : noCorrespondingTaskItems) {
+                MakeTaskItemDto taskItem = new MakeTaskItemDto().create();
+
+                taskItem.setTask(makeTask);
+                taskItem.setPart(orderItem.getPart());
+                taskItem.setQuantity(orderItem.quantity);
+
+                taskItems.add(taskItem);
+            }
+
+            return taskItems;
+        }
+
+        return null;
     }
 
 }

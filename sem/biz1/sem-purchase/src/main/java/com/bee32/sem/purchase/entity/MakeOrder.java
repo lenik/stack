@@ -3,7 +3,9 @@ package com.bee32.sem.purchase.entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,6 +28,7 @@ import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sem.world.monetary.MCValue;
 import com.bee32.sem.world.monetary.MCVector;
+import com.bee32.sems.bom.entity.Part;
 
 /**
  * 生产定单
@@ -203,4 +206,50 @@ public class MakeOrder
         nativeTotal = null;
     }
 
+    //找寻还没有按排生产任务的产品列表
+    @Transient
+    public List<MakeOrderItem> getNoCorrespondingTaskItems() {
+        Map<Part, MakeTaskItem> taskItemMap = new HashMap<Part, MakeTaskItem>();
+
+        for(MakeTask task : tasks) {
+            for(MakeTaskItem taskItem : task.getItems()) {
+                MakeTaskItem taskItemInMap = taskItemMap.get(taskItem.part);
+                if(taskItemInMap == null) {
+                    taskItemMap.put(taskItem.part, taskItem);
+                } else {
+                    taskItemInMap.setQuantity(taskItem.getQuantity().add(taskItemInMap.getQuantity()));
+                }
+            }
+        }
+
+        List<MakeOrderItem> result = new ArrayList<MakeOrderItem>();
+        for(MakeOrderItem orderItem : items) {
+            MakeTaskItem taskItemInMap = taskItemMap.get(orderItem.getPart());
+
+            if(taskItemInMap == null) {
+                //没有对应的生产任务
+                result.add(orderItem);
+            } else {
+                //找到对应的生产任务
+                BigDecimal haveNotArrangeTaskCount = //
+                        orderItem.getQuantity().subtract(taskItemInMap.getQuantity());
+
+                if(haveNotArrangeTaskCount.longValue() > 0) {
+                    //生产任务的数量小订单的数量
+                    MakeOrderItem haveNotArrangeTaskOrderItem = new MakeOrderItem();
+                    haveNotArrangeTaskOrderItem.setOrder(this);
+                    haveNotArrangeTaskOrderItem.setPart(orderItem.getPart());
+                    haveNotArrangeTaskOrderItem.setQuantity(haveNotArrangeTaskCount);
+                    haveNotArrangeTaskOrderItem.setExternalProductName(orderItem.getExternalProductName());
+                    haveNotArrangeTaskOrderItem.setExternalSpecification(orderItem.getExternalSpecification());
+
+                    result.add(haveNotArrangeTaskOrderItem);
+                }
+            }
+        }
+
+        if(result.size() > 0) return result;
+        return null;
+
+    }
 }
