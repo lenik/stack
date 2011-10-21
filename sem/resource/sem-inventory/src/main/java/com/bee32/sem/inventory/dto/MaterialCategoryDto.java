@@ -8,8 +8,8 @@ import javax.validation.constraints.NotNull;
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.ox1.tree.TreeEntityDto;
-import com.bee32.sem.inventory.Classification;
 import com.bee32.plover.util.TextUtil;
+import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.entity.CodeGenerator;
 import com.bee32.sem.inventory.entity.MaterialCategory;
 

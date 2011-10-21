@@ -16,18 +16,15 @@ public class MenuLoader
     static Logger logger = LoggerFactory.getLogger(MenuLoader.class);
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext)
+    public synchronized void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
-
         for (MenuContribution contribution : applicationContext.getBeansOfType(MenuContribution.class).values()) {
             logger.debug("Merge menu contribution: " + contribution);
 
             // XXX Force load of NLS.
             contribution.dump();
             // merge(contribution);
-
         }
-
     }
 
 }
