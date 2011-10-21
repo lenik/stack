@@ -264,60 +264,239 @@
 
         <h:form id="orderForm">
             <p:dialog header="查找定单" widgetVar="orderDialog"
-                modal="true" height="500" width="640">
+                modal="true" height="600" width="800">
                 <h:panelGroup id="orderPanel">
 
+                    <h:panelGroup>
+                        <t:panelGrid columns="3">
+                            <h:outputText value="客户"/>
+                            <p:inputText id="customer"
+                                value="#{makeTaskAdminBean.customer.name}"
+                                readonly="true" />
+                            <p:commandButton value="..."
+                                onclick="customerDialog.show()"/>
+                        </t:panelGrid>
+                        <h:panelGrid columns="6">
+                            <h:outputText value="时间段:" />
+                            <h:outputText value="从" />
+                            <p:calendar id="limitDateFromForOrder"
+                                navigator="true" locale="zh_CN"
+                                pattern="yyyy-MM-dd"
+                                value="#{makeTaskAdminBean.limitDateFromForOrder}"
+                                showOn="button"/>
+                            <h:outputText value="到" />
+                            <p:calendar id="limitDateToForOrder"
+                                navigator="true" locale="zh_CN"
+                                pattern="yyyy-MM-dd"
+                                value="#{makeTaskAdminBean.limitDateToForOrder}"
+                                showOn="button"/>
+                            <p:commandButton value="查找"
+                                actionListener="#{makeTaskAdminBean.findOrder}"
+                                async="true" update="orders"/>
+                        </h:panelGrid>
+                    </h:panelGroup>
 
-
-                    <h:panelGrid columns="2">
-                        <p:inputText
-                            value="#{makeOrderAdminBean.chancePattern}" />
-
-                        <p:commandButton value="查找"
-                            actionListener="#{makeOrderAdminBean.findChance}"
-                            update="chanceForm:chances" async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="chances" var="chance"
-                        value="#{makeOrderAdminBean.chances}"
+                    <p:dataTable id="orders" var="order"
+                        value="#{makeTaskAdminBean.orders}"
                         resizableColumns="true"
-                        selection="#{makeOrderAdminBean.selectedChance}"
-                        selectionMode="single" rowKey="#{chance.id}"
                         rowIndexVar="rowIndex" scrollable="true"
-                        scrollWidth="600" scrollHeight="350">
+                        scrollWidth="750" scrollHeight="350">
 
                         <p:column headerText="序号" style="width:45px;">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
-                        <p:column headerText="机会主题">
-                            <h:outputText value="#{chance.subject}" />
-                        </p:column>
-
                         <p:column headerText="客户">
-                            <h:outputText value="#{chance.partiesHint}" />
+                            <h:outputText value="#{order.customer.name}" />
                         </p:column>
 
-                        <p:column headerText="来源" style="width:100px;">
-                            <h:outputText value="#{chance.source.label}" />
+                        <p:column headerText="创建时间">
+                            <h:outputText value="#{order.createdDate}" />
+                        </p:column>
+
+                        <p:column headerText="交货时间">
+                            <h:outputText value="#{order.deadline}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">操作</f:facet>
+                            <t:panelGroup>
+                                <p:commandLink
+                                    oncomplete="orderItemsDialog.show()"
+                                    update="orderItemsForm:orderItems"
+                                    value="明细">
+                                    <f:setPropertyActionListener
+                                        value="#{order}"
+                                        target="#{makeTaskAdminBean.selectedOrder}" />
+                                </p:commandLink>
+                                <p:spacer width="10"/>
+                                <p:commandLink
+                                    oncomplete="orderDialog.hide();"
+                                    update="mainForm:order"
+                                    action="#{makeTaskAdminBean.chooseOrder}"
+                                    value="挑选">
+                                    <f:setPropertyActionListener
+                                        value="#{order}"
+                                        target="#{makeTaskAdminBean.selectedOrder}" />
+                                </p:commandLink>
+                            </t:panelGroup>
                         </p:column>
 
                     </p:dataTable>
-                    <h:panelGrid columns="2">
-                        <p:commandButton value="确定"
-                            actionListener="#{makeOrderAdminBean.chooseChance}"
-                            oncomplete="chanceDialog.hide();"
-                            update="mainForm:chance" async="true" />
-                        <p:commandButton value="取消"
-                            oncomplete="chanceDialog.hide();" />
-                    </h:panelGrid>
 
-
-
+                    <p:commandButton value="取消"
+                        oncomplete="orderDialog.hide();" />
 
 
                 </h:panelGroup>
             </p:dialog>
         </h:form>
+
+        <h:form id="customerForm">
+            <p:dialog header="选择客户" widgetVar="customerDialog" modal="true"
+                height="500" width="840">
+                <h:panelGroup>
+
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="客户名称全部或部份:" />
+                        <p:inputText value="#{makeTaskAdminBean.customerPattern}" />
+                        <p:commandButton value="查找"
+                            actionListener="#{makeTaskAdminBean.findCustomer}" update="customers"
+                            async="true" />
+                    </h:panelGrid>
+                    <p:dataTable id="customers" var="customer"
+                        value="#{makeTaskAdminBean.customers}" resizableColumns="true"
+                        rowIndexVar="rowIndex"
+                        scrollable="true" scrollWidth="600" scrollHeight="350">
+
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column headerText="客户名称">
+                            <h:outputText value="#{customer.name}" />
+                        </p:column>
+
+                        <p:column headerText="标签">
+                            <p:dataList value="#{customer.tags}" var="tag" type="definition">
+                                <f:facet name="description">
+                                    <h:outputText value="#{tag.label}"/>
+                                </f:facet>
+                            </p:dataList>
+                        </p:column>
+
+                        <p:column headerText="成立日期/生日">
+                            <h:outputText value="#{customer.birthday}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="税务登记号/证件号">
+                            <h:outputText value="#{customer.sid}" />
+                        </p:column>
+
+                        <p:column headerText="创建日期">
+                            <h:outputText value="#{customer.createdDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="动作">
+                            <p:commandLink
+                                oncomplete="customerDialog.hide()"
+                                action="#{makeTaskAdminBean.chooseCustomer}"
+                                update="orderForm:customer" value="挑选">
+                                <f:setPropertyActionListener
+                                    value="#{customer}"
+                                    target="#{makeTaskAdminBean.selectedCustomer}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="取消" oncomplete="customerDialog.hide();" />
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
+
+        <h:form id="orderItemsForm">
+            <p:dialog header="出入库明细" widgetVar="orderItemsDialog" modal="true"
+                height="480" width="800">
+                <h:panelGroup id="orderItemsPanel">
+
+                    <p:dataTable id="orderItems" var="item"
+                        value="#{makeTaskAdminBean.orderItems}"
+                        resizableColumns="true"
+                        rowIndexVar="rowIndex"
+                        scrollable="true" scrollWidth="750" scrollHeight="350">
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="序号" />
+                            </f:facet>
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="物料" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{item.part.target.label}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="规格型号" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{item.part.target.modelSpec}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="单价" />
+                            </f:facet>
+                            <h:outputText value="#{item.price.value}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="币种" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{item.price.currencyText}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="数量" />
+                            </f:facet>
+                            <h:outputText value="#{item.quantity}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="外部名称" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{item.externalProductName}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="外部规格" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{item.externalSpecification}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:panelGroup>
+            </p:dialog>
+
+        </h:form>
+
     </ui:define>
 </ui:composition>
 </html>

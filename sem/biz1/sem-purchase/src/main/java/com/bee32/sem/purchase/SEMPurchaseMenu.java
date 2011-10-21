@@ -12,8 +12,8 @@ public class SEMPurchaseMenu
 
     public static MenuNode PURCHASE = menu(SEMFrameMenu.BIZ1, "purchase");
 
-    static MenuNode makeOrderAdmin = entry(PURCHASE, 1, "makeOrderAdmin", PURCHASE_.join("makeOrder/index-rich.jsf"));
-    static MenuNode makeTaskAdmin = entry(PURCHASE, 2, "makeTaskAdmin", PURCHASE_.join("makeTask/index-rich.jsf"));
+    static MenuNode makeOrderAdmin = entry(PURCHASE, 1, "makeOrderAdmin", PURCHASE_.join("makeOrder/"));
+    static MenuNode makeTaskAdmin = entry(PURCHASE, 2, "makeTaskAdmin", PURCHASE_.join("makeTask/"));
 
     @Override
     protected void preamble() {

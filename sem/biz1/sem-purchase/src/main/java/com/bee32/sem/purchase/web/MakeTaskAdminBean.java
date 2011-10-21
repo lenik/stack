@@ -8,11 +8,19 @@ import java.util.List;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
+import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.misc.EntityCriteria;
+import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.util.PeopleCriteria;
+import com.bee32.sem.purchase.dto.MakeOrderDto;
+import com.bee32.sem.purchase.dto.MakeOrderItemDto;
 import com.bee32.sem.purchase.dto.MakeTaskDto;
 import com.bee32.sem.purchase.dto.MakeTaskItemDto;
 import com.bee32.sem.purchase.entity.MakeOrder;
@@ -47,16 +55,31 @@ public class MakeTaskAdminBean extends EntityViewBean {
 
     protected List<MakeTaskItemDto> itemsNeedToRemoveWhenModify = new ArrayList<MakeTaskItemDto>();
 
+    private PartyDto customer;
+
+    private Date limitDateFromForOrder;
+    private Date limitDateToForOrder;
+
+    private List<MakeOrderDto> orders;
+    private MakeOrderDto selectedOrder;
+
+    private String customerPattern;
+    private List<PartyDto> customers;
+    private PartyDto selectedCustomer;
+
+
     public MakeTaskAdminBean() {
         Calendar c = Calendar.getInstance();
         // 取这个月的第一天
         c.set(Calendar.DAY_OF_MONTH, 1);
         limitDateFrom = c.getTime();
+        limitDateFromForOrder = c.getTime();
 
         // 最这个月的最后一天
         c.add(Calendar.MONTH, 1);
         c.add(Calendar.DAY_OF_MONTH, -1);
         limitDateTo = c.getTime();
+        limitDateToForOrder = c.getTime();
 
         goNumber = 1;
         loadMakeTask(goNumber);
@@ -96,7 +119,7 @@ public class MakeTaskAdminBean extends EntityViewBean {
 
 
     public int getCount() {
-        count = serviceFor(MakeOrder.class).count(//
+        count = serviceFor(MakeTask.class).count(//
                 EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
         return count;
     }
@@ -165,6 +188,84 @@ public class MakeTaskAdminBean extends EntityViewBean {
     public void setNewItemStatus(boolean newItemStatus) {
         this.newItemStatus = newItemStatus;
     }
+
+    public PartyDto getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(PartyDto customer) {
+        this.customer = customer;
+    }
+
+    public Date getLimitDateFromForOrder() {
+        return limitDateFromForOrder;
+    }
+
+    public void setLimitDateFromForOrder(Date limitDateFromForOrder) {
+        this.limitDateFromForOrder = limitDateFromForOrder;
+    }
+
+    public Date getLimitDateToForOrder() {
+        return limitDateToForOrder;
+    }
+
+    public void setLimitDateToForOrder(Date limitDateToForOrder) {
+        this.limitDateToForOrder = limitDateToForOrder;
+    }
+
+    public List<MakeOrderDto> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<MakeOrderDto> orders) {
+        this.orders = orders;
+    }
+
+    public MakeOrderDto getSelectedOrder() {
+        return selectedOrder;
+    }
+
+    public void setSelectedOrder(MakeOrderDto selectedOrder) {
+        this.selectedOrder = selectedOrder;
+    }
+
+    public String getCustomerPattern() {
+        return customerPattern;
+    }
+
+    public void setCustomerPattern(String customerPattern) {
+        this.customerPattern = customerPattern;
+    }
+
+    public List<PartyDto> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<PartyDto> customers) {
+        this.customers = customers;
+    }
+
+    public PartyDto getSelectedCustomer() {
+        return selectedCustomer;
+    }
+
+    public void setSelectedCustomer(PartyDto selectedCustomer) {
+        this.selectedCustomer = selectedCustomer;
+    }
+
+    public List<MakeOrderItemDto> getOrderItems() {
+        if(selectedOrder != null) {
+            return selectedOrder.getItems();
+        }
+        return null;
+    }
+
+
+
+
+
+
+
 
     public void limit() {
         loadMakeTask(goNumber);
@@ -325,4 +426,48 @@ public class MakeTaskAdminBean extends EntityViewBean {
         selectedPart = null;
     }
 
+    public void findOrder() {
+        List<MakeOrder> _orders = serviceFor(MakeOrder.class).list( //
+                new Equals("customer.id", customer.getId()), //
+                EntityCriteria.createdBetweenEx(limitDateFromForOrder, limitDateToForOrder));
+
+        orders = DTOs.mrefList(MakeOrderDto.class, _orders);
+    }
+
+    public void chooseOrder() {
+
+        if(selectedOrder != null) {
+            for(MakeOrderItemDto item : selectedOrder.getItems()) {
+                MakeTaskItemDto i = new MakeTaskItemDto().create();
+
+                i.setTask(makeTask);
+                i.setPart(item.getPart());
+                i.setQuantity(item.getQuantity());
+
+                makeTask.addItem(i);
+            }
+        }
+
+
+
+
+        makeTask.setOrder(selectedOrder);
+    }
+
+    public void findCustomer() {
+        if (customerPattern != null && !customerPattern.isEmpty()) {
+
+            List<Party> _customers = serviceFor(Party.class).list( //
+                    PeopleCriteria.customers(), //
+                    new Or( //
+                            new Like("name", "%" + customerPattern + "%"), //
+                            new Like("fullName", "%" + customerPattern + "%")));
+
+            customers = DTOs.marshalList(PartyDto.class, _customers);
+        }
+    }
+
+    public void chooseCustomer() {
+        customer = selectedCustomer;
+    }
 }
