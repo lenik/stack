@@ -7,19 +7,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.bee32.icsf.login.LoginInfo;
 import com.bee32.icsf.login.LoginManager;
 import com.bee32.plover.ajax.SuccessOrFailMessage;
-import com.bee32.plover.inject.ControllerTemplate;
 import com.bee32.plover.ox1.principal.User;
 
-@ControllerTemplate
+@Controller
 @Lazy
-public class LogoutController
-        extends MultiActionController {
+@RequestMapping("/logout.do")
+public class LogoutController {
 
     @Inject
     LoginManager loginManager;

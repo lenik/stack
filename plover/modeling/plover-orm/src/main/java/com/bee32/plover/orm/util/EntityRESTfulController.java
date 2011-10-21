@@ -8,8 +8,8 @@ import javax.free.ParseException;
 import javax.inject.Inject;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
 
-import com.bee32.plover.inject.ControllerTemplate;
 import com.bee32.plover.orm.dao.CommonDataManager;
 import com.bee32.plover.orm.dao.MemdbDataManager;
 import com.bee32.plover.orm.entity.Entity;
@@ -28,7 +28,7 @@ import com.bee32.plover.restful.IRESTfulResponse;
  *
  * 同时需要注意的是，ER 并非毫无用处，这里 populate 还是需要 ER 的具体实现支持。
  */
-@ControllerTemplate
+@Controller
 @Lazy
 public class EntityRESTfulController<E extends Entity<K>, K extends Serializable> {
 

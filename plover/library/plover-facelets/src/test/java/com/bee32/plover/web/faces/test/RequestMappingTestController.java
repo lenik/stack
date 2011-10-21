@@ -4,10 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.bee32.plover.inject.ControllerTemplate;
 
 /**
  * 1，如果继承 MultiActionController，就必须约束方法名
@@ -16,7 +15,7 @@ import com.bee32.plover.inject.ControllerTemplate;
  *
  * 3，什么都不用时，默认会用什么实现地址转换？（未知） 在这种情况下可以构建 RESTful 地址。
  */
-@ControllerTemplate
+@Controller
 @Lazy
 public class RequestMappingTestController {
 
