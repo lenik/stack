@@ -9,11 +9,10 @@ import java.util.Map.Entry;
 import javax.free.AbstractNonNullComparator;
 import javax.free.Pair;
 
-import org.springframework.context.annotation.Scope;
-
+import com.bee32.plover.web.faces.view.PerView;
 import com.bee32.plover.web.faces.view.ViewBean;
 
-@Scope("view")
+@PerView
 public class ThreadDiagBean
         extends ViewBean {
 

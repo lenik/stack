@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
@@ -16,7 +15,6 @@ import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserDto;
 import com.bee32.plover.ox1.tree.TreeCriteria;
 
-@Scope("view")
 public class PrincipalAdminBean
         extends EntityViewBean {
 

@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -27,8 +25,6 @@ import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.util.PeopleCriteria;
 
-@Component
-@Scope("view")
 public class TransferOutAdminBean extends StockOrderBaseBean {
 
     private static final long serialVersionUID = 1L;

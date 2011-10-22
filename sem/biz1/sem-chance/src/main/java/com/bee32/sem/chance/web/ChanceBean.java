@@ -8,8 +8,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.zkoss.lang.Strings;
 
 import com.bee32.plover.criteria.hibernate.Order;
@@ -52,8 +50,6 @@ import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.sandbox.ZLazyDataModel;
 import com.bee32.sem.world.monetary.MCValue;
 
-@Component
-@Scope("view")
 public class ChanceBean
         extends ChanceBeanVdx {
 

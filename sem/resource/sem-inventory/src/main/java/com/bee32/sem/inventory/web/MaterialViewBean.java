@@ -16,8 +16,6 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.UploadedFile;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.zkoss.lang.Strings;
 
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -54,8 +52,6 @@ import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitCriteria;
 import com.bee32.sem.world.thing.UnitDto;
 
-@Component
-@Scope("view")
 public class MaterialViewBean
         extends MaterialVdx {
 

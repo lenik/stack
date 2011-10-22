@@ -7,8 +7,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -23,8 +21,6 @@ import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 
-@Component
-@Scope("view")
 public class TakeAdminBean extends StockOrderBaseBean {
 
     private static final long serialVersionUID = 1L;

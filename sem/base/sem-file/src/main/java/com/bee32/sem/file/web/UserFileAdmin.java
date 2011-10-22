@@ -14,8 +14,6 @@ import javax.free.TempFile;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.UploadedFile;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.zkoss.lang.Strings;
 
 import com.bee32.plover.criteria.hibernate.Order;
@@ -33,8 +31,6 @@ import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.UIHelper;
 
-@Component
-@Scope("view")
 public class UserFileAdmin
         extends EntityViewBean {
 

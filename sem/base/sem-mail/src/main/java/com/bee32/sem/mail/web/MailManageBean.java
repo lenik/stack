@@ -9,7 +9,6 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.component.tabview.TabView;
-import org.springframework.context.annotation.Scope;
 
 import com.bee32.icsf.login.LoginInfo;
 import com.bee32.plover.criteria.hibernate.Order;
@@ -27,7 +26,6 @@ import com.bee32.sem.mail.entity.MailOrientation;
 import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.util.LoginPersonInfo;
 
-@Scope("view")
 public class MailManageBean
         extends MailManageVdx {
 

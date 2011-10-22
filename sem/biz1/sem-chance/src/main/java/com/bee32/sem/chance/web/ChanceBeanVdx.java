@@ -1,13 +1,8 @@
 package com.bee32.sem.chance.web;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.bee32.sem.sandbox.MultiTabEntityVdx;
 
-@Component
-@Scope("view")
-public class ChanceBeanVdx
+public abstract class ChanceBeanVdx
         extends MultiTabEntityVdx {
 
     private static final long serialVersionUID = 1L;

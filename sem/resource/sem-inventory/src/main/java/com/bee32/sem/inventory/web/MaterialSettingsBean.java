@@ -8,8 +8,6 @@ import java.util.Locale;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.event.FlowEvent;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.zkoss.lang.Strings;
 
 import com.bee32.plover.criteria.hibernate.Order;
@@ -37,8 +35,6 @@ import com.bee32.sem.world.thing.UnitConvDto;
 import com.bee32.sem.world.thing.UnitCriteria;
 import com.bee32.sem.world.thing.UnitDto;
 
-@Component
-@Scope("view")
 public class MaterialSettingsBean
         extends MultiTabEntityVdx {
 

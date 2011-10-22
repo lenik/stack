@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -18,8 +16,6 @@ import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.util.StockCriteria;
 
-@Component
-@Scope("view")
 public class InitAdminBean extends StockOrderBaseBean {
 
     private static final long serialVersionUID = 1L;

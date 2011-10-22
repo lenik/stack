@@ -8,7 +8,6 @@ import java.util.List;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.InCollection;
@@ -36,7 +35,6 @@ import com.bee32.sems.bom.entity.PartItem;
 import com.bee32.sems.bom.service.MaterialPriceNotFoundException;
 import com.bee32.sems.bom.util.BomCriteria;
 
-@Scope("view")
 public class BomAdminBean
         extends BomAdminVdx {
 

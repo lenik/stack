@@ -3,15 +3,12 @@ package com.bee32.sem.people.web;
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.context.annotation.Scope;
-
 import com.bee32.icsf.login.LoginCriteria;
 import com.bee32.icsf.login.LoginInfo;
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.principal.User;
 
-@Scope("view")
 public class ModifyPasswordBean
         extends EntityViewBean {
 

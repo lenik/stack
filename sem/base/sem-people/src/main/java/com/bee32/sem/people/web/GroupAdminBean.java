@@ -5,9 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.primefaces.model.TreeNode;
-import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
 
 import com.bee32.plover.ox1.principal.Group;
 import com.bee32.plover.ox1.principal.GroupDto;
@@ -17,8 +15,6 @@ import com.bee32.plover.ox1.principal.PrincipalDiag;
 import com.bee32.plover.ox1.principal.RoleDto;
 import com.bee32.plover.ox1.principal.UserDto;
 
-@Component
-@Scope("view")
 public class GroupAdminBean extends PrincipalAdminBean {
 
     private static final long serialVersionUID = 1L;

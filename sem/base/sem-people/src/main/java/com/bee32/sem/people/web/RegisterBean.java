@@ -4,15 +4,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.principal.User;
 
-@Component
-@Scope("view")
 public class RegisterBean extends EntityViewBean {
 
 	private static final long serialVersionUID = 1L;

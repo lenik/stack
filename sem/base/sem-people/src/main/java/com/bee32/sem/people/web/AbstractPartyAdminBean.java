@@ -8,7 +8,6 @@ import javax.free.UnexpectedException;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
-import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.sem.people.dto.AbstractPartyDto;
@@ -22,7 +21,6 @@ import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.sandbox.MultiTabEntityVdx;
 import com.bee32.sem.sandbox.UIHelper;
 
-@Scope("view")
 public abstract class AbstractPartyAdminBean
         extends MultiTabEntityVdx {
 

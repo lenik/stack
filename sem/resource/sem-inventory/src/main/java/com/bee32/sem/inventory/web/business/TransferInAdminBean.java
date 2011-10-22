@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -14,6 +13,7 @@ import com.bee32.plover.criteria.hibernate.IsNull;
 import com.bee32.plover.criteria.hibernate.Offset;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
+import com.bee32.plover.web.faces.view.PerView;
 import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
@@ -27,7 +27,7 @@ import com.bee32.sem.people.dto.PersonDto;
 import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.util.PeopleCriteria;
 
-@Scope("view")
+@PerView
 public class TransferInAdminBean
         extends StockOrderBaseBean {
 

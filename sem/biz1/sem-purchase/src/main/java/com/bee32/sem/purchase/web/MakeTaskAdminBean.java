@@ -5,9 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
@@ -29,8 +26,6 @@ import com.bee32.sems.bom.dto.PartDto;
 import com.bee32.sems.bom.entity.Part;
 import com.bee32.sems.bom.util.BomCriteria;
 
-@Component
-@Scope("view")
 public class MakeTaskAdminBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;

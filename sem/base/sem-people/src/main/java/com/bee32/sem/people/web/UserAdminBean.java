@@ -6,9 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.primefaces.model.TreeNode;
-import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -25,8 +23,6 @@ import com.bee32.sem.people.entity.Person;
 import com.bee32.sem.people.entity.PersonLogin;
 import com.bee32.sem.people.util.PeopleCriteria;
 
-@Component
-@Scope("view")
 public class UserAdminBean
         extends PrincipalAdminBean {
 

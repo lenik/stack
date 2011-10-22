@@ -4,11 +4,10 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.springframework.context.annotation.Scope;
-
+import com.bee32.plover.web.faces.view.PerView;
 import com.bee32.plover.web.faces.view.ViewBean;
 
-@Scope("view")
+@PerView
 public class ThemeSwitcherBean
         extends ViewBean {
 

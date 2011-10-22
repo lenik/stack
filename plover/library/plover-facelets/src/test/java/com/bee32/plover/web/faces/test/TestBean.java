@@ -1,10 +1,9 @@
 package com.bee32.plover.web.faces.test;
 
-import org.springframework.context.annotation.Scope;
-
+import com.bee32.plover.web.faces.view.PerView;
 import com.bee32.plover.web.faces.view.ViewBean;
 
-@Scope("view")
+@PerView
 public class TestBean
         extends ViewBean {
 

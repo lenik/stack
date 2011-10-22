@@ -4,12 +4,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.springframework.context.annotation.Scope;
-
 import com.bee32.plover.model.validation.core.NLength;
 import com.bee32.plover.util.TextUtil;
+import com.bee32.plover.web.faces.view.PerView;
 
-@Scope("view")
+@PerView
 public class ValidBean
         extends ValidBase {
 

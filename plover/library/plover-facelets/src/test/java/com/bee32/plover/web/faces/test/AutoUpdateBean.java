@@ -4,12 +4,11 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.context.annotation.Scope;
-
 import com.bee32.plover.model.validation.core.NLength;
+import com.bee32.plover.web.faces.view.PerView;
 import com.bee32.plover.web.faces.view.ViewBean;
 
-@Scope("view")
+@PerView
 public class AutoUpdateBean
         extends ViewBean {
 

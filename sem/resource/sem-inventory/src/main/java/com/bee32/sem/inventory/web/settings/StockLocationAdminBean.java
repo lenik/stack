@@ -8,9 +8,7 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.util.DTOs;
@@ -24,8 +22,6 @@ import com.bee32.sem.sandbox.UIHelper;
 import com.bee32.sem.world.thing.Unit;
 import com.bee32.sem.world.thing.UnitDto;
 
-@Component
-@Scope("view")
 public class StockLocationAdminBean
         extends EntityViewBean {
 

@@ -1,10 +1,7 @@
 package com.bee32.sems.bom.web;
 
-import org.springframework.context.annotation.Scope;
-
 import com.bee32.sem.sandbox.MultiTabEntityVdx;
 
-@Scope("view")
 public abstract class BomAdminVdx
         extends MultiTabEntityVdx {
 

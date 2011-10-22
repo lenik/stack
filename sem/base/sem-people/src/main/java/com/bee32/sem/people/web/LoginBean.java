@@ -9,8 +9,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.LoginCriteria;
 import com.bee32.icsf.login.LoginManager;
@@ -18,8 +16,6 @@ import com.bee32.icsf.login.UserPassword;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.plover.ox1.principal.User;
 
-@Component
-@Scope("view")
 public class LoginBean
         extends EntityViewBean {
 

@@ -10,8 +10,6 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.access.Permission;
 import com.bee32.icsf.access.ResourcePermission;
@@ -33,8 +31,6 @@ import com.bee32.plover.ox1.principal.RoleDto;
 import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserDto;
 
-@Component
-@Scope("view")
 public class PermissionAdminBean
         extends EntityViewBean {
 

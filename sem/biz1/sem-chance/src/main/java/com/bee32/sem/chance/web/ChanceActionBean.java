@@ -10,8 +10,6 @@ import javax.faces.model.SelectItem;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.bee32.icsf.login.LoginInfo;
 import com.bee32.plover.criteria.hibernate.Order;
@@ -36,8 +34,6 @@ import com.bee32.sem.sandbox.EntityDataModelOptions;
 import com.bee32.sem.sandbox.MultiTabEntityVdx;
 import com.bee32.sem.sandbox.UIHelper;
 
-@Component
-@Scope("view")
 public class ChanceActionBean
         extends MultiTabEntityVdx {
 

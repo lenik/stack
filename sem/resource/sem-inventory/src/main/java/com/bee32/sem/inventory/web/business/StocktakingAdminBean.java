@@ -8,8 +8,6 @@ import java.util.List;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -29,8 +27,6 @@ import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 
-@Component
-@Scope("view")
 public class StocktakingAdminBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;

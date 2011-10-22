@@ -1,10 +1,7 @@
 package com.bee32.sem.frame.web;
 
-import org.springframework.context.annotation.Scope;
-
 import com.bee32.plover.web.faces.view.ViewBean;
 
-@Scope("view")
 public class ViewConfig
         extends ViewBean {
 

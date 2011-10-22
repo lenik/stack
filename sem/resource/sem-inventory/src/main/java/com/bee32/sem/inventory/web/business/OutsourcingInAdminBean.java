@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.plover.criteria.hibernate.Equals;
@@ -24,8 +22,6 @@ import com.bee32.sem.inventory.tx.entity.StockOutsourcing;
 import com.bee32.sem.inventory.util.StockCriteria;
 import com.bee32.sem.misc.EntityCriteria;
 
-@Component
-@Scope("view")
 public class OutsourcingInAdminBean extends StockOrderBaseBean {
 
     private static final long serialVersionUID = 1L;

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import org.springframework.context.annotation.Scope;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.orm.util.DTOs;
@@ -17,7 +16,6 @@ import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.dto.StockWarehouseDto;
 import com.bee32.sem.inventory.entity.StockLocation;
 
-@Scope("view")
 public abstract class LocationAboutBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
