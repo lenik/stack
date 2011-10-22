@@ -72,16 +72,16 @@ public class SuperfishMenuBuilder
 
         IAction action = menuNode.getAction();
         if (action != null && action.isEnabled()) {
-
             ILocationContext target = action.getTargetLocation();
-            String href = resolve(target);
-            String hrefEncoded;
-            try {
-                hrefEncoded = UriUtils.encodeUri(href, "utf-8");
-            } catch (UnsupportedEncodingException e) {
-                throw new IllegalUsageException(String.format("Bad location in %s: %s", menuNode, href));
+            String hrefEncoded = "#";
+            if (target != null) {
+                String href = resolve(target);
+                try {
+                    hrefEncoded = UriUtils.encodeUri(href, "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    throw new IllegalUsageException(String.format("Bad location in %s: %s", menuNode, href));
+                }
             }
-
             out.print(" href='");
             out.print(hrefEncoded);
             out.print("'");
