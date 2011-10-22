@@ -6,6 +6,20 @@
         <ui:define name="login">
         </ui:define>
 
+        <ui:define name="content">
+
+            <h:form>
+                <p:commandButton value="Show Dialog" onclick="dlg.show()" />
+            </h:form>
+
+            <p:dialog header="Very long title" widgetVar="dlg" modal="true">
+                <div style="width:300px; height:200px;">
+                    <h:outputText value="This is a Modal Dialog." />
+                </div>
+            </p:dialog>
+
+        </ui:define>
+
     </ui:composition>
 
 </html>
