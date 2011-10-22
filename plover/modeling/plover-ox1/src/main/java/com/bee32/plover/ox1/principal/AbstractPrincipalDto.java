@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import javax.free.ParseException;
 import javax.free.TypeConvertException;
+import javax.validation.constraints.Size;
 
 import com.bee32.plover.arch.util.Mask32;
 import com.bee32.plover.arch.util.TextMap;
@@ -62,6 +63,7 @@ public abstract class AbstractPrincipalDto<E extends Principal>
         this.description = map.getString("description");
     }
 
+    @Size(min = 3, max = Principal.NAME_LENGTH)
     public String getName() {
         return name;
     }
@@ -72,6 +74,7 @@ public abstract class AbstractPrincipalDto<E extends Principal>
         this.name = name;
     }
 
+    @Size(min = 3, max = Principal.FULLNAME_LENGTH)
     public String getFullName() {
         return fullName;
     }

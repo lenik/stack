@@ -54,6 +54,12 @@ public class UserAdminBean
         this.user = reload(user);
     }
 
+    /**
+     * 密码保存到数据库中为 hash 值，并无长度限制。但出于一般限制需要设置最大长度为 12 （相当于 96 位密钥强度） 。
+     */
+//    @NotEmpty
+//    @Size(min = 5, max = 12)
+//    @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
     public String getPassword() {
         return password;
     }
@@ -62,6 +68,9 @@ public class UserAdminBean
         this.password = password;
     }
 
+//    @NotEmpty
+//    @Size(min = 5, max = 12)
+//    @Alphabet(tab = Alphabet.ALNUM, hint = Alphabet.ALNUM_HINT)
     public String getPasswordConfirm() {
         return passwordConfirm;
     }
