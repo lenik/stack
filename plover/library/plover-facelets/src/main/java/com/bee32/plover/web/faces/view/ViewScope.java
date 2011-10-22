@@ -8,9 +8,10 @@ import org.springframework.beans.factory.ObjectFactory;
 
 import com.bee32.plover.inject.scope.AbstractScope;
 
-class ViewScope
+public class ViewScope
         extends AbstractScope {
 
+    @Override
     public Object get(String name, ObjectFactory<?> objectFactory) {
         Map<String, Object> viewMap = FacesContext.getCurrentInstance().getViewRoot().getViewMap();
 
@@ -24,6 +25,7 @@ class ViewScope
         }
     }
 
+    @Override
     public Object remove(String name) {
         return FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove(name);
     }

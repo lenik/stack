@@ -101,23 +101,23 @@ public class TrueJsr330ScopeMetadataResolver
      * @return Non-empty scope name.
      */
     static String _getScopeName(Class<? extends Annotation> scopeAnnotationClass) {
-        Scope metaScope = scopeAnnotationClass.getAnnotation(org.springframework.context.annotation.Scope.class);
-        if (metaScope != null) {
-            String nameByMeta = metaScope.value();
-            if (nameByMeta != null && !nameByMeta.isEmpty())
-                return nameByMeta;
+        Scope _springScope = scopeAnnotationClass.getAnnotation(org.springframework.context.annotation.Scope.class);
+        if (_springScope != null) {
+            String springScopeName = _springScope.value();
+            if (springScopeName != null && !springScopeName.isEmpty())
+                return springScopeName;
         }
 
         // Test: scopeAnnotationClass < javax.inject.Scope
+        ScopeName _scopeName = scopeAnnotationClass.getAnnotation(ScopeName.class);
+        if (_scopeName != null) {
+            String scopeName = _scopeName.value();
+            return scopeName;
+        }
 
         String simpleName = scopeAnnotationClass.getSimpleName();
-        if (simpleName.endsWith("Scope"))
-            simpleName = simpleName.substring(0, simpleName.length() - 5);
-        if (simpleName.endsWith("Local"))
-            simpleName = simpleName.substring(0, simpleName.length() - 5);
-
-        String scopeName = Strings.lcfirst(simpleName);
-        return scopeName;
+        String defaultScopeName = Strings.lcfirst(simpleName);
+        return defaultScopeName;
     }
 
 }

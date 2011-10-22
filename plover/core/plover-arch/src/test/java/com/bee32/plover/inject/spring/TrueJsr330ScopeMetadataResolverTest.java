@@ -20,12 +20,13 @@ public class TrueJsr330ScopeMetadataResolverTest {
     }
 
     @Scope
+    @ScopeName("foo")
     @Inherited
     @Retention(RUNTIME)
-    @interface FooScope {
+    @interface FooScoping {
     }
 
-    @FooScope
+    @FooScoping
     static class FooBean {
     }
 
