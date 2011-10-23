@@ -206,9 +206,7 @@ public class MakeOrder
         nativeTotal = null;
     }
 
-    //找寻还没有按排生产任务的产品列表
-    @Transient
-    public List<MakeOrderItem> getNoCorrespondingTaskItems() {
+    public Map<Part, MakeTaskItem> taskItemListToMap() {
         Map<Part, MakeTaskItem> taskItemMap = new HashMap<Part, MakeTaskItem>();
 
         for(MakeTask task : tasks) {
@@ -221,6 +219,14 @@ public class MakeOrder
                 }
             }
         }
+
+        return taskItemMap;
+    }
+
+    //找寻还没有按排生产任务的产品列表
+    @Transient
+    public List<MakeOrderItem> getNoCorrespondingTaskItems() {
+        Map<Part, MakeTaskItem> taskItemMap = taskItemListToMap();
 
         List<MakeOrderItem> result = new ArrayList<MakeOrderItem>();
         for(MakeOrderItem orderItem : items) {
@@ -251,5 +257,27 @@ public class MakeOrder
         if(result.size() > 0) return result;
         return null;
 
+    }
+
+    //检查所有对应生产任务单的数量总合是否超过订单的数量
+    public Map<Part, BigDecimal> checkIfTaskQuantityFitOrder() {
+        Map<Part, BigDecimal> result = new HashMap<Part, BigDecimal>();
+
+        Map<Part, MakeTaskItem> taskItemMap = taskItemListToMap();
+        for(MakeOrderItem orderItem : items) {
+            MakeTaskItem taskItem = taskItemMap.get(orderItem.getPart());
+
+            if(taskItem != null) {
+                int i = taskItem.getQuantity().compareTo(orderItem.getQuantity());
+                if(i > 0) {
+                    //生产任务中的数量大于订单中的数量
+                    result.put( //
+                            orderItem.getPart(), //
+                            taskItem.getQuantity().subtract(orderItem.getQuantity()));
+                }
+            }
+        }
+
+        return result;
     }
 }

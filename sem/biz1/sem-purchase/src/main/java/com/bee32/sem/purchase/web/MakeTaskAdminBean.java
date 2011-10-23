@@ -1,9 +1,12 @@
 package com.bee32.sem.purchase.web;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
@@ -321,10 +324,27 @@ public class MakeTaskAdminBean extends EntityViewBean {
                 _task.removeItem(item.unmarshal());
             }
 
-            serviceFor(MakeTask.class).save(_task);
-            uiLogger.info("保存成功");
-            loadMakeTask(goNumber);
-            editable = false;
+            MakeOrder order = _task.getOrder();
+            order.getTasks().add(_task);
+
+            Map<Part, BigDecimal> mapQuantityOverloadParts = order.checkIfTaskQuantityFitOrder();
+            Set<Part> setQuantityOverloadParts = mapQuantityOverloadParts.keySet();
+            if(setQuantityOverloadParts.size() > 0){
+                StringBuilder infoBuilder = new StringBuilder();
+                for(Part part : setQuantityOverloadParts) {
+                    infoBuilder.append(part.getTarget().getLabel());
+                    infoBuilder.append("超过");
+                    infoBuilder.append(mapQuantityOverloadParts.get(part));
+                    infoBuilder.append(";");
+                }
+
+                uiLogger.info("对应订单的所有生产任务单数量总和超过订单中的数量!" + infoBuilder.toString());
+            } else {
+                serviceFor(MakeTask.class).save(_task);
+                uiLogger.info("保存成功");
+                loadMakeTask(goNumber);
+                editable = false;
+            }
         } catch (Exception e) {
             uiLogger.warn("保存失败,错误信息:" + e.getMessage());
         }
@@ -431,8 +451,13 @@ public class MakeTaskAdminBean extends EntityViewBean {
 
     public void chooseOrder() {
         selectedOrder = reload(selectedOrder);
-        makeTask.setItems(selectedOrder.arrangeMakeTask(makeTask));
-        makeTask.setOrder(selectedOrder);
+        List<MakeTaskItemDto> makeTaskItems = selectedOrder.arrangeMakeTask(makeTask);
+        if(makeTaskItems != null) {
+            makeTask.setItems(makeTaskItems);
+            makeTask.setOrder(selectedOrder);
+        } else {
+            uiLogger.error("此定单上的产品的生产任务已经全部安排完成");
+        }
     }
 
     public void findCustomer() {
