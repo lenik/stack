@@ -1,51 +1,69 @@
 package com.bee32.sem.purchase.web;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import javax.faces.event.AjaxBehaviorEvent;
-
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.Map;
+import java.util.Set;
 
 import com.bee32.plover.criteria.hibernate.Equals;
+import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
+import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
-import com.bee32.sem.inventory.dto.StockOrderDto;
-import com.bee32.sem.inventory.dto.StockOrderItemDto;
-import com.bee32.sem.inventory.dto.StockWarehouseDto;
-import com.bee32.sem.inventory.entity.StockOrder;
-import com.bee32.sem.inventory.entity.StockOrderSubject;
-import com.bee32.sem.inventory.tx.dto.StockTransferDto;
-import com.bee32.sem.inventory.tx.entity.StockTransfer;
-import com.bee32.sem.inventory.util.StockCriteria;
-import com.bee32.sem.inventory.web.business.StockOrderBaseBean;
+import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.misc.EntityCriteria;
-import com.bee32.sem.people.dto.PersonDto;
-import com.bee32.sem.people.entity.Person;
+import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.people.entity.Party;
 import com.bee32.sem.people.util.PeopleCriteria;
+import com.bee32.sem.purchase.dto.MakeOrderDto;
+import com.bee32.sem.purchase.dto.MakeOrderItemDto;
+import com.bee32.sem.purchase.dto.MakeTaskDto;
+import com.bee32.sem.purchase.dto.MakeTaskItemDto;
+import com.bee32.sem.purchase.entity.MakeOrder;
+import com.bee32.sem.purchase.entity.MakeTask;
+import com.bee32.sems.bom.dto.PartDto;
+import com.bee32.sems.bom.entity.Part;
+import com.bee32.sems.bom.util.BomCriteria;
 
-@Component
-@Scope("view")
-public class MaterialPlanAdminBean extends StockOrderBaseBean {
+public class MaterialPlanAdminBean extends EntityViewBean {
 
     private static final long serialVersionUID = 1L;
-
-    private StockTransferDto stockTransfer = new StockTransferDto().create();
 
     private Date limitDateFrom;
     private Date limitDateTo;
 
+    private boolean editable = false;
+
     private int goNumber;
     private int count;
 
+    protected MakeTaskDto makeTask = new MakeTaskDto().create();
 
-    private String personPattern;
-    private List<PersonDto> persons;
-    private PersonDto selectedPerson;
+    protected MakeTaskItemDto makeTaskItem = new MakeTaskItemDto().create();
+
+    private String partPattern;
+    private List<PartDto> parts;
+    private PartDto selectedPart;
+
+    private boolean newItemStatus = false;
+
+    protected List<MakeTaskItemDto> itemsNeedToRemoveWhenModify = new ArrayList<MakeTaskItemDto>();
+
+    private PartyDto customer;
+
+    private Date limitDateFromForOrder;
+    private Date limitDateToForOrder;
+
+    private List<MakeOrderDto> orders;
+    private MakeOrderDto selectedOrder;
+
+    private String customerPattern;
+    private List<PartyDto> customers;
+    private PartyDto selectedCustomer;
 
 
     public MaterialPlanAdminBean() {
@@ -53,19 +71,17 @@ public class MaterialPlanAdminBean extends StockOrderBaseBean {
         // 取这个月的第一天
         c.set(Calendar.DAY_OF_MONTH, 1);
         limitDateFrom = c.getTime();
+        limitDateFromForOrder = c.getTime();
 
         // 最这个月的最后一天
         c.add(Calendar.MONTH, 1);
         c.add(Calendar.DAY_OF_MONTH, -1);
         limitDateTo = c.getTime();
+        limitDateToForOrder = c.getTime();
 
         goNumber = 1;
-
-        subject = StockOrderSubject.XFER_OUT;
+        loadMakeTask(goNumber);
     }
-
-
-
 
     public Date getLimitDateFrom() {
         return limitDateFrom;
@@ -83,6 +99,14 @@ public class MaterialPlanAdminBean extends StockOrderBaseBean {
         this.limitDateTo = limitDateTo;
     }
 
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
     public int getGoNumber() {
         return goNumber;
     }
@@ -91,56 +115,161 @@ public class MaterialPlanAdminBean extends StockOrderBaseBean {
         this.goNumber = goNumber;
     }
 
+
     public int getCount() {
-        count = serviceFor(StockOrder.class).count(//
-                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                StockCriteria.subjectOf(getSubject()), //
-                new Equals("warehouse.id", selectedWarehouse.getId()));
+        count = serviceFor(MakeTask.class).count(//
+                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
         return count;
     }
 
-
-    public StockTransferDto getStockTransfer() {
-        return stockTransfer;
+    public MakeTaskDto getMakeTask() {
+        return makeTask;
     }
 
-    public void setStockTransfer(StockTransferDto stockTransfer) {
-        this.stockTransfer = stockTransfer;
+    public void setMakeTask(MakeTaskDto makeTask) {
+        this.makeTask = makeTask;
     }
 
-    public String getPersonPattern() {
-        return personPattern;
+    public String getCreator() {
+        if (makeTask == null)
+            return "";
+        else
+            return makeTask.getOwnerDisplayName();
     }
 
-    public void setPersonPattern(String personPattern) {
-        this.personPattern = personPattern;
+    public List<MakeTaskItemDto> getItems() {
+        if (makeTask == null)
+            return null;
+        return makeTask.getItems();
     }
 
-    public List<PersonDto> getPersons() {
-        return persons;
+    public MakeTaskItemDto getMakeTaskItem() {
+        return makeTaskItem;
     }
 
-    public void setPersons(List<PersonDto> persons) {
-        this.persons = persons;
+    public void setMakeTaskItem(MakeTaskItemDto makeTaskItem) {
+        this.makeTaskItem = makeTaskItem;
     }
 
-    public PersonDto getSelectedPerson() {
-        return selectedPerson;
+    public void setCount(int count) {
+        this.count = count;
     }
 
-    public void setSelectedPerson(PersonDto selectedPerson) {
-        this.selectedPerson = selectedPerson;
+    public String getPartPattern() {
+        return partPattern;
+    }
+
+    public void setPartPattern(String partPattern) {
+        this.partPattern = partPattern;
+    }
+
+    public List<PartDto> getParts() {
+        return parts;
+    }
+
+    public void setParts(List<PartDto> parts) {
+        this.parts = parts;
+    }
+
+    public PartDto getSelectedPart() {
+        return selectedPart;
+    }
+
+    public void setSelectedPart(PartDto selectedPart) {
+        this.selectedPart = selectedPart;
+    }
+
+    public boolean isNewItemStatus() {
+        return newItemStatus;
+    }
+
+    public void setNewItemStatus(boolean newItemStatus) {
+        this.newItemStatus = newItemStatus;
+    }
+
+    public PartyDto getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(PartyDto customer) {
+        this.customer = customer;
+    }
+
+    public Date getLimitDateFromForOrder() {
+        return limitDateFromForOrder;
+    }
+
+    public void setLimitDateFromForOrder(Date limitDateFromForOrder) {
+        this.limitDateFromForOrder = limitDateFromForOrder;
+    }
+
+    public Date getLimitDateToForOrder() {
+        return limitDateToForOrder;
+    }
+
+    public void setLimitDateToForOrder(Date limitDateToForOrder) {
+        this.limitDateToForOrder = limitDateToForOrder;
+    }
+
+    public List<MakeOrderDto> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<MakeOrderDto> orders) {
+        this.orders = orders;
+    }
+
+    public MakeOrderDto getSelectedOrder() {
+        return selectedOrder;
+    }
+
+    public void setSelectedOrder(MakeOrderDto selectedOrder) {
+        this.selectedOrder = selectedOrder;
+    }
+
+    public String getCustomerPattern() {
+        return customerPattern;
+    }
+
+    public void setCustomerPattern(String customerPattern) {
+        this.customerPattern = customerPattern;
+    }
+
+    public List<PartyDto> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<PartyDto> customers) {
+        this.customers = customers;
+    }
+
+    public PartyDto getSelectedCustomer() {
+        return selectedCustomer;
+    }
+
+    public void setSelectedCustomer(PartyDto selectedCustomer) {
+        this.selectedCustomer = selectedCustomer;
+    }
+
+    public List<MakeOrderItemDto> getOrderItems() {
+        if(selectedOrder != null) {
+            return selectedOrder.getItems();
+        }
+        return null;
     }
 
 
 
 
-    public void onSwChange(AjaxBehaviorEvent e) {
-        loadStockOrder(goNumber);
-        loadStockLocationTree();
+
+
+
+
+    public void limit() {
+        loadMakeTask(goNumber);
     }
 
-    private void loadStockOrder(int position) {
+    private void loadMakeTask(int position) {
         //刷新总记录数
         getCount();
 
@@ -155,48 +284,25 @@ public class MaterialPlanAdminBean extends StockOrderBaseBean {
             position = count;
         }
 
+        makeTask = new MakeTaskDto().create();    //如果限定条件内没有找到makeTask,则创建一个
 
-        stockOrder = new StockOrderDto().create();
-        stockTransfer = new StockTransferDto().create();
-        if (selectedWarehouse != null) {
-            StockOrder firstOrder = serviceFor(StockOrder.class).getFirst( //
-                    new Offset(position - 1), //
-                    EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
-                    StockCriteria.subjectOf(getSubject()), //
-                    new Equals("warehouse.id", selectedWarehouse.getId()), //
-                    Order.asc("id"));
+        MakeTask firstTask = serviceFor(MakeTask.class).getFirst( //
+                new Offset(position - 1), //
+                EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
+                Order.asc("id"));
 
-            if (firstOrder != null) {
-                stockOrder = DTOs.marshal(StockOrderDto.class, firstOrder);
+        if (firstTask != null)
+            makeTask = DTOs.marshal(MakeTaskDto.class, MakeTaskDto.ITEMS, firstTask);
 
-                StockTransfer t = serviceFor(StockTransfer.class)
-                        .getUnique(new Equals("source.id", stockOrder.getId()));
-                if(t != null) {
-                    stockTransfer = DTOs.marshal(StockTransferDto.class, -1, t);
-                }
-            }
-        }
-    }
-
-    public void limit() {
-        loadStockOrder(goNumber);
     }
 
     public void new_() {
-        if (selectedWarehouse.getId() == null) {
-            uiLogger.warn("请选择对应的仓库!");
-            return;
-        }
-
-        stockTransfer = new StockTransferDto().create();
-        stockOrder = new StockOrderDto().create();
-        stockOrder.setSubject(subject);
-        //stockOrder.setCreatedDate(new Date());
+        makeTask = new MakeTaskDto().create();
         editable = true;
     }
 
     public void modify() {
-        if(stockOrder.getId() == null) {
+        if(makeTask.getId() == null) {
             uiLogger.warn("当前没有对应的单据");
             return;
         }
@@ -206,78 +312,59 @@ public class MaterialPlanAdminBean extends StockOrderBaseBean {
         editable = true;
     }
 
-    @Transactional
-    public void delete() {
-        try {
-            serviceFor(StockTransfer.class).deleteAll(
-                    new Equals("source.id", stockOrder.getId()));
-            // serviceFor(StockOrder.class).deleteById(stockOrder.getId());
-            uiLogger.info("删除成功!");
-            loadStockOrder(goNumber);
-        } catch (Exception e) {
-            uiLogger.warn("删除失败,错误信息:" + e.getMessage());
-        }
-    }
-
-    @Transactional
     public void save() {
-        if(selectedWarehouse.getId().equals(stockTransfer.getDestWarehouse().getId())) {
-            uiLogger.warn("调拨源仓库和目标仓库不能相同");
-            return;
-        }
-
-
-//        if(stockOrder.getItems() != null && stockOrder.getItems().size() <= 0) {
-//            uiLogger.warn("单据上至少应该有一条明细");
-//            return;
-//        }
-
-        stockOrder.setWarehouse(selectedWarehouse);
-
-        if(stockOrder.getId() == null) {
+        if(makeTask.getId() == null) {
             //新增
             goNumber = count + 1;
         }
 
         try {
-            stockTransfer.setSourceWarehouse(selectedWarehouse);
-            stockTransfer.setSource(stockOrder);
-            StockTransfer _stockTransfer = stockTransfer.unmarshal();
-
-            StockOrder _order = _stockTransfer.getSource();
-
-            // 删除需要删除的item
-            for (StockOrderItemDto item : itemsNeedToRemoveWhenModify) {
-                _order.removeItem(item.unmarshal());
+            MakeTask _task = makeTask.unmarshal();
+            for(MakeTaskItemDto item : itemsNeedToRemoveWhenModify) {
+                _task.removeItem(item.unmarshal());
             }
 
-            // 保存stockTransfer
-            serviceFor(StockTransfer.class).saveOrUpdate(_stockTransfer);
+            MakeOrder order = _task.getOrder();
+            order.getTasks().add(_task);
 
-            uiLogger.info("保存成功");
-            loadStockOrder(goNumber);
-            editable = false;
+            Map<Part, BigDecimal> mapQuantityOverloadParts = order.checkIfTaskQuantityFitOrder();
+            Set<Part> setQuantityOverloadParts = mapQuantityOverloadParts.keySet();
+            if(setQuantityOverloadParts.size() > 0){
+                StringBuilder infoBuilder = new StringBuilder();
+                for(Part part : setQuantityOverloadParts) {
+                    infoBuilder.append(part.getTarget().getLabel());
+                    infoBuilder.append("超过");
+                    infoBuilder.append(mapQuantityOverloadParts.get(part));
+                    infoBuilder.append(";");
+                }
+
+                uiLogger.info("对应订单的所有生产任务单数量总和超过订单中的数量!" + infoBuilder.toString());
+            } else {
+                serviceFor(MakeTask.class).save(_task);
+                uiLogger.info("保存成功");
+                loadMakeTask(goNumber);
+                editable = false;
+            }
         } catch (Exception e) {
             uiLogger.warn("保存失败,错误信息:" + e.getMessage());
         }
     }
 
     public void cancel() {
-
-        loadStockOrder(goNumber);
+        loadMakeTask(goNumber);
         editable = false;
     }
 
     public void first() {
         goNumber = 1;
-        loadStockOrder(goNumber);
+        loadMakeTask(goNumber);
     }
 
     public void previous() {
         goNumber--;
         if (goNumber < 1)
             goNumber = 1;
-        loadStockOrder(goNumber);
+        loadMakeTask(goNumber);
     }
 
     public void go() {
@@ -286,7 +373,7 @@ public class MaterialPlanAdminBean extends StockOrderBaseBean {
         } else if (goNumber > count) {
             goNumber = count;
         }
-        loadStockOrder(goNumber);
+        loadMakeTask(goNumber);
     }
 
     public void next() {
@@ -294,38 +381,99 @@ public class MaterialPlanAdminBean extends StockOrderBaseBean {
 
         if (goNumber > count)
             goNumber = count;
-        loadStockOrder(goNumber);
+        loadMakeTask(goNumber);
     }
 
     public void last() {
         goNumber = count + 1;
-        loadStockOrder(goNumber);
+        loadMakeTask(goNumber);
     }
 
-    public void findPerson() {
-        if (personPattern != null && !personPattern.isEmpty()) {
+    public void newItem() {
+        makeTaskItem = new MakeTaskItemDto().create();
+        makeTaskItem.setTask(makeTask);
 
-            List<Person> _persons = serviceFor(Person.class).list(//
-                    // Restrictions.in("tags", new Object[] { PartyTagname.INTERNAL }), //
-                    PeopleCriteria.internal(), //
-                    PeopleCriteria.namedLike(personPattern));
+        newItemStatus = true;
+    }
 
-            persons = DTOs.mrefList(PersonDto.class, _persons);
+    public void modifyItem() {
+        newItemStatus = false;
+    }
+
+
+    public void saveItem() {
+        makeTaskItem.setTask(makeTask);
+        if (newItemStatus) {
+            makeTask.addItem(makeTaskItem);
         }
     }
 
-    public void choosePerson() {
-        stockTransfer.setTransferredBy(selectedPerson);
+    public void delete() {
+        try {
+            serviceFor(MakeTask.class).delete(makeTask.unmarshal());
+            uiLogger.info("删除成功!");
+            loadMakeTask(goNumber);
+        } catch (Exception e) {
+            uiLogger.warn("删除失败,错误信息:" + e.getMessage());
+        }
     }
 
-    @Override
-    public StockOrderItemDto getOrderItem_() {
-        return orderItem;
+    public void deleteItem() {
+        makeTask.removeItem(makeTaskItem);
+
+        if (makeTaskItem.getId() != null) {
+            itemsNeedToRemoveWhenModify.add(makeTaskItem);
+        }
     }
 
+    public void findPart() {
+        if (partPattern != null && !partPattern.isEmpty()) {
 
-    @Override
-    public StockWarehouseDto getSelectedWarehouse_() {
-        return selectedWarehouse;
+            List<Part> _parts = serviceFor(Part.class).list(BomCriteria.findPartUseMaterialName(partPattern));
+
+            parts = DTOs.mrefList(PartDto.class, _parts);
+        }
+    }
+
+    public void choosePart() {
+        makeTaskItem.setPart(selectedPart);
+
+        selectedPart = null;
+    }
+
+    public void findOrder() {
+        List<MakeOrder> _orders = serviceFor(MakeOrder.class).list( //
+                new Equals("customer.id", customer.getId()), //
+                EntityCriteria.createdBetweenEx(limitDateFromForOrder, limitDateToForOrder));
+
+        orders = DTOs.marshalList(MakeOrderDto.class, _orders);
+    }
+
+    public void chooseOrder() {
+        selectedOrder = reload(selectedOrder);
+        List<MakeTaskItemDto> makeTaskItems = selectedOrder.arrangeMakeTask(makeTask);
+        if(makeTaskItems != null) {
+            makeTask.setItems(makeTaskItems);
+            makeTask.setOrder(selectedOrder);
+        } else {
+            uiLogger.error("此定单上的产品的生产任务已经全部安排完成");
+        }
+    }
+
+    public void findCustomer() {
+        if (customerPattern != null && !customerPattern.isEmpty()) {
+
+            List<Party> _customers = serviceFor(Party.class).list( //
+                    PeopleCriteria.customers(), //
+                    new Or( //
+                            new Like("name", "%" + customerPattern + "%"), //
+                            new Like("fullName", "%" + customerPattern + "%")));
+
+            customers = DTOs.marshalList(PartyDto.class, _customers);
+        }
+    }
+
+    public void chooseCustomer() {
+        customer = selectedCustomer;
     }
 }

@@ -13,7 +13,6 @@ import org.hibernate.annotations.CascadeType;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.entity.StockJob;
-import com.bee32.sem.people.entity.Party;
 
 /**
  * 物料需求
@@ -25,13 +24,10 @@ public class MaterialPlan
 
     private static final long serialVersionUID = 1L;
 
-    public static final int ADDITIONAL_REQUIREMENT_LENGTH = 200;
     public static final int MEMO_LENGTH = 3000;
 
     MakeTask task;
     StockOrder planOrder;
-    Party preferredSupplier;
-    String additionalRequirement;
     String memo;
 
     PurchaseRequest purchaseRequest;
@@ -59,27 +55,6 @@ public class MaterialPlan
 
     public void setPlanOrder(StockOrder planOrder) {
         this.planOrder = planOrder;
-    }
-
-    @ManyToOne
-    public Party getPreferredSupplier() {
-        return preferredSupplier;
-    }
-
-    public void setPreferredSupplier(Party preferredSupplier) {
-        this.preferredSupplier = preferredSupplier;
-    }
-
-    /**
-     * 如客户指定产品需要哪种原材料
-     */
-    @Column(length = ADDITIONAL_REQUIREMENT_LENGTH)
-    public String getAdditionalRequirement() {
-        return additionalRequirement;
-    }
-
-    public void setAdditionalRequirement(String additionalRequirement) {
-        this.additionalRequirement = additionalRequirement;
     }
 
     @Column(length = MEMO_LENGTH)

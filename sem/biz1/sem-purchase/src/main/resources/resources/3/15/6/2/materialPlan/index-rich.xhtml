@@ -37,21 +37,6 @@
 
 
 		<h:form id="mainForm">
-            <h:panelGrid columns="2">
-                <h:outputText value="仓库:" />
-                <p:selectOneMenu id="stockWarehouseId"
-                    disabled="#{materialPlanAdminBean.editable}"
-                    value="#{materialPlanAdminBean.selectedWarehouse.id}"
-                    style="width:200px;">
-                    <f:selectItem itemValue="" itemLabel="--选择仓库--" />
-                    <f:selectItems
-                        value="#{materialPlanAdminBean.stockWarehouses}" />
-                    <p:ajax
-                        listener="#{materialPlanAdminBean.onSwChange}"
-                        update="mainForm chooseStockLocationForm:chooseStockLocationPanel"
-                        event="change" />
-                </p:selectOneMenu>
-            </h:panelGrid>
 
             <h:panelGrid columns="6">
                 <h:outputText value="时间段:" />
@@ -59,17 +44,15 @@
                 <p:calendar id="limitDateFrom" navigator="true"
                     locale="zh_CN" pattern="yyyy-MM-dd"
                     value="#{materialPlanAdminBean.limitDateFrom}"
-                    showOn="button"
-                    disabled="#{materialPlanAdminBean.editable}" />
+                    showOn="button" disabled="#{materialPlanAdminBean.editable}" />
                 <h:outputText value="到" />
                 <p:calendar id="limitDateTo" navigator="true"
                     locale="zh_CN" pattern="yyyy-MM-dd"
-                    value="#{materialPlanAdminBean.limitDateTo}"
-                    showOn="button"
+                    value="#{materialPlanAdminBean.limitDateTo}" showOn="button"
                     disabled="#{materialPlanAdminBean.editable}" />
                 <p:commandButton value="限定"
-                    actionListener="#{materialPlanAdminBean.limit}"
-                    async="true" update="mainForm"
+                    actionListener="#{materialPlanAdminBean.limit}" async="true"
+                    update="mainForm"
                     disabled="#{materialPlanAdminBean.editable}" />
             </h:panelGrid>
 
@@ -120,67 +103,32 @@
 				</p:toolbarGroup>
 			</p:toolbar>
 
-			<p:panel header="#{materialPlanAdminBean.subject.displayName}">
-
+			<p:panel header="物料计划管理">
 				<t:panelGrid columns="4">
-                    <h:outputLabel value="生产任务"/>
-                    <t:panelGroup colspan="3">
-                        <p:inputText />
-                        <p:commandButton value="..."/>
-                    </t:panelGroup>
-
-                    <h:outputLabel value="客户额外要求"/>
-                    <t:panelGroup colspan="3">
-                        <p:inputText />
-                    </t:panelGroup>
-
-                    <h:outputLabel value="备注"/>
-                    <t:panelGroup colspan="3">
-                        <p:inputText />
-                    </t:panelGroup>
-
-
-                    <t:panelGroup colspan="4">
-                        <hr />
-                    </t:panelGroup>
-
-                    <h:outputText value="时间" />
-                    <h:outputText value="#{materialPlanAdminBean.stockOrder.createdDate}">
+                    <h:outputText value="时间:" />
+                    <h:outputText
+                        value="#{materialPlanAdminBean.materialPlan.createdDate}">
                         <f:convertDateTime pattern="yyyy-MM-dd"
                             timeZone="Asia/Shanghai" />
                     </h:outputText>
-                    <h:outputText value="标签" />
-					<p:inputText value="#{materialPlanAdminBean.stockOrder.label}" disabled="#{!materialPlanAdminBean.editable}"/>
+                    <h:outputText value="制单人:" />
+                    <p:inputText value="#{materialPlanAdminBean.creator}"
+                        disabled="true" />
 
-					<h:outputText value="描述" />
-					<t:panelGroup colspan="3">
-                        <p:inputText value="#{materialPlanAdminBean.stockOrder.description}" disabled="#{!materialPlanAdminBean.editable}"/>
-					</t:panelGroup>
-
-                    <h:outputText value="对应公司" />
-                    <t:panelGroup>
-                        <p:inputText id="org" value="#{materialPlanAdminBean.stockOrder.org.name}" readonly="true"/>
-                        <p:commandButton value="..." onclick="orgDialog.show()" disabled="#{!materialPlanAdminBean.editable}"/>
-                    </t:panelGroup>
-                    <h:outputText value="对应部门" />
-                    <t:panelGroup>
-                        <p:inputText id="orgUnit" value="#{materialPlanAdminBean.stockOrder.orgUnit.name}" readonly="true"/>
-                        <p:commandButton value="..." onclick="orgUnitDialog.show()" disabled="#{!materialPlanAdminBean.editable}"/>
+                    <h:outputText value="定单:" />
+                    <t:panelGroup colspan="3">
+                        <p:inputText id="task" value="#{materialPlanAdminBean.materialPlan.task.id}" readonly="true"/>
+                        <p:commandButton value="..." onclick="taskDialog.show()" disabled="#{!materialPlanAdminBean.editable}"/>
                     </t:panelGroup>
 
-					<h:outputText value="制单人" />
-                    <p:inputText value="#{materialPlanAdminBean.creator}" disabled="true"/>
-                    <h:outputText value="单据状态" />
-                    <p:inputText value="" disabled="true"/>
-				</t:panelGrid>
+                    <h:outputText value="备注"/>
+                    <t:panelGroup colspan="3">
+                        <p:inputText value="#{materialPlanAdminBean.materialPlan.memo}"/>
+                    </t:panelGroup>
 
-                <t:panelGrid columns="2">
-                    <h:outputText value="明细"/>
-					<p:commandButton value="新增明细" onclick="itemDialog.show();"
-						action="#{materialPlanAdminBean.newItem}"
-						update="itemForm:itemPanel"
-						disabled="#{!materialPlanAdminBean.editable}" />
-				</t:panelGrid>
+                </t:panelGrid>
+
+                <h:outputText value="明细"/>
 
 				<p:dataTable id="items" var="item"
 					value="#{materialPlanAdminBean.items}" resizableColumns="true"
@@ -197,56 +145,14 @@
                         <f:facet name="header">
                             <h:outputText value="物料"/>
                         </f:facet>
-                        <h:outputText value="#{item.material.label}" />
+                        <h:outputText value="#{item.part.target.label}" />
                     </p:column>
 
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="规格型号"/>
                         </f:facet>
-                        <h:outputText value="#{item.material.modelSpec}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="单位"/>
-                        </f:facet>
-                        <h:outputText value="#{item.material.unit.name}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="批号"/>
-                        </f:facet>
-                        <h:outputText value="#{item.batch}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="有效期"/>
-                        </f:facet>
-                        <h:outputText value="#{item.expirationDate}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="库位"/>
-                        </f:facet>
-                        <h:outputText value="#{item.location.nodeText}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="单价"/>
-                        </f:facet>
-                        <h:outputText value="#{item.price.value}" />
-                    </p:column>
-
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="币种"/>
-                        </f:facet>
-                        <h:outputText value="#{item.price.currencyText}" />
+                        <h:outputText value="#{item.part.target.modelSpec}" />
                     </p:column>
 
                     <p:column>
@@ -258,40 +164,27 @@
 
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="备注"/>
+                            <h:outputText value="交货日期"/>
                         </f:facet>
-                        <h:outputText value="#{item.description}" />
+                        <h:outputText value="#{item.deadline}" />
                     </p:column>
 
 					<p:column>
 						<f:facet name="header">操作</f:facet>
 						<t:panelGroup>
-                            <!--
-							<p:commandLink update="" oncomplete=""
-								value="查看">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{materialPlanAdminBean.orderItem}" />
-							</p:commandLink>
-							<p:spacer width="10" />
-                             -->
-
 							<p:commandLink update="itemForm:itemPanel"
 								disabled="#{!materialPlanAdminBean.editable}"
 								actionListener="#{materialPlanAdminBean.modifyItem}"
 								oncomplete="itemDialog.show()" value="修改">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{materialPlanAdminBean.orderItem}" />
-                                <f:setPropertyActionListener value="#{item.priceValue}"
-                                    target="#{materialPlanAdminBean.orderItemPrice}" />
-                                <f:setPropertyActionListener value="#{item.priceCurrencyCode}"
-                                    target="#{materialPlanAdminBean.orderItemPriceCurrency}" />
+									target="#{materialPlanAdminBean.makeTaskItem}" />
 							</p:commandLink>
 							<p:spacer width="10" />
 							<p:commandLink
 								disabled="#{!materialPlanAdminBean.editable}"
 								oncomplete="deleteItemConfirmDialog.show()" value="删除">
 								<f:setPropertyActionListener value="#{item}"
-									target="#{materialPlanAdminBean.orderItem}" />
+									target="#{materialPlanAdminBean.makeTaskItem}" />
 							</p:commandLink>
 						</t:panelGroup>
 					</p:column>
@@ -302,82 +195,38 @@
 			</p:panel>
 		</h:form>
 
-
 		<h:form id="itemForm">
-			<p:dialog header="#{materialPlanAdminBean.subject.displayName}项目编辑" widgetVar="itemDialog" modal="true"
+			<p:dialog header="生产任务单项目编辑" widgetVar="itemDialog" modal="true"
 				height="500" width="640">
 				<h:panelGroup id="itemPanel">
-					<t:panelGrid columns="4"
-						columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+					<t:panelGrid columns="2"
+						columnClasses="detail_col_title,detail_col_value">
 
 						<h:outputLabel value="物料" />
-						<t:panelGroup colspan="3">
-							<p:inputText value="#{materialPlanAdminBean.orderItem.material.label}" readonly="true"/>
-							<p:commandButton value="..." onclick="materialDialog.show();"/>
-						</t:panelGroup>
-
-                        <t:panelGroup colspan="2">
-                            <p:commandButton
-                                value="查询库存"
-                                onclick="stockQueryDialog.show()"
-                                update="stockQueryForm:stockQueryPanel"/>
-                        </t:panelGroup>
-                        <t:panelGroup colspan="2"/>
-
-						<h:outputLabel value="批号" />
-						<p:inputText value="#{materialPlanAdminBean.orderItem.batch}" />
-						<h:outputLabel value="有效期" />
-						<p:calendar navigator="true" locale="zh_CN"
-                                    pattern="yyyy-MM-dd" value="#{materialPlanAdminBean.orderItem.expirationDate}"
-                                    showOn="button" />
-
-                        <h:outputLabel value="库位" />
-						<t:panelGroup colspan="3">
-							<p:inputText
-								value="#{materialPlanAdminBean.orderItem.location.nodeText}"
-								readonly="true" />
-							<p:commandButton value="..."
-								oncomplete="chooseStockLocationDialog.show();"
-								actionListener="#{materialPlanAdminBean.updateLocations}"
-								update="chooseStockLocationForm:chooseStockLocationPanel" />
-						</t:panelGroup>
+				        <h:outputText value="#{materialPlanAdminBean.makeTaskItem.part.target.label}"/>
 
                         <h:outputLabel value="数量" />
-                        <t:panelGroup colspan="2">
-                            <p:inputText value="#{materialPlanAdminBean.orderItem.quantity}"/>
-                            <h:outputText value="#{materialPlanAdminBean.orderItem.material.unit.name}"/>
-                        </t:panelGroup>
-                        <p:commandButton
-                            actionListener="#{materialPlanAdminBean.checkUnitConv}"
-                            update="unitConvForm:unitConvPanel"
-                            value="按换算单位输入数量"
-                            oncomplete="unitConvDialog.show()"/>
+                        <p:inputText value="#{materialPlanAdminBean.makeTaskItem.quantity}"/>
 
-						<h:outputLabel value="单价" />
-                        <p:inputText value="#{materialPlanAdminBean.orderItemPrice}" />
-                        <h:outputLabel value="币种" />
-                        <p:selectOneMenu value="#{materialPlanAdminBean.orderItemPriceCurrency}" style="width:200px;">
-                            <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                            <f:selectItems value="#{materialPlanAdminBean.currencies}" />
-                        </p:selectOneMenu>
+                        <h:outputText value="完工时间:" />
+                        <p:calendar navigator="true"
+                            locale="zh_CN" pattern="yyyy-MM-dd"
+                            value="#{materialPlanAdminBean.makeTaskItem.deadline}"
+                            showOn="button" />
 
                         <h:outputLabel value="备注" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText value="#{materialPlanAdminBean.orderItem.description}" style="width:400px"/>
-                        </t:panelGroup>
+                        <p:inputText value="#{materialPlanAdminBean.makeTaskItem.description}"/>
 
-						<h:panelGroup />
 						<t:panelGroup colspan="2">
 							<t:panelGrid columns="2">
 								<p:commandButton value="保存"
-									actionListener="#{materialPlanAdminBean.doSaveItem}"
+									actionListener="#{materialPlanAdminBean.saveItem}"
 									oncomplete="itemDialog.hide();" async="true"
 									update="mainForm" />
 								<p:commandButton value="取消"
 									oncomplete="itemDialog.hide();" />
 							</t:panelGrid>
 						</t:panelGroup>
-						<h:panelGroup />
 
 					</t:panelGrid>
 				</h:panelGroup>
@@ -386,130 +235,7 @@
 		</h:form>
 
 
-		<h:form id="materialForm">
-			<p:dialog header="选择物料" widgetVar="materialDialog" modal="true"
-				height="480" width="640">
-				<h:panelGroup>
-
-					<h:panelGrid columns="3">
-						<h:outputLabel value="物料名字全部或部份:" />
-						<p:inputText value="#{materialPlanAdminBean.materialPattern}" />
-						<p:commandButton value="查找"
-							actionListener="#{materialPlanAdminBean.findMaterial}" update="materials"
-							async="true" />
-					</h:panelGrid>
-					<p:dataTable id="materials" var="material"
-						value="#{materialPlanAdminBean.materials}" resizableColumns="true"
-						selection="#{materialPlanAdminBean.selectedMaterial}" selectionMode="single"
-                        rowKey="#{material.id}"
-						rowIndexVar="rowIndex"
-                        scrollable="true" scrollWidth="600" scrollHeight="350">
-
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="序号" />
-							</f:facet>
-							<h:outputText value="#{rowIndex + 1}" />
-						</p:column>
-
-						<p:column headerText="物料名称">
-							<h:outputText value="#{material.label}" />
-						</p:column>
-
-						<p:column headerText="序列号">
-							<h:outputText value="#{material.serial}" />
-						</p:column>
-
-						<p:column headerText="条形码">
-							<h:outputText value="#{material.barCode}" />
-						</p:column>
-
-						<p:column headerText="主单位">
-							<h:outputText value="#{material.unit.name}" />
-						</p:column>
-
-                        <p:column headerText="规格型号">
-                            <h:outputText value="#{material.modelSpec}" />
-                        </p:column>
-
-					</p:dataTable>
-					<h:panelGrid columns="2">
-						<p:commandButton value="确定"
-							actionListener="#{materialPlanAdminBean.chooseMaterial}"
-							oncomplete="materialDialog.hide();" update="itemForm:itemPanel"
-							async="true" />
-						<p:commandButton value="取消" oncomplete="materialDialog.hide();" />
-					</h:panelGrid>
-				</h:panelGroup>
-			</p:dialog>
-
-		</h:form>
-
-
-
-		<h:form id="chooseStockLocationForm">
-			<p:dialog header="选择库位" widgetVar="chooseStockLocationDialog"
-				modal="true" height="500" width="640">
-				<h:panelGroup id="chooseStockLocationPanel">
-
-					<p:panel header="预设库位" toggleable="true">
-						<p:dataTable id="preferredLocations" var="stockLocation"
-							value="#{materialPlanAdminBean.preferredLocations}" resizableColumns="true"
-							selection="#{materialPlanAdminBean.selectedPreferredStockLocation}"
-							selectionMode="single"
-                            rowKey="#{stockLocation.id}" rowIndexVar="rowIndex">
-
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="序号" />
-								</f:facet>
-								<h:outputText value="#{rowIndex + 1}" />
-							</p:column>
-
-							<p:column>
-								<f:facet name="header">库位</f:facet>
-								<h:outputText value="#{stockLocation.nodeText}" />
-							</p:column>
-							<p:column>
-								<f:facet name="header">所属仓库</f:facet>
-								<h:outputText value="#{stockLocation.warehouse.name}" />
-							</p:column>
-						</p:dataTable>
-                        <h:panelGrid columns="2">
-                            <p:commandButton value="确定"
-                                actionListener="#{materialPlanAdminBean.doSelectPreferredStockLocation}"
-                                update="itemForm:itemPanel"
-                                oncomplete="chooseStockLocationDialog.hide();" />
-                            <p:commandButton value="取消"
-                                oncomplete="chooseStockLocationDialog.hide();" />
-                        </h:panelGrid>
-					</p:panel>
-					<p:panel header="所有库位" toggleable="true">
-						<p:tree value="#{materialPlanAdminBean.locationRoot}"
-							var="stockLocation" selectionMode="single"
-							selection="#{materialPlanAdminBean.selectedStockLocationNode}">
-							<p:treeNode>
-								<h:outputText value="#{stockLocation.nodeText}" />
-							</p:treeNode>
-						</p:tree>
-
-						<h:panelGrid columns="2">
-							<p:commandButton value="确定"
-								actionListener="#{materialPlanAdminBean.doSelectStockLocation}"
-								update="itemForm:itemPanel"
-								oncomplete="chooseStockLocationDialog.hide();" />
-							<p:commandButton value="取消"
-								oncomplete="chooseStockLocationDialog.hide();" />
-						</h:panelGrid>
-					</p:panel>
-
-
-
-				</h:panelGroup>
-			</p:dialog>
-		</h:form>
-
-        <h:form id="deleteConfirmForm">
+       <h:form id="deleteConfirmForm">
             <p:confirmDialog message="确定要删除吗?" width="200" header="删除确认"
                 severity="alert" widgetVar="deleteConfirmDialog" modal="true">
 
@@ -537,25 +263,173 @@
             </p:confirmDialog>
         </h:form>
 
-        <h:form id="personForm">
-            <p:dialog header="选择联系人" widgetVar="personHolderDlg"
-                modal="true" height="400" width="640">
+        <h:form id="orderForm">
+            <p:dialog header="查找定单" widgetVar="orderDialog"
+                modal="true" height="600" width="800">
+                <h:panelGroup id="orderPanel">
+
+                    <h:panelGroup>
+                        <t:panelGrid columns="3">
+                            <h:outputText value="客户"/>
+                            <p:inputText id="customer"
+                                value="#{materialPlanAdminBean.customer.name}"
+                                readonly="true" />
+                            <p:commandButton value="..."
+                                onclick="customerDialog.show()"/>
+                        </t:panelGrid>
+                        <h:panelGrid columns="6">
+                            <h:outputText value="时间段:" />
+                            <h:outputText value="从" />
+                            <p:calendar id="limitDateFromForOrder"
+                                navigator="true" locale="zh_CN"
+                                pattern="yyyy-MM-dd"
+                                value="#{materialPlanAdminBean.limitDateFromForOrder}"
+                                showOn="button"/>
+                            <h:outputText value="到" />
+                            <p:calendar id="limitDateToForOrder"
+                                navigator="true" locale="zh_CN"
+                                pattern="yyyy-MM-dd"
+                                value="#{materialPlanAdminBean.limitDateToForOrder}"
+                                showOn="button"/>
+                            <p:commandButton value="查找"
+                                actionListener="#{materialPlanAdminBean.findOrder}"
+                                async="true" update="orders"/>
+                        </h:panelGrid>
+                    </h:panelGroup>
+
+                    <p:dataTable id="orders" var="order"
+                        value="#{materialPlanAdminBean.orders}"
+                        resizableColumns="true"
+                        rowIndexVar="rowIndex" scrollable="true"
+                        scrollWidth="750" scrollHeight="350">
+
+                        <p:column headerText="序号" style="width:45px;">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column headerText="客户">
+                            <h:outputText value="#{order.customer.name}" />
+                        </p:column>
+
+                        <p:column headerText="创建时间">
+                            <h:outputText value="#{order.createdDate}" />
+                        </p:column>
+
+                        <p:column headerText="交货时间">
+                            <h:outputText value="#{order.deadline}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">操作</f:facet>
+                            <t:panelGroup>
+                                <p:commandLink
+                                    oncomplete="orderItemsDialog.show()"
+                                    update="orderItemsForm:orderItems"
+                                    value="明细">
+                                    <f:setPropertyActionListener
+                                        value="#{order}"
+                                        target="#{materialPlanAdminBean.selectedOrder}" />
+                                </p:commandLink>
+                                <p:spacer width="10"/>
+                                <p:commandLink
+                                    oncomplete="orderDialog.hide();"
+                                    update="mainForm:order mainForm:items"
+                                    action="#{materialPlanAdminBean.chooseOrder}"
+                                    value="挑选">
+                                    <f:setPropertyActionListener
+                                        value="#{order}"
+                                        target="#{materialPlanAdminBean.selectedOrder}" />
+                                </p:commandLink>
+                            </t:panelGroup>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <p:commandButton value="取消"
+                        oncomplete="orderDialog.hide();" />
+
+
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
+        <h:form id="customerForm">
+            <p:dialog header="选择客户" widgetVar="customerDialog" modal="true"
+                height="500" width="840">
                 <h:panelGroup>
 
                     <h:panelGrid columns="3">
-                        <h:outputLabel value="联系人名字全部或部份:" />
-                        <p:inputText
-                            value="#{materialPlanAdminBean.personPattern}" />
+                        <h:outputLabel value="客户名称全部或部份:" />
+                        <p:inputText value="#{materialPlanAdminBean.customerPattern}" />
                         <p:commandButton value="查找"
-                            actionListener="#{materialPlanAdminBean.findPerson}"
-                            update="persons" async="true" />
+                            actionListener="#{materialPlanAdminBean.findCustomer}" update="customers"
+                            async="true" />
                     </h:panelGrid>
-                    <p:dataTable id="persons" var="person"
-                        value="#{materialPlanAdminBean.persons}"
+                    <p:dataTable id="customers" var="customer"
+                        value="#{materialPlanAdminBean.customers}" resizableColumns="true"
+                        rowIndexVar="rowIndex"
+                        scrollable="true" scrollWidth="600" scrollHeight="350">
+
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
+
+                        <p:column headerText="客户名称">
+                            <h:outputText value="#{customer.name}" />
+                        </p:column>
+
+                        <p:column headerText="标签">
+                            <p:dataList value="#{customer.tags}" var="tag" type="definition">
+                                <f:facet name="description">
+                                    <h:outputText value="#{tag.label}"/>
+                                </f:facet>
+                            </p:dataList>
+                        </p:column>
+
+                        <p:column headerText="成立日期/生日">
+                            <h:outputText value="#{customer.birthday}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="税务登记号/证件号">
+                            <h:outputText value="#{customer.sid}" />
+                        </p:column>
+
+                        <p:column headerText="创建日期">
+                            <h:outputText value="#{customer.createdDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"
+                                    timeZone="Asia/Shanghai" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="动作">
+                            <p:commandLink
+                                oncomplete="customerDialog.hide()"
+                                action="#{materialPlanAdminBean.chooseCustomer}"
+                                update="orderForm:customer" value="挑选">
+                                <f:setPropertyActionListener
+                                    value="#{customer}"
+                                    target="#{materialPlanAdminBean.selectedCustomer}" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="取消" oncomplete="customerDialog.hide();" />
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
+
+        <h:form id="orderItemsForm">
+            <p:dialog header="出入库明细" widgetVar="orderItemsDialog" modal="true"
+                height="480" width="800">
+                <h:panelGroup id="orderItemsPanel">
+
+                    <p:dataTable id="orderItems" var="item"
+                        value="#{materialPlanAdminBean.orderItems}"
                         resizableColumns="true"
-                        selection="#{materialPlanAdminBean.selectedPerson}"
-                        selectionMode="single"
-                        rowKey="#{person.id}" rowIndexVar="rowIndex">
+                        rowIndexVar="rowIndex"
+                        scrollable="true" scrollWidth="750" scrollHeight="350">
 
                         <p:column>
                             <f:facet name="header">
@@ -566,283 +440,62 @@
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="姓名" />
-                            </f:facet>
-                            <h:outputText value="#{person.displayName}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="性别" />
-                            </f:facet>
-                            <h:outputText value="#{person.sexText}" />
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="生日" />
-                            </f:facet>
-                            <h:outputText value="#{person.birthday}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="证件类型" />
+                                <h:outputText value="物料" />
                             </f:facet>
                             <h:outputText
-                                value="#{person.sidType.label}" />
+                                value="#{item.part.target.label}" />
                         </p:column>
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="证件号码" />
+                                <h:outputText value="规格型号" />
                             </f:facet>
-                            <h:outputText value="#{person.sid}" />
+                            <h:outputText
+                                value="#{item.part.target.modelSpec}" />
                         </p:column>
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="户籍" />
+                                <h:outputText value="单价" />
                             </f:facet>
-                            <h:outputText
-                                value="#{person.censusRegister}" />
-                        </p:column>
-
-                    </p:dataTable>
-                    <h:panelGrid columns="2">
-                        <p:commandButton value="确定"
-                            actionListener="#{materialPlanAdminBean.choosePerson}"
-                            oncomplete="personHolderDlg.hide();"
-                            update="mainForm" async="true" />
-                        <p:commandButton value="取消"
-                            oncomplete="personHolderDlg.hide();" />
-                    </h:panelGrid>
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="orgForm">
-            <p:dialog header="选择公司" widgetVar="orgDialog" modal="true"
-                height="400" width="800">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="公司名称全部或部份:" />
-                        <p:inputText value="#{materialPlanAdminBean.orgPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{materialPlanAdminBean.findOrg}" update="orgs"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="orgs" var="org"
-                        value="#{materialPlanAdminBean.orgs}" resizableColumns="true"
-                        rowIndexVar="rowIndex">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="客户/供应商名称">
-                            <h:outputText value="#{org.name}" />
-                        </p:column>
-
-                        <p:column headerText="标签">
-                            <p:dataList value="#{org.tags}" var="tag" type="definition">
-                                <f:facet name="description">
-                                    <h:outputText value="#{tag.label}"/>
-                                </f:facet>
-                            </p:dataList>
-                        </p:column>
-
-                        <p:column headerText="成立日期">
-                            <h:outputText value="#{org.birthday}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="公司类型">
-                            <h:outputText value="#{org.type.label}" />
-                        </p:column>
-
-                        <p:column headerText="税务登记号">
-                            <h:outputText value="#{org.sid}" />
-                        </p:column>
-
-                        <p:column headerText="公司规模">
-                            <h:outputText value="#{org.size}" />
-                        </p:column>
-
-                        <p:column headerText="创建日期">
-                            <h:outputText value="#{org.createdDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"
-                                    timeZone="Asia/Shanghai" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="orgDialog.hide()"
-                                action="#{materialPlanAdminBean.chooseOrg}"
-                                update="mainForm:org" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{org}"
-                                    target="#{materialPlanAdminBean.selectedOrg}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="orgDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-        <h:form id="orgUnitForm">
-            <p:dialog header="选择部门" widgetVar="orgUnitDialog" modal="true"
-                height="400" width="640">
-                <h:panelGroup>
-
-                    <h:panelGrid columns="3">
-                        <h:outputLabel value="部门名称全部或部份:" />
-                        <p:inputText value="#{materialPlanAdminBean.orgUnitPattern}" />
-                        <p:commandButton value="查找"
-                            actionListener="#{materialPlanAdminBean.findOrgUnit}" update="orgUnits"
-                            async="true" />
-                    </h:panelGrid>
-                    <p:dataTable id="orgUnits" var="orgUnit"
-                        value="#{materialPlanAdminBean.orgUnits}" resizableColumns="true"
-                        rowIndexVar="rowIndex">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="部门名称">
-                            <h:outputText value="#{orgUnit.name}" />
-                        </p:column>
-
-                        <p:column headerText="所属公司">
-                            <h:outputText value="#{orgUnit.org.name}" />
-                        </p:column>
-
-                        <p:column headerText="动作">
-                            <p:commandLink
-                                oncomplete="orgUnitDialog.hide()"
-                                action="#{materialPlanAdminBean.chooseOrgUnit}"
-                                update="mainForm:orgUnit" value="挑选">
-                                <f:setPropertyActionListener
-                                    value="#{orgUnit}"
-                                    target="#{materialPlanAdminBean.selectedOrgUnit}" />
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
-                    <p:commandButton value="取消" oncomplete="orgUnitDialog.hide();" />
-                </h:panelGroup>
-            </p:dialog>
-        </h:form>
-
-
-        <h:form id="stockQueryForm">
-            <p:dialog header="库存查询" widgetVar="stockQueryDialog"
-                modal="true" height="400" width="640">
-                <h:panelGroup id="stockQueryPanel">
-                    <t:panelGrid columns="2">
-                        <h:outputText value="当前仓库:" />
-                        <h:outputText value="#{materialPlanAdminBean.selectedWarehouse.name}" />
-                    </t:panelGrid>
-
-                    <p:dataTable id="stockQuery" var="item"
-                        value="#{materialPlanAdminBean.stockQueryItems}"
-                        resizableColumns="true"
-                        selectionMode="single"
-                        selection="#{materialPlanAdminBean.selectedStockQueryItem}"
-                        rowKey="#{item.index}"
-                        rowIndexVar="rowIndex">
-
-                        <p:column headerText="序号">
-                            <h:outputText value="#{rowIndex + 1}" />
-                        </p:column>
-
-                        <p:column headerText="物料">
-                            <h:outputText value="#{item.material.label}" />
-                        </p:column>
-
-                        <p:column headerText="规格型号">
-                            <h:outputText value="#{item.material.modelSpec}" />
-                        </p:column>
-
-                        <p:column headerText="批号">
-                            <h:outputText value="#{item.batch}" />
-                        </p:column>
-
-                        <p:column headerText="有效期">
-                            <h:outputText value="#{item.expirationDate}" />
-                        </p:column>
-
-                        <p:column headerText="库位">
-                            <h:outputText
-                                value="#{item.location.nodeText}" />
-                        </p:column>
-
-                        <p:column headerText="单价">
                             <h:outputText value="#{item.price.value}" />
                         </p:column>
 
-                        <p:column headerText="币种">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="币种" />
+                            </f:facet>
                             <h:outputText
                                 value="#{item.price.currencyText}" />
                         </p:column>
 
-                        <p:column headerText="数量">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="数量" />
+                            </f:facet>
                             <h:outputText value="#{item.quantity}" />
                         </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="外部名称" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{item.externalProductName}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="外部规格" />
+                            </f:facet>
+                            <h:outputText
+                                value="#{item.externalSpecification}" />
+                        </p:column>
+
                     </p:dataTable>
-                    <h:panelGrid columns="2">
-                        <p:commandButton value="确定"
-                            actionListener="#{materialPlanAdminBean.chooseStockQueryItem}"
-                            oncomplete="stockQueryDialog.hide();"
-                            update="itemForm:itemPanel" async="true" />
-                        <p:commandButton value="取消"
-                            oncomplete="stockQueryDialog.hide();" />
-                    </h:panelGrid>
                 </h:panelGroup>
             </p:dialog>
-        </h:form>
 
-        <h:form id="unitConvForm">
-            <p:dialog header="按换算单位输入数量" widgetVar="unitConvDialog" modal="true"
-                height="400" width="640">
-                <h:panelGroup id="unitConvPanel">
-
-                    <t:panelGrid columns="2">
-                        <h:outputText value="换算单位:"/>
-                        <p:selectOneMenu value="#{materialPlanAdminBean.materialUnitId}" style="width:200px;">
-                            <f:selectItems value="#{materialPlanAdminBean.materialUnits}" />
-                        </p:selectOneMenu>
-
-                        <h:outputText value="数量:"/>
-                        <p:inputText value="#{materialPlanAdminBean.materialQuantity}"/>
-
-                        <h:outputText value="单价:"/>
-                        <p:inputText value="#{materialPlanAdminBean.materialPrice}"/>
-
-                        <h:outputText value="币种:"/>
-                        <p:selectOneMenu value="#{materialPlanAdminBean.orderItemPriceCurrency}" style="width:200px;">
-                            <f:selectItem itemValue="" itemLabel="--选择币种--" />
-                            <f:selectItems value="#{materialPlanAdminBean.currencies}" />
-                        </p:selectOneMenu>
-                    </t:panelGrid>
-
-                    <h:panelGrid columns="2">
-                        <p:commandButton value="确定"
-                            actionListener="#{materialPlanAdminBean.doUnitConv}"
-                            oncomplete="unitConvDialog.hide();"
-                            update="itemForm:itemPanel" async="true" />
-                        <p:commandButton value="取消"
-                            oncomplete="unitConvDialog.hide();" />
-                    </h:panelGrid>
-                </h:panelGroup>
-            </p:dialog>
         </h:form>
 
     </ui:define>
