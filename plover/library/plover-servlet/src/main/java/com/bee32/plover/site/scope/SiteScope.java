@@ -10,7 +10,7 @@ import com.bee32.plover.site.LoadSiteException;
 import com.bee32.plover.site.SiteInstance;
 import com.bee32.plover.site.SiteManager;
 
-class SiteScope
+public class SiteScope
         extends AbstractScope {
 
     SiteManager siteManager = SiteManager.getInstance();

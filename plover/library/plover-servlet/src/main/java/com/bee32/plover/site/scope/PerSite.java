@@ -7,9 +7,12 @@ import java.lang.annotation.Retention;
 
 import javax.inject.Scope;
 
+import com.bee32.plover.inject.spring.ScopeName;
+
 @Scope
+@ScopeName("site")
 @Retention(RUNTIME)
 @Documented
-public @interface SiteScoped {
+public @interface PerSite {
 
 }
