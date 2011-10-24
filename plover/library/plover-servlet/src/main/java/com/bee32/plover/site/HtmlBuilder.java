@@ -5,6 +5,14 @@ import java.io.Writer;
 
 import com.googlecode.jatl.Html;
 
+/**
+ * Features:
+ *
+ * <ul>
+ * <li>Wrapped Html but exports the writer, so toString() would work.
+ * <li>Add more html sugar constructors.
+ * </ul>
+ */
 public class HtmlBuilder
         extends Html {
 
