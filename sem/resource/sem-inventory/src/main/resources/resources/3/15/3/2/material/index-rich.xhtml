@@ -83,7 +83,7 @@
                 <p:dataTable var="material" value="#{materialViewBean.materialList}" id="materialList" paginator="true"
                     rowsPerPageTemplate="#{viewConfig.pageSizeTemplate}" rows="#{viewConfig.pageSize}"
                     style="width:100%;">
-                    <p:column headerText="物料名称">
+                    <p:column sortBy="#{material.label}" headerText="物料名称">
                         <h:outputText value="#{material.label}" />
                     </p:column>
                     <p:column headerText="条形码">
