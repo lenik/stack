@@ -121,7 +121,10 @@ public class SiteInstance {
         return attributes.remove(attributeName);
     }
 
-    public synchronized void save()
+    /**
+     * Save attributes to the config file.
+     */
+    public synchronized void saveConfig()
             throws IOException {
         if (dirty) {
             JavaioFile _file = new JavaioFile(configFile);

@@ -128,10 +128,13 @@ public class SiteManager {
         }
     }
 
-    public void saveAll()
+    /**
+     * Save all config attributes to corresponding config files.
+     */
+    public void saveAllConfigs()
             throws IOException {
         for (SiteInstance site : getSites())
-            site.save();
+            site.saveConfig();
     }
 
     private static final SiteManager instance;

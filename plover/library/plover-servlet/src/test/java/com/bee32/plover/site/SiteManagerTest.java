@@ -5,7 +5,8 @@ import org.junit.Assert;
 public class SiteManagerTest
         extends Assert {
 
-    public static void main(String[] args)
+    // @Test
+    public void testSaveAllConfig()
             throws Exception {
         SiteManager manager = SiteManager.getInstance();
         for (SiteInstance site : manager.getSites()) {
@@ -15,7 +16,7 @@ public class SiteManagerTest
         SiteInstance newsite = manager.getOrCreateSite("new");
         newsite.setProperty("hello", "world");
 
-        manager.saveAll();
+        manager.saveAllConfigs();
     }
 
 }
