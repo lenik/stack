@@ -206,39 +206,40 @@ public class MakeOrder
         nativeTotal = null;
     }
 
-    public Map<Part, MakeTaskItem> taskItemListToMap() {
-        Map<Part, MakeTaskItem> taskItemMap = new HashMap<Part, MakeTaskItem>();
+    private Map<Part, BigDecimal> taskItemListToMap() {
+        Map<Part, BigDecimal> taskQuantityMap = new HashMap<Part, BigDecimal>();
 
         for(MakeTask task : tasks) {
             for(MakeTaskItem taskItem : task.getItems()) {
-                MakeTaskItem taskItemInMap = taskItemMap.get(taskItem.part);
-                if(taskItemInMap == null) {
-                    taskItemMap.put(taskItem.part, taskItem);
+                BigDecimal taskQuantityInMap = taskQuantityMap.get(taskItem.part);
+                if(taskQuantityInMap == null) {
+                    taskQuantityMap.put(taskItem.part, taskItem.getQuantity());
                 } else {
-                    taskItemInMap.setQuantity(taskItem.getQuantity().add(taskItemInMap.getQuantity()));
+                    taskQuantityInMap = taskItem.getQuantity().add(taskQuantityInMap);
+                    taskQuantityMap.put(taskItem.part, taskQuantityInMap);
                 }
             }
         }
 
-        return taskItemMap;
+        return taskQuantityMap;
     }
 
     //找寻还没有按排生产任务的产品列表
     @Transient
     public List<MakeOrderItem> getNoCorrespondingTaskItems() {
-        Map<Part, MakeTaskItem> taskItemMap = taskItemListToMap();
+        Map<Part, BigDecimal> taskQuantityMap = taskItemListToMap();
 
         List<MakeOrderItem> result = new ArrayList<MakeOrderItem>();
         for(MakeOrderItem orderItem : items) {
-            MakeTaskItem taskItemInMap = taskItemMap.get(orderItem.getPart());
+            BigDecimal taskQuantityInMap = taskQuantityMap.get(orderItem.getPart());
 
-            if(taskItemInMap == null) {
+            if(taskQuantityInMap == null) {
                 //没有对应的生产任务
                 result.add(orderItem);
             } else {
                 //找到对应的生产任务
                 BigDecimal haveNotArrangeTaskCount = //
-                        orderItem.getQuantity().subtract(taskItemInMap.getQuantity());
+                        orderItem.getQuantity().subtract(taskQuantityInMap);
 
                 if(haveNotArrangeTaskCount.longValue() > 0) {
                     //生产任务的数量小订单的数量
@@ -263,17 +264,17 @@ public class MakeOrder
     public Map<Part, BigDecimal> checkIfTaskQuantityFitOrder() {
         Map<Part, BigDecimal> result = new HashMap<Part, BigDecimal>();
 
-        Map<Part, MakeTaskItem> taskItemMap = taskItemListToMap();
+        Map<Part, BigDecimal> taskQuantityMap = taskItemListToMap();
         for(MakeOrderItem orderItem : items) {
-            MakeTaskItem taskItem = taskItemMap.get(orderItem.getPart());
+            BigDecimal taskQuantity = taskQuantityMap.get(orderItem.getPart());
 
-            if(taskItem != null) {
-                int i = taskItem.getQuantity().compareTo(orderItem.getQuantity());
+            if(taskQuantity != null) {
+                int i = taskQuantity.compareTo(orderItem.getQuantity());
                 if(i > 0) {
                     //生产任务中的数量大于订单中的数量
                     result.put( //
                             orderItem.getPart(), //
-                            taskItem.getQuantity().subtract(orderItem.getQuantity()));
+                            taskQuantity.subtract(orderItem.getQuantity()));
                 }
             }
         }
