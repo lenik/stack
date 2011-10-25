@@ -105,6 +105,11 @@
 
 			<p:panel header="定单管理">
 				<t:panelGrid columns="4">
+                    <h:outputText value="标识:" />
+                    <t:panelGroup colspan="3">
+                        <h:outputText value="#{makeOrderAdminBean.makeOrder.id}"/>
+                    </t:panelGroup>
+
                     <h:outputText value="时间:" />
                     <h:outputText
                         value="#{makeOrderAdminBean.makeOrder.createdDate}">

@@ -105,6 +105,11 @@
 
 			<p:panel header="生产任务单管理">
 				<t:panelGrid columns="4">
+                    <h:outputText value="标识:" />
+                    <t:panelGroup colspan="3">
+                        <h:outputText value="#{makeTaskAdminBean.makeTask.id}"/>
+                    </t:panelGroup>
+
                     <h:outputText value="时间:" />
                     <h:outputText
                         value="#{makeTaskAdminBean.makeTask.createdDate}">
@@ -306,6 +311,10 @@
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
+                        <p:column headerText="标识">
+                            <h:outputText value="#{order.id}" />
+                        </p:column>
+
                         <p:column headerText="客户">
                             <h:outputText value="#{order.customer.name}" />
                         </p:column>
@@ -420,7 +429,7 @@
 
 
         <h:form id="orderItemsForm">
-            <p:dialog header="出入库明细" widgetVar="orderItemsDialog" modal="true"
+            <p:dialog header="订单明细" widgetVar="orderItemsDialog" modal="true"
                 height="480" width="800">
                 <h:panelGroup id="orderItemsPanel">
 

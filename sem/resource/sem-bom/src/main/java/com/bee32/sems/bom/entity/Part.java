@@ -3,7 +3,9 @@ package com.bee32.sems.bom.entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +24,7 @@ import com.bee32.plover.orm.cache.Redundant;
 import com.bee32.plover.ox1.color.Green;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.world.monetary.FxrQueryException;
 import com.bee32.sems.bom.service.MaterialPriceNotFoundException;
@@ -273,6 +276,30 @@ public class Part
             throws MaterialPriceNotFoundException, FxrQueryException {
         BigDecimal price = priceStrategy.getPrice(this);
         return price;
+    }
+
+
+    public Map<Material, BigDecimal> obtainAllMaterial() {
+        Map<Material, BigDecimal> result = new HashMap<Material, BigDecimal>();
+        for(PartItem item : children) {
+            if(item.getClassification() == Classification.RAW) {
+                result.put(item.getMaterial(), item.getQuantity());
+            } else {
+                Map<Material, BigDecimal> childMaterials = item.getPart().obtainAllMaterial();
+                for(Material m : childMaterials.keySet()) {
+                    BigDecimal q = result.get(m);
+
+                    if(q != null) {
+                        result.put(m, q.add(childMaterials.get(m)));
+                    } else {
+                        result.put(m, childMaterials.get(m));
+                    }
+                }
+            }
+        }
+
+        if(result.size() > 0) return result;
+        return null;
     }
 
 }

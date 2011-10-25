@@ -1,5 +1,8 @@
 package com.bee32.sem.purchase.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
@@ -13,12 +16,16 @@ public class MaterialPlanDto
 
     private static final long serialVersionUID = 1L;
 
+    public static final int ITEMS = 1;
+
     public static final int PURCHASE_REQUEST = 1;
 
     MakeTaskDto task;
     StockOrderDto planOrder;
 
     String memo;
+
+    List<MaterialPlanItemDto> items;
 
     PurchaseRequestDto purchaseRequest;
 
@@ -33,6 +40,11 @@ public class MaterialPlanDto
 
         memo = source.getMemo();
 
+        if (selection.contains(ITEMS))
+            items = marshalList(MaterialPlanItemDto.class, source.getItems());
+        else
+            items = new ArrayList<MaterialPlanItemDto>();
+
         if (selection.contains(PURCHASE_REQUEST))
             purchaseRequest = mref(PurchaseRequestDto.class, source.getPurchaseRequest());
     }
@@ -44,8 +56,10 @@ public class MaterialPlanDto
         if (selection.contains(ORDERS))
             merge(target, "planOrder", planOrder);
 
-
         target.setMemo(memo);
+
+        if (selection.contains(ITEMS))
+            mergeList(target, "items", items);
 
         if (selection.contains(PURCHASE_REQUEST))
             merge(target, "purchaseRequest", purchaseRequest);
@@ -83,6 +97,47 @@ public class MaterialPlanDto
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public List<MaterialPlanItemDto> getItems() {
+        return items;
+    }
+
+    public void setItems(List<MaterialPlanItemDto> items) {
+        if (items == null)
+            throw new NullPointerException("items");
+        this.items = items;
+    }
+
+    public synchronized void addItem(MaterialPlanItemDto item) {
+        if (item == null)
+            throw new NullPointerException("item");
+
+        if (item.getIndex() == -1)
+            item.setIndex(items.size());
+
+        items.add(item);
+    }
+
+    public synchronized void removeItem(MaterialPlanItemDto item) {
+        if (item == null)
+            throw new NullPointerException("item");
+
+        int index = items.indexOf(item);
+        if (index == -1)
+            return /* false */;
+
+        items.remove(index);
+        // item.detach();
+
+        // Renum [index, ..)
+        for (int i = index; i < items.size(); i++)
+            items.get(i).setIndex(i);
+    }
+
+    public synchronized void reindex() {
+        for (int index = items.size() - 1; index >= 0; index--)
+            items.get(index).setIndex(index);
     }
 
     public PurchaseRequestDto getPurchaseRequest() {

@@ -1,5 +1,6 @@
 package com.bee32.sem.purchase.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -9,8 +10,10 @@ import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.bee32.plover.arch.util.IdComposite;
+import com.bee32.plover.criteria.hibernate.ICriteriaElement;
+import com.bee32.plover.ox1.color.MomentInterval;
 import com.bee32.plover.ox1.config.DecimalConfig;
-import com.bee32.sem.base.tx.TxEntity;
 import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.people.entity.Party;
 
@@ -21,7 +24,7 @@ import com.bee32.sem.people.entity.Party;
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "plan_item_seq", allocationSize = 1)
 public class MaterialPlanItem
-        extends TxEntity
+        extends MomentInterval
         implements DecimalConfig {
 
     private static final long serialVersionUID = 1L;
@@ -29,6 +32,7 @@ public class MaterialPlanItem
     public static final int ADDITIONAL_REQUIREMENT_LENGTH = 200;
 
     MaterialPlan materialPlan;
+    int index;
     Material material;
     BigDecimal quantity = new BigDecimal(0);
 
@@ -43,6 +47,18 @@ public class MaterialPlanItem
 
     public void setMaterialPlan(MaterialPlan materialPlan) {
         this.materialPlan = materialPlan;
+    }
+
+    /**
+     * 单据内部的序号
+     */
+    @Column(nullable = false)
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     @NaturalId(mutable=true)
@@ -101,5 +117,30 @@ public class MaterialPlanItem
 
     public void setAdditionalRequirement(String additionalRequirement) {
         this.additionalRequirement = additionalRequirement;
+    }
+
+    @Override
+    protected Serializable naturalId() {
+        return new IdComposite(//
+                naturalId(materialPlan), //
+                naturalId(material));
+    }
+
+    @Override
+    protected ICriteriaElement selector(String prefix) {
+        if (materialPlan == null)
+            throw new NullPointerException("materialPlan");
+        if (material == null)
+            throw new NullPointerException("material");
+        return selectors(//
+                selector(prefix + "materialPlan", materialPlan), //
+                selector(prefix + "material", material));
+    }
+
+    @Override
+    public MaterialPlanItem detach() {
+        super.detach();
+        materialPlan = null;
+        return this;
     }
 }

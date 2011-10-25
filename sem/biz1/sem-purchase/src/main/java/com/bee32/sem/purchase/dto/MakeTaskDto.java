@@ -17,11 +17,14 @@ public class MakeTaskDto
     private static final long serialVersionUID = 1L;
 
     public static final int ITEMS = 1;
+    public static final int PLANS = 2;
 
     MakeOrderDto order;
 
     Date deadline;
     List<MakeTaskItemDto> items;
+
+    List<MaterialPlanDto> plans;
 
     @Override
     protected void _marshal(MakeTask source) {
@@ -33,6 +36,11 @@ public class MakeTaskDto
             items = marshalList(MakeTaskItemDto.class, source.getItems());
         else
             items = new ArrayList<MakeTaskItemDto>();
+
+        if (selection.contains(PLANS))
+            plans = marshalList(MaterialPlanDto.class, source.getPlans());
+        else
+            plans = new ArrayList<MaterialPlanDto>();
     }
 
     @Override
@@ -43,6 +51,9 @@ public class MakeTaskDto
 
         if (selection.contains(ITEMS))
             mergeList(target, "items", items);
+
+        if (selection.contains(PLANS))
+            mergeList(target, "plans", plans);
     }
 
     @Override
@@ -108,6 +119,16 @@ public class MakeTaskDto
     public synchronized void reindex() {
         for (int index = items.size() - 1; index >= 0; index--)
             items.get(index).setIndex(index);
+    }
+
+    public List<MaterialPlanDto> getPlans() {
+        return plans;
+    }
+
+    public void setPlans(List<MaterialPlanDto> plans) {
+        if (plans == null)
+            throw new NullPointerException("plans");
+        this.plans = plans;
     }
 
 }

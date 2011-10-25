@@ -31,6 +31,8 @@ public class MakeTask
     Date deadline;
     List<MakeTaskItem> items = new ArrayList<MakeTaskItem>();
 
+    List<MaterialPlan> plans = new ArrayList<MaterialPlan>();
+
     @ManyToOne(optional = false)
     public MakeOrder getOrder() {
         return order;
@@ -92,4 +94,16 @@ public class MakeTask
             items.get(index).setIndex(index);
     }
 
+
+    @OneToMany(mappedBy = "task")
+    @Cascade(CascadeType.ALL)
+    public List<MaterialPlan> getPlans() {
+        return plans;
+    }
+
+    public void setPlans(List<MaterialPlan> plans) {
+        if (plans == null)
+            throw new NullPointerException("plans");
+        this.plans = plans;
+    }
 }

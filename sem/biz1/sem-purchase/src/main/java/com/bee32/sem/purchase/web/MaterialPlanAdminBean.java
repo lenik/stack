@@ -6,28 +6,22 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import com.bee32.plover.criteria.hibernate.Equals;
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
-import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
+import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.misc.EntityCriteria;
-import com.bee32.sem.people.dto.PartyDto;
-import com.bee32.sem.people.entity.Party;
-import com.bee32.sem.people.util.PeopleCriteria;
-import com.bee32.sem.purchase.dto.MakeOrderDto;
-import com.bee32.sem.purchase.dto.MakeOrderItemDto;
 import com.bee32.sem.purchase.dto.MakeTaskDto;
 import com.bee32.sem.purchase.dto.MakeTaskItemDto;
-import com.bee32.sem.purchase.entity.MakeOrder;
+import com.bee32.sem.purchase.dto.MaterialPlanDto;
+import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
 import com.bee32.sem.purchase.entity.MakeTask;
+import com.bee32.sem.purchase.entity.MaterialPlan;
 import com.bee32.sems.bom.dto.PartDto;
-import com.bee32.sems.bom.entity.Part;
-import com.bee32.sems.bom.util.BomCriteria;
 
 public class MaterialPlanAdminBean extends EntityViewBean {
 
@@ -41,29 +35,27 @@ public class MaterialPlanAdminBean extends EntityViewBean {
     private int goNumber;
     private int count;
 
-    protected MakeTaskDto makeTask = new MakeTaskDto().create();
+    protected MaterialPlanDto materialPlan = new MaterialPlanDto().create();
 
-    protected MakeTaskItemDto makeTaskItem = new MakeTaskItemDto().create();
+    protected MaterialPlanItemDto materialPlanItem = new MaterialPlanItemDto().create();
 
-    private String partPattern;
-    private List<PartDto> parts;
-    private PartDto selectedPart;
+    private String materialPattern;
+    private List<MaterialDto> materials;
+    private MaterialDto selectedMaterial;
 
     private boolean newItemStatus = false;
 
-    protected List<MakeTaskItemDto> itemsNeedToRemoveWhenModify = new ArrayList<MakeTaskItemDto>();
+    protected List<MaterialPlanItemDto> itemsNeedToRemoveWhenModify = new ArrayList<MaterialPlanItemDto>();
 
-    private PartyDto customer;
 
-    private Date limitDateFromForOrder;
-    private Date limitDateToForOrder;
 
-    private List<MakeOrderDto> orders;
-    private MakeOrderDto selectedOrder;
+    private Date limitDateFromForTask;
+    private Date limitDateToForTask;
 
-    private String customerPattern;
-    private List<PartyDto> customers;
-    private PartyDto selectedCustomer;
+    private List<MakeTaskDto> tasks;
+    private MakeTaskDto selectedTask;
+
+
 
 
     public MaterialPlanAdminBean() {
@@ -71,16 +63,16 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         // 取这个月的第一天
         c.set(Calendar.DAY_OF_MONTH, 1);
         limitDateFrom = c.getTime();
-        limitDateFromForOrder = c.getTime();
+        limitDateFromForTask = c.getTime();
 
         // 最这个月的最后一天
         c.add(Calendar.MONTH, 1);
         c.add(Calendar.DAY_OF_MONTH, -1);
         limitDateTo = c.getTime();
-        limitDateToForOrder = c.getTime();
+        limitDateToForTask = c.getTime();
 
         goNumber = 1;
-        loadMakeTask(goNumber);
+        loadMaterialPlan(goNumber);
     }
 
     public Date getLimitDateFrom() {
@@ -117,66 +109,66 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
 
     public int getCount() {
-        count = serviceFor(MakeTask.class).count(//
+        count = serviceFor(MaterialPlan.class).count(//
                 EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo));
         return count;
     }
 
-    public MakeTaskDto getMakeTask() {
-        return makeTask;
+    public MaterialPlanDto getMaterialPlan() {
+        return materialPlan;
     }
 
-    public void setMakeTask(MakeTaskDto makeTask) {
-        this.makeTask = makeTask;
+    public void setMaterialPlan(MaterialPlanDto materialPlan) {
+        this.materialPlan = materialPlan;
     }
 
     public String getCreator() {
-        if (makeTask == null)
+        if (materialPlan == null)
             return "";
         else
-            return makeTask.getOwnerDisplayName();
+            return materialPlan.getOwnerDisplayName();
     }
 
-    public List<MakeTaskItemDto> getItems() {
-        if (makeTask == null)
+    public List<MaterialPlanItemDto> getItems() {
+        if (materialPlan == null)
             return null;
-        return makeTask.getItems();
+        return materialPlan.getItems();
     }
 
-    public MakeTaskItemDto getMakeTaskItem() {
-        return makeTaskItem;
+    public MaterialPlanItemDto getMaterialPlanItem() {
+        return materialPlanItem;
     }
 
-    public void setMakeTaskItem(MakeTaskItemDto makeTaskItem) {
-        this.makeTaskItem = makeTaskItem;
+    public void setMaterialPlanItem(MaterialPlanItemDto materialPlanItem) {
+        this.materialPlanItem = materialPlanItem;
     }
 
     public void setCount(int count) {
         this.count = count;
     }
 
-    public String getPartPattern() {
-        return partPattern;
+    public String getMaterialPattern() {
+        return materialPattern;
     }
 
-    public void setPartPattern(String partPattern) {
-        this.partPattern = partPattern;
+    public void setMaterialPattern(String materialPattern) {
+        this.materialPattern = materialPattern;
     }
 
-    public List<PartDto> getParts() {
-        return parts;
+    public List<MaterialDto> getMaterials() {
+        return materials;
     }
 
-    public void setParts(List<PartDto> parts) {
-        this.parts = parts;
+    public void setMaterials(List<MaterialDto> materials) {
+        this.materials = materials;
     }
 
-    public PartDto getSelectedPart() {
-        return selectedPart;
+    public MaterialDto getSelectedMaterial() {
+        return selectedMaterial;
     }
 
-    public void setSelectedPart(PartDto selectedPart) {
-        this.selectedPart = selectedPart;
+    public void setSelectedMaterial(MaterialDto selectedMaterial) {
+        this.selectedMaterial = selectedMaterial;
     }
 
     public boolean isNewItemStatus() {
@@ -187,73 +179,44 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         this.newItemStatus = newItemStatus;
     }
 
-    public PartyDto getCustomer() {
-        return customer;
+    public Date getLimitDateFromForTask() {
+        return limitDateFromForTask;
     }
 
-    public void setCustomer(PartyDto customer) {
-        this.customer = customer;
+    public void setLimitDateFromForTask(Date limitDateFromForTask) {
+        this.limitDateFromForTask = limitDateFromForTask;
     }
 
-    public Date getLimitDateFromForOrder() {
-        return limitDateFromForOrder;
+    public Date getLimitDateToForTask() {
+        return limitDateToForTask;
     }
 
-    public void setLimitDateFromForOrder(Date limitDateFromForOrder) {
-        this.limitDateFromForOrder = limitDateFromForOrder;
+    public void setLimitDateToForTask(Date limitDateToForTask) {
+        this.limitDateToForTask = limitDateToForTask;
     }
 
-    public Date getLimitDateToForOrder() {
-        return limitDateToForOrder;
+    public List<MakeTaskDto> getTasks() {
+        return tasks;
     }
 
-    public void setLimitDateToForOrder(Date limitDateToForOrder) {
-        this.limitDateToForOrder = limitDateToForOrder;
+    public void setTasks(List<MakeTaskDto> tasks) {
+        this.tasks = tasks;
     }
 
-    public List<MakeOrderDto> getOrders() {
-        return orders;
+
+    public MakeTaskDto getSelectedTask() {
+        return selectedTask;
     }
 
-    public void setOrders(List<MakeOrderDto> orders) {
-        this.orders = orders;
+    public void setSelectedTask(MakeTaskDto selectedTask) {
+        this.selectedTask = selectedTask;
     }
 
-    public MakeOrderDto getSelectedOrder() {
-        return selectedOrder;
-    }
 
-    public void setSelectedOrder(MakeOrderDto selectedOrder) {
-        this.selectedOrder = selectedOrder;
-    }
 
-    public String getCustomerPattern() {
-        return customerPattern;
-    }
-
-    public void setCustomerPattern(String customerPattern) {
-        this.customerPattern = customerPattern;
-    }
-
-    public List<PartyDto> getCustomers() {
-        return customers;
-    }
-
-    public void setCustomers(List<PartyDto> customers) {
-        this.customers = customers;
-    }
-
-    public PartyDto getSelectedCustomer() {
-        return selectedCustomer;
-    }
-
-    public void setSelectedCustomer(PartyDto selectedCustomer) {
-        this.selectedCustomer = selectedCustomer;
-    }
-
-    public List<MakeOrderItemDto> getOrderItems() {
-        if(selectedOrder != null) {
-            return selectedOrder.getItems();
+    public List<MakeTaskItemDto> getTaskItems() {
+        if(selectedTask != null) {
+            return selectedTask.getItems();
         }
         return null;
     }
@@ -266,10 +229,10 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
 
     public void limit() {
-        loadMakeTask(goNumber);
+        loadMaterialPlan(goNumber);
     }
 
-    private void loadMakeTask(int position) {
+    private void loadMaterialPlan(int position) {
         //刷新总记录数
         getCount();
 
@@ -284,25 +247,25 @@ public class MaterialPlanAdminBean extends EntityViewBean {
             position = count;
         }
 
-        makeTask = new MakeTaskDto().create();    //如果限定条件内没有找到makeTask,则创建一个
+        materialPlan = new MaterialPlanDto().create();    //如果限定条件内没有找到materialPlan,则创建一个
 
-        MakeTask firstTask = serviceFor(MakeTask.class).getFirst( //
+        MaterialPlan firstPlan = serviceFor(MaterialPlan.class).getFirst( //
                 new Offset(position - 1), //
                 EntityCriteria.createdBetweenEx(limitDateFrom, limitDateTo), //
                 Order.asc("id"));
 
-        if (firstTask != null)
-            makeTask = DTOs.marshal(MakeTaskDto.class, MakeTaskDto.ITEMS, firstTask);
+        if (firstPlan != null)
+            materialPlan = DTOs.marshal(MaterialPlanDto.class, MaterialPlanDto.ITEMS, firstPlan);
 
     }
 
     public void new_() {
-        makeTask = new MakeTaskDto().create();
+        materialPlan = new MaterialPlanDto().create();
         editable = true;
     }
 
     public void modify() {
-        if(makeTask.getId() == null) {
+        if(materialPlan.getId() == null) {
             uiLogger.warn("当前没有对应的单据");
             return;
         }
@@ -313,58 +276,45 @@ public class MaterialPlanAdminBean extends EntityViewBean {
     }
 
     public void save() {
-        if(makeTask.getId() == null) {
+        if(materialPlan.getId() == null) {
             //新增
             goNumber = count + 1;
         }
 
         try {
-            MakeTask _task = makeTask.unmarshal();
-            for(MakeTaskItemDto item : itemsNeedToRemoveWhenModify) {
-                _task.removeItem(item.unmarshal());
+            MaterialPlan _plan = materialPlan.unmarshal();
+            for(MaterialPlanItemDto item : itemsNeedToRemoveWhenModify) {
+                _plan.removeItem(item.unmarshal());
             }
 
-            MakeOrder order = _task.getOrder();
-            order.getTasks().add(_task);
+            MakeTask task = _plan.getTask();
+            task.getPlans().add(_plan);
 
-            Map<Part, BigDecimal> mapQuantityOverloadParts = order.checkIfTaskQuantityFitOrder();
-            Set<Part> setQuantityOverloadParts = mapQuantityOverloadParts.keySet();
-            if(setQuantityOverloadParts.size() > 0){
-                StringBuilder infoBuilder = new StringBuilder();
-                for(Part part : setQuantityOverloadParts) {
-                    infoBuilder.append(part.getTarget().getLabel());
-                    infoBuilder.append("超过");
-                    infoBuilder.append(mapQuantityOverloadParts.get(part));
-                    infoBuilder.append(";");
-                }
+            serviceFor(MaterialPlan.class).save(_plan);
+            uiLogger.info("保存成功");
+            loadMaterialPlan(goNumber);
+            editable = false;
 
-                uiLogger.info("对应订单的所有生产任务单数量总和超过订单中的数量!" + infoBuilder.toString());
-            } else {
-                serviceFor(MakeTask.class).save(_task);
-                uiLogger.info("保存成功");
-                loadMakeTask(goNumber);
-                editable = false;
-            }
         } catch (Exception e) {
             uiLogger.warn("保存失败,错误信息:" + e.getMessage());
         }
     }
 
     public void cancel() {
-        loadMakeTask(goNumber);
+        loadMaterialPlan(goNumber);
         editable = false;
     }
 
     public void first() {
         goNumber = 1;
-        loadMakeTask(goNumber);
+        loadMaterialPlan(goNumber);
     }
 
     public void previous() {
         goNumber--;
         if (goNumber < 1)
             goNumber = 1;
-        loadMakeTask(goNumber);
+        loadMaterialPlan(goNumber);
     }
 
     public void go() {
@@ -373,7 +323,7 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         } else if (goNumber > count) {
             goNumber = count;
         }
-        loadMakeTask(goNumber);
+        loadMaterialPlan(goNumber);
     }
 
     public void next() {
@@ -381,17 +331,17 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
         if (goNumber > count)
             goNumber = count;
-        loadMakeTask(goNumber);
+        loadMaterialPlan(goNumber);
     }
 
     public void last() {
         goNumber = count + 1;
-        loadMakeTask(goNumber);
+        loadMaterialPlan(goNumber);
     }
 
     public void newItem() {
-        makeTaskItem = new MakeTaskItemDto().create();
-        makeTaskItem.setTask(makeTask);
+        materialPlanItem = new MaterialPlanItemDto().create();
+        materialPlanItem.setMaterialPlan(materialPlan);
 
         newItemStatus = true;
     }
@@ -402,78 +352,71 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
 
     public void saveItem() {
-        makeTaskItem.setTask(makeTask);
+        materialPlanItem.setMaterialPlan(materialPlan);
         if (newItemStatus) {
-            makeTask.addItem(makeTaskItem);
+            materialPlan.addItem(materialPlanItem);
         }
     }
 
     public void delete() {
         try {
-            serviceFor(MakeTask.class).delete(makeTask.unmarshal());
+            serviceFor(MaterialPlan.class).delete(materialPlan.unmarshal());
             uiLogger.info("删除成功!");
-            loadMakeTask(goNumber);
+            loadMaterialPlan(goNumber);
         } catch (Exception e) {
             uiLogger.warn("删除失败,错误信息:" + e.getMessage());
         }
     }
 
     public void deleteItem() {
-        makeTask.removeItem(makeTaskItem);
+        materialPlan.removeItem(materialPlanItem);
 
-        if (makeTaskItem.getId() != null) {
-            itemsNeedToRemoveWhenModify.add(makeTaskItem);
+        if (materialPlanItem.getId() != null) {
+            itemsNeedToRemoveWhenModify.add(materialPlanItem);
         }
     }
 
-    public void findPart() {
-        if (partPattern != null && !partPattern.isEmpty()) {
+    public void findMaterial() {
+        if (materialPattern != null && !materialPattern.isEmpty()) {
 
-            List<Part> _parts = serviceFor(Part.class).list(BomCriteria.findPartUseMaterialName(partPattern));
+            List<Material> _materials = serviceFor(Material.class).list(new Like("label", "%" + materialPattern + "%"));
 
-            parts = DTOs.mrefList(PartDto.class, _parts);
+            materials = DTOs.mrefList(MaterialDto.class, _materials);
         }
     }
 
-    public void choosePart() {
-        makeTaskItem.setPart(selectedPart);
+    public void chooseMaterial() {
+        materialPlanItem.setMaterial(selectedMaterial);
 
-        selectedPart = null;
+        selectedMaterial = null;
     }
 
-    public void findOrder() {
-        List<MakeOrder> _orders = serviceFor(MakeOrder.class).list( //
-                new Equals("customer.id", customer.getId()), //
-                EntityCriteria.createdBetweenEx(limitDateFromForOrder, limitDateToForOrder));
+    public void findTask() {
+        List<MakeTask> _tasks = serviceFor(MakeTask.class).list( //
+                EntityCriteria.createdBetweenEx(limitDateFromForTask, limitDateToForTask));
 
-        orders = DTOs.marshalList(MakeOrderDto.class, _orders);
+        tasks = DTOs.marshalList(MakeTaskDto.class, _tasks);
     }
 
-    public void chooseOrder() {
-        selectedOrder = reload(selectedOrder);
-        List<MakeTaskItemDto> makeTaskItems = selectedOrder.arrangeMakeTask(makeTask);
-        if(makeTaskItems != null) {
-            makeTask.setItems(makeTaskItems);
-            makeTask.setOrder(selectedOrder);
-        } else {
-            uiLogger.error("此定单上的产品的生产任务已经全部安排完成");
+    public void chooseTask() {
+        //在此方法中，根据bom计算所需物料
+
+        selectedTask = reload(selectedTask);
+        for(MakeTaskItemDto taskItem : selectedTask.getItems()) {
+            PartDto part = taskItem.getPart();
+            BigDecimal quantity = taskItem.getQuantity();
+
+            Map<MaterialDto, BigDecimal> allMaterial = part.getAllMaterial();
+
+            for(MaterialDto m : allMaterial.keySet()) {
+                MaterialPlanItemDto item = new MaterialPlanItemDto().create();
+
+                item.setMaterialPlan(materialPlan);
+                item.setMaterial(m);
+                item.setQuantity(quantity.multiply(allMaterial.get(m))); //产品数量乘以原物料数量
+
+                materialPlan.addItem(item);
+            }
         }
-    }
-
-    public void findCustomer() {
-        if (customerPattern != null && !customerPattern.isEmpty()) {
-
-            List<Party> _customers = serviceFor(Party.class).list( //
-                    PeopleCriteria.customers(), //
-                    new Or( //
-                            new Like("name", "%" + customerPattern + "%"), //
-                            new Like("fullName", "%" + customerPattern + "%")));
-
-            customers = DTOs.marshalList(PartyDto.class, _customers);
-        }
-    }
-
-    public void chooseCustomer() {
-        customer = selectedCustomer;
     }
 }

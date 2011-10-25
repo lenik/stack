@@ -3,14 +3,18 @@ package com.bee32.sems.bom.dto;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.ox1.color.UIEntityDto;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sems.bom.entity.Part;
 
 public class PartDto
@@ -37,6 +41,8 @@ public class PartDto
     BigDecimal otherFee;
     BigDecimal electricityFee;
     BigDecimal equipmentCost;
+
+    Map<MaterialDto, BigDecimal> allMaterial = new HashMap<MaterialDto, BigDecimal>();
 
     public PartDto() {
         super();
@@ -72,6 +78,12 @@ public class PartDto
         otherFee = source.getOtherFee();
         electricityFee = source.getElectricityFee();
         equipmentCost = source.getEquipmentCost();
+
+        Map<Material, BigDecimal> _allMaterial = source.obtainAllMaterial();
+        for(Material _m : _allMaterial.keySet()) {
+            MaterialDto m = DTOs.marshal(MaterialDto.class, _m);
+            allMaterial.put(m, _allMaterial.get(_m));
+        }
     }
 
     @Override
@@ -232,4 +244,7 @@ public class PartDto
         return total;
     }
 
+    public Map<MaterialDto, BigDecimal> getAllMaterial() {
+        return allMaterial;
+    }
 }

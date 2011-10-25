@@ -1,9 +1,13 @@
 package com.bee32.sem.purchase.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -29,6 +33,8 @@ public class MaterialPlan
     MakeTask task;
     StockOrder planOrder;
     String memo;
+
+    List<MaterialPlanItem> items = new ArrayList<MaterialPlanItem>();
 
     PurchaseRequest purchaseRequest;
 
@@ -64,6 +70,49 @@ public class MaterialPlan
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    @OneToMany(mappedBy = "materialPlan", orphanRemoval = true)
+    @Cascade(CascadeType.ALL)
+    public List<MaterialPlanItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<MaterialPlanItem> items) {
+        if (items == null)
+            throw new NullPointerException("items");
+        this.items = items;
+    }
+
+    public synchronized void addItem(MaterialPlanItem item) {
+        if (item == null)
+            throw new NullPointerException("item");
+
+        if (item.getIndex() == -1)
+            item.setIndex(items.size());
+
+        items.add(item);
+    }
+
+    public synchronized void removeItem(MaterialPlanItem item) {
+        if (item == null)
+            throw new NullPointerException("item");
+
+        int index = items.indexOf(item);
+        if (index == -1)
+            return /* false */;
+
+        items.remove(index);
+        item.detach();
+
+        // Renum [index, ..)
+        for (int i = index; i < items.size(); i++)
+            items.get(i).setIndex(i);
+    }
+
+    public synchronized void reindex() {
+        for (int index = items.size() - 1; index >= 0; index--)
+            items.get(index).setIndex(index);
     }
 
     @OneToOne(mappedBy = "plan")

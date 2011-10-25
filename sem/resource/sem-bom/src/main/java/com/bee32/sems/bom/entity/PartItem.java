@@ -18,6 +18,7 @@ import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.UIEntityAuto;
 import com.bee32.plover.ox1.config.DecimalConfig;
+import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.entity.Material;
 
 @Entity
@@ -162,6 +163,13 @@ public class PartItem
                 selector(prefix + "parent", parent), //
                 selector(prefix + "part", part, true), //
                 selector(prefix + "material", material, true));
+    }
+
+    public Classification getClassification() {
+        if(part != null)
+            return Classification.SEMI;
+        else
+            return Classification.RAW;
     }
 
 }
