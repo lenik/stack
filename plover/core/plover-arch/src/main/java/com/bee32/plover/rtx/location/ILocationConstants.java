@@ -12,7 +12,7 @@ public interface ILocationConstants {
 
     Location URL = REQUEST;
 
-    Location WEB_APP = new ServletContextLocation(null);
+    Location WEB_APP = new ServletContextLocation("/");
 
     Location LIB_JS = new ServletContextLocation("lib/js/");
 
