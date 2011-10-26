@@ -5,7 +5,7 @@ import org.mortbay.jetty.servlet.ServletHolder;
 import com.bee32.plover.servlet.rabbits.OverlappedResourceServlet;
 
 public class FallbackWac
-        extends AbstractWebAppConfigurer {
+        extends AbstractWac {
 
     @Override
     public int getOrder() {

@@ -2,14 +2,14 @@ package com.bee32.sem.uber.coll;
 
 import java.io.IOException;
 
-import com.bee32.plover.servlet.test.AbstractWebAppConfigurer;
+import com.bee32.plover.servlet.test.AbstractWac;
 import com.bee32.plover.servlet.test.IWebAppConfigurer;
 import com.bee32.plover.test.ServiceCollector;
 
 /**
- * Please make {@link AbstractWebAppConfigurer} be DI-component at first.
+ * Please make {@link AbstractWac} be DI-component at first.
  *
- * @see AbstractWebAppConfigurer
+ * @see AbstractWac
  */
 public class WacCollector
         extends ServiceCollector<IWebAppConfigurer> {

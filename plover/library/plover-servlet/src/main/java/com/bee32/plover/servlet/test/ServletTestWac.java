@@ -1,7 +1,7 @@
 package com.bee32.plover.servlet.test;
 
 public class ServletTestWac
-        extends AbstractWebAppConfigurer {
+        extends AbstractWac {
 
     @Override
     public int getOrder() {

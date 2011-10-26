@@ -6,11 +6,11 @@ import org.zkoss.zk.au.http.DHtmlUpdateServlet;
 import org.zkoss.zk.ui.http.DHtmlLayoutServlet;
 import org.zkoss.zk.ui.http.HttpSessionListener;
 
-import com.bee32.plover.servlet.test.AbstractWebAppConfigurer;
+import com.bee32.plover.servlet.test.AbstractWac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
 
 public class ZkWac
-        extends AbstractWebAppConfigurer {
+        extends AbstractWac {
     @Override
     public int getOrder() {
         return NORMAL_ORDER;

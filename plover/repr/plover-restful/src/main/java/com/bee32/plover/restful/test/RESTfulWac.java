@@ -2,11 +2,11 @@ package com.bee32.plover.restful.test;
 
 import com.bee32.plover.restful.DispatchServlet;
 import com.bee32.plover.restful.RESTfulConfig;
-import com.bee32.plover.servlet.test.AbstractWebAppConfigurer;
+import com.bee32.plover.servlet.test.AbstractWac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
 
 public class RESTfulWac
-        extends AbstractWebAppConfigurer {
+        extends AbstractWac {
     @Override
     public int getOrder() {
         return 0;

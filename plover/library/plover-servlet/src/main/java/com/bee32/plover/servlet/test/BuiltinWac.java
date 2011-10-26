@@ -6,7 +6,7 @@ import com.bee32.plover.servlet.rabbits.Logo;
 import com.bee32.plover.servlet.util.ThreadServletContextFilter;
 
 public class BuiltinWac
-        extends AbstractWebAppConfigurer {
+        extends AbstractWac {
 
     @Override
     public int getOrder() {

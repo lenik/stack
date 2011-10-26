@@ -4,7 +4,7 @@ import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.servlet.test.ServletTestCase.LocalSTL;
 
 public abstract class OuterWac<T extends ServletTestCase>
-        extends AbstractWebAppConfigurer {
+        extends AbstractWac {
 
     final Class<T> outerDeclType;
 

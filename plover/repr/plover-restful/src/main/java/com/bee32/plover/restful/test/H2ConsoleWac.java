@@ -2,12 +2,12 @@ package com.bee32.plover.restful.test;
 
 import org.mortbay.jetty.servlet.ServletHolder;
 
-import com.bee32.plover.servlet.test.AbstractWebAppConfigurer;
+import com.bee32.plover.servlet.test.AbstractWac;
 import com.bee32.plover.servlet.test.ServletTestLibrary;
 import com.bee32.plover.servlet.util.LazyLoadServlet;
 
 public class H2ConsoleWac
-        extends AbstractWebAppConfigurer {
+        extends AbstractWac {
 
     @Override
     public int getOrder() {
