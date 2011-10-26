@@ -63,7 +63,7 @@ public class OrgAdminBean
 
     public OrgAdminBean() {
         EntityDataModelOptions<Org, OrgDto> options = new EntityDataModelOptions<Org, OrgDto>(//
-                Org.class, OrgDto.class, 0, //
+                Org.class, OrgDto.class, AbstractPartyDto.CONTACTS, //
                 Order.desc("id"), EntityCriteria.ownedByCurrentUser());
         orgs = UIHelper.buildLazyDataModel(options);
 
@@ -310,6 +310,8 @@ public class OrgAdminBean
             serviceFor(Org.class).save(org);
             serviceFor(Org.class).delete(org);
             refreshOrgCount();
+
+            selectedOrg = null;
 
         } catch (Exception e) {
             uiLogger.error("删除客户/供应商失败", e);

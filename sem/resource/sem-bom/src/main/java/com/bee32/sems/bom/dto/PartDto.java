@@ -42,7 +42,7 @@ public class PartDto
     BigDecimal electricityFee;
     BigDecimal equipmentCost;
 
-    Map<MaterialDto, BigDecimal> allMaterial = new HashMap<MaterialDto, BigDecimal>();
+    Map<MaterialDto, BigDecimal> allMaterial;
 
     public PartDto() {
         super();
@@ -80,9 +80,12 @@ public class PartDto
         equipmentCost = source.getEquipmentCost();
 
         Map<Material, BigDecimal> _allMaterial = source.obtainAllMaterial();
-        for(Material _m : _allMaterial.keySet()) {
-            MaterialDto m = DTOs.marshal(MaterialDto.class, _m);
-            allMaterial.put(m, _allMaterial.get(_m));
+        if(_allMaterial != null) {
+            allMaterial = new HashMap<MaterialDto, BigDecimal>();
+            for(Material _m : _allMaterial.keySet()) {
+                MaterialDto m = DTOs.marshal(MaterialDto.class, _m);
+                allMaterial.put(m, _allMaterial.get(_m));
+            }
         }
     }
 

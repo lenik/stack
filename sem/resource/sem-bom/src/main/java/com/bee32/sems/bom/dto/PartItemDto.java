@@ -8,6 +8,7 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
 import com.bee32.plover.ox1.color.UIEntityDto;
+import com.bee32.sem.inventory.Classification;
 import com.bee32.sem.inventory.dto.MaterialDto;
 import com.bee32.sems.bom.entity.PartItem;
 
@@ -29,6 +30,8 @@ public class PartItemDto
     Date validDateFrom;
     Date validDateTo;
 
+    Classification classification;
+
     @Override
     protected void _marshal(PartItem source) {
         if (selection.contains(PARENT))
@@ -42,6 +45,7 @@ public class PartItemDto
         valid = source.isValid();
         validDateFrom = source.getValidDateFrom();
         validDateTo = source.getValidDateTo();
+        classification = source.getClassification();
     }
 
     @Override
@@ -125,4 +129,7 @@ public class PartItemDto
         this.validDateTo = validDateTo;
     }
 
+    public Classification getClassification() {
+        return classification;
+    }
 }

@@ -400,23 +400,32 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
     public void chooseTask() {
         //在此方法中，根据bom计算所需物料
-
         selectedTask = reload(selectedTask);
+
+
+        if(selectedTask.getPlans().size() > 0) {
+            uiLogger.error("此生产任务单已经有对应的物料计划!");
+            return;
+        }
+
         for(MakeTaskItemDto taskItem : selectedTask.getItems()) {
             PartDto part = taskItem.getPart();
             BigDecimal quantity = taskItem.getQuantity();
 
             Map<MaterialDto, BigDecimal> allMaterial = part.getAllMaterial();
+            if(allMaterial != null) {
+                for(MaterialDto m : allMaterial.keySet()) {
+                    MaterialPlanItemDto item = new MaterialPlanItemDto().create();
 
-            for(MaterialDto m : allMaterial.keySet()) {
-                MaterialPlanItemDto item = new MaterialPlanItemDto().create();
+                    item.setMaterialPlan(materialPlan);
+                    item.setMaterial(m);
+                    item.setQuantity(quantity.multiply(allMaterial.get(m))); //产品数量乘以原物料数量
 
-                item.setMaterialPlan(materialPlan);
-                item.setMaterial(m);
-                item.setQuantity(quantity.multiply(allMaterial.get(m))); //产品数量乘以原物料数量
-
-                materialPlan.addItem(item);
+                    materialPlan.addItem(item);
+                }
             }
         }
+
+        materialPlan.setTask(selectedTask);
     }
 }

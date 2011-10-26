@@ -38,6 +38,10 @@ public class AbstractPartyDto<E extends Party>
 
     Date birthday;
     String interests;
+
+    String bank;
+    String bankAccount;
+
     String memo;
 
     List<PartyTagnameDto> tags;
@@ -70,6 +74,9 @@ public class AbstractPartyDto<E extends Party>
         birthday = source.getBirthday();
         interests = source.getInterests();
 
+        bank = source.getBank();
+        bankAccount = source.getBankAccount();
+
         memo = source.getMemo();
 
         tags = mrefList(PartyTagnameDto.class, source.getTags());
@@ -98,6 +105,10 @@ public class AbstractPartyDto<E extends Party>
 
         target.setBirthday(birthday);
         target.setInterests(interests);
+
+        target.setBank(bank);
+        target.setBankAccount(bankAccount);
+
         target.setMemo(memo);
 
         mergeSet(target, "tags", tags);
@@ -226,6 +237,24 @@ public class AbstractPartyDto<E extends Party>
         this.interests = interests;
     }
 
+    @NLength(max = Party.BANK_LENGTH)
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    @NLength(max = Party.BANK_ACCOUNT_LENGTH)
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
     @NLength(max = Party.MEMO_LENGTH)
     public String getMemo() {
         return memo;
@@ -257,6 +286,12 @@ public class AbstractPartyDto<E extends Party>
 
     public void setContacts(List<ContactDto> contacts) {
         this.contacts = contacts;
+    }
+
+    public String getDefaultTel() {
+        if(contacts == null) return "";
+        if(contacts.size() <= 0) return "";
+        return contacts.get(0).getTel();
     }
 
     @Override

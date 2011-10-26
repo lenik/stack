@@ -121,10 +121,12 @@
                         disabled="true" />
 
                     <h:outputText value="生产任务单" />
-                    <t:panelGroup colspan="3">
+                    <t:panelGroup>
                         <p:inputText id="task" value="#{materialPlanAdminBean.materialPlan.task.id}" readonly="true"/>
                         <p:commandButton value="..." onclick="taskDialog.show()" disabled="#{!materialPlanAdminBean.editable}"/>
                     </t:panelGroup>
+                    <t:panelGroup/>
+                    <t:panelGroup/>
 
                     <h:outputText value="备注"/>
                     <t:panelGroup colspan="3">
@@ -157,7 +159,7 @@
                         <f:facet name="header">
                             <h:outputText value="规格型号"/>
                         </f:facet>
-                        <h:outputText value="#{item.part.target.modelSpec}" />
+                        <h:outputText value="#{item.material.modelSpec}" />
                     </p:column>
 
                     <p:column>
@@ -171,7 +173,7 @@
                         <f:facet name="header">
                             <h:outputText value="优选供应商"/>
                         </f:facet>
-                        <h:outputText value="#{item.preferredSupplier}" />
+                        <h:outputText value="#{item.preferredSupplier.name}" />
                     </p:column>
 
                     <p:column>
@@ -191,15 +193,24 @@
 								<f:setPropertyActionListener value="#{item}"
 									target="#{materialPlanAdminBean.materialPlanItem}" />
 							</p:commandLink>
+                            <!--
 							<p:spacer width="10" />
-							<p:commandLink
+                            <p:commandLink
 								disabled="#{!materialPlanAdminBean.editable}"
 								oncomplete="deleteItemConfirmDialog.show()" value="删除">
 								<f:setPropertyActionListener value="#{item}"
 									target="#{materialPlanAdminBean.materialPlanItem}" />
 							</p:commandLink>
+                            -->
+                            <p:spacer width="10" />
+                            <p:commandLink
+                                oncomplete="lockStockDialog.show()" value="锁定库存">
+                                <f:setPropertyActionListener value="#{item}"
+                                    target="#{materialPlanAdminBean.materialPlanItem}" />
+                            </p:commandLink>
 						</t:panelGroup>
 					</p:column>
+
 
 				</p:dataTable>
 

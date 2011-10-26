@@ -135,10 +135,6 @@ public class PersonAdminBean
         return roles;
     }
 
-    private void _newPerson() {
-        person = new PersonDto().create();
-    }
-
     public void doNew() {
         person = new PersonDto().create();
 
@@ -170,6 +166,8 @@ public class PersonAdminBean
             serviceFor(Person.class).save(person);
             serviceFor(Person.class).delete(person);
             refreshPersonCount();
+
+            selectedPerson = null;
 
         } catch (Exception e) {
             uiLogger.error("删除联系人失败", e);

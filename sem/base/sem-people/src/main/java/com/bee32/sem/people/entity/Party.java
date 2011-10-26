@@ -55,6 +55,8 @@ public abstract class Party
     public static final int SID_LENGTH = 30;
     public static final int XID_LENGTH = 40;
     public static final int INTERESTS_LENGTH = 200;
+    public static final int BANK_LENGTH = 100;
+    public static final int BANK_ACCOUNT_LENGTH = 50;
     public static final int MEMO_LENGTH = 1000;
 
     String name;
@@ -65,6 +67,11 @@ public abstract class Party
 
     Date birthday;
     String interests;
+
+    String bank;
+    String bankAccount;
+
+
     String memo;
 
     Set<PartyTagname> tags = new HashSet<PartyTagname>();
@@ -190,6 +197,24 @@ public abstract class Party
 
     public void setInterests(String interests) {
         this.interests = interests;
+    }
+
+    @Column(length = BANK_LENGTH)
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    @Column(length = BANK_ACCOUNT_LENGTH)
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     @Column(length = MEMO_LENGTH)

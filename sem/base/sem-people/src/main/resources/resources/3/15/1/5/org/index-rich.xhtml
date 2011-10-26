@@ -129,6 +129,27 @@
 
                             <p:column>
                                 <f:facet name="header">
+                                    <h:outputText value="联系电话" />
+                                </f:facet>
+                                <h:outputText value="#{org.defaultTel}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="银行" />
+                                </f:facet>
+                                <h:outputText value="#{org.bank}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="帐号" />
+                                </f:facet>
+                                <h:outputText value="#{org.bankAccount}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
                                     <h:outputText value="税务登记号" />
                                 </f:facet>
                                 <h:outputText value="#{org.sid}" />
@@ -206,6 +227,11 @@
 									<f:selectItem itemValue="" itemLabel="--选择公司类型--" />
 									<f:selectItems value="#{orgAdminBean.orgTypes}" />
 								</p:selectOneMenu>
+
+                                <h:outputLabel for="orgBank" value="银行" />
+                                <p:inputText id="orgBank" value="#{orgAdminBean.org.bank}" />
+                                <h:outputLabel for="orgBankAccount" value="帐号" />
+                                <p:inputText id="orgBankAccount" value="#{orgAdminBean.org.bankAccount}" />
 
 								<h:outputLabel for="orgSid" value="税务登记号" />
 								<p:inputText id="orgSid" value="#{orgAdminBean.org.sid}" />

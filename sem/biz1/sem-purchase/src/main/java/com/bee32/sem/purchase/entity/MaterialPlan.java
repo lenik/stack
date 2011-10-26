@@ -52,7 +52,7 @@ public class MaterialPlan
         this.task = task;
     }
 
-    @OneToOne(optional = false)
+    @OneToOne
     @JoinColumn(name = "s1")
     @Cascade(CascadeType.ALL)
     public StockOrder getPlanOrder() {

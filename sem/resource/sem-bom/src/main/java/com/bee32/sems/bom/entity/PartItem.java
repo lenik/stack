@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
@@ -165,6 +166,7 @@ public class PartItem
                 selector(prefix + "material", material, true));
     }
 
+    @Transient
     public Classification getClassification() {
         if(part != null)
             return Classification.SEMI;
