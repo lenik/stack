@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bee32.plover.arch.util.TextMap;
-
 public class SiteManagerServlet
         extends HttpServlet {
 
@@ -25,19 +23,25 @@ public class SiteManagerServlet
         String cmdname;
         int lastSlash = uri.lastIndexOf('/');
         if (lastSlash != -1)
-            cmdname = uri;
-        else
             cmdname = uri.substring(lastSlash + 1);
+        else
+            cmdname = uri;
 
-        Map<String, ?> _map = req.getParameterMap();
-        TextMap args = new TextMap(_map);
+        IPageGenerator page = pages.getPage(cmdname);
+        if (page == null)
+            throw new ServletException("Bad command: " + cmdname);
+
+        Map<String, ?> _args = req.getParameterMap();
+        String content = page.generate(_args);
 
         PrintWriter out = resp.getWriter();
-        out.println();
+        out.println(content);
     }
 
-    static MultiPage pages;
+    static PageMap pages;
     static {
+        pages = new PageMap();
+        pages.add("index", -1, new SiteIndex(pages));
         pages.add(About.class);
         pages.add(Create.class);
     }
@@ -47,7 +51,7 @@ public class SiteManagerServlet
     static class About
             extends SiteTemplate {
 
-        public About(TextMap args) {
+        public About(Map<String, ?> args) {
             super(args);
         }
 
@@ -57,7 +61,7 @@ public class SiteManagerServlet
     static class Create
             extends SiteTemplate {
 
-        public Create(TextMap args) {
+        public Create(Map<String, ?> args) {
             super(args);
         }
 

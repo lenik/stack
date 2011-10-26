@@ -1,20 +1,19 @@
 package com.bee32.plover.site;
 
 import java.lang.reflect.Constructor;
+import java.util.Map;
 
 import javax.free.Order;
 
-import com.bee32.plover.arch.util.IOrdered;
-import com.bee32.plover.arch.util.TextMap;
-
-public class MetaPage
-        implements IOrdered {
+public class InstantiatePageGenerator
+        implements IPageGenerator {
 
     final int order;
+
     final Class<?> pageClass;
     final Constructor<?> pageCtor;
 
-    public MetaPage(Class<?> pageClass) {
+    public InstantiatePageGenerator(Class<?> pageClass) {
         if (pageClass == null)
             throw new NullPointerException("pageClass");
 
@@ -24,14 +23,10 @@ public class MetaPage
         this.pageClass = pageClass;
 
         try {
-            pageCtor = pageClass.getConstructor(TextMap.class);
+            pageCtor = pageClass.getConstructor(Map.class);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
-    }
-
-    public Class<?> getPageClass() {
-        return pageClass;
     }
 
     @Override
@@ -39,7 +34,8 @@ public class MetaPage
         return order;
     }
 
-    public String render(TextMap args) {
+    @Override
+    public String generate(Map<String, ?> args) {
         Object page;
         try {
             page = pageCtor.newInstance(args);

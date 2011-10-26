@@ -1,37 +1,22 @@
 package com.bee32.plover.site;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.free.ClassResource;
-import javax.free.DocUtil;
-import javax.free.ParseException;
+import javax.free.URLResource;
 
-import com.bee32.plover.arch.util.TextMap;
 import com.googlecode.jatl.Html;
 
 public class SiteTemplate
-        extends HtmlBuilder {
+        extends SiteTemplateSupport {
 
-    String classDoc;
-    TextMap args;
-    SiteInstance siteInstance;
-
-    public SiteTemplate(TextMap args) {
-        this.args = args;
-        parse(args);
-        try {
-            classDoc = DocUtil.getClassDoc(getClass());
-        } catch (ParseException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+    public SiteTemplate() {
+        super();
     }
 
-    protected void parse(TextMap args) {
-        siteInstance = (SiteInstance) args.get("siteInstance");
-    }
-
-    public SiteInstance getSiteInstance() {
-        return siteInstance;
+    public SiteTemplate(Map<String, ?> _args) {
+        super(_args);
     }
 
     protected String getTitle() {
@@ -44,7 +29,7 @@ public class SiteTemplate
 
     protected Html _menu() {
         ul();
-        li().a().end();
+        li().a().end().end();
         end();
         return this;
     }
@@ -60,7 +45,8 @@ public class SiteTemplate
     static String SITE_CSS;
     static {
         try {
-            SITE_CSS = ClassResource.classData(SiteTemplate.class, "css").forRead().readTextContents();
+            URLResource cssResource = ClassResource.classData(SiteTemplate.class, "css");
+            SITE_CSS = cssResource.forRead().readTextContents();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -71,7 +57,7 @@ public class SiteTemplate
         head();
         {
             title(getTitle()).end();
-            style().type("css").text(SITE_CSS).end();
+            style().type("text/css").text(SITE_CSS).end();
             end();
         }
 
@@ -130,10 +116,10 @@ public class SiteTemplate
                 }
                 end(2); // .tr.td
             }
-            tr().td().colspan("2").align("center");
-            input().name("submit").value("Submit").end();
-            text("&nbsp;");
-            input().name("reset").value("Reset").end();
+            tr().td().colspan("2").align("left");
+            input().type("submit").name("submit").value("Save").end();
+            text("");
+            input().type("reset").value("Reset").end();
             end(3); // .table.tr.td
         }
         end();

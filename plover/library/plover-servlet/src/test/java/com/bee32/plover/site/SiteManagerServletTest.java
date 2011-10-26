@@ -1,34 +1,20 @@
 package com.bee32.plover.site;
 
-import com.googlecode.jatl.Html;
+import java.io.IOException;
 
-public class SiteManagerServletTest {
+import com.bee32.plover.servlet.test.ServletTestCase;
+
+public class SiteManagerServletTest
+        extends ServletTestCase {
+
+    @Override
+    protected void configureServlets() {
+        new SiteManagerWac().configureServlets(stl);
+    }
 
     public static void main(String[] args)
-            throws Exception {
-        HtmlBuilder t = new HtmlBuilder() {
-            {
-                bind("id", "foo");
-                bind("coolName", "Awesomo");
-                html();
-                body();
-                h1().text("Name Games").end();
-                p().id("${id}").text("Hello ${coolName}, and hello").end();
-                makeList("Kyle", "Stan", "Eric", "${coolName}");
-                endAll();
-                done();
-            }
-
-            Html makeList(String... names) {
-                ul();
-                for (String name : names) {
-                    li().text(name).end();
-                }
-                return end();
-            }
-        };
-
-        System.out.println(t);
+            throws IOException {
+        new SiteManagerServletTest().browseAndWait("/sites/index");
     }
 
 }
