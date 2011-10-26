@@ -17,7 +17,6 @@ public class MaterialPlanDto
     private static final long serialVersionUID = 1L;
 
     public static final int ITEMS = 1;
-
     public static final int PURCHASE_REQUEST = 1;
 
     MakeTaskDto task;

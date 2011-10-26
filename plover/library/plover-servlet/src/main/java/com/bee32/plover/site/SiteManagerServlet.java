@@ -2,10 +2,11 @@ package com.bee32.plover.site;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.free.Doc;
-import javax.free.Order;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,23 +42,31 @@ public class SiteManagerServlet
     static PageMap pages;
     static {
         pages = new PageMap();
-        pages.add("index", -1, new SiteIndex(pages));
-        pages.add(About.class);
+        pages.add(Index.class);
         pages.add(Create.class);
+        pages.add(Data.class);
+        pages.add(Cache.class);
+        pages.add(Status.class);
+        pages.add(HelpDoc.class);
     }
 
-    @Order(100)
-    @Doc("关于")
-    static class About
+    @Doc("所有应用")
+    static class Index
             extends SiteTemplate {
 
-        public About(Map<String, ?> args) {
-            super(args);
+        public Index(Map<String, ?> _args) {
+            super(_args);
+        }
+
+        @Override
+        protected void _content() {
+            SiteManager manager = SiteManager.getInstance();
+            manager.getSites();
         }
 
     }
 
-    @Doc("新建实例")
+    @Doc("新建应用")
     static class Create
             extends SiteTemplate {
 
@@ -69,14 +78,68 @@ public class SiteManagerServlet
         protected void _content() {
             SiteInstance site = getSiteInstance();
 
-            // if `label` is provided, set it anyway.
+            boolean save = args.getString("save") != null;
+            String name = args.getString("name");
             String label = args.getString("label");
-            if (label != null) {
+            String aliases = args.getString("aliases");
+
+            if (save) {
+                name = name.trim();
                 label = label.trim();
+                Set<String> aliasSet = new LinkedHashSet<String>();
+                for (String alias : aliases.split(",")) {
+                    alias = alias.trim();
+                    aliasSet.add(alias);
+                }
+                site.setName(name);
                 site.setProperty("label", label);
+                site.setAliases(aliasSet);
             }
 
-            simpleForm("#", "label", "Label", label);
+            simpleForm("#", //
+                    "name", "应用代码:应用的唯一代码，用于系统内部标识应用", name, //
+                    "label", "标题:应用的显示名称，一般是企业名称", label, //
+                    "aliases", "网络绑定:多个网络名称绑定，用逗号分隔", aliases //
+            );
+        }
+    }
+
+    @Doc("数据备份")
+    static class Data
+            extends SiteTemplate {
+
+        public Data(Map<String, ?> _args) {
+            super(_args);
+        }
+
+    }
+
+    @Doc("缓存管理")
+    static class Cache
+            extends SiteTemplate {
+
+        public Cache(Map<String, ?> _args) {
+            super(_args);
+        }
+
+    }
+
+    @Doc("运行状态")
+    static class Status
+            extends SiteTemplate {
+
+        public Status(Map<String, ?> _args) {
+            super(_args);
+        }
+
+    }
+
+    @Doc("帮助信息")
+    static class HelpDoc
+            extends SiteTemplate {
+
+        public HelpDoc(Map<String, ?> args) {
+            super(args);
         }
 
     }

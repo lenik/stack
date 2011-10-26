@@ -20,7 +20,7 @@ public class SiteTemplate
     }
 
     protected String getTitle() {
-        return "Site Manager";
+        return "应用站点管理 (V-0.3)";
     }
 
     protected String getSubTitle() {
@@ -29,7 +29,13 @@ public class SiteTemplate
 
     protected Html _menu() {
         ul();
-        li().a().end().end();
+        li().a().href("index").text("所有站点").end(2);
+        li().a().href("create").text("新建站点").end(2);
+        li().a().href("data").text("数据备份").end(2);
+        li().a().href("cache").text("缓存管理").end(2);
+        li().a().href("status").text("运行状态").end(2);
+        li().a().href("helpDoc").text("帮助信息").end(2);
+
         end();
         return this;
     }
@@ -39,7 +45,7 @@ public class SiteTemplate
     }
 
     protected void _footer() {
-        text("Copyright 2010");
+        text("(C) 版权所有 智恒软件有限公司 2010-2011");
     }
 
     static String SITE_CSS;
@@ -93,6 +99,10 @@ public class SiteTemplate
 
     // html sugars
 
+    /**
+     * array: each entry as { name, label, value } label may be in format "LABEL:HELPDOC", where
+     * HELPDOC is shown as control title.
+     */
     protected void simpleForm(String action, Object... array) {
         form().method("get").action(action);
         {
@@ -101,6 +111,13 @@ public class SiteTemplate
                 String name = (String) array[i];
                 String label = (String) array[i + 1];
                 Object value = array[i + 2];
+                String tooltip = "";
+                int labelColon = label.indexOf(':');
+                if (labelColon != -1) {
+                    tooltip = label.substring(labelColon + 1);
+                    label = label.substring(0, labelColon);
+                }
+
                 tr();
                 th().text(label).end();
                 td();
@@ -111,15 +128,17 @@ public class SiteTemplate
                         input.selected("selected");
                 } else {
                     Html input = input().name(name).type("text");
-                    String sval = String.valueOf(value);
+                    String sval = value == null ? "" : value.toString();
                     input.value(sval).end();
                 }
-                end(2); // .tr.td
+                end(); // .td
+                td().text(tooltip).end();
+                end(); // .tr
             }
-            tr().td().colspan("2").align("left");
-            input().type("submit").name("submit").value("Save").end();
+            tr().td().colspan("3").align("left");
+            input().type("submit").name("save").value("保存").end();
             text("");
-            input().type("reset").value("Reset").end();
+            input().type("reset").value("重置").end();
             end(3); // .table.tr.td
         }
         end();

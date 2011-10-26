@@ -1,28 +1,26 @@
 package com.bee32.plover.site;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.free.Strings;
 
-import com.bee32.plover.arch.util.OrderComparator;
-
 public class PageMap {
 
-    Set<IPageGenerator> index;
+    List<IPageGenerator> index;
     Map<String, IPageGenerator> map;
 
     public PageMap() {
-        index = new TreeSet<IPageGenerator>(OrderComparator.INSTANCE);
+        index = new ArrayList<IPageGenerator>(); // (OrderComparator.INSTANCE);
         map = new HashMap<String, IPageGenerator>();
     }
 
     public void add(String name, Class<?> pageClass) {
         InstantiatePageGenerator page = new InstantiatePageGenerator(pageClass);
-        map.put(name, page);
         index.add(page);
+        map.put(name, page);
     }
 
     public void add(Class<?> pageClass) {
@@ -33,8 +31,8 @@ public class PageMap {
 
     public void add(String name, int order, Object content) {
         IPageGenerator page = new SimplePageGenerator(order, content);
-        map.put(name, page);
         index.add(page);
+        map.put(name, page);
     }
 
     public IPageGenerator getPage(String name) {

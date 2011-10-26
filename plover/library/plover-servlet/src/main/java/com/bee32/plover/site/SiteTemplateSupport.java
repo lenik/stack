@@ -14,6 +14,7 @@ public class SiteTemplateSupport
 
     protected String classDoc;
     protected TextMap args;
+    protected SiteManager siteManager;
     protected SiteInstance siteInstance;
 
     public SiteTemplateSupport() {
@@ -39,7 +40,12 @@ public class SiteTemplateSupport
     }
 
     protected void parse(TextMap args) {
+        siteManager = (SiteManager) args.get("siteManager");
         siteInstance = (SiteInstance) args.get("siteInstance");
+    }
+
+    public SiteManager getSiteManager() {
+        return siteManager;
     }
 
     public SiteInstance getSiteInstance() {
