@@ -89,9 +89,45 @@
     margin: 0 0 .5em;
 }
 
+.content h3 {
+    margin: 1em 0.3em 0.3em;
+}
+
 .footer {
     background: #aaa;
     text-align: right;
     margin: 0;
     padding: 5px;
+}
+
+/* Three-Column Form */
+.tcf {
+    background: #eee;
+}
+
+.tcf .key {
+    padding: 0 .5em 0 1em;
+    background: #ccc;
+    text-align: right;
+    font-weight: bold;
+}
+
+.tcf .value {
+    padding: 0 .5em 0 .5em;
+    text-align: left;
+}
+
+.tcf .comment {
+    padding: 0 .5em 0 .5em;
+    color: #888;
+    font-size: 80%;
+    font-style: italic;
+}
+
+.tcf .critical {
+    color: #f33;
+}
+
+.tcf input[readonly] {
+    background: buttonface;
 }

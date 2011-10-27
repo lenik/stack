@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.free.DocUtil;
-import javax.free.ParseException;
+import javax.free.Doc;
 
 import com.bee32.plover.arch.util.TextMap;
 
@@ -32,16 +31,16 @@ public class SiteTemplateSupport
             bind(name, value);
         }
 
-        try {
-            classDoc = DocUtil.getClassDoc(getClass());
-        } catch (ParseException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        Doc _doc = getClass().getAnnotation(Doc.class);
+        classDoc = _doc == null ? getClass().getSimpleName() : _doc.value();
     }
 
     protected void parse(TextMap args) {
-        siteManager = (SiteManager) args.get("siteManager");
-        siteInstance = (SiteInstance) args.get("siteInstance");
+        siteManager = SiteManager.getInstance();
+
+        String siteName = (String) args.get("site");
+        if (siteName != null)
+            siteInstance = siteManager.getSite(siteName);
     }
 
     public SiteManager getSiteManager() {

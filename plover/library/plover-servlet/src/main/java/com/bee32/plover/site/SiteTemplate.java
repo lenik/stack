@@ -40,7 +40,8 @@ public class SiteTemplate
         return this;
     }
 
-    protected void _content() {
+    protected void _content()
+            throws Exception {
         text("No content.");
     }
 
@@ -48,14 +49,17 @@ public class SiteTemplate
         text("(C) 版权所有 智恒软件有限公司 2010-2011");
     }
 
-    static String SITE_CSS;
-    static {
+    static String SITE_CSS = getSiteCss();
+
+    static String getSiteCss() {
+        String siteCss;
         try {
             URLResource cssResource = ClassResource.classData(SiteTemplate.class, "css");
-            SITE_CSS = cssResource.forRead().readTextContents();
+            siteCss = cssResource.forRead().readTextContents();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
+        return siteCss;
     }
 
     {
@@ -63,7 +67,7 @@ public class SiteTemplate
         head();
         {
             title(getTitle()).end();
-            style().type("text/css").text(SITE_CSS).end();
+            style().type("text/css").text(getSiteCss()).end(); // OPT
             end();
         }
 
@@ -84,7 +88,11 @@ public class SiteTemplate
 
                 div().classAttr("content");
                 h2().text(getSubTitle()).end();
-                _content();
+                try {
+                    _content();
+                } catch (Exception e) {
+                    throw new RuntimeException(e.getMessage(), e);
+                }
                 end();
             }
             end();
@@ -100,17 +108,41 @@ public class SiteTemplate
     // html sugars
 
     /**
-     * array: each entry as { name, label, value } label may be in format "LABEL:HELPDOC", where
-     * HELPDOC is shown as control title.
+     * array: each entry as { name, label, value }
+     *
+     * action may be in format "href:action-text"
+     *
+     * name may be prefixed with `-` for read-only fields.
+     *
+     * label may be in format "LABEL:HELPDOC", where HELPDOC is shown as control title.
      */
     protected void simpleForm(String action, Object... array) {
+        String actionText = "保存";
+        int actionColon = action.indexOf(':');
+        if (actionColon != -1) {
+            actionText = action.substring(actionColon + 1);
+            action = action.substring(0, actionColon);
+        }
+
         form().method("get").action(action);
         {
-            table().border("0");
+            table().classAttr("tcf").border("0");
             for (int i = 0; i < array.length; i += 3) {
                 String name = (String) array[i];
+                boolean critical = false;
+                boolean readOnly = false;
+
+                while (true) {
+                    if (name.startsWith("-"))
+                        readOnly = true;
+                    else if (name.startsWith("!"))
+                        critical = true;
+                    else
+                        break;
+                    name = name.substring(1);
+                }
+
                 String label = (String) array[i + 1];
-                Object value = array[i + 2];
                 String tooltip = "";
                 int labelColon = label.indexOf(':');
                 if (labelColon != -1) {
@@ -118,30 +150,64 @@ public class SiteTemplate
                     label = label.substring(0, labelColon);
                 }
 
+                Object value = array[i + 2];
+
                 tr();
-                th().text(label).end();
-                td();
-                if (value instanceof Boolean) {
-                    Html input = input().name(name).type("check");
+                th().classAttr("key" + (critical ? " critical" : "")).text(label).end();
+
+                td().classAttr("value");
+
+                Html input;
+
+                if (value == null || value instanceof String || value instanceof Number) {
+                    input = input().name(name).type("text");
+                    String sval = value == null ? "" : value.toString();
+                    input.value(sval);
+
+                } else if (value instanceof Boolean) {
+                    input = input().name(name).type("checkbox");
                     Boolean bval = (Boolean) value;
                     if (bval)
                         input.selected("selected");
+
+                } else if (value instanceof Enum<?>) {
+                    Class<? extends Enum<?>> enumClass = (Class<? extends Enum<?>>) value.getClass();
+                    boolean hasLabel = ILabel.class.isAssignableFrom(enumClass);
+
+                    Enum<?>[] candidates = EnumUtil.values(enumClass);
+
+                    input = select().name(name);
+                    for (Enum<?> candidate : candidates) {
+                        boolean selected = value.equals(candidate);
+                        Html option = option().value(candidate.name());
+                        if (selected)
+                            option.selected("selected");
+                        if (hasLabel) {
+                            String candidateLabel = ((ILabel) candidate).getLabel();
+                            option.text(candidateLabel);
+                        } else {
+                            option.text(candidate.name());
+                        }
+                        option.end();
+                    }
                 } else {
-                    Html input = input().name(name).type("text");
-                    String sval = value == null ? "" : value.toString();
-                    input.value(sval).end();
+                    throw new UnsupportedOperationException("Unsupported field value type for simple-form: " + value);
                 }
+
+                if (readOnly)
+                    input.readonly("readonly");
+                input.end();
+
                 end(); // .td
-                td().text(tooltip).end();
+                td().classAttr("comment").text(tooltip).end();
                 end(); // .tr
             }
             tr().td().colspan("3").align("left");
-            input().type("submit").name("save").value("保存").end();
+            input().type("submit").name("save").value(actionText).end();
             text("");
             input().type("reset").value("重置").end();
             end(3); // .table.tr.td
         }
         end();
     }
-
 }

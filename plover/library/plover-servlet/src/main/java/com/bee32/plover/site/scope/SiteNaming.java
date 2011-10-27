@@ -5,7 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 public class SiteNaming {
 
     public static String getSiteAlias(HttpServletRequest request) {
-        String host = request.getLocalName();
+        String host = request.getServerName();
+        String localName = request.getLocalName();
         int port = request.getLocalPort();
         return host + ":" + port;
     }

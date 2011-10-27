@@ -49,14 +49,15 @@ public class SiteManager {
             throws LoadSiteException {
         SiteInstance site = getSite(nameOrAlias);
         if (site == null) {
-            site = loadSite(nameOrAlias);
-            assert site.getName().equals(nameOrAlias);
-            addSite(nameOrAlias, site);
+            String siteName = nameOrAlias;
+            site = loadSite(siteName);
+            addSite(site);
         }
         return site;
     }
 
-    public void addSite(String siteName, SiteInstance site) {
+    public void addSite(SiteInstance site) {
+        String siteName = site.getName();
         if (siteMap.containsKey(siteName))
             throw new IllegalUsageException("Site is already existed: " + siteName);
 
@@ -83,7 +84,10 @@ public class SiteManager {
         }
     }
 
-    protected SiteInstance loadSite(String siteName)
+    /**
+     * Create or load existing site.
+     */
+    public SiteInstance loadSite(String siteName)
             throws LoadSiteException {
         File configFile = new File(SITE_HOME, siteName + SiteInstance.CONFIG_EXTENSION);
         SiteInstance site;
