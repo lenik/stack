@@ -60,7 +60,7 @@ public class PartItem
     /**
      * 作为半成品的子部件。在这种情况下，忽略作为原材料的属性。
      */
-    @NaturalId
+    @NaturalId(mutable = true)
     @ManyToOne
     public Part getPart() {
         return part;
@@ -75,7 +75,7 @@ public class PartItem
      *
      * 当子部件为半成品时，忽略此属性。
      */
-    @NaturalId
+    @NaturalId(mutable = true)
     @ManyToOne
     public Material getMaterial() {
         if (part != null)

@@ -27,6 +27,8 @@ public class MaterialDto
     public static final int OPTIONS = 4;
     public static final int PRICES = 8;
 
+    public static final int PREFERRED_LOCATIONS = 16;
+
     MaterialCategoryDto category;
     String barCode;
     String modelSpec;
@@ -62,22 +64,25 @@ public class MaterialDto
         packageWeight = source.getPackageWeight();
         netWeight = source.getNetWeight();
 
+
+
         if (selection.contains(ATTRBUTES))
             attributes = marshalList(MaterialAttributeDto.class, ~MaterialAttributeDto.MATERIAL, source.getAttributes());
-
-        preferredLocations = mrefList(MaterialPreferredLocationDto.class, ~MaterialPreferredLocationDto.MATERIAL,
-                source.getPreferredLocations());
-        options = marshalList(MaterialWarehouseOptionDto.class, ~MaterialWarehouseOptionDto.MATERIAL,
-                source.getOptions());
 
         if (selection.contains(ATTACHMENTS))
             attachments = mrefList(UserFileDto.class, source.getAttachments());
 
+        if (selection.contains(OPTIONS))
+            options = marshalList(MaterialWarehouseOptionDto.class,
+                    ~MaterialWarehouseOptionDto.MATERIAL, source.getOptions());
+
+        if (selection.contains(PREFERRED_LOCATIONS))
+            preferredLocations = mrefList(MaterialPreferredLocationDto.class,
+                    ~MaterialPreferredLocationDto.MATERIAL,
+                    source.getPreferredLocations());
+
         if (selection.contains(PRICES))
             prices = mrefList(MaterialPriceDto.class, source.getPrices());
-
-        if (selection.contains(ATTACHMENTS))
-            attachments = marshalList(UserFileDto.class, source.getAttachments());
     }
 
     @Override

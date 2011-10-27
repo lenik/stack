@@ -47,7 +47,7 @@ public class Part
     List<PartItem> children = new ArrayList<PartItem>();
 
     List<PartItem> xrefs = new ArrayList<PartItem>();
-    int xrefCount;
+    Integer xrefCount;
 
     Material target;
 
@@ -128,6 +128,7 @@ public class Part
         if (xrefs == null)
             throw new NullPointerException("xrefs");
         this.xrefs = xrefs;
+        this.xrefCount = null;
     }
 
     /**
@@ -136,7 +137,10 @@ public class Part
     @Redundant
     @Column(nullable = false)
     public int getXrefCount() {
-        return xrefs.size();
+        if (xrefCount == null) {
+            xrefCount = xrefs.size();
+        }
+        return xrefCount;
     }
 
     public void setXrefCount(int xrefCount) {
@@ -286,13 +290,15 @@ public class Part
                 result.put(item.getMaterial(), item.getQuantity());
             } else {
                 Map<Material, BigDecimal> childMaterials = item.getPart().obtainAllMaterial();
-                for(Material m : childMaterials.keySet()) {
-                    BigDecimal q = result.get(m);
+                if(childMaterials != null) {
+                    for(Material m : childMaterials.keySet()) {
+                        BigDecimal q = result.get(m);
 
-                    if(q != null) {
-                        result.put(m, q.add(childMaterials.get(m)));
-                    } else {
-                        result.put(m, childMaterials.get(m));
+                        if(q != null) {
+                            result.put(m, q.add(childMaterials.get(m)));
+                        } else {
+                            result.put(m, childMaterials.get(m));
+                        }
                     }
                 }
             }

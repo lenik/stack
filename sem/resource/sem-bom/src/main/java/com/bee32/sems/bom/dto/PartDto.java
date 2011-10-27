@@ -79,12 +79,14 @@ public class PartDto
         electricityFee = source.getElectricityFee();
         equipmentCost = source.getEquipmentCost();
 
-        Map<Material, BigDecimal> _allMaterial = source.obtainAllMaterial();
-        if(_allMaterial != null) {
-            allMaterial = new HashMap<MaterialDto, BigDecimal>();
-            for(Material _m : _allMaterial.keySet()) {
-                MaterialDto m = DTOs.marshal(MaterialDto.class, _m);
-                allMaterial.put(m, _allMaterial.get(_m));
+        if (selection.contains(CHILDREN)) {
+            Map<Material, BigDecimal> _allMaterial = source.obtainAllMaterial();
+            if(_allMaterial != null) {
+                allMaterial = new HashMap<MaterialDto, BigDecimal>();
+                for(Material _m : _allMaterial.keySet()) {
+                    MaterialDto m = DTOs.mref(MaterialDto.class, _m);
+                    allMaterial.put(m, _allMaterial.get(_m));
+                }
             }
         }
     }
