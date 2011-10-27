@@ -32,6 +32,16 @@ public class TextMap
         return map.containsKey(key);
     }
 
+    public String getNString(String key) {
+        String str = getString(key);
+        if (str != null) {
+            str = str.trim();
+            if (str.isEmpty())
+                str = null;
+        }
+        return str;
+    }
+
     @Override
     public String[] getStringArray(String key) {
         return getStringArray(key, null);
