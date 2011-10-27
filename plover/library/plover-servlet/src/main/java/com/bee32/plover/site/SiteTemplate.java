@@ -131,12 +131,15 @@ public class SiteTemplate
                 String name = (String) array[i];
                 boolean critical = false;
                 boolean readOnly = false;
+                boolean hidden = false;
 
                 while (true) {
                     if (name.startsWith("-"))
                         readOnly = true;
                     else if (name.startsWith("!"))
                         critical = true;
+                    else if (name.startsWith("."))
+                        hidden = true;
                     else
                         break;
                     name = name.substring(1);
@@ -152,6 +155,14 @@ public class SiteTemplate
 
                 Object value = array[i + 2];
 
+                if (hidden) {
+                    tr().td().colspan("3");
+                    String sval = value == null ? "" : value.toString();
+                    input().name(name).type("hidden").value(sval).end();
+                    end(2); // .tr.td
+                    continue;
+                }
+
                 tr();
                 th().classAttr("key" + (critical ? " critical" : "")).text(label).end();
 
@@ -165,7 +176,7 @@ public class SiteTemplate
                     input.value(sval);
 
                 } else if (value instanceof Boolean) {
-                    input = input().name(name).type("checkbox");
+                    input = input().name(name).type("checkbox").value("1");
                     Boolean bval = (Boolean) value;
                     if (bval)
                         input.selected("selected");
