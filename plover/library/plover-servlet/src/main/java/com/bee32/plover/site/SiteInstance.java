@@ -241,8 +241,13 @@ public class SiteInstance {
 
     public String getDbName() {
         String dbName = getProperty(DB_NAME_KEY);
-        if (dbName == null)
-            dbName = getName() + "_db";
+        if (dbName == null) {
+            String siteName = getName();
+            if (siteName == null)
+                return null;
+            else
+                dbName = siteName + "_db";
+        }
         return dbName;
     }
 

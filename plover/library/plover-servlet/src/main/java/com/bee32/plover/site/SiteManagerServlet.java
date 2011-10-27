@@ -115,17 +115,16 @@ public class SiteManagerServlet
             boolean save = args.getString("save") != null;
 
             if (save) {
-                String label = args.getString("label");
+                String label = args.getNString("label");
                 String aliases = args.getString("aliases");
-                String dbHost = args.getString("dbhost");
+                String dbHost = args.getNString("dbhost");
                 int dbPort = args.getInt("dbport");
-                String dbUser = args.getString("dbuser");
-                String dbPass = args.getString("dbpass");
-                String dbName = args.getString("dbname");
+                String dbUser = args.getNString("dbuser");
+                String dbPass = args.getNString("dbpass");
+                String dbName = args.getNString("dbname");
                 String _samples = args.getString("samples");
                 SamplesSelection samples = SamplesSelection.valueOf(_samples);
 
-                label = label.trim();
                 Set<String> aliasSet = new LinkedHashSet<String>();
                 for (String alias : aliases.split(",")) {
                     alias = alias.trim();
@@ -150,10 +149,12 @@ public class SiteManagerServlet
 
                 if (createSite)
                     siteManager.addSite(site);
+
+                p().text("保存成功。[" + System.identityHashCode(this) + "]").end();
             }
 
             simpleForm("#", //
-                    createSite ? "site" : "-site", "应用代码:应用的唯一代码，用于系统内部标识应用", site.getName(), //
+                    (createSite && !save) ? "site" : "-site", "应用代码:应用的唯一代码，用于系统内部标识应用", site.getName(), //
                     "label", "标题:应用的显示名称，一般是企业名称", site.getLabel(), //
                     "description", "描述:应用的描述信息，如企业的全称", site.getDescription(), //
                     "aliases", "网络绑定:多个网络名称绑定，用逗号分隔", StringArray.join(", ", site.getAliases()), //
@@ -165,10 +166,13 @@ public class SiteManagerServlet
                     "samples", "样本加载:选择加载哪些样本", site.getSamples() //
             );
 
-            fieldset().legend().text("删除该应用配置").end();
-            simpleForm("delete:删除", //
-                    "!removeData", "同时删除所有数据:危险：默认只删除配置文件，删除所有数据将无法恢复！", false //
-            );
+            if (!createSite) {
+                fieldset().legend().text("删除该应用配置").end();
+                simpleForm("delete:删除", //
+                        ".site", "应用代码:应用的唯一代码，用于系统内部标识应用", site.getName(), //
+                        "!removeData", "同时删除所有数据:危险：默认只删除配置文件，删除所有数据将无法恢复！", false //
+                );
+            }
             end();
 
         }
@@ -195,15 +199,30 @@ public class SiteManagerServlet
         @Override
         protected void _content()
                 throws Exception {
+            String removeData = args.getString("removeData");
             String confirmed = args.getString("confirmed");
+
             if ("1".equals(confirmed)) {
-                a().href("index").text("应用已删除，点击返回列表");
+                if (siteInstance == null) {
+                    a().href("index").text("应用不存在或已经被删除，点击返回列表").end();
+                } else {
+                    siteManager.deleteSite(siteInstance);
+                    a().href("index").text("应用已删除，点击返回列表").end();
+                }
             } else {
                 fieldset().legend().text("确认删除").end();
 
                 form().action("#");
+                input().type("hidden").name("site").value(siteInstance.getName()).end();
+
+                p().text("您确定要删除站点 " + siteInstance.getLabel() + " 吗？").end();
                 input().type("hidden").name("confirmed").value("1").end();
-                input().type("submit").valign("删除");
+
+                if ("1".equals(removeData)) {
+                    input().type("hidden").name("removeData").valign("1").end();
+                    p().text("附件：同时删除所有数据").end();
+                }
+                input().type("submit").value("删除");
                 end(2); // .fieldset.form
             }
         }

@@ -114,6 +114,11 @@ public class SiteManager {
         siteMap.remove(name);
     }
 
+    protected void deleteSite(SiteInstance site) {
+        removeSite(site);
+        site.configFile.delete();
+    }
+
     public void scan(File siteHome) {
         for (File _file : siteHome.listFiles()) {
             if (!_file.isFile())
