@@ -9,7 +9,6 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bee32.icsf.IcsfIdentityUnit;
@@ -30,7 +29,6 @@ import com.bee32.plover.ox1.principal.User;
 import com.bee32.plover.ox1.principal.UserDao;
 import com.bee32.plover.test.ICoordinator;
 
-@Scope("prototype")
 @Using(IcsfIdentityUnit.class)
 public class UsersFeat
         extends WiredDaoFeat<UsersFeat> {

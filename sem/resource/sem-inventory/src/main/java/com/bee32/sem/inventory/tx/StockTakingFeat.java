@@ -26,7 +26,6 @@ import com.bee32.sem.inventory.tx.dto.StockTakingDto;
 import com.bee32.sem.inventory.tx.dto.StockTakingItemDto;
 import com.bee32.sem.inventory.tx.entity.StockTaking;
 
-@Scope("prototype")
 @Using(SEMInventoryUnit.class)
 public class StockTakingFeat
         extends WiredDaoFeat<StockTakingFeat> {

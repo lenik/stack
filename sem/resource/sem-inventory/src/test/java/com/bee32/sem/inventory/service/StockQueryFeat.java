@@ -8,8 +8,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.springframework.context.annotation.Scope;
-
 import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.SamplesLoaderActivator;
 import com.bee32.plover.orm.util.WiredDaoFeat;
@@ -20,7 +18,6 @@ import com.bee32.sem.inventory.entity.Material;
 import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.world.monetary.FxrQueryException;
 
-@Scope("prototype")
 @Using(SEMInventoryUnit.class)
 public class StockQueryFeat
         extends WiredDaoFeat<StockQueryFeat> {

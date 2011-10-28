@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -17,7 +16,6 @@ import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.test.ICoordinator;
 
-@Scope("prototype")
 @Using(AnimalUnit.class)
 public class SessionCacheFeat
         extends WiredDaoFeat<SessionCacheFeat> {

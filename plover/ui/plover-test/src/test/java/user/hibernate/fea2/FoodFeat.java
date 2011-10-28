@@ -2,7 +2,6 @@ package user.hibernate.fea2;
 
 import javax.inject.Inject;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
 import user.hibernate.fea2.ext.Banana;
@@ -14,7 +13,6 @@ import com.bee32.plover.orm.unit.Using;
 import com.bee32.plover.orm.util.WiredDaoFeat;
 import com.bee32.plover.test.ICoordinator;
 
-@Scope("prototype")
 @Using(Fea2Unit.class)
 public class FoodFeat
         extends WiredDaoFeat<FoodFeat> {

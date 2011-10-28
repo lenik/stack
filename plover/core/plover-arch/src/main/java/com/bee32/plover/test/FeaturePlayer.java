@@ -10,17 +10,16 @@ import java.util.Set;
 import org.junit.Assert;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Lazy;
 
 import com.bee32.plover.arch.util.ClassUtil;
 import com.bee32.plover.inject.ComponentTemplate;
 import com.bee32.plover.inject.cref.Import;
 import com.bee32.plover.inject.cref.ScanTestxContext;
 import com.bee32.plover.inject.spring.ApplicationContextBuilder;
+import com.bee32.plover.inject.spring.Prototype;
 
 @ComponentTemplate
-@Lazy
-//@Scope("prototype")
+@Prototype
 @Import(ScanTestxContext.class)
 public abstract class FeaturePlayer<T extends FeaturePlayer<T>>
         extends Assert {
