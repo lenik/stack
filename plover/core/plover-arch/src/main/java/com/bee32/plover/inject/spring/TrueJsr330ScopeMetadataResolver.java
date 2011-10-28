@@ -52,9 +52,9 @@ public class TrueJsr330ScopeMetadataResolver
                 proxyMode = (ScopedProxyMode) attributes.get("proxyMode");
                 break;
             }
-            Class<? extends Annotation> annotationClass = resolveScopeAnnotation(annotationType);
-            if (annotationClass != null) {
-                scopeName = getScopeName(annotationClass);
+            Class<? extends Annotation> scopeAnnotationClass = resolveScopeAnnotation(annotationType);
+            if (scopeAnnotationClass != null) {
+                scopeName = getScopeName(scopeAnnotationClass);
                 break;
             }
         }
