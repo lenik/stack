@@ -45,5 +45,10 @@ public class PeopleCriteria
                 in("tag.id", PartyTagname.CUSTOMER.getId()));
     }
 
+    public static ICriteriaElement suppliers() {
+        return compose(alias("tags", "tag"), //
+                in("tag.id", PartyTagname.SUPPLIER.getId()));
+    }
+
 
 }

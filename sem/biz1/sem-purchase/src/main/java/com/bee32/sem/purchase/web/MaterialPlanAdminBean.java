@@ -9,12 +9,19 @@ import java.util.Map;
 
 import com.bee32.plover.criteria.hibernate.Like;
 import com.bee32.plover.criteria.hibernate.Offset;
+import com.bee32.plover.criteria.hibernate.Or;
 import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
+import com.bee32.sem.inventory.dto.StockOrderDto;
+import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.misc.EntityCriteria;
+import com.bee32.sem.people.dto.PartyDto;
+import com.bee32.sem.people.entity.Party;
+import com.bee32.sem.people.util.PeopleCriteria;
 import com.bee32.sem.purchase.dto.MakeTaskDto;
 import com.bee32.sem.purchase.dto.MakeTaskItemDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
@@ -35,9 +42,8 @@ public class MaterialPlanAdminBean extends EntityViewBean {
     private int goNumber;
     private int count;
 
-    protected MaterialPlanDto materialPlan = new MaterialPlanDto().create();
-
-    protected MaterialPlanItemDto materialPlanItem = new MaterialPlanItemDto().create();
+    private MaterialPlanDto materialPlan = new MaterialPlanDto().create();
+    private MaterialPlanItemDto materialPlanItem = new MaterialPlanItemDto().create();
 
     private String materialPattern;
     private List<MaterialDto> materials;
@@ -56,6 +62,13 @@ public class MaterialPlanAdminBean extends EntityViewBean {
     private MakeTaskDto selectedTask;
 
 
+    private StockOrderSubject subject = null;
+    private StockOrderItemDto orderItem = new StockOrderItemDto().create();
+
+
+    private String supplierPattern;
+    private List<PartyDto> suppliers;
+    private PartyDto selectedSupplier;
 
 
     public MaterialPlanAdminBean() {
@@ -73,6 +86,8 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
         goNumber = 1;
         loadMaterialPlan(goNumber);
+
+        subject = StockOrderSubject.PLAN_OUT;
     }
 
     public Date getLimitDateFrom() {
@@ -212,14 +227,65 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         this.selectedTask = selectedTask;
     }
 
-
-
     public List<MakeTaskItemDto> getTaskItems() {
         if(selectedTask != null) {
             return selectedTask.getItems();
         }
         return null;
     }
+
+    public StockOrderSubject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(StockOrderSubject subject) {
+        this.subject = subject;
+    }
+
+    public List<StockOrderItemDto> getOrderItems() {
+        StockOrderDto order = materialPlan.getPlanOrder();
+        if(order != null) {
+            return order.getItems();
+        }
+        return new ArrayList<StockOrderItemDto>();
+    }
+
+    public StockOrderItemDto getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(StockOrderItemDto orderItem) {
+        this.orderItem = orderItem;
+    }
+
+    public String getSupplierPattern() {
+        return supplierPattern;
+    }
+
+    public void setSupplierPattern(String supplierPattern) {
+        this.supplierPattern = supplierPattern;
+    }
+
+    public List<PartyDto> getSuppliers() {
+        return suppliers;
+    }
+
+    public void setSuppliers(List<PartyDto> suppliers) {
+        this.suppliers = suppliers;
+    }
+
+    public PartyDto getSelectedSupplier() {
+        return selectedSupplier;
+    }
+
+    public void setSelectedSupplier(PartyDto selectedSupplier) {
+        this.selectedSupplier = selectedSupplier;
+    }
+
+
+
+
+
 
 
 
@@ -347,12 +413,14 @@ public class MaterialPlanAdminBean extends EntityViewBean {
     }
 
     public void modifyItem() {
+        selectedSupplier = null;
         newItemStatus = false;
     }
 
 
     public void saveItem() {
         materialPlanItem.setMaterialPlan(materialPlan);
+        materialPlanItem.setPreferredSupplier(selectedSupplier);
         if (newItemStatus) {
             materialPlan.addItem(materialPlanItem);
         }
@@ -427,5 +495,22 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         }
 
         materialPlan.setTask(selectedTask);
+    }
+
+    public void saveOrderItem() {
+        orderItem.setParent(materialPlan.getPlanOrder());
+    }
+
+    public void findSupplier() {
+        if (supplierPattern != null && !supplierPattern.isEmpty()) {
+
+            List<Party> _suppliers = serviceFor(Party.class).list( //
+                    PeopleCriteria.suppliers(), //
+                    new Or( //
+                            new Like("name", "%" + supplierPattern + "%"), //
+                            new Like("fullName", "%" + supplierPattern + "%")));
+
+            suppliers = DTOs.marshalList(PartyDto.class, _suppliers);
+        }
     }
 }
