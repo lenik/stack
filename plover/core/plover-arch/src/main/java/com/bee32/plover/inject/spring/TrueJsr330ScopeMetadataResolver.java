@@ -19,6 +19,9 @@ import com.bee32.plover.arch.util.ClassUtil;
 public class TrueJsr330ScopeMetadataResolver
         extends AnnotationScopeMetadataResolver {
 
+    public static String DEFAULT_SCOPE_NAME = "singleton";
+    static String springScopeAnn = Scope.class.getName();
+
     private final ScopedProxyMode defaultProxyMode;
 
     public TrueJsr330ScopeMetadataResolver() {
@@ -33,10 +36,31 @@ public class TrueJsr330ScopeMetadataResolver
 
     @Override
     public ScopeMetadata resolveScopeMetadata(BeanDefinition definition) {
-        if (definition instanceof AnnotatedBeanDefinition) {
-            AnnotatedBeanDefinition annDef = (AnnotatedBeanDefinition) definition;
+        if (!(definition instanceof AnnotatedBeanDefinition))
+            return super.resolveScopeMetadata(definition);
 
-            // Set<String> annotationTypes = annDef.getMetadata().getAnnotationTypes();
+        AnnotatedBeanDefinition annDef = (AnnotatedBeanDefinition) definition;
+
+        String scopeName = null;
+        ScopedProxyMode proxyMode = null;
+
+        // OPT - Check if duplicated scope annotation.
+        for (String annotationType : annDef.getMetadata().getAnnotationTypes()) {
+            if (springScopeAnn.equals(annotationType)) {
+                Map<String, Object> attributes = annDef.getMetadata().getAnnotationAttributes(annotationType);
+                scopeName = (String) attributes.get("value");
+                proxyMode = (ScopedProxyMode) attributes.get("proxyMode");
+                break;
+            }
+            Class<? extends Annotation> annotationClass = resolveScopeAnnotation(annotationType);
+            if (annotationClass != null) {
+                scopeName = getScopeName(annotationClass);
+                break;
+            }
+        }
+
+        if (scopeName == null) {
+            // Try resolve scope by JRE.
             String beanClassName = annDef.getBeanClassName();
             Class<?> beanClass;
             try {
@@ -49,7 +73,17 @@ public class TrueJsr330ScopeMetadataResolver
             if (metadata != null)
                 return metadata;
         }
-        return super.resolveScopeMetadata(definition);
+
+        if (scopeName == null)
+            scopeName = DEFAULT_SCOPE_NAME;
+
+        if (proxyMode == null || proxyMode == ScopedProxyMode.DEFAULT)
+            proxyMode = this.defaultProxyMode;
+
+        ScopeMetadata metadata = new ScopeMetadata();
+        metadata.setScopeName(scopeName);
+        metadata.setScopedProxyMode(proxyMode);
+        return metadata;
     }
 
     public ScopeMetadata getScopeMetadata(Class<?> beanClass) {
@@ -75,6 +109,24 @@ public class TrueJsr330ScopeMetadataResolver
             } // isScopeAnnotation?
         } // for annotation
         return null;
+    }
+
+    public static Class<? extends Annotation> resolveScopeAnnotation(String annotationClassName) {
+        try {
+            Class<?> clazz = Class.forName(annotationClassName);
+            if (!clazz.isAnnotation())
+                return null;
+
+            @SuppressWarnings("unchecked")
+            Class<? extends Annotation> annotationClass = (Class<? extends Annotation>) clazz;
+
+            if (!isScopeAnnotation(annotationClass))
+                return null;
+
+            return annotationClass;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     public static boolean isScopeAnnotation(Class<? extends Annotation> annotationClass) {

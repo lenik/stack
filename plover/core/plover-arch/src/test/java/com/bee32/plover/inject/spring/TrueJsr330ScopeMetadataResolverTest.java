@@ -20,13 +20,13 @@ public class TrueJsr330ScopeMetadataResolverTest {
     }
 
     @Scope
-    @ScopeName("foo")
+    @ScopeName("user")
     @Inherited
     @Retention(RUNTIME)
-    @interface FooScoping {
+    @interface PerUser {
     }
 
-    @FooScoping
+    @PerUser
     static class FooBean {
     }
 
@@ -43,13 +43,13 @@ public class TrueJsr330ScopeMetadataResolverTest {
     @Test
     public void testCustomScopeAnnotation() {
         ScopeMetadata metadata = resolver.getScopeMetadata(FooBean.class);
-        assertEquals("foo", metadata.getScopeName());
+        assertEquals("user", metadata.getScopeName());
     }
 
     @Test
     public void testInheritedCustomScopeAnnotation() {
         ScopeMetadata metadata = resolver.getScopeMetadata(Foo2Bean.class);
-        assertEquals("foo", metadata.getScopeName());
+        assertEquals("user", metadata.getScopeName());
     }
 
 }
