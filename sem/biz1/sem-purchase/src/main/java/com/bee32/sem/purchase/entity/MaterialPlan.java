@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.Cascade;
@@ -106,8 +105,7 @@ public class MaterialPlan
             items.get(index).setIndex(index);
     }
 
-    @OneToOne(mappedBy = "plan")
-    @Cascade(CascadeType.ALL)
+    @ManyToOne
     public PurchaseRequest getPurchaseRequest() {
         return purchaseRequest;
     }
