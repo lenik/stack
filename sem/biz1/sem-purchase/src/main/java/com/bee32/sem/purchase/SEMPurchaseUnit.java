@@ -11,6 +11,7 @@ import com.bee32.sem.purchase.entity.MaterialPlan;
 import com.bee32.sem.purchase.entity.MaterialPlanItem;
 import com.bee32.sem.purchase.entity.PlanOrder;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
+import com.bee32.sem.purchase.entity.PurchaseRequestItem;
 import com.bee32.sems.bom.SEMBomUnit;
 
 @ImportUnit({ SEMBomUnit.class, SEMChanceUnit.class })
@@ -26,6 +27,7 @@ public class SEMPurchaseUnit
         add(MaterialPlan.class);
         add(MaterialPlanItem.class);
         add(PurchaseRequest.class);
+        add(PurchaseRequestItem.class);
         add(PlanOrder.class);
     }
 
