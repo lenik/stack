@@ -66,6 +66,7 @@ public class SiteTemplate
         html();
         head();
         {
+            // meta().httpEquiv("content-type").content("text/html; encoding=utf-8");
             title(getTitle()).end();
             style().type("text/css").text(getSiteCss()).end(); // OPT
             end();
@@ -221,4 +222,22 @@ public class SiteTemplate
         }
         end();
     }
+
+    protected void simpleRow(String name, Object value) {
+        String _value = value == null ? "" : value.toString();
+        tr();
+        th().classAttr("key").text(name).end();
+        td().classAttr("value").text(_value).end();
+        end();
+    }
+
+    protected void simpleRow(String name, Object value, String comment) {
+        String _value = value == null ? "" : value.toString();
+        tr();
+        th().classAttr("key").text(name).end();
+        td().classAttr("value").text(_value).end();
+        td().classAttr("comment").text(comment == null ? "" : comment).end();
+        end();
+    }
+
 }

@@ -13,10 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SiteManagerServlet
         extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+
+    static Logger logger = LoggerFactory.getLogger(SiteManagerServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -29,12 +34,16 @@ public class SiteManagerServlet
         else
             cmdname = uri;
 
+        logger.info("Site-Command: " + cmdname);
+
         IPageGenerator page = pages.getPage(cmdname);
         if (page == null)
             throw new ServletException("Bad command: " + cmdname);
 
         Map<String, ?> _args = req.getParameterMap();
         String content = page.generate(_args);
+
+        resp.setContentType("text/html; charset=utf-8");
 
         PrintWriter out = resp.getWriter();
         out.println(content);
@@ -47,6 +56,7 @@ public class SiteManagerServlet
         pages.add(Config.class);
         pages.add(Create.class);
         pages.add(Delete.class);
+        pages.add(Reload.class);
         pages.add(Data.class);
         pages.add(Cache.class);
         pages.add(Status.class);
@@ -65,20 +75,24 @@ public class SiteManagerServlet
         protected void _content() {
             SiteManager manager = SiteManager.getInstance();
             for (SiteInstance site : manager.getSites()) {
-                String siteLabel = site.getLabel();
-                String siteName = site.getName();
+                String name = site.getName();
+                String label = site.getLabel();
+                String description = site.getDescription();
 
                 div().style("background: #eef; margin-left: 1em; border-bottom: solid 1px #888;");
                 {
                     h3();
-                    text(" 应用：" + siteLabel);
-                    a().href("config?site=" + siteName).text("[配置]").end();
+                    text("应用：" + label);
+                    a().href("config?site=" + name).text("配置").end();
+                    a().href("reload?site=" + name).text("更新").end();
                     end();
 
                     div().classAttr("tcf").style("margein-left: 1em;");
                     table().border("0");
                     {
-                        tr().th().classAttr("key").text("代码：").end().td().classAttr("value").text(siteName).end(2);
+                        simpleRow("代码：", name);
+                        if (description != null)
+                            simpleRow("描述：", description);
                         tr().th().classAttr("key").text("域名绑定：").end().td().classAttr("value");
                         {
                             ol().style("margin: 0; padding: 0; list-style-type: none;");
@@ -116,6 +130,7 @@ public class SiteManagerServlet
 
             if (save) {
                 String label = args.getNString("label");
+                String description = args.getNString("description");
                 String aliases = args.getString("aliases");
                 String dbHost = args.getNString("dbhost");
                 int dbPort = args.getInt("dbport");
@@ -124,6 +139,9 @@ public class SiteManagerServlet
                 String dbName = args.getNString("dbname");
                 String _samples = args.getString("samples");
                 SamplesSelection samples = SamplesSelection.valueOf(_samples);
+
+                if (dbName == null)
+                    dbName = site + "_db";
 
                 Set<String> aliasSet = new LinkedHashSet<String>();
                 for (String alias : aliases.split(",")) {
@@ -136,7 +154,8 @@ public class SiteManagerServlet
                     site = siteManager.loadSite(siteName);
                 }
 
-                site.setProperty("label", label);
+                site.setLabel(label);
+                site.setDescription(description);
                 site.setAliases(aliasSet);
                 site.setDbHost(dbHost);
                 site.setDbPort(dbPort);
@@ -160,9 +179,9 @@ public class SiteManagerServlet
                     "aliases", "网络绑定:多个网络名称绑定，用逗号分隔", StringArray.join(", ", site.getAliases()), //
                     "dbhost", "数据服务器:数据库服务器的主机名称", site.getDbHost(), //
                     "dbport", "数据库端口:数据库服务器的端口号", site.getDbPort(), //
+                    "dbname", "数据库名称:数据库的名称", site.getDbName(), //
                     "dbuser", "数据库用户名:数据库的登录用户", site.getDbUser(), //
                     "dbpass", "数据库密码:数据库的登录密码", site.getDbPass(), //
-                    "dbname", "数据库名称:数据库的名称", site.getDbName(), //
                     "samples", "样本加载:选择加载哪些样本", site.getSamples() //
             );
 
@@ -172,8 +191,8 @@ public class SiteManagerServlet
                         ".site", "应用代码:应用的唯一代码，用于系统内部标识应用", site.getName(), //
                         "!removeData", "同时删除所有数据:危险：默认只删除配置文件，删除所有数据将无法恢复！", false //
                 );
+                end();
             }
-            end();
 
         }
     }
@@ -228,6 +247,28 @@ public class SiteManagerServlet
         }
     }
 
+    @Doc("更新应用配置")
+    static class Reload
+            extends SiteTemplate {
+
+        public Reload(Map<String, ?> _args) {
+            super(_args);
+        }
+
+        @Override
+        protected void _content()
+                throws Exception {
+            p().text("重新读取配置文件……").end();
+
+            siteInstance.reloadConfig();
+
+            p().text("更新完成。").end();
+
+            a().href("index").text("返回应用列表").end();
+        }
+
+    }
+
     @Doc("数据备份")
     static class Data
             extends SiteTemplate {
@@ -264,6 +305,13 @@ public class SiteManagerServlet
 
         public HelpDoc(Map<String, ?> args) {
             super(args);
+        }
+
+        @Override
+        protected void _content()
+                throws Exception {
+            h3().text("智恒应用站点管理程序。").end();
+            p().text("本程序用于创建、配置、监控一台服务器上运行的所有应用。").end();
         }
 
     }

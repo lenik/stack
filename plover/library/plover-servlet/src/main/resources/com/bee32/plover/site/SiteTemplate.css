@@ -93,6 +93,18 @@
     margin: 1em 0.3em 0.3em;
 }
 
+.content h3 a {
+    padding: 0.1em;
+    text-decoration: none;
+    font-weight: normal;
+    color: #55f;
+}
+
+.content h3 a:hover {
+    background: #ff0;
+    border: solid 1px red;
+}
+
 .footer {
     background: #aaa;
     text-align: right;
