@@ -1,6 +1,7 @@
 package com.bee32.sem.purchase.dto;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.free.NotImplementedException;
 import javax.free.ParseException;
@@ -14,16 +15,32 @@ public class PurchaseRequestDto
 
     private static final long serialVersionUID = 1L;
 
-    MaterialPlanDto plan;
+    public static final int ITEMS = 1;
+    public static final int PLANS = 2;
+
+    List<PurchaseRequestItemDto> items;
+    List<MaterialPlanDto> plans;
 
     @Override
     protected void _marshal(PurchaseRequest source) {
-        plan = mref(MaterialPlanDto.class, source.getPlan());
+        if (selection.contains(ITEMS))
+            items = marshalList(PurchaseRequestItemDto.class, source.getItems());
+        else
+            items = new ArrayList<PurchaseRequestItemDto>();
+
+        if (selection.contains(PLANS))
+            plans = marshalList(MaterialPlanDto.class, source.getPlans());
+        else
+            plans = new ArrayList<MaterialPlanDto>();
     }
 
     @Override
     protected void _unmarshalTo(PurchaseRequest target) {
-        merge(target, "plan", plan);
+        if (selection.contains(ITEMS))
+            mergeList(target, "items", items);
+
+        if (selection.contains(PLANS))
+            mergeList(target, "plans", plans);
     }
 
     @Override
@@ -32,19 +49,56 @@ public class PurchaseRequestDto
         throw new NotImplementedException();
     }
 
-    public MaterialPlanDto getPlan() {
-        return plan;
+    public List<PurchaseRequestItemDto> getItems() {
+        return items;
     }
 
-    public void setPlan(MaterialPlanDto plan) {
-        if (plan == null)
-            throw new NullPointerException("plan");
-        this.plan = plan;
+    public void setItems(List<PurchaseRequestItemDto> items) {
+        if (items == null)
+            throw new NullPointerException("items");
+        this.items = items;
     }
 
-    @Override
-    protected Serializable naturalId() {
-        return naturalId(plan);
+    public synchronized void addItem(PurchaseRequestItemDto item) {
+        if (item == null)
+            throw new NullPointerException("item");
+
+        if (item.getIndex() == -1)
+            item.setIndex(items.size());
+
+        items.add(item);
     }
+
+    public synchronized void removeItem(PurchaseRequestItemDto item) {
+        if (item == null)
+            throw new NullPointerException("item");
+
+        int index = items.indexOf(item);
+        if (index == -1)
+            return /* false */;
+
+        items.remove(index);
+        // item.detach();
+
+        // Renum [index, ..)
+        for (int i = index; i < items.size(); i++)
+            items.get(i).setIndex(i);
+    }
+
+    public synchronized void reindex() {
+        for (int index = items.size() - 1; index >= 0; index--)
+            items.get(index).setIndex(index);
+    }
+
+
+    public List<MaterialPlanDto> getPlans() {
+        return plans;
+    }
+
+    public void setPlans(List<MaterialPlanDto> plans) {
+        this.plans = plans;
+    }
+
+
 
 }
