@@ -31,7 +31,7 @@ public class SiteInstance {
     public static final String DB_NAME_KEY = "db.name";
     public static final String DB_USER_KEY = "db.user";
     public static final String DB_PASS_KEY = "db.pass";
-    public static final String SAMPLES_KEY = "scamples";
+    public static final String SAMPLES_KEY = "samples";
 
     static final String DEFAULT_DB_HOST = "localhost";
     static final int DEFAULT_DB_PORT = 1063;
@@ -47,6 +47,10 @@ public class SiteInstance {
     public SiteInstance() {
         configFile = null;
         properties = new FormatProperties();
+        setProperty(DB_HOST_KEY, DEFAULT_DB_HOST);
+        setIntProperty(DB_PORT_KEY, DEFAULT_DB_PORT);
+        setProperty(DB_USER_KEY, DEFAULT_DB_USER);
+        setProperty(DB_PASS_KEY, DEFAULT_DB_PASS);
     }
 
     public SiteInstance(File file)
@@ -62,10 +66,7 @@ public class SiteInstance {
             name = name.substring(0, name.length() - CONFIG_EXTENSION.length());
         properties.setProperty("name", name);
 
-        if (file.exists()) {
-            IFile _file = new JavaioFile(file);
-            properties.parse(_file);
-        }
+        loadConfig();
     }
 
     SiteInstance(FormatProperties properties, File configFile) {
@@ -154,6 +155,19 @@ public class SiteInstance {
         return attributes.remove(attributeName);
     }
 
+    public void reloadConfig()
+            throws IOException, ParseException {
+        loadConfig();
+    }
+
+    void loadConfig()
+            throws IOException, ParseException {
+        if (configFile.exists()) {
+            IFile _file = new JavaioFile(configFile);
+            properties.parse(_file);
+        }
+    }
+
     /**
      * Save attributes to the config file.
      */
@@ -166,17 +180,22 @@ public class SiteInstance {
         }
     }
 
-    @Override
-    public String toString() {
-        return getName();
-    }
-
     public String getName() {
         return getProperty(NAME_KEY);
     }
 
     public void setName(String name) {
         setProperty(NAME_KEY, name);
+
+        // Set default db name to site_db.
+        String dbName = getDbName();
+        if (dbName == null) {
+            String siteName = getName();
+            if (siteName != null) {
+                dbName = siteName + "_db";
+                setDbName(dbName);
+            }
+        }
     }
 
     public String getLabel() {
@@ -222,8 +241,6 @@ public class SiteInstance {
 
     public String getDbHost() {
         String dbHost = getProperty(DB_HOST_KEY);
-        if (dbHost == null)
-            dbHost = DEFAULT_DB_HOST;
         return dbHost;
     }
 
@@ -241,13 +258,6 @@ public class SiteInstance {
 
     public String getDbName() {
         String dbName = getProperty(DB_NAME_KEY);
-        if (dbName == null) {
-            String siteName = getName();
-            if (siteName == null)
-                return null;
-            else
-                dbName = siteName + "_db";
-        }
         return dbName;
     }
 
@@ -257,8 +267,6 @@ public class SiteInstance {
 
     public String getDbUser() {
         String dbUser = getProperty(DB_USER_KEY);
-        if (dbUser == null)
-            dbUser = DEFAULT_DB_USER;
         return dbUser;
     }
 
@@ -268,8 +276,6 @@ public class SiteInstance {
 
     public String getDbPass() {
         String dbPass = getProperty(DB_PASS_KEY);
-        if (dbPass == null)
-            dbPass = DEFAULT_DB_PASS;
         return dbPass;
     }
 
@@ -292,6 +298,11 @@ public class SiteInstance {
     public void setSamples(SamplesSelection samples) {
         String property = samples == null ? "" : samples.name();
         setProperty(SAMPLES_KEY, property);
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 
 }
