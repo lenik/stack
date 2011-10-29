@@ -16,6 +16,7 @@ import com.bee32.sem.inventory.entity.StockLocation;
 import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.entity.StockWarehouse;
 import com.bee32.sem.world.monetary.MCValue;
 
 public class StockQuery
@@ -43,7 +44,8 @@ public class StockQuery
                 options.getPriceProjection(), //
                 options.getExpirationProjection(), //
                 options.getLocationProjection(), //
-                options.getWarehouseProjection());
+                options.getWarehouseProjection(), //
+                options.getParentWarehouseProjection());
 
         List<Object[]> list = asFor(StockOrderItem.class).listMisc(projection, selection);
 
@@ -67,6 +69,8 @@ public class StockQuery
             Date _expire = null;
             MCValue _price = null;
             StockLocation _location = null;
+            StockWarehouse _warehouse = null;
+            StockWarehouse _parentWarehouse = null;
 
             if (!options.isCBatchMerged()) {
                 _cBatch = (String) line[_column++];
@@ -75,6 +79,18 @@ public class StockQuery
             }
             if (!options.isLocationMerged()) {
                 _location = (StockLocation) line[_column++];
+            }
+            if (!options.isWarehouseMerged()) {
+                _warehouse = (StockWarehouse) line[_column++];
+                _parentWarehouse = (StockWarehouse) line[_column++];
+
+                if (_warehouse == null)
+                    _warehouse = _parentWarehouse;
+
+                if (_location == null) {
+                    _location = new StockLocation();
+                    _location.setWarehouse(_warehouse);
+                }
             }
 
             StockOrderItem item = new StockOrderItem(all);
@@ -91,5 +107,4 @@ public class StockQuery
 
         return all;
     }
-
 }

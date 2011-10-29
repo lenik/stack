@@ -115,6 +115,13 @@ public final class StockQueryOptions
             return new GroupPropertyProjection("warehouse");
     }
 
+    public GroupPropertyProjection getParentWarehouseProjection() {
+        if (warehouseMerged)
+            return null;
+        else
+            return new GroupPropertyProjection("parent.warehouse");
+    }
+
     public GroupPropertyProjection getExpirationProjection() {
         if (cbatchMerged)
             return null;
