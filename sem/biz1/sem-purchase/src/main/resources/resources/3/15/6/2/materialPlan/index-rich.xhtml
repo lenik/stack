@@ -129,7 +129,7 @@
 
                     <p:commandButton
                         value="锁定库存"
-                        disabled="#{materialPlanAdminBean.editable}"
+                        disabled="#{!materialPlanAdminBean.editable}"
                         oncomplete="lockStockDialog.show()"
                         update="lockStockForm:lockStockPanel"/>
                     <t:panelGroup colspan="3"/>
