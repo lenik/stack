@@ -400,7 +400,7 @@ public class MaterialPlanAdminBean extends EntityViewBean {
             editable = false;
 
         } catch (Exception e) {
-            uiLogger.warn("保存失败,错误信息:" + e.getMessage());
+            uiLogger.warn("保存失败,错误信息", e);
         }
     }
 
@@ -638,6 +638,7 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         StockQueryOptions opts = new StockQueryOptions(c.getTime());
         opts.setCBatch(null, false);
         opts.setLocation(null, false);
+        opts.setWarehouse(null, false);
 
         IStockQuery q = getBean(IStockQuery.class);
         StockItemList list = q.getActualSummary(ms, opts);
