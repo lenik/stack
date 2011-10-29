@@ -506,7 +506,7 @@
                                 <p:spacer width="10"/>
                                 <p:commandLink
                                     oncomplete="taskDialog.hide();"
-                                    update="mainForm:task mainForm:items"
+                                    update="mainForm:task mainForm:planDetail:items"
                                     action="#{materialPlanAdminBean.chooseTask}"
                                     value="挑选">
                                     <f:setPropertyActionListener

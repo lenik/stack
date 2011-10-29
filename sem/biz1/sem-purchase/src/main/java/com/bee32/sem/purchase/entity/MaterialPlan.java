@@ -33,7 +33,6 @@ public class MaterialPlan
 
     List<MaterialPlanItem> items = new ArrayList<MaterialPlanItem>();
 
-
     PurchaseRequest purchaseRequest;
 
     @ManyToOne(optional = false)

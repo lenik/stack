@@ -515,7 +515,7 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         }
 
         for(MakeTaskItemDto taskItem : selectedTask.getItems()) {
-            PartDto part = taskItem.getPart();
+            PartDto part = reload(taskItem.getPart(), PartDto.CHILDREN);
             BigDecimal quantity = taskItem.getQuantity();
 
             Map<MaterialDto, BigDecimal> allMaterial = part.getAllMaterial();

@@ -1,14 +1,11 @@
 package com.bee32.sem.purchase.entity;
 
-import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.NaturalId;
-
-import com.bee32.plover.criteria.hibernate.ICriteriaElement;
 import com.bee32.plover.ox1.color.MomentInterval;
 
 /**
@@ -21,28 +18,14 @@ public class PurchaseRequest
 
     private static final long serialVersionUID = 1L;
 
-    MaterialPlan plan;
+    List<MaterialPlan> plans;
 
-    @NaturalId
-    @OneToOne(optional = false)
-    public MaterialPlan getPlan() {
-        return plan;
+    @OneToMany(mappedBy = "purchaseRequest")
+    public List<MaterialPlan> getPlans() {
+        return plans;
     }
 
-    public void setPlan(MaterialPlan plan) {
-        if (plan == null)
-            throw new NullPointerException("plan");
-        this.plan = plan;
+    public void setPlans(List<MaterialPlan> plans) {
+        this.plans = plans;
     }
-
-    @Override
-    protected Serializable naturalId() {
-        return naturalId(plan);
-    }
-
-    @Override
-    protected ICriteriaElement selector(String prefix) {
-        return selector(prefix + "plan", plan);
-    }
-
 }
