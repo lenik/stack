@@ -9,6 +9,7 @@ import com.bee32.sem.purchase.entity.MakeTask;
 import com.bee32.sem.purchase.entity.MakeTaskItem;
 import com.bee32.sem.purchase.entity.MaterialPlan;
 import com.bee32.sem.purchase.entity.MaterialPlanItem;
+import com.bee32.sem.purchase.entity.PlanOrder;
 import com.bee32.sem.purchase.entity.PurchaseRequest;
 import com.bee32.sems.bom.SEMBomUnit;
 
@@ -25,6 +26,7 @@ public class SEMPurchaseUnit
         add(MaterialPlan.class);
         add(MaterialPlanItem.class);
         add(PurchaseRequest.class);
+        add(PlanOrder.class);
     }
 
 }

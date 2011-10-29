@@ -14,10 +14,12 @@ import com.bee32.plover.criteria.hibernate.Order;
 import com.bee32.plover.orm.util.DTOs;
 import com.bee32.plover.orm.util.EntityViewBean;
 import com.bee32.sem.inventory.dto.MaterialDto;
-import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.dto.StockOrderItemDto;
 import com.bee32.sem.inventory.entity.Material;
+import com.bee32.sem.inventory.entity.StockItemList;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
+import com.bee32.sem.inventory.service.IStockQuery;
+import com.bee32.sem.inventory.service.StockQueryOptions;
 import com.bee32.sem.misc.EntityCriteria;
 import com.bee32.sem.people.dto.PartyDto;
 import com.bee32.sem.people.entity.Party;
@@ -26,6 +28,7 @@ import com.bee32.sem.purchase.dto.MakeTaskDto;
 import com.bee32.sem.purchase.dto.MakeTaskItemDto;
 import com.bee32.sem.purchase.dto.MaterialPlanDto;
 import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
+import com.bee32.sem.purchase.dto.PlanOrderDto;
 import com.bee32.sem.purchase.entity.MakeTask;
 import com.bee32.sem.purchase.entity.MaterialPlan;
 import com.bee32.sems.bom.dto.PartDto;
@@ -54,7 +57,6 @@ public class MaterialPlanAdminBean extends EntityViewBean {
     protected List<MaterialPlanItemDto> itemsNeedToRemoveWhenModify = new ArrayList<MaterialPlanItemDto>();
 
 
-
     private Date limitDateFromForTask;
     private Date limitDateToForTask;
 
@@ -70,6 +72,14 @@ public class MaterialPlanAdminBean extends EntityViewBean {
     private List<PartyDto> suppliers;
     private PartyDto selectedSupplier;
 
+
+    private PlanOrderDto planOrder;
+    private int goNumberPlanOrder;
+    private int countPlanOrder;
+
+    private List<StockOrderItemDto> orderItems;
+
+    private StockOrderItemDto selectedStockQueryItem;
 
     public MaterialPlanAdminBean() {
         Calendar c = Calendar.getInstance();
@@ -242,13 +252,6 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         this.subject = subject;
     }
 
-    public List<StockOrderItemDto> getOrderItems() {
-        StockOrderDto order = materialPlan.getPlanOrder();
-        if(order != null) {
-            return order.getItems();
-        }
-        return new ArrayList<StockOrderItemDto>();
-    }
 
     public StockOrderItemDto getOrderItem() {
         return orderItem;
@@ -282,10 +285,45 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         this.selectedSupplier = selectedSupplier;
     }
 
+    public PlanOrderDto getPlanOrder() {
+        return planOrder;
+    }
 
+    public void setPlanOrder(PlanOrderDto planOrder) {
+        this.planOrder = planOrder;
+    }
 
+    public int getGoNumberPlanOrder() {
+        return goNumberPlanOrder;
+    }
 
+    public void setGoNumberPlanOrder(int goNumberPlanOrder) {
+        this.goNumberPlanOrder = goNumberPlanOrder;
+    }
 
+    public int getCountPlanOrder() {
+        if(materialPlan != null && materialPlan.getPlanOrders() != null)
+            countPlanOrder = materialPlan.getPlanOrders().size();
+        else
+            countPlanOrder = 0;
+        return countPlanOrder;
+    }
+
+    public List<StockOrderItemDto> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<StockOrderItemDto> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public StockOrderItemDto getSelectedStockQueryItem() {
+        return selectedStockQueryItem;
+    }
+
+    public void setSelectedStockQueryItem(StockOrderItemDto selectedStockQueryItem) {
+        this.selectedStockQueryItem = selectedStockQueryItem;
+    }
 
 
 
@@ -497,9 +535,6 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         materialPlan.setTask(selectedTask);
     }
 
-    public void saveOrderItem() {
-        orderItem.setParent(materialPlan.getPlanOrder());
-    }
 
     public void findSupplier() {
         if (supplierPattern != null && !supplierPattern.isEmpty()) {
@@ -512,5 +547,100 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
             suppliers = DTOs.marshalList(PartyDto.class, _suppliers);
         }
+    }
+
+
+    public void firstPlanOrder() {
+        goNumberPlanOrder = 1;
+        loadMaterialPlanOrder(goNumberPlanOrder);
+    }
+
+    public void previousPlanOrder() {
+        goNumberPlanOrder--;
+        if (goNumberPlanOrder < 1)
+            goNumberPlanOrder = 1;
+        loadMaterialPlanOrder(goNumberPlanOrder);
+    }
+
+    public void goPlanOrder() {
+        if (goNumberPlanOrder < 1) {
+            goNumberPlanOrder = 1;
+        } else if (goNumberPlanOrder > count) {
+            goNumberPlanOrder = count;
+        }
+        loadMaterialPlanOrder(goNumberPlanOrder);
+    }
+
+    public void nextPlanOrder() {
+        goNumberPlanOrder++;
+
+        if (goNumberPlanOrder > count)
+            goNumberPlanOrder = count;
+        loadMaterialPlanOrder(goNumberPlanOrder);
+    }
+
+    public void lastPlanOrder() {
+        goNumberPlanOrder = count + 1;
+        loadMaterialPlanOrder(goNumberPlanOrder);
+    }
+
+    public void loadMaterialPlanOrder(int position) {
+        //刷新总记录数
+        getCountPlanOrder();
+
+        goNumberPlanOrder = position;
+
+        if(position < 1) {
+            goNumberPlanOrder = 1;
+            position = 1;
+        }
+        if(goNumberPlanOrder > countPlanOrder) {
+            goNumberPlanOrder = countPlanOrder;
+            position = countPlanOrder;
+        }
+
+
+        if(
+                materialPlan != null
+                && materialPlan.getPlanOrders() != null
+                && materialPlan.getPlanOrders().size() > 0) {
+
+            planOrder = materialPlan.getPlanOrders().get(position - 1);
+            orderItems = planOrder.getItems();
+
+        } else {
+            planOrder = new PlanOrderDto().create();
+            orderItems = planOrder.getItems();
+        }
+    }
+
+    public List<StockOrderItemDto> getStockQueryItems() {
+        List<MaterialPlanItemDto> items = getItems();
+        if(items == null) {
+            return new ArrayList<StockOrderItemDto>();
+        }
+
+        List<Material> ms = new ArrayList<Material>();
+        for(MaterialPlanItemDto i : items) {
+            ms.add(i.getMaterial().unmarshal());
+        }
+
+        if(ms.size() <= 0) {
+            return new ArrayList<StockOrderItemDto>();
+        }
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        c.set(Calendar.MILLISECOND, 999);
+
+        StockQueryOptions opts = new StockQueryOptions(c.getTime());
+        opts.setCBatch(null, false);
+        opts.setLocation(null, false);
+
+        IStockQuery q = getBean(IStockQuery.class);
+        StockItemList list = q.getActualSummary(ms, opts);
+        return DTOs.marshalList(StockOrderItemDto.class, list.getItems());
     }
 }

@@ -133,9 +133,13 @@
                         <p:inputText value="#{materialPlanAdminBean.materialPlan.memo}"/>
                     </t:panelGroup>
 
+                    <p:commandButton
+                        value="锁定库存"
+                        disabled="#{materialPlanAdminBean.editable}"
+                        oncomplete="lockStockDialog.show()"
+                        update="lockStockForm:lockStockPanel"/>
+                    <t:panelGroup colspan="3"/>
                 </t:panelGrid>
-
-                <h:outputText value="明细"/>
 
                 <p:tabView id="planDetail">
                     <p:tab title="明细">
@@ -204,24 +208,6 @@
                                             value="#{item}"
                                             target="#{materialPlanAdminBean.materialPlanItem}" />
                                     </p:commandLink>
-                                    <!--
-                                    <p:spacer width="10" />
-                                    <p:commandLink
-                                        disabled="#{!materialPlanAdminBean.editable}"
-                                        oncomplete="deleteItemConfirmDialog.show()" value="删除">
-                                        <f:setPropertyActionListener value="#{item}"
-                                            target="#{materialPlanAdminBean.materialPlanItem}" />
-                                    </p:commandLink>
-                                    -->
-                                    <p:spacer width="10" />
-                                    <p:commandLink
-                                        disabled="#{!materialPlanAdminBean.editable}"
-                                        oncomplete="lockStockDialog.show()"
-                                        value="锁定库存">
-                                        <f:setPropertyActionListener
-                                            value="#{item}"
-                                            target="#{materialPlanAdminBean.materialPlanItem}" />
-                                    </p:commandLink>
                                 </t:panelGroup>
                             </p:column>
 
@@ -229,7 +215,32 @@
                         </p:dataTable>
                     </p:tab>
                     <p:tab title="库存锁定">
-                        <p:panel header="#{materialPlanAdminBean.subject.displayName}">
+                        <t:panelGroup id="planOrdersPanel">
+                            <p:toolbar id="toolbar">
+                                <p:toolbarGroup align="left">
+                                    <p:commandButton value="第一条"
+                                        actionListener="#{materialPlanAdminBean.firstPlanOrder}"
+                                        update="mainForm:planDetail:planOrdersPanel" async="true" />
+                                    <p:commandButton value="上一条"
+                                        actionListener="#{materialPlanAdminBean.previousPlanOrder}"
+                                        update="mainForm:planDetail:planOrdersPanel" async="true" />
+                                    <p:commandButton value="下一条"
+                                        actionListener="#{materialPlanAdminBean.nextPlanOrder}"
+                                        disabled="#{materialPlanAdminBean.editable}"
+                                        update="mainForm:planDetail:planOrdersPanel" async="true" />
+                                    <p:commandButton value="最末条"
+                                        actionListener="#{materialPlanAdminBean.lastPlanOrder}"
+                                        update="mainForm:planDetail:planOrdersPanel" async="true" />
+                                    <p:inputText
+                                        value="#{materialPlanAdminBean.goNumberPlanOrder}"
+                                        style="width:30px;" />
+                                    <h:outputText
+                                        value="/#{materialPlanAdminBean.countPlanOrder}" />
+                                    <p:commandButton value="前往"
+                                        actionListener="#{materialPlanAdminBean.goPlanOrder}"
+                                        update="mainForm:planDetail:planOrdersPanel" async="true" />
+                                </p:toolbarGroup>
+                            </p:toolbar>
                             <p:dataTable id="orderItems" var="item"
                                 value="#{materialPlanAdminBean.orderItems}"
                                 resizableColumns="true"
@@ -347,11 +358,9 @@
                                         </p:commandLink>
                                     </t:panelGroup>
                                 </p:column>
-
                             </p:dataTable>
+                        </t:panelGroup>
 
-
-                        </p:panel>
                     </p:tab>
                 </p:tabView>
 			</p:panel>
@@ -771,70 +780,68 @@
         </h:form>
 
         <h:form id="lockStockForm">
-            <p:dialog header="锁定库存" widgetVar="lockStockDialog"
-                modal="true" height="500" width="840">
-                <t:panelGroup id="lockStockPanel">
-                    <t:panelGrid columns="4"
-                        columnClasses="detail_col_title,detail_col_value,detail_col_title,detail_col_value">
+            <p:dialog header="库存查询" widgetVar="lockStockDialog"
+                modal="true" height="400" width="640">
+                <h:panelGroup id="lockStockPanel">
+                    <p:dataTable id="stockQuery" var="item"
+                        value="#{materialPlanAdminBean.stockQueryItems}"
+                        resizableColumns="true"
+                        selectionMode="single"
+                        selection="#{materialPlanAdminBean.selectedStockQueryItem}"
+                        rowKey="#{item.index}"
+                        rowIndexVar="rowIndex">
 
-                        <h:outputLabel value="物料" />
-                        <t:panelGroup colspan="3">
-                            <h:outputText value="#{materialPlanAdminBean.orderItem.material.label}"/>
-                        </t:panelGroup>
+                        <p:column headerText="序号">
+                            <h:outputText value="#{rowIndex + 1}" />
+                        </p:column>
 
-                        <t:panelGroup colspan="2">
-                            <p:commandButton value="查询库存"
-                                onclick="stockQueryDialog.show()"
-                                update="stockQueryForm:stockQueryPanel" />
-                        </t:panelGroup>
-                        <t:panelGroup colspan="2" />
+                        <p:column headerText="仓库">
+                            <h:outputText value="#{item.location.warehouse.name}" />
+                        </p:column>
 
-                        <h:outputLabel value="批号" />
-                        <h:outputText value="#{materialPlanAdminBean.orderItem.batch}" />
-                        <h:outputLabel value="有效期" />
-                        <h:outputText value="#{materialPlanAdminBean.orderItem.expirationDate}"/>
+                        <p:column headerText="物料">
+                            <h:outputText value="#{item.material.label}" />
+                        </p:column>
 
-                        <h:outputLabel value="库位" />
-                        <t:panelGroup colspan="3">
-                            <h:output value="#{materialPlanAdminBean.orderItem.location.nodeText}"/>
-                        </t:panelGroup>
+                        <p:column headerText="规格型号">
+                            <h:outputText value="#{item.material.modelSpec}" />
+                        </p:column>
 
-                        <h:outputLabel value="数量" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText
-                                value="#{materialPlanAdminBean.orderItem.quantity}" />
+                        <p:column headerText="批号">
+                            <h:outputText value="#{item.batch}" />
+                        </p:column>
+
+                        <p:column headerText="有效期">
+                            <h:outputText value="#{item.expirationDate}" />
+                        </p:column>
+
+                        <p:column headerText="库位">
                             <h:outputText
-                                value="#{materialPlanAdminBean.orderItem.material.unit.name}" />
-                        </t:panelGroup>
+                                value="#{item.location.nodeText}" />
+                        </p:column>
 
+                        <p:column headerText="单价">
+                            <h:outputText value="#{item.price.value}" />
+                        </p:column>
 
-                        <h:outputLabel value="单价" />
-                        <h:outputText value="#{materialPlanAdminBean.orderItem.price.value}" />
-                        <h:outputLabel value="币种" />
-                        <h:outputText value="#{materialPlanAdminBean.orderItem.price.currencyText}"/>
+                        <p:column headerText="币种">
+                            <h:outputText
+                                value="#{item.price.currencyText}" />
+                        </p:column>
 
-                        <h:outputLabel value="备注" />
-                        <t:panelGroup colspan="3">
-                            <p:inputText
-                                value="#{materialPlanAdminBean.orderItem.description}"
-                                style="width:400px" />
-                        </t:panelGroup>
-
-                        <h:panelGroup />
-                        <t:panelGroup colspan="2">
-                            <t:panelGrid columns="2">
-                                <p:commandButton value="保存"
-                                    actionListener="#{materialPlanAdminBean.lockStockOrderItem}"
-                                    oncomplete="lockStockDialog.hide();"
-                                    async="true" update=mainForm:planDetail:orderItems />
-                                <p:commandButton value="取消"
-                                    oncomplete="lockStockDialog.hide();" />
-                            </t:panelGrid>
-                        </t:panelGroup>
-                        <h:panelGroup />
-
-                    </t:panelGrid>
-                </t:panelGroup>
+                        <p:column headerText="数量">
+                            <h:outputText value="#{item.quantity}" />
+                        </p:column>
+                    </p:dataTable>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="确定"
+                            actionListener="#{materialPlanAdminBean.lockStock}"
+                            oncomplete="stockQueryDialog.hide();"
+                            update="mainForm:planDetail:orderItems" async="true" />
+                        <p:commandButton value="取消"
+                            oncomplete="stockQueryDialog.hide();" />
+                    </h:panelGrid>
+                </h:panelGroup>
             </p:dialog>
         </h:form>
 

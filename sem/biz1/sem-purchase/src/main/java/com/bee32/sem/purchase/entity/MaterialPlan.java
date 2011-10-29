@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -14,8 +13,6 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bee32.sem.inventory.entity.StockOrder;
-import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.inventory.tx.entity.StockJob;
 
 /**
@@ -31,17 +28,13 @@ public class MaterialPlan
     public static final int MEMO_LENGTH = 3000;
 
     MakeTask task;
-    StockOrder planOrder;
+    List<PlanOrder> planOrders;
     String memo;
 
     List<MaterialPlanItem> items = new ArrayList<MaterialPlanItem>();
 
-    PurchaseRequest purchaseRequest;
 
-    public MaterialPlan() {
-        planOrder = new StockOrder();
-        planOrder.setSubject(StockOrderSubject.PLAN_OUT);
-    }
+    PurchaseRequest purchaseRequest;
 
     @ManyToOne(optional = false)
     public MakeTask getTask() {
@@ -52,15 +45,14 @@ public class MaterialPlan
         this.task = task;
     }
 
-    @OneToOne
-    @JoinColumn(name = "s1")
+    @OneToMany(mappedBy = "plan", orphanRemoval = true)
     @Cascade(CascadeType.ALL)
-    public StockOrder getPlanOrder() {
-        return planOrder;
+    public List<PlanOrder> getPlanOrders() {
+        return planOrders;
     }
 
-    public void setPlanOrder(StockOrder planOrder) {
-        this.planOrder = planOrder;
+    public void setPlanOrders(List<PlanOrder> planOrders) {
+        this.planOrders = planOrders;
     }
 
     @Column(length = MEMO_LENGTH)

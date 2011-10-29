@@ -7,7 +7,6 @@ import javax.free.NotImplementedException;
 import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.TextMap;
-import com.bee32.sem.inventory.dto.StockOrderDto;
 import com.bee32.sem.inventory.tx.dto.StockJobDto;
 import com.bee32.sem.purchase.entity.MaterialPlan;
 
@@ -20,7 +19,7 @@ public class MaterialPlanDto
     public static final int PURCHASE_REQUEST = 2;
 
     MakeTaskDto task;
-    StockOrderDto planOrder;
+    List<PlanOrderDto> planOrders;
 
     String memo;
 
@@ -33,8 +32,8 @@ public class MaterialPlanDto
         task = mref(MakeTaskDto.class, source.getTask());
 
         if (selection.contains(ORDERS)) {
-            int orderSelection = selection.translate(ITEMS, StockOrderDto.ITEMS);
-            planOrder = mref(StockOrderDto.class, orderSelection, source.getPlanOrder());
+            //int orderSelection = selection.translate(ITEMS, StockOrderDto.ITEMS);
+            planOrders = mrefList(PlanOrderDto.class, source.getPlanOrders());
         }
 
         memo = source.getMemo();
@@ -53,7 +52,7 @@ public class MaterialPlanDto
         merge(target, "task", task);
 
         if (selection.contains(ORDERS))
-            merge(target, "planOrder", planOrder);
+            mergeList(target, "planOrders", planOrders);
 
         target.setMemo(memo);
 
@@ -80,14 +79,12 @@ public class MaterialPlanDto
         this.task = task;
     }
 
-    public StockOrderDto getPlanOrder() {
-        return planOrder;
+    public List<PlanOrderDto> getPlanOrders() {
+        return planOrders;
     }
 
-    public void setPlanOrder(StockOrderDto planOrder) {
-        if (planOrder == null)
-            throw new NullPointerException("planOrder");
-        this.planOrder = planOrder;
+    public void setPlanOrders(List<PlanOrderDto> planOrders) {
+        this.planOrders = planOrders;
     }
 
     public String getMemo() {
