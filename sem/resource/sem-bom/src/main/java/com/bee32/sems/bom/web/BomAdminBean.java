@@ -449,6 +449,7 @@ public class BomAdminBean
 
             if(partList != null & partList.size() > 0) {
                 uiLogger.info("此物料已经存在BOM信息,继续新增的话,此物料将存在多个BOM信息");
+                return;
             }
 
             part.setTarget(selectedMaterial);

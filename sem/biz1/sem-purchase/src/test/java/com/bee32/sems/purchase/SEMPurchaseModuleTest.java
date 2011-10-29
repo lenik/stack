@@ -12,10 +12,6 @@ import com.bee32.sem.test.SEMTestCase;
 public class SEMPurchaseModuleTest
         extends SEMTestCase {
 
-    public SEMPurchaseModuleTest() {
-        super();
-    }
-
     @Override
     protected boolean isDebugMode() {
         return true;
