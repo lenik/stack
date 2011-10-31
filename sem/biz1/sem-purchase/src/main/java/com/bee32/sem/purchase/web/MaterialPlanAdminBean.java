@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ import com.bee32.sem.purchase.dto.MaterialPlanItemDto;
 import com.bee32.sem.purchase.dto.PlanOrderDto;
 import com.bee32.sem.purchase.entity.MakeTask;
 import com.bee32.sem.purchase.entity.MaterialPlan;
+import com.bee32.sem.purchase.util.SelectItemHolder;
 import com.bee32.sems.bom.dto.PartDto;
 
 public class MaterialPlanAdminBean extends EntityViewBean {
@@ -78,8 +80,6 @@ public class MaterialPlanAdminBean extends EntityViewBean {
     private int countPlanOrder;
 
     private List<StockOrderItemDto> orderItems;
-
-    private StockOrderItemDto selectedStockQueryItem;
 
     public MaterialPlanAdminBean() {
         Calendar c = Calendar.getInstance();
@@ -317,13 +317,6 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         this.orderItems = orderItems;
     }
 
-    public StockOrderItemDto getSelectedStockQueryItem() {
-        return selectedStockQueryItem;
-    }
-
-    public void setSelectedStockQueryItem(StockOrderItemDto selectedStockQueryItem) {
-        this.selectedStockQueryItem = selectedStockQueryItem;
-    }
 
 
 
@@ -614,10 +607,10 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         }
     }
 
-    public List<StockOrderItemDto> getStockQueryItems() {
+    public List<SelectItemHolder> getStockQueryItems() {
         List<MaterialPlanItemDto> items = getItems();
         if(items == null) {
-            return new ArrayList<StockOrderItemDto>();
+            return new ArrayList<SelectItemHolder>();
         }
 
         List<Material> ms = new ArrayList<Material>();
@@ -626,7 +619,7 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         }
 
         if(ms.size() <= 0) {
-            return new ArrayList<StockOrderItemDto>();
+            return new ArrayList<SelectItemHolder>();
         }
 
         Calendar c = Calendar.getInstance();
@@ -642,6 +635,33 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
         IStockQuery q = getBean(IStockQuery.class);
         StockItemList list = q.getActualSummary(ms, opts);
-        return DTOs.marshalList(StockOrderItemDto.class, list.getItems());
+        List<StockOrderItemDto> queryResult = DTOs.marshalList(StockOrderItemDto.class, list.getItems());
+
+        //把查询结果变成SelectItemHoder的list,以便于绑定primefaces的DataTable组件
+        if(queryResult != null & queryResult.size() > 0) {
+            //把items变成map,便于根据物料查询数量
+            Map<MaterialDto, BigDecimal> materialQueryMap = new HashMap<MaterialDto, BigDecimal>();
+            for(MaterialPlanItemDto __planItem : items) {
+                materialQueryMap.put(__planItem.getMaterial(), __planItem.getQuantity());
+            }
+
+
+            List<SelectItemHolder> result = new ArrayList<SelectItemHolder>();
+            for(StockOrderItemDto queryItem : queryResult) {
+                SelectItemHolder holder = new SelectItemHolder();
+                holder.setItem(queryItem);
+                if(materialQueryMap.get(queryItem.getMaterial()).compareTo(queryItem.getQuantity()) <= 0) {
+                    holder.setQuantity(materialQueryMap.get(queryItem.getMaterial()));
+                } else {
+                    holder.setQuantity(queryItem.getQuantity());
+                }
+                //**如果查询结果同一种物料在两个仓库里都有
+                holder.setChecked(false);
+
+                result.add(holder);
+            }
+            return result;
+        }
+        return new ArrayList<SelectItemHolder>();
     }
 }

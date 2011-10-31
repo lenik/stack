@@ -587,13 +587,6 @@
 
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="物料编码" />
-                                </f:facet>
-                                <h:outputText value="#{material.serial}" />
-                            </p:column>
-
-                            <p:column>
-                                <f:facet name="header">
                                     <h:outputText value="规格型号" />
                                 </f:facet>
                                 <h:outputText
@@ -651,6 +644,23 @@
                                 <h:outputText
                                     value="#{part.target.label}" />
                             </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="规格型号" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{part.target.modelSpec}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="计量单位" />
+                                </f:facet>
+                                <h:outputText
+                                    value="#{part.target.unit.name}" />
+                            </p:column>
+
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="创建人" />
@@ -691,6 +701,7 @@
                                 </h:outputText>
                             </p:column>
 
+                            <!--
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="类型" />
@@ -698,6 +709,7 @@
                                 <h:outputText
                                     value="#{part.xrefCount == 0 ? '产品' : '半成品'}" />
                             </p:column>
+                            -->
 
                         </p:dataTable>
 

@@ -774,56 +774,61 @@
 
         <h:form id="lockStockForm">
             <p:dialog header="库存查询" widgetVar="lockStockDialog"
-                modal="true" height="400" width="640">
+                modal="true" height="500" width="800">
                 <h:panelGroup id="lockStockPanel">
                     <p:dataTable id="stockQuery" var="item"
                         value="#{materialPlanAdminBean.stockQueryItems}"
                         resizableColumns="true"
-                        selectionMode="single"
-                        selection="#{materialPlanAdminBean.selectedStockQueryItem}"
-                        rowKey="#{item.index}"
-                        rowIndexVar="rowIndex">
+                        rowIndexVar="rowIndex"
+                        scrollable="true"
+                        scrollWidth="750" scrollHeight="430">
 
                         <p:column headerText="序号">
                             <h:outputText value="#{rowIndex + 1}" />
                         </p:column>
 
                         <p:column headerText="仓库">
-                            <h:outputText value="#{item.location.warehouse.name}" />
+                            <h:outputText value="#{item.item.location.warehouse.name}" />
                         </p:column>
 
                         <p:column headerText="物料">
-                            <h:outputText value="#{item.material.label}" />
+                            <h:outputText value="#{item.item.material.label}" />
                         </p:column>
 
                         <p:column headerText="规格型号">
-                            <h:outputText value="#{item.material.modelSpec}" />
+                            <h:outputText value="#{item.item.material.modelSpec}" />
                         </p:column>
 
                         <p:column headerText="批号">
-                            <h:outputText value="#{item.batch}" />
+                            <h:outputText value="#{item.item.batch}" />
                         </p:column>
 
                         <p:column headerText="有效期">
-                            <h:outputText value="#{item.expirationDate}" />
+                            <h:outputText value="#{item.item.expirationDate}" />
                         </p:column>
 
                         <p:column headerText="库位">
                             <h:outputText
-                                value="#{item.location.nodeText}" />
+                                value="#{item.item.location.nodeText}" />
                         </p:column>
 
                         <p:column headerText="单价">
-                            <h:outputText value="#{item.price.value}" />
+                            <h:outputText value="#{item.item.price.value}" />
                         </p:column>
 
                         <p:column headerText="币种">
                             <h:outputText
-                                value="#{item.price.currencyText}" />
+                                value="#{item.item.price.currencyText}" />
                         </p:column>
 
                         <p:column headerText="数量">
-                            <h:outputText value="#{item.quantity}" />
+                            <h:outputText value="#{item.item.quantity}" />
+                        </p:column>
+                        <p:column headerText="锁定数量">
+                            <p:inputText value="#{item.quantity}" />
+                        </p:column>
+                        <p:column headerText="锁定">
+                            <p:selectBooleanCheckbox value="#{item.checked}" />
                         </p:column>
                     </p:dataTable>
                     <h:panelGrid columns="2">
