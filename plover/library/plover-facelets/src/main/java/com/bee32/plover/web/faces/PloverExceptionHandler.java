@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.ServiceLoader;
 import java.util.Set;
 
 import javax.faces.FacesException;
@@ -122,6 +123,21 @@ public class PloverExceptionHandler
             if (handlers != null)
                 handlers.remove(handlers);
             // if (handlers.isEmpty()) iter.remove();
+        }
+    }
+
+    // Scan FEHs.
+    static {
+        for (IFaceletExceptionHandler feh : ServiceLoader.load(IFaceletExceptionHandler.class)) {
+            Class<?> fehClass = feh.getClass();
+
+            ForException annotation = fehClass.getAnnotation(ForException.class);
+            if (annotation == null)
+                throw new IllegalUsageException(ForException.class + " is not declared on " + fehClass);
+
+            Class<? extends Throwable> exceptionType = annotation.value();
+
+            register(exceptionType, feh);
         }
     }
 
