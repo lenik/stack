@@ -8,7 +8,9 @@ import javax.free.ParseException;
 
 import com.bee32.plover.arch.util.IdComposite;
 import com.bee32.plover.arch.util.TextMap;
+import com.bee32.plover.orm.entity.EntityUtil;
 import com.bee32.sem.inventory.entity.StockItemState;
+import com.bee32.sem.inventory.entity.StockOrder;
 import com.bee32.sem.inventory.entity.StockOrderItem;
 import com.bee32.sem.inventory.entity.StockOrderSubject;
 import com.bee32.sem.world.thing.AbstractOrderItemDto;
@@ -18,7 +20,7 @@ public class StockOrderItemDto
 
     private static final long serialVersionUID = 1L;
 
-    StockOrderDto parent;
+    AbstractStockOrderDto<? extends StockOrder> parent;
     MaterialDto material;
     String batch;
     Date expirationDate;
@@ -55,7 +57,7 @@ public class StockOrderItemDto
 
     @Override
     protected boolean isNegated() {
-        StockOrderDto parent = getParent();
+        AbstractStockOrderDto<? extends StockOrder> parent = getParent();
         if (parent == null || parent.isNull()) {
             return false;
             //throw new IllegalStateException("Parent isn't set.");
@@ -67,7 +69,21 @@ public class StockOrderItemDto
 
     @Override
     protected void _marshal(StockOrderItem source) {
-        parent = mref(StockOrderDto.class, source.getParent());
+        StockOrder _parent = source.getParent();
+
+        boolean tryBest = false;
+        if (tryBest) {
+            Class<? extends StockOrder> parentClass = _parent == null ? StockOrder.class : _parent.getClass();
+
+            @SuppressWarnings("unchecked")
+            Class<? extends StockOrderDto> parentDtoType = (Class<? extends StockOrderDto>) EntityUtil
+                    .getDtoType(parentClass);
+
+            parent = mref(parentDtoType, _parent);
+        } else {
+            parent = mref(StockOrderDto.class, _parent);
+        }
+
         material = mref(MaterialDto.class, source.getMaterial());
         batch = source.getBatch();
         expirationDate = source.getExpirationDate();
@@ -95,11 +111,11 @@ public class StockOrderItemDto
         map.getString("state");
     }
 
-    public StockOrderDto getParent() {
+    public AbstractStockOrderDto<? extends StockOrder> getParent() {
         return parent;
     }
 
-    public void setParent(StockOrderDto parent) {
+    public void setParent(AbstractStockOrderDto<? extends StockOrder> parent) {
         if (parent == null)
             throw new NullPointerException("parent");
         this.parent = parent;

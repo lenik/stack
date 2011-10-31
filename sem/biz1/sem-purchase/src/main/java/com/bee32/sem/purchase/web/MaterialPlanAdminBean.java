@@ -74,6 +74,8 @@ public class MaterialPlanAdminBean extends EntityViewBean {
     private List<PartyDto> suppliers;
     private PartyDto selectedSupplier;
 
+    private List<SelectItemHolder> stockQueryItems;
+
 
     private PlanOrderDto planOrder;
     private int goNumberPlanOrder;
@@ -96,6 +98,10 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
         goNumber = 1;
         loadMaterialPlan(goNumber);
+
+        goNumberPlanOrder = 1;
+        loadMaterialPlanOrder(goNumberPlanOrder);
+
 
         subject = StockOrderSubject.PLAN_OUT;
     }
@@ -139,6 +145,10 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         return count;
     }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     public MaterialPlanDto getMaterialPlan() {
         return materialPlan;
     }
@@ -166,10 +176,6 @@ public class MaterialPlanAdminBean extends EntityViewBean {
 
     public void setMaterialPlanItem(MaterialPlanItemDto materialPlanItem) {
         this.materialPlanItem = materialPlanItem;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 
     public String getMaterialPattern() {
@@ -309,6 +315,10 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         return countPlanOrder;
     }
 
+    public void setCountPlanOrder(int countPlanOrder) {
+        this.countPlanOrder = countPlanOrder;
+    }
+
     public List<StockOrderItemDto> getOrderItems() {
         return orderItems;
     }
@@ -317,6 +327,14 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         this.orderItems = orderItems;
     }
 
+
+    public List<SelectItemHolder> getStockQueryItems() {
+        return stockQueryItems;
+    }
+
+    public void setStockQueryItems(List<SelectItemHolder> stockQueryItems) {
+        this.stockQueryItems = stockQueryItems;
+    }
 
 
 
@@ -352,7 +370,7 @@ public class MaterialPlanAdminBean extends EntityViewBean {
                 Order.asc("id"));
 
         if (firstPlan != null)
-            materialPlan = DTOs.marshal(MaterialPlanDto.class, MaterialPlanDto.ITEMS, firstPlan);
+            materialPlan = DTOs.marshal(MaterialPlanDto.class, MaterialPlanDto.ITEMS | MaterialPlanDto.ORDERS, firstPlan);
 
     }
 
@@ -558,8 +576,8 @@ public class MaterialPlanAdminBean extends EntityViewBean {
     public void goPlanOrder() {
         if (goNumberPlanOrder < 1) {
             goNumberPlanOrder = 1;
-        } else if (goNumberPlanOrder > count) {
-            goNumberPlanOrder = count;
+        } else if (goNumberPlanOrder > countPlanOrder) {
+            goNumberPlanOrder = countPlanOrder;
         }
         loadMaterialPlanOrder(goNumberPlanOrder);
     }
@@ -567,13 +585,13 @@ public class MaterialPlanAdminBean extends EntityViewBean {
     public void nextPlanOrder() {
         goNumberPlanOrder++;
 
-        if (goNumberPlanOrder > count)
-            goNumberPlanOrder = count;
+        if (goNumberPlanOrder > countPlanOrder)
+            goNumberPlanOrder = countPlanOrder;
         loadMaterialPlanOrder(goNumberPlanOrder);
     }
 
     public void lastPlanOrder() {
-        goNumberPlanOrder = count + 1;
+        goNumberPlanOrder = countPlanOrder + 1;
         loadMaterialPlanOrder(goNumberPlanOrder);
     }
 
@@ -607,10 +625,12 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         }
     }
 
-    public List<SelectItemHolder> getStockQueryItems() {
+
+
+    public void queryStock() {
         List<MaterialPlanItemDto> items = getItems();
         if(items == null) {
-            return new ArrayList<SelectItemHolder>();
+            stockQueryItems = new ArrayList<SelectItemHolder>();
         }
 
         List<Material> ms = new ArrayList<Material>();
@@ -619,7 +639,7 @@ public class MaterialPlanAdminBean extends EntityViewBean {
         }
 
         if(ms.size() <= 0) {
-            return new ArrayList<SelectItemHolder>();
+            stockQueryItems = new ArrayList<SelectItemHolder>();
         }
 
         Calendar c = Calendar.getInstance();
@@ -645,23 +665,75 @@ public class MaterialPlanAdminBean extends EntityViewBean {
                 materialQueryMap.put(__planItem.getMaterial(), __planItem.getQuantity());
             }
 
+            //为一个物料同时在不同仓库中有数量的情况使用
+            Map<MaterialDto, BigDecimal> alreadySetQuantityMap = new HashMap<MaterialDto, BigDecimal>();
 
-            List<SelectItemHolder> result = new ArrayList<SelectItemHolder>();
+            stockQueryItems = new ArrayList<SelectItemHolder>();
             for(StockOrderItemDto queryItem : queryResult) {
                 SelectItemHolder holder = new SelectItemHolder();
                 holder.setItem(queryItem);
-                if(materialQueryMap.get(queryItem.getMaterial()).compareTo(queryItem.getQuantity()) <= 0) {
-                    holder.setQuantity(materialQueryMap.get(queryItem.getMaterial()));
+
+                BigDecimal needQuantity = materialQueryMap.get(queryItem.getMaterial());
+                BigDecimal lastQuantity = alreadySetQuantityMap.get(queryItem.getMaterial());
+                if(lastQuantity != null) {
+                    //说明出现了同一个物料在不同仓库中同时存在的情
+                    needQuantity = needQuantity.subtract(lastQuantity);
+                }
+
+                if(needQuantity.compareTo(queryItem.getQuantity()) <= 0) {
+                    holder.setQuantity(needQuantity);
                 } else {
                     holder.setQuantity(queryItem.getQuantity());
                 }
-                //**如果查询结果同一种物料在两个仓库里都有
-                holder.setChecked(false);
 
-                result.add(holder);
+                alreadySetQuantityMap.put(queryItem.getMaterial(), holder.getQuantity());
+                holder.setChecked(true);
+
+                stockQueryItems.add(holder);
             }
-            return result;
+        } else {
+            stockQueryItems = new ArrayList<SelectItemHolder>();
         }
-        return new ArrayList<SelectItemHolder>();
+    }
+
+    public void lockStock() {
+        List<PlanOrderDto> orders = new ArrayList<PlanOrderDto>();
+        for(SelectItemHolder holder : stockQueryItems) {
+            if(holder.isChecked()) {
+                PlanOrderDto order = null;
+                for(PlanOrderDto o : orders) {
+                    if(o.getWarehouse().getId() == holder.getItem().getLocation().getWarehouse().getId()) {
+                        order = o;
+                        break;
+                    }
+                }
+
+                if(order == null) {
+                    order = new PlanOrderDto().create();
+                    order.setSubject(StockOrderSubject.PLAN_OUT);
+                    order.setPlan(materialPlan);
+                    order.setWarehouse(holder.getItem().getLocation().getWarehouse());
+                    orders.add(order);
+                }
+
+                StockOrderItemDto item = new StockOrderItemDto().create();
+                item.setParent(order);
+                item.setBatch(holder.getItem().getBatch());
+                item.setExpirationDate(holder.getItem().getExpirationDate());
+                item.setLocation(holder.getItem().getLocation());
+                item.setMaterial(holder.getItem().getMaterial());
+                item.setPrice(holder.getItem().getPrice());
+                item.setQuantity(holder.getQuantity());
+
+
+                order.addItem(item);
+            }
+        }
+
+        if(orders.size() > 0) {
+            materialPlan.setPlanOrders(orders);
+            goNumberPlanOrder = 1;
+            loadMaterialPlanOrder(goNumberPlanOrder);
+        }
     }
 }

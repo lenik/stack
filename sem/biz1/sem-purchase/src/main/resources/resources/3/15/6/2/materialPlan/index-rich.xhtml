@@ -130,6 +130,7 @@
                     <p:commandButton
                         value="锁定库存"
                         disabled="#{!materialPlanAdminBean.editable}"
+                        actionListener="#{materialPlanAdminBean.queryStock}"
                         oncomplete="lockStockDialog.show()"
                         update="lockStockForm:lockStockPanel"/>
                     <t:panelGroup colspan="3"/>
@@ -220,7 +221,6 @@
                                         update="mainForm:planDetail:planOrdersPanel" async="true" />
                                     <p:commandButton value="下一条"
                                         actionListener="#{materialPlanAdminBean.nextPlanOrder}"
-                                        disabled="#{materialPlanAdminBean.editable}"
                                         update="mainForm:planDetail:planOrdersPanel" async="true" />
                                     <p:commandButton value="最末条"
                                         actionListener="#{materialPlanAdminBean.lastPlanOrder}"
@@ -235,6 +235,13 @@
                                         update="mainForm:planDetail:planOrdersPanel" async="true" />
                                 </p:toolbarGroup>
                             </p:toolbar>
+                            <t:panelGrid columns="2">
+                                <h:outputText value="时间:"/>
+                                <h:outputText value="#{materialPlanAdminBean.planOrder.createdDate}"/>
+
+                                <h:outputText value="仓库:"/>
+                                <h:outputText value="#{materialPlanAdminBean.planOrder.warehouse.name}"/>
+                            </t:panelGrid>
                             <p:dataTable id="orderItems" var="item"
                                 value="#{materialPlanAdminBean.orderItems}"
                                 resizableColumns="true"
@@ -318,7 +325,6 @@
                                     <h:outputText
                                         value="#{item.quantity}" />
                                 </p:column>
-
                                 <p:column>
                                     <f:facet name="header">
                                         <h:outputText value="备注" />
@@ -328,30 +334,7 @@
                                 </p:column>
 
 
-                                <p:column>
-                                    <f:facet name="header">操作</f:facet>
-                                    <t:panelGroup>
 
-                                        <p:commandLink
-                                            update="orderItemForm:orderItemPanel"
-                                            disabled="#{!materialPlanAdminBean.editable}"
-                                            oncomplete="orderItemDialog.show()"
-                                            value="修改">
-                                            <f:setPropertyActionListener
-                                                value="#{item}"
-                                                target="#{materialPlanAdminBean.orderItem}" />
-                                        </p:commandLink>
-                                        <p:spacer width="10" />
-                                        <p:commandLink
-                                            disabled="#{!materialPlanAdminBean.editable}"
-                                            oncomplete="deleteOrderItemConfirmDialog.show()"
-                                            value="删除">
-                                            <f:setPropertyActionListener
-                                                value="#{item}"
-                                                target="#{materialPlanAdminBean.orderItem}" />
-                                        </p:commandLink>
-                                    </t:panelGroup>
-                                </p:column>
                             </p:dataTable>
                         </t:panelGroup>
 
@@ -834,10 +817,10 @@
                     <h:panelGrid columns="2">
                         <p:commandButton value="确定"
                             actionListener="#{materialPlanAdminBean.lockStock}"
-                            oncomplete="stockQueryDialog.hide();"
-                            update="mainForm:planDetail:orderItems" async="true" />
+                            oncomplete="lockStockDialog.hide();"
+                            update="mainForm:planDetail:planOrdersPanel" async="true" />
                         <p:commandButton value="取消"
-                            oncomplete="stockQueryDialog.hide();" />
+                            oncomplete="lockStockDialog.hide();" />
                     </h:panelGrid>
                 </h:panelGroup>
             </p:dialog>
