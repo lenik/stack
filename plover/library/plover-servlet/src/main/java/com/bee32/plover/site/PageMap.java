@@ -1,7 +1,7 @@
 package com.bee32.plover.site;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +14,7 @@ public class PageMap {
 
     public PageMap() {
         index = new ArrayList<IPageGenerator>(); // (OrderComparator.INSTANCE);
-        map = new HashMap<String, IPageGenerator>();
+        map = new LinkedHashMap<String, IPageGenerator>();
     }
 
     public void add(String name, Class<?> pageClass) {
