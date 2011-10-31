@@ -58,30 +58,36 @@ public class SiteManager {
 
     public void addSite(SiteInstance site) {
         String siteName = site.getName();
-        if (siteMap.containsKey(siteName))
-            throw new IllegalUsageException("Site is already existed: " + siteName);
+
+        // "Transactional"
+        {
+            if (siteMap.containsKey(siteName))
+                throw new IllegalUsageException("Site is already existed: " + siteName);
+
+            for (String alias : site.getAliases()) {
+                HostSpec spec = HostSpec.parse(alias);
+                if (spec.isWild()) {
+                    if (wildHostAliasMap.containsKey(spec.getHostName()))
+                        throw new IllegalUsageException(String.format("Wild alias %s:* for site %s is already used.", //
+                                spec.getHostName(), siteName));
+                } else {
+                    if (hostAliasMap.containsKey(alias))
+                        throw new IllegalUsageException(String.format("Alias %s for site %s is already used.", //
+                                alias, siteName));
+                }
+            }
+        }
 
         for (String alias : site.getAliases()) {
             HostSpec spec = HostSpec.parse(alias);
+            String hostName = spec.getHostName();
             if (spec.isWild())
-                if (wildHostAliasMap.containsKey(spec.getHostName())) {
-                    throw new IllegalUsageException(String.format("Wild alias %s:* for site %s is already used.", //
-                            spec.getHostName(), siteName));
-                } else if (hostAliasMap.containsKey(alias)) {
-                    throw new IllegalUsageException(String.format("Alias %s for site %s is already used.", //
-                            alias, siteName));
-                }
+                wildHostAliasMap.put(hostName, siteName);
+            else
+                hostAliasMap.put(hostName, siteName);
         }
 
         siteMap.put(siteName, site);
-
-        for (String alias : site.getAliases()) {
-            HostSpec spec = HostSpec.parse(alias);
-            if (spec.isWild())
-                wildHostAliasMap.put(spec.getHostName(), siteName);
-            else
-                hostAliasMap.put(alias, siteName);
-        }
     }
 
     /**
@@ -109,8 +115,13 @@ public class SiteManager {
     protected void removeSite(SiteInstance site) {
         String name = site.getName();
         Set<String> aliases = site.getAliases();
-        for (String alias : aliases)
-            hostAliasMap.remove(alias);
+        for (String alias : aliases) {
+            HostSpec hostSpec = HostSpec.parse(alias);
+            if (hostSpec.isWild())
+                wildHostAliasMap.remove(hostSpec.getHostName());
+            else
+                hostAliasMap.remove(alias);
+        }
         siteMap.remove(name);
     }
 
@@ -119,7 +130,7 @@ public class SiteManager {
         site.configFile.delete();
     }
 
-    public void scan(File siteHome) {
+    public void scanAndLoadSites(File siteHome) {
         for (File _file : siteHome.listFiles()) {
             if (!_file.isFile())
                 continue;
@@ -150,7 +161,7 @@ public class SiteManager {
 
     static {
         instance = new SiteManager();
-        instance.scan(SITE_HOME);
+        instance.scanAndLoadSites(SITE_HOME);
     }
 
     public static SiteManager getInstance() {
