@@ -1,9 +1,12 @@
 package com.bee32.plover.site;
 
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.free.ClassResource;
+import javax.free.Doc;
 import javax.free.URLResource;
 
 import com.googlecode.jatl.Html;
@@ -29,12 +32,27 @@ public class SiteTemplate
 
     protected Html _menu() {
         ul();
-        li().a().href("index").text("所有站点").end(2);
-        li().a().href("create").text("新建站点").end(2);
-        li().a().href("data").text("数据备份").end(2);
-        li().a().href("cache").text("缓存管理").end(2);
-        li().a().href("status").text("运行状态").end(2);
-        li().a().href("helpDoc").text("帮助信息").end(2);
+        for (Entry<String, IPageGenerator> entry : SiteManagerServlet.pages.map.entrySet()) {
+            IPageGenerator pageGenerator = entry.getValue();
+            if (!(pageGenerator instanceof InstantiatePageGenerator))
+                continue;
+
+            InstantiatePageGenerator ipg = (InstantiatePageGenerator) pageGenerator;
+            Class<?> pageClass = ipg.pageClass;
+
+            int modifiers = pageClass.getModifiers();
+            if (!Modifier.isPublic(modifiers))
+                continue;
+
+            Doc _doc = pageClass.getAnnotation(Doc.class);
+
+            String href = entry.getKey();
+            String title = pageClass.getSimpleName();
+            if (_doc != null)
+                title = _doc.value();
+
+            li().a().href(href).text(title).end(2);
+        }
 
         end();
         return this;
