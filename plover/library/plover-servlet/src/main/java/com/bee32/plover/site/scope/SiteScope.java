@@ -1,7 +1,5 @@
 package com.bee32.plover.site.scope;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.ObjectFactory;
 
 import com.bee32.plover.inject.scope.AbstractScope;
@@ -15,21 +13,15 @@ public class SiteScope
 
     SiteManager siteManager = SiteManager.getInstance();
 
-    SiteInstance getSiteForRequest() {
-        HttpServletRequest request = ThreadHttpContext.getRequest();
-        String alias = SiteNaming.getSiteAlias(request);
+    @Override
+    public Object get(String name, ObjectFactory<?> objectFactory) {
         SiteInstance site;
         try {
-            site = siteManager.getOrCreateSite(alias);
+            site = ThreadHttpContext.getSiteInstance();
         } catch (LoadSiteException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
-        return site;
-    }
 
-    @Override
-    public Object get(String name, ObjectFactory<?> objectFactory) {
-        SiteInstance site = getSiteForRequest();
         Object obj;
         if (site.containsAttribute(name)) {
             obj = site.getAttribute(name);
@@ -42,7 +34,13 @@ public class SiteScope
 
     @Override
     public Object remove(String name) {
-        SiteInstance site = getSiteForRequest();
+        SiteInstance site;
+        try {
+            site = ThreadHttpContext.getSiteInstance();
+        } catch (LoadSiteException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+
         Object obj = site.removeAttribute(name);
         return obj;
     }

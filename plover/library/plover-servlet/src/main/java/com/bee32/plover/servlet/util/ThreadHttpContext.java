@@ -2,11 +2,17 @@ package com.bee32.plover.servlet.util;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.bee32.plover.site.LoadSiteException;
+import com.bee32.plover.site.SiteInstance;
+import com.bee32.plover.site.SiteManager;
+import com.bee32.plover.site.scope.SiteNaming;
 
 public class ThreadHttpContext
         extends ThreadServletContext {
@@ -33,6 +39,26 @@ public class ThreadHttpContext
     public static void autowireThisServlet(HttpServlet thisServlet) {
         AutowireCapableBeanFactory beanFactory = requireApplicationContext().getAutowireCapableBeanFactory();
         beanFactory.autowireBean(thisServlet);
+    }
+
+    static boolean autoCreateMode = false;
+
+    public static SiteInstance getSiteInstance()
+            throws LoadSiteException {
+        SiteManager siteManager = SiteManager.getInstance();
+
+        HttpServletRequest request = getRequest();
+        if (request == null)
+            throw new NullPointerException("request");
+        String siteAlias = SiteNaming.getSiteAlias(request);
+
+        SiteInstance siteInstance;
+        if (autoCreateMode)
+            siteInstance = siteManager.getOrCreateSite(siteAlias);
+        else
+            siteInstance = siteManager.getSite(siteAlias);
+
+        return siteInstance;
     }
 
 }
