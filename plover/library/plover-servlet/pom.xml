@@ -91,7 +91,7 @@
         <dependency>
             <groupId>com.googlecode.jatl</groupId>
             <artifactId>jatl</artifactId>
-            <version>0.1.1</version>
+            <version>0.2.0</version>
         </dependency>
     </dependencies>
     <name>Plover :: Library :: Servlet</name>
